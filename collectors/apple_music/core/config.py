@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[1]
@@ -13,7 +14,32 @@ APPLE_MUSIC_HOME = "https://music.apple.com/fr/new"
 ARTIST_FILTER = "Taylor Swift"
 ARTIST_ID = "159260351"
 DEFAULT_STOREFRONT = "fr"
-DEFAULT_TIMEOUT = 20
+
+
+def _int_from_env(name: str, default: int) -> int:
+    raw = os.getenv(name)
+    if raw is None:
+        return default
+    try:
+        return int(raw)
+    except ValueError:
+        return default
+
+
+def _float_from_env(name: str, default: float) -> float:
+    raw = os.getenv(name)
+    if raw is None:
+        return default
+    try:
+        return float(raw)
+    except ValueError:
+        return default
+
+
+DEFAULT_TIMEOUT = _int_from_env("APPLE_MUSIC_TIMEOUT", 20)
+RETRY_TOTAL = _int_from_env("APPLE_MUSIC_RETRY_TOTAL", 3)
+RETRY_BACKOFF = _float_from_env("APPLE_MUSIC_RETRY_BACKOFF", 1.0)
+RETRY_STATUS_FORCELIST = (429, 500, 502, 503, 504)
 TOKEN_CACHE_PATH = TOOLS_JSON_DIR / "apple_music_token.json"
 
 HEADERS = {

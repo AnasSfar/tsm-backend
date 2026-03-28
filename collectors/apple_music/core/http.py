@@ -4,7 +4,13 @@ from requests import Session
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-from .config import DEFAULT_TIMEOUT, HEADERS
+from .config import (
+    DEFAULT_TIMEOUT,
+    HEADERS,
+    RETRY_BACKOFF,
+    RETRY_STATUS_FORCELIST,
+    RETRY_TOTAL,
+)
 
 
 class AppleMusicSession(Session):
@@ -15,18 +21,23 @@ class AppleMusicSession(Session):
         return super().request(*args, **kwargs)
 
 
-
-def build_session() -> AppleMusicSession:
+def build_session(
+    *,
+    retry_total: int = RETRY_TOTAL,
+    retry_backoff: float = RETRY_BACKOFF,
+    timeout: int = DEFAULT_TIMEOUT,
+) -> AppleMusicSession:
     retry = Retry(
-        total=3,
-        read=3,
-        connect=3,
-        backoff_factor=1.0,
-        status_forcelist=[429, 500, 502, 503, 504],
+        total=retry_total,
+        read=retry_total,
+        connect=retry_total,
+        backoff_factor=retry_backoff,
+        status_forcelist=RETRY_STATUS_FORCELIST,
         allowed_methods=frozenset(["GET"]),
         raise_on_status=False,
     )
     session = AppleMusicSession()
+    session.default_timeout = timeout
     adapter = HTTPAdapter(max_retries=retry)
     session.mount("https://", adapter)
     session.mount("http://", adapter)
