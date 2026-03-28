@@ -6,6 +6,12 @@ import subprocess
 import sys
 from pathlib import Path
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 HERE = Path(__file__).resolve().parent
 REPO_ROOT = HERE.parents[1]
 
@@ -14,6 +20,7 @@ SCRIPTS = [
     HERE / "global.py",
     HERE / "genre_charts.py",
     HERE / "country_charts.py",
+    HERE / "country_albums.py",
 ]
 
 

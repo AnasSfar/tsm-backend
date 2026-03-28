@@ -32,6 +32,11 @@ FIELDNAMES = [
     "url",
     "artist_name",
     "album_name",
+    "duration_ms",
+    "release_date",
+    "isrc",
+    "content_rating",
+    "genre_names",
 ]
 
 
@@ -72,6 +77,11 @@ def fetch_genre_chart(session, country: str, genre_id: str) -> list[dict] | None
                 "url": attrs.get("url", ""),
                 "artist_name": clean_text(attrs.get("artistName", "")),
                 "album_name": clean_text(attrs.get("albumName", "")),
+                "duration_ms": attrs.get("durationInMillis", ""),
+                "release_date": attrs.get("releaseDate", ""),
+                "isrc": attrs.get("isrc", ""),
+                "content_rating": attrs.get("contentRating", ""),
+                "genre_names": " | ".join(attrs.get("genreNames") or []),
             }
         )
     return songs
@@ -128,6 +138,11 @@ def main() -> None:
                         "url": song["url"],
                         "artist_name": song["artist_name"],
                         "album_name": song["album_name"],
+                        "duration_ms": song["duration_ms"],
+                        "release_date": song["release_date"],
+                        "isrc": song["isrc"],
+                        "content_rating": song["content_rating"],
+                        "genre_names": song["genre_names"],
                     }
                 )
         print(f"{country}: {hits} Taylor Swift chart hit(s)")

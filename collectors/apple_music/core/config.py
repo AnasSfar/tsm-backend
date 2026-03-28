@@ -36,6 +36,14 @@ def _float_from_env(name: str, default: float) -> float:
         return default
 
 
+def _list_from_env(name: str, default: list[str]) -> list[str]:
+    raw = os.getenv(name)
+    if raw is None:
+        return default
+    values = [part.strip().lower() for part in raw.split(",") if part.strip()]
+    return values or default
+
+
 DEFAULT_TIMEOUT = _int_from_env("APPLE_MUSIC_TIMEOUT", 20)
 RETRY_TOTAL = _int_from_env("APPLE_MUSIC_RETRY_TOTAL", 3)
 RETRY_BACKOFF = _float_from_env("APPLE_MUSIC_RETRY_BACKOFF", 1.0)
@@ -50,7 +58,10 @@ HEADERS = {
     "Accept-Language": "fr-FR,fr;q=0.9,en;q=0.8",
 }
 
-COUNTRIES = ["us", "fr", "gb", "de", "au"]
+COUNTRIES = _list_from_env(
+    "APPLE_MUSIC_COUNTRIES",
+    ["us", "fr", "gb", "de", "au", "ca", "jp", "br", "mx", "it", "es", "nl", "se"],
+)
 GENRES = [
     ("14", "Pop"),
     ("6", "Country"),

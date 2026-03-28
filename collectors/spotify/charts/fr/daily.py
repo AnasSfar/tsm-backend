@@ -16,11 +16,18 @@ Options :
             Sans date explicite, cible hier.
 """
 import re
+import os
 import subprocess
 import sys
 import time
 from datetime import date, datetime, timedelta
 from pathlib import Path
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from core.twitter import post_thread, post_with_image, split_tweets
@@ -212,6 +219,20 @@ def build_multi_tweet(dates: list[date]) -> str:
     return f"Taylor Swift on {' & '.join(parts)}, {year}"
 
 
+def maybe_upload_to_r2() -> None:
+    if os.getenv("UPLOAD_TO_R2", "").strip().lower() not in ("1", "true", "yes"):
+        log("INFO", "R2 upload skipped (UPLOAD_TO_R2 disabled)")
+        return
+
+    r2_script = _REPO_ROOT / "scripts" / "r2.py"
+    if not r2_script.exists():
+        log("WARN", f"R2 upload script missing: {r2_script}")
+        return
+
+    log("STEP", "Uploading exported data to R2")
+    subprocess.run([sys.executable, str(r2_script)], check=False, cwd=str(_REPO_ROOT))
+
+
 def main():
     force = "--force" in sys.argv
     date_args = [a for a in sys.argv[1:] if not a.startswith("--")]
@@ -325,6 +346,7 @@ def main():
         log("INFO", f"Terminé avec succès ({len(processed)} date(s) postée(s))")
 
         git_commit_and_push(_REPO_ROOT)
+        maybe_upload_to_r2()
 
         notify(
             NTFY_TOPIC,

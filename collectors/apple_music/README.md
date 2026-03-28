@@ -7,6 +7,7 @@ This bundle provides a richer Apple Music collector package designed to drop int
 - `collectors/apple_music/global.py`
 - `collectors/apple_music/genre_charts.py`
 - `collectors/apple_music/country_charts.py`
+- `collectors/apple_music/country_albums.py`
 - shared core utilities under `collectors/apple_music/core/`
 
 ## Improvements over the original scripts
@@ -16,7 +17,9 @@ This bundle provides a richer Apple Music collector package designed to drop int
 - normalized rank matching across days
 - rerun-safe CSV rewriting for the current day
 - richer CSV schema with Apple Music IDs and URLs
+- richer metadata (duration, release date, ISRC, content rating, genres)
 - cleaner separation between fetching, filtering, and persistence
+- optional countries override via `APPLE_MUSIC_COUNTRIES`
 
 ## Expected project layout after merge
 Copy the `collectors/apple_music/` folder into your repository and keep your existing `db/` and `scripts/` folders.
@@ -30,6 +33,13 @@ These scripts expect:
 - `db/apple_music_global.csv`
 - `db/apple_music_genre_charts.csv`
 - `db/apple_music_country_charts.csv`
+- `db/apple_music_country_albums.csv`
+
+## Optional environment configuration
+- `APPLE_MUSIC_COUNTRIES=us,fr,gb,de,au,ca,jp,...`
+- `APPLE_MUSIC_TIMEOUT=20`
+- `APPLE_MUSIC_RETRY_TOTAL=3`
+- `APPLE_MUSIC_RETRY_BACKOFF=1.0`
 
 ## Notes
 - Country charts use the public RSS feed.

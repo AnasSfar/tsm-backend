@@ -15,6 +15,7 @@ OUT_DIR = ROOT / "website" / "site" / "data"
 GLOBAL_CSV = DB_DIR / "apple_music_global.csv"
 TOP_SONGS_CSV = DB_DIR / "apple_music_ts_top_songs.csv"
 COUNTRY_CSV = DB_DIR / "apple_music_country_charts.csv"
+COUNTRY_ALBUMS_CSV = DB_DIR / "apple_music_country_albums.csv"
 GENRE_CSV = DB_DIR / "apple_music_genre_charts.csv"
 
 OUT_DATA = OUT_DIR / "applemusic.json"
@@ -55,6 +56,7 @@ def normalize_date(row: dict[str, Any]) -> str:
 
 def normalize_song_entry(row: dict[str, Any]) -> dict[str, Any]:
     previous_rank = to_int(row.get("previous_rank") or row.get("prev_rank"))
+    genre_names_raw = clean_str(row.get("genre_names"))
     return {
         "song_name": clean_str(row.get("song_name") or row.get("title") or row.get("track_name")),
         "apple_music_id": clean_str(row.get("apple_music_id") or row.get("song_id") or row.get("id")),
@@ -63,6 +65,28 @@ def normalize_song_entry(row: dict[str, Any]) -> dict[str, Any]:
         "image_url": clean_str(row.get("image_url") or row.get("artwork_url")),
         "url": clean_str(row.get("url") or row.get("song_url")),
         "artist_name": clean_str(row.get("artist_name") or row.get("artist") or "Taylor Swift"),
+        "album_name": clean_str(row.get("album_name")),
+        "duration_ms": to_int(row.get("duration_ms")),
+        "release_date": clean_str(row.get("release_date")),
+        "isrc": clean_str(row.get("isrc")),
+        "content_rating": clean_str(row.get("content_rating")),
+        "genre_names": [part.strip() for part in genre_names_raw.split("|") if part.strip()] if genre_names_raw else [],
+    }
+
+
+def normalize_album_entry(row: dict[str, Any]) -> dict[str, Any]:
+    previous_rank = to_int(row.get("previous_rank") or row.get("prev_rank"))
+    genre_names_raw = clean_str(row.get("genre_names"))
+    return {
+        "album_name": clean_str(row.get("album_name") or row.get("name") or row.get("title")),
+        "apple_music_id": clean_str(row.get("apple_music_id") or row.get("album_id") or row.get("id")),
+        "rank": to_int(row.get("rank")),
+        "previous_rank": previous_rank if previous_rank else None,
+        "image_url": clean_str(row.get("image_url") or row.get("artwork_url")),
+        "url": clean_str(row.get("url")),
+        "artist_name": clean_str(row.get("artist_name") or row.get("artist") or "Taylor Swift"),
+        "release_date": clean_str(row.get("release_date")),
+        "genre_names": [part.strip() for part in genre_names_raw.split("|") if part.strip()] if genre_names_raw else [],
     }
 
 
@@ -199,20 +223,49 @@ def build_genre(rows: list[dict[str, Any]]) -> tuple[dict[str, Any] | None, dict
     return current, by_date, dates
 
 
+def build_country_albums(rows: list[dict[str, Any]]) -> tuple[dict[str, Any] | None, dict[str, dict[str, list[dict[str, Any]]]], list[str]]:
+    by_date: dict[str, dict[str, list[dict[str, Any]]]] = defaultdict(lambda: defaultdict(list))
+
+    for row in rows:
+        d = normalize_date(row)
+        country = clean_str(row.get("country")).lower()
+        if not d or not country:
+            continue
+        by_date[d][country].append(normalize_album_entry(row))
+
+    for d, countries in by_date.items():
+        for country, entries in list(countries.items()):
+            countries[country] = sort_entries(entries)
+
+    dates = sorted(by_date.keys())
+    latest = dates[-1] if dates else None
+
+    current = None
+    if latest:
+        current = {
+            "date": latest,
+            "countries": by_date[latest],
+        }
+
+    return current, by_date, dates
+
+
 def main() -> None:
     ensure_out_dir()
 
     global_rows = read_csv_rows(GLOBAL_CSV)
     top_rows = read_csv_rows(TOP_SONGS_CSV)
     country_rows = read_csv_rows(COUNTRY_CSV)
+    country_album_rows = read_csv_rows(COUNTRY_ALBUMS_CSV)
     genre_rows = read_csv_rows(GENRE_CSV)
 
     global_current, global_history, global_dates = build_global(global_rows)
     top_current, top_history, top_dates = build_top_songs(top_rows)
     country_current, country_history, country_dates = build_country(country_rows)
+    country_album_current, country_album_history, country_album_dates = build_country_albums(country_album_rows)
     genre_current, genre_history, genre_dates = build_genre(genre_rows)
 
-    all_dates = sorted(set(global_dates + top_dates + country_dates + genre_dates))
+    all_dates = sorted(set(global_dates + top_dates + country_dates + country_album_dates + genre_dates))
     latest_any = all_dates[-1] if all_dates else None
 
     applemusic_data = {
@@ -220,6 +273,7 @@ def main() -> None:
         "global_chart": global_current,
         "ts_top_songs": top_current,
         "country_charts": country_current,
+        "country_album_charts": country_album_current,
         "genre_charts": genre_current,
     }
 
@@ -228,6 +282,7 @@ def main() -> None:
         "global": global_history,
         "top_songs": top_history,
         "country": country_history,
+        "country_albums": country_album_history,
         "genre": genre_history,
     }
 

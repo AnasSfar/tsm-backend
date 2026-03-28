@@ -23,11 +23,18 @@ Options :
 from __future__ import annotations
 
 import re
+import os
 import subprocess
 import sys
 import time
 from datetime import date, datetime, timedelta
 from pathlib import Path
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
@@ -381,6 +388,20 @@ def generate_image(processed: list[date]) -> Path | None:
     return image_path
 
 
+def maybe_upload_to_r2() -> None:
+    if os.getenv("UPLOAD_TO_R2", "").strip().lower() not in ("1", "true", "yes"):
+        log("INFO", "R2 upload skipped (UPLOAD_TO_R2 disabled)")
+        return
+
+    r2_script = _REPO_ROOT / "scripts" / "r2.py"
+    if not r2_script.exists():
+        log("WARN", f"R2 upload script missing: {r2_script}")
+        return
+
+    log("STEP", "Uploading exported data to R2")
+    subprocess.run([sys.executable, str(r2_script)], check=False, cwd=str(_REPO_ROOT))
+
+
 def main() -> None:
     date_args = [a for a in sys.argv[1:] if not a.startswith("--")]
     force = "--force" in sys.argv
@@ -472,6 +493,7 @@ def main() -> None:
 
         migrate_archive_csv(MIGRATE_SCRIPT)
         git_commit_and_push(_REPO_ROOT)
+        maybe_upload_to_r2()
 
         if NTFY_TOPIC:
             notify(

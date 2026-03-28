@@ -3,9 +3,17 @@ from __future__ import annotations
 
 import csv
 import json
+import os
+import subprocess
 import sys
 from datetime import datetime
 from pathlib import Path
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
 
@@ -248,6 +256,20 @@ def _save_to_csv(result: dict) -> None:
     print(f"\nSaved {len(new_rows)} rows to {BILLBOARD_CSV_PATH}", flush=True)
 
 
+def _maybe_upload_to_r2() -> None:
+    if os.getenv("UPLOAD_TO_R2", "").strip().lower() not in ("1", "true", "yes"):
+        print("R2 upload skipped (UPLOAD_TO_R2 disabled)", flush=True)
+        return
+
+    r2_script = _REPO_ROOT / "scripts" / "r2.py"
+    if not r2_script.exists():
+        print(f"R2 upload script missing: {r2_script}", flush=True)
+        return
+
+    print("Uploading exported data to R2...", flush=True)
+    subprocess.run([sys.executable, str(r2_script)], cwd=str(_REPO_ROOT), check=False)
+
+
 def main() -> None:
     result: dict = {
         "scraped_at": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S"),
@@ -307,6 +329,7 @@ def main() -> None:
         browser.close()
 
     _save_to_csv(result)
+    _maybe_upload_to_r2()
 
 
 if __name__ == "__main__":
