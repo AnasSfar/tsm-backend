@@ -1,0 +1,30 @@
+# Core dependencies
+requests>=2.28.0
+urllib3>=1.26.0
+
+# Browser automation (for Spotify & Billboard scraping)
+playwright>=1.40.0
+
+# Cloud storage (Cloudflare R2 / AWS S3 compatible)
+boto3>=1.26.0
+
+# Environment configuration
+python-dotenv>=0.19.0
+
+# Image processing (for album cover fetching)
+Pillow>=9.0.0
+
+# Optional: Web scraping and parsing
+beautifulsoup4>=4.11.0
+lxml>=4.9.0
+
+# Optional: Twitter integration (if used)
+tweepy>=4.0.0
+
+# Development dependencies (optional)
+# Uncomment to include:
+# pytest>=7.0.0
+# pytest-cov>=4.0.0
+# black>=22.0.0
+# ruff>=0.1.0
+# mypy>=1.0.0
