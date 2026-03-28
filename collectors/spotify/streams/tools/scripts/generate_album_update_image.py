@@ -165,6 +165,15 @@ def load_album_sections(album_name: str) -> list[dict]:
         )
         sections.append({"name": name, "tracks": tracks})
 
+    # Sort so "Standard Edition" (or "Standard") always appears first
+    def sort_key(sec):
+        name_lower = sec["name"].lower()
+        if "standard" in name_lower:
+            return (0, 0)  # Standard editions first
+        else:
+            return (1, sec["name"])  # Others alphabetically
+    sections.sort(key=sort_key)
+
     return sections
 
 
