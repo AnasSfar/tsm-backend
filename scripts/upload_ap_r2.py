@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import argparse
 import csv
+import hashlib
 import json
 import os
 import re
 import sys
+import time
 import unicodedata
-from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
@@ -79,7 +81,7 @@ def song_key(song_name: str) -> str:
 def read_csv(path: Path) -> list[dict[str, str]]:
     if not path.exists():
         return []
-    with path.open("r", newline="", encoding="utf-8") as f:
+    with path.open("r", newline="", encoding="utf-8-sig") as f:
         return list(csv.DictReader(f))
 
 
@@ -101,27 +103,49 @@ def object_has_same_body_hash(client: BaseClient, bucket: str, key: str, body: b
     return remote_hash == local_hash
 
 
-def upload_json_if_changed(client: BaseClient, bucket: str, key: str, payload: Any) -> bool:
-    import hashlib
-
+def upload_json_if_changed(
+    client: BaseClient,
+    bucket: str,
+    key: str,
+    payload: Any,
+    *,
+    dry_run: bool,
+    retries: int = 3,
+) -> bool:
     body = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
     local_hash = hashlib.sha256(body).hexdigest()
 
     if object_has_same_body_hash(client, bucket, key, body):
         return False
 
-    client.put_object(
-        Bucket=bucket,
-        Key=key,
-        Body=body,
-        ContentType="application/json; charset=utf-8",
-        Metadata={"sha256": local_hash},
-    )
+    if dry_run:
+        print(f"[dry-run][upload] {key}")
+        return True
+
+    for attempt in range(1, retries + 1):
+        try:
+            client.put_object(
+                Bucket=bucket,
+                Key=key,
+                Body=body,
+                ContentType="application/json; charset=utf-8",
+                Metadata={"sha256": local_hash},
+            )
+            break
+        except Exception:
+            if attempt == retries:
+                raise
+            time.sleep(min(2 ** attempt, 5))
+
     return True
 
 
 def clean_row(row: dict[str, str], keep_fields: list[str]) -> dict[str, str]:
     return {field: row.get(field, "") for field in keep_fields if field in row}
+
+
+def normalize_song_identity(song_name: str) -> str:
+    return normalize_text(song_name)
 
 
 def append_rows(
@@ -135,12 +159,14 @@ def append_rows(
         if not name:
             continue
 
-        key = song_key(name)
+        key = normalize_song_identity(name)
+        slug = song_key(name)
         bucket = grouped.setdefault(
             key,
             {
-                "song_key": key,
+                "song_key": slug,
                 "song_name": name,
+                "normalized_song_name": key,
                 "sources": {
                     "country_charts": [],
                     "genre_charts": [],
@@ -205,17 +231,33 @@ def build_history_objects() -> dict[str, dict[str, Any]]:
         keep_fields=["date", "storefront", "song_name", "rank", "previous_rank", "image_url", "url", "apple_music_id", "album_name"],
     )
 
-    for key in list(grouped.keys()):
-        grouped[key] = finalize_payload(grouped[key])
+    for normalized_name in list(grouped.keys()):
+        grouped[normalized_name] = finalize_payload(grouped[normalized_name])
 
     return grouped
 
 
+def object_key(payload: dict[str, Any], prefix: str) -> str:
+    normalized = payload.get("normalized_song_name") or normalize_song_identity(payload.get("song_name", ""))
+    suffix = hashlib.sha1(str(normalized).encode("utf-8")).hexdigest()[:10]
+    slug = payload.get("song_key") or song_key(payload.get("song_name", ""))
+    return f"{prefix}/{slug}--{suffix}.json"
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Upload Apple Music history-by-song data to R2.")
+    parser.add_argument("--bucket", default=get_bucket_name())
+    parser.add_argument("--prefix", default=R2_PREFIX)
+    parser.add_argument("--dry-run", action="store_true")
+    return parser.parse_args()
+
+
 def main() -> None:
     load_dotenv()
+    args = parse_args()
 
     client = get_r2_client()
-    bucket = get_bucket_name()
+    bucket = args.bucket
 
     objects = build_history_objects()
 
@@ -226,13 +268,14 @@ def main() -> None:
     uploaded = 0
     unchanged = 0
 
-    for key, payload in sorted(objects.items()):
-        r2_key = f"{R2_PREFIX}/{key}.json"
+    for _, payload in sorted(objects.items(), key=lambda item: item[1].get("song_name", "")):
+        r2_key = object_key(payload, args.prefix)
         changed = upload_json_if_changed(
             client=client,
             bucket=bucket,
             key=r2_key,
             payload=payload,
+            dry_run=args.dry_run,
         )
         if changed:
             print(f"[uploaded] {r2_key}")
@@ -244,10 +287,12 @@ def main() -> None:
     print()
     print("[done]")
     print(f"  bucket: {bucket}")
-    print(f"  prefix: {R2_PREFIX}")
+    print(f"  prefix: {args.prefix}")
     print(f"  songs: {len(objects)}")
     print(f"  uploaded: {uploaded}")
     print(f"  unchanged: {unchanged}")
+    if args.dry_run:
+        print("  mode: dry-run")
 
 
 if __name__ == "__main__":

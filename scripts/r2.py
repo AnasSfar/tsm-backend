@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import argparse
+import hashlib
 import io
 import json
 import os
 import re
+import time
 from collections import defaultdict
 from pathlib import Path
+from typing import Any
 
 import boto3
 from dotenv import load_dotenv
@@ -18,49 +22,123 @@ HISTORY_DIR = ROOT / "website" / "site" / "history"
 SITE_DATA_DIR = ROOT / "website" / "site" / "data"
 DB_DIR = ROOT / "db"
 
-R2_ACCOUNT_ID = os.environ["R2_ACCOUNT_ID"]
-R2_ACCESS_KEY_ID = os.environ["R2_ACCESS_KEY_ID"]
-R2_SECRET_ACCESS_KEY = os.environ["R2_SECRET_ACCESS_KEY"]
-R2_BUCKET = os.environ["R2_BUCKET"]
-
 DATE_RE = re.compile(r"(\d{4}-\d{2}-\d{2})")
 
-s3 = boto3.client(
-    "s3",
-    endpoint_url=f"https://{R2_ACCOUNT_ID}.r2.cloudflarestorage.com",
-    aws_access_key_id=R2_ACCESS_KEY_ID,
-    aws_secret_access_key=R2_SECRET_ACCESS_KEY,
-)
+
+def get_env(name: str) -> str:
+    value = os.getenv(name, "").strip()
+    if not value:
+        raise RuntimeError(f"Missing environment variable: {name}")
+    return value
 
 
-def load_json(path: Path):
+def get_s3_client():
+    account_id = get_env("R2_ACCOUNT_ID")
+    access_key_id = get_env("R2_ACCESS_KEY_ID")
+    secret_access_key = get_env("R2_SECRET_ACCESS_KEY")
+    return boto3.client(
+        "s3",
+        endpoint_url=f"https://{account_id}.r2.cloudflarestorage.com",
+        aws_access_key_id=access_key_id,
+        aws_secret_access_key=secret_access_key,
+        region_name="auto",
+    )
+
+
+def load_json(path: Path) -> Any:
     with path.open("r", encoding="utf-8") as f:
         return json.load(f)
 
 
-def upload_json_bytes(obj: dict, bucket_key: str) -> None:
-    raw = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
-    s3.upload_fileobj(
-        io.BytesIO(raw),
-        R2_BUCKET,
-        bucket_key,
-        ExtraArgs={"ContentType": "application/json"},
+def head_object_safe(client, bucket: str, key: str) -> dict[str, Any] | None:
+    try:
+        return client.head_object(Bucket=bucket, Key=key)
+    except Exception:
+        return None
+
+
+def object_has_same_hash(client, bucket: str, key: str, data: bytes) -> bool:
+    local_hash = hashlib.sha256(data).hexdigest()
+    meta = head_object_safe(client, bucket, key)
+    if not meta:
+        return False
+    remote_hash = (meta.get("Metadata") or {}).get("sha256", "")
+    return local_hash == remote_hash
+
+
+def upload_bytes_if_changed(
+    *,
+    client,
+    bucket: str,
+    key: str,
+    data: bytes,
+    content_type: str,
+    dry_run: bool,
+    retries: int = 3,
+) -> bool:
+    if object_has_same_hash(client, bucket, key, data):
+        return False
+
+    if dry_run:
+        print(f"[DRY-RUN][UPLOAD] {key}")
+        return True
+
+    body_hash = hashlib.sha256(data).hexdigest()
+    for attempt in range(1, retries + 1):
+        try:
+            client.upload_fileobj(
+                io.BytesIO(data),
+                bucket,
+                key,
+                ExtraArgs={
+                    "ContentType": content_type,
+                    "Metadata": {"sha256": body_hash},
+                },
+            )
+            return True
+        except Exception:
+            if attempt == retries:
+                raise
+            time.sleep(min(2 ** attempt, 5))
+
+    return True
+
+
+def upload_json_if_changed(*, client, bucket: str, key: str, payload: dict[str, Any], dry_run: bool) -> bool:
+    data = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+    return upload_bytes_if_changed(
+        client=client,
+        bucket=bucket,
+        key=key,
+        data=data,
+        content_type="application/json; charset=utf-8",
+        dry_run=dry_run,
     )
 
 
-def upload_raw_bytes(data: bytes, bucket_key: str, content_type: str) -> None:
-    s3.upload_fileobj(
-        io.BytesIO(data),
-        R2_BUCKET,
-        bucket_key,
-        ExtraArgs={"ContentType": content_type},
+def upload_raw_if_changed(*, client, bucket: str, key: str, data: bytes, content_type: str, dry_run: bool) -> bool:
+    return upload_bytes_if_changed(
+        client=client,
+        bucket=bucket,
+        key=key,
+        data=data,
+        content_type=content_type,
+        dry_run=dry_run,
     )
 
 
-def upload_static_data() -> None:
-    """Upload all generated JSON/CSV data files to R2 so the Vercel API can read them."""
+def upload_static_data(
+    *,
+    client,
+    bucket: str,
+    data_prefix: str,
+    history_prefix: str,
+    dry_run: bool,
+) -> tuple[int, int]:
+    """Upload generated JSON/CSV/static history files used by the frontend."""
+    uploaded = 0
+    unchanged = 0
 
-    # ── JSON files from website/site/data/ ───────────────────────────────────
     json_mappings = [
         ("songs.json",               "data/songs.json"),
         ("albums.json",              "data/albums.json"),
@@ -77,10 +155,15 @@ def upload_static_data() -> None:
             print(f"[SKIP] absent: {src}")
             continue
         obj = load_json(src)
-        upload_json_bytes(obj, r2_key)
-        print(f"[OK] {r2_key}")
+        full_key = f"{data_prefix}/{r2_key.split('/', 1)[1]}"
+        changed = upload_json_if_changed(client=client, bucket=bucket, key=full_key, payload=obj, dry_run=dry_run)
+        if changed:
+            uploaded += 1
+            print(f"[UPLOADED] {full_key}")
+        else:
+            unchanged += 1
+            print(f"[UNCHANGED] {full_key}")
 
-    # ── CSV charts from db/ ───────────────────────────────────────────────────
     csv_mappings = [
         ("charts_history_global.csv", "data/charts_global.csv"),
         ("charts_history_fr.csv",     "data/charts_fr.csv"),
@@ -90,16 +173,39 @@ def upload_static_data() -> None:
         if not src.exists():
             print(f"[SKIP] absent: {src}")
             continue
-        upload_raw_bytes(src.read_bytes(), r2_key, "text/csv; charset=utf-8")
-        print(f"[OK] {r2_key}")
+        full_key = f"{data_prefix}/{r2_key.split('/', 1)[1]}"
+        changed = upload_raw_if_changed(
+            client=client,
+            bucket=bucket,
+            key=full_key,
+            data=src.read_bytes(),
+            content_type="text/csv; charset=utf-8",
+            dry_run=dry_run,
+        )
+        if changed:
+            uploaded += 1
+            print(f"[UPLOADED] {full_key}")
+        else:
+            unchanged += 1
+            print(f"[UNCHANGED] {full_key}")
 
-    # ── history/index.json ────────────────────────────────────────────────────
     index_path = HISTORY_DIR / "index.json"
     if index_path.exists():
-        upload_json_bytes(load_json(index_path), "history/index.json")
-        print("[OK] history/index.json")
+        full_key = f"{history_prefix}/index.json"
+        changed = upload_json_if_changed(
+            client=client,
+            bucket=bucket,
+            key=full_key,
+            payload=load_json(index_path),
+            dry_run=dry_run,
+        )
+        if changed:
+            uploaded += 1
+            print(f"[UPLOADED] {full_key}")
+        else:
+            unchanged += 1
+            print(f"[UNCHANGED] {full_key}")
 
-    # ── daily history snapshots ───────────────────────────────────────────────
     daily_files = sorted(
         p for p in HISTORY_DIR.glob("*.json")
         if p.name != "index.json"
@@ -108,14 +214,41 @@ def upload_static_data() -> None:
         m = DATE_RE.search(path.stem)
         if not m:
             continue
-        r2_key = f"history/{m.group(1)}.json"
-        upload_json_bytes(load_json(path), r2_key)
-        print(f"[OK] {r2_key}")
+        full_key = f"{history_prefix}/{m.group(1)}.json"
+        changed = upload_json_if_changed(
+            client=client,
+            bucket=bucket,
+            key=full_key,
+            payload=load_json(path),
+            dry_run=dry_run,
+        )
+        if changed:
+            uploaded += 1
+            print(f"[UPLOADED] {full_key}")
+        else:
+            unchanged += 1
+            print(f"[UNCHANGED] {full_key}")
 
-    print(f"[DONE] static data uploaded ({len(json_mappings)} JSON + {len(csv_mappings)} CSV + history)")
+    return uploaded, unchanged
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Upload Spotify history and static data to R2.")
+    parser.add_argument("--bucket", default=os.getenv("R2_BUCKET", "taylor-data"))
+    parser.add_argument("--track-prefix", default=os.getenv("SPOTIFY_R2_TRACK_PREFIX", "history-by-track"))
+    parser.add_argument("--data-prefix", default=os.getenv("R2_STATIC_DATA_PREFIX", "data"))
+    parser.add_argument("--history-prefix", default=os.getenv("R2_STATIC_HISTORY_PREFIX", "history"))
+    parser.add_argument("--skip-history-upload", action="store_true")
+    parser.add_argument("--skip-static-upload", action="store_true")
+    parser.add_argument("--dry-run", action="store_true")
+    return parser.parse_args()
 
 
 def main() -> None:
+    args = parse_args()
+    client = get_s3_client()
+    bucket = args.bucket
+
     if not HISTORY_DIR.exists():
         raise FileNotFoundError(f"History folder not found: {HISTORY_DIR}")
 
@@ -128,55 +261,78 @@ def main() -> None:
         print("No history files found.")
         return
 
-    by_track = defaultdict(list)
+    history_uploaded = 0
+    history_unchanged = 0
+    static_uploaded = 0
+    static_unchanged = 0
 
-    for path in daily_files:
-        m = DATE_RE.search(path.stem)
-        if not m:
-            print(f"[SKIP] date introuvable: {path}")
-            continue
+    if not args.skip_history_upload:
+        by_track = defaultdict(list)
 
-        date = m.group(1)
-        data = load_json(path)
-
-        if not isinstance(data, dict):
-            print(f"[SKIP] format invalide: {path}")
-            continue
-
-        for track_id, values in data.items():
-            if not isinstance(values, dict):
+        for path in daily_files:
+            m = DATE_RE.search(path.stem)
+            if not m:
+                print(f"[SKIP] date not found in filename: {path}")
                 continue
 
-            point = {
-                "date": date,
-                "streams": values.get("s"),
-                "daily_streams": values.get("d"),
-            }
+            date = m.group(1)
+            data = load_json(path)
 
-            if "rank" in values:
-                point["rank"] = values.get("rank")
+            if not isinstance(data, dict):
+                print(f"[SKIP] invalid format: {path}")
+                continue
 
-            by_track[track_id].append(point)
+            for track_id, values in data.items():
+                if not isinstance(values, dict):
+                    continue
 
-    uploaded = 0
+                point = {
+                    "date": date,
+                    "streams": values.get("s"),
+                    "daily_streams": values.get("d"),
+                }
 
-    for track_id, points in by_track.items():
-        points.sort(key=lambda x: x["date"])
+                if "rank" in values:
+                    point["rank"] = values.get("rank")
 
-        payload = {
-            "track_id": track_id,
-            "points": points,
-        }
+                by_track[track_id].append(point)
 
-        bucket_key = f"history-by-track/{track_id}.json"
-        upload_json_bytes(payload, bucket_key)
-        uploaded += 1
-        print(f"[OK] {bucket_key}")
+        for track_id, points in by_track.items():
+            points.sort(key=lambda x: x["date"])
+            payload = {"track_id": track_id, "points": points}
+            bucket_key = f"{args.track_prefix}/{track_id}.json"
+            changed = upload_json_if_changed(
+                client=client,
+                bucket=bucket,
+                key=bucket_key,
+                payload=payload,
+                dry_run=args.dry_run,
+            )
+            if changed:
+                history_uploaded += 1
+                print(f"[UPLOADED] {bucket_key}")
+            else:
+                history_unchanged += 1
+                print(f"[UNCHANGED] {bucket_key}")
 
-    print(f"[DONE] {uploaded} fichiers history-by-track envoyés sur R2")
+    if not args.skip_static_upload:
+        static_uploaded, static_unchanged = upload_static_data(
+            client=client,
+            bucket=bucket,
+            data_prefix=args.data_prefix,
+            history_prefix=args.history_prefix,
+            dry_run=args.dry_run,
+        )
 
-    # Upload all static data files
-    upload_static_data()
+    print("\n[done]")
+    print(f"  bucket: {bucket}")
+    print(f"  track_prefix: {args.track_prefix}")
+    print(f"  history uploaded: {history_uploaded}")
+    print(f"  history unchanged: {history_unchanged}")
+    print(f"  static uploaded: {static_uploaded}")
+    print(f"  static unchanged: {static_unchanged}")
+    if args.dry_run:
+        print("  mode: dry-run")
 
 
 if __name__ == "__main__":

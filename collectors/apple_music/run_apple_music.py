@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -8,14 +9,26 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO_ROOT = HERE.parents[1]
 
-EXPORT_SCRIPT = REPO_ROOT / "scripts" / "upload_apple_music_to_r2.py"
-
 SCRIPTS = [
     HERE / "ts_page.py",
     HERE / "global.py",
     HERE / "genre_charts.py",
     HERE / "country_charts.py",
 ]
+
+
+def maybe_upload_to_r2() -> None:
+    if os.getenv("UPLOAD_TO_R2", "").strip().lower() not in ("1", "true", "yes"):
+        print("[Apple Music] R2 upload skipped (UPLOAD_TO_R2 disabled)")
+        return
+
+    upload_script = REPO_ROOT / "scripts" / "upload_ap_r2.py"
+    if not upload_script.exists():
+        print(f"[Apple Music] R2 upload script missing: {upload_script}")
+        return
+
+    print("[Apple Music] Uploading history-by-song to R2...")
+    subprocess.run([sys.executable, str(upload_script)], cwd=REPO_ROOT, check=False)
 
 def run_script(script_path: Path) -> int:
     if not script_path.exists():
@@ -58,6 +71,7 @@ def main() -> None:
         sys.exit(1)
     else:
         print("[Apple Music] All scripts completed successfully")
+        maybe_upload_to_r2()
         print(f"{'=' * 80}")
 
 

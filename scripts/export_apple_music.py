@@ -54,11 +54,12 @@ def normalize_date(row: dict[str, Any]) -> str:
 
 
 def normalize_song_entry(row: dict[str, Any]) -> dict[str, Any]:
+    previous_rank = to_int(row.get("previous_rank") or row.get("prev_rank"))
     return {
         "song_name": clean_str(row.get("song_name") or row.get("title") or row.get("track_name")),
         "apple_music_id": clean_str(row.get("apple_music_id") or row.get("song_id") or row.get("id")),
         "rank": to_int(row.get("rank")),
-        "previous_rank": (lambda pr: pr if pr else None)(to_int(row.get("previous_rank") or row.get("prev_rank"))),
+        "previous_rank": previous_rank if previous_rank else None,
         "image_url": clean_str(row.get("image_url") or row.get("artwork_url")),
         "url": clean_str(row.get("url") or row.get("song_url")),
         "artist_name": clean_str(row.get("artist_name") or row.get("artist") or "Taylor Swift"),
@@ -89,7 +90,7 @@ def sort_entries(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
     )
 
 
-def build_global(rows: list[dict[str, Any]]) -> tuple[dict[str, Any], dict[str, list[dict[str, Any]]], list[str]]:
+def build_ranked_series(rows: list[dict[str, Any]]) -> tuple[dict[str, Any], dict[str, list[dict[str, Any]]], list[str]]:
     by_date: dict[str, list[dict[str, Any]]] = defaultdict(list)
 
     for row in rows:
@@ -110,29 +111,14 @@ def build_global(rows: list[dict[str, Any]]) -> tuple[dict[str, Any], dict[str, 
     }
 
     return current, by_date, dates
+
+
+def build_global(rows: list[dict[str, Any]]) -> tuple[dict[str, Any], dict[str, list[dict[str, Any]]], list[str]]:
+    return build_ranked_series(rows)
 
 
 def build_top_songs(rows: list[dict[str, Any]]) -> tuple[dict[str, Any], dict[str, list[dict[str, Any]]], list[str]]:
-    by_date: dict[str, list[dict[str, Any]]] = defaultdict(list)
-
-    for row in rows:
-        d = normalize_date(row)
-        if not d:
-            continue
-        by_date[d].append(normalize_song_entry(row))
-
-    for d in list(by_date.keys()):
-        by_date[d] = sort_entries(by_date[d])
-
-    dates = sorted(by_date.keys())
-    latest = dates[-1] if dates else None
-
-    current = {
-        "date": latest,
-        "entries": by_date.get(latest, []),
-    }
-
-    return current, by_date, dates
+    return build_ranked_series(rows)
 
 
 def build_country(rows: list[dict[str, Any]]) -> tuple[dict[str, Any] | None, dict[str, dict[str, list[dict[str, Any]]]], list[str]]:
