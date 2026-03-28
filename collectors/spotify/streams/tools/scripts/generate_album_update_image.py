@@ -423,7 +423,7 @@ def _edition_css(dominant_hex: str, bi: int) -> tuple[str, str]:
         h, s, bg_l = 142.0, 60.0, 96.5
     else:
         r, g, b = int(m.group(1), 16), int(m.group(2), 16), int(m.group(3), 16)
-        h_f, s_f, l_f = colorsys.rgb_to_hls(r / 255, g / 255, b / 255)
+        h_f, l_f, s_f = colorsys.rgb_to_hls(r / 255, g / 255, b / 255)
         h = h_f * 360
         s = max(40.0, min(s_f * 100, 75.0))
         bg_l = max(92.0, 96.8 - bi * 1.2)
@@ -493,7 +493,7 @@ def build_html(
     m = re.fullmatch(r"#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})", dominant_hex.lower())
     if m:
         r, g, b = int(m.group(1), 16), int(m.group(2), 16), int(m.group(3), 16)
-        h, s, l = colorsys.rgb_to_hls(r / 255, g / 255, b / 255)
+        h, l, s = colorsys.rgb_to_hls(r / 255, g / 255, b / 255)
         # Create light background with accent
         accent_light = _css_hsl(h * 360, s * 100, 92.0)
         accent_mid = _css_hsl(h * 360, s * 100, 88.0)
