@@ -259,53 +259,54 @@ CSS = """
 *{margin:0;padding:0;box-sizing:border-box}
 body{
   font-family:Inter,-apple-system,'Helvetica Neue',Arial,sans-serif;
-  background:
-    radial-gradient(circle at 12% 18%,rgba(29,185,84,.13),transparent 30%),
-    radial-gradient(circle at 84% 16%,rgba(126,87,255,.10),transparent 32%),
-    linear-gradient(180deg,#f4f7f8 0%,#edf3f4 100%);
-  width:800px;
-  padding:16px;
+  background:#ffffff;
+  width:880px;
+  padding:20px;
   color:#101828;
 }
 .container{
-  border-radius:18px;
+  border-radius:20px;
   overflow:hidden;
-  box-shadow:0 14px 40px rgba(16,24,40,.10),0 2px 8px rgba(16,24,40,.06);
+  box-shadow:0 10px 30px rgba(16,24,40,.08),0 2px 8px rgba(16,24,40,.05);
+  background:#ffffff;
 }
 /* ── header ── */
 .hdr{
-  height:100px;
+  height:110px;
   display:flex;align-items:center;gap:0;
   position:relative;overflow:hidden;
+  background:linear-gradient(135deg, rgba(29,185,84,.15) 0%, rgba(21,136,62,.08) 100%);
+  border-bottom:2px solid rgba(29,185,84,.15);
 }
 .hdr-cover{
-  width:76px;height:76px;border-radius:10px;
+  width:84px;height:84px;border-radius:12px;
   flex-shrink:0;object-fit:cover;
-  box-shadow:0 2px 10px rgba(0,0,0,.35);
-  margin-left:20px;
+  box-shadow:0 4px 14px rgba(0,0,0,.15);
+  margin-left:24px;
 }
 .hdr-cover-ph{
-  width:76px;height:76px;border-radius:10px;
-  background:#1f2937;flex-shrink:0;margin-left:20px;
+  width:84px;height:84px;border-radius:12px;
+  background:linear-gradient(135deg,#e8f5ee 0%,#d4f1e0 100%);
+  flex-shrink:0;margin-left:24px;
 }
 .hdr-text{
-  margin-left:20px;display:flex;flex-direction:column;gap:3px;
+  margin-left:24px;display:flex;flex-direction:column;gap:4px;
 }
-.hdr-title{color:#fff;font-size:21px;font-weight:800;letter-spacing:-.3px;line-height:1.2}
-.hdr-sub{color:#fff;font-size:15px;font-weight:700;line-height:1.3}
-.hdr-handle{font-size:11px;font-weight:700;line-height:1.3}
+.hdr-title{color:#101828;font-size:24px;font-weight:800;letter-spacing:-.4px;line-height:1.2}
+.hdr-sub{color:#667085;font-size:14px;font-weight:600;line-height:1.3}
+.hdr-handle{font-size:12px;font-weight:700;line-height:1.3}
 /* ── column headers ── */
 .col-heads{
   display:grid;
   grid-template-columns:40px minmax(150px,1fr) 120px 110px 110px;
-  column-gap:8px;
-  padding:5px 14px;
-  background:rgba(241,245,246,.95);
-  border-bottom:1px solid rgba(16,24,40,.07);
+  column-gap:10px;
+  padding:10px 18px;
+  background:#f5f8f5;
+  border-bottom:1px solid rgba(29,185,84,.08);
 }
 .col-heads span{
-  font-size:9px;font-weight:700;text-transform:uppercase;
-  letter-spacing:.07em;color:#9aa5b4;
+  font-size:10px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.08em;color:#9aa5b4;
   display:flex;align-items:center;
 }
 .col-heads .center{justify-content:center}
@@ -314,35 +315,36 @@ body{
 .song-row{
   display:grid;
   grid-template-columns:40px minmax(150px,1fr) 120px 110px 110px;
-  column-gap:8px;
+  column-gap:10px;
   align-items:center;
-  padding:0 14px;
-  height:32px;
+  padding:8px 18px;
+  height:40px;
   border-bottom:1px solid rgba(16,24,40,.04);
+  background:#ffffff;
 }
 .song-row.alt{background:var(--alt-row)}
 .col-rank{
-  font-size:11px;color:#b0bac8;font-weight:500;
+  font-size:12px;color:#b0bac8;font-weight:600;
   text-align:center;
 }
 .col-song{display:flex;flex-direction:column;justify-content:center;min-width:0}
 .song-title{
-  font-size:12.5px;font-weight:600;color:#101828;
+  font-size:13px;font-weight:600;color:#101828;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
-.song-title.has-tag{font-size:12px}
+.song-title.has-tag{font-size:12.5px}
 .song-ver{
-  font-size:10px;color:#9aa5b4;font-weight:400;
+  font-size:11px;color:#9aa5b4;font-weight:400;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .col-num{
-  font-size:11.5px;color:#344054;font-weight:700;
+  font-size:12px;color:#344054;font-weight:700;
   display:flex;align-items:center;justify-content:flex-end;
 }
-.col-num.daily-val{color:#101828}
-.delta-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
-.delta-num{font-size:11px;font-weight:700}
-.delta-pct{font-size:9px;font-weight:500;opacity:.85}
+.col-num.daily-val{color:#101828;font-size:13px;font-weight:700}
+.delta-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.delta-num{font-size:12px;font-weight:700}
+.delta-pct{font-size:10px;font-weight:500;opacity:.80}
 .pos .delta-num,.pos .delta-pct{color:#067647}
 .neg .delta-num,.neg .delta-pct{color:#b42318}
 .neutral .delta-num{color:#667085}
@@ -350,56 +352,59 @@ body{
 .sec-total{
   display:grid;
   grid-template-columns:40px minmax(150px,1fr) 120px 110px 110px;
-  column-gap:8px;
+  column-gap:10px;
   align-items:center;
-  padding:0 14px;
-  height:36px;
-  border-left:4px solid var(--sec-accent);
+  padding:10px 18px;
+  height:44px;
+  border-left:5px solid var(--sec-accent);
   background:var(--sec-bg);
+  font-weight:700;
 }
 .sec-label{
   grid-column:1/3;
-  font-size:11px;font-weight:700;color:#101828;
-  padding-left:4px;
+  font-size:12px;color:#101828;
+  padding-left:2px;
 }
 .sec-num{
-  font-size:11px;font-weight:700;
+  font-size:13px;
   display:flex;align-items:center;justify-content:flex-end;color:#101828;
+  font-weight:700;
 }
-.sec-chg{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
-.sec-chg-num{font-size:11px;font-weight:700}
-.sec-chg-pct{font-size:9px;font-weight:500;opacity:.85}
+.sec-chg{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.sec-chg-num{font-size:12px;font-weight:700}
+.sec-chg-pct{font-size:10px;font-weight:600;opacity:.80}
 /* ── grand total ── */
 .era-total{
   display:grid;
   grid-template-columns:40px minmax(150px,1fr) 120px 110px 110px;
-  column-gap:8px;
+  column-gap:10px;
   align-items:center;
-  padding:0 14px;
-  height:36px;
-  background:#0d1117;
+  padding:12px 18px;
+  height:48px;
+  background:linear-gradient(135deg, #0d1117 0%, #1a1f26 100%);
+  border-top:2px solid rgba(29,185,84,.1);
 }
 .era-label{
   grid-column:1/3;
-  font-size:13px;font-weight:700;color:rgba(255,255,255,.9);
-  padding-left:4px;
+  font-size:14px;font-weight:800;color:rgba(255,255,255,.95);
+  padding-left:2px;
 }
 .era-num{
-  font-size:13px;font-weight:700;color:rgba(255,255,255,.9);
+  font-size:14px;font-weight:800;color:rgba(255,255,255,.95);
   display:flex;align-items:center;justify-content:flex-end;
 }
-.era-chg{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
-.era-chg-num{font-size:13px;font-weight:700}
-.era-chg-pct{font-size:10px;font-weight:500;opacity:.85}
+.era-chg{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.era-chg-num{font-size:13px;font-weight:800}
+.era-chg-pct{font-size:11px;font-weight:600;opacity:.85}
 /* ── footer ── */
 .ftr{
-  background:rgba(241,245,246,.96);
-  padding:8px 16px;
+  background:#f5f8f5;
+  padding:12px 18px;
   display:flex;justify-content:space-between;align-items:center;
-  border-top:1px solid rgba(16,24,40,.07);
+  border-top:1px solid rgba(29,185,84,.08);
 }
-.ftr-handle{font-size:11px;font-weight:700}
-.ftr-date{font-size:11px;color:#667085;font-weight:500}
+.ftr-handle{font-size:12px;font-weight:700}
+.ftr-date{font-size:12px;color:#667085;font-weight:500}
 """
 
 
@@ -413,15 +418,15 @@ def _edition_css(dominant_hex: str, bi: int) -> tuple[str, str]:
     """Returns (accent_css, bg_css) for section total row."""
     m = re.fullmatch(r"#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})", dominant_hex.lower())
     if not m:
-        h, s, bg_l = 142.0, 50.0, 95.0
+        h, s, bg_l = 142.0, 60.0, 96.5
     else:
         r, g, b = int(m.group(1), 16), int(m.group(2), 16), int(m.group(3), 16)
         h_f, s_f, l_f = colorsys.rgb_to_hls(r / 255, g / 255, b / 255)
         h = h_f * 360
-        s = max(35.0, min(s_f * 100, 70.0))
-        bg_l = max(88.0, 97.0 - bi * 4)
-    accent = _css_hsl(h, s, 38.0)
-    bg     = _css_hsl(h, min(s, 50.0), bg_l)
+        s = max(40.0, min(s_f * 100, 75.0))
+        bg_l = max(92.0, 96.8 - bi * 1.2)
+    accent = _css_hsl(h, s, 42.0)
+    bg     = _css_hsl(h, min(s, 45.0), bg_l)
     return accent, bg
 
 
@@ -494,18 +499,19 @@ def build_html(
     from datetime import datetime
     date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
 
-    # header background
-    if header_img:
-        img_url = header_img.as_posix()
-        hdr_bg = (
-            f"background-image:linear-gradient(rgba(0,0,0,.50),rgba(0,0,0,.50)),"
-            f"url('file:///{img_url}');"
-            "background-size:cover;background-position:center top;"
-        )
+    # header background - light with accent color
+    m = re.fullmatch(r"#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})", dominant_hex.lower())
+    if m:
+        r, g, b = int(m.group(1), 16), int(m.group(2), 16), int(m.group(3), 16)
+        h, s, l = colorsys.rgb_to_hls(r / 255, g / 255, b / 255)
+        # Create light background with accent
+        accent_light = _css_hsl(h * 360, s * 100, 92.0)
+        accent_mid = _css_hsl(h * 360, s * 100, 88.0)
     else:
-        hdr_bg = (
-            "background:linear-gradient(135deg,#0d1117 0%,#131e15 55%,#0e1c24 100%);"
-        )
+        accent_light = "#e8f5ee"
+        accent_mid = "#d4f1e0"
+    
+    hdr_bg = f"background:linear-gradient(135deg, {accent_light} 0%, {accent_mid} 100%);"
 
     # album cover img or placeholder
     if cover_uri:
@@ -519,7 +525,7 @@ def build_html(
         dr, dg, db = int(m.group(1), 16), int(m.group(2), 16), int(m.group(3), 16)
     else:
         dr, dg, db = 29, 185, 84
-    alt_row_css = f"rgba({dr},{dg},{db},0.07)"
+    alt_row_css = f"rgba({dr},{dg},{db},0.05)"
 
     # build song rows + section totals
     rows_html = ""
