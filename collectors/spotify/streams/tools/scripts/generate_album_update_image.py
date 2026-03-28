@@ -432,7 +432,6 @@ def _edition_css(dominant_hex: str, bi: int) -> tuple[str, str]:
 
 def build_song_row_html(si: int, track: dict, hdata: dict, alt: bool) -> str:
     title  = _shorten_title(track["title_clean"])
-    ver    = _shorten_title(track["version_tag"]) if track["version_tag"] else ""
     daily  = hdata.get("daily")
     change = hdata.get("change")
     pct    = hdata.get("pct")
@@ -442,13 +441,11 @@ def build_song_row_html(si: int, track: dict, hdata: dict, alt: bool) -> str:
     chg_s, pct_s, chg_cls = fmt_chg(change, pct)
 
     alt_cls = " alt" if alt else ""
-    ver_html = f'<div class="song-ver">{ver}</div>' if ver else ""
-    title_cls = "song-title has-tag" if ver else "song-title"
 
     return f"""<div class="song-row{alt_cls}">
   <div class="col-rank">{si + 1}</div>
   <div class="col-song">
-    <div class="{title_cls}">{title}</div>{ver_html}
+    <div class="song-title">{title}</div>
   </div>
   <div class="col-num daily-val">{daily_s}</div>
   <div class="col-num {chg_cls}">
