@@ -18,6 +18,7 @@ import base64
 import colorsys
 import concurrent.futures
 import csv
+import io
 import json
 import re
 import sys
@@ -67,25 +68,57 @@ def _dominant_color(img_path: Path) -> str:
     if not _PIL:
         return "#1db954"
     try:
-        img = Image.open(img_path).convert("RGB").resize((60, 60), Image.LANCZOS)
-        pixels = list(img.getdata())
-        filtered = [
-            (r, g, b) for r, g, b in pixels
-            if not (r > 210 and g > 210 and b > 210)
-            and not (r < 40  and g < 40  and b < 40)
-        ]
-        if not filtered:
-            filtered = pixels
-        r = sum(p[0] for p in filtered) // len(filtered)
-        g = sum(p[1] for p in filtered) // len(filtered)
-        b = sum(p[2] for p in filtered) // len(filtered)
-        h, s, v = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
-        s = min(1.0, s * 1.8)
-        v = min(1.0, max(0.55, v))
-        r2, g2, b2 = colorsys.hsv_to_rgb(h, s, v)
-        return f"#{int(r2*255):02x}{int(g2*255):02x}{int(b2*255):02x}"
+        img = Image.open(img_path).convert("RGB")
+        return _dominant_color_from_pil(img)
     except Exception:
         return "#1db954"
+
+
+def _dominant_color_from_url(url: str) -> str:
+    if not _PIL or not url:
+        return "#1db954"
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=8) as r:
+            data = r.read()
+        img = Image.open(io.BytesIO(data)).convert("RGB")
+        return _dominant_color_from_pil(img)
+    except Exception:
+        return "#1db954"
+
+
+def _dominant_color_from_pil(img: Image.Image) -> str:
+    # Pick a vivid representative color from the album cover instead of averaging all pixels.
+    img = img.resize((160, 160), Image.LANCZOS)
+    pal = img.quantize(colors=12, method=Image.MEDIANCUT).convert("RGB")
+    colors = pal.getcolors(maxcolors=160 * 160) or []
+
+    best = None
+    best_score = -1.0
+    for count, (r, g, b) in colors:
+        h, s, v = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
+        # Ignore near-white, near-black and very gray tones.
+        if v > 0.96 or v < 0.10 or s < 0.14:
+            continue
+        score = float(count) * (0.35 + 1.25 * s) * (0.50 + 0.50 * v)
+        if score > best_score:
+            best_score = score
+            best = (h, s, v)
+
+    if best is None:
+        # Fallback to average if palette filtering removed everything.
+        pixels = list(img.getdata())
+        r = sum(p[0] for p in pixels) // len(pixels)
+        g = sum(p[1] for p in pixels) // len(pixels)
+        b = sum(p[2] for p in pixels) // len(pixels)
+        h, s, v = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
+    else:
+        h, s, v = best
+
+    s = min(1.0, max(0.42, s * 1.12))
+    v = min(0.88, max(0.46, v))
+    r2, g2, b2 = colorsys.hsv_to_rgb(h, s, v)
+    return f"#{int(r2 * 255):02x}{int(g2 * 255):02x}{int(b2 * 255):02x}"
 
 
 def _url_to_data_uri(url: str) -> str:
@@ -230,15 +263,32 @@ def load_history_for_album(
 
 
 def load_cover_url(album_name: str) -> str:
-    if not COVERS_PATH.exists():
-        return ""
+    # 1) Primary source: covers.json
     try:
-        covers = json.loads(COVERS_PATH.read_text(encoding="utf-8"))
-        for v in covers.values():
-            if v.get("title") == album_name:
-                return v.get("cover_url", "")
+        if COVERS_PATH.exists():
+            covers = json.loads(COVERS_PATH.read_text(encoding="utf-8"))
+            for v in covers.values():
+                if v.get("title") == album_name:
+                    url = v.get("cover_url", "")
+                    if url:
+                        return url
     except Exception:
         pass
+
+    # 2) Fallback: albums.json track image_url (fixes missing entries like Holiday Collection)
+    try:
+        if ALBUMS_JSON.exists():
+            rows = json.loads(ALBUMS_JSON.read_text(encoding="utf-8"))
+            for row in rows:
+                if row.get("album") == album_name:
+                    tracks = row.get("tracks", [])
+                    for tr in tracks:
+                        url = tr.get("image_url", "")
+                        if url:
+                            return url
+    except Exception:
+        pass
+
     return ""
 
 
@@ -599,9 +649,16 @@ def generate(album_name: str, target_date: str | None = None) -> Path:
 
     hist = load_history_for_album(sections, target_date)
 
-    cover_url    = load_cover_url(album_name)
-    header_img   = pick_header_image(album_name)
-    dominant_hex = _dominant_color(header_img) if header_img else "#1db954"
+    cover_url  = load_cover_url(album_name)
+    header_img = pick_header_image(album_name)
+
+    # Colors should come from the album cover first.
+    if cover_url:
+        dominant_hex = _dominant_color_from_url(cover_url)
+    elif header_img:
+        dominant_hex = _dominant_color(header_img)
+    else:
+        dominant_hex = "#1db954"
 
     # prefetch cover image
     print("[album_update] Téléchargement de la cover...")
