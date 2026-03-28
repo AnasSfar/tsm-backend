@@ -307,7 +307,7 @@ body{
 /* ── column headers ── */
 .col-heads{
   display:grid;
-  grid-template-columns:40px minmax(150px,1fr) 120px 110px 110px;
+  grid-template-columns:40px minmax(150px,1fr) 120px 80px 80px 110px;
   column-gap:10px;
   padding:10px 18px;
   background:#f5f8f5;
@@ -323,7 +323,7 @@ body{
 /* ── song rows ── */
 .song-row{
   display:grid;
-  grid-template-columns:40px minmax(150px,1fr) 120px 110px 110px;
+  grid-template-columns:40px minmax(150px,1fr) 120px 80px 80px 110px;
   column-gap:10px;
   align-items:center;
   padding:8px 18px;
@@ -351,16 +351,15 @@ body{
   display:flex;align-items:center;justify-content:flex-end;
 }
 .col-num.daily-val{color:#101828;font-size:13px;font-weight:700}
-.delta-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
-.delta-num{font-size:12px;font-weight:700}
-.delta-pct{font-size:10px;font-weight:500;opacity:.80}
-.pos .delta-num,.pos .delta-pct{color:#067647}
-.neg .delta-num,.neg .delta-pct{color:#b42318}
-.neutral .delta-num{color:#667085}
+.col-chg{font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:flex-end}
+.col-pct{font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:flex-end}
+.pos{color:#067647}
+.neg{color:#b42318}
+.neutral{color:#667085}
 /* ── section total ── */
 .sec-total{
   display:grid;
-  grid-template-columns:40px minmax(150px,1fr) 120px 110px 110px;
+  grid-template-columns:40px minmax(150px,1fr) 120px 80px 80px 110px;
   column-gap:10px;
   align-items:center;
   padding:10px 18px;
@@ -379,13 +378,10 @@ body{
   display:flex;align-items:center;justify-content:flex-end;color:#101828;
   font-weight:700;
 }
-.sec-chg{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
-.sec-chg-num{font-size:12px;font-weight:700}
-.sec-chg-pct{font-size:10px;font-weight:600;opacity:.80}
 /* ── grand total ── */
 .era-total{
   display:grid;
-  grid-template-columns:40px minmax(150px,1fr) 120px 110px 110px;
+  grid-template-columns:40px minmax(150px,1fr) 120px 80px 80px 110px;
   column-gap:10px;
   align-items:center;
   padding:12px 18px;
@@ -402,9 +398,6 @@ body{
   font-size:14px;font-weight:800;color:rgba(255,255,255,.95);
   display:flex;align-items:center;justify-content:flex-end;
 }
-.era-chg{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
-.era-chg-num{font-size:13px;font-weight:800}
-.era-chg-pct{font-size:11px;font-weight:600;opacity:.85}
 /* ── footer ── */
 .ftr{
   background:#f5f8f5;
@@ -457,12 +450,8 @@ def build_song_row_html(si: int, track: dict, hdata: dict, alt: bool) -> str:
     <div class="song-title">{title}</div>
   </div>
   <div class="col-num daily-val">{daily_s}</div>
-  <div class="col-num {chg_cls}">
-    <div class="delta-wrap">
-      <span class="delta-num">{chg_s}</span>
-      {f'<span class="delta-pct">{pct_s}</span>' if pct_s else ''}
-    </div>
-  </div>
+  <div class="col-chg {chg_cls}">{chg_s}</div>
+  <div class="col-pct {chg_cls}">{pct_s}</div>
   <div class="col-num">{fmt_num(streams)}</div>
 </div>
 """
@@ -477,17 +466,12 @@ def build_section_total_html(sec_name: str, tracks: list[dict],
     sec_pct    = (sec_change / sec_yest * 100) if sec_yest != 0 else None
 
     chg_s, pct_s, chg_cls = fmt_chg(sec_change, sec_pct)
-    chg_color = "#067647" if sec_change >= 0 else "#b42318"
 
     return f"""<div class="sec-total" style="--sec-accent:{accent};--sec-bg:{bg}">
   <div class="sec-label">{sec_name}&nbsp;&nbsp;—&nbsp;&nbsp;Total</div>
   <div class="sec-num">+{fmt_num(sec_daily)}</div>
-  <div class="sec-num">
-    <div class="sec-chg">
-      <span class="sec-chg-num" style="color:{chg_color}">{chg_s}</span>
-      {f'<span class="sec-chg-pct" style="color:{chg_color}">{pct_s}</span>' if pct_s else ''}
-    </div>
-  </div>
+  <div class="sec-num {chg_cls}">{chg_s}</div>
+  <div class="sec-num {chg_cls}">{pct_s}</div>
   <div class="sec-num">{fmt_num(sec_str)}</div>
 </div>
 """
@@ -555,18 +539,14 @@ def build_html(
     # grand total
     total_yest = total_daily - total_change
     total_pct  = (total_change / total_yest * 100) if total_yest != 0 else None
-    tot_chg_s, tot_pct_s, _ = fmt_chg(total_change, total_pct)
+    tot_chg_s, tot_pct_s, chg_cls = fmt_chg(total_change, total_pct)
     accent_color = dominant_hex
 
     era_html = f"""<div class="era-total">
   <div class="era-label">Total</div>
   <div class="era-num">+{fmt_num(total_daily)}</div>
-  <div class="era-num">
-    <div class="era-chg">
-      <span class="era-chg-num" style="color:{accent_color}">{tot_chg_s}</span>
-      {f'<span class="era-chg-pct" style="color:{accent_color}">{tot_pct_s}</span>' if tot_pct_s else ''}
-    </div>
-  </div>
+  <div class="era-num {chg_cls}">{tot_chg_s}</div>
+  <div class="era-num {chg_cls}">{tot_pct_s}</div>
   <div class="era-num">{fmt_num(total_streams)}</div>
 </div>
 """
@@ -592,6 +572,7 @@ def build_html(
     <span>SONG</span>
     <span class="right">DAILY</span>
     <span class="right">CHG</span>
+    <span class="right">%</span>
     <span class="right">TOTAL</span>
   </div>
   {rows_html}
