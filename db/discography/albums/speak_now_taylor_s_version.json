@@ -1,0 +1,443 @@
+{
+  "album": "Speak Now (Taylor's Version)",
+  "section_count": 2,
+  "track_count": 22,
+  "sections": [
+    {
+      "section": "from_the_vault_tv",
+      "track_count": 6,
+      "tracks": [
+        {
+          "title": "Castles Crumbling (feat. Hayley Williams) (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/4ABYxlb92WBIjHu7TIKmml",
+          "type": "feature",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "Castles Crumbling (feat. Hayley Williams) (Taylor's Version) (From The Vault)",
+          "album": "Speak Now (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Hayley Williams"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Hayley Williams"
+          ],
+          "title_clean": "Castles Crumbling",
+          "song_family": "castles_crumbling",
+          "version_tag": "featured__vault__taylors_version__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+        },
+        {
+          "title": "Electric Touch (feat. Fall Out Boy) (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/4e3ZNTAV6PCrdYMUrUlMpQ",
+          "type": "feature",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "Electric Touch (feat. Fall Out Boy) (Taylor's Version) (From The Vault)",
+          "album": "Speak Now (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Fall Out Boy"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Fall Out Boy"
+          ],
+          "title_clean": "Electric Touch",
+          "song_family": "electric_touch",
+          "version_tag": "featured__vault__taylors_version__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+        },
+        {
+          "title": "Foolish One (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/4s8BIKx4Zh6ryAEz8RTlaU",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 3,
+          "base_title": "Foolish One (Taylor's Version) (From The Vault)",
+          "album": "Speak Now (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Foolish One",
+          "song_family": "foolish_one",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+        },
+        {
+          "title": "I Can See You (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/5kHMfzgLZP95O9NBy0ku4v",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 4,
+          "base_title": "I Can See You (Taylor's Version) (From The Vault)",
+          "album": "Speak Now (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Can See You",
+          "song_family": "i_can_see_you",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+        },
+        {
+          "title": "Timeless (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/1HCdems7PQZRj42QDWLA0A",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 5,
+          "base_title": "Timeless (Taylor's Version) (From The Vault)",
+          "album": "Speak Now (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Timeless",
+          "song_family": "timeless",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+        },
+        {
+          "title": "When Emma Falls in Love (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/0zo975x58DlXbZllWvfYhg",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 6,
+          "base_title": "When Emma Falls in Love (Taylor's Version) (From The Vault)",
+          "album": "Speak Now (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "When Emma Falls in Love",
+          "song_family": "when_emma_falls_in_love",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+        }
+      ]
+    },
+    {
+      "section": "standard_edition_tv",
+      "track_count": 16,
+      "tracks": [
+        {
+          "title": "Mine (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/7G0gBu6nLdhFDPRLc0HdDG",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 1,
+          "base_title": "Mine",
+          "album": "Speak Now (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Mine",
+          "song_family": "mine",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+        },
+        {
+          "title": "Sparks Fly (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/3MytWN8L7shNYzGl4tAKRp",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 2,
+          "base_title": "Sparks Fly",
+          "album": "Speak Now (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Sparks Fly",
+          "song_family": "sparks_fly",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+        },
+        {
+          "title": "Back To December (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/79uDOz0zuuWS7HWxzMmTa2",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 3,
+          "base_title": "Back To December",
+          "album": "Speak Now (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Back To December",
+          "song_family": "back_to_december",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+        },
+        {
+          "title": "Speak Now (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/5xXqyjLicvEpch72qEryFT",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 4,
+          "base_title": "Speak Now",
+          "album": "Speak Now (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Speak Now",
+          "song_family": "speak_now",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+        },
+        {
+          "title": "Dear John (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/1zU8j1x3yi9xalMF96pzKp",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 5,
+          "base_title": "Dear John",
+          "album": "Speak Now (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Dear John",
+          "song_family": "dear_john",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+        },
+        {
+          "title": "Mean (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/30Y4CV7A6YqtQtTTo7Ue4j",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 6,
+          "base_title": "Mean",
+          "album": "Speak Now (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Mean",
+          "song_family": "mean",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+        },
+        {
+          "title": "The Story Of Us (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/6dTA6y0C2ReQklntzZl8l3",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 7,
+          "base_title": "The Story Of Us",
+          "album": "Speak Now (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Story Of Us",
+          "song_family": "the_story_of_us",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+        },
+        {
+          "title": "Never Grow Up (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/2EFZ9emtKWEglWUQGEQ3P9",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 8,
+          "base_title": "Never Grow Up",
+          "album": "Speak Now (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Never Grow Up",
+          "song_family": "never_grow_up",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+        },
+        {
+          "title": "Enchanted (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/3sW3oSbzsfecv9XoUdGs7h",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 9,
+          "base_title": "Enchanted",
+          "album": "Speak Now (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Enchanted",
+          "song_family": "enchanted",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+        },
+        {
+          "title": "Better Than Revenge (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/0NwGC0v03ysCYINtg6ns58",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 10,
+          "base_title": "Better Than Revenge",
+          "album": "Speak Now (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Better Than Revenge",
+          "song_family": "better_than_revenge",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+        },
+        {
+          "title": "Innocent (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/12nBPF4Rh4XLFJV0YLN7uj",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 11,
+          "base_title": "Innocent",
+          "album": "Speak Now (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Innocent",
+          "song_family": "innocent",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+        },
+        {
+          "title": "Haunted (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/4tMzIAFTFdqGBQLdfbPces",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 12,
+          "base_title": "Haunted",
+          "album": "Speak Now (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Haunted",
+          "song_family": "haunted",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+        },
+        {
+          "title": "Last Kiss (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/59KOoHFcw5XfICnO57holu",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 13,
+          "base_title": "Last Kiss",
+          "album": "Speak Now (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Last Kiss",
+          "song_family": "last_kiss",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+        },
+        {
+          "title": "Long Live (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/4hqJ4bSlYJOXb6Z4SRmzxs",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 14,
+          "base_title": "Long Live",
+          "album": "Speak Now (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Long Live",
+          "song_family": "long_live",
+          "version_tag": "live__taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+        },
+        {
+          "title": "Ours (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/3yNJkriPzWjkkDAWHIAVUq",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 15,
+          "base_title": "Ours",
+          "album": "Speak Now (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Ours",
+          "song_family": "ours",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+        },
+        {
+          "title": "Superman (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/4evLyY5Ue1Wesc61t2KXAU",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 16,
+          "base_title": "Superman",
+          "album": "Speak Now (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Superman",
+          "song_family": "superman",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+        }
+      ]
+    }
+  ]
+}

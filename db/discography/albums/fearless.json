@@ -1,0 +1,638 @@
+{
+  "album": "Fearless",
+  "section_count": 5,
+  "track_count": 31,
+  "sections": [
+    {
+      "section": "original_edition",
+      "track_count": 15,
+      "tracks": [
+        {
+          "title": "Breathe",
+          "url": "https://open.spotify.com/intl-fr/track/0qsSmObOgBZfuMIwfAQDBP",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 1,
+          "base_title": "Breathe",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Breathe",
+          "song_family": "breathe",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2"
+        },
+        {
+          "title": "Come In With The Rain",
+          "url": "https://open.spotify.com/intl-fr/track/0cEG04R5cldkTLzK6phlcn",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 2,
+          "base_title": "Come In With The Rain",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Come In With The Rain",
+          "song_family": "come_in_with_the_rain",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2"
+        },
+        {
+          "title": "Fearless",
+          "url": "https://open.spotify.com/intl-fr/track/6zV8AVM9eVfdG7Qahwd64R",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 3,
+          "base_title": "Fearless",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Fearless",
+          "song_family": "fearless",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2"
+        },
+        {
+          "title": "Fifteen",
+          "url": "https://open.spotify.com/intl-fr/track/4yf9OivCH2lmQWN8mzpCC6",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 4,
+          "base_title": "Fifteen",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Fifteen",
+          "song_family": "fifteen",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da"
+        },
+        {
+          "title": "Forever & Always - Piano Version",
+          "url": "https://open.spotify.com/intl-fr/track/13MAWVUSkbGMUi6I7RowRK",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 5,
+          "base_title": "Forever & Always",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Forever & Always - Piano Version",
+          "song_family": "forever_always",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2"
+        },
+        {
+          "title": "Hey Stephen",
+          "url": "https://open.spotify.com/intl-fr/track/4fWDgRZa0GKE5KZNhE9MQa",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 6,
+          "base_title": "Hey Stephen",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Hey Stephen",
+          "song_family": "hey_stephen",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2"
+        },
+        {
+          "title": "Jump Then Fall",
+          "url": "https://open.spotify.com/intl-fr/track/6WWvcA62QlnRguluWAk6bv",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 7,
+          "base_title": "Jump Then Fall",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Jump Then Fall",
+          "song_family": "jump_then_fall",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2"
+        },
+        {
+          "title": "Love Story",
+          "url": "https://open.spotify.com/intl-fr/track/5xPsybHWRHbTYO44xnREY5",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 8,
+          "base_title": "Love Story",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Love Story",
+          "song_family": "love_story",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da"
+        },
+        {
+          "title": "SuperStar",
+          "url": "https://open.spotify.com/intl-fr/track/0XfTh16YcKPzdxMPTeKTAq",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 9,
+          "base_title": "SuperStar",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "SuperStar",
+          "song_family": "superstar",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2"
+        },
+        {
+          "title": "Tell Me Why",
+          "url": "https://open.spotify.com/intl-fr/track/6vLpy7UPYuOa75Bkqocrcw",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 10,
+          "base_title": "Tell Me Why",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Tell Me Why",
+          "song_family": "tell_me_why",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da"
+        },
+        {
+          "title": "The Other Side Of The Door",
+          "url": "https://open.spotify.com/intl-fr/track/1yDJcXc549N6AabNBzFAku",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 11,
+          "base_title": "The Other Side Of The Door",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Other Side Of The Door",
+          "song_family": "the_other_side_of_the_door",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2"
+        },
+        {
+          "title": "Untouchable",
+          "url": "https://open.spotify.com/intl-fr/track/6ovFJkdau79DuXEvQjPaNH",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 12,
+          "base_title": "Untouchable",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Untouchable",
+          "song_family": "untouchable",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2"
+        },
+        {
+          "title": "White Horse",
+          "url": "https://open.spotify.com/intl-fr/track/1yFjBRQVhRdcdnrTE5LuyD",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 13,
+          "base_title": "White Horse",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "White Horse",
+          "song_family": "white_horse",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2"
+        },
+        {
+          "title": "You Belong With Me",
+          "url": "https://open.spotify.com/intl-fr/track/7G6TDmGJXDoBaV6NGj3Yic",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 14,
+          "base_title": "You Belong With Me",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You Belong With Me",
+          "song_family": "you_belong_with_me",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da"
+        },
+        {
+          "title": "You're Not Sorry",
+          "url": "https://open.spotify.com/intl-fr/track/4N419mmxYybTfAECy5j4dw",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 15,
+          "base_title": "You're Not Sorry",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You're Not Sorry",
+          "song_family": "you_re_not_sorry",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2"
+        }
+      ]
+    },
+    {
+      "section": "remixes",
+      "track_count": 2,
+      "tracks": [
+        {
+          "title": "Love Story - Digital Dog Remix",
+          "url": "https://open.spotify.com/intl-fr/track/3RNDw7yywLNyawDKV99hTx",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "Love Story",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Love Story - Digital Dog Remix",
+          "song_family": "love_story",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273c4d3acdcb5d53a2a3856786e"
+        },
+        {
+          "title": "You're Not Sorry - CSI Remix",
+          "url": "https://open.spotify.com/intl-fr/track/4VbErhGDMTnvPAnt5z70DL",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "You're Not Sorry",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You're Not Sorry - CSI Remix",
+          "song_family": "you_re_not_sorry",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e8ae61ef7ff5c29b9f84828f"
+        }
+      ]
+    },
+    {
+      "section": "platinum_edition",
+      "track_count": 4,
+      "tracks": [
+        {
+          "title": "Change",
+          "url": "https://open.spotify.com/intl-fr/track/0RdcBnAXyH2YZZvcBVu2k6",
+          "type": "standalone",
+          "edition": "deluxe",
+          "display_section": "Platinum Edition",
+          "display_order": 2,
+          "base_title": "Change",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Change",
+          "song_family": "change",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e"
+        },
+        {
+          "title": "Forever & Always",
+          "url": "https://open.spotify.com/intl-fr/track/1zxrcAk6eiytfavqriMcKT",
+          "type": "standalone",
+          "edition": "deluxe",
+          "display_section": "Platinum Edition",
+          "display_order": 6,
+          "base_title": "Forever & Always",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Forever & Always",
+          "song_family": "forever_always",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e"
+        },
+        {
+          "title": "The Best Day",
+          "url": "https://open.spotify.com/intl-fr/track/5YbZZ2gYfvW1UvHHF4pVaD",
+          "type": "standalone",
+          "edition": "deluxe",
+          "display_section": "Platinum Edition",
+          "display_order": 13,
+          "base_title": "The Best Day",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Best Day",
+          "song_family": "the_best_day",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e"
+        },
+        {
+          "title": "The Way I Loved You",
+          "url": "https://open.spotify.com/intl-fr/track/77VotUUL79U10TAnYdqwvr",
+          "type": "standalone",
+          "edition": "deluxe",
+          "display_section": "Platinum Edition",
+          "display_order": 15,
+          "base_title": "The Way I Loved You",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Way I Loved You",
+          "song_family": "the_way_i_loved_you",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e"
+        }
+      ]
+    },
+    {
+      "album": "Fearless",
+      "section": "misc_standalone",
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "Today Was A Fairytale",
+          "url": "https://open.spotify.com/intl-fr/track/4pFvEWbjBpPUdYRQly0THs",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 3,
+          "base_title": "Today Was A Fairytale",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Today Was A Fairytale",
+          "song_family": "today_was_a_fairytale",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738d3b185c6a110a479e01e3c4",
+          "display_era": "Fearless"
+        }
+      ]
+    },
+    {
+      "album": "Fearless",
+      "section": "kworb_extras",
+      "track_count": 9,
+      "tracks": [
+        {
+          "title": "Change - Live From Clear Channel Stripped 2008",
+          "url": "https://open.spotify.com/intl-fr/track/69o9kr9UexjzeZDE8yD8dQ",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Change - Live From Clear Channel Stripped 2008",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Change - Live From Clear Channel Stripped 2008",
+          "song_family": "change_live_from_clear_channel_stripped_2008",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
+          "display_era": "Fearless"
+        },
+        {
+          "title": "Fearless - Live From Clear Channel Stripped 2008",
+          "url": "https://open.spotify.com/intl-fr/track/5g7RMU3cV7zXWH244BLe7G",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Fearless - Live From Clear Channel Stripped 2008",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Fearless - Live From Clear Channel Stripped 2008",
+          "song_family": "fearless_live_from_clear_channel_stripped_2008",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
+          "display_era": "Fearless"
+        },
+        {
+          "title": "Hey Stephen - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/7Ae2hYOcJmLbGCYIA3M1VM",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Hey Stephen - Commentary",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Hey Stephen - Commentary",
+          "song_family": "hey_stephen_commentary",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27360cb9332e8c8c7d8e50854b3",
+          "display_era": "Fearless"
+        },
+        {
+          "title": "Love Story - Instrumental with BGV",
+          "url": "https://open.spotify.com/intl-fr/track/2GZNZLMvT3gjCEPd6NNvvQ",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Love Story - Instrumental with BGV",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Love Story - Instrumental with BGV",
+          "song_family": "love_story_instrumental_with_bgv",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2733aaff042743bac0fdec793fc",
+          "display_era": "Fearless"
+        },
+        {
+          "title": "Love Story - J Stax Radio Mix",
+          "url": "https://open.spotify.com/intl-fr/track/4i0M7glXqIIRKPwbLtpExi",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Love Story - J Stax Radio Mix",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Love Story - J Stax Radio Mix",
+          "song_family": "love_story_j_stax_radio_mix",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2736ff72554305455511e786687",
+          "display_era": "Fearless"
+        },
+        {
+          "title": "Love Story - Live From Clear Channel Stripped 2008",
+          "url": "https://open.spotify.com/intl-fr/track/4RBKAqJ3qyvvriDG0s9IJ3",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Love Story - Live From Clear Channel Stripped 2008",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Love Story - Live From Clear Channel Stripped 2008",
+          "song_family": "love_story_live_from_clear_channel_stripped_2008",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
+          "display_era": "Fearless"
+        },
+        {
+          "title": "Love Story - Pop Mix",
+          "url": "https://open.spotify.com/intl-fr/track/5lA0yK8S5tP3xoaRMCp4Ug",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Love Story - Pop Mix",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Love Story - Pop Mix",
+          "song_family": "love_story_pop_mix",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d676631cbb331a320db57b64",
+          "display_era": "Fearless"
+        },
+        {
+          "title": "Today Was A Fairytale - US Version",
+          "url": "https://open.spotify.com/intl-fr/track/1P5QpwOgXJuoVTm3CWbnLY",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Today Was A Fairytale - US Version",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Today Was A Fairytale - US Version",
+          "song_family": "today_was_a_fairytale_us_version",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27393b047c75268dd2847187910",
+          "display_era": "Fearless"
+        },
+        {
+          "title": "Untouchable - Live From Clear Channel Stripped 2008",
+          "url": "https://open.spotify.com/intl-fr/track/4MbHDiHQjhmoVAV75G04Ql",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Untouchable - Live From Clear Channel Stripped 2008",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Untouchable - Live From Clear Channel Stripped 2008",
+          "song_family": "untouchable_live_from_clear_channel_stripped_2008",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
+          "display_era": "Fearless"
+        }
+      ]
+    }
+  ]
+}

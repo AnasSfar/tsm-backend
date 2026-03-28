@@ -1,0 +1,462 @@
+{
+  "album": "1989 (Taylor's Version)",
+  "section_count": 2,
+  "track_count": 23,
+  "sections": [
+    {
+      "section": "deluxe_edition",
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "Bad Blood (feat. Kendrick Lamar) (Taylor's Version)",
+          "url": "https://open.spotify.com/track/6qAcApH8obo8eqatCKUHd9",
+          "type": "alternate_version",
+          "edition": "deluxe",
+          "display_section": "deluxe edition",
+          "display_order": 1,
+          "base_title": "Bad Blood (feat. Kendrick Lamar)",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Kendrick Lamar"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Kendrick Lamar"
+          ],
+          "title_clean": "Bad Blood",
+          "song_family": "bad_blood",
+          "version_tag": "featured__deluxe__taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949"
+        }
+      ]
+    },
+    {
+      "section": "standard_edition_tv",
+      "track_count": 22,
+      "tracks": [
+        {
+          "title": "\"Slut!\" (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/0CD7DzeCsuPJygddqlUVYa",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "from the vault",
+          "display_order": 1,
+          "base_title": "\"Slut!\" (Taylor's Version) (From The Vault)",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "\"Slut!\"",
+          "song_family": "slut",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949"
+        },
+        {
+          "title": "Welcome To New York (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/1hR8BSuEqPCCZfv93zzzz9",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "standard edition",
+          "display_order": 1,
+          "base_title": "Welcome To New York",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Welcome To New York",
+          "song_family": "welcome_to_new_york",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac"
+        },
+        {
+          "title": "Blank Space (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/45wMBGri1PORPjM9PwFfrS",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "standard edition",
+          "display_order": 2,
+          "base_title": "Blank Space",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Blank Space",
+          "song_family": "blank_space",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac"
+        },
+        {
+          "title": "Is It Over Now? (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/6IG3sQ8s9nfk6TUlVzRhbN",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "from the vault",
+          "display_order": 2,
+          "base_title": "Is It Over Now? (Taylor's Version) (From The Vault)",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Is It Over Now?",
+          "song_family": "is_it_over_now",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949"
+        },
+        {
+          "title": "Now That We Don't Talk (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/5QUIK7ZtziW8kGWo8RqopF",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "from the vault",
+          "display_order": 3,
+          "base_title": "Now That We Don't Talk (Taylor's Version) (From The Vault)",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Now That We Don't Talk",
+          "song_family": "now_that_we_don_t_talk",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949"
+        },
+        {
+          "title": "Style (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/1hjRhYpWyqDpPahmSlUTlc",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "standard edition",
+          "display_order": 3,
+          "base_title": "Style",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Style",
+          "song_family": "style",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac"
+        },
+        {
+          "title": "Out Of The Woods (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/045ZeOHPIzhxxsm8bq5kyE",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "standard edition",
+          "display_order": 4,
+          "base_title": "Out Of The Woods",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Out Of The Woods",
+          "song_family": "out_of_the_woods",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac"
+        },
+        {
+          "title": "Say Don't Go (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/3CCRVu4F91Qp2mnGjmWBrf",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "from the vault",
+          "display_order": 4,
+          "base_title": "Say Don't Go (Taylor's Version) (From The Vault)",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Say Don't Go",
+          "song_family": "say_don_t_go",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949"
+        },
+        {
+          "title": "All You Had To Do Was Stay (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/6GXgd1BPD9bUpqw5AntGV5",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "standard edition",
+          "display_order": 5,
+          "base_title": "All You Had To Do Was Stay",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "All You Had To Do Was Stay",
+          "song_family": "all_you_had_to_do_was_stay",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac"
+        },
+        {
+          "title": "Suburban Legends (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/6M9ppdfFjR1AbpUl3Y8DcV",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "from the vault",
+          "display_order": 5,
+          "base_title": "Suburban Legends (Taylor's Version) (From The Vault)",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Suburban Legends",
+          "song_family": "suburban_legends",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949"
+        },
+        {
+          "title": "Bad Blood (feat. Kendrick Lamar) (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/6qAcApH8obo8eqatCKUHd9",
+          "type": "feature",
+          "edition": "standard",
+          "display_section": "standard edition",
+          "display_order": 6,
+          "base_title": "Bad Blood (feat. Kendrick Lamar)",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Kendrick Lamar"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Kendrick Lamar"
+          ],
+          "title_clean": "Bad Blood",
+          "song_family": "bad_blood",
+          "version_tag": "featured__taylors_version__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949"
+        },
+        {
+          "title": "Shake It Off (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/3pv7Q5v2dpdefwdWIvE7yH",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "standard edition",
+          "display_order": 6,
+          "base_title": "Shake It Off",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Shake It Off",
+          "song_family": "shake_it_off",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac"
+        },
+        {
+          "title": "I Wish You Would (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/43y1WpBdnEy5TR9aZoSQL9",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "standard edition",
+          "display_order": 7,
+          "base_title": "I Wish You Would",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Wish You Would",
+          "song_family": "i_wish_you_would",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac"
+        },
+        {
+          "title": "Bad Blood (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/64FzgoLZ3oXu2SriZblHic",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "standard edition",
+          "display_order": 8,
+          "base_title": "Bad Blood",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Bad Blood",
+          "song_family": "bad_blood",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac"
+        },
+        {
+          "title": "Wildest Dreams (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/1K39ty6o1sHwwlZwO6a7wK",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "standard edition",
+          "display_order": 9,
+          "base_title": "Wildest Dreams",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Wildest Dreams",
+          "song_family": "wildest_dreams",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac"
+        },
+        {
+          "title": "How You Get The Girl (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/733OhaXQIHY7BKtY3vnSkn",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "standard edition",
+          "display_order": 10,
+          "base_title": "How You Get The Girl",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "How You Get The Girl",
+          "song_family": "how_you_get_the_girl",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949"
+        },
+        {
+          "title": "This Love (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/4WBEj8TeGtRPNJdOmT3WJW",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "standard edition",
+          "display_order": 11,
+          "base_title": "This Love",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "This Love",
+          "song_family": "this_love",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949"
+        },
+        {
+          "title": "Clean (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/0lKUBmEyQfzsQHozyeXzES",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "standard edition",
+          "display_order": 12,
+          "base_title": "Clean",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Clean",
+          "song_family": "clean",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949"
+        },
+        {
+          "title": "New Romantics (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/5M787RexsAiVYjQusM98CV",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "standard edition",
+          "display_order": 13,
+          "base_title": "New Romantics",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "New Romantics",
+          "song_family": "new_romantics",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949"
+        },
+        {
+          "title": "Wonderland (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/6HRsJu8vcnzYDN4t0570FY",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "standard edition",
+          "display_order": 14,
+          "base_title": "Wonderland",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Wonderland",
+          "song_family": "wonderland",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949"
+        },
+        {
+          "title": "You Are In Love (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/0TyGh27YQ5LknmiDhCzJiT",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "standard edition",
+          "display_order": 15,
+          "base_title": "You Are In Love",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You Are In Love",
+          "song_family": "you_are_in_love",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949"
+        },
+        {
+          "title": "I Know Places (Taylor's Version)",
+          "url": "https://open.spotify.com/track/1ULabO0PEsdJekqVH6G10G",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "standard edition",
+          "display_order": 16,
+          "base_title": "I Know Places",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Know Places",
+          "song_family": "i_know_places",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,718 @@
+{
+  "album": "Lover",
+  "section_count": 6,
+  "track_count": 35,
+  "sections": [
+    {
+      "section": "remixes",
+      "track_count": 11,
+      "tracks": [
+        {
+          "title": "Lover (Remix) [feat. Shawn Mendes]",
+          "url": "https://open.spotify.com/intl-fr/track/3i9UVldZOE0aD0JnyfAZZ0",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "Lover (Remix) [feat. Shawn Mendes]",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Lover [feat. Shawn Mendes]",
+          "song_family": "lover_feat_shawn_mendes",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27359457bdb1edb5c6417f3baa2"
+        },
+        {
+          "title": "Lover - First Dance Remix",
+          "url": "https://open.spotify.com/intl-fr/track/2msvOEbkK50foYf9BMXr2X",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "Lover",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Lover - First Dance Remix",
+          "song_family": "lover",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273affd87a5167957a7adbf8e37"
+        },
+        {
+          "title": "Lover - Live From Paris",
+          "url": "https://open.spotify.com/intl-fr/track/4lD3RXyvHpJsM3BhIEC4aA",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Live From Paris",
+          "display_order": 3,
+          "base_title": "Lover",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Lover - Live From Paris",
+          "song_family": "lover",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d29b148f84d0cd04ebdbe919"
+        },
+        {
+          "title": "You Need To Calm Down - Clean Bandit Remix",
+          "url": "https://open.spotify.com/intl-fr/track/7Bjf96uNizpvXLvNyOJpst",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 4,
+          "base_title": "You Need To Calm Down",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You Need To Calm Down - Clean Bandit Remix",
+          "song_family": "you_need_to_calm_down",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2739911942b4845c29ad3ad1224"
+        },
+        {
+          "title": "You Need To Calm Down - Live From Paris",
+          "url": "https://open.spotify.com/intl-fr/track/36a08nLG1xazGaaVKK0vv7",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Live From Paris",
+          "display_order": 5,
+          "base_title": "You Need To Calm Down",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You Need To Calm Down - Live From Paris",
+          "song_family": "you_need_to_calm_down",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738546aa90c89127a13f02c73d"
+        },
+        {
+          "title": "Cornelia Street - Live From Paris",
+          "url": "https://open.spotify.com/intl-fr/track/3fGnrtrtL1IHSX9t4DKOYf",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Live From Paris",
+          "display_order": 6,
+          "base_title": "Cornelia Street",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Cornelia Street - Live From Paris",
+          "song_family": "cornelia_street",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273eec5bf14fcf7c92ec8166027"
+        },
+        {
+          "title": "Daylight - Live From Paris",
+          "url": "https://open.spotify.com/intl-fr/track/7ryS0xBZNYjQqql34GCkDp",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Live From Paris",
+          "display_order": 7,
+          "base_title": "Daylight",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Daylight - Live From Paris",
+          "song_family": "daylight",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2739638abe9135aed2817baf686"
+        },
+        {
+          "title": "Death By A Thousand Cuts - Live From Paris",
+          "url": "https://open.spotify.com/intl-fr/track/3oF7Or7T35yhQbGxbCGvRX",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Live From Paris",
+          "display_order": 8,
+          "base_title": "Death By A Thousand Cuts",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Death By A Thousand Cuts - Live From Paris",
+          "song_family": "death_by_a_thousand_cuts",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737864c044d3fa4ac3814ca667"
+        },
+        {
+          "title": "The Archer - Live From Paris",
+          "url": "https://open.spotify.com/intl-fr/track/2fgiBCtbWo8pijF6M7pN1i",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Live From Paris",
+          "display_order": 9,
+          "base_title": "The Archer",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Archer - Live From Paris",
+          "song_family": "the_archer",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273cde19bd5377f06eb0bca3256"
+        },
+        {
+          "title": "The Man - Live From Paris",
+          "url": "https://open.spotify.com/intl-fr/track/7FKbTRXXIWVFQmPH8zGfU0",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Live From Paris",
+          "display_order": 10,
+          "base_title": "The Man",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Man - Live From Paris",
+          "song_family": "the_man",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2739a6d517fc78fb707bed067c2"
+        },
+        {
+          "title": "ME! - Live From Paris",
+          "url": "https://open.spotify.com/intl-fr/track/5fOV54t6mMYv3H9CsnvU81",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Live From Paris",
+          "display_order": 11,
+          "base_title": "ME!",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "ME! - Live From Paris",
+          "song_family": "me",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d8f29c3584e77996dd2f9950"
+        }
+      ]
+    },
+    {
+      "section": "standalone",
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "All Of The Girls You Loved Before",
+          "url": "https://open.spotify.com/intl-fr/track/4P9Q0GojKVXpRTJCaL3kyy",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "All Of The Girls You Loved Before",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "All Of The Girls You Loved Before",
+          "song_family": "all_of_the_girls_you_loved_before",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738481d8f15859aa5bae75ee17"
+        }
+      ]
+    },
+    {
+      "album": "Lover",
+      "section": "standalone",
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "All Of The Girls You Loved Before",
+          "url": "https://open.spotify.com/intl-fr/track/4P9Q0GojKVXpRTJCaL3kyy",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "All Of The Girls You Loved Before",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "All Of The Girls You Loved Before",
+          "song_family": "all_of_the_girls_you_loved_before",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738481d8f15859aa5bae75ee17",
+          "display_era": "Lover"
+        }
+      ]
+    },
+    {
+      "section": "standard_edition",
+      "track_count": 18,
+      "tracks": [
+        {
+          "title": "I Forgot That You Existed",
+          "url": "https://open.spotify.com/intl-fr/track/43rA71bccXFGD4C8GOpIlN",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 1,
+          "base_title": "I Forgot That You Existed",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Forgot That You Existed",
+          "song_family": "i_forgot_that_you_existed",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647"
+        },
+        {
+          "title": "Cruel Summer",
+          "url": "https://open.spotify.com/intl-fr/track/1BxfuPKGuaTgP7aM0Bbdwr",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 2,
+          "base_title": "Cruel Summer",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Cruel Summer",
+          "song_family": "cruel_summer",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647"
+        },
+        {
+          "title": "Lover",
+          "url": "https://open.spotify.com/intl-fr/track/1dGr1c8CrMLDpV6mPbImSI",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 3,
+          "base_title": "Lover",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Lover",
+          "song_family": "lover",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647"
+        },
+        {
+          "title": "The Man",
+          "url": "https://open.spotify.com/intl-fr/track/3RauEVgRgj1IuWdJ9fDs70",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 4,
+          "base_title": "The Man",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Man",
+          "song_family": "the_man",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647"
+        },
+        {
+          "title": "The Archer",
+          "url": "https://open.spotify.com/intl-fr/track/3pHkh7d0lzM2AldUtz2x37",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 5,
+          "base_title": "The Archer",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Archer",
+          "song_family": "the_archer",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647"
+        },
+        {
+          "title": "I Think He Knows",
+          "url": "https://open.spotify.com/intl-fr/track/2YWtcWi3a83pdEg3Gif4Pd",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 6,
+          "base_title": "I Think He Knows",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Think He Knows",
+          "song_family": "i_think_he_knows",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647"
+        },
+        {
+          "title": "Miss Americana & The Heartbreak Prince",
+          "url": "https://open.spotify.com/intl-fr/track/214nt20w5wOxJnY462klLw",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 7,
+          "base_title": "Miss Americana & The Heartbreak Prince",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Miss Americana & The Heartbreak Prince",
+          "song_family": "miss_americana_the_heartbreak_prince",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647"
+        },
+        {
+          "title": "Paper Rings",
+          "url": "https://open.spotify.com/intl-fr/track/4y5bvROuBDPr5fuwXbIBZR",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 8,
+          "base_title": "Paper Rings",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Paper Rings",
+          "song_family": "paper_rings",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647"
+        },
+        {
+          "title": "Cornelia Street",
+          "url": "https://open.spotify.com/intl-fr/track/12M5uqx0ZuwkpLp5rJim1a",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 9,
+          "base_title": "Cornelia Street",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Cornelia Street",
+          "song_family": "cornelia_street",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647"
+        },
+        {
+          "title": "Death By A Thousand Cuts",
+          "url": "https://open.spotify.com/intl-fr/track/2dgFqt3w9xIQRjhPtwNk3D",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 10,
+          "base_title": "Death By A Thousand Cuts",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Death By A Thousand Cuts",
+          "song_family": "death_by_a_thousand_cuts",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647"
+        },
+        {
+          "title": "London Boy",
+          "url": "https://open.spotify.com/intl-fr/track/1LLXZFeAHK9R4xUramtUKw",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 11,
+          "base_title": "London Boy",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "London Boy",
+          "song_family": "london_boy",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647"
+        },
+        {
+          "title": "Soon You'll Get Better (feat. The Chicks)",
+          "url": "https://open.spotify.com/intl-fr/track/4AYtqFyFbX0Xkc2wtcygTr",
+          "type": "feature",
+          "edition": "standard",
+          "display_section": "standard edition",
+          "display_order": 12,
+          "base_title": "Soon You'll Get Better (feat. The Chicks)",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "The Chicks"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "The Chicks"
+          ],
+          "title_clean": "Soon You'll Get Better",
+          "song_family": "soon_you_ll_get_better",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647"
+        },
+        {
+          "title": "False God",
+          "url": "https://open.spotify.com/intl-fr/track/5hQSXkFgbxjZo9uCwd11so",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 13,
+          "base_title": "False God",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "False God",
+          "song_family": "false_god",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647"
+        },
+        {
+          "title": "You Need To Calm Down",
+          "url": "https://open.spotify.com/intl-fr/track/6RRNNciQGZEXnqk8SQ9yv5",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 14,
+          "base_title": "You Need To Calm Down",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You Need To Calm Down",
+          "song_family": "you_need_to_calm_down",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647"
+        },
+        {
+          "title": "Afterglow",
+          "url": "https://open.spotify.com/intl-fr/track/1SymEzIT3H8UZfibCs3TYi",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 15,
+          "base_title": "Afterglow",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Afterglow",
+          "song_family": "afterglow",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647"
+        },
+        {
+          "title": "ME! (feat. Brendon Urie of Panic! At The Disco)",
+          "url": "https://open.spotify.com/intl-fr/track/2Rk4JlNc2TPmZe2af99d45",
+          "type": "feature",
+          "edition": "standard",
+          "display_section": "standard edition",
+          "display_order": 16,
+          "base_title": "ME! (feat. Brendon Urie of Panic! At The Disco)",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Brendon Urie of Panic! At The Disco"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Brendon Urie of Panic! At The Disco"
+          ],
+          "title_clean": "ME!",
+          "song_family": "me",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647"
+        },
+        {
+          "title": "It's Nice To Have A Friend",
+          "url": "https://open.spotify.com/intl-fr/track/1SmiQ65iSAbPto6gPFlBYm",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 17,
+          "base_title": "It's Nice To Have A Friend",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "It's Nice To Have A Friend",
+          "song_family": "it_s_nice_to_have_a_friend",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647"
+        },
+        {
+          "title": "Daylight",
+          "url": "https://open.spotify.com/intl-fr/track/1fzAuUVbzlhZ1lJAx9PtY6",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 18,
+          "base_title": "Daylight",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Daylight",
+          "song_family": "daylight",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647"
+        }
+      ]
+    },
+    {
+      "section": "cruel_summer_single",
+      "track_count": 3,
+      "tracks": [
+        {
+          "title": "Cruel Summer - Live from TS",
+          "url": "The Eras Tour",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "Cruel Summer",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Cruel Summer - Live from TS",
+          "song_family": "cruel_summer",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647"
+        },
+        {
+          "title": "Cruel Summer - LP Giobbi Remix",
+          "url": "https://open.spotify.com/intl-fr/track/37jfioVu3Bd2Du9bteXNDU",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 3,
+          "base_title": "Cruel Summer",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Cruel Summer - LP Giobbi Remix",
+          "song_family": "cruel_summer",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273905c0872bdf4e1787a6bb5da"
+        },
+        {
+          "title": "Cruel Summer - LP Giobbi Remix - Extended Version",
+          "url": "https://open.spotify.com/intl-fr/track/0ISHfeb30gj4CSWUZYuesj",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 4,
+          "base_title": "Cruel Summer",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Cruel Summer - LP Giobbi Remix - Extended Version",
+          "song_family": "cruel_summer",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273905c0872bdf4e1787a6bb5da"
+        }
+      ]
+    },
+    {
+      "album": "Lover",
+      "section": "soundtracks",
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "Only The Young - Featured in Miss Americana",
+          "url": "https://open.spotify.com/intl-fr/track/2slqvGLwzZZYsT4K4Y1GBC",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 6,
+          "base_title": "Only The Young - Featured in Miss Americana",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Only The Young - Featured in Miss Americana",
+          "song_family": "only_the_young_featured_in_miss_americana",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2734aa13f6de271d8403a82e4a8",
+          "display_era": "Lover"
+        }
+      ]
+    }
+  ]
+}

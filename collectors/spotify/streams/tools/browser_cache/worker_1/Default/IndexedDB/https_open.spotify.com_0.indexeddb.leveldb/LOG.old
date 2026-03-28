@@ -1,0 +1,10 @@
+2026/03/22-15:17:17.790 7244 Reusing MANIFEST C:\Users\sfara\Documents\GitHub\The Taylor Swift Musuem\collectors\spotify\streams\tools\browser_cache\worker_1\Default\IndexedDB\https_open.spotify.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/03/22-15:17:17.808 7244 Recovering log #4
+2026/03/22-15:17:17.934 7244 Reusing old log C:\Users\sfara\Documents\GitHub\The Taylor Swift Musuem\collectors\spotify\streams\tools\browser_cache\worker_1\Default\IndexedDB\https_open.spotify.com_0.indexeddb.leveldb/000004.log 
+2026/03/22-15:18:00.515 11584 Level-0 table #8: started
+2026/03/22-15:18:00.575 11584 Level-0 table #8: 762244 bytes OK
+2026/03/22-15:18:00.578 11584 Delete type=0 #4
+2026/03/22-15:18:01.011 11584 Compacting 1@1 + 1@2 files
+2026/03/22-15:18:01.063 11584 Generated table #9@1: 3017 keys, 238943 bytes
+2026/03/22-15:18:01.064 11584 Compacted 1@1 + 1@2 files => 238943 bytes
+2026/03/22-15:18:01.068 11584 compacted to: files[ 0 0 1 0 0 0 0 ]

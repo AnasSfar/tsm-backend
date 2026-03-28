@@ -1,0 +1,621 @@
+{
+  "album": "Red",
+  "section_count": 8,
+  "track_count": 29,
+  "sections": [
+    {
+      "section": "demos_and_acoustic",
+      "track_count": 3,
+      "tracks": [
+        {
+          "title": "Red - Original Demo Recording",
+          "url": "https://open.spotify.com/intl-fr/track/4mqgn90sCeVSYqcoftTQTd",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Other Editions",
+          "display_order": 1,
+          "base_title": "Red",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Red - Original Demo Recording",
+          "song_family": "red",
+          "version_tag": "demo__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+        },
+        {
+          "title": "Treacherous - Original Demo Recording",
+          "url": "https://open.spotify.com/intl-fr/track/7BT9K9BDqq6HI2oWH5UMZQ",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Other Editions",
+          "display_order": 2,
+          "base_title": "Treacherous",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Treacherous - Original Demo Recording",
+          "song_family": "treacherous",
+          "version_tag": "demo__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+        },
+        {
+          "title": "State Of Grace - Acoustic",
+          "url": "https://open.spotify.com/intl-fr/track/5G9AVKld9q7DCrmoY42raf",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Other Editions",
+          "display_order": 3,
+          "base_title": "State Of Grace",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "State Of Grace - Acoustic",
+          "song_family": "state_of_grace",
+          "version_tag": "acoustic__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+        }
+      ]
+    },
+    {
+      "section": "remixes_and_extras",
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "Message In A Bottle (Fat Max G Remix) (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/3tGq7hWDCtrnL83y5OGual",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "Message In A Bottle (Fat Max G Remix)",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Message In A Bottle (Fat Max G Remix)",
+          "song_family": "message_in_a_bottle_fat_max_g_remix",
+          "version_tag": "remix__taylors_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e53252ce47982a3d555a6b3b"
+        }
+      ]
+    },
+    {
+      "section": "standard_edition",
+      "track_count": 18,
+      "tracks": [
+        {
+          "title": "State Of Grace",
+          "url": "https://open.spotify.com/intl-fr/track/786NsUYn4GGUf8AOt0SQhP",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 1,
+          "base_title": "State Of Grace",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "State Of Grace",
+          "song_family": "state_of_grace",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+        },
+        {
+          "title": "Red",
+          "url": "https://open.spotify.com/intl-fr/track/0cITLOYn1Sv4q27zZPqlNK",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 2,
+          "base_title": "Red",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Red",
+          "song_family": "red",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+        },
+        {
+          "title": "Treacherous",
+          "url": "https://open.spotify.com/intl-fr/track/5kYFVSQoPu7yRpfiHBwMUk",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 3,
+          "base_title": "Treacherous",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Treacherous",
+          "song_family": "treacherous",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+        },
+        {
+          "title": "I Knew You Were Trouble.",
+          "url": "https://open.spotify.com/intl-fr/track/72jCZdH0Lhg93z6Z4hBjgj",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 4,
+          "base_title": "I Knew You Were Trouble.",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Knew You Were Trouble.",
+          "song_family": "i_knew_you_were_trouble",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+        },
+        {
+          "title": "All Too Well",
+          "url": "https://open.spotify.com/intl-fr/track/4XMP3zVxrnr58T0tjIHvpR",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 5,
+          "base_title": "All Too Well",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "All Too Well",
+          "song_family": "all_too_well",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+        },
+        {
+          "title": "22",
+          "url": "https://open.spotify.com/intl-fr/track/2ULNeSomDxVNmdDy8VxEBU",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 6,
+          "base_title": "22",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "22",
+          "song_family": "22",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+        },
+        {
+          "title": "I Almost Do",
+          "url": "https://open.spotify.com/intl-fr/track/5VwFkx7JOimOGTYfha5rs1",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 7,
+          "base_title": "I Almost Do",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Almost Do",
+          "song_family": "i_almost_do",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+        },
+        {
+          "title": "We Are Never Ever Getting Back Together",
+          "url": "https://open.spotify.com/intl-fr/track/7AEAGTc8cReDqcbPoY9gwo",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 8,
+          "base_title": "We Are Never Ever Getting Back Together",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "We Are Never Ever Getting Back Together",
+          "song_family": "we_are_never_ever_getting_back_together",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+        },
+        {
+          "title": "Stay Stay Stay",
+          "url": "https://open.spotify.com/intl-fr/track/1qLeEu4iXEclkLwoBlMiou",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 9,
+          "base_title": "Stay Stay Stay",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Stay Stay Stay",
+          "song_family": "stay_stay_stay",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+        },
+        {
+          "title": "The Last Time",
+          "url": "https://open.spotify.com/intl-fr/track/7vvIpJZye5cRR6De1LKM0m",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 10,
+          "base_title": "The Last Time",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Last Time",
+          "song_family": "the_last_time",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+        },
+        {
+          "title": "Holy Ground",
+          "url": "https://open.spotify.com/intl-fr/track/5d2Kn9oAAh9S2EbyCo1i52",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 11,
+          "base_title": "Holy Ground",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Holy Ground",
+          "song_family": "holy_ground",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+        },
+        {
+          "title": "Sad Beautiful Tragic",
+          "url": "https://open.spotify.com/intl-fr/track/5QKhg4r4Ibt0LVTmWEXTEg",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 12,
+          "base_title": "Sad Beautiful Tragic",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Sad Beautiful Tragic",
+          "song_family": "sad_beautiful_tragic",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+        },
+        {
+          "title": "The Lucky One",
+          "url": "https://open.spotify.com/intl-fr/track/2wtHlpYSgC7xEdD3DrSHNL",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 13,
+          "base_title": "The Lucky One",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Lucky One",
+          "song_family": "the_lucky_one",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+        },
+        {
+          "title": "Everything Has Changed",
+          "url": "https://open.spotify.com/intl-fr/track/7gdwoOmi258QJq0hmQ4hto",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 14,
+          "base_title": "Everything Has Changed",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Everything Has Changed",
+          "song_family": "everything_has_changed",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+        },
+        {
+          "title": "Starlight",
+          "url": "https://open.spotify.com/intl-fr/track/0vqI4ZIMuifeKeItGiWbPj",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 15,
+          "base_title": "Starlight",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Starlight",
+          "song_family": "starlight",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+        },
+        {
+          "title": "Begin Again",
+          "url": "https://open.spotify.com/intl-fr/track/48A0aShHlovDfTMucMrE66",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 16,
+          "base_title": "Begin Again",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Begin Again",
+          "song_family": "begin_again",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+        },
+        {
+          "title": "Come Back...Be Here",
+          "url": "https://open.spotify.com/intl-fr/track/4qyalTRMRH5YuEntvvMvq0",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 17,
+          "base_title": "Come Back...Be Here",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Come Back...Be Here",
+          "song_family": "come_back_be_here",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+        },
+        {
+          "title": "Girl At Home",
+          "url": "https://open.spotify.com/intl-fr/track/6cf6rLb8qcklvJv90W6HCW",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 18,
+          "base_title": "Girl At Home",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Girl At Home",
+          "song_family": "girl_at_home",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+        }
+      ]
+    },
+    {
+      "album": "Red",
+      "section": "misc_standalone",
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "Ronan",
+          "url": "https://open.spotify.com/intl-fr/track/0Nw8hv79MLJa1yjtsEgz08",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "Ronan",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Ronan",
+          "song_family": "ronan",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dbe6e4dd1b2a61e375a12c63",
+          "display_era": "Red"
+        }
+      ]
+    },
+    {
+      "album": "Red",
+      "section": "taylor_versions_standalone",
+      "track_count": 2,
+      "tracks": [
+        {
+          "title": "All Too Well (10 Minute Version) (The Short Film)",
+          "url": "https://open.spotify.com/intl-fr/track/1u4HUiREUR6vX1W1RYG2Tm",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 3,
+          "base_title": "All Too Well (10 Minute Version) (The Short Film)",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "All Too Well (10 Minute Version) (The Short Film)",
+          "song_family": "all_too_well",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738e16c6e20dbed531a9006d58",
+          "display_era": "Red"
+        },
+        {
+          "title": "All Too Well (Sad Girl Autumn Version) - Recorded at Long Pond Studios",
+          "url": "https://open.spotify.com/intl-fr/track/1n3b9Eekoy3S9ZSZ5DmTW1",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 4,
+          "base_title": "All Too Well (Sad Girl Autumn Version) - Recorded at Long Pond Studios",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "All Too Well (Sad Girl Autumn Version) - Recorded at Long Pond Studios",
+          "song_family": "all_too_well",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27370f88b5ee2da16d3f3929fea",
+          "display_era": "Red"
+        }
+      ]
+    },
+    {
+      "album": "Red",
+      "section": "soundtracks",
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "Safe & Sound - from The Hunger Games Soundtrack",
+          "url": "https://open.spotify.com/track/0z9UVN8VBHJ9HdfYsOuuNf",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 7,
+          "base_title": "Safe & Sound - from The Hunger Games Soundtrack",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Safe & Sound - from The Hunger Games Soundtrack",
+          "song_family": "safe_sound_from_the_hunger_games_soundtrack",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d29a5d713277b0b3d517507b",
+          "display_era": "Red"
+        }
+      ]
+    },
+    {
+      "album": "Red",
+      "section": "collabs_and_features",
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "Babe (feat. Taylor Swift)",
+          "url": "https://open.spotify.com/track/40PXEOFLJc7UIpLMrhSfW1",
+          "type": "feature",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 8,
+          "base_title": "Babe (feat. Taylor Swift)",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Taylor Swift"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Taylor Swift"
+          ],
+          "title_clean": "Babe",
+          "song_family": "babe",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27363d77f99117b28af9f656918",
+          "display_era": "Red"
+        }
+      ]
+    },
+    {
+      "album": "Red",
+      "section": "kworb_extras",
+      "track_count": 2,
+      "tracks": [
+        {
+          "title": "The Last Time - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/3vM04liQIPwzatRCDvWvba",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "The Last Time - Karaoke Version",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Last Time - Karaoke Version",
+          "song_family": "the_last_time_karaoke_version",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273220563fb6c59f7e470ba3272",
+          "display_era": "Red"
+        },
+        {
+          "title": "The Moment I Knew",
+          "url": "https://open.spotify.com/intl-fr/track/5AsmAjBSSQjRPWgAYIp8tm",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "The Moment I Knew",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Moment I Knew",
+          "song_family": "the_moment_i_knew",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "display_era": "Red"
+        }
+      ]
+    }
+  ]
+}

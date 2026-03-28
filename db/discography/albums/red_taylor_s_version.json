@@ -1,0 +1,683 @@
+{
+  "album": "Red (Taylor's Version)",
+  "section_count": 4,
+  "track_count": 33,
+  "sections": [
+    {
+      "section": "from_the_vault_tv",
+      "track_count": 10,
+      "tracks": [
+        {
+          "title": "All Too Well (10 Minute Version) (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/5enxwA8aAbwZbf5qCHORXi",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "All Too Well (10 Minute Version) (Taylor's Version) (From The Vault)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "All Too Well (10 Minute Version)",
+          "song_family": "all_too_well",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "Babe (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/0v4z1tuZvn6LGknom9Qx7d",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "Babe (Taylor's Version) (From The Vault)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Babe",
+          "song_family": "babe",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "Better Man (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/4OmFmE0fzcMG6g0Y8p4eSD",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 3,
+          "base_title": "Better Man (Taylor's Version) (From The Vault)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Better Man",
+          "song_family": "better_man",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "Forever Winter (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/3oGVx9RBmiYGv5ZCecWLkx",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 4,
+          "base_title": "Forever Winter (Taylor's Version) (From The Vault)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Forever Winter",
+          "song_family": "forever_winter",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "I Bet You Think About Me (feat. Chris Stapleton) (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/4CkgMiMqZ5JzW9iYXSTMTL",
+          "type": "feature",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 5,
+          "base_title": "I Bet You Think About Me (feat. Chris Stapleton) (Taylor's Version) (From The Vault)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Chris Stapleton"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Chris Stapleton"
+          ],
+          "title_clean": "I Bet You Think About Me",
+          "song_family": "i_bet_you_think_about_me",
+          "version_tag": "featured__vault__taylors_version__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "Message In A Bottle (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/3z6XUommYDWPHeFhmhhT6j",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 6,
+          "base_title": "Message In A Bottle (Taylor's Version) (From The Vault)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Message In A Bottle",
+          "song_family": "message_in_a_bottle",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "Nothing New (feat. Phoebe Bridgers) (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/01K4zKU104LyJ8gMb7227B",
+          "type": "feature",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 7,
+          "base_title": "Nothing New (feat. Phoebe Bridgers) (Taylor's Version) (From The Vault)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Phoebe Bridgers"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Phoebe Bridgers"
+          ],
+          "title_clean": "Nothing New",
+          "song_family": "nothing_new",
+          "version_tag": "featured__vault__taylors_version__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "Run (feat. Ed Sheeran) (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/4IQkfUsrwXol38VV3U7t7T",
+          "type": "feature",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 8,
+          "base_title": "Run (feat. Ed Sheeran) (Taylor's Version) (From The Vault)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Ed Sheeran"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Ed Sheeran"
+          ],
+          "title_clean": "Run",
+          "song_family": "run",
+          "version_tag": "featured__vault__taylors_version__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "The Very First Night (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/6pYNq0ZwpPVazKzsqpf0G8",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9,
+          "base_title": "The Very First Night (Taylor's Version) (From The Vault)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Very First Night",
+          "song_family": "the_very_first_night",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "State Of Grace (Acoustic Version) (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/5jAIouBES8LWMiriuNq170",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10,
+          "base_title": "State Of Grace (Acoustic Version)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "State Of Grace (Acoustic Version)",
+          "song_family": "state_of_grace_acoustic_version",
+          "version_tag": "acoustic__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        }
+      ]
+    },
+    {
+      "section": "standard_edition_tv",
+      "track_count": 20,
+      "tracks": [
+        {
+          "title": "State Of Grace (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/6lzc0Al0zfZOIFsFvBS1ki",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 1,
+          "base_title": "State Of Grace",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "State Of Grace",
+          "song_family": "state_of_grace",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "Red (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/4OAuvHryIVv4kMDNSLuPt6",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 2,
+          "base_title": "Red",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Red",
+          "song_family": "red",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "Treacherous (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/3S7HNKPakdwNEBFIVTL6dZ",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 3,
+          "base_title": "Treacherous",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Treacherous",
+          "song_family": "treacherous",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "I Knew You Were Trouble (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/6AtZLIzUINvExIUy4QhdjP",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 4,
+          "base_title": "I Knew You Were Trouble",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Knew You Were Trouble",
+          "song_family": "i_knew_you_were_trouble",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "All Too Well (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/3nsfB1vus2qaloUdcBZvDu",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 5,
+          "base_title": "All Too Well",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "All Too Well",
+          "song_family": "all_too_well",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "22 (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/3yII7UwgLF6K5zW3xad3MP",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 6,
+          "base_title": "22",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "22",
+          "song_family": "22",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "I Almost Do (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/2r9CbjYgFhtAmcFv1cSquB",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 7,
+          "base_title": "I Almost Do",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Almost Do",
+          "song_family": "i_almost_do",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "We Are Never Ever Getting Back Together (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/5YqltLsjdqFtvqE7Nrysvs",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 8,
+          "base_title": "We Are Never Ever Getting Back Together",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "We Are Never Ever Getting Back Together",
+          "song_family": "we_are_never_ever_getting_back_together",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "Stay Stay Stay (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/7eQj6r5PIdYKEIZjucBMcq",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 9,
+          "base_title": "Stay Stay Stay",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Stay Stay Stay",
+          "song_family": "stay_stay_stay",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "The Last Time (feat. Gary Lightbody of Snow Patrol) (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/0y6kdSRCVQhSsHSpWvTUm7",
+          "type": "feature",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 10,
+          "base_title": "The Last Time (feat. Gary Lightbody of Snow Patrol)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Gary Lightbody of Snow Patrol"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Gary Lightbody of Snow Patrol"
+          ],
+          "title_clean": "The Last Time",
+          "song_family": "the_last_time",
+          "version_tag": "featured__taylors_version__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "Holy Ground (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/7J4b3LVCIGO4CMBDFLPoP6",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 11,
+          "base_title": "Holy Ground",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Holy Ground",
+          "song_family": "holy_ground",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "Sad Beautiful Tragic (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/73qMN9bXy7MSPwwGfH3wQr",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 12,
+          "base_title": "Sad Beautiful Tragic",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Sad Beautiful Tragic",
+          "song_family": "sad_beautiful_tragic",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "The Lucky One (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/4e5ayHsOLJNLTGfjau2mEw",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 13,
+          "base_title": "The Lucky One",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Lucky One",
+          "song_family": "the_lucky_one",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "Everything Has Changed (feat. Ed Sheeran) (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/7qEUFOVcxRI19tbT68JcYK",
+          "type": "feature",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 14,
+          "base_title": "Everything Has Changed (feat. Ed Sheeran)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Ed Sheeran"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Ed Sheeran"
+          ],
+          "title_clean": "Everything Has Changed",
+          "song_family": "everything_has_changed",
+          "version_tag": "featured__taylors_version__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "Starlight (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/7A2cNLRT0YJc1yjxHlKihs",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 15,
+          "base_title": "Starlight",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Starlight",
+          "song_family": "starlight",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "Begin Again (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/05GsNucq8Bngd9fnd4fRa0",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 16,
+          "base_title": "Begin Again",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Begin Again",
+          "song_family": "begin_again",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "Girl At Home (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/0DMVrlMUn01M0IcpDbwgu7",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 17,
+          "base_title": "Girl At Home",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Girl At Home",
+          "song_family": "girl_at_home",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "Ronan (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/7nWui6jiMM2m9qFmET1Mtj",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 18,
+          "base_title": "Ronan",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Ronan",
+          "song_family": "ronan",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "Come Back...Be Here (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/4pNApnaUWAL2J4KO2eqokq",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 19,
+          "base_title": "Come Back...Be Here",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Come Back...Be Here",
+          "song_family": "come_back_be_here",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        },
+        {
+          "title": "The Moment I Knew (Taylor's Version)",
+          "url": "https://open.spotify.com/track/0NRHj8hDwwmSPaA41o379r",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 20,
+          "base_title": "The Moment I Knew",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Moment I Knew",
+          "song_family": "the_moment_i_knew",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+        }
+      ]
+    },
+    {
+      "album": "Red (Taylor's Version)",
+      "section": "soundtracks",
+      "track_count": 2,
+      "tracks": [
+        {
+          "title": "Eyes Open (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/2NIBaWXdjaTDmytjjwbEfP",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 4,
+          "base_title": "Eyes Open",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Eyes Open",
+          "song_family": "eyes_open",
+          "version_tag": "taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d5cc403148a5161b4561cf61",
+          "display_era": "Red"
+        },
+        {
+          "title": "Safe & Sound (feat. Joy Williams and John Paul White) (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/2RJnNdu4pb3MypbBroHU0T",
+          "type": "feature",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 5,
+          "base_title": "Safe & Sound (feat. Joy Williams and John Paul White)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Joy Williams",
+            "John Paul White"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Joy Williams",
+            "John Paul White"
+          ],
+          "title_clean": "Safe & Sound",
+          "song_family": "safe_sound",
+          "version_tag": "featured__taylors_version__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2734f719ea76d1b7048664b8fec",
+          "display_era": "Red"
+        }
+      ]
+    },
+    {
+      "album": "Red (Taylor's Version)",
+      "section": "kworb_extras",
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "Safe & Sound (feat. Joy Williams and John Paul White) (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/6Q237Ts37YGYRIi5Vy5lVX",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Safe & Sound (feat. Joy Williams and John Paul White) (Taylor's Version)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Safe & Sound (feat. Joy Williams and John Paul White) (Taylor's Version)",
+          "song_family": "safe_sound_feat_joy_williams_and_john_paul_white_taylors_version",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e508c5f5080d8a6c9db576df",
+          "display_era": "Red"
+        }
+      ]
+    }
+  ]
+}

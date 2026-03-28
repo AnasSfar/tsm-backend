@@ -1,0 +1,247 @@
+{
+  "album": "The Taylor Swift Holiday Collection",
+  "section_count": 2,
+  "track_count": 12,
+  "sections": [
+    {
+      "section": "christmas_tree_farm_single",
+      "track_count": 3,
+      "tracks": [
+        {
+          "title": "Christmas Tree Farm",
+          "url": "https://open.spotify.com/intl-fr/track/4mKye6Z1kXuKolzMkJoKFA",
+          "type": "standalone",
+          "edition": "standard edition",
+          "display_section": "standard edition",
+          "display_order": 1,
+          "base_title": "Christmas Tree Farm",
+          "album": "The Taylor Swift Holiday Collection",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Christmas Tree Farm",
+          "song_family": "christmas_tree_farm",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8"
+        },
+        {
+          "title": "Christmas Tree Farm - Old Timey Version",
+          "url": "https://open.spotify.com/intl-fr/track/50ho0AOvkm8E5l8zf7OfJI",
+          "type": "standalone",
+          "edition": "standard edition",
+          "display_section": "standard edition",
+          "display_order": 2,
+          "base_title": "Christmas Tree Farm",
+          "album": "The Taylor Swift Holiday Collection",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Christmas Tree Farm - Old Timey Version",
+          "song_family": "christmas_tree_farm",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8"
+        },
+        {
+          "title": "Christmas Tree Farm - Recorded Live at the 2019 iHeartRadio Jingle Ball",
+          "url": "https://open.spotify.com/intl-fr/track/1alAo6dYalSx8yZUn17JxF",
+          "type": "standalone",
+          "edition": "standard edition",
+          "display_section": "standard edition",
+          "display_order": 3,
+          "base_title": "Christmas Tree Farm",
+          "album": "The Taylor Swift Holiday Collection",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Christmas Tree Farm - Recorded Live at the 2019 iHeartRadio Jingle Ball",
+          "song_family": "christmas_tree_farm",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8"
+        }
+      ]
+    },
+    {
+      "section": "standard_edition",
+      "track_count": 9,
+      "tracks": [
+        {
+          "title": "Christmas Must Be Something More",
+          "url": "https://open.spotify.com/intl-fr/track/31JVjy3XWnh6C2zf4kLCXN",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 1,
+          "base_title": "Christmas Must Be Something More",
+          "album": "The Taylor Swift Holiday Collection",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Christmas Must Be Something More",
+          "song_family": "christmas_must_be_something_more",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732a0face7d69df61c20a6db2b"
+        },
+        {
+          "title": "Christmas Tree Farm",
+          "url": "https://open.spotify.com/intl-fr/track/4mKye6Z1kXuKolzMkJoKFA",
+          "type": "standalone",
+          "edition": "standard edition",
+          "display_section": "Standard Edition",
+          "display_order": 1,
+          "base_title": "Christmas Tree Farm",
+          "album": "The Taylor Swift Holiday Collection",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Christmas Tree Farm",
+          "song_family": "christmas_tree_farm",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8"
+        },
+        {
+          "title": "Christmas Tree Farm - Old Timey Version",
+          "url": "https://open.spotify.com/intl-fr/track/50ho0AOvkm8E5l8zf7OfJI",
+          "type": "standalone",
+          "edition": "standard edition",
+          "display_section": "Standard Edition",
+          "display_order": 2,
+          "base_title": "Christmas Tree Farm",
+          "album": "The Taylor Swift Holiday Collection",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Christmas Tree Farm - Old Timey Version",
+          "song_family": "christmas_tree_farm",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8"
+        },
+        {
+          "title": "Christmases When You Were Mine",
+          "url": "https://open.spotify.com/intl-fr/track/1g09DZjQ7yBommCT6POY2n",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 2,
+          "base_title": "Christmases When You Were Mine",
+          "album": "The Taylor Swift Holiday Collection",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Christmases When You Were Mine",
+          "song_family": "christmases_when_you_were_mine",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732a0face7d69df61c20a6db2b"
+        },
+        {
+          "title": "Christmas Tree Farm - Recorded Live at the 2019 iHeartRadio Jingle Ball",
+          "url": "https://open.spotify.com/intl-fr/track/1alAo6dYalSx8yZUn17JxF",
+          "type": "standalone",
+          "edition": "standard edition",
+          "display_section": "Standard Edition",
+          "display_order": 3,
+          "base_title": "Christmas Tree Farm",
+          "album": "The Taylor Swift Holiday Collection",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Christmas Tree Farm - Recorded Live at the 2019 iHeartRadio Jingle Ball",
+          "song_family": "christmas_tree_farm",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8"
+        },
+        {
+          "title": "Last Christmas",
+          "url": "https://open.spotify.com/intl-fr/track/2IprIjGNRlj3TfqUWCAo0C",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 3,
+          "base_title": "Last Christmas",
+          "album": "The Taylor Swift Holiday Collection",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Last Christmas",
+          "song_family": "last_christmas",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732a0face7d69df61c20a6db2b"
+        },
+        {
+          "title": "Santa Baby",
+          "url": "https://open.spotify.com/intl-fr/track/71IScwIe7bcIlpnlkbKVQw",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 4,
+          "base_title": "Santa Baby",
+          "album": "The Taylor Swift Holiday Collection",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Santa Baby",
+          "song_family": "santa_baby",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732a0face7d69df61c20a6db2b"
+        },
+        {
+          "title": "Silent Night",
+          "url": "https://open.spotify.com/intl-fr/track/1cJkUN5LAotktryx2nPCr7",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 5,
+          "base_title": "Silent Night",
+          "album": "The Taylor Swift Holiday Collection",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Silent Night",
+          "song_family": "silent_night",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732a0face7d69df61c20a6db2b"
+        },
+        {
+          "title": "White Christmas",
+          "url": "https://open.spotify.com/intl-fr/track/7GZ3KDorsc1yWndEtzGTjf",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 6,
+          "base_title": "White Christmas",
+          "album": "The Taylor Swift Holiday Collection",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "White Christmas",
+          "song_family": "white_christmas",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732a0face7d69df61c20a6db2b"
+        }
+      ]
+    }
+  ]
+}

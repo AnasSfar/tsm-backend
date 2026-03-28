@@ -1,0 +1,388 @@
+[
+  {
+    "album": "Standalone & Extras",
+    "section": "misc_standalone",
+    "track_count": 1,
+    "tracks": [
+      {
+        "title": "Birch",
+        "url": "https://open.spotify.com/intl-fr/track/7wo2UNeQBowm28hfAJsEMz",
+        "type": "standalone",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 1,
+        "base_title": "Birch",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Birch",
+        "song_family": "birch",
+        "version_tag": "standalone",
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273fbab613f887083f7ee11a1de",
+        "display_era": "Features"
+      }
+    ]
+  },
+  {
+    "album": "Standalone & Extras",
+    "section": "soundtracks",
+    "track_count": 2,
+    "tracks": [
+      {
+        "title": "Beautiful Ghosts - From The Motion Picture Soundtrack \"Cats\"",
+        "url": "https://open.spotify.com/track/2evEoQAhIMaa9PfjTT5skG",
+        "type": "standalone",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 8,
+        "base_title": "Beautiful Ghosts - From The Motion Picture Soundtrack \"Cats\"",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Beautiful Ghosts - From The Motion Picture Soundtrack \"Cats\"",
+        "song_family": "beautiful_ghosts_from_the_motion_picture_soundtrack_cats",
+        "version_tag": "standalone",
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27370d80ce758278c0ac3a63d9e",
+        "display_era": "Misc"
+      },
+      {
+        "title": "Macavity - From The Motion Picture Soundtrack \"Cats\"",
+        "url": "https://open.spotify.com/track/5zOKuItOTZhRCGtPrDYmlj",
+        "type": "standalone",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 9,
+        "base_title": "Macavity - From The Motion Picture Soundtrack \"Cats\"",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Macavity - From The Motion Picture Soundtrack \"Cats\"",
+        "song_family": "macavity_from_the_motion_picture_soundtrack_cats",
+        "version_tag": "standalone",
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27370d80ce758278c0ac3a63d9e",
+        "display_era": "Misc"
+      }
+    ]
+  },
+  {
+    "album": "Standalone & Extras",
+    "section": "live",
+    "track_count": 3,
+    "tracks": [
+      {
+        "title": "Drops of Jupiter (Live / 2011)",
+        "url": "",
+        "type": "live",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 999,
+        "base_title": "Drops of Jupiter",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Drops of Jupiter",
+        "song_family": "drops_of_jupiter",
+        "version_tag": "extras__live",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/0f/ba/81/0fba81cd-a026-a6db-47b8-26c13fadac1b/00843930036974.rgb.jpg/64x64bb.jpg"
+      },
+      {
+        "title": "Mary's Song (Oh My My My) [Live]",
+        "url": "",
+        "type": "live",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 999,
+        "base_title": "Mary's Song (Oh My My My) [Live]",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Mary's Song [Live]",
+        "song_family": "mary_s_song_live",
+        "version_tag": "extras__live",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/9b/11/0d/9b110d4c-8b4a-b40d-4e0b-2d0dd33e73df/Cover.jpg/64x64bb.jpg"
+      },
+      {
+        "title": "Umbrella (Live)",
+        "url": "",
+        "type": "live",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 999,
+        "base_title": "Umbrella",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Umbrella",
+        "song_family": "umbrella",
+        "version_tag": "extras__live",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/9b/11/0d/9b110d4c-8b4a-b40d-4e0b-2d0dd33e73df/Cover.jpg/64x64bb.jpg"
+      }
+    ],
+    "display_section": "Extras",
+    "edition": "extras"
+  },
+  {
+    "album": "Standalone & Extras",
+    "section": "misc_standalone",
+    "track_count": 5,
+    "tracks": [
+      {
+        "title": "Mary's Song (Oh My My My) [Commentary]",
+        "url": "",
+        "type": "standalone",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 999,
+        "base_title": "Mary's Song (Oh My My My) [Commentary]",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Mary's Song [Commentary]",
+        "song_family": "mary_s_song_commentary",
+        "version_tag": "extras__standalone",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/1e/bc/ee/1ebcee9e-88f4-5ac2-9a75-6519c3b62ecd/18OPBMR00218.rgb.jpg/64x64bb.jpg"
+      },
+      {
+        "title": "Mary's Song (Oh My My My) [Karaoke Version]",
+        "url": "",
+        "type": "standalone",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 999,
+        "base_title": "Mary's Song (Oh My My My) [Karaoke Version]",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Mary's Song [Karaoke Version]",
+        "song_family": "mary_s_song_karaoke_version",
+        "version_tag": "extras__standalone",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/cc/32/c5/cc32c5c2-f977-c827-6f5b-6b42aaebaecb/11UMGIM11677.rgb.jpg/64x64bb.jpg"
+      },
+      {
+        "title": "Only The Young (Featured in Miss Americana)",
+        "url": "",
+        "type": "standalone",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 999,
+        "base_title": "Only The Young (Featured in Miss Americana)",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Only The Young",
+        "song_family": "only_the_young",
+        "version_tag": "extras__standalone",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/b7/e6/8a/b7e68a1a-6beb-6187-3cdc-ecd3dbf0257e/20UMGIM04837.rgb.jpg/64x64bb.jpg"
+      },
+      {
+        "title": "Radio Outro (Commentary)",
+        "url": "",
+        "type": "standalone",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 999,
+        "base_title": "Radio Outro (Commentary)",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Radio Outro",
+        "song_family": "radio_outro",
+        "version_tag": "extras__standalone",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/7f/81/c1/7f81c122-95d2-c42a-f1d8-49db7cc88951/18OPBMR00211.rgb.jpg/64x64bb.jpg"
+      },
+      {
+        "title": "You'll Always Find Your Way Back Home (Karaoke Instrumental)",
+        "url": "",
+        "type": "standalone",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 999,
+        "base_title": "You'll Always Find Your Way Back Home (Karaoke Instrumental)",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "You'll Always Find Your Way Back Home",
+        "song_family": "you_ll_always_find_your_way_back_home",
+        "version_tag": "extras__standalone",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music4/v4/fa/85/67/fa856725-37a4-2b02-4702-65399f03570d/05099968575557.jpg/64x64bb.jpg"
+      }
+    ],
+    "display_section": "Extras",
+    "edition": "extras"
+  },
+  {
+    "album": "Standalone & Extras",
+    "section": "remixes",
+    "track_count": 1,
+    "tracks": [
+      {
+        "title": "Love Story (Taylor's Version) [Elvira Remix]",
+        "url": "",
+        "type": "remix",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 999,
+        "base_title": "Love Story [Elvira Remix]",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Love Story [Elvira Remix]",
+        "song_family": "love_story_elvira_remix",
+        "version_tag": "extras__taylors_version__remix",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/a3/0b/f5/a30bf5ad-3ba7-ae84-0a79-b4591298c1de/21UMGIM23472.rgb.jpg/64x64bb.jpg"
+      }
+    ],
+    "display_section": "Extras",
+    "edition": "extras"
+  },
+  {
+    "album": "Standalone & Extras",
+    "section": "vault_tracks",
+    "track_count": 2,
+    "tracks": [
+      {
+        "title": "Don't You (Taylor's Version) [From The Vault]",
+        "url": "",
+        "type": "standalone",
+        "edition": "vault",
+        "display_section": "vault tracks",
+        "display_order": 999,
+        "base_title": "Don't You [From The Vault]",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Don't You [From The Vault]",
+        "song_family": "don_t_you_from_the_vault",
+        "version_tag": "vault__taylors_version__vault_track__standalone",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/64x64bb.jpg"
+      },
+      {
+        "title": "Forever Winter (Taylor's Version) [From The Vault]",
+        "url": "",
+        "type": "standalone",
+        "edition": "vault",
+        "display_section": "vault tracks",
+        "display_order": 999,
+        "base_title": "Forever Winter [From The Vault]",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Forever Winter [From The Vault]",
+        "song_family": "forever_winter_from_the_vault",
+        "version_tag": "vault__taylors_version__vault_track__standalone",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/38/9b/15389bf4-8074-06c3-11ee-655b5453af68/21UM1IM25046.rgb.jpg/64x64bb.jpg"
+      }
+    ],
+    "display_section": "vault tracks",
+    "edition": "vault"
+  },
+  {
+    "album": "Standalone & Extras",
+    "section": "kworb_extras",
+    "track_count": 3,
+    "tracks": [
+      {
+        "title": "Bette Davis Eyes - Live/2011",
+        "url": "https://open.spotify.com/intl-fr/track/6KF9xd2hBLuexrmBX4vUWD",
+        "type": "standalone",
+        "edition": "extras",
+        "display_section": "Kworb Extras",
+        "display_order": 9999,
+        "base_title": "Bette Davis Eyes - Live/2011",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Bette Davis Eyes - Live/2011",
+        "song_family": "bette_davis_eyes_live2011",
+        "version_tag": null,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
+        "display_era": "Misc"
+      },
+      {
+        "title": "Drops Of Jupiter - Live/2011",
+        "url": "https://open.spotify.com/intl-fr/track/0BSmbCIY36iw04azzJ3S0S",
+        "type": "standalone",
+        "edition": "extras",
+        "display_section": "Kworb Extras",
+        "display_order": 9999,
+        "base_title": "Drops Of Jupiter - Live/2011",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Drops Of Jupiter - Live/2011",
+        "song_family": "drops_of_jupiter_live2011",
+        "version_tag": null,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
+        "display_era": "Misc"
+      },
+      {
+        "title": "I Want You Back - Live/2011",
+        "url": "https://open.spotify.com/intl-fr/track/4KB3zBArZ1rHRExilzycaV",
+        "type": "standalone",
+        "edition": "extras",
+        "display_section": "Kworb Extras",
+        "display_order": 9999,
+        "base_title": "I Want You Back - Live/2011",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "I Want You Back - Live/2011",
+        "song_family": "i_want_you_back_live2011",
+        "version_tag": null,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
+        "display_era": "Misc"
+      }
+    ]
+  }
+]

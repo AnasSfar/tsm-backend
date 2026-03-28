@@ -1,0 +1,956 @@
+{
+  "album": "folklore",
+  "section_count": 7,
+  "track_count": 47,
+  "sections": [
+    {
+      "section": "deluxe_edition",
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "the lakes - bonus track",
+          "url": "https://open.spotify.com/intl-fr/track/0eFQWVz0qIxDOvhLpZ40P7",
+          "type": "alternate_version",
+          "edition": "deluxe",
+          "display_section": "deluxe edition",
+          "display_order": 1,
+          "base_title": "the lakes - bonus track",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "the lakes - bonus track",
+          "song_family": "the_lakes_bonus_track",
+          "version_tag": "deluxe__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273c288028c2592f400dd0b9233"
+        }
+      ]
+    },
+    {
+      "section": "extras",
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "the lakes - original version",
+          "url": "https://open.spotify.com/track/0UAdDYrkCvVQftaKpL6q5f",
+          "type": "standalone",
+          "edition": "other editions",
+          "display_section": "deluxe edition",
+          "display_order": 1,
+          "base_title": "the lakes",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "the lakes - original version",
+          "song_family": "the_lakes",
+          "version_tag": "deluxe__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737d60bda8f85d66599c3fe851"
+        }
+      ]
+    },
+    {
+      "section": "remixes_and_live",
+      "track_count": 2,
+      "tracks": [
+        {
+          "title": "betty - Live from the 2020 Academy of Country Music Awards",
+          "url": "https://open.spotify.com/intl-fr/track/4GS68CE8nKLIKjjapiSm2I",
+          "type": "alternate_version",
+          "edition": "live",
+          "display_section": "Other Editions",
+          "display_order": 1,
+          "base_title": "betty",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "betty - Live from the 2020 Academy of Country Music Awards",
+          "song_family": "betty",
+          "version_tag": "live__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2736761ef4b8f9e8b2007f4d8c3"
+        },
+        {
+          "title": "cardigan - cabin in candlelight version",
+          "url": "https://open.spotify.com/intl-fr/track/2hmafYGj1CXYKIYcMnX4lj",
+          "type": "alternate_version",
+          "edition": "live",
+          "display_section": "Other Editions",
+          "display_order": 2,
+          "base_title": "cardigan",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "cardigan - cabin in candlelight version",
+          "song_family": "cardigan",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27326ade10c17424417bd06f1d6"
+        }
+      ]
+    },
+    {
+      "album": "folklore",
+      "section": "soundtracks",
+      "track_count": 2,
+      "tracks": [
+        {
+          "title": "Carolina - \"Where The Crawdads Sing\" - Video Edition",
+          "url": "https://open.spotify.com/intl-fr/track/12xIjI9A9UlB6zEc7kyZ06",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "Carolina - \"Where The Crawdads Sing\" - Video Edition",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Carolina - \"Where The Crawdads Sing\" - Video Edition",
+          "song_family": "carolina_where_the_crawdads_sing_video_edition",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732c683c1b9fa1b711499408f7",
+          "display_era": "folklore"
+        },
+        {
+          "title": "Carolina - From The Motion Picture “Where The Crawdads Sing”",
+          "url": "https://open.spotify.com/intl-fr/track/4axSuOg3BqsowKjRpj59RU",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "Carolina - From The Motion Picture “Where The Crawdads Sing”",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Carolina - From The Motion Picture “Where The Crawdads Sing”",
+          "song_family": "carolina_from_the_motion_picture_where_the_crawdads_sing",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732c683c1b9fa1b711499408f7",
+          "display_era": "folklore"
+        }
+      ]
+    },
+    {
+      "section": "standard_edition",
+      "track_count": 24,
+      "tracks": [
+        {
+          "title": "august",
+          "url": "https://open.spotify.com/intl-fr/track/1UHoF9p75IVsvUt6WdTYhn",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 1,
+          "base_title": "august",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "august",
+          "song_family": "august",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+        },
+        {
+          "title": "the 1",
+          "url": "https://open.spotify.com/intl-fr/track/0Jlcvv8IykzHaSmj49uNW8",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 1,
+          "base_title": "the 1",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "the 1",
+          "song_family": "the_1",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+        },
+        {
+          "title": "cardigan",
+          "url": "https://open.spotify.com/intl-fr/track/4R2kfaDFhslZEMJqAFNpdd",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 2,
+          "base_title": "cardigan",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "cardigan",
+          "song_family": "cardigan",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+        },
+        {
+          "title": "the last great american dynasty",
+          "url": "https://open.spotify.com/intl-fr/track/2Eeur20xVqfUoM3Q7EFPFt",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 3,
+          "base_title": "the last great american dynasty",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "the last great american dynasty",
+          "song_family": "the_last_great_american_dynasty",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+        },
+        {
+          "title": "cardigan",
+          "url": "https://open.spotify.com/intl-fr/track/7zcnlq38eqNWyUF6eNaB5Z",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 4,
+          "base_title": "cardigan",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "cardigan",
+          "song_family": "cardigan",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+        },
+        {
+          "title": "exile (feat. Bon Iver)",
+          "url": "https://open.spotify.com/intl-fr/track/4pvb0WLRcMtbPGmtejJJ6y",
+          "type": "feature",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 4,
+          "base_title": "exile (feat. Bon Iver)",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Bon Iver"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Bon Iver"
+          ],
+          "title_clean": "exile",
+          "song_family": "exile",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+        },
+        {
+          "title": "my tears ricochet",
+          "url": "https://open.spotify.com/intl-fr/track/1MgV7FIyNxIG7WzMRJV5HC",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 5,
+          "base_title": "my tears ricochet",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "my tears ricochet",
+          "song_family": "my_tears_ricochet",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+        },
+        {
+          "title": "exile (feat. Bon Iver)",
+          "url": "https://open.spotify.com/intl-fr/track/6kz2hkq1xQvDqPcUyBkw8f",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 6,
+          "base_title": "exile (feat. Bon Iver)",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Bon Iver"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Bon Iver"
+          ],
+          "title_clean": "exile",
+          "song_family": "exile",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+        },
+        {
+          "title": "mirrorball",
+          "url": "https://open.spotify.com/intl-fr/track/0ZNU020wNYvgW84iljPkPP",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 6,
+          "base_title": "mirrorball",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "mirrorball",
+          "song_family": "mirrorball",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+        },
+        {
+          "title": "seven",
+          "url": "https://open.spotify.com/intl-fr/track/6KJqZcs9XDgVck7Lg9QOTC",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 7,
+          "base_title": "seven",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "seven",
+          "song_family": "seven",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+        },
+        {
+          "title": "august",
+          "url": "https://open.spotify.com/intl-fr/track/3hUxzQpSfdDqwM3ZTFQY0K",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 8,
+          "base_title": "august",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "august",
+          "song_family": "august",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+        },
+        {
+          "title": "this is me trying",
+          "url": "https://open.spotify.com/intl-fr/track/7kt9e9LFSpN1zQtYEl19o1",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 9,
+          "base_title": "this is me trying",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "this is me trying",
+          "song_family": "this_is_me_trying",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+        },
+        {
+          "title": "illicit affairs",
+          "url": "https://open.spotify.com/intl-fr/track/2NmsngXHeC1GQ9wWrzhOMf",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 10,
+          "base_title": "illicit affairs",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "illicit affairs",
+          "song_family": "illicit_affairs",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+        },
+        {
+          "title": "invisible string",
+          "url": "https://open.spotify.com/intl-fr/track/6VsvKPJ4xjVNKpI8VVZ3SV",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 11,
+          "base_title": "invisible string",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "invisible string",
+          "song_family": "invisible_string",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+        },
+        {
+          "title": "mirrorball",
+          "url": "https://open.spotify.com/intl-fr/track/5jQyGzcwqAxwT5QUIMivoX",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 11,
+          "base_title": "mirrorball",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "mirrorball",
+          "song_family": "mirrorball",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+        },
+        {
+          "title": "mad woman",
+          "url": "https://open.spotify.com/intl-fr/track/2QDyYdZyhlP2fp79KZX8Bi",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 12,
+          "base_title": "mad woman",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "mad woman",
+          "song_family": "mad_woman",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+        },
+        {
+          "title": "epiphany",
+          "url": "https://open.spotify.com/intl-fr/track/08fa9LFcFBTcilB3iq2e2A",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 13,
+          "base_title": "epiphany",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "epiphany",
+          "song_family": "epiphany",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+        },
+        {
+          "title": "my tears ricochet",
+          "url": "https://open.spotify.com/intl-fr/track/0Oju1YcbPCJuUQQWoZNdJK",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 13,
+          "base_title": "my tears ricochet",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "my tears ricochet",
+          "song_family": "my_tears_ricochet",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+        },
+        {
+          "title": "betty",
+          "url": "https://open.spotify.com/intl-fr/track/5kI4eCXXzyuIUXjQra0Cxi",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 14,
+          "base_title": "betty",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "betty",
+          "song_family": "betty",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+        },
+        {
+          "title": "peace",
+          "url": "https://open.spotify.com/intl-fr/track/7MbT4I8qGntX4fMdqMQgke",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 15,
+          "base_title": "peace",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "peace",
+          "song_family": "peace",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+        },
+        {
+          "title": "hoax",
+          "url": "https://open.spotify.com/intl-fr/track/6MWoRt97mnSTXZhu3ggi9C",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 16,
+          "base_title": "hoax",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "hoax",
+          "song_family": "hoax",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+        },
+        {
+          "title": "seven",
+          "url": "https://open.spotify.com/intl-fr/track/2vJ7QvyCiR4DaHxwO58izA",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 16,
+          "base_title": "seven",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "seven",
+          "song_family": "seven",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+        },
+        {
+          "title": "the 1",
+          "url": "https://open.spotify.com/intl-fr/track/0P9wLFurlgumLXuqFEpw52",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 18,
+          "base_title": "the 1",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "the 1",
+          "song_family": "the_1",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+        },
+        {
+          "title": "the last great american dynasty",
+          "url": "https://open.spotify.com/intl-fr/track/4ojxSyrEraN7d46BMBPThZ",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 20,
+          "base_title": "the last great american dynasty",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "the last great american dynasty",
+          "song_family": "the_last_great_american_dynasty",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+        }
+      ]
+    },
+    {
+      "section": "long_pond_studio_sessions",
+      "track_count": 13,
+      "tracks": [
+        {
+          "title": "august - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/4MGexoZc12lqE0hYkq9YYx",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 2,
+          "base_title": "august - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "august - the long pond studio sessions",
+          "song_family": "august",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+        },
+        {
+          "title": "betty - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/1mh5dObNoOvCfHmXnhvDEK",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 3,
+          "base_title": "betty - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "betty - the long pond studio sessions",
+          "song_family": "betty",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+        },
+        {
+          "title": "epiphany - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/4yyKppX85ZkmlGOC2toBZA",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 5,
+          "base_title": "epiphany - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "epiphany - the long pond studio sessions",
+          "song_family": "epiphany",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+        },
+        {
+          "title": "hoax - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/0QTBsdoJhamY3Aid3fOsOd",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 7,
+          "base_title": "hoax - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "hoax - the long pond studio sessions",
+          "song_family": "hoax",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+        },
+        {
+          "title": "illicit affairs - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/560uQyz3p5G9WdnMX39xc6",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 8,
+          "base_title": "illicit affairs - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "illicit affairs - the long pond studio sessions",
+          "song_family": "illicit_affairs",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+        },
+        {
+          "title": "invisible string - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/5KByGq0JijSSDcy0qzuINs",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 9,
+          "base_title": "invisible string - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "invisible string - the long pond studio sessions",
+          "song_family": "invisible_string",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+        },
+        {
+          "title": "mad woman - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/04xrhDrQ2WOW8GLwu7kbc0",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 10,
+          "base_title": "mad woman - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "mad woman - the long pond studio sessions",
+          "song_family": "mad_woman",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+        },
+        {
+          "title": "mirrorball - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/2yceD2hx5HhOLgkm1CITCi",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 12,
+          "base_title": "mirrorball - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "mirrorball - the long pond studio sessions",
+          "song_family": "mirrorball",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+        },
+        {
+          "title": "my tears ricochet - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/5mdNyCS7ttVcAyVYOIFEjs",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 14,
+          "base_title": "my tears ricochet - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "my tears ricochet - the long pond studio sessions",
+          "song_family": "my_tears_ricochet",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+        },
+        {
+          "title": "peace - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/4YHHz3VIXgNDGdoL9xC1tx",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 15,
+          "base_title": "peace - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "peace - the long pond studio sessions",
+          "song_family": "peace",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+        },
+        {
+          "title": "seven - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/4cOWq0cVsKjxaQpRMbDoH1",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 17,
+          "base_title": "seven - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "seven - the long pond studio sessions",
+          "song_family": "seven",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+        },
+        {
+          "title": "the lakes - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/6mqyTq948oap5AkyTsd6XF",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 19,
+          "base_title": "the lakes - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "the lakes - the long pond studio sessions",
+          "song_family": "the_lakes",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+        },
+        {
+          "title": "this is me trying - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/1gaLZjPrDnHQWJds2Jg4KT",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 21,
+          "base_title": "this is me trying - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "this is me trying - the long pond studio sessions",
+          "song_family": "this_is_me_trying",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+        }
+      ]
+    },
+    {
+      "album": "folklore",
+      "section": "kworb_extras",
+      "track_count": 4,
+      "tracks": [
+        {
+          "title": "cardigan - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/3EPgWM1zfTSzEc0z4AwWTM",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 9999,
+          "base_title": "cardigan - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "cardigan - the long pond studio sessions",
+          "song_family": "cardigan",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "display_era": "folklore"
+        },
+        {
+          "title": "exile (feat. Bon Iver) - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/7N015NTIWGjQDddHUdHPoO",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 9999,
+          "base_title": "exile (feat. Bon Iver) - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "exile (feat. Bon Iver) - the long pond studio sessions",
+          "song_family": "exile_feat_bon_iver",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "display_era": "folklore"
+        },
+        {
+          "title": "the 1 - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/08J4bMHbILkwSIhbtrcvjN",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 9999,
+          "base_title": "the 1 - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "the 1 - the long pond studio sessions",
+          "song_family": "the_1",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "display_era": "folklore"
+        },
+        {
+          "title": "the last great american dynasty - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/28tIMaewZuGR8urkvFhQyA",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 9999,
+          "base_title": "the last great american dynasty - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "the last great american dynasty - the long pond studio sessions",
+          "song_family": "the_last_great_american_dynasty",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "display_era": "folklore"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,722 @@
+{
+  "album": "Midnights",
+  "section_count": 6,
+  "track_count": 35,
+  "sections": [
+    {
+      "section": "3am_edition",
+      "track_count": 7,
+      "tracks": [
+        {
+          "title": "The Great War",
+          "url": "https://open.spotify.com/intl-fr/track/2VuqMjgoKaOHNM8HpxtXKx",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "3am Edition",
+          "display_order": 1,
+          "base_title": "The Great War",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Great War",
+          "song_family": "the_great_war",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0"
+        },
+        {
+          "title": "Bigger Than The Whole Sky",
+          "url": "https://open.spotify.com/intl-fr/track/71CBDRKmF2VeRKYMG1DFBh",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "3am Edition",
+          "display_order": 2,
+          "base_title": "Bigger Than The Whole Sky",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Bigger Than The Whole Sky",
+          "song_family": "bigger_than_the_whole_sky",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0"
+        },
+        {
+          "title": "Paris",
+          "url": "https://open.spotify.com/intl-fr/track/5tWxKWq1DSP1s9WQ5PWuqu",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "3am Edition",
+          "display_order": 3,
+          "base_title": "Paris",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Paris",
+          "song_family": "paris",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0"
+        },
+        {
+          "title": "High Infidelity",
+          "url": "https://open.spotify.com/intl-fr/track/1SztNGCwEHJEVFx90E5g7D",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "3am Edition",
+          "display_order": 4,
+          "base_title": "High Infidelity",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "High Infidelity",
+          "song_family": "high_infidelity",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0"
+        },
+        {
+          "title": "Glitch",
+          "url": "https://open.spotify.com/intl-fr/track/7C0w28EsX0Um2FrZs9gso2",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "3am Edition",
+          "display_order": 5,
+          "base_title": "Glitch",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Glitch",
+          "song_family": "glitch",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0"
+        },
+        {
+          "title": "Would've, Could've, Should've",
+          "url": "https://open.spotify.com/intl-fr/track/4txojlesMFQZGWxwz2EeqB",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "3am Edition",
+          "display_order": 6,
+          "base_title": "Would've, Could've, Should've",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Would've, Could've, Should've",
+          "song_family": "would_ve_could_ve_should_ve",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0"
+        },
+        {
+          "title": "Dear Reader",
+          "url": "https://open.spotify.com/intl-fr/track/10GRRCR5fctuOF4GFmATJI",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "3am Edition",
+          "display_order": 7,
+          "base_title": "Dear Reader",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Dear Reader",
+          "song_family": "dear_reader",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0"
+        }
+      ]
+    },
+    {
+      "section": "from_the_vault",
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "You're Losing Me (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/3CWq0pAKKTWb0K4yiglDc4",
+          "type": "standalone",
+          "edition": "From The Vault",
+          "display_section": "From The Vault",
+          "display_order": 1,
+          "base_title": "You're Losing Me (From The Vault)",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You're Losing Me",
+          "song_family": "you_re_losing_me",
+          "version_tag": "vault__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2734fe1868aa6838eb595f3673a"
+        }
+      ]
+    },
+    {
+      "section": "standard_edition",
+      "track_count": 13,
+      "tracks": [
+        {
+          "title": "Lavender Haze",
+          "url": "https://open.spotify.com/intl-fr/track/5jQI2r1RdgtuT8S3iG8zFC",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 1,
+          "base_title": "Lavender Haze",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Lavender Haze",
+          "song_family": "lavender_haze",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0"
+        },
+        {
+          "title": "Maroon",
+          "url": "https://open.spotify.com/intl-fr/track/3eX0NZfLtGzoLUxPNvRfqm",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 2,
+          "base_title": "Maroon",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Maroon",
+          "song_family": "maroon",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5"
+        },
+        {
+          "title": "Anti-Hero",
+          "url": "https://open.spotify.com/intl-fr/track/0V3wPSX9ygBnCm8psDIegu",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 3,
+          "base_title": "Anti-Hero",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Anti-Hero",
+          "song_family": "anti_hero",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0"
+        },
+        {
+          "title": "Snow On The Beach (feat. Lana Del Rey)",
+          "url": "https://open.spotify.com/intl-fr/track/1wtOxkiel43cVs0Yux5Q4h",
+          "type": "feature",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 4,
+          "base_title": "Snow On The Beach (feat. Lana Del Rey)",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Lana Del Rey"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Lana Del Rey"
+          ],
+          "title_clean": "Snow On The Beach",
+          "song_family": "snow_on_the_beach",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5"
+        },
+        {
+          "title": "You're On Your Own, Kid",
+          "url": "https://open.spotify.com/intl-fr/track/4D7BCuvgdJlYvlX5WlN54t",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 5,
+          "base_title": "You're On Your Own, Kid",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You're On Your Own, Kid",
+          "song_family": "you_re_on_your_own_kid",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5"
+        },
+        {
+          "title": "Midnight Rain",
+          "url": "https://open.spotify.com/intl-fr/track/3rWDp9tBPQR9z6U5YyRSK4",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 6,
+          "base_title": "Midnight Rain",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Midnight Rain",
+          "song_family": "midnight_rain",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5"
+        },
+        {
+          "title": "Question...?",
+          "url": "https://open.spotify.com/intl-fr/track/0heeNYlwOGuUSe7TgUD27B",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 7,
+          "base_title": "Question...?",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Question...?",
+          "song_family": "question",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5"
+        },
+        {
+          "title": "Vigilante Shit",
+          "url": "https://open.spotify.com/intl-fr/track/1xwAWUI6Dj0WGC3KiUPN0O",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 8,
+          "base_title": "Vigilante Shit",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Vigilante Shit",
+          "song_family": "vigilante_shit",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5"
+        },
+        {
+          "title": "Bejeweled",
+          "url": "https://open.spotify.com/intl-fr/track/3qoftcUZaUOncvIYjFSPdE",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 9,
+          "base_title": "Bejeweled",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Bejeweled",
+          "song_family": "bejeweled",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5"
+        },
+        {
+          "title": "Labyrinth",
+          "url": "https://open.spotify.com/intl-fr/track/4bBDkw2KBMX0tcgAaXC83Q",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 10,
+          "base_title": "Labyrinth",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Labyrinth",
+          "song_family": "labyrinth",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0"
+        },
+        {
+          "title": "Karma",
+          "url": "https://open.spotify.com/intl-fr/track/45R112Jz5hQeKgITXgSXzs",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 11,
+          "base_title": "Karma",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Karma",
+          "song_family": "karma",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0"
+        },
+        {
+          "title": "Sweet Nothing",
+          "url": "https://open.spotify.com/intl-fr/track/2L09RYwH5Pjzca6PmbUAw3",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 12,
+          "base_title": "Sweet Nothing",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Sweet Nothing",
+          "song_family": "sweet_nothing",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0"
+        },
+        {
+          "title": "Mastermind",
+          "url": "https://open.spotify.com/intl-fr/track/1QQii3pa5m8MEda0nbkjfw",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 13,
+          "base_title": "Mastermind",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Mastermind",
+          "song_family": "mastermind",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0"
+        }
+      ]
+    },
+    {
+      "section": "til_dawn_edition",
+      "track_count": 3,
+      "tracks": [
+        {
+          "title": "Hits Different",
+          "url": "https://open.spotify.com/intl-fr/track/3xYJScVfxByb61dYHTwiby",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Til Dawn Edition",
+          "display_order": 1,
+          "base_title": "Hits Different",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Hits Different",
+          "song_family": "hits_different",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0"
+        },
+        {
+          "title": "Snow On The Beach (feat. More Lana Del Rey)",
+          "url": "https://open.spotify.com/intl-fr/track/4zmKGsrXjLmljb5fTaBTot",
+          "type": "feature",
+          "edition": "extras",
+          "display_section": "Til Dawn Edition",
+          "display_order": 2,
+          "base_title": "Snow On The Beach (feat. More Lana Del Rey)",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "More Lana Del Rey"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "More Lana Del Rey"
+          ],
+          "title_clean": "Snow On The Beach",
+          "song_family": "snow_on_the_beach",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0"
+        },
+        {
+          "title": "Karma (feat. Ice Spice)",
+          "url": "https://open.spotify.com/intl-fr/track/4i6cwNY6oIUU2XZxPIw82Y",
+          "type": "feature",
+          "edition": "extras",
+          "display_section": "Til Dawn Edition",
+          "display_order": 3,
+          "base_title": "Karma (feat. Ice Spice)",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Ice Spice"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Ice Spice"
+          ],
+          "title_clean": "Karma",
+          "song_family": "karma",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0"
+        }
+      ]
+    },
+    {
+      "section": "remixes",
+      "track_count": 10,
+      "tracks": [
+        {
+          "title": "Anti-Hero (feat. Bleachers)",
+          "url": "https://open.spotify.com/intl-fr/track/16M9Rxid0nXhVmme7lzVwN",
+          "type": "feature",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "Anti-Hero (feat. Bleachers)",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Bleachers"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Bleachers"
+          ],
+          "title_clean": "Anti-Hero",
+          "song_family": "anti_hero",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2739954fa9f0ba8534c3897b59d"
+        },
+        {
+          "title": "Anti-Hero - ILLENIUM Remix",
+          "url": "https://open.spotify.com/intl-fr/track/6C0H8ts9M6deezz0yYR6LK",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 3,
+          "base_title": "Anti-Hero",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Anti-Hero - ILLENIUM Remix",
+          "song_family": "anti_hero",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273eb7289d463cd524a93b722c9"
+        },
+        {
+          "title": "Anti-Hero - Jayda G Remix",
+          "url": "https://open.spotify.com/intl-fr/track/4YrpqEBNuz7IMsZtUP6bNQ",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 4,
+          "base_title": "Anti-Hero",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Anti-Hero - Jayda G Remix",
+          "song_family": "anti_hero",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2739954fa9f0ba8534c3897b59d"
+        },
+        {
+          "title": "Anti-Hero - Kungs Remix",
+          "url": "https://open.spotify.com/intl-fr/track/2oWpe2L8ypC080BxpDVuTY",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 5,
+          "base_title": "Anti-Hero",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Anti-Hero - Kungs Remix",
+          "song_family": "anti_hero",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2739954fa9f0ba8534c3897b59d"
+        },
+        {
+          "title": "Anti-Hero - Roosevelt Remix",
+          "url": "https://open.spotify.com/intl-fr/track/4XiypEn8iKbeP1TbTqdfk5",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 6,
+          "base_title": "Anti-Hero",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Anti-Hero - Roosevelt Remix",
+          "song_family": "anti_hero",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2739954fa9f0ba8534c3897b59d"
+        },
+        {
+          "title": "Anti-Hero - Acoustic Version",
+          "url": "https://open.spotify.com/intl-fr/track/2d3d9xZutJjmUpntiyHt3F",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 7,
+          "base_title": "Anti-Hero",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Anti-Hero - Acoustic Version",
+          "song_family": "anti_hero",
+          "version_tag": "acoustic__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730fc559ebbed8b0b100ad206c"
+        },
+        {
+          "title": "Lavender Haze - Felix Jaehn Remix",
+          "url": "https://open.spotify.com/intl-fr/track/2M4tVhRXucLE9M3STv21Yi",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10,
+          "base_title": "Lavender Haze",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Lavender Haze - Felix Jaehn Remix",
+          "song_family": "lavender_haze",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27390212229c9230e320fe0ecd3"
+        },
+        {
+          "title": "Lavender Haze - Jungle Remix",
+          "url": "https://open.spotify.com/intl-fr/track/0ThxqUZ9PwS6n0UT5i1XH6",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 11,
+          "base_title": "Lavender Haze",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Lavender Haze - Jungle Remix",
+          "song_family": "lavender_haze",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f7c84273e5c8ecb7594b4357"
+        },
+        {
+          "title": "Lavender Haze - Snakehips Remix",
+          "url": "https://open.spotify.com/intl-fr/track/6F67FNdOBNMFzxdj1CQ5pL",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 12,
+          "base_title": "Lavender Haze",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Lavender Haze - Snakehips Remix",
+          "song_family": "lavender_haze",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f7c84273e5c8ecb7594b4357"
+        },
+        {
+          "title": "Lavender Haze - Tensnake Remix",
+          "url": "https://open.spotify.com/intl-fr/track/7kjSmkSo15pHlkb0mOQtfj",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 13,
+          "base_title": "Lavender Haze",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Lavender Haze - Tensnake Remix",
+          "song_family": "lavender_haze",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f7c84273e5c8ecb7594b4357"
+        }
+      ]
+    },
+    {
+      "album": "Midnights",
+      "section": "kworb_extras",
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "Lavender Haze - Acoustic Version",
+          "url": "https://open.spotify.com/intl-fr/track/05kJkr80XEaZeN8kxyQoFp",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Lavender Haze - Acoustic Version",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Lavender Haze - Acoustic Version",
+          "song_family": "lavender_haze_acoustic_version",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f233c37dddd971caf61515cf",
+          "display_era": "Midnights"
+        }
+      ]
+    }
+  ]
+}

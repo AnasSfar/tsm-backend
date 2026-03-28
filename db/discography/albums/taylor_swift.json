@@ -1,0 +1,450 @@
+{
+  "album": "Taylor Swift",
+  "section_count": 3,
+  "track_count": 22,
+  "sections": [
+    {
+      "section": "extras",
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "Crazier",
+          "url": "https://open.spotify.com/intl-fr/track/5vyxXfD5gLlyPxGZMEjtmd",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "Crazier",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Crazier",
+          "song_family": "crazier",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730e8ba185f3e9f15630a7b5fb"
+        }
+      ]
+    },
+    {
+      "section": "standard_edition",
+      "track_count": 15,
+      "tracks": [
+        {
+          "title": "A Perfectly Good Heart",
+          "url": "https://open.spotify.com/intl-fr/track/1spLfUJxtyVyiKKTegQ2r4",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 1,
+          "base_title": "A Perfectly Good Heart",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "A Perfectly Good Heart",
+          "song_family": "a_perfectly_good_heart",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+        },
+        {
+          "title": "A Place in this World",
+          "url": "https://open.spotify.com/intl-fr/track/73OX8GdpOeGzKC6OvGSbsv",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 2,
+          "base_title": "A Place in this World",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "A Place in this World",
+          "song_family": "a_place_in_this_world",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+        },
+        {
+          "title": "Cold As You",
+          "url": "https://open.spotify.com/intl-fr/track/7an1exwMnfYRcdVQm0yDev",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 3,
+          "base_title": "Cold As You",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Cold As You",
+          "song_family": "cold_as_you",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+        },
+        {
+          "title": "I'm Only Me When I'm With You",
+          "url": "https://open.spotify.com/intl-fr/track/0JIdBrXGSJXS72zjF9ss9u",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 4,
+          "base_title": "I'm Only Me When I'm With You",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I'm Only Me When I'm With You",
+          "song_family": "i_m_only_me_when_i_m_with_you",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+        },
+        {
+          "title": "Invisible",
+          "url": "https://open.spotify.com/intl-fr/track/5OOd01o2YS1QFwdpVLds3r",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 5,
+          "base_title": "Invisible",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Invisible",
+          "song_family": "invisible",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+        },
+        {
+          "title": "Mary's Song (Oh My My My)",
+          "url": "https://open.spotify.com/intl-fr/track/2QrQCMel6v2JiLxqrg4p2O",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 6,
+          "base_title": "Mary's Song (Oh My My My)",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Mary's Song (Oh My My My)",
+          "song_family": "mary_s_song_oh_my_my_my",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+        },
+        {
+          "title": "Our Song",
+          "url": "https://open.spotify.com/intl-fr/track/15DeqWWQB4dcEWzJg15VrN",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 7,
+          "base_title": "Our Song",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Our Song",
+          "song_family": "our_song",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+        },
+        {
+          "title": "Picture To Burn",
+          "url": "https://open.spotify.com/intl-fr/track/32mVHdy0bi1XKgr0ajsBlG",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 8,
+          "base_title": "Picture To Burn",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Picture To Burn",
+          "song_family": "picture_to_burn",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+        },
+        {
+          "title": "Should've Said No",
+          "url": "https://open.spotify.com/intl-fr/track/16MVSD0mGI4RMQT83Qzm69",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 9,
+          "base_title": "Should've Said No",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Should've Said No",
+          "song_family": "should_ve_said_no",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+        },
+        {
+          "title": "Stay Beautiful",
+          "url": "https://open.spotify.com/intl-fr/track/2ZoOmCSgj0ypVAmGd1ve4y",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 10,
+          "base_title": "Stay Beautiful",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Stay Beautiful",
+          "song_family": "stay_beautiful",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+        },
+        {
+          "title": "Teardrops on My Guitar - Pop Version",
+          "url": "https://open.spotify.com/intl-fr/track/4pJi1rVt9GNegU9kywjg4z",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 11,
+          "base_title": "Teardrops on My Guitar",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Teardrops on My Guitar - Pop Version",
+          "song_family": "teardrops_on_my_guitar",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+        },
+        {
+          "title": "Teardrops On My Guitar - Radio Single Remix",
+          "url": "https://open.spotify.com/intl-fr/track/7zMcNqs55Mxer82bvZFkpg",
+          "type": "remix",
+          "edition": "standard",
+          "display_section": "Extras",
+          "display_order": 12,
+          "base_title": "Teardrops On My Guitar",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Teardrops On My Guitar - Radio Single Remix",
+          "song_family": "teardrops_on_my_guitar",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+        },
+        {
+          "title": "The Outside",
+          "url": "https://open.spotify.com/intl-fr/track/2QA3IixpRcKyOdG7XDzRgv",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 13,
+          "base_title": "The Outside",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Outside",
+          "song_family": "the_outside",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+        },
+        {
+          "title": "Tied Together with a Smile",
+          "url": "https://open.spotify.com/intl-fr/track/6K0CJLVXqbGMeJSmJ4ENKK",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 14,
+          "base_title": "Tied Together with a Smile",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Tied Together with a Smile",
+          "song_family": "tied_together_with_a_smile",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+        },
+        {
+          "title": "Tim McGraw",
+          "url": "https://open.spotify.com/intl-fr/track/0Om9WAB5RS09L80DyOfTNa",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 15,
+          "base_title": "Tim McGraw",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Tim McGraw",
+          "song_family": "tim_mcgraw",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+        }
+      ]
+    },
+    {
+      "album": "Taylor Swift",
+      "section": "kworb_extras",
+      "track_count": 6,
+      "tracks": [
+        {
+          "title": "Beautiful Eyes - Live From Clear Channel Stripped 2008",
+          "url": "https://open.spotify.com/intl-fr/track/4aBW31cmkA7BLColUsMEeZ",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Beautiful Eyes - Live From Clear Channel Stripped 2008",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Beautiful Eyes - Live From Clear Channel Stripped 2008",
+          "song_family": "beautiful_eyes_live_from_clear_channel_stripped_2008",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
+          "display_era": "Taylor Swift"
+        },
+        {
+          "title": "Picture To Burn - Live From Clear Channel Stripped 2008",
+          "url": "https://open.spotify.com/intl-fr/track/7EvU9pRoJ9Xs7anx0P7tEc",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Picture To Burn - Live From Clear Channel Stripped 2008",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Picture To Burn - Live From Clear Channel Stripped 2008",
+          "song_family": "picture_to_burn_live_from_clear_channel_stripped_2008",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
+          "display_era": "Taylor Swift"
+        },
+        {
+          "title": "Should've Said No - Live From Clear Channel Stripped 2008",
+          "url": "https://open.spotify.com/intl-fr/track/5a9hUL6ZuiagZhazwrtwHF",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Should've Said No - Live From Clear Channel Stripped 2008",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Should've Said No - Live From Clear Channel Stripped 2008",
+          "song_family": "shouldve_said_no_live_from_clear_channel_stripped_2008",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
+          "display_era": "Taylor Swift"
+        },
+        {
+          "title": "Should've Said No - The 3D Concert Experience",
+          "url": "https://open.spotify.com/intl-fr/track/06FXaDDdg0BzXl15cthMS5",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Should've Said No - The 3D Concert Experience",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Should've Said No - The 3D Concert Experience",
+          "song_family": "shouldve_said_no_the_3d_concert_experience",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2735e0f4b509e71ef57a82ccc3e",
+          "display_era": "Taylor Swift"
+        },
+        {
+          "title": "Teardrops On My Guitar",
+          "url": "https://open.spotify.com/intl-fr/track/60oZARTE1kCh5ntBfeO1XB",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Teardrops On My Guitar",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Teardrops On My Guitar",
+          "song_family": "teardrops_on_my_guitar",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27334614bd156c2177e3c0dd051",
+          "display_era": "Taylor Swift"
+        },
+        {
+          "title": "Teardrops On My Guitar - Live From Clear Channel Stripped 2008",
+          "url": "https://open.spotify.com/intl-fr/track/4DjevQhsPWULcondN4mRh5",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Teardrops On My Guitar - Live From Clear Channel Stripped 2008",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Teardrops On My Guitar - Live From Clear Channel Stripped 2008",
+          "song_family": "teardrops_on_my_guitar_live_from_clear_channel_stripped_2008",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
+          "display_era": "Taylor Swift"
+        }
+      ]
+    }
+  ]
+}

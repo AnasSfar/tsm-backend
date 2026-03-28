@@ -1,0 +1,257 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import csv
+import json
+from collections import defaultdict
+from pathlib import Path
+from typing import Any
+
+ROOT = Path(__file__).resolve().parents[1]
+
+DB_DIR = ROOT / "db"
+OUT_DIR = ROOT / "website" / "site" / "data"
+
+GLOBAL_CSV = DB_DIR / "apple_music_global.csv"
+TOP_SONGS_CSV = DB_DIR / "apple_music_ts_top_songs.csv"
+COUNTRY_CSV = DB_DIR / "apple_music_country_charts.csv"
+GENRE_CSV = DB_DIR / "apple_music_genre_charts.csv"
+
+OUT_DATA = OUT_DIR / "applemusic.json"
+OUT_HISTORY = OUT_DIR / "applemusic_history.json"
+
+
+def log(msg: str) -> None:
+    print(f"[applemusic-export] {msg}", flush=True)
+
+
+def ensure_out_dir() -> None:
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+
+def to_int(value: Any) -> int | None:
+    if value is None:
+        return None
+    s = str(value).strip()
+    if not s:
+        return None
+    try:
+        return int(float(s))
+    except Exception:
+        return None
+
+
+def clean_str(value: Any) -> str:
+    return "" if value is None else str(value).strip()
+
+
+def normalize_date(row: dict[str, Any]) -> str:
+    for key in ("date", "chart_date", "day"):
+        val = clean_str(row.get(key))
+        if val:
+            return val
+    return ""
+
+
+def normalize_song_entry(row: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "song_name": clean_str(row.get("song_name") or row.get("title") or row.get("track_name")),
+        "apple_music_id": clean_str(row.get("apple_music_id") or row.get("song_id") or row.get("id")),
+        "rank": to_int(row.get("rank")),
+        "previous_rank": (lambda pr: pr if pr else None)(to_int(row.get("previous_rank") or row.get("prev_rank"))),
+        "image_url": clean_str(row.get("image_url") or row.get("artwork_url")),
+        "url": clean_str(row.get("url") or row.get("song_url")),
+        "artist_name": clean_str(row.get("artist_name") or row.get("artist") or "Taylor Swift"),
+    }
+
+
+def read_csv_rows(path: Path) -> list[dict[str, Any]]:
+    if not path.exists():
+        log(f"absent: {path}")
+        return []
+
+    with path.open("r", encoding="utf-8-sig", newline="") as f:
+        reader = csv.DictReader(f)
+        rows = [dict(row) for row in reader]
+
+    log(f"lu {len(rows)} lignes depuis {path.name}")
+    return rows
+
+
+def sort_entries(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return sorted(
+        entries,
+        key=lambda x: (
+            x.get("rank") is None,
+            x.get("rank") if x.get("rank") is not None else 10**9,
+            x.get("song_name", "").lower(),
+        ),
+    )
+
+
+def build_global(rows: list[dict[str, Any]]) -> tuple[dict[str, Any], dict[str, list[dict[str, Any]]], list[str]]:
+    by_date: dict[str, list[dict[str, Any]]] = defaultdict(list)
+
+    for row in rows:
+        d = normalize_date(row)
+        if not d:
+            continue
+        by_date[d].append(normalize_song_entry(row))
+
+    for d in list(by_date.keys()):
+        by_date[d] = sort_entries(by_date[d])
+
+    dates = sorted(by_date.keys())
+    latest = dates[-1] if dates else None
+
+    current = {
+        "date": latest,
+        "entries": by_date.get(latest, []),
+    }
+
+    return current, by_date, dates
+
+
+def build_top_songs(rows: list[dict[str, Any]]) -> tuple[dict[str, Any], dict[str, list[dict[str, Any]]], list[str]]:
+    by_date: dict[str, list[dict[str, Any]]] = defaultdict(list)
+
+    for row in rows:
+        d = normalize_date(row)
+        if not d:
+            continue
+        by_date[d].append(normalize_song_entry(row))
+
+    for d in list(by_date.keys()):
+        by_date[d] = sort_entries(by_date[d])
+
+    dates = sorted(by_date.keys())
+    latest = dates[-1] if dates else None
+
+    current = {
+        "date": latest,
+        "entries": by_date.get(latest, []),
+    }
+
+    return current, by_date, dates
+
+
+def build_country(rows: list[dict[str, Any]]) -> tuple[dict[str, Any] | None, dict[str, dict[str, list[dict[str, Any]]]], list[str]]:
+    # history format attendu par ton JS:
+    # historyData.country[date][country] = [...]
+    by_date: dict[str, dict[str, list[dict[str, Any]]]] = defaultdict(lambda: defaultdict(list))
+
+    for row in rows:
+        d = normalize_date(row)
+        country = clean_str(row.get("country")).lower()
+        if not d or not country:
+            continue
+        by_date[d][country].append(normalize_song_entry(row))
+
+    for d, countries in by_date.items():
+        for country, entries in list(countries.items()):
+            countries[country] = sort_entries(entries)
+
+    dates = sorted(by_date.keys())
+    latest = dates[-1] if dates else None
+
+    current = None
+    if latest:
+        current = {
+            "date": latest,
+            "countries": by_date[latest],
+        }
+
+    return current, by_date, dates
+
+
+def detect_genre_key(row: dict[str, Any]) -> str:
+    # Supporte plusieurs noms de colonnes possibles
+    for key in ("genre", "genre_name", "chart_name", "subchart", "section"):
+        value = clean_str(row.get(key))
+        if value:
+            return value
+
+    # fallback si chart_type contient la valeur de genre
+    chart_type = clean_str(row.get("chart_type"))
+    if chart_type and chart_type.lower() != "genre":
+        return chart_type
+
+    return ""
+
+
+def build_genre(rows: list[dict[str, Any]]) -> tuple[dict[str, Any] | None, dict[str, dict[str, dict[str, list[dict[str, Any]]]]], list[str]]:
+    # history format attendu:
+    # historyData.genre[date][country][genre] = [...]
+    by_date: dict[str, dict[str, dict[str, list[dict[str, Any]]]]] = defaultdict(
+        lambda: defaultdict(lambda: defaultdict(list))
+    )
+
+    for row in rows:
+        d = normalize_date(row)
+        country = clean_str(row.get("country")).lower()
+        genre = detect_genre_key(row)
+        if not d or not country or not genre:
+            continue
+
+        by_date[d][country][genre].append(normalize_song_entry(row))
+
+    for d, countries in by_date.items():
+        for country, genres in countries.items():
+            for genre, entries in list(genres.items()):
+                genres[genre] = sort_entries(entries)
+
+    dates = sorted(by_date.keys())
+    latest = dates[-1] if dates else None
+
+    current = None
+    if latest:
+        current = {
+            "date": latest,
+            "by_country": by_date[latest],
+        }
+
+    return current, by_date, dates
+
+
+def main() -> None:
+    ensure_out_dir()
+
+    global_rows = read_csv_rows(GLOBAL_CSV)
+    top_rows = read_csv_rows(TOP_SONGS_CSV)
+    country_rows = read_csv_rows(COUNTRY_CSV)
+    genre_rows = read_csv_rows(GENRE_CSV)
+
+    global_current, global_history, global_dates = build_global(global_rows)
+    top_current, top_history, top_dates = build_top_songs(top_rows)
+    country_current, country_history, country_dates = build_country(country_rows)
+    genre_current, genre_history, genre_dates = build_genre(genre_rows)
+
+    all_dates = sorted(set(global_dates + top_dates + country_dates + genre_dates))
+    latest_any = all_dates[-1] if all_dates else None
+
+    applemusic_data = {
+        "scraped_at": latest_any,
+        "global_chart": global_current,
+        "ts_top_songs": top_current,
+        "country_charts": country_current,
+        "genre_charts": genre_current,
+    }
+
+    applemusic_history = {
+        "dates": all_dates,
+        "global": global_history,
+        "top_songs": top_history,
+        "country": country_history,
+        "genre": genre_history,
+    }
+
+    OUT_DATA.write_text(json.dumps(applemusic_data, ensure_ascii=False, indent=2), encoding="utf-8")
+    OUT_HISTORY.write_text(json.dumps(applemusic_history, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    log(f"écrit: {OUT_DATA}")
+    log(f"écrit: {OUT_HISTORY}")
+    log(f"dates détectées: {len(all_dates)}")
+
+
+if __name__ == "__main__":
+    main()

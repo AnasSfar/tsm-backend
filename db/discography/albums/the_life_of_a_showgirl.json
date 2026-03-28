@@ -1,0 +1,799 @@
+{
+  "album": "The Life of a Showgirl",
+  "section_count": 6,
+  "track_count": 39,
+  "sections": [
+    {
+      "section": "standard_edition",
+      "track_count": 12,
+      "tracks": [
+        {
+          "title": "The Fate of Ophelia",
+          "url": "https://open.spotify.com/intl-fr/track/53iuhJlwXhSER5J2IYYv1W",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 1,
+          "base_title": "The Fate of Ophelia",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Fate of Ophelia",
+          "song_family": "the_fate_of_ophelia",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+        },
+        {
+          "title": "Elizabeth Taylor",
+          "url": "https://open.spotify.com/intl-fr/track/1jgTiNob5cVyXeJ3WgX5bL",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 2,
+          "base_title": "Elizabeth Taylor",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Elizabeth Taylor",
+          "song_family": "elizabeth_taylor",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+        },
+        {
+          "title": "Opalite",
+          "url": "https://open.spotify.com/intl-fr/track/3yWuTOYDztXjZxdE2cIRUa",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 3,
+          "base_title": "Opalite",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Opalite",
+          "song_family": "opalite",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+        },
+        {
+          "title": "Father Figure",
+          "url": "https://open.spotify.com/intl-fr/track/03bTIHJElXZ0O0jqOQvAbY",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 4,
+          "base_title": "Father Figure",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Father Figure",
+          "song_family": "father_figure",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+        },
+        {
+          "title": "Eldest Daughter",
+          "url": "https://open.spotify.com/intl-fr/track/62HoDY1Km6lm47haFpUn9c",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 5,
+          "base_title": "Eldest Daughter",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Eldest Daughter",
+          "song_family": "eldest_daughter",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+        },
+        {
+          "title": "Ruin The Friendship",
+          "url": "https://open.spotify.com/intl-fr/track/62V2ZHslgQV98gH4AuVXnr",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 6,
+          "base_title": "Ruin The Friendship",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Ruin The Friendship",
+          "song_family": "ruin_the_friendship",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+        },
+        {
+          "title": "Actually Romantic",
+          "url": "https://open.spotify.com/intl-fr/track/2x3mwb96B6TquRqMtbxUE1",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 7,
+          "base_title": "Actually Romantic",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Actually Romantic",
+          "song_family": "actually_romantic",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+        },
+        {
+          "title": "Wi$h Li$t",
+          "url": "https://open.spotify.com/intl-fr/track/2TEQvxxQabwLQMqWMg1qGu",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 8,
+          "base_title": "Wi$h Li$t",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Wi$h Li$t",
+          "song_family": "wi_h_li_t",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+        },
+        {
+          "title": "Wood",
+          "url": "https://open.spotify.com/intl-fr/track/5ylJtmaWPJ33cW3En7WOu0",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 9,
+          "base_title": "Wood",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Wood",
+          "song_family": "wood",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+        },
+        {
+          "title": "CANCELLED!",
+          "url": "https://open.spotify.com/intl-fr/track/1appZ3c336FkPvCuywfmrs",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 10,
+          "base_title": "CANCELLED!",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "CANCELLED!",
+          "song_family": "cancelled",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+        },
+        {
+          "title": "Honey",
+          "url": "https://open.spotify.com/intl-fr/track/4qmFC3Jz5aQ0erlk2OSi2X",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 11,
+          "base_title": "Honey",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Honey",
+          "song_family": "honey",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+        },
+        {
+          "title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
+          "url": "https://open.spotify.com/intl-fr/track/5eXgqtg3T8Av0m1FUaGHex",
+          "type": "feature",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 12,
+          "base_title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Sabrina Carpenter"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Sabrina Carpenter"
+          ],
+          "title_clean": "The Life of a Showgirl",
+          "song_family": "the_life_of_a_showgirl",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+        }
+      ]
+    },
+    {
+      "section": "acoustic_edition",
+      "track_count": 7,
+      "tracks": [
+        {
+          "title": "The Fate of Ophelia - Alone In My Tower Acoustic Version",
+          "url": "https://open.spotify.com/intl-fr/track/3Z2nTctPsTsgqqJm5fCSvG",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Acoustic Edition",
+          "display_order": 1,
+          "base_title": "The Fate of Ophelia",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Fate of Ophelia - Alone In My Tower Acoustic Version",
+          "song_family": "the_fate_of_ophelia",
+          "version_tag": "acoustic__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bc755429117cac056edd2bf7"
+        },
+        {
+          "title": "Opalite - Life Is A Song Acoustic Version",
+          "url": "https://open.spotify.com/intl-fr/track/7y16ygjcEcfo1VYKxmgVZY",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Acoustic Edition",
+          "display_order": 2,
+          "base_title": "Opalite",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Opalite - Life Is A Song Acoustic Version",
+          "song_family": "opalite",
+          "version_tag": "acoustic__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738b312c2d2873e7da95e316d2"
+        },
+        {
+          "title": "Wi$h Li$t - Settled Down Acoustic Version",
+          "url": "https://open.spotify.com/track/1qwClaxDb5fCrLjXaAmB35",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Acoustic Edition",
+          "display_order": 3,
+          "base_title": "Wi$h Li$t",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Wi$h Li$t - Settled Down Acoustic Version",
+          "song_family": "wi_h_li_t",
+          "version_tag": "acoustic__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94"
+        },
+        {
+          "title": "Ruin The Friendship - My Advice Version",
+          "url": "https://open.spotify.com/track/6hKfPNnVlA2cgTgKj6Vgcw",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Acoustic Edition",
+          "display_order": 4,
+          "base_title": "Ruin The Friendship",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Ruin The Friendship - My Advice Version",
+          "song_family": "ruin_the_friendship",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94"
+        },
+        {
+          "title": "Eldest Daughter - Now You're Home Acoustic Version",
+          "url": "https://open.spotify.com/track/2JHzTARFUispsjZHKhrxxO",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Acoustic Edition",
+          "display_order": 5,
+          "base_title": "Eldest Daughter",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Eldest Daughter - Now You're Home Acoustic Version",
+          "song_family": "eldest_daughter",
+          "version_tag": "acoustic__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94"
+        },
+        {
+          "title": "Elizabeth Taylor - So Glamorous Cabaret Version",
+          "url": "https://open.spotify.com/track/4UBWugj5D20ZveyzdGpqvD",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Acoustic Edition",
+          "display_order": 6,
+          "base_title": "Elizabeth Taylor",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Elizabeth Taylor - So Glamorous Cabaret Version",
+          "song_family": "elizabeth_taylor",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94"
+        },
+        {
+          "title": "The Life of a Showgirl (feat. Sabrina Carpenter) - Dressing Room Rehearsal Version",
+          "url": "https://open.spotify.com/track/2DF2sUvgHFKJ5TQGjm6n3T",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Acoustic Edition",
+          "display_order": 7,
+          "base_title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Sabrina Carpenter"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Sabrina Carpenter"
+          ],
+          "title_clean": "The Life of a Showgirl - Dressing Room Rehearsal Version",
+          "song_family": "the_life_of_a_showgirl",
+          "version_tag": "featured__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94"
+        }
+      ]
+    },
+    {
+      "section": "music_videos_extended",
+      "track_count": 2,
+      "tracks": [
+        {
+          "title": "Opalite - Official Music Video Extended Version Part 1",
+          "url": "https://open.spotify.com/intl-fr/track/7vf4GBEJmv0uXojpr5qPMX",
+          "type": "alternate_version",
+          "edition": "extended",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "Opalite",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Opalite - Official Music Video Extended Version Part 1",
+          "song_family": "opalite",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738b312c2d2873e7da95e316d2"
+        },
+        {
+          "title": "Opalite - Official Music Video Extended Version Part 2",
+          "url": "https://open.spotify.com/intl-fr/track/7EWLNUpx0QWUCYfmBJS9qb",
+          "type": "alternate_version",
+          "edition": "extended",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "Opalite",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Opalite - Official Music Video Extended Version Part 2",
+          "song_family": "opalite",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738b312c2d2873e7da95e316d2"
+        }
+      ]
+    },
+    {
+      "section": "remixes",
+      "track_count": 6,
+      "tracks": [
+        {
+          "title": "Opalite - BUNT. Remix",
+          "url": "https://open.spotify.com/intl-fr/track/0E3Vtmgzk067KASoo0HwzV",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "Opalite",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Opalite - BUNT. Remix",
+          "song_family": "opalite",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737796280b4d7e9692b354f902"
+        },
+        {
+          "title": "Opalite - Chris Lake Remix",
+          "url": "https://open.spotify.com/intl-fr/track/0ttGLmxI0mAkMblE6iRm2S",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "Opalite",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Opalite - Chris Lake Remix",
+          "song_family": "opalite",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273156ba090375f53d5c8fac5c3"
+        },
+        {
+          "title": "Opalite - Ely Oaks Remix",
+          "url": "https://open.spotify.com/intl-fr/track/5t1wMjV9ldVDdYs4l7mG2g",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 3,
+          "base_title": "Opalite",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Opalite - Ely Oaks Remix",
+          "song_family": "opalite",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738100654494e42240857384d9"
+        },
+        {
+          "title": "Opalite - Skream Remix",
+          "url": "https://open.spotify.com/intl-fr/track/1VCcPLfDiR1S9PJaSp5qm5",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 4,
+          "base_title": "Opalite",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Opalite - Skream Remix",
+          "song_family": "opalite",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bcde9224bc1fb45f15c7bc56"
+        },
+        {
+          "title": "The Fate of Ophelia - Loud Luxury Remix",
+          "url": "https://open.spotify.com/intl-fr/track/6PlBKImSl4AZoxBU7F649D",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 6,
+          "base_title": "The Fate of Ophelia",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Fate of Ophelia - Loud Luxury Remix",
+          "song_family": "the_fate_of_ophelia",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27339b6ce4f493d53cfba83170a"
+        },
+        {
+          "title": "The Fate of Ophelia - The Chainsmokers Remix",
+          "url": "https://open.spotify.com/intl-fr/track/3JNaLxAymiSUMrmjOarjeo",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 7,
+          "base_title": "The Fate of Ophelia",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Fate of Ophelia - The Chainsmokers Remix",
+          "song_family": "the_fate_of_ophelia",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2735a9197396cb52631e73364b9"
+        }
+      ]
+    },
+    
+    {
+      "section": "track_by_track",
+      "track_count": 5,
+      "tracks": [
+        {
+          "title": "Elizabeth Taylor - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/3r9fAceWmaDFvbNiTnFiLr",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "Elizabeth Taylor - Track by Track",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Elizabeth Taylor - Track by Track",
+          "song_family": "elizabeth_taylor",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901"
+        },
+        {
+          "title": "Father Figure - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/2NGGvVcfb2m2NbVaXHC3gb",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "Father Figure - Track by Track",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Father Figure - Track by Track",
+          "song_family": "father_figure",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901"
+        },
+        {
+          "title": "Opalite - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/5SkuikJwvwfEvNyCepGkq3",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 3,
+          "base_title": "Opalite - Track by Track",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Opalite - Track by Track",
+          "song_family": "opalite",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901"
+        },
+        {
+          "title": "The Fate of Ophelia - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/5k9RjjuYyOMCLL81U8FaHT",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 4,
+          "base_title": "The Fate of Ophelia - Track by Track",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Fate of Ophelia - Track by Track",
+          "song_family": "the_fate_of_ophelia",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901"
+        },
+        {
+          "title": "The Life of a Showgirl - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/42TAweWJJ9YlQ47T5nesu5",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 5,
+          "base_title": "The Life of a Showgirl - Track by Track",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Life of a Showgirl - Track by Track",
+          "song_family": "the_life_of_a_showgirl",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901"
+        }
+      ]
+    },
+    {
+      "album": "The Life of a Showgirl",
+      "section": "kworb_extras",
+      "track_count": 7,
+      "tracks": [
+        {
+          "title": "Actually Romantic - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/6FJemhBlVTGTCgrrrLam3D",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Actually Romantic - Track by Track",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Actually Romantic - Track by Track",
+          "song_family": "actually_romantic_track_by_track",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "display_era": "The Life of a Showgirl"
+        },
+        {
+          "title": "CANCELLED! - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/6JNM6pLKbXMGG2opeExCb2",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "CANCELLED! - Track by Track",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "CANCELLED! - Track by Track",
+          "song_family": "cancelled",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "display_era": "The Life of a Showgirl"
+        },
+        {
+          "title": "Eldest Daughter - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/0wAvTNz81YTUhLFWuWJSAV",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Eldest Daughter - Track by Track",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Eldest Daughter - Track by Track",
+          "song_family": "eldest_daughter",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "display_era": "The Life of a Showgirl"
+        },
+        {
+          "title": "Honey - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/5EwypOO9NEI7MvjPOYZtWk",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Honey - Track by Track",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Honey - Track by Track",
+          "song_family": "honey",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "display_era": "The Life of a Showgirl"
+        },
+        {
+          "title": "Ruin The Friendship - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/6NUy8xajng5zMSGJRKniAG",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Ruin The Friendship - Track by Track",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Ruin The Friendship - Track by Track",
+          "song_family": "ruin_the_friendship",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "display_era": "The Life of a Showgirl"
+        },
+        {
+          "title": "Wi$h Li$t - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/5yrrh7VYFMCNjUOIMzGNp5",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Wi$h Li$t - Track by Track",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Wi$h Li$t - Track by Track",
+          "song_family": "wiSh_liSt",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "display_era": "The Life of a Showgirl"
+        },
+        {
+          "title": "Wood - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/20QSU9vg05qYSDVgOTAwPp",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Wood - Track by Track",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Wood - Track by Track",
+          "song_family": "wood",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "display_era": "The Life of a Showgirl"
+        }
+      ]
+    }
+  ]
+}

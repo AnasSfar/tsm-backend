@@ -1,0 +1,574 @@
+{
+  "album": "1989",
+  "section_count": 7,
+  "track_count": 27,
+  "sections": [
+    {
+      "section": "deluxe_edition",
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "Bad Blood (feat. Kendrick Lamar)",
+          "url": "https://open.spotify.com/track/6xsEAm6w9oMQYYg3jkEkMT",
+          "type": "alternate_version",
+          "edition": "deluxe",
+          "display_section": "deluxe edition",
+          "display_order": 1,
+          "base_title": "Bad Blood (feat. Kendrick Lamar)",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Kendrick Lamar"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Kendrick Lamar"
+          ],
+          "title_clean": "Bad Blood",
+          "song_family": "bad_blood",
+          "version_tag": "featured__deluxe__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737941dc6a3a023016acbe3d06"
+        }
+      ]
+    },
+    {
+      "section": "remixes",
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "Wildest Dreams - R3hab Remix",
+          "url": "https://open.spotify.com/intl-fr/track/5VDHMi7own9vDZjiwDES1e",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "Wildest Dreams",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Wildest Dreams - R3hab Remix",
+          "song_family": "wildest_dreams",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273b8d01ff84dc531f884d90928"
+        }
+      ]
+    },
+    {
+      "section": "standard_edition",
+      "track_count": 16,
+      "tracks": [
+        {
+          "title": "All You Had To Do Was Stay",
+          "url": "https://open.spotify.com/intl-fr/track/6aLOekfwbytwWvQftxTEF0",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 1,
+          "base_title": "All You Had To Do Was Stay",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "All You Had To Do Was Stay",
+          "song_family": "all_you_had_to_do_was_stay",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+        },
+        {
+          "title": "Bad Blood",
+          "url": "https://open.spotify.com/intl-fr/track/2NlmmAjGYrrjAp0MED5rGx",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 2,
+          "base_title": "Bad Blood",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Bad Blood",
+          "song_family": "bad_blood",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+        },
+        {
+          "title": "Blank Space",
+          "url": "https://open.spotify.com/intl-fr/track/1u8c2t2Cy7UBoG4ArRcF5g",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 3,
+          "base_title": "Blank Space",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Blank Space",
+          "song_family": "blank_space",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+        },
+        {
+          "title": "Clean",
+          "url": "https://open.spotify.com/intl-fr/track/4bXCcoesMt8u99xMsbLr9U",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 4,
+          "base_title": "Clean",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Clean",
+          "song_family": "clean",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+        },
+        {
+          "title": "How You Get The Girl",
+          "url": "https://open.spotify.com/intl-fr/track/6wfugRLamFsTRbPcCpNnP7",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 5,
+          "base_title": "How You Get The Girl",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "How You Get The Girl",
+          "song_family": "how_you_get_the_girl",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+        },
+        {
+          "title": "I Know Places",
+          "url": "https://open.spotify.com/intl-fr/track/2zfgVd034GlUvk7LqBHl6u",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 6,
+          "base_title": "I Know Places",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Know Places",
+          "song_family": "i_know_places",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+        },
+        {
+          "title": "I Wish You Would",
+          "url": "https://open.spotify.com/intl-fr/track/5gRYrtvyVyaCRvLt56OfuV",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 7,
+          "base_title": "I Wish You Would",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Wish You Would",
+          "song_family": "i_wish_you_would",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+        },
+        {
+          "title": "New Romantics",
+          "url": "https://open.spotify.com/intl-fr/track/6rZVy6FIG7lSJQMFXHo12z",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 8,
+          "base_title": "New Romantics",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "New Romantics",
+          "song_family": "new_romantics",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+        },
+        {
+          "title": "Out Of The Woods",
+          "url": "https://open.spotify.com/intl-fr/track/0qUnBLZ8bJqUNEeQgayL9t",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 9,
+          "base_title": "Out Of The Woods",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Out Of The Woods",
+          "song_family": "out_of_the_woods",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+        },
+        {
+          "title": "Shake It Off",
+          "url": "https://open.spotify.com/intl-fr/track/0cqRj7pUJDkTCEsJkx8snD",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 10,
+          "base_title": "Shake It Off",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Shake It Off",
+          "song_family": "shake_it_off",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+        },
+        {
+          "title": "Style",
+          "url": "https://open.spotify.com/intl-fr/track/0ug5NqcwcFR2xrfTkc7k8e",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 11,
+          "base_title": "Style",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Style",
+          "song_family": "style",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+        },
+        {
+          "title": "This Love",
+          "url": "https://open.spotify.com/intl-fr/track/1kTPQnabROVkW9bUXdCGrB",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 12,
+          "base_title": "This Love",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "This Love",
+          "song_family": "this_love",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+        },
+        {
+          "title": "Welcome To New York",
+          "url": "https://open.spotify.com/intl-fr/track/3nRmDz7qGCvsMS30rGGY0x",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 13,
+          "base_title": "Welcome To New York",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Welcome To New York",
+          "song_family": "welcome_to_new_york",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+        },
+        {
+          "title": "Wildest Dreams",
+          "url": "https://open.spotify.com/intl-fr/track/4A4A6dwl5DqdqrZaEtKGPR",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 14,
+          "base_title": "Wildest Dreams",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Wildest Dreams",
+          "song_family": "wildest_dreams",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+        },
+        {
+          "title": "Wonderland",
+          "url": "https://open.spotify.com/intl-fr/track/6iWMI5oOhWrDbLbjmwTWFq",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 15,
+          "base_title": "Wonderland",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Wonderland",
+          "song_family": "wonderland",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+        },
+        {
+          "title": "You Are In Love",
+          "url": "https://open.spotify.com/intl-fr/track/4A2LfnduSTsE8u0ecYROxE",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 16,
+          "base_title": "You Are In Love",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You Are In Love",
+          "song_family": "you_are_in_love",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+        }
+      ]
+    },
+    {
+      "section": "voice_memos",
+      "track_count": 3,
+      "tracks": [
+        {
+          "title": "Blank Space - Voice Memo",
+          "url": "https://open.spotify.com/intl-fr/track/0yisH8r0f3Mkq34kjzUlCV",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "Blank Space - Voice Memo",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Blank Space - Voice Memo",
+          "song_family": "blank_space_voice_memo",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+        },
+        {
+          "title": "I Know Places - Voice Memo",
+          "url": "https://open.spotify.com/intl-fr/track/4JQm7ebhsrt10wmrP6AfXL",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "I Know Places - Voice Memo",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Know Places - Voice Memo",
+          "song_family": "i_know_places_voice_memo",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+        },
+        {
+          "title": "I Wish You Would - Voice Memo",
+          "url": "https://open.spotify.com/intl-fr/track/4TtyvyI42C0KFnbDZvNC8Y",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 3,
+          "base_title": "I Wish You Would - Voice Memo",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Wish You Would - Voice Memo",
+          "song_family": "i_wish_you_would_voice_memo",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+        }
+      ]
+    },
+    {
+      "section": "soundtracks",
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "Sweeter Than Fiction - From \"One Chance\" Soundtrack",
+          "url": "https://open.spotify.com/intl-fr/track/0RFCHlNuTeUHIB36VuVbOL",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 3,
+          "base_title": "Sweeter Than Fiction - From \"One Chance\" Soundtrack",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Sweeter Than Fiction - From \"One Chance\" Soundtrack",
+          "song_family": "sweeter_than_fiction_from_one_chance_soundtrack",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a8d770d373f0bb3f0818526c",
+          "display_era": "1989"
+        }
+      ]
+    },
+    {
+      "album": "1989",
+      "section": "standard",
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "Sweeter Than Fiction (From \"One Chance\")",
+          "url": "",
+          "type": "album_track",
+          "edition": "standard",
+          "display_section": "standard",
+          "display_order": 999,
+          "base_title": "Sweeter Than Fiction (From \"One Chance\")",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Sweeter Than Fiction",
+          "song_family": "sweeter_than_fiction",
+          "version_tag": "album_track",
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/70/86/fd/7086fdfa-43e6-091f-b84e-6f2e813dad58/00602537602889.rgb.jpg/64x64bb.jpg",
+          "display_era": "1989"
+        }
+      ],
+      "display_section": "standard",
+      "edition": "standard"
+    },
+    {
+      "section": "kworb_extras",
+      "track_count": 4,
+      "tracks": [
+        {
+          "title": "Blank Space - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/6N6V2v89hS4N9ossON5f9R",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Blank Space - Karaoke Version",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Blank Space - Karaoke Version",
+          "song_family": "blank_space_karaoke_version",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273b98fc11a07f752803fbebea4",
+          "display_era": "1989"
+        },
+        {
+          "title": "Shake It Off - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/4omftH10jc82Sj8VJ395C7",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Shake It Off - Karaoke Version",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Shake It Off - Karaoke Version",
+          "song_family": "shake_it_off_karaoke_version",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273b98fc11a07f752803fbebea4",
+          "display_era": "1989"
+        },
+        {
+          "title": "Style - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/1Qicm51crXMvUuH4SMjobT",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Style - Karaoke Version",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Style - Karaoke Version",
+          "song_family": "style_karaoke_version",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273b98fc11a07f752803fbebea4",
+          "display_era": "1989"
+        },
+        {
+          "title": "Wildest Dreams (Arr. Lawson for Harp)",
+          "url": "https://open.spotify.com/intl-fr/track/3Ng1BPUR5qf6vQ1AizIA0D",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "Wildest Dreams (Arr. Lawson for Harp)",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Wildest Dreams (Arr. Lawson for Harp)",
+          "song_family": "wildest_dreams_arr_lawson_for_harp",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2733288d3aebd519ba5e147850e",
+          "display_era": "1989"
+        }
+      ]
+    }
+  ]
+}

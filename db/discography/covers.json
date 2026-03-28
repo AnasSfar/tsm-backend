@@ -1,0 +1,82 @@
+{
+  "Taylor Swift": {
+    "title": "Taylor Swift",
+    "spotify_url": "https://open.spotify.com/intl-fr/album/5eyZZoQEFQWRHkV2xgAeBw",
+    "cover_url": "https://i.scdn.co/image/ab67616d0000b273c909d4e47de2ab0636f46d64"
+  },
+  "Fearless": {
+    "title": "Fearless",
+    "spotify_url": "https://open.spotify.com/intl-fr/album/4hDok0OAJd57SGIT8xuWJH",
+    "cover_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2"
+  },
+  "Fearless (Taylor's Version)": {
+    "title": "Fearless (Taylor's Version)",
+    "spotify_url": "https://open.spotify.com/intl-fr/album/4hDok0OAJd57SGIT8xuWJH",
+    "cover_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de"
+  },
+  "Speak Now": {
+    "title": "Speak Now",
+    "spotify_url": "https://open.spotify.com/intl-fr/album/6Ar2o9KCqcyYF9J0aQP3au",
+    "cover_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd"
+  },
+  "Speak Now (Taylor's Version)": {
+    "title": "Speak Now (Taylor's Version)",
+    "spotify_url": "https://open.spotify.com/intl-fr/album/5AEDGbliTTfjOB8TSm1sxt",
+    "cover_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+  },
+  "Red": {
+    "title": "Red",
+    "spotify_url": "https://open.spotify.com/intl-fr/album/1EoDsNmgTLtmwe1BDAVxV5",
+    "cover_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+  },
+  "Red (Taylor's Version)": {
+    "title": "Red (Taylor's Version)",
+    "spotify_url": "https://open.spotify.com/intl-fr/album/6kZ42qRrzov54LcAk4onW9",
+    "cover_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+  },
+  "1989": {
+    "title": "1989",
+    "spotify_url": "https://open.spotify.com/intl-fr/album/1yGbNOtRIgdIiGHOEBaZWf",
+    "cover_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+  },
+  "1989 (Taylor's Version)": {
+    "title": "1989 (Taylor's Version)",
+    "spotify_url": "https://open.spotify.com/intl-fr/album/1o59UpKw81iHR0HPiSkJR0",
+    "cover_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949"
+  },
+  "reputation": {
+    "title": "reputation",
+    "spotify_url": "https://open.spotify.com/intl-fr/album/6DEjYFkNZh67HP7R9PSZvv",
+    "cover_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+  },
+  "Lover": {
+    "title": "Lover",
+    "spotify_url": "https://open.spotify.com/intl-fr/album/1NAmidJlEaVgA3MpcPFYGq",
+    "cover_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647"
+  },
+  "folklore": {
+    "title": "folklore",
+    "spotify_url": "https://open.spotify.com/intl-fr/album/2fenSS68JI1h4Fo296JfGr",
+    "cover_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+  },
+  "evermore": {
+    "title": "evermore",
+    "spotify_url": "https://open.spotify.com/intl-fr/album/2Xoteh7uEpea4TohMxjtaq",
+    "cover_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+  },
+  "Midnights": {
+    "title": "Midnights",
+    "spotify_url": "https://open.spotify.com/intl-fr/album/1fnJ7k0bllNfL1kVdNVW1A",
+    "cover_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0"
+  },
+  "THE TORTURED POETS DEPARTMENT": {
+    "title": "THE TORTURED POETS DEPARTMENT",
+    "spotify_url": "https://open.spotify.com/intl-fr/album/5H7ixXZfsNMGbIE5OBSpcb",
+    "cover_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa"
+  },
+  "The Life of a Showgirl": {
+    "title": "The Life of a Showgirl",
+    "spotify_url": "https://open.spotify.com/intl-fr/album/4a6NzYL1YHRUgx9e3YZI6I",
+    "cover_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+  }
+}

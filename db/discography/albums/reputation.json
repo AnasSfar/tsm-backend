@@ -1,0 +1,777 @@
+{
+  "album": "reputation",
+  "section_count": 7,
+  "track_count": 38,
+  "sections": [
+    {
+      "section": "extras",
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "September - Recorded at The Tracking Room Nashville",
+          "url": "https://open.spotify.com/track/5eGX87IiKsGuzS3iw4CfCX",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "September - Recorded at The Tracking Room Nashville",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "September - Recorded at The Tracking Room Nashville",
+          "song_family": "september_recorded_at_the_tracking_room_nashville",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bae8f095c58e137855f6d230"
+        }
+      ]
+    },
+    {
+      "section": "karaoke",
+      "track_count": 15,
+      "tracks": [
+        {
+          "title": "...Ready For It? - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/4twNUyTpLMPWokYmCdFDCH",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 1,
+          "base_title": "...Ready For It?",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "...Ready For It? - Karaoke Version",
+          "song_family": "ready_for_it",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04"
+        },
+        {
+          "title": "Call It What You Want - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/1VPHQriwOsy5aGHLwwZyho",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 2,
+          "base_title": "Call It What You Want",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Call It What You Want - Karaoke Version",
+          "song_family": "call_it_what_you_want",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04"
+        },
+        {
+          "title": "Dancing With Our Hands Tied - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/3ZfvKQxJp4zZshiJsRPoD1",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 3,
+          "base_title": "Dancing With Our Hands Tied",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Dancing With Our Hands Tied - Karaoke Version",
+          "song_family": "dancing_with_our_hands_tied",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04"
+        },
+        {
+          "title": "Delicate - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/5Iadj8IBPrt634WW0yGPRI",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 4,
+          "base_title": "Delicate",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Delicate - Karaoke Version",
+          "song_family": "delicate",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04"
+        },
+        {
+          "title": "Don't Blame Me - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/5JtXBqKLdfzwedmlUjjqAm",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 5,
+          "base_title": "Don't Blame Me",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Don't Blame Me - Karaoke Version",
+          "song_family": "don_t_blame_me",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04"
+        },
+        {
+          "title": "Dress - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/2k0w1FGqvzVPgQ9VdTaJpe",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 6,
+          "base_title": "Dress",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Dress - Karaoke Version",
+          "song_family": "dress",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04"
+        },
+        {
+          "title": "End Game - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/4cag67C3v9ToeFivUwDUsE",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 7,
+          "base_title": "End Game",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "End Game - Karaoke Version",
+          "song_family": "end_game",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04"
+        },
+        {
+          "title": "Getaway Car - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/7bdyzcQ0onk60hfsxDCd2X",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 8,
+          "base_title": "Getaway Car",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Getaway Car - Karaoke Version",
+          "song_family": "getaway_car",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04"
+        },
+        {
+          "title": "Gorgeous - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/3ZHTwJzCNDFvjLpVQiqpH6",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 9,
+          "base_title": "Gorgeous",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Gorgeous - Karaoke Version",
+          "song_family": "gorgeous",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04"
+        },
+        {
+          "title": "I Did Something Bad - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/2hecdut2HWM5JMHqLTWThq",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 10,
+          "base_title": "I Did Something Bad",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Did Something Bad - Karaoke Version",
+          "song_family": "i_did_something_bad",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04"
+        },
+        {
+          "title": "King Of My Heart - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/5EsfyTD26nlVQ0DtYo16uJ",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 11,
+          "base_title": "King Of My Heart",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "King Of My Heart - Karaoke Version",
+          "song_family": "king_of_my_heart",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04"
+        },
+        {
+          "title": "Look What You Made Me Do - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/1zz0XSmHCFd57ne04UAp38",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 12,
+          "base_title": "Look What You Made Me Do",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Look What You Made Me Do - Karaoke Version",
+          "song_family": "look_what_you_made_me_do",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04"
+        },
+        {
+          "title": "New Year's Day - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/13tYZVTtzLUJTlM7m1ivbi",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 13,
+          "base_title": "New Year's Day",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "New Year's Day - Karaoke Version",
+          "song_family": "new_year_s_day",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04"
+        },
+        {
+          "title": "So It Goes... - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/5oJUjUsBZcqyEhOdpif37h",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 14,
+          "base_title": "So It Goes...",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "So It Goes... - Karaoke Version",
+          "song_family": "so_it_goes",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04"
+        },
+        {
+          "title": "This Is Why We Can't Have Nice Things - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/0MtU9ETYyVX8YPBDCYPdMb",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 15,
+          "base_title": "This Is Why We Can't Have Nice Things",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "This Is Why We Can't Have Nice Things - Karaoke Version",
+          "song_family": "this_is_why_we_can_t_have_nice_things",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04"
+        }
+      ]
+    },
+    {
+      "section": "remixes",
+      "track_count": 4,
+      "tracks": [
+        {
+          "title": "...Ready For It? - BloodPop® Remix",
+          "url": "https://open.spotify.com/intl-fr/track/1Ygm9KdH3wbzDekO8JgxcW",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "...Ready For It?",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "...Ready For It? - BloodPop® Remix",
+          "song_family": "ready_for_it",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d41ccf8f43721c045a969300"
+        },
+        {
+          "title": "Delicate - Seeb Remix",
+          "url": "https://open.spotify.com/intl-fr/track/2Sy2oGjP5RYB4cLVoDU0Gz",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "Delicate",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Delicate - Seeb Remix",
+          "song_family": "delicate",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737809d9723e21370fe5926a7c"
+        },
+        {
+          "title": "Delicate - Recorded at The Tracking Room Nashville",
+          "url": "https://open.spotify.com/intl-fr/track/1Fj0T1XKuhRu7EZzJ7NJIK",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 3,
+          "base_title": "Delicate - Recorded at The Tracking Room Nashville",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Delicate - Recorded at The Tracking Room Nashville",
+          "song_family": "delicate_recorded_at_the_tracking_room_nashville",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bae8f095c58e137855f6d230"
+        },
+        {
+          "title": "Delicate - Sawyr And Ryan Tedder Mix",
+          "url": "https://open.spotify.com/intl-fr/track/6SYwJcqaltK2WFRmD1unUV",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 4,
+          "base_title": "Delicate - Sawyr And Ryan Tedder Mix",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Delicate - Sawyr And Ryan Tedder Mix",
+          "song_family": "delicate_sawyr_and_ryan_tedder_mix",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d8032a149cd86c879c9df63a"
+        }
+      ]
+    },
+    {
+      "section": "standalone",
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "I Don't Wanna Live Forever (Fifty Shades Darker)",
+          "url": "https://open.spotify.com/intl-fr/track/2y5aJvzXhHPA94U5GFAcXe",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Soundtrack Feature",
+          "display_order": 1,
+          "base_title": "I Don't Wanna Live Forever (Fifty Shades Darker)",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": "Zayn",
+          "artists": [
+            "Taylor Swift",
+            "Zayn"
+          ],
+          "title_clean": "I Don't Wanna Live Forever (Fifty Shades Darker)",
+          "song_family": "i_don_t_wanna_live_forever_fifty_shades_darker",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2735997605214d568d73fd365c2"
+        }
+      ]
+    },
+    {
+      "album": "reputation",
+      "section": "standalone",
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "I Don't Wanna Live Forever (Fifty Shades Darker)",
+          "url": "https://open.spotify.com/intl-fr/track/2y5aJvzXhHPA94U5GFAcXe",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Soundtrack Feature",
+          "display_order": 1,
+          "base_title": "I Don't Wanna Live Forever (Fifty Shades Darker)",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": "Zayn",
+          "artists": [
+            "Taylor Swift",
+            "Zayn"
+          ],
+          "title_clean": "I Don't Wanna Live Forever (Fifty Shades Darker)",
+          "song_family": "i_don_t_wanna_live_forever_fifty_shades_darker",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2735997605214d568d73fd365c2",
+          "display_era": "reputation"
+        }
+      ]
+    },
+    {
+      "section": "standard_edition",
+      "track_count": 15,
+      "tracks": [
+        {
+          "title": "...Ready For It?",
+          "url": "https://open.spotify.com/intl-fr/track/2yLa0QULdQr0qAIvVwN6B5",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 1,
+          "base_title": "...Ready For It?",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "...Ready For It?",
+          "song_family": "ready_for_it",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+        },
+        {
+          "title": "End Game",
+          "url": "https://open.spotify.com/intl-fr/track/2x0WlnmfG39ZuDmstl9xfX",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 2,
+          "base_title": "End Game",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "End Game",
+          "song_family": "end_game",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+        },
+        {
+          "title": "I Did Something Bad",
+          "url": "https://open.spotify.com/intl-fr/track/4svZDCRz4cJoneBpjpx8DJ",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 3,
+          "base_title": "I Did Something Bad",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Did Something Bad",
+          "song_family": "i_did_something_bad",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+        },
+        {
+          "title": "Don't Blame Me",
+          "url": "https://open.spotify.com/intl-fr/track/1R0a2iXumgCiFb7HEZ7gUE",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 4,
+          "base_title": "Don't Blame Me",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Don't Blame Me",
+          "song_family": "don_t_blame_me",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+        },
+        {
+          "title": "Delicate",
+          "url": "https://open.spotify.com/intl-fr/track/6NFyWDv5CjfwuzoCkw47Xf",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 5,
+          "base_title": "Delicate",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Delicate",
+          "song_family": "delicate",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+        },
+        {
+          "title": "Look What You Made Me Do",
+          "url": "https://open.spotify.com/intl-fr/track/1P17dC1amhFzptugyAO7Il",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 6,
+          "base_title": "Look What You Made Me Do",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Look What You Made Me Do",
+          "song_family": "look_what_you_made_me_do",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+        },
+        {
+          "title": "So It Goes...",
+          "url": "https://open.spotify.com/intl-fr/track/5PxFv9yJEg9dxvbZggykro",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 7,
+          "base_title": "So It Goes...",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "So It Goes...",
+          "song_family": "so_it_goes",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+        },
+        {
+          "title": "Gorgeous",
+          "url": "https://open.spotify.com/intl-fr/track/1ZY1PqizIl78geGM4xWlEA",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 8,
+          "base_title": "Gorgeous",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Gorgeous",
+          "song_family": "gorgeous",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+        },
+        {
+          "title": "Getaway Car",
+          "url": "https://open.spotify.com/intl-fr/track/0VE4kBnHJUgtMf0dy6DRmW",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 9,
+          "base_title": "Getaway Car",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Getaway Car",
+          "song_family": "getaway_car",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+        },
+        {
+          "title": "King Of My Heart",
+          "url": "https://open.spotify.com/intl-fr/track/7HuBDWi18s4aJM8UFnNheH",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 10,
+          "base_title": "King Of My Heart",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "King Of My Heart",
+          "song_family": "king_of_my_heart",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+        },
+        {
+          "title": "Dancing With Our Hands Tied",
+          "url": "https://open.spotify.com/intl-fr/track/7I7JbDv63ZJJsSi24DyJrz",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 11,
+          "base_title": "Dancing With Our Hands Tied",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Dancing With Our Hands Tied",
+          "song_family": "dancing_with_our_hands_tied",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+        },
+        {
+          "title": "Dress",
+          "url": "https://open.spotify.com/intl-fr/track/6oVxXO5oQ4pTpO8RSnkzvv",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 12,
+          "base_title": "Dress",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Dress",
+          "song_family": "dress",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+        },
+        {
+          "title": "This Is Why We Can't Have Nice Things",
+          "url": "https://open.spotify.com/intl-fr/track/07NxDD1iKCHbAldceD7QLP",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 13,
+          "base_title": "This Is Why We Can't Have Nice Things",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "This Is Why We Can't Have Nice Things",
+          "song_family": "this_is_why_we_can_t_have_nice_things",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+        },
+        {
+          "title": "Call It What You Want",
+          "url": "https://open.spotify.com/intl-fr/track/1GwMQaZz6Au3QLDbjbMdme",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 14,
+          "base_title": "Call It What You Want",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Call It What You Want",
+          "song_family": "call_it_what_you_want",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+        },
+        {
+          "title": "New Year's Day",
+          "url": "https://open.spotify.com/intl-fr/track/7F5oktn5YOsR9eR5YsFtqb",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 15,
+          "base_title": "New Year's Day",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "New Year's Day",
+          "song_family": "new_year_s_day",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+        }
+      ]
+    },
+    {
+      "album": "reputation",
+      "section": "kworb_extras",
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "...Ready For It? - BloodPopÂ® Remix",
+          "url": "https://open.spotify.com/intl-fr/track/1Ygm9KdH3wbzDekO8JgxcW",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Kworb Extras",
+          "display_order": 9999,
+          "base_title": "...Ready For It? - BloodPopÂ® Remix",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "...Ready For It? - BloodPopÂ® Remix",
+          "song_family": "ready_for_it_bloodpopa_remix",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d41ccf8f43721c045a969300",
+          "display_era": "reputation"
+        }
+      ]
+    }
+  ]
+}

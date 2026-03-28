@@ -1,0 +1,762 @@
+{
+  "album": "THE TORTURED POETS DEPARTMENT",
+  "section_count": 3,
+  "track_count": 38,
+  "sections": [
+    {
+      "section": "anthology_edition",
+      "track_count": 15,
+      "tracks": [
+        {
+          "title": "thanK you aIMee",
+          "url": "https://open.spotify.com/intl-fr/track/7ogK4lJDVDMU6A6vYR5rvD",
+          "type": "track",
+          "edition": "anthology",
+          "display_section": "anthology edition",
+          "display_order": 24,
+          "base_title": "thanK you aIMee",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "thanK you aIMee",
+          "song_family": "thank_you_aimee",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa"
+        },
+        {
+          "title": "I Look in People's Windows",
+          "url": "https://open.spotify.com/intl-fr/track/1Zai5UJ2di3qEuR2HeT2s8",
+          "type": "track",
+          "edition": "anthology",
+          "display_section": "anthology edition",
+          "display_order": 25,
+          "base_title": "I Look in People's Windows",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Look in People's Windows",
+          "song_family": "i_look_in_people_s_windows",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa"
+        },
+        {
+          "title": "The Prophecy",
+          "url": "https://open.spotify.com/intl-fr/track/18WFFUIsewmA8g31KAeo3e",
+          "type": "track",
+          "edition": "anthology",
+          "display_section": "anthology edition",
+          "display_order": 26,
+          "base_title": "The Prophecy",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Prophecy",
+          "song_family": "the_prophecy",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa"
+        },
+        {
+          "title": "Cassandra",
+          "url": "https://open.spotify.com/intl-fr/track/0g4fMVo4JjwnIpTfFfLdxS",
+          "type": "track",
+          "edition": "anthology",
+          "display_section": "anthology edition",
+          "display_order": 27,
+          "base_title": "Cassandra",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Cassandra",
+          "song_family": "cassandra",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa"
+        },
+        {
+          "title": "Peter",
+          "url": "https://open.spotify.com/intl-fr/track/3zMDGj4D8ogaYgAIZPeU7S",
+          "type": "track",
+          "edition": "anthology",
+          "display_section": "anthology edition",
+          "display_order": 28,
+          "base_title": "Peter",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Peter",
+          "song_family": "peter",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa"
+        },
+        {
+          "title": "The Bolter",
+          "url": "https://open.spotify.com/intl-fr/track/2913xXOVAIDAqxzV2g4VcU",
+          "type": "track",
+          "edition": "anthology",
+          "display_section": "anthology edition",
+          "display_order": 29,
+          "base_title": "The Bolter",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Bolter",
+          "song_family": "the_bolter",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa"
+        },
+        {
+          "title": "Robin",
+          "url": "https://open.spotify.com/intl-fr/track/2CnjDMdpRjlWv04Xk3s6MW",
+          "type": "track",
+          "edition": "anthology",
+          "display_section": "anthology edition",
+          "display_order": 30,
+          "base_title": "Robin",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Robin",
+          "song_family": "robin",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa"
+        },
+        {
+          "title": "The Manuscript",
+          "url": "https://open.spotify.com/intl-fr/track/1DTRUYVd8rYpla9hhVVwjo",
+          "type": "track",
+          "edition": "anthology",
+          "display_section": "anthology edition",
+          "display_order": 31,
+          "base_title": "The Manuscript",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Manuscript",
+          "song_family": "the_manuscript",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa"
+        },
+        {
+          "title": "The Black Dog",
+          "url": "https://open.spotify.com/intl-fr/track/62E2nR0od0M5HYxuYLaDz7",
+          "type": "track",
+          "edition": "anthology",
+          "display_section": "anthology edition",
+          "display_order": 17,
+          "base_title": "The Black Dog",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Black Dog",
+          "song_family": "the_black_dog",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa"
+        },
+        {
+          "title": "imgonnagetyouback",
+          "url": "https://open.spotify.com/intl-fr/track/1kcwpPDQnqEqmezzXdJTCP",
+          "type": "track",
+          "edition": "anthology",
+          "display_section": "anthology edition",
+          "display_order": 18,
+          "base_title": "imgonnagetyouback",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "imgonnagetyouback",
+          "song_family": "imgonnagetyouback",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa"
+        },
+        {
+          "title": "The Albatross",
+          "url": "https://open.spotify.com/intl-fr/track/4EF6IyONolQy0bIQXm2EmX",
+          "type": "track",
+          "edition": "anthology",
+          "display_section": "anthology edition",
+          "display_order": 19,
+          "base_title": "The Albatross",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Albatross",
+          "song_family": "the_albatross",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa"
+        },
+        {
+          "title": "Chloe or Sam or Sophia or Marcus",
+          "url": "https://open.spotify.com/intl-fr/track/1rmEsOezwf2lmIZTMAO5Ag",
+          "type": "track",
+          "edition": "anthology",
+          "display_section": "anthology edition",
+          "display_order": 20,
+          "base_title": "Chloe or Sam or Sophia or Marcus",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Chloe or Sam or Sophia or Marcus",
+          "song_family": "chloe_or_sam_or_sophia_or_marcus",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa"
+        },
+        {
+          "title": "How Did It End?",
+          "url": "https://open.spotify.com/intl-fr/track/5Bedn0svl0ZD7RGmJkmKKw",
+          "type": "track",
+          "edition": "anthology",
+          "display_section": "anthology edition",
+          "display_order": 21,
+          "base_title": "How Did It End?",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "How Did It End?",
+          "song_family": "how_did_it_end",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa"
+        },
+        {
+          "title": "So High School",
+          "url": "https://open.spotify.com/intl-fr/track/1J1ldDi3rMQlRi49gaba0a",
+          "type": "track",
+          "edition": "anthology",
+          "display_section": "anthology edition",
+          "display_order": 22,
+          "base_title": "So High School",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "So High School",
+          "song_family": "so_high_school",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273c246cd7fb142b383672627c8"
+        },
+        {
+          "title": "I Hate It Here",
+          "url": "https://open.spotify.com/intl-fr/track/3hlGuz3loYoLfI3bpwieWq",
+          "type": "track",
+          "edition": "anthology",
+          "display_section": "anthology edition",
+          "display_order": 23,
+          "base_title": "I Hate It Here",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Hate It Here",
+          "song_family": "i_hate_it_here",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa"
+        }
+      ]
+    },
+    {
+      "section": "remixes_and_live",
+      "track_count": 5,
+      "tracks": [
+        {
+          "title": "Fortnight (feat. Post Malone) - BLOND:ISH Remix",
+          "url": "https://open.spotify.com/intl-fr/track/1gejz5ROvJBUb6WJzkMAcc",
+          "type": "remix",
+          "edition": "live",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "Fortnight (feat. Post Malone)",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Post Malone"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Post Malone"
+          ],
+          "title_clean": "Fortnight - BLOND:ISH Remix",
+          "song_family": "fortnight",
+          "version_tag": "featured__remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e6b77b3eef9269d06e13fe17"
+        },
+        {
+          "title": "I Can Do It With a Broken Heart - Dombresky Remix",
+          "url": "https://open.spotify.com/intl-fr/track/0hFF0aqyjDwDh6SQwRbTyx",
+          "type": "remix",
+          "edition": "live",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "I Can Do It With a Broken Heart",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Can Do It With a Broken Heart - Dombresky Remix",
+          "song_family": "i_can_do_it_with_a_broken_heart",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f7dd2c5a8045a39fcecbfe8e"
+        },
+        {
+          "title": "I Can Do It With a Broken Heart - Instrumental",
+          "url": "https://open.spotify.com/intl-fr/track/2PGIFYRG1XWsPqNG14hgD1",
+          "type": "alternate_version",
+          "edition": "live",
+          "display_section": "Extras",
+          "display_order": 3,
+          "base_title": "I Can Do It With a Broken Heart",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Can Do It With a Broken Heart - Instrumental",
+          "song_family": "i_can_do_it_with_a_broken_heart",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f7dd2c5a8045a39fcecbfe8e"
+        },
+        {
+          "title": "Fortnight (feat. Post Malone) - Acoustic Version",
+          "url": "https://open.spotify.com/intl-fr/track/2BUTSRKPGRsyc9FnsC5Udd",
+          "type": "alternate_version",
+          "edition": "live",
+          "display_section": "Extras",
+          "display_order": 4,
+          "base_title": "Fortnight (feat. Post Malone)",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Post Malone"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Post Malone"
+          ],
+          "title_clean": "Fortnight - Acoustic Version",
+          "song_family": "fortnight",
+          "version_tag": "featured__acoustic__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273aecb5c6308cf8ce94199aea8"
+        },
+        {
+          "title": "Fortnight (feat. Post Malone) - Cults Remix",
+          "url": "https://open.spotify.com/intl-fr/track/7pM01Cfj8vt7z3qI2TveNT",
+          "type": "remix",
+          "edition": "live",
+          "display_section": "Extras",
+          "display_order": 5,
+          "base_title": "Fortnight (feat. Post Malone)",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Post Malone"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Post Malone"
+          ],
+          "title_clean": "Fortnight - Cults Remix",
+          "song_family": "fortnight",
+          "version_tag": "featured__remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273aecb5c6308cf8ce94199aea8"
+        }
+      ]
+    },
+    {
+      "section": "standard_edition",
+      "track_count": 18,
+      "tracks": [
+        {
+          "title": "Fortnight (feat. Post Malone)",
+          "url": "https://open.spotify.com/intl-fr/track/2OzhQlSqBEmt7hmkYxfT6m",
+          "type": "feature",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 1,
+          "base_title": "Fortnight (feat. Post Malone)",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Post Malone"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Post Malone"
+          ],
+          "title_clean": "Fortnight",
+          "song_family": "fortnight",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33"
+        },
+        {
+          "title": "The Tortured Poets Department",
+          "url": "https://open.spotify.com/intl-fr/track/3NMrVbIVWT3fPXBj0rNDKG",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 2,
+          "base_title": "The Tortured Poets Department",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Tortured Poets Department",
+          "song_family": "the_tortured_poets_department",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33"
+        },
+        {
+          "title": "My Boy Only Breaks His Favorite Toys",
+          "url": "https://open.spotify.com/intl-fr/track/2XXwLdtuAcE0HSCu61ijAb",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 3,
+          "base_title": "My Boy Only Breaks His Favorite Toys",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "My Boy Only Breaks His Favorite Toys",
+          "song_family": "my_boy_only_breaks_his_favorite_toys",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33"
+        },
+        {
+          "title": "Down Bad",
+          "url": "https://open.spotify.com/intl-fr/track/2F3N9tdombb64aW6VtZOdo",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 4,
+          "base_title": "Down Bad",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Down Bad",
+          "song_family": "down_bad",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33"
+        },
+        {
+          "title": "So Long, London",
+          "url": "https://open.spotify.com/intl-fr/track/3Vevii7qKqrmW8CcyzBHDl",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 5,
+          "base_title": "So Long, London",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "So Long, London",
+          "song_family": "so_long_london",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33"
+        },
+        {
+          "title": "But Daddy I Love Him",
+          "url": "https://open.spotify.com/intl-fr/track/5og4Qzt92jJzVDkOtSEilb",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 6,
+          "base_title": "But Daddy I Love Him",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "But Daddy I Love Him",
+          "song_family": "but_daddy_i_love_him",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa"
+        },
+        {
+          "title": "Fresh Out The Slammer",
+          "url": "https://open.spotify.com/intl-fr/track/3fO566xJgwxIa3qGCGBvIC",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 7,
+          "base_title": "Fresh Out The Slammer",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Fresh Out The Slammer",
+          "song_family": "fresh_out_the_slammer",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33"
+        },
+        {
+          "title": "Florida!!! (feat. Florence + The Machine)",
+          "url": "https://open.spotify.com/intl-fr/track/3ZVFcD8Wlw9T9klGqmJf9F",
+          "type": "feature",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 8,
+          "base_title": "Florida!!! (feat. Florence + The Machine)",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Florence + The Machine"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Florence + The Machine"
+          ],
+          "title_clean": "Florida!!!",
+          "song_family": "florida",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33"
+        },
+        {
+          "title": "Guilty as Sin?",
+          "url": "https://open.spotify.com/intl-fr/track/0W0iAC1VGlB82PI6elxFYf",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 9,
+          "base_title": "Guilty as Sin?",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Guilty as Sin?",
+          "song_family": "guilty_as_sin",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33"
+        },
+        {
+          "title": "Down Bad",
+          "url": "https://open.spotify.com/intl-fr/track/212gSq8QwTqxjHJSEcMoEZ",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 10,
+          "base_title": "Down Bad",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Down Bad",
+          "song_family": "down_bad",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa"
+        },
+        {
+          "title": "But Daddy I Love Him",
+          "url": "https://open.spotify.com/intl-fr/track/74sZKiwaGtSEEyjhDmi99y",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 11,
+          "base_title": "But Daddy I Love Him",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "But Daddy I Love Him",
+          "song_family": "but_daddy_i_love_him",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273c246cd7fb142b383672627c8"
+        },
+        {
+          "title": "Clara Bow",
+          "url": "https://open.spotify.com/intl-fr/track/4d9PtIEVij9jW5OaLinH66",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 12,
+          "base_title": "Clara Bow",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Clara Bow",
+          "song_family": "clara_bow",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa"
+        },
+        {
+          "title": "I Can Fix Him (No Really I Can)",
+          "url": "https://open.spotify.com/intl-fr/track/5chnRTB9qMK3W1M41SnU9s",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 13,
+          "base_title": "I Can Fix Him (No Really I Can)",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Can Fix Him (No Really I Can)",
+          "song_family": "i_can_fix_him_no_really_i_can",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa"
+        },
+        {
+          "title": "I Can Do It With a Broken Heart",
+          "url": "https://open.spotify.com/intl-fr/track/4dgf2DYVJbtmy8zAYLs4c7",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 14,
+          "base_title": "I Can Do It With a Broken Heart",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Can Do It With a Broken Heart",
+          "song_family": "i_can_do_it_with_a_broken_heart",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273c246cd7fb142b383672627c8"
+        },
+        {
+          "title": "The Alchemy",
+          "url": "https://open.spotify.com/intl-fr/track/1tuNqJOtRQVHvONR8Lg3MZ",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 15,
+          "base_title": "The Alchemy",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Alchemy",
+          "song_family": "the_alchemy",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa"
+        },
+        {
+          "title": "Who's Afraid of Little Old Me?",
+          "url": "https://open.spotify.com/intl-fr/track/6kl8thRysTeVV3WvKxgZAy",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 16,
+          "base_title": "Who's Afraid of Little Old Me?",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Who's Afraid of Little Old Me?",
+          "song_family": "who_s_afraid_of_little_old_me",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273c246cd7fb142b383672627c8"
+        },
+        {
+          "title": "loml",
+          "url": "https://open.spotify.com/intl-fr/track/3YkNIrAvbKNrrwwEd7NVLl",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 17,
+          "base_title": "loml",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "loml",
+          "song_family": "loml",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa"
+        },
+        {
+          "title": "The Smallest Man Who Ever Lived",
+          "url": "https://open.spotify.com/intl-fr/track/4GBbcyrbDzwRtQjrsDRywK",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 18,
+          "base_title": "The Smallest Man Who Ever Lived",
+          "album": "THE TORTURED POETS DEPARTMENT",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Smallest Man Who Ever Lived",
+          "song_family": "the_smallest_man_who_ever_lived",
+          "version_tag": "live__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273c246cd7fb142b383672627c8"
+        }
+      ]
+    }
+  ]
+}

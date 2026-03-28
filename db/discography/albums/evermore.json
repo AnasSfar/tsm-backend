@@ -1,0 +1,477 @@
+{
+  "album": "evermore",
+  "section_count": 4,
+  "track_count": 23,
+  "sections": [
+    {
+      "section": "bonus_versions",
+      "track_count": 2,
+      "tracks": [
+        {
+          "title": "willow - lonely witch version",
+          "url": "https://open.spotify.com/intl-fr/track/0U0etHtpARihOUUY8Akc7y",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "willow",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "willow - lonely witch version",
+          "song_family": "willow",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+        },
+        {
+          "title": "willow - moonlit witch version",
+          "url": "https://open.spotify.com/intl-fr/track/5XkJj6sV2XLMaURdmdXgNx",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "willow",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "willow - moonlit witch version",
+          "song_family": "willow",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273ec07f0fc562d46804df394b4"
+        }
+      ]
+    },
+    {
+      "section": "deluxe_edition",
+      "track_count": 2,
+      "tracks": [
+        {
+          "title": "right where you left me - bonus track",
+          "url": "https://open.spotify.com/intl-fr/track/3zwMVvkBe2qIKDObWgXw4N",
+          "type": "alternate_version",
+          "edition": "deluxe",
+          "display_section": "deluxe edition",
+          "display_order": 1,
+          "base_title": "right where you left me - bonus track",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "right where you left me - bonus track",
+          "song_family": "right_where_you_left_me_bonus_track",
+          "version_tag": "deluxe__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27390fd9741e1838115cd90b3b6"
+        },
+        {
+          "title": "it's time to go - bonus track",
+          "url": "https://open.spotify.com/intl-fr/track/1kdWw77ZpYOkhxeuhzU1j6",
+          "type": "alternate_version",
+          "edition": "deluxe",
+          "display_section": "deluxe edition",
+          "display_order": 2,
+          "base_title": "it's time to go - bonus track",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "it's time to go - bonus track",
+          "song_family": "it_s_time_to_go_bonus_track",
+          "version_tag": "deluxe__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27390fd9741e1838115cd90b3b6"
+        }
+      ]
+    },
+    {
+      "section": "remixes",
+      "track_count": 4,
+      "tracks": [
+        {
+          "title": "willow - 90's trend remix",
+          "url": "https://open.spotify.com/intl-fr/track/77p4fRpoeiZMtUy3P9kN21",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "willow",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "willow - 90's trend remix",
+          "song_family": "willow",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27348ea2c0fbc6682c6d10d91aa"
+        },
+        {
+          "title": "willow - dancing witch version (Elvira remix)",
+          "url": "https://open.spotify.com/intl-fr/track/2NnrAdjE9cPdMklonMBuAv",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "willow",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "willow - dancing witch version (Elvira remix)",
+          "song_family": "willow",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e141efa4999ddb4b52512a7c"
+        },
+        {
+          "title": "willow - lonely witch version",
+          "url": "https://open.spotify.com/intl-fr/track/77d7q9TNbsIDmRTDPkPv3L",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 3,
+          "base_title": "willow",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "willow - lonely witch version",
+          "song_family": "willow",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738312c50a6b9046d7dea5de12"
+        },
+        {
+          "title": "willow - moonlit witch version",
+          "url": "https://open.spotify.com/intl-fr/track/5F7hpFKLmWgMHGxQuwssuv",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 4,
+          "base_title": "willow",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "willow - moonlit witch version",
+          "song_family": "willow",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+        }
+      ]
+    },
+    {
+      "section": "standard_edition",
+      "track_count": 15,
+      "tracks": [
+        {
+          "title": "willow",
+          "url": "https://open.spotify.com/intl-fr/track/0lx2cLdOt3piJbcaXIV74f",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 1,
+          "base_title": "willow",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "willow",
+          "song_family": "willow",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+        },
+        {
+          "title": "champagne problems",
+          "url": "https://open.spotify.com/intl-fr/track/0sY6ZUTh4yoctD8VIXz339",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 2,
+          "base_title": "champagne problems",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "champagne problems",
+          "song_family": "champagne_problems",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+        },
+        {
+          "title": "gold rush",
+          "url": "https://open.spotify.com/intl-fr/track/5BK0uqwY9DNfZ630STAEaq",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 3,
+          "base_title": "gold rush",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "gold rush",
+          "song_family": "gold_rush",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+        },
+        {
+          "title": "tolerate it",
+          "url": "https://open.spotify.com/intl-fr/track/0PurA4JVJ8YQgSVopY8fn6",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 4,
+          "base_title": "tolerate it",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "tolerate it",
+          "song_family": "tolerate_it",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+        },
+        {
+          "title": "no body, no crime (feat. HAIM)",
+          "url": "https://open.spotify.com/intl-fr/track/3RaT22zZsxVYxxKR7TAaYF",
+          "type": "feature",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 5,
+          "base_title": "no body, no crime (feat. HAIM)",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "HAIM"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "HAIM"
+          ],
+          "title_clean": "no body, no crime",
+          "song_family": "no_body_no_crime",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+        },
+        {
+          "title": "happiness",
+          "url": "https://open.spotify.com/intl-fr/track/73YUReisjb3A9ActdLLjJQ",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 6,
+          "base_title": "happiness",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "happiness",
+          "song_family": "happiness",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+        },
+        {
+          "title": "dorothea",
+          "url": "https://open.spotify.com/intl-fr/track/670fUmXf4KQekzbEgaXyPA",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 7,
+          "base_title": "dorothea",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "dorothea",
+          "song_family": "dorothea",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+        },
+        {
+          "title": "coney island (feat. The National)",
+          "url": "https://open.spotify.com/intl-fr/track/3k7ne7VmH43ZPWxPdvPUgR",
+          "type": "feature",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 8,
+          "base_title": "coney island (feat. The National)",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "The National"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "The National"
+          ],
+          "title_clean": "coney island",
+          "song_family": "coney_island",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+        },
+        {
+          "title": "ivy",
+          "url": "https://open.spotify.com/intl-fr/track/19CSr8rwW05VJL2F91KFNK",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 9,
+          "base_title": "ivy",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "ivy",
+          "song_family": "ivy",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+        },
+        {
+          "title": "cowboy like me",
+          "url": "https://open.spotify.com/intl-fr/track/1XjHRolIXL2M1EEOUsGGR4",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 10,
+          "base_title": "cowboy like me",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "cowboy like me",
+          "song_family": "cowboy_like_me",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+        },
+        {
+          "title": "long story short",
+          "url": "https://open.spotify.com/intl-fr/track/2o2sgVJIgFXk8GQjWTgI6U",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 11,
+          "base_title": "long story short",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "long story short",
+          "song_family": "long_story_short",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+        },
+        {
+          "title": "marjorie",
+          "url": "https://open.spotify.com/intl-fr/track/12ntTeqEeTg7GAVpe8Mhpl",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 12,
+          "base_title": "marjorie",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "marjorie",
+          "song_family": "marjorie",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+        },
+        {
+          "title": "closure",
+          "url": "https://open.spotify.com/intl-fr/track/35rdVq36LMHQX0Suw9a6tK",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 13,
+          "base_title": "closure",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "closure",
+          "song_family": "closure",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+        },
+        {
+          "title": "evermore (feat. Bon Iver)",
+          "url": "https://open.spotify.com/intl-fr/track/3O5osWf1rSoKMwe6E9ZaXP",
+          "type": "feature",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 14,
+          "base_title": "evermore (feat. Bon Iver)",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Bon Iver"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Bon Iver"
+          ],
+          "title_clean": "evermore",
+          "song_family": "evermore",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+        },
+        {
+          "title": "'tis the damn season",
+          "url": "https://open.spotify.com/track/6sQckd3Z8NPxVVKUnavY1F",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 15,
+          "base_title": "'tis the damn season",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "'tis the damn season",
+          "song_family": "tis_the_damn_season",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27390fd9741e1838115cd90b3b6"
+        }
+      ]
+    }
+  ]
+}
