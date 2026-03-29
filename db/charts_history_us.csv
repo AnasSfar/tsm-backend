@@ -1,4 +1,4 @@
-date,song_name,rank,streams,previous_rank,peak_rank,total_days
-2026-03-27,The Fate of Ophelia,24,679660,31,1,176
-2026-03-27,Opalite,53,509786,63,2,92
-2026-03-27,Style,200,335845,1,8,1
+date,song_name,rank,streams,previous_rank,peak_rank,total_days,movement
+2026-03-27,The Fate of Ophelia,24,679660,31,1,176,+7
+2026-03-27,Opalite,53,509786,63,2,92,+10
+2026-03-27,Style,200,335845,1,8,1,-199
