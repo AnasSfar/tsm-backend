@@ -17,3 +17,10 @@ env/
 # OS / editor
 .DS_Store
 .vscode/
+
+# Generated browser runtime data (Playwright Chrome profiles)
+**/tools/json/chrome_profile/**
+
+# Common runtime artifacts
+*.lock
+twitter_post.txt
