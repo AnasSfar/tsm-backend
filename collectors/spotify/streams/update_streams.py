@@ -40,12 +40,12 @@ LAST_SUCCESSFUL_UPDATE_JSON = DATA_DIR / "last_successful_updates.json"
 LAST_UNFINISHED_UPDATE_JSON = DATA_DIR / "last_unfinished_updates.json"
 
 DISCOGRAPHY_DIR = _DB_ROOT / "discography"
-DB_ALBUMS_JSON = DISCOGRAPHY_DIR / "albums.json"
+DB_ALBUMS_DIR = DISCOGRAPHY_DIR / "albums"
 DB_SONGS_JSON = DISCOGRAPHY_DIR / "songs.json"
 ARTIST_PATH = DISCOGRAPHY_DIR / "artist.json"
 ARTIST_URL = "https://open.spotify.com/artist/06HL4z0CvFAxyc27GXpf02"
 
-HEADLESS = False
+HEADLESS = True
 MAX_PARALLEL_PAGES = 10
 PAGE_GOTO_TIMEOUT_MS = 20_000
 DEBUG_PAGE_PREVIEW = False
@@ -109,6 +109,9 @@ Usage:
   python update_streams.py --dry-run
       Scrape only. No writes anywhere.
 
+  python update_streams.py --no-post
+      Run full pipeline but skip all Twitter posting steps.
+
   python update_streams.py --reset-last-date
       Delete all rows for the latest date found in streams_history.csv before running.
 
@@ -120,6 +123,7 @@ Usage:
 
 Notes:
   - Normal mode writes official updates and can post/export/push.
+    - --no-post keeps processing/export/commit but skips Twitter posts.
   - --debug-daily writes missing updates into history, but stays local/no posting.
   - --debug-total rewrites an existing date's totals in history.
         """.strip()
@@ -163,6 +167,34 @@ def extract_track_id(url: str | None) -> str | None:
         return None
     match = re.search(r"track/([A-Za-z0-9]+)", url)
     return match.group(1) if match else None
+
+
+def load_album_sections_flat() -> list[dict]:
+    """Load album sections from db/discography/albums/*.json as a flat list."""
+    if not DB_ALBUMS_DIR.exists():
+        return []
+
+    sections: list[dict] = []
+    for album_file in sorted(DB_ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
+        try:
+            payload = json.loads(album_file.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+
+        album_name = payload.get("album", "") if isinstance(payload, dict) else ""
+        raw_sections = payload.get("sections", []) if isinstance(payload, dict) else []
+        if not isinstance(raw_sections, list):
+            continue
+
+        for section in raw_sections:
+            if not isinstance(section, dict):
+                continue
+            item = dict(section)
+            if not item.get("album"):
+                item["album"] = album_name
+            sections.append(item)
+
+    return sections
 
 
 def normalize_spotify_track_url(url: str) -> str:
@@ -684,13 +716,8 @@ def update_artist_metadata(pre_scraped: dict | None = None) -> dict:
 
 
 def load_album_track_ids() -> set[str]:
-    """Returns track IDs from albums.json only (excludes songs.json extras)."""
-    if not DB_ALBUMS_JSON.exists():
-        return set()
-    try:
-        sections = json.loads(DB_ALBUMS_JSON.read_text(encoding="utf-8"))
-    except Exception:
-        return set()
+    """Returns track IDs from album files only (excludes songs.json extras)."""
+    sections = load_album_sections_flat()
     ids = set()
     for section in sections:
         for track in section.get("tracks", []):
@@ -702,7 +729,7 @@ def load_album_track_ids() -> set[str]:
 
 
 def all_album_tracks_done(stats_date: str) -> bool:
-    """Returns True when every albums.json track has a history row for stats_date."""
+    """Returns True when every album-file track has a history row for stats_date."""
     album_ids = load_album_track_ids()
     if not album_ids:
         return True
@@ -712,12 +739,7 @@ def all_album_tracks_done(stats_date: str) -> bool:
 
 def album_tracks_done_for(album_name: str, stats_date: str) -> bool:
     """Returns True when every track from the given album has a history row for stats_date."""
-    if not DB_ALBUMS_JSON.exists():
-        return False
-    try:
-        sections = json.loads(DB_ALBUMS_JSON.read_text(encoding="utf-8"))
-    except Exception:
-        return False
+    sections = load_album_sections_flat()
     album_ids = set()
     for section in sections:
         if section.get("album") != album_name:
@@ -735,13 +757,18 @@ def album_tracks_done_for(album_name: str, stats_date: str) -> bool:
 def load_active_track_ids_from_discography() -> set[str]:
     active_track_ids = set()
 
-    for db_file in [DB_ALBUMS_JSON, DB_SONGS_JSON]:
-        if not db_file.exists():
-            continue
+    for data in load_album_sections_flat():
+        for track in data.get("tracks", []):
+            url = (track.get("url") or track.get("spotify_url") or "").strip()
+            track_id = extract_track_id(url)
+            if track_id:
+                active_track_ids.add(track_id)
+
+    if DB_SONGS_JSON.exists():
         try:
-            sections = json.loads(db_file.read_text(encoding="utf-8"))
+            sections = json.loads(DB_SONGS_JSON.read_text(encoding="utf-8"))
         except Exception:
-            continue
+            sections = []
         for data in sections:
             for track in data.get("tracks", []):
                 url = (track.get("url") or track.get("spotify_url") or "").strip()
@@ -919,44 +946,43 @@ def compute_daily(previous_streams: int | None, new_streams: int) -> int | None:
 def load_tracks_from_discography(active_track_ids: set[str] | None = None) -> list[dict]:
     seen: dict[str, dict] = {}
 
-    for db_file in [DB_ALBUMS_JSON, DB_SONGS_JSON]:
-        if not db_file.exists():
-            continue
+    all_sections = load_album_sections_flat()
+    if DB_SONGS_JSON.exists():
         try:
-            sections = json.loads(db_file.read_text(encoding="utf-8"))
+            all_sections.extend(json.loads(DB_SONGS_JSON.read_text(encoding="utf-8")))
         except Exception:
-            continue
+            pass
 
-        for section in sections:
-            for track in section.get("tracks", []):
-                url = (track.get("url") or track.get("spotify_url") or "").strip()
-                track_id = extract_track_id(url)
-                if not track_id or track_id in seen:
-                    continue
+    for section in all_sections:
+        for track in section.get("tracks", []):
+            url = (track.get("url") or track.get("spotify_url") or "").strip()
+            track_id = extract_track_id(url)
+            if not track_id or track_id in seen:
+                continue
 
-                title = (track.get("title") or "").strip()
-                if not title:
-                    continue
+            title = (track.get("title") or "").strip()
+            if not title:
+                continue
 
-                if active_track_ids is not None and track_id not in active_track_ids:
-                    continue
+            if active_track_ids is not None and track_id not in active_track_ids:
+                continue
 
-                spotify_url = f"https://open.spotify.com/track/{track_id}"
-                image_url = track.get("image_url") or None
-                artists = track.get("artists") or []
-                primary_artist = track.get("primary_artist") or (artists[0] if artists else None)
+            spotify_url = f"https://open.spotify.com/track/{track_id}"
+            image_url = track.get("image_url") or None
+            artists = track.get("artists") or []
+            primary_artist = track.get("primary_artist") or (artists[0] if artists else None)
 
-                seen[track_id] = {
-                    "track_id": track_id,
-                    "title": title,
-                    "spotify_url": spotify_url,
-                    "streams": None,
-                    "daily_streams": None,
-                    "last_updated": None,
-                    "image_url": image_url,
-                    "primary_artist": primary_artist,
-                    "artists_json": json.dumps(artists),
-                }
+            seen[track_id] = {
+                "track_id": track_id,
+                "title": title,
+                "spotify_url": spotify_url,
+                "streams": None,
+                "daily_streams": None,
+                "last_updated": None,
+                "image_url": image_url,
+                "primary_artist": primary_artist,
+                "artists_json": json.dumps(artists),
+            }
 
     tracks = list(seen.values())
     tracks.sort(key=lambda t: t["title"].casefold())
@@ -1181,13 +1207,51 @@ def update_not_found_streak(streak: dict, not_found_ids: set[str], updated_ids: 
 
 def remove_track_from_discography(track_id: str) -> int:
     removed = 0
-    for db_file in [DB_ALBUMS_JSON, DB_SONGS_JSON]:
-        if not db_file.exists():
-            continue
+
+    if DB_ALBUMS_DIR.exists():
+        for album_file in sorted(DB_ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
+            try:
+                payload = json.loads(album_file.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            if not isinstance(payload, dict):
+                continue
+
+            raw_sections = payload.get("sections", [])
+            if not isinstance(raw_sections, list):
+                continue
+
+            changed = False
+            for data in raw_sections:
+                if not isinstance(data, dict):
+                    continue
+                tracks = data.get("tracks", [])
+                if not isinstance(tracks, list):
+                    tracks = []
+                new_tracks = [
+                    t for t in tracks
+                    if extract_track_id(t.get("url") or t.get("spotify_url") or "") != track_id
+                ]
+                if len(new_tracks) < len(tracks):
+                    data["tracks"] = new_tracks
+                    data["track_count"] = len(new_tracks)
+                    changed = True
+                    removed += 1
+
+            if changed:
+                payload["sections"] = raw_sections
+                payload["section_count"] = len(raw_sections)
+                payload["track_count"] = sum(len(s.get("tracks", [])) for s in raw_sections if isinstance(s, dict))
+                album_file.write_text(
+                    json.dumps(payload, ensure_ascii=False, indent=2),
+                    encoding="utf-8",
+                )
+
+    if DB_SONGS_JSON.exists():
         try:
-            sections = json.loads(db_file.read_text(encoding="utf-8"))
+            sections = json.loads(DB_SONGS_JSON.read_text(encoding="utf-8"))
         except Exception:
-            continue
+            sections = []
 
         changed = False
         for data in sections:
@@ -1203,7 +1267,7 @@ def remove_track_from_discography(track_id: str) -> int:
                 removed += 1
 
         if changed:
-            db_file.write_text(
+            DB_SONGS_JSON.write_text(
                 json.dumps(sections, ensure_ascii=False, indent=2),
                 encoding="utf-8",
             )
@@ -2388,6 +2452,7 @@ def main():
     debug_daily_mode = "--debug-daily" in sys.argv
     debug_total_mode = "--debug-total" in sys.argv
     dry_run_mode = "--dry-run" in sys.argv
+    no_post_mode = "--no-post" in sys.argv
     reset_last_date_mode = "--reset-last-date" in sys.argv
 
     if debug_daily_mode and debug_total_mode:
@@ -2400,6 +2465,7 @@ def main():
             "--debug-daily",
             "--debug-total",
             "--dry-run",
+            "--no-post",
             "--reset-last-date",
             "--help",
             "-h",
@@ -2609,7 +2675,7 @@ def main():
         stats_date_override=stats_date_override,
         dry_run_mode=dry_run_mode,
         only_track_ids=unfinished_ids if debug_daily_mode else None,
-        enable_early_twitter=(not dry_run_mode and not debug_daily_mode),
+        enable_early_twitter=(not dry_run_mode and not debug_daily_mode and not no_post_mode),
         token_mgr=token_mgr,
     )
     print_summary_block(summary)
@@ -2655,7 +2721,7 @@ def main():
             skip_track_ids=not_found_ids,
             stats_date_override=stats_date_override,
             dry_run_mode=False,
-            enable_early_twitter=True,
+            enable_early_twitter=(not no_post_mode),
             token_mgr=token_mgr,
         )
         not_found_ids.update(
@@ -2699,12 +2765,24 @@ def main():
     if debug_daily_mode:
         print("[DEBUG-DAILY] Skip: Twitter, forecast, images, git, notify.")
     else:
-        print("Posting streams image to Twitter...")
-        subprocess.run(
-            [sys.executable, str(_SCRIPT_DIR / "tools" / "scripts" / "post_streams_twitter.py"), summary["stats_date"]],
-            check=False,
-        )
-        print("Twitter post done.")
+        if no_post_mode:
+            print("Skipping Twitter post (--no-post).")
+            subprocess.run(
+                [
+                    sys.executable,
+                    str(_SCRIPT_DIR / "tools" / "scripts" / "post_streams_twitter.py"),
+                    summary["stats_date"],
+                    "--no-post",
+                ],
+                check=False,
+            )
+        else:
+            print("Posting streams image to Twitter...")
+            subprocess.run(
+                [sys.executable, str(_SCRIPT_DIR / "tools" / "scripts" / "post_streams_twitter.py"), summary["stats_date"]],
+                check=False,
+            )
+            print("Twitter post done.")
 
     print("Re-exporting web data...")
     export_for_web.export_for_web()
@@ -2743,14 +2821,17 @@ def main():
 
         post_script = _SCRIPT_DIR / "tools" / "scripts" / "post_streams_twitter.py"
         if all_album_tracks_done(summary["stats_date"]):
-            print("100% des tracks albums.json presents -> generation image top 15 + post Twitter...")
+            print("100% des tracks albums/* presents -> generation image top 15...")
+            post_cmd = [sys.executable, str(post_script), summary["stats_date"]]
+            if no_post_mode:
+                post_cmd.append("--no-post")
             subprocess.run(
-                [sys.executable, str(post_script), summary["stats_date"]],
+                post_cmd,
                 check=False,
             )
         else:
             missing = load_album_track_ids() - load_history_track_ids_for_date(summary["stats_date"])
-            print(f"Image top 15 ignorée : {len(missing)} track(s) albums.json manquant(s) pour {summary['stats_date']}.")
+            print(f"Image top 15 ignorée : {len(missing)} track(s) albums/* manquant(s) pour {summary['stats_date']}.")
 
         # ── Album update images (priority order) ──────────────────────────────
         _ALBUM_UPDATE_TARGETS = [
@@ -2760,15 +2841,22 @@ def main():
         _album_img_script = _SCRIPT_DIR / "tools" / "scripts" / "generate_album_update_image.py"
         for _alb in _ALBUM_UPDATE_TARGETS:
             if album_tracks_done_for(_alb, summary["stats_date"]):
-                print(f"Generating + posting album update image: {_alb} ...")
+                print(f"Generating album update image: {_alb} ...")
+                album_cmd = [
+                    sys.executable,
+                    str(_album_img_script),
+                    _alb,
+                    summary["stats_date"],
+                ]
+                if not no_post_mode:
+                    album_cmd.append("--post")
                 subprocess.run(
-                    [sys.executable, str(_album_img_script),
-                     _alb, summary["stats_date"], "--post"],
+                    album_cmd,
                     check=False,
                 )
             else:
                 try:
-                    _sections = json.loads(DB_ALBUMS_JSON.read_text(encoding="utf-8"))
+                    _sections = load_album_sections_flat()
                     _alb_ids = {
                         extract_track_id(t.get("url") or t.get("spotify_url") or "")
                         for sec in _sections if sec.get("album") == _alb

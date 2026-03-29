@@ -41,7 +41,7 @@ ROOT            = SCRIPT_DIR.parents[1]                    # streams/
 REPO_ROOT       = SCRIPT_DIR.parents[4]                    # repo root
 DB_DIR          = REPO_ROOT / "db"
 HISTORY_PATH    = DB_DIR / "streams_history.csv"
-ALBUMS_JSON     = DB_DIR / "discography" / "albums.json"
+ALBUMS_DIR      = DB_DIR / "discography" / "albums"
 COVERS_PATH     = DB_DIR / "discography" / "covers.json"
 HEADERS_DIR     = DB_DIR / "discography" / "headers"
 TWITTER_SESSION = ROOT.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json"
@@ -161,18 +161,24 @@ def load_album_sections(album_name: str) -> list[dict]:
       {name, tracks: [{track_id, title_clean, version_tag, display_order, image_url}]}
     Only editions in INCLUDED_EDITIONS. Tracks sorted by display_order.
     """
-    if not ALBUMS_JSON.exists():
+    if not ALBUMS_DIR.exists():
         return []
-    try:
-        raw = json.loads(ALBUMS_JSON.read_text(encoding="utf-8"))
-    except Exception as e:
-        print(f"[album_update] Erreur lecture albums.json: {e}")
+
+    target_payload = None
+    for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
+        try:
+            payload = json.loads(album_file.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        if isinstance(payload, dict) and payload.get("album") == album_name:
+            target_payload = payload
+            break
+
+    if target_payload is None:
         return []
 
     sections = []
-    for sec in raw:
-        if sec.get("album") != album_name:
-            continue
+    for sec in target_payload.get("sections", []):
         tracks = []
         for t in sec.get("tracks", []):
             edition = (t.get("edition") or "").strip().lower()
@@ -275,14 +281,15 @@ def load_cover_url(album_name: str) -> str:
     except Exception:
         pass
 
-    # 2) Fallback: albums.json track image_url (fixes missing entries like Holiday Collection)
+    # 2) Fallback: album files track image_url (fixes missing entries like Holiday Collection)
     try:
-        if ALBUMS_JSON.exists():
-            rows = json.loads(ALBUMS_JSON.read_text(encoding="utf-8"))
-            for row in rows:
-                if row.get("album") == album_name:
-                    tracks = row.get("tracks", [])
-                    for tr in tracks:
+        if ALBUMS_DIR.exists():
+            for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
+                payload = json.loads(album_file.read_text(encoding="utf-8"))
+                if not isinstance(payload, dict) or payload.get("album") != album_name:
+                    continue
+                for section in payload.get("sections", []):
+                    for tr in section.get("tracks", []):
                         url = tr.get("image_url", "")
                         if url:
                             return url
@@ -722,8 +729,8 @@ def main() -> None:
         print(__doc__)
         sys.exit(0)
 
-    do_post    = "--post" in args
-    clean_args = [a for a in args if a != "--post"]
+    do_post = "--post" in args and "--no-post" not in args
+    clean_args = [a for a in args if a not in ("--post", "--no-post")]
 
     album_name  = clean_args[0] if len(clean_args) > 0 else None
     target_date = clean_args[1] if len(clean_args) > 1 else None

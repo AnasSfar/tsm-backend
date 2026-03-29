@@ -6,7 +6,7 @@ Pour chaque album, n'inclut que les éditions principales :
   standard, deluxe, acoustic, anthology, original
   (exclut : extras, live, remix, extended)
 
-Lit  : db/streams_history.csv + db/discography/albums.json
+Lit  : db/streams_history.csv + db/discography/albums/*.json
        db/discography/songs.json + db/discography/covers.json
 Ecrit: collectors/spotify/streams/history/YYYY/MM/YYYY-MM-DD/albums_image.png
 
@@ -44,6 +44,8 @@ REPO_ROOT    = SCRIPT_DIR.parents[4]                    # repo root
 DB_DIR       = REPO_ROOT / "db"
 HISTORY_PATH = DB_DIR / "streams_history.csv"
 COVERS_PATH  = DB_DIR / "discography" / "covers.json"
+ALBUMS_DIR   = DB_DIR / "discography" / "albums"
+SONGS_JSON   = DB_DIR / "discography" / "songs.json"
 HEADERS_DIR  = _TOOLS / "headers"
 HANDLE       = "@swiftiescharts"
 
@@ -146,34 +148,43 @@ def load_covers() -> dict:
 def load_album_track_map() -> dict[str, dict]:
     """
     Returns {track_id: {album, edition, image_url}}
-    Only from albums.json + songs.json.
+    Only from albums/*.json + songs.json.
     Editions not in INCLUDED_EDITIONS are excluded.
     """
     result = {}
-    for path in [DB_DIR / "discography" / "albums.json",
-                 DB_DIR / "discography" / "songs.json"]:
-        if not path.exists():
-            continue
+
+    def _consume_sections(sections: list[dict], album_name_fallback: str = "") -> None:
+        for section in sections:
+            album_name = section.get("album") or album_name_fallback
+            for track in section.get("tracks", []):
+                edition = (track.get("edition") or "").strip().lower()
+                if edition not in INCLUDED_EDITIONS:
+                    continue
+                url = (track.get("url") or track.get("spotify_url") or "").strip()
+                m = re.search(r"track/([A-Za-z0-9]+)", url)
+                if not m:
+                    continue
+                track_id = m.group(1)
+                if track_id not in result:
+                    result[track_id] = {
+                        "album":     album_name,
+                        "edition":   edition,
+                        "image_url": (track.get("image_url") or "").strip(),
+                    }
+
+    if ALBUMS_DIR.exists():
+        for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
+            try:
+                payload = json.loads(album_file.read_text(encoding="utf-8"))
+                _consume_sections(payload.get("sections", []) if isinstance(payload, dict) else [], payload.get("album", "") if isinstance(payload, dict) else "")
+            except Exception as e:
+                print(f"Erreur {album_file.name}: {e}")
+
+    if SONGS_JSON.exists():
         try:
-            for section in json.loads(path.read_text(encoding="utf-8")):
-                album_name = section.get("album", "")
-                for track in section.get("tracks", []):
-                    edition = (track.get("edition") or "").strip().lower()
-                    if edition not in INCLUDED_EDITIONS:
-                        continue
-                    url = (track.get("url") or track.get("spotify_url") or "").strip()
-                    m = re.search(r"track/([A-Za-z0-9]+)", url)
-                    if not m:
-                        continue
-                    track_id = m.group(1)
-                    if track_id not in result:
-                        result[track_id] = {
-                            "album":     album_name,
-                            "edition":   edition,
-                            "image_url": (track.get("image_url") or "").strip(),
-                        }
+            _consume_sections(json.loads(SONGS_JSON.read_text(encoding="utf-8")))
         except Exception as e:
-            print(f"Erreur {path.name}: {e}")
+            print(f"Erreur {SONGS_JSON.name}: {e}")
     return result
 
 

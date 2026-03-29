@@ -149,6 +149,14 @@ async function renderPage() {
     }
   }
 
+  if (state.page === "song") {
+    if (!state.chartsWorldwide) {
+      state.chartsWorldwide = await fetchJSON(
+        "/website/site/data/charts_worldwide.json"
+      ).catch(() => null);
+    }
+  }
+
   const container = document.getElementById("app") || document.body;
 
   await applyTheme(state.themeMode);
@@ -213,6 +221,7 @@ async function loadData() {
   state.albums = [];
   state.expectedMilestones = [];
   state.billboard = null;
+  state.chartsWorldwide = null;
 
   state.artist = artistData || null;
   state.albumCovers = albumCoversData || {};

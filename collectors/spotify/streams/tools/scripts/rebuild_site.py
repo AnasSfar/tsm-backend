@@ -26,7 +26,7 @@ def main() -> None:
     print("  Full site rebuild")
     print("=" * 50)
 
-    run(EXPORT_SCRIPT,    "Export songs.json / albums.json",  cwd=ROOT)
+    run(EXPORT_SCRIPT,    "Export site data (songs.json / albums.json)",  cwd=ROOT)
     run(FORECAST_SCRIPT,  "Forecast milestones")
     run(FILL_IMG_SCRIPT,  "Fill image URLs + track_covers.json")
     run(BILLBOARD_SCRIPT, "Scrape Billboard charts")

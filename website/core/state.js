@@ -38,4 +38,6 @@ export const state = {
   billboardTab: "hot_100",
 
   appearancesLoaded: false,
+
+  chartsWorldwide: null,
 };

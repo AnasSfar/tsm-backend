@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Scrape les streams totaux de toutes les chansons depuis songs.json/albums.json.
+Scrape les streams totaux de toutes les chansons depuis songs.json et albums/*.json.
 
 - Cible par défaut : TOUTES les tracks (y compris kworb extras)
 - Écrit uniquement dans streams_history.csv (daily_streams laissé vide)
@@ -34,11 +34,11 @@ _REPO_ROOT       = _SCRIPT_DIR.parents[2]
 _DB_ROOT         = _REPO_ROOT / "db"
 HISTORY_PATH     = _DB_ROOT / "streams_history.csv"
 _DISCOGRAPHY_DIR = _DB_ROOT / "discography"
-_ALBUMS_JSON     = _DISCOGRAPHY_DIR / "albums.json"
+_ALBUMS_DIR      = _DISCOGRAPHY_DIR / "albums"
 _SONGS_JSON      = _DISCOGRAPHY_DIR / "songs.json"
 
 # ── Config ─────────────────────────────────────────────────────────────────────
-HEADLESS             = False
+HEADLESS             = True
 PAGE_GOTO_TIMEOUT_MS = 45_000
 MAX_PARALLEL_PAGES   = 6
 
@@ -343,10 +343,27 @@ def _track_id_from_url(url: str) -> str | None:
 def _load_all_tracks_from_json() -> list[dict]:
     import json
     seen: dict[str, dict] = {}
-    for path in [_ALBUMS_JSON, _SONGS_JSON]:
-        if not path.exists():
-            continue
-        for section in json.loads(path.read_text(encoding="utf-8")):
+
+    all_sections = []
+    if _ALBUMS_DIR.exists():
+        for album_file in sorted(_ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
+            try:
+                payload = json.loads(album_file.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            album_name = payload.get("album", "") if isinstance(payload, dict) else ""
+            for section in payload.get("sections", []) if isinstance(payload, dict) else []:
+                if not isinstance(section, dict):
+                    continue
+                item = dict(section)
+                if not item.get("album"):
+                    item["album"] = album_name
+                all_sections.append(item)
+
+    if _SONGS_JSON.exists():
+        all_sections.extend(json.loads(_SONGS_JSON.read_text(encoding="utf-8")))
+
+    for section in all_sections:
             for t in section.get("tracks", []):
                 url      = (t.get("url") or t.get("spotify_url") or "").strip()
                 track_id = _track_id_from_url(url)

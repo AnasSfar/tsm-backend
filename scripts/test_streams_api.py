@@ -55,7 +55,7 @@ def get_tokens() -> dict:
     browser = None
     try:
         browser = p.chromium.launch(
-            headless=False,
+            headless=True,
             args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
         )
         ctx = browser.new_context(

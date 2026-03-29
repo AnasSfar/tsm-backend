@@ -18,6 +18,7 @@ Options :
   --force   Supprime le posted.lock de la date cible et relance le pipeline complet
             (y compris filter même si les données existent déjà). Sans date explicite,
             cible hier.
+    --no-post Exécute tout le pipeline mais ignore la publication Twitter.
 """
 
 from __future__ import annotations
@@ -29,6 +30,12 @@ import sys
 import time
 from datetime import date, datetime, timedelta
 from pathlib import Path
+
+try:
+    from PIL import Image, ImageOps
+except ImportError:
+    Image = None
+    ImageOps = None
 
 try:
     from dotenv import load_dotenv
@@ -47,6 +54,7 @@ ROOT = Path(__file__).parent
 _REPO_ROOT = ROOT.parents[3]
 
 CHART_ID = "regional-global-daily"
+US_CHART_ID = "regional-us-daily"
 TWITTER_SESSION = ROOT / "tools/json/twitter_session.json"
 SPOTIFY_SESSION = ROOT / "tools/json/spotify_session.json"
 FILTER_SCRIPT = ROOT / "tools/script/filter.py"
@@ -101,6 +109,25 @@ def mark_posted(d: date) -> None:
     p.parent.mkdir(parents=True, exist_ok=True)
     p.touch()
     log("INFO", f"posted.lock créé: {p}")
+
+
+def cleanup_tweet_files(dates: list[date]) -> None:
+    for d in dates:
+        tp = tweet_path(d)
+        if tp.exists():
+            try:
+                tp.unlink()
+                log("INFO", f"tweet.txt supprimé pour {d}")
+            except Exception as e:
+                log("WARN", f"Impossible de supprimer tweet.txt pour {d}: {e}")
+
+    twitter_post = ROOT / "twitter_post.txt"
+    if twitter_post.exists():
+        try:
+            twitter_post.unlink()
+            log("INFO", "twitter_post.txt supprimé")
+        except Exception as e:
+            log("WARN", f"Impossible de supprimer twitter_post.txt: {e}")
 
 
 def chart_already_processed(d: date) -> bool:
@@ -166,22 +193,30 @@ def try_extract_chart_date_from_page(page) -> date | None:
     return extract_date_from_url(page.url)
 
 
-def page_has_exploitable_chart(body_text: str) -> bool:
+def page_has_exploitable_chart(page, body_text: str) -> bool:
     body_text_lower = body_text.lower()
 
-    has_streams = bool(re.search(r"\b\d{1,3}(?:[,.\s]\d{3}){2,}\b", body_text))
-    has_chart_header = "track" in body_text_lower and "streams" in body_text_lower
-    has_rank_line = bool(re.search(r"(?m)^\s*1\s*$", body_text))
+    has_streams = bool(re.search(r"\b\d{1,3}(?:[,.\s]\d{3})+\b", body_text))
+    has_chart_header = (
+        (("track" in body_text_lower) or ("titre" in body_text_lower))
+        and (("streams" in body_text_lower) or ("ecoutes" in body_text_lower) or ("écoutes" in body_text_lower))
+    )
+    has_rank_line = bool(re.search(r"(?m)^\s*(?:1|2|3|4|5)\s*$", body_text))
+    try:
+        has_download_button = page.locator("button[aria-labelledby='csv_download']").count() > 0
+    except Exception:
+        has_download_button = False
 
     log("CHECK", f"has_streams={has_streams}")
     log("CHECK", f"has_chart_header={has_chart_header}")
     log("CHECK", f"has_rank_line={has_rank_line}")
+    log("CHECK", f"has_download_button={has_download_button}")
 
-    return has_streams and has_chart_header and has_rank_line
+    return has_download_button or (has_streams and (has_chart_header or has_rank_line)) or (has_chart_header and has_rank_line)
 
 
-def open_chart_page(page, route_value: str) -> tuple[bool, date | None]:
-    url = f"https://charts.spotify.com/charts/view/{CHART_ID}/{route_value}"
+def open_chart_page(page, route_value: str, chart_id: str = CHART_ID) -> tuple[bool, date | None]:
+    url = f"https://charts.spotify.com/charts/view/{chart_id}/{route_value}"
     log("CHECK", f"Ouverture {url}")
 
     page.goto(url, wait_until="domcontentloaded", timeout=PAGE_TIMEOUT_MS)
@@ -210,16 +245,16 @@ def open_chart_page(page, route_value: str) -> tuple[bool, date | None]:
     detected_date = try_extract_chart_date_from_page(page)
     log("CHECK", f"Date détectée: {detected_date if detected_date else 'N/A'}")
 
-    available = page_has_exploitable_chart(body_text)
+    available = page_has_exploitable_chart(page, body_text)
     log("CHECK", f"Page exploitable: {'oui' if available else 'non'}")
 
     return available, detected_date
 
 
-def _check_page_once(page, target_date: date) -> bool:
+def _check_page_once(page, target_date: date, chart_id: str = CHART_ID) -> bool:
     """Une tentative de vérification sur un page Playwright déjà ouvert."""
     try:
-        available, _ = open_chart_page(page, str(target_date))
+        available, _ = open_chart_page(page, str(target_date), chart_id)
         if available:
             return True
     except PlaywrightTimeoutError as e:
@@ -230,7 +265,7 @@ def _check_page_once(page, target_date: date) -> bool:
     log("CHECK", "Fallback vers latest ...")
 
     try:
-        available, detected_date = open_chart_page(page, "latest")
+        available, detected_date = open_chart_page(page, "latest", chart_id)
     except PlaywrightTimeoutError as e:
         log("CHECK", f"Timeout latest: {e}")
         return False
@@ -257,7 +292,7 @@ def wait_for_page(target_date: date) -> bool:
 
     with sync_playwright() as p:
         browser = p.chromium.launch(
-            headless=False,
+            headless=True,
             args=[
                 "--disable-blink-features=AutomationControlled",
                 "--disable-dev-shm-usage",
@@ -286,7 +321,7 @@ def wait_for_page(target_date: date) -> bool:
                     return False
 
                 log("WAIT", f"Vérification tentative #{attempt} pour {target_date}")
-                if _check_page_once(page, target_date):
+                if _check_page_once(page, target_date, CHART_ID):
                     log("INFO", f"Page de {target_date} détectée (tentative #{attempt})")
                     return True
 
@@ -321,6 +356,8 @@ def run_filter(d: date) -> str | None:
         [sys.executable, str(FILTER_SCRIPT), str(d)],
         capture_output=True,
         text=True,
+        encoding="utf-8",
+        errors="replace",
         cwd=str(ROOT),
     )
 
@@ -369,6 +406,8 @@ def generate_image(processed: list[date]) -> Path | None:
         img_args,
         capture_output=True,
         text=True,
+        encoding="utf-8",
+        errors="replace",
         cwd=str(ROOT),
     )
 
@@ -388,9 +427,107 @@ def generate_image(processed: list[date]) -> Path | None:
     return image_path
 
 
+def ensure_us_image_for_date(target_date: date) -> Path | None:
+    """Capture US Spotify chart page image directly from this global pipeline."""
+    if not SPOTIFY_SESSION.exists():
+        log("WARN", f"Session Spotify introuvable: {SPOTIFY_SESSION}")
+        return None
+
+    date_str = str(target_date)
+    out_path = ROOT / "history" / str(target_date.year) / f"{target_date.month:02d}" / date_str / "us_chart_capture.png"
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+
+    log("STEP", f"Preparing US chart image for {date_str}")
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch(
+            headless=True,
+            args=[
+                "--disable-blink-features=AutomationControlled",
+                "--disable-dev-shm-usage",
+                "--no-sandbox",
+            ],
+        )
+        context = browser.new_context(
+            storage_state=str(SPOTIFY_SESSION),
+            viewport={"width": 1400, "height": 2600},
+            user_agent=(
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/133.0.0.0 Safari/537.36"
+            ),
+            locale="en-US",
+        )
+        page = context.new_page()
+        page.set_default_navigation_timeout(PAGE_TIMEOUT_MS)
+        page.set_default_timeout(PAGE_TIMEOUT_MS)
+
+        try:
+            if not _check_page_once(page, target_date, US_CHART_ID):
+                log("WARN", f"US chart not exploitable for {date_str}")
+                return None
+
+            try:
+                page.wait_for_load_state("networkidle", timeout=8000)
+            except Exception:
+                pass
+
+            page.locator("body").screenshot(path=str(out_path))
+        except Exception as e:
+            log("WARN", f"US image capture failed for {date_str}: {e}")
+            return None
+        finally:
+            try:
+                context.close()
+            except Exception:
+                pass
+            try:
+                browser.close()
+            except Exception:
+                pass
+
+    if not out_path.exists():
+        log("WARN", f"US image missing after capture: {out_path}")
+        return None
+
+    return out_path
+
+
+def build_global_us_combined_image(global_image: Path, us_image: Path, target_date: date) -> Path | None:
+    """Build a single image with global on top and US on bottom."""
+    if Image is None or ImageOps is None:
+        log("WARN", "Pillow not installed; cannot build combined Global+US image")
+        return None
+
+    try:
+        global_img = Image.open(global_image).convert("RGB")
+        us_img = Image.open(us_image).convert("RGB")
+    except Exception as e:
+        log("WARN", f"Unable to open images for merge: {e}")
+        return None
+
+    pad = 18
+    width = global_img.width
+    top = ImageOps.pad(global_img, (width, global_img.height), color=(255, 255, 255), centering=(0.5, 0.5))
+
+    # Keep the US part readable and compact compared to the TS global card.
+    us_fit = ImageOps.contain(us_img, (width, max(220, int(global_img.height * 0.9))))
+    bottom = ImageOps.pad(us_fit, (width, us_fit.height), color=(255, 255, 255), centering=(0.5, 0.5))
+
+    merged = Image.new("RGB", (width, top.height + bottom.height + pad), (248, 248, 248))
+    merged.paste(top, (0, 0))
+    merged.paste(bottom, (0, top.height + pad))
+
+    out_path = ROOT / "history" / str(target_date.year) / f"{target_date.month:02d}" / str(target_date) / "chart_image_global_us.png"
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    merged.save(out_path, format="PNG")
+    log("INFO", f"Combined Global+US image saved: {out_path}")
+    return out_path
+
+
 def maybe_upload_to_r2() -> None:
-    if os.getenv("UPLOAD_TO_R2", "").strip().lower() not in ("1", "true", "yes"):
-        log("INFO", "R2 upload skipped (UPLOAD_TO_R2 disabled)")
+    if os.getenv("UPLOAD_TO_R2", "").strip().lower() in ("0", "false", "no"):
+        log("INFO", "R2 upload skipped (UPLOAD_TO_R2 explicitly disabled)")
         return
 
     r2_script = _REPO_ROOT / "scripts" / "r2.py"
@@ -399,12 +536,15 @@ def maybe_upload_to_r2() -> None:
         return
 
     log("STEP", "Uploading exported data to R2")
-    subprocess.run([sys.executable, str(r2_script)], check=False, cwd=str(_REPO_ROOT))
+    result = subprocess.run([sys.executable, str(r2_script)], check=False, cwd=str(_REPO_ROOT))
+    if result.returncode != 0:
+        raise RuntimeError(f"R2 upload failed with code {result.returncode}")
 
 
 def main() -> None:
     date_args = [a for a in sys.argv[1:] if not a.startswith("--")]
     force = "--force" in sys.argv
+    no_post = "--no-post" in sys.argv
 
     if date_args:
         try:
@@ -479,15 +619,32 @@ def main() -> None:
 
     image_path = generate_image(processed)
 
+    if image_path and len(processed) == 1:
+        target_date = processed[0]
+        us_image = ensure_us_image_for_date(target_date)
+        if us_image:
+            combined = build_global_us_combined_image(image_path, us_image, target_date)
+            if combined:
+                image_path = combined
+    elif len(processed) > 1:
+        log("INFO", "Global+US combined image skipped (multi-date run)")
+
     log("STEP", "Publication Twitter")
-    if image_path:
-        posted = post_with_image(tweet_content, image_path, TWITTER_SESSION)
+    if no_post:
+        log("INFO", "Publication Twitter ignorée (--no-post)")
+        posted = True
     else:
-        posted = post_thread(split_tweets(tweet_content), TWITTER_SESSION)
+        log("STEP", "Publication Twitter")
+        if image_path:
+            posted = post_with_image(tweet_content, image_path, TWITTER_SESSION)
+        else:
+            posted = post_thread(split_tweets(tweet_content), TWITTER_SESSION)
 
     if posted:
         for d in processed:
             mark_posted(d)
+
+        cleanup_tweet_files(processed)
 
         log("INFO", f"Terminé avec succès ({len(processed)} date(s) postée(s))")
 

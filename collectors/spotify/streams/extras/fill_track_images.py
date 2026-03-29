@@ -17,8 +17,9 @@ _SCRIPT_DIR   = Path(__file__).resolve().parent
 _REPO_ROOT    = _SCRIPT_DIR.parents[2]
 ROOT          = _REPO_ROOT / "website"
 DISCO_DIR     = _REPO_ROOT / "db" / "discography"
+ALBUMS_DIR    = DISCO_DIR / "albums"
 SITE_SONGS    = ROOT / "site" / "data" / "songs.json"
-_DISCO_FILES  = ["albums.json", "songs.json"]
+_DISCO_FILES  = ["songs.json"]
 
 HEADLESS = True
 MAX_PARALLEL_PAGES = 4
@@ -67,11 +68,33 @@ def _track_id_from_url(url: str) -> str | None:
 
 def load_tracks_missing_images() -> list[dict]:
     seen: dict[str, dict] = {}
+
+    all_sections = []
+    if ALBUMS_DIR.exists():
+        for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
+            try:
+                payload = json.loads(album_file.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            album_name = payload.get("album", "") if isinstance(payload, dict) else ""
+            for section in payload.get("sections", []) if isinstance(payload, dict) else []:
+                if not isinstance(section, dict):
+                    continue
+                item = dict(section)
+                if not item.get("album"):
+                    item["album"] = album_name
+                all_sections.append(item)
+
     for fname in _DISCO_FILES:
         path = DISCO_DIR / fname
         if not path.exists():
             continue
-        for section in json.loads(path.read_text(encoding="utf-8")):
+        try:
+            all_sections.extend(json.loads(path.read_text(encoding="utf-8")))
+        except Exception:
+            continue
+
+    for section in all_sections:
             for t in section.get("tracks", []):
                 url      = (t.get("url") or t.get("spotify_url") or "").strip()
                 track_id = _track_id_from_url(url)
@@ -238,7 +261,7 @@ def propagate_to_jsons(found: dict[str, str]) -> None:
     if not found:
         return
 
-    # db/discography/albums.json and songs.json (list-of-sections format)
+    # db/discography/songs.json (list-of-sections format)
     for fname in _DISCO_FILES:
         path = DISCO_DIR / fname
         if not path.exists():
@@ -256,6 +279,27 @@ def propagate_to_jsons(found: dict[str, str]) -> None:
         if changed:
             path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
             print(f"Updated {path.name} ({len(found)} track(s))")
+
+    # db/discography/albums/*.json (dict with sections)
+    if ALBUMS_DIR.exists():
+        for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
+            try:
+                payload = json.loads(album_file.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            if not isinstance(payload, dict):
+                continue
+            changed = False
+            for section in payload.get("sections", []):
+                for track in section.get("tracks", []):
+                    url = track.get("url") or track.get("spotify_url") or ""
+                    m = re.search(r"/track/([A-Za-z0-9]+)", url)
+                    if m and m.group(1) in found:
+                        track["image_url"] = found[m.group(1)]
+                        changed = True
+            if changed:
+                album_file.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+                print(f"Updated {album_file.name} ({len(found)} track(s))")
 
     # website/site/data/songs.json (dict with "songs" list)
     if SITE_SONGS.exists():

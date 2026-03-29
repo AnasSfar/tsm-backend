@@ -91,7 +91,7 @@ def download_charts(root: Path, chart_id: str, session_file: Path,
     print(f"{len(dates_to_fetch)} fichiers à télécharger ({start} → {end})")
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=True)
 
         if session_file.exists():
             context = browser.new_context(accept_downloads=True, storage_state=str(session_file))

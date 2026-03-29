@@ -7,7 +7,7 @@ du site : website/site/data/songs.json, albums.json, artist.json,
 expected_milestones.json, history/*.json, billboard.json.
 
 À lancer manuellement après avoir modifié db/discography/songs.json
-ou db/discography/albums.json sans attendre le daily update_streams.
+ou des fichiers dans db/discography/albums/ sans attendre le daily update_streams.
 
 Usage:
   python scripts/export_for_web.py

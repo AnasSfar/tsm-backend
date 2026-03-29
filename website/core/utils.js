@@ -52,10 +52,72 @@ export function renderFocusModal() {
   return "";
 }
 
+function buildFetchCandidates(url) {
+  const candidates = [];
+  const seen = new Set();
+
+  const add = (value) => {
+    if (!value || seen.has(value)) return;
+    seen.add(value);
+    candidates.push(value);
+  };
+
+  add(url);
+
+  if (url.startsWith("/website/site/")) {
+    add(url.replace("/website/site/", "/site/"));
+  }
+
+  if (url.startsWith("/website/")) {
+    add(url.replace("/website/", "/"));
+  }
+
+  if (url.startsWith("/site/")) {
+    add(url.replace("/site/", "/website/site/"));
+  }
+
+  if (url.startsWith("/db/")) {
+    add(url.replace("/db/", "/website/db/"));
+  }
+
+  if (url.startsWith("/website/db/")) {
+    add(url.replace("/website/db/", "/db/"));
+  }
+
+  const firstSegment = String(window.location.pathname || "")
+    .split("/")
+    .filter(Boolean)[0];
+
+  if (firstSegment) {
+    const prefixed = `/${firstSegment}${url.startsWith("/") ? "" : "/"}${url}`;
+    add(prefixed);
+
+    if (url.startsWith("/website/")) {
+      add(prefixed.replace(`/${firstSegment}/website/`, `/${firstSegment}/`));
+    }
+  }
+
+  return candidates;
+}
+
 export async function fetchJSON(url) {
-  const r = await fetch(`${url}${url.includes("?") ? "&" : "?"}ts=${Date.now()}`);
-  if (!r.ok) throw new Error(`Failed to fetch ${url}`);
-  return r.json();
+  const tried = [];
+  const ts = Date.now();
+
+  for (const candidate of buildFetchCandidates(url)) {
+    const withTs = `${candidate}${candidate.includes("?") ? "&" : "?"}ts=${ts}`;
+    tried.push(candidate);
+
+    try {
+      const r = await fetch(withTs);
+      if (!r.ok) continue;
+      return await r.json();
+    } catch {
+      // Continue trying fallback paths.
+    }
+  }
+
+  throw new Error(`Failed to fetch ${url}. Tried: ${tried.join(", ")}`);
 }
 
 export const normalize = v =>

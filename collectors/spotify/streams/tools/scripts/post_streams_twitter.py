@@ -24,7 +24,9 @@ import generate_albums_image
 
 
 def main():
-    target_date = sys.argv[1] if len(sys.argv) > 1 else str(date.today() - timedelta(days=1))
+    no_post = "--no-post" in sys.argv[1:]
+    args = [a for a in sys.argv[1:] if a != "--no-post"]
+    target_date = args[0] if args else str(date.today() - timedelta(days=1))
 
     # Guard against double-posting
     d = date.fromisoformat(target_date)
@@ -36,7 +38,7 @@ def main():
         print(f"Already posted for {target_date}, skipping.")
         return
 
-    if not TWITTER_SESSION.exists():
+    if not no_post and not TWITTER_SESSION.exists():
         print(f"ERROR: Twitter session not found at {TWITTER_SESSION}")
         sys.exit(1)
 
@@ -57,7 +59,11 @@ def main():
     print(f"Tweet: {tweet}")
     print(f"Image: {image_path}")
 
-    success = post_with_image(tweet, image_path, TWITTER_SESSION)
+    if no_post:
+        print("Twitter post skipped (--no-post).")
+        success = True
+    else:
+        success = post_with_image(tweet, image_path, TWITTER_SESSION)
 
     if success:
         posted_lock.touch()

@@ -1147,6 +1147,32 @@ export function renderSongPage(container){
 
   const main = rows[0];
 
+  // ── Worldwide chart data ──────────────────────────────────────────────────
+  const allTrackIds = rows.map(r => r.track_id);
+  const seenCountries = new Set();
+  const countryEntries = [];
+  if (state.chartsWorldwide?.by_track) {
+    for (const tid of allTrackIds) {
+      for (const e of (state.chartsWorldwide.by_track[tid] || [])) {
+        if (!seenCountries.has(e.country)) {
+          seenCountries.add(e.country);
+          countryEntries.push(e);
+        }
+      }
+    }
+    countryEntries.sort((a, b) => (a.rank || 9999) - (b.rank || 9999));
+  }
+  const countryCount = countryEntries.length;
+  const worldwideDate = state.chartsWorldwide?.date || "";
+  const countryHTML = countryEntries.length
+    ? countryEntries.map(e => `
+        <div class="country-chart-card">
+          <span class="country-name">${e.country_name}</span>
+          <span class="country-rank">#${e.rank}</span>
+          <span class="country-streams">${formatFull(e.streams)}</span>
+        </div>`).join("")
+    : `<p class="country-chart-empty">Not charting in any country today.</p>`;
+
   container.innerHTML = `
     ${renderTopbar()}
 
@@ -1261,6 +1287,18 @@ export function renderSongPage(container){
       </div>
       <div id="song-chart-wrap" class="song-chart-wrap">
         <p class="chart-loading">Loading chart…</p>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <div class="section-head">
+        <div>
+          <h2>Spotify Charts</h2>
+          <p>Charting in ${countryCount} countr${countryCount === 1 ? "y" : "ies"} today${worldwideDate ? " · " + worldwideDate : ""}</p>
+        </div>
+      </div>
+      <div class="country-chart-grid">
+        ${countryHTML}
       </div>
     </section>
   `;

@@ -37,7 +37,7 @@ REPO_ROOT       = SCRIPT_DIR.parents[2]                    # repo root
 DB_DIR          = REPO_ROOT / "db"
 HISTORY_PATH    = DB_DIR / "streams_history.csv"
 SONGS_JSON      = DB_DIR / "discography" / "songs.json"
-ALBUMS_JSON     = DB_DIR / "discography" / "albums.json"
+ALBUMS_DIR      = DB_DIR / "discography" / "albums"
 COVERS_PATH     = DB_DIR / "discography" / "covers.json"
 OUT_DIR         = SCRIPT_DIR / "history" / "spotlight"
 TWITTER_SESSION = SCRIPT_DIR.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json"
@@ -152,29 +152,45 @@ def _cover_palette(img_bytes: bytes) -> tuple[str, str]:
 def load_all_tracks() -> list[dict]:
     tracks = []
     seen: set[str] = set()
-    for path in [ALBUMS_JSON, SONGS_JSON]:
-        if not path.exists():
-            continue
-        try:
-            sections = json.loads(path.read_text(encoding="utf-8"))
-        except Exception:
-            continue
-        for section in sections:
-            for t in section.get("tracks", []):
-                url = (t.get("url") or t.get("spotify_url") or "").strip()
-                tid = _extract_track_id(url)
-                if not tid or tid in seen:
+
+    all_sections = []
+    if ALBUMS_DIR.exists():
+        for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
+            try:
+                payload = json.loads(album_file.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            album_name = payload.get("album", "") if isinstance(payload, dict) else ""
+            for section in payload.get("sections", []) if isinstance(payload, dict) else []:
+                if not isinstance(section, dict):
                     continue
-                seen.add(tid)
-                artists = t.get("artists") or []
-                tracks.append({
-                    "track_id":   tid,
-                    "title":      (t.get("title") or "").strip(),
-                    "artist":     t.get("primary_artist") or (artists[0] if artists else "Taylor Swift"),
-                    "spotify_url": f"https://open.spotify.com/track/{tid}",
-                    "image_url":  (t.get("image_url") or "").strip(),
-                    "album":      section.get("album", ""),
-                })
+                item = dict(section)
+                if not item.get("album"):
+                    item["album"] = album_name
+                all_sections.append(item)
+
+    if SONGS_JSON.exists():
+        try:
+            all_sections.extend(json.loads(SONGS_JSON.read_text(encoding="utf-8")))
+        except Exception:
+            pass
+
+    for section in all_sections:
+        for t in section.get("tracks", []):
+            url = (t.get("url") or t.get("spotify_url") or "").strip()
+            tid = _extract_track_id(url)
+            if not tid or tid in seen:
+                continue
+            seen.add(tid)
+            artists = t.get("artists") or []
+            tracks.append({
+                "track_id":   tid,
+                "title":      (t.get("title") or "").strip(),
+                "artist":     t.get("primary_artist") or (artists[0] if artists else "Taylor Swift"),
+                "spotify_url": f"https://open.spotify.com/track/{tid}",
+                "image_url":  (t.get("image_url") or "").strip(),
+                "album":      section.get("album", ""),
+            })
     return tracks
 
 
@@ -313,7 +329,7 @@ def scrape_track(track: dict) -> int | None:
     print(f"Scraping : {track['title']} …")
     attempt = 0
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=True)
         ctx  = browser.new_context(locale="fr-FR")
         page = ctx.new_page()
         page.route("**/*", _block_unneeded)
@@ -630,6 +646,7 @@ def main() -> None:
     parser.add_argument("date",  nargs="?", help="Stats date YYYY-MM-DD (default: yesterday)")
     parser.add_argument("--url",       help="Spotify track URL (alternative to title positional arg)")
     parser.add_argument("--post",      action="store_true", help="Post to Twitter after generating")
+    parser.add_argument("--no-post",   action="store_true", help="Generate image but skip Twitter posting")
     parser.add_argument("--no-scrape", action="store_true", help="Use history CSV total, skip live scraping")
     args = parser.parse_args()
 
@@ -678,7 +695,8 @@ def main() -> None:
         stats_date      = stats_date,
     )
 
-    if args.post:
+    post_requested = args.post and not args.no_post
+    if post_requested:
         if not TWITTER_SESSION.exists():
             print(f"Twitter session not found: {TWITTER_SESSION}")
             sys.exit(1)
@@ -693,6 +711,8 @@ def main() -> None:
         else:
             print("Échec du post.")
             sys.exit(1)
+    elif args.no_post:
+        print("Twitter post skipped (--no-post).")
 
 
 if __name__ == "__main__":

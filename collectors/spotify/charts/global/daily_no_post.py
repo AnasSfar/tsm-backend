@@ -6,6 +6,7 @@ Utile pour régénérer les données (filter, historique, image) sans publier.
 
 Usage : python daily_no_post.py [YYYY-MM-DD]
 """
+import os
 import re
 import subprocess
 import sys
@@ -17,6 +18,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from playwright.sync_api import sync_playwright
 
 ROOT                  = Path(__file__).parent
+_REPO_ROOT            = ROOT.parents[3]
 CHART_ID              = "regional-global-daily"
 SPOTIFY_SESSION       = ROOT / "tools/json/spotify_session.json"
 FILTER_SCRIPT         = ROOT / "tools/script/filter.py"
@@ -146,6 +148,8 @@ def run_filter(d: date) -> str | None:
         [sys.executable, str(FILTER_SCRIPT), str(d)],
         capture_output=True,
         text=True,
+        encoding="utf-8",
+        errors="replace",
         cwd=str(ROOT),
     )
 
@@ -174,6 +178,22 @@ def build_multi_tweet(dates: list[date]) -> str:
     parts = [datetime.strptime(str(d), "%Y-%m-%d").strftime("%B %d") for d in dates]
     year  = dates[-1].year
     return f"📈 | Taylor Swift on Daily Global 🌍 Spotify charts ({' & '.join(parts)}, {year}) :"
+
+
+def maybe_upload_to_r2() -> None:
+    if os.getenv("UPLOAD_TO_R2", "").strip().lower() in ("0", "false", "no"):
+        log("INFO", "R2 upload skipped (UPLOAD_TO_R2 explicitly disabled)")
+        return
+
+    r2_script = _REPO_ROOT / "scripts" / "r2.py"
+    if not r2_script.exists():
+        log("WARN", f"R2 upload script missing: {r2_script}")
+        return
+
+    log("STEP", "Uploading exported data to R2")
+    result = subprocess.run([sys.executable, str(r2_script)], check=False, cwd=str(_REPO_ROOT))
+    if result.returncode != 0:
+        raise RuntimeError(f"R2 upload failed with code {result.returncode}")
 
 
 def main():
@@ -246,7 +266,14 @@ def main():
         image_path = ROOT / "chart_image_multi.png"
         img_args = [sys.executable, str(GENERATE_IMAGE_SCRIPT)] + [str(d) for d in processed]
 
-    img_result = subprocess.run(img_args, capture_output=True, text=True, cwd=str(ROOT))
+    img_result = subprocess.run(
+        img_args,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        cwd=str(ROOT),
+    )
     if img_result.stdout:
         print(img_result.stdout, flush=True)
     if img_result.stderr:
@@ -261,6 +288,7 @@ def main():
         log("WARN", "Pas d'image disponible")
 
     log("INFO", f"Terminé ({len(processed)} date(s) traitée(s)) — Twitter non publié, posted.lock non créé")
+    maybe_upload_to_r2()
 
 
 if __name__ == "__main__":

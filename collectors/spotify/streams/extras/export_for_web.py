@@ -16,7 +16,7 @@ _DB_ROOT    = _REPO_ROOT / "db"
 HISTORY_CSV_PATH = _DB_ROOT / "streams_history.csv"
 
 DISCOGRAPHY_DIR  = _DB_ROOT / "discography"
-ALBUMS_JSON_SRC  = DISCOGRAPHY_DIR / "albums.json"
+ALBUMS_DIR_SRC   = DISCOGRAPHY_DIR / "albums"
 MISC_JSON_SRC    = DISCOGRAPHY_DIR / "songs.json"
 COVERS_JSON_PATH = DISCOGRAPHY_DIR / "covers.json"
 
@@ -135,43 +135,71 @@ def write_json(path: Path, payload) -> None:
     )
 
 
+def load_album_sections_flat() -> list[dict]:
+    """Load db/discography/albums/*.json and flatten to section entries."""
+    if not ALBUMS_DIR_SRC.exists():
+        return []
+
+    sections: list[dict] = []
+    for album_file in sorted(ALBUMS_DIR_SRC.glob("*.json"), key=lambda p: p.name.casefold()):
+        try:
+            payload = json.loads(album_file.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+
+        album_name = payload.get("album", "") if isinstance(payload, dict) else ""
+        raw_sections = payload.get("sections", []) if isinstance(payload, dict) else []
+        if not isinstance(raw_sections, list):
+            continue
+
+        for section in raw_sections:
+            if not isinstance(section, dict):
+                continue
+            item = dict(section)
+            if not item.get("album"):
+                item["album"] = album_name
+            sections.append(item)
+
+    return sections
+
+
 def load_tracks_from_discography() -> list[dict]:
     seen: dict[str, dict] = {}
 
-    for db_file in [ALBUMS_JSON_SRC, MISC_JSON_SRC]:
-        if not db_file.exists():
-            continue
+    all_sections = load_album_sections_flat()
+    if MISC_JSON_SRC.exists():
         try:
-            sections = json.loads(db_file.read_text(encoding="utf-8"))
+            all_sections.extend(json.loads(MISC_JSON_SRC.read_text(encoding="utf-8")))
         except Exception:
-            continue
-        for section in sections:
-            for track in section.get("tracks", []):
-                url = (track.get("url") or track.get("spotify_url") or "").strip()
-                track_id = extract_track_id(url)
-                if not track_id or track_id in seen:
-                    continue
-                title = (track.get("title") or "").strip()
-                if not title:
-                    continue
-                spotify_url = f"https://open.spotify.com/track/{track_id}"
-                image_url = track.get("image_url") or None
-                artists = track.get("artists") or []
-                primary_artist = track.get("primary_artist") or (artists[0] if artists else None)
+            pass
 
-                seen[track_id] = {
-                    "track_id": track_id,
-                    "title": title,
-                    "title_key": normalize_title_for_site(title),
-                    "spotify_url": spotify_url,
-                    "image_url": image_url,
-                    "streams": None,
-                    "daily_streams": None,
-                    "last_updated": None,
-                    "primary_artist": primary_artist,
-                    "artists": artists,
-                    "appearances": [],
-                }
+    for section in all_sections:
+        for track in section.get("tracks", []):
+            url = (track.get("url") or track.get("spotify_url") or "").strip()
+            track_id = extract_track_id(url)
+            if not track_id or track_id in seen:
+                continue
+            title = (track.get("title") or "").strip()
+            if not title:
+                continue
+            spotify_url = f"https://open.spotify.com/track/{track_id}"
+            image_url = track.get("image_url") or None
+            artists = track.get("artists") or []
+            primary_artist = track.get("primary_artist") or (artists[0] if artists else None)
+
+            seen[track_id] = {
+                "track_id": track_id,
+                "title": title,
+                "title_key": normalize_title_for_site(title),
+                "spotify_url": spotify_url,
+                "image_url": image_url,
+                "streams": None,
+                "daily_streams": None,
+                "last_updated": None,
+                "primary_artist": primary_artist,
+                "artists": artists,
+                "appearances": [],
+            }
 
     return list(seen.values())
 
@@ -418,10 +446,8 @@ def build_discography_index() -> tuple[dict, list[dict]]:
     album_map: dict[str, dict] = {}
 
     # ── Albums ────────────────────────────────────────────────────────────────
-    if ALBUMS_JSON_SRC.exists():
-        raw_editions: list[dict] = json.loads(
-            ALBUMS_JSON_SRC.read_text(encoding="utf-8")
-        )
+    raw_editions: list[dict] = load_album_sections_flat()
+    if raw_editions:
 
         # Group sections by album name while preserving insertion order
         albums_order: list[str] = []

@@ -1,19 +1,5 @@
-2026/03/22-15:17:17.639 5500 Reusing MANIFEST C:\Users\sfara\Documents\GitHub\The Taylor Swift Musuem\collectors\spotify\streams\tools\browser_cache\worker_5\Default\IndexedDB\https_open.spotify.com_0.indexeddb.leveldb/MANIFEST-000001
-2026/03/22-15:17:17.684 5500 Recovering log #4
-2026/03/22-15:17:17.859 5500 Reusing old log C:\Users\sfara\Documents\GitHub\The Taylor Swift Musuem\collectors\spotify\streams\tools\browser_cache\worker_5\Default\IndexedDB\https_open.spotify.com_0.indexeddb.leveldb/000004.log 
-2026/03/22-15:17:58.103 117e4 Level-0 table #8: started
-2026/03/22-15:17:58.153 117e4 Level-0 table #8: 759785 bytes OK
-2026/03/22-15:17:58.155 117e4 Delete type=0 #4
-2026/03/22-15:17:58.909 5500 Compacting 1@1 + 1@2 files
-2026/03/22-15:17:59.181 5500 Generated table #9@1: 3157 keys, 247573 bytes
-2026/03/22-15:17:59.182 5500 Compacted 1@1 + 1@2 files => 247573 bytes
-2026/03/22-15:17:59.188 5500 compacted to: files[ 0 0 1 0 0 0 0 ]
-2026/03/22-15:26:35.562 86c Level-0 table #11: started
-2026/03/22-15:26:36.763 86c Level-0 table #11: 779522 bytes OK
-2026/03/22-15:26:36.769 86c Delete type=2 #5
-2026/03/22-15:26:36.769 86c Delete type=0 #7
-2026/03/22-15:26:36.771 86c Delete type=2 #8
-2026/03/22-15:26:40.513 117e4 Compacting 1@1 + 1@2 files
-2026/03/22-15:26:40.570 117e4 Generated table #12@1: 4637 keys, 368553 bytes
-2026/03/22-15:26:40.570 117e4 Compacted 1@1 + 1@2 files => 368553 bytes
-2026/03/22-15:26:40.571 117e4 compacted to: files[ 0 0 1 0 0 0 0 ]
+2026/03/22-15:29:10.107 57f4 Reusing MANIFEST C:\Users\sfara\Documents\GitHub\The Taylor Swift Musuem\collectors\spotify\streams\tools\browser_cache\worker_5\Default\IndexedDB\https_open.spotify.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/03/22-15:29:10.108 57f4 Recovering log #10
+2026/03/22-15:29:10.109 57f4 Reusing old log C:\Users\sfara\Documents\GitHub\The Taylor Swift Musuem\collectors\spotify\streams\tools\browser_cache\worker_5\Default\IndexedDB\https_open.spotify.com_0.indexeddb.leveldb/000010.log 
+2026/03/22-15:29:10.109 57f4 Delete type=2 #9
+2026/03/22-15:29:10.109 57f4 Delete type=2 #11

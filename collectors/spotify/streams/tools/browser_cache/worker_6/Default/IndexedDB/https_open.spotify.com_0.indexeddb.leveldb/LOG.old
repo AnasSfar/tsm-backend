@@ -1,5 +1,3 @@
-2026/03/22-15:17:54.555 10860 Creating DB C:\Users\sfara\Documents\GitHub\The Taylor Swift Musuem\collectors\spotify\streams\tools\browser_cache\worker_6\Default\IndexedDB\https_open.spotify.com_0.indexeddb.leveldb since it was missing.
-2026/03/22-15:17:54.568 10860 Reusing MANIFEST C:\Users\sfara\Documents\GitHub\The Taylor Swift Musuem\collectors\spotify\streams\tools\browser_cache\worker_6\Default\IndexedDB\https_open.spotify.com_0.indexeddb.leveldb/MANIFEST-000001
-2026/03/22-15:26:33.023 abdc Level-0 table #5: started
-2026/03/22-15:26:36.766 abdc Level-0 table #5: 836705 bytes OK
-2026/03/22-15:26:36.777 abdc Delete type=0 #3
+2026/03/22-15:29:44.198 eac Reusing MANIFEST C:\Users\sfara\Documents\GitHub\The Taylor Swift Musuem\collectors\spotify\streams\tools\browser_cache\worker_6\Default\IndexedDB\https_open.spotify.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/03/22-15:29:44.199 eac Recovering log #4
+2026/03/22-15:29:44.201 eac Reusing old log C:\Users\sfara\Documents\GitHub\The Taylor Swift Musuem\collectors\spotify\streams\tools\browser_cache\worker_6\Default\IndexedDB\https_open.spotify.com_0.indexeddb.leveldb/000004.log 

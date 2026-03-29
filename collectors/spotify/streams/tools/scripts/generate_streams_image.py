@@ -40,6 +40,7 @@ DB_DIR       = REPO_ROOT / "db"
 HISTORY_PATH = DB_DIR / "streams_history.csv"
 COVERS_PATH  = DB_DIR / "discography" / "covers.json"
 SONGS_JSON   = DB_DIR / "discography" / "songs.json"
+ALBUMS_DIR   = DB_DIR / "discography" / "albums"
 HEADERS_DIR  = _TOOLS / "headers"
 HANDLE       = "@swiftiescharts"
 
@@ -104,21 +105,33 @@ def load_covers() -> dict:
 
 
 def load_track_album_map() -> dict:
-    """Returns {normalized_track_title → album_title} from albums.json + songs.json."""
+    """Returns {normalized_track_title → album_title} from album files + songs.json."""
     result = {}
-    for path in [DB_DIR / "discography" / "albums.json", SONGS_JSON]:
-        if not path.exists():
-            continue
-        try:
-            groups = json.loads(path.read_text(encoding="utf-8"))
-            for group in groups:
-                album_name = group.get("album", "")
-                for track in group.get("tracks", []):
+
+    if ALBUMS_DIR.exists():
+        for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
+            try:
+                payload = json.loads(album_file.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            album_name = payload.get("album", "") if isinstance(payload, dict) else ""
+            for section in payload.get("sections", []) if isinstance(payload, dict) else []:
+                for track in section.get("tracks", []):
                     title = track.get("title", "")
                     if title:
                         result[_norm(title)] = album_name
+
+    if SONGS_JSON.exists():
+        try:
+            groups = json.loads(SONGS_JSON.read_text(encoding="utf-8"))
         except Exception:
-            pass
+            groups = []
+        for group in groups:
+            album_name = group.get("album", "")
+            for track in group.get("tracks", []):
+                title = track.get("title", "")
+                if title:
+                    result[_norm(title)] = album_name
     return result
 
 
@@ -126,28 +139,37 @@ def load_song_db() -> dict:
     """Returns {track_id: {title, artist, image_url}} from discography JSONs."""
     import re as _re
     result = {}
-    for path in [DB_DIR / "discography" / "albums.json",
-                 DB_DIR / "discography" / "songs.json"]:
-        if not path.exists():
-            continue
+
+    def _consume_sections(sections: list[dict], source_name: str) -> None:
+        for section in sections:
+            for t in section.get("tracks", []):
+                url = (t.get("url") or t.get("spotify_url") or "").strip()
+                m = _re.search(r"track/([A-Za-z0-9]+)", url)
+                if not m:
+                    continue
+                track_id = m.group(1)
+                if track_id in result:
+                    continue
+                artists = t.get("artists") or []
+                result[track_id] = {
+                    "title":     (t.get("title") or "").strip(),
+                    "artist":    t.get("primary_artist") or (artists[0] if artists else "Taylor Swift"),
+                    "image_url": (t.get("image_url") or "").strip(),
+                }
+
+    if ALBUMS_DIR.exists():
+        for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
+            try:
+                payload = json.loads(album_file.read_text(encoding="utf-8"))
+                _consume_sections(payload.get("sections", []) if isinstance(payload, dict) else [], album_file.name)
+            except Exception as e:
+                print(f"Erreur {album_file.name}: {e}")
+
+    if (DB_DIR / "discography" / "songs.json").exists():
         try:
-            for section in json.loads(path.read_text(encoding="utf-8")):
-                for t in section.get("tracks", []):
-                    url = (t.get("url") or t.get("spotify_url") or "").strip()
-                    m = _re.search(r"track/([A-Za-z0-9]+)", url)
-                    if not m:
-                        continue
-                    track_id = m.group(1)
-                    if track_id in result:
-                        continue
-                    artists = t.get("artists") or []
-                    result[track_id] = {
-                        "title":     (t.get("title") or "").strip(),
-                        "artist":    t.get("primary_artist") or (artists[0] if artists else "Taylor Swift"),
-                        "image_url": (t.get("image_url") or "").strip(),
-                    }
+            _consume_sections(json.loads((DB_DIR / "discography" / "songs.json").read_text(encoding="utf-8")), "songs.json")
         except Exception as e:
-            print(f"Erreur {path.name}: {e}")
+            print(f"Erreur songs.json: {e}")
     return result
 
 

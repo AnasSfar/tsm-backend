@@ -1,3 +1,6 @@
-2026/03/28-15:01:13.531 92b8 Reusing MANIFEST C:\Users\sfara\Documents\GitHub\The Taylor Swift Musuem\collectors\spotify\streams\tools\browser_cache\worker_4\Default\Session Storage/MANIFEST-000001
-2026/03/28-15:01:13.532 92b8 Recovering log #6
-2026/03/28-15:01:13.535 92b8 Reusing old log C:\Users\sfara\Documents\GitHub\The Taylor Swift Musuem\collectors\spotify\streams\tools\browser_cache\worker_4\Default\Session Storage/000006.log 
+2026/03/29-01:38:23.349 888c Reusing MANIFEST C:\Users\sfara\Documents\GitHub\tsm-backend\collectors\spotify\streams\tools\browser_cache\worker_4\Default\Session Storage/MANIFEST-000001
+2026/03/29-01:38:23.350 888c Recovering log #6
+2026/03/29-01:38:23.352 888c Reusing old log C:\Users\sfara\Documents\GitHub\tsm-backend\collectors\spotify\streams\tools\browser_cache\worker_4\Default\Session Storage/000006.log 
+2026/03/29-01:40:27.196 862c Level-0 table #10: started
+2026/03/29-01:40:27.212 862c Level-0 table #10: 37016 bytes OK
+2026/03/29-01:40:27.217 862c Delete type=0 #6

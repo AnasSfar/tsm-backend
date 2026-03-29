@@ -18,7 +18,7 @@ ARTIST_PATH = DATA_DIR / "artist.json"
 SITE_ARTIST_PATH = SITE_DATA_DIR / "artist.json"
 ARTIST_URL = "https://open.spotify.com/artist/06HL4z0CvFAxyc27GXpf02"
 
-HEADLESS = False
+HEADLESS = True
 
 
 def get_scrape_date_str() -> str:

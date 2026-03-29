@@ -29,7 +29,7 @@ _REPO_ROOT  = _SCRIPT_DIR.parents[3]
 DB_ROOT         = _REPO_ROOT / "db"
 DISCOGRAPHY_DIR = DB_ROOT / "discography"
 SONGS_JSON_PATH = DISCOGRAPHY_DIR / "songs.json"
-ALBUMS_JSON_PATH = DISCOGRAPHY_DIR / "albums.json"
+ALBUMS_DIR_PATH = DISCOGRAPHY_DIR / "albums"
 
 # ── Config ─────────────────────────────────────────────────────────────────────
 ARTIST_ID       = "06HL4z0CvFAxyc27GXpf02"
@@ -126,10 +126,21 @@ def parse_songs_page(html: str) -> list[dict]:
 
 def existing_track_ids() -> set[str]:
     ids: set[str] = set()
-    for path in [ALBUMS_JSON_PATH, SONGS_JSON_PATH]:
-        if not path.exists():
-            continue
-        for section in json.loads(path.read_text(encoding="utf-8")):
+    if ALBUMS_DIR_PATH.exists():
+        for album_file in sorted(ALBUMS_DIR_PATH.glob("*.json"), key=lambda p: p.name.casefold()):
+            try:
+                payload = json.loads(album_file.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            for section in payload.get("sections", []) if isinstance(payload, dict) else []:
+                for t in section.get("tracks", []):
+                    url = (t.get("url") or t.get("spotify_url") or "").strip()
+                    m = TRACK_ID_RE.search(url)
+                    if m:
+                        ids.add(m.group(1))
+
+    if SONGS_JSON_PATH.exists():
+        for section in json.loads(SONGS_JSON_PATH.read_text(encoding="utf-8")):
             for t in section.get("tracks", []):
                 url = (t.get("url") or t.get("spotify_url") or "").strip()
                 m = TRACK_ID_RE.search(url)
@@ -140,10 +151,27 @@ def existing_track_ids() -> set[str]:
 
 def existing_title_slugs() -> set[str]:
     slugs: set[str] = set()
-    for path in [ALBUMS_JSON_PATH, SONGS_JSON_PATH]:
-        if not path.exists():
-            continue
-        for section in json.loads(path.read_text(encoding="utf-8")):
+
+    all_sections: list[dict] = []
+    if ALBUMS_DIR_PATH.exists():
+        for album_file in sorted(ALBUMS_DIR_PATH.glob("*.json"), key=lambda p: p.name.casefold()):
+            try:
+                payload = json.loads(album_file.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            album_name = payload.get("album", "") if isinstance(payload, dict) else ""
+            for section in payload.get("sections", []) if isinstance(payload, dict) else []:
+                if not isinstance(section, dict):
+                    continue
+                item = dict(section)
+                if not item.get("album"):
+                    item["album"] = album_name
+                all_sections.append(item)
+
+    if SONGS_JSON_PATH.exists():
+        all_sections.extend(json.loads(SONGS_JSON_PATH.read_text(encoding="utf-8")))
+
+    for section in all_sections:
             for t in section.get("tracks", []):
                 title = (t.get("title") or "").strip()
                 if title:

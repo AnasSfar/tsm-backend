@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Gestion de ts_history.json — partagé Fr + Global."""
 import json
+import re
 from pathlib import Path
 from datetime import datetime
 
@@ -8,10 +9,26 @@ from datetime import datetime
 TS_HISTORY_FILE = "ts_history.json"
 
 
+def _to_int(value):
+    if value is None:
+        return None
+    if isinstance(value, int):
+        return value
+
+    raw = str(value).strip()
+    if not raw or raw.lower() == "nan":
+        return None
+
+    digits = re.sub(r"\D", "", raw)
+    if not digits:
+        return None
+    return int(digits)
+
+
 def parse_date(s: str):
     try:
         return datetime.strptime(str(s), "%Y-%m-%d").date()
-    except Exception:
+    except ValueError:
         return None
 
 
@@ -20,7 +37,8 @@ def load(path: Path = None) -> dict:
     if p.exists():
         try:
             return json.loads(p.read_text(encoding="utf-8"))
-        except Exception:
+        except (OSError, json.JSONDecodeError):
+            print(f"[history] JSON invalide, fichier ignoré: {p}")
             return {}
     return {}
 
@@ -34,25 +52,16 @@ def update(history: dict, track: str, chart_date: str, rank: int, streams,
            previous_rank=None, peak_rank=None):
     if track not in history:
         history[track] = {}
-    try:
-        streams_int = int(streams)
-    except (TypeError, ValueError):
-        streams_int = 0
+    streams_int = _to_int(streams) or 0
     entry = {"rank": rank, "streams": streams_int}
     if previous_rank is not None:
-        try:
-            v = int(float(previous_rank))
-            if v > 0:
-                entry["previous_rank"] = v
-        except (TypeError, ValueError):
-            pass
+        v = _to_int(previous_rank)
+        if v and v > 0:
+            entry["previous_rank"] = v
     if peak_rank is not None:
-        try:
-            v = int(float(peak_rank))
-            if v > 0:
-                entry["peak_rank"] = v
-        except (TypeError, ValueError):
-            pass
+        v = _to_int(peak_rank)
+        if v and v > 0:
+            entry["peak_rank"] = v
     history[track][chart_date] = entry
 
 

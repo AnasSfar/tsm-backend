@@ -14,6 +14,7 @@ Logique :
 Options :
   --force   Supprime le posted.lock de la date cible et relance le pipeline complet.
             Sans date explicite, cible hier.
+    --no-post Exécute tout le pipeline mais ignore la publication Twitter.
 """
 import re
 import os
@@ -80,6 +81,29 @@ def mark_posted(d: date):
     log("INFO", f"posted.lock créé: {p}")
 
 
+def tweet_path(d: date) -> Path:
+    return DATA_DIR / str(d.year) / f"{d.month:02d}" / str(d) / "tweet.txt"
+
+
+def cleanup_tweet_files(dates: list[date]) -> None:
+    for d in dates:
+        tp = tweet_path(d)
+        if tp.exists():
+            try:
+                tp.unlink()
+                log("INFO", f"tweet.txt supprimé pour {d}")
+            except Exception as e:
+                log("WARN", f"Impossible de supprimer tweet.txt pour {d}: {e}")
+
+    twitter_post = ROOT / "twitter_post.txt"
+    if twitter_post.exists():
+        try:
+            twitter_post.unlink()
+            log("INFO", "twitter_post.txt supprimé")
+        except Exception as e:
+            log("WARN", f"Impossible de supprimer twitter_post.txt: {e}")
+
+
 def get_unposted_dates() -> list[date]:
     """Retourne les dates non-postées des LOOKBACK_DAYS derniers jours, du plus ancien au plus récent."""
     today = date.today()
@@ -106,7 +130,7 @@ def page_available(d: date) -> bool:
         context = None
         try:
             browser = p.chromium.launch(
-                headless=False,
+                headless=True,
                 args=[
                     "--disable-blink-features=AutomationControlled",
                     "--disable-dev-shm-usage",
@@ -154,15 +178,23 @@ def page_available(d: date) -> bool:
 
             log("CHECK", f"Longueur texte: {len(body_text)}")
 
-            has_streams      = bool(re.search(r"\b\d{1,3}[,.\s]\d{3}[,.\s]\d{3}\b", body_text))
-            has_chart_header = "track" in body_text_lower and "streams" in body_text_lower
-            has_rank_line    = bool(re.search(r"(?m)^\s*1\s*$", body_text))
+            has_streams      = bool(re.search(r"\b\d{1,3}(?:[,.\s]\d{3})+\b", body_text))
+            has_chart_header = (
+                (("track" in body_text_lower) or ("titre" in body_text_lower))
+                and (("streams" in body_text_lower) or ("ecoutes" in body_text_lower) or ("écoutes" in body_text_lower))
+            )
+            has_rank_line    = bool(re.search(r"(?m)^\s*(?:1|2|3|4|5)\s*$", body_text))
+            try:
+                has_download_button = page.locator("button[aria-labelledby='csv_download']").count() > 0
+            except Exception:
+                has_download_button = False
 
             log("CHECK", f"has_streams={has_streams}")
             log("CHECK", f"has_chart_header={has_chart_header}")
             log("CHECK", f"has_rank_line={has_rank_line}")
+            log("CHECK", f"has_download_button={has_download_button}")
 
-            available = has_streams and has_chart_header and has_rank_line
+            available = has_download_button or (has_streams and (has_chart_header or has_rank_line)) or (has_chart_header and has_rank_line)
             log("CHECK", f"Page exploitable: {'oui' if available else 'non'}")
             return available
 
@@ -189,6 +221,8 @@ def run_filter(d: date) -> str | None:
         [sys.executable, str(FILTER_SCRIPT), str(d)],
         capture_output=True,
         text=True,
+        encoding="utf-8",
+        errors="replace",
         cwd=str(ROOT),
     )
 
@@ -203,12 +237,12 @@ def run_filter(d: date) -> str | None:
         log("ERROR", f"filter.py a échoué (code {result.returncode})")
         return None
 
-    tweet_path = DATA_DIR / str(d.year) / f"{d.month:02d}" / str(d) / "tweet.txt"
-    if not tweet_path.exists():
+    tp = tweet_path(d)
+    if not tp.exists():
         log("ERROR", "tweet.txt introuvable après filter.py")
         return None
 
-    content = tweet_path.read_text(encoding="utf-8")
+    content = tp.read_text(encoding="utf-8")
     log("INFO", f"tweet.txt chargé ({len(content)} caractères)")
     return content
 
@@ -220,8 +254,8 @@ def build_multi_tweet(dates: list[date]) -> str:
 
 
 def maybe_upload_to_r2() -> None:
-    if os.getenv("UPLOAD_TO_R2", "").strip().lower() not in ("1", "true", "yes"):
-        log("INFO", "R2 upload skipped (UPLOAD_TO_R2 disabled)")
+    if os.getenv("UPLOAD_TO_R2", "").strip().lower() in ("0", "false", "no"):
+        log("INFO", "R2 upload skipped (UPLOAD_TO_R2 explicitly disabled)")
         return
 
     r2_script = _REPO_ROOT / "scripts" / "r2.py"
@@ -230,11 +264,14 @@ def maybe_upload_to_r2() -> None:
         return
 
     log("STEP", "Uploading exported data to R2")
-    subprocess.run([sys.executable, str(r2_script)], check=False, cwd=str(_REPO_ROOT))
+    result = subprocess.run([sys.executable, str(r2_script)], check=False, cwd=str(_REPO_ROOT))
+    if result.returncode != 0:
+        raise RuntimeError(f"R2 upload failed with code {result.returncode}")
 
 
 def main():
     force = "--force" in sys.argv
+    no_post = "--no-post" in sys.argv
     date_args = [a for a in sys.argv[1:] if not a.startswith("--")]
 
     # Mode manuel : python daily.py [--force] [YYYY-MM-DD]
@@ -324,7 +361,14 @@ def main():
         image_path = ROOT / "chart_image_multi.png"
         img_args = [sys.executable, str(GENERATE_IMAGE_SCRIPT)] + [str(d) for d in processed]
 
-    img_result = subprocess.run(img_args, capture_output=True, text=True, cwd=str(ROOT))
+    img_result = subprocess.run(
+        img_args,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        cwd=str(ROOT),
+    )
     if img_result.stdout:
         print(img_result.stdout, flush=True)
     if img_result.stderr:
@@ -334,15 +378,22 @@ def main():
         image_path = None
 
     # Poster
-    log("STEP", "Publication Twitter")
-    if image_path and image_path.exists():
-        posted = post_with_image(tweet_content, image_path, TWITTER_SESSION)
+    if no_post:
+        log("INFO", "Publication Twitter ignorée (--no-post)")
+        posted = True
     else:
-        posted = post_thread(split_tweets(tweet_content), TWITTER_SESSION)
+        log("STEP", "Publication Twitter")
+        if image_path and image_path.exists():
+            posted = post_with_image(tweet_content, image_path, TWITTER_SESSION)
+        else:
+            posted = post_thread(split_tweets(tweet_content), TWITTER_SESSION)
 
     if posted:
         for d in processed:
             mark_posted(d)
+
+        cleanup_tweet_files(processed)
+
         log("INFO", f"Terminé avec succès ({len(processed)} date(s) postée(s))")
 
         git_commit_and_push(_REPO_ROOT)

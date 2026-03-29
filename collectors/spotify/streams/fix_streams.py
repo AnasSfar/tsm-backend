@@ -46,13 +46,13 @@ import export_for_web          # noqa: E402
 from git_ops import git_commit_and_push  # noqa: E402
 
 HISTORY_PATH = _DB_ROOT / "streams_history.csv"
-ALBUMS_JSON  = _DB_ROOT / "discography" / "albums.json"
+ALBUMS_DIR   = _DB_ROOT / "discography" / "albums"
 SONGS_JSON   = _DB_ROOT / "discography" / "songs.json"
 SESSION_PATH = _SCRIPT_DIR / "tools" / "json" / "spotify_session.json"
 CACHE_DIR    = _SCRIPT_DIR / "tools" / "browser_cache"
 
 PAGE_GOTO_TIMEOUT_MS = 20_000
-HEADLESS             = False
+HEADLESS             = True
 NUM_WORKERS          = 6        # point de départ pour le hill climbing
 RATE_LIMIT_WAIT      = 60       # secondes d'attente si 429
 MAX_WORKERS          = 10       # plafond du hill climbing
@@ -330,13 +330,33 @@ def scrape_total(page, title: str, url: str, adaptive: AdaptiveWorkerState) -> i
 
 def load_tracks_from_discography() -> list[dict]:
     seen: dict[str, dict] = {}
-    for db_file in (ALBUMS_JSON, SONGS_JSON):
-        if not db_file.exists():
-            continue
+
+    if ALBUMS_DIR.exists():
+        for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
+            try:
+                payload = json.loads(album_file.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            for section in payload.get("sections", []) if isinstance(payload, dict) else []:
+                for track in section.get("tracks", []):
+                    url = (track.get("url") or track.get("spotify_url") or "").strip()
+                    tid = extract_track_id(url)
+                    if not tid or tid in seen:
+                        continue
+                    title = (track.get("title") or "").strip()
+                    if not title:
+                        continue
+                    seen[tid] = {
+                        "track_id": tid,
+                        "title":    title,
+                        "url":      f"https://open.spotify.com/track/{tid}",
+                    }
+
+    if SONGS_JSON.exists():
         try:
-            sections = json.loads(db_file.read_text(encoding="utf-8"))
+            sections = json.loads(SONGS_JSON.read_text(encoding="utf-8"))
         except Exception:
-            continue
+            sections = []
         for section in sections:
             for track in section.get("tracks", []):
                 url = (track.get("url") or track.get("spotify_url") or "").strip()

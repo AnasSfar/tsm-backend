@@ -14,6 +14,18 @@ const REGIONS = {
     title:      'France Spotify',
     coversUrl:  '../spotify-charts/track_covers.json',
   },
+  us: {
+    csvUrl:    () => '../../db/charts_history_us.csv',
+    dayUrl:    d  => { const [y,m]=d.split('-'); return `../../collectors/spotify/charts/us/history/${y}/${m}/${d}/ts_chart_${d}.json`; },
+    title:      'US Spotify',
+    coversUrl:  '../spotify-charts/track_covers.json',
+  },
+  uk: {
+    csvUrl:    () => '../../db/charts_history_uk.csv',
+    dayUrl:    d  => { const [y,m]=d.split('-'); return `../../collectors/spotify/charts/uk/history/${y}/${m}/${d}/ts_chart_${d}.json`; },
+    title:      'UK Spotify',
+    coversUrl:  '../spotify-charts/track_covers.json',
+  },
 };
 
 /* ════════════════════════════════════════
@@ -22,6 +34,8 @@ const REGIONS = {
 const S = {
   global: { hist:{}, avail:[], imgCache:{}, dayCache:{}, loaded:false },
   fr:     { hist:{}, avail:[], imgCache:{}, dayCache:{}, loaded:false },
+  us:     { hist:{}, avail:[], imgCache:{}, dayCache:{}, loaded:false },
+  uk:     { hist:{}, avail:[], imgCache:{}, dayCache:{}, loaded:false },
 };
 let cjs = [];
 
@@ -64,7 +78,7 @@ function parseHash() {
   const raw = decodeURIComponent(location.hash.slice(1)) || 'global/chart';
   const parts = raw.split('/');
   let rgn = 'global', rest = raw;
-  if (parts[0] === 'global' || parts[0] === 'fr') {
+  if (parts[0] === 'global' || parts[0] === 'fr' || parts[0] === 'us' || parts[0] === 'uk') {
     rgn  = parts[0];
     rest = parts.slice(1).join('/') || 'chart';
   }
@@ -328,6 +342,8 @@ async function renderToday(rgn) {
     <div class="region-toggle-bar">
       <button class="rgn-btn ${rgn==='global'?'active':''}" data-r="global">🌍 Global</button>
       <button class="rgn-btn ${rgn==='fr'    ?'active':''}" data-r="fr">🇫🇷 France</button>
+      <button class="rgn-btn ${rgn==='us'    ?'active':''}" data-r="us">🇺🇸 US</button>
+      <button class="rgn-btn ${rgn==='uk'    ?'active':''}" data-r="uk">🇬🇧 UK</button>
     </div>
     ${buildChart(rgn, latestDate, songsOn(rgn, latestDate), outs(rgn, latestDate), extra)}
     <div class="calendar-section">
@@ -718,6 +734,8 @@ async function renderHistoryPage() {
         <div class="disco-rgn">
           <button class="disco-rgn-btn ${rgn==='global'?'active':''}" data-r="global">🌍 Global</button>
           <button class="disco-rgn-btn ${rgn==='fr'    ?'active':''}" data-r="fr">🇫🇷 France</button>
+          <button class="disco-rgn-btn ${rgn==='us'    ?'active':''}" data-r="us">🇺🇸 US</button>
+          <button class="disco-rgn-btn ${rgn==='uk'    ?'active':''}" data-r="uk">🇬🇧 UK</button>
         </div>
       </div>
       <div class="disco-albums">${albumsHtml || '<div class="empty">No results.</div>'}</div>`;

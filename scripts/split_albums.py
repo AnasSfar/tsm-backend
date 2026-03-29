@@ -103,39 +103,46 @@ def build_album_file(album_name: str, sections: list[dict[str, Any]]) -> dict[st
 
 
 def main() -> None:
-    if not SOURCE_PATH.exists():
-        raise FileNotFoundError(f"Source file not found: {SOURCE_PATH}")
+    if SOURCE_PATH.exists():
+        data = read_json(SOURCE_PATH)
 
-    data = read_json(SOURCE_PATH)
+        if not isinstance(data, list):
+            raise ValueError(
+                f"Expected {SOURCE_PATH} to contain a top-level list of album sections."
+            )
 
-    if not isinstance(data, list):
-        raise ValueError(
-            f"Expected {SOURCE_PATH} to contain a top-level list of album sections."
-        )
+        by_album: dict[str, list[dict[str, Any]]] = defaultdict(list)
 
-    by_album: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        for i, entry in enumerate(data):
+            if not isinstance(entry, dict):
+                raise ValueError(f"Entry #{i} is not an object.")
+            album_name = entry.get("album")
+            if not isinstance(album_name, str) or not album_name.strip():
+                raise ValueError(f"Entry #{i} is missing a valid 'album' field.")
+            by_album[album_name.strip()].append(entry)
 
-    for i, entry in enumerate(data):
-        if not isinstance(entry, dict):
-            raise ValueError(f"Entry #{i} is not an object.")
-        album_name = entry.get("album")
-        if not isinstance(album_name, str) or not album_name.strip():
-            raise ValueError(f"Entry #{i} is missing a valid 'album' field.")
-        by_album[album_name.strip()].append(entry)
+        OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+        written_files: list[Path] = []
+        for album_name in sorted(by_album.keys(), key=lambda s: s.casefold()):
+            album_data = build_album_file(album_name, by_album[album_name])
+            filename = f"{slugify(album_name)}.json"
+            output_path = OUTPUT_DIR / filename
+            write_json(output_path, album_data)
+            written_files.append(output_path)
 
-    written_files: list[Path] = []
-    for album_name in sorted(by_album.keys(), key=lambda s: s.casefold()):
-        album_data = build_album_file(album_name, by_album[album_name])
-        filename = f"{slugify(album_name)}.json"
-        output_path = OUTPUT_DIR / filename
-        write_json(output_path, album_data)
-        written_files.append(output_path)
+        print(f"Split complete: {len(written_files)} album file(s) written to {OUTPUT_DIR}")
+        for path in written_files:
+            print(f" - {path.relative_to(ROOT)}")
+        return
 
-    print(f"Split complete: {len(written_files)} album file(s) written to {OUTPUT_DIR}")
-    for path in written_files:
-        print(f" - {path.relative_to(ROOT)}")
+    if OUTPUT_DIR.exists() and any(OUTPUT_DIR.glob("*.json")):
+        print(f"Albums are already split in {OUTPUT_DIR}.")
+        return
+
+    raise FileNotFoundError(
+        f"No legacy source at {SOURCE_PATH} and no split directory at {OUTPUT_DIR}."
+    )
 
 
 if __name__ == "__main__":

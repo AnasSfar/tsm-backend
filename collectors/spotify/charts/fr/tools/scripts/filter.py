@@ -105,9 +105,11 @@ def clean_int(value):
     s = str(value).strip()
     if not s or s.lower() == "nan":
         return None
-    s = s.replace(",", "").replace(" ", "")
-    if s.isdigit():
-        return int(s)
+    s = s.replace("−", "-").replace("–", "-").replace("—", "-")
+    s = re.sub(r"[,\.\s]", "", s)
+    if re.fullmatch(r"-?\d+", s):
+        n = int(s)
+        return n if n > 0 else None
     return None
 
 
@@ -287,7 +289,7 @@ def _get_bearer_token() -> str:
     browser = None
     try:
         browser = p.chromium.launch(
-            headless=False,
+            headless=True,
             args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
         )
         ctx = browser.new_context(
@@ -322,21 +324,21 @@ def _parse_api_entries(data: dict) -> list[dict]:
     for entry in (data.get("entries") or []):
         ced  = entry.get("chartEntryData") or {}
         meta = entry.get("trackMetadata") or {}
-        rank    = ced.get("currentRank")
-        streams = (ced.get("rankingMetric") or {}).get("value")
+        rank = clean_int(ced.get("currentRank"))
+        streams = clean_int((ced.get("rankingMetric") or {}).get("value"))
         artists = meta.get("artists") or []
         artist_str = ", ".join(a.get("name", "") for a in artists if a.get("name"))
         track = meta.get("trackName") or ""
         if not track or rank is None:
             continue
         rows.append({
-            "rank":          int(rank),
+            "rank":          rank,
             "track_name":    track.strip(),
             "artist_names":  artist_str.strip(),
-            "streams":       int(streams) if streams else None,
-            "previous_rank": ced.get("previousRank"),
-            "peak_rank":     ced.get("peakRank"),
-            "total_days":    ced.get("consecutiveAppearancesOnChart"),
+            "streams":       streams,
+            "previous_rank": clean_int(ced.get("previousRank")),
+            "peak_rank":     clean_int(ced.get("peakRank")),
+            "total_days":    clean_int(ced.get("consecutiveAppearancesOnChart")),
             "image_url":     (meta.get("displayImageUri") or "").replace("spotify:image:", "https://i.scdn.co/image/") or None,
         })
     rows.sort(key=lambda r: r["rank"])
@@ -444,7 +446,7 @@ def scrape_chart_rows(chart_date: str) -> list[dict]:
         try:
             with sync_playwright() as p:
                 browser = p.chromium.launch(
-                    headless=False,
+                    headless=True,
                     args=[
                         "--disable-blink-features=AutomationControlled",
                         "--disable-dev-shm-usage",

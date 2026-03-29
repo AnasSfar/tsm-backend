@@ -1,0 +1,97 @@
+{
+  "username": "theflameofanas",
+  "password": "AnasTaylorSwift2005!",
+  "cookies": [
+    {
+      "name": "auth_token",
+      "value": "8407ebd123ed4e32da75e15ab416e2d33ed878a8",
+      "domain": ".x.com",
+      "path": "/",
+      "secure": true,
+      "httpOnly": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "guest_id",
+      "value": "v1%3A175709000554228776",
+      "domain": ".x.com",
+      "path": "/",
+      "secure": true,
+      "httpOnly": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "twid",
+      "value": "u%3D1623291037144821760",
+      "domain": ".x.com",
+      "path": "/",
+      "secure": true,
+      "httpOnly": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "__cf_bm",
+      "value": "6PevFPa9GdF5c3XP.dEHSDrBk9SyUUSy9OdsO.PkkNo-1772894592.4745693-1.0.1.1-vJuHZ4SYIcHfCnX4vZA9YmUJEb7iKxoYWhbnT5kJk4.3cEGO8isS.9is1LVSiy5TwgsQATs3ekMmDNTFHtLntfnwtfscCKJEOrhFQ399J0xSPmXKRdlgpFA8sV5s4AXt",
+      "domain": ".x.com",
+      "path": "/",
+      "secure": true,
+      "httpOnly": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "ct0",
+      "value": "807d0ecae014bff8dc84780a378821093a15298621d14a503bf6fcc0c2e42aad9889f1133c29cb75581a935ed56046e38a1c42429deaf2ebec2d01680954d87c8e7d0ba20d3b72f9bcf5efe963942544",
+      "domain": ".x.com",
+      "path": "/",
+      "secure": true,
+      "httpOnly": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "d_prefs",
+      "value": "MToxLGNvbnNlbnRfdmVyc2lvbjoyLHRleHRfdmVyc2lvbjoxMDAw",
+      "domain": ".x.com",
+      "path": "/",
+      "secure": true,
+      "httpOnly": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "guest_id_ads",
+      "value": "v1%3A175709000554228776",
+      "domain": ".x.com",
+      "path": "/",
+      "secure": true,
+      "httpOnly": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "guest_id_marketing",
+      "value": "v1%3A175709000554228776",
+      "domain": ".x.com",
+      "path": "/",
+      "secure": true,
+      "httpOnly": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "kdt",
+      "value": "Aaft2cQpngeeLSTFON4hCe7KpQOiltuVxhpEAJca",
+      "domain": ".x.com",
+      "path": "/",
+      "secure": true,
+      "httpOnly": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "personalization_id",
+      "value": "\"v1_imV1FWi+zikoRIGdypjjHw==\"",
+      "domain": ".x.com",
+      "path": "/",
+      "secure": true,
+      "httpOnly": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": []
+}

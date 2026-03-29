@@ -3,79 +3,79 @@
     "2026-03-21": {
       "rank": 29,
       "streams": 173196,
-      "previous_rank": 36,
+      "previous_rank": 360,
       "peak_rank": 2
     },
     "2026-03-20": {
       "rank": 36,
       "streams": 161280,
-      "previous_rank": 32,
+      "previous_rank": 320,
       "peak_rank": 2
     },
     "2026-03-19": {
       "rank": 32,
       "streams": 155224,
-      "previous_rank": 36,
+      "previous_rank": 360,
       "peak_rank": 2
     },
     "2026-03-18": {
       "rank": 36,
       "streams": 159060,
-      "previous_rank": 32,
+      "previous_rank": 320,
       "peak_rank": 2
     },
     "2026-03-17": {
       "rank": 32,
       "streams": 151592,
-      "previous_rank": 37,
+      "previous_rank": 370,
       "peak_rank": 2
     },
     "2026-03-16": {
       "rank": 37,
       "streams": 141310,
-      "previous_rank": 36,
+      "previous_rank": 360,
       "peak_rank": 2
     },
     "2026-03-15": {
       "rank": 36,
       "streams": 140497,
-      "previous_rank": 35,
+      "previous_rank": 350,
       "peak_rank": 2
     },
     "2026-03-14": {
       "rank": 35,
       "streams": 174461,
-      "previous_rank": 44,
+      "previous_rank": 440,
       "peak_rank": 2
     },
     "2026-03-13": {
       "rank": 44,
       "streams": 166500,
-      "previous_rank": 22,
+      "previous_rank": 220,
       "peak_rank": 2
     },
     "2026-03-12": {
       "rank": 22,
       "streams": 155693,
-      "previous_rank": 25,
+      "previous_rank": 250,
       "peak_rank": 2
     },
     "2026-03-11": {
       "rank": 25,
       "streams": 161902,
-      "previous_rank": 23,
+      "previous_rank": 230,
       "peak_rank": 2
     },
     "2026-03-10": {
       "rank": 23,
       "streams": 157197,
-      "previous_rank": 24,
+      "previous_rank": 240,
       "peak_rank": 2
     },
     "2026-03-09": {
       "rank": 24,
       "streams": 154677,
-      "previous_rank": 26,
+      "previous_rank": 260,
       "peak_rank": 2
     },
     "2026-03-08": {
@@ -875,7 +875,7 @@
     "2026-03-27": {
       "rank": 42,
       "streams": 148365,
-      "previous_rank": 29,
+      "previous_rank": 290,
       "peak_rank": 2
     }
   },
@@ -883,31 +883,31 @@
     "2026-03-21": {
       "rank": 178,
       "streams": 76606,
-      "previous_rank": 200,
+      "previous_rank": 2000,
       "peak_rank": 8
     },
     "2026-03-20": {
       "rank": 200,
       "streams": 72257,
-      "previous_rank": 173,
+      "previous_rank": 1730,
       "peak_rank": 8
     },
     "2026-03-19": {
       "rank": 173,
       "streams": 66291,
-      "previous_rank": 195,
+      "previous_rank": 1950,
       "peak_rank": 8
     },
     "2026-03-18": {
       "rank": 195,
       "streams": 66525,
-      "previous_rank": 181,
+      "previous_rank": 1810,
       "peak_rank": 8
     },
     "2026-03-17": {
       "rank": 181,
       "streams": 65314,
-      "previous_rank": 194,
+      "previous_rank": 1940,
       "peak_rank": 8
     },
     "2026-03-16": {
@@ -923,19 +923,19 @@
     "2026-03-12": {
       "rank": 165,
       "streams": 62587,
-      "previous_rank": 180,
+      "previous_rank": 1800,
       "peak_rank": 8
     },
     "2026-03-11": {
       "rank": 180,
       "streams": 62284,
-      "previous_rank": 173,
+      "previous_rank": 1730,
       "peak_rank": 8
     },
     "2026-03-10": {
       "rank": 173,
       "streams": 61407,
-      "previous_rank": 175,
+      "previous_rank": 1750,
       "peak_rank": 8
     },
     "2026-03-09": {
@@ -3938,6 +3938,7 @@
     "2024-04-19": {
       "rank": 57,
       "streams": 129800,
+      "previous_rank": 1,
       "peak_rank": 57
     }
   },
@@ -6065,6 +6066,7 @@
     "2017-09-21": {
       "rank": 200,
       "streams": 19084,
+      "previous_rank": 1,
       "peak_rank": 2
     },
     "2017-09-18": {
@@ -6126,6 +6128,7 @@
     "2017-09-03": {
       "rank": 200,
       "streams": 16346,
+      "previous_rank": 1,
       "peak_rank": 2
     },
     "2017-09-01": {
@@ -6373,6 +6376,7 @@
     "2017-07-10": {
       "rank": 193,
       "streams": 19762,
+      "previous_rank": 1,
       "peak_rank": 2
     },
     "2017-07-07": {

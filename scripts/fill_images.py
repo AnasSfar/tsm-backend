@@ -35,6 +35,7 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 ROOT        = Path(__file__).parent.parent
 DISCO_DIR   = ROOT / "db" / "discography"
+ALBUMS_DIR  = DISCO_DIR / "albums"
 SONGS_JSON  = ROOT / "website" / "site" / "data" / "songs.json"
 COVERS_JSON = DISCO_DIR / "covers.json"
 HIST_JSON  = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "ts_history.json"
@@ -201,13 +202,35 @@ if chart_names:
         n = re.sub(r"\s+", " ", n).strip()
         return n
 
-    # Build title → image_url from db/discography/songs.json + albums.json
+    # Build title → image_url from db/discography/songs.json + albums/*.json
     title_to_img: dict[str, str] = {}
-    for disco_file in [DISCO_DIR / "albums.json", DISCO_DIR / "songs.json"]:
-        if not disco_file.exists():
-            continue
-        sections = json.loads(disco_file.read_text(encoding="utf-8"))
-        for section in (sections if isinstance(sections, list) else [sections]):
+
+    if ALBUMS_DIR.exists():
+        for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
+            try:
+                payload = json.loads(album_file.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            for section in payload.get("sections", []) if isinstance(payload, dict) else []:
+                for t in section.get("tracks", []):
+                    img = t.get("image_url", "")
+                    if not img:
+                        continue
+                    for raw in [
+                        (t.get("title") or "").lower(),
+                        (t.get("base_title") or "").lower(),
+                        (t.get("title_clean") or "").lower(),
+                    ]:
+                        if raw:
+                            title_to_img[raw] = img
+                            normed = norm_apos(raw)
+                            if normed != raw:
+                                title_to_img[normed] = img
+
+    songs_disco = DISCO_DIR / "songs.json"
+    if songs_disco.exists():
+        sections = json.loads(songs_disco.read_text(encoding="utf-8"))
+        for section in sections:
             for t in section.get("tracks", []):
                 img = t.get("image_url", "")
                 if not img:

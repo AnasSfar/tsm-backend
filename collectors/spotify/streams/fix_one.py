@@ -15,7 +15,7 @@ What gets recomputed automatically:
           - daily_streams for (track, day)       recomputed as new - prev_day
           - daily_streams for (track, day+1)     recomputed as next_day - new
     2. website/site/history/{day}.json and all other date JSONs (full export)
-    3. website/site/data/songs.json, albums.json, etc. (full export)
+    3. website/site/data/songs.json, albums.json, etc. (full export output)
     4. R2: history-by-track/{track_id}.json — targeted single-track upload
            (only if env var UPLOAD_TO_R2=1 and boto3/credentials are available)
 """
@@ -46,7 +46,7 @@ import export_for_web                            # noqa: E402  (collectors/spoti
 from git_ops import git_commit_and_push          # noqa: E402  (collectors/spotify/streams/tools/scripts/)
 
 HISTORY_PATH  = _REPO_ROOT / "db" / "streams_history.csv"
-ALBUMS_JSON   = _REPO_ROOT / "db" / "discography" / "albums.json"
+ALBUMS_DIR    = _REPO_ROOT / "db" / "discography" / "albums"
 SONGS_JSON    = _REPO_ROOT / "db" / "discography" / "songs.json"
 HISTORY_DIR   = _REPO_ROOT / "website" / "site" / "history"
 
@@ -66,12 +66,28 @@ def _extract_id(url: str) -> str:
 
 
 def load_tracks() -> list[dict]:
-    """Return [{track_id, title, album}] from albums.json + songs.json."""
+    """Return [{track_id, title, album}] from album files + songs.json."""
     seen: dict[str, dict] = {}
-    for path in (ALBUMS_JSON, SONGS_JSON):
-        if not path.exists():
-            continue
-        for section in json.loads(path.read_text(encoding="utf-8")):
+
+    if ALBUMS_DIR.exists():
+        for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
+            try:
+                payload = json.loads(album_file.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            album_name = payload.get("album", "") if isinstance(payload, dict) else ""
+            for section in payload.get("sections", []) if isinstance(payload, dict) else []:
+                for track in section.get("tracks", []):
+                    url = (track.get("url") or track.get("spotify_url") or "").strip()
+                    tid = _extract_id(url)
+                    if not tid or tid in seen:
+                        continue
+                    title = (track.get("title") or "").strip()
+                    if title:
+                        seen[tid] = {"track_id": tid, "title": title, "album": album_name}
+
+    if SONGS_JSON.exists():
+        for section in json.loads(SONGS_JSON.read_text(encoding="utf-8")):
             album = section.get("album", "")
             for track in section.get("tracks", []):
                 url = (track.get("url") or track.get("spotify_url") or "").strip()

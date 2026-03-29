@@ -1,5 +1,10 @@
-2026/03/22-15:29:10.107 57f4 Reusing MANIFEST C:\Users\sfara\Documents\GitHub\The Taylor Swift Musuem\collectors\spotify\streams\tools\browser_cache\worker_5\Default\IndexedDB\https_open.spotify.com_0.indexeddb.leveldb/MANIFEST-000001
-2026/03/22-15:29:10.108 57f4 Recovering log #10
-2026/03/22-15:29:10.109 57f4 Reusing old log C:\Users\sfara\Documents\GitHub\The Taylor Swift Musuem\collectors\spotify\streams\tools\browser_cache\worker_5\Default\IndexedDB\https_open.spotify.com_0.indexeddb.leveldb/000010.log 
-2026/03/22-15:29:10.109 57f4 Delete type=2 #9
-2026/03/22-15:29:10.109 57f4 Delete type=2 #11
+2026/03/29-01:38:26.043 8940 Reusing MANIFEST C:\Users\sfara\Documents\GitHub\tsm-backend\collectors\spotify\streams\tools\browser_cache\worker_5\Default\IndexedDB\https_open.spotify.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/03/29-01:38:26.043 8940 Recovering log #10
+2026/03/29-01:38:26.072 8940 Reusing old log C:\Users\sfara\Documents\GitHub\tsm-backend\collectors\spotify\streams\tools\browser_cache\worker_5\Default\IndexedDB\https_open.spotify.com_0.indexeddb.leveldb/000010.log 
+2026/03/29-01:45:27.753 4a64 Level-0 table #15: started
+2026/03/29-01:45:27.820 4a64 Level-0 table #15: 945104 bytes OK
+2026/03/29-01:45:27.824 4a64 Delete type=0 #10
+2026/03/29-01:45:29.204 8940 Compacting 1@1 + 1@2 files
+2026/03/29-01:45:29.264 8940 Generated table #16@1: 5950 keys, 481894 bytes
+2026/03/29-01:45:29.264 8940 Compacted 1@1 + 1@2 files => 481894 bytes
+2026/03/29-01:45:29.265 8940 compacted to: files[ 0 0 1 0 0 0 0 ]

@@ -5,6 +5,7 @@ import argparse
 import hashlib
 import io
 import json
+import mimetypes
 import os
 import re
 import time
@@ -20,6 +21,7 @@ load_dotenv()
 ROOT = Path(__file__).resolve().parents[1]
 HISTORY_DIR = ROOT / "website" / "site" / "history"
 SITE_DATA_DIR = ROOT / "website" / "site" / "data"
+APPLE_MUSIC_IMAGES_DIR = SITE_DATA_DIR / "apple-music-images"
 DB_DIR = ROOT / "db"
 
 DATE_RE = re.compile(r"(\d{4}-\d{2}-\d{2})")
@@ -127,6 +129,82 @@ def upload_raw_if_changed(*, client, bucket: str, key: str, data: bytes, content
     )
 
 
+def upload_db_files(
+    *,
+    client,
+    bucket: str,
+    db_prefix: str,
+    dry_run: bool,
+) -> tuple[int, int]:
+    """Upload all files under db/ to R2 while preserving relative paths."""
+    uploaded = 0
+    unchanged = 0
+
+    db_files = sorted(p for p in DB_DIR.rglob("*") if p.is_file())
+    for path in db_files:
+        rel_path = path.relative_to(DB_DIR).as_posix()
+        full_key = f"{db_prefix}/{rel_path}"
+        content_type = mimetypes.guess_type(path.name)[0] or "application/octet-stream"
+        changed = upload_raw_if_changed(
+            client=client,
+            bucket=bucket,
+            key=full_key,
+            data=path.read_bytes(),
+            content_type=content_type,
+            dry_run=dry_run,
+        )
+        if changed:
+            uploaded += 1
+            print(f"[UPLOADED] {full_key}")
+        else:
+            unchanged += 1
+            print(f"[UNCHANGED] {full_key}")
+
+    return uploaded, unchanged
+
+
+def upload_apple_music_images(
+    *,
+    client,
+    bucket: str,
+    images_prefix: str,
+    dry_run: bool,
+) -> tuple[int, int]:
+    """Upload Apple Music track images if they exist locally."""
+    uploaded = 0
+    unchanged = 0
+
+    if not APPLE_MUSIC_IMAGES_DIR.exists():
+        return uploaded, unchanged
+
+    image_files = sorted(p for p in APPLE_MUSIC_IMAGES_DIR.glob("*") if p.is_file())
+    if not image_files:
+        return uploaded, unchanged
+
+    print(f"[INFO] Found {len(image_files)} Apple Music images to upload")
+
+    for path in image_files:
+        rel_path = path.name
+        full_key = f"{images_prefix}/{rel_path}"
+        content_type = "image/jpeg"
+        changed = upload_raw_if_changed(
+            client=client,
+            bucket=bucket,
+            key=full_key,
+            data=path.read_bytes(),
+            content_type=content_type,
+            dry_run=dry_run,
+        )
+        if changed:
+            uploaded += 1
+            print(f"[UPLOADED] {full_key}")
+        else:
+            unchanged += 1
+            print(f"[UNCHANGED] {full_key}")
+
+    return uploaded, unchanged
+
+
 def upload_static_data(
     *,
     client,
@@ -148,6 +226,7 @@ def upload_static_data(
         ("applemusic.json",          "data/applemusic.json"),
         ("applemusic_history.json",  "data/applemusic_history.json"),
         ("songs-appearances.json",   "data/songs-appearances.json"),
+        ("charts_worldwide.json",    "data/charts_worldwide.json"),
     ]
     for filename, r2_key in json_mappings:
         src = SITE_DATA_DIR / filename
@@ -233,13 +312,16 @@ def upload_static_data(
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Upload Spotify history and static data to R2.")
+    parser = argparse.ArgumentParser(description="Upload Spotify history, static data, and db files to R2.")
     parser.add_argument("--bucket", default=os.getenv("R2_BUCKET", "taylor-data"))
     parser.add_argument("--track-prefix", default=os.getenv("SPOTIFY_R2_TRACK_PREFIX", "history-by-track"))
     parser.add_argument("--data-prefix", default=os.getenv("R2_STATIC_DATA_PREFIX", "data"))
     parser.add_argument("--history-prefix", default=os.getenv("R2_STATIC_HISTORY_PREFIX", "history"))
+    parser.add_argument("--db-prefix", default=os.getenv("R2_DB_PREFIX", "db"))
     parser.add_argument("--skip-history-upload", action="store_true")
     parser.add_argument("--skip-static-upload", action="store_true")
+    parser.add_argument("--skip-db-upload", action="store_true")
+    parser.add_argument("--skip-images-upload", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
     return parser.parse_args()
 
@@ -249,24 +331,29 @@ def main() -> None:
     client = get_s3_client()
     bucket = args.bucket
 
-    if not HISTORY_DIR.exists():
-        raise FileNotFoundError(f"History folder not found: {HISTORY_DIR}")
+    daily_files: list[Path] = []
+    if not args.skip_history_upload:
+        if not HISTORY_DIR.exists():
+            raise FileNotFoundError(f"History folder not found: {HISTORY_DIR}")
 
-    daily_files = sorted(
-        p for p in HISTORY_DIR.glob("*.json")
-        if p.name != "index.json"
-    )
+        daily_files = sorted(
+            p for p in HISTORY_DIR.glob("*.json")
+            if p.name != "index.json"
+        )
 
-    if not daily_files:
-        print("No history files found.")
-        return
+        if not daily_files:
+            print("No history files found. History upload will be skipped.")
 
     history_uploaded = 0
     history_unchanged = 0
     static_uploaded = 0
     static_unchanged = 0
+    db_uploaded = 0
+    db_unchanged = 0
+    images_uploaded = 0
+    images_unchanged = 0
 
-    if not args.skip_history_upload:
+    if not args.skip_history_upload and daily_files:
         by_track = defaultdict(list)
 
         for path in daily_files:
@@ -324,13 +411,38 @@ def main() -> None:
             dry_run=args.dry_run,
         )
 
+    if not args.skip_db_upload:
+        db_uploaded, db_unchanged = upload_db_files(
+            client=client,
+            bucket=bucket,
+            db_prefix=args.db_prefix,
+            dry_run=args.dry_run,
+        )
+
+    # Upload Apple Music images if they exist
+    if not args.skip_images_upload:
+        images_uploaded, images_unchanged = upload_apple_music_images(
+            client=client,
+            bucket=bucket,
+            images_prefix=os.getenv("R2_IMAGES_PREFIX", "images/apple-music"),
+            dry_run=args.dry_run,
+        )
+    else:
+        images_uploaded = 0
+        images_unchanged = 0
+
     print("\n[done]")
     print(f"  bucket: {bucket}")
     print(f"  track_prefix: {args.track_prefix}")
+    print(f"  db_prefix: {args.db_prefix}")
     print(f"  history uploaded: {history_uploaded}")
     print(f"  history unchanged: {history_unchanged}")
     print(f"  static uploaded: {static_uploaded}")
     print(f"  static unchanged: {static_unchanged}")
+    print(f"  db uploaded: {db_uploaded}")
+    print(f"  db unchanged: {db_unchanged}")
+    print(f"  images uploaded: {images_uploaded}")
+    print(f"  images unchanged: {images_unchanged}")
     if args.dry_run:
         print("  mode: dry-run")
 

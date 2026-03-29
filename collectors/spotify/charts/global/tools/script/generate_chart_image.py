@@ -132,45 +132,60 @@ def build_cover_map() -> dict:
 
 
 def build_track_album_map() -> dict:
-    """Reads albums.json + songs.json → {normalized_track_title → album_title}."""
+    """Reads album files + songs.json → {normalized_track_title → album_title}."""
     result = {}
-    for json_file in [DISCOGRAPHY_ROOT / "albums.json", DISCOGRAPHY_ROOT / "songs.json"]:
-        if not json_file.exists():
-            continue
-        try:
-            sections = json.loads(json_file.read_text(encoding="utf-8"))
-            for section in sections:
-                album_name = section.get("album", "")
-                if not album_name:
-                    continue
+
+    albums_dir = DISCOGRAPHY_ROOT / "albums"
+    if albums_dir.exists():
+        for album_file in sorted(albums_dir.glob("*.json"), key=lambda p: p.name.casefold()):
+            try:
+                payload = json.loads(album_file.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            album_name = payload.get("album", "") if isinstance(payload, dict) else ""
+            for section in payload.get("sections", []) if isinstance(payload, dict) else []:
                 for track in section.get("tracks", []):
                     title = track.get("title", "")
                     if title:
                         result[_norm(title)] = album_name
+
+    songs_file = DISCOGRAPHY_ROOT / "songs.json"
+    if songs_file.exists():
+        try:
+            sections = json.loads(songs_file.read_text(encoding="utf-8"))
         except Exception:
-            pass
+            sections = []
+        for section in sections:
+            album_name = section.get("album", "")
+            if not album_name:
+                continue
+            for track in section.get("tracks", []):
+                title = track.get("title", "")
+                if title:
+                    result[_norm(title)] = album_name
     return result
 
 
 _track_image_map: dict | None = None
 
 def _get_track_image_map() -> dict:
-    """Returns {normalized_track_title → image_url} from albums.json + songs.json (lazy, cached)."""
+    """Returns {normalized_track_title → image_url} from album files + songs.json (lazy, cached)."""
     global _track_image_map
     if _track_image_map is None:
         _track_image_map = {}
-        albums_path = DISCOGRAPHY_ROOT / "albums.json"
-        if albums_path.exists():
-            try:
-                sections = json.loads(albums_path.read_text(encoding="utf-8"))
-                for section in sections:
-                    for track in section.get("tracks", []):
-                        title = track.get("title", "")
-                        img = (track.get("image_url") or "").strip()
-                        if title and img:
-                            _track_image_map[_norm(title)] = img
-            except Exception:
-                pass
+        albums_dir = DISCOGRAPHY_ROOT / "albums"
+        if albums_dir.exists():
+            for album_file in sorted(albums_dir.glob("*.json"), key=lambda p: p.name.casefold()):
+                try:
+                    payload = json.loads(album_file.read_text(encoding="utf-8"))
+                    for section in payload.get("sections", []) if isinstance(payload, dict) else []:
+                        for track in section.get("tracks", []):
+                            title = track.get("title", "")
+                            img = (track.get("image_url") or "").strip()
+                            if title and img:
+                                _track_image_map[_norm(title)] = img
+                except Exception:
+                    pass
         # Also read songs.json for standalone/non-album tracks
         songs_path = DISCOGRAPHY_ROOT / "songs.json"
         if songs_path.exists():
@@ -199,7 +214,7 @@ def get_album_cover(
         if cover and str(cover).startswith("http"):
             return cover
 
-    # Priorité 2 : image_url par track depuis albums.json (fiable, basé sur l'identité)
+    # Priorité 2 : image_url par track depuis albums/*.json (fiable, basé sur l'identité)
     track_img = _get_track_image_map().get(_norm(track_name), "")
     if track_img and str(track_img).startswith("http"):
         return track_img

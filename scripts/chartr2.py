@@ -25,7 +25,7 @@ R2_PREFIX = "chart-history-global-by-track"
 
 WEBSITE_SONGS_PATH = ROOT / "website" / "site" / "data" / "songs.json"
 DISCO_SONGS_PATH = ROOT / "db" / "discography" / "songs.json"
-DISCO_ALBUMS_PATH = ROOT / "db" / "discography" / "albums.json"
+DISCO_ALBUMS_DIR = ROOT / "db" / "discography" / "albums"
 MANUAL_MAP_PATH = ROOT / "scripts" / "chart_title_to_track_id.json"
 
 R2_ACCOUNT_ID = os.environ["R2_ACCOUNT_ID"]
@@ -108,10 +108,13 @@ def iter_discography_tracks() -> Iterable[Dict[str, Any]]:
                 if isinstance(item, dict):
                     yield item
 
-    if DISCO_ALBUMS_PATH.exists():
-        albums = load_json(DISCO_ALBUMS_PATH)
-        if isinstance(albums, list):
-            for section in albums:
+    if DISCO_ALBUMS_DIR.exists():
+        for album_file in sorted(DISCO_ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
+            payload = load_json(album_file)
+            if not isinstance(payload, dict):
+                continue
+            album_name = payload.get("album", "")
+            for section in payload.get("sections", []):
                 if not isinstance(section, dict):
                     continue
                 tracks = section.get("tracks", [])
@@ -121,8 +124,8 @@ def iter_discography_tracks() -> Iterable[Dict[str, Any]]:
                     if not isinstance(track, dict):
                         continue
                     merged = dict(track)
-                    if "album" not in merged and "album" in section:
-                        merged["album"] = section["album"]
+                    if "album" not in merged:
+                        merged["album"] = album_name
                     yield merged
 
 
