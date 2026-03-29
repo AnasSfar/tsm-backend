@@ -17,7 +17,7 @@ What gets recomputed automatically:
     2. website/site/history/{day}.json and all other date JSONs (full export)
     3. website/site/data/songs.json, albums.json, etc. (full export output)
     4. R2: history-by-track/{track_id}.json — targeted single-track upload
-           (only if env var UPLOAD_TO_R2=1 and boto3/credentials are available)
+            (enabled by default; set UPLOAD_TO_R2=0 to disable, requires boto3/credentials)
 """
 from __future__ import annotations
 
@@ -350,11 +350,11 @@ def main() -> None:
     print("✓ Site web régénéré.")
 
     # ── R2 targeted upload ────────────────────────────────────────────────────
-    if os.getenv("UPLOAD_TO_R2", "").strip().lower() in ("1", "true", "yes"):
+    if os.getenv("UPLOAD_TO_R2", "").strip().lower() not in ("0", "false", "no"):
         print(f"  Upload R2 pour {track_id}...")
         _r2_upload_track(track_id)
     else:
-        print("[R2] Skipped (UPLOAD_TO_R2 non activé).")
+        print("[R2] Skipped (UPLOAD_TO_R2 explicitement désactivé).")
 
     # ── Git commit ────────────────────────────────────────────────────────────
     if not args.no_git:

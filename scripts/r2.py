@@ -16,7 +16,7 @@ from typing import Any
 import boto3
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(str(Path(__file__).resolve().parents[1] / ".env"))
 
 ROOT = Path(__file__).resolve().parents[1]
 HISTORY_DIR = ROOT / "website" / "site" / "history"
@@ -25,6 +25,11 @@ APPLE_MUSIC_IMAGES_DIR = SITE_DATA_DIR / "apple-music-images"
 DB_DIR = ROOT / "db"
 
 DATE_RE = re.compile(r"(\d{4}-\d{2}-\d{2})")
+R2_REQUIRED_ENV_VARS = (
+    "R2_ACCOUNT_ID",
+    "R2_ACCESS_KEY_ID",
+    "R2_SECRET_ACCESS_KEY",
+)
 
 
 def get_env(name: str) -> str:
@@ -32,6 +37,10 @@ def get_env(name: str) -> str:
     if not value:
         raise RuntimeError(f"Missing environment variable: {name}")
     return value
+
+
+def get_missing_env_vars(names: tuple[str, ...]) -> list[str]:
+    return [name for name in names if not os.getenv(name, "").strip()]
 
 
 def get_s3_client():
@@ -326,8 +335,25 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def main() -> None:
+def main() -> int:
     args = parse_args()
+
+    missing_vars = get_missing_env_vars(R2_REQUIRED_ENV_VARS)
+    if missing_vars:
+        upload_to_r2 = os.getenv("UPLOAD_TO_R2", "").strip().lower()
+        if upload_to_r2 in ("1", "true", "yes", "on"):
+            raise RuntimeError(
+                "Missing required R2 environment variable(s) while UPLOAD_TO_R2 is enabled: "
+                + ", ".join(missing_vars)
+            )
+
+        print(
+            "[WARN] R2 credentials are not configured; skipping upload "
+            f"({', '.join(missing_vars)})."
+        )
+        print("[INFO] Set UPLOAD_TO_R2=1 to enforce upload and fail fast on missing credentials.")
+        return 0
+
     client = get_s3_client()
     bucket = args.bucket
 
@@ -446,6 +472,8 @@ def main() -> None:
     if args.dry_run:
         print("  mode: dry-run")
 
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

@@ -176,6 +176,8 @@ python scripts/export_apple_music.py
 
 ### Environment-Specific Tests
 
+Note: R2 upload is enabled by default. Set `UPLOAD_TO_R2=0` to disable it during local tests.
+
 ```bash
 # Test with custom timeout
 APPLE_MUSIC_TIMEOUT=30 python -m pytest

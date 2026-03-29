@@ -105,7 +105,13 @@ def main() -> None:
     args = parse_args()
     today = args.run_date
 
-    previous = load_previous_ranks(
+    # Prefer stable IDs to avoid collisions across versions sharing a title.
+    previous_by_id = load_previous_ranks(
+        CSV_PATH,
+        key_fields=["country", "apple_music_id"],
+        today=today,
+    )
+    previous_by_name = load_previous_ranks(
         CSV_PATH,
         key_fields=["country", "song_name"],
         today=today,
@@ -114,7 +120,11 @@ def main() -> None:
     songs = fetch_global_chart()
     rows: list[dict] = []
     for song in songs:
-        key = (song["country"], rank_key(song["song_name"]))
+        key_by_id = (song["country"], song["apple_music_id"])
+        key_by_name = (song["country"], rank_key(song["song_name"]))
+        prev_rank = previous_by_id.get(key_by_id)
+        if prev_rank is None:
+            prev_rank = previous_by_name.get(key_by_name)
         rows.append(
             {
                 "date": today,
@@ -123,7 +133,7 @@ def main() -> None:
                 "song_name": song["song_name"],
                 "apple_music_id": song["apple_music_id"],
                 "rank": song["rank"],
-                "previous_rank": previous.get(key, ""),
+                "previous_rank": prev_rank if prev_rank is not None else "",
                 "image_url": song["image_url"],
                 "url": song["url"],
                 "artist_name": song["artist_name"],
@@ -135,7 +145,7 @@ def main() -> None:
                 "genre_names": song["genre_names"],
             }
         )
-        prev = previous.get(key)
+        prev = prev_rank
         if prev is None:
             marker = "NEW"
         elif prev > song["rank"]:

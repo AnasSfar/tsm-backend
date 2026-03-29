@@ -204,7 +204,8 @@ def get_track_tags_album(artist, track):
             tags = [norm(x["name"]) for x in data.get("toptags", {}).get("tag", []) if isinstance(x, dict)]
             tags = [t for t in tags if t]
         except Exception:
-            pass
+            pass
+
 
     return tags, album
 
@@ -585,7 +586,7 @@ def scrape_chart_rows(chart_date: str) -> list[dict]:
 
 def _fmt_ts_song_line(row, chart_date, ts_history) -> str:
     track = str(row["track_name"])
-    dg = fmt_delta(row["rank"], row.get("previous_rank"), row.get("peak_rank"))
+    dg = fmt_delta(row["rank"], row.get("previous_rank"), row.get("peak_rank"), row.get("total_days"))
     s = fmt_streams(row.get("streams"))
     sd = fmt_streams_delta(track, row.get("streams"), chart_date, ts_history)
 
@@ -609,7 +610,8 @@ def write_log(log, ts_df, chart_date, ts_history):
     for track in sorted(dropped_out):
         yesterday = str(parse_date(chart_date) - timedelta(days=1))
         entry = ts_history.get(track, {}).get(yesterday, {})
-        log.log(f"(OUT) {track} | last position #{entry.get('rank', '?')}")
+        log.log(f"(OUT) {track} | last position #{entry.get('rank', '?')}")
+
 
 
 def _fmt_date(chart_date: str) -> str:
@@ -630,7 +632,8 @@ def generate_tweet(ts_df, chart_date, ts_history) -> str:
     for track in sorted(dropped_out):
         yesterday = str(parse_date(chart_date) - timedelta(days=1))
         entry = ts_history.get(track, {}).get(yesterday, {})
-        lines.append(f"(OUT) {track} | last position #{entry.get('rank', '?')}")
+        lines.append(f"(OUT) {track} | last position #{entry.get('rank', '?')}")
+
 
     full = "\n".join(lines)
     if len(full) <= 280:
@@ -685,7 +688,8 @@ def process_one(chart_date: str, db, ts_history):
             album_col.append(album or "")
             rd_col.append(release_date or "")
             rd = parse_date(release_date)
-            days_col.append((cd - rd).days if rd and cd else "")
+            days_col.append((cd - rd).days if rd and cd else "")
+
         else:
             tags_col.append("")
             album_col.append("")
@@ -695,7 +699,8 @@ def process_one(chart_date: str, db, ts_history):
     df["lastfm_tags"] = tags_col
     df["album"] = album_col
     df["release_date"] = rd_col
-    df["days_since_release"] = days_col
+    df["days_since_release"] = days_col
+
 
     out_dir = get_out_dir(chart_date)
     out_dir.mkdir(parents=True, exist_ok=True)

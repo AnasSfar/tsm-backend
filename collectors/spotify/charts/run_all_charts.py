@@ -11,14 +11,14 @@ CHARTS_ROOT = Path(__file__).resolve().parent
 REPO_ROOT = CHARTS_ROOT.parents[2]
 
 POSTING_RUNNERS = [
-    ("global", CHARTS_ROOT / "global" / "daily.py"),
-    ("fr", CHARTS_ROOT / "fr" / "daily.py"),
+    ("global", CHARTS_ROOT / "global" / "daily.py", []),
+    ("fr", CHARTS_ROOT / "fr" / "daily.py", []),
 ]
 
 NO_POST_RUNNERS = [
-    ("us-no-post", CHARTS_ROOT / "us"        / "daily_no_post.py"),
-    ("uk-no-post", CHARTS_ROOT / "uk"        / "daily_no_post.py"),
-    ("worldwide",  CHARTS_ROOT / "worldwide" / "daily.py"),
+    ("us-no-post", CHARTS_ROOT / "us" / "daily.py", ["--no-post"]),
+    ("uk-no-post", CHARTS_ROOT / "uk" / "daily_no_post.py", []),
+    ("worldwide", CHARTS_ROOT / "worldwide" / "daily.py", []),
 ]
 
 
@@ -80,7 +80,7 @@ def main() -> int:
         print(f"Forwarded args: {' '.join(forwarded)}")
     print()
 
-    for region, script_path in runners:
+    for region, script_path, runner_args in runners:
         if not script_path.exists():
             print(f"[FAIL] {region}: missing script {script_path}")
             failures.append((region, 127))
@@ -88,7 +88,8 @@ def main() -> int:
                 break
             continue
 
-        cmd = [sys.executable, str(script_path), *forwarded]
+        merged_args = list(dict.fromkeys([*runner_args, *forwarded]))
+        cmd = [sys.executable, str(script_path), *merged_args]
         print(f"[RUN ] {region}: {' '.join(cmd)}")
 
         if args.dry_run:

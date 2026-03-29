@@ -111,7 +111,15 @@ def main() -> None:
     storefront = args.storefront.lower().strip()
     today = args.run_date
 
-    previous = load_previous_ranks(
+    # Prefer Apple Music IDs to avoid collisions between different versions
+    # sharing the same display name.
+    previous_by_id = load_previous_ranks(
+        CSV_PATH,
+        key_fields=["storefront", "apple_music_id"],
+        today=today,
+    )
+    # Backward-compatible fallback for any historical rows without IDs.
+    previous_by_name = load_previous_ranks(
         CSV_PATH,
         key_fields=["storefront", "song_name"],
         today=today,
@@ -120,7 +128,11 @@ def main() -> None:
     songs = fetch_top_songs(storefront)
     rows: list[dict] = []
     for idx, song in enumerate(songs, start=1):
-        key = (storefront, rank_key(song["song_name"]))
+        key_by_id = (storefront, song["apple_music_id"])
+        key_by_name = (storefront, rank_key(song["song_name"]))
+        prev_rank = previous_by_id.get(key_by_id)
+        if prev_rank is None:
+            prev_rank = previous_by_name.get(key_by_name)
         rows.append(
             {
                 "date": today,
@@ -128,7 +140,7 @@ def main() -> None:
                 "song_name": song["song_name"],
                 "apple_music_id": song["apple_music_id"],
                 "rank": idx,
-                "previous_rank": previous.get(key, ""),
+                "previous_rank": prev_rank if prev_rank is not None else "",
                 "image_url": song["image_url"],
                 "url": song["url"],
                 "artist_name": song["artist_name"],
@@ -140,7 +152,7 @@ def main() -> None:
                 "genre_names": song["genre_names"],
             }
         )
-        prev = previous.get(key)
+        prev = prev_rank
         if prev is None:
             marker = "NEW"
         elif prev > idx:

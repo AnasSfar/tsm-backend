@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 import re
 import subprocess
 import threading
@@ -822,6 +823,35 @@ def delete_history_rows_for_date(target_date: str) -> int:
     return removed
 
 
+def dedupe_history_rows_by_date_track() -> int:
+    if not HISTORY_PATH.exists():
+        return 0
+
+    with HISTORY_PATH.open("r", newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        rows = list(reader)
+        fieldnames = reader.fieldnames or ["date", "track_id", "streams", "daily_streams"]
+
+    deduped: dict[tuple[str, str], dict] = {}
+    for row in rows:
+        date_value = (row.get("date") or "").strip()
+        track_id = (row.get("track_id") or "").strip()
+        if not date_value or not track_id:
+            continue
+        deduped[(date_value, track_id)] = row
+
+    removed = len(rows) - len(deduped)
+    if removed <= 0:
+        return 0
+
+    with HISTORY_PATH.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(deduped.values())
+
+    return removed
+
+
 def append_history_row(row: list) -> None:
     with HISTORY_PATH.open("a", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
@@ -882,6 +912,28 @@ def get_last_history_total(track_id: str) -> int | None:
                 except Exception:
                     pass
     return last
+
+
+def get_history_total_for_date(track_id: str, stats_date: str) -> int | None:
+    if not HISTORY_PATH.exists():
+        return None
+
+    value = None
+    with HISTORY_PATH.open("r", newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            if (row.get("track_id") or "").strip() != track_id:
+                continue
+            if (row.get("date") or "").strip() != stats_date:
+                continue
+            raw = (row.get("streams") or "").strip()
+            if not raw:
+                continue
+            try:
+                value = int(raw)
+            except Exception:
+                continue
+    return value
 
 
 def get_previous_total_before_date(track_id: str, stats_date: str) -> int | None:
@@ -1613,7 +1665,9 @@ def try_apply_track_update(
 ) -> dict:
     track_id = track["track_id"]
     last_total = get_last_history_total(track_id)
-    daily = compute_daily(last_total, total)
+    previous_stats_date = get_previous_stats_date_str(stats_date)
+    previous_day_total = get_history_total_for_date(track_id, previous_stats_date)
+    daily = compute_daily(previous_day_total, total)
 
     if last_total is None:
         reason = "first_seen"
@@ -2100,6 +2154,9 @@ def run_update(
     token_mgr: "TokenManager | None" = None,
 ):
     ensure_history_file()
+    removed_duplicates = dedupe_history_rows_by_date_track()
+    if removed_duplicates > 0:
+        print(f"History dedupe: removed {removed_duplicates} duplicate row(s) by (date, track_id).")
 
     stats_date = stats_date_override or get_stats_date_str()
     skip_track_ids = skip_track_ids or set()
@@ -2526,6 +2583,13 @@ def main():
         print("[DEBUG-TOTAL] Replace totals for an existing date in streams_history.csv.")
     else:
         print("[NORMAL] Official run mode.")
+
+    if dry_run_mode or debug_daily_mode:
+        os.environ["UPLOAD_TO_R2"] = "0"
+        print("R2 upload disabled for this run mode.")
+    else:
+        os.environ["UPLOAD_TO_R2"] = "1"
+        print("R2 upload enabled for this run (UPLOAD_TO_R2=1).")
 
     stats_date = stats_date_override or get_stats_date_str()
     print(f"Target stats date: {stats_date}")

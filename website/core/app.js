@@ -90,7 +90,7 @@ function bindUpdateButton(){
     }
     catch(e){
       state.updateLogText =
-        "Update failed. Spotify usually updates around 15:00 Paris time.";
+        "It's a cruel summer without fresh data. Spotify usually updates around 15:00 Paris time — check back then! 🌞";
 
       state.updateLogClass = "update-log error";
       renderPage();
@@ -279,7 +279,7 @@ async function init(){
 
     document.body.innerHTML = `
       <div style="padding:40px;font-family:sans-serif;">
-        Failed to load data.
+        Got blank space, baby. The vault door's locked right now. Retry in a moment! 💫
       </div>
     `;
   }

@@ -96,8 +96,7 @@ function renderGlobal() {
   const uAt   = !selectedDate ? updatedAt(data.scraped_at) : '';
 
   if (!entries || !entries.length) {
-    return `<div class="global-note"><strong>No data available for this date.</strong></div>`;
-  }
+    return `<div class="global-note"><strong>Blank Space on this date — the charts are in their Fortnight feature era. 🎬</strong></div>`;
 
   return `
     <div class="global-note">
@@ -127,8 +126,7 @@ function renderTopSongs() {
   const uAt   = !selectedDate ? updatedAt(data.scraped_at) : '';
 
   if (!entries || !entries.length) {
-    return `<div class="empty-msg">No data available for this date.</div>`;
-  }
+    return `<div class="empty-msg">No songs for this date — it's the quiet part between albums. 🤫</div>`;
 
   return `
     <div class="chart-card">
@@ -164,7 +162,7 @@ let _activeGenre   = 'Pop';
 
 function renderCountryRows(entries) {
   if (!entries || !entries.length)
-    return `<div class="country-empty">No Taylor Swift songs in this Top 100</div>`;
+    return `<div class="country-empty">No Taylor Swift in this Top 100 — she's taking a exile break from this realm. 🧛‍♀️</div>`;
   return entries.map((r, i) => `
     <div class="country-row${i % 2 === 1 ? ' odd' : ''}">
       <div class="col-pos">${r.rank}</div>
@@ -185,7 +183,7 @@ function renderCountryGenre() {
 
   if (!countrySection && !genreSection) {
     return `<div class="global-note">
-      <strong>No data available for this date.</strong> Run the country and genre collectors.
+      <strong>Blank Space on this date.</strong> The vault's locked — run the country & genre collectors to unlock it! 🔑
     </div>`;
   }
 
@@ -205,10 +203,7 @@ function renderCountryGenre() {
   const genreBtns = availableGenres.length
     ? availableGenres.map(g => `<button class="genre-btn${g === _activeGenre ? ' active' : ''}"
         onclick="_activeGenre='${g}';renderPage()">${g}</button>`).join('')
-    : `<span style="font-size:12px;color:var(--muted)">No genre data for this country</span>`;
-
-  const info = COUNTRY_INFO[_activeCountry];
-
+    : `<span style="font-size:12px;color:var(--muted)">No genre data here — this tab's still in its folklore phase. 🍂</span>`;
   // Top 100 card
   const countryEntries = countrySection ? ((countrySection.countries || {})[_activeCountry] || []) : [];
   const cDate = fmtDate(countrySection ? countrySection.date : null);
@@ -334,5 +329,4 @@ Promise.all([
   setupDatePicker();
 }).catch(() => {
   document.getElementById('app').innerHTML =
-    '<div class="empty-msg">Could not load Apple Music data.<br>Run the collectors first.</div>';
-});
+    '<div class="empty-msg">Apple Music hit a dead end — vault\'s sealed. 🚪<br>Run the collectors first, then we\'ll all too well reload this!</div>';

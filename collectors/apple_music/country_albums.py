@@ -74,7 +74,12 @@ def main() -> None:
     today = args.run_date
     session = build_session()
 
-    previous = load_previous_ranks(
+    previous_by_id = load_previous_ranks(
+        CSV_PATH,
+        key_fields=["country", "apple_music_id"],
+        today=today,
+    )
+    previous_by_name = load_previous_ranks(
         CSV_PATH,
         key_fields=["country", "album_name"],
         today=today,
@@ -86,7 +91,11 @@ def main() -> None:
         albums = fetch_country(session, country)
         print(f"{country}: {len(albums)} Taylor Swift album(s)")
         for album in albums:
-            key = (country, rank_key(album["album_name"]))
+            key_by_id = (country, album["apple_music_id"])
+            key_by_name = (country, rank_key(album["album_name"]))
+            prev_rank = previous_by_id.get(key_by_id)
+            if prev_rank is None:
+                prev_rank = previous_by_name.get(key_by_name)
             rows.append(
                 {
                     "date": today,
@@ -95,7 +104,7 @@ def main() -> None:
                     "album_name": album["album_name"],
                     "apple_music_id": album["apple_music_id"],
                     "rank": album["rank"],
-                    "previous_rank": previous.get(key, ""),
+                    "previous_rank": prev_rank if prev_rank is not None else "",
                     "image_url": album["image_url"],
                     "url": album["url"],
                     "artist_name": album["artist_name"],

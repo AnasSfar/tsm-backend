@@ -257,8 +257,8 @@ def _save_to_csv(result: dict) -> None:
 
 
 def _maybe_upload_to_r2() -> None:
-    if os.getenv("UPLOAD_TO_R2", "").strip().lower() not in ("1", "true", "yes"):
-        print("R2 upload skipped (UPLOAD_TO_R2 disabled)", flush=True)
+    if os.getenv("UPLOAD_TO_R2", "").strip().lower() in ("0", "false", "no"):
+        print("R2 upload skipped (UPLOAD_TO_R2 explicitly disabled)", flush=True)
         return
 
     r2_script = _REPO_ROOT / "scripts" / "r2.py"

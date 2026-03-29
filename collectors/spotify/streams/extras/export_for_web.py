@@ -1054,12 +1054,23 @@ def export_for_web() -> None:
     print(f"Albums exported:  {len(albums_payload)}")
     print(f"Dates exported:   {len(dates)}")
 
-    # R2 upload — opt-in via UPLOAD_TO_R2=1 env var
+    # R2 upload — enabled by default; set UPLOAD_TO_R2=0 to disable
     import os as _os, subprocess as _subprocess, sys as _sys
-    if _os.getenv("UPLOAD_TO_R2", "").strip().lower() in ("1", "true", "yes"):
-        print("Uploading per-track history to R2...")
-        _r2_script = Path(__file__).resolve().parents[4] / "scripts" / "r2.py"
-        _subprocess.run([_sys.executable, str(_r2_script)], check=True)
+    if _os.getenv("UPLOAD_TO_R2", "").strip().lower() not in ("0", "false", "no"):
+        required_env = ["R2_ACCOUNT_ID", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY"]
+        missing = [name for name in required_env if not _os.getenv(name, "").strip()]
+        if missing:
+            print(
+                "[R2] Upload skipped: missing env var(s): "
+                + ", ".join(missing)
+            )
+        else:
+            print("Uploading per-track history to R2...")
+            _r2_script = Path(__file__).resolve().parents[4] / "scripts" / "r2.py"
+            try:
+                _subprocess.run([_sys.executable, str(_r2_script)], check=True)
+            except _subprocess.CalledProcessError as exc:
+                print(f"[R2] Upload failed (non-blocking): {exc}")
 
 
 def main() -> None:

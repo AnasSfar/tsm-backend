@@ -24,9 +24,15 @@ import subprocess
 import sys
 import time
 import unicodedata
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict, Iterable, Optional
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
@@ -396,7 +402,7 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    raw_date = args.date or args.date_pos or str(date.today())
+    raw_date = args.date or args.date_pos or str(date.today() - timedelta(days=1))
     try:
         chart_date = datetime.strptime(raw_date, "%Y-%m-%d").strftime("%Y-%m-%d")
     except ValueError:

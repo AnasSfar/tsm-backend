@@ -806,7 +806,7 @@ export function renderAlbumPage(container) {
   if (!album) {
     container.innerHTML = `
       ${renderTopbar()}
-      <div class="section-card empty">Album not found</div>
+      <div class="section-card empty">This album's in its reputation era — it's hidden from view. Try a different era! 🕷️</div>
     `;
     return;
   }
@@ -1081,7 +1081,7 @@ async function _loadSongChart(family) {
     const inner = document.getElementById("song-chart-inner");
     if (!inner) return;
     if (data.length < 2) {
-      inner.innerHTML = '<p class="chart-empty">Not enough data</p>';
+      inner.innerHTML = '<p class="chart-empty">Not enough days to sketch the love story chart yet. Give it time! 💕</p>';
       return;
     }
     inner.innerHTML = _buildSongSvg(data, mode);
@@ -1124,7 +1124,7 @@ export function renderSongPage(container){
   if(!songs.length){
     container.innerHTML = `
       ${renderTopbar()}
-      <div class="section-card empty">Song not found</div>
+      <div class="section-card empty">This track went invisible — it's all too well, some songs just vanish from the charts. 👻</div>
     `;
     return;
   }
@@ -1171,7 +1171,7 @@ export function renderSongPage(container){
           <span class="country-rank">#${e.rank}</span>
           <span class="country-streams">${formatFull(e.streams)}</span>
         </div>`).join("")
-    : `<p class="country-chart-empty">Not charting in any country today.</p>`;
+    : `<p class="country-chart-empty">No charting countries today — TS is on a midnights break from the globe. 🌙</p>`;
 
   container.innerHTML = `
     ${renderTopbar()}
@@ -1406,7 +1406,7 @@ export function renderMilestones(container) {
         </div>
 
         <div class="empty">
-          No upcoming milestones
+          No upcoming milestones — she's in the quiet part of her folklore forest. 🌲
         </div>
       </section>
     `;
@@ -1443,7 +1443,7 @@ export function renderAdmin(container) {
       ${renderTopbar()}
       <section class="section-card">
         <div class="section-head"><div><h2>Admin</h2><p>Pipeline monitoring</p></div></div>
-        <div class="empty">No run state data yet — run the update pipeline first.</div>
+        <div class="empty">No run state yet — we're in Folklore vault mode. Run the update pipeline to unlock the records! 🔐</div>
       </section>
     `;
     return;
@@ -1559,7 +1559,7 @@ export function renderBillboard(container) {
       ${renderTopbar()}
       <section class="section-card">
         <div class="section-head"><div><h2>Billboard</h2><p>Taylor Swift chart entries</p></div></div>
-        <div class="empty">No Billboard data available yet — run scrape_billboard.py first.</div>
+        <div class="empty">Billboard's blank space right now — run scrape_billboard.py to chart some history! 📊</div>
       </section>
     `;
     return;
@@ -1603,7 +1603,7 @@ export function renderBillboard(container) {
         Greatest of All Time Artists: <strong>#${greatestArtists.rank}</strong>
       </div>` : ""}
 
-      ${rows.length === 0 ? `<div class="empty">No entries for this chart.</div>` : `
+      ${rows.length === 0 ? `<div class="empty">No entries on this chart. The next era awaits! ⏭️</div>` : `
       <div class="table-wrap">
         <table class="table">
           <thead>

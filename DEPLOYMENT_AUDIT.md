@@ -126,7 +126,8 @@ R2_ACCESS_KEY_ID=your_access_key
 R2_SECRET_ACCESS_KEY=your_secret_key
 R2_BUCKET=your_bucket_name
 
-# Optional: Auto-upload to R2 after collect
+# Optional: Disable auto-upload to R2 after collect
+# (upload is enabled by default)
 UPLOAD_TO_R2=0
 
 # Optional: Apple Music HTTP tuning

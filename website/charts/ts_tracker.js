@@ -423,8 +423,7 @@ async function renderSong(rgn, name) {
 
   const h = songHist(rgn, name);
   if (!h.length) {
-    app.innerHTML = `<div class="empty">Song not found: <em>${name}</em></div>`;
-    return;
+    app.innerHTML = `<div class="empty">No trace of <em>${name}</em> — it slipped through the fingers like water. Lost in folklore. 🌊</div>`;
   }
 
   if (!S[rgn].imgCache[name]) await loadDay(rgn, h[h.length - 1].date);
@@ -609,7 +608,7 @@ async function renderHistoryPage() {
       const r = await fetch('../site/data/songs.json');
       discoCache = (await r.json()).songs || [];
     } catch(e) {
-      app.innerHTML = `<div class="empty">Failed to load data.<br><span style="font-size:11px">${e.message}</span></div>`;
+      app.innerHTML = `<div class="empty">Blank Space moment: we could not load the data.<br><span style="font-size:11px">${e.message}</span></div>`;
       return;
     }
   }
@@ -738,7 +737,7 @@ async function renderHistoryPage() {
           <button class="disco-rgn-btn ${rgn==='uk'    ?'active':''}" data-r="uk">🇬🇧 UK</button>
         </div>
       </div>
-      <div class="disco-albums">${albumsHtml || '<div class="empty">No results.</div>'}</div>`;
+      <div class="disco-albums">${albumsHtml || '<div class="empty">No results — the invisible string couldn\'t connect to that search. 🧵</div>'}</div>`;
 
     document.getElementById('histSearch').addEventListener('input', e => {
       query = e.target.value.trim();
@@ -765,7 +764,7 @@ async function init() {
     document.getElementById('app').innerHTML = `
     <div class="empty">
       <div style="font-size:32px;margin-bottom:12px">⚠️</div>
-      Failed to load chart data.<br>
+      We got blank space, baby. Come back for it later. 💬<br>
       <span style="font-size:11px;color:var(--muted)">${e.message}</span>
     </div>`;
   }

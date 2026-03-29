@@ -54,8 +54,9 @@ R2_ACCESS_KEY_ID=your_access_key
 R2_SECRET_ACCESS_KEY=your_secret_key
 R2_BUCKET=your_bucket
 
-# Enable R2 upload after collection
-UPLOAD_TO_R2=1
+# Optional: disable R2 upload after collection
+# (upload is enabled by default)
+UPLOAD_TO_R2=0
 
 # Optional: Collector tuning
 APPLE_MUSIC_COUNTRIES=fr,us,gb,de,au
@@ -106,7 +107,7 @@ After collection, export to JSON/CSV:
 # Apple Music export
 python scripts/export_apple_music.py
 
-# Spotify R2 export (if UPLOAD_TO_R2=1)
+# Spotify R2 export (manual)
 python scripts/r2.py
 ```
 
@@ -115,7 +116,7 @@ python scripts/r2.py
 ```
 Collectors                  Export                    Cloud
 ├─ Apple Music ─┐
-├─ Spotify      ├─→ CSV/JSON ─→ Export Scripts ─→ R2 (optional)
+├─ Spotify      ├─→ CSV/JSON ─→ Export Scripts ─→ R2 (enabled by default)
 ├─ Billboard ───┤
 └─ Local Tracks─┘
                         Website
@@ -149,7 +150,7 @@ tsm-backend/
 | `R2_ACCESS_KEY_ID` | - | R2 access key |
 | `R2_SECRET_ACCESS_KEY` | - | R2 secret key |
 | `R2_BUCKET` | `taylor-data` | R2 bucket name |
-| `UPLOAD_TO_R2` | `0` | Enable auto-upload (0=off, 1=on) |
+| `UPLOAD_TO_R2` | unset | Upload control (set `0` to disable; any other value enables) |
 | `APPLE_MUSIC_COUNTRIES` | `fr,us,gb,de,au,ca,jp,...` | Country codes to collect |
 | `APPLE_MUSIC_TIMEOUT` | `20` | HTTP timeout (seconds) |
 | `APPLE_MUSIC_RETRY_TOTAL` | `3` | HTTP retry attempts |
@@ -187,7 +188,7 @@ See [collectors/apple_music/README.md](collectors/apple_music/README.md) for mor
 1. Create Cloudflare R2 bucket
 2. Generate API tokens
 3. Add to `.env`
-4. Set `UPLOAD_TO_R2=1`
+4. Optional: set `UPLOAD_TO_R2=0` if you want to disable automatic uploads
 
 ### What Gets Uploaded
 
@@ -199,7 +200,10 @@ See [collectors/apple_music/README.md](collectors/apple_music/README.md) for mor
 
 ```bash
 # Automatic upload after collection
-UPLOAD_TO_R2=1 python collectors/apple_music/run_apple_music.py
+python collectors/apple_music/run_apple_music.py
+
+# Explicitly disable upload
+UPLOAD_TO_R2=0 python collectors/apple_music/run_apple_music.py
 
 # Manual upload
 python scripts/r2.py --bucket your-bucket

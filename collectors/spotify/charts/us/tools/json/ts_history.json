@@ -1,0 +1,7486 @@
+{
+  "The Fate of Ophelia": {
+    "2026-03-21": {
+      "rank": 29,
+      "streams": 173196,
+      "previous_rank": 360,
+      "peak_rank": 2
+    },
+    "2026-03-20": {
+      "rank": 36,
+      "streams": 161280,
+      "previous_rank": 320,
+      "peak_rank": 2
+    },
+    "2026-03-19": {
+      "rank": 32,
+      "streams": 155224,
+      "previous_rank": 360,
+      "peak_rank": 2
+    },
+    "2026-03-18": {
+      "rank": 36,
+      "streams": 159060,
+      "previous_rank": 320,
+      "peak_rank": 2
+    },
+    "2026-03-17": {
+      "rank": 32,
+      "streams": 151592,
+      "previous_rank": 370,
+      "peak_rank": 2
+    },
+    "2026-03-16": {
+      "rank": 37,
+      "streams": 141310,
+      "previous_rank": 36,
+      "peak_rank": 2
+    },
+    "2026-03-15": {
+      "rank": 36,
+      "streams": 140497,
+      "previous_rank": 35,
+      "peak_rank": 2
+    },
+    "2026-03-14": {
+      "rank": 35,
+      "streams": 174461,
+      "previous_rank": 44,
+      "peak_rank": 2
+    },
+    "2026-03-13": {
+      "rank": 44,
+      "streams": 166500,
+      "previous_rank": 22,
+      "peak_rank": 2
+    },
+    "2026-03-12": {
+      "rank": 22,
+      "streams": 155693,
+      "previous_rank": 25,
+      "peak_rank": 2
+    },
+    "2026-03-11": {
+      "rank": 25,
+      "streams": 161902,
+      "previous_rank": 23,
+      "peak_rank": 2
+    },
+    "2026-03-10": {
+      "rank": 23,
+      "streams": 157197,
+      "previous_rank": 24,
+      "peak_rank": 2
+    },
+    "2026-03-09": {
+      "rank": 24,
+      "streams": 154677,
+      "previous_rank": 26,
+      "peak_rank": 2
+    },
+    "2026-03-08": {
+      "rank": 26,
+      "streams": 149126,
+      "previous_rank": 21
+    },
+    "2026-03-07": {
+      "rank": 21,
+      "streams": 187208,
+      "previous_rank": 23
+    },
+    "2026-03-06": {
+      "rank": 23,
+      "streams": 172922,
+      "previous_rank": 22
+    },
+    "2026-03-05": {
+      "rank": 22,
+      "streams": 161811,
+      "previous_rank": 19
+    },
+    "2026-03-04": {
+      "rank": 19,
+      "streams": 172227,
+      "previous_rank": 21
+    },
+    "2026-03-03": {
+      "rank": 21,
+      "streams": 165553,
+      "previous_rank": 21
+    },
+    "2026-03-02": {
+      "rank": 21,
+      "streams": 162572,
+      "previous_rank": 23
+    },
+    "2026-03-01": {
+      "rank": 23,
+      "streams": 156668,
+      "previous_rank": 19
+    },
+    "2026-02-28": {
+      "rank": 19,
+      "streams": 198607,
+      "previous_rank": 21
+    },
+    "2026-02-27": {
+      "rank": 21,
+      "streams": 192080,
+      "previous_rank": 22
+    },
+    "2026-02-26": {
+      "rank": 22,
+      "streams": 177479,
+      "previous_rank": 22
+    },
+    "2026-02-25": {
+      "rank": 22,
+      "streams": 178671,
+      "previous_rank": 21
+    },
+    "2026-02-24": {
+      "rank": 21,
+      "streams": 175304,
+      "previous_rank": 20
+    },
+    "2026-02-23": {
+      "rank": 20,
+      "streams": 168619,
+      "previous_rank": 19
+    },
+    "2026-02-22": {
+      "rank": 19,
+      "streams": 151942,
+      "previous_rank": 21
+    },
+    "2026-02-21": {
+      "rank": 21,
+      "streams": 192562,
+      "previous_rank": 23
+    },
+    "2026-02-20": {
+      "rank": 23,
+      "streams": 186724,
+      "previous_rank": 23
+    },
+    "2026-02-19": {
+      "rank": 23,
+      "streams": 168846,
+      "previous_rank": 23
+    },
+    "2026-02-18": {
+      "rank": 23,
+      "streams": 172239,
+      "previous_rank": 24
+    },
+    "2026-02-17": {
+      "rank": 24,
+      "streams": 178780,
+      "previous_rank": 26
+    },
+    "2026-02-16": {
+      "rank": 26,
+      "streams": 174124,
+      "previous_rank": 24
+    },
+    "2026-02-15": {
+      "rank": 24,
+      "streams": 153412,
+      "previous_rank": 23
+    },
+    "2026-02-14": {
+      "rank": 23,
+      "streams": 199578,
+      "previous_rank": 23
+    },
+    "2026-02-13": {
+      "rank": 23,
+      "streams": 197769,
+      "previous_rank": 23
+    },
+    "2026-02-12": {
+      "rank": 23,
+      "streams": 175517,
+      "previous_rank": 23
+    },
+    "2026-02-11": {
+      "rank": 23,
+      "streams": 187158,
+      "previous_rank": 24
+    },
+    "2026-02-10": {
+      "rank": 24,
+      "streams": 179003,
+      "previous_rank": 23
+    },
+    "2026-02-09": {
+      "rank": 23,
+      "streams": 180283,
+      "previous_rank": 17
+    },
+    "2026-02-08": {
+      "rank": 17,
+      "streams": 175271,
+      "previous_rank": 15
+    },
+    "2026-02-07": {
+      "rank": 15,
+      "streams": 228174,
+      "previous_rank": 18
+    },
+    "2026-02-06": {
+      "rank": 18,
+      "streams": 209814,
+      "previous_rank": 16
+    },
+    "2026-02-04": {
+      "rank": 16,
+      "streams": 202975,
+      "previous_rank": 16
+    },
+    "2026-02-03": {
+      "rank": 16,
+      "streams": 189767,
+      "previous_rank": 16
+    },
+    "2026-02-02": {
+      "rank": 16,
+      "streams": 188157,
+      "previous_rank": 17
+    },
+    "2026-02-01": {
+      "rank": 17,
+      "streams": 179556,
+      "previous_rank": 16
+    },
+    "2026-01-31": {
+      "rank": 16,
+      "streams": 230023,
+      "previous_rank": 15
+    },
+    "2026-01-30": {
+      "rank": 15,
+      "streams": 217023,
+      "previous_rank": 15
+    },
+    "2026-01-29": {
+      "rank": 15,
+      "streams": 203064,
+      "previous_rank": 15
+    },
+    "2026-01-28": {
+      "rank": 15,
+      "streams": 213795,
+      "previous_rank": 15
+    },
+    "2026-01-26": {
+      "rank": 15,
+      "streams": 196609,
+      "previous_rank": 15
+    },
+    "2026-01-25": {
+      "rank": 15,
+      "streams": 187980,
+      "previous_rank": 14
+    },
+    "2026-01-24": {
+      "rank": 14,
+      "streams": 235606,
+      "previous_rank": 15
+    },
+    "2026-01-23": {
+      "rank": 15,
+      "streams": 223761,
+      "previous_rank": 14
+    },
+    "2026-01-22": {
+      "rank": 14,
+      "streams": 209321,
+      "previous_rank": 14
+    },
+    "2026-01-21": {
+      "rank": 14,
+      "streams": 219115,
+      "previous_rank": 14
+    },
+    "2026-01-20": {
+      "rank": 14,
+      "streams": 208306,
+      "previous_rank": 13
+    },
+    "2026-01-19": {
+      "rank": 13,
+      "streams": 204716,
+      "previous_rank": 15
+    },
+    "2026-01-18": {
+      "rank": 15,
+      "streams": 186944,
+      "previous_rank": 14
+    },
+    "2026-01-17": {
+      "rank": 14,
+      "streams": 250696,
+      "previous_rank": 14
+    },
+    "2026-01-16": {
+      "rank": 14,
+      "streams": 235643,
+      "previous_rank": 12
+    },
+    "2026-01-15": {
+      "rank": 12,
+      "streams": 227018,
+      "previous_rank": 12
+    },
+    "2026-01-14": {
+      "rank": 12,
+      "streams": 239592,
+      "previous_rank": 12
+    },
+    "2026-01-13": {
+      "rank": 12,
+      "streams": 234297,
+      "previous_rank": 14
+    },
+    "2026-01-12": {
+      "rank": 14,
+      "streams": 232056,
+      "previous_rank": 12
+    },
+    "2026-01-11": {
+      "rank": 12,
+      "streams": 216994,
+      "previous_rank": 12
+    },
+    "2026-01-10": {
+      "rank": 12,
+      "streams": 270003,
+      "previous_rank": 25
+    },
+    "2026-01-09": {
+      "rank": 25,
+      "streams": 262444,
+      "previous_rank": 10
+    },
+    "2026-01-08": {
+      "rank": 10,
+      "streams": 230386,
+      "previous_rank": 10
+    },
+    "2026-01-07": {
+      "rank": 10,
+      "streams": 219736,
+      "previous_rank": 10
+    },
+    "2026-01-06": {
+      "rank": 10,
+      "streams": 218576,
+      "previous_rank": 9
+    },
+    "2026-01-05": {
+      "rank": 9,
+      "streams": 224778,
+      "previous_rank": 9
+    },
+    "2026-01-04": {
+      "rank": 9,
+      "streams": 204383,
+      "previous_rank": 8
+    },
+    "2026-01-03": {
+      "rank": 8,
+      "streams": 241078,
+      "previous_rank": 9
+    },
+    "2026-01-02": {
+      "rank": 9,
+      "streams": 237973,
+      "previous_rank": 9
+    },
+    "2026-01-01": {
+      "rank": 9,
+      "streams": 188568,
+      "previous_rank": 8
+    },
+    "2025-12-31": {
+      "rank": 8,
+      "streams": 374317,
+      "previous_rank": 7
+    },
+    "2025-12-30": {
+      "rank": 7,
+      "streams": 251580,
+      "previous_rank": 6
+    },
+    "2025-12-29": {
+      "rank": 6,
+      "streams": 243087,
+      "previous_rank": 9
+    },
+    "2025-12-28": {
+      "rank": 9,
+      "streams": 209855,
+      "previous_rank": 8
+    },
+    "2025-12-27": {
+      "rank": 8,
+      "streams": 240531,
+      "previous_rank": 8
+    },
+    "2025-12-26": {
+      "rank": 8,
+      "streams": 232223,
+      "previous_rank": 25
+    },
+    "2025-12-25": {
+      "rank": 25,
+      "streams": 189223,
+      "previous_rank": 34
+    },
+    "2025-12-24": {
+      "rank": 34,
+      "streams": 295880,
+      "previous_rank": 7
+    },
+    "2025-12-23": {
+      "rank": 7,
+      "streams": 265314,
+      "previous_rank": 7
+    },
+    "2025-12-22": {
+      "rank": 7,
+      "streams": 261869,
+      "previous_rank": 9
+    },
+    "2025-12-21": {
+      "rank": 9,
+      "streams": 227024,
+      "previous_rank": 8
+    },
+    "2025-12-20": {
+      "rank": 8,
+      "streams": 274593,
+      "previous_rank": 8
+    },
+    "2025-12-19": {
+      "rank": 8,
+      "streams": 264958,
+      "previous_rank": 7
+    },
+    "2025-12-18": {
+      "rank": 7,
+      "streams": 241752,
+      "previous_rank": 7
+    },
+    "2025-12-17": {
+      "rank": 7,
+      "streams": 246004,
+      "previous_rank": 7
+    },
+    "2025-12-16": {
+      "rank": 7,
+      "streams": 238095,
+      "previous_rank": 7
+    },
+    "2025-12-15": {
+      "rank": 7,
+      "streams": 235723,
+      "previous_rank": 7
+    },
+    "2025-12-14": {
+      "rank": 7,
+      "streams": 211553,
+      "previous_rank": 7
+    },
+    "2025-12-13": {
+      "rank": 7,
+      "streams": 269050,
+      "previous_rank": 7
+    },
+    "2025-12-12": {
+      "rank": 7,
+      "streams": 262071,
+      "previous_rank": 7
+    },
+    "2025-12-11": {
+      "rank": 7,
+      "streams": 236252,
+      "previous_rank": 7
+    },
+    "2025-12-10": {
+      "rank": 7,
+      "streams": 239145,
+      "previous_rank": 6
+    },
+    "2025-12-09": {
+      "rank": 6,
+      "streams": 233723,
+      "previous_rank": 7
+    },
+    "2025-12-08": {
+      "rank": 7,
+      "streams": 227446,
+      "previous_rank": 9
+    },
+    "2025-12-07": {
+      "rank": 9,
+      "streams": 199469,
+      "previous_rank": 10
+    },
+    "2025-12-06": {
+      "rank": 10,
+      "streams": 242895,
+      "previous_rank": 7
+    },
+    "2025-12-05": {
+      "rank": 7,
+      "streams": 241069,
+      "previous_rank": 8
+    },
+    "2025-12-04": {
+      "rank": 8,
+      "streams": 221604,
+      "previous_rank": 8
+    },
+    "2025-12-03": {
+      "rank": 8,
+      "streams": 233917,
+      "previous_rank": 8
+    },
+    "2025-12-02": {
+      "rank": 8,
+      "streams": 225172,
+      "previous_rank": 7
+    },
+    "2025-12-01": {
+      "rank": 7,
+      "streams": 223006,
+      "previous_rank": 8
+    },
+    "2025-11-30": {
+      "rank": 8,
+      "streams": 202903,
+      "previous_rank": 11
+    },
+    "2025-11-29": {
+      "rank": 11,
+      "streams": 252080,
+      "previous_rank": 7
+    },
+    "2025-11-28": {
+      "rank": 7,
+      "streams": 257838,
+      "previous_rank": 6
+    },
+    "2025-11-27": {
+      "rank": 6,
+      "streams": 231529,
+      "previous_rank": 6
+    },
+    "2025-11-26": {
+      "rank": 6,
+      "streams": 238825,
+      "previous_rank": 6
+    },
+    "2025-11-25": {
+      "rank": 6,
+      "streams": 231524,
+      "previous_rank": 8
+    },
+    "2025-11-24": {
+      "rank": 8,
+      "streams": 225480,
+      "previous_rank": 9
+    },
+    "2025-11-23": {
+      "rank": 9,
+      "streams": 196298,
+      "previous_rank": 9
+    },
+    "2025-11-22": {
+      "rank": 9,
+      "streams": 249744,
+      "previous_rank": 8
+    },
+    "2025-11-21": {
+      "rank": 8,
+      "streams": 247146,
+      "previous_rank": 8
+    },
+    "2025-11-20": {
+      "rank": 8,
+      "streams": 231665,
+      "previous_rank": 8
+    },
+    "2025-11-19": {
+      "rank": 8,
+      "streams": 234175,
+      "previous_rank": 8
+    },
+    "2025-11-18": {
+      "rank": 8,
+      "streams": 229361,
+      "previous_rank": 8
+    },
+    "2025-11-17": {
+      "rank": 8,
+      "streams": 228664,
+      "previous_rank": 9
+    },
+    "2025-11-16": {
+      "rank": 9,
+      "streams": 199736,
+      "previous_rank": 12
+    },
+    "2025-11-15": {
+      "rank": 12,
+      "streams": 253735,
+      "previous_rank": 8
+    },
+    "2025-11-14": {
+      "rank": 8,
+      "streams": 251036,
+      "previous_rank": 6
+    },
+    "2025-11-13": {
+      "rank": 6,
+      "streams": 238025,
+      "previous_rank": 8
+    },
+    "2025-11-12": {
+      "rank": 8,
+      "streams": 244835,
+      "previous_rank": 8
+    },
+    "2025-11-11": {
+      "rank": 8,
+      "streams": 229173,
+      "previous_rank": 8
+    },
+    "2025-11-10": {
+      "rank": 8,
+      "streams": 244627,
+      "previous_rank": 10
+    },
+    "2025-11-09": {
+      "rank": 10,
+      "streams": 207196,
+      "previous_rank": 15
+    },
+    "2025-11-08": {
+      "rank": 15,
+      "streams": 258570,
+      "previous_rank": 24
+    },
+    "2025-11-07": {
+      "rank": 24,
+      "streams": 252679,
+      "previous_rank": 7
+    },
+    "2025-11-06": {
+      "rank": 7,
+      "streams": 226272,
+      "previous_rank": 12
+    },
+    "2025-11-05": {
+      "rank": 12,
+      "streams": 225041,
+      "previous_rank": 7
+    },
+    "2025-11-04": {
+      "rank": 7,
+      "streams": 218186,
+      "previous_rank": 8
+    },
+    "2025-11-02": {
+      "rank": 16,
+      "streams": 187029,
+      "previous_rank": 17
+    },
+    "2025-11-01": {
+      "rank": 17,
+      "streams": 207344,
+      "previous_rank": 16
+    },
+    "2025-10-31": {
+      "rank": 16,
+      "streams": 242392,
+      "previous_rank": 16
+    },
+    "2025-10-30": {
+      "rank": 16,
+      "streams": 221064,
+      "previous_rank": 15
+    },
+    "2025-10-29": {
+      "rank": 15,
+      "streams": 216566,
+      "previous_rank": 14
+    },
+    "2025-10-28": {
+      "rank": 14,
+      "streams": 221636,
+      "previous_rank": 15
+    },
+    "2025-10-27": {
+      "rank": 15,
+      "streams": 218608,
+      "previous_rank": 15
+    },
+    "2025-10-26": {
+      "rank": 15,
+      "streams": 187638,
+      "previous_rank": 15
+    },
+    "2025-10-25": {
+      "rank": 15,
+      "streams": 224742,
+      "previous_rank": 14
+    },
+    "2025-10-24": {
+      "rank": 14,
+      "streams": 243962,
+      "previous_rank": 14
+    },
+    "2025-10-23": {
+      "rank": 14,
+      "streams": 225728,
+      "previous_rank": 14
+    },
+    "2025-10-22": {
+      "rank": 14,
+      "streams": 230303,
+      "previous_rank": 14
+    },
+    "2025-10-21": {
+      "rank": 14,
+      "streams": 233415,
+      "previous_rank": 14
+    },
+    "2025-10-20": {
+      "rank": 14,
+      "streams": 237670,
+      "previous_rank": 18
+    },
+    "2025-10-19": {
+      "rank": 18,
+      "streams": 199592,
+      "previous_rank": 16
+    },
+    "2025-10-18": {
+      "rank": 16,
+      "streams": 250073,
+      "previous_rank": 11
+    },
+    "2025-10-17": {
+      "rank": 11,
+      "streams": 265370,
+      "previous_rank": 6
+    },
+    "2025-10-16": {
+      "rank": 6,
+      "streams": 258450,
+      "previous_rank": 11
+    },
+    "2025-10-15": {
+      "rank": 11,
+      "streams": 271422,
+      "previous_rank": 6
+    },
+    "2025-10-14": {
+      "rank": 6,
+      "streams": 271629,
+      "previous_rank": 6
+    },
+    "2025-10-12": {
+      "rank": 9,
+      "streams": 240167,
+      "previous_rank": 9
+    },
+    "2025-10-11": {
+      "rank": 9,
+      "streams": 299787,
+      "previous_rank": 7
+    },
+    "2025-10-10": {
+      "rank": 7,
+      "streams": 328730,
+      "previous_rank": 7
+    },
+    "2025-10-09": {
+      "rank": 7,
+      "streams": 289432,
+      "previous_rank": 6
+    },
+    "2025-10-08": {
+      "rank": 6,
+      "streams": 308979,
+      "previous_rank": 5
+    },
+    "2025-10-07": {
+      "rank": 5,
+      "streams": 311775,
+      "previous_rank": 6
+    },
+    "2025-10-06": {
+      "rank": 6,
+      "streams": 290735,
+      "previous_rank": 6
+    },
+    "2025-10-05": {
+      "rank": 6,
+      "streams": 241617,
+      "previous_rank": 10
+    },
+    "2025-10-04": {
+      "rank": 10,
+      "streams": 281216,
+      "previous_rank": 2
+    },
+    "2025-10-03": {
+      "rank": 2,
+      "streams": 476365
+    },
+    "2026-03-22": {
+      "rank": 30,
+      "streams": 599967,
+      "previous_rank": 310,
+      "peak_rank": 1
+    },
+    "2026-03-23": {
+      "rank": 37,
+      "streams": 617386,
+      "previous_rank": 300,
+      "peak_rank": 1
+    },
+    "2026-03-24": {
+      "rank": 35,
+      "streams": 605252,
+      "previous_rank": 370,
+      "peak_rank": 1
+    },
+    "2026-03-25": {
+      "rank": 31,
+      "streams": 619701,
+      "previous_rank": 350,
+      "peak_rank": 1
+    },
+    "2026-03-26": {
+      "rank": 31,
+      "streams": 629384,
+      "previous_rank": 310,
+      "peak_rank": 1
+    },
+    "2026-03-27": {
+      "rank": 24,
+      "streams": 679660,
+      "previous_rank": 310,
+      "peak_rank": 1
+    },
+    "2026-03-28": {
+      "rank": 29,
+      "streams": 690084,
+      "previous_rank": 240,
+      "peak_rank": 1
+    }
+  },
+  "Opalite": {
+    "2026-03-21": {
+      "rank": 178,
+      "streams": 76606,
+      "previous_rank": 2000,
+      "peak_rank": 8
+    },
+    "2026-03-20": {
+      "rank": 200,
+      "streams": 72257,
+      "previous_rank": 1730,
+      "peak_rank": 8
+    },
+    "2026-03-19": {
+      "rank": 173,
+      "streams": 66291,
+      "previous_rank": 1950,
+      "peak_rank": 8
+    },
+    "2026-03-18": {
+      "rank": 195,
+      "streams": 66525,
+      "previous_rank": 1810,
+      "peak_rank": 8
+    },
+    "2026-03-17": {
+      "rank": 181,
+      "streams": 65314,
+      "previous_rank": 1940,
+      "peak_rank": 8
+    },
+    "2026-03-16": {
+      "rank": 194,
+      "streams": 59210,
+      "peak_rank": 8
+    },
+    "2026-03-14": {
+      "rank": 186,
+      "streams": 69952,
+      "peak_rank": 8
+    },
+    "2026-03-12": {
+      "rank": 165,
+      "streams": 62587,
+      "previous_rank": 180,
+      "peak_rank": 8
+    },
+    "2026-03-11": {
+      "rank": 180,
+      "streams": 62284,
+      "previous_rank": 173,
+      "peak_rank": 8
+    },
+    "2026-03-10": {
+      "rank": 173,
+      "streams": 61407,
+      "previous_rank": 175,
+      "peak_rank": 8
+    },
+    "2026-03-09": {
+      "rank": 175,
+      "streams": 59905,
+      "peak_rank": 8
+    },
+    "2026-03-07": {
+      "rank": 171,
+      "streams": 69419,
+      "previous_rank": 185
+    },
+    "2026-03-06": {
+      "rank": 185,
+      "streams": 65992,
+      "previous_rank": 154
+    },
+    "2026-03-05": {
+      "rank": 154,
+      "streams": 65805,
+      "previous_rank": 158
+    },
+    "2026-03-04": {
+      "rank": 158,
+      "streams": 68090,
+      "previous_rank": 143
+    },
+    "2026-03-03": {
+      "rank": 143,
+      "streams": 66262,
+      "previous_rank": 149
+    },
+    "2026-03-02": {
+      "rank": 149,
+      "streams": 63999,
+      "previous_rank": 162
+    },
+    "2026-03-01": {
+      "rank": 162,
+      "streams": 59916,
+      "previous_rank": 137
+    },
+    "2026-02-28": {
+      "rank": 137,
+      "streams": 75960,
+      "previous_rank": 143
+    },
+    "2026-02-27": {
+      "rank": 143,
+      "streams": 74606,
+      "previous_rank": 151
+    },
+    "2026-02-26": {
+      "rank": 151,
+      "streams": 68235,
+      "previous_rank": 154
+    },
+    "2026-02-25": {
+      "rank": 154,
+      "streams": 68744,
+      "previous_rank": 140
+    },
+    "2026-02-24": {
+      "rank": 140,
+      "streams": 68773,
+      "previous_rank": 144
+    },
+    "2026-02-23": {
+      "rank": 144,
+      "streams": 66331,
+      "previous_rank": 164
+    },
+    "2026-02-22": {
+      "rank": 164,
+      "streams": 55878,
+      "previous_rank": 141
+    },
+    "2026-02-21": {
+      "rank": 141,
+      "streams": 73631,
+      "previous_rank": 152
+    },
+    "2026-02-20": {
+      "rank": 152,
+      "streams": 72423,
+      "previous_rank": 145
+    },
+    "2026-02-19": {
+      "rank": 145,
+      "streams": 67233,
+      "previous_rank": 150
+    },
+    "2026-02-18": {
+      "rank": 150,
+      "streams": 68270,
+      "previous_rank": 151
+    },
+    "2026-02-17": {
+      "rank": 151,
+      "streams": 71715,
+      "previous_rank": 153
+    },
+    "2026-02-16": {
+      "rank": 153,
+      "streams": 69289,
+      "previous_rank": 176
+    },
+    "2026-02-15": {
+      "rank": 176,
+      "streams": 57764,
+      "previous_rank": 138
+    },
+    "2026-02-14": {
+      "rank": 138,
+      "streams": 83374,
+      "previous_rank": 141
+    },
+    "2026-02-13": {
+      "rank": 141,
+      "streams": 80546,
+      "previous_rank": 136
+    },
+    "2026-02-12": {
+      "rank": 136,
+      "streams": 72152,
+      "previous_rank": 136
+    },
+    "2026-02-11": {
+      "rank": 136,
+      "streams": 74373,
+      "previous_rank": 124
+    },
+    "2026-02-10": {
+      "rank": 124,
+      "streams": 74030,
+      "previous_rank": 124
+    },
+    "2026-02-09": {
+      "rank": 124,
+      "streams": 75848,
+      "previous_rank": 104
+    },
+    "2026-02-08": {
+      "rank": 104,
+      "streams": 75847,
+      "previous_rank": 75
+    },
+    "2026-02-07": {
+      "rank": 75,
+      "streams": 109217,
+      "previous_rank": 59
+    },
+    "2026-02-06": {
+      "rank": 59,
+      "streams": 123266,
+      "previous_rank": 196
+    },
+    "2026-02-05": {
+      "rank": 196,
+      "streams": 58023
+    },
+    "2026-01-27": {
+      "rank": 196,
+      "streams": 56863
+    },
+    "2025-11-04": {
+      "rank": 154,
+      "streams": 67753,
+      "previous_rank": 186
+    },
+    "2025-11-03": {
+      "rank": 186,
+      "streams": 60259
+    },
+    "2025-10-24": {
+      "rank": 172,
+      "streams": 71824,
+      "previous_rank": 164
+    },
+    "2025-10-23": {
+      "rank": 164,
+      "streams": 68717,
+      "previous_rank": 143
+    },
+    "2025-10-22": {
+      "rank": 143,
+      "streams": 71802,
+      "previous_rank": 141
+    },
+    "2025-10-21": {
+      "rank": 141,
+      "streams": 72546,
+      "previous_rank": 123
+    },
+    "2025-10-20": {
+      "rank": 123,
+      "streams": 78021,
+      "previous_rank": 143
+    },
+    "2025-10-19": {
+      "rank": 143,
+      "streams": 66103,
+      "previous_rank": 136
+    },
+    "2025-10-18": {
+      "rank": 136,
+      "streams": 81318,
+      "previous_rank": 102
+    },
+    "2025-10-17": {
+      "rank": 102,
+      "streams": 92292,
+      "previous_rank": 78
+    },
+    "2025-10-16": {
+      "rank": 78,
+      "streams": 94227,
+      "previous_rank": 79
+    },
+    "2025-10-15": {
+      "rank": 79,
+      "streams": 101841,
+      "previous_rank": 61
+    },
+    "2025-10-14": {
+      "rank": 61,
+      "streams": 105088,
+      "previous_rank": 58
+    },
+    "2025-10-12": {
+      "rank": 69,
+      "streams": 99288,
+      "previous_rank": 75
+    },
+    "2025-10-11": {
+      "rank": 75,
+      "streams": 117414,
+      "previous_rank": 43
+    },
+    "2025-10-10": {
+      "rank": 43,
+      "streams": 147389,
+      "previous_rank": 40
+    },
+    "2025-10-09": {
+      "rank": 40,
+      "streams": 134614,
+      "previous_rank": 39
+    },
+    "2025-10-08": {
+      "rank": 39,
+      "streams": 149339,
+      "previous_rank": 35
+    },
+    "2025-10-07": {
+      "rank": 35,
+      "streams": 155325,
+      "previous_rank": 30
+    },
+    "2025-10-06": {
+      "rank": 30,
+      "streams": 167041,
+      "previous_rank": 31
+    },
+    "2025-10-05": {
+      "rank": 31,
+      "streams": 147283,
+      "previous_rank": 29
+    },
+    "2025-10-04": {
+      "rank": 29,
+      "streams": 180785,
+      "previous_rank": 8
+    },
+    "2025-10-03": {
+      "rank": 8,
+      "streams": 310631
+    },
+    "2026-03-23": {
+      "rank": 71,
+      "streams": 467899,
+      "previous_rank": 620,
+      "peak_rank": 2
+    },
+    "2026-03-24": {
+      "rank": 67,
+      "streams": 472117,
+      "previous_rank": 710,
+      "peak_rank": 2
+    },
+    "2026-03-28": {
+      "rank": 59,
+      "streams": 516357,
+      "previous_rank": 530,
+      "peak_rank": 2
+    },
+    "2026-03-22": {
+      "rank": 62,
+      "streams": 457392,
+      "previous_rank": 590,
+      "peak_rank": 2
+    },
+    "2026-03-25": {
+      "rank": 71,
+      "streams": 469138,
+      "previous_rank": 670,
+      "peak_rank": 2
+    },
+    "2026-03-26": {
+      "rank": 63,
+      "streams": 475608,
+      "previous_rank": 710,
+      "peak_rank": 2
+    },
+    "2026-03-27": {
+      "rank": 53,
+      "streams": 509786,
+      "previous_rank": 630,
+      "peak_rank": 2
+    }
+  },
+  "Elizabeth Taylor": {
+    "2025-10-17": {
+      "rank": 193,
+      "streams": 69879,
+      "previous_rank": 149
+    },
+    "2025-10-16": {
+      "rank": 149,
+      "streams": 69747,
+      "previous_rank": 139
+    },
+    "2025-10-15": {
+      "rank": 139,
+      "streams": 75121,
+      "previous_rank": 104
+    },
+    "2025-10-14": {
+      "rank": 104,
+      "streams": 80968,
+      "previous_rank": 96
+    },
+    "2025-10-12": {
+      "rank": 108,
+      "streams": 76755,
+      "previous_rank": 97
+    },
+    "2025-10-11": {
+      "rank": 97,
+      "streams": 97869,
+      "previous_rank": 85
+    },
+    "2025-10-10": {
+      "rank": 85,
+      "streams": 110140,
+      "previous_rank": 51
+    },
+    "2025-10-09": {
+      "rank": 51,
+      "streams": 120551,
+      "previous_rank": 44
+    },
+    "2025-10-08": {
+      "rank": 44,
+      "streams": 138182,
+      "previous_rank": 39
+    },
+    "2025-10-07": {
+      "rank": 39,
+      "streams": 144389,
+      "previous_rank": 32
+    },
+    "2025-10-06": {
+      "rank": 32,
+      "streams": 160113,
+      "previous_rank": 32
+    },
+    "2025-10-05": {
+      "rank": 32,
+      "streams": 145409,
+      "previous_rank": 28
+    },
+    "2025-10-04": {
+      "rank": 28,
+      "streams": 184247,
+      "previous_rank": 5
+    },
+    "2025-10-03": {
+      "rank": 5,
+      "streams": 323455
+    }
+  },
+  "Father Figure": {
+    "2025-10-14": {
+      "rank": 185,
+      "streams": 63045,
+      "previous_rank": 156
+    },
+    "2025-10-12": {
+      "rank": 184,
+      "streams": 59865,
+      "previous_rank": 169
+    },
+    "2025-10-11": {
+      "rank": 169,
+      "streams": 73760,
+      "previous_rank": 131
+    },
+    "2025-10-10": {
+      "rank": 131,
+      "streams": 86420,
+      "previous_rank": 87
+    },
+    "2025-10-09": {
+      "rank": 87,
+      "streams": 92902,
+      "previous_rank": 73
+    },
+    "2025-10-08": {
+      "rank": 73,
+      "streams": 108185,
+      "previous_rank": 58
+    },
+    "2025-10-07": {
+      "rank": 58,
+      "streams": 115955,
+      "previous_rank": 46
+    },
+    "2025-10-06": {
+      "rank": 46,
+      "streams": 128562,
+      "previous_rank": 47
+    },
+    "2025-10-05": {
+      "rank": 47,
+      "streams": 115026,
+      "previous_rank": 42
+    },
+    "2025-10-04": {
+      "rank": 42,
+      "streams": 148012,
+      "previous_rank": 14
+    },
+    "2025-10-03": {
+      "rank": 14,
+      "streams": 273554
+    }
+  },
+  "CANCELLED!": {
+    "2025-10-13": {
+      "rank": 171,
+      "streams": 63304
+    },
+    "2025-10-11": {
+      "rank": 189,
+      "streams": 71084,
+      "previous_rank": 143
+    },
+    "2025-10-10": {
+      "rank": 143,
+      "streams": 82499,
+      "previous_rank": 95
+    },
+    "2025-10-09": {
+      "rank": 95,
+      "streams": 87233,
+      "previous_rank": 81
+    },
+    "2025-10-08": {
+      "rank": 81,
+      "streams": 101649,
+      "previous_rank": 67
+    },
+    "2025-10-07": {
+      "rank": 67,
+      "streams": 106591,
+      "previous_rank": 53
+    },
+    "2025-10-06": {
+      "rank": 53,
+      "streams": 121016,
+      "previous_rank": 57
+    },
+    "2025-10-05": {
+      "rank": 57,
+      "streams": 108646,
+      "previous_rank": 48
+    },
+    "2025-10-04": {
+      "rank": 48,
+      "streams": 142691,
+      "previous_rank": 20
+    },
+    "2025-10-03": {
+      "rank": 20,
+      "streams": 249570
+    }
+  },
+  "The Life of a Showgirl (feat. Sabrina Carpenter)": {
+    "2025-10-10": {
+      "rank": 147,
+      "streams": 81886,
+      "previous_rank": 131
+    },
+    "2025-10-09": {
+      "rank": 131,
+      "streams": 75748,
+      "previous_rank": 107
+    },
+    "2025-10-08": {
+      "rank": 107,
+      "streams": 88041,
+      "previous_rank": 86
+    },
+    "2025-10-07": {
+      "rank": 86,
+      "streams": 94135,
+      "previous_rank": 66
+    },
+    "2025-10-06": {
+      "rank": 66,
+      "streams": 105387,
+      "previous_rank": 72
+    },
+    "2025-10-05": {
+      "rank": 72,
+      "streams": 97161,
+      "previous_rank": 59
+    },
+    "2025-10-04": {
+      "rank": 59,
+      "streams": 131119,
+      "previous_rank": 22
+    },
+    "2025-10-03": {
+      "rank": 22,
+      "streams": 241988
+    }
+  },
+  "Actually Romantic": {
+    "2025-10-09": {
+      "rank": 143,
+      "streams": 72879,
+      "previous_rank": 115
+    },
+    "2025-10-08": {
+      "rank": 115,
+      "streams": 85551,
+      "previous_rank": 90
+    },
+    "2025-10-07": {
+      "rank": 90,
+      "streams": 92290,
+      "previous_rank": 67
+    },
+    "2025-10-06": {
+      "rank": 67,
+      "streams": 104842,
+      "previous_rank": 76
+    },
+    "2025-10-05": {
+      "rank": 76,
+      "streams": 95293,
+      "previous_rank": 65
+    },
+    "2025-10-04": {
+      "rank": 65,
+      "streams": 127803,
+      "previous_rank": 21
+    },
+    "2025-10-03": {
+      "rank": 21,
+      "streams": 243248
+    }
+  },
+  "Eldest Daughter": {
+    "2025-10-09": {
+      "rank": 147,
+      "streams": 72151,
+      "previous_rank": 126
+    },
+    "2025-10-08": {
+      "rank": 126,
+      "streams": 83184,
+      "previous_rank": 92
+    },
+    "2025-10-07": {
+      "rank": 92,
+      "streams": 91434,
+      "previous_rank": 70
+    },
+    "2025-10-06": {
+      "rank": 70,
+      "streams": 103872,
+      "previous_rank": 71
+    },
+    "2025-10-05": {
+      "rank": 71,
+      "streams": 97640,
+      "previous_rank": 62
+    },
+    "2025-10-04": {
+      "rank": 62,
+      "streams": 129709,
+      "previous_rank": 18
+    },
+    "2025-10-03": {
+      "rank": 18,
+      "streams": 253378
+    }
+  },
+  "Wood": {
+    "2025-10-09": {
+      "rank": 154,
+      "streams": 70981,
+      "previous_rank": 120
+    },
+    "2025-10-08": {
+      "rank": 120,
+      "streams": 84002,
+      "previous_rank": 97
+    },
+    "2025-10-07": {
+      "rank": 97,
+      "streams": 87910,
+      "previous_rank": 80
+    },
+    "2025-10-06": {
+      "rank": 80,
+      "streams": 97965,
+      "previous_rank": 84
+    },
+    "2025-10-05": {
+      "rank": 84,
+      "streams": 91936,
+      "previous_rank": 71
+    },
+    "2025-10-04": {
+      "rank": 71,
+      "streams": 123396,
+      "previous_rank": 28
+    },
+    "2025-10-03": {
+      "rank": 28,
+      "streams": 226036
+    }
+  },
+  "Wi$h Li$t": {
+    "2025-10-09": {
+      "rank": 157,
+      "streams": 70502,
+      "previous_rank": 129
+    },
+    "2025-10-08": {
+      "rank": 129,
+      "streams": 81847,
+      "previous_rank": 96
+    },
+    "2025-10-07": {
+      "rank": 96,
+      "streams": 88231,
+      "previous_rank": 81
+    },
+    "2025-10-06": {
+      "rank": 81,
+      "streams": 97689,
+      "previous_rank": 83
+    },
+    "2025-10-05": {
+      "rank": 83,
+      "streams": 92099,
+      "previous_rank": 72
+    },
+    "2025-10-04": {
+      "rank": 72,
+      "streams": 122692,
+      "previous_rank": 27
+    },
+    "2025-10-03": {
+      "rank": 27,
+      "streams": 230260
+    }
+  },
+  "Ruin The Friendship": {
+    "2025-10-09": {
+      "rank": 163,
+      "streams": 68639,
+      "previous_rank": 140
+    },
+    "2025-10-08": {
+      "rank": 140,
+      "streams": 78154,
+      "previous_rank": 104
+    },
+    "2025-10-07": {
+      "rank": 104,
+      "streams": 85992,
+      "previous_rank": 79
+    },
+    "2025-10-06": {
+      "rank": 79,
+      "streams": 98143,
+      "previous_rank": 79
+    },
+    "2025-10-05": {
+      "rank": 79,
+      "streams": 93679,
+      "previous_rank": 70
+    },
+    "2025-10-04": {
+      "rank": 70,
+      "streams": 123437,
+      "previous_rank": 23
+    },
+    "2025-10-03": {
+      "rank": 23,
+      "streams": 237680
+    }
+  },
+  "Honey": {
+    "2025-10-08": {
+      "rank": 195,
+      "streams": 66538,
+      "previous_rank": 141
+    },
+    "2025-10-07": {
+      "rank": 141,
+      "streams": 72155,
+      "previous_rank": 110
+    },
+    "2025-10-06": {
+      "rank": 110,
+      "streams": 82793,
+      "previous_rank": 113
+    },
+    "2025-10-05": {
+      "rank": 113,
+      "streams": 78276,
+      "previous_rank": 91
+    },
+    "2025-10-04": {
+      "rank": 91,
+      "streams": 105197,
+      "previous_rank": 36
+    },
+    "2025-10-03": {
+      "rank": 36,
+      "streams": 198422
+    }
+  },
+  "Cruel Summer": {
+    "2024-09-03": {
+      "rank": 181,
+      "streams": 54730,
+      "previous_rank": 178
+    },
+    "2024-09-02": {
+      "rank": 178,
+      "streams": 56438,
+      "previous_rank": 181,
+      "peak_rank": 36
+    },
+    "2024-09-01": {
+      "rank": 181,
+      "streams": 54569,
+      "previous_rank": 191,
+      "peak_rank": 36
+    },
+    "2024-08-31": {
+      "rank": 191,
+      "streams": 62191,
+      "previous_rank": 1,
+      "peak_rank": 36
+    },
+    "2024-08-29": {
+      "rank": 188,
+      "streams": 62039
+    },
+    "2024-08-26": {
+      "rank": 199,
+      "streams": 58113,
+      "previous_rank": 200
+    },
+    "2024-08-25": {
+      "rank": 200,
+      "streams": 52828,
+      "previous_rank": 189
+    },
+    "2024-08-24": {
+      "rank": 189,
+      "streams": 62065,
+      "previous_rank": 194
+    },
+    "2024-08-23": {
+      "rank": 194,
+      "streams": 61498,
+      "previous_rank": 186
+    },
+    "2024-08-22": {
+      "rank": 186,
+      "streams": 59753,
+      "previous_rank": 158
+    },
+    "2024-08-21": {
+      "rank": 158,
+      "streams": 64466,
+      "previous_rank": 161
+    },
+    "2024-08-20": {
+      "rank": 161,
+      "streams": 62785,
+      "previous_rank": 181
+    },
+    "2024-08-19": {
+      "rank": 181,
+      "streams": 60736,
+      "previous_rank": 193
+    },
+    "2024-08-18": {
+      "rank": 193,
+      "streams": 53317
+    },
+    "2024-08-16": {
+      "rank": 192,
+      "streams": 59685
+    },
+    "2024-08-14": {
+      "rank": 194,
+      "streams": 58853,
+      "previous_rank": 169,
+      "peak_rank": 36
+    },
+    "2024-08-13": {
+      "rank": 169,
+      "streams": 60121,
+      "previous_rank": 179,
+      "peak_rank": 36
+    },
+    "2024-08-12": {
+      "rank": 179,
+      "streams": 59009,
+      "previous_rank": 184,
+      "peak_rank": 36
+    },
+    "2024-08-11": {
+      "rank": 184,
+      "streams": 52576,
+      "previous_rank": 169,
+      "peak_rank": 36
+    },
+    "2024-08-10": {
+      "rank": 169,
+      "streams": 63855,
+      "previous_rank": 179
+    },
+    "2024-08-09": {
+      "rank": 179,
+      "streams": 60323,
+      "previous_rank": 153
+    },
+    "2024-08-08": {
+      "rank": 153,
+      "streams": 63252,
+      "previous_rank": 185
+    },
+    "2024-08-07": {
+      "rank": 185,
+      "streams": 57912,
+      "previous_rank": 168
+    },
+    "2024-08-06": {
+      "rank": 168,
+      "streams": 60363,
+      "previous_rank": 173
+    },
+    "2024-08-05": {
+      "rank": 173,
+      "streams": 60435,
+      "previous_rank": 185
+    },
+    "2024-08-04": {
+      "rank": 185,
+      "streams": 54591,
+      "previous_rank": 189
+    },
+    "2024-08-03": {
+      "rank": 189,
+      "streams": 62118,
+      "previous_rank": 171
+    },
+    "2024-08-02": {
+      "rank": 171,
+      "streams": 65951,
+      "previous_rank": 168
+    },
+    "2024-08-01": {
+      "rank": 168,
+      "streams": 62719,
+      "previous_rank": 179
+    },
+    "2024-07-31": {
+      "rank": 179,
+      "streams": 58749,
+      "previous_rank": 177
+    },
+    "2024-07-30": {
+      "rank": 177,
+      "streams": 59948,
+      "previous_rank": 176
+    },
+    "2024-07-29": {
+      "rank": 176,
+      "streams": 60986,
+      "previous_rank": 190
+    },
+    "2024-07-28": {
+      "rank": 190,
+      "streams": 54236
+    },
+    "2024-07-25": {
+      "rank": 190,
+      "streams": 63308,
+      "previous_rank": 165,
+      "peak_rank": 36
+    },
+    "2024-07-24": {
+      "rank": 165,
+      "streams": 65983,
+      "previous_rank": 158,
+      "peak_rank": 36
+    },
+    "2024-07-23": {
+      "rank": 158,
+      "streams": 67839,
+      "previous_rank": 163,
+      "peak_rank": 36
+    },
+    "2024-07-22": {
+      "rank": 163,
+      "streams": 68075,
+      "previous_rank": 167
+    },
+    "2024-07-21": {
+      "rank": 167,
+      "streams": 59292,
+      "previous_rank": 174
+    },
+    "2024-07-20": {
+      "rank": 174,
+      "streams": 69674,
+      "previous_rank": 167
+    },
+    "2024-07-19": {
+      "rank": 167,
+      "streams": 74085,
+      "previous_rank": 152
+    },
+    "2024-07-18": {
+      "rank": 152,
+      "streams": 70106,
+      "previous_rank": 145
+    },
+    "2024-07-17": {
+      "rank": 145,
+      "streams": 69207,
+      "previous_rank": 137
+    },
+    "2024-07-16": {
+      "rank": 137,
+      "streams": 71743,
+      "previous_rank": 134
+    },
+    "2024-07-15": {
+      "rank": 134,
+      "streams": 69820,
+      "previous_rank": 153
+    },
+    "2024-07-14": {
+      "rank": 153,
+      "streams": 60146,
+      "previous_rank": 162
+    },
+    "2024-07-13": {
+      "rank": 162,
+      "streams": 69905,
+      "previous_rank": 154
+    },
+    "2024-07-12": {
+      "rank": 154,
+      "streams": 74902,
+      "previous_rank": 151
+    },
+    "2024-07-11": {
+      "rank": 151,
+      "streams": 68311,
+      "previous_rank": 147
+    },
+    "2024-07-10": {
+      "rank": 147,
+      "streams": 66652,
+      "previous_rank": 136
+    },
+    "2024-07-09": {
+      "rank": 136,
+      "streams": 68734,
+      "previous_rank": 131
+    },
+    "2024-07-08": {
+      "rank": 131,
+      "streams": 70993,
+      "previous_rank": 149
+    },
+    "2024-07-07": {
+      "rank": 149,
+      "streams": 61883,
+      "previous_rank": 143
+    },
+    "2024-07-06": {
+      "rank": 143,
+      "streams": 72255,
+      "previous_rank": 154,
+      "peak_rank": 36
+    },
+    "2024-07-05": {
+      "rank": 154,
+      "streams": 72739,
+      "previous_rank": 174,
+      "peak_rank": 36
+    },
+    "2024-07-04": {
+      "rank": 174,
+      "streams": 66430,
+      "previous_rank": 160,
+      "peak_rank": 36
+    },
+    "2024-07-03": {
+      "rank": 160,
+      "streams": 66696,
+      "previous_rank": 158,
+      "peak_rank": 36
+    },
+    "2024-07-02": {
+      "rank": 158,
+      "streams": 66445,
+      "previous_rank": 146
+    },
+    "2024-07-01": {
+      "rank": 146,
+      "streams": 64806,
+      "previous_rank": 151
+    },
+    "2024-06-30": {
+      "rank": 151,
+      "streams": 61790,
+      "previous_rank": 149
+    },
+    "2024-06-29": {
+      "rank": 149,
+      "streams": 72081,
+      "previous_rank": 149
+    },
+    "2024-06-28": {
+      "rank": 149,
+      "streams": 78215,
+      "previous_rank": 137
+    },
+    "2024-06-27": {
+      "rank": 137,
+      "streams": 74055,
+      "previous_rank": 148
+    },
+    "2024-06-26": {
+      "rank": 148,
+      "streams": 71336,
+      "previous_rank": 124
+    },
+    "2024-06-25": {
+      "rank": 124,
+      "streams": 72442,
+      "previous_rank": 117
+    },
+    "2024-06-24": {
+      "rank": 117,
+      "streams": 74437,
+      "previous_rank": 145
+    },
+    "2024-06-23": {
+      "rank": 145,
+      "streams": 65105,
+      "previous_rank": 144
+    },
+    "2024-06-22": {
+      "rank": 144,
+      "streams": 72180,
+      "previous_rank": 149
+    },
+    "2024-06-21": {
+      "rank": 149,
+      "streams": 76627,
+      "previous_rank": 90
+    },
+    "2024-06-20": {
+      "rank": 90,
+      "streams": 84156,
+      "previous_rank": 94
+    },
+    "2024-06-19": {
+      "rank": 94,
+      "streams": 83767,
+      "previous_rank": 91
+    },
+    "2024-06-18": {
+      "rank": 91,
+      "streams": 83133,
+      "previous_rank": 89
+    },
+    "2024-06-17": {
+      "rank": 89,
+      "streams": 83396,
+      "previous_rank": 88
+    },
+    "2024-06-16": {
+      "rank": 88,
+      "streams": 77730,
+      "previous_rank": 79,
+      "peak_rank": 36
+    },
+    "2024-06-15": {
+      "rank": 79,
+      "streams": 97211,
+      "previous_rank": 93,
+      "peak_rank": 36
+    },
+    "2024-06-14": {
+      "rank": 93,
+      "streams": 95718,
+      "previous_rank": 99,
+      "peak_rank": 36
+    },
+    "2024-06-13": {
+      "rank": 99,
+      "streams": 85726,
+      "previous_rank": 105,
+      "peak_rank": 36
+    },
+    "2024-06-12": {
+      "rank": 105,
+      "streams": 86481,
+      "previous_rank": 97
+    },
+    "2024-06-11": {
+      "rank": 97,
+      "streams": 88391,
+      "previous_rank": 101
+    },
+    "2024-06-10": {
+      "rank": 101,
+      "streams": 83367,
+      "previous_rank": 104
+    },
+    "2024-06-09": {
+      "rank": 104,
+      "streams": 77929,
+      "previous_rank": 94
+    },
+    "2024-06-08": {
+      "rank": 94,
+      "streams": 101107,
+      "previous_rank": 105
+    },
+    "2024-06-07": {
+      "rank": 105,
+      "streams": 103267,
+      "previous_rank": 118
+    },
+    "2024-06-06": {
+      "rank": 118,
+      "streams": 86843,
+      "previous_rank": 111
+    },
+    "2024-06-05": {
+      "rank": 111,
+      "streams": 92948,
+      "previous_rank": 103
+    },
+    "2024-06-04": {
+      "rank": 103,
+      "streams": 91703,
+      "previous_rank": 102
+    },
+    "2024-06-03": {
+      "rank": 102,
+      "streams": 90869,
+      "previous_rank": 105
+    },
+    "2024-06-02": {
+      "rank": 105,
+      "streams": 80762,
+      "previous_rank": 129
+    },
+    "2024-06-01": {
+      "rank": 129,
+      "streams": 89109,
+      "previous_rank": 147
+    },
+    "2024-05-31": {
+      "rank": 147,
+      "streams": 85783,
+      "previous_rank": 110
+    },
+    "2024-05-30": {
+      "rank": 110,
+      "streams": 81216,
+      "previous_rank": 114
+    },
+    "2024-05-29": {
+      "rank": 114,
+      "streams": 83135,
+      "previous_rank": 109
+    },
+    "2024-05-28": {
+      "rank": 109,
+      "streams": 81534,
+      "previous_rank": 108
+    },
+    "2024-05-27": {
+      "rank": 108,
+      "streams": 78301,
+      "previous_rank": 127
+    },
+    "2024-05-26": {
+      "rank": 127,
+      "streams": 70798,
+      "previous_rank": 137
+    },
+    "2024-05-25": {
+      "rank": 137,
+      "streams": 83959,
+      "previous_rank": 128,
+      "peak_rank": 36
+    },
+    "2024-05-24": {
+      "rank": 128,
+      "streams": 85009,
+      "previous_rank": 110,
+      "peak_rank": 36
+    },
+    "2024-05-23": {
+      "rank": 110,
+      "streams": 84242,
+      "previous_rank": 105,
+      "peak_rank": 36
+    },
+    "2024-05-22": {
+      "rank": 105,
+      "streams": 89249,
+      "previous_rank": 101,
+      "peak_rank": 36
+    },
+    "2024-05-21": {
+      "rank": 101,
+      "streams": 85965,
+      "previous_rank": 97
+    },
+    "2024-05-20": {
+      "rank": 97,
+      "streams": 84295,
+      "previous_rank": 101
+    },
+    "2024-05-19": {
+      "rank": 101,
+      "streams": 81913,
+      "previous_rank": 102
+    },
+    "2024-05-18": {
+      "rank": 102,
+      "streams": 96835,
+      "previous_rank": 99
+    },
+    "2024-05-17": {
+      "rank": 99,
+      "streams": 102398,
+      "previous_rank": 74
+    },
+    "2024-05-16": {
+      "rank": 74,
+      "streams": 95401,
+      "previous_rank": 80
+    },
+    "2024-05-15": {
+      "rank": 80,
+      "streams": 97109,
+      "previous_rank": 69
+    },
+    "2024-05-14": {
+      "rank": 69,
+      "streams": 99793,
+      "previous_rank": 61
+    },
+    "2024-05-12": {
+      "rank": 59,
+      "streams": 106021,
+      "previous_rank": 71
+    },
+    "2024-05-11": {
+      "rank": 71,
+      "streams": 110743,
+      "previous_rank": 73
+    },
+    "2024-05-09": {
+      "rank": 96,
+      "streams": 87483,
+      "previous_rank": 116
+    },
+    "2024-05-08": {
+      "rank": 116,
+      "streams": 80081,
+      "previous_rank": 122
+    },
+    "2024-05-07": {
+      "rank": 122,
+      "streams": 76719,
+      "previous_rank": 131,
+      "peak_rank": 36
+    },
+    "2024-05-06": {
+      "rank": 131,
+      "streams": 65101,
+      "previous_rank": 144,
+      "peak_rank": 36
+    },
+    "2024-05-05": {
+      "rank": 144,
+      "streams": 59413,
+      "previous_rank": 143,
+      "peak_rank": 36
+    },
+    "2024-05-04": {
+      "rank": 143,
+      "streams": 71824,
+      "previous_rank": 146,
+      "peak_rank": 36
+    },
+    "2024-05-03": {
+      "rank": 146,
+      "streams": 74976,
+      "previous_rank": 117
+    },
+    "2024-05-02": {
+      "rank": 117,
+      "streams": 75381,
+      "previous_rank": 120
+    },
+    "2024-05-01": {
+      "rank": 120,
+      "streams": 66528,
+      "previous_rank": 110
+    },
+    "2024-04-30": {
+      "rank": 110,
+      "streams": 78793,
+      "previous_rank": 128
+    },
+    "2024-04-29": {
+      "rank": 128,
+      "streams": 69500,
+      "previous_rank": 146
+    },
+    "2024-04-28": {
+      "rank": 146,
+      "streams": 60816,
+      "previous_rank": 142
+    },
+    "2024-04-27": {
+      "rank": 142,
+      "streams": 71967,
+      "previous_rank": 124
+    },
+    "2024-04-26": {
+      "rank": 124,
+      "streams": 79564,
+      "previous_rank": 85
+    },
+    "2024-04-25": {
+      "rank": 85,
+      "streams": 87354,
+      "previous_rank": 67
+    },
+    "2024-04-24": {
+      "rank": 67,
+      "streams": 93746,
+      "previous_rank": 79
+    },
+    "2024-04-23": {
+      "rank": 79,
+      "streams": 88555,
+      "previous_rank": 76
+    },
+    "2024-04-22": {
+      "rank": 76,
+      "streams": 91132,
+      "previous_rank": 64
+    },
+    "2024-04-21": {
+      "rank": 64,
+      "streams": 90639,
+      "previous_rank": 61
+    },
+    "2024-04-20": {
+      "rank": 61,
+      "streams": 114383,
+      "previous_rank": 71
+    },
+    "2024-04-19": {
+      "rank": 71,
+      "streams": 115176,
+      "previous_rank": 60,
+      "peak_rank": 36
+    },
+    "2024-04-18": {
+      "rank": 60,
+      "streams": 104731,
+      "previous_rank": 63,
+      "peak_rank": 36
+    },
+    "2024-04-17": {
+      "rank": 63,
+      "streams": 101493,
+      "previous_rank": 58,
+      "peak_rank": 36
+    },
+    "2024-04-16": {
+      "rank": 58,
+      "streams": 101803,
+      "previous_rank": 61,
+      "peak_rank": 36
+    },
+    "2024-04-15": {
+      "rank": 61,
+      "streams": 99362,
+      "previous_rank": 61
+    },
+    "2024-04-14": {
+      "rank": 61,
+      "streams": 95133,
+      "previous_rank": 63
+    },
+    "2024-04-13": {
+      "rank": 63,
+      "streams": 119510,
+      "previous_rank": 72
+    },
+    "2024-04-12": {
+      "rank": 72,
+      "streams": 114156,
+      "previous_rank": 65
+    },
+    "2024-04-11": {
+      "rank": 65,
+      "streams": 103581,
+      "previous_rank": 62
+    },
+    "2024-04-10": {
+      "rank": 62,
+      "streams": 105789,
+      "previous_rank": 61
+    },
+    "2024-04-09": {
+      "rank": 61,
+      "streams": 102329,
+      "previous_rank": 66
+    },
+    "2024-04-08": {
+      "rank": 66,
+      "streams": 100308,
+      "previous_rank": 65
+    },
+    "2024-04-07": {
+      "rank": 65,
+      "streams": 92214,
+      "previous_rank": 57
+    },
+    "2024-04-06": {
+      "rank": 57,
+      "streams": 122937,
+      "previous_rank": 66
+    },
+    "2024-04-05": {
+      "rank": 66,
+      "streams": 114663,
+      "previous_rank": 55
+    },
+    "2024-04-04": {
+      "rank": 55,
+      "streams": 109303,
+      "previous_rank": 56
+    },
+    "2024-04-03": {
+      "rank": 56,
+      "streams": 111085,
+      "previous_rank": 61
+    },
+    "2024-04-02": {
+      "rank": 61,
+      "streams": 103422,
+      "previous_rank": 56
+    },
+    "2024-04-01": {
+      "rank": 56,
+      "streams": 98695,
+      "previous_rank": 60,
+      "peak_rank": 36
+    },
+    "2024-03-31": {
+      "rank": 60,
+      "streams": 94746,
+      "previous_rank": 54,
+      "peak_rank": 36
+    },
+    "2024-03-30": {
+      "rank": 54,
+      "streams": 119474,
+      "previous_rank": 54,
+      "peak_rank": 36
+    },
+    "2024-03-29": {
+      "rank": 54,
+      "streams": 122567,
+      "previous_rank": 55,
+      "peak_rank": 36
+    },
+    "2024-03-28": {
+      "rank": 55,
+      "streams": 110779,
+      "previous_rank": 59
+    },
+    "2024-03-27": {
+      "rank": 59,
+      "streams": 111704,
+      "previous_rank": 49
+    },
+    "2024-03-26": {
+      "rank": 49,
+      "streams": 107283,
+      "previous_rank": 53
+    },
+    "2024-03-25": {
+      "rank": 53,
+      "streams": 104881,
+      "previous_rank": 54
+    },
+    "2024-03-24": {
+      "rank": 54,
+      "streams": 99803,
+      "previous_rank": 49
+    },
+    "2024-03-23": {
+      "rank": 49,
+      "streams": 126083,
+      "previous_rank": 53
+    },
+    "2024-03-22": {
+      "rank": 53,
+      "streams": 120812,
+      "previous_rank": 54
+    },
+    "2024-03-21": {
+      "rank": 54,
+      "streams": 113498,
+      "previous_rank": 51
+    },
+    "2024-03-20": {
+      "rank": 51,
+      "streams": 119162,
+      "previous_rank": 53
+    },
+    "2024-03-19": {
+      "rank": 53,
+      "streams": 117016,
+      "previous_rank": 52
+    },
+    "2024-03-18": {
+      "rank": 52,
+      "streams": 110081,
+      "previous_rank": 54
+    },
+    "2024-03-17": {
+      "rank": 54,
+      "streams": 101606,
+      "previous_rank": 47
+    },
+    "2024-03-16": {
+      "rank": 47,
+      "streams": 129951,
+      "previous_rank": 50
+    },
+    "2024-03-15": {
+      "rank": 50,
+      "streams": 125894,
+      "previous_rank": 41
+    },
+    "2024-03-14": {
+      "rank": 41,
+      "streams": 127304,
+      "previous_rank": 40,
+      "peak_rank": 36
+    },
+    "2024-03-13": {
+      "rank": 40,
+      "streams": 131234,
+      "previous_rank": 37,
+      "peak_rank": 36
+    },
+    "2024-03-12": {
+      "rank": 37,
+      "streams": 124911,
+      "previous_rank": 41,
+      "peak_rank": 36
+    },
+    "2024-03-11": {
+      "rank": 41,
+      "streams": 121777,
+      "previous_rank": 42,
+      "peak_rank": 36
+    },
+    "2024-03-10": {
+      "rank": 42,
+      "streams": 114312,
+      "previous_rank": 40
+    },
+    "2024-03-09": {
+      "rank": 40,
+      "streams": 149583,
+      "previous_rank": 46
+    },
+    "2024-03-08": {
+      "rank": 46,
+      "streams": 143248,
+      "previous_rank": 48
+    },
+    "2024-03-07": {
+      "rank": 48,
+      "streams": 119725,
+      "previous_rank": 52
+    },
+    "2024-03-06": {
+      "rank": 52,
+      "streams": 122205,
+      "previous_rank": 50
+    },
+    "2024-03-05": {
+      "rank": 50,
+      "streams": 122052,
+      "previous_rank": 53
+    },
+    "2024-03-04": {
+      "rank": 53,
+      "streams": 119475,
+      "previous_rank": 49
+    },
+    "2024-03-03": {
+      "rank": 49,
+      "streams": 105016,
+      "previous_rank": 48
+    },
+    "2024-03-02": {
+      "rank": 48,
+      "streams": 135280,
+      "previous_rank": 47
+    },
+    "2024-03-01": {
+      "rank": 47,
+      "streams": 135596,
+      "previous_rank": 46
+    },
+    "2024-02-29": {
+      "rank": 46,
+      "streams": 128532,
+      "previous_rank": 46
+    },
+    "2024-02-28": {
+      "rank": 46,
+      "streams": 129525,
+      "previous_rank": 47
+    },
+    "2024-02-27": {
+      "rank": 47,
+      "streams": 126624,
+      "previous_rank": 49
+    },
+    "2024-02-26": {
+      "rank": 49,
+      "streams": 121327,
+      "previous_rank": 48
+    },
+    "2024-02-25": {
+      "rank": 48,
+      "streams": 112066,
+      "previous_rank": 47
+    },
+    "2024-02-24": {
+      "rank": 47,
+      "streams": 144858,
+      "previous_rank": 48,
+      "peak_rank": 36
+    },
+    "2024-02-23": {
+      "rank": 48,
+      "streams": 145459,
+      "previous_rank": 45,
+      "peak_rank": 36
+    },
+    "2024-02-22": {
+      "rank": 45,
+      "streams": 135376,
+      "previous_rank": 45,
+      "peak_rank": 36
+    },
+    "2024-02-21": {
+      "rank": 45,
+      "streams": 137290,
+      "previous_rank": 48,
+      "peak_rank": 36
+    },
+    "2024-02-20": {
+      "rank": 48,
+      "streams": 135474,
+      "previous_rank": 49
+    },
+    "2024-02-19": {
+      "rank": 49,
+      "streams": 129415,
+      "previous_rank": 48
+    },
+    "2024-02-18": {
+      "rank": 48,
+      "streams": 117452,
+      "previous_rank": 48
+    },
+    "2024-02-17": {
+      "rank": 48,
+      "streams": 154035,
+      "previous_rank": 62
+    },
+    "2024-02-16": {
+      "rank": 62,
+      "streams": 148055,
+      "previous_rank": 48
+    },
+    "2024-02-15": {
+      "rank": 48,
+      "streams": 126768,
+      "previous_rank": 48
+    },
+    "2024-02-14": {
+      "rank": 48,
+      "streams": 137114,
+      "previous_rank": 52
+    },
+    "2024-02-13": {
+      "rank": 52,
+      "streams": 129045,
+      "previous_rank": 55
+    },
+    "2024-02-12": {
+      "rank": 55,
+      "streams": 121143,
+      "previous_rank": 52
+    },
+    "2024-02-11": {
+      "rank": 52,
+      "streams": 112216,
+      "previous_rank": 51
+    },
+    "2024-02-10": {
+      "rank": 51,
+      "streams": 143361,
+      "previous_rank": 57
+    },
+    "2024-02-09": {
+      "rank": 57,
+      "streams": 134150,
+      "previous_rank": 44
+    },
+    "2024-02-08": {
+      "rank": 44,
+      "streams": 127344,
+      "previous_rank": 47
+    },
+    "2024-02-07": {
+      "rank": 47,
+      "streams": 133471,
+      "previous_rank": 48
+    },
+    "2024-02-06": {
+      "rank": 48,
+      "streams": 129378,
+      "previous_rank": 46,
+      "peak_rank": 36
+    },
+    "2024-02-05": {
+      "rank": 46,
+      "streams": 128341,
+      "previous_rank": 49,
+      "peak_rank": 36
+    },
+    "2024-02-04": {
+      "rank": 49,
+      "streams": 108623,
+      "previous_rank": 43,
+      "peak_rank": 36
+    },
+    "2024-02-03": {
+      "rank": 43,
+      "streams": 140726,
+      "previous_rank": 55,
+      "peak_rank": 36
+    },
+    "2024-02-02": {
+      "rank": 55,
+      "streams": 136873,
+      "previous_rank": 46
+    },
+    "2024-02-01": {
+      "rank": 46,
+      "streams": 127322,
+      "previous_rank": 49
+    },
+    "2024-01-31": {
+      "rank": 49,
+      "streams": 127927,
+      "previous_rank": 45
+    },
+    "2024-01-30": {
+      "rank": 45,
+      "streams": 122843,
+      "previous_rank": 47
+    },
+    "2024-01-29": {
+      "rank": 47,
+      "streams": 118779,
+      "previous_rank": 45
+    },
+    "2024-01-28": {
+      "rank": 45,
+      "streams": 114058,
+      "previous_rank": 44
+    },
+    "2024-01-27": {
+      "rank": 44,
+      "streams": 145386,
+      "previous_rank": 66
+    },
+    "2024-01-26": {
+      "rank": 66,
+      "streams": 129999,
+      "previous_rank": 40
+    },
+    "2024-01-25": {
+      "rank": 40,
+      "streams": 129046,
+      "previous_rank": 45
+    },
+    "2024-01-24": {
+      "rank": 45,
+      "streams": 128425,
+      "previous_rank": 46
+    },
+    "2024-01-23": {
+      "rank": 46,
+      "streams": 123408,
+      "previous_rank": 42
+    },
+    "2024-01-22": {
+      "rank": 42,
+      "streams": 124362,
+      "previous_rank": 40
+    },
+    "2024-01-21": {
+      "rank": 40,
+      "streams": 113956,
+      "previous_rank": 36
+    },
+    "2024-01-20": {
+      "rank": 36,
+      "streams": 146807,
+      "previous_rank": 61
+    },
+    "2024-01-19": {
+      "rank": 61,
+      "streams": 133171,
+      "previous_rank": 70
+    },
+    "2024-01-18": {
+      "rank": 70,
+      "streams": 84506,
+      "previous_rank": 71,
+      "peak_rank": 70
+    },
+    "2024-01-17": {
+      "rank": 71,
+      "streams": 85934,
+      "previous_rank": 96,
+      "peak_rank": 71
+    },
+    "2024-01-16": {
+      "rank": 96,
+      "streams": 70808,
+      "previous_rank": 101,
+      "peak_rank": 96
+    },
+    "2024-01-15": {
+      "rank": 101,
+      "streams": 68326,
+      "previous_rank": 107,
+      "peak_rank": 101
+    },
+    "2024-01-14": {
+      "rank": 107,
+      "streams": 61227,
+      "previous_rank": 106
+    },
+    "2024-01-13": {
+      "rank": 106,
+      "streams": 74044,
+      "previous_rank": 117
+    },
+    "2024-01-12": {
+      "rank": 117,
+      "streams": 72522,
+      "previous_rank": 116
+    },
+    "2024-01-11": {
+      "rank": 116,
+      "streams": 62332,
+      "previous_rank": 120
+    },
+    "2024-01-10": {
+      "rank": 120,
+      "streams": 63001,
+      "previous_rank": 122
+    },
+    "2024-01-09": {
+      "rank": 122,
+      "streams": 58999,
+      "previous_rank": 127
+    },
+    "2024-01-08": {
+      "rank": 127,
+      "streams": 57527,
+      "previous_rank": 129
+    },
+    "2024-01-07": {
+      "rank": 129,
+      "streams": 54135,
+      "previous_rank": 128
+    },
+    "2024-01-06": {
+      "rank": 128,
+      "streams": 64070,
+      "previous_rank": 125
+    },
+    "2024-01-05": {
+      "rank": 125,
+      "streams": 65876,
+      "previous_rank": 117
+    },
+    "2024-01-04": {
+      "rank": 117,
+      "streams": 63959,
+      "previous_rank": 120
+    },
+    "2024-01-03": {
+      "rank": 120,
+      "streams": 61720,
+      "previous_rank": 124
+    },
+    "2024-01-02": {
+      "rank": 124,
+      "streams": 60475,
+      "previous_rank": 200
+    },
+    "2024-01-01": {
+      "rank": 200,
+      "streams": 48965,
+      "previous_rank": 192
+    },
+    "2023-12-31": {
+      "rank": 192,
+      "streams": 81826,
+      "previous_rank": 133
+    },
+    "2023-12-30": {
+      "rank": 133,
+      "streams": 65757,
+      "previous_rank": 130,
+      "peak_rank": 103
+    },
+    "2023-12-29": {
+      "rank": 130,
+      "streams": 66123,
+      "previous_rank": 144,
+      "peak_rank": 103
+    },
+    "2023-12-28": {
+      "rank": 144,
+      "streams": 60010,
+      "previous_rank": 148,
+      "peak_rank": 103
+    },
+    "2023-12-27": {
+      "rank": 148,
+      "streams": 58979,
+      "previous_rank": 168,
+      "peak_rank": 103
+    },
+    "2023-12-26": {
+      "rank": 168,
+      "streams": 57832
+    },
+    "2023-12-21": {
+      "rank": 194,
+      "streams": 56630,
+      "previous_rank": 199
+    },
+    "2023-12-20": {
+      "rank": 199,
+      "streams": 56947,
+      "previous_rank": 197
+    },
+    "2023-12-19": {
+      "rank": 197,
+      "streams": 53681
+    },
+    "2023-12-07": {
+      "rank": 164,
+      "streams": 56343,
+      "previous_rank": 194
+    },
+    "2023-12-06": {
+      "rank": 194,
+      "streams": 55087,
+      "previous_rank": 187
+    },
+    "2023-12-05": {
+      "rank": 187,
+      "streams": 52803,
+      "previous_rank": 188
+    },
+    "2023-12-04": {
+      "rank": 188,
+      "streams": 51189
+    },
+    "2023-12-01": {
+      "rank": 180,
+      "streams": 60781,
+      "previous_rank": 132
+    },
+    "2023-11-30": {
+      "rank": 132,
+      "streams": 60559,
+      "previous_rank": 131
+    },
+    "2023-11-28": {
+      "rank": 177,
+      "streams": 50092
+    },
+    "2023-11-23": {
+      "rank": 197,
+      "streams": 49498,
+      "previous_rank": 192
+    },
+    "2023-11-22": {
+      "rank": 192,
+      "streams": 51888,
+      "previous_rank": 192
+    },
+    "2023-11-21": {
+      "rank": 192,
+      "streams": 49234,
+      "previous_rank": 200
+    },
+    "2023-11-20": {
+      "rank": 200,
+      "streams": 47313
+    },
+    "2023-11-16": {
+      "rank": 189,
+      "streams": 50449,
+      "previous_rank": 186
+    },
+    "2023-11-15": {
+      "rank": 186,
+      "streams": 53070,
+      "previous_rank": 165
+    },
+    "2023-11-14": {
+      "rank": 165,
+      "streams": 51858,
+      "previous_rank": 168
+    },
+    "2023-11-13": {
+      "rank": 168,
+      "streams": 50394
+    },
+    "2023-11-10": {
+      "rank": 199,
+      "streams": 54103,
+      "previous_rank": 177
+    },
+    "2023-11-09": {
+      "rank": 177,
+      "streams": 51734,
+      "previous_rank": 179
+    },
+    "2023-11-08": {
+      "rank": 179,
+      "streams": 52701,
+      "previous_rank": 169
+    },
+    "2023-11-07": {
+      "rank": 169,
+      "streams": 50372,
+      "previous_rank": 171
+    },
+    "2023-11-06": {
+      "rank": 171,
+      "streams": 49504,
+      "previous_rank": 180
+    },
+    "2023-11-05": {
+      "rank": 180,
+      "streams": 45375,
+      "previous_rank": 176
+    },
+    "2023-11-04": {
+      "rank": 176,
+      "streams": 51524,
+      "previous_rank": 171
+    },
+    "2023-11-03": {
+      "rank": 171,
+      "streams": 56807,
+      "previous_rank": 154
+    },
+    "2023-11-02": {
+      "rank": 154,
+      "streams": 53097,
+      "previous_rank": 163
+    },
+    "2023-11-01": {
+      "rank": 163,
+      "streams": 47042,
+      "previous_rank": 168
+    },
+    "2023-10-31": {
+      "rank": 168,
+      "streams": 58328,
+      "previous_rank": 152
+    },
+    "2023-10-30": {
+      "rank": 152,
+      "streams": 54285,
+      "previous_rank": 174
+    },
+    "2023-10-28": {
+      "rank": 168,
+      "streams": 55570,
+      "previous_rank": 154
+    },
+    "2023-10-26": {
+      "rank": 135,
+      "streams": 58909,
+      "previous_rank": 132
+    },
+    "2023-10-25": {
+      "rank": 132,
+      "streams": 59808,
+      "previous_rank": 131
+    },
+    "2023-10-24": {
+      "rank": 131,
+      "streams": 60098,
+      "previous_rank": 135
+    },
+    "2023-10-23": {
+      "rank": 135,
+      "streams": 58818,
+      "previous_rank": 145
+    },
+    "2023-10-22": {
+      "rank": 145,
+      "streams": 51733,
+      "previous_rank": 154
+    },
+    "2023-10-21": {
+      "rank": 154,
+      "streams": 60916,
+      "previous_rank": 143
+    },
+    "2023-10-20": {
+      "rank": 143,
+      "streams": 67469,
+      "previous_rank": 121
+    },
+    "2023-10-19": {
+      "rank": 121,
+      "streams": 62190,
+      "previous_rank": 151
+    },
+    "2023-10-18": {
+      "rank": 151,
+      "streams": 56195,
+      "previous_rank": 152
+    },
+    "2023-10-17": {
+      "rank": 152,
+      "streams": 52416,
+      "previous_rank": 165
+    },
+    "2023-10-16": {
+      "rank": 165,
+      "streams": 49666,
+      "previous_rank": 169
+    },
+    "2023-10-15": {
+      "rank": 169,
+      "streams": 47276,
+      "previous_rank": 187
+    },
+    "2023-10-14": {
+      "rank": 187,
+      "streams": 54405,
+      "previous_rank": 190
+    },
+    "2023-10-13": {
+      "rank": 190,
+      "streams": 55887,
+      "previous_rank": 184
+    },
+    "2023-10-12": {
+      "rank": 184,
+      "streams": 51339,
+      "previous_rank": 187
+    },
+    "2023-10-11": {
+      "rank": 187,
+      "streams": 52711
+    },
+    "2023-10-05": {
+      "rank": 156,
+      "streams": 57233,
+      "previous_rank": 146
+    },
+    "2023-10-04": {
+      "rank": 146,
+      "streams": 62146,
+      "previous_rank": 144
+    },
+    "2023-10-03": {
+      "rank": 144,
+      "streams": 58799,
+      "previous_rank": 146
+    },
+    "2023-10-02": {
+      "rank": 146,
+      "streams": 57132,
+      "previous_rank": 150
+    },
+    "2023-10-01": {
+      "rank": 150,
+      "streams": 53989,
+      "previous_rank": 171
+    },
+    "2023-09-30": {
+      "rank": 171,
+      "streams": 60678,
+      "previous_rank": 168
+    },
+    "2023-09-29": {
+      "rank": 168,
+      "streams": 63684,
+      "previous_rank": 123
+    },
+    "2023-09-28": {
+      "rank": 123,
+      "streams": 67826,
+      "previous_rank": 126
+    },
+    "2023-09-27": {
+      "rank": 126,
+      "streams": 69602,
+      "previous_rank": 124
+    },
+    "2023-09-26": {
+      "rank": 124,
+      "streams": 66741,
+      "previous_rank": 130
+    },
+    "2023-09-25": {
+      "rank": 130,
+      "streams": 62932,
+      "previous_rank": 128
+    },
+    "2023-09-24": {
+      "rank": 128,
+      "streams": 58693,
+      "previous_rank": 135
+    },
+    "2023-09-23": {
+      "rank": 135,
+      "streams": 68683,
+      "previous_rank": 140
+    },
+    "2023-09-22": {
+      "rank": 140,
+      "streams": 70306,
+      "previous_rank": 116
+    },
+    "2023-09-21": {
+      "rank": 116,
+      "streams": 64312,
+      "previous_rank": 125
+    },
+    "2023-09-20": {
+      "rank": 125,
+      "streams": 67440,
+      "previous_rank": 123
+    },
+    "2023-09-19": {
+      "rank": 123,
+      "streams": 64525,
+      "previous_rank": 134
+    },
+    "2023-09-18": {
+      "rank": 134,
+      "streams": 61087,
+      "previous_rank": 138
+    },
+    "2023-09-17": {
+      "rank": 138,
+      "streams": 52726,
+      "previous_rank": 149
+    },
+    "2023-09-16": {
+      "rank": 149,
+      "streams": 62550,
+      "previous_rank": 129
+    },
+    "2023-09-15": {
+      "rank": 129,
+      "streams": 71850,
+      "previous_rank": 123
+    },
+    "2023-09-14": {
+      "rank": 123,
+      "streams": 65118,
+      "previous_rank": 121
+    },
+    "2023-09-13": {
+      "rank": 121,
+      "streams": 67021,
+      "previous_rank": 109
+    },
+    "2023-09-12": {
+      "rank": 109,
+      "streams": 68268,
+      "previous_rank": 105
+    },
+    "2023-09-11": {
+      "rank": 105,
+      "streams": 67544,
+      "previous_rank": 103
+    },
+    "2023-09-10": {
+      "rank": 103,
+      "streams": 62740,
+      "previous_rank": 111
+    },
+    "2023-09-09": {
+      "rank": 111,
+      "streams": 72015,
+      "previous_rank": 116
+    },
+    "2023-09-08": {
+      "rank": 116,
+      "streams": 73449,
+      "previous_rank": 140
+    },
+    "2023-09-07": {
+      "rank": 140,
+      "streams": 57741,
+      "previous_rank": 161,
+      "peak_rank": 140
+    },
+    "2023-09-06": {
+      "rank": 161,
+      "streams": 54444,
+      "previous_rank": 148,
+      "peak_rank": 148
+    },
+    "2023-09-05": {
+      "rank": 148,
+      "streams": 53671,
+      "previous_rank": 152,
+      "peak_rank": 148
+    },
+    "2023-09-04": {
+      "rank": 152,
+      "streams": 54238,
+      "previous_rank": 153
+    },
+    "2023-09-03": {
+      "rank": 153,
+      "streams": 49948,
+      "previous_rank": 166
+    },
+    "2023-09-02": {
+      "rank": 166,
+      "streams": 55177,
+      "previous_rank": 156
+    },
+    "2023-09-01": {
+      "rank": 156,
+      "streams": 59504
+    }
+  },
+  "Fortnight (feat. Post Malone)": {
+    "2024-07-18": {
+      "rank": 100,
+      "streams": 88436,
+      "previous_rank": 70
+    },
+    "2024-07-17": {
+      "rank": 70,
+      "streams": 98438,
+      "previous_rank": 69
+    },
+    "2024-07-16": {
+      "rank": 69,
+      "streams": 98626,
+      "previous_rank": 71
+    },
+    "2024-07-15": {
+      "rank": 71,
+      "streams": 95410,
+      "previous_rank": 78
+    },
+    "2024-07-14": {
+      "rank": 78,
+      "streams": 84561,
+      "previous_rank": 73
+    },
+    "2024-07-13": {
+      "rank": 73,
+      "streams": 107641,
+      "previous_rank": 69
+    },
+    "2024-07-12": {
+      "rank": 69,
+      "streams": 108623,
+      "previous_rank": 71
+    },
+    "2024-07-11": {
+      "rank": 71,
+      "streams": 98302,
+      "previous_rank": 70
+    },
+    "2024-07-10": {
+      "rank": 70,
+      "streams": 95121,
+      "previous_rank": 60
+    },
+    "2024-07-09": {
+      "rank": 60,
+      "streams": 99371,
+      "previous_rank": 69
+    },
+    "2024-07-08": {
+      "rank": 69,
+      "streams": 96509,
+      "previous_rank": 76
+    },
+    "2024-07-07": {
+      "rank": 76,
+      "streams": 83445,
+      "previous_rank": 73
+    },
+    "2024-07-06": {
+      "rank": 73,
+      "streams": 97236,
+      "previous_rank": 71,
+      "peak_rank": 11
+    },
+    "2024-07-05": {
+      "rank": 71,
+      "streams": 103194,
+      "previous_rank": 75,
+      "peak_rank": 11
+    },
+    "2024-07-04": {
+      "rank": 75,
+      "streams": 97584,
+      "previous_rank": 76,
+      "peak_rank": 11
+    },
+    "2024-07-03": {
+      "rank": 76,
+      "streams": 94992,
+      "previous_rank": 84,
+      "peak_rank": 11
+    },
+    "2024-07-02": {
+      "rank": 84,
+      "streams": 93242,
+      "previous_rank": 81
+    },
+    "2024-07-01": {
+      "rank": 81,
+      "streams": 87591,
+      "previous_rank": 87
+    },
+    "2024-06-30": {
+      "rank": 87,
+      "streams": 78668,
+      "previous_rank": 70
+    },
+    "2024-06-29": {
+      "rank": 70,
+      "streams": 98744,
+      "previous_rank": 78
+    },
+    "2024-06-28": {
+      "rank": 78,
+      "streams": 102848,
+      "previous_rank": 81
+    },
+    "2024-06-27": {
+      "rank": 81,
+      "streams": 94463,
+      "previous_rank": 81
+    },
+    "2024-06-26": {
+      "rank": 81,
+      "streams": 92583,
+      "previous_rank": 71
+    },
+    "2024-06-25": {
+      "rank": 71,
+      "streams": 94021,
+      "previous_rank": 68
+    },
+    "2024-06-24": {
+      "rank": 68,
+      "streams": 95338,
+      "previous_rank": 73
+    },
+    "2024-06-23": {
+      "rank": 73,
+      "streams": 85612,
+      "previous_rank": 67
+    },
+    "2024-06-22": {
+      "rank": 67,
+      "streams": 99825,
+      "previous_rank": 79
+    },
+    "2024-06-21": {
+      "rank": 79,
+      "streams": 101933,
+      "previous_rank": 63
+    },
+    "2024-06-20": {
+      "rank": 63,
+      "streams": 98795,
+      "previous_rank": 66
+    },
+    "2024-06-19": {
+      "rank": 66,
+      "streams": 101274,
+      "previous_rank": 62
+    },
+    "2024-06-18": {
+      "rank": 62,
+      "streams": 100872,
+      "previous_rank": 63
+    },
+    "2024-06-17": {
+      "rank": 63,
+      "streams": 97794,
+      "previous_rank": 68
+    },
+    "2024-06-16": {
+      "rank": 68,
+      "streams": 86565,
+      "previous_rank": 64,
+      "peak_rank": 11
+    },
+    "2024-06-15": {
+      "rank": 64,
+      "streams": 106596,
+      "previous_rank": 71,
+      "peak_rank": 11
+    },
+    "2024-06-14": {
+      "rank": 71,
+      "streams": 109996,
+      "previous_rank": 64,
+      "peak_rank": 11
+    },
+    "2024-06-13": {
+      "rank": 64,
+      "streams": 107213,
+      "previous_rank": 66,
+      "peak_rank": 11
+    },
+    "2024-06-12": {
+      "rank": 66,
+      "streams": 109556,
+      "previous_rank": 62
+    },
+    "2024-06-11": {
+      "rank": 62,
+      "streams": 112520,
+      "previous_rank": 68
+    },
+    "2024-06-10": {
+      "rank": 68,
+      "streams": 107390,
+      "previous_rank": 67
+    },
+    "2024-06-09": {
+      "rank": 67,
+      "streams": 96074,
+      "previous_rank": 67
+    },
+    "2024-06-08": {
+      "rank": 67,
+      "streams": 123840,
+      "previous_rank": 73
+    },
+    "2024-06-07": {
+      "rank": 73,
+      "streams": 126005,
+      "previous_rank": 67
+    },
+    "2024-06-06": {
+      "rank": 67,
+      "streams": 114288,
+      "previous_rank": 74
+    },
+    "2024-06-05": {
+      "rank": 74,
+      "streams": 116423,
+      "previous_rank": 74
+    },
+    "2024-06-04": {
+      "rank": 74,
+      "streams": 117072,
+      "previous_rank": 79
+    },
+    "2024-06-03": {
+      "rank": 79,
+      "streams": 113488,
+      "previous_rank": 73
+    },
+    "2024-06-02": {
+      "rank": 73,
+      "streams": 101757,
+      "previous_rank": 76
+    },
+    "2024-06-01": {
+      "rank": 76,
+      "streams": 119210,
+      "previous_rank": 87
+    },
+    "2024-05-31": {
+      "rank": 87,
+      "streams": 122634,
+      "previous_rank": 62
+    },
+    "2024-05-30": {
+      "rank": 62,
+      "streams": 112780,
+      "previous_rank": 67
+    },
+    "2024-05-29": {
+      "rank": 67,
+      "streams": 112473,
+      "previous_rank": 63
+    },
+    "2024-05-28": {
+      "rank": 63,
+      "streams": 112415,
+      "previous_rank": 60
+    },
+    "2024-05-27": {
+      "rank": 60,
+      "streams": 107178,
+      "previous_rank": 67
+    },
+    "2024-05-26": {
+      "rank": 67,
+      "streams": 96802,
+      "previous_rank": 69
+    },
+    "2024-05-25": {
+      "rank": 69,
+      "streams": 116043,
+      "previous_rank": 68,
+      "peak_rank": 11
+    },
+    "2024-05-24": {
+      "rank": 68,
+      "streams": 121486,
+      "previous_rank": 73,
+      "peak_rank": 11
+    },
+    "2024-05-23": {
+      "rank": 73,
+      "streams": 109311,
+      "previous_rank": 68,
+      "peak_rank": 11
+    },
+    "2024-05-22": {
+      "rank": 68,
+      "streams": 115532,
+      "previous_rank": 71,
+      "peak_rank": 11
+    },
+    "2024-05-21": {
+      "rank": 71,
+      "streams": 108184,
+      "previous_rank": 74
+    },
+    "2024-05-20": {
+      "rank": 74,
+      "streams": 100842,
+      "previous_rank": 80
+    },
+    "2024-05-19": {
+      "rank": 80,
+      "streams": 94327,
+      "previous_rank": 73
+    },
+    "2024-05-18": {
+      "rank": 73,
+      "streams": 117712,
+      "previous_rank": 69
+    },
+    "2024-05-17": {
+      "rank": 69,
+      "streams": 134567,
+      "previous_rank": 42
+    },
+    "2024-05-16": {
+      "rank": 42,
+      "streams": 150024,
+      "previous_rank": 31
+    },
+    "2024-05-15": {
+      "rank": 31,
+      "streams": 173045,
+      "previous_rank": 27
+    },
+    "2024-05-14": {
+      "rank": 27,
+      "streams": 170713,
+      "previous_rank": 25
+    },
+    "2024-05-12": {
+      "rank": 24,
+      "streams": 161158,
+      "previous_rank": 26
+    },
+    "2024-05-11": {
+      "rank": 26,
+      "streams": 183406,
+      "previous_rank": 26
+    },
+    "2024-05-09": {
+      "rank": 35,
+      "streams": 155391,
+      "previous_rank": 57
+    },
+    "2024-05-08": {
+      "rank": 57,
+      "streams": 118716,
+      "previous_rank": 57
+    },
+    "2024-05-07": {
+      "rank": 57,
+      "streams": 121986,
+      "previous_rank": 54,
+      "peak_rank": 11
+    },
+    "2024-05-06": {
+      "rank": 54,
+      "streams": 119588,
+      "previous_rank": 55,
+      "peak_rank": 11
+    },
+    "2024-05-05": {
+      "rank": 55,
+      "streams": 103040,
+      "previous_rank": 57,
+      "peak_rank": 11
+    },
+    "2024-05-04": {
+      "rank": 57,
+      "streams": 120390,
+      "previous_rank": 57,
+      "peak_rank": 11
+    },
+    "2024-05-03": {
+      "rank": 57,
+      "streams": 127456,
+      "previous_rank": 55
+    },
+    "2024-05-02": {
+      "rank": 55,
+      "streams": 114260,
+      "previous_rank": 55
+    },
+    "2024-05-01": {
+      "rank": 55,
+      "streams": 99182,
+      "previous_rank": 51
+    },
+    "2024-04-30": {
+      "rank": 51,
+      "streams": 128650,
+      "previous_rank": 48
+    },
+    "2024-04-29": {
+      "rank": 48,
+      "streams": 130047,
+      "previous_rank": 40
+    },
+    "2024-04-28": {
+      "rank": 40,
+      "streams": 124282,
+      "previous_rank": 48
+    },
+    "2024-04-27": {
+      "rank": 48,
+      "streams": 136114,
+      "previous_rank": 30
+    },
+    "2024-04-26": {
+      "rank": 30,
+      "streams": 171805,
+      "previous_rank": 41
+    },
+    "2024-04-25": {
+      "rank": 41,
+      "streams": 149045,
+      "previous_rank": 32
+    },
+    "2024-04-24": {
+      "rank": 32,
+      "streams": 159743,
+      "previous_rank": 35
+    },
+    "2024-04-23": {
+      "rank": 35,
+      "streams": 155857,
+      "previous_rank": 31
+    },
+    "2024-04-22": {
+      "rank": 31,
+      "streams": 159226,
+      "previous_rank": 33
+    },
+    "2024-04-21": {
+      "rank": 33,
+      "streams": 144176,
+      "previous_rank": 38
+    },
+    "2024-04-20": {
+      "rank": 38,
+      "streams": 160377,
+      "previous_rank": 11
+    },
+    "2024-04-19": {
+      "rank": 11,
+      "streams": 257361,
+      "previous_rank": 1,
+      "peak_rank": 11
+    }
+  },
+  "I Can Do It With a Broken Heart": {
+    "2024-05-16": {
+      "rank": 143,
+      "streams": 68882,
+      "previous_rank": 131
+    },
+    "2024-05-15": {
+      "rank": 131,
+      "streams": 74705,
+      "previous_rank": 104
+    },
+    "2024-05-14": {
+      "rank": 104,
+      "streams": 76003,
+      "previous_rank": 98
+    },
+    "2024-05-12": {
+      "rank": 139,
+      "streams": 66366,
+      "previous_rank": 159
+    },
+    "2024-05-11": {
+      "rank": 159,
+      "streams": 70600,
+      "previous_rank": 132
+    },
+    "2024-05-10": {
+      "rank": 132,
+      "streams": 77675
+    },
+    "2024-05-06": {
+      "rank": 178,
+      "streams": 57038,
+      "previous_rank": 1,
+      "peak_rank": 56
+    },
+    "2024-05-02": {
+      "rank": 197,
+      "streams": 57736,
+      "previous_rank": 195
+    },
+    "2024-05-01": {
+      "rank": 195,
+      "streams": 51826,
+      "previous_rank": 153
+    },
+    "2024-04-30": {
+      "rank": 153,
+      "streams": 67730,
+      "previous_rank": 126
+    },
+    "2024-04-29": {
+      "rank": 126,
+      "streams": 69821,
+      "previous_rank": 144
+    },
+    "2024-04-28": {
+      "rank": 144,
+      "streams": 61076,
+      "previous_rank": 157
+    },
+    "2024-04-27": {
+      "rank": 157,
+      "streams": 69573,
+      "previous_rank": 119
+    },
+    "2024-04-26": {
+      "rank": 119,
+      "streams": 80564,
+      "previous_rank": 117
+    },
+    "2024-04-25": {
+      "rank": 117,
+      "streams": 74901,
+      "previous_rank": 105
+    },
+    "2024-04-24": {
+      "rank": 105,
+      "streams": 77480,
+      "previous_rank": 105
+    },
+    "2024-04-23": {
+      "rank": 105,
+      "streams": 79018,
+      "previous_rank": 87
+    },
+    "2024-04-22": {
+      "rank": 87,
+      "streams": 86219,
+      "previous_rank": 91
+    },
+    "2024-04-21": {
+      "rank": 91,
+      "streams": 76398,
+      "previous_rank": 103
+    },
+    "2024-04-20": {
+      "rank": 103,
+      "streams": 90202,
+      "previous_rank": 56
+    },
+    "2024-04-19": {
+      "rank": 56,
+      "streams": 131611,
+      "previous_rank": 1,
+      "peak_rank": 56
+    }
+  },
+  "Who's Afraid of Little Old Me?": {
+    "2024-05-13": {
+      "rank": 183,
+      "streams": 56708
+    },
+    "2024-04-24": {
+      "rank": 183,
+      "streams": 58806,
+      "previous_rank": 161
+    },
+    "2024-04-23": {
+      "rank": 161,
+      "streams": 63590,
+      "previous_rank": 133
+    },
+    "2024-04-22": {
+      "rank": 133,
+      "streams": 70852,
+      "previous_rank": 129
+    },
+    "2024-04-21": {
+      "rank": 129,
+      "streams": 65845,
+      "previous_rank": 130
+    },
+    "2024-04-20": {
+      "rank": 130,
+      "streams": 80915,
+      "previous_rank": 57
+    },
+    "2024-04-19": {
+      "rank": 57,
+      "streams": 129800,
+      "previous_rank": 1,
+      "peak_rank": 57
+    }
+  },
+  "Down Bad": {
+    "2024-05-13": {
+      "rank": 184,
+      "streams": 56439
+    },
+    "2024-04-26": {
+      "rank": 181,
+      "streams": 66932,
+      "previous_rank": 136
+    },
+    "2024-04-25": {
+      "rank": 136,
+      "streams": 69446,
+      "previous_rank": 107
+    },
+    "2024-04-24": {
+      "rank": 107,
+      "streams": 76782,
+      "previous_rank": 97
+    },
+    "2024-04-23": {
+      "rank": 97,
+      "streams": 82477,
+      "previous_rank": 80
+    },
+    "2024-04-22": {
+      "rank": 80,
+      "streams": 88638,
+      "previous_rank": 85
+    },
+    "2024-04-21": {
+      "rank": 85,
+      "streams": 80589,
+      "previous_rank": 89
+    },
+    "2024-04-20": {
+      "rank": 89,
+      "streams": 98765,
+      "previous_rank": 38
+    },
+    "2024-04-19": {
+      "rank": 38,
+      "streams": 168470,
+      "previous_rank": 1,
+      "peak_rank": 38
+    }
+  },
+  "So Long, London": {
+    "2024-04-26": {
+      "rank": 163,
+      "streams": 68965,
+      "previous_rank": 123
+    },
+    "2024-04-25": {
+      "rank": 123,
+      "streams": 72942,
+      "previous_rank": 98
+    },
+    "2024-04-24": {
+      "rank": 98,
+      "streams": 80032,
+      "previous_rank": 85
+    },
+    "2024-04-23": {
+      "rank": 85,
+      "streams": 86070,
+      "previous_rank": 70
+    },
+    "2024-04-22": {
+      "rank": 70,
+      "streams": 93695,
+      "previous_rank": 72
+    },
+    "2024-04-21": {
+      "rank": 72,
+      "streams": 86521,
+      "previous_rank": 73
+    },
+    "2024-04-20": {
+      "rank": 73,
+      "streams": 103527,
+      "previous_rank": 35
+    },
+    "2024-04-19": {
+      "rank": 35,
+      "streams": 172851,
+      "previous_rank": 1,
+      "peak_rank": 35
+    }
+  },
+  "My Boy Only Breaks His Favorite Toys": {
+    "2024-04-26": {
+      "rank": 192,
+      "streams": 63950,
+      "previous_rank": 153
+    },
+    "2024-04-25": {
+      "rank": 153,
+      "streams": 65917,
+      "previous_rank": 120
+    },
+    "2024-04-24": {
+      "rank": 120,
+      "streams": 73642,
+      "previous_rank": 99
+    },
+    "2024-04-23": {
+      "rank": 99,
+      "streams": 81479,
+      "previous_rank": 78
+    },
+    "2024-04-22": {
+      "rank": 78,
+      "streams": 90322,
+      "previous_rank": 75
+    },
+    "2024-04-21": {
+      "rank": 75,
+      "streams": 85366,
+      "previous_rank": 69
+    },
+    "2024-04-20": {
+      "rank": 69,
+      "streams": 104566,
+      "previous_rank": 33
+    },
+    "2024-04-19": {
+      "rank": 33,
+      "streams": 179294,
+      "previous_rank": 1,
+      "peak_rank": 33
+    }
+  },
+  "Florida!!! (feat. Florence + The Machine)": {
+    "2024-04-25": {
+      "rank": 193,
+      "streams": 57510,
+      "previous_rank": 157
+    },
+    "2024-04-24": {
+      "rank": 157,
+      "streams": 63379,
+      "previous_rank": 165
+    },
+    "2024-04-23": {
+      "rank": 165,
+      "streams": 63121,
+      "previous_rank": 132
+    },
+    "2024-04-22": {
+      "rank": 132,
+      "streams": 70896,
+      "previous_rank": 132
+    },
+    "2024-04-21": {
+      "rank": 132,
+      "streams": 65643,
+      "previous_rank": 127
+    },
+    "2024-04-20": {
+      "rank": 127,
+      "streams": 82014,
+      "previous_rank": 52
+    },
+    "2024-04-19": {
+      "rank": 52,
+      "streams": 143830,
+      "previous_rank": 1,
+      "peak_rank": 52
+    }
+  },
+  "The Tortured Poets Department": {
+    "2024-04-25": {
+      "rank": 195,
+      "streams": 56982,
+      "previous_rank": 155
+    },
+    "2024-04-24": {
+      "rank": 155,
+      "streams": 63624,
+      "previous_rank": 124
+    },
+    "2024-04-23": {
+      "rank": 124,
+      "streams": 73152,
+      "previous_rank": 98
+    },
+    "2024-04-22": {
+      "rank": 98,
+      "streams": 80571,
+      "previous_rank": 88
+    },
+    "2024-04-21": {
+      "rank": 88,
+      "streams": 79441,
+      "previous_rank": 86
+    },
+    "2024-04-20": {
+      "rank": 86,
+      "streams": 98963,
+      "previous_rank": 28
+    },
+    "2024-04-19": {
+      "rank": 28,
+      "streams": 187526,
+      "previous_rank": 1,
+      "peak_rank": 28
+    }
+  },
+  "But Daddy I Love Him": {
+    "2024-04-24": {
+      "rank": 195,
+      "streams": 56546,
+      "previous_rank": 162
+    },
+    "2024-04-23": {
+      "rank": 162,
+      "streams": 63560,
+      "previous_rank": 134
+    },
+    "2024-04-22": {
+      "rank": 134,
+      "streams": 70802,
+      "previous_rank": 120
+    },
+    "2024-04-21": {
+      "rank": 120,
+      "streams": 68103,
+      "previous_rank": 116
+    },
+    "2024-04-20": {
+      "rank": 116,
+      "streams": 85085,
+      "previous_rank": 49
+    },
+    "2024-04-19": {
+      "rank": 49,
+      "streams": 150377,
+      "previous_rank": 1,
+      "peak_rank": 49
+    }
+  },
+  "Guilty as Sin?": {
+    "2024-04-22": {
+      "rank": 179,
+      "streams": 59909,
+      "previous_rank": 179
+    },
+    "2024-04-21": {
+      "rank": 179,
+      "streams": 55906,
+      "previous_rank": 170
+    },
+    "2024-04-20": {
+      "rank": 170,
+      "streams": 69806,
+      "previous_rank": 62
+    },
+    "2024-04-19": {
+      "rank": 62,
+      "streams": 124466,
+      "previous_rank": 1,
+      "peak_rank": 62
+    }
+  },
+  "loml": {
+    "2024-04-21": {
+      "rank": 200,
+      "streams": 52506,
+      "previous_rank": 197
+    },
+    "2024-04-20": {
+      "rank": 197,
+      "streams": 65408,
+      "previous_rank": 74
+    },
+    "2024-04-19": {
+      "rank": 74,
+      "streams": 114526,
+      "previous_rank": 1,
+      "peak_rank": 74
+    }
+  },
+  "Fresh Out The Slammer": {
+    "2024-04-20": {
+      "rank": 184,
+      "streams": 66972,
+      "previous_rank": 60
+    },
+    "2024-04-19": {
+      "rank": 60,
+      "streams": 126413,
+      "previous_rank": 1,
+      "peak_rank": 60
+    }
+  },
+  "I Can Fix Him (No Really I Can)": {
+    "2024-04-19": {
+      "rank": 80,
+      "streams": 107997,
+      "previous_rank": 1,
+      "peak_rank": 80
+    }
+  },
+  "The Smallest Man Who Ever Lived": {
+    "2024-04-19": {
+      "rank": 92,
+      "streams": 102621,
+      "previous_rank": 1,
+      "peak_rank": 92
+    }
+  },
+  "The Alchemy": {
+    "2024-04-19": {
+      "rank": 101,
+      "streams": 97480,
+      "previous_rank": 1,
+      "peak_rank": 101
+    }
+  },
+  "Clara Bow": {
+    "2024-04-19": {
+      "rank": 115,
+      "streams": 90733,
+      "previous_rank": 1,
+      "peak_rank": 115
+    }
+  },
+  "You're Losing Me (From The Vault)": {
+    "2023-11-30": {
+      "rank": 158,
+      "streams": 56656,
+      "previous_rank": 123
+    },
+    "2023-11-29": {
+      "rank": 123,
+      "streams": 63785
+    }
+  },
+  "Is It Over Now? (Taylor's Version) (From The Vault)": {
+    "2023-10-30": {
+      "rank": 160,
+      "streams": 52523,
+      "previous_rank": 159
+    },
+    "2023-10-28": {
+      "rank": 190,
+      "streams": 53208,
+      "previous_rank": 82
+    },
+    "2023-10-27": {
+      "rank": 82,
+      "streams": 86712
+    }
+  },
+  "Now That We Don't Talk (Taylor's Version) (From The Vault)": {
+    "2023-10-30": {
+      "rank": 182,
+      "streams": 49414,
+      "previous_rank": 196
+    },
+    "2023-10-29": {
+      "rank": 196,
+      "streams": 43404
+    },
+    "2023-10-27": {
+      "rank": 88,
+      "streams": 85745
+    }
+  },
+  "Say Don't Go (Taylor's Version) (From The Vault)": {
+    "2023-10-30": {
+      "rank": 186,
+      "streams": 48936,
+      "previous_rank": 185
+    },
+    "2023-10-28": {
+      "rank": 181,
+      "streams": 54016,
+      "previous_rank": 68
+    },
+    "2023-10-27": {
+      "rank": 68,
+      "streams": 94961
+    }
+  },
+  "\"Slut!\" (Taylor's Version) (From The Vault)": {
+    "2023-10-28": {
+      "rank": 191,
+      "streams": 53155,
+      "previous_rank": 52
+    },
+    "2023-10-27": {
+      "rank": 52,
+      "streams": 104493
+    }
+  },
+  "Style (Taylor's Version)": {
+    "2023-10-28": {
+      "rank": 196,
+      "streams": 52721,
+      "previous_rank": 43
+    },
+    "2023-10-27": {
+      "rank": 43,
+      "streams": 111417
+    }
+  },
+  "Blank Space (Taylor's Version)": {
+    "2023-10-27": {
+      "rank": 61,
+      "streams": 98074
+    }
+  },
+  "Welcome To New York (Taylor's Version)": {
+    "2023-10-27": {
+      "rank": 76,
+      "streams": 90852
+    }
+  },
+  "Out Of The Woods (Taylor's Version)": {
+    "2023-10-27": {
+      "rank": 77,
+      "streams": 89852
+    }
+  },
+  "Shake It Off (Taylor's Version)": {
+    "2023-10-27": {
+      "rank": 102,
+      "streams": 77710
+    }
+  },
+  "Suburban Legends (Taylor's Version) (From The Vault)": {
+    "2023-10-27": {
+      "rank": 110,
+      "streams": 74922
+    }
+  },
+  "Wildest Dreams (Taylor's Version)": {
+    "2023-10-27": {
+      "rank": 113,
+      "streams": 74516
+    }
+  },
+  "All You Had To Do Was Stay (Taylor's Version)": {
+    "2023-10-27": {
+      "rank": 114,
+      "streams": 74423
+    }
+  },
+  "Bad Blood (Taylor's Version)": {
+    "2023-10-27": {
+      "rank": 125,
+      "streams": 71906
+    }
+  },
+  "I Wish You Would (Taylor's Version)": {
+    "2023-10-27": {
+      "rank": 146,
+      "streams": 65798
+    }
+  },
+  "New Romantics (Taylor's Version)": {
+    "2023-10-27": {
+      "rank": 152,
+      "streams": 63992
+    }
+  },
+  "Clean (Taylor's Version)": {
+    "2023-10-27": {
+      "rank": 173,
+      "streams": 59726
+    }
+  },
+  "How You Get The Girl (Taylor's Version)": {
+    "2023-10-27": {
+      "rank": 175,
+      "streams": 59415
+    }
+  },
+  "I Know Places (Taylor's Version)": {
+    "2023-10-27": {
+      "rank": 182,
+      "streams": 58411
+    }
+  },
+  "Wonderland (Taylor's Version)": {
+    "2023-10-27": {
+      "rank": 200,
+      "streams": 55521
+    }
+  },
+  "Anti-Hero": {
+    "2023-01-19": {
+      "rank": 186,
+      "streams": 47953,
+      "previous_rank": 157
+    },
+    "2023-01-18": {
+      "rank": 157,
+      "streams": 56499,
+      "previous_rank": 148
+    },
+    "2023-01-17": {
+      "rank": 148,
+      "streams": 53959,
+      "previous_rank": 148
+    },
+    "2023-01-16": {
+      "rank": 148,
+      "streams": 52385,
+      "previous_rank": 144
+    },
+    "2023-01-15": {
+      "rank": 144,
+      "streams": 50555,
+      "previous_rank": 143
+    },
+    "2023-01-14": {
+      "rank": 143,
+      "streams": 59290,
+      "previous_rank": 164
+    },
+    "2023-01-13": {
+      "rank": 164,
+      "streams": 59083,
+      "previous_rank": 149
+    },
+    "2023-01-12": {
+      "rank": 149,
+      "streams": 56666,
+      "previous_rank": 146
+    },
+    "2023-01-11": {
+      "rank": 146,
+      "streams": 57625,
+      "previous_rank": 122
+    },
+    "2023-01-10": {
+      "rank": 122,
+      "streams": 62511,
+      "previous_rank": 129
+    },
+    "2023-01-09": {
+      "rank": 129,
+      "streams": 60586,
+      "previous_rank": 122
+    },
+    "2023-01-08": {
+      "rank": 122,
+      "streams": 56483,
+      "previous_rank": 113
+    },
+    "2023-01-07": {
+      "rank": 113,
+      "streams": 70311,
+      "previous_rank": 130
+    },
+    "2023-01-06": {
+      "rank": 130,
+      "streams": 67255,
+      "previous_rank": 120
+    },
+    "2023-01-05": {
+      "rank": 120,
+      "streams": 63683,
+      "previous_rank": 121
+    },
+    "2023-01-04": {
+      "rank": 121,
+      "streams": 64186,
+      "previous_rank": 116
+    },
+    "2023-01-03": {
+      "rank": 116,
+      "streams": 62809,
+      "previous_rank": 116
+    },
+    "2023-01-02": {
+      "rank": 116,
+      "streams": 62398,
+      "previous_rank": 158
+    },
+    "2023-01-01": {
+      "rank": 158,
+      "streams": 48831,
+      "previous_rank": 161
+    },
+    "2022-12-30": {
+      "rank": 118,
+      "streams": 67510,
+      "previous_rank": 115
+    },
+    "2022-12-29": {
+      "rank": 115,
+      "streams": 65882,
+      "previous_rank": 113
+    },
+    "2022-12-28": {
+      "rank": 113,
+      "streams": 65513,
+      "previous_rank": 119
+    },
+    "2022-12-27": {
+      "rank": 119,
+      "streams": 63825,
+      "previous_rank": 130
+    },
+    "2022-12-26": {
+      "rank": 130,
+      "streams": 59996
+    },
+    "2022-12-23": {
+      "rank": 145,
+      "streams": 68046,
+      "previous_rank": 129,
+      "peak_rank": 23
+    },
+    "2022-12-22": {
+      "rank": 129,
+      "streams": 65429,
+      "previous_rank": 127,
+      "peak_rank": 23
+    },
+    "2022-12-21": {
+      "rank": 127,
+      "streams": 63639,
+      "previous_rank": 131
+    },
+    "2022-12-20": {
+      "rank": 131,
+      "streams": 62271,
+      "previous_rank": 139
+    },
+    "2022-12-19": {
+      "rank": 139,
+      "streams": 59909,
+      "previous_rank": 158
+    },
+    "2022-12-18": {
+      "rank": 158,
+      "streams": 44400,
+      "previous_rank": 150
+    },
+    "2022-12-17": {
+      "rank": 150,
+      "streams": 63639,
+      "previous_rank": 166
+    },
+    "2022-12-16": {
+      "rank": 166,
+      "streams": 66946,
+      "previous_rank": 136
+    },
+    "2022-12-15": {
+      "rank": 136,
+      "streams": 60713,
+      "previous_rank": 138
+    },
+    "2022-12-14": {
+      "rank": 138,
+      "streams": 60138,
+      "previous_rank": 130
+    },
+    "2022-12-13": {
+      "rank": 130,
+      "streams": 60205,
+      "previous_rank": 138
+    },
+    "2022-12-12": {
+      "rank": 138,
+      "streams": 60218,
+      "previous_rank": 158
+    },
+    "2022-12-11": {
+      "rank": 158,
+      "streams": 53427,
+      "previous_rank": 152
+    },
+    "2022-12-10": {
+      "rank": 152,
+      "streams": 61314,
+      "previous_rank": 168
+    },
+    "2022-12-09": {
+      "rank": 168,
+      "streams": 66170,
+      "previous_rank": 128
+    },
+    "2022-12-08": {
+      "rank": 128,
+      "streams": 64957,
+      "previous_rank": 139
+    },
+    "2022-12-07": {
+      "rank": 139,
+      "streams": 65048,
+      "previous_rank": 120
+    },
+    "2022-12-06": {
+      "rank": 120,
+      "streams": 66135,
+      "previous_rank": 129,
+      "peak_rank": 23
+    },
+    "2022-12-05": {
+      "rank": 129,
+      "streams": 63786,
+      "previous_rank": 135,
+      "peak_rank": 23
+    },
+    "2022-12-04": {
+      "rank": 135,
+      "streams": 56137,
+      "previous_rank": 133,
+      "peak_rank": 23
+    },
+    "2022-12-03": {
+      "rank": 133,
+      "streams": 72969,
+      "previous_rank": 125,
+      "peak_rank": 23
+    },
+    "2022-12-02": {
+      "rank": 125,
+      "streams": 73501,
+      "previous_rank": 103
+    },
+    "2022-12-01": {
+      "rank": 103,
+      "streams": 70062,
+      "previous_rank": 89
+    },
+    "2022-11-30": {
+      "rank": 89,
+      "streams": 72850,
+      "previous_rank": 95
+    },
+    "2022-11-29": {
+      "rank": 95,
+      "streams": 69942,
+      "previous_rank": 98
+    },
+    "2022-11-28": {
+      "rank": 98,
+      "streams": 68370,
+      "previous_rank": 102
+    },
+    "2022-11-27": {
+      "rank": 102,
+      "streams": 61819,
+      "previous_rank": 97
+    },
+    "2022-11-26": {
+      "rank": 97,
+      "streams": 74101,
+      "previous_rank": 101
+    },
+    "2022-11-25": {
+      "rank": 101,
+      "streams": 80595,
+      "previous_rank": 90
+    },
+    "2022-11-24": {
+      "rank": 90,
+      "streams": 75107,
+      "previous_rank": 97
+    },
+    "2022-11-23": {
+      "rank": 97,
+      "streams": 74434,
+      "previous_rank": 89
+    },
+    "2022-11-22": {
+      "rank": 89,
+      "streams": 74227,
+      "previous_rank": 92
+    },
+    "2022-11-21": {
+      "rank": 92,
+      "streams": 73343,
+      "previous_rank": 95
+    },
+    "2022-11-20": {
+      "rank": 95,
+      "streams": 65377,
+      "previous_rank": 92
+    },
+    "2022-11-19": {
+      "rank": 92,
+      "streams": 83804,
+      "previous_rank": 90
+    },
+    "2022-11-18": {
+      "rank": 90,
+      "streams": 86542,
+      "previous_rank": 74
+    },
+    "2022-11-17": {
+      "rank": 74,
+      "streams": 82013,
+      "previous_rank": 78
+    },
+    "2022-11-16": {
+      "rank": 78,
+      "streams": 84101,
+      "previous_rank": 61,
+      "peak_rank": 23
+    },
+    "2022-11-15": {
+      "rank": 61,
+      "streams": 88063,
+      "previous_rank": 62,
+      "peak_rank": 23
+    },
+    "2022-11-14": {
+      "rank": 62,
+      "streams": 86982,
+      "previous_rank": 58,
+      "peak_rank": 23
+    },
+    "2022-11-13": {
+      "rank": 58,
+      "streams": 81358,
+      "previous_rank": 64,
+      "peak_rank": 23
+    },
+    "2022-11-12": {
+      "rank": 64,
+      "streams": 90733,
+      "previous_rank": 58
+    },
+    "2022-11-11": {
+      "rank": 58,
+      "streams": 98100,
+      "previous_rank": 52
+    },
+    "2022-11-10": {
+      "rank": 52,
+      "streams": 103644,
+      "previous_rank": 43
+    },
+    "2022-11-09": {
+      "rank": 43,
+      "streams": 105442,
+      "previous_rank": 60
+    },
+    "2022-11-08": {
+      "rank": 60,
+      "streams": 91087,
+      "previous_rank": 61
+    },
+    "2022-11-07": {
+      "rank": 61,
+      "streams": 91659,
+      "previous_rank": 59
+    },
+    "2022-11-06": {
+      "rank": 59,
+      "streams": 83992,
+      "previous_rank": 67
+    },
+    "2022-11-05": {
+      "rank": 67,
+      "streams": 99509,
+      "previous_rank": 75
+    },
+    "2022-11-04": {
+      "rank": 75,
+      "streams": 104283,
+      "previous_rank": 72
+    },
+    "2022-11-03": {
+      "rank": 72,
+      "streams": 78807,
+      "previous_rank": 62
+    },
+    "2022-10-31": {
+      "rank": 96,
+      "streams": 76566,
+      "previous_rank": 98
+    },
+    "2022-10-30": {
+      "rank": 98,
+      "streams": 67247,
+      "previous_rank": 100
+    },
+    "2022-10-29": {
+      "rank": 100,
+      "streams": 78728,
+      "previous_rank": 79
+    },
+    "2022-10-28": {
+      "rank": 79,
+      "streams": 92980,
+      "previous_rank": 55
+    },
+    "2022-10-27": {
+      "rank": 55,
+      "streams": 93215,
+      "previous_rank": 50,
+      "peak_rank": 23
+    },
+    "2022-10-26": {
+      "rank": 50,
+      "streams": 97385,
+      "previous_rank": 44,
+      "peak_rank": 23
+    },
+    "2022-10-25": {
+      "rank": 44,
+      "streams": 105457,
+      "previous_rank": 39,
+      "peak_rank": 23
+    },
+    "2022-10-24": {
+      "rank": 39,
+      "streams": 110727,
+      "previous_rank": 38,
+      "peak_rank": 23
+    },
+    "2022-10-23": {
+      "rank": 38,
+      "streams": 99209,
+      "previous_rank": 48
+    },
+    "2022-10-22": {
+      "rank": 48,
+      "streams": 112079,
+      "previous_rank": 23
+    },
+    "2022-10-21": {
+      "rank": 23,
+      "streams": 149835
+    }
+  },
+  "Shake It Off": {
+    "2022-12-31": {
+      "rank": 106,
+      "streams": 105638
+    },
+    "2021-12-31": {
+      "rank": 117,
+      "streams": 94241
+    },
+    "2017-12-31": {
+      "rank": 191,
+      "streams": 38587,
+      "previous_rank": 1,
+      "peak_rank": 191
+    }
+  },
+  "Lavender Haze": {
+    "2022-11-02": {
+      "rank": 195,
+      "streams": 45902
+    },
+    "2022-10-27": {
+      "rank": 168,
+      "streams": 51562,
+      "previous_rank": 138,
+      "peak_rank": 40
+    },
+    "2022-10-26": {
+      "rank": 138,
+      "streams": 55869,
+      "previous_rank": 111,
+      "peak_rank": 40
+    },
+    "2022-10-25": {
+      "rank": 111,
+      "streams": 63775,
+      "previous_rank": 96,
+      "peak_rank": 40
+    },
+    "2022-10-24": {
+      "rank": 96,
+      "streams": 69090,
+      "previous_rank": 88,
+      "peak_rank": 40
+    },
+    "2022-10-23": {
+      "rank": 88,
+      "streams": 65460,
+      "previous_rank": 98
+    },
+    "2022-10-22": {
+      "rank": 98,
+      "streams": 77797,
+      "previous_rank": 40
+    },
+    "2022-10-21": {
+      "rank": 40,
+      "streams": 122196
+    }
+  },
+  "Snow On The Beach (feat. Lana Del Rey)": {
+    "2022-11-01": {
+      "rank": 193,
+      "streams": 41263
+    },
+    "2022-10-27": {
+      "rank": 143,
+      "streams": 55730,
+      "previous_rank": 122,
+      "peak_rank": 42
+    },
+    "2022-10-26": {
+      "rank": 122,
+      "streams": 60372,
+      "previous_rank": 96,
+      "peak_rank": 42
+    },
+    "2022-10-25": {
+      "rank": 96,
+      "streams": 68595,
+      "previous_rank": 81,
+      "peak_rank": 42
+    },
+    "2022-10-24": {
+      "rank": 81,
+      "streams": 78756,
+      "previous_rank": 77,
+      "peak_rank": 42
+    },
+    "2022-10-23": {
+      "rank": 77,
+      "streams": 70479,
+      "previous_rank": 90
+    },
+    "2022-10-22": {
+      "rank": 90,
+      "streams": 81268,
+      "previous_rank": 42
+    },
+    "2022-10-21": {
+      "rank": 42,
+      "streams": 121258
+    }
+  },
+  "Midnight Rain": {
+    "2022-10-27": {
+      "rank": 192,
+      "streams": 47465,
+      "previous_rank": 159,
+      "peak_rank": 70
+    },
+    "2022-10-26": {
+      "rank": 159,
+      "streams": 51587,
+      "previous_rank": 134,
+      "peak_rank": 70
+    },
+    "2022-10-25": {
+      "rank": 134,
+      "streams": 57656,
+      "previous_rank": 112,
+      "peak_rank": 70
+    },
+    "2022-10-24": {
+      "rank": 112,
+      "streams": 63283,
+      "previous_rank": 114,
+      "peak_rank": 70
+    },
+    "2022-10-23": {
+      "rank": 114,
+      "streams": 56325,
+      "previous_rank": 129
+    },
+    "2022-10-22": {
+      "rank": 129,
+      "streams": 65732,
+      "previous_rank": 70
+    },
+    "2022-10-21": {
+      "rank": 70,
+      "streams": 93133
+    }
+  },
+  "You're On Your Own, Kid": {
+    "2022-10-27": {
+      "rank": 199,
+      "streams": 46174,
+      "previous_rank": 166,
+      "peak_rank": 63
+    },
+    "2022-10-26": {
+      "rank": 166,
+      "streams": 50743,
+      "previous_rank": 135,
+      "peak_rank": 63
+    },
+    "2022-10-25": {
+      "rank": 135,
+      "streams": 57274,
+      "previous_rank": 113,
+      "peak_rank": 63
+    },
+    "2022-10-24": {
+      "rank": 113,
+      "streams": 63043,
+      "previous_rank": 113,
+      "peak_rank": 63
+    },
+    "2022-10-23": {
+      "rank": 113,
+      "streams": 56650,
+      "previous_rank": 128
+    },
+    "2022-10-22": {
+      "rank": 128,
+      "streams": 66075,
+      "previous_rank": 63
+    },
+    "2022-10-21": {
+      "rank": 63,
+      "streams": 98907
+    }
+  },
+  "Maroon": {
+    "2022-10-26": {
+      "rank": 181,
+      "streams": 48725,
+      "previous_rank": 142,
+      "peak_rank": 56
+    },
+    "2022-10-25": {
+      "rank": 142,
+      "streams": 56171,
+      "previous_rank": 120,
+      "peak_rank": 56
+    },
+    "2022-10-24": {
+      "rank": 120,
+      "streams": 62279,
+      "previous_rank": 112,
+      "peak_rank": 56
+    },
+    "2022-10-23": {
+      "rank": 112,
+      "streams": 56799,
+      "previous_rank": 122
+    },
+    "2022-10-22": {
+      "rank": 122,
+      "streams": 67997,
+      "previous_rank": 56
+    },
+    "2022-10-21": {
+      "rank": 56,
+      "streams": 107751
+    }
+  },
+  "Karma": {
+    "2022-10-26": {
+      "rank": 184,
+      "streams": 47879,
+      "previous_rank": 152,
+      "peak_rank": 93
+    },
+    "2022-10-25": {
+      "rank": 152,
+      "streams": 53006,
+      "previous_rank": 135,
+      "peak_rank": 93
+    },
+    "2022-10-24": {
+      "rank": 135,
+      "streams": 57806,
+      "previous_rank": 133,
+      "peak_rank": 93
+    },
+    "2022-10-23": {
+      "rank": 133,
+      "streams": 51585,
+      "previous_rank": 155
+    },
+    "2022-10-22": {
+      "rank": 155,
+      "streams": 59649,
+      "previous_rank": 93
+    },
+    "2022-10-21": {
+      "rank": 93,
+      "streams": 82321
+    }
+  },
+  "Vigilante Shit": {
+    "2022-10-25": {
+      "rank": 176,
+      "streams": 49448,
+      "previous_rank": 145,
+      "peak_rank": 78
+    },
+    "2022-10-24": {
+      "rank": 145,
+      "streams": 55028,
+      "previous_rank": 145,
+      "peak_rank": 78
+    },
+    "2022-10-23": {
+      "rank": 145,
+      "streams": 49818,
+      "previous_rank": 151
+    },
+    "2022-10-22": {
+      "rank": 151,
+      "streams": 60545,
+      "previous_rank": 78
+    },
+    "2022-10-21": {
+      "rank": 78,
+      "streams": 89621
+    }
+  },
+  "Bejeweled": {
+    "2022-10-25": {
+      "rank": 179,
+      "streams": 48872,
+      "previous_rank": 172,
+      "peak_rank": 103
+    },
+    "2022-10-24": {
+      "rank": 172,
+      "streams": 49979,
+      "previous_rank": 170,
+      "peak_rank": 103
+    },
+    "2022-10-23": {
+      "rank": 170,
+      "streams": 44952,
+      "previous_rank": 181
+    },
+    "2022-10-22": {
+      "rank": 181,
+      "streams": 53310,
+      "previous_rank": 103
+    },
+    "2022-10-21": {
+      "rank": 103,
+      "streams": 78303
+    }
+  },
+  "Question...?": {
+    "2022-10-25": {
+      "rank": 190,
+      "streams": 47095,
+      "previous_rank": 151,
+      "peak_rank": 85
+    },
+    "2022-10-24": {
+      "rank": 151,
+      "streams": 53179,
+      "previous_rank": 153,
+      "peak_rank": 85
+    },
+    "2022-10-23": {
+      "rank": 153,
+      "streams": 48201,
+      "previous_rank": 162
+    },
+    "2022-10-22": {
+      "rank": 162,
+      "streams": 58205,
+      "previous_rank": 85
+    },
+    "2022-10-21": {
+      "rank": 85,
+      "streams": 86850
+    }
+  },
+  "Labyrinth": {
+    "2022-10-21": {
+      "rank": 118,
+      "streams": 72556
+    }
+  },
+  "Mastermind": {
+    "2022-10-21": {
+      "rank": 135,
+      "streams": 67127
+    }
+  },
+  "Sweet Nothing": {
+    "2022-10-21": {
+      "rank": 136,
+      "streams": 66953
+    }
+  },
+  "All Too Well (10 Minute Version) (Taylor's Version) (From The Vault)": {
+    "2021-11-16": {
+      "rank": 171,
+      "streams": 42565,
+      "previous_rank": 172
+    },
+    "2021-11-15": {
+      "rank": 172,
+      "streams": 44619
+    }
+  },
+  "Love Story (Taylor's Version)": {
+    "2021-02-12": {
+      "rank": 174,
+      "streams": 43367
+    }
+  },
+  "Christmas Tree Farm": {
+    "2020-12-24": {
+      "rank": 150,
+      "streams": 79724
+    }
+  },
+  "willow": {
+    "2020-12-15": {
+      "rank": 170,
+      "streams": 40033,
+      "previous_rank": 156
+    },
+    "2020-12-14": {
+      "rank": 156,
+      "streams": 43614,
+      "previous_rank": 161
+    },
+    "2020-12-13": {
+      "rank": 161,
+      "streams": 42521,
+      "previous_rank": 165
+    },
+    "2020-12-12": {
+      "rank": 165,
+      "streams": 50008,
+      "previous_rank": 119
+    },
+    "2020-12-11": {
+      "rank": 119,
+      "streams": 61231
+    }
+  },
+  "cardigan": {
+    "2020-07-29": {
+      "rank": 199,
+      "streams": 37422,
+      "previous_rank": 179
+    },
+    "2020-07-28": {
+      "rank": 179,
+      "streams": 41731,
+      "previous_rank": 165
+    },
+    "2020-07-27": {
+      "rank": 165,
+      "streams": 44638,
+      "previous_rank": 159
+    },
+    "2020-07-26": {
+      "rank": 159,
+      "streams": 41904,
+      "previous_rank": 158
+    },
+    "2020-07-25": {
+      "rank": 158,
+      "streams": 47892,
+      "previous_rank": 119
+    },
+    "2020-07-24": {
+      "rank": 119,
+      "streams": 60242
+    }
+  },
+  "You Need To Calm Down": {
+    "2019-09-12": {
+      "rank": 198,
+      "streams": 35545,
+      "previous_rank": 170
+    },
+    "2019-09-11": {
+      "rank": 170,
+      "streams": 42119,
+      "previous_rank": 159,
+      "peak_rank": 100
+    },
+    "2019-09-10": {
+      "rank": 159,
+      "streams": 41022,
+      "previous_rank": 177,
+      "peak_rank": 100
+    },
+    "2019-09-09": {
+      "rank": 177,
+      "streams": 38476,
+      "previous_rank": 1,
+      "peak_rank": 100
+    },
+    "2019-09-05": {
+      "rank": 192,
+      "streams": 35274,
+      "previous_rank": 186
+    },
+    "2019-09-04": {
+      "rank": 186,
+      "streams": 36921,
+      "previous_rank": 168
+    },
+    "2019-09-03": {
+      "rank": 168,
+      "streams": 36549,
+      "previous_rank": 181
+    },
+    "2019-09-02": {
+      "rank": 181,
+      "streams": 36356,
+      "previous_rank": 167
+    },
+    "2019-09-01": {
+      "rank": 167,
+      "streams": 35321,
+      "previous_rank": 158
+    },
+    "2019-08-31": {
+      "rank": 158,
+      "streams": 41765,
+      "previous_rank": 160
+    },
+    "2019-08-30": {
+      "rank": 160,
+      "streams": 43757,
+      "previous_rank": 178
+    },
+    "2019-08-29": {
+      "rank": 178,
+      "streams": 39421,
+      "previous_rank": 185
+    },
+    "2019-08-28": {
+      "rank": 185,
+      "streams": 37458,
+      "previous_rank": 180
+    },
+    "2019-08-27": {
+      "rank": 180,
+      "streams": 37395,
+      "previous_rank": 173
+    },
+    "2019-08-26": {
+      "rank": 173,
+      "streams": 37559,
+      "previous_rank": 149
+    },
+    "2019-08-25": {
+      "rank": 149,
+      "streams": 38156,
+      "previous_rank": 140
+    },
+    "2019-08-24": {
+      "rank": 140,
+      "streams": 43755,
+      "previous_rank": 132
+    },
+    "2019-08-22": {
+      "rank": 190,
+      "streams": 37697,
+      "previous_rank": 156
+    },
+    "2019-08-21": {
+      "rank": 156,
+      "streams": 40703,
+      "previous_rank": 153
+    },
+    "2019-08-20": {
+      "rank": 153,
+      "streams": 39036,
+      "previous_rank": 147,
+      "peak_rank": 100
+    },
+    "2019-08-19": {
+      "rank": 147,
+      "streams": 38588,
+      "previous_rank": 1,
+      "peak_rank": 100
+    },
+    "2019-08-10": {
+      "rank": 191,
+      "streams": 35144,
+      "previous_rank": 180
+    },
+    "2019-08-09": {
+      "rank": 180,
+      "streams": 36142,
+      "previous_rank": 196
+    },
+    "2019-08-08": {
+      "rank": 196,
+      "streams": 33846
+    },
+    "2019-08-05": {
+      "rank": 178,
+      "streams": 36763,
+      "previous_rank": 171
+    },
+    "2019-08-04": {
+      "rank": 171,
+      "streams": 34994,
+      "previous_rank": 146
+    },
+    "2019-08-03": {
+      "rank": 146,
+      "streams": 43520,
+      "previous_rank": 146
+    },
+    "2019-08-02": {
+      "rank": 146,
+      "streams": 45759,
+      "previous_rank": 138,
+      "peak_rank": 100
+    },
+    "2019-08-01": {
+      "rank": 138,
+      "streams": 43136,
+      "previous_rank": 138,
+      "peak_rank": 100
+    },
+    "2019-07-31": {
+      "rank": 138,
+      "streams": 43216,
+      "previous_rank": 162,
+      "peak_rank": 100
+    },
+    "2019-07-30": {
+      "rank": 162,
+      "streams": 38945,
+      "previous_rank": 160,
+      "peak_rank": 100
+    },
+    "2019-07-29": {
+      "rank": 160,
+      "streams": 39718,
+      "previous_rank": 163
+    },
+    "2019-07-28": {
+      "rank": 163,
+      "streams": 35112,
+      "previous_rank": 156
+    },
+    "2019-07-27": {
+      "rank": 156,
+      "streams": 40652,
+      "previous_rank": 151
+    },
+    "2019-07-26": {
+      "rank": 151,
+      "streams": 44188,
+      "previous_rank": 130
+    },
+    "2019-07-25": {
+      "rank": 130,
+      "streams": 42337,
+      "previous_rank": 108
+    },
+    "2019-07-24": {
+      "rank": 108,
+      "streams": 47659,
+      "previous_rank": 148
+    },
+    "2019-07-23": {
+      "rank": 148,
+      "streams": 41689,
+      "previous_rank": 158
+    },
+    "2019-07-22": {
+      "rank": 158,
+      "streams": 41654,
+      "previous_rank": 104
+    },
+    "2019-07-21": {
+      "rank": 104,
+      "streams": 44615,
+      "previous_rank": 105
+    },
+    "2019-07-20": {
+      "rank": 105,
+      "streams": 50929,
+      "previous_rank": 100
+    },
+    "2019-07-19": {
+      "rank": 100,
+      "streams": 53509,
+      "previous_rank": 195
+    },
+    "2019-07-18": {
+      "rank": 195,
+      "streams": 35427
+    },
+    "2019-06-27": {
+      "rank": 177,
+      "streams": 44656
+    },
+    "2019-06-24": {
+      "rank": 196,
+      "streams": 39474,
+      "previous_rank": 1,
+      "peak_rank": 147
+    },
+    "2019-06-21": {
+      "rank": 171,
+      "streams": 50371,
+      "previous_rank": 187
+    },
+    "2019-06-20": {
+      "rank": 187,
+      "streams": 39644,
+      "previous_rank": 179
+    },
+    "2019-06-19": {
+      "rank": 179,
+      "streams": 42498,
+      "previous_rank": 162
+    },
+    "2019-06-18": {
+      "rank": 162,
+      "streams": 44334,
+      "previous_rank": 168
+    },
+    "2019-06-17": {
+      "rank": 168,
+      "streams": 42185
+    },
+    "2019-06-14": {
+      "rank": 147,
+      "streams": 51074
+    }
+  },
+  "Lover": {
+    "2019-08-23": {
+      "rank": 160,
+      "streams": 43428
+    }
+  },
+  "The Man": {
+    "2019-08-23": {
+      "rank": 161,
+      "streams": 43362
+    }
+  },
+  "ME! (feat. Brendon Urie of Panic! At The Disco)": {
+    "2019-05-23": {
+      "rank": 138,
+      "streams": 41522,
+      "previous_rank": 107
+    },
+    "2019-05-22": {
+      "rank": 107,
+      "streams": 51302,
+      "previous_rank": 115
+    },
+    "2019-05-21": {
+      "rank": 115,
+      "streams": 45458,
+      "previous_rank": 107
+    },
+    "2019-05-20": {
+      "rank": 107,
+      "streams": 45455,
+      "previous_rank": 128
+    },
+    "2019-05-19": {
+      "rank": 128,
+      "streams": 37749,
+      "previous_rank": 119
+    },
+    "2019-05-18": {
+      "rank": 119,
+      "streams": 47659,
+      "previous_rank": 129,
+      "peak_rank": 21
+    },
+    "2019-05-17": {
+      "rank": 129,
+      "streams": 47121,
+      "previous_rank": 107,
+      "peak_rank": 21
+    },
+    "2019-05-16": {
+      "rank": 107,
+      "streams": 48002,
+      "previous_rank": 96,
+      "peak_rank": 21
+    },
+    "2019-05-15": {
+      "rank": 96,
+      "streams": 53468,
+      "previous_rank": 95,
+      "peak_rank": 21
+    },
+    "2019-05-14": {
+      "rank": 95,
+      "streams": 51414,
+      "previous_rank": 104
+    },
+    "2019-05-13": {
+      "rank": 104,
+      "streams": 47110,
+      "previous_rank": 97
+    },
+    "2019-05-12": {
+      "rank": 97,
+      "streams": 45722,
+      "previous_rank": 103
+    },
+    "2019-05-11": {
+      "rank": 103,
+      "streams": 53121,
+      "previous_rank": 106
+    },
+    "2019-05-10": {
+      "rank": 106,
+      "streams": 55640,
+      "previous_rank": 88
+    },
+    "2019-05-09": {
+      "rank": 88,
+      "streams": 53298,
+      "previous_rank": 87
+    },
+    "2019-05-08": {
+      "rank": 87,
+      "streams": 48218,
+      "previous_rank": 87
+    },
+    "2019-05-07": {
+      "rank": 87,
+      "streams": 56677,
+      "previous_rank": 83
+    },
+    "2019-05-06": {
+      "rank": 83,
+      "streams": 55592,
+      "previous_rank": 88
+    },
+    "2019-05-05": {
+      "rank": 88,
+      "streams": 49928,
+      "previous_rank": 89
+    },
+    "2019-05-04": {
+      "rank": 89,
+      "streams": 59640,
+      "previous_rank": 81
+    },
+    "2019-05-03": {
+      "rank": 81,
+      "streams": 68562,
+      "previous_rank": 47
+    },
+    "2019-05-02": {
+      "rank": 47,
+      "streams": 83688,
+      "previous_rank": 30
+    },
+    "2019-05-01": {
+      "rank": 30,
+      "streams": 93249,
+      "previous_rank": 35
+    },
+    "2019-04-30": {
+      "rank": 35,
+      "streams": 99095,
+      "previous_rank": 30
+    },
+    "2019-04-29": {
+      "rank": 30,
+      "streams": 99378,
+      "previous_rank": 31
+    },
+    "2019-04-28": {
+      "rank": 31,
+      "streams": 89670,
+      "previous_rank": 32
+    },
+    "2019-04-27": {
+      "rank": 32,
+      "streams": 102460,
+      "previous_rank": 21,
+      "peak_rank": 21
+    },
+    "2019-04-26": {
+      "rank": 21,
+      "streams": 129018,
+      "previous_rank": 1,
+      "peak_rank": 21
+    }
+  },
+  "Bad Blood": {
+    "2017-10-31": {
+      "rank": 177,
+      "streams": 25764,
+      "previous_rank": 1,
+      "peak_rank": 177
+    }
+  },
+  "Look What You Made Me Do": {
+    "2017-10-31": {
+      "rank": 191,
+      "streams": 23693,
+      "previous_rank": 186,
+      "peak_rank": 12
+    },
+    "2017-10-30": {
+      "rank": 186,
+      "streams": 22849,
+      "previous_rank": 185
+    },
+    "2017-10-29": {
+      "rank": 185,
+      "streams": 20880,
+      "previous_rank": 123
+    },
+    "2017-10-28": {
+      "rank": 123,
+      "streams": 33759,
+      "previous_rank": 118
+    },
+    "2017-10-27": {
+      "rank": 118,
+      "streams": 39545,
+      "previous_rank": 104
+    },
+    "2017-10-26": {
+      "rank": 104,
+      "streams": 38441,
+      "previous_rank": 100
+    },
+    "2017-10-25": {
+      "rank": 100,
+      "streams": 40353,
+      "previous_rank": 105
+    },
+    "2017-10-23": {
+      "rank": 104,
+      "streams": 39276,
+      "previous_rank": 106
+    },
+    "2017-10-22": {
+      "rank": 106,
+      "streams": 35365,
+      "previous_rank": 101
+    },
+    "2017-10-21": {
+      "rank": 101,
+      "streams": 44717,
+      "previous_rank": 102
+    },
+    "2017-10-19": {
+      "rank": 86,
+      "streams": 38397,
+      "previous_rank": 83
+    },
+    "2017-10-18": {
+      "rank": 83,
+      "streams": 41266,
+      "previous_rank": 82
+    },
+    "2017-10-17": {
+      "rank": 82,
+      "streams": 39033,
+      "previous_rank": 79
+    },
+    "2017-10-16": {
+      "rank": 79,
+      "streams": 38448,
+      "previous_rank": 77
+    },
+    "2017-10-15": {
+      "rank": 77,
+      "streams": 41929,
+      "previous_rank": 78
+    },
+    "2017-10-14": {
+      "rank": 78,
+      "streams": 47142,
+      "previous_rank": 83
+    },
+    "2017-10-13": {
+      "rank": 83,
+      "streams": 42973,
+      "previous_rank": 80
+    },
+    "2017-10-12": {
+      "rank": 80,
+      "streams": 39484,
+      "previous_rank": 73,
+      "peak_rank": 12
+    },
+    "2017-10-11": {
+      "rank": 73,
+      "streams": 42288,
+      "previous_rank": 76,
+      "peak_rank": 12
+    },
+    "2017-10-10": {
+      "rank": 76,
+      "streams": 41778,
+      "previous_rank": 78,
+      "peak_rank": 12
+    },
+    "2017-10-09": {
+      "rank": 78,
+      "streams": 39959,
+      "previous_rank": 66,
+      "peak_rank": 12
+    },
+    "2017-10-08": {
+      "rank": 66,
+      "streams": 45890,
+      "previous_rank": 69
+    },
+    "2017-10-07": {
+      "rank": 69,
+      "streams": 51723,
+      "previous_rank": 77
+    },
+    "2017-10-06": {
+      "rank": 77,
+      "streams": 46819,
+      "previous_rank": 69
+    },
+    "2017-10-05": {
+      "rank": 69,
+      "streams": 43862,
+      "previous_rank": 74
+    },
+    "2017-10-04": {
+      "rank": 74,
+      "streams": 46194,
+      "previous_rank": 71
+    },
+    "2017-10-03": {
+      "rank": 71,
+      "streams": 45140,
+      "previous_rank": 79
+    },
+    "2017-10-02": {
+      "rank": 79,
+      "streams": 41863,
+      "previous_rank": 64
+    },
+    "2017-10-01": {
+      "rank": 64,
+      "streams": 46892,
+      "previous_rank": 71
+    },
+    "2017-09-30": {
+      "rank": 71,
+      "streams": 52768,
+      "previous_rank": 79
+    },
+    "2017-09-29": {
+      "rank": 79,
+      "streams": 50477,
+      "previous_rank": 61
+    },
+    "2017-09-28": {
+      "rank": 61,
+      "streams": 50049,
+      "previous_rank": 68
+    },
+    "2017-09-27": {
+      "rank": 68,
+      "streams": 50890,
+      "previous_rank": 66
+    },
+    "2017-09-26": {
+      "rank": 66,
+      "streams": 50052,
+      "previous_rank": 72
+    },
+    "2017-09-25": {
+      "rank": 72,
+      "streams": 44740,
+      "previous_rank": 64
+    },
+    "2017-09-24": {
+      "rank": 64,
+      "streams": 48875,
+      "previous_rank": 64,
+      "peak_rank": 12
+    },
+    "2017-09-23": {
+      "rank": 64,
+      "streams": 55616,
+      "previous_rank": 69,
+      "peak_rank": 12
+    },
+    "2017-09-22": {
+      "rank": 69,
+      "streams": 53354,
+      "previous_rank": 50,
+      "peak_rank": 12
+    },
+    "2017-09-21": {
+      "rank": 50,
+      "streams": 53685,
+      "previous_rank": 50,
+      "peak_rank": 12
+    },
+    "2017-09-20": {
+      "rank": 50,
+      "streams": 57188,
+      "previous_rank": 44
+    },
+    "2017-09-19": {
+      "rank": 44,
+      "streams": 56019,
+      "previous_rank": 49
+    },
+    "2017-09-17": {
+      "rank": 43,
+      "streams": 56921,
+      "previous_rank": 45
+    },
+    "2017-09-16": {
+      "rank": 45,
+      "streams": 65048,
+      "previous_rank": 47
+    },
+    "2017-09-15": {
+      "rank": 47,
+      "streams": 61599,
+      "previous_rank": 40
+    },
+    "2017-09-14": {
+      "rank": 40,
+      "streams": 60102,
+      "previous_rank": 39
+    },
+    "2017-09-13": {
+      "rank": 39,
+      "streams": 62683,
+      "previous_rank": 38
+    },
+    "2017-09-12": {
+      "rank": 38,
+      "streams": 61645,
+      "previous_rank": 30
+    },
+    "2017-09-11": {
+      "rank": 30,
+      "streams": 61061,
+      "previous_rank": 37
+    },
+    "2017-09-09": {
+      "rank": 37,
+      "streams": 68669,
+      "previous_rank": 32
+    },
+    "2017-09-08": {
+      "rank": 32,
+      "streams": 70214,
+      "previous_rank": 15
+    },
+    "2017-09-07": {
+      "rank": 15,
+      "streams": 74314,
+      "previous_rank": 18
+    },
+    "2017-09-06": {
+      "rank": 18,
+      "streams": 70937,
+      "previous_rank": 12,
+      "peak_rank": 12
+    },
+    "2017-09-05": {
+      "rank": 12,
+      "streams": 80140,
+      "previous_rank": 18,
+      "peak_rank": 12
+    },
+    "2017-09-04": {
+      "rank": 18,
+      "streams": 70546,
+      "previous_rank": 17,
+      "peak_rank": 12
+    },
+    "2017-09-03": {
+      "rank": 17,
+      "streams": 71021,
+      "previous_rank": 19,
+      "peak_rank": 12
+    },
+    "2017-09-02": {
+      "rank": 19,
+      "streams": 75888,
+      "previous_rank": 17
+    },
+    "2017-09-01": {
+      "rank": 17,
+      "streams": 77626,
+      "previous_rank": 12
+    },
+    "2017-08-31": {
+      "rank": 12,
+      "streams": 80091,
+      "previous_rank": 16
+    },
+    "2017-08-30": {
+      "rank": 16,
+      "streams": 74995,
+      "previous_rank": 20
+    },
+    "2017-08-29": {
+      "rank": 20,
+      "streams": 72754,
+      "previous_rank": 25
+    },
+    "2017-08-27": {
+      "rank": 49,
+      "streams": 41175,
+      "previous_rank": 61
+    },
+    "2017-08-26": {
+      "rank": 61,
+      "streams": 41797,
+      "previous_rank": 23
+    },
+    "2017-08-25": {
+      "rank": 23,
+      "streams": 63695
+    }
+  },
+  "Gorgeous": {
+    "2017-10-24": {
+      "rank": 200,
+      "streams": 21851
+    },
+    "2017-10-20": {
+      "rank": 154,
+      "streams": 28733
+    }
+  },
+  "I Don't Wanna Live Forever (Fifty Shades Darker)": {
+    "2017-09-21": {
+      "rank": 200,
+      "streams": 19084,
+      "previous_rank": 1,
+      "peak_rank": 2
+    },
+    "2017-09-18": {
+      "rank": 195,
+      "streams": 18268
+    },
+    "2017-09-14": {
+      "rank": 171,
+      "streams": 20838,
+      "previous_rank": 170
+    },
+    "2017-09-13": {
+      "rank": 170,
+      "streams": 21893,
+      "previous_rank": 179
+    },
+    "2017-09-12": {
+      "rank": 179,
+      "streams": 19506,
+      "previous_rank": 190
+    },
+    "2017-09-11": {
+      "rank": 190,
+      "streams": 18547,
+      "previous_rank": 196
+    },
+    "2017-09-10": {
+      "rank": 196,
+      "streams": 17633
+    },
+    "2017-09-08": {
+      "rank": 184,
+      "streams": 20696,
+      "previous_rank": 160
+    },
+    "2017-09-07": {
+      "rank": 160,
+      "streams": 19769,
+      "previous_rank": 173
+    },
+    "2017-09-06": {
+      "rank": 173,
+      "streams": 19830,
+      "previous_rank": 180,
+      "peak_rank": 2
+    },
+    "2017-09-05": {
+      "rank": 180,
+      "streams": 17958,
+      "previous_rank": 178,
+      "peak_rank": 2
+    },
+    "2017-09-04": {
+      "rank": 178,
+      "streams": 18534,
+      "previous_rank": 200,
+      "peak_rank": 2
+    },
+    "2017-09-03": {
+      "rank": 200,
+      "streams": 16346,
+      "previous_rank": 1,
+      "peak_rank": 2
+    },
+    "2017-09-01": {
+      "rank": 191,
+      "streams": 19510,
+      "previous_rank": 183
+    },
+    "2017-08-31": {
+      "rank": 183,
+      "streams": 19028,
+      "previous_rank": 178
+    },
+    "2017-08-30": {
+      "rank": 178,
+      "streams": 19695,
+      "previous_rank": 190
+    },
+    "2017-08-29": {
+      "rank": 190,
+      "streams": 18229,
+      "previous_rank": 180
+    },
+    "2017-08-28": {
+      "rank": 180,
+      "streams": 18786
+    },
+    "2017-08-24": {
+      "rank": 175,
+      "streams": 18307,
+      "previous_rank": 162
+    },
+    "2017-08-23": {
+      "rank": 162,
+      "streams": 19041,
+      "previous_rank": 185
+    },
+    "2017-08-22": {
+      "rank": 185,
+      "streams": 17627,
+      "previous_rank": 188
+    },
+    "2017-08-21": {
+      "rank": 188,
+      "streams": 17349,
+      "previous_rank": 194
+    },
+    "2017-08-20": {
+      "rank": 194,
+      "streams": 15614
+    },
+    "2017-08-18": {
+      "rank": 180,
+      "streams": 18677,
+      "previous_rank": 177,
+      "peak_rank": 2
+    },
+    "2017-08-17": {
+      "rank": 177,
+      "streams": 17256,
+      "previous_rank": 167,
+      "peak_rank": 2
+    },
+    "2017-08-16": {
+      "rank": 167,
+      "streams": 17669,
+      "previous_rank": 189,
+      "peak_rank": 2
+    },
+    "2017-08-15": {
+      "rank": 189,
+      "streams": 15279,
+      "previous_rank": 190
+    },
+    "2017-08-14": {
+      "rank": 190,
+      "streams": 16304,
+      "previous_rank": 194
+    },
+    "2017-08-13": {
+      "rank": 194,
+      "streams": 15060,
+      "previous_rank": 196
+    },
+    "2017-08-12": {
+      "rank": 196,
+      "streams": 16773,
+      "previous_rank": 162
+    },
+    "2017-08-11": {
+      "rank": 162,
+      "streams": 19510,
+      "previous_rank": 168
+    },
+    "2017-08-10": {
+      "rank": 168,
+      "streams": 18181,
+      "previous_rank": 164
+    },
+    "2017-08-09": {
+      "rank": 164,
+      "streams": 18345,
+      "previous_rank": 169
+    },
+    "2017-08-08": {
+      "rank": 169,
+      "streams": 17367,
+      "previous_rank": 182
+    },
+    "2017-08-07": {
+      "rank": 182,
+      "streams": 16845,
+      "previous_rank": 179
+    },
+    "2017-08-06": {
+      "rank": 179,
+      "streams": 16258,
+      "previous_rank": 186
+    },
+    "2017-08-05": {
+      "rank": 186,
+      "streams": 17716,
+      "previous_rank": 156
+    },
+    "2017-08-04": {
+      "rank": 156,
+      "streams": 20223,
+      "previous_rank": 163
+    },
+    "2017-08-03": {
+      "rank": 163,
+      "streams": 18629,
+      "previous_rank": 156
+    },
+    "2017-08-02": {
+      "rank": 156,
+      "streams": 19170,
+      "previous_rank": 159
+    },
+    "2017-08-01": {
+      "rank": 159,
+      "streams": 18677,
+      "previous_rank": 162
+    },
+    "2017-07-31": {
+      "rank": 162,
+      "streams": 18838,
+      "previous_rank": 183,
+      "peak_rank": 2
+    },
+    "2017-07-30": {
+      "rank": 183,
+      "streams": 16434,
+      "previous_rank": 178,
+      "peak_rank": 2
+    },
+    "2017-07-29": {
+      "rank": 178,
+      "streams": 18874,
+      "previous_rank": 153,
+      "peak_rank": 2
+    },
+    "2017-07-28": {
+      "rank": 153,
+      "streams": 21842,
+      "previous_rank": 168,
+      "peak_rank": 2
+    },
+    "2017-07-27": {
+      "rank": 168,
+      "streams": 19678,
+      "previous_rank": 169
+    },
+    "2017-07-26": {
+      "rank": 169,
+      "streams": 19603,
+      "previous_rank": 184
+    },
+    "2017-07-25": {
+      "rank": 184,
+      "streams": 18538,
+      "previous_rank": 190
+    },
+    "2017-07-24": {
+      "rank": 190,
+      "streams": 17801,
+      "previous_rank": 192
+    },
+    "2017-07-21": {
+      "rank": 192,
+      "streams": 21798,
+      "previous_rank": 170
+    },
+    "2017-07-20": {
+      "rank": 170,
+      "streams": 19640,
+      "previous_rank": 170
+    },
+    "2017-07-19": {
+      "rank": 170,
+      "streams": 19554,
+      "previous_rank": 176
+    },
+    "2017-07-18": {
+      "rank": 176,
+      "streams": 19001,
+      "previous_rank": 177
+    },
+    "2017-07-17": {
+      "rank": 177,
+      "streams": 18741,
+      "previous_rank": 186
+    },
+    "2017-07-16": {
+      "rank": 186,
+      "streams": 17255,
+      "previous_rank": 195
+    },
+    "2017-07-15": {
+      "rank": 195,
+      "streams": 18243,
+      "previous_rank": 180
+    },
+    "2017-07-14": {
+      "rank": 180,
+      "streams": 19113,
+      "previous_rank": 176
+    },
+    "2017-07-13": {
+      "rank": 176,
+      "streams": 21578,
+      "previous_rank": 154
+    },
+    "2017-07-12": {
+      "rank": 154,
+      "streams": 22320,
+      "previous_rank": 185,
+      "peak_rank": 2
+    },
+    "2017-07-11": {
+      "rank": 185,
+      "streams": 20447,
+      "previous_rank": 193,
+      "peak_rank": 2
+    },
+    "2017-07-10": {
+      "rank": 193,
+      "streams": 19762,
+      "previous_rank": 1,
+      "peak_rank": 2
+    },
+    "2017-07-07": {
+      "rank": 180,
+      "streams": 22892,
+      "previous_rank": 164
+    },
+    "2017-07-06": {
+      "rank": 164,
+      "streams": 22034,
+      "previous_rank": 155
+    },
+    "2017-07-05": {
+      "rank": 155,
+      "streams": 23042,
+      "previous_rank": 164
+    },
+    "2017-07-04": {
+      "rank": 164,
+      "streams": 22267,
+      "previous_rank": 169
+    },
+    "2017-07-03": {
+      "rank": 169,
+      "streams": 22051,
+      "previous_rank": 171
+    },
+    "2017-07-02": {
+      "rank": 171,
+      "streams": 19115,
+      "previous_rank": 185
+    },
+    "2017-07-01": {
+      "rank": 185,
+      "streams": 21475,
+      "previous_rank": 163
+    },
+    "2017-06-30": {
+      "rank": 163,
+      "streams": 24137,
+      "previous_rank": 132
+    },
+    "2017-06-29": {
+      "rank": 132,
+      "streams": 24211,
+      "previous_rank": 119
+    },
+    "2017-06-28": {
+      "rank": 119,
+      "streams": 24962,
+      "previous_rank": 137
+    },
+    "2017-06-27": {
+      "rank": 137,
+      "streams": 23084,
+      "previous_rank": 158
+    },
+    "2017-06-26": {
+      "rank": 158,
+      "streams": 21808,
+      "previous_rank": 158
+    },
+    "2017-06-25": {
+      "rank": 158,
+      "streams": 19744,
+      "previous_rank": 168
+    },
+    "2017-06-24": {
+      "rank": 168,
+      "streams": 22428,
+      "previous_rank": 151
+    },
+    "2017-06-23": {
+      "rank": 151,
+      "streams": 24188,
+      "previous_rank": 134,
+      "peak_rank": 2
+    },
+    "2017-06-22": {
+      "rank": 134,
+      "streams": 22196,
+      "previous_rank": 133,
+      "peak_rank": 2
+    },
+    "2017-06-21": {
+      "rank": 133,
+      "streams": 23042,
+      "previous_rank": 116,
+      "peak_rank": 2
+    },
+    "2017-06-20": {
+      "rank": 116,
+      "streams": 24052,
+      "previous_rank": 118,
+      "peak_rank": 2
+    },
+    "2017-06-19": {
+      "rank": 118,
+      "streams": 24180,
+      "previous_rank": 123
+    },
+    "2017-06-18": {
+      "rank": 123,
+      "streams": 22744,
+      "previous_rank": 125
+    },
+    "2017-06-17": {
+      "rank": 125,
+      "streams": 26499,
+      "previous_rank": 121
+    },
+    "2017-06-16": {
+      "rank": 121,
+      "streams": 26928,
+      "previous_rank": 115
+    },
+    "2017-06-15": {
+      "rank": 115,
+      "streams": 24172,
+      "previous_rank": 112
+    },
+    "2017-06-14": {
+      "rank": 112,
+      "streams": 25749,
+      "previous_rank": 109
+    },
+    "2017-06-13": {
+      "rank": 109,
+      "streams": 25774,
+      "previous_rank": 111
+    },
+    "2017-06-12": {
+      "rank": 111,
+      "streams": 25515,
+      "previous_rank": 116
+    },
+    "2017-06-11": {
+      "rank": 116,
+      "streams": 22941,
+      "previous_rank": 119
+    },
+    "2017-06-10": {
+      "rank": 119,
+      "streams": 27428,
+      "previous_rank": 111
+    },
+    "2017-06-09": {
+      "rank": 111,
+      "streams": 28287,
+      "previous_rank": 110
+    },
+    "2017-06-08": {
+      "rank": 110,
+      "streams": 26924,
+      "previous_rank": 90
+    },
+    "2017-06-07": {
+      "rank": 90,
+      "streams": 30109,
+      "previous_rank": 91
+    },
+    "2017-06-06": {
+      "rank": 91,
+      "streams": 28378,
+      "previous_rank": 93
+    },
+    "2017-06-05": {
+      "rank": 93,
+      "streams": 27745,
+      "previous_rank": 111
+    },
+    "2017-06-04": {
+      "rank": 111,
+      "streams": 24856,
+      "previous_rank": 107
+    },
+    "2017-06-03": {
+      "rank": 107,
+      "streams": 28492,
+      "previous_rank": 89
+    },
+    "2017-06-02": {
+      "rank": 89,
+      "streams": 32492,
+      "previous_rank": 97,
+      "peak_rank": 2
+    },
+    "2017-06-01": {
+      "rank": 97,
+      "streams": 29411,
+      "previous_rank": 88,
+      "peak_rank": 2
+    },
+    "2017-05-31": {
+      "rank": 88,
+      "streams": 32126,
+      "previous_rank": 88,
+      "peak_rank": 2
+    },
+    "2017-05-30": {
+      "rank": 88,
+      "streams": 29835,
+      "previous_rank": 88,
+      "peak_rank": 2
+    },
+    "2017-05-29": {
+      "rank": 88,
+      "streams": 29522,
+      "previous_rank": 92
+    },
+    "2017-05-28": {
+      "rank": 92,
+      "streams": 28608,
+      "previous_rank": 72
+    },
+    "2017-05-27": {
+      "rank": 72,
+      "streams": 37597,
+      "previous_rank": 79
+    },
+    "2017-05-26": {
+      "rank": 79,
+      "streams": 39885,
+      "previous_rank": 83
+    },
+    "2017-05-25": {
+      "rank": 83,
+      "streams": 39161,
+      "previous_rank": 82
+    },
+    "2017-05-24": {
+      "rank": 82,
+      "streams": 42235,
+      "previous_rank": 90
+    },
+    "2017-05-23": {
+      "rank": 90,
+      "streams": 34675,
+      "previous_rank": 92
+    },
+    "2017-05-22": {
+      "rank": 92,
+      "streams": 33817,
+      "previous_rank": 85
+    },
+    "2017-05-21": {
+      "rank": 85,
+      "streams": 35315,
+      "previous_rank": 84
+    },
+    "2017-05-20": {
+      "rank": 84,
+      "streams": 42154,
+      "previous_rank": 89
+    },
+    "2017-05-19": {
+      "rank": 89,
+      "streams": 39733,
+      "previous_rank": 77
+    },
+    "2017-05-18": {
+      "rank": 77,
+      "streams": 36361,
+      "previous_rank": 75
+    },
+    "2017-05-17": {
+      "rank": 75,
+      "streams": 39974,
+      "previous_rank": 76
+    },
+    "2017-05-16": {
+      "rank": 76,
+      "streams": 37351,
+      "previous_rank": 81
+    },
+    "2017-05-15": {
+      "rank": 81,
+      "streams": 35571,
+      "previous_rank": 78
+    },
+    "2017-05-14": {
+      "rank": 78,
+      "streams": 35108,
+      "previous_rank": 75
+    },
+    "2017-05-13": {
+      "rank": 75,
+      "streams": 46702,
+      "previous_rank": 80
+    },
+    "2017-05-12": {
+      "rank": 80,
+      "streams": 44007,
+      "previous_rank": 67
+    },
+    "2017-05-11": {
+      "rank": 67,
+      "streams": 42935,
+      "previous_rank": 58,
+      "peak_rank": 2
+    },
+    "2017-05-10": {
+      "rank": 58,
+      "streams": 47722,
+      "previous_rank": 39,
+      "peak_rank": 2
+    },
+    "2017-05-09": {
+      "rank": 39,
+      "streams": 56194,
+      "previous_rank": 34,
+      "peak_rank": 2
+    },
+    "2017-05-08": {
+      "rank": 34,
+      "streams": 59969,
+      "previous_rank": 38,
+      "peak_rank": 2
+    },
+    "2017-05-07": {
+      "rank": 38,
+      "streams": 58454,
+      "previous_rank": 36
+    },
+    "2017-05-06": {
+      "rank": 36,
+      "streams": 71096,
+      "previous_rank": 49
+    },
+    "2017-05-05": {
+      "rank": 49,
+      "streams": 66225,
+      "previous_rank": 34
+    },
+    "2017-05-04": {
+      "rank": 34,
+      "streams": 60967,
+      "previous_rank": 33
+    },
+    "2017-05-03": {
+      "rank": 33,
+      "streams": 61421,
+      "previous_rank": 35
+    },
+    "2017-05-02": {
+      "rank": 35,
+      "streams": 56581,
+      "previous_rank": 32
+    },
+    "2017-05-01": {
+      "rank": 32,
+      "streams": 61703,
+      "previous_rank": 35
+    },
+    "2017-04-30": {
+      "rank": 35,
+      "streams": 61224,
+      "previous_rank": 35
+    },
+    "2017-04-29": {
+      "rank": 35,
+      "streams": 73751,
+      "previous_rank": 31
+    },
+    "2017-04-28": {
+      "rank": 31,
+      "streams": 69842,
+      "previous_rank": 19
+    },
+    "2017-04-27": {
+      "rank": 19,
+      "streams": 67511,
+      "previous_rank": 16
+    },
+    "2017-04-26": {
+      "rank": 16,
+      "streams": 68952,
+      "previous_rank": 16
+    },
+    "2017-04-25": {
+      "rank": 16,
+      "streams": 62996,
+      "previous_rank": 19
+    },
+    "2017-04-24": {
+      "rank": 19,
+      "streams": 63706,
+      "previous_rank": 16
+    },
+    "2017-04-23": {
+      "rank": 16,
+      "streams": 63398,
+      "previous_rank": 12,
+      "peak_rank": 2
+    },
+    "2017-04-22": {
+      "rank": 12,
+      "streams": 83229,
+      "previous_rank": 12,
+      "peak_rank": 2
+    },
+    "2017-04-21": {
+      "rank": 12,
+      "streams": 74647,
+      "previous_rank": 19,
+      "peak_rank": 2
+    },
+    "2017-04-20": {
+      "rank": 19,
+      "streams": 65210,
+      "previous_rank": 22,
+      "peak_rank": 2
+    },
+    "2017-04-19": {
+      "rank": 22,
+      "streams": 65467,
+      "previous_rank": 23
+    },
+    "2017-04-18": {
+      "rank": 23,
+      "streams": 61581,
+      "previous_rank": 23
+    },
+    "2017-04-17": {
+      "rank": 23,
+      "streams": 59209,
+      "previous_rank": 25
+    },
+    "2017-04-16": {
+      "rank": 25,
+      "streams": 57519,
+      "previous_rank": 23
+    },
+    "2017-04-15": {
+      "rank": 23,
+      "streams": 69733,
+      "previous_rank": 24
+    },
+    "2017-04-14": {
+      "rank": 24,
+      "streams": 73079,
+      "previous_rank": 18
+    },
+    "2017-04-13": {
+      "rank": 18,
+      "streams": 71236,
+      "previous_rank": 18
+    },
+    "2017-04-12": {
+      "rank": 18,
+      "streams": 73233,
+      "previous_rank": 18
+    },
+    "2017-04-11": {
+      "rank": 18,
+      "streams": 69208,
+      "previous_rank": 13
+    },
+    "2017-04-10": {
+      "rank": 13,
+      "streams": 74103,
+      "previous_rank": 10
+    },
+    "2017-04-09": {
+      "rank": 10,
+      "streams": 80511,
+      "previous_rank": 11
+    },
+    "2017-04-08": {
+      "rank": 11,
+      "streams": 95204,
+      "previous_rank": 10
+    },
+    "2017-04-07": {
+      "rank": 10,
+      "streams": 86674,
+      "previous_rank": 14
+    },
+    "2017-04-06": {
+      "rank": 14,
+      "streams": 76968,
+      "previous_rank": 12
+    },
+    "2017-04-05": {
+      "rank": 12,
+      "streams": 80926,
+      "previous_rank": 15,
+      "peak_rank": 2
+    },
+    "2017-04-04": {
+      "rank": 15,
+      "streams": 75682,
+      "previous_rank": 17,
+      "peak_rank": 2
+    },
+    "2017-04-03": {
+      "rank": 17,
+      "streams": 75022,
+      "previous_rank": 18,
+      "peak_rank": 2
+    },
+    "2017-04-02": {
+      "rank": 18,
+      "streams": 75041,
+      "previous_rank": 20,
+      "peak_rank": 2
+    },
+    "2017-04-01": {
+      "rank": 20,
+      "streams": 88951,
+      "previous_rank": 25
+    },
+    "2017-03-31": {
+      "rank": 25,
+      "streams": 88423,
+      "previous_rank": 11
+    },
+    "2017-03-30": {
+      "rank": 11,
+      "streams": 81825,
+      "previous_rank": 9
+    },
+    "2017-03-29": {
+      "rank": 9,
+      "streams": 86164,
+      "previous_rank": 10
+    },
+    "2017-03-28": {
+      "rank": 10,
+      "streams": 75911,
+      "previous_rank": 12
+    },
+    "2017-03-27": {
+      "rank": 12,
+      "streams": 74341,
+      "previous_rank": 10
+    },
+    "2017-03-26": {
+      "rank": 10,
+      "streams": 81946,
+      "previous_rank": 11
+    },
+    "2017-03-25": {
+      "rank": 11,
+      "streams": 97902,
+      "previous_rank": 13
+    },
+    "2017-03-24": {
+      "rank": 13,
+      "streams": 86836,
+      "previous_rank": 9
+    },
+    "2017-03-23": {
+      "rank": 9,
+      "streams": 81552,
+      "previous_rank": 7
+    },
+    "2017-03-22": {
+      "rank": 7,
+      "streams": 89184,
+      "previous_rank": 7
+    },
+    "2017-03-21": {
+      "rank": 7,
+      "streams": 79670,
+      "previous_rank": 4
+    },
+    "2017-03-20": {
+      "rank": 4,
+      "streams": 86230,
+      "previous_rank": 2
+    },
+    "2017-03-19": {
+      "rank": 2,
+      "streams": 99184,
+      "previous_rank": 3
+    },
+    "2017-03-18": {
+      "rank": 3,
+      "streams": 114450,
+      "previous_rank": 3,
+      "peak_rank": 2
+    },
+    "2017-03-17": {
+      "rank": 3,
+      "streams": 102396,
+      "previous_rank": 4,
+      "peak_rank": 2
+    },
+    "2017-03-16": {
+      "rank": 4,
+      "streams": 104005,
+      "previous_rank": 4,
+      "peak_rank": 2
+    },
+    "2017-03-15": {
+      "rank": 4,
+      "streams": 102172,
+      "previous_rank": 3,
+      "peak_rank": 2
+    },
+    "2017-03-14": {
+      "rank": 3,
+      "streams": 90787,
+      "previous_rank": 3
+    },
+    "2017-03-13": {
+      "rank": 3,
+      "streams": 94902,
+      "previous_rank": 3
+    },
+    "2017-03-12": {
+      "rank": 3,
+      "streams": 110235,
+      "previous_rank": 3
+    },
+    "2017-03-11": {
+      "rank": 3,
+      "streams": 128826,
+      "previous_rank": 5
+    },
+    "2017-03-10": {
+      "rank": 5,
+      "streams": 99615,
+      "previous_rank": 4
+    },
+    "2017-03-09": {
+      "rank": 4,
+      "streams": 95013,
+      "previous_rank": 4
+    },
+    "2017-03-08": {
+      "rank": 4,
+      "streams": 98397,
+      "previous_rank": 7
+    },
+    "2017-03-07": {
+      "rank": 7,
+      "streams": 87254,
+      "previous_rank": 7
+    },
+    "2017-03-06": {
+      "rank": 7,
+      "streams": 84329,
+      "previous_rank": 6
+    },
+    "2017-03-05": {
+      "rank": 6,
+      "streams": 88243,
+      "previous_rank": 8
+    },
+    "2017-03-04": {
+      "rank": 8,
+      "streams": 101621,
+      "previous_rank": 6
+    },
+    "2017-03-03": {
+      "rank": 6,
+      "streams": 99866,
+      "previous_rank": 2
+    },
+    "2017-03-02": {
+      "rank": 2,
+      "streams": 106114,
+      "previous_rank": 2
+    },
+    "2017-03-01": {
+      "rank": 2,
+      "streams": 118608,
+      "previous_rank": 2
+    },
+    "2017-02-28": {
+      "rank": 2,
+      "streams": 109816,
+      "previous_rank": 3,
+      "peak_rank": 2
+    },
+    "2017-02-27": {
+      "rank": 3,
+      "streams": 109254,
+      "previous_rank": 2,
+      "peak_rank": 2
+    },
+    "2017-02-26": {
+      "rank": 2,
+      "streams": 107205,
+      "previous_rank": 2,
+      "peak_rank": 2
+    },
+    "2017-02-25": {
+      "rank": 2,
+      "streams": 130130,
+      "previous_rank": 2,
+      "peak_rank": 2
+    },
+    "2017-02-24": {
+      "rank": 2,
+      "streams": 123830,
+      "previous_rank": 2
+    },
+    "2017-02-23": {
+      "rank": 2,
+      "streams": 112799,
+      "previous_rank": 2
+    },
+    "2017-02-22": {
+      "rank": 2,
+      "streams": 115565,
+      "previous_rank": 3
+    },
+    "2017-02-21": {
+      "rank": 3,
+      "streams": 116651,
+      "previous_rank": 3
+    },
+    "2017-02-20": {
+      "rank": 3,
+      "streams": 123217,
+      "previous_rank": 2
+    },
+    "2017-02-19": {
+      "rank": 2,
+      "streams": 114451,
+      "previous_rank": 2
+    },
+    "2017-02-18": {
+      "rank": 2,
+      "streams": 139043,
+      "previous_rank": 3
+    },
+    "2017-02-17": {
+      "rank": 3,
+      "streams": 132020,
+      "previous_rank": 2
+    },
+    "2017-02-16": {
+      "rank": 2,
+      "streams": 122921,
+      "previous_rank": 2
+    },
+    "2017-02-15": {
+      "rank": 2,
+      "streams": 119541,
+      "previous_rank": 3
+    },
+    "2017-02-14": {
+      "rank": 3,
+      "streams": 114197,
+      "previous_rank": 2
+    },
+    "2017-02-13": {
+      "rank": 2,
+      "streams": 117861,
+      "previous_rank": 3
+    },
+    "2017-02-12": {
+      "rank": 3,
+      "streams": 103117,
+      "previous_rank": 5
+    },
+    "2017-02-11": {
+      "rank": 5,
+      "streams": 116926,
+      "previous_rank": 7
+    },
+    "2017-02-10": {
+      "rank": 7,
+      "streams": 107352,
+      "previous_rank": 7
+    },
+    "2017-02-09": {
+      "rank": 7,
+      "streams": 102481,
+      "previous_rank": 7,
+      "peak_rank": 7
+    },
+    "2017-02-08": {
+      "rank": 7,
+      "streams": 97943,
+      "previous_rank": 9,
+      "peak_rank": 7
+    },
+    "2017-02-07": {
+      "rank": 9,
+      "streams": 86887,
+      "previous_rank": 9,
+      "peak_rank": 9
+    },
+    "2017-02-06": {
+      "rank": 9,
+      "streams": 84969,
+      "previous_rank": 14,
+      "peak_rank": 9
+    },
+    "2017-02-05": {
+      "rank": 14,
+      "streams": 76882,
+      "previous_rank": 14
+    },
+    "2017-02-04": {
+      "rank": 14,
+      "streams": 89821,
+      "previous_rank": 12
+    },
+    "2017-02-03": {
+      "rank": 12,
+      "streams": 84827,
+      "previous_rank": 12
+    },
+    "2017-02-02": {
+      "rank": 12,
+      "streams": 80279,
+      "previous_rank": 13
+    },
+    "2017-02-01": {
+      "rank": 13,
+      "streams": 80317,
+      "previous_rank": 12
+    },
+    "2017-01-31": {
+      "rank": 12,
+      "streams": 73642,
+      "previous_rank": 11
+    },
+    "2017-01-30": {
+      "rank": 11,
+      "streams": 76282,
+      "previous_rank": 10
+    },
+    "2017-01-29": {
+      "rank": 10,
+      "streams": 75901,
+      "previous_rank": 10
+    },
+    "2017-01-28": {
+      "rank": 10,
+      "streams": 94534,
+      "previous_rank": 11
+    },
+    "2017-01-27": {
+      "rank": 11,
+      "streams": 82431,
+      "previous_rank": 10
+    },
+    "2017-01-26": {
+      "rank": 10,
+      "streams": 77989,
+      "previous_rank": 19
+    },
+    "2017-01-25": {
+      "rank": 19,
+      "streams": 70319,
+      "previous_rank": 22
+    },
+    "2017-01-24": {
+      "rank": 22,
+      "streams": 59168,
+      "previous_rank": 20
+    },
+    "2017-01-23": {
+      "rank": 20,
+      "streams": 58358,
+      "previous_rank": 25
+    },
+    "2017-01-22": {
+      "rank": 25,
+      "streams": 57695,
+      "previous_rank": 25
+    },
+    "2017-01-21": {
+      "rank": 25,
+      "streams": 68971,
+      "previous_rank": 23
+    },
+    "2017-01-20": {
+      "rank": 23,
+      "streams": 62109,
+      "previous_rank": 21,
+      "peak_rank": 21
+    },
+    "2017-01-19": {
+      "rank": 21,
+      "streams": 60511,
+      "previous_rank": 24,
+      "peak_rank": 21
+    },
+    "2017-01-18": {
+      "rank": 24,
+      "streams": 61542,
+      "previous_rank": 22,
+      "peak_rank": 22
+    },
+    "2017-01-17": {
+      "rank": 22,
+      "streams": 56416,
+      "previous_rank": 26,
+      "peak_rank": 22
+    },
+    "2017-01-16": {
+      "rank": 26,
+      "streams": 52480,
+      "previous_rank": 27
+    },
+    "2017-01-15": {
+      "rank": 27,
+      "streams": 55563,
+      "previous_rank": 33
+    },
+    "2017-01-14": {
+      "rank": 33,
+      "streams": 62980,
+      "previous_rank": 42
+    },
+    "2017-01-13": {
+      "rank": 42,
+      "streams": 49438,
+      "previous_rank": 62
+    },
+    "2017-01-12": {
+      "rank": 62,
+      "streams": 36486,
+      "previous_rank": 69
+    },
+    "2017-01-11": {
+      "rank": 69,
+      "streams": 36449,
+      "previous_rank": 57
+    },
+    "2017-01-10": {
+      "rank": 57,
+      "streams": 35667,
+      "previous_rank": 64
+    },
+    "2017-01-09": {
+      "rank": 64,
+      "streams": 33942,
+      "previous_rank": 73
+    },
+    "2017-01-08": {
+      "rank": 73,
+      "streams": 33458,
+      "previous_rank": 85
+    },
+    "2017-01-07": {
+      "rank": 85,
+      "streams": 35356,
+      "previous_rank": 64
+    },
+    "2017-01-06": {
+      "rank": 64,
+      "streams": 36826,
+      "previous_rank": 78
+    },
+    "2017-01-05": {
+      "rank": 78,
+      "streams": 31831,
+      "previous_rank": 88
+    },
+    "2017-01-04": {
+      "rank": 88,
+      "streams": 29764,
+      "previous_rank": 82
+    },
+    "2017-01-03": {
+      "rank": 82,
+      "streams": 27615,
+      "previous_rank": 86
+    },
+    "2017-01-02": {
+      "rank": 86,
+      "streams": 28754,
+      "previous_rank": 140
+    },
+    "2017-01-01": {
+      "rank": 140,
+      "streams": 18368
+    }
+  },
+  "...Ready For It?": {
+    "2017-09-14": {
+      "rank": 173,
+      "streams": 20725,
+      "previous_rank": 165
+    },
+    "2017-09-13": {
+      "rank": 165,
+      "streams": 22680,
+      "previous_rank": 163
+    },
+    "2017-09-12": {
+      "rank": 163,
+      "streams": 21294,
+      "previous_rank": 145
+    },
+    "2017-09-11": {
+      "rank": 145,
+      "streams": 22823,
+      "previous_rank": 142
+    },
+    "2017-09-09": {
+      "rank": 137,
+      "streams": 27348,
+      "previous_rank": 98
+    },
+    "2017-09-08": {
+      "rank": 98,
+      "streams": 36074,
+      "previous_rank": 96
+    },
+    "2017-09-07": {
+      "rank": 96,
+      "streams": 29167,
+      "previous_rank": 104
+    },
+    "2017-09-06": {
+      "rank": 104,
+      "streams": 29797,
+      "previous_rank": 105,
+      "peak_rank": 101
+    },
+    "2017-09-05": {
+      "rank": 105,
+      "streams": 27732,
+      "previous_rank": 101,
+      "peak_rank": 101
+    },
+    "2017-09-04": {
+      "rank": 101,
+      "streams": 29049,
+      "previous_rank": 1,
+      "peak_rank": 101
+    }
+  },
+  "Style": {
+    "2026-03-25": {
+      "rank": 179,
+      "streams": 341484,
+      "peak_rank": 8
+    },
+    "2026-03-27": {
+      "rank": 200,
+      "streams": 335845,
+      "peak_rank": 8
+    },
+    "2026-03-28": {
+      "rank": 198,
+      "streams": 335729,
+      "previous_rank": 2000,
+      "peak_rank": 8
+    }
+  }
+}

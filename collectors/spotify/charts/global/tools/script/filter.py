@@ -654,7 +654,7 @@ def scrape_chart_rows(chart_date: str) -> tuple[list[dict], str]:
 
 def _fmt_song_line(row, chart_date, ts_history) -> str:
     track = str(row["track_name"])
-    dg = fmt_delta(row["rank"], row.get("previous_rank"), row.get("peak_rank"))
+    dg = fmt_delta(row["rank"], row.get("previous_rank"), row.get("peak_rank"), row.get("total_days"))
     s = fmt_streams(row.get("streams"))
     sd = fmt_streams_delta(track, row.get("streams"), chart_date, ts_history)
 

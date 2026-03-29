@@ -18,16 +18,14 @@ def fmt_delta(rank, previous_rank, peak_rank=None, total_days=None) -> str:
     except (TypeError, ValueError):
         prev = 0
     if prev <= 0:
+        # prev <= 0 means no previous rank (new entry or re-entry)
         try:
+            # RE: has been on chart before (total_days indicates chart history)
             if total_days and int(total_days) > 0:
                 return "RE"
         except (TypeError, ValueError):
             pass
-        try:
-            if int(peak_rank) > 0 and int(peak_rank) != int(rank):
-                return "RE"
-        except (TypeError, ValueError):
-            pass
+        # NEW: no chart history
         return "NEW"
     d = prev - int(rank)
     if d > 0:

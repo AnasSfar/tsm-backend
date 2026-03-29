@@ -25,8 +25,8 @@ SCRIPTS = [
 
 
 def maybe_upload_to_r2() -> None:
-    if os.getenv("UPLOAD_TO_R2", "").strip().lower() not in ("1", "true", "yes"):
-        print("[Apple Music] R2 upload skipped (UPLOAD_TO_R2 disabled)")
+    if os.getenv("UPLOAD_TO_R2", "").strip().lower() in ("0", "false", "no"):
+        print("[Apple Music] R2 upload skipped (UPLOAD_TO_R2 explicitly disabled)")
         return
 
     upload_script = REPO_ROOT / "scripts" / "upload_ap_r2.py"
