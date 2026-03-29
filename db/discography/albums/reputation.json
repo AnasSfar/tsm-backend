@@ -428,34 +428,6 @@
       ]
     },
     {
-      "album": "reputation",
-      "section": "standalone",
-      "track_count": 1,
-      "tracks": [
-        {
-          "title": "I Don't Wanna Live Forever (Fifty Shades Darker)",
-          "url": "https://open.spotify.com/intl-fr/track/2y5aJvzXhHPA94U5GFAcXe",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Soundtrack Feature",
-          "display_order": 1,
-          "base_title": "I Don't Wanna Live Forever (Fifty Shades Darker)",
-          "album": "reputation",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": "Zayn",
-          "artists": [
-            "Taylor Swift",
-            "Zayn"
-          ],
-          "title_clean": "I Don't Wanna Live Forever (Fifty Shades Darker)",
-          "song_family": "i_don_t_wanna_live_forever_fifty_shades_darker",
-          "version_tag": "live__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2735997605214d568d73fd365c2",
-          "display_era": "reputation"
-        }
-      ]
-    },
-    {
       "section": "standard_edition",
       "track_count": 15,
       "tracks": [
