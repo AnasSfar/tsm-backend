@@ -16,7 +16,7 @@ from typing import Any
 import boto3
 from dotenv import load_dotenv
 
-load_dotenv(str(Path(__file__).resolve().parents[1] / ".env"))
+load_dotenv(str(Path(__file__).resolve().parents[1] / ".env"), override=True)
 
 ROOT = Path(__file__).resolve().parents[1]
 HISTORY_DIR = ROOT / "website" / "site" / "history"

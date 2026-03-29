@@ -2,13 +2,22 @@
 from __future__ import annotations
 
 import argparse
+import os
 import subprocess
 import sys
 import time
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 CHARTS_ROOT = Path(__file__).resolve().parent
 REPO_ROOT = CHARTS_ROOT.parents[2]
+REPO_ENV_FILE = REPO_ROOT / ".env"
+R2_ENV_VARS = (
+    "R2_ACCOUNT_ID",
+    "R2_ACCESS_KEY_ID",
+    "R2_SECRET_ACCESS_KEY",
+)
 
 POSTING_RUNNERS = [
     ("global", CHARTS_ROOT / "global" / "daily.py", []),
@@ -26,6 +35,22 @@ def _format_seconds(value: float) -> str:
     mins = int(value // 60)
     secs = int(value % 60)
     return f"{mins}m {secs:02d}s"
+
+
+def _build_child_env() -> dict[str, str]:
+    # Force .env values to override stale/empty inherited environment values.
+    load_dotenv(REPO_ENV_FILE, override=True)
+    child_env = os.environ.copy()
+
+    missing = [key for key in R2_ENV_VARS if not child_env.get(key, "").strip()]
+    if missing:
+        print(
+            "[WARN] Missing R2 variables in environment after loading .env: "
+            + ", ".join(missing)
+        )
+        print(f"[INFO] Checked .env at: {REPO_ENV_FILE}")
+
+    return child_env
 
 
 def main() -> int:
@@ -64,6 +89,7 @@ def main() -> int:
 
     started = time.perf_counter()
     failures: list[tuple[str, int]] = []
+    child_env = _build_child_env()
 
     runners = list(POSTING_RUNNERS)
     runners.append(NO_POST_RUNNERS[0])
@@ -98,7 +124,7 @@ def main() -> int:
             continue
 
         t0 = time.perf_counter()
-        result = subprocess.run(cmd, cwd=str(REPO_ROOT), check=False)
+        result = subprocess.run(cmd, cwd=str(REPO_ROOT), check=False, env=child_env)
         dt = _format_seconds(time.perf_counter() - t0)
 
         if result.returncode == 0:
