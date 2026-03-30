@@ -170,7 +170,7 @@ def load_album_sections(album_name: str) -> list[dict]:
             payload = json.loads(album_file.read_text(encoding="utf-8"))
         except Exception:
             continue
-        if isinstance(payload, dict) and payload.get("album") == album_name:
+        if isinstance(payload, dict) and (payload.get("album") or "").lower() == album_name.lower():
             target_payload = payload
             break
 

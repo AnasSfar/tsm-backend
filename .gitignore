@@ -13,6 +13,7 @@ env/
 # Local secrets / environment
 .env
 .env.*
+.env.local
 
 # OS / editor
 .DS_Store
@@ -24,3 +25,10 @@ env/
 # Common runtime artifacts
 *.lock
 twitter_post.txt
+
+# Images
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
