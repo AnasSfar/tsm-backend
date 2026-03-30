@@ -74,6 +74,7 @@ CUTOFF_HOUR = 15
 LOOKBACK_DAYS = 7
 PAGE_TIMEOUT_MS = 120_000
 POST_GOTO_WAIT_MS = 6000
+ENABLE_GLOBAL_US_COMBINED_IMAGE = False
 
 _SCRIPT_START = datetime.now()
 
@@ -619,7 +620,7 @@ def main() -> None:
 
     image_path = generate_image(processed)
 
-    if image_path and len(processed) == 1:
+    if ENABLE_GLOBAL_US_COMBINED_IMAGE and image_path and len(processed) == 1:
         target_date = processed[0]
         us_image = ensure_us_image_for_date(target_date)
         if us_image:
