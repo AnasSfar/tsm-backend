@@ -1,3 +1,3 @@
-2026/03/29-01:38:23.280 3160 Reusing MANIFEST C:\Users\sfara\Documents\GitHub\tsm-backend\collectors\spotify\streams\tools\browser_cache\worker_1\Default\Local Storage\leveldb/MANIFEST-000001
-2026/03/29-01:38:23.288 3160 Recovering log #3
-2026/03/29-01:38:23.291 3160 Reusing old log C:\Users\sfara\Documents\GitHub\tsm-backend\collectors\spotify\streams\tools\browser_cache\worker_1\Default\Local Storage\leveldb/000003.log 
+2026/03/29-17:57:24.830 52b8 Reusing MANIFEST C:\Users\sfara\Documents\GitHub\tsm-backend\collectors\spotify\streams\tools\browser_cache\worker_1\Default\Local Storage\leveldb/MANIFEST-000001
+2026/03/29-17:57:24.855 52b8 Recovering log #3
+2026/03/29-17:57:24.861 52b8 Reusing old log C:\Users\sfara\Documents\GitHub\tsm-backend\collectors\spotify\streams\tools\browser_cache\worker_1\Default\Local Storage\leveldb/000003.log 

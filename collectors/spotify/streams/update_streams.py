@@ -2184,6 +2184,7 @@ def run_update(
 
     _early_fired = threading.Event()
     _priority_lock = threading.Lock()
+    _early_thread: list[threading.Thread | None] = [None]
     # Tracks du top-50 déjà traités (updated OU not_found définitif après retry)
     _processed_priority_ids = set(load_history_track_ids_for_date(stats_date)) & priority_top_50_ids
 
@@ -2204,7 +2205,12 @@ def run_update(
 
             if priority_top_50_ids and priority_top_50_ids.issubset(_processed_priority_ids):
                 _early_fired.set()
-                threading.Thread(target=_run_early_twitter, args=(stats_date,), daemon=True).start()
+                _early_thread[0] = threading.Thread(
+                    target=_run_early_twitter,
+                    args=(stats_date,),
+                    daemon=True,
+                )
+                _early_thread[0].start()
 
     # ── Pre-scrape artist page for top 10 tracks ──────────────────────────────
     track_lookup = build_track_lookup(tracks)
@@ -2330,6 +2336,11 @@ def run_update(
     final_done_for_stats_date = load_history_track_ids_for_date(stats_date)
     filtered_results = [r for r in results if r is not None]
 
+    # Ensure early Twitter posting (if triggered) has completed before main flow continues.
+    if _early_thread[0] is not None:
+        print("Waiting for early Twitter thread to finish...")
+        _early_thread[0].join(timeout=300)
+
     return {
         "stats_date": stats_date,
         "total_tracks": total_tracks,
@@ -2343,6 +2354,7 @@ def run_update(
         "timeout_this_run": len([r for r in failed_results if r["status"] == "timeout"]),
         "error_this_run": len([r for r in failed_results if r["status"] == "error"]),
         "not_found_this_run": len([r for r in failed_results if r["status"] == "not_found"]),
+        "early_twitter_triggered": _early_fired.is_set(),
         "results": filtered_results,
         "failed_results": failed_results,
     }
@@ -2829,6 +2841,8 @@ def main():
     if debug_daily_mode:
         print("[DEBUG-DAILY] Skip: Twitter, forecast, images, git, notify.")
     else:
+        early_twitter_triggered = bool(summary.get("early_twitter_triggered"))
+
         if no_post_mode:
             print("Skipping Twitter post (--no-post).")
             subprocess.run(
@@ -2841,12 +2855,15 @@ def main():
                 check=False,
             )
         else:
-            print("Posting streams image to Twitter...")
-            subprocess.run(
-                [sys.executable, str(_SCRIPT_DIR / "tools" / "scripts" / "post_streams_twitter.py"), summary["stats_date"]],
-                check=False,
-            )
-            print("Twitter post done.")
+            if early_twitter_triggered:
+                print("Skipping regular Twitter post: early top-15 post already triggered.")
+            else:
+                print("Posting streams image to Twitter...")
+                subprocess.run(
+                    [sys.executable, str(_SCRIPT_DIR / "tools" / "scripts" / "post_streams_twitter.py"), summary["stats_date"]],
+                    check=False,
+                )
+                print("Twitter post done.")
 
     print("Re-exporting web data...")
     export_for_web.export_for_web()
@@ -2899,8 +2916,8 @@ def main():
 
         # ── Album update images (priority order) ──────────────────────────────
         _ALBUM_UPDATE_TARGETS = [
-            # "The Life of a Showgirl",           # paused 2026-03-28
-            # "THE TORTURED POETS DEPARTMENT",    # paused 2026-03-28
+            "The Life of a Showgirl",
+            "THE TORTURED POETS DEPARTMENT",
         ]
         _album_img_script = _SCRIPT_DIR / "tools" / "scripts" / "generate_album_update_image.py"
         for _alb in _ALBUM_UPDATE_TARGETS:
