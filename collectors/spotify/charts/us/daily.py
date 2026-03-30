@@ -54,7 +54,8 @@ except Exception:
 
 
 RETRY_SECONDS = 60
-CUTOFF_HOUR   = 15  # abandon si page non dispo Ã  15h le lendemain
+CUTOFF_HOUR   = 15
+CUTOFF_MINUTE = 30  # abandon si page non dispo à 15h30 le lendemain
 LOOKBACK_DAYS = 7   # fenÃªtre de dÃ©tection des jours manquants
 
 _SCRIPT_START = datetime.now()
@@ -118,7 +119,13 @@ def get_unposted_dates() -> list[date]:
 
 def past_cutoff() -> bool:
     now = datetime.now()
-    return now.date() > _SCRIPT_START.date() and now.hour >= CUTOFF_HOUR
+    return (
+        now.date() > _SCRIPT_START.date()
+        and (
+            now.hour > CUTOFF_HOUR
+            or (now.hour == CUTOFF_HOUR and now.minute >= CUTOFF_MINUTE)
+        )
+    )
 
 
 def page_available(d: date) -> bool:
@@ -315,7 +322,7 @@ def main():
     attempt = 1
     while True:
         if past_cutoff():
-            log("WARN", f"{CUTOFF_HOUR}h00 atteint â€” page {target} toujours indisponible, abandon")
+            log("WARN", f"{CUTOFF_HOUR}h{CUTOFF_MINUTE:02d} atteint — page {target} toujours indisponible, abandon")
             return
 
         log("WAIT", f"VÃ©rification tentative #{attempt} pour {target}")

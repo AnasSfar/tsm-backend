@@ -1342,8 +1342,49 @@ def generate(album_name: str, target_date: str | None = None) -> Path:
     return out_path
 
 
-def post(album_name: str, image_path: Path, target_date: str) -> bool:
+def _build_album_post_text(album_name: str, target_date: str) -> str:
+    """Builds the album post text with daily total and biggest gainer/most stable track."""
     from datetime import datetime
+
+    sections, canonical_name = load_album_sections(album_name)
+    if not sections:
+        raise ValueError(f"Aucune section trouvée pour l'album: {album_name!r}")
+
+    hist = load_history_for_album(sections, target_date)
+
+    tracks = [t for sec in sections for t in sec["tracks"]]
+    total_daily = sum(hist.get(t["track_id"], {}).get("daily") or 0 for t in tracks)
+
+    scored = []
+    for t in tracks:
+        h = hist.get(t["track_id"], {})
+        pct = h.get("pct")
+        if pct is None:
+            continue
+        scored.append({"title": t.get("title_clean") or "Unknown", "pct": pct})
+
+    # Rule: if every available % change is negative, pick the least negative as "most stable".
+    label = "most stable"
+    selected_song = "Unknown"
+    if scored:
+        if all(item["pct"] < 0 for item in scored):
+            best = max(scored, key=lambda x: x["pct"])
+            label = "most stable"
+        else:
+            best = max(scored, key=lambda x: x["pct"])
+            label = "biggest gainer"
+        selected_song = _shorten_title(best["title"])
+
+    date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    total_daily_fmt = f"{int(total_daily):,}"
+
+    return (
+        f'📈| “{canonical_name}" received "{total_daily_fmt} streams" yesterday, "{date_fmt}".\n\n'
+        f'"{selected_song}" was the {label}".'
+    )
+
+
+def post(album_name: str, image_path: Path, target_date: str) -> bool:
     if not TWITTER_SESSION.exists():
         print(f"[album_update] Session Twitter introuvable : {TWITTER_SESSION}")
         return False
@@ -1354,8 +1395,13 @@ def post(album_name: str, image_path: Path, target_date: str) -> bool:
         print(f"[album_update] Impossible d'importer core.twitter: {e}")
         return False
 
-    date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
-    tweet    = f"Taylor Swift · {album_name}\nDaily Streams Update — {date_fmt}"
+    try:
+        tweet = _build_album_post_text(album_name, target_date)
+    except Exception as e:
+        print(f"[album_update] Fallback tweet (erreur génération texte): {e}")
+        from datetime import datetime
+        date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
+        tweet = f"Taylor Swift · {album_name}\nDaily Streams Update — {date_fmt}"
 
     print(f"[album_update] Publication Twitter : {tweet[:60]}...")
     ok = post_with_image(tweet, image_path, TWITTER_SESSION)

@@ -6,7 +6,7 @@ Usage : python daily.py [--force] [YYYY-MM-DD]
 
 Logique :
 - cherche toutes les dates non-postées des 7 derniers jours
-- attend que la page la plus récente soit disponible (cutoff à 15h)
+- attend que la page la plus récente soit disponible (cutoff à 15h30)
 - lance filter.py pour chaque date manquante
 - si plusieurs dates : génère une image combinée et un tweet condensé
 - poste sur Twitter
@@ -54,7 +54,8 @@ except Exception:
 
 
 RETRY_SECONDS = 60
-CUTOFF_HOUR   = 15  # abandon si page non dispo à 15h le lendemain
+CUTOFF_HOUR   = 15
+CUTOFF_MINUTE = 30  # abandon si page non dispo à 15h30 le lendemain
 LOOKBACK_DAYS = 7   # fenêtre de détection des jours manquants
 
 _SCRIPT_START = datetime.now()
@@ -118,7 +119,13 @@ def get_unposted_dates() -> list[date]:
 
 def past_cutoff() -> bool:
     now = datetime.now()
-    return now.date() > _SCRIPT_START.date() and now.hour >= CUTOFF_HOUR
+    return (
+        now.date() > _SCRIPT_START.date()
+        and (
+            now.hour > CUTOFF_HOUR
+            or (now.hour == CUTOFF_HOUR and now.minute >= CUTOFF_MINUTE)
+        )
+    )
 
 
 def page_available(d: date) -> bool:
@@ -311,11 +318,11 @@ def main():
     log("INFO", f"Dates à poster: {[str(d) for d in unposted]}")
     target = unposted[0]  # la plus récente débloquera les autres
 
-    # Attendre que la page cible soit disponible (cutoff à CUTOFF_HOUR)
+    # Attendre que la page cible soit disponible (cutoff à CUTOFF_HOUR:CUTOFF_MINUTE)
     attempt = 1
     while True:
         if past_cutoff():
-            log("WARN", f"{CUTOFF_HOUR}h00 atteint — page {target} toujours indisponible, abandon")
+            log("WARN", f"{CUTOFF_HOUR}h{CUTOFF_MINUTE:02d} atteint — page {target} toujours indisponible, abandon")
             return
 
         log("WAIT", f"Vérification tentative #{attempt} pour {target}")

@@ -71,6 +71,7 @@ except Exception:
 
 RETRY_SECONDS = 60
 CUTOFF_HOUR = 15
+CUTOFF_MINUTE = 30
 LOOKBACK_DAYS = 7
 PAGE_TIMEOUT_MS = 120_000
 POST_GOTO_WAIT_MS = 6000
@@ -150,7 +151,13 @@ def get_unposted_dates() -> list[date]:
 
 def past_cutoff() -> bool:
     now = datetime.now()
-    return now.date() > _SCRIPT_START.date() and now.hour >= CUTOFF_HOUR
+    return (
+        now.date() > _SCRIPT_START.date()
+        and (
+            now.hour > CUTOFF_HOUR
+            or (now.hour == CUTOFF_HOUR and now.minute >= CUTOFF_MINUTE)
+        )
+    )
 
 
 def extract_date_from_url(url: str) -> date | None:
@@ -318,7 +325,7 @@ def wait_for_page(target_date: date) -> bool:
         try:
             while True:
                 if past_cutoff():
-                    log("WARN", f"{CUTOFF_HOUR}h00 atteint — page {target_date} toujours indisponible, abandon")
+                    log("WARN", f"{CUTOFF_HOUR}h{CUTOFF_MINUTE:02d} atteint — page {target_date} toujours indisponible, abandon")
                     return False
 
                 log("WAIT", f"Vérification tentative #{attempt} pour {target_date}")

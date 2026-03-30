@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import concurrent.futures
 import os
 import subprocess
 import sys
@@ -53,6 +54,38 @@ def _build_child_env() -> dict[str, str]:
     return child_env
 
 
+def _run_region(
+    region: str,
+    script_path: Path,
+    merged_args: list[str],
+    *,
+    dry_run: bool,
+    repo_root: Path,
+    child_env: dict[str, str],
+) -> int:
+    if not script_path.exists():
+        print(f"[FAIL] {region}: missing script {script_path}")
+        return 127
+
+    cmd = [sys.executable, str(script_path), *merged_args]
+    print(f"[RUN ] {region}: {' '.join(cmd)}")
+
+    if dry_run:
+        print(f"[SKIP] {region}: dry-run mode")
+        return 0
+
+    t0 = time.perf_counter()
+    result = subprocess.run(cmd, cwd=str(repo_root), check=False, env=child_env)
+    dt = _format_seconds(time.perf_counter() - t0)
+
+    if result.returncode == 0:
+        print(f"[ OK ] {region}: completed in {dt}")
+    else:
+        print(f"[FAIL] {region}: exit code {result.returncode} after {dt}")
+
+    return result.returncode
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
@@ -91,13 +124,13 @@ def main() -> int:
     failures: list[tuple[str, int]] = []
     child_env = _build_child_env()
 
-    runners = list(POSTING_RUNNERS)
-    runners.append(NO_POST_RUNNERS[0])
+    parallel_runners = list(POSTING_RUNNERS)
+    sequential_runners = [NO_POST_RUNNERS[0]]
     if args.include_uk_no_post:
-        runners.append(NO_POST_RUNNERS[1])
-    runners.append(NO_POST_RUNNERS[2])   # worldwide — always last
+        sequential_runners.append(NO_POST_RUNNERS[1])
+    sequential_runners.append(NO_POST_RUNNERS[2])   # worldwide — always last
 
-    print("Running Spotify chart dailies for: global, fr, us-no-post, worldwide")
+    print("Running Spotify chart dailies for: global + fr (parallel), then us-no-post, worldwide")
     if args.include_uk_no_post:
         print("Also running: uk-no-post")
     if args.no_post:
@@ -106,38 +139,55 @@ def main() -> int:
         print(f"Forwarded args: {' '.join(forwarded)}")
     print()
 
-    for region, script_path, runner_args in runners:
-        if not script_path.exists():
-            print(f"[FAIL] {region}: missing script {script_path}")
-            failures.append((region, 127))
-            if args.stop_on_error:
-                break
-            continue
+    print("[PHASE] Parallel: global + fr")
+    with concurrent.futures.ThreadPoolExecutor(max_workers=len(parallel_runners)) as executor:
+        future_to_region = {}
+        for region, script_path, runner_args in parallel_runners:
+            merged_args = list(dict.fromkeys([*runner_args, *forwarded]))
+            future = executor.submit(
+                _run_region,
+                region,
+                script_path,
+                merged_args,
+                dry_run=args.dry_run,
+                repo_root=REPO_ROOT,
+                child_env=child_env,
+            )
+            future_to_region[future] = region
 
-        merged_args = list(dict.fromkeys([*runner_args, *forwarded]))
-        cmd = [sys.executable, str(script_path), *merged_args]
-        print(f"[RUN ] {region}: {' '.join(cmd)}")
+        for future in concurrent.futures.as_completed(future_to_region):
+            region = future_to_region[future]
+            try:
+                code = future.result()
+            except Exception as e:
+                print(f"[FAIL] {region}: runner crashed ({e})")
+                code = 1
+            if code != 0:
+                failures.append((region, code))
 
-        if args.dry_run:
-            print(f"[SKIP] {region}: dry-run mode")
+    print()
+
+    if failures and args.stop_on_error:
+        print("Stopping due to --stop-on-error")
+    else:
+        print("[PHASE] Sequential: us-no-post, uk-no-post (optional), worldwide")
+        for region, script_path, runner_args in sequential_runners:
+            merged_args = list(dict.fromkeys([*runner_args, *forwarded]))
+            code = _run_region(
+                region,
+                script_path,
+                merged_args,
+                dry_run=args.dry_run,
+                repo_root=REPO_ROOT,
+                child_env=child_env,
+            )
+            if code != 0:
+                failures.append((region, code))
+                if args.stop_on_error:
+                    print("Stopping due to --stop-on-error")
+                    print()
+                    break
             print()
-            continue
-
-        t0 = time.perf_counter()
-        result = subprocess.run(cmd, cwd=str(REPO_ROOT), check=False, env=child_env)
-        dt = _format_seconds(time.perf_counter() - t0)
-
-        if result.returncode == 0:
-            print(f"[ OK ] {region}: completed in {dt}")
-        else:
-            print(f"[FAIL] {region}: exit code {result.returncode} after {dt}")
-            failures.append((region, result.returncode))
-            if args.stop_on_error:
-                print("Stopping due to --stop-on-error")
-                print()
-                break
-
-        print()
 
     total = _format_seconds(time.perf_counter() - started)
     print(f"Total runtime: {total}")
