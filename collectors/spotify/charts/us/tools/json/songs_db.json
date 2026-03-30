@@ -3256,5 +3256,22 @@
       "rap"
     ],
     "is_pop": false
+  },
+  "kanye west|||all falls down": {
+    "artist": "Kanye West",
+    "track": "All Falls Down",
+    "tags": [
+      "hip-hop",
+      "kanye west",
+      "rap",
+      "hip hop",
+      "2004",
+      "pop rap",
+      "rnb",
+      "00s",
+      "american",
+      "melodic"
+    ],
+    "is_pop": false
   }
 }
