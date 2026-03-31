@@ -53,12 +53,42 @@ ROW_THRESHOLD_WARN = 195
 _API_BASE    = "https://charts-spotify-com-service.spotify.com/auth/v0/charts"
 _UA          = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                 "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36")
+_BEARER_CACHE = _TOOLS / "json" / "bearer_cache.json"
+_TOKEN_TTL    = 50 * 60  # 50 minutes (conservateur)
 
 
 # ── API helpers ──────────────────────────────────────────────────────────────
 
+def _load_cached_token() -> str | None:
+    """Retourne le token en cache s'il est encore valide, sinon None."""
+    try:
+        if not _BEARER_CACHE.exists():
+            return None
+        data = json.loads(_BEARER_CACHE.read_text(encoding="utf-8"))
+        if time.time() - data.get("ts", 0) < _TOKEN_TTL:
+            return data.get("token") or None
+    except Exception:
+        pass
+    return None
+
+
+def _save_cached_token(token: str) -> None:
+    try:
+        _BEARER_CACHE.parent.mkdir(parents=True, exist_ok=True)
+        _BEARER_CACHE.write_text(
+            json.dumps({"token": token, "ts": time.time()}), encoding="utf-8"
+        )
+    except Exception:
+        pass
+
+
 def _get_bearer_token() -> str:
-    """Ouvre Playwright, attend le premier appel à l'API interne, retourne le Bearer token."""
+    """Retourne le Bearer token (depuis le cache si valide, sinon via Playwright)."""
+    cached = _load_cached_token()
+    if cached:
+        print("  Token Bearer depuis le cache.")
+        return cached
+
     token_holder: list[str] = []
 
     def _on_request(req):
@@ -98,6 +128,7 @@ def _get_bearer_token() -> str:
 
     if not token_holder:
         raise RuntimeError("Bearer token introuvable — vérifiez spotify_session.json")
+    _save_cached_token(token_holder[0])
     return token_holder[0]
 
 
@@ -708,8 +739,12 @@ def generate_tweet(ts_df, chart_date, ts_history) -> str:
 
 
 def process_one(requested_date: str, ts_history):
+    t_total = time.time()
     print(f"Scrape du chart global pour {requested_date} ...")
+
+    t0 = time.time()
     rows, actual_chart_date = scrape_chart_rows(requested_date)
+    print(f"  [scraping] {time.time() - t0:.1f}s — {len(rows)} lignes")
 
     if not rows:
         raise RuntimeError(f"Aucune ligne scrapee pour {requested_date}")
@@ -725,6 +760,7 @@ def process_one(requested_date: str, ts_history):
         print(f"{actual_chart_date} - aucune chanson TS.")
         return
 
+    t0 = time.time()
     ts_df = df[df["artist_names"].astype(str).str.contains(TS_NAME, case=False, na=False)].copy()
 
     for _, row in ts_df.iterrows():
@@ -737,7 +773,9 @@ def process_one(requested_date: str, ts_history):
             previous_rank=row.get("previous_rank"),
             peak_rank=row.get("peak_rank"),
         )
+    print(f"  [filtrage TS] {time.time() - t0:.1f}s — {len(ts_df)} chansons")
 
+    t0 = time.time()
     out_dir = get_out_dir(actual_chart_date)
     out_dir.mkdir(parents=True, exist_ok=True)
     ts_df.to_csv(out_dir / "ts_all_songs.csv", index=False)
@@ -764,9 +802,14 @@ def process_one(requested_date: str, ts_history):
 
     tweet = generate_tweet(ts_df, actual_chart_date, ts_history)
     (out_dir / "tweet.txt").write_text(tweet, encoding="utf-8")
+    print(f"  [écriture fichiers] {time.time() - t0:.1f}s")
 
+    t0 = time.time()
     append_to_archive_csv(actual_chart_date, ts_df)
+    print(f"  [archive CSV] {time.time() - t0:.1f}s")
+
     print(f"OK {actual_chart_date} -> {out_dir}/")
+    print(f"  [TOTAL] {time.time() - t_total:.1f}s")
 
 
 def _date_in_archive_csv(chart_date: str) -> bool:

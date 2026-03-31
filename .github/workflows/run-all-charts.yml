@@ -3,7 +3,7 @@ name: Run All Spotify Charts
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 7 * * *'  # Tous les jours à 07:30 UTC
+    - cron: '30 13 * * *'  # Tous les jours à 15:30 heure de Paris (UTC+2 été / UTC+1 hiver)
 
 jobs:
   run-charts:

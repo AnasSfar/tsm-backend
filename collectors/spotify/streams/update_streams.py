@@ -58,15 +58,7 @@ HILL_429_THRESHOLD = 0.15   # taux de 429 au-delà duquel on retire 1 worker
 HILL_MIN_WORKERS   = 2
 HILL_INITIAL       = 6      # point de départ (MAX_PARALLEL_PAGES comme plafond)
 
-PROBE_TITLES = [
-    "Cruel Summer",
-    "Anti-Hero",
-    "Blank Space",
-    "Style",
-    "cardigan",
-]
-MIN_SUCCESSFUL_PROBES = 2
-MIN_UPDATED_PROBES_TO_START = 1
+PROBE_CANDIDATES = 10  # top N tracks (by streams) used as probe candidates
 
 PENDING_RETRY_SLEEP_SECONDS = 1 * 60
 MAX_PENDING_RETRY_ROUNDS = 6
@@ -914,6 +906,22 @@ def get_last_history_total(track_id: str) -> int | None:
     return last
 
 
+def get_all_last_history_totals() -> dict[str, int]:
+    """Lit le CSV une seule fois et retourne {track_id: last_streams}."""
+    result: dict[str, int] = {}
+    if not HISTORY_PATH.exists():
+        return result
+    with HISTORY_PATH.open("r", newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            track_id = row.get("track_id", "").strip()
+            try:
+                result[track_id] = int(row["streams"])
+            except Exception:
+                pass
+    return result
+
+
 def get_history_total_for_date(track_id: str, stats_date: str) -> int | None:
     if not HISTORY_PATH.exists():
         return None
@@ -1751,48 +1759,49 @@ def live_progress(i, total, title, result):
 
 
 def _probe_on_page(probe_tracks: list[dict], page) -> dict:
+    """
+    Logique séquentielle :
+    - Cherche la 1ère chanson OK → si non updatée → can_start=False
+    - Si 1ère updatée → cherche la 2ème chanson OK → si updatée → can_start=True
+    """
     results = []
     successful_probes = 0
     updated_probes = 0
+    can_start_full_run = False
 
     for track in probe_tracks:
         title = track["title"]
         url = track["spotify_url"]
         total, raw, scrape_status, _ = scrape_track_total(page, title, url)
+        last_total = get_last_history_total(track["track_id"])
 
         if scrape_status == "ok" and total is not None:
-            successful_probes += 1
-            last_total = get_last_history_total(track["track_id"])
             updated = has_real_update(last_total, total)
+            successful_probes += 1
             if updated:
                 updated_probes += 1
-
-            results.append(
-                {
-                    "title": title,
-                    "status": "ok",
-                    "streams": total,
-                    "previous_streams": last_total,
-                    "updated": updated,
-                    "raw": raw,
-                }
-            )
+            results.append({
+                "title": title,
+                "status": "ok",
+                "streams": total,
+                "previous_streams": last_total,
+                "updated": updated,
+                "raw": raw,
+            })
+            if successful_probes == 1 and not updated:
+                break  # 1ère chanson pas updatée → inutile de continuer
+            if successful_probes == 2:
+                can_start_full_run = updated
+                break  # 2ème chanson OK → décision finale
         else:
-            results.append(
-                {
-                    "title": title,
-                    "status": scrape_status,
-                    "streams": None,
-                    "previous_streams": get_last_history_total(track["track_id"]),
-                    "updated": False,
-                    "raw": None,
-                }
-            )
-
-    can_start_full_run = (
-        successful_probes >= MIN_SUCCESSFUL_PROBES
-        and updated_probes >= MIN_UPDATED_PROBES_TO_START
-    )
+            results.append({
+                "title": title,
+                "status": scrape_status,
+                "streams": None,
+                "previous_streams": last_total,
+                "updated": False,
+                "raw": None,
+            })
 
     return {
         "can_start_full_run": can_start_full_run,
@@ -1870,6 +1879,7 @@ def _probe_via_api(probe_tracks: list[dict], token_mgr: TokenManager) -> dict | 
     """
     Probe via API GraphQL. Retourne le même dict que _probe_on_page,
     ou None si l'API n'est pas disponible.
+    Logique séquentielle : 1ère chanson OK updatée → check 2ème → si updatée → can_start=True.
     """
     if not token_mgr.available:
         return None
@@ -1878,15 +1888,16 @@ def _probe_via_api(probe_tracks: list[dict], token_mgr: TokenManager) -> dict | 
     successful_probes = 0
     updated_probes = 0
     results = []
+    can_start = False
 
     try:
         for track in probe_tracks:
-            pc        = fetch_playcount_api(track["track_id"], token_mgr, session)
+            pc = fetch_playcount_api(track["track_id"], token_mgr, session)
             last_total = get_last_history_total(track["track_id"])
 
             if pc is not None:
-                successful_probes += 1
                 updated = has_real_update(last_total, pc)
+                successful_probes += 1
                 if updated:
                     updated_probes += 1
                 results.append({
@@ -1897,6 +1908,11 @@ def _probe_via_api(probe_tracks: list[dict], token_mgr: TokenManager) -> dict | 
                     "updated":          updated,
                     "raw":              str(pc),
                 })
+                if successful_probes == 1 and not updated:
+                    break  # 1ère chanson pas updatée → inutile de continuer
+                if successful_probes == 2:
+                    can_start = updated
+                    break  # 2ème chanson OK → décision finale
             else:
                 results.append({
                     "title":            track["title"],
@@ -1909,10 +1925,6 @@ def _probe_via_api(probe_tracks: list[dict], token_mgr: TokenManager) -> dict | 
     finally:
         session.close()
 
-    can_start = (
-        successful_probes >= MIN_SUCCESSFUL_PROBES
-        and updated_probes >= MIN_UPDATED_PROBES_TO_START
-    )
     return {
         "can_start_full_run":  can_start,
         "successful_probes":   successful_probes,
@@ -1921,14 +1933,16 @@ def _probe_via_api(probe_tracks: list[dict], token_mgr: TokenManager) -> dict | 
     }
 
 
-def run_probe(tracks: list[dict]) -> dict:
-    track_lookup = build_track_lookup(tracks)
-    probe_tracks: list[dict] = []
+def build_probe_tracks(tracks: list[dict]) -> list[dict]:
+    """Retourne les PROBE_CANDIDATES tracks avec le plus de streams hier, triées décroissant."""
+    last_totals = get_all_last_history_totals()
+    scored = [(t, last_totals.get(t["track_id"], 0)) for t in tracks]
+    scored.sort(key=lambda x: x[1], reverse=True)
+    return [t for t, _ in scored[:PROBE_CANDIDATES]]
 
-    for title in PROBE_TITLES:
-        matches = track_lookup.get(normalize_title(title), [])
-        if len(matches) == 1:
-            probe_tracks.append(matches[0])
+
+def run_probe(tracks: list[dict]) -> dict:
+    probe_tracks = build_probe_tracks(tracks)
 
     if not probe_tracks:
         print("Probe skipped: no probe tracks found in database.")
@@ -2658,12 +2672,7 @@ def main():
     )
 
     if should_run_probe:
-        track_lookup = build_track_lookup(tracks)
-        probe_tracks: list[dict] = []
-        for title in PROBE_TITLES:
-            matches = track_lookup.get(normalize_title(title), [])
-            if len(matches) == 1:
-                probe_tracks.append(matches[0])
+        probe_tracks = build_probe_tracks(tracks)
 
         if not probe_tracks:
             print("Probe skipped: no probe tracks found in database.")

@@ -54,6 +54,8 @@ LOCAL_DB_FILE = _TOOLS / "json" / "songs_db.json"
 TS_HISTORY_PATH     = _TOOLS / "json" / "ts_history.json"
 TOTAL_DAYS_PATH     = _TOOLS / "json" / "total_days.json"
 ARCHIVE_CSV   = Path(__file__).resolve().parents[6] / "db" / "charts_history_uk.csv"
+_BEARER_CACHE = _TOOLS / "json" / "bearer_cache.json"
+_TOKEN_TTL    = 50 * 60  # 50 minutes (conservateur)
 
 SLEEP_SECONDS = 0.20
 TS_NAME = "Taylor Swift"
@@ -236,8 +238,36 @@ def get_song_data(db, artist, track, fetch_release_date=True):
 
 # â”€â”€ API helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
+def _load_cached_token() -> str | None:
+    """Retourne le token en cache s'il est encore valide, sinon None."""
+    try:
+        if not _BEARER_CACHE.exists():
+            return None
+        data = json.loads(_BEARER_CACHE.read_text(encoding="utf-8"))
+        if time.time() - data.get("ts", 0) < _TOKEN_TTL:
+            return data.get("token") or None
+    except Exception:
+        pass
+    return None
+
+
+def _save_cached_token(token: str) -> None:
+    try:
+        _BEARER_CACHE.parent.mkdir(parents=True, exist_ok=True)
+        _BEARER_CACHE.write_text(
+            json.dumps({"token": token, "ts": time.time()}), encoding="utf-8"
+        )
+    except Exception:
+        pass
+
+
 def _get_bearer_token() -> str:
-    """Ouvre Playwright, attend le premier appel Ã  l'API interne, retourne le Bearer token."""
+    """Retourne le Bearer token (depuis le cache si valide, sinon via Playwright)."""
+    cached = _load_cached_token()
+    if cached:
+        print("  Token Bearer depuis le cache.")
+        return cached
+
     token_holder: list[str] = []
 
     def _on_request(req):
@@ -276,7 +306,8 @@ def _get_bearer_token() -> str:
             pass
 
     if not token_holder:
-        raise RuntimeError("Bearer token introuvable â€” vÃ©rifiez spotify_session.json")
+        raise RuntimeError("Bearer token introuvable — verifiez spotify_session.json")
+    _save_cached_token(token_holder[0])
     return token_holder[0]
 
 
@@ -642,14 +673,19 @@ def generate_tweet(ts_df, chart_date, ts_history) -> str:
 
 
 def process_one(chart_date: str, db, ts_history):
+    t_total = time.time()
     print(f"Scrape du chart UK pour {chart_date} ...")
+
+    t0 = time.time()
     rows = scrape_chart_rows(chart_date)
+    print(f"  [scraping] {time.time() - t0:.1f}s — {len(rows)} lignes")
+
     if not rows:
         raise RuntimeError(f"Aucune ligne scrapee pour {chart_date}")
 
     df = pd.DataFrame(rows)
     if df.empty:
-        raise RuntimeError(f"Aucune donnÃ©e exploitable pour {chart_date}")
+        raise RuntimeError(f"Aucune donnee exploitable pour {chart_date}")
 
     if not df["artist_names"].astype(str).str.contains(TS_NAME, case=False, na=False).any():
         out_dir = get_out_dir(chart_date)
@@ -658,50 +694,44 @@ def process_one(chart_date: str, db, ts_history):
         print(f"  {chart_date} - aucune chanson TS.")
         return 0
 
-    tags_col, album_col, rd_col, days_col = [], [], [], []
+    n = len(df)
+    tags_col  = [""] * n
+    album_col = [""] * n
+    rd_col    = [""] * n
+    days_col  = [""] * n
     new_calls = 0
     cd = parse_date(chart_date)
 
-    for _, row in df.iterrows():
-        track = str(row["track_name"])
+    # Chansons TS : enrichissement Last.fm/MusicBrainz + historique
+    t0 = time.time()
+    for idx, (_, row) in enumerate(df.iterrows()):
+        if TS_NAME.lower() not in str(row["artist_names"]).lower():
+            continue
+        track  = str(row["track_name"])
         artist = str(row["artist_names"]).split(",")[0].strip()
-        rank = int(row["rank"])
-        is_ts = TS_NAME.lower() in str(row["artist_names"]).lower()
+        rank   = int(row["rank"])
+        tags, album, release_date, fetched = get_song_data(db, artist, track, fetch_release_date=True)
+        update(
+            ts_history, track, chart_date, rank, row.get("streams"),
+            previous_rank=row.get("previous_rank"), peak_rank=row.get("peak_rank"),
+        )
+        if fetched:
+            new_calls += 1
+            if new_calls % 10 == 0:
+                save_db(db)
+        tags_col[idx]  = "; ".join(tags)
+        album_col[idx] = album or ""
+        rd_col[idx]    = release_date or ""
+        rd = parse_date(release_date)
+        days_col[idx]  = (cd - rd).days if rd and cd else ""
+    print(f"  [enrichissement TS] {time.time() - t0:.1f}s")
 
-        if is_ts:
-            tags, album, release_date, fetched = get_song_data(db, artist, track, fetch_release_date=True)
-            update(
-                ts_history,
-                track,
-                chart_date,
-                rank,
-                row.get("streams"),
-                previous_rank=row.get("previous_rank"),
-                peak_rank=row.get("peak_rank"),
-            )
-            if fetched:
-                new_calls += 1
-                if new_calls % 10 == 0:
-                    save_db(db)
-
-            tags_col.append("; ".join(tags))
-            album_col.append(album or "")
-            rd_col.append(release_date or "")
-            rd = parse_date(release_date)
-            days_col.append((cd - rd).days if rd and cd else "")
-
-        else:
-            tags_col.append("")
-            album_col.append("")
-            rd_col.append("")
-            days_col.append("")
-
-    df["lastfm_tags"] = tags_col
-    df["album"] = album_col
-    df["release_date"] = rd_col
+    df["lastfm_tags"]        = tags_col
+    df["album"]              = album_col
+    df["release_date"]       = rd_col
     df["days_since_release"] = days_col
 
-
+    t0 = time.time()
     out_dir = get_out_dir(chart_date)
     out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -713,7 +743,6 @@ def process_one(chart_date: str, db, ts_history):
     def _clean_row(r):
         return {k: (None if (isinstance(v, float) and str(v) == "nan") else v) for k, v in r.items()}
 
-    # JSON streaming pour generate_chart_image.py
     ts_rows_json = [_clean_row(r) for r in ts_df.to_dict(orient="records")]
     (out_dir / f"ts_chart_{chart_date}.json").write_text(
         json.dumps(ts_rows_json, ensure_ascii=False), encoding="utf-8"
@@ -721,12 +750,16 @@ def process_one(chart_date: str, db, ts_history):
 
     log = Logger()
     write_log(log, ts_df, chart_date, ts_history)
-
     tweet = generate_tweet(ts_df, chart_date, ts_history)
     (out_dir / "tweet.txt").write_text(tweet, encoding="utf-8")
+    print(f"  [ecriture fichiers] {time.time() - t0:.1f}s")
 
+    t0 = time.time()
     append_to_archive_csv(chart_date, ts_df)
+    print(f"  [archive CSV] {time.time() - t0:.1f}s")
+
     print(f"  OK {chart_date} -> {out_dir}/")
+    print(f"  [TOTAL] {time.time() - t_total:.1f}s")
     return new_calls
 
 

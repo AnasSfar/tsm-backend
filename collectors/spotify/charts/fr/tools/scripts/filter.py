@@ -17,7 +17,9 @@ import io
 import json
 import re
 import sys
+import threading
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -56,10 +58,16 @@ TS_HISTORY_PATH     = _TOOLS / "json" / "ts_history.json"
 TS_POP_HISTORY_PATH = _TOOLS / "json" / "ts_pop_history.json"
 TOTAL_DAYS_PATH     = _TOOLS / "json" / "total_days.json"
 ARCHIVE_CSV   = Path(__file__).resolve().parents[6] / "db" / "charts_history_fr.csv"
+_BEARER_CACHE = _TOOLS / "json" / "bearer_cache.json"
+_TOKEN_TTL    = 50 * 60  # 50 minutes (conservateur)
 
 SLEEP_SECONDS = 0.20
 TS_NAME = "Taylor Swift"
 CHART_ID = "regional-fr-daily"
+POP_FILTERING = False  # Mettre à True pour réactiver le classement Pop
+POP_WORKERS = 8        # Nombre de workers parallèles pour Last.fm (si POP_FILTERING=True)
+
+_db_lock = threading.Lock()
 
 
 def norm(s):
@@ -273,10 +281,69 @@ def get_pop_for_nonts(db, artist, track):
     return pop
 
 
+def _classify_pop_threadsafe(db, artist, track) -> bool:
+    """Version thread-safe de get_pop_for_nonts pour usage avec ThreadPoolExecutor."""
+    key = f"{norm(artist)}|||{norm(track)}"
+    with _db_lock:
+        if key in db:
+            e = db[key]
+            tags = e.get("tags", [])
+            return e.get("is_pop", is_pop(tags))
+
+    time.sleep(SLEEP_SECONDS)
+    try:
+        data = lastfm_get({
+            "method": "track.gettoptags",
+            "api_key": LASTFM_API_KEY,
+            "artist": artist,
+            "track": track,
+            "format": "json",
+            "autocorrect": "1",
+        })
+        tags = [norm(x["name"]) for x in data.get("toptags", {}).get("tag", []) if isinstance(x, dict)]
+        tags = [t for t in tags if t]
+    except Exception:
+        tags = []
+
+    pop = is_pop(tags)
+    with _db_lock:
+        if key not in db:
+            db[key] = {"artist": artist, "track": track, "tags": tags, "is_pop": pop}
+    return pop
+
+
 # ── API helpers ──────────────────────────────────────────────────────────────
 
+def _load_cached_token() -> str | None:
+    """Retourne le token en cache s'il est encore valide, sinon None."""
+    try:
+        if not _BEARER_CACHE.exists():
+            return None
+        data = json.loads(_BEARER_CACHE.read_text(encoding="utf-8"))
+        if time.time() - data.get("ts", 0) < _TOKEN_TTL:
+            return data.get("token") or None
+    except Exception:
+        pass
+    return None
+
+
+def _save_cached_token(token: str) -> None:
+    try:
+        _BEARER_CACHE.parent.mkdir(parents=True, exist_ok=True)
+        _BEARER_CACHE.write_text(
+            json.dumps({"token": token, "ts": time.time()}), encoding="utf-8"
+        )
+    except Exception:
+        pass
+
+
 def _get_bearer_token() -> str:
-    """Ouvre Playwright, attend le premier appel à l'API interne, retourne le Bearer token."""
+    """Retourne le Bearer token (depuis le cache si valide, sinon via Playwright)."""
+    cached = _load_cached_token()
+    if cached:
+        print("  Token Bearer depuis le cache.")
+        return cached
+
     token_holder: list[str] = []
 
     def _on_request(req):
@@ -316,6 +383,7 @@ def _get_bearer_token() -> str:
 
     if not token_holder:
         raise RuntimeError("Bearer token introuvable — vérifiez spotify_session.json")
+    _save_cached_token(token_holder[0])
     return token_holder[0]
 
 
@@ -707,8 +775,13 @@ def generate_tweet(ts_df, ts_pop, chart_date, ts_history) -> str:
 
 
 def process_one(chart_date: str, db, ts_history):
+    t_total = time.time()
     print(f"Scrape du chart France pour {chart_date} ...")
+
+    t0 = time.time()
     rows = scrape_chart_rows(chart_date)
+    print(f"  [scraping] {time.time() - t0:.1f}s — {len(rows)} lignes")
+
     if not rows:
         raise RuntimeError(f"Aucune ligne scrapee pour {chart_date}")
 
@@ -723,50 +796,63 @@ def process_one(chart_date: str, db, ts_history):
         print(f"  {chart_date} - aucune chanson TS.")
         return 0
 
-    tags_col, pop_col, album_col, rd_col, days_col = [], [], [], [], []
+    n = len(df)
+    tags_col  = [""] * n
+    pop_col   = [False] * n
+    album_col = [""] * n
+    rd_col    = [""] * n
+    days_col  = [""] * n
     new_calls = 0
     cd = parse_date(chart_date)
 
-    for _, row in df.iterrows():
-        track = str(row["track_name"])
+    # Pass 1 : chansons TS — séquentiel (met à jour ts_history)
+    t0 = time.time()
+    for idx, (_, row) in enumerate(df.iterrows()):
+        if TS_NAME.lower() not in str(row["artist_names"]).lower():
+            continue
+        track  = str(row["track_name"])
         artist = str(row["artist_names"]).split(",")[0].strip()
-        rank = int(row["rank"])
-        is_ts = TS_NAME.lower() in str(row["artist_names"]).lower()
+        rank   = int(row["rank"])
+        tags, album, release_date, pop, fetched = get_song_data(db, artist, track, fetch_release_date=True)
+        update(
+            ts_history, track, chart_date, rank, row.get("streams"),
+            previous_rank=row.get("previous_rank"), peak_rank=row.get("peak_rank"),
+        )
+        if fetched:
+            new_calls += 1
+            if new_calls % 10 == 0:
+                save_db(db)
+        tags_col[idx]  = "; ".join(tags)
+        album_col[idx] = album or ""
+        rd_col[idx]    = release_date or ""
+        rd = parse_date(release_date)
+        days_col[idx]  = (cd - rd).days if rd and cd else ""
+        pop_col[idx]   = pop
+    print(f"  [enrichissement TS] {time.time() - t0:.1f}s")
 
-        if is_ts:
-            tags, album, release_date, pop, fetched = get_song_data(db, artist, track, fetch_release_date=True)
-            update(
-                ts_history,
-                track,
-                chart_date,
-                rank,
-                row.get("streams"),
-                previous_rank=row.get("previous_rank"),
-                peak_rank=row.get("peak_rank"),
-            )
-            if fetched:
-                new_calls += 1
-                if new_calls % 10 == 0:
-                    save_db(db)
+    # Pass 2 : chansons non-TS — classification pop
+    if POP_FILTERING:
+        t0 = time.time()
+        non_ts_items = [
+            (idx, str(row["artist_names"]).split(",")[0].strip(), str(row["track_name"]))
+            for idx, (_, row) in enumerate(df.iterrows())
+            if TS_NAME.lower() not in str(row["artist_names"]).lower()
+        ]
+        with ThreadPoolExecutor(max_workers=POP_WORKERS) as executor:
+            futures = {
+                executor.submit(_classify_pop_threadsafe, db, artist, track): idx
+                for idx, artist, track in non_ts_items
+            }
+            for future in as_completed(futures):
+                pop_col[futures[future]] = future.result()
+        print(f"  [filtrage pop — {len(non_ts_items)} chansons, {POP_WORKERS} workers] {time.time() - t0:.1f}s")
+    else:
+        print("  [filtrage pop] désactivé (POP_FILTERING=False)")
 
-            tags_col.append("; ".join(tags))
-            album_col.append(album or "")
-            rd_col.append(release_date or "")
-            rd = parse_date(release_date)
-            days_col.append((cd - rd).days if rd and cd else "")
-        else:
-            pop = get_pop_for_nonts(db, artist, track)
-            tags_col.append("")
-            album_col.append("")
-            rd_col.append("")
-            days_col.append("")
-
-        pop_col.append(pop)
-
-    df["lastfm_tags"] = tags_col
-    df["pop_flag"] = pop_col
-    df["album"] = album_col
-    df["release_date"] = rd_col
+    df["lastfm_tags"]       = tags_col
+    df["pop_flag"]          = pop_col
+    df["album"]             = album_col
+    df["release_date"]      = rd_col
     df["days_since_release"] = days_col
 
     pop_df = df[df["pop_flag"]].sort_values("rank").copy()
@@ -781,7 +867,7 @@ def process_one(chart_date: str, db, ts_history):
     out_dir = get_out_dir(chart_date)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    ts_df = df[df["artist_names"].astype(str).str.contains(TS_NAME, case=False, na=False)].copy()
+    ts_df  = df[df["artist_names"].astype(str).str.contains(TS_NAME, case=False, na=False)].copy()
     ts_pop = pop_df[pop_df["artist_names"].astype(str).str.contains(TS_NAME, case=False, na=False)].copy()
 
     # Pop history : déterminer NEW vs RE-ENTRY
@@ -798,8 +884,6 @@ def process_one(chart_date: str, db, ts_history):
             pop_total_days_list.append(past)
         ts_pop = ts_pop.copy()
         ts_pop["pop_total_days"] = pop_total_days_list
-
-        # Mettre à jour l'historique pop
         for _, row in ts_pop.iterrows():
             track = str(row["track_name"])
             if track not in ts_pop_history:
@@ -810,6 +894,7 @@ def process_one(chart_date: str, db, ts_history):
             json.dumps(ts_pop_history, ensure_ascii=False, indent=2), encoding="utf-8"
         )
 
+    t0 = time.time()
     ts_df.to_csv(out_dir / "ts_all_songs.csv", index=False)
     update_total_days_file(ts_df, chart_date)
     if not ts_pop.empty:
@@ -818,13 +903,10 @@ def process_one(chart_date: str, db, ts_history):
     def _clean_row(r):
         return {k: (None if (isinstance(v, float) and str(v) == "nan") else v) for k, v in r.items()}
 
-    # JSON streaming pour generate_chart_image.py
     ts_rows_json = [_clean_row(r) for r in ts_df.to_dict(orient="records")]
     (out_dir / f"ts_chart_{chart_date}.json").write_text(
         json.dumps(ts_rows_json, ensure_ascii=False), encoding="utf-8"
     )
-
-    # JSON pop pour generate_chart_image.py
     if not ts_pop.empty:
         ts_pop_rows_json = [_clean_row(r) for r in ts_pop.to_dict(orient="records")]
         (out_dir / f"ts_pop_{chart_date}.json").write_text(
@@ -833,12 +915,16 @@ def process_one(chart_date: str, db, ts_history):
 
     log = Logger()
     write_log(log, ts_df, ts_pop, chart_date, ts_history)
-
     tweet = generate_tweet(ts_df, ts_pop, chart_date, ts_history)
     (out_dir / "tweet.txt").write_text(tweet, encoding="utf-8")
+    print(f"  [écriture fichiers] {time.time() - t0:.1f}s")
 
+    t0 = time.time()
     append_to_archive_csv(chart_date, ts_df)
+    print(f"  [archive CSV] {time.time() - t0:.1f}s")
+
     print(f"  OK {chart_date} -> {out_dir}/")
+    print(f"  [TOTAL] {time.time() - t_total:.1f}s")
     return new_calls
 
 

@@ -3,7 +3,7 @@ name: Update Spotify Streams
 on:
   workflow_dispatch:
   schedule:
-    - cron: '15 7 * * *'  # Tous les jours à 07:15 UTC
+    - cron: '15 13 * * *'  # Tous les jours à 15:15 heure de Paris (UTC+2 été / UTC+1 hiver)
 
 jobs:
   update-streams:

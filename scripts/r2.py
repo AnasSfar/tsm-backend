@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import concurrent.futures
 import hashlib
 import io
 import json
@@ -30,6 +31,8 @@ R2_REQUIRED_ENV_VARS = (
     "R2_ACCESS_KEY_ID",
     "R2_SECRET_ACCESS_KEY",
 )
+
+MAX_WORKERS = 10
 
 
 def get_env(name: str) -> str:
@@ -68,13 +71,12 @@ def head_object_safe(client, bucket: str, key: str) -> dict[str, Any] | None:
         return None
 
 
-def object_has_same_hash(client, bucket: str, key: str, data: bytes) -> bool:
-    local_hash = hashlib.sha256(data).hexdigest()
+def object_has_same_hash(client, bucket: str, key: str, body_hash: str) -> bool:
     meta = head_object_safe(client, bucket, key)
     if not meta:
         return False
     remote_hash = (meta.get("Metadata") or {}).get("sha256", "")
-    return local_hash == remote_hash
+    return body_hash == remote_hash
 
 
 def upload_bytes_if_changed(
@@ -87,14 +89,14 @@ def upload_bytes_if_changed(
     dry_run: bool,
     retries: int = 3,
 ) -> bool:
-    if object_has_same_hash(client, bucket, key, data):
+    body_hash = hashlib.sha256(data).hexdigest()
+
+    if object_has_same_hash(client, bucket, key, body_hash):
         return False
 
     if dry_run:
-        print(f"[DRY-RUN][UPLOAD] {key}")
         return True
 
-    body_hash = hashlib.sha256(data).hexdigest()
     for attempt in range(1, retries + 1):
         try:
             client.upload_fileobj(
@@ -138,6 +140,20 @@ def upload_raw_if_changed(*, client, bucket: str, key: str, data: bytes, content
     )
 
 
+def _upload_db_file(client, bucket: str, path: Path, db_prefix: str, dry_run: bool) -> bool:
+    rel_path = path.relative_to(DB_DIR).as_posix()
+    full_key = f"{db_prefix}/{rel_path}"
+    content_type = mimetypes.guess_type(path.name)[0] or "application/octet-stream"
+    return upload_raw_if_changed(
+        client=client,
+        bucket=bucket,
+        key=full_key,
+        data=path.read_bytes(),
+        content_type=content_type,
+        dry_run=dry_run,
+    )
+
+
 def upload_db_files(
     *,
     client,
@@ -146,30 +162,35 @@ def upload_db_files(
     dry_run: bool,
 ) -> tuple[int, int]:
     """Upload all files under db/ to R2 while preserving relative paths."""
+    db_files = sorted(p for p in DB_DIR.rglob("*") if p.is_file())
+
     uploaded = 0
     unchanged = 0
+    with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        futures = [
+            executor.submit(_upload_db_file, client, bucket, path, db_prefix, dry_run)
+            for path in db_files
+        ]
+        for future in concurrent.futures.as_completed(futures):
+            if future.result():
+                uploaded += 1
+            else:
+                unchanged += 1
 
-    db_files = sorted(p for p in DB_DIR.rglob("*") if p.is_file())
-    for path in db_files:
-        rel_path = path.relative_to(DB_DIR).as_posix()
-        full_key = f"{db_prefix}/{rel_path}"
-        content_type = mimetypes.guess_type(path.name)[0] or "application/octet-stream"
-        changed = upload_raw_if_changed(
-            client=client,
-            bucket=bucket,
-            key=full_key,
-            data=path.read_bytes(),
-            content_type=content_type,
-            dry_run=dry_run,
-        )
-        if changed:
-            uploaded += 1
-            print(f"[UPLOADED] {full_key}")
-        else:
-            unchanged += 1
-            print(f"[UNCHANGED] {full_key}")
-
+    print(f"  db         : {uploaded} uploaded, {unchanged} unchanged")
     return uploaded, unchanged
+
+
+def _upload_image_file(client, bucket: str, path: Path, images_prefix: str, dry_run: bool) -> bool:
+    full_key = f"{images_prefix}/{path.name}"
+    return upload_raw_if_changed(
+        client=client,
+        bucket=bucket,
+        key=full_key,
+        data=path.read_bytes(),
+        content_type="image/jpeg",
+        dry_run=dry_run,
+    )
 
 
 def upload_apple_music_images(
@@ -180,38 +201,39 @@ def upload_apple_music_images(
     dry_run: bool,
 ) -> tuple[int, int]:
     """Upload Apple Music track images if they exist locally."""
-    uploaded = 0
-    unchanged = 0
-
     if not APPLE_MUSIC_IMAGES_DIR.exists():
-        return uploaded, unchanged
+        return 0, 0
 
     image_files = sorted(p for p in APPLE_MUSIC_IMAGES_DIR.glob("*") if p.is_file())
     if not image_files:
-        return uploaded, unchanged
+        return 0, 0
 
-    print(f"[INFO] Found {len(image_files)} Apple Music images to upload")
+    uploaded = 0
+    unchanged = 0
+    with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        futures = [
+            executor.submit(_upload_image_file, client, bucket, path, images_prefix, dry_run)
+            for path in image_files
+        ]
+        for future in concurrent.futures.as_completed(futures):
+            if future.result():
+                uploaded += 1
+            else:
+                unchanged += 1
 
-    for path in image_files:
-        rel_path = path.name
-        full_key = f"{images_prefix}/{rel_path}"
-        content_type = "image/jpeg"
-        changed = upload_raw_if_changed(
-            client=client,
-            bucket=bucket,
-            key=full_key,
-            data=path.read_bytes(),
-            content_type=content_type,
-            dry_run=dry_run,
-        )
-        if changed:
-            uploaded += 1
-            print(f"[UPLOADED] {full_key}")
-        else:
-            unchanged += 1
-            print(f"[UNCHANGED] {full_key}")
-
+    print(f"  images     : {uploaded} uploaded, {unchanged} unchanged ({len(image_files)} total)")
     return uploaded, unchanged
+
+
+def _upload_static_item(client, bucket: str, key: str, data: bytes, content_type: str, dry_run: bool) -> bool:
+    return upload_bytes_if_changed(
+        client=client,
+        bucket=bucket,
+        key=key,
+        data=data,
+        content_type=content_type,
+        dry_run=dry_run,
+    )
 
 
 def upload_static_data(
@@ -223,8 +245,7 @@ def upload_static_data(
     dry_run: bool,
 ) -> tuple[int, int]:
     """Upload generated JSON/CSV/static history files used by the frontend."""
-    uploaded = 0
-    unchanged = 0
+    tasks: list[tuple[str, bytes, str]] = []  # (key, data, content_type)
 
     json_mappings = [
         ("songs.json",               "data/songs.json"),
@@ -244,13 +265,8 @@ def upload_static_data(
             continue
         obj = load_json(src)
         full_key = f"{data_prefix}/{r2_key.split('/', 1)[1]}"
-        changed = upload_json_if_changed(client=client, bucket=bucket, key=full_key, payload=obj, dry_run=dry_run)
-        if changed:
-            uploaded += 1
-            print(f"[UPLOADED] {full_key}")
-        else:
-            unchanged += 1
-            print(f"[UNCHANGED] {full_key}")
+        data = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+        tasks.append((full_key, data, "application/json; charset=utf-8"))
 
     csv_mappings = [
         ("charts_history_global.csv", "data/charts_global.csv"),
@@ -262,37 +278,14 @@ def upload_static_data(
             print(f"[SKIP] absent: {src}")
             continue
         full_key = f"{data_prefix}/{r2_key.split('/', 1)[1]}"
-        changed = upload_raw_if_changed(
-            client=client,
-            bucket=bucket,
-            key=full_key,
-            data=src.read_bytes(),
-            content_type="text/csv; charset=utf-8",
-            dry_run=dry_run,
-        )
-        if changed:
-            uploaded += 1
-            print(f"[UPLOADED] {full_key}")
-        else:
-            unchanged += 1
-            print(f"[UNCHANGED] {full_key}")
+        tasks.append((full_key, src.read_bytes(), "text/csv; charset=utf-8"))
 
     index_path = HISTORY_DIR / "index.json"
     if index_path.exists():
         full_key = f"{history_prefix}/index.json"
-        changed = upload_json_if_changed(
-            client=client,
-            bucket=bucket,
-            key=full_key,
-            payload=load_json(index_path),
-            dry_run=dry_run,
-        )
-        if changed:
-            uploaded += 1
-            print(f"[UPLOADED] {full_key}")
-        else:
-            unchanged += 1
-            print(f"[UNCHANGED] {full_key}")
+        obj = load_json(index_path)
+        data = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+        tasks.append((full_key, data, "application/json; charset=utf-8"))
 
     daily_files = sorted(
         p for p in HISTORY_DIR.glob("*.json")
@@ -303,20 +296,24 @@ def upload_static_data(
         if not m:
             continue
         full_key = f"{history_prefix}/{m.group(1)}.json"
-        changed = upload_json_if_changed(
-            client=client,
-            bucket=bucket,
-            key=full_key,
-            payload=load_json(path),
-            dry_run=dry_run,
-        )
-        if changed:
-            uploaded += 1
-            print(f"[UPLOADED] {full_key}")
-        else:
-            unchanged += 1
-            print(f"[UNCHANGED] {full_key}")
+        obj = load_json(path)
+        data = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+        tasks.append((full_key, data, "application/json; charset=utf-8"))
 
+    uploaded = 0
+    unchanged = 0
+    with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        futures = [
+            executor.submit(_upload_static_item, client, bucket, key, data, content_type, dry_run)
+            for key, data, content_type in tasks
+        ]
+        for future in concurrent.futures.as_completed(futures):
+            if future.result():
+                uploaded += 1
+            else:
+                unchanged += 1
+
+    print(f"  static     : {uploaded} uploaded, {unchanged} unchanged")
     return uploaded, unchanged
 
 
@@ -335,6 +332,60 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def _run_history_upload(client, bucket, track_prefix, daily_files, dry_run) -> tuple[int, int]:
+    by_track: dict[str, list[dict]] = defaultdict(list)
+
+    for path in daily_files:
+        m = DATE_RE.search(path.stem)
+        if not m:
+            print(f"[SKIP] date not found in filename: {path}")
+            continue
+        date = m.group(1)
+        data = load_json(path)
+        if not isinstance(data, dict):
+            print(f"[SKIP] invalid format: {path}")
+            continue
+        for track_id, values in data.items():
+            if not isinstance(values, dict):
+                continue
+            point: dict[str, Any] = {
+                "date": date,
+                "streams": values.get("s"),
+                "daily_streams": values.get("d"),
+            }
+            if "rank" in values:
+                point["rank"] = values.get("rank")
+            by_track[track_id].append(point)
+
+    def _upload_track(track_id: str, points: list[dict]) -> bool:
+        points.sort(key=lambda x: x["date"])
+        payload = {"track_id": track_id, "points": points}
+        bucket_key = f"{track_prefix}/{track_id}.json"
+        return upload_json_if_changed(
+            client=client,
+            bucket=bucket,
+            key=bucket_key,
+            payload=payload,
+            dry_run=dry_run,
+        )
+
+    uploaded = 0
+    unchanged = 0
+    with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        futures = [
+            executor.submit(_upload_track, track_id, points)
+            for track_id, points in by_track.items()
+        ]
+        for future in concurrent.futures.as_completed(futures):
+            if future.result():
+                uploaded += 1
+            else:
+                unchanged += 1
+
+    print(f"  history    : {uploaded} uploaded, {unchanged} unchanged ({len(by_track)} tracks)")
+    return uploaded, unchanged
+
+
 def main() -> int:
     args = parse_args()
 
@@ -346,7 +397,6 @@ def main() -> int:
                 "Missing required R2 environment variable(s) while UPLOAD_TO_R2 is enabled: "
                 + ", ".join(missing_vars)
             )
-
         print(
             "[WARN] R2 credentials are not configured; skipping upload "
             f"({', '.join(missing_vars)})."
@@ -361,116 +411,56 @@ def main() -> int:
     if not args.skip_history_upload:
         if not HISTORY_DIR.exists():
             raise FileNotFoundError(f"History folder not found: {HISTORY_DIR}")
-
         daily_files = sorted(
             p for p in HISTORY_DIR.glob("*.json")
             if p.name != "index.json"
         )
-
         if not daily_files:
             print("No history files found. History upload will be skipped.")
 
-    history_uploaded = 0
-    history_unchanged = 0
-    static_uploaded = 0
-    static_unchanged = 0
-    db_uploaded = 0
-    db_unchanged = 0
-    images_uploaded = 0
-    images_unchanged = 0
+    # Run all 4 sections in parallel
+    section_futures: dict[str, concurrent.futures.Future] = {}
 
-    if not args.skip_history_upload and daily_files:
-        by_track = defaultdict(list)
-
-        for path in daily_files:
-            m = DATE_RE.search(path.stem)
-            if not m:
-                print(f"[SKIP] date not found in filename: {path}")
-                continue
-
-            date = m.group(1)
-            data = load_json(path)
-
-            if not isinstance(data, dict):
-                print(f"[SKIP] invalid format: {path}")
-                continue
-
-            for track_id, values in data.items():
-                if not isinstance(values, dict):
-                    continue
-
-                point = {
-                    "date": date,
-                    "streams": values.get("s"),
-                    "daily_streams": values.get("d"),
-                }
-
-                if "rank" in values:
-                    point["rank"] = values.get("rank")
-
-                by_track[track_id].append(point)
-
-        for track_id, points in by_track.items():
-            points.sort(key=lambda x: x["date"])
-            payload = {"track_id": track_id, "points": points}
-            bucket_key = f"{args.track_prefix}/{track_id}.json"
-            changed = upload_json_if_changed(
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+        if not args.skip_history_upload and daily_files:
+            section_futures["history"] = executor.submit(
+                _run_history_upload, client, bucket, args.track_prefix, daily_files, args.dry_run
+            )
+        if not args.skip_static_upload:
+            section_futures["static"] = executor.submit(
+                upload_static_data,
                 client=client,
                 bucket=bucket,
-                key=bucket_key,
-                payload=payload,
+                data_prefix=args.data_prefix,
+                history_prefix=args.history_prefix,
                 dry_run=args.dry_run,
             )
-            if changed:
-                history_uploaded += 1
-                print(f"[UPLOADED] {bucket_key}")
-            else:
-                history_unchanged += 1
-                print(f"[UNCHANGED] {bucket_key}")
+        if not args.skip_db_upload:
+            section_futures["db"] = executor.submit(
+                upload_db_files,
+                client=client,
+                bucket=bucket,
+                db_prefix=args.db_prefix,
+                dry_run=args.dry_run,
+            )
+        if not args.skip_images_upload:
+            section_futures["images"] = executor.submit(
+                upload_apple_music_images,
+                client=client,
+                bucket=bucket,
+                images_prefix=os.getenv("R2_IMAGES_PREFIX", "images/apple-music"),
+                dry_run=args.dry_run,
+            )
 
-    if not args.skip_static_upload:
-        static_uploaded, static_unchanged = upload_static_data(
-            client=client,
-            bucket=bucket,
-            data_prefix=args.data_prefix,
-            history_prefix=args.history_prefix,
-            dry_run=args.dry_run,
-        )
+    history_uploaded, history_unchanged = section_futures["history"].result() if "history" in section_futures else (0, 0)
+    static_uploaded, static_unchanged = section_futures["static"].result() if "static" in section_futures else (0, 0)
+    db_uploaded, db_unchanged = section_futures["db"].result() if "db" in section_futures else (0, 0)
+    images_uploaded, images_unchanged = section_futures["images"].result() if "images" in section_futures else (0, 0)
 
-    if not args.skip_db_upload:
-        db_uploaded, db_unchanged = upload_db_files(
-            client=client,
-            bucket=bucket,
-            db_prefix=args.db_prefix,
-            dry_run=args.dry_run,
-        )
-
-    # Upload Apple Music images if they exist
-    if not args.skip_images_upload:
-        images_uploaded, images_unchanged = upload_apple_music_images(
-            client=client,
-            bucket=bucket,
-            images_prefix=os.getenv("R2_IMAGES_PREFIX", "images/apple-music"),
-            dry_run=args.dry_run,
-        )
-    else:
-        images_uploaded = 0
-        images_unchanged = 0
-
-    print("\n[done]")
-    print(f"  bucket: {bucket}")
-    print(f"  track_prefix: {args.track_prefix}")
-    print(f"  db_prefix: {args.db_prefix}")
-    print(f"  history uploaded: {history_uploaded}")
-    print(f"  history unchanged: {history_unchanged}")
-    print(f"  static uploaded: {static_uploaded}")
-    print(f"  static unchanged: {static_unchanged}")
-    print(f"  db uploaded: {db_uploaded}")
-    print(f"  db unchanged: {db_unchanged}")
-    print(f"  images uploaded: {images_uploaded}")
-    print(f"  images unchanged: {images_unchanged}")
-    if args.dry_run:
-        print("  mode: dry-run")
+    total_uploaded = history_uploaded + static_uploaded + db_uploaded + images_uploaded
+    total_unchanged = history_unchanged + static_unchanged + db_unchanged + images_unchanged
+    suffix = " [dry-run]" if args.dry_run else ""
+    print(f"\n[done]{suffix}  {total_uploaded} uploaded, {total_unchanged} unchanged  (bucket: {bucket})")
 
     return 0
 
