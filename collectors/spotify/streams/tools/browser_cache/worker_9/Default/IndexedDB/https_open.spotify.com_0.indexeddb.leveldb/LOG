@@ -1,6 +1,0 @@
-2026/03/29-01:40:05.656 64c0 Reusing MANIFEST C:\Users\sfara\Documents\GitHub\tsm-backend\collectors\spotify\streams\tools\browser_cache\worker_9\Default\IndexedDB\https_open.spotify.com_0.indexeddb.leveldb/MANIFEST-000001
-2026/03/29-01:40:05.671 64c0 Recovering log #3
-2026/03/29-01:40:05.712 64c0 Reusing old log C:\Users\sfara\Documents\GitHub\tsm-backend\collectors\spotify\streams\tools\browser_cache\worker_9\Default\IndexedDB\https_open.spotify.com_0.indexeddb.leveldb/000003.log 
-2026/03/29-01:40:34.240 64c0 Level-0 table #5: started
-2026/03/29-01:40:34.270 64c0 Level-0 table #5: 866287 bytes OK
-2026/03/29-01:40:34.273 64c0 Delete type=0 #3
