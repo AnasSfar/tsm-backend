@@ -3,7 +3,7 @@ name: Run Apple Music Collectors
 on:
   workflow_dispatch:
   schedule:
-    - cron: '45 7 * * *'  # Tous les jours à 07:45 UTC
+    - cron: '45 13 * * *'  # Tous les jours à 15:45 heure de Paris (UTC+2 été / UTC+1 hiver)
 
 jobs:
   run-apple-music:
