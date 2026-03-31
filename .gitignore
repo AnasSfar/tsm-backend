@@ -21,6 +21,7 @@ env/
 
 # Generated browser runtime data (Playwright Chrome profiles)
 **/tools/json/chrome_profile/**
+**/tools/browser_cache/**
 
 # Common runtime artifacts
 *.lock

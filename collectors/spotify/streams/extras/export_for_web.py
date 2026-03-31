@@ -1056,6 +1056,11 @@ def export_for_web() -> None:
 
     # R2 upload — enabled by default; set UPLOAD_TO_R2=0 to disable
     import os as _os, subprocess as _subprocess, sys as _sys
+    try:
+        from dotenv import load_dotenv as _load_dotenv
+        _load_dotenv(str(Path(__file__).resolve().parents[4] / ".env"), override=True)
+    except Exception:
+        pass
     if _os.getenv("UPLOAD_TO_R2", "").strip().lower() not in ("0", "false", "no"):
         required_env = ["R2_ACCOUNT_ID", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY"]
         missing = [name for name in required_env if not _os.getenv(name, "").strip()]
