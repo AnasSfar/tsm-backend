@@ -152,6 +152,7 @@ def _parse_api_entries(data: dict) -> list[dict]:
             "previous_rank": clean_int(ced.get("previousRank")),
             "peak_rank":     clean_int(ced.get("peakRank")),
             "total_days":    clean_int(ced.get("consecutiveAppearancesOnChart")),
+            "streak":        clean_int(ced.get("consecutiveAppearancesOnChart")),
             "image_url":     (meta.get("displayImageUri") or "").replace("spotify:image:", "https://i.scdn.co/image/") or None,
         })
     rows.sort(key=lambda r: r["rank"])
@@ -839,11 +840,31 @@ def append_to_archive_csv(chart_date: str, ts_df) -> None:
             return ""
         return val
 
+    _EXPECTED_HEADER = ["date", "song_name", "rank", "streams", "previous_rank", "peak_rank", "total_days", "streak", "movement"]
+
+    # Migrate existing CSV if it's missing the "streak" column
+    if ARCHIVE_CSV.exists():
+        with ARCHIVE_CSV.open("r", encoding="utf-8", newline="") as f:
+            reader = _csv.reader(f)
+            existing_header = next(reader, [])
+        if "streak" not in existing_header:
+            rows_to_migrate = []
+            with ARCHIVE_CSV.open("r", encoding="utf-8", newline="") as f:
+                dr = _csv.DictReader(f)
+                for r in dr:
+                    r["streak"] = r.get("total_days", "")
+                    rows_to_migrate.append(r)
+            with ARCHIVE_CSV.open("w", newline="", encoding="utf-8") as f:
+                w = _csv.writer(f)
+                w.writerow(_EXPECTED_HEADER)
+                for r in rows_to_migrate:
+                    w.writerow([r.get(col, "") for col in _EXPECTED_HEADER])
+
     write_header = not ARCHIVE_CSV.exists()
     with ARCHIVE_CSV.open("a", newline="", encoding="utf-8") as f:
         w = _csv.writer(f)
         if write_header:
-            w.writerow(["date", "song_name", "rank", "streams", "previous_rank", "peak_rank", "total_days"])
+            w.writerow(_EXPECTED_HEADER)
         for _, row in ts_df.iterrows():
             w.writerow(
                 [
@@ -854,6 +875,8 @@ def append_to_archive_csv(chart_date: str, ts_df) -> None:
                     _v(row.get("previous_rank")),
                     _v(row.get("peak_rank")),
                     _v(row.get("total_days")),
+                    _v(row.get("streak")),
+                    _v(row.get("movement")),
                 ]
             )
     print(f"  Archive CSV mise à jour pour {chart_date} ({len(ts_df)} chansons)")
