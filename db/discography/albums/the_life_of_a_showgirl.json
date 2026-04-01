@@ -28,7 +28,7 @@
         },
         {
           "title": "Elizabeth Taylor",
-          "url": "https://open.spotify.com/intl-fr/track/1jgTiNob5cVyXeJ3WgX5bL",
+          "url": "https://open.spotify.com/track/3AKV7Mvo2Mx4tb39iPvPlT",
           "type": "track",
           "edition": "standard",
           "display_section": "Standard Edition",
@@ -43,7 +43,8 @@
           "title_clean": "Elizabeth Taylor",
           "song_family": "elizabeth_taylor",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc6e4c7774e0c77c210d3a31",
+          "single_image": "https://i.scdn.co/image/ab67616d0000b273dc6e4c7774e0c77c210d3a31"
         },
         {
           "title": "Opalite",
@@ -546,7 +547,6 @@
         }
       ]
     },
-    
     {
       "section": "track_by_track",
       "track_count": 5,
