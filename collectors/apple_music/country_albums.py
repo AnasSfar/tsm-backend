@@ -1,7 +1,7 @@
 """
 Collect Taylor Swift appearances in Apple Music country top albums charts.
 
-Uses the public Apple RSS feeds, which require no authentication.
+Uses the MusicKit API for real-time data.
 """
 
 from __future__ import annotations
@@ -9,11 +9,12 @@ from __future__ import annotations
 import argparse
 from datetime import date
 
-from core.config import ARTIST_ID, COUNTRIES, DB_DIR, SCRIPTS_DIR
+from core.config import COUNTRIES, DB_DIR, SCRIPTS_DIR
 from core.csv_utils import load_previous_ranks, rewrite_for_date
 from core.export import maybe_run_export
-from core.filters import clean_text, rank_key
+from core.filters import build_artwork_url, clean_text, is_taylor_swift_song, rank_key
 from core.http import build_session
+from core.token import build_auth_headers, fetch_musickit_token
 
 CSV_PATH = DB_DIR / "apple_music_country_albums.csv"
 EXPORT_SCRIPT = SCRIPTS_DIR / "export_apple_music.py"
@@ -41,28 +42,35 @@ def parse_args() -> argparse.Namespace:
 
 
 def fetch_country(session, country: str) -> list[dict]:
-    url = f"https://rss.applemarketingtools.com/api/v2/{country}/music/most-played/100/albums.json"
+    url = f"https://amp-api-edge.music.apple.com/v1/catalog/{country}/charts?types=albums&limit=100"
     resp = session.get(url)
+    if resp.status_code == 400:
+        return []
+    if resp.status_code == 401:
+        raise RuntimeError("Unauthorized while calling Apple Music charts API")
     resp.raise_for_status()
-    results = (resp.json().get("feed") or {}).get("results", [])
+
+    albums_block = ((resp.json().get("results") or {}).get("albums") or [])
+    if not albums_block:
+        return []
+    items = (albums_block[0] or {}).get("data", [])
 
     albums: list[dict] = []
-    for idx, item in enumerate(results, start=1):
-        artist_id = str(item.get("artistId", ""))
-        artist_name = clean_text(item.get("artistName", ""))
-        if artist_id != ARTIST_ID and "taylor swift" not in artist_name.casefold():
+    for idx, item in enumerate(items, start=1):
+        attrs = item.get("attributes", {}) or {}
+        if not is_taylor_swift_song(item, attrs):
             continue
-        genres = [clean_text((g or {}).get("name", "")) for g in item.get("genres", [])]
+        genre_names = " | ".join([g for g in (attrs.get("genreNames") or []) if g])
         albums.append(
             {
-                "album_name": clean_text(item.get("name", "")),
+                "album_name": clean_text(attrs.get("name", "")),
                 "apple_music_id": str(item.get("id", "")),
                 "rank": idx,
-                "image_url": item.get("artworkUrl100", "").replace("100x100bb", "500x500bb"),
-                "url": item.get("url", ""),
-                "artist_name": artist_name,
-                "release_date": item.get("releaseDate", ""),
-                "genre_names": " | ".join([g for g in genres if g]),
+                "image_url": build_artwork_url(attrs.get("artwork"), size=500),
+                "url": attrs.get("url", ""),
+                "artist_name": clean_text(attrs.get("artistName", "")),
+                "release_date": attrs.get("releaseDate", ""),
+                "genre_names": genre_names,
             }
         )
     return albums
@@ -72,7 +80,12 @@ def main() -> None:
     args = parse_args()
     countries = [c.lower() for c in args.countries]
     today = args.run_date
+
     session = build_session()
+    token = fetch_musickit_token(session) or fetch_musickit_token(session, refresh=True)
+    if not token:
+        raise RuntimeError("Could not extract Apple Music developer token")
+    session.headers.update(build_auth_headers(token))
 
     previous_by_id = load_previous_ranks(
         CSV_PATH,
@@ -88,7 +101,14 @@ def main() -> None:
 
     rows: list[dict] = []
     for country in countries:
-        albums = fetch_country(session, country)
+        try:
+            albums = fetch_country(session, country)
+        except RuntimeError:
+            token = fetch_musickit_token(session, refresh=True)
+            if not token:
+                raise
+            session.headers.update(build_auth_headers(token))
+            albums = fetch_country(session, country)
         print(f"{country}: {len(albums)} Taylor Swift album(s)")
         for album in albums:
             key_by_id = (country, album["apple_music_id"])
