@@ -5940,6 +5940,12 @@
       "streams": 3577326,
       "previous_rank": 150,
       "peak_rank": 1
+    },
+    "2026-03-31": {
+      "rank": 15,
+      "streams": 3583344,
+      "previous_rank": 160,
+      "peak_rank": 1
     }
   },
   "Opalite": {
@@ -6854,6 +6860,12 @@
       "rank": 74,
       "streams": 1851408,
       "previous_rank": 800,
+      "peak_rank": 2
+    },
+    "2026-03-31": {
+      "rank": 65,
+      "streams": 1933868,
+      "previous_rank": 740,
       "peak_rank": 2
     }
   },
@@ -8622,6 +8634,12 @@
       "rank": 178,
       "streams": 1275257,
       "previous_rank": 1480,
+      "peak_rank": 12
+    },
+    "2026-03-31": {
+      "rank": 177,
+      "streams": 1299792,
+      "previous_rank": 1780,
       "peak_rank": 12
     }
   },
@@ -56548,6 +56566,11 @@
       "rank": 184,
       "streams": 1287013,
       "previous_rank": 175
+    },
+    "2026-03-31": {
+      "rank": 115,
+      "streams": 1479902,
+      "peak_rank": 2
     }
   },
   "Father Figure": {

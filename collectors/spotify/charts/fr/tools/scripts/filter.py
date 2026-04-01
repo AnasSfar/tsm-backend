@@ -34,7 +34,7 @@ from playwright.sync_api import sync_playwright
 
 sys.path.insert(0, str(Path(__file__).parents[4]))
 from core.fmt import fmt_delta, fmt_streams, fmt_streams_delta
-from core.history import load, parse_date, save, update
+from core.history import load, parse_date, save, update, calculate_total_days, calculate_streak
 from core.logger import Logger
 
 from config import LASTFM_API_KEY
@@ -870,6 +870,21 @@ def process_one(chart_date: str, db, ts_history):
     ts_df  = df[df["artist_names"].astype(str).str.contains(TS_NAME, case=False, na=False)].copy()
     ts_pop = pop_df[pop_df["artist_names"].astype(str).str.contains(TS_NAME, case=False, na=False)].copy()
 
+    # Calculer DAYS (total unique) et STREAK (consécutif)
+    # Le 'total_days' de Spotify = jours consécutifs = renommer en spotify_streak temporairement
+    # Puis calculer le vrai total_days et streak
+    if not ts_df.empty:
+        total_days_list = []
+        streak_list = []
+        for _, row in ts_df.iterrows():
+            track = str(row.get("track_name", ""))
+            td = calculate_total_days(ts_history, track, chart_date)
+            st = calculate_streak(ts_history, track, chart_date)
+            total_days_list.append(td)
+            streak_list.append(st)
+        ts_df["total_days"] = total_days_list
+        ts_df["streak"] = streak_list
+    
     # Pop history : déterminer NEW vs RE-ENTRY
     try:
         ts_pop_history = json.loads(TS_POP_HISTORY_PATH.read_text(encoding="utf-8")) if TS_POP_HISTORY_PATH.exists() else {}
@@ -959,7 +974,7 @@ def append_to_archive_csv(chart_date: str, ts_df) -> None:
     with ARCHIVE_CSV.open("a", newline="", encoding="utf-8") as f:
         w = _csv.writer(f)
         if write_header:
-            w.writerow(["date", "song_name", "rank", "streams", "previous_rank", "peak_rank", "total_days"])
+            w.writerow(["date", "song_name", "rank", "streams", "previous_rank", "peak_rank", "total_days", "streak"])
         for _, row in ts_df.iterrows():
             w.writerow([
                 chart_date,
@@ -969,6 +984,7 @@ def append_to_archive_csv(chart_date: str, ts_df) -> None:
                 _v(row.get("previous_rank")),
                 _v(row.get("peak_rank")),
                 _v(row.get("total_days")),
+                _v(row.get("streak")),
             ])
     print(f"  Archive CSV mise à jour pour {chart_date} ({len(ts_df)} chansons)")
 

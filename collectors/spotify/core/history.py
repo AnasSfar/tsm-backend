@@ -134,3 +134,52 @@ def rebuild_from_csvs(root: Path, chart_id_prefix: str) -> dict:
             )
 
     return history
+
+
+def calculate_total_days(history: dict, track: str, chart_date: str) -> int:
+    """Compte le nombre UNIQUE de jours où la chanson a été sur le chart.
+    
+    DAYS = total de tous les jours uniques où la chanson a charté,
+           peu importe les interruptions/sorties/rentrées.
+    """
+    if track not in history:
+        return 0
+    entries = history[track]
+    # Compte tous les jours uniques <= chart_date
+    count = sum(1 for d in entries if d <= chart_date)
+    return count
+
+
+def calculate_streak(history: dict, track: str, chart_date: str) -> int:
+    """Calcule le nombre CONSÉCUTIF de jours depuis la dernière apparition.
+    
+    STREAK = jours consécutifs en remontant depuis chart_date.
+             Reset à 0 si la chanson n'y était pas le jour d'avant.
+    """
+    from datetime import timedelta
+    
+    if track not in history:
+        return 0
+    
+    entries = history[track]
+    current_date = parse_date(chart_date)
+    
+    if current_date is None:
+        return 0
+    
+    # Si la chanson n'est pas dans le chart aujourd'hui, streak = 0
+    if chart_date not in entries:
+        return 0
+    
+    # Compter consécutif en remontant
+    streak = 0
+    check_date = current_date
+    while True:
+        check_date_str = str(check_date)
+        if check_date_str in entries:
+            streak += 1
+            check_date -= timedelta(days=1)
+        else:
+            break
+    
+    return streak

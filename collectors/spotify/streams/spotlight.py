@@ -1,13 +1,22 @@
 #!/usr/bin/env python3
 """
-spotlight.py — scrape une chanson et génère une image "spotlight" carrée.
+spotlight.py — scrape une chanson et génère une image "spotlight" carrée, puis poste sur Twitter.
 
 Usage:
-  python spotlight.py "Cruel Summer"
   python spotlight.py "Cruel Summer" 2026-03-21
-  python spotlight.py --url https://open.spotify.com/track/1BxfuPKGuaTgP7aM0Bbdwr
-  python spotlight.py "Cruel Summer" --post
-  python spotlight.py "Cruel Summer" --no-scrape   # utilise l'historique uniquement
+  python spotlight.py "Cruel Summer" 2026-03-21 --no-post
+  python spotlight.py --url https://open.spotify.com/track/1BxfuPKGuaTgP7aM0Bbdwr 2026-03-21
+
+Options:
+  --no-post   : Generate image but skip Twitter posting (default: will post)
+  --no-scrape : Use history CSV total only, skip live scraping or API retry
+  --url URL   : Provide Spotify track URL instead of title
+
+Behavior:
+  1. If stream data exists in history for the given date: use it (fast path)
+  2. If missing and --no-scrape NOT used: try API retry every 60s (infinite loop)
+  3. Otherwise: fall back to Playwright scraping (legacy)
+  4. By default: posts to Twitter (use --no-post to suppress)
 """
 from __future__ import annotations
 
@@ -18,11 +27,14 @@ import csv
 import json
 import re
 import sys
+import threading
+import time
 import unicodedata
 import urllib.request
 from datetime import date as date_cls, timedelta
 from pathlib import Path
 
+import requests as _requests
 from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
 
 try:
@@ -47,6 +59,12 @@ sys.path.insert(0, str(SCRIPT_DIR.parent))  # collectors/spotify/ for core.*
 HANDLE          = "@swiftiescharts"
 PAGE_TIMEOUT_MS = 20_000
 
+# ── API GraphQL Spotify ───────────────────────────────────────────────────────
+GRAPHQL_URL   = "https://api-partner.spotify.com/pathfinder/v2/query"
+GETTRACK_HASH = "612585ae06ba435ad26369870deaae23b5c8800a256cd8a57e08eddc25a37294"
+APP_VERSION   = "1.2.87.30.gc764ebf1"
+API_RETRY_SLEEP_SECONDS = 60
+
 # ── Helpers ───────────────────────────────────────────────────────────────────
 def _norm(s: str) -> str:
     s = unicodedata.normalize("NFKD", s)
@@ -57,6 +75,25 @@ def _norm(s: str) -> str:
 def _extract_track_id(url: str) -> str | None:
     m = re.search(r"track/([A-Za-z0-9]+)", url)
     return m.group(1) if m else None
+
+
+def _clean_title_for_filename(title: str) -> str:
+    """Convert track title to safe filename part: 'Cruel Summer' -> 'Cruel_Summer'."""
+    # Keep alphanumerics, spaces, hyphens, apostrophes
+    title = title.strip()
+    # Replace spaces and special chars with underscore
+    title = re.sub(r"[^\w\s-]", "", title)  # Remove most special chars
+    title = re.sub(r"[\s-]+", "_", title)   # Replace spaces/hyphens with underscore
+    return title
+
+
+def _validate_date(date_str: str) -> bool:
+    """Validate YYYY-MM-DD format."""
+    try:
+        date_cls.fromisoformat(date_str)
+        return True
+    except ValueError:
+        return False
 
 
 def _fmt(n: int | None) -> str:
@@ -148,6 +185,217 @@ def _cover_palette(img_bytes: bytes) -> tuple[str, str]:
     except Exception:
         return _FALLBACK
 
+# ── API Token Management ──────────────────────────────────────────────────────
+class TokenManager:
+    """
+    Capture Bearer + client-token depuis Spotify une seule fois via Playwright.
+    Thread-safe : sur 401, un seul thread re-capture, les autres attendent.
+    """
+
+    def __init__(self) -> None:
+        self._tokens: dict = {}
+        self._lock = threading.Lock()
+        self._recapturing = threading.Event()
+
+    def capture(self) -> bool:
+        """Ouvre Playwright, charge une track, capture les tokens. Retourne True si succès."""
+        tokens: dict = {}
+
+        def on_request(req):
+            if "api-partner.spotify.com" in req.url and not tokens.get("bearer"):
+                auth = req.headers.get("authorization", "")
+                ct   = req.headers.get("client-token", "")
+                if auth.startswith("Bearer ") and ct:
+                    tokens["bearer"]       = auth[7:]
+                    tokens["client_token"] = ct
+
+        print("TokenManager: capture des tokens Spotify via Playwright…")
+        ctx_kwargs: dict = {
+            "user_agent": (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 Chrome/133.0.0.0 Safari/537.36"
+            ),
+        }
+
+        p = sync_playwright().start()
+        browser = None
+        try:
+            browser = p.chromium.launch(
+                headless=True,
+                args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
+            )
+            ctx  = browser.new_context(**ctx_kwargs)
+            page = ctx.new_page()
+            page.on("request", on_request)
+            page.goto(
+                "https://open.spotify.com/track/0V3wPSX9ygBnCm8psDIegu",
+                wait_until="domcontentloaded",
+                timeout=30_000,
+            )
+            deadline = time.time() + 20
+            while not tokens.get("bearer") and time.time() < deadline:
+                page.wait_for_timeout(300)
+        except Exception as e:
+            print(f"TokenManager: erreur capture: {e}")
+        finally:
+            try:
+                browser.close()
+            except Exception:
+                pass
+            try:
+                p.stop()
+            except Exception:
+                pass
+
+        if tokens.get("bearer"):
+            with self._lock:
+                self._tokens = tokens
+            print(f"TokenManager: Bearer capturé ({tokens['bearer'][:20]}…)")
+            return True
+        print("TokenManager: échec de capture des tokens")
+        return False
+
+    def get(self) -> dict:
+        with self._lock:
+            return dict(self._tokens)
+
+    def mark_expired(self) -> None:
+        """Appelé sur 401 — déclenche une re-capture (un seul thread à la fois)."""
+        if self._recapturing.is_set():
+            while self._recapturing.is_set():
+                time.sleep(0.5)
+            return
+        self._recapturing.set()
+        try:
+            self.capture()
+        finally:
+            self._recapturing.clear()
+
+    @property
+    def available(self) -> bool:
+        with self._lock:
+            return bool(self._tokens.get("bearer"))
+
+
+def fetch_playcount_api(
+    track_id: str,
+    token_mgr: TokenManager,
+    session: _requests.Session,
+) -> int | None:
+    """
+    Récupère le playcount via l'API GraphQL Spotify.
+    Retourne un int, ou None si la track n'est pas trouvée / erreur.
+    Sur 401, déclenche une re-capture des tokens et retente une fois.
+    """
+    tokens = token_mgr.get()
+    if not tokens.get("bearer"):
+        return None
+
+    body = {
+        "variables":     {"uri": f"spotify:track:{track_id}"},
+        "operationName": "getTrack",
+        "extensions":    {
+            "persistedQuery": {
+                "version":    1,
+                "sha256Hash": GETTRACK_HASH,
+            }
+        },
+    }
+
+    for attempt in range(2):
+        headers = {
+            "Authorization":       f"Bearer {tokens['bearer']}",
+            "client-token":        tokens["client_token"],
+            "spotify-app-version": APP_VERSION,
+            "app-platform":        "WebPlayer",
+            "Accept":              "application/json",
+            "Content-Type":        "application/json;charset=UTF-8",
+            "Origin":              "https://open.spotify.com",
+            "Referer":             "https://open.spotify.com/",
+            "User-Agent":          (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 Chrome/133.0.0.0 Safari/537.36"
+            ),
+        }
+        try:
+            resp = session.post(GRAPHQL_URL, json=body, headers=headers, timeout=15)
+            if resp.status_code == 200:
+                data = resp.json()
+                track_union = (data.get("data") or {}).get("trackUnion") or {}
+                pc = track_union.get("playcount")
+                if pc is not None:
+                    return int(pc)
+                m = re.search(r'"playcount":\s*"(\d+)"', json.dumps(data))
+                return int(m.group(1)) if m else None
+            elif resp.status_code == 401 and attempt == 0:
+                print("  [API] 401 — re-capture des tokens…")
+                token_mgr.mark_expired()
+                tokens = token_mgr.get()
+                if not tokens.get("bearer"):
+                    return None
+                continue
+            else:
+                return None
+        except Exception:
+            return None
+    return None
+
+
+def fetch_stream_with_retry(track_id: str, stats_date: str, total_yesterday: int | None) -> int | None:
+    """
+    Fetch stream data from API, retrying every minute until available.
+    Returns total streams for the track on stats_date, or None if unavailable.
+    Updates streams_history.csv with fetched data.
+    """
+    token_mgr = TokenManager()
+    session = _requests.Session()
+    retry_count = 0
+    
+    print(f"\nFetching stream data for {track_id} on {stats_date}…")
+    
+    while True:
+        if not token_mgr.available:
+            print(f"Attempt {retry_count + 1}: Capturing Spotify tokens…")
+            token_mgr.capture()
+        
+        if not token_mgr.available:
+            print(f"Attempt {retry_count + 1}: Token capture failed, will retry…")
+            retry_count += 1
+            time.sleep(API_RETRY_SLEEP_SECONDS)
+            continue
+        
+        try:
+            total_today = fetch_playcount_api(track_id, token_mgr, session)
+            
+            if total_today is not None:
+                # Calculate daily streams
+                daily_today = None
+                if total_yesterday is not None and total_yesterday > 0:
+                    daily_today = max(0, total_today - total_yesterday)
+                else:
+                    daily_today = ""
+                
+                # Check if data is actually updated: daily should be > 0 if we have yesterday's data
+                # If daily == 0 and we have yesterday data, it likely means Spotify hasn't updated yet
+                if daily_today == 0 and total_yesterday is not None:
+                    print(f"Attempt {retry_count + 1}: Total unchanged since yesterday (data not yet updated), retrying in {API_RETRY_SLEEP_SECONDS}s…")
+                    retry_count += 1
+                    time.sleep(API_RETRY_SLEEP_SECONDS)
+                    continue
+                
+                # Data is valid and updated, return it (don't write to CSV - that's update_streams.py's job)
+                print(f"  ✓ Data acquired! Total: {total_today:,}, Daily: {daily_today}")
+                return total_today
+            
+            print(f"Attempt {retry_count + 1}: Stream data not yet available, retrying in {API_RETRY_SLEEP_SECONDS}s…")
+            retry_count += 1
+            time.sleep(API_RETRY_SLEEP_SECONDS)
+            
+        except Exception as e:
+            print(f"Attempt {retry_count + 1}: API error: {e}, retrying in {API_RETRY_SLEEP_SECONDS}s…")
+            retry_count += 1
+            time.sleep(API_RETRY_SLEEP_SECONDS)
+
 # ── Discography ───────────────────────────────────────────────────────────────
 def load_all_tracks() -> list[dict]:
     tracks = []
@@ -189,20 +437,135 @@ def load_all_tracks() -> list[dict]:
                 "artist":     t.get("primary_artist") or (artists[0] if artists else "Taylor Swift"),
                 "spotify_url": f"https://open.spotify.com/track/{tid}",
                 "image_url":  (t.get("image_url") or "").strip(),
+                "type":       t.get("type", "album"),
+                "single_image": (t.get("single_image") or "").strip(),
+                "song_family": t.get("song_family", ""),
                 "album":      section.get("album", ""),
             })
     return tracks
 
 
 def find_track(query: str, tracks: list[dict]) -> dict | None:
+    """Find a track by ID, exact name, or fuzzy substring matching."""
     tid = _extract_track_id(query)
     if tid:
         return next((t for t in tracks if t["track_id"] == tid), None)
+    
     q = _norm(query)
+    
+    # Exact match (normalized)
     exact = next((t for t in tracks if _norm(t["title"]) == q), None)
     if exact:
         return exact
-    return next((t for t in tracks if q in _norm(t["title"])), None)
+    
+    # Substring match (normalized)
+    substring = next((t for t in tracks if q in _norm(t["title"])), None)
+    if substring:
+        return substring
+    
+    # Fuzzy match: search for tracks that contain multiple words from the query
+    # This handles cases like "Elizabeth Taylor (So Glamourous Cabaret Version)"
+    # matching "Elizabeth Taylor" in the discography
+    query_words = set(w for w in q.split("_") if w and len(w) > 2)  # Filter short words
+    if query_words:
+        best_match = None
+        best_score = 0
+        
+        for track in tracks:
+            track_words = set(w for w in _norm(track["title"]).split("_") if w and len(w) > 2)
+            # Calculate how many query words match in the track title
+            matching_words = len(query_words & track_words)
+            if matching_words > best_score:
+                best_score = matching_words
+                best_match = track
+        
+        if best_match and best_score > 0:
+            return best_match
+    
+    return None
+
+
+def _get_song_family_single_image_map() -> dict:
+    """Returns {song_family → single_image} mapping for version inheritance."""
+    family_map = {}
+    
+    all_sections = []
+    if ALBUMS_DIR.exists():
+        for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
+            try:
+                payload = json.loads(album_file.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            album_name = payload.get("album", "") if isinstance(payload, dict) else ""
+            for section in payload.get("sections", []) if isinstance(payload, dict) else []:
+                if not isinstance(section, dict):
+                    continue
+                item = dict(section)
+                if not item.get("album"):
+                    item["album"] = album_name
+                all_sections.append(item)
+    
+    if SONGS_JSON.exists():
+        try:
+            all_sections.extend(json.loads(SONGS_JSON.read_text(encoding="utf-8")))
+        except Exception:
+            pass
+    
+    for section in all_sections:
+        for t in section.get("tracks", []):
+            song_family = t.get("song_family", "")
+            single_image = (t.get("single_image") or "").strip()
+            if song_family and single_image and str(single_image).startswith("http"):
+                family_map[song_family] = single_image
+    
+    return family_map
+
+
+def get_cover_url(track: dict, covers: dict) -> str:
+    """
+    Returns cover URL for a track.
+    
+    Priority:
+      - If type == "standalone" or "alternate_version":
+        * single_image (from same song_family) > image_url (NEVER album cover)
+      - Otherwise: covers.json (album) > image_url
+    """
+    track_type = track.get("type", "album")
+    track_img = track.get("image_url", "")
+    single_img = track.get("single_image", "")
+    song_family = track.get("song_family", "")
+    album = track.get("album", "")
+    
+    # Singles et versions alternatives : JAMAIS d'album cover
+    if track_type in ("standalone", "alternate_version"):
+        # Check if this track's song_family has a single_image
+        family_map = _get_song_family_single_image_map()
+        if song_family and song_family in family_map:
+            family_img = family_map[song_family]
+            if str(family_img).startswith("http"):
+                return family_img
+        
+        # Own single_image
+        if single_img and str(single_img).startswith("http"):
+            return single_img
+        
+        # Track image fallback
+        if track_img and str(track_img).startswith("http"):
+            return track_img
+        
+        return ""
+    
+    # Tracks normaux : priorité album cover → image_url
+    if album:
+        cover = covers.get(_norm(album), "")
+        if cover and str(cover).startswith("http"):
+            return cover
+    
+    # Track image fallback
+    if track_img and str(track_img).startswith("http"):
+        return track_img
+    
+    return ""
 
 
 def load_covers() -> dict:
@@ -619,9 +982,10 @@ def generate_spotlight_image(
     )
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    tid      = track["track_id"]
-    out_path = OUT_DIR / f"{stats_date}_{tid}.png"
-    tmp_html = OUT_DIR / f"_spotlight_{tid}.html"
+    tid           = track["track_id"]
+    title_clean   = _clean_title_for_filename(track["title"])
+    out_path      = OUT_DIR / f"{title_clean}__{stats_date}.png"
+    tmp_html      = OUT_DIR / f"_spotlight_{tid}.html"
     tmp_html.write_text(html, encoding="utf-8")
 
     try:
@@ -641,13 +1005,13 @@ def generate_spotlight_image(
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Spotlight image for one Taylor Swift track.")
-    parser.add_argument("title", nargs="?", help="Track title (or Spotify URL)")
-    parser.add_argument("date",  nargs="?", help="Stats date YYYY-MM-DD (default: yesterday)")
-    parser.add_argument("--url",       help="Spotify track URL (alternative to title positional arg)")
-    parser.add_argument("--post",      action="store_true", help="Post to Twitter after generating")
-    parser.add_argument("--no-post",   action="store_true", help="Generate image but skip Twitter posting")
-    parser.add_argument("--no-scrape", action="store_true", help="Use history CSV total, skip live scraping")
+    parser = argparse.ArgumentParser(description="Spotlight image for one Taylor Swift track with Twitter posting.")
+    parser.add_argument("title", nargs="?", help="Track title (or use --url for Spotify URL)")
+    parser.add_argument("date",  help="Stats date YYYY-MM-DD (required)")
+    parser.add_argument("--url",       help="Spotify track URL (alternative to title)")
+    parser.add_argument("--no-post",   action="store_true", help="Generate image but skip Twitter posting (default: will post)")
+    parser.add_argument("--no-scrape", action="store_true", help="Use history CSV total only, skip API and scraping")
+    parser.add_argument("--post",      action="store_true", help="[Deprecated] Explicitly post to Twitter (now default)")
     args = parser.parse_args()
 
     query = args.url or args.title
@@ -655,7 +1019,12 @@ def main() -> None:
         parser.print_help()
         sys.exit(1)
 
-    stats_date = args.date or str(date_cls.today() - timedelta(days=1))
+    # Validate date format
+    if not _validate_date(args.date):
+        print(f"Invalid date format: {args.date!r}. Use YYYY-MM-DD.")
+        sys.exit(1)
+
+    stats_date = args.date
 
     tracks = load_all_tracks()
     track  = find_track(query, tracks)
@@ -669,20 +1038,34 @@ def main() -> None:
     total_today_hist, total_yesterday, daily_today_hist, daily_yesterday = load_history_for_track(track["track_id"], stats_date)
     print(f"History    : today={total_today_hist}, yesterday={total_yesterday}, daily_today={daily_today_hist}, daily_yesterday={daily_yesterday}")
 
-    if total_today_hist is not None:
+    # Validate history data: if daily==0 and we have yesterday data, it's not fully updated yet
+    history_is_valid = True
+    if total_today_hist is not None and total_yesterday is not None:
+        if daily_today_hist == 0:
+            print("[!] History data found but not fully updated (daily=0 despite yesterday data). Will attempt API refresh…")
+            history_is_valid = False
+
+    if total_today_hist is not None and history_is_valid:
         total_scraped = total_today_hist
-        print(f"Data already in history, skipping scrape : {total_scraped:,}")
+        print(f"Data found in history, using it : {total_scraped:,}")
     elif args.no_scrape:
-        print("No history data available and --no-scrape specified. Aborting.")
+        print("No valid history data available and --no-scrape specified. Aborting.")
         sys.exit(1)
     else:
-        total_scraped = scrape_track(track)
+        # Try API retry first
+        print("History data not found or not fully updated. Attempting API fetch with retry loop…")
+        total_scraped = fetch_stream_with_retry(track["track_id"], stats_date, total_yesterday)
+        
         if total_scraped is None:
-            print("Scrape failed and no history available. Aborting.")
-            sys.exit(1)
+            # Fallback to Playwright scraping
+            print("\nAPI retry completed. Falling back to Playwright scrape…")
+            total_scraped = scrape_track(track)
+            if total_scraped is None:
+                print("Scrape failed and no history available. Aborting.")
+                sys.exit(1)
 
     covers    = load_covers()
-    cover_url = covers.get(_norm(track["album"]), "") or track.get("image_url", "")
+    cover_url = get_cover_url(track, covers)
     if not cover_url:
         print("Warning: no cover found.")
 
@@ -695,24 +1078,50 @@ def main() -> None:
         stats_date      = stats_date,
     )
 
-    post_requested = args.post and not args.no_post
+    # New default: POST to Twitter unless --no-post is specified
+    post_requested = not args.no_post
+    
+    # Generate tweet text (shown in all cases)
+    from datetime import datetime
+    date_obj = datetime.strptime(stats_date, "%Y-%m-%d")
+    date_fmt = date_obj.strftime("%B %d")
+    
+    daily = (total_scraped - total_yesterday) if total_yesterday else None
+    daily_fmt = _fmt(daily) if daily and daily >= 0 else "?"
+    total_fmt = _fmt(total_scraped)
+    
+    # For tweet text, use simpler formatting without special unicode characters
+    daily_tweet = f"{int(daily):,}" if daily and daily >= 0 else "?"
+    total_tweet = f"{int(total_scraped):,}"
+    
+    # Calculate percentage gain: compare daily streams today vs yesterday
+    pct_str = ""
+    if daily is not None and daily > 0 and daily_yesterday and daily_yesterday > 0:
+        pct_gain = ((daily - daily_yesterday) / daily_yesterday) * 100
+        pct_str = f"({pct_gain:+.1f}%)"
+    
+    tweet = f"[STREAMS] | {track['title']} earned {total_tweet} streams on {date_fmt}. The song gained {daily_tweet} streams {pct_str}"
+    print(f"\nTweet : {tweet}")
+    
+    # Post to Twitter if requested
     if post_requested:
         if not TWITTER_SESSION.exists():
             print(f"Twitter session not found: {TWITTER_SESSION}")
-            sys.exit(1)
-        from core.twitter import post_with_image
-        daily     = (total_scraped - total_yesterday) if total_yesterday else None
-        daily_fmt = _fmt(daily) if daily and daily >= 0 else "?"
-        tweet     = f"✨ {track['title']}\n{daily_fmt} streams yesterday"
-        print(f"Tweet : {tweet}")
-        success = post_with_image(tweet, img_path, TWITTER_SESSION)
-        if success:
-            print("Posté avec succès.")
+            print("Generate image successfully, but skipping Twitter post.")
         else:
-            print("Échec du post.")
-            sys.exit(1)
-    elif args.no_post:
-        print("Twitter post skipped (--no-post).")
+            try:
+                from core.twitter import post_with_image
+                success = post_with_image(tweet, img_path, TWITTER_SESSION)
+                if success:
+                    print("✓ Posté avec succès.")
+                else:
+                    print("✗ Échec du post Twitter.")
+                    sys.exit(1)
+            except ImportError as e:
+                print(f"Twitter module not available: {e}")
+                print("Image generated successfully, but could not post to Twitter.")
+    else:
+        print("\nTwitter post suppressed (--no-post).")
 
 
 if __name__ == "__main__":

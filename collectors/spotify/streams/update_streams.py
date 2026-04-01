@@ -2775,7 +2775,6 @@ def main():
         and not debug_daily_mode
         and not summary["all_done"]
         and summary["pending_this_run"] > summary["total_tracks"] // 2
-        and retry_round < MAX_PENDING_RETRY_ROUNDS
     ):
         retry_round += 1
 
@@ -2895,19 +2894,19 @@ def main():
         )
         print("Expected milestones forecast done.")
 
+        print("Updating track image URLs from Spotify (cache-aware)...")
+        subprocess.run(
+            [sys.executable, str(_SCRIPT_DIR / "extras" / "update_all_track_images.py")],
+            check=False,
+        )
+        print("Track image scrape done.")
+
         print("Refreshing image URLs + track_covers.json...")
         subprocess.run(
             [sys.executable, str(_REPO_ROOT / "scripts" / "fill_images.py")],
             check=True,
         )
-        print("Image URLs done.")
-
-        print("Fetching missing track cover images from Spotify...")
-        subprocess.run(
-            [sys.executable, str(_SCRIPT_DIR / "extras" / "fill_track_images.py")],
-            check=False,
-        )
-        print("Track cover images done.")
+        print("Image URLs and track_covers.json done.")
 
         post_script = _SCRIPT_DIR / "tools" / "scripts" / "post_streams_twitter.py"
         if all_album_tracks_done(summary["stats_date"]):

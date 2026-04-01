@@ -1,18 +1,22 @@
 {
   "The Fate of Ophelia": {
-    "days": 179,
-    "date": "2026-03-30"
+    "days": 180,
+    "date": "2026-03-31"
   },
   "Opalite": {
-    "days": 179,
-    "date": "2026-03-30"
+    "days": 180,
+    "date": "2026-03-31"
   },
   "Style": {
-    "days": 24,
-    "date": "2026-03-30"
+    "days": 353,
+    "date": "2026-03-31"
   },
   "Cruel Summer": {
     "days": 1,
     "date": "2026-03-24"
+  },
+  "Elizabeth Taylor": {
+    "days": 63,
+    "date": "2026-03-31"
   }
 }

@@ -136,7 +136,7 @@ def load_track_album_map() -> dict:
 
 
 def load_song_db() -> dict:
-    """Returns {track_id: {title, artist, image_url}} from discography JSONs."""
+    """Returns {track_id: {title, artist, image_url, type, single_image, song_family}} from discography JSONs."""
     import re as _re
     result = {}
 
@@ -155,6 +155,9 @@ def load_song_db() -> dict:
                     "title":     (t.get("title") or "").strip(),
                     "artist":    t.get("primary_artist") or (artists[0] if artists else "Taylor Swift"),
                     "image_url": (t.get("image_url") or "").strip(),
+                    "type":      t.get("type", "album"),
+                    "single_image": (t.get("single_image") or "").strip(),
+                    "song_family": t.get("song_family", ""),
                 }
 
     if ALBUMS_DIR.exists():
@@ -198,6 +201,86 @@ def load_history(target_date: str) -> tuple[list[dict], list[dict]]:
                 yesterday_rows[row["track_id"]] = entry
 
     return list(today_rows.values()), list(yesterday_rows.values())
+
+
+def _get_song_family_single_image_map() -> dict:
+    """Returns {song_family → single_image} mapping for version inheritance."""
+    family_map = {}
+    
+    if ALBUMS_DIR.exists():
+        for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
+            try:
+                payload = json.loads(album_file.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            for section in payload.get("sections", []) if isinstance(payload, dict) else []:
+                for t in section.get("tracks", []):
+                    song_family = t.get("song_family", "")
+                    single_image = (t.get("single_image") or "").strip()
+                    if song_family and single_image and str(single_image).startswith("http"):
+                        family_map[song_family] = single_image
+    
+    if (DB_DIR / "discography" / "songs.json").exists():
+        try:
+            groups = json.loads((DB_DIR / "discography" / "songs.json").read_text(encoding="utf-8"))
+        except Exception:
+            groups = []
+        for group in groups:
+            for t in group.get("tracks", []):
+                song_family = t.get("song_family", "")
+                single_image = (t.get("single_image") or "").strip()
+                if song_family and single_image and str(single_image).startswith("http"):
+                    family_map[song_family] = single_image
+    
+    return family_map
+
+
+def get_cover_url(entry: dict, cover_map: dict, track_album_map: dict) -> str:
+    """
+    Returns cover URL for a stream entry (row from history CSV).
+    
+    Priority:
+      - If type == "standalone" or "alternate_version":
+        * single_image (from same song_family) > image_url (NEVER album cover)
+      - Otherwise: covers.json (album) > image_url
+    """
+    track_type = entry.get("type", "album")
+    track_img = entry.get("image_url", "")
+    single_img = entry.get("single_image", "")
+    song_family = entry.get("song_family", "")
+    title = entry.get("title", "")
+    
+    # Singles et versions alternatives : JAMAIS d'album cover
+    if track_type in ("standalone", "alternate_version"):
+        # Check if this track's song_family has a single_image
+        family_map = _get_song_family_single_image_map()
+        if song_family and song_family in family_map:
+            family_img = family_map[song_family]
+            if str(family_img).startswith("http"):
+                return family_img
+        
+        # Own single_image
+        if single_img and str(single_img).startswith("http"):
+            return single_img
+        
+        # Track image fallback
+        if track_img and str(track_img).startswith("http"):
+            return track_img
+        
+        return ""
+    
+    # Tracks normaux : priorité album cover → image_url
+    album_name = track_album_map.get(_norm(title), "")
+    if album_name:
+        cover = cover_map.get(_norm(album_name), "")
+        if cover and str(cover).startswith("http"):
+            return cover
+    
+    # Track image fallback
+    if track_img and str(track_img).startswith("http"):
+        return track_img
+    
+    return ""
 
 
 def get_latest_date() -> str:
@@ -414,11 +497,7 @@ def prefetch_images(top15: list[dict], cover_map: dict, track_album_map: dict) -
     """Resolve cover URLs for all top15 entries and return {url: data_uri}."""
     urls = set()
     for entry in top15:
-        img_url = entry.get("image_url", "")
-        album_name = track_album_map.get(_norm(entry["title"]), "")
-        cover_url = cover_map.get(_norm(album_name), "") if album_name else ""
-        if not cover_url:
-            cover_url = img_url
+        cover_url = get_cover_url(entry, cover_map, track_album_map)
         if cover_url:
             urls.add(cover_url)
 
@@ -444,11 +523,8 @@ def build_rows_html(top15: list[dict], cover_map: dict, track_album_map: dict,
         yest    = entry.get("daily_streams_yesterday")
         img_url = entry.get("image_url", "")
 
-        # Cover lookup: discography → fallback to scraped URL
-        album_name = track_album_map.get(_norm(title), "")
-        cover_url  = cover_map.get(_norm(album_name), "") if album_name else ""
-        if not cover_url:
-            cover_url = img_url
+        # Cover lookup using new priority logic
+        cover_url = get_cover_url(entry, cover_map, track_album_map)
 
         # Use pre-fetched data URI so Playwright doesn't need network access
         if image_cache and cover_url:

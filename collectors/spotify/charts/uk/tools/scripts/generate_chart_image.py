@@ -202,6 +202,55 @@ def _get_track_image_map() -> dict:
     return _track_image_map
 
 
+_track_metadata_map: dict | None = None
+_song_family_single_image_map: dict | None = None
+
+def _get_song_family_single_image_map() -> dict:
+    """Returns {song_family → single_image} mapping for version inheritance."""
+    global _song_family_single_image_map
+    if _song_family_single_image_map is None:
+        _song_family_single_image_map = {}
+        albums_dir = DISCOGRAPHY_ROOT / "albums"
+        if albums_dir.exists():
+            for album_file in sorted(albums_dir.glob("*.json"), key=lambda p: p.name.casefold()):
+                try:
+                    payload = json.loads(album_file.read_text(encoding="utf-8"))
+                    for section in payload.get("sections", []) if isinstance(payload, dict) else []:
+                        for track in section.get("tracks", []):
+                            song_family = track.get("song_family", "")
+                            single_image = (track.get("single_image") or "").strip()
+                            if song_family and single_image and str(single_image).startswith("http"):
+                                _song_family_single_image_map[song_family] = single_image
+                except Exception:
+                    pass
+    return _song_family_single_image_map
+
+def _get_track_metadata_map() -> dict:
+    """Returns {normalized_track_title → {type, image_url, single_image, song_family, album}} for priority logic."""
+    global _track_metadata_map
+    if _track_metadata_map is None:
+        _track_metadata_map = {}
+        albums_dir = DISCOGRAPHY_ROOT / "albums"
+        if albums_dir.exists():
+            for album_file in sorted(albums_dir.glob("*.json"), key=lambda p: p.name.casefold()):
+                try:
+                    payload = json.loads(album_file.read_text(encoding="utf-8"))
+                    for section in payload.get("sections", []) if isinstance(payload, dict) else []:
+                        for track in section.get("tracks", []):
+                            title = track.get("title", "")
+                            if title:
+                                _track_metadata_map[_norm(title)] = {
+                                    "type": track.get("type", "album"),
+                                    "image_url": (track.get("image_url") or "").strip(),
+                                    "single_image": (track.get("single_image") or "").strip(),
+                                    "song_family": track.get("song_family", ""),
+                                    "album": track.get("album", ""),
+                                }
+                except Exception:
+                    pass
+    return _track_metadata_map
+
+
 def get_album_cover(
     track_name: str,
     track_album_map: dict,
@@ -210,21 +259,50 @@ def get_album_cover(
 ) -> str:
     """
     Returns cover URL for a track.
-    Priority: covers.json (album) > albums/*.json per-track image_url > scraped Spotify CDN URL.
+    
+    Priority:
+      - If type == "standalone" or "alternate_version": 
+        * single_image (from same song_family) > image_url > fallback_url (NEVER album cover)
+      - Otherwise: covers.json (album) > image_url > fallback_url
     """
-    # PrioritÃ© 1 : cover album depuis covers.json (fiable)
-    album_name = track_album_map.get(_norm(track_name), "")
+    norm_track = _norm(track_name)
+    metadata = _get_track_metadata_map().get(norm_track, {})
+    track_type = metadata.get("type", "album")
+    track_img = metadata.get("image_url", "")
+    single_img = metadata.get("single_image", "")
+    song_family = metadata.get("song_family", "")
+
+    # Singles et versions alternatives : JAMAIS d'album cover
+    if track_type in ("standalone", "alternate_version"):
+        # Check if this track's song_family has a single_image
+        family_single_img_map = _get_song_family_single_image_map()
+        if song_family and song_family in family_single_img_map:
+            family_single_img = family_single_img_map[song_family]
+            if str(family_single_img).startswith("http"):
+                return family_single_img
+        
+        # Own single_image
+        if single_img and str(single_img).startswith("http"):
+            return single_img
+        
+        # Track image fallback
+        if track_img and str(track_img).startswith("http"):
+            return track_img
+        
+        return fallback_url or ""
+
+    # Tracks normaux : priorité album cover → image_url → fallback
+    album_name = track_album_map.get(norm_track, "")
     if album_name:
         cover = cover_map.get(_norm(album_name), "")
         if cover and str(cover).startswith("http"):
             return cover
 
-    # PrioritÃ© 2 : image_url par track depuis albums/*.json (fiable, basÃ© sur l'identitÃ©)
-    track_img = _get_track_image_map().get(_norm(track_name), "")
+    # Track image fallback
     if track_img and str(track_img).startswith("http"):
         return track_img
 
-    # PrioritÃ© 3 : image scrapÃ©e depuis Spotify (peut Ãªtre incorrecte par assignation positionnelle)
+    # Fallback URL scrapée depuis Spotify
     return fallback_url or ""
 
 

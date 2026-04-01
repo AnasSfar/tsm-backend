@@ -31,7 +31,7 @@ from playwright.sync_api import sync_playwright
 
 sys.path.insert(0, str(Path(__file__).parents[4]))
 from core.fmt import fmt_delta, fmt_streams, fmt_streams_delta
-from core.history import load, parse_date, save, update
+from core.history import load, parse_date, save, update, calculate_total_days, calculate_streak
 from core.logger import Logger
 
 TS_NAME = "Taylor Swift"
@@ -775,6 +775,19 @@ def process_one(requested_date: str, ts_history):
             peak_rank=row.get("peak_rank"),
         )
     print(f"  [filtrage TS] {time.time() - t0:.1f}s — {len(ts_df)} chansons")
+
+    # Calculer DAYS (total unique) et STREAK (consécutif)
+    if not ts_df.empty:
+        total_days_list = []
+        streak_list = []
+        for _, row in ts_df.iterrows():
+            track = str(row.get("track_name", ""))
+            td = calculate_total_days(ts_history, track, actual_chart_date)
+            st = calculate_streak(ts_history, track, actual_chart_date)
+            total_days_list.append(td)
+            streak_list.append(st)
+        ts_df["total_days"] = total_days_list
+        ts_df["streak"] = streak_list
 
     t0 = time.time()
     out_dir = get_out_dir(actual_chart_date)
