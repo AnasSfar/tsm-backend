@@ -7,10 +7,10 @@ Uses the MusicKit API to fetch genre-specific charts for multiple countries.
 from __future__ import annotations
 
 import argparse
-from datetime import date
+from datetime import date, datetime
 
 from core.config import COUNTRIES, DB_DIR, GENRES, SCRIPTS_DIR
-from core.csv_utils import load_previous_ranks, rewrite_for_date
+from core.csv_utils import load_previous_ranks, rewrite_for_snapshot
 from core.export import maybe_run_export
 from core.filters import build_artwork_url, clean_text, is_taylor_swift_song, rank_key
 from core.http import build_session
@@ -20,6 +20,7 @@ CSV_PATH = DB_DIR / "apple_music_genre_charts.csv"
 EXPORT_SCRIPT = SCRIPTS_DIR / "export_apple_music.py"
 FIELDNAMES = [
     "date",
+    "scraped_at",
     "country",
     "genre_id",
     "genre_name",
@@ -92,6 +93,7 @@ def main() -> None:
     args = parse_args()
     countries = [c.lower() for c in args.countries]
     today = args.run_date
+    scraped_at = f"{today}T{datetime.now().strftime('%H:%M:%S')}"
 
     base_session = build_session()
     token = fetch_musickit_token(base_session) or fetch_musickit_token(base_session, refresh=True)
@@ -102,12 +104,12 @@ def main() -> None:
     previous_by_id = load_previous_ranks(
         CSV_PATH,
         key_fields=["country", "genre_id", "apple_music_id"],
-        today=today,
+        today=scraped_at,
     )
     previous_by_name = load_previous_ranks(
         CSV_PATH,
         key_fields=["country", "genre_id", "song_name"],
-        today=today,
+        today=scraped_at,
     )
 
     rows: list[dict] = []
@@ -135,6 +137,7 @@ def main() -> None:
                 rows.append(
                     {
                         "date": today,
+                        "scraped_at": scraped_at,
                         "country": country,
                         "genre_id": genre_id,
                         "genre_name": genre_name,
@@ -156,7 +159,7 @@ def main() -> None:
                 )
         print(f"{country}: {hits} Taylor Swift chart hit(s)")
 
-    rewrite_for_date(CSV_PATH, FIELDNAMES, today, rows)
+    rewrite_for_snapshot(CSV_PATH, FIELDNAMES, scraped_at, rows)
     print(f"Wrote {len(rows)} rows -> {CSV_PATH}")
     maybe_run_export(EXPORT_SCRIPT)
 

@@ -8,10 +8,10 @@ keeps a daily CSV history, and preserves rerun safety by rewriting today's rows.
 from __future__ import annotations
 
 import argparse
-from datetime import date
+from datetime import date, datetime
 
 from core.config import ARTIST_ID, DB_DIR, DEFAULT_STOREFRONT, SCRIPTS_DIR
-from core.csv_utils import load_previous_ranks, rewrite_for_date
+from core.csv_utils import load_previous_ranks, rewrite_for_snapshot
 from core.export import maybe_run_export
 from core.filters import build_artwork_url, clean_text, rank_key
 from core.http import build_session
@@ -21,6 +21,7 @@ CSV_PATH = DB_DIR / "apple_music_ts_top_songs.csv"
 EXPORT_SCRIPT = SCRIPTS_DIR / "export_apple_music.py"
 FIELDNAMES = [
     "date",
+    "scraped_at",
     "storefront",
     "song_name",
     "apple_music_id",
@@ -110,19 +111,20 @@ def main() -> None:
     args = parse_args()
     storefront = args.storefront.lower().strip()
     today = args.run_date
+    scraped_at = f"{today}T{datetime.now().strftime('%H:%M:%S')}"
 
     # Prefer Apple Music IDs to avoid collisions between different versions
     # sharing the same display name.
     previous_by_id = load_previous_ranks(
         CSV_PATH,
         key_fields=["storefront", "apple_music_id"],
-        today=today,
+        today=scraped_at,
     )
     # Backward-compatible fallback for any historical rows without IDs.
     previous_by_name = load_previous_ranks(
         CSV_PATH,
         key_fields=["storefront", "song_name"],
-        today=today,
+        today=scraped_at,
     )
 
     songs = fetch_top_songs(storefront)
@@ -136,6 +138,7 @@ def main() -> None:
         rows.append(
             {
                 "date": today,
+                "scraped_at": scraped_at,
                 "storefront": storefront,
                 "song_name": song["song_name"],
                 "apple_music_id": song["apple_music_id"],
@@ -163,7 +166,7 @@ def main() -> None:
             marker = "="
         print(f"#{idx:>3} [{marker}] {song['song_name']}")
 
-    rewrite_for_date(CSV_PATH, FIELDNAMES, today, rows)
+    rewrite_for_snapshot(CSV_PATH, FIELDNAMES, scraped_at, rows)
     print(f"Wrote {len(rows)} rows -> {CSV_PATH}")
     maybe_run_export(EXPORT_SCRIPT)
 

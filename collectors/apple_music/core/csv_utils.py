@@ -35,6 +35,20 @@ def rewrite_for_date(
     write_csv_rows(csv_path, fieldnames, [*existing, *new_rows])
 
 
+def rewrite_for_snapshot(
+    csv_path: Path,
+    fieldnames: list[str],
+    scraped_at: str,
+    new_rows: list[dict],
+) -> None:
+    """Append a new snapshot, removing any existing rows with the same scraped_at (idempotent)."""
+    existing = [row for row in read_csv_rows(csv_path) if row.get("scraped_at") != scraped_at]
+    write_csv_rows(csv_path, fieldnames, [*existing, *new_rows])
+
+
+def _snapshot_key(row: dict) -> str:
+    return row.get("scraped_at") or row.get("date", "")
+
 
 def load_previous_ranks(
     csv_path: Path,
@@ -47,14 +61,17 @@ def load_previous_ranks(
     if not rows:
         return {}
 
-    dates = sorted({row.get("date", "") for row in rows if row.get("date") and row.get("date") != today}, reverse=True)
-    if not dates:
+    all_keys = sorted(
+        {_snapshot_key(r) for r in rows if _snapshot_key(r) and _snapshot_key(r) != today},
+        reverse=True,
+    )
+    if not all_keys:
         return {}
-    latest = dates[0]
+    latest = all_keys[0]
 
     previous: dict[tuple[str, ...], int] = {}
     for row in rows:
-        if row.get("date") != latest:
+        if _snapshot_key(row) != latest:
             continue
         try:
             rank = int(row.get(rank_field, ""))

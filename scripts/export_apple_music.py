@@ -47,7 +47,8 @@ def clean_str(value: Any) -> str:
 
 
 def normalize_date(row: dict[str, Any]) -> str:
-    for key in ("date", "chart_date", "day"):
+    # Prefer scraped_at (datetime) so multiple daily snapshots are preserved
+    for key in ("scraped_at", "date", "chart_date", "day"):
         val = clean_str(row.get(key))
         if val:
             return val
