@@ -13,9 +13,13 @@ DB_DIR = ROOT / "db"
 OUT_DIR = ROOT / "website" / "site" / "data"
 
 GLOBAL_CSV = DB_DIR / "apple_music_global.csv"
+GLOBAL_ALBUMS_CSV = DB_DIR / "apple_music_global_albums.csv"
 TOP_SONGS_CSV = DB_DIR / "apple_music_ts_top_songs.csv"
+TOP_ALBUMS_CSV = DB_DIR / "apple_music_ts_top_albums.csv"
+TOP_VIDEOS_CSV = DB_DIR / "apple_music_ts_top_videos.csv"
 COUNTRY_CSV = DB_DIR / "apple_music_country_charts.csv"
 COUNTRY_ALBUMS_CSV = DB_DIR / "apple_music_country_albums.csv"
+MUSIC_VIDEO_CHARTS_CSV = DB_DIR / "apple_music_music_video_charts.csv"
 GENRE_CSV = DB_DIR / "apple_music_genre_charts.csv"
 
 OUT_DATA = OUT_DIR / "applemusic.json"
@@ -138,6 +142,38 @@ def build_ranked_series(rows: list[dict[str, Any]]) -> tuple[dict[str, Any], dic
     return current, by_date, dates
 
 
+def build_ranked_album_series(rows: list[dict[str, Any]]) -> tuple[dict[str, Any], dict[str, list[dict[str, Any]]], list[str]]:
+    by_date: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for row in rows:
+        d = normalize_date(row)
+        if not d:
+            continue
+        by_date[d].append(normalize_album_entry(row))
+    for d in list(by_date.keys()):
+        by_date[d] = sort_entries(by_date[d])
+    dates = sorted(by_date.keys())
+    latest = dates[-1] if dates else None
+    current = {"date": latest, "entries": by_date.get(latest, [])}
+    return current, by_date, dates
+
+
+def build_ranked_video_series(rows: list[dict[str, Any]]) -> tuple[dict[str, Any], dict[str, list[dict[str, Any]]], list[str]]:
+    by_date: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for row in rows:
+        d = normalize_date(row)
+        if not d:
+            continue
+        entry = normalize_song_entry(row)
+        entry["video_name"] = clean_str(row.get("video_name"))
+        by_date[d].append(entry)
+    for d in list(by_date.keys()):
+        by_date[d] = sort_entries(by_date[d])
+    dates = sorted(by_date.keys())
+    latest = dates[-1] if dates else None
+    current = {"date": latest, "entries": by_date.get(latest, [])}
+    return current, by_date, dates
+
+
 def build_global(rows: list[dict[str, Any]]) -> tuple[dict[str, Any], dict[str, list[dict[str, Any]]], list[str]]:
     return build_ranked_series(rows)
 
@@ -255,35 +291,54 @@ def main() -> None:
     ensure_out_dir()
 
     global_rows = read_csv_rows(GLOBAL_CSV)
+    global_album_rows = read_csv_rows(GLOBAL_ALBUMS_CSV)
     top_rows = read_csv_rows(TOP_SONGS_CSV)
+    top_album_rows = read_csv_rows(TOP_ALBUMS_CSV)
+    top_video_rows = read_csv_rows(TOP_VIDEOS_CSV)
     country_rows = read_csv_rows(COUNTRY_CSV)
     country_album_rows = read_csv_rows(COUNTRY_ALBUMS_CSV)
+    music_video_chart_rows = read_csv_rows(MUSIC_VIDEO_CHARTS_CSV)
     genre_rows = read_csv_rows(GENRE_CSV)
 
     global_current, global_history, global_dates = build_global(global_rows)
+    global_album_current, global_album_history, global_album_dates = build_ranked_album_series(global_album_rows)
     top_current, top_history, top_dates = build_top_songs(top_rows)
+    top_album_current, top_album_history, top_album_dates = build_ranked_album_series(top_album_rows)
+    top_video_current, top_video_history, top_video_dates = build_ranked_video_series(top_video_rows)
     country_current, country_history, country_dates = build_country(country_rows)
     country_album_current, country_album_history, country_album_dates = build_country_albums(country_album_rows)
+    music_video_chart_current, music_video_chart_history, music_video_chart_dates = build_country(music_video_chart_rows)
     genre_current, genre_history, genre_dates = build_genre(genre_rows)
 
-    all_dates = sorted(set(global_dates + top_dates + country_dates + country_album_dates + genre_dates))
+    all_dates = sorted(set(
+        global_dates + global_album_dates + top_dates + top_album_dates + top_video_dates +
+        country_dates + country_album_dates + music_video_chart_dates + genre_dates
+    ))
     latest_any = all_dates[-1] if all_dates else None
 
     applemusic_data = {
         "scraped_at": latest_any,
         "global_chart": global_current,
+        "global_album_chart": global_album_current,
         "ts_top_songs": top_current,
+        "ts_top_albums": top_album_current,
+        "ts_top_videos": top_video_current,
         "country_charts": country_current,
         "country_album_charts": country_album_current,
+        "music_video_charts": music_video_chart_current,
         "genre_charts": genre_current,
     }
 
     applemusic_history = {
         "dates": all_dates,
         "global": global_history,
+        "global_albums": global_album_history,
         "top_songs": top_history,
+        "top_albums": top_album_history,
+        "top_videos": top_video_history,
         "country": country_history,
         "country_albums": country_album_history,
+        "music_video_charts": music_video_chart_history,
         "genre": genre_history,
     }
 

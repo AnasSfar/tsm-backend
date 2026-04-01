@@ -27,9 +27,14 @@ APPLEMUSIC_JSON = SITE_DATA_DIR / "applemusic.json"
 APPLEMUSIC_HISTORY_JSON = SITE_DATA_DIR / "applemusic_history.json"
 
 COUNTRY_CSV = DB_DIR / "apple_music_country_charts.csv"
+COUNTRY_ALBUMS_CSV = DB_DIR / "apple_music_country_albums.csv"
 GENRE_CSV = DB_DIR / "apple_music_genre_charts.csv"
 GLOBAL_CSV = DB_DIR / "apple_music_global.csv"
+GLOBAL_ALBUMS_CSV = DB_DIR / "apple_music_global_albums.csv"
+MUSIC_VIDEO_CHARTS_CSV = DB_DIR / "apple_music_music_video_charts.csv"
 TS_TOP_CSV = DB_DIR / "apple_music_ts_top_songs.csv"
+TS_TOP_ALBUMS_CSV = DB_DIR / "apple_music_ts_top_albums.csv"
+TS_TOP_VIDEOS_CSV = DB_DIR / "apple_music_ts_top_videos.csv"
 
 R2_PREFIX = "apple-music/history-by-song"
 
@@ -212,28 +217,63 @@ def build_history_objects() -> dict[str, dict[str, Any]]:
         grouped=grouped,
         rows=read_csv(COUNTRY_CSV),
         source_name="country_charts",
-        keep_fields=["date", "country", "song_name", "rank", "previous_rank", "image_url", "url", "apple_music_id"],
+        keep_fields=["date", "scraped_at", "country", "song_name", "rank", "previous_rank", "image_url", "url", "apple_music_id"],
+    )
+
+    append_rows(
+        grouped=grouped,
+        rows=read_csv(COUNTRY_ALBUMS_CSV),
+        source_name="country_albums",
+        keep_fields=["date", "scraped_at", "country", "album_name", "rank", "previous_rank", "image_url", "url", "apple_music_id"],
     )
 
     append_rows(
         grouped=grouped,
         rows=read_csv(GENRE_CSV),
         source_name="genre_charts",
-        keep_fields=["date", "country", "genre_id", "genre_name", "song_name", "rank", "previous_rank", "image_url", "url", "apple_music_id"],
+        keep_fields=["date", "scraped_at", "country", "genre_id", "genre_name", "song_name", "rank", "previous_rank", "image_url", "url", "apple_music_id"],
     )
 
     append_rows(
         grouped=grouped,
         rows=read_csv(GLOBAL_CSV),
         source_name="global",
-        keep_fields=["date", "song_name", "rank", "previous_rank", "image_url", "url", "apple_music_id"],
+        keep_fields=["date", "scraped_at", "song_name", "rank", "previous_rank", "image_url", "url", "apple_music_id"],
+    )
+
+    append_rows(
+        grouped=grouped,
+        rows=read_csv(GLOBAL_ALBUMS_CSV),
+        source_name="global_albums",
+        keep_fields=["date", "scraped_at", "country", "album_name", "rank", "previous_rank", "image_url", "url", "apple_music_id"],
+    )
+
+    append_rows(
+        grouped=grouped,
+        rows=read_csv(MUSIC_VIDEO_CHARTS_CSV),
+        source_name="music_video_charts",
+        keep_fields=["date", "scraped_at", "country", "video_name", "rank", "previous_rank", "image_url", "url", "apple_music_id"],
     )
 
     append_rows(
         grouped=grouped,
         rows=read_csv(TS_TOP_CSV),
         source_name="ts_top_songs",
-        keep_fields=["date", "storefront", "song_name", "rank", "previous_rank", "image_url", "url", "apple_music_id", "album_name"],
+        keep_fields=["date", "scraped_at", "storefront", "song_name", "rank", "previous_rank", "image_url", "url", "apple_music_id", "album_name"],
+    )
+
+    append_rows(
+        grouped=grouped,
+        rows=read_csv(TS_TOP_ALBUMS_CSV),
+        source_name="ts_top_albums",
+        keep_fields=["date", "scraped_at", "storefront", "album_name", "rank", "previous_rank", "image_url", "url", "apple_music_id"],
+    )
+
+    append_rows(
+        grouped=grouped,
+        rows=read_csv(TS_TOP_VIDEOS_CSV),
+        source_name="ts_top_videos",
+        keep_fields=["date", "scraped_at", "storefront", "video_name", "rank", "previous_rank", "image_url", "url", "apple_music_id"],
     )
 
     for normalized_name in list(grouped.keys()):

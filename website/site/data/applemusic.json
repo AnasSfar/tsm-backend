@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-04-01T12:50:23",
+  "scraped_at": "2026-04-01T13:03:43",
   "global_chart": {
     "date": "2026-04-01T12:50:09",
     "entries": [
@@ -41,8 +41,27 @@
       }
     ]
   },
+  "global_album_chart": {
+    "date": "2026-04-01T13:03:43",
+    "entries": [
+      {
+        "album_name": "The Life of a Showgirl",
+        "apple_music_id": "1838810949",
+        "rank": 53,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/58/8f/a9/588fa9a2-7cc5-f02c-9ce6-c986e0dc1c15/25UM1IM19577.rgb.jpg/500x500bb.jpg",
+        "url": "https://music.apple.com/fr/album/the-life-of-a-showgirl/1838810949",
+        "artist_name": "Taylor Swift",
+        "release_date": "2025-10-03",
+        "genre_names": [
+          "Pop",
+          "Musique"
+        ]
+      }
+    ]
+  },
   "ts_top_songs": {
-    "date": "2026-04-01T12:50:05",
+    "date": "2026-04-01T13:03:43",
     "entries": [
       {
         "song_name": "The Fate of Ophelia",
@@ -3930,27 +3949,9 @@
         ]
       },
       {
-        "song_name": "Elizabeth Taylor (Track by Track)",
-        "apple_music_id": "1888604747",
-        "rank": 215,
-        "previous_rank": 215,
-        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/2b/14/dc/2b14dc4d-5173-7b38-b0ff-1c30daf5fa32/26UMGIM37308.rgb.jpg/300x300bb.jpg",
-        "url": "https://music.apple.com/fr/album/elizabeth-taylor-track-by-track/1888604488?i=1888604747",
-        "artist_name": "Taylor Swift",
-        "album_name": "Elizabeth Taylor",
-        "duration_ms": 35910,
-        "release_date": "2025-10-02",
-        "isrc": "USUG12508946",
-        "content_rating": "",
-        "genre_names": [
-          "Pop",
-          "Musique"
-        ]
-      },
-      {
         "song_name": "The Alcott (feat. Taylor Swift)",
         "apple_music_id": "1660283622",
-        "rank": 216,
+        "rank": 215,
         "previous_rank": 216,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/f7/47/ec/f747ecf4-6520-e39b-7f58-b56b8e5446e0/191400056671.png/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/the-alcott-feat-taylor-swift/1660282625?i=1660283622",
@@ -3968,7 +3969,7 @@
       {
         "song_name": "The Story Of Us (Taylor's Version)",
         "apple_music_id": "1690840394",
-        "rank": 217,
+        "rank": 216,
         "previous_rank": 217,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/9f/3c/0a/9f3c0a60-f9e0-a34e-60e5-0be1f182896b/23UMGIM63932.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/the-story-of-us-taylors-version/1690839749?i=1690840394",
@@ -3986,7 +3987,7 @@
       {
         "song_name": "White Horse (Taylor's Version)",
         "apple_music_id": "1552791552",
-        "rank": 218,
+        "rank": 217,
         "previous_rank": 218,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/white-horse-taylors-version/1552791073?i=1552791552",
@@ -4004,7 +4005,7 @@
       {
         "song_name": "Karma (feat. Ice Spice)",
         "apple_music_id": "1689132081",
-        "rank": 219,
+        "rank": 218,
         "previous_rank": 219,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/a6/85/b9/a685b9f8-dad3-2ed7-58b2-ab7f64304505/23UMGIM58157.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/karma-feat-ice-spice/1689131527?i=1689132081",
@@ -4022,7 +4023,7 @@
       {
         "song_name": "Holy Ground (Taylor's Version)",
         "apple_music_id": "1590368464",
-        "rank": 220,
+        "rank": 219,
         "previous_rank": 220,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/38/9b/15389bf4-8074-06c3-11ee-655b5453af68/21UM1IM25046.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/holy-ground-taylors-version/1590368448?i=1590368464",
@@ -4040,7 +4041,7 @@
       {
         "song_name": "Soon You'll Get Better (feat. The Chicks)",
         "apple_music_id": "1468058699",
-        "rank": 221,
+        "rank": 220,
         "previous_rank": 221,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/49/3d/ab/493dab54-f920-9043-6181-80993b8116c9/19UMGIM53909.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/soon-youll-get-better-feat-the-chicks/1468058165?i=1468058699",
@@ -4058,7 +4059,7 @@
       {
         "song_name": "closure",
         "apple_music_id": "1547316002",
-        "rank": 222,
+        "rank": 221,
         "previous_rank": 222,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/44/e3/94/44e3945f-d613-09f8-538a-aba063d59358/20UM1IM14847.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/closure/1547315522?i=1547316002",
@@ -4076,7 +4077,7 @@
       {
         "song_name": "Last Kiss (Taylor's Version)",
         "apple_music_id": "1690840752",
-        "rank": 223,
+        "rank": 222,
         "previous_rank": 223,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/9f/3c/0a/9f3c0a60-f9e0-a34e-60e5-0be1f182896b/23UMGIM63932.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/last-kiss-taylors-version/1690839749?i=1690840752",
@@ -4094,7 +4095,7 @@
       {
         "song_name": "Begin Again (Taylor's Version)",
         "apple_music_id": "1590368745",
-        "rank": 224,
+        "rank": 223,
         "previous_rank": 224,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/38/9b/15389bf4-8074-06c3-11ee-655b5453af68/21UM1IM25046.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/begin-again-taylors-version/1590368448?i=1590368745",
@@ -4112,7 +4113,7 @@
       {
         "song_name": "Electric Touch (Taylor's Version) (From The Vault) [feat. Fall Out Boy]",
         "apple_music_id": "1690841057",
-        "rank": 225,
+        "rank": 224,
         "previous_rank": 225,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/9f/3c/0a/9f3c0a60-f9e0-a34e-60e5-0be1f182896b/23UMGIM63932.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/electric-touch-taylors-version-from-the-vault-feat/1690839749?i=1690841057",
@@ -4130,7 +4131,7 @@
       {
         "song_name": "Wi$h Li$t (Settled Down Acoustic Version)",
         "apple_music_id": "1850496267",
-        "rank": 226,
+        "rank": 225,
         "previous_rank": 226,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/0e/e5/c7/0ee5c717-114f-f4e8-9f7c-e92dd6eb9152/25UM1IM74420.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/wi%24h-li%24t-settled-down-acoustic-version/1850496031?i=1850496267",
@@ -4148,7 +4149,7 @@
       {
         "song_name": "Ruin The Friendship (My Advice Version)",
         "apple_music_id": "1850496266",
-        "rank": 227,
+        "rank": 226,
         "previous_rank": 227,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/0e/e5/c7/0ee5c717-114f-f4e8-9f7c-e92dd6eb9152/25UM1IM74420.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/ruin-the-friendship-my-advice-version/1850496031?i=1850496266",
@@ -4166,7 +4167,7 @@
       {
         "song_name": "Castles Crumbling (Taylor's Version) (From The Vault) [feat. Hayley Williams]",
         "apple_music_id": "1690841083",
-        "rank": 228,
+        "rank": 227,
         "previous_rank": 228,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/9f/3c/0a/9f3c0a60-f9e0-a34e-60e5-0be1f182896b/23UMGIM63932.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/castles-crumbling-taylors-version-from-the-vault-feat/1690839749?i=1690841083",
@@ -4184,7 +4185,7 @@
       {
         "song_name": "Red",
         "apple_music_id": "1440935346",
-        "rank": 229,
+        "rank": 228,
         "previous_rank": 229,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/25/0d/7e/250d7e42-3a2f-19ac-f865-f1e04a4a1f97/12UMDIM01007.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/red/1440935340?i=1440935346",
@@ -4207,7 +4208,7 @@
       {
         "song_name": "New Romantics",
         "apple_music_id": "1445882771",
-        "rank": 230,
+        "rank": 229,
         "previous_rank": 230,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/fe/57/5f/fe575f85-b843-e190-b043-2605d5f6ec59/14UMGIM34830.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/new-romantics/1445881848?i=1445882771",
@@ -4225,7 +4226,7 @@
       {
         "song_name": "Crazier",
         "apple_music_id": "1440633184",
-        "rank": 231,
+        "rank": 230,
         "previous_rank": 231,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/23/42/0a/23420a7b-6fe0-9a8b-a740-c8e1ff6db2a7/09PNDIM00900.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/crazier/1440632617?i=1440633184",
@@ -4250,7 +4251,7 @@
       {
         "song_name": "Everything Has Changed (feat. Ed Sheeran)",
         "apple_music_id": "1440935577",
-        "rank": 232,
+        "rank": 231,
         "previous_rank": 232,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/25/0d/7e/250d7e42-3a2f-19ac-f865-f1e04a4a1f97/12UMDIM01007.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/everything-has-changed-feat-ed-sheeran/1440935340?i=1440935577",
@@ -4273,7 +4274,7 @@
       {
         "song_name": "All You Had To Do Was Stay",
         "apple_music_id": "1445888391",
-        "rank": 233,
+        "rank": 232,
         "previous_rank": 233,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/32/1d/8e/321d8e9e-d806-b545-fd30-5c7aef575abc/14UMGIM34829.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/all-you-had-to-do-was-stay/1445888258?i=1445888391",
@@ -4291,7 +4292,7 @@
       {
         "song_name": "It's Nice To Have A Friend",
         "apple_music_id": "1468058707",
-        "rank": 234,
+        "rank": 233,
         "previous_rank": 234,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/49/3d/ab/493dab54-f920-9043-6181-80993b8116c9/19UMGIM53909.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/its-nice-to-have-a-friend/1468058165?i=1468058707",
@@ -4309,7 +4310,7 @@
       {
         "song_name": "You're Not Sorry (Taylor's Version)",
         "apple_music_id": "1552791575",
-        "rank": 235,
+        "rank": 234,
         "previous_rank": 235,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/youre-not-sorry-taylors-version/1552791073?i=1552791575",
@@ -4327,7 +4328,7 @@
       {
         "song_name": "Babe (Taylor's Version) [From The Vault]",
         "apple_music_id": "1590368765",
-        "rank": 236,
+        "rank": 235,
         "previous_rank": 236,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/38/9b/15389bf4-8074-06c3-11ee-655b5453af68/21UM1IM25046.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/babe-taylors-version-from-the-vault/1590368448?i=1590368765",
@@ -4345,7 +4346,7 @@
       {
         "song_name": "Never Grow Up (Taylor's Version)",
         "apple_music_id": "1690840524",
-        "rank": 237,
+        "rank": 236,
         "previous_rank": 237,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/9f/3c/0a/9f3c0a60-f9e0-a34e-60e5-0be1f182896b/23UMGIM63932.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/never-grow-up-taylors-version/1690839749?i=1690840524",
@@ -4363,7 +4364,7 @@
       {
         "song_name": "Treacherous (Taylor's Version)",
         "apple_music_id": "1590368454",
-        "rank": 238,
+        "rank": 237,
         "previous_rank": 238,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/38/9b/15389bf4-8074-06c3-11ee-655b5453af68/21UM1IM25046.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/treacherous-taylors-version/1590368448?i=1590368454",
@@ -4381,7 +4382,7 @@
       {
         "song_name": "Tim Mcgraw",
         "apple_music_id": "1440802686",
-        "rank": 239,
+        "rank": 238,
         "previous_rank": 239,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/69/9e/92/699e92bb-b589-27f7-bdd1-d0cdc8a061e4/08UMGIM21979.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/tim-mcgraw/1440802681?i=1440802686",
@@ -4402,7 +4403,7 @@
       {
         "song_name": "Starlight (Taylor's Version)",
         "apple_music_id": "1590368743",
-        "rank": 240,
+        "rank": 239,
         "previous_rank": 240,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/38/9b/15389bf4-8074-06c3-11ee-655b5453af68/21UM1IM25046.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/starlight-taylors-version/1590368448?i=1590368743",
@@ -4420,7 +4421,7 @@
       {
         "song_name": "Carolina (From The Motion Picture \"Where The Crawdads Sing\")",
         "apple_music_id": "1631018071",
-        "rank": 241,
+        "rank": 240,
         "previous_rank": 241,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/51/5f/41/515f417f-19d6-ea22-e1fb-acebc2ba4f23/22UMGIM67563.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/carolina-from-the-motion-picture-where-the-crawdads-sing/1631018069?i=1631018071",
@@ -4438,7 +4439,7 @@
       {
         "song_name": "I Almost Do (Taylor's Version)",
         "apple_music_id": "1590368458",
-        "rank": 242,
+        "rank": 241,
         "previous_rank": 242,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/38/9b/15389bf4-8074-06c3-11ee-655b5453af68/21UM1IM25046.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/i-almost-do-taylors-version/1590368448?i=1590368458",
@@ -4456,7 +4457,7 @@
       {
         "song_name": "All Too Well",
         "apple_music_id": "1440935561",
-        "rank": 243,
+        "rank": 242,
         "previous_rank": 243,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/25/0d/7e/250d7e42-3a2f-19ac-f865-f1e04a4a1f97/12UMDIM01007.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/all-too-well/1440935340?i=1440935561",
@@ -4479,7 +4480,7 @@
       {
         "song_name": "Forever & Always (Taylor's Version)",
         "apple_music_id": "1552791766",
-        "rank": 244,
+        "rank": 243,
         "previous_rank": 244,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/forever-always-taylors-version/1552791073?i=1552791766",
@@ -4497,7 +4498,7 @@
       {
         "song_name": "When Emma Falls In Love (Taylor's Version) (From The Vault)",
         "apple_music_id": "1690841068",
-        "rank": 245,
+        "rank": 244,
         "previous_rank": 245,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/9f/3c/0a/9f3c0a60-f9e0-a34e-60e5-0be1f182896b/23UMGIM63932.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/when-emma-falls-in-love-taylors-version-from-the-vault/1690839749?i=1690841068",
@@ -4515,7 +4516,7 @@
       {
         "song_name": "The Moment I Knew (Taylor's Version)",
         "apple_music_id": "1590368746",
-        "rank": 246,
+        "rank": 245,
         "previous_rank": 246,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/38/9b/15389bf4-8074-06c3-11ee-655b5453af68/21UM1IM25046.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/the-moment-i-knew-taylors-version/1590368448?i=1590368746",
@@ -4533,7 +4534,7 @@
       {
         "song_name": "Hey Stephen (Taylor's Version)",
         "apple_music_id": "1552791434",
-        "rank": 247,
+        "rank": 246,
         "previous_rank": 247,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/hey-stephen-taylors-version/1552791073?i=1552791434",
@@ -4551,7 +4552,7 @@
       {
         "song_name": "The Other Side Of The Door (Taylor's Version)",
         "apple_music_id": "1552792296",
-        "rank": 248,
+        "rank": 247,
         "previous_rank": 248,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/the-other-side-of-the-door-taylors-version/1552791073?i=1552792296",
@@ -4569,7 +4570,7 @@
       {
         "song_name": "How You Get the Girl",
         "apple_music_id": "1445888406",
-        "rank": 249,
+        "rank": 248,
         "previous_rank": 249,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/32/1d/8e/321d8e9e-d806-b545-fd30-5c7aef575abc/14UMGIM34829.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/how-you-get-the-girl/1445888258?i=1445888406",
@@ -4587,7 +4588,7 @@
       {
         "song_name": "The Life of a Showgirl (feat. Sabrina Carpenter) [Dressing Room Rehearsal Version]",
         "apple_music_id": "1850496271",
-        "rank": 250,
+        "rank": 249,
         "previous_rank": 250,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/0e/e5/c7/0ee5c717-114f-f4e8-9f7c-e92dd6eb9152/25UM1IM74420.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/the-life-of-a-showgirl-feat-sabrina/1850496031?i=1850496271",
@@ -4605,7 +4606,7 @@
       {
         "song_name": "Stay Stay Stay (Taylor's Version)",
         "apple_music_id": "1590368462",
-        "rank": 251,
+        "rank": 250,
         "previous_rank": 251,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/38/9b/15389bf4-8074-06c3-11ee-655b5453af68/21UM1IM25046.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/stay-stay-stay-taylors-version/1590368448?i=1590368462",
@@ -4623,7 +4624,7 @@
       {
         "song_name": "Timeless (Taylor's Version) (From The Vault)",
         "apple_music_id": "1690841279",
-        "rank": 252,
+        "rank": 251,
         "previous_rank": 252,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/9f/3c/0a/9f3c0a60-f9e0-a34e-60e5-0be1f182896b/23UMGIM63932.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/timeless-taylors-version-from-the-vault/1690839749?i=1690841279",
@@ -4641,7 +4642,7 @@
       {
         "song_name": "Eldest Daughter (Now You're Home Acoustic Version)",
         "apple_music_id": "1850496264",
-        "rank": 253,
+        "rank": 252,
         "previous_rank": 253,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/0e/e5/c7/0ee5c717-114f-f4e8-9f7c-e92dd6eb9152/25UM1IM74420.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/eldest-daughter-now-youre-home-acoustic-version/1850496031?i=1850496264",
@@ -4659,7 +4660,7 @@
       {
         "song_name": "Breathe (Taylor's Version) [feat. Colbie Caillat]",
         "apple_music_id": "1552791568",
-        "rank": 254,
+        "rank": 253,
         "previous_rank": 254,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/breathe-taylors-version-feat-colbie-caillat/1552791073?i=1552791568",
@@ -4677,7 +4678,7 @@
       {
         "song_name": "Back to December",
         "apple_music_id": "1440920489",
-        "rank": 255,
+        "rank": 254,
         "previous_rank": 255,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/d4/23/57/d423579f-24f7-5c82-ed10-fbfd21ceef25/10UMDIM00487.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/back-to-december/1440920310?i=1440920489",
@@ -4698,7 +4699,7 @@
       {
         "song_name": "Forever Winter (Taylor's Version) [From The Vault]",
         "apple_music_id": "1590368890",
-        "rank": 256,
+        "rank": 255,
         "previous_rank": 256,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/38/9b/15389bf4-8074-06c3-11ee-655b5453af68/21UM1IM25046.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/forever-winter-taylors-version-from-the-vault/1590368448?i=1590368890",
@@ -4716,7 +4717,7 @@
       {
         "song_name": "The Lucky One (Taylor's Version)",
         "apple_music_id": "1590368737",
-        "rank": 257,
+        "rank": 256,
         "previous_rank": 257,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/38/9b/15389bf4-8074-06c3-11ee-655b5453af68/21UM1IM25046.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/the-lucky-one-taylors-version/1590368448?i=1590368737",
@@ -4734,7 +4735,7 @@
       {
         "song_name": "Both of Us (feat. Taylor Swift)",
         "apple_music_id": "518748322",
-        "rank": 258,
+        "rank": 257,
         "previous_rank": 258,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/9c/0e/34/9c0e340b-3eaa-b0a3-1628-d23dcaf36c5b/075679968951.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/both-of-us-feat-taylor-swift/518748242?i=518748322",
@@ -4756,7 +4757,7 @@
       {
         "song_name": "Superman (Taylor's Version)",
         "apple_music_id": "1690840832",
-        "rank": 259,
+        "rank": 258,
         "previous_rank": 259,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/9f/3c/0a/9f3c0a60-f9e0-a34e-60e5-0be1f182896b/23UMGIM63932.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/superman-taylors-version/1690839749?i=1690840832",
@@ -4774,7 +4775,7 @@
       {
         "song_name": "The Best Day (Taylor's Version)",
         "apple_music_id": "1552791777",
-        "rank": 260,
+        "rank": 259,
         "previous_rank": 260,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/the-best-day-taylors-version/1552791073?i=1552791777",
@@ -4792,7 +4793,7 @@
       {
         "song_name": "All Too Well (Sad Girl Autumn Version) [Recorded at Long Pond Studios]",
         "apple_music_id": "1596155191",
-        "rank": 261,
+        "rank": 260,
         "previous_rank": 261,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/9a/75/35/9a753585-a52f-8485-46e3-3017f5a69df6/21UM1IM45600.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/all-too-well-sad-girl-autumn-version-recorded-at-long/1596155189?i=1596155191",
@@ -4810,7 +4811,7 @@
       {
         "song_name": "Untouchable (Taylor's Version)",
         "apple_music_id": "1552791979",
-        "rank": 262,
+        "rank": 261,
         "previous_rank": 262,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/untouchable-taylors-version/1552791073?i=1552791979",
@@ -4828,7 +4829,7 @@
       {
         "song_name": "I Know Places",
         "apple_music_id": "1445888471",
-        "rank": 263,
+        "rank": 262,
         "previous_rank": 263,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/32/1d/8e/321d8e9e-d806-b545-fd30-5c7aef575abc/14UMGIM34829.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/i-know-places/1445888258?i=1445888471",
@@ -4846,7 +4847,7 @@
       {
         "song_name": "Jump Then Fall (Taylor's Version)",
         "apple_music_id": "1552791976",
-        "rank": 264,
+        "rank": 263,
         "previous_rank": 264,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/jump-then-fall-taylors-version/1552791073?i=1552791976",
@@ -4864,7 +4865,7 @@
       {
         "song_name": "Cruel Summer (LP Giobbi Remix)",
         "apple_music_id": "1712547505",
-        "rank": 265,
+        "rank": 264,
         "previous_rank": 265,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/ec/80/be/ec80be7c-5e3c-4ac9-ac24-2f51cddabfa3/23UM1IM30381.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/cruel-summer-lp-giobbi-remix/1712547428?i=1712547505",
@@ -4882,7 +4883,7 @@
       {
         "song_name": "This Love",
         "apple_music_id": "1445888409",
-        "rank": 266,
+        "rank": 265,
         "previous_rank": 266,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/32/1d/8e/321d8e9e-d806-b545-fd30-5c7aef575abc/14UMGIM34829.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/this-love/1445888258?i=1445888409",
@@ -4900,7 +4901,7 @@
       {
         "song_name": "I Wish You Would",
         "apple_music_id": "1445888396",
-        "rank": 267,
+        "rank": 266,
         "previous_rank": 267,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/32/1d/8e/321d8e9e-d806-b545-fd30-5c7aef575abc/14UMGIM34829.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/i-wish-you-would/1445888258?i=1445888396",
@@ -4918,7 +4919,7 @@
       {
         "song_name": "Foolish One (Taylor's Version) (From The Vault)",
         "apple_music_id": "1690841273",
-        "rank": 268,
+        "rank": 267,
         "previous_rank": 268,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/9f/3c/0a/9f3c0a60-f9e0-a34e-60e5-0be1f182896b/23UMGIM63932.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/foolish-one-taylors-version-from-the-vault/1690839749?i=1690841273",
@@ -4936,7 +4937,7 @@
       {
         "song_name": "Only The Young (Featured in Miss Americana)",
         "apple_music_id": "1496696600",
-        "rank": 269,
+        "rank": 268,
         "previous_rank": 269,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/b7/e6/8a/b7e68a1a-6beb-6187-3cdc-ecd3dbf0257e/20UMGIM04837.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/only-the-young-featured-in-miss-americana/1496696596?i=1496696600",
@@ -4954,7 +4955,7 @@
       {
         "song_name": "Change (Taylor's Version)",
         "apple_music_id": "1552791966",
-        "rank": 270,
+        "rank": 269,
         "previous_rank": 270,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/change-taylors-version/1552791073?i=1552791966",
@@ -4972,7 +4973,7 @@
       {
         "song_name": "The Fate of Ophelia (The Chainsmokers Remix)",
         "apple_music_id": "1856301586",
-        "rank": 271,
+        "rank": 270,
         "previous_rank": 271,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/a3/f4/e8/a3f4e86d-b574-ae74-7b92-fe582ceefc73/25UM1IM98397.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/the-fate-of-ophelia-the-chainsmokers-remix/1856301585?i=1856301586",
@@ -4990,7 +4991,7 @@
       {
         "song_name": "Should've Said No",
         "apple_music_id": "1440802960",
-        "rank": 272,
+        "rank": 271,
         "previous_rank": 272,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/69/9e/92/699e92bb-b589-27f7-bdd1-d0cdc8a061e4/08UMGIM21979.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/shouldve-said-no/1440802681?i=1440802960",
@@ -5011,7 +5012,7 @@
       {
         "song_name": "Today Was A Fairytale (Taylor's Version)",
         "apple_music_id": "1552792300",
-        "rank": 273,
+        "rank": 272,
         "previous_rank": 273,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/today-was-a-fairytale-taylors-version/1552791073?i=1552792300",
@@ -5029,7 +5030,7 @@
       {
         "song_name": "A Place In This World",
         "apple_music_id": "1440802932",
-        "rank": 274,
+        "rank": 273,
         "previous_rank": 274,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/69/9e/92/699e92bb-b589-27f7-bdd1-d0cdc8a061e4/08UMGIM21979.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/a-place-in-this-world/1440802681?i=1440802932",
@@ -5050,7 +5051,7 @@
       {
         "song_name": "Clean",
         "apple_music_id": "1445888472",
-        "rank": 275,
+        "rank": 274,
         "previous_rank": 275,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/32/1d/8e/321d8e9e-d806-b545-fd30-5c7aef575abc/14UMGIM34829.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/clean/1445888258?i=1445888472",
@@ -5068,7 +5069,7 @@
       {
         "song_name": "Teardrops On My Guitar",
         "apple_music_id": "1440802931",
-        "rank": 276,
+        "rank": 275,
         "previous_rank": 276,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/69/9e/92/699e92bb-b589-27f7-bdd1-d0cdc8a061e4/08UMGIM21979.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/teardrops-on-my-guitar/1440802681?i=1440802931",
@@ -5089,7 +5090,7 @@
       {
         "song_name": "Elizabeth Taylor (So Glamorous Cabaret Version)",
         "apple_music_id": "1888604742",
-        "rank": 277,
+        "rank": 276,
         "previous_rank": 277,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/2b/14/dc/2b14dc4d-5173-7b38-b0ff-1c30daf5fa32/26UMGIM37308.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/elizabeth-taylor-so-glamorous-cabaret-version/1888604488?i=1888604742",
@@ -5107,7 +5108,7 @@
       {
         "song_name": "Girl At Home (Taylor's Version)",
         "apple_music_id": "1590368749",
-        "rank": 278,
+        "rank": 277,
         "previous_rank": 278,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/38/9b/15389bf4-8074-06c3-11ee-655b5453af68/21UM1IM25046.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/girl-at-home-taylors-version/1590368448?i=1590368749",
@@ -5125,7 +5126,7 @@
       {
         "song_name": "That's When (Taylor's Version) [From The Vault] [feat. Keith Urban]",
         "apple_music_id": "1552792323",
-        "rank": 279,
+        "rank": 278,
         "previous_rank": 279,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/thats-when-taylors-version-from-the-vault-feat-keith-urban/1552791073?i=1552792323",
@@ -5143,7 +5144,7 @@
       {
         "song_name": "You All Over Me (Taylor's Version) [From The Vault] [feat. Maren Morris]",
         "apple_music_id": "1552792302",
-        "rank": 280,
+        "rank": 279,
         "previous_rank": 280,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/you-all-over-me-taylors-version-from-the-vault-feat/1552791073?i=1552792302",
@@ -5161,7 +5162,7 @@
       {
         "song_name": "Teardrops On My Guitar (Pop Version)",
         "apple_music_id": "1440803034",
-        "rank": 281,
+        "rank": 280,
         "previous_rank": 281,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/69/9e/92/699e92bb-b589-27f7-bdd1-d0cdc8a061e4/08UMGIM21979.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/teardrops-on-my-guitar-pop-version/1440802681?i=1440803034",
@@ -5182,7 +5183,7 @@
       {
         "song_name": "Forever & Always (Piano Version) [Taylor's Version]",
         "apple_music_id": "1552791985",
-        "rank": 282,
+        "rank": 281,
         "previous_rank": 282,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/forever-always-piano-version-taylors-version/1552791073?i=1552791985",
@@ -5200,7 +5201,7 @@
       {
         "song_name": "Don't You (Taylor's Version) [From The Vault]",
         "apple_music_id": "1552792508",
-        "rank": 283,
+        "rank": 282,
         "previous_rank": 283,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/dont-you-taylors-version-from-the-vault/1552791073?i=1552792508",
@@ -5218,7 +5219,7 @@
       {
         "song_name": "State Of Grace (Acoustic Version) [Taylor's Version]",
         "apple_music_id": "1590368752",
-        "rank": 284,
+        "rank": 283,
         "previous_rank": 284,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/38/9b/15389bf4-8074-06c3-11ee-655b5453af68/21UM1IM25046.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/state-of-grace-acoustic-version-taylors-version/1590368448?i=1590368752",
@@ -5236,7 +5237,7 @@
       {
         "song_name": "Innocent (Taylor's Version)",
         "apple_music_id": "1690840726",
-        "rank": 285,
+        "rank": 284,
         "previous_rank": 285,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/9f/3c/0a/9f3c0a60-f9e0-a34e-60e5-0be1f182896b/23UMGIM63932.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/innocent-taylors-version/1690839749?i=1690840726",
@@ -5254,7 +5255,7 @@
       {
         "song_name": "Tell Me Why (Taylor's Version)",
         "apple_music_id": "1552791572",
-        "rank": 286,
+        "rank": 285,
         "previous_rank": 286,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/tell-me-why-taylors-version/1552791073?i=1552791572",
@@ -5272,7 +5273,7 @@
       {
         "song_name": "Mine",
         "apple_music_id": "1440920319",
-        "rank": 287,
+        "rank": 286,
         "previous_rank": 287,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/d4/23/57/d423579f-24f7-5c82-ed10-fbfd21ceef25/10UMDIM00487.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/mine/1440920310?i=1440920319",
@@ -5293,7 +5294,7 @@
       {
         "song_name": "Ronan (Taylor's Version)",
         "apple_music_id": "1590368753",
-        "rank": 288,
+        "rank": 287,
         "previous_rank": 288,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/38/9b/15389bf4-8074-06c3-11ee-655b5453af68/21UM1IM25046.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/ronan-taylors-version/1590368448?i=1590368753",
@@ -5311,7 +5312,7 @@
       {
         "song_name": "You Are In Love",
         "apple_music_id": "1445882614",
-        "rank": 289,
+        "rank": 288,
         "previous_rank": 289,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/fe/57/5f/fe575f85-b843-e190-b043-2605d5f6ec59/14UMGIM34830.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/you-are-in-love/1445881848?i=1445882614",
@@ -5329,7 +5330,7 @@
       {
         "song_name": "Safe & Sound (Taylor's Version)",
         "apple_music_id": "1676966710",
-        "rank": 290,
+        "rank": 289,
         "previous_rank": 290,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/71/68/56/71685693-ccea-7640-209b-94a0f974c697/21UM1IM25046.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/safe-sound-taylors-version/1676966698?i=1676966710",
@@ -5347,7 +5348,7 @@
       {
         "song_name": "The Joker And The Queen (feat. Taylor Swift)",
         "apple_music_id": "1608894952",
-        "rank": 291,
+        "rank": 290,
         "previous_rank": 291,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/7b/36/ec/7b36ec5a-d752-167b-849f-2e6f8bdf90d5/190296267987.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/the-joker-and-the-queen-feat-taylor-swift/1608894948?i=1608894952",
@@ -5365,7 +5366,7 @@
       {
         "song_name": "Fortnight (feat. Post Malone) [BLOND:ISH Remix]",
         "apple_music_id": "1747337110",
-        "rank": 292,
+        "rank": 291,
         "previous_rank": 292,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/1c/ff/72/1cff72ce-8c33-e7e2-9e7c-542ea8f91b7a/24UMGIM56433.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/fortnight-feat-post-malone-blond-ish-remix/1747337107?i=1747337110",
@@ -5383,7 +5384,7 @@
       {
         "song_name": "my tears ricochet (the long pond studio sessions)",
         "apple_music_id": "1541905079",
-        "rank": 293,
+        "rank": 292,
         "previous_rank": 293,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/0f/a0/14/0fa0144d-6cd5-792a-1589-3e1f0c25db49/20UM1IM08851.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/my-tears-ricochet-the-long-pond-studio-sessions/1541904688?i=1541905079",
@@ -5401,7 +5402,7 @@
       {
         "song_name": "Opalite (BUNT. Remix)",
         "apple_music_id": "1878183696",
-        "rank": 294,
+        "rank": 293,
         "previous_rank": 294,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/6b/a8/ae/6ba8aef4-7f96-ef7e-53e6-f3ecc301b8ca/ticket.ntqjdpnb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/opalite-bunt-remix/1878183335?i=1878183696",
@@ -5419,7 +5420,7 @@
       {
         "song_name": "Ours (Taylor's Version)",
         "apple_music_id": "1690840823",
-        "rank": 295,
+        "rank": 294,
         "previous_rank": 295,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/9f/3c/0a/9f3c0a60-f9e0-a34e-60e5-0be1f182896b/23UMGIM63932.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/ours-taylors-version/1690839749?i=1690840823",
@@ -5437,7 +5438,7 @@
       {
         "song_name": "Wonderland",
         "apple_music_id": "1445882606",
-        "rank": 296,
+        "rank": 295,
         "previous_rank": 296,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/fe/57/5f/fe575f85-b843-e190-b043-2605d5f6ec59/14UMGIM34830.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/wonderland/1445881848?i=1445882606",
@@ -5455,7 +5456,7 @@
       {
         "song_name": "Haunted",
         "apple_music_id": "1440920739",
-        "rank": 297,
+        "rank": 296,
         "previous_rank": 297,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/d4/23/57/d423579f-24f7-5c82-ed10-fbfd21ceef25/10UMDIM00487.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/haunted/1440920310?i=1440920739",
@@ -5476,7 +5477,7 @@
       {
         "song_name": "Come In With The Rain (Taylor's Version)",
         "apple_music_id": "1552791988",
-        "rank": 298,
+        "rank": 297,
         "previous_rank": 298,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/come-in-with-the-rain-taylors-version/1552791073?i=1552791988",
@@ -5494,7 +5495,7 @@
       {
         "song_name": "Bye Bye Baby (Taylor's Version) [From The Vault]",
         "apple_music_id": "1552792518",
-        "rank": 299,
+        "rank": 298,
         "previous_rank": 299,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/bye-bye-baby-taylors-version-from-the-vault/1552791073?i=1552792518",
@@ -5512,7 +5513,7 @@
       {
         "song_name": "exile (feat. Bon Iver) [the long pond studio sessions]",
         "apple_music_id": "1541907047",
-        "rank": 300,
+        "rank": 299,
         "previous_rank": 300,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/dd/6a/2f/dd6a2fec-2476-b44a-f2cc-8a2736143d8c/20UM1IM08851.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/exile-feat-bon-iver-the-long-pond-studio-sessions/1541905871?i=1541907047",
@@ -5530,7 +5531,7 @@
       {
         "song_name": "this is me trying (the long pond studio sessions)",
         "apple_music_id": "1541905149",
-        "rank": 301,
+        "rank": 300,
         "previous_rank": 301,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/0f/a0/14/0fa0144d-6cd5-792a-1589-3e1f0c25db49/20UM1IM08851.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/this-is-me-trying-the-long-pond-studio-sessions/1541904688?i=1541905149",
@@ -5548,7 +5549,7 @@
       {
         "song_name": "Superstar (Taylor's Version)",
         "apple_music_id": "1552791992",
-        "rank": 302,
+        "rank": 301,
         "previous_rank": 302,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/superstar-taylors-version/1552791073?i=1552791992",
@@ -5566,7 +5567,7 @@
       {
         "song_name": "I'm Only Me When I'm With You",
         "apple_music_id": "1440803026",
-        "rank": 303,
+        "rank": 302,
         "previous_rank": 303,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/69/9e/92/699e92bb-b589-27f7-bdd1-d0cdc8a061e4/08UMGIM21979.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/im-only-me-when-im-with-you/1440802681?i=1440803026",
@@ -5587,7 +5588,7 @@
       {
         "song_name": "Elizabeth Taylor",
         "apple_music_id": "1888604735",
-        "rank": 304,
+        "rank": 303,
         "previous_rank": 304,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/2b/14/dc/2b14dc4d-5173-7b38-b0ff-1c30daf5fa32/26UMGIM37308.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/elizabeth-taylor/1888604488?i=1888604735",
@@ -5605,7 +5606,7 @@
       {
         "song_name": "We Were Happy (Taylor's Version) [From The Vault]",
         "apple_music_id": "1552792315",
-        "rank": 305,
+        "rank": 304,
         "previous_rank": 305,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/we-were-happy-taylors-version-from-the-vault/1552791073?i=1552792315",
@@ -5623,7 +5624,7 @@
       {
         "song_name": "Fearless",
         "apple_music_id": "1440924805",
-        "rank": 306,
+        "rank": 305,
         "previous_rank": 306,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/cb/6e/a7/cb6ea70a-6cb8-89a0-4da7-91e2d04a7bba/08PNDIM05386.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/fearless/1440924803?i=1440924805",
@@ -5646,7 +5647,7 @@
       {
         "song_name": "State of Grace",
         "apple_music_id": "1440935342",
-        "rank": 307,
+        "rank": 306,
         "previous_rank": 307,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/25/0d/7e/250d7e42-3a2f-19ac-f865-f1e04a4a1f97/12UMDIM01007.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/state-of-grace/1440935340?i=1440935342",
@@ -5669,7 +5670,7 @@
       {
         "song_name": "Mary's Song (Oh My My My)",
         "apple_music_id": "1440803022",
-        "rank": 308,
+        "rank": 307,
         "previous_rank": 308,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/69/9e/92/699e92bb-b589-27f7-bdd1-d0cdc8a061e4/08UMGIM21979.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/marys-song-oh-my-my-my/1440802681?i=1440803022",
@@ -5690,7 +5691,7 @@
       {
         "song_name": "Cruel Summer (Live from TS The Eras Tour)",
         "apple_music_id": "1712547499",
-        "rank": 309,
+        "rank": 308,
         "previous_rank": 309,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/ec/80/be/ec80be7c-5e3c-4ac9-ac24-2f51cddabfa3/23UM1IM30381.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/cruel-summer-live-from-ts-the-eras-tour/1712547428?i=1712547499",
@@ -5708,7 +5709,7 @@
       {
         "song_name": "Lavender Haze (Acoustic Version)",
         "apple_music_id": "1679400243",
-        "rank": 310,
+        "rank": 309,
         "previous_rank": 310,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/01/fb/b1/01fbb1c6-3fe5-1b6a-8c9e-a295734f592e/23UMGIM34990.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/lavender-haze-acoustic-version/1679400242?i=1679400243",
@@ -5726,7 +5727,7 @@
       {
         "song_name": "cardigan (the long pond studio sessions)",
         "apple_music_id": "1541905058",
-        "rank": 311,
+        "rank": 310,
         "previous_rank": 311,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/0f/a0/14/0fa0144d-6cd5-792a-1589-3e1f0c25db49/20UM1IM08851.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/cardigan-the-long-pond-studio-sessions/1541904688?i=1541905058",
@@ -5744,7 +5745,7 @@
       {
         "song_name": "Opalite (Skream Remix)",
         "apple_music_id": "1878173708",
-        "rank": 312,
+        "rank": 311,
         "previous_rank": 312,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c6/12/bf/c612bfeb-e48f-827b-6174-5d23d61ce5ac/ticket.zrdcyfil.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/opalite-skream-remix/1878173707?i=1878173708",
@@ -5762,7 +5763,7 @@
       {
         "song_name": "Cold As You",
         "apple_music_id": "1440802935",
-        "rank": 313,
+        "rank": 312,
         "previous_rank": 313,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/69/9e/92/699e92bb-b589-27f7-bdd1-d0cdc8a061e4/08UMGIM21979.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/cold-as-you/1440802681?i=1440802935",
@@ -5783,7 +5784,7 @@
       {
         "song_name": "Safe & Sound (feat. The Civil Wars)",
         "apple_music_id": "1440795596",
-        "rank": 314,
+        "rank": 313,
         "previous_rank": 314,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/41/22/0e/41220e16-ceb6-a7a3-a0c6-32b75fdce125/00602527969206.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/safe-sound-feat-the-civil-wars/1440795097?i=1440795596",
@@ -5801,7 +5802,7 @@
       {
         "song_name": "A Message From Taylor",
         "apple_music_id": "1739669203",
-        "rank": 315,
+        "rank": 314,
         "previous_rank": 315,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b4/cd/1f/b4cd1f53-545e-7e06-dfb2-6c6febe6707d/Old_Habits_Die_Screaming_Songs-3000x3000.png/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/a-message-from-taylor/1739669199?i=1739669203",
@@ -5820,7 +5821,7 @@
       {
         "song_name": "The Way I Loved You",
         "apple_music_id": "1440925046",
-        "rank": 316,
+        "rank": 315,
         "previous_rank": 316,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/cb/6e/a7/cb6ea70a-6cb8-89a0-4da7-91e2d04a7bba/08PNDIM05386.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/the-way-i-loved-you/1440924803?i=1440925046",
@@ -5843,7 +5844,7 @@
       {
         "song_name": "Cornelia Street (Live From Paris)",
         "apple_music_id": "1513212580",
-        "rank": 317,
+        "rank": 316,
         "previous_rank": 317,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/81/32/b0/8132b068-3866-006d-1793-b67473e43a04/20UMGIM36104.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/cornelia-street-live-from-paris/1513212576?i=1513212580",
@@ -5861,7 +5862,7 @@
       {
         "song_name": "The Last Time (feat. Gary Lightbody)",
         "apple_music_id": "1440935568",
-        "rank": 318,
+        "rank": 317,
         "previous_rank": 318,
         "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/25/0d/7e/250d7e42-3a2f-19ac-f865-f1e04a4a1f97/12UMDIM01007.rgb.jpg/300x300bb.jpg",
         "url": "https://music.apple.com/fr/album/the-last-time-feat-gary-lightbody/1440935340?i=1440935568",
@@ -5879,6 +5880,24 @@
           "Pop",
           "Pop ado",
           "Honky tonk"
+        ]
+      },
+      {
+        "song_name": "Elizabeth Taylor (Track by Track)",
+        "apple_music_id": "1888604747",
+        "rank": 318,
+        "previous_rank": 215,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/2b/14/dc/2b14dc4d-5173-7b38-b0ff-1c30daf5fa32/26UMGIM37308.rgb.jpg/300x300bb.jpg",
+        "url": "https://music.apple.com/fr/album/elizabeth-taylor-track-by-track/1888604488?i=1888604747",
+        "artist_name": "Taylor Swift",
+        "album_name": "Elizabeth Taylor",
+        "duration_ms": 35910,
+        "release_date": "2025-10-02",
+        "isrc": "USUG12508946",
+        "content_rating": "",
+        "genre_names": [
+          "Pop",
+          "Musique"
         ]
       },
       {
@@ -13016,6 +13035,1815 @@
       }
     ]
   },
+  "ts_top_albums": {
+    "date": null,
+    "entries": []
+  },
+  "ts_top_videos": {
+    "date": "2026-04-01T13:03:43",
+    "entries": [
+      {
+        "song_name": "",
+        "apple_music_id": "1444612068",
+        "rank": 1,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video1/v4/88/a5/4a/88a54a39-15cc-072f-d245-68e6c2cd90be/15UMDIM00351_1_1.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/bad-blood-feat-kendrick-lamar/1444612068",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 246292,
+        "release_date": "2015-05-17",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Bad Blood (feat. Kendrick Lamar)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1445139748",
+        "rank": 2,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video5/v4/1d/d6/36/1dd636b9-3d2b-95b7-e2a5-ba06cfdf6cec/14UMGIM35306_1_1.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/shake-it-off/1445139748",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 243048,
+        "release_date": "2014-01-01",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Shake It Off"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1460866705",
+        "rank": 3,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video113/v4/84/4a/bd/844abdf8-f2db-1a48-0fd7-693ffb4f970b/19UMGIM38661_.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/me-feat-brendon-urie-of-panic-at-the-disco/1460866705",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 248680,
+        "release_date": "2019-04-26",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "ME! (feat. Brendon Urie of Panic! At The Disco)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1690841286",
+        "rank": 4,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video116/v4/a1/8a/c5/a18ac573-372d-58ce-5321-db63eead1062/23UMGIM63544.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/surprise-announcement-taylors-version/1690841286",
+        "artist_name": "Taylor Swift",
+        "album_name": "Speak Now (Taylor's Version)",
+        "duration_ms": 96637,
+        "release_date": "2023-07-06",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Surprise Announcement (Taylor's Version)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1845446611",
+        "rank": 5,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/fe/d9/a8/fed9a8ad-13fc-7408-a739-2d80d3714876/25UM1IM51274.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/the-fate-of-ophelia/1845446611",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 238208,
+        "release_date": "2025-10-03",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "The Fate of Ophelia"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1874387735",
+        "rank": 6,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/0d/72/ce/0d72ce84-a2c3-864d-ab62-2d6ee8d63697/26UMGIM11601.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/opalite/1874387735",
+        "artist_name": "Taylor Swift",
+        "album_name": "Opalite - Single",
+        "duration_ms": 359723,
+        "release_date": "2026-02-06",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Opalite"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1650836460",
+        "rank": 7,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video122/v4/77/8e/77/778e77d1-59ef-0be7-616e-8b7ef186e8a4/22UM1IM21531.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/anti-hero/1650836460",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 309422,
+        "release_date": "2022-10-21",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Anti-Hero"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1468647174",
+        "rank": 8,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video123/v4/1b/64/29/1b64297a-b315-fbe4-61a9-a841a93548c0/19UMGIM53855.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/you-need-to-calm-down/1468647174",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 210387,
+        "release_date": "2019-06-17",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "You Need To Calm Down"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1358176127",
+        "rank": 9,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video118/v4/e2/19/28/e2192865-f022-11c7-35f3-c18a06ede4ab/00843930028078_00001.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/delicate/1358176127",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 235860,
+        "release_date": "2018-01-01",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Delicate"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1742247789",
+        "rank": 10,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/a6/ff/7c/a6ff7cc4-b45d-49c1-bb21-ec08c3948869/24UMGIM42850.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/fortnight-feat-post-malone/1742247789",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 249472,
+        "release_date": "2024-04-19",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Fortnight (feat. Post Malone)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1445740748",
+        "rank": 11,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video128/v4/0a/7c/2e/0a7c2eb8-8443-9ea2-cdeb-afcf06698e45/17UM1IM24940_1_1.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/look-what-you-made-me-do/1445740748",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 256595,
+        "release_date": "2017-08-27",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Look What You Made Me Do"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1715551233",
+        "rank": 12,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video126/v4/c9/1f/01/c91f01ee-899a-f786-fce0-3276959eb62d/AOTY2023_000402.png/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/artist-of-the-year-2023-taylor-swift/1715551233",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 36870,
+        "release_date": "2023-11-08",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Artist of the Year 2023: Taylor Swift"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1763899528",
+        "rank": 13,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/ed/2d/43/ed2d432d-0a7a-e7a2-648a-5089089484f9/24UMGIM88082.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/i-can-do-it-with-a-broken-heart/1763899528",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 222166,
+        "release_date": "2024-08-20",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "I Can Do It With a Broken Heart"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1651347213",
+        "rank": 14,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video122/v4/5d/77/de/5d77de5a-fb15-b0c9-b252-ade68e921a4b/22UM1IM21537.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/bejeweled/1651347213",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 353882,
+        "release_date": "2022-10-25",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Bejeweled"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1524878994",
+        "rank": 15,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video124/v4/26/4b/0a/264b0ac1-f92a-bc57-8af6-9a6abb20e752/20UMGIM64242.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/cardigan/1524878994",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 274537,
+        "release_date": "2020-07-24",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Alternative"
+        ],
+        "video_name": "cardigan"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1477498160",
+        "rank": 16,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video123/v4/99/d0/00/99d000c9-efaf-720c-0534-8aedc6dd0a96/19UMGIM76676.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/lover/1477498160",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 238163,
+        "release_date": "2019-08-22",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Lover"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1545490404",
+        "rank": 17,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video114/v4/72/ec/7b/72ec7b08-8791-7d82-f6e5-dfde40927492/AppleMusicAwards2020_Special_FullFilm_AppleMusicAwards2020_KeyframeImage_06_41.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/apple-music-awards-2020-wrap-up/1545490404",
+        "artist_name": "Megan Thee Stallion, Taylor Swift, Roddy Ricch, Lil Baby, Zane Lowe & Ebro Darden",
+        "album_name": "",
+        "duration_ms": 1872168,
+        "release_date": "2020-12-18",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Clips"
+        ],
+        "video_name": "Apple Music Awards 2020 Wrap-Up"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1445010473",
+        "rank": 18,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video49/v4/6e/5d/d4/6e5dd4e4-0355-89b9-20fe-9859e5274a20/15UMDIM00510_1_1.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/wildest-dreams/1445010473",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 236158,
+        "release_date": "2015-01-01",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Wildest Dreams"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1452879769",
+        "rank": 19,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/ad/8f/b1/ad8fb154-dcc2-d251-1024-6f1e01fdd3fa/09UMGIM11115.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/love-story/1452879769",
+        "artist_name": "Taylor Swift",
+        "album_name": "Fearless (Platinum Edition)",
+        "duration_ms": 241814,
+        "release_date": "2009-11-16",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Country"
+        ],
+        "video_name": "Love Story"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1452879772",
+        "rank": 20,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/2e/90/bd/2e90bd7a-49fe-5c91-b9ba-d1fdd3c6f4f0/09UMGIM13288.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/you-belong-with-me-closed-captioned/1452879772",
+        "artist_name": "Taylor Swift",
+        "album_name": "Fearless (Platinum Edition)",
+        "duration_ms": 234665,
+        "release_date": "2009-11-16",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Country"
+        ],
+        "video_name": "You Belong With Me (Closed-Captioned)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1544365888",
+        "rank": 21,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video114/v4/47/c2/bd/47c2bdd9-8c3d-f451-deb6-5019361e50d3/20UM1IM14918.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/willow/1544365888",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 252478,
+        "release_date": "2020-12-11",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Alternative"
+        ],
+        "video_name": "willow"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1689811161",
+        "rank": 22,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video126/v4/8f/8f/d0/8f8fd097-4498-3d6b-5326-c1708bd5ffb1/23UMGIM58032.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/karma-feat-ice-spice/1689811161",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 205087,
+        "release_date": "2023-05-27",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Karma (feat. Ice Spice)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1651516874",
+        "rank": 23,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video112/v4/fe/61/45/fe6145f7-53c0-8eb2-e877-7cfea2763b7d/22UM1IM21531.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/anti-hero/1651516874",
+        "artist_name": "Taylor Swift",
+        "album_name": "Midnights (3am Edition / Video Deluxe)",
+        "duration_ms": 309422,
+        "release_date": "2022-10-20",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Anti-Hero"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1594912232",
+        "rank": 24,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video116/v4/db/0a/5d/db0a5de2-e8f0-86c6-950a-cf1b7aed540d/21UM1IM33918.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/all-too-well-the-short-film/1594912232",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 895080,
+        "release_date": "2021-11-13",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "All Too Well: The Short Film"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1445011970",
+        "rank": 25,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video118/v4/76/b7/7b/76b77b40-4058-d4ff-1683-27e57a6f1ad4/dj.oevfezxg.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/ready-for-it/1445011970",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 211795,
+        "release_date": "2017-10-27",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "...Ready For It?"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1668233442",
+        "rank": 26,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video126/v4/69/10/02/691002a6-9dca-c165-7e3d-31199917337a/23UMGIM08802.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/lavender-haze/1668233442",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 210113,
+        "release_date": "2023-01-27",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Lavender Haze"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1444876631",
+        "rank": 27,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video51/v4/b3/03/3b/b3033b28-a075-e75a-eb16-f649d75ad8be/17UMGIM06513_1_1.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/i-dont-wanna-live-forever-from-fifty-shades-darker/1444876631",
+        "artist_name": "ZAYN & Taylor Swift",
+        "album_name": "",
+        "duration_ms": 249577,
+        "release_date": "2017-01-30",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "R&B/Soul"
+        ],
+        "video_name": "I Don't Wanna Live Forever (From \"Fifty Shades Darker\")"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1500663135",
+        "rank": 28,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video124/v4/b4/11/2a/b4112abb-baa3-dedc-733f-6c673e201360/20UMGIM14437.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/the-man/1500663135",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 254718,
+        "release_date": "2020-02-27",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "The Man"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1445020977",
+        "rank": 29,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video118/v4/2b/b3/44/2bb344f2-4124-2b0f-403c-76dceb919dcc/18UMGIM01170_1_1.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/end-game-feat-ed-sheeran-future/1445020977",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 250963,
+        "release_date": "2018-01-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "End Game (feat. Ed Sheeran & Future)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1609610315",
+        "rank": 30,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video116/v4/85/7f/11/857f110f-371a-705f-ecb9-c5faf87443b2/GB1302200055.sca1.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/the-joker-and-the-queen-feat-taylor-swift/1609610315",
+        "artist_name": "Ed Sheeran",
+        "album_name": "",
+        "duration_ms": 186493,
+        "release_date": "2022-02-10",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "The Joker And The Queen (feat. Taylor Swift)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1875381399",
+        "rank": 31,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/59/66/8f/59668f86-ced9-f3f0-5c2c-61d8469b78b9/26UMGIM11602.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/opalite-official-music-video-extended-version-part-1/1875381399",
+        "artist_name": "Taylor Swift",
+        "album_name": "Opalite (Official Music Video Extended Versions) - Single",
+        "duration_ms": 569707,
+        "release_date": "2026-02-13",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Opalite (Official Music Video Extended Version Part 1)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1444580166",
+        "rank": 32,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video2/v4/13/78/54/137854d2-fbe6-3e91-8ebd-2957915a3e88/13UAAIM07078_1_1.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/everything-has-changed-feat-ed-sheeran/1444580166",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 253462,
+        "release_date": "2013-01-01",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Country"
+        ],
+        "video_name": "Everything Has Changed (feat. Ed Sheeran)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1440494391",
+        "rank": 33,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/fd/a7/80/fda7801e-2213-0149-6e35-c3ea5a170d7d/10UMGIM20870.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/mine/1440494391",
+        "artist_name": "Taylor Swift",
+        "album_name": "Speak Now",
+        "duration_ms": 235795,
+        "release_date": "2010-10-25",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Mine"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1445004793",
+        "rank": 34,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video3/v4/2b/ee/50/2bee5071-9787-00ab-fe15-af52a5d5ef4d/15UMGIM08332_1_1.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/style/1445004793",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 244457,
+        "release_date": "2015-02-11",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Style"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1452880086",
+        "rank": 35,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/09/d3/c1/09d3c1cf-42dc-41b8-3631-1bed5555413f/11UMGIM07558.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/thug-story-cmt-awards/1452880086",
+        "artist_name": "T-Pain, Taylor Swift, Nash Overstreet & R. K. Follese",
+        "album_name": "Fearless (Platinum Edition)",
+        "duration_ms": 87892,
+        "release_date": "2009-11-16",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Country"
+        ],
+        "video_name": "Thug Story (CMT Awards)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423414",
+        "rank": 36,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video116/v4/10/28/a3/1028a3b4-0a30-9e69-c4be-48096d2aa54a/21UM1IM39922.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/state-of-grace-taylors-version-lyric-video/1595423414",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 299262,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "State Of Grace (Taylor's Version) [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1651517092",
+        "rank": 37,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video122/v4/83/06/ff/8306ff54-9375-3220-242c-594cd26cd9b9/22UM1IM21537.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/bejeweled/1651517092",
+        "artist_name": "Taylor Swift",
+        "album_name": "Midnights (3am Edition / Video Deluxe)",
+        "duration_ms": 353882,
+        "release_date": "2022-10-20",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Bejeweled"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1544282836",
+        "rank": 38,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video114/v4/45/2b/2b/452b2bcd-dd8c-bf7d-39aa-65e2f6954e62/AppleMusicAwards2020_PreMusicWeekTease_KeyFrameImage_00.07.22.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/apple-music-awards-2020-preview/1544282836",
+        "artist_name": "Megan Thee Stallion, Taylor Swift, Roddy Ricch & Lil Baby",
+        "album_name": "",
+        "duration_ms": 52990,
+        "release_date": "2020-12-10",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Clips"
+        ],
+        "video_name": "Apple Music Awards 2020: Preview"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1719153852",
+        "rank": 39,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video126/v4/33/2b/d5/332bd592-a2be-2fbb-3bdc-ef8dcf3ffe85/TN-MS-WW-AOTY_20231113-AUC_Episode.png/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/artist-of-the-year-2023-star-swifties/1719153852",
+        "artist_name": "Selena Gomez, Camila Cabello, Gracie Abrams, MUNA, Sabrina Carpenter, girl in red & Taylor Swift",
+        "album_name": "",
+        "duration_ms": 51342,
+        "release_date": "2023-12-01",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Artist of the Year 2023: Star Swifties"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423415",
+        "rank": 40,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video126/v4/fe/3f/35/fe3f351b-78a7-5437-0ac3-8abed5f4d1fa/21UM1IM39917.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/red-taylors-version-lyric-video/1595423415",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 220265,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Red (Taylor's Version) [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1445869099",
+        "rank": 41,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video122/v4/ab/2f/79/ab2f7942-1da9-4084-785a-85b3a73a88e4/dj.hakvvsin.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/we-are-never-ever-getting-back-together/1445869099",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 216425,
+        "release_date": "2012-01-01",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Country"
+        ],
+        "video_name": "We Are Never Ever Getting Back Together"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595394305",
+        "rank": 42,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video126/v4/c6/ea/6f/c6ea6f60-aeef-6d5e-4251-b6eaa5551d84/21UM1IM33919.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/i-bet-you-think-about-me-taylors-version-from-the/1595394305",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 375293,
+        "release_date": "2021-11-15",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "I Bet You Think About Me (Taylor's Version) (From The Vault) [feat. Chris Stapleton]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1445862389",
+        "rank": 43,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video/v4/d6/96/fc/d696fc0f-3c00-e1a6-7cda-d077f4fe409f/12UMGIM65634_1_1.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/i-knew-you-were-trouble/1445862389",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 359058,
+        "release_date": "2012-01-01",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Country"
+        ],
+        "video_name": "I Knew You Were Trouble"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1651517266",
+        "rank": 44,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video122/v4/4e/b6/62/4eb6622f-07e8-076d-68f2-b092879b9fc3/22UM1IM20563.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/snow-on-the-beach-feat-lana-del-rey-lyric-video/1651517266",
+        "artist_name": "Taylor Swift",
+        "album_name": "Midnights (3am Edition / Video Deluxe)",
+        "duration_ms": 259872,
+        "release_date": "2022-10-20",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Snow On The Beach (feat. Lana Del Rey) [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1452879766",
+        "rank": 45,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/8c/1c/1e/8c1c1e13-6421-a269-66c4-fb27cfdb75c2/11UMGIM07551.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/change/1452879766",
+        "artist_name": "Taylor Swift",
+        "album_name": "Fearless (Platinum Edition)",
+        "duration_ms": 275456,
+        "release_date": "2009-11-16",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Country"
+        ],
+        "video_name": "Change"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1445684368",
+        "rank": 46,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video/v4/60/d2/8b/60d28b16-a9ed-059a-057d-0a59ffd82642/13UMGIM26495_1_1.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/22/1445684368",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 244678,
+        "release_date": "2013-01-01",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Country"
+        ],
+        "video_name": "22"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423423",
+        "rank": 47,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video126/v4/f2/66/d7/f266d7d2-7277-a79a-5190-632ba3ac31d4/21UM1IM39914.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/i-knew-you-were-trouble-taylors-version-lyric-video/1595423423",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 220670,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "I Knew You Were Trouble (Taylor's Version) [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423430",
+        "rank": 48,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video126/v4/8d/0c/f6/8d0cf689-ae05-8742-846e-14c1e8671dd1/21UM1IM39929.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/we-are-never-ever-getting-back-together-taylors-version/1595423430",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 194728,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "We Are Never Ever Getting Back Together (Taylor's Version) [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423914",
+        "rank": 49,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video116/v4/e4/1d/f7/e41df79e-7c86-233a-50e1-deaff275970a/21UM1IM39902.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/all-too-well-10-minute-version-taylors-version-from/1595423914",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 612200,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "All Too Well (10 Minute Version) (Taylor's Version) (From The Vault) [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423424",
+        "rank": 50,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video116/v4/ae/1f/b5/ae1fb5e0-b291-2d58-85f4-0af4a4ae7ba5/21UM1IM39903.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/all-too-well-taylors-version-lyric-video/1595423424",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 330153,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "All Too Well (Taylor's Version) [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1445018135",
+        "rank": 51,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video49/v4/06/14/8a/06148ac5-b3a9-a36d-88a7-644b54e24093/15UMDIM00758_1_1.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/out-of-the-woods/1445018135",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 257555,
+        "release_date": "2015-01-01",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Out of the Woods"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1696387354",
+        "rank": 52,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video116/v4/f6/70/ea/f670ead3-e9f0-684d-ecbc-2e59f97ec0ff/23UMGIM76729.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/i-can-see-you-taylors-version-from-the-vault/1696387354",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 306522,
+        "release_date": "2023-07-08",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Country"
+        ],
+        "video_name": "I Can See You (Taylor's Version) [From The Vault]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1452879770",
+        "rank": 53,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/7f/76/16/7f761683-9e5e-55ea-7822-06fcf647c3a0/11UMGIM07553.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/white-horse/1452879770",
+        "artist_name": "Taylor Swift",
+        "album_name": "Fearless (Platinum Edition)",
+        "duration_ms": 250432,
+        "release_date": "2009-11-16",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Country"
+        ],
+        "video_name": "White Horse"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1476817618",
+        "rank": 54,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video123/v4/d6/5b/3c/d65b3cd2-09a1-e992-3598-85ab56e1404d/19UMGIM74677.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/lover-lyric-video/1476817618",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 229332,
+        "release_date": "2019-08-16",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Lover (Lyric Video)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423418",
+        "rank": 55,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video126/v4/36/c7/80/36c78023-f012-5309-d39c-0d85fec55d66/21UM1IM39928.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/treacherous-taylors-version-lyric-video/1595423418",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 240915,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Treacherous (Taylor's Version) [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1875381400",
+        "rank": 56,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/03/bf/a6/03bfa664-492d-6699-de57-b6160867d33c/26UMGIM11603.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/opalite-official-music-video-extended-version-part-2/1875381400",
+        "artist_name": "Taylor Swift",
+        "album_name": "Opalite (Official Music Video Extended Versions) - Single",
+        "duration_ms": 543446,
+        "release_date": "2026-02-13",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Opalite (Official Music Video Extended Version Part 2)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1452879768",
+        "rank": 57,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/dc/d6/72/dcd6724a-8c02-b626-6975-ac883356fc07/11UMGIM07552.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/the-best-day/1452879768",
+        "artist_name": "Taylor Swift",
+        "album_name": "Fearless (Platinum Edition)",
+        "duration_ms": 281451,
+        "release_date": "2009-11-16",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Country"
+        ],
+        "video_name": "The Best Day"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1440494386",
+        "rank": 58,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/10/a1/16/10a1161b-b333-2569-f05e-c3301f76bb3a/10UMGIM28612.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/behind-the-scenes-mine-music-video/1440494386",
+        "artist_name": "Taylor Swift",
+        "album_name": "Speak Now",
+        "duration_ms": 1873683,
+        "release_date": "2010-10-25",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Behind The Scenes 'Mine' Music Video"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1490487419",
+        "rank": 59,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video123/v4/c3/b1/de/c3b1de38-fc2e-0aeb-f7c7-e0800159d030/19UM1IM09472.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/christmas-tree-farm/1490487419",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 224767,
+        "release_date": "2019-12-06",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Christmas Tree Farm"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1651517203",
+        "rank": 60,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video112/v4/ad/c1/1d/adc11d8d-e8d3-3fc1-d11c-a5c539f87786/22UM1IM20555.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/anti-hero-lyric-video/1651517203",
+        "artist_name": "Taylor Swift",
+        "album_name": "Midnights (3am Edition / Video Deluxe)",
+        "duration_ms": 203690,
+        "release_date": "2022-10-20",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Anti-Hero (Lyric Video)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595424062",
+        "rank": 61,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video116/v4/7d/3f/65/7d3f65e5-519a-5af3-3e10-ac2a8ed324d2/21UM1IM33918.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/all-too-well-the-short-film/1595424062",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 895080,
+        "release_date": "2021-11-13",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "All Too Well: The Short Film"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423428",
+        "rank": 62,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video126/v4/c3/c7/db/c3c7db88-6356-9cda-5abc-ff76821d5d5c/21UM1IM39901.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/22-taylors-version-lyric-video/1595423428",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 231273,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "22 (Taylor's Version) [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1446736743",
+        "rank": 63,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video113/v4/02/db/62/02db628f-b39a-ff52-917f-d249781b4892/dj.jhaznkkg.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/you-belong-with-me/1446736743",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 234665,
+        "release_date": "2009-01-01",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "You Belong With Me"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1651517097",
+        "rank": 64,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video112/v4/60/fa/6d/60fa6de4-ddab-9acd-fead-274d57561c62/22UM1IM20553.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/lavender-haze-lyric-video/1651517097",
+        "artist_name": "Taylor Swift",
+        "album_name": "Midnights (3am Edition / Video Deluxe)",
+        "duration_ms": 206110,
+        "release_date": "2022-10-20",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Lavender Haze (Lyric Video)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595424013",
+        "rank": 65,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video126/v4/24/57/13/24571362-4221-9030-de31-1ef27acac4db/21UM1IM33919.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/i-bet-you-think-about-me-taylors-version-from-the/1595424013",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 375293,
+        "release_date": "2021-11-15",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "I Bet You Think About Me (Taylor's Version) (From The Vault) [feat. Chris Stapleton]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1541077215",
+        "rank": 66,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video124/v4/26/d5/02/26d50296-e9e8-6629-e980-b802736416c2/AppleMusicAwards_01.png/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/apple-music-awards-2020-preview/1541077215",
+        "artist_name": "Lil Baby, Roddy Ricch, Taylor Swift & Megan Thee Stallion",
+        "album_name": "",
+        "duration_ms": 60733,
+        "release_date": "2020-11-19",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Clips"
+        ],
+        "video_name": "Apple Music Awards 2020 Preview"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1651517099",
+        "rank": 67,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video112/v4/67/98/41/6798414f-8e40-ac7b-7381-221e28a42ff3/22UM1IM20560.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/maroon-lyric-video/1651517099",
+        "artist_name": "Taylor Swift",
+        "album_name": "Midnights (3am Edition / Video Deluxe)",
+        "duration_ms": 222418,
+        "release_date": "2022-10-20",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Maroon (Lyric Video)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1445685486",
+        "rank": 68,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/61/63/af/6163af11-e144-2f3e-190f-58e930850410/dj.znovjtsi.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/love-story/1445685486",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 241622,
+        "release_date": "2009-01-01",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Country"
+        ],
+        "video_name": "Love Story"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1651517269",
+        "rank": 69,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video122/v4/e5/c6/75/e5c6755e-5b2f-9f06-e721-9bae3d342c1b/22UM1IM20566.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/youre-on-your-own-kid-lyric-video/1651517269",
+        "artist_name": "Taylor Swift",
+        "album_name": "Midnights (3am Edition / Video Deluxe)",
+        "duration_ms": 198727,
+        "release_date": "2022-10-20",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "You're On Your Own, Kid (Lyric Video)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1446004567",
+        "rank": 70,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Features/29/14/0e/dj.nrcqgmxt.tif/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/our-song/1446004567",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 208400,
+        "release_date": "2008-01-01",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Country"
+        ],
+        "video_name": "Our Song"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423649",
+        "rank": 71,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video116/v4/e9/76/c9/e976c952-ae11-bf97-2e6e-1a66615446e1/21UM1IM39908.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/everything-has-changed-taylors-version-feat-ed-sheeran/1595423649",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 248617,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Everything Has Changed (Taylor's Version) [feat. Ed Sheeran] [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423429",
+        "rank": 72,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video116/v4/af/00/43/af004381-021e-1eb0-bc69-2eb2e1a46530/21UM1IM39912.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/i-almost-do-taylors-version-lyric-video/1595423429",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 244990,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "I Almost Do (Taylor's Version) [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423432",
+        "rank": 73,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video116/v4/83/73/97/83739708-3a82-8c79-c55c-f0f44afaa77c/21UM1IM39924.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/the-last-time-taylors-version-feat-gary-lightbody/1595423432",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 300008,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "The Last Time (Taylor's Version) [feat. Gary Lightbody] [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423655",
+        "rank": 74,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video116/v4/00/27/09/00270969-7585-a41d-2ca0-6ab77eeeafb8/21UM1IM39907.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/come-back-be-here-taylors-version-lyric-video/1595423655",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 225640,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Come Back...Be Here (Taylor's Version) [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423433",
+        "rank": 75,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video126/v4/2e/fe/f6/2efef6cc-c848-f14d-b14f-74bf0017ef33/21UM1IM39911.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/holy-ground-taylors-version-lyric-video/1595423433",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 206120,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Holy Ground (Taylor's Version) [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1396787825",
+        "rank": 76,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video116/v4/be/22/8e/be228ee0-cf33-3f3d-842e-37ba4a4c90c7/dj.fnkgrrxi.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/babe-feat-taylor-swift/1396787825",
+        "artist_name": "Sugarland",
+        "album_name": "",
+        "duration_ms": 279252,
+        "release_date": "2018-06-09",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Country"
+        ],
+        "video_name": "Babe (feat. Taylor Swift)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423431",
+        "rank": 77,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video116/v4/a4/b0/9f/a4b09f04-5028-b15e-d618-25463ca47abf/21UM1IM39923.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/stay-stay-stay-taylors-version-lyric-video/1595423431",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 207613,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Stay Stay Stay (Taylor's Version) [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1651517275",
+        "rank": 78,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video122/v4/08/70/6a/08706aa1-64a8-7c19-dac4-05914a10417b/22UM1IM20559.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/midnight-rain-lyric-video/1651517275",
+        "artist_name": "Taylor Swift",
+        "album_name": "Midnights (3am Edition / Video Deluxe)",
+        "duration_ms": 179833,
+        "release_date": "2022-10-20",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Midnight Rain (Lyric Video)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1444405662",
+        "rank": 79,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video1/v4/86/6c/90/866c9046-f766-1027-47f6-a9712b50139d/dj.xuscxlvq.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/red-live/1444405662",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 242750,
+        "release_date": "2013-01-01",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Country"
+        ],
+        "video_name": "Red (Live)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423647",
+        "rank": 80,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video116/v4/da/81/47/da8147af-9dd2-3dd2-628c-c09cc92a17f9/21UM1IM39925.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/the-lucky-one-taylors-version-lyric-video/1595423647",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 236200,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "The Lucky One (Taylor's Version) [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1651517280",
+        "rank": 81,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video112/v4/48/0a/cb/480acbed-b26c-8480-0d43-69528ca0f8b3/22UM1IM20556.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/bejeweled-lyric-video/1651517280",
+        "artist_name": "Taylor Swift",
+        "album_name": "Midnights (3am Edition / Video Deluxe)",
+        "duration_ms": 198310,
+        "release_date": "2022-10-20",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Bejeweled (Lyric Video)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423661",
+        "rank": 82,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video126/v4/53/46/09/534609fb-1946-c477-acb1-4edc04811243/21UM1IM39906.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/better-man-taylors-version-from-the-vault-lyric-video/1595423661",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 296873,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Better Man (Taylor's Version) (From The Vault) [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1445869386",
+        "rank": 83,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video1/v4/a1/29/ce/a129cead-dc23-4b1a-c660-64aaee24171f/dj.cgqmwsok.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/begin-again/1445869386",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 251795,
+        "release_date": "2012-01-01",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Country"
+        ],
+        "video_name": "Begin Again"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423669",
+        "rank": 84,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video126/v4/6b/13/54/6b135421-51b0-0116-2197-5a1a1ab45979/21UM1IM39915.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/message-in-a-bottle-taylors-version-from-the/1595423669",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 226430,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Message In A Bottle (Taylor's Version) (From The Vault) [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1651517276",
+        "rank": 85,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video122/v4/87/57/ec/8757ec00-2d48-a103-aca0-5614f60b45cd/22UM1IM20562.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/question-lyric-video/1651517276",
+        "artist_name": "Taylor Swift",
+        "album_name": "Midnights (3am Edition / Video Deluxe)",
+        "duration_ms": 214077,
+        "release_date": "2022-10-20",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Question...? (Lyric Video)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1452879774",
+        "rank": 86,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/b6/bc/6e/b6bc6e5b-b318-a942-9ac4-7e18cc3a2cfd/11UMGIM07562.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/love-story-on-the-set-behind-the-scenes/1452879774",
+        "artist_name": "Taylor Swift",
+        "album_name": "Fearless (Platinum Edition)",
+        "duration_ms": 1326313,
+        "release_date": "2009-11-16",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Country"
+        ],
+        "video_name": "Love Story (On The Set Behind The Scenes)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423654",
+        "rank": 87,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video126/v4/44/c3/1e/44c31eff-0d7d-ea50-d40f-d18e0096d54f/21UM1IM39926.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/the-moment-i-knew-taylors-version-lyric-video/1595423654",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 283368,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "The Moment I Knew (Taylor's Version) [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423435",
+        "rank": 88,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video126/v4/f4/93/14/f49314ab-37f7-5096-1fe6-d45b4f1f96db/21UM1IM39920.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/sad-beautiful-tragic-taylors-version-lyric-video/1595423435",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 285950,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Sad Beautiful Tragic (Taylor's Version) [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423652",
+        "rank": 89,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video126/v4/00/8d/58/008d5874-7465-c81a-be9e-90d2603d5b93/21UM1IM39905.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/begin-again-taylors-version-lyric-video/1595423652",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 238995,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Begin Again (Taylor's Version) [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1651517287",
+        "rank": 90,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video122/v4/62/16/fe/6216feda-5114-3269-bfc4-90dd402767c7/22UM1IM20557.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/karma-lyric-video/1651517287",
+        "artist_name": "Taylor Swift",
+        "album_name": "Midnights (3am Edition / Video Deluxe)",
+        "duration_ms": 209238,
+        "release_date": "2022-10-20",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Karma (Lyric Video)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423650",
+        "rank": 91,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video126/v4/cf/75/3e/cf753e2d-ed9e-979f-552b-2eebda5d5732/21UM1IM39899.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/starlight-taylors-version-lyric-video/1595423650",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 223465,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Starlight (Taylor's Version) [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423664",
+        "rank": 92,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video126/v4/be/2c/c0/be2cc0c0-3b2b-d0ba-81e3-823686cd3a42/21UM1IM39916.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/nothing-new-taylors-version-from-the-vault-feat/1595423664",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 262100,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Nothing New (Taylor's Version) (From The Vault) [feat. Phoebe Bridgers] [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1651517635",
+        "rank": 93,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video112/v4/ed/51/4b/ed514b4a-c8e2-a09c-e3a2-84f60ec048bd/22UM1IM21130.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/bigger-than-the-whole-sky-lyric-video/1651517635",
+        "artist_name": "Taylor Swift",
+        "album_name": "Midnights (3am Edition / Video Deluxe)",
+        "duration_ms": 223043,
+        "release_date": "2022-10-20",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Bigger Than The Whole Sky (Lyric Video)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1651517278",
+        "rank": 94,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video112/v4/fb/62/5d/fb625d31-9836-7dd8-e46a-7b4ff2d5dd67/22UM1IM20565.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/vigilante-shit-lyric-video/1651517278",
+        "artist_name": "Taylor Swift",
+        "album_name": "Midnights (3am Edition / Video Deluxe)",
+        "duration_ms": 169740,
+        "release_date": "2022-10-20",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Vigilante Shit (Lyric Video)"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423869",
+        "rank": 95,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video116/v4/3a/e1/ab/3ae1ab63-3cf2-88b9-3f0b-40e8c3a38614/21UM1IM39919.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/run-taylors-version-from-the-vault-feat-ed-sheeran/1595423869",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 240360,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Run (Taylor's Version) (From The Vault) [feat. Ed Sheeran] [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423665",
+        "rank": 96,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video126/v4/ab/01/05/ab0105d4-f21e-d26e-7674-eb8a7f8fe745/21UM1IM39904.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/babe-taylors-version-from-the-vault-lyric-video/1595423665",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 225107,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "Babe (Taylor's Version) (From The Vault) [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1445682367",
+        "rank": 97,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Features/84/e7/48/dj.yvewxuuc.tif/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/teardrops-on-my-guitar/1445682367",
+        "artist_name": "Taylor Swift",
+        "album_name": "",
+        "duration_ms": 224867,
+        "release_date": "2008-01-01",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Country"
+        ],
+        "video_name": "Teardrops On My Guitar"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423826",
+        "rank": 98,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video116/v4/5b/a5/56/5ba556f6-6b7c-25bb-ba36-f9b857e4ba81/21UM1IM39913.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/i-bet-you-think-about-me-taylors-version-from-the/1595423826",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 288488,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "I Bet You Think About Me (Taylor's Version) (From The Vault) [feat. Chris Stapleton] [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423659",
+        "rank": 99,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video126/v4/b6/7c/9a/b67c9a57-567f-ca94-db96-4871f80a6bac/21UM1IM39921.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/state-of-grace-acoustic-version-taylors-version/1595423659",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 319230,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "State Of Grace (Acoustic Version) (Taylor's Version) [Lyric Video]"
+      },
+      {
+        "song_name": "",
+        "apple_music_id": "1595423910",
+        "rank": 100,
+        "previous_rank": null,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video116/v4/d0/08/88/d0088807-6bd7-9b42-d6a4-683320c99408/21UM1IM39927.crop.jpg/300x300mv.jpg",
+        "url": "https://music.apple.com/fr/music-video/the-very-first-night-taylors-version-from-the-vault/1595423910",
+        "artist_name": "Taylor Swift",
+        "album_name": "Red (Taylor's Version) [Video Deluxe]",
+        "duration_ms": 202153,
+        "release_date": "2021-11-12",
+        "isrc": "",
+        "content_rating": "",
+        "genre_names": [
+          "Pop"
+        ],
+        "video_name": "The Very First Night (Taylor's Version) (From The Vault) [Lyric Video]"
+      }
+    ]
+  },
   "country_charts": {
     "date": "2026-04-01T12:50:20",
     "countries": {
@@ -14068,6 +15896,1327 @@
           "genre_names": [
             "Alternativt",
             "Musik"
+          ]
+        }
+      ]
+    }
+  },
+  "music_video_charts": {
+    "date": "2026-04-01T13:03:43",
+    "countries": {
+      "us": [
+        {
+          "song_name": "",
+          "apple_music_id": "1888604749",
+          "rank": 1,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/0b/f7/6a/0bf76a66-022c-1a48-00f3-9d1778244a88/26UMGIM37304.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/us/music-video/elizabeth-taylor/1888604749",
+          "artist_name": "Taylor Swift",
+          "album_name": "Elizabeth Taylor",
+          "duration_ms": 228886,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1833329009",
+          "rank": 5,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/64/af/6b/64af6b79-fc3b-347b-11a8-039815b9c41e/25UM1IM20144.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/us/music-video/and-baby-thats-show-business-for-you/1833329009",
+          "artist_name": "Taylor Swift",
+          "album_name": "The Life of a Showgirl",
+          "duration_ms": 12118,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1843998897",
+          "rank": 35,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/ef/d4/ba/efd4ba7d-2326-0de5-676c-358c806cd06e/25UM1IM53281.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/us/music-video/elizabeth-taylor-lyric-video/1843998897",
+          "artist_name": "Taylor Swift",
+          "album_name": "The Life of a Showgirl (Track by Track Version)",
+          "duration_ms": 211392,
+          "release_date": "2025-10-05",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1874387735",
+          "rank": 59,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/0d/72/ce/0d72ce84-a2c3-864d-ab62-2d6ee8d63697/26UMGIM11601.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/us/music-video/opalite/1874387735",
+          "artist_name": "Taylor Swift",
+          "album_name": "Opalite - Single",
+          "duration_ms": 359723,
+          "release_date": "2026-02-06",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1845446611",
+          "rank": 70,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/fe/d9/a8/fed9a8ad-13fc-7408-a739-2d80d3714876/25UM1IM51274.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/us/music-video/the-fate-of-ophelia/1845446611",
+          "artist_name": "Taylor Swift",
+          "album_name": "",
+          "duration_ms": 238208,
+          "release_date": "2025-10-03",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1875381399",
+          "rank": 85,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/59/66/8f/59668f86-ced9-f3f0-5c2c-61d8469b78b9/26UMGIM11602.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/us/music-video/opalite-official-music-video-extended-version-part-1/1875381399",
+          "artist_name": "Taylor Swift",
+          "album_name": "Opalite (Official Music Video Extended Versions) - Single",
+          "duration_ms": 569707,
+          "release_date": "2026-02-13",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        }
+      ],
+      "fr": [
+        {
+          "song_name": "",
+          "apple_music_id": "1888604749",
+          "rank": 1,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/0b/f7/6a/0bf76a66-022c-1a48-00f3-9d1778244a88/26UMGIM37304.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/fr/music-video/elizabeth-taylor/1888604749",
+          "artist_name": "Taylor Swift",
+          "album_name": "Elizabeth Taylor",
+          "duration_ms": 228886,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1833329009",
+          "rank": 14,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/64/af/6b/64af6b79-fc3b-347b-11a8-039815b9c41e/25UM1IM20144.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/fr/music-video/and-baby-thats-show-business-for-you/1833329009",
+          "artist_name": "Taylor Swift",
+          "album_name": "The Life of a Showgirl",
+          "duration_ms": 12118,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1845446611",
+          "rank": 63,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/fe/d9/a8/fed9a8ad-13fc-7408-a739-2d80d3714876/25UM1IM51274.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/fr/music-video/the-fate-of-ophelia/1845446611",
+          "artist_name": "Taylor Swift",
+          "album_name": "",
+          "duration_ms": 238208,
+          "release_date": "2025-10-03",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        }
+      ],
+      "gb": [
+        {
+          "song_name": "",
+          "apple_music_id": "1888604749",
+          "rank": 1,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/0b/f7/6a/0bf76a66-022c-1a48-00f3-9d1778244a88/26UMGIM37304.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/gb/music-video/elizabeth-taylor/1888604749",
+          "artist_name": "Taylor Swift",
+          "album_name": "Elizabeth Taylor",
+          "duration_ms": 228886,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1833329009",
+          "rank": 3,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/64/af/6b/64af6b79-fc3b-347b-11a8-039815b9c41e/25UM1IM20144.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/gb/music-video/and-baby-thats-show-business-for-you/1833329009",
+          "artist_name": "Taylor Swift",
+          "album_name": "The Life of a Showgirl",
+          "duration_ms": 12118,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1874387735",
+          "rank": 9,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/0d/72/ce/0d72ce84-a2c3-864d-ab62-2d6ee8d63697/26UMGIM11601.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/gb/music-video/opalite/1874387735",
+          "artist_name": "Taylor Swift",
+          "album_name": "Opalite - Single",
+          "duration_ms": 359723,
+          "release_date": "2026-02-06",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1845446611",
+          "rank": 16,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/fe/d9/a8/fed9a8ad-13fc-7408-a739-2d80d3714876/25UM1IM51274.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/gb/music-video/the-fate-of-ophelia/1845446611",
+          "artist_name": "Taylor Swift",
+          "album_name": "",
+          "duration_ms": 238208,
+          "release_date": "2025-10-03",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1843998897",
+          "rank": 19,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/ef/d4/ba/efd4ba7d-2326-0de5-676c-358c806cd06e/25UM1IM53281.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/gb/music-video/elizabeth-taylor-lyric-video/1843998897",
+          "artist_name": "Taylor Swift",
+          "album_name": "The Life of a Showgirl (Track by Track Version)",
+          "duration_ms": 211392,
+          "release_date": "2025-10-05",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1690841286",
+          "rank": 47,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video116/v4/a1/8a/c5/a18ac573-372d-58ce-5321-db63eead1062/23UMGIM63544.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/gb/music-video/surprise-announcement-taylors-version/1690841286",
+          "artist_name": "Taylor Swift",
+          "album_name": "Speak Now (Taylor's Version)",
+          "duration_ms": 96637,
+          "release_date": "2023-07-06",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1875381399",
+          "rank": 55,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/59/66/8f/59668f86-ced9-f3f0-5c2c-61d8469b78b9/26UMGIM11602.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/gb/music-video/opalite-official-music-video-extended-version-part-1/1875381399",
+          "artist_name": "Taylor Swift",
+          "album_name": "Opalite (Official Music Video Extended Versions) - Single",
+          "duration_ms": 569707,
+          "release_date": "2026-02-13",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1736268559",
+          "rank": 67,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video112/v4/50/f2/54/50f2543c-c49b-6fff-c2a1-ffc3e68b69e7/24UMGIM30410.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/gb/music-video/alls-fair-in-love-and-poetry/1736268559",
+          "artist_name": "Taylor Swift",
+          "album_name": "THE TORTURED POETS DEPARTMENT",
+          "duration_ms": 8150,
+          "release_date": "2024-03-17",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1444612068",
+          "rank": 84,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video1/v4/88/a5/4a/88a54a39-15cc-072f-d245-68e6c2cd90be/15UMDIM00351_1_1.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/gb/music-video/bad-blood-feat-kendrick-lamar/1444612068",
+          "artist_name": "Taylor Swift",
+          "album_name": "",
+          "duration_ms": 246292,
+          "release_date": "2015-05-17",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        }
+      ],
+      "de": [
+        {
+          "song_name": "",
+          "apple_music_id": "1888604749",
+          "rank": 1,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/0b/f7/6a/0bf76a66-022c-1a48-00f3-9d1778244a88/26UMGIM37304.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/de/music-video/elizabeth-taylor/1888604749",
+          "artist_name": "Taylor Swift",
+          "album_name": "Elizabeth Taylor",
+          "duration_ms": 228886,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1833329009",
+          "rank": 14,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/64/af/6b/64af6b79-fc3b-347b-11a8-039815b9c41e/25UM1IM20144.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/de/music-video/and-baby-thats-show-business-for-you/1833329009",
+          "artist_name": "Taylor Swift",
+          "album_name": "The Life of a Showgirl",
+          "duration_ms": 12118,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1845446611",
+          "rank": 26,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/fe/d9/a8/fed9a8ad-13fc-7408-a739-2d80d3714876/25UM1IM51274.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/de/music-video/the-fate-of-ophelia/1845446611",
+          "artist_name": "Taylor Swift",
+          "album_name": "",
+          "duration_ms": 238208,
+          "release_date": "2025-10-03",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1874387735",
+          "rank": 65,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/0d/72/ce/0d72ce84-a2c3-864d-ab62-2d6ee8d63697/26UMGIM11601.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/de/music-video/opalite/1874387735",
+          "artist_name": "Taylor Swift",
+          "album_name": "Opalite - Single",
+          "duration_ms": 359723,
+          "release_date": "2026-02-06",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1445139748",
+          "rank": 85,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video5/v4/1d/d6/36/1dd636b9-3d2b-95b7-e2a5-ba06cfdf6cec/14UMGIM35306_1_1.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/de/music-video/shake-it-off/1445139748",
+          "artist_name": "Taylor Swift",
+          "album_name": "",
+          "duration_ms": 243048,
+          "release_date": "2014-01-01",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        }
+      ],
+      "au": [
+        {
+          "song_name": "",
+          "apple_music_id": "1888604749",
+          "rank": 1,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/0b/f7/6a/0bf76a66-022c-1a48-00f3-9d1778244a88/26UMGIM37304.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/au/music-video/elizabeth-taylor/1888604749",
+          "artist_name": "Taylor Swift",
+          "album_name": "Elizabeth Taylor",
+          "duration_ms": 228886,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1833329009",
+          "rank": 3,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/64/af/6b/64af6b79-fc3b-347b-11a8-039815b9c41e/25UM1IM20144.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/au/music-video/and-baby-thats-show-business-for-you/1833329009",
+          "artist_name": "Taylor Swift",
+          "album_name": "The Life of a Showgirl",
+          "duration_ms": 12118,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1874387735",
+          "rank": 12,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/0d/72/ce/0d72ce84-a2c3-864d-ab62-2d6ee8d63697/26UMGIM11601.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/au/music-video/opalite/1874387735",
+          "artist_name": "Taylor Swift",
+          "album_name": "Opalite - Single",
+          "duration_ms": 359723,
+          "release_date": "2026-02-06",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1845446611",
+          "rank": 13,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/fe/d9/a8/fed9a8ad-13fc-7408-a739-2d80d3714876/25UM1IM51274.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/au/music-video/the-fate-of-ophelia/1845446611",
+          "artist_name": "Taylor Swift",
+          "album_name": "",
+          "duration_ms": 238208,
+          "release_date": "2025-10-03",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1445139748",
+          "rank": 20,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video5/v4/1d/d6/36/1dd636b9-3d2b-95b7-e2a5-ba06cfdf6cec/14UMGIM35306_1_1.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/au/music-video/shake-it-off/1445139748",
+          "artist_name": "Taylor Swift",
+          "album_name": "",
+          "duration_ms": 243048,
+          "release_date": "2014-01-01",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1736268559",
+          "rank": 42,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video112/v4/50/f2/54/50f2543c-c49b-6fff-c2a1-ffc3e68b69e7/24UMGIM30410.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/au/music-video/alls-fair-in-love-and-poetry/1736268559",
+          "artist_name": "Taylor Swift",
+          "album_name": "THE TORTURED POETS DEPARTMENT",
+          "duration_ms": 8150,
+          "release_date": "2024-03-17",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1468647174",
+          "rank": 49,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video123/v4/1b/64/29/1b64297a-b315-fbe4-61a9-a841a93548c0/19UMGIM53855.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/au/music-video/you-need-to-calm-down/1468647174",
+          "artist_name": "Taylor Swift",
+          "album_name": "",
+          "duration_ms": 210387,
+          "release_date": "2019-06-17",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1843967068",
+          "rank": 62,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/f8/91/2c/f8912cfc-fcd9-9c4b-200f-2d9e10df5331/25UM1IM53281.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/au/music-video/elizabeth-taylor-lyric-video/1843967068",
+          "artist_name": "Taylor Swift",
+          "album_name": "",
+          "duration_ms": 211392,
+          "release_date": "2025-10-05",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1875381399",
+          "rank": 68,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/59/66/8f/59668f86-ced9-f3f0-5c2c-61d8469b78b9/26UMGIM11602.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/au/music-video/opalite-official-music-video-extended-version-part-1/1875381399",
+          "artist_name": "Taylor Swift",
+          "album_name": "Opalite (Official Music Video Extended Versions) - Single",
+          "duration_ms": 569707,
+          "release_date": "2026-02-13",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1444612068",
+          "rank": 69,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video1/v4/88/a5/4a/88a54a39-15cc-072f-d245-68e6c2cd90be/15UMDIM00351_1_1.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/au/music-video/bad-blood-feat-kendrick-lamar/1444612068",
+          "artist_name": "Taylor Swift",
+          "album_name": "",
+          "duration_ms": 246292,
+          "release_date": "2015-05-17",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1460866705",
+          "rank": 73,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video113/v4/84/4a/bd/844abdf8-f2db-1a48-0fd7-693ffb4f970b/19UMGIM38661_.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/au/music-video/me-feat-brendon-urie-of-panic-at-the-disco/1460866705",
+          "artist_name": "Taylor Swift",
+          "album_name": "",
+          "duration_ms": 248680,
+          "release_date": "2019-04-26",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1445740748",
+          "rank": 100,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video128/v4/0a/7c/2e/0a7c2eb8-8443-9ea2-cdeb-afcf06698e45/17UM1IM24940_1_1.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/au/music-video/look-what-you-made-me-do/1445740748",
+          "artist_name": "Taylor Swift",
+          "album_name": "",
+          "duration_ms": 256595,
+          "release_date": "2017-08-27",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        }
+      ],
+      "ca": [
+        {
+          "song_name": "",
+          "apple_music_id": "1888604749",
+          "rank": 1,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/0b/f7/6a/0bf76a66-022c-1a48-00f3-9d1778244a88/26UMGIM37304.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/ca/music-video/elizabeth-taylor/1888604749",
+          "artist_name": "Taylor Swift",
+          "album_name": "Elizabeth Taylor",
+          "duration_ms": 228886,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1833329009",
+          "rank": 3,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/64/af/6b/64af6b79-fc3b-347b-11a8-039815b9c41e/25UM1IM20144.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/ca/music-video/and-baby-thats-show-business-for-you/1833329009",
+          "artist_name": "Taylor Swift",
+          "album_name": "The Life of a Showgirl",
+          "duration_ms": 12118,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1843998897",
+          "rank": 8,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/ef/d4/ba/efd4ba7d-2326-0de5-676c-358c806cd06e/25UM1IM53281.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/ca/music-video/elizabeth-taylor-lyric-video/1843998897",
+          "artist_name": "Taylor Swift",
+          "album_name": "The Life of a Showgirl (Track by Track Version)",
+          "duration_ms": 211392,
+          "release_date": "2025-10-05",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1874387735",
+          "rank": 12,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/0d/72/ce/0d72ce84-a2c3-864d-ab62-2d6ee8d63697/26UMGIM11601.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/ca/music-video/opalite/1874387735",
+          "artist_name": "Taylor Swift",
+          "album_name": "Opalite - Single",
+          "duration_ms": 359723,
+          "release_date": "2026-02-06",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1845446611",
+          "rank": 23,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/fe/d9/a8/fed9a8ad-13fc-7408-a739-2d80d3714876/25UM1IM51274.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/ca/music-video/the-fate-of-ophelia/1845446611",
+          "artist_name": "Taylor Swift",
+          "album_name": "",
+          "duration_ms": 238208,
+          "release_date": "2025-10-03",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1690841286",
+          "rank": 24,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video116/v4/a1/8a/c5/a18ac573-372d-58ce-5321-db63eead1062/23UMGIM63544.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/ca/music-video/surprise-announcement-taylors-version/1690841286",
+          "artist_name": "Taylor Swift",
+          "album_name": "Speak Now (Taylor's Version)",
+          "duration_ms": 96637,
+          "release_date": "2023-07-06",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1875381399",
+          "rank": 31,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/59/66/8f/59668f86-ced9-f3f0-5c2c-61d8469b78b9/26UMGIM11602.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/ca/music-video/opalite-official-music-video-extended-version-part-1/1875381399",
+          "artist_name": "Taylor Swift",
+          "album_name": "Opalite (Official Music Video Extended Versions) - Single",
+          "duration_ms": 569707,
+          "release_date": "2026-02-13",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1736268559",
+          "rank": 40,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video112/v4/50/f2/54/50f2543c-c49b-6fff-c2a1-ffc3e68b69e7/24UMGIM30410.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/ca/music-video/alls-fair-in-love-and-poetry/1736268559",
+          "artist_name": "Taylor Swift",
+          "album_name": "THE TORTURED POETS DEPARTMENT",
+          "duration_ms": 8150,
+          "release_date": "2024-03-17",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1445005781",
+          "rank": 50,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video2/v4/02/e7/57/02e7574c-81f8-ed99-16ef-4156276fd41c/vidtrkimg_00843930013845_1_1.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/ca/music-video/shake-it-off/1445005781",
+          "artist_name": "Taylor Swift",
+          "album_name": "",
+          "duration_ms": 241577,
+          "release_date": "2014-01-01",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1875381400",
+          "rank": 52,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/03/bf/a6/03bfa664-492d-6699-de57-b6160867d33c/26UMGIM11603.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/ca/music-video/opalite-official-music-video-extended-version-part-2/1875381400",
+          "artist_name": "Taylor Swift",
+          "album_name": "Opalite (Official Music Video Extended Versions) - Single",
+          "duration_ms": 543446,
+          "release_date": "2026-02-13",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1468647174",
+          "rank": 84,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video123/v4/1b/64/29/1b64297a-b315-fbe4-61a9-a841a93548c0/19UMGIM53855.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/ca/music-video/you-need-to-calm-down/1468647174",
+          "artist_name": "Taylor Swift",
+          "album_name": "",
+          "duration_ms": 210387,
+          "release_date": "2019-06-17",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1452859640",
+          "rank": 86,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/f1/ff/21/f1ff21a1-4cff-88b3-230f-fd1bc0c26b70/dj.imboabfu.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/ca/music-video/you-belong-with-me/1452859640",
+          "artist_name": "Taylor Swift",
+          "album_name": "Fearless (Platinum Edition)",
+          "duration_ms": 234665,
+          "release_date": "2009-05-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Country"
+          ]
+        }
+      ],
+      "br": [
+        {
+          "song_name": "",
+          "apple_music_id": "1888604749",
+          "rank": 1,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/0b/f7/6a/0bf76a66-022c-1a48-00f3-9d1778244a88/26UMGIM37304.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/br/music-video/elizabeth-taylor/1888604749",
+          "artist_name": "Taylor Swift",
+          "album_name": "Elizabeth Taylor",
+          "duration_ms": 228886,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1833329009",
+          "rank": 6,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/64/af/6b/64af6b79-fc3b-347b-11a8-039815b9c41e/25UM1IM20144.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/br/music-video/and-baby-thats-show-business-for-you/1833329009",
+          "artist_name": "Taylor Swift",
+          "album_name": "The Life of a Showgirl",
+          "duration_ms": 12118,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1845446611",
+          "rank": 19,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/fe/d9/a8/fed9a8ad-13fc-7408-a739-2d80d3714876/25UM1IM51274.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/br/music-video/the-fate-of-ophelia/1845446611",
+          "artist_name": "Taylor Swift",
+          "album_name": "",
+          "duration_ms": 238208,
+          "release_date": "2025-10-03",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1874387735",
+          "rank": 57,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/0d/72/ce/0d72ce84-a2c3-864d-ab62-2d6ee8d63697/26UMGIM11601.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/br/music-video/opalite/1874387735",
+          "artist_name": "Taylor Swift",
+          "album_name": "Opalite - Single",
+          "duration_ms": 359723,
+          "release_date": "2026-02-06",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1736268559",
+          "rank": 58,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video112/v4/50/f2/54/50f2543c-c49b-6fff-c2a1-ffc3e68b69e7/24UMGIM30410.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/br/music-video/alls-fair-in-love-and-poetry/1736268559",
+          "artist_name": "Taylor Swift",
+          "album_name": "THE TORTURED POETS DEPARTMENT",
+          "duration_ms": 8150,
+          "release_date": "2024-03-17",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1875381399",
+          "rank": 94,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/59/66/8f/59668f86-ced9-f3f0-5c2c-61d8469b78b9/26UMGIM11602.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/br/music-video/opalite-official-music-video-extended-version-part-1/1875381399",
+          "artist_name": "Taylor Swift",
+          "album_name": "Opalite (Official Music Video Extended Versions) - Single",
+          "duration_ms": 569707,
+          "release_date": "2026-02-13",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        }
+      ],
+      "mx": [
+        {
+          "song_name": "",
+          "apple_music_id": "1888604749",
+          "rank": 1,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/0b/f7/6a/0bf76a66-022c-1a48-00f3-9d1778244a88/26UMGIM37304.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/mx/music-video/elizabeth-taylor/1888604749",
+          "artist_name": "Taylor Swift",
+          "album_name": "Elizabeth Taylor",
+          "duration_ms": 228886,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1833329009",
+          "rank": 19,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/64/af/6b/64af6b79-fc3b-347b-11a8-039815b9c41e/25UM1IM20144.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/mx/music-video/and-baby-thats-show-business-for-you/1833329009",
+          "artist_name": "Taylor Swift",
+          "album_name": "The Life of a Showgirl",
+          "duration_ms": 12118,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1874387735",
+          "rank": 34,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/0d/72/ce/0d72ce84-a2c3-864d-ab62-2d6ee8d63697/26UMGIM11601.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/mx/music-video/opalite/1874387735",
+          "artist_name": "Taylor Swift",
+          "album_name": "Opalite - Single",
+          "duration_ms": 359723,
+          "release_date": "2026-02-06",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1845446611",
+          "rank": 35,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/fe/d9/a8/fed9a8ad-13fc-7408-a739-2d80d3714876/25UM1IM51274.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/mx/music-video/the-fate-of-ophelia/1845446611",
+          "artist_name": "Taylor Swift",
+          "album_name": "",
+          "duration_ms": 238208,
+          "release_date": "2025-10-03",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        }
+      ],
+      "it": [
+        {
+          "song_name": "",
+          "apple_music_id": "1888604749",
+          "rank": 1,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/0b/f7/6a/0bf76a66-022c-1a48-00f3-9d1778244a88/26UMGIM37304.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/it/music-video/elizabeth-taylor/1888604749",
+          "artist_name": "Taylor Swift",
+          "album_name": "Elizabeth Taylor",
+          "duration_ms": 228886,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1833329009",
+          "rank": 13,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/64/af/6b/64af6b79-fc3b-347b-11a8-039815b9c41e/25UM1IM20144.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/it/music-video/and-baby-thats-show-business-for-you/1833329009",
+          "artist_name": "Taylor Swift",
+          "album_name": "The Life of a Showgirl",
+          "duration_ms": 12118,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1845446611",
+          "rank": 49,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/fe/d9/a8/fed9a8ad-13fc-7408-a739-2d80d3714876/25UM1IM51274.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/it/music-video/the-fate-of-ophelia/1845446611",
+          "artist_name": "Taylor Swift",
+          "album_name": "",
+          "duration_ms": 238208,
+          "release_date": "2025-10-03",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1874387735",
+          "rank": 59,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/0d/72/ce/0d72ce84-a2c3-864d-ab62-2d6ee8d63697/26UMGIM11601.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/it/music-video/opalite/1874387735",
+          "artist_name": "Taylor Swift",
+          "album_name": "Opalite - Single",
+          "duration_ms": 359723,
+          "release_date": "2026-02-06",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        }
+      ],
+      "es": [
+        {
+          "song_name": "",
+          "apple_music_id": "1888604749",
+          "rank": 1,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/0b/f7/6a/0bf76a66-022c-1a48-00f3-9d1778244a88/26UMGIM37304.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/es/music-video/elizabeth-taylor/1888604749",
+          "artist_name": "Taylor Swift",
+          "album_name": "Elizabeth Taylor",
+          "duration_ms": 228886,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1833329009",
+          "rank": 6,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/64/af/6b/64af6b79-fc3b-347b-11a8-039815b9c41e/25UM1IM20144.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/es/music-video/and-baby-thats-show-business-for-you/1833329009",
+          "artist_name": "Taylor Swift",
+          "album_name": "The Life of a Showgirl",
+          "duration_ms": 12118,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1845446611",
+          "rank": 28,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/fe/d9/a8/fed9a8ad-13fc-7408-a739-2d80d3714876/25UM1IM51274.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/es/music-video/the-fate-of-ophelia/1845446611",
+          "artist_name": "Taylor Swift",
+          "album_name": "",
+          "duration_ms": 238208,
+          "release_date": "2025-10-03",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1874387735",
+          "rank": 38,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/0d/72/ce/0d72ce84-a2c3-864d-ab62-2d6ee8d63697/26UMGIM11601.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/es/music-video/opalite/1874387735",
+          "artist_name": "Taylor Swift",
+          "album_name": "Opalite - Single",
+          "duration_ms": 359723,
+          "release_date": "2026-02-06",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1875381399",
+          "rank": 93,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/59/66/8f/59668f86-ced9-f3f0-5c2c-61d8469b78b9/26UMGIM11602.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/es/music-video/opalite-official-music-video-extended-version-part-1/1875381399",
+          "artist_name": "Taylor Swift",
+          "album_name": "Opalite (Official Music Video Extended Versions) - Single",
+          "duration_ms": 569707,
+          "release_date": "2026-02-13",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        }
+      ],
+      "nl": [
+        {
+          "song_name": "",
+          "apple_music_id": "1888604749",
+          "rank": 1,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/0b/f7/6a/0bf76a66-022c-1a48-00f3-9d1778244a88/26UMGIM37304.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/nl/music-video/elizabeth-taylor/1888604749",
+          "artist_name": "Taylor Swift",
+          "album_name": "Elizabeth Taylor",
+          "duration_ms": 228886,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1833329009",
+          "rank": 9,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/64/af/6b/64af6b79-fc3b-347b-11a8-039815b9c41e/25UM1IM20144.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/nl/music-video/and-baby-thats-show-business-for-you/1833329009",
+          "artist_name": "Taylor Swift",
+          "album_name": "The Life of a Showgirl",
+          "duration_ms": 12118,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1845446611",
+          "rank": 32,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/fe/d9/a8/fed9a8ad-13fc-7408-a739-2d80d3714876/25UM1IM51274.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/nl/music-video/the-fate-of-ophelia/1845446611",
+          "artist_name": "Taylor Swift",
+          "album_name": "",
+          "duration_ms": 238208,
+          "release_date": "2025-10-03",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1874387735",
+          "rank": 55,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/0d/72/ce/0d72ce84-a2c3-864d-ab62-2d6ee8d63697/26UMGIM11601.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/nl/music-video/opalite/1874387735",
+          "artist_name": "Taylor Swift",
+          "album_name": "Opalite - Single",
+          "duration_ms": 359723,
+          "release_date": "2026-02-06",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1875381399",
+          "rank": 67,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/59/66/8f/59668f86-ced9-f3f0-5c2c-61d8469b78b9/26UMGIM11602.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/nl/music-video/opalite-official-music-video-extended-version-part-1/1875381399",
+          "artist_name": "Taylor Swift",
+          "album_name": "Opalite (Official Music Video Extended Versions) - Single",
+          "duration_ms": 569707,
+          "release_date": "2026-02-13",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        }
+      ],
+      "se": [
+        {
+          "song_name": "",
+          "apple_music_id": "1888604749",
+          "rank": 1,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/0b/f7/6a/0bf76a66-022c-1a48-00f3-9d1778244a88/26UMGIM37304.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/se/music-video/elizabeth-taylor/1888604749",
+          "artist_name": "Taylor Swift",
+          "album_name": "Elizabeth Taylor",
+          "duration_ms": 228886,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1833329009",
+          "rank": 3,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/64/af/6b/64af6b79-fc3b-347b-11a8-039815b9c41e/25UM1IM20144.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/se/music-video/and-baby-thats-show-business-for-you/1833329009",
+          "artist_name": "Taylor Swift",
+          "album_name": "The Life of a Showgirl",
+          "duration_ms": 12118,
+          "release_date": "2025-10-02",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1845446611",
+          "rank": 23,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/fe/d9/a8/fed9a8ad-13fc-7408-a739-2d80d3714876/25UM1IM51274.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/se/music-video/the-fate-of-ophelia/1845446611",
+          "artist_name": "Taylor Swift",
+          "album_name": "",
+          "duration_ms": 238208,
+          "release_date": "2025-10-03",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1445139748",
+          "rank": 45,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video5/v4/1d/d6/36/1dd636b9-3d2b-95b7-e2a5-ba06cfdf6cec/14UMGIM35306_1_1.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/se/music-video/shake-it-off/1445139748",
+          "artist_name": "Taylor Swift",
+          "album_name": "",
+          "duration_ms": 243048,
+          "release_date": "2014-01-01",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
+          ]
+        },
+        {
+          "song_name": "",
+          "apple_music_id": "1874387735",
+          "rank": 46,
+          "previous_rank": null,
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Video211/v4/0d/72/ce/0d72ce84-a2c3-864d-ab62-2d6ee8d63697/26UMGIM11601.crop.jpg/300x300mv.jpg",
+          "url": "https://music.apple.com/se/music-video/opalite/1874387735",
+          "artist_name": "Taylor Swift",
+          "album_name": "Opalite - Single",
+          "duration_ms": 359723,
+          "release_date": "2026-02-06",
+          "isrc": "",
+          "content_rating": "",
+          "genre_names": [
+            "Pop"
           ]
         }
       ]
