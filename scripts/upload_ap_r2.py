@@ -258,28 +258,30 @@ def parse_args() -> argparse.Namespace:
 
 
 def upload_main_json_files(client: BaseClient, bucket: str, dry_run: bool) -> int:
-    """Upload applemusic.json and applemusic_history.json to R2 data/ prefix."""
-    uploaded = 0
-    for local_path, r2_key in [
+    """Upload applemusic.json and applemusic_history.json to R2 data/ prefix (parallel)."""
+    pairs = [
         (APPLEMUSIC_JSON, "data/applemusic.json"),
         (APPLEMUSIC_HISTORY_JSON, "data/applemusic_history.json"),
-    ]:
+    ]
+
+    def _upload(item: tuple) -> tuple:
+        local_path, r2_key = item
         if not local_path.exists():
-            print(f"[skip] {local_path.name} not found locally")
-            continue
+            return r2_key, None
         payload = json.loads(local_path.read_text(encoding="utf-8"))
-        changed = upload_json_if_changed(
-            client=client,
-            bucket=bucket,
-            key=r2_key,
-            payload=payload,
-            dry_run=dry_run,
-        )
-        if changed:
-            print(f"[uploaded] {r2_key}")
-            uploaded += 1
-        else:
-            print(f"[unchanged] {r2_key}")
+        changed = upload_json_if_changed(client, bucket, r2_key, payload, dry_run=dry_run)
+        return r2_key, changed
+
+    uploaded = 0
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        for r2_key, changed in pool.map(_upload, pairs):
+            if changed is None:
+                print(f"[skip] {r2_key} not found locally")
+            elif changed:
+                print(f"[uploaded] {r2_key}")
+                uploaded += 1
+            else:
+                print(f"[unchanged] {r2_key}")
     return uploaded
 
 
@@ -302,24 +304,28 @@ def main() -> None:
         print("[error] no Apple Music history data found")
         sys.exit(1)
 
+    tasks = [
+        (client, bucket, payload, args.dry_run, args.prefix)
+        for _, payload in sorted(objects.items(), key=lambda item: item[1].get("song_name", ""))
+    ]
+
+    def _upload_one(args_tuple: tuple) -> tuple:
+        c, b, payload, dry_run, prefix = args_tuple
+        r2_key = object_key(payload, prefix)
+        changed = upload_json_if_changed(c, b, r2_key, payload, dry_run=dry_run)
+        return r2_key, changed
+
     uploaded = 0
     unchanged = 0
 
-    for _, payload in sorted(objects.items(), key=lambda item: item[1].get("song_name", "")):
-        r2_key = object_key(payload, args.prefix)
-        changed = upload_json_if_changed(
-            client=client,
-            bucket=bucket,
-            key=r2_key,
-            payload=payload,
-            dry_run=args.dry_run,
-        )
-        if changed:
-            print(f"[uploaded] {r2_key}")
-            uploaded += 1
-        else:
-            print(f"[unchanged] {r2_key}")
-            unchanged += 1
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        for r2_key, changed in pool.map(_upload_one, tasks):
+            if changed:
+                print(f"[uploaded] {r2_key}")
+                uploaded += 1
+            else:
+                print(f"[unchanged] {r2_key}")
+                unchanged += 1
 
     print()
     print("[done]")

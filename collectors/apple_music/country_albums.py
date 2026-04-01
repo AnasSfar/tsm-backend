@@ -39,6 +39,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Collect Apple Music country album charts for Taylor Swift albums.")
     parser.add_argument("--countries", nargs="*", default=COUNTRIES)
     parser.add_argument("--date", dest="run_date", default=date.today().isoformat())
+    parser.add_argument("--scraped-at", dest="scraped_at", default=None)
     return parser.parse_args()
 
 
@@ -81,7 +82,7 @@ def main() -> None:
     args = parse_args()
     countries = [c.lower() for c in args.countries]
     today = args.run_date
-    scraped_at = f"{today}T{datetime.now().strftime('%H:%M:%S')}"
+    scraped_at = args.scraped_at or f"{today}T{datetime.now().strftime('%H:%M:%S')}"
 
     session = build_session()
     token = fetch_musickit_token(session) or fetch_musickit_token(session, refresh=True)

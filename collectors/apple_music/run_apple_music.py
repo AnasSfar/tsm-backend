@@ -4,6 +4,7 @@ from __future__ import annotations
 import os
 import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
 
 try:
@@ -37,7 +38,7 @@ def maybe_upload_to_r2() -> None:
     print("[Apple Music] Uploading history-by-song to R2...")
     subprocess.run([sys.executable, str(upload_script)], cwd=REPO_ROOT, check=False)
 
-def run_script(script_path: Path) -> int:
+def run_script(script_path: Path, scraped_at: str) -> int:
     if not script_path.exists():
         print(f"[ERROR] Missing script: {script_path}")
         return 1
@@ -47,7 +48,7 @@ def run_script(script_path: Path) -> int:
     print(f"{'=' * 80}")
 
     result = subprocess.run(
-        [sys.executable, str(script_path)],
+        [sys.executable, str(script_path), "--scraped-at", scraped_at],
         cwd=REPO_ROOT,
         check=False,
     )
@@ -61,12 +62,13 @@ def run_script(script_path: Path) -> int:
 
 
 def main() -> None:
-    print("[Apple Music] Starting full run")
+    scraped_at = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+    print(f"[Apple Music] Starting full run — scraped_at={scraped_at}")
 
     failures: list[tuple[str, int]] = []
 
     for script in SCRIPTS:
-        code = run_script(script)
+        code = run_script(script, scraped_at)
         if code != 0:
             failures.append((script.name, code))
 

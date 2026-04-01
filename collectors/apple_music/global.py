@@ -48,6 +48,7 @@ PLAYLIST_IDS = [
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Collect Apple Music global top playlist entries for Taylor Swift songs.")
     parser.add_argument("--date", dest="run_date", default=date.today().isoformat())
+    parser.add_argument("--scraped-at", dest="scraped_at", default=None)
     return parser.parse_args()
 
 
@@ -105,7 +106,7 @@ def fetch_global_chart() -> list[dict]:
 def main() -> None:
     args = parse_args()
     today = args.run_date
-    scraped_at = f"{today}T{datetime.now().strftime('%H:%M:%S')}"
+    scraped_at = args.scraped_at or f"{today}T{datetime.now().strftime('%H:%M:%S')}"
 
     # Prefer stable IDs to avoid collisions across versions sharing a title.
     previous_by_id = load_previous_ranks(

@@ -44,6 +44,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Collect Taylor Swift Apple Music top songs.")
     parser.add_argument("storefront", nargs="?", default=DEFAULT_STOREFRONT)
     parser.add_argument("--date", dest="run_date", default=date.today().isoformat())
+    parser.add_argument("--scraped-at", dest="scraped_at", default=None)
     return parser.parse_args()
 
 
@@ -111,7 +112,7 @@ def main() -> None:
     args = parse_args()
     storefront = args.storefront.lower().strip()
     today = args.run_date
-    scraped_at = f"{today}T{datetime.now().strftime('%H:%M:%S')}"
+    scraped_at = args.scraped_at or f"{today}T{datetime.now().strftime('%H:%M:%S')}"
 
     # Prefer Apple Music IDs to avoid collisions between different versions
     # sharing the same display name.

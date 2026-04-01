@@ -41,9 +41,31 @@ def rewrite_for_snapshot(
     scraped_at: str,
     new_rows: list[dict],
 ) -> None:
-    """Append a new snapshot, removing any existing rows with the same scraped_at (idempotent)."""
-    existing = [row for row in read_csv_rows(csv_path) if row.get("scraped_at") != scraped_at]
-    write_csv_rows(csv_path, fieldnames, [*existing, *new_rows])
+    """Append a new snapshot, removing any existing rows with the same scraped_at (idempotent).
+    Skips write if the new data is identical to the most recent existing snapshot."""
+    existing = read_csv_rows(csv_path)
+
+    # Find the most recent previous snapshot rows
+    prev_keys = sorted(
+        {_snapshot_key(r) for r in existing if _snapshot_key(r) != scraped_at},
+        reverse=True,
+    )
+    if prev_keys:
+        _COMPARE_FIELDS = [f for f in fieldnames if f not in ("scraped_at", "date", "previous_rank")]
+        prev_rows = [
+            {f: r.get(f, "") for f in _COMPARE_FIELDS}
+            for r in existing if _snapshot_key(r) == prev_keys[0]
+        ]
+        new_comparable = [
+            {f: str(r.get(f, "")) for f in _COMPARE_FIELDS}
+            for r in new_rows
+        ]
+        if prev_rows == new_comparable:
+            print(f"[skip] snapshot identical to previous ({prev_keys[0]}), not writing")
+            return
+
+    filtered = [r for r in existing if r.get("scraped_at") != scraped_at]
+    write_csv_rows(csv_path, fieldnames, [*filtered, *new_rows])
 
 
 def _snapshot_key(row: dict) -> str:
