@@ -20,6 +20,10 @@ from dotenv import load_dotenv
 
 ROOT = Path(__file__).resolve().parents[1]
 DB_DIR = ROOT / "db"
+SITE_DATA_DIR = ROOT / "website" / "site" / "data"
+
+APPLEMUSIC_JSON = SITE_DATA_DIR / "applemusic.json"
+APPLEMUSIC_HISTORY_JSON = SITE_DATA_DIR / "applemusic_history.json"
 
 COUNTRY_CSV = DB_DIR / "apple_music_country_charts.csv"
 GENRE_CSV = DB_DIR / "apple_music_genre_charts.csv"
@@ -252,6 +256,32 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def upload_main_json_files(client: BaseClient, bucket: str, dry_run: bool) -> int:
+    """Upload applemusic.json and applemusic_history.json to R2 data/ prefix."""
+    uploaded = 0
+    for local_path, r2_key in [
+        (APPLEMUSIC_JSON, "data/applemusic.json"),
+        (APPLEMUSIC_HISTORY_JSON, "data/applemusic_history.json"),
+    ]:
+        if not local_path.exists():
+            print(f"[skip] {local_path.name} not found locally")
+            continue
+        payload = json.loads(local_path.read_text(encoding="utf-8"))
+        changed = upload_json_if_changed(
+            client=client,
+            bucket=bucket,
+            key=r2_key,
+            payload=payload,
+            dry_run=dry_run,
+        )
+        if changed:
+            print(f"[uploaded] {r2_key}")
+            uploaded += 1
+        else:
+            print(f"[unchanged] {r2_key}")
+    return uploaded
+
+
 def main() -> None:
     load_dotenv()
     args = parse_args()
@@ -259,6 +289,12 @@ def main() -> None:
     client = get_r2_client()
     bucket = args.bucket
 
+    # Upload main JSON files first (what the API reads)
+    print("=== Uploading main Apple Music JSON files ===")
+    upload_main_json_files(client, bucket, args.dry_run)
+
+    # Upload per-song history objects
+    print("\n=== Uploading per-song history objects ===")
     objects = build_history_objects()
 
     if not objects:
