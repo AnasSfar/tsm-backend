@@ -2406,16 +2406,17 @@ def print_remaining_details(summary: dict) -> None:
 
 def print_summary_block(summary: dict) -> None:
     print()
-    print(
-        f"Progress {summary['stats_date']}: "
-        f"done={summary['done_tracks']} "
-        f"| run_total={summary['total_tracks']} "
-        f"| updated={summary['updated_this_run']} "
-        f"| pending={summary['pending_this_run']} "
-        f"| timeout={summary['timeout_this_run']} "
-        f"| error={summary['error_this_run']} "
-        f"| not_found={summary['not_found_this_run']}"
-    )
+    print("=" * 70)
+    print(f"Progress {summary['stats_date']}")
+    print("=" * 70)
+    print(f"  Total tracks:      {summary['total_tracks']}")
+    print(f"  Updated this run:  {summary['updated_this_run']}")
+    print(f"  Pending:           {summary['pending_this_run']}")
+    print(f"  Not found:         {summary['not_found_this_run']}")
+    print(f"  Timeout:           {summary['timeout_this_run']}")
+    print(f"  Error:             {summary['error_this_run']}")
+    print("=" * 70)
+    print()
 
 
 def update_json_logs_from_summary(summary: dict) -> None:
@@ -2618,7 +2619,12 @@ def main():
         print("R2 upload enabled for this run (UPLOAD_TO_R2=1).")
 
     stats_date = stats_date_override or get_stats_date_str()
+    
+    print("=" * 70)
+    print("Taylor Swift - Spotify Streams Collector")
+    print("=" * 70)
     print(f"Target stats date: {stats_date}")
+    print()
 
     if debug_total_mode:
         if stats_date_override is None:
@@ -2627,14 +2633,14 @@ def main():
         run_debug_total_replace(stats_date)
         return
 
-    print("Checking kworbs for new extra tracks...")
+    print("Loading discography and checking for new extra tracks...")
     try:
         _backfill_cmd = [sys.executable, str(_SCRIPT_DIR / "extras" / "backfill_from_kworb.py")]
         if dry_run_mode:
             _backfill_cmd.append("--dry-run")
         subprocess.run(_backfill_cmd, check=False)
     except Exception as e:
-        print(f"Kworbs backfill failed (non-fatal): {e}")
+        print(f"  [INFO] Backfill skipped: {e}")
 
     active_track_ids = load_active_track_ids_from_discography()
     tracks = load_tracks_from_discography(active_track_ids)
@@ -2642,6 +2648,9 @@ def main():
     already_done_for_stats_date = load_history_track_ids_for_date(stats_date)
     done_tracks_before_run = len(already_done_for_stats_date)
     total_tracks = len(tracks)
+
+    print(f"Loaded {total_tracks} track(s) from discography")
+    print()
 
     if debug_daily_mode:
         unfinished_ids = load_last_unfinished_update_track_ids(stats_date)
@@ -2655,10 +2664,6 @@ def main():
 
     if dry_run_mode:
         print(f"[DRY-RUN] Scraping {total_tracks} tracks.")
-    elif debug_daily_mode:
-        print(f"[DEBUG-DAILY] Current progress for {stats_date}: {done_tracks_before_run}/{total_tracks}")
-    else:
-        print(f"Current progress for {stats_date}: {done_tracks_before_run}/{total_tracks}")
 
     # Capture des tokens API (une seule fois pour tout le run)
     token_mgr = TokenManager()
@@ -2769,6 +2774,11 @@ def main():
         r["track_id"] for r in summary["failed_results"] if r["status"] == "not_found"
     }
 
+    # Check if this is the first run of the day with zero updates (Spotify hasn't updated yet)
+    history_entries_for_this_date = load_history_track_ids_for_date(summary["stats_date"])
+    is_first_run_of_day = len(history_entries_for_this_date) == 0
+    has_zero_real_updates = summary["updated_this_run"] == 0
+
     retry_round = 0
     while (
         not dry_run_mode
@@ -2776,6 +2786,17 @@ def main():
         and not summary["all_done"]
         and summary["pending_this_run"] > summary["total_tracks"] // 2
     ):
+        # Don't retry on first run of the day if there are zero real updates
+        # This means Spotify hasn't done its daily update yet - wait for next run instead
+        if retry_round == 0 and is_first_run_of_day and has_zero_real_updates:
+            print()
+            print(
+                f"⚠ {summary['pending_this_run']} unchanged track(s) detected, "
+                f"but this is the first run for {stats_date} with zero updates."
+            )
+            print("Spotify may not have updated yet. Skipping retries for now.")
+            break
+
         retry_round += 1
 
         print()
@@ -2961,16 +2982,22 @@ def main():
 
     elapsed = time.perf_counter() - START_TIME
     print()
-    print(f"Finished in {int(elapsed // 60)}m {int(elapsed % 60)}s")
-    print(f"Done: {summary['done_tracks']}")
-    print(f"Updated this run: {summary['updated_this_run']}")
+    print("=" * 70)
+    print("✓ Execution complete")
+    print("=" * 70)
+    print(f"  Duration:          {int(elapsed // 60)}m {int(elapsed % 60)}s")
+    print(f"  Updated:           {summary['updated_this_run']} track(s)")
+    print(f"  Pending (retry):   {summary['pending_this_run']} track(s)")
+    print(f"  Not found:         {summary['not_found_this_run']} track(s)")
+    print("=" * 70)
+    print()
 
     if not debug_daily_mode:
         notify(
             NTFY_TOPIC,
-            f"{summary['done_tracks']} track(s) enregistrées ({summary['stats_date']})\n"
-            f"Durée : {int(elapsed // 60)}m {int(elapsed % 60)}s",
-            title="Taylor Swift - Streams mis à jour",
+            f"✓ {summary['updated_this_run']} track(s) updated ({summary['stats_date']})\n"
+            f"Duration: {int(elapsed // 60)}m {int(elapsed % 60)}s",
+            title="Taylor Swift - Streams updated",
             tags="white_check_mark,chart_increasing",
         )
 
