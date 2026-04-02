@@ -1355,17 +1355,33 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
     tracks = [t for sec in sections for t in sec["tracks"]]
     total_daily = sum(hist.get(t["track_id"], {}).get("daily") or 0 for t in tracks)
 
+    # Calculate album percentage change
+    # change = daily_today - daily_yesterday, so daily_yesterday = daily_today - change
+    total_daily_yesterday = total_daily - sum(hist.get(t["track_id"], {}).get("change") or 0 for t in tracks)
+    
+    album_pct = None
+    if total_daily_yesterday and total_daily_yesterday > 0:
+        album_change = total_daily - total_daily_yesterday
+        album_pct = (album_change / total_daily_yesterday) * 100
+
     scored = []
     for t in tracks:
         h = hist.get(t["track_id"], {})
         pct = h.get("pct")
         if pct is None:
             continue
-        scored.append({"title": t.get("title_clean") or "Unknown", "pct": pct})
+        scored.append({
+            "title": t.get("title_clean") or "Unknown",
+            "pct": pct,
+            "daily": h.get("daily") or 0,
+        })
 
     # Rule: if every available % change is negative, pick the least negative as "most stable".
-    label = "most stable"
+    label = "biggest gainer"
     selected_song = "Unknown"
+    track_daily = 0
+    track_pct = None
+    
     if scored:
         if all(item["pct"] < 0 for item in scored):
             best = max(scored, key=lambda x: x["pct"])
@@ -1374,13 +1390,29 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
             best = max(scored, key=lambda x: x["pct"])
             label = "biggest gainer"
         selected_song = _shorten_title(best["title"])
+        track_daily = best.get("daily", 0)
+        track_pct = best.get("pct")
 
+    # Format data for tweet
     date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
     total_daily_fmt = f"{int(total_daily):,}"
+    track_daily_fmt = f"{int(track_daily):,}"
+    
+    # Format album percentage
+    album_pct_str = ""
+    if album_pct is not None:
+        sign = "+" if album_pct >= 0 else "−"
+        album_pct_str = f" ({sign}{abs(album_pct):.1f}%)"
+    
+    # Format track percentage
+    track_pct_str = ""
+    if track_pct is not None:
+        sign = "+" if track_pct >= 0 else "−"
+        track_pct_str = f" ({sign}{abs(track_pct):.1f}%)"
 
     return (
-        f'📈| “{canonical_name}" received "{total_daily_fmt} streams" yesterday, "{date_fmt}".\n\n'
-        f'"{selected_song}" was the {label}".'
+        f'📈| "{canonical_name}" received {total_daily_fmt} streams yesterday, {date_fmt}.{album_pct_str}\n\n'
+        f'"{selected_song}" was the {label} with {track_daily_fmt} streams{track_pct_str}.'
     )
 
 
