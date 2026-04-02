@@ -18,7 +18,6 @@ REPO_ROOT = HERE.parents[1]
 
 SCRIPTS = [
     HERE / "ts_page.py",
-    HERE / "top_albums.py",
     HERE / "top_music_videos.py",
     HERE / "global.py",
     HERE / "global_albums.py",
@@ -27,6 +26,18 @@ SCRIPTS = [
     HERE / "country_albums.py",
     HERE / "music_video_charts.py",
 ]
+
+
+def export_apple_music() -> int:
+    """Generate JSON files from CSV data."""
+    export_script = REPO_ROOT / "scripts" / "export_apple_music.py"
+    if not export_script.exists():
+        print(f"[Apple Music] Export script missing: {export_script}")
+        return 1
+
+    print("[Apple Music] Exporting CSV to JSON...")
+    result = subprocess.run([sys.executable, str(export_script)], cwd=REPO_ROOT, check=False)
+    return result.returncode
 
 
 def maybe_upload_to_r2() -> None:
@@ -84,6 +95,13 @@ def main() -> None:
         sys.exit(1)
     else:
         print("[Apple Music] All scripts completed successfully")
+        
+        # Export CSV to JSON for API/website
+        export_code = export_apple_music()
+        if export_code != 0:
+            print("[Apple Music] Export failed, skipping R2 upload")
+            sys.exit(1)
+        
         maybe_upload_to_r2()
         print(f"{'=' * 80}")
 

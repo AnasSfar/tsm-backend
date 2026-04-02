@@ -15,7 +15,6 @@ OUT_DIR = ROOT / "website" / "site" / "data"
 GLOBAL_CSV = DB_DIR / "apple_music_global.csv"
 GLOBAL_ALBUMS_CSV = DB_DIR / "apple_music_global_albums.csv"
 TOP_SONGS_CSV = DB_DIR / "apple_music_ts_top_songs.csv"
-TOP_ALBUMS_CSV = DB_DIR / "apple_music_ts_top_albums.csv"
 TOP_VIDEOS_CSV = DB_DIR / "apple_music_ts_top_videos.csv"
 COUNTRY_CSV = DB_DIR / "apple_music_country_charts.csv"
 COUNTRY_ALBUMS_CSV = DB_DIR / "apple_music_country_albums.csv"
@@ -293,7 +292,6 @@ def main() -> None:
     global_rows = read_csv_rows(GLOBAL_CSV)
     global_album_rows = read_csv_rows(GLOBAL_ALBUMS_CSV)
     top_rows = read_csv_rows(TOP_SONGS_CSV)
-    top_album_rows = read_csv_rows(TOP_ALBUMS_CSV)
     top_video_rows = read_csv_rows(TOP_VIDEOS_CSV)
     country_rows = read_csv_rows(COUNTRY_CSV)
     country_album_rows = read_csv_rows(COUNTRY_ALBUMS_CSV)
@@ -303,7 +301,6 @@ def main() -> None:
     global_current, global_history, global_dates = build_global(global_rows)
     global_album_current, global_album_history, global_album_dates = build_ranked_album_series(global_album_rows)
     top_current, top_history, top_dates = build_top_songs(top_rows)
-    top_album_current, top_album_history, top_album_dates = build_ranked_album_series(top_album_rows)
     top_video_current, top_video_history, top_video_dates = build_ranked_video_series(top_video_rows)
     country_current, country_history, country_dates = build_country(country_rows)
     country_album_current, country_album_history, country_album_dates = build_country_albums(country_album_rows)
@@ -311,7 +308,7 @@ def main() -> None:
     genre_current, genre_history, genre_dates = build_genre(genre_rows)
 
     all_dates = sorted(set(
-        global_dates + global_album_dates + top_dates + top_album_dates + top_video_dates +
+        global_dates + global_album_dates + top_dates + top_video_dates +
         country_dates + country_album_dates + music_video_chart_dates + genre_dates
     ))
     latest_any = all_dates[-1] if all_dates else None
@@ -321,7 +318,6 @@ def main() -> None:
         "global_chart": global_current,
         "global_album_chart": global_album_current,
         "ts_top_songs": top_current,
-        "ts_top_albums": top_album_current,
         "ts_top_videos": top_video_current,
         "country_charts": country_current,
         "country_album_charts": country_album_current,
@@ -334,7 +330,6 @@ def main() -> None:
         "global": global_history,
         "global_albums": global_album_history,
         "top_songs": top_history,
-        "top_albums": top_album_history,
         "top_videos": top_video_history,
         "country": country_history,
         "country_albums": country_album_history,
