@@ -1352,10 +1352,19 @@ def purge_stale_tracks(streak: dict, tracks: list[dict]) -> list[str]:
 
 def _run_early_twitter(stats_date: str) -> None:
     try:
-        print("\n[Twitter] Posting early top 15 after top-50 priority tracks are validated...")
+        print("\n[Twitter] Posting early top 10 after top-50 priority tracks are validated...")
         export_for_web.export_for_web()
         subprocess.run([sys.executable, str(_SCRIPT_DIR / "tools" / "scripts" / "migrate_streams_to_csv.py")], check=False)
-        subprocess.run([sys.executable, str(_SCRIPT_DIR / "tools" / "scripts" / "post_streams_twitter.py"), stats_date], check=False)
+        subprocess.run(
+            [
+                sys.executable,
+                str(_SCRIPT_DIR / "tools" / "scripts" / "post_streams_twitter.py"),
+                stats_date,
+                "--top-n",
+                "10",
+            ],
+            check=False,
+        )
         print("[Twitter] Early post done.")
     except Exception as e:
         print(f"[Twitter] Early post error: {e}")
@@ -2885,7 +2894,7 @@ def main():
             )
         else:
             if early_twitter_triggered:
-                print("Skipping regular Twitter post: early top-15 post already triggered.")
+                print("Skipping regular Twitter post: early top-10 post already triggered.")
             else:
                 print("Posting streams image to Twitter...")
                 subprocess.run(
@@ -2931,7 +2940,7 @@ def main():
 
         post_script = _SCRIPT_DIR / "tools" / "scripts" / "post_streams_twitter.py"
         if all_album_tracks_done(summary["stats_date"]):
-            print("100% des tracks albums/* presents -> generation image top 15...")
+            print("100% des tracks albums/* presents -> generation image top 10...")
             post_cmd = [sys.executable, str(post_script), summary["stats_date"]]
             if no_post_mode:
                 post_cmd.append("--no-post")
@@ -2941,7 +2950,7 @@ def main():
             )
         else:
             missing = load_album_track_ids() - load_history_track_ids_for_date(summary["stats_date"])
-            print(f"Image top 15 ignorée : {len(missing)} track(s) albums/* manquant(s) pour {summary['stats_date']}.")
+            print(f"Image top 10 ignorée : {len(missing)} track(s) albums/* manquant(s) pour {summary['stats_date']}.")
 
         # ── Album update images (priority order) ──────────────────────────────
         _ALBUM_UPDATE_TARGETS = [

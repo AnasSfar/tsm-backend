@@ -7,6 +7,7 @@ on:
 
 jobs:
   run-charts:
+    if: false  # PAUSED
     runs-on: ubuntu-latest
     env:
       R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}

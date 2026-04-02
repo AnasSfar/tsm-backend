@@ -7,6 +7,7 @@ on:
 
 jobs:
   run-apple-music:
+    if: false  # PAUSED
     runs-on: ubuntu-latest
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true

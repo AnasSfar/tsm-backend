@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-generate_streams_image.py — génère le PNG des 15 chansons les plus streamées daily.
+generate_streams_image.py — génère le PNG des chansons les plus streamées daily (top configurable, défaut=10).
 
 Lit  : db/streams_history.csv  +  db/discography/songs.json  +  db/discography/covers.json
 Ecrit: collectors/spotify/streams/history/YYYY/MM/YYYY-MM-DD/streams_image.png
@@ -44,7 +44,7 @@ ALBUMS_DIR   = DB_DIR / "discography" / "albums"
 HEADERS_DIR  = _TOOLS / "headers"
 HANDLE       = "@swiftiescharts"
 
-TOP_N = 15
+TOP_N = 10
 
 # ---------------------------------------------------------------------------
 # Header image + dominant colour (same helpers as chart image)
@@ -309,9 +309,9 @@ def _dedup_by_title(rows: list[dict], song_db: dict) -> list[dict]:
     return list(best.values())
 
 
-def build_top15(today_rows: list[dict], yesterday_rows: list[dict], song_db: dict) -> list[dict]:
+def build_top_n(today_rows: list[dict], yesterday_rows: list[dict], song_db: dict, top_n: int) -> list[dict]:
     """
-    Déduplique par titre, trie par daily_streams décroissant, retourne top 15.
+    Déduplique par titre, trie par daily_streams décroissant, retourne top N.
     Attache prev_rank et daily_streams_yesterday à chaque entrée.
     """
     # Build yesterday's ranking {title_key: rank}
@@ -322,7 +322,7 @@ def build_top15(today_rows: list[dict], yesterday_rows: list[dict], song_db: dic
 
     today_deduped = _dedup_by_title(today_rows, song_db)
     ranked = sorted(today_deduped, key=lambda r: r["daily_streams"], reverse=True)
-    top = ranked[:TOP_N]
+    top = ranked[:top_n]
 
     for entry in top:
         key = _norm(entry["title"])
@@ -493,10 +493,10 @@ def _url_to_data_uri(url: str) -> str:
         return ""
 
 
-def prefetch_images(top15: list[dict], cover_map: dict, track_album_map: dict) -> dict[str, str]:
-    """Resolve cover URLs for all top15 entries and return {url: data_uri}."""
+def prefetch_images(top_rows: list[dict], cover_map: dict, track_album_map: dict) -> dict[str, str]:
+    """Resolve cover URLs for all top entries and return {url: data_uri}."""
     urls = set()
-    for entry in top15:
+    for entry in top_rows:
         cover_url = get_cover_url(entry, cover_map, track_album_map)
         if cover_url:
             urls.add(cover_url)
@@ -511,10 +511,10 @@ def prefetch_images(top15: list[dict], cover_map: dict, track_album_map: dict) -
     return result
 
 
-def build_rows_html(top15: list[dict], cover_map: dict, track_album_map: dict,
+def build_rows_html(top_rows: list[dict], cover_map: dict, track_album_map: dict,
                     image_cache: dict[str, str] | None = None) -> str:
     html = ""
-    for i, entry in enumerate(top15):
+    for i, entry in enumerate(top_rows):
         rank    = i + 1
         title   = entry["title"]
         artist  = entry["artist"]
@@ -568,11 +568,12 @@ def build_rows_html(top15: list[dict], cover_map: dict, track_album_map: dict,
     return html
 
 
-def build_html(top15: list[dict], target_date: str, cover_map: dict, track_album_map: dict,
+def build_html(top_rows: list[dict], target_date: str, cover_map: dict, track_album_map: dict,
+               top_n: int,
                image_cache: dict[str, str] | None = None) -> str:
     from datetime import datetime
     date_fmt   = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
-    rows_html  = build_rows_html(top15, cover_map, track_album_map, image_cache)
+    rows_html  = build_rows_html(top_rows, cover_map, track_album_map, image_cache)
 
     header_img   = _pick_header_image()
     handle_color = "#1db954"
@@ -595,7 +596,7 @@ def build_html(top15: list[dict], target_date: str, cover_map: dict, track_album
     {SPOTIFY_SVG}
     <div>
       <div class="hdr-title">Taylor Swift · Daily Streams</div>
-      <div class="hdr-sub">Top {TOP_N} Most Streamed · {date_fmt}</div>
+            <div class="hdr-sub">Top {top_n} Most Streamed · {date_fmt}</div>
     </div>
   </div>
   <div class="col-heads">
@@ -619,10 +620,14 @@ def build_html(top15: list[dict], target_date: str, cover_map: dict, track_album
 # Main
 # ---------------------------------------------------------------------------
 
-def generate(target_date: str | None = None) -> Path:
+def generate(target_date: str | None = None, *, top_n: int | None = None) -> Path:
     if target_date is None:
         target_date = get_latest_date()
     print(f"Date: {target_date}")
+
+    top_n_final = TOP_N if top_n is None else int(top_n)
+    if top_n_final <= 0:
+        raise ValueError("top_n must be > 0")
 
     song_db         = load_song_db()
     cover_map       = load_covers()
@@ -632,17 +637,17 @@ def generate(target_date: str | None = None) -> Path:
     if not today_rows:
         raise ValueError(f"Aucune donnée pour {target_date} dans {HISTORY_PATH}")
 
-    top15 = build_top15(today_rows, yesterday_rows, song_db)
-    print(f"Top {TOP_N} construit ({len(top15)} chansons)")
-    for i, e in enumerate(top15, 1):
+    top_rows = build_top_n(today_rows, yesterday_rows, song_db, top_n_final)
+    print(f"Top {top_n_final} construit ({len(top_rows)} chansons)")
+    for i, e in enumerate(top_rows, 1):
         daily_fmt = f"{e['daily_streams']:,}"
         print(f"  #{i:2d} {e['title']:<40} {daily_fmt} streams/day")
 
     print("Téléchargement des images...")
-    image_cache = prefetch_images(top15, cover_map, track_album_map)
+    image_cache = prefetch_images(top_rows, cover_map, track_album_map)
     print(f"  {len(image_cache)} images téléchargées")
 
-    html = build_html(top15, target_date, cover_map, track_album_map, image_cache)
+    html = build_html(top_rows, target_date, cover_map, track_album_map, top_n_final, image_cache)
 
     # Output to history/YYYY/MM/YYYY-MM-DD/
     out_dir  = ROOT / "history" / target_date[:4] / target_date[5:7] / target_date
