@@ -12,6 +12,7 @@ from datetime import date, timedelta
 from pathlib import Path
 from queue import Empty, Queue
 import sys
+import random
 
 import requests as _requests
 
@@ -51,6 +52,12 @@ MAX_PARALLEL_PAGES = 10
 PAGE_GOTO_TIMEOUT_MS = 20_000
 DEBUG_PAGE_PREVIEW = False
 BROWSER_CACHE_DIR = _SCRIPT_DIR / "tools" / "browser_cache"
+
+# Logging
+# - default: compact output
+# - --verbose: per-track lines + extra debug prints
+# - --quiet: only periodic summaries + errors
+LOG_MODE = "normal"  # "quiet" | "normal" | "verbose"
 
 # Hill climbing
 HILL_WINDOW        = 20     # completions par fenêtre d'évaluation
@@ -110,6 +117,12 @@ Usage:
 
   python update_streams.py --reset-date YYYY-MM-DD
       Delete all rows for that date before running.
+
+  python update_streams.py --quiet
+      Reduce terminal output (periodic summaries + errors only).
+
+  python update_streams.py --verbose
+      Verbose per-track output (debug-friendly).
 
   python update_streams.py --help
       Show this help.
@@ -360,10 +373,12 @@ class AdaptiveWorkerState:
 
                 if rate_429 > HILL_429_THRESHOLD and self.target > HILL_MIN_WORKERS:
                     self.target -= 1
-                    print(f"  [hill] 429={rate_429:.0%}  {rate_sps:.2f}/s  -> workers: {self.target}")
+                    if LOG_MODE == "verbose":
+                        print(f"  [hill] 429={rate_429:.0%}  {rate_sps:.2f}/s  -> workers: {self.target}")
                 elif rate_429 == 0 and self.target < MAX_PARALLEL_PAGES:
                     self.target += 1
-                    print(f"  [hill] 0 429s  {rate_sps:.2f}/s  -> workers: {self.target}")
+                    if LOG_MODE == "verbose":
+                        print(f"  [hill] 0 429s  {rate_sps:.2f}/s  -> workers: {self.target}")
 
                 self._win_done  = 0
                 self._win_429   = 0
@@ -393,7 +408,8 @@ class TokenManager:
                     tokens["bearer"]       = auth[7:]
                     tokens["client_token"] = ct
 
-        print("TokenManager: capture des tokens Spotify via Playwright…")
+        if LOG_MODE != "quiet":
+            print("TokenManager: capture des tokens Spotify via Playwright…")
         ctx_kwargs: dict = {
             "user_agent": (
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -436,9 +452,11 @@ class TokenManager:
         if tokens.get("bearer"):
             with self._lock:
                 self._tokens = tokens
-            print(f"TokenManager: Bearer capturé ({tokens['bearer'][:20]}…)")
+            if LOG_MODE != "quiet":
+                print(f"TokenManager: Bearer capturé ({tokens['bearer'][:20]}…)")
             return True
-        print("TokenManager: échec — fallback Playwright pour toutes les tracks")
+        if LOG_MODE != "quiet":
+            print("TokenManager: échec — fallback Playwright pour toutes les tracks")
         return False
 
     def get(self) -> dict:
@@ -985,11 +1003,12 @@ def has_real_update(previous_streams: int | None, new_streams: int) -> bool:
     if new_streams <= previous_streams:
         return False
     if new_streams - previous_streams > MAX_DAILY_INCREASE:
-        print(
-            f"  [ANOMALY REJECTED] {new_streams:,} "
-            f"(prev={previous_streams:,}, delta=+{new_streams - previous_streams:,}) "
-            f"— exceeds {MAX_DAILY_INCREASE:,}/day cap, skipping"
-        )
+        if LOG_MODE != "quiet":
+            print(
+                f"  [ANOMALY REJECTED] {new_streams:,} "
+                f"(prev={previous_streams:,}, delta=+{new_streams - previous_streams:,}) "
+                f"— exceeds {MAX_DAILY_INCREASE:,}/day cap, skipping"
+            )
         return False
     return True
 
@@ -1350,26 +1369,6 @@ def purge_stale_tracks(streak: dict, tracks: list[dict]) -> list[str]:
     return deleted
 
 
-def _run_early_twitter(stats_date: str) -> None:
-    try:
-        print("\n[Twitter] Posting early top 10 after top-50 priority tracks are validated...")
-        export_for_web.export_for_web()
-        subprocess.run([sys.executable, str(_SCRIPT_DIR / "tools" / "scripts" / "migrate_streams_to_csv.py")], check=False)
-        subprocess.run(
-            [
-                sys.executable,
-                str(_SCRIPT_DIR / "tools" / "scripts" / "post_streams_twitter.py"),
-                stats_date,
-                "--top-n",
-                "10",
-            ],
-            check=False,
-        )
-        print("[Twitter] Early post done.")
-    except Exception as e:
-        print(f"[Twitter] Early post error: {e}")
-
-
 def incremental_publish_update(
     track: dict,
     stats_date: str,
@@ -1656,14 +1655,16 @@ def scrape_track_total(page, title: str, url: str) -> tuple[int | None, str | No
             return None, None, "not_found", []
 
         except PlaywrightTimeoutError:
-            print(f"SCRAPE TIMEOUT on {title}: {clean_url} (attempt {attempt + 1}/3)")
+            if LOG_MODE != "quiet":
+                print(f"SCRAPE TIMEOUT on {title}: {clean_url} (attempt {attempt + 1}/3)")
             try:
                 page.wait_for_timeout(1500)
             except Exception:
                 pass
 
         except Exception as e:
-            print(f"SCRAPE ERROR on {title}: {e} (attempt {attempt + 1}/3)")
+            if LOG_MODE != "quiet":
+                print(f"SCRAPE ERROR on {title}: {e} (attempt {attempt + 1}/3)")
             try:
                 page.wait_for_timeout(1000)
             except Exception:
@@ -1684,7 +1685,10 @@ def try_apply_track_update(
     last_total = get_last_history_total(track_id)
     previous_stats_date = get_previous_stats_date_str(stats_date)
     previous_day_total = get_history_total_for_date(track_id, previous_stats_date)
-    daily = compute_daily(previous_day_total, total)
+    # daily_streams ideally uses yesterday's total. If yesterday is missing (partial run,
+    # newly added track, not-found yesterday), fall back to last known total so daily isn't blank.
+    daily_base = previous_day_total if previous_day_total is not None else last_total
+    daily = compute_daily(daily_base, total)
 
     if last_total is None:
         reason = "first_seen"
@@ -1730,41 +1734,80 @@ def try_apply_track_update(
     }
 
 
-def live_progress(i, total, title, result):
-    elapsed = time.perf_counter() - START_TIME if START_TIME else 0
-    done = max(i - 1, 0) if result is None else i
-    remaining = ((elapsed / done) * max(total - done, 0)) if done > 0 else 0
-    eta = f"{int(remaining // 60)}m {int(remaining % 60)}s"
-    prefix = f"[{i}/{total}] {title}"
+class ProgressLogger:
+    def __init__(self, mode: str) -> None:
+        self.mode = mode
+        self.start = time.perf_counter()
+        self.done = 0
+        self.counts = {
+            "updated": 0,
+            "pending": 0,
+            "skipped": 0,
+            "timeout": 0,
+            "error": 0,
+            "not_found": 0,
+        }
+        self._last_summary_t = 0.0
 
-    if result is None:
-        print(f"{prefix} ... scraping | ETA {eta}")
-        return
+    def _eta(self, total: int) -> str:
+        elapsed = time.perf_counter() - self.start
+        rate = (self.done / elapsed) if elapsed > 0 and self.done > 0 else 0
+        remaining = (total - self.done) / rate if rate > 0 else 0
+        return f"{int(remaining // 60)}m {int(remaining % 60)}s"
 
-    status = result.get("status")
+    def __call__(self, i: int, total: int, title: str, result: dict | None):
+        # Called twice per track (start + finish). Keep output compact.
+        if result is None:
+            if self.mode == "verbose":
+                print(f"[{i}/{total}] {title} ... scraping | ETA {self._eta(total)}")
+            return
 
-    if status == "updated":
-        print(
-            f"{prefix} OK | total={format_int(result.get('streams'))} | "
-            f"daily={format_int(result.get('daily_streams'))} | ETA {eta}"
+        status = (result.get("status") or "").strip()
+        self.done += 1
+        if status in self.counts:
+            self.counts[status] += 1
+
+        eta = self._eta(total)
+        prefix = f"[{self.done}/{total}]"
+
+        if self.mode == "verbose":
+            # Keep the previous detailed format.
+            if status == "updated":
+                print(
+                    f"[{i}/{total}] {title} OK | total={format_int(result.get('streams'))} | "
+                    f"daily={format_int(result.get('daily_streams'))} | ETA {eta}"
+                )
+            elif status == "pending":
+                print(
+                    f"[{i}/{total}] {title} PENDING | total={format_int(result.get('streams'))} | "
+                    f"prev={format_int(result.get('previous_streams'))} | "
+                    f"delta={format_int(result.get('delta'))} | "
+                    f"reason={result.get('reason')} | ETA {eta}"
+                )
+            else:
+                print(f"[{i}/{total}] {title} {status.upper()} | ETA {eta}")
+            return
+
+        # quiet/normal: only print errors + periodic summaries
+        important = status in {"timeout", "error", "not_found"}
+        now = time.perf_counter()
+        should_summary = (
+            self.done == total
+            or important
+            or (now - self._last_summary_t) >= (60 if self.mode == "quiet" else 30)
+            or (self.done % (50 if self.mode == "quiet" else 25) == 0)
         )
-    elif status == "pending":
-        print(
-            f"{prefix} PENDING | total={format_int(result.get('streams'))} | "
-            f"prev={format_int(result.get('previous_streams'))} | "
-            f"delta={format_int(result.get('delta'))} | "
-            f"reason={result.get('reason')} | ETA {eta}"
-        )
-    elif status == "skipped":
-        print(f"{prefix} SKIPPED | ETA {eta}")
-    elif status == "timeout":
-        print(f"{prefix} TIMEOUT | ETA {eta}")
-    elif status == "error":
-        print(f"{prefix} ERROR | ETA {eta}")
-    elif status == "not_found":
-        print(f"{prefix} NOT FOUND | ETA {eta}")
-    else:
-        print(f"{prefix} {status.upper()} | ETA {eta}")
+
+        if important:
+            print(f"{prefix} {status.upper()} | {title} | ETA {eta}")
+
+        if should_summary:
+            self._last_summary_t = now
+            print(
+                f"{prefix} ETA {eta} | "
+                f"updated={self.counts['updated']} pending={self.counts['pending']} "
+                f"nf={self.counts['not_found']} to={self.counts['timeout']} err={self.counts['error']}"
+            )
 
 
 def _probe_on_page(probe_tracks: list[dict], page) -> dict:
@@ -1845,7 +1888,12 @@ def fetch_playcount_api(
         },
     }
 
-    for attempt in range(2):
+    # Retry policy:
+    # - 401: recapture tokens once
+    # - 429: honor Retry-After when present + exponential backoff
+    # - 5xx / network errors: retry with backoff
+    # - other 4xx: do not retry
+    for token_attempt in range(2):
         headers = {
             "Authorization":       f"Bearer {tokens['bearer']}",
             "client-token":        tokens["client_token"],
@@ -1860,26 +1908,60 @@ def fetch_playcount_api(
                 "AppleWebKit/537.36 Chrome/133.0.0.0 Safari/537.36"
             ),
         }
-        try:
-            resp = session.post(GRAPHQL_URL, json=body, headers=headers, timeout=15)
-            if resp.status_code == 200:
-                data = resp.json()
+        backoff = 1.0
+        for attempt in range(5):
+            try:
+                resp = session.post(GRAPHQL_URL, json=body, headers=headers, timeout=(5, 15))
+            except Exception:
+                # Network hiccup — retry
+                time.sleep(min(10.0, backoff) + random.random() * 0.25)
+                backoff *= 1.8
+                continue
+
+            code = resp.status_code
+
+            if code == 200:
+                try:
+                    data = resp.json()
+                except Exception:
+                    data = {}
                 track_union = (data.get("data") or {}).get("trackUnion") or {}
                 pc = track_union.get("playcount")
                 if pc is not None:
-                    return int(pc)
+                    try:
+                        return int(pc)
+                    except Exception:
+                        return None
                 m = re.search(r'"playcount":\s*"(\d+)"', json.dumps(data))
                 return int(m.group(1)) if m else None
-            elif resp.status_code == 401 and attempt == 0:
-                print("  [API] 401 — re-capture des tokens…")
+
+            if code == 401 and token_attempt == 0:
+                if LOG_MODE != "quiet":
+                    print("  [API] 401 — re-capture des tokens…")
                 token_mgr.mark_expired()
                 tokens = token_mgr.get()
                 if not tokens.get("bearer"):
                     return None
+                break  # restart with refreshed tokens
+
+            if code == 429:
+                ra = (resp.headers.get("Retry-After") or "").strip()
+                try:
+                    wait_s = float(ra)
+                except Exception:
+                    wait_s = backoff
+                # cap to avoid stalling forever; add jitter
+                wait_s = min(30.0, max(1.0, wait_s)) + random.random() * 0.35
+                time.sleep(wait_s)
+                backoff = min(30.0, backoff * 1.8)
                 continue
-            else:
-                return None
-        except Exception:
+
+            if code in {408, 500, 502, 503, 504}:
+                time.sleep(min(20.0, backoff) + random.random() * 0.25)
+                backoff *= 1.8
+                continue
+
+            # Other errors are not transient.
             return None
     return None
 
@@ -1984,7 +2066,6 @@ def _worker(
     on_progress,
     total_tracks,
     dry_run_mode=False,
-    early_twitter_trigger=None,
     worker_id: int = 0,
     adaptive: "AdaptiveWorkerState | None" = None,
     priority_top_50_ids: frozenset = frozenset(),
@@ -2037,7 +2118,8 @@ def _worker(
                 total = pre_scraped[track["track_id"]]
                 raw = str(total)
                 scrape_status = "ok"
-                print(f"  [pre-scraped] {track['title']} -> {total:,}")
+                if LOG_MODE == "verbose":
+                    print(f"  [pre-scraped] {track['title']} -> {total:,}")
             elif token_mgr is not None and token_mgr.available:
                 # Primary: API GraphQL Spotify (3 attempts before Playwright fallback)
                 api_result = None
@@ -2115,8 +2197,6 @@ def _worker(
                         dry_run_mode=dry_run_mode,
                     )
                     result["raw"] = raw
-                    if early_twitter_trigger:
-                        early_twitter_trigger(result)
                 else:
                     result = {
                         "track_id": track["track_id"],
@@ -2126,9 +2206,6 @@ def _worker(
                     }
                     with lock:
                         failed_results.append(dict(result))
-                    # Signaler quand même au trigger que ce top-50 est traité (not_found définitif)
-                    if early_twitter_trigger and track["track_id"] in priority_top_50_ids:
-                        early_twitter_trigger(result)
 
             else:
                 result = try_apply_track_update(
@@ -2140,8 +2217,6 @@ def _worker(
                     dry_run_mode=dry_run_mode,
                 )
                 result["raw"] = raw
-                if early_twitter_trigger:
-                    early_twitter_trigger(result)
 
             with lock:
                 results[i - 1] = result
@@ -2152,7 +2227,8 @@ def _worker(
             queue.task_done()
 
     finally:
-        print("Worker finished.")
+        if LOG_MODE == "verbose":
+            print("Worker finished.")
         try:
             _api_session.close()
         except Exception:
@@ -2173,7 +2249,6 @@ def run_update(
     stats_date_override: str | None = None,
     dry_run_mode: bool = False,
     only_track_ids: set[str] | None = None,
-    enable_early_twitter: bool = False,
     token_mgr: "TokenManager | None" = None,
 ):
     ensure_history_file()
@@ -2205,49 +2280,22 @@ def run_update(
     if priority_top_50_ids and len(priority_top_50_ids) < 50:
         print(f"Warning: only {len(priority_top_50_ids)} priority track(s) found from previous day.")
 
-    _early_fired = threading.Event()
-    _priority_lock = threading.Lock()
-    _early_thread: list[threading.Thread | None] = [None]
-    # Tracks du top-50 déjà traités (updated OU not_found définitif après retry)
-    _processed_priority_ids = set(load_history_track_ids_for_date(stats_date)) & priority_top_50_ids
-
-    def early_twitter_trigger(result: dict):
-        if not enable_early_twitter:
-            return
-        if _early_fired.is_set():
-            return
-        if result.get("status") == "pending":
-            return
-
-        track_id = result.get("track_id")
-        if not track_id or track_id not in priority_top_50_ids:
-            return
-
-        with _priority_lock:
-            _processed_priority_ids.add(track_id)
-
-            if priority_top_50_ids and priority_top_50_ids.issubset(_processed_priority_ids):
-                _early_fired.set()
-                _early_thread[0] = threading.Thread(
-                    target=_run_early_twitter,
-                    args=(stats_date,),
-                    daemon=True,
-                )
-                _early_thread[0].start()
-
     # ── Pre-scrape artist page for top 10 tracks ──────────────────────────────
     track_lookup = build_track_lookup(tracks)
-    artist_top_titles = scrape_artist_top_tracks()
+    artist_top_titles = scrape_artist_top_tracks() if LOG_MODE != "quiet" else {}
     pre_scraped: dict[str, int] = {}
     for norm_title, stream_count in artist_top_titles.items():
         matches = track_lookup.get(norm_title, [])
         if len(matches) == 1:
             tid = matches[0]["track_id"]
             pre_scraped[tid] = stream_count
-            print(f"  [artist page] {matches[0]['title']} -> {stream_count:,}")
+            if LOG_MODE == "verbose":
+                print(f"  [artist page] {matches[0]['title']} -> {stream_count:,}")
         elif len(matches) > 1:
-            print(f"  [artist page] ambiguous title '{norm_title}', skipping")
-    print(f"  {len(pre_scraped)} track(s) pre-scraped from artist page")
+            if LOG_MODE == "verbose":
+                print(f"  [artist page] ambiguous title '{norm_title}', skipping")
+    if LOG_MODE == "verbose":
+        print(f"  {len(pre_scraped)} track(s) pre-scraped from artist page")
 
     already_done_for_stats_date = load_history_track_ids_for_date(stats_date)
 
@@ -2296,7 +2344,6 @@ def run_update(
                     on_progress,
                     total_tracks,
                     dry_run_mode,
-                    early_twitter_trigger,
                     idx,
                     adaptive,
                     priority_top_50_ids,
@@ -2317,14 +2364,19 @@ def run_update(
             w.join(timeout=5)
         print("All worker threads joined.")
 
-        # ── Retry NOT FOUND (2ème passe, 30s d'attente, 3 workers max) ──────
-        not_found_items = [r for r in failed_results if r.get("status") == "not_found"]
-        if not_found_items:
-            print(f"\n  {len(not_found_items)} NOT FOUND — retry dans 30s avec {min(3, len(not_found_items))} workers...")
+        # ── Retry failures (2ème passe, 30s d'attente, 3 workers max) ──────
+        retry_candidates = [
+            r for r in failed_results
+            if r.get("status") in {"not_found", "timeout", "error"}
+        ]
+        if retry_candidates:
+            print(
+                f"\n  {len(retry_candidates)} failure(s) — retry dans 30s avec {min(3, len(retry_candidates))} workers..."
+            )
             time.sleep(30)
 
             retry_queue: Queue = Queue()
-            for idx, r in enumerate(not_found_items, 1):
+            for idx, r in enumerate(retry_candidates, 1):
                 retry_queue.put({
                     "index": idx,
                     "track": {"title": r["title"], "track_id": r["track_id"], "spotify_url": r["spotify_url"]},
@@ -2339,7 +2391,7 @@ def run_update(
                 threading.Thread(
                     target=_worker,
                     args=(retry_queue, retry_results, retry_failed, lock, publish_lock,
-                          None, retry_total, dry_run_mode, None, idx, retry_adaptive,
+                          None, retry_total, dry_run_mode, idx, retry_adaptive,
                           frozenset(), None, token_mgr),
                     daemon=True,
                 )
@@ -2351,18 +2403,19 @@ def run_update(
             for w in retry_workers:
                 w.join(timeout=5)
 
-            # Fusionner dans failed_results : retirer les not_found résolus
-            resolved_ids = {r["track_id"] for r in retry_results if r and r.get("status") not in (None, "not_found", "timeout")}
+            # Fusionner dans failed_results : retirer les candidats résolus
+            resolved_ids = {
+                r["track_id"]
+                for r in retry_results
+                if r and r.get("status") not in (None, "not_found", "timeout", "error")
+            }
             failed_results[:] = [r for r in failed_results if r.get("track_id") not in resolved_ids]
-            print(f"  Retry terminé : {len(resolved_ids)} récupérés, {len(not_found_items) - len(resolved_ids)} toujours NOT FOUND")
+            print(
+                f"  Retry terminé : {len(resolved_ids)} récupérés, {len(retry_candidates) - len(resolved_ids)} encore en échec"
+            )
 
     final_done_for_stats_date = load_history_track_ids_for_date(stats_date)
     filtered_results = [r for r in results if r is not None]
-
-    # Ensure early Twitter posting (if triggered) has completed before main flow continues.
-    if _early_thread[0] is not None:
-        print("Waiting for early Twitter thread to finish...")
-        _early_thread[0].join(timeout=300)
 
     return {
         "stats_date": stats_date,
@@ -2377,7 +2430,6 @@ def run_update(
         "timeout_this_run": len([r for r in failed_results if r["status"] == "timeout"]),
         "error_this_run": len([r for r in failed_results if r["status"] == "error"]),
         "not_found_this_run": len([r for r in failed_results if r["status"] == "not_found"]),
-        "early_twitter_triggered": _early_fired.is_set(),
         "results": filtered_results,
         "failed_results": failed_results,
     }
@@ -2467,11 +2519,10 @@ def run_debug_total_replace(stats_date: str) -> None:
     print(f"[DEBUG-TOTAL] Re-scraping {len(tracks)} track(s) for {stats_date}...")
 
     summary = run_update(
-        on_progress=live_progress,
+        on_progress=ProgressLogger(LOG_MODE),
         stats_date_override=stats_date,
         dry_run_mode=True,
         only_track_ids=target_track_ids,
-        enable_early_twitter=False,
     )
 
     rows = load_history_rows()
@@ -2542,6 +2593,12 @@ def main():
         print_help()
         return
 
+    global LOG_MODE
+    if "--quiet" in sys.argv:
+        LOG_MODE = "quiet"
+    if "--verbose" in sys.argv:
+        LOG_MODE = "verbose"
+
     debug_daily_mode = "--debug-daily" in sys.argv
     debug_total_mode = "--debug-total" in sys.argv
     dry_run_mode = "--dry-run" in sys.argv
@@ -2560,6 +2617,8 @@ def main():
             "--dry-run",
             "--no-post",
             "--reset-last-date",
+            "--quiet",
+            "--verbose",
             "--help",
             "-h",
         )
@@ -2769,12 +2828,12 @@ def main():
         artist_thread = threading.Thread(target=_scrape_artist_bg, daemon=True)
         artist_thread.start()
 
+    progress = ProgressLogger(LOG_MODE)
     summary = run_update(
-        on_progress=live_progress,
+        on_progress=progress,
         stats_date_override=stats_date_override,
         dry_run_mode=dry_run_mode,
         only_track_ids=unfinished_ids if debug_daily_mode else None,
-        enable_early_twitter=(not dry_run_mode and not debug_daily_mode and not no_post_mode),
         token_mgr=token_mgr,
     )
     print_summary_block(summary)
@@ -2831,11 +2890,10 @@ def main():
         print("=" * 70)
 
         summary = run_update(
-            on_progress=live_progress,
+            on_progress=progress,
             skip_track_ids=not_found_ids,
             stats_date_override=stats_date_override,
             dry_run_mode=False,
-            enable_early_twitter=(not no_post_mode),
             token_mgr=token_mgr,
         )
         not_found_ids.update(
@@ -2879,8 +2937,6 @@ def main():
     if debug_daily_mode:
         print("[DEBUG-DAILY] Skip: Twitter, forecast, images, git, notify.")
     else:
-        early_twitter_triggered = bool(summary.get("early_twitter_triggered"))
-
         if no_post_mode:
             print("Skipping Twitter post (--no-post).")
             subprocess.run(
@@ -2893,8 +2949,8 @@ def main():
                 check=False,
             )
         else:
-            if early_twitter_triggered:
-                print("Skipping regular Twitter post: early top-10 post already triggered.")
+            if not summary.get("all_done"):
+                print("Skipping Twitter post: not all tracks are done yet.")
             else:
                 print("Posting streams image to Twitter...")
                 subprocess.run(
@@ -2940,14 +2996,20 @@ def main():
 
         post_script = _SCRIPT_DIR / "tools" / "scripts" / "post_streams_twitter.py"
         if all_album_tracks_done(summary["stats_date"]):
-            print("100% des tracks albums/* presents -> generation image top 10...")
-            post_cmd = [sys.executable, str(post_script), summary["stats_date"]]
             if no_post_mode:
-                post_cmd.append("--no-post")
-            subprocess.run(
-                post_cmd,
-                check=False,
-            )
+                print("100% des tracks albums/* presents -> generation image top 10...")
+                subprocess.run(
+                    [sys.executable, str(post_script), summary["stats_date"], "--no-post"],
+                    check=False,
+                )
+            elif not summary.get("all_done"):
+                print("Skipping top-10 Twitter post: not all tracks are done yet.")
+            else:
+                print("100% des tracks albums/* presents -> generation image top 10...")
+                subprocess.run(
+                    [sys.executable, str(post_script), summary["stats_date"]],
+                    check=False,
+                )
         else:
             missing = load_album_track_ids() - load_history_track_ids_for_date(summary["stats_date"])
             print(f"Image top 10 ignorée : {len(missing)} track(s) albums/* manquant(s) pour {summary['stats_date']}.")

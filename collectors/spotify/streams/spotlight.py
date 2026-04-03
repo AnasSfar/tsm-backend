@@ -736,10 +736,10 @@ _CSS = """
 *{margin:0;padding:0;box-sizing:border-box}
 body{
   font-family:Inter,-apple-system,'Helvetica Neue',Arial,sans-serif;
-  background:
-    radial-gradient(circle at 12% 18%, rgba(29,185,84,.13), transparent 30%),
-    radial-gradient(circle at 84% 16%, rgba(126,87,255,.10), transparent 32%),
-    linear-gradient(180deg,#f4f7f8 0%,#edf3f4 100%);
+    background: var(--page-bg,
+        radial-gradient(circle at 12% 18%, rgba(29,185,84,.13), transparent 30%),
+        radial-gradient(circle at 84% 16%, rgba(126,87,255,.10), transparent 32%),
+        linear-gradient(180deg,#f4f7f8 0%,#edf3f4 100%));
   width:800px;
   padding:16px;
   color:#101828;
@@ -803,13 +803,23 @@ body{
   border-radius:10px;padding:12px 14px;
   border:1px solid rgba(16,24,40,.07);
 }
+.stat-card.highlight{
+    background: linear-gradient(135deg, rgba(241,245,246,.98), rgba(255,255,255,.96));
+    border: 2px solid var(--accent, #0055cc);
+    box-shadow: 0 8px 32px rgba(var(--accent-rgb, 0,85,204),.16), inset 0 1px 0 rgba(255,255,255,.60);
+}
 .stat-label{
   font-size:10px;font-weight:700;
   text-transform:uppercase;letter-spacing:.08em;
   color:#667085;margin-bottom:5px;
 }
 .stat-val{font-size:24px;font-weight:800;color:#101828;letter-spacing:-.02em;}
-.stat-sub{font-size:10px;font-weight:500;color:#667085;margin-top:2px;}
+.stat-sub{font-size:13px;font-weight:600;color:#667085;margin-top:4px;}
+.stat-card.highlight .stat-sub{
+  font-size:14px;
+  font-weight:700;
+  color:var(--accent, #0055cc);
+}
 .pos{color:#067647}
 .neg{color:#b42318}
 .neutral{color:#667085}
@@ -824,6 +834,11 @@ body{
 .stat-card-gold{
   background:linear-gradient(135deg,#7a5800,#c8920a,#f5c518,#c8920a,#7a5800);
   border:none;
+}
+.stat-card-gold.highlight{
+    box-shadow: 0 8px 32px rgba(255,215,0,.20), inset 0 1px 0 rgba(255,255,255,.60);
+    outline:2px solid rgba(255,255,255,.28);
+    outline-offset:0px;
 }
 .stat-card-gold .stat-label{color:rgba(255,255,255,.80);}
 .stat-card-gold .stat-val{color:#fff;}
@@ -869,6 +884,44 @@ def _fetch_image(url: str) -> tuple[str, bytes]:
         return "", b""
 
 
+def _hex_to_rgb(hex_color: str) -> tuple[int, int, int] | None:
+    m = re.fullmatch(r"#([0-9a-fA-F]{6})", (hex_color or "").strip())
+    if not m:
+        return None
+    h = m.group(1)
+    return int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+
+
+def _relative_luminance(rgb: tuple[int, int, int]) -> float:
+    # WCAG relative luminance (sRGB)
+    def _lin(c: float) -> float:
+        c = c / 255.0
+        return c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
+
+    r, g, b = rgb
+    return 0.2126 * _lin(r) + 0.7152 * _lin(g) + 0.0722 * _lin(b)
+
+
+def _average_luminance_from_gradient(gradient_css: str) -> float | None:
+    # Extract all #RRGGBB stops and average their luminance.
+    hexes = re.findall(r"#[0-9a-fA-F]{6}", gradient_css or "")
+    rgbs = [_hex_to_rgb(h) for h in hexes]
+    rgbs = [c for c in rgbs if c is not None]
+    if not rgbs:
+        return None
+    lums = [_relative_luminance(c) for c in rgbs]
+    return sum(lums) / len(lums)
+
+
+def _pick_block_colors_for_background(gradient_css: str) -> tuple[str, str]:
+    """Return (block_bg_hex, block_text_hex) for max contrast vs background."""
+    lum = _average_luminance_from_gradient(gradient_css)
+    # If background is bright → choose black block; if dark → choose white block.
+    if lum is not None and lum >= 0.55:
+        return "#000000", "#ffffff"
+    return "#ffffff", "#000000"
+
+
 def _build_html(
     title: str,
     artist: str,
@@ -880,6 +933,7 @@ def _build_html(
     accent_hex: str,
     date_fmt: str,
     milestone: int | None = None,
+    highlight: str = "total",
 ) -> str:
     has_daily    = daily is not None and daily >= 0
     daily_fmt    = _fmt(daily) if has_daily else "—"
@@ -906,9 +960,17 @@ def _build_html(
         '<div class="cover-ph">🎵</div>'
     )
 
+    block_bg, block_text = _pick_block_colors_for_background(gradient)
+    block_border = "rgba(16,24,40,.12)" if block_bg.lower() == "#ffffff" else "rgba(255,255,255,.18)"
+
+    highlight_vs = "highlight" if highlight == "vs" else ""
+    highlight_vs_style = f'style="border-color:{accent_hex};--accent:{accent_hex}"' if highlight == "vs" else ""
+    highlight_total = "highlight" if highlight == "total" else ""
+    highlight_total_style = f'style="border-color:{accent_hex};--accent:{accent_hex}"' if highlight == "total" else ""
+
     return f"""<!DOCTYPE html>
 <html><head><meta charset="utf-8"><style>{_CSS}</style></head>
-<body>
+<body style="--page-bg: {gradient};">
 <div class="container">
   <div class="main-row">
     <div class="cover-col">
@@ -920,16 +982,16 @@ def _build_html(
         <div class="song-artist">{artist}</div>
         <div class="song-date">{date_fmt}</div>
       </div>
-      <div class="daily-block" style="background:{gradient}">
-        <div class="daily-num">{daily_prefix}{daily_fmt}</div>
+            <div class="daily-block" style="background:{block_bg}; border:1px solid {block_border}">
+                <div class="daily-num" style="color:{block_text}">{daily_prefix}{daily_fmt}</div>
       </div>
       <div class="stat-row">
-        <div class="stat-card">
+                <div class="stat-card {highlight_vs}" {highlight_vs_style}>
           <div class="stat-label">vs Yesterday</div>
           <div class="stat-val {vs_cls}">{vs_str}</div>
           <div class="stat-sub">{pct_str}</div>
         </div>
-        <div class="stat-card{' stat-card-gold' if milestone else ''}">
+                <div class="stat-card {highlight_total}{' stat-card-gold' if milestone else ''}" {highlight_total_style}>
           <div class="stat-label">Total Streams</div>
           <div class="stat-val">{total_fmt}</div>
           <div class="stat-sub">{'🏆 ' + _fmt_milestone(milestone) + ' MILESTONE' if milestone else 'SINCE RELEASE'}</div>
@@ -952,6 +1014,7 @@ def generate_spotlight_image(
     daily_yesterday: int | None,
     cover_url: str,
     stats_date: str,
+    highlight: str = "total",
 ) -> Path:
     from datetime import datetime
     date_fmt = datetime.strptime(stats_date, "%Y-%m-%d").strftime("%B %d, %Y")
@@ -979,6 +1042,7 @@ def generate_spotlight_image(
         accent_hex      = accent_hex,
         date_fmt        = date_fmt,
         milestone       = milestone,
+        highlight       = highlight,
     )
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -1012,6 +1076,12 @@ def main() -> None:
     parser.add_argument("--no-post",   action="store_true", help="Generate image but skip Twitter posting (default: will post)")
     parser.add_argument("--no-scrape", action="store_true", help="Use history CSV total only, skip API and scraping")
     parser.add_argument("--post",      action="store_true", help="[Deprecated] Explicitly post to Twitter (now default)")
+    parser.add_argument(
+        "--highlight",
+        choices=["vs", "total"],
+        default="total",
+        help="Which stat card to emphasize: 'vs' (vs yesterday) or 'total' (total streams).",
+    )
     args = parser.parse_args()
 
     query = args.url or args.title
@@ -1076,6 +1146,7 @@ def main() -> None:
         daily_yesterday = daily_yesterday,
         cover_url       = cover_url,
         stats_date      = stats_date,
+        highlight       = args.highlight,
     )
 
     # New default: POST to Twitter unless --no-post is specified

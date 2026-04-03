@@ -1,19 +1,23 @@
 #!/usr/bin/env python3
 """
-fix_one.py — Manually correct the streams value for one song on one specific day,
+fix_one.py — Manually correct the DAILY streams value for one song on one specific day,
 then propagate the update through the entire data pipeline.
 
 Usage:
-    python collectors/spotify/streams/fix_one.py "Song Title" YYYY-MM-DD NEW_STREAMS
-    python collectors/spotify/streams/fix_one.py "Song Title" YYYY-MM-DD NEW_STREAMS --dry-run
-    python collectors/spotify/streams/fix_one.py "Song Title" YYYY-MM-DD NEW_STREAMS --track-id <SPOTIFY_ID>
-    python collectors/spotify/streams/fix_one.py "Song Title" YYYY-MM-DD NEW_STREAMS --no-git
+    # Default: fix daily streams for that day (TOTAL is derived from previous day)
+    python collectors/spotify/streams/fix_one.py "Song Title" YYYY-MM-DD NEW_DAILY_STREAMS
+    python collectors/spotify/streams/fix_one.py "Song Title" YYYY-MM-DD NEW_DAILY_STREAMS --dry-run
+    python collectors/spotify/streams/fix_one.py "Song Title" YYYY-MM-DD NEW_DAILY_STREAMS --track-id <SPOTIFY_ID>
+    python collectors/spotify/streams/fix_one.py "Song Title" YYYY-MM-DD NEW_DAILY_STREAMS --no-git
+
+    # Legacy: fix total streams directly
+    python collectors/spotify/streams/fix_one.py "Song Title" YYYY-MM-DD NEW_TOTAL_STREAMS --total
 
 What gets recomputed automatically:
     1. db/streams_history.csv
-          - streams value for (track, day)
-          - daily_streams for (track, day)       recomputed as new - prev_day
-          - daily_streams for (track, day+1)     recomputed as next_day - new
+        - daily_streams value for (track, day)
+        - streams for (track, day)             derived as prev_day_total + new_daily
+        - daily_streams for (track, day+1)     recomputed as next_day_total - new_total
     2. website/site/history/{day}.json and all other date JSONs (full export)
     3. website/site/data/songs.json, albums.json, etc. (full export output)
     4. R2: history-by-track/{track_id}.json — targeted single-track upload
@@ -228,18 +232,31 @@ def _r2_upload_track(track_id: str) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Corrige manuellement les streams d'une chanson pour un jour donné.",
+        description="Corrige manuellement le daily_streams d'une chanson pour un jour donné.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=(
             "Exemples :\n"
-            '  python fix_one.py "Anti-Hero" 2026-03-15 2500000000\n'
-            '  python fix_one.py "cruel summer" 2026-03-10 1800000000 --dry-run\n'
-            '  python fix_one.py "Blank Space" 2026-03-12 900000000 --track-id 1P4mNKvhKTnqGHhiQz1zJH'
+            '  python fix_one.py "Anti-Hero" 2026-03-15 1250000\n'
+            '  python fix_one.py "cruel summer" 2026-03-10 980000 --dry-run\n'
+            '  python fix_one.py "Blank Space" 2026-03-12 550000 --track-id 1P4mNKvhKTnqGHhiQz1zJH\n'
+            '  python fix_one.py "Anti-Hero" 2026-03-15 2500000000 --total'
         ),
     )
     parser.add_argument("song",        help="Titre de la chanson (partiel ou exact, insensible à la casse)")
     parser.add_argument("day",         help="Date à corriger (YYYY-MM-DD)")
-    parser.add_argument("streams",     type=int, help="Valeur corrigée des streams TOTAUX (pas le delta)")
+    parser.add_argument(
+        "value",
+        type=int,
+        help=(
+            "Par défaut: valeur corrigée de daily_streams pour ce jour (delta). "
+            "Avec --total: valeur corrigée des streams totaux."
+        ),
+    )
+    parser.add_argument(
+        "--total",
+        action="store_true",
+        help="Interprète VALUE comme streams totaux (ancien comportement).",
+    )
     parser.add_argument("--dry-run",   action="store_true", help="Affiche les changements sans rien écrire")
     parser.add_argument("--track-id",  metavar="ID", help="ID Spotify explicite (si le titre est ambigu)")
     parser.add_argument("--no-git",    action="store_true", help="Ne pas committer ni pusher")
@@ -251,9 +268,8 @@ def main() -> None:
     except ValueError:
         sys.exit(f"[ERREUR] Date invalide : {args.day!r}  (format attendu : YYYY-MM-DD)")
 
-    new_streams = args.streams
-    if new_streams < 0:
-        sys.exit("[ERREUR] La valeur de streams doit être positive.")
+    if args.value < 0:
+        sys.exit("[ERREUR] La valeur doit être positive.")
 
     day_str      = target_date.isoformat()
     prev_day_str = (target_date - timedelta(days=1)).isoformat()
@@ -286,7 +302,12 @@ def main() -> None:
     print(f"  Chanson  : {title}  ({album})")
     print(f"  Track ID : {track_id}")
     print(f"  Jour     : {day_str}")
-    print(f"  Valeur   : {new_streams:,}")
+    if args.total:
+        print(f"  Mode     : total streams")
+        print(f"  Valeur   : {args.value:,}")
+    else:
+        print(f"  Mode     : daily_streams")
+        print(f"  Valeur   : {args.value:,}")
     print()
 
     # ── Load CSV and locate relevant rows ─────────────────────────────────────
@@ -307,20 +328,87 @@ def main() -> None:
     next_streams = get_streams(rows, track_id, next_day_str)   # may be None
     next_idx     = find_row(rows, track_id, next_day_str)       # may be None
 
-    new_daily_str      = daily_str(prev_streams, new_streams)
+    old_next_daily = (rows[next_idx].get("daily_streams") or "").strip() if next_idx is not None else None
+
+    if args.total:
+        new_streams = args.value
+        new_daily_str = daily_str(prev_streams, new_streams)
+    else:
+        new_daily = args.value
+        if prev_streams is None:
+            derived_prev: int | None = None
+
+            # Fallback A (best-effort): derive previous total from current row if daily_streams exists
+            try:
+                old_daily_int = int(old_daily) if old_daily != "" else None
+            except ValueError:
+                old_daily_int = None
+            if old_daily_int is not None and old_streams >= old_daily_int:
+                derived_prev = old_streams - old_daily_int
+                print(
+                    f"[WARN] Total manquant pour {prev_day_str} — fallback via la ligne du jour: "
+                    f"prev_total = streams({day_str}) - daily_streams({day_str})."
+                )
+
+            # Fallback B (requested): prev_total = (next_total - next_daily) - new_daily
+            if derived_prev is None and next_streams is not None and old_next_daily not in (None, ""):
+                try:
+                    next_daily_int = int(old_next_daily)
+                except ValueError:
+                    next_daily_int = None
+
+                if next_daily_int is not None and next_streams >= next_daily_int:
+                    implied_curr_total = next_streams - next_daily_int
+                    if implied_curr_total >= new_daily:
+                        derived_prev = implied_curr_total - new_daily
+                        print(
+                            f"[WARN] Total manquant pour {prev_day_str} — fallback via le jour suivant: "
+                            f"prev_total = streams({next_day_str}) - daily({next_day_str}) - new_daily({day_str})."
+                        )
+
+            if derived_prev is None:
+                sys.exit(
+                    f"[ERREUR] Impossible de calculer le total pour {day_str} car la veille ({prev_day_str}) "
+                    "n'a pas de total streams dans le CSV, et le fallback via le jour suivant est impossible.\n"
+                    "  Assurez-vous d'avoir une ligne pour le lendemain avec daily_streams, ou relancez en mode --total."
+                )
+
+            prev_streams = derived_prev
+        new_streams = prev_streams + new_daily
+        new_daily_str = str(new_daily)
+
+    if next_streams is not None and new_streams > next_streams:
+        print(
+            "[WARN] Incohérence: le total du jour corrigé dépasse le total du jour suivant.\n"
+            f"  {day_str} total={new_streams:,}  >  {next_day_str} total={next_streams:,}\n"
+            "  Le daily_streams du lendemain sera vidé (valeur négative impossible)."
+        )
+
     new_next_daily_str = daily_str(new_streams, next_streams) if next_streams is not None else None
-    old_next_daily     = (rows[next_idx].get("daily_streams") or "").strip() if next_idx is not None else None
 
     # ── Show plan ─────────────────────────────────────────────────────────────
     delta = new_streams - old_streams
-    sign  = "+" if delta >= 0 else ""
+    sign = "+" if delta >= 0 else ""
     print("Corrections prévues :")
-    print(f"  [{day_str}]   streams       {old_streams:>15,}  →  {new_streams:>15,}  ({sign}{delta:,})")
 
-    if old_daily != new_daily_str:
-        label_old = repr(old_daily)    if old_daily    != "" else "(vide)"
+    if args.total:
+        print(f"  [{day_str}]   streams       {old_streams:>15,}  →  {new_streams:>15,}  ({sign}{delta:,})")
+    else:
+        old_daily_int = int(old_daily) if old_daily.isdigit() else None
+        daily_delta = None if old_daily_int is None else (args.value - old_daily_int)
+        daily_sign = "+" if (daily_delta is not None and daily_delta >= 0) else ""
+
+        print(
+            f"  [{day_str}]   daily_streams {old_daily if old_daily != '' else '(vide)':>15}  "
+            f"→  {new_daily_str:>15}"
+            + (f"  ({daily_sign}{daily_delta:,})" if daily_delta is not None else "")
+        )
+        print(f"  [{day_str}]   streams       {old_streams:>15,}  →  {new_streams:>15,}  ({sign}{delta:,})  ← total recalculé")
+
+    if args.total and old_daily != new_daily_str:
+        label_old = repr(old_daily) if old_daily != "" else "(vide)"
         label_new = repr(new_daily_str) if new_daily_str != "" else "(vide)"
-        print(f"  [{day_str}]   daily_streams {label_old:>15}  →  {label_new}")
+        print(f"  [{day_str}]   daily_streams {label_old:>15}  →  {label_new}  ← recalculé")
 
     if next_idx is not None and new_next_daily_str is not None \
             and old_next_daily != new_next_daily_str:
@@ -358,7 +446,10 @@ def main() -> None:
 
     # ── Git commit ────────────────────────────────────────────────────────────
     if not args.no_git:
-        msg = f"fix streams: {title} [{day_str}] {old_streams:,} → {new_streams:,}"
+        if args.total:
+            msg = f"fix streams: {title} [{day_str}] {old_streams:,} → {new_streams:,}"
+        else:
+            msg = f"fix daily_streams: {title} [{day_str}] → {args.value:,} (total {old_streams:,} → {new_streams:,})"
         git_commit_and_push(_REPO_ROOT, msg)
     else:
         print("[Git] Skipped (--no-git).")

@@ -182,23 +182,52 @@ def load_history(target_date: str) -> tuple[list[dict], list[dict]]:
     Each row: {track_id, streams, daily_streams}
     """
     yesterday = str(date_cls.fromisoformat(target_date) - timedelta(days=1))
+    day_before = str(date_cls.fromisoformat(target_date) - timedelta(days=2))
     today_rows: dict[str, dict] = {}
     yesterday_rows: dict[str, dict] = {}
+    before_rows: dict[str, dict] = {}
+
+    def _parse_optional_int(raw: str | None) -> int | None:
+        s = (raw or "").strip()
+        if not s:
+            return None
+        try:
+            return int(s)
+        except Exception:
+            return None
 
     with open(HISTORY_PATH, newline="", encoding="utf-8") as f:
         for row in csv.DictReader(f):
             d = row["date"]
-            if d not in (target_date, yesterday):
+            if d not in (target_date, yesterday, day_before):
                 continue
             entry = {
                 "track_id": row["track_id"],
                 "streams": int(row["streams"] or 0),
-                "daily_streams": int(row["daily_streams"] or 0),
+                # Keep None when daily_streams is missing; some days historically have blank daily values.
+                "daily_streams": _parse_optional_int(row.get("daily_streams")),
             }
             if d == target_date:
                 today_rows[row["track_id"]] = entry
             elif d == yesterday:
                 yesterday_rows[row["track_id"]] = entry
+            else:
+                before_rows[row["track_id"]] = entry
+
+    def _fill_missing_daily(cur: dict[str, dict], prev: dict[str, dict]) -> None:
+        for tid, e in cur.items():
+            if e.get("daily_streams") is not None:
+                continue
+            p = prev.get(tid)
+            if not p:
+                continue
+            diff = e.get("streams", 0) - p.get("streams", 0)
+            if diff >= 0:
+                e["daily_streams"] = diff
+
+    # If daily_streams is blank in CSV, recompute from totals using adjacent dates.
+    _fill_missing_daily(today_rows, yesterday_rows)
+    _fill_missing_daily(yesterday_rows, before_rows)
 
     return list(today_rows.values()), list(yesterday_rows.values())
 
@@ -303,7 +332,9 @@ def _dedup_by_title(rows: list[dict], song_db: dict) -> list[dict]:
         title = info.get("title") or tid
         key   = _norm(title)
         existing = best.get(key)
-        if existing is None or row["daily_streams"] > existing["daily_streams"]:
+        row_daily = row.get("daily_streams") or 0
+        existing_daily = (existing or {}).get("daily_streams") or 0
+        if existing is None or row_daily > existing_daily:
             best[key] = {**row, "title": title, "artist": info.get("artist", "Taylor Swift"),
                          "image_url": info.get("image_url", "")}
     return list(best.values())
@@ -316,12 +347,12 @@ def build_top_n(today_rows: list[dict], yesterday_rows: list[dict], song_db: dic
     """
     # Build yesterday's ranking {title_key: rank}
     yest_deduped = _dedup_by_title(yesterday_rows, song_db)
-    yest_sorted  = sorted(yest_deduped, key=lambda r: r["daily_streams"], reverse=True)
+    yest_sorted  = sorted(yest_deduped, key=lambda r: (r.get("daily_streams") or 0), reverse=True)
     yest_rank_by_key  = {_norm(r["title"]): i + 1 for i, r in enumerate(yest_sorted)}
-    yest_daily_by_key = {_norm(r["title"]): r["daily_streams"] for r in yest_deduped}
+    yest_daily_by_key = {_norm(r["title"]): r.get("daily_streams") for r in yest_deduped}
 
     today_deduped = _dedup_by_title(today_rows, song_db)
-    ranked = sorted(today_deduped, key=lambda r: r["daily_streams"], reverse=True)
+    ranked = sorted(today_deduped, key=lambda r: (r.get("daily_streams") or 0), reverse=True)
     top = ranked[:top_n]
 
     for entry in top:

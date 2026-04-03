@@ -191,22 +191,50 @@ def load_album_track_map() -> dict[str, dict]:
 def load_history(target_date: str) -> tuple[dict, dict]:
     """Returns (today: {track_id: {streams, daily}}, yesterday: same)."""
     yesterday = str(date_cls.fromisoformat(target_date) - timedelta(days=1))
+    day_before = str(date_cls.fromisoformat(target_date) - timedelta(days=2))
     today: dict[str, dict] = {}
     yest:  dict[str, dict] = {}
+    before: dict[str, dict] = {}
+
+    def _parse_optional_int(raw: str | None) -> int | None:
+        s = (raw or "").strip()
+        if not s:
+            return None
+        try:
+            return int(s)
+        except Exception:
+            return None
 
     with open(HISTORY_PATH, newline="", encoding="utf-8") as f:
         for row in csv.DictReader(f):
             d = row["date"]
-            if d not in (target_date, yesterday):
+            if d not in (target_date, yesterday, day_before):
                 continue
             entry = {
                 "streams":       int(row["streams"] or 0),
-                "daily_streams": int(row["daily_streams"] or 0),
+                "daily_streams": _parse_optional_int(row.get("daily_streams")),
             }
             if d == target_date:
                 today[row["track_id"]] = entry
             else:
-                yest[row["track_id"]] = entry
+                if d == yesterday:
+                    yest[row["track_id"]] = entry
+                else:
+                    before[row["track_id"]] = entry
+
+    def _fill_missing_daily(cur: dict[str, dict], prev: dict[str, dict]) -> None:
+        for tid, e in cur.items():
+            if e.get("daily_streams") is not None:
+                continue
+            p = prev.get(tid)
+            if not p:
+                continue
+            diff = e.get("streams", 0) - p.get("streams", 0)
+            if diff >= 0:
+                e["daily_streams"] = diff
+
+    _fill_missing_daily(today, yest)
+    _fill_missing_daily(yest, before)
 
     return today, yest
 
@@ -244,8 +272,8 @@ def build_album_rows(today: dict, yest: dict, track_map: dict, covers: dict) -> 
                 "cover_url":     covers.get(_norm(album), "") or info["image_url"],
             }
         albums[album]["streams"]       += t["streams"]
-        albums[album]["daily_streams"] += t["daily_streams"]
-        albums[album]["yest_daily"]    += y.get("daily_streams", 0)
+        albums[album]["daily_streams"] += (t.get("daily_streams") or 0)
+        albums[album]["yest_daily"]    += (y.get("daily_streams") or 0)
 
     rows = sorted(albums.values(), key=lambda r: r["daily_streams"], reverse=True)
     return rows

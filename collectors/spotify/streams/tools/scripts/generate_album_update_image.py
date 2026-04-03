@@ -441,45 +441,84 @@ def load_history_for_album(
     pct    = change / daily_yesterday * 100  (None if yest == 0)
     """
     yesterday = str(date_cls.fromisoformat(target_date) - timedelta(days=1))
+    day_before = str(date_cls.fromisoformat(target_date) - timedelta(days=2))
     all_ids = {t["track_id"] for sec in sections for t in sec["tracks"]}
 
     today_data: dict[str, dict] = {}
-    yest_data:  dict[str, dict] = {}
+    yest_data: dict[str, dict] = {}
+    before_data: dict[str, dict] = {}
+    ever_seen: set[str] = set()
+
+    def _parse_optional_int(raw: str | None) -> int | None:
+        s = (raw or "").strip()
+        if not s:
+            return None
+        try:
+            return int(s)
+        except Exception:
+            return None
 
     with open(HISTORY_PATH, newline="", encoding="utf-8") as f:
         for row in csv.DictReader(f):
-            d = row["date"]
-            if d not in (target_date, yesterday):
-                continue
-            tid = row["track_id"]
+            tid = row.get("track_id") or ""
             if tid not in all_ids:
                 continue
+
+            ever_seen.add(tid)
+
+            d = row.get("date") or ""
+            if d not in (target_date, yesterday, day_before):
+                continue
+
             entry = {
-                "streams":       int(row["streams"] or 0),
-                "daily_streams": int(row["daily_streams"] or 0),
+                "streams": int(row.get("streams") or 0),
+                "daily_streams": _parse_optional_int(row.get("daily_streams")),
             }
             if d == target_date:
                 today_data[tid] = entry
-            else:
+            elif d == yesterday:
                 yest_data[tid] = entry
+            else:
+                before_data[tid] = entry
+
+    def _fill_missing_daily(cur: dict[str, dict], prev: dict[str, dict]) -> None:
+        for tid, e in cur.items():
+            if e.get("daily_streams") is not None:
+                continue
+            p = prev.get(tid)
+            if not p:
+                continue
+            diff = e.get("streams", 0) - p.get("streams", 0)
+            if diff >= 0:
+                e["daily_streams"] = diff
+
+    _fill_missing_daily(today_data, yest_data)
+    _fill_missing_daily(yest_data, before_data)
 
     result = {}
     for tid in all_ids:
         t = today_data.get(tid)
         if t is None:
-            result[tid] = {"streams": None, "daily": None, "change": None, "pct": None}
+            result[tid] = {
+                "streams": None,
+                "daily": None,
+                "change": None,
+                "pct": None,
+                "ever_seen": tid in ever_seen,
+            }
             continue
-        y = yest_data.get(tid, {})
-        daily    = t["daily_streams"]
-        streams  = t["streams"]
-        yest_d   = y.get("daily_streams", 0)
-        change   = daily - yest_d
-        pct      = (change / yest_d * 100) if yest_d != 0 else None
+        y = yest_data.get(tid)
+        daily = t.get("daily_streams")
+        streams = t.get("streams")
+        yest_d = (y or {}).get("daily_streams")
+        change = (daily - yest_d) if (daily is not None and yest_d is not None) else None
+        pct = (change / yest_d * 100) if (change is not None and yest_d not in (None, 0)) else None
         result[tid] = {
             "streams": streams,
             "daily":   daily,
             "change":  change,
             "pct":     pct,
+            "ever_seen": tid in ever_seen,
         }
     return result
 
@@ -972,27 +1011,31 @@ def _build_totals_chip(items: list[tuple[str, str]]) -> str:
 
 
 def build_song_row_html(si: int, track: dict, hdata: dict, alt: bool, show_filter_cols: bool) -> str:
-        title = _shorten_title(track["title_clean"])
-        daily = hdata.get("daily")
-        change = hdata.get("change")
-        pct = hdata.get("pct")
-        streams = hdata.get("streams")
-        f_streams = hdata.get("filtered_streams")
-        f_rate = hdata.get("filter_rate")
+    title = _shorten_title(track["title_clean"])
+    daily = hdata.get("daily")
+    change = hdata.get("change")
+    pct = hdata.get("pct")
+    streams = hdata.get("streams")
+    f_streams = hdata.get("filtered_streams")
+    f_rate = hdata.get("filter_rate")
 
-        daily_s = ("+" + fmt_num(daily)) if daily is not None else "—"
-        chg_s, pct_s, chg_cls = fmt_chg(change, pct)
+    daily_s = ("+" + fmt_num(daily)) if daily is not None else "—"
+    chg_s, pct_s, chg_cls = fmt_chg(change, pct)
+    if not hdata.get("ever_seen", True):
+        chg_s = "NEW"
+        pct_s = ""
+        chg_cls = "neutral"
 
-        alt_cls = " alt" if alt else ""
+    alt_cls = " alt" if alt else ""
 
-        if show_filter_cols:
-                extra_cells = f"""
+    if show_filter_cols:
+        extra_cells = f"""
             <div class="col-num filtered-col">{fmt_optional_num(f_streams)}</div>
         <div class="col-pct neutral rate-col">{fmt_rate(f_rate)}</div>"""
-        else:
-                extra_cells = ""
+    else:
+        extra_cells = ""
 
-        return f"""<div class="song-row{alt_cls}">
+    return f"""<div class="song-row{alt_cls}">
     <div class="col-rank">{si + 1}</div>
     <div class="col-song">
         <div class="song-title">{title}</div>
