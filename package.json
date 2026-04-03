@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "postinstall": "node ./scripts/ensure-node-modules-tsconfig.cjs"
+  },
   "dependencies": {
     "@vercel/analytics": "^2.0.1"
   }
