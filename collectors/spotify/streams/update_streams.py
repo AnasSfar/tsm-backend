@@ -68,7 +68,6 @@ HILL_INITIAL       = 6      # point de départ (MAX_PARALLEL_PAGES comme plafond
 PROBE_CANDIDATES = 10  # top N tracks (by streams) used as probe candidates
 
 PENDING_RETRY_SLEEP_SECONDS = 1 * 60
-MAX_PENDING_RETRY_ROUNDS = 6
 INCREMENTAL_PUBLISH_ON_UPDATE = False
 
 NOT_FOUND_STREAK_PATH = DATA_DIR / "not_found_streak.json"
@@ -2852,7 +2851,7 @@ def main():
         not dry_run_mode
         and not debug_daily_mode
         and not summary["all_done"]
-        and summary["pending_this_run"] > summary["total_tracks"] // 2
+        and summary["pending_this_run"] > 0
     ):
         # Don't retry on first run of the day if there are zero real updates
         # This means Spotify hasn't done its daily update yet - wait for next run instead
@@ -2880,7 +2879,7 @@ def main():
 
         print(
             f"Waiting {PENDING_RETRY_SLEEP_SECONDS // 60} minutes before retry "
-            f"({retry_round}/{MAX_PENDING_RETRY_ROUNDS})..."
+            f"(round {retry_round})..."
         )
         time.sleep(PENDING_RETRY_SLEEP_SECONDS)
 
