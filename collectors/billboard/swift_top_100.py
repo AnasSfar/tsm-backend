@@ -492,7 +492,7 @@ def _build_week_chart(
         title = meta.title if meta else tid
         norm_title = _normalize_title(title)
         br = best_rank.get(norm_title)
-        points = daily_points.get(tid, 0)
+        points = round(daily_points.get(tid, 0) * 1000 / 700)
         scored.append(
             {
                 "track_id": tid,
