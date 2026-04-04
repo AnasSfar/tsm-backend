@@ -2,9 +2,7 @@
 """
 generate_albums_image.py — génère le PNG "Top Albums by Daily Streams".
 
-Pour chaque album, n'inclut que les éditions principales :
-  standard, deluxe, acoustic, anthology, original
-  (exclut : extras, live, remix, extended)
+Pour chaque album, compte toutes les éditions sauf "extras" / "extra".
 
 Lit  : db/streams_history.csv + db/discography/albums/*.json
        db/discography/songs.json + db/discography/covers.json
@@ -49,8 +47,8 @@ SONGS_JSON   = DB_DIR / "discography" / "songs.json"
 HEADERS_DIR  = _TOOLS / "headers"
 HANDLE       = "@swiftiescharts"
 
-# Éditions incluses dans les totaux albums
-INCLUDED_EDITIONS = {"standard", "deluxe", "acoustic", "anthology", "original"}
+EXCLUDED_EDITIONS = {"extras", "extra"}
+EXCLUDED_DISPLAY_SECTIONS = {"extras", "extra"}
 
 # ---------------------------------------------------------------------------
 # Helpers (copiés depuis generate_streams_image.py)
@@ -149,17 +147,37 @@ def load_album_track_map() -> dict[str, dict]:
     """
     Returns {track_id: {album, edition, image_url}}
     Only from albums/*.json + songs.json.
-    Editions not in INCLUDED_EDITIONS are excluded.
+    Compte toutes les éditions sauf "extras" / "extra".
     """
     result = {}
 
-    def _consume_sections(sections: list[dict], album_name_fallback: str = "") -> None:
+    def _to_int(raw, fallback: int) -> int:
+        try:
+            return int(raw)
+        except Exception:
+            try:
+                return int(float(raw))
+            except Exception:
+                return fallback
+
+    def _consume_sections(
+        sections: list[dict],
+        album_name_fallback: str = "",
+        *,
+        allow_all_non_extras: bool = True,
+    ) -> None:
         for section in sections:
             album_name = section.get("album") or album_name_fallback
             for track in section.get("tracks", []):
                 edition = (track.get("edition") or "").strip().lower()
-                if edition not in INCLUDED_EDITIONS:
-                    continue
+                display_section = (track.get("display_section") or "").strip().lower()
+
+                if allow_all_non_extras:
+                    if edition in EXCLUDED_EDITIONS:
+                        continue
+                    if display_section in EXCLUDED_DISPLAY_SECTIONS:
+                        continue
+
                 url = (track.get("url") or track.get("spotify_url") or "").strip()
                 m = re.search(r"track/([A-Za-z0-9]+)", url)
                 if not m:
@@ -170,19 +188,27 @@ def load_album_track_map() -> dict[str, dict]:
                         "album":     album_name,
                         "edition":   edition,
                         "image_url": (track.get("image_url") or "").strip(),
+                        "song_family": (track.get("song_family") or "").strip(),
+                        "display_section": (track.get("display_section") or "").strip(),
                     }
 
     if ALBUMS_DIR.exists():
         for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
             try:
                 payload = json.loads(album_file.read_text(encoding="utf-8"))
-                _consume_sections(payload.get("sections", []) if isinstance(payload, dict) else [], payload.get("album", "") if isinstance(payload, dict) else "")
+                if not isinstance(payload, dict):
+                    continue
+                _consume_sections(
+                    payload.get("sections", []),
+                    payload.get("album", ""),
+                    allow_all_non_extras=True,
+                )
             except Exception as e:
                 print(f"Erreur {album_file.name}: {e}")
 
     if SONGS_JSON.exists():
         try:
-            _consume_sections(json.loads(SONGS_JSON.read_text(encoding="utf-8")))
+            _consume_sections(json.loads(SONGS_JSON.read_text(encoding="utf-8")), allow_all_non_extras=True)
         except Exception as e:
             print(f"Erreur {SONGS_JSON.name}: {e}")
     return result
@@ -257,23 +283,81 @@ def build_album_rows(today: dict, yest: dict, track_map: dict, covers: dict) -> 
     """
     albums: dict[str, dict] = {}
 
+    tracks_by_album: dict[str, list[tuple[str, dict]]] = {}
     for track_id, info in track_map.items():
-        t = today.get(track_id)
-        if t is None:
+        album = info.get("album") or ""
+        if not album:
             continue
-        y = yest.get(track_id, {})
-        album = info["album"]
-        if album not in albums:
-            albums[album] = {
-                "album":         album,
-                "streams":       0,
-                "daily_streams": 0,
-                "yest_daily":    0,
-                "cover_url":     covers.get(_norm(album), "") or info["image_url"],
-            }
-        albums[album]["streams"]       += t["streams"]
-        albums[album]["daily_streams"] += (t.get("daily_streams") or 0)
-        albums[album]["yest_daily"]    += (y.get("daily_streams") or 0)
+        tracks_by_album.setdefault(album, []).append((track_id, info))
+
+    def _best_key(day_entry: dict | None) -> tuple[int, int]:
+        if not day_entry:
+            return (-1, -1)
+        return (int(day_entry.get("daily_streams") or 0), int(day_entry.get("streams") or 0))
+
+    for album, album_tracks in tracks_by_album.items():
+        # Dédoublonnage uniquement *dans une même section d'affichage*.
+        # Ex: folklore contient des pistes Standard Edition en double avec deux IDs.
+        dedupe = True
+
+        cover_url = covers.get(_norm(album), "")
+        if not cover_url:
+            for _, info in album_tracks:
+                if info.get("image_url"):
+                    cover_url = info["image_url"]
+                    break
+
+        albums[album] = {
+            "album":         album,
+            "streams":       0,
+            "daily_streams": 0,
+            "yest_daily":    0,
+            "cover_url":     cover_url,
+        }
+
+        if not dedupe:
+            for track_id, _info in album_tracks:
+                t = today.get(track_id)
+                if t is None:
+                    continue
+                y = yest.get(track_id, {})
+                albums[album]["streams"]       += t["streams"]
+                albums[album]["daily_streams"] += (t.get("daily_streams") or 0)
+                albums[album]["yest_daily"]    += (y.get("daily_streams") or 0)
+            continue
+
+        best_today: dict[tuple[str, str], str] = {}
+        best_yest: dict[tuple[str, str], str] = {}
+
+        for track_id, info in album_tracks:
+            fam = (info.get("song_family") or "").strip() or track_id
+            sec = (info.get("display_section") or "").strip().lower()
+            key = (fam, sec)
+
+            t = today.get(track_id)
+            if t is not None:
+                prev_id = best_today.get(key)
+                if prev_id is None or _best_key(t) > _best_key(today.get(prev_id)):
+                    best_today[key] = track_id
+
+            y = yest.get(track_id)
+            if y is not None:
+                prev_id = best_yest.get(key)
+                if prev_id is None or _best_key(y) > _best_key(yest.get(prev_id)):
+                    best_yest[key] = track_id
+
+        for track_id in best_today.values():
+            t = today.get(track_id)
+            if t is None:
+                continue
+            albums[album]["streams"]       += t["streams"]
+            albums[album]["daily_streams"] += (t.get("daily_streams") or 0)
+
+        for track_id in best_yest.values():
+            y = yest.get(track_id)
+            if y is None:
+                continue
+            albums[album]["yest_daily"] += (y.get("daily_streams") or 0)
 
     rows = sorted(albums.values(), key=lambda r: r["daily_streams"], reverse=True)
     return rows

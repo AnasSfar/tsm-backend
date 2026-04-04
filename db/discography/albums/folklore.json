@@ -24,7 +24,8 @@
           "title_clean": "the lakes - bonus track",
           "song_family": "the_lakes_bonus_track",
           "version_tag": "deluxe__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273c288028c2592f400dd0b9233"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273c288028c2592f400dd0b9233",
+          "historical_track_ids": []
         }
       ]
     },
@@ -49,7 +50,8 @@
           "title_clean": "the lakes - original version",
           "song_family": "the_lakes",
           "version_tag": "deluxe__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2737d60bda8f85d66599c3fe851"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737d60bda8f85d66599c3fe851",
+          "historical_track_ids": []
         }
       ]
     },
@@ -74,7 +76,8 @@
           "title_clean": "betty - Live from the 2020 Academy of Country Music Awards",
           "song_family": "betty",
           "version_tag": "live__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2736761ef4b8f9e8b2007f4d8c3"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2736761ef4b8f9e8b2007f4d8c3",
+          "historical_track_ids": []
         },
         {
           "title": "cardigan - cabin in candlelight version",
@@ -93,7 +96,8 @@
           "title_clean": "cardigan - cabin in candlelight version",
           "song_family": "cardigan",
           "version_tag": "alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27326ade10c17424417bd06f1d6"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27326ade10c17424417bd06f1d6",
+          "historical_track_ids": []
         }
       ]
     },
@@ -120,7 +124,8 @@
           "song_family": "carolina_where_the_crawdads_sing_video_edition",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732c683c1b9fa1b711499408f7",
-          "display_era": "folklore"
+          "display_era": "folklore",
+          "historical_track_ids": []
         },
         {
           "title": "Carolina - From The Motion Picture “Where The Crawdads Sing”",
@@ -140,7 +145,8 @@
           "song_family": "carolina_from_the_motion_picture_where_the_crawdads_sing",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732c683c1b9fa1b711499408f7",
-          "display_era": "folklore"
+          "display_era": "folklore",
+          "historical_track_ids": []
         }
       ]
     },
@@ -148,25 +154,6 @@
       "section": "standard_edition",
       "track_count": 24,
       "tracks": [
-        {
-          "title": "august",
-          "url": "https://open.spotify.com/intl-fr/track/1UHoF9p75IVsvUt6WdTYhn",
-          "type": "track",
-          "edition": "standard",
-          "display_section": "Standard Edition",
-          "display_order": 1,
-          "base_title": "august",
-          "album": "folklore",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "august",
-          "song_family": "august",
-          "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
-        },
         {
           "title": "the 1",
           "url": "https://open.spotify.com/intl-fr/track/0Jlcvv8IykzHaSmj49uNW8",
@@ -184,7 +171,8 @@
           "title_clean": "the 1",
           "song_family": "the_1",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": []
         },
         {
           "title": "cardigan",
@@ -203,7 +191,10 @@
           "title_clean": "cardigan",
           "song_family": "cardigan",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": [
+            "7zcnlq38eqNWyUF6eNaB5Z"
+          ]
         },
         {
           "title": "the last great american dynasty",
@@ -222,26 +213,8 @@
           "title_clean": "the last great american dynasty",
           "song_family": "the_last_great_american_dynasty",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
-        },
-        {
-          "title": "cardigan",
-          "url": "https://open.spotify.com/intl-fr/track/7zcnlq38eqNWyUF6eNaB5Z",
-          "type": "track",
-          "edition": "standard",
-          "display_section": "Standard Edition",
-          "display_order": 4,
-          "base_title": "cardigan",
-          "album": "folklore",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "cardigan",
-          "song_family": "cardigan",
-          "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": []
         },
         {
           "title": "exile (feat. Bon Iver)",
@@ -263,7 +236,10 @@
           "title_clean": "exile",
           "song_family": "exile",
           "version_tag": "featured__feature",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": [
+            "6kz2hkq1xQvDqPcUyBkw8f"
+          ]
         },
         {
           "title": "my tears ricochet",
@@ -282,29 +258,8 @@
           "title_clean": "my tears ricochet",
           "song_family": "my_tears_ricochet",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
-        },
-        {
-          "title": "exile (feat. Bon Iver)",
-          "url": "https://open.spotify.com/intl-fr/track/6kz2hkq1xQvDqPcUyBkw8f",
-          "type": "track",
-          "edition": "standard",
-          "display_section": "Standard Edition",
-          "display_order": 6,
-          "base_title": "exile (feat. Bon Iver)",
-          "album": "folklore",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [
-            "Bon Iver"
-          ],
-          "artists": [
-            "Taylor Swift",
-            "Bon Iver"
-          ],
-          "title_clean": "exile",
-          "song_family": "exile",
-          "version_tag": "featured__feature",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": []
         },
         {
           "title": "mirrorball",
@@ -323,7 +278,8 @@
           "title_clean": "mirrorball",
           "song_family": "mirrorball",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": []
         },
         {
           "title": "seven",
@@ -342,7 +298,8 @@
           "title_clean": "seven",
           "song_family": "seven",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": []
         },
         {
           "title": "august",
@@ -361,7 +318,10 @@
           "title_clean": "august",
           "song_family": "august",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": [
+            "1UHoF9p75IVsvUt6WdTYhn"
+          ]
         },
         {
           "title": "this is me trying",
@@ -380,7 +340,8 @@
           "title_clean": "this is me trying",
           "song_family": "this_is_me_trying",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": []
         },
         {
           "title": "illicit affairs",
@@ -399,7 +360,8 @@
           "title_clean": "illicit affairs",
           "song_family": "illicit_affairs",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": []
         },
         {
           "title": "invisible string",
@@ -418,7 +380,8 @@
           "title_clean": "invisible string",
           "song_family": "invisible_string",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": []
         },
         {
           "title": "mirrorball",
@@ -437,7 +400,8 @@
           "title_clean": "mirrorball",
           "song_family": "mirrorball",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": []
         },
         {
           "title": "mad woman",
@@ -456,7 +420,8 @@
           "title_clean": "mad woman",
           "song_family": "mad_woman",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": []
         },
         {
           "title": "epiphany",
@@ -475,7 +440,8 @@
           "title_clean": "epiphany",
           "song_family": "epiphany",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": []
         },
         {
           "title": "my tears ricochet",
@@ -494,7 +460,8 @@
           "title_clean": "my tears ricochet",
           "song_family": "my_tears_ricochet",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": []
         },
         {
           "title": "betty",
@@ -513,7 +480,8 @@
           "title_clean": "betty",
           "song_family": "betty",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": []
         },
         {
           "title": "peace",
@@ -532,7 +500,8 @@
           "title_clean": "peace",
           "song_family": "peace",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": []
         },
         {
           "title": "hoax",
@@ -551,7 +520,8 @@
           "title_clean": "hoax",
           "song_family": "hoax",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": []
         },
         {
           "title": "seven",
@@ -570,7 +540,8 @@
           "title_clean": "seven",
           "song_family": "seven",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": []
         },
         {
           "title": "the 1",
@@ -589,7 +560,8 @@
           "title_clean": "the 1",
           "song_family": "the_1",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": []
         },
         {
           "title": "the last great american dynasty",
@@ -608,7 +580,8 @@
           "title_clean": "the last great american dynasty",
           "song_family": "the_last_great_american_dynasty",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": []
         }
       ]
     },
@@ -633,7 +606,8 @@
           "title_clean": "august - the long pond studio sessions",
           "song_family": "august",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": []
         },
         {
           "title": "betty - the long pond studio sessions",
@@ -652,7 +626,8 @@
           "title_clean": "betty - the long pond studio sessions",
           "song_family": "betty",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": []
         },
         {
           "title": "epiphany - the long pond studio sessions",
@@ -671,7 +646,8 @@
           "title_clean": "epiphany - the long pond studio sessions",
           "song_family": "epiphany",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": []
         },
         {
           "title": "hoax - the long pond studio sessions",
@@ -690,7 +666,8 @@
           "title_clean": "hoax - the long pond studio sessions",
           "song_family": "hoax",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": []
         },
         {
           "title": "illicit affairs - the long pond studio sessions",
@@ -709,7 +686,8 @@
           "title_clean": "illicit affairs - the long pond studio sessions",
           "song_family": "illicit_affairs",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": []
         },
         {
           "title": "invisible string - the long pond studio sessions",
@@ -728,7 +706,8 @@
           "title_clean": "invisible string - the long pond studio sessions",
           "song_family": "invisible_string",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": []
         },
         {
           "title": "mad woman - the long pond studio sessions",
@@ -747,7 +726,8 @@
           "title_clean": "mad woman - the long pond studio sessions",
           "song_family": "mad_woman",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": []
         },
         {
           "title": "mirrorball - the long pond studio sessions",
@@ -766,7 +746,8 @@
           "title_clean": "mirrorball - the long pond studio sessions",
           "song_family": "mirrorball",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": []
         },
         {
           "title": "my tears ricochet - the long pond studio sessions",
@@ -785,7 +766,8 @@
           "title_clean": "my tears ricochet - the long pond studio sessions",
           "song_family": "my_tears_ricochet",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": []
         },
         {
           "title": "peace - the long pond studio sessions",
@@ -804,7 +786,8 @@
           "title_clean": "peace - the long pond studio sessions",
           "song_family": "peace",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": []
         },
         {
           "title": "seven - the long pond studio sessions",
@@ -823,7 +806,8 @@
           "title_clean": "seven - the long pond studio sessions",
           "song_family": "seven",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": []
         },
         {
           "title": "the lakes - the long pond studio sessions",
@@ -842,7 +826,8 @@
           "title_clean": "the lakes - the long pond studio sessions",
           "song_family": "the_lakes",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": []
         },
         {
           "title": "this is me trying - the long pond studio sessions",
@@ -861,7 +846,8 @@
           "title_clean": "this is me trying - the long pond studio sessions",
           "song_family": "this_is_me_trying",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": []
         }
       ]
     },
@@ -888,7 +874,8 @@
           "song_family": "cardigan",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
-          "display_era": "folklore"
+          "display_era": "folklore",
+          "historical_track_ids": []
         },
         {
           "title": "exile (feat. Bon Iver) - the long pond studio sessions",
@@ -908,7 +895,8 @@
           "song_family": "exile_feat_bon_iver",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
-          "display_era": "folklore"
+          "display_era": "folklore",
+          "historical_track_ids": []
         },
         {
           "title": "the 1 - the long pond studio sessions",
@@ -928,7 +916,8 @@
           "song_family": "the_1",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
-          "display_era": "folklore"
+          "display_era": "folklore",
+          "historical_track_ids": []
         },
         {
           "title": "the last great american dynasty - the long pond studio sessions",
@@ -948,7 +937,8 @@
           "song_family": "the_last_great_american_dynasty",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
-          "display_era": "folklore"
+          "display_era": "folklore",
+          "historical_track_ids": []
         }
       ]
     }

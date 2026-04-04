@@ -253,6 +253,7 @@ def upload_static_data(
         ("artist.json",              "data/artist.json"),
         ("expected_milestones.json", "data/milestones.json"),
         ("billboard.json",           "data/billboard.json"),
+        ("swift_top_100.json",       "data/swift_top_100.json"),
         ("applemusic.json",          "data/applemusic.json"),
         ("applemusic_history.json",  "data/applemusic_history.json"),
         ("songs-appearances.json",   "data/songs-appearances.json"),
@@ -267,6 +268,17 @@ def upload_static_data(
         full_key = f"{data_prefix}/{r2_key.split('/', 1)[1]}"
         data = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
         tasks.append((full_key, data, "application/json; charset=utf-8"))
+
+    binary_mappings = [
+        ("swift_top_100.png", "data/swift_top_100.png", "image/png"),
+    ]
+    for filename, r2_key, content_type in binary_mappings:
+        src = SITE_DATA_DIR / filename
+        if not src.exists():
+            print(f"[SKIP] absent: {src}")
+            continue
+        full_key = f"{data_prefix}/{r2_key.split('/', 1)[1]}"
+        tasks.append((full_key, src.read_bytes(), content_type))
 
     csv_mappings = [
         ("charts_history_global.csv", "data/charts_global.csv"),

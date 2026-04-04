@@ -27,7 +27,8 @@
           "title_clean": "Castles Crumbling",
           "song_family": "castles_crumbling",
           "version_tag": "featured__vault__taylors_version__feature",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
+          "historical_track_ids": []
         },
         {
           "title": "Electric Touch (feat. Fall Out Boy) (Taylor's Version) (From The Vault)",
@@ -49,7 +50,8 @@
           "title_clean": "Electric Touch",
           "song_family": "electric_touch",
           "version_tag": "featured__vault__taylors_version__feature",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
+          "historical_track_ids": []
         },
         {
           "title": "Foolish One (Taylor's Version) (From The Vault)",
@@ -68,7 +70,8 @@
           "title_clean": "Foolish One",
           "song_family": "foolish_one",
           "version_tag": "vault__taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
+          "historical_track_ids": []
         },
         {
           "title": "I Can See You (Taylor's Version) (From The Vault)",
@@ -87,7 +90,8 @@
           "title_clean": "I Can See You",
           "song_family": "i_can_see_you",
           "version_tag": "vault__taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
+          "historical_track_ids": []
         },
         {
           "title": "Timeless (Taylor's Version) (From The Vault)",
@@ -106,7 +110,8 @@
           "title_clean": "Timeless",
           "song_family": "timeless",
           "version_tag": "vault__taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
+          "historical_track_ids": []
         },
         {
           "title": "When Emma Falls in Love (Taylor's Version) (From The Vault)",
@@ -125,7 +130,8 @@
           "title_clean": "When Emma Falls in Love",
           "song_family": "when_emma_falls_in_love",
           "version_tag": "vault__taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
+          "historical_track_ids": []
         }
       ]
     },
@@ -150,7 +156,8 @@
           "title_clean": "Mine",
           "song_family": "mine",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
+          "historical_track_ids": []
         },
         {
           "title": "Sparks Fly (Taylor's Version)",
@@ -169,7 +176,8 @@
           "title_clean": "Sparks Fly",
           "song_family": "sparks_fly",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
+          "historical_track_ids": []
         },
         {
           "title": "Back To December (Taylor's Version)",
@@ -188,7 +196,8 @@
           "title_clean": "Back To December",
           "song_family": "back_to_december",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
+          "historical_track_ids": []
         },
         {
           "title": "Speak Now (Taylor's Version)",
@@ -207,7 +216,8 @@
           "title_clean": "Speak Now",
           "song_family": "speak_now",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
+          "historical_track_ids": []
         },
         {
           "title": "Dear John (Taylor's Version)",
@@ -226,7 +236,8 @@
           "title_clean": "Dear John",
           "song_family": "dear_john",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
+          "historical_track_ids": []
         },
         {
           "title": "Mean (Taylor's Version)",
@@ -245,7 +256,8 @@
           "title_clean": "Mean",
           "song_family": "mean",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
+          "historical_track_ids": []
         },
         {
           "title": "The Story Of Us (Taylor's Version)",
@@ -264,7 +276,8 @@
           "title_clean": "The Story Of Us",
           "song_family": "the_story_of_us",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
+          "historical_track_ids": []
         },
         {
           "title": "Never Grow Up (Taylor's Version)",
@@ -283,7 +296,8 @@
           "title_clean": "Never Grow Up",
           "song_family": "never_grow_up",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
+          "historical_track_ids": []
         },
         {
           "title": "Enchanted (Taylor's Version)",
@@ -302,7 +316,8 @@
           "title_clean": "Enchanted",
           "song_family": "enchanted",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
+          "historical_track_ids": []
         },
         {
           "title": "Better Than Revenge (Taylor's Version)",
@@ -321,7 +336,8 @@
           "title_clean": "Better Than Revenge",
           "song_family": "better_than_revenge",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
+          "historical_track_ids": []
         },
         {
           "title": "Innocent (Taylor's Version)",
@@ -340,7 +356,8 @@
           "title_clean": "Innocent",
           "song_family": "innocent",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
+          "historical_track_ids": []
         },
         {
           "title": "Haunted (Taylor's Version)",
@@ -359,7 +376,8 @@
           "title_clean": "Haunted",
           "song_family": "haunted",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
+          "historical_track_ids": []
         },
         {
           "title": "Last Kiss (Taylor's Version)",
@@ -378,7 +396,8 @@
           "title_clean": "Last Kiss",
           "song_family": "last_kiss",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
+          "historical_track_ids": []
         },
         {
           "title": "Long Live (Taylor's Version)",
@@ -397,7 +416,8 @@
           "title_clean": "Long Live",
           "song_family": "long_live",
           "version_tag": "live__taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
+          "historical_track_ids": []
         },
         {
           "title": "Ours (Taylor's Version)",
@@ -416,7 +436,8 @@
           "title_clean": "Ours",
           "song_family": "ours",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
+          "historical_track_ids": []
         },
         {
           "title": "Superman (Taylor's Version)",
@@ -435,7 +456,8 @@
           "title_clean": "Superman",
           "song_family": "superman",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
+          "historical_track_ids": []
         }
       ]
     }

@@ -27,7 +27,8 @@
           "title_clean": "Bad Blood",
           "song_family": "bad_blood",
           "version_tag": "featured__deluxe__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2737941dc6a3a023016acbe3d06"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737941dc6a3a023016acbe3d06",
+          "historical_track_ids": []
         }
       ]
     },
@@ -52,7 +53,8 @@
           "title_clean": "Wildest Dreams - R3hab Remix",
           "song_family": "wildest_dreams",
           "version_tag": "remix",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273b8d01ff84dc531f884d90928"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273b8d01ff84dc531f884d90928",
+          "historical_track_ids": []
         }
       ]
     },
@@ -77,7 +79,8 @@
           "title_clean": "All You Had To Do Was Stay",
           "song_family": "all_you_had_to_do_was_stay",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a",
+          "historical_track_ids": []
         },
         {
           "title": "Bad Blood",
@@ -96,7 +99,8 @@
           "title_clean": "Bad Blood",
           "song_family": "bad_blood",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a",
+          "historical_track_ids": []
         },
         {
           "title": "Blank Space",
@@ -115,7 +119,8 @@
           "title_clean": "Blank Space",
           "song_family": "blank_space",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a",
+          "historical_track_ids": []
         },
         {
           "title": "Clean",
@@ -134,7 +139,8 @@
           "title_clean": "Clean",
           "song_family": "clean",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2",
+          "historical_track_ids": []
         },
         {
           "title": "How You Get The Girl",
@@ -153,7 +159,8 @@
           "title_clean": "How You Get The Girl",
           "song_family": "how_you_get_the_girl",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2",
+          "historical_track_ids": []
         },
         {
           "title": "I Know Places",
@@ -172,7 +179,8 @@
           "title_clean": "I Know Places",
           "song_family": "i_know_places",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2",
+          "historical_track_ids": []
         },
         {
           "title": "I Wish You Would",
@@ -191,7 +199,8 @@
           "title_clean": "I Wish You Would",
           "song_family": "i_wish_you_would",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a",
+          "historical_track_ids": []
         },
         {
           "title": "New Romantics",
@@ -210,7 +219,8 @@
           "title_clean": "New Romantics",
           "song_family": "new_romantics",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2",
+          "historical_track_ids": []
         },
         {
           "title": "Out Of The Woods",
@@ -229,7 +239,8 @@
           "title_clean": "Out Of The Woods",
           "song_family": "out_of_the_woods",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a",
+          "historical_track_ids": []
         },
         {
           "title": "Shake It Off",
@@ -248,7 +259,8 @@
           "title_clean": "Shake It Off",
           "song_family": "shake_it_off",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a",
+          "historical_track_ids": []
         },
         {
           "title": "Style",
@@ -267,7 +279,8 @@
           "title_clean": "Style",
           "song_family": "style",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a",
+          "historical_track_ids": []
         },
         {
           "title": "This Love",
@@ -286,7 +299,8 @@
           "title_clean": "This Love",
           "song_family": "this_love",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2",
+          "historical_track_ids": []
         },
         {
           "title": "Welcome To New York",
@@ -305,7 +319,8 @@
           "title_clean": "Welcome To New York",
           "song_family": "welcome_to_new_york",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a",
+          "historical_track_ids": []
         },
         {
           "title": "Wildest Dreams",
@@ -324,7 +339,8 @@
           "title_clean": "Wildest Dreams",
           "song_family": "wildest_dreams",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a",
+          "historical_track_ids": []
         },
         {
           "title": "Wonderland",
@@ -343,7 +359,8 @@
           "title_clean": "Wonderland",
           "song_family": "wonderland",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2",
+          "historical_track_ids": []
         },
         {
           "title": "You Are In Love",
@@ -362,7 +379,8 @@
           "title_clean": "You Are In Love",
           "song_family": "you_are_in_love",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2",
+          "historical_track_ids": []
         }
       ]
     },
@@ -387,7 +405,8 @@
           "title_clean": "Blank Space - Voice Memo",
           "song_family": "blank_space_voice_memo",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2",
+          "historical_track_ids": []
         },
         {
           "title": "I Know Places - Voice Memo",
@@ -406,7 +425,8 @@
           "title_clean": "I Know Places - Voice Memo",
           "song_family": "i_know_places_voice_memo",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2",
+          "historical_track_ids": []
         },
         {
           "title": "I Wish You Would - Voice Memo",
@@ -425,7 +445,8 @@
           "title_clean": "I Wish You Would - Voice Memo",
           "song_family": "i_wish_you_would_voice_memo",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2",
+          "historical_track_ids": []
         }
       ]
     },
@@ -451,7 +472,8 @@
           "song_family": "sweeter_than_fiction_from_one_chance_soundtrack",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a8d770d373f0bb3f0818526c",
-          "display_era": "1989"
+          "display_era": "1989",
+          "historical_track_ids": []
         }
       ]
     },
@@ -478,7 +500,8 @@
           "song_family": "sweeter_than_fiction",
           "version_tag": "album_track",
           "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/70/86/fd/7086fdfa-43e6-091f-b84e-6f2e813dad58/00602537602889.rgb.jpg/64x64bb.jpg",
-          "display_era": "1989"
+          "display_era": "1989",
+          "historical_track_ids": []
         }
       ],
       "display_section": "standard",
@@ -506,7 +529,8 @@
           "song_family": "blank_space_karaoke_version",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273b98fc11a07f752803fbebea4",
-          "display_era": "1989"
+          "display_era": "1989",
+          "historical_track_ids": []
         },
         {
           "title": "Shake It Off - Karaoke Version",
@@ -526,7 +550,8 @@
           "song_family": "shake_it_off_karaoke_version",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273b98fc11a07f752803fbebea4",
-          "display_era": "1989"
+          "display_era": "1989",
+          "historical_track_ids": []
         },
         {
           "title": "Style - Karaoke Version",
@@ -546,7 +571,8 @@
           "song_family": "style_karaoke_version",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273b98fc11a07f752803fbebea4",
-          "display_era": "1989"
+          "display_era": "1989",
+          "historical_track_ids": []
         },
         {
           "title": "Wildest Dreams (Arr. Lawson for Harp)",
@@ -566,7 +592,8 @@
           "song_family": "wildest_dreams_arr_lawson_for_harp",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b2733288d3aebd519ba5e147850e",
-          "display_era": "1989"
+          "display_era": "1989",
+          "historical_track_ids": []
         }
       ]
     }

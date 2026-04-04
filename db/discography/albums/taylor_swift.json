@@ -24,7 +24,8 @@
           "title_clean": "Crazier",
           "song_family": "crazier",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730e8ba185f3e9f15630a7b5fb"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730e8ba185f3e9f15630a7b5fb",
+          "historical_track_ids": []
         }
       ]
     },
@@ -49,7 +50,8 @@
           "title_clean": "A Perfectly Good Heart",
           "song_family": "a_perfectly_good_heart",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
+          "historical_track_ids": []
         },
         {
           "title": "A Place in this World",
@@ -68,7 +70,8 @@
           "title_clean": "A Place in this World",
           "song_family": "a_place_in_this_world",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
+          "historical_track_ids": []
         },
         {
           "title": "Cold As You",
@@ -87,7 +90,8 @@
           "title_clean": "Cold As You",
           "song_family": "cold_as_you",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
+          "historical_track_ids": []
         },
         {
           "title": "I'm Only Me When I'm With You",
@@ -106,7 +110,8 @@
           "title_clean": "I'm Only Me When I'm With You",
           "song_family": "i_m_only_me_when_i_m_with_you",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
+          "historical_track_ids": []
         },
         {
           "title": "Invisible",
@@ -125,7 +130,8 @@
           "title_clean": "Invisible",
           "song_family": "invisible",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
+          "historical_track_ids": []
         },
         {
           "title": "Mary's Song (Oh My My My)",
@@ -144,7 +150,8 @@
           "title_clean": "Mary's Song (Oh My My My)",
           "song_family": "mary_s_song_oh_my_my_my",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
+          "historical_track_ids": []
         },
         {
           "title": "Our Song",
@@ -163,7 +170,8 @@
           "title_clean": "Our Song",
           "song_family": "our_song",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
+          "historical_track_ids": []
         },
         {
           "title": "Picture To Burn",
@@ -182,7 +190,8 @@
           "title_clean": "Picture To Burn",
           "song_family": "picture_to_burn",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
+          "historical_track_ids": []
         },
         {
           "title": "Should've Said No",
@@ -201,7 +210,8 @@
           "title_clean": "Should've Said No",
           "song_family": "should_ve_said_no",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
+          "historical_track_ids": []
         },
         {
           "title": "Stay Beautiful",
@@ -220,7 +230,8 @@
           "title_clean": "Stay Beautiful",
           "song_family": "stay_beautiful",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
+          "historical_track_ids": []
         },
         {
           "title": "Teardrops on My Guitar - Pop Version",
@@ -239,7 +250,8 @@
           "title_clean": "Teardrops on My Guitar - Pop Version",
           "song_family": "teardrops_on_my_guitar",
           "version_tag": "alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
+          "historical_track_ids": []
         },
         {
           "title": "Teardrops On My Guitar - Radio Single Remix",
@@ -258,7 +270,8 @@
           "title_clean": "Teardrops On My Guitar - Radio Single Remix",
           "song_family": "teardrops_on_my_guitar",
           "version_tag": "remix",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
+          "historical_track_ids": []
         },
         {
           "title": "The Outside",
@@ -277,7 +290,8 @@
           "title_clean": "The Outside",
           "song_family": "the_outside",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
+          "historical_track_ids": []
         },
         {
           "title": "Tied Together with a Smile",
@@ -296,7 +310,8 @@
           "title_clean": "Tied Together with a Smile",
           "song_family": "tied_together_with_a_smile",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
+          "historical_track_ids": []
         },
         {
           "title": "Tim McGraw",
@@ -315,7 +330,8 @@
           "title_clean": "Tim McGraw",
           "song_family": "tim_mcgraw",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
+          "historical_track_ids": []
         }
       ]
     },
@@ -342,7 +358,8 @@
           "song_family": "beautiful_eyes_live_from_clear_channel_stripped_2008",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
-          "display_era": "Taylor Swift"
+          "display_era": "Taylor Swift",
+          "historical_track_ids": []
         },
         {
           "title": "Picture To Burn - Live From Clear Channel Stripped 2008",
@@ -362,7 +379,8 @@
           "song_family": "picture_to_burn_live_from_clear_channel_stripped_2008",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
-          "display_era": "Taylor Swift"
+          "display_era": "Taylor Swift",
+          "historical_track_ids": []
         },
         {
           "title": "Should've Said No - Live From Clear Channel Stripped 2008",
@@ -382,7 +400,8 @@
           "song_family": "shouldve_said_no_live_from_clear_channel_stripped_2008",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
-          "display_era": "Taylor Swift"
+          "display_era": "Taylor Swift",
+          "historical_track_ids": []
         },
         {
           "title": "Should've Said No - The 3D Concert Experience",
@@ -402,7 +421,8 @@
           "song_family": "shouldve_said_no_the_3d_concert_experience",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735e0f4b509e71ef57a82ccc3e",
-          "display_era": "Taylor Swift"
+          "display_era": "Taylor Swift",
+          "historical_track_ids": []
         },
         {
           "title": "Teardrops On My Guitar",
@@ -422,7 +442,8 @@
           "song_family": "teardrops_on_my_guitar",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b27334614bd156c2177e3c0dd051",
-          "display_era": "Taylor Swift"
+          "display_era": "Taylor Swift",
+          "historical_track_ids": []
         },
         {
           "title": "Teardrops On My Guitar - Live From Clear Channel Stripped 2008",
@@ -442,7 +463,8 @@
           "song_family": "teardrops_on_my_guitar_live_from_clear_channel_stripped_2008",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
-          "display_era": "Taylor Swift"
+          "display_era": "Taylor Swift",
+          "historical_track_ids": []
         }
       ]
     }

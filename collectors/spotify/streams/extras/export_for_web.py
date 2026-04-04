@@ -30,6 +30,9 @@ NOT_FOUND_STREAK_SRC = ROOT / "data" / "not_found_streak.json"
 BILLBOARD_CSV_PATH   = _DB_ROOT / "billboard_history.csv"
 BILLBOARD_JSON_PATH  = SITE_DATA_DIR / "billboard.json"
 
+SWIFT_TOP_100_CSV_PATH  = _DB_ROOT / "swift_top_100_history.csv"
+SWIFT_TOP_100_JSON_PATH = SITE_DATA_DIR / "swift_top_100.json"
+
 TRACK_ID_RE = re.compile(r"track/([A-Za-z0-9]+)")
 
 MILESTONES = [
@@ -187,6 +190,10 @@ def load_tracks_from_discography() -> list[dict]:
             artists = track.get("artists") or []
             primary_artist = track.get("primary_artist") or (artists[0] if artists else None)
 
+            historical_ids = [
+                h for h in (track.get("historical_track_ids") or [])
+                if isinstance(h, str) and h and h != track_id
+            ]
             seen[track_id] = {
                 "track_id": track_id,
                 "title": title,
@@ -199,6 +206,7 @@ def load_tracks_from_discography() -> list[dict]:
                 "primary_artist": primary_artist,
                 "artists": artists,
                 "appearances": [],
+                "historical_track_ids": historical_ids,
             }
 
     return list(seen.values())
@@ -864,6 +872,80 @@ def export_billboard_from_csv() -> None:
     print(f"  Billboard JSON written ({total} entries) -> {BILLBOARD_JSON_PATH}")
 
 
+def export_swift_top_100_from_csv(*, songs_by_id: dict[str, dict] | None = None) -> None:
+    """Read latest week from swift_top_100_history.csv and write website/site/data/swift_top_100.json.
+
+    The collector script can also write this JSON directly; this exporter exists so
+    running scripts/export_for_web.py always refreshes the site data.
+    """
+    if not SWIFT_TOP_100_CSV_PATH.exists():
+        return
+
+    with open(SWIFT_TOP_100_CSV_PATH, newline="", encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+
+    if not rows:
+        return
+
+    latest_date = max(r["date"] for r in rows if r.get("date"))
+    week_rows = [r for r in rows if r.get("date") == latest_date]
+    if not week_rows:
+        return
+
+    def _int(v):
+        try:
+            return int(v) if v not in (None, "", "None") else None
+        except (ValueError, TypeError):
+            return None
+
+    def _float(v):
+        try:
+            return float(v) if v not in (None, "", "None") else None
+        except (ValueError, TypeError):
+            return None
+
+    # week_start column exists in the history CSV.
+    week_start = next((r.get("week_start") for r in week_rows if r.get("week_start")), None)
+    entries = []
+    for r in sorted(week_rows, key=lambda x: _int(x.get("rank")) or 9999):
+        track_id = (r.get("track_id") or "").strip()
+        song = (songs_by_id or {}).get(track_id) if track_id else None
+        entries.append({
+            "rank": _int(r.get("rank")),
+            "track_id": track_id or None,
+            "title": r.get("title"),
+            "primary_album": (song or {}).get("primary_album"),
+            "spotify_url": (song or {}).get("spotify_url"),
+            "image_url": (song or {}).get("image_url"),
+            "weekly_streams": _int(r.get("weekly_streams")) or 0,
+            "bonus_points": _int(r.get("bonus_points")) or 0,
+            "points": _int(r.get("points")) or 0,
+            "global_best_rank": _int(r.get("global_best_rank")),
+            "apple_music_global_best_rank": _int(r.get("apple_music_global_best_rank")),
+            "apple_music_global_charting": bool(_int(r.get("apple_music_global_best_rank"))),
+            "apple_music_ts_top_songs_best_rank": _int(r.get("apple_music_ts_top_songs_best_rank")),
+            "apple_music_ts_top_songs_charting": bool(_int(r.get("apple_music_ts_top_songs_best_rank"))),
+            "prev_rank": _int(r.get("prev_rank")),
+            "rank_change": _int(r.get("rank_change")),
+            "percentage_change": _float(r.get("percentage_change")),
+            "weeks_on_chart": _int(r.get("weeks_on_chart")),
+            "peak_position": _int(r.get("peak_position")),
+        })
+
+    payload = {
+        "chart_date": latest_date,
+        "week_start": week_start,
+        "week_end": latest_date,
+        "entries": entries,
+    }
+
+    SWIFT_TOP_100_JSON_PATH.parent.mkdir(parents=True, exist_ok=True)
+    SWIFT_TOP_100_JSON_PATH.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    print(f"  Swift Top 100 JSON written ({len(entries)} entries) -> {SWIFT_TOP_100_JSON_PATH}")
+
+
 def export_for_web() -> None:
     SITE_DATA_DIR.mkdir(parents=True, exist_ok=True)
     print(f"ROOT     = {ROOT}")
@@ -888,6 +970,14 @@ def export_for_web() -> None:
         song["base_title"] = primary.get("base_title") if primary else None
 
     deduped_songs, old_to_kept = dedupe_songs_for_site(raw_songs, raw_history_by_date)
+
+    # Add explicit historical_track_ids mappings (for single re-releases where track ID changed)
+    for song in raw_songs:
+        kept_id = old_to_kept.get(song["track_id"], song["track_id"])
+        for h_id in song.get("historical_track_ids") or []:
+            if h_id not in old_to_kept:
+                old_to_kept[h_id] = kept_id
+
     merged_history = merge_history_by_kept_track(dates, raw_history_by_date, old_to_kept)
 
     latest_date = dates[-1] if dates else None
@@ -1036,6 +1126,7 @@ def export_for_web() -> None:
     )
 
     export_billboard_from_csv()
+    export_swift_top_100_from_csv(songs_by_id=songs_by_id)
 
     # copy album header images to website
     headers_src = DISCOGRAPHY_DIR / "headers"

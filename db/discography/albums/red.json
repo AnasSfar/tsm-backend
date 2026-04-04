@@ -24,7 +24,8 @@
           "title_clean": "Red - Original Demo Recording",
           "song_family": "red",
           "version_tag": "demo__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": []
         },
         {
           "title": "Treacherous - Original Demo Recording",
@@ -43,7 +44,8 @@
           "title_clean": "Treacherous - Original Demo Recording",
           "song_family": "treacherous",
           "version_tag": "demo__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": []
         },
         {
           "title": "State Of Grace - Acoustic",
@@ -62,7 +64,8 @@
           "title_clean": "State Of Grace - Acoustic",
           "song_family": "state_of_grace",
           "version_tag": "acoustic__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": []
         }
       ]
     },
@@ -87,7 +90,8 @@
           "title_clean": "Message In A Bottle (Fat Max G Remix)",
           "song_family": "message_in_a_bottle_fat_max_g_remix",
           "version_tag": "remix__taylors_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273e53252ce47982a3d555a6b3b"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e53252ce47982a3d555a6b3b",
+          "historical_track_ids": []
         }
       ]
     },
@@ -112,7 +116,8 @@
           "title_clean": "State Of Grace",
           "song_family": "state_of_grace",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "historical_track_ids": []
         },
         {
           "title": "Red",
@@ -131,7 +136,8 @@
           "title_clean": "Red",
           "song_family": "red",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "historical_track_ids": []
         },
         {
           "title": "Treacherous",
@@ -150,7 +156,8 @@
           "title_clean": "Treacherous",
           "song_family": "treacherous",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "historical_track_ids": []
         },
         {
           "title": "I Knew You Were Trouble.",
@@ -169,7 +176,8 @@
           "title_clean": "I Knew You Were Trouble.",
           "song_family": "i_knew_you_were_trouble",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "historical_track_ids": []
         },
         {
           "title": "All Too Well",
@@ -188,7 +196,8 @@
           "title_clean": "All Too Well",
           "song_family": "all_too_well",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "historical_track_ids": []
         },
         {
           "title": "22",
@@ -207,7 +216,8 @@
           "title_clean": "22",
           "song_family": "22",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "historical_track_ids": []
         },
         {
           "title": "I Almost Do",
@@ -226,7 +236,8 @@
           "title_clean": "I Almost Do",
           "song_family": "i_almost_do",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "historical_track_ids": []
         },
         {
           "title": "We Are Never Ever Getting Back Together",
@@ -245,7 +256,8 @@
           "title_clean": "We Are Never Ever Getting Back Together",
           "song_family": "we_are_never_ever_getting_back_together",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "historical_track_ids": []
         },
         {
           "title": "Stay Stay Stay",
@@ -264,7 +276,8 @@
           "title_clean": "Stay Stay Stay",
           "song_family": "stay_stay_stay",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "historical_track_ids": []
         },
         {
           "title": "The Last Time",
@@ -283,7 +296,8 @@
           "title_clean": "The Last Time",
           "song_family": "the_last_time",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": []
         },
         {
           "title": "Holy Ground",
@@ -302,7 +316,8 @@
           "title_clean": "Holy Ground",
           "song_family": "holy_ground",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": []
         },
         {
           "title": "Sad Beautiful Tragic",
@@ -321,7 +336,8 @@
           "title_clean": "Sad Beautiful Tragic",
           "song_family": "sad_beautiful_tragic",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": []
         },
         {
           "title": "The Lucky One",
@@ -340,7 +356,8 @@
           "title_clean": "The Lucky One",
           "song_family": "the_lucky_one",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": []
         },
         {
           "title": "Everything Has Changed",
@@ -359,7 +376,8 @@
           "title_clean": "Everything Has Changed",
           "song_family": "everything_has_changed",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": []
         },
         {
           "title": "Starlight",
@@ -378,7 +396,8 @@
           "title_clean": "Starlight",
           "song_family": "starlight",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": []
         },
         {
           "title": "Begin Again",
@@ -397,7 +416,8 @@
           "title_clean": "Begin Again",
           "song_family": "begin_again",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": []
         },
         {
           "title": "Come Back...Be Here",
@@ -416,7 +436,8 @@
           "title_clean": "Come Back...Be Here",
           "song_family": "come_back_be_here",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": []
         },
         {
           "title": "Girl At Home",
@@ -435,7 +456,8 @@
           "title_clean": "Girl At Home",
           "song_family": "girl_at_home",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": []
         }
       ]
     },
@@ -462,7 +484,8 @@
           "song_family": "ronan",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dbe6e4dd1b2a61e375a12c63",
-          "display_era": "Red"
+          "display_era": "Red",
+          "historical_track_ids": []
         }
       ]
     },
@@ -489,7 +512,8 @@
           "song_family": "all_too_well",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738e16c6e20dbed531a9006d58",
-          "display_era": "Red"
+          "display_era": "Red",
+          "historical_track_ids": []
         },
         {
           "title": "All Too Well (Sad Girl Autumn Version) - Recorded at Long Pond Studios",
@@ -509,7 +533,8 @@
           "song_family": "all_too_well",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27370f88b5ee2da16d3f3929fea",
-          "display_era": "Red"
+          "display_era": "Red",
+          "historical_track_ids": []
         }
       ]
     },
@@ -536,7 +561,8 @@
           "song_family": "safe_sound_from_the_hunger_games_soundtrack",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d29a5d713277b0b3d517507b",
-          "display_era": "Red"
+          "display_era": "Red",
+          "historical_track_ids": []
         }
       ]
     },
@@ -566,7 +592,8 @@
           "song_family": "babe",
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27363d77f99117b28af9f656918",
-          "display_era": "Red"
+          "display_era": "Red",
+          "historical_track_ids": []
         }
       ]
     },
@@ -593,7 +620,8 @@
           "song_family": "the_last_time_karaoke_version",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273220563fb6c59f7e470ba3272",
-          "display_era": "Red"
+          "display_era": "Red",
+          "historical_track_ids": []
         },
         {
           "title": "The Moment I Knew",
@@ -613,7 +641,8 @@
           "song_family": "the_moment_i_knew",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
-          "display_era": "Red"
+          "display_era": "Red",
+          "historical_track_ids": []
         }
       ]
     }

@@ -11,8 +11,8 @@
           "title": "All Too Well (10 Minute Version) (Taylor's Version) (From The Vault)",
           "url": "https://open.spotify.com/intl-fr/track/5enxwA8aAbwZbf5qCHORXi",
           "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
+          "edition": "vault",
+          "display_section": "From The Vault",
           "display_order": 1,
           "base_title": "All Too Well (10 Minute Version) (Taylor's Version) (From The Vault)",
           "album": "Red (Taylor's Version)",
@@ -24,14 +24,15 @@
           "title_clean": "All Too Well (10 Minute Version)",
           "song_family": "all_too_well",
           "version_tag": "vault__taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "Babe (Taylor's Version) (From The Vault)",
           "url": "https://open.spotify.com/intl-fr/track/0v4z1tuZvn6LGknom9Qx7d",
           "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
+          "edition": "vault",
+          "display_section": "From The Vault",
           "display_order": 2,
           "base_title": "Babe (Taylor's Version) (From The Vault)",
           "album": "Red (Taylor's Version)",
@@ -43,14 +44,15 @@
           "title_clean": "Babe",
           "song_family": "babe",
           "version_tag": "vault__taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "Better Man (Taylor's Version) (From The Vault)",
           "url": "https://open.spotify.com/intl-fr/track/4OmFmE0fzcMG6g0Y8p4eSD",
           "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
+          "edition": "vault",
+          "display_section": "From The Vault",
           "display_order": 3,
           "base_title": "Better Man (Taylor's Version) (From The Vault)",
           "album": "Red (Taylor's Version)",
@@ -62,14 +64,15 @@
           "title_clean": "Better Man",
           "song_family": "better_man",
           "version_tag": "vault__taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "Forever Winter (Taylor's Version) (From The Vault)",
           "url": "https://open.spotify.com/intl-fr/track/3oGVx9RBmiYGv5ZCecWLkx",
           "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
+          "edition": "vault",
+          "display_section": "From The Vault",
           "display_order": 4,
           "base_title": "Forever Winter (Taylor's Version) (From The Vault)",
           "album": "Red (Taylor's Version)",
@@ -81,14 +84,15 @@
           "title_clean": "Forever Winter",
           "song_family": "forever_winter",
           "version_tag": "vault__taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "I Bet You Think About Me (feat. Chris Stapleton) (Taylor's Version) (From The Vault)",
           "url": "https://open.spotify.com/intl-fr/track/4CkgMiMqZ5JzW9iYXSTMTL",
           "type": "feature",
-          "edition": "extras",
-          "display_section": "Extras",
+          "edition": "vault",
+          "display_section": "From The Vault",
           "display_order": 5,
           "base_title": "I Bet You Think About Me (feat. Chris Stapleton) (Taylor's Version) (From The Vault)",
           "album": "Red (Taylor's Version)",
@@ -103,14 +107,15 @@
           "title_clean": "I Bet You Think About Me",
           "song_family": "i_bet_you_think_about_me",
           "version_tag": "featured__vault__taylors_version__feature",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "Message In A Bottle (Taylor's Version) (From The Vault)",
           "url": "https://open.spotify.com/intl-fr/track/3z6XUommYDWPHeFhmhhT6j",
           "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
+          "edition": "vault",
+          "display_section": "From The Vault",
           "display_order": 6,
           "base_title": "Message In A Bottle (Taylor's Version) (From The Vault)",
           "album": "Red (Taylor's Version)",
@@ -122,14 +127,15 @@
           "title_clean": "Message In A Bottle",
           "song_family": "message_in_a_bottle",
           "version_tag": "vault__taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "Nothing New (feat. Phoebe Bridgers) (Taylor's Version) (From The Vault)",
           "url": "https://open.spotify.com/intl-fr/track/01K4zKU104LyJ8gMb7227B",
           "type": "feature",
-          "edition": "extras",
-          "display_section": "Extras",
+          "edition": "vault",
+          "display_section": "From The Vault",
           "display_order": 7,
           "base_title": "Nothing New (feat. Phoebe Bridgers) (Taylor's Version) (From The Vault)",
           "album": "Red (Taylor's Version)",
@@ -144,14 +150,15 @@
           "title_clean": "Nothing New",
           "song_family": "nothing_new",
           "version_tag": "featured__vault__taylors_version__feature",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "Run (feat. Ed Sheeran) (Taylor's Version) (From The Vault)",
           "url": "https://open.spotify.com/intl-fr/track/4IQkfUsrwXol38VV3U7t7T",
           "type": "feature",
-          "edition": "extras",
-          "display_section": "Extras",
+          "edition": "vault",
+          "display_section": "From The Vault",
           "display_order": 8,
           "base_title": "Run (feat. Ed Sheeran) (Taylor's Version) (From The Vault)",
           "album": "Red (Taylor's Version)",
@@ -166,14 +173,15 @@
           "title_clean": "Run",
           "song_family": "run",
           "version_tag": "featured__vault__taylors_version__feature",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "The Very First Night (Taylor's Version) (From The Vault)",
           "url": "https://open.spotify.com/intl-fr/track/6pYNq0ZwpPVazKzsqpf0G8",
           "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
+          "edition": "vault",
+          "display_section": "From The Vault",
           "display_order": 9,
           "base_title": "The Very First Night (Taylor's Version) (From The Vault)",
           "album": "Red (Taylor's Version)",
@@ -185,14 +193,15 @@
           "title_clean": "The Very First Night",
           "song_family": "the_very_first_night",
           "version_tag": "vault__taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "State Of Grace (Acoustic Version) (Taylor's Version)",
           "url": "https://open.spotify.com/intl-fr/track/5jAIouBES8LWMiriuNq170",
           "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
+          "edition": "vault",
+          "display_section": "From The Vault",
           "display_order": 10,
           "base_title": "State Of Grace (Acoustic Version)",
           "album": "Red (Taylor's Version)",
@@ -204,7 +213,8 @@
           "title_clean": "State Of Grace (Acoustic Version)",
           "song_family": "state_of_grace_acoustic_version",
           "version_tag": "acoustic__taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         }
       ]
     },
@@ -229,7 +239,8 @@
           "title_clean": "State Of Grace",
           "song_family": "state_of_grace",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "Red (Taylor's Version)",
@@ -248,7 +259,8 @@
           "title_clean": "Red",
           "song_family": "red",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "Treacherous (Taylor's Version)",
@@ -267,7 +279,8 @@
           "title_clean": "Treacherous",
           "song_family": "treacherous",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "I Knew You Were Trouble (Taylor's Version)",
@@ -286,7 +299,8 @@
           "title_clean": "I Knew You Were Trouble",
           "song_family": "i_knew_you_were_trouble",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "All Too Well (Taylor's Version)",
@@ -305,7 +319,8 @@
           "title_clean": "All Too Well",
           "song_family": "all_too_well",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "22 (Taylor's Version)",
@@ -324,7 +339,8 @@
           "title_clean": "22",
           "song_family": "22",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "I Almost Do (Taylor's Version)",
@@ -343,7 +359,8 @@
           "title_clean": "I Almost Do",
           "song_family": "i_almost_do",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "We Are Never Ever Getting Back Together (Taylor's Version)",
@@ -362,7 +379,8 @@
           "title_clean": "We Are Never Ever Getting Back Together",
           "song_family": "we_are_never_ever_getting_back_together",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "Stay Stay Stay (Taylor's Version)",
@@ -381,7 +399,8 @@
           "title_clean": "Stay Stay Stay",
           "song_family": "stay_stay_stay",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "The Last Time (feat. Gary Lightbody of Snow Patrol) (Taylor's Version)",
@@ -403,7 +422,8 @@
           "title_clean": "The Last Time",
           "song_family": "the_last_time",
           "version_tag": "featured__taylors_version__feature",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "Holy Ground (Taylor's Version)",
@@ -422,7 +442,8 @@
           "title_clean": "Holy Ground",
           "song_family": "holy_ground",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "Sad Beautiful Tragic (Taylor's Version)",
@@ -441,7 +462,8 @@
           "title_clean": "Sad Beautiful Tragic",
           "song_family": "sad_beautiful_tragic",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "The Lucky One (Taylor's Version)",
@@ -460,7 +482,8 @@
           "title_clean": "The Lucky One",
           "song_family": "the_lucky_one",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "Everything Has Changed (feat. Ed Sheeran) (Taylor's Version)",
@@ -482,7 +505,8 @@
           "title_clean": "Everything Has Changed",
           "song_family": "everything_has_changed",
           "version_tag": "featured__taylors_version__feature",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "Starlight (Taylor's Version)",
@@ -501,7 +525,8 @@
           "title_clean": "Starlight",
           "song_family": "starlight",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "Begin Again (Taylor's Version)",
@@ -520,7 +545,8 @@
           "title_clean": "Begin Again",
           "song_family": "begin_again",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "Girl At Home (Taylor's Version)",
@@ -539,7 +565,8 @@
           "title_clean": "Girl At Home",
           "song_family": "girl_at_home",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "Ronan (Taylor's Version)",
@@ -558,7 +585,8 @@
           "title_clean": "Ronan",
           "song_family": "ronan",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "Come Back...Be Here (Taylor's Version)",
@@ -577,7 +605,8 @@
           "title_clean": "Come Back...Be Here",
           "song_family": "come_back_be_here",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         },
         {
           "title": "The Moment I Knew (Taylor's Version)",
@@ -596,7 +625,8 @@
           "title_clean": "The Moment I Knew",
           "song_family": "the_moment_i_knew",
           "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": []
         }
       ]
     },
@@ -623,7 +653,8 @@
           "song_family": "eyes_open",
           "version_tag": "taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d5cc403148a5161b4561cf61",
-          "display_era": "Red"
+          "display_era": "Red",
+          "historical_track_ids": []
         },
         {
           "title": "Safe & Sound (feat. Joy Williams and John Paul White) (Taylor's Version)",
@@ -648,7 +679,8 @@
           "song_family": "safe_sound",
           "version_tag": "featured__taylors_version__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2734f719ea76d1b7048664b8fec",
-          "display_era": "Red"
+          "display_era": "Red",
+          "historical_track_ids": []
         }
       ]
     },
@@ -675,7 +707,8 @@
           "song_family": "safe_sound_feat_joy_williams_and_john_paul_white_taylors_version",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e508c5f5080d8a6c9db576df",
-          "display_era": "Red"
+          "display_era": "Red",
+          "historical_track_ids": []
         }
       ]
     }

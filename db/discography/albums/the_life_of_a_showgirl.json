@@ -24,7 +24,8 @@
           "title_clean": "The Fate of Ophelia",
           "song_family": "the_fate_of_ophelia",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
+          "historical_track_ids": []
         },
         {
           "title": "Elizabeth Taylor",
@@ -44,7 +45,10 @@
           "song_family": "elizabeth_taylor",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc6e4c7774e0c77c210d3a31",
-          "single_image": "https://i.scdn.co/image/ab67616d0000b273dc6e4c7774e0c77c210d3a31"
+          "single_image": "https://i.scdn.co/image/ab67616d0000b273dc6e4c7774e0c77c210d3a31",
+          "historical_track_ids": [
+            "1jgTiNob5cVyXeJ3WgX5bL"
+          ]
         },
         {
           "title": "Opalite",
@@ -63,7 +67,8 @@
           "title_clean": "Opalite",
           "song_family": "opalite",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
+          "historical_track_ids": []
         },
         {
           "title": "Father Figure",
@@ -82,7 +87,8 @@
           "title_clean": "Father Figure",
           "song_family": "father_figure",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
+          "historical_track_ids": []
         },
         {
           "title": "Eldest Daughter",
@@ -101,7 +107,8 @@
           "title_clean": "Eldest Daughter",
           "song_family": "eldest_daughter",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
+          "historical_track_ids": []
         },
         {
           "title": "Ruin The Friendship",
@@ -120,7 +127,8 @@
           "title_clean": "Ruin The Friendship",
           "song_family": "ruin_the_friendship",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
+          "historical_track_ids": []
         },
         {
           "title": "Actually Romantic",
@@ -139,7 +147,8 @@
           "title_clean": "Actually Romantic",
           "song_family": "actually_romantic",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
+          "historical_track_ids": []
         },
         {
           "title": "Wi$h Li$t",
@@ -158,7 +167,8 @@
           "title_clean": "Wi$h Li$t",
           "song_family": "wi_h_li_t",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
+          "historical_track_ids": []
         },
         {
           "title": "Wood",
@@ -177,7 +187,8 @@
           "title_clean": "Wood",
           "song_family": "wood",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
+          "historical_track_ids": []
         },
         {
           "title": "CANCELLED!",
@@ -196,7 +207,8 @@
           "title_clean": "CANCELLED!",
           "song_family": "cancelled",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
+          "historical_track_ids": []
         },
         {
           "title": "Honey",
@@ -215,7 +227,8 @@
           "title_clean": "Honey",
           "song_family": "honey",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
+          "historical_track_ids": []
         },
         {
           "title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
@@ -237,7 +250,8 @@
           "title_clean": "The Life of a Showgirl",
           "song_family": "the_life_of_a_showgirl",
           "version_tag": "featured__feature",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
+          "historical_track_ids": []
         }
       ]
     },
@@ -262,7 +276,8 @@
           "title_clean": "The Fate of Ophelia - Alone In My Tower Acoustic Version",
           "song_family": "the_fate_of_ophelia",
           "version_tag": "acoustic__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273bc755429117cac056edd2bf7"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bc755429117cac056edd2bf7",
+          "historical_track_ids": []
         },
         {
           "title": "Opalite - Life Is A Song Acoustic Version",
@@ -281,7 +296,8 @@
           "title_clean": "Opalite - Life Is A Song Acoustic Version",
           "song_family": "opalite",
           "version_tag": "acoustic__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2738b312c2d2873e7da95e316d2"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738b312c2d2873e7da95e316d2",
+          "historical_track_ids": []
         },
         {
           "title": "Wi$h Li$t - Settled Down Acoustic Version",
@@ -300,7 +316,8 @@
           "title_clean": "Wi$h Li$t - Settled Down Acoustic Version",
           "song_family": "wi_h_li_t",
           "version_tag": "acoustic__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94",
+          "historical_track_ids": []
         },
         {
           "title": "Ruin The Friendship - My Advice Version",
@@ -319,7 +336,8 @@
           "title_clean": "Ruin The Friendship - My Advice Version",
           "song_family": "ruin_the_friendship",
           "version_tag": "alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94",
+          "historical_track_ids": []
         },
         {
           "title": "Eldest Daughter - Now You're Home Acoustic Version",
@@ -338,7 +356,8 @@
           "title_clean": "Eldest Daughter - Now You're Home Acoustic Version",
           "song_family": "eldest_daughter",
           "version_tag": "acoustic__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94",
+          "historical_track_ids": []
         },
         {
           "title": "Elizabeth Taylor - So Glamorous Cabaret Version",
@@ -357,7 +376,8 @@
           "title_clean": "Elizabeth Taylor - So Glamorous Cabaret Version",
           "song_family": "elizabeth_taylor",
           "version_tag": "alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94",
+          "historical_track_ids": []
         },
         {
           "title": "The Life of a Showgirl (feat. Sabrina Carpenter) - Dressing Room Rehearsal Version",
@@ -379,7 +399,8 @@
           "title_clean": "The Life of a Showgirl - Dressing Room Rehearsal Version",
           "song_family": "the_life_of_a_showgirl",
           "version_tag": "featured__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94",
+          "historical_track_ids": []
         }
       ]
     },
@@ -404,7 +425,8 @@
           "title_clean": "Opalite - Official Music Video Extended Version Part 1",
           "song_family": "opalite",
           "version_tag": "alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2738b312c2d2873e7da95e316d2"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738b312c2d2873e7da95e316d2",
+          "historical_track_ids": []
         },
         {
           "title": "Opalite - Official Music Video Extended Version Part 2",
@@ -423,7 +445,8 @@
           "title_clean": "Opalite - Official Music Video Extended Version Part 2",
           "song_family": "opalite",
           "version_tag": "alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2738b312c2d2873e7da95e316d2"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738b312c2d2873e7da95e316d2",
+          "historical_track_ids": []
         }
       ]
     },
@@ -448,7 +471,8 @@
           "title_clean": "Opalite - BUNT. Remix",
           "song_family": "opalite",
           "version_tag": "remix",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2737796280b4d7e9692b354f902"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737796280b4d7e9692b354f902",
+          "historical_track_ids": []
         },
         {
           "title": "Opalite - Chris Lake Remix",
@@ -467,7 +491,8 @@
           "title_clean": "Opalite - Chris Lake Remix",
           "song_family": "opalite",
           "version_tag": "remix",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273156ba090375f53d5c8fac5c3"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273156ba090375f53d5c8fac5c3",
+          "historical_track_ids": []
         },
         {
           "title": "Opalite - Ely Oaks Remix",
@@ -486,7 +511,8 @@
           "title_clean": "Opalite - Ely Oaks Remix",
           "song_family": "opalite",
           "version_tag": "remix",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2738100654494e42240857384d9"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738100654494e42240857384d9",
+          "historical_track_ids": []
         },
         {
           "title": "Opalite - Skream Remix",
@@ -505,7 +531,8 @@
           "title_clean": "Opalite - Skream Remix",
           "song_family": "opalite",
           "version_tag": "remix",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273bcde9224bc1fb45f15c7bc56"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bcde9224bc1fb45f15c7bc56",
+          "historical_track_ids": []
         },
         {
           "title": "The Fate of Ophelia - Loud Luxury Remix",
@@ -524,7 +551,8 @@
           "title_clean": "The Fate of Ophelia - Loud Luxury Remix",
           "song_family": "the_fate_of_ophelia",
           "version_tag": "remix",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27339b6ce4f493d53cfba83170a"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27339b6ce4f493d53cfba83170a",
+          "historical_track_ids": []
         },
         {
           "title": "The Fate of Ophelia - The Chainsmokers Remix",
@@ -543,7 +571,8 @@
           "title_clean": "The Fate of Ophelia - The Chainsmokers Remix",
           "song_family": "the_fate_of_ophelia",
           "version_tag": "remix",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2735a9197396cb52631e73364b9"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2735a9197396cb52631e73364b9",
+          "historical_track_ids": []
         }
       ]
     },
@@ -568,7 +597,8 @@
           "title_clean": "Elizabeth Taylor - Track by Track",
           "song_family": "elizabeth_taylor",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "historical_track_ids": []
         },
         {
           "title": "Father Figure - Track by Track",
@@ -587,7 +617,8 @@
           "title_clean": "Father Figure - Track by Track",
           "song_family": "father_figure",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "historical_track_ids": []
         },
         {
           "title": "Opalite - Track by Track",
@@ -606,7 +637,8 @@
           "title_clean": "Opalite - Track by Track",
           "song_family": "opalite",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "historical_track_ids": []
         },
         {
           "title": "The Fate of Ophelia - Track by Track",
@@ -625,7 +657,8 @@
           "title_clean": "The Fate of Ophelia - Track by Track",
           "song_family": "the_fate_of_ophelia",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "historical_track_ids": []
         },
         {
           "title": "The Life of a Showgirl - Track by Track",
@@ -644,7 +677,8 @@
           "title_clean": "The Life of a Showgirl - Track by Track",
           "song_family": "the_life_of_a_showgirl",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "historical_track_ids": []
         }
       ]
     },
@@ -671,7 +705,8 @@
           "song_family": "actually_romantic_track_by_track",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "display_era": "The Life of a Showgirl"
+          "display_era": "The Life of a Showgirl",
+          "historical_track_ids": []
         },
         {
           "title": "CANCELLED! - Track by Track",
@@ -691,7 +726,8 @@
           "song_family": "cancelled",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "display_era": "The Life of a Showgirl"
+          "display_era": "The Life of a Showgirl",
+          "historical_track_ids": []
         },
         {
           "title": "Eldest Daughter - Track by Track",
@@ -711,7 +747,8 @@
           "song_family": "eldest_daughter",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "display_era": "The Life of a Showgirl"
+          "display_era": "The Life of a Showgirl",
+          "historical_track_ids": []
         },
         {
           "title": "Honey - Track by Track",
@@ -731,7 +768,8 @@
           "song_family": "honey",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "display_era": "The Life of a Showgirl"
+          "display_era": "The Life of a Showgirl",
+          "historical_track_ids": []
         },
         {
           "title": "Ruin The Friendship - Track by Track",
@@ -751,7 +789,8 @@
           "song_family": "ruin_the_friendship",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "display_era": "The Life of a Showgirl"
+          "display_era": "The Life of a Showgirl",
+          "historical_track_ids": []
         },
         {
           "title": "Wi$h Li$t - Track by Track",
@@ -771,7 +810,8 @@
           "song_family": "wiSh_liSt",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "display_era": "The Life of a Showgirl"
+          "display_era": "The Life of a Showgirl",
+          "historical_track_ids": []
         },
         {
           "title": "Wood - Track by Track",
@@ -791,7 +831,8 @@
           "song_family": "wood",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "display_era": "The Life of a Showgirl"
+          "display_era": "The Life of a Showgirl",
+          "historical_track_ids": []
         }
       ]
     }

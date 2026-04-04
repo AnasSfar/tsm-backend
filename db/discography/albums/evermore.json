@@ -24,7 +24,8 @@
           "title_clean": "willow - lonely witch version",
           "song_family": "willow",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": []
         },
         {
           "title": "willow - moonlit witch version",
@@ -43,7 +44,8 @@
           "title_clean": "willow - moonlit witch version",
           "song_family": "willow",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273ec07f0fc562d46804df394b4"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273ec07f0fc562d46804df394b4",
+          "historical_track_ids": []
         }
       ]
     },
@@ -68,7 +70,8 @@
           "title_clean": "right where you left me - bonus track",
           "song_family": "right_where_you_left_me_bonus_track",
           "version_tag": "deluxe__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27390fd9741e1838115cd90b3b6"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27390fd9741e1838115cd90b3b6",
+          "historical_track_ids": []
         },
         {
           "title": "it's time to go - bonus track",
@@ -87,7 +90,8 @@
           "title_clean": "it's time to go - bonus track",
           "song_family": "it_s_time_to_go_bonus_track",
           "version_tag": "deluxe__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27390fd9741e1838115cd90b3b6"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27390fd9741e1838115cd90b3b6",
+          "historical_track_ids": []
         }
       ]
     },
@@ -112,7 +116,8 @@
           "title_clean": "willow - 90's trend remix",
           "song_family": "willow",
           "version_tag": "remix",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27348ea2c0fbc6682c6d10d91aa"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27348ea2c0fbc6682c6d10d91aa",
+          "historical_track_ids": []
         },
         {
           "title": "willow - dancing witch version (Elvira remix)",
@@ -131,7 +136,8 @@
           "title_clean": "willow - dancing witch version (Elvira remix)",
           "song_family": "willow",
           "version_tag": "remix",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273e141efa4999ddb4b52512a7c"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e141efa4999ddb4b52512a7c",
+          "historical_track_ids": []
         },
         {
           "title": "willow - lonely witch version",
@@ -150,7 +156,8 @@
           "title_clean": "willow - lonely witch version",
           "song_family": "willow",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2738312c50a6b9046d7dea5de12"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738312c50a6b9046d7dea5de12",
+          "historical_track_ids": []
         },
         {
           "title": "willow - moonlit witch version",
@@ -169,7 +176,8 @@
           "title_clean": "willow - moonlit witch version",
           "song_family": "willow",
           "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": []
         }
       ]
     },
@@ -194,7 +202,8 @@
           "title_clean": "willow",
           "song_family": "willow",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": []
         },
         {
           "title": "champagne problems",
@@ -213,7 +222,8 @@
           "title_clean": "champagne problems",
           "song_family": "champagne_problems",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": []
         },
         {
           "title": "gold rush",
@@ -232,7 +242,8 @@
           "title_clean": "gold rush",
           "song_family": "gold_rush",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": []
         },
         {
           "title": "tolerate it",
@@ -251,7 +262,8 @@
           "title_clean": "tolerate it",
           "song_family": "tolerate_it",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": []
         },
         {
           "title": "no body, no crime (feat. HAIM)",
@@ -273,7 +285,8 @@
           "title_clean": "no body, no crime",
           "song_family": "no_body_no_crime",
           "version_tag": "featured__feature",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": []
         },
         {
           "title": "happiness",
@@ -292,7 +305,8 @@
           "title_clean": "happiness",
           "song_family": "happiness",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": []
         },
         {
           "title": "dorothea",
@@ -311,7 +325,8 @@
           "title_clean": "dorothea",
           "song_family": "dorothea",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": []
         },
         {
           "title": "coney island (feat. The National)",
@@ -333,7 +348,8 @@
           "title_clean": "coney island",
           "song_family": "coney_island",
           "version_tag": "featured__feature",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": []
         },
         {
           "title": "ivy",
@@ -352,7 +368,8 @@
           "title_clean": "ivy",
           "song_family": "ivy",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": []
         },
         {
           "title": "cowboy like me",
@@ -371,7 +388,8 @@
           "title_clean": "cowboy like me",
           "song_family": "cowboy_like_me",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": []
         },
         {
           "title": "long story short",
@@ -390,7 +408,8 @@
           "title_clean": "long story short",
           "song_family": "long_story_short",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": []
         },
         {
           "title": "marjorie",
@@ -409,7 +428,8 @@
           "title_clean": "marjorie",
           "song_family": "marjorie",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": []
         },
         {
           "title": "closure",
@@ -428,7 +448,8 @@
           "title_clean": "closure",
           "song_family": "closure",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": []
         },
         {
           "title": "evermore (feat. Bon Iver)",
@@ -450,7 +471,8 @@
           "title_clean": "evermore",
           "song_family": "evermore",
           "version_tag": "featured__feature",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": []
         },
         {
           "title": "'tis the damn season",
@@ -469,7 +491,8 @@
           "title_clean": "'tis the damn season",
           "song_family": "tis_the_damn_season",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27390fd9741e1838115cd90b3b6"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27390fd9741e1838115cd90b3b6",
+          "historical_track_ids": []
         }
       ]
     }
