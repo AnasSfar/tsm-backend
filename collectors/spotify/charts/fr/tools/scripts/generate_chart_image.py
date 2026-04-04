@@ -706,7 +706,6 @@ def build_html(
     track_album_map: dict,
     cover_map: dict,
     header_img: Path | None = None,
-    pop_rows=None,
     out_songs: list | None = None,
 ) -> str:
     date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
@@ -731,12 +730,6 @@ def build_html(
     rows_html += build_out_rows_html(out_songs or [], track_album_map, cover_map, chart_date)
 
     pop_section_html = ""
-    if pop_rows or out_songs:
-        pop_html = build_pop_rows_html(pop_rows or [], history, chart_date, track_album_map, cover_map)
-        out_pop_html = build_out_rows_html(out_songs or [], track_album_map, cover_map, chart_date)
-        pop_section_html = f"""<div class="section-hdr" {sec_style}>France Pop Chart</div>
-{COL_HEADS_HTML}
-{pop_html}{out_pop_html}"""
 
     return f"""<!DOCTYPE html>
 <html><head><meta charset="utf-8"><style>{CSS}</style></head>
@@ -779,14 +772,11 @@ def generate(chart_date: str, header_img: Path | None = None) -> Path:
     if not rows:
         raise ValueError(f"Aucune chanson TS dans {json_path}")
 
-    pop_json_path = date_dir / f"ts_pop_{chart_date}.json"
-    pop_rows = enrich_pop_rows(load_json(pop_json_path) if pop_json_path.exists() else [], chart_date)
-
     cover_map       = build_cover_map()
     track_album_map = build_track_album_map()
     out_songs       = get_out_songs(chart_date, rows)
 
-    html     = build_html(rows, history, chart_date, track_album_map, cover_map, header_img=header_img, pop_rows=pop_rows, out_songs=out_songs)
+    html     = build_html(rows, history, chart_date, track_album_map, cover_map, header_img=header_img, out_songs=out_songs)
     html_tmp = date_dir / "_chart_tmp.html"
     html_tmp.write_text(html, encoding="utf-8")
 
@@ -825,8 +815,6 @@ def generate_all_headers(chart_date: str) -> list[Path]:
 
     rows    = load_json(json_path)
     history = load_json(TS_HISTORY_PATH) if TS_HISTORY_PATH.exists() else {}
-    pop_json_path = date_dir / f"ts_pop_{chart_date}.json"
-    pop_rows = enrich_pop_rows(load_json(pop_json_path) if pop_json_path.exists() else [], chart_date)
     cover_map       = build_cover_map()
     track_album_map = build_track_album_map()
     out_songs_data  = get_out_songs(chart_date, rows)
@@ -836,7 +824,7 @@ def generate_all_headers(chart_date: str) -> list[Path]:
         browser = p.chromium.launch(headless=True)
         for img_path in imgs:
             out_path = date_dir / f"chart_image_{img_path.stem}.png"
-            html     = build_html(rows, history, chart_date, track_album_map, cover_map, header_img=img_path, pop_rows=pop_rows, out_songs=out_songs_data)
+            html     = build_html(rows, history, chart_date, track_album_map, cover_map, header_img=img_path, out_songs=out_songs_data)
             html_tmp = date_dir / "_chart_tmp.html"
             html_tmp.write_text(html, encoding="utf-8")
             try:
@@ -865,7 +853,6 @@ def generate_multi(chart_dates: list[str], header_img: Path | None = None) -> Pa
     track_album_map = build_track_album_map()
 
     combined_rows_html = ""
-    combined_pop_html  = ""
     valid_dates = []
     for chart_date in chart_dates:
         date_dir  = DATA_DIR / chart_date[:4] / chart_date[5:7] / chart_date
@@ -881,13 +868,6 @@ def generate_multi(chart_dates: list[str], header_img: Path | None = None) -> Pa
         combined_rows_html += f'<div class="day-hdr">{date_label}</div>\n'
         combined_rows_html += build_rows_html(rows, history, chart_date, track_album_map, cover_map)
         combined_rows_html += build_out_rows_html(get_out_songs(chart_date, rows), track_album_map, cover_map, chart_date)
-
-        pop_json_path = date_dir / f"ts_pop_{chart_date}.json"
-        if pop_json_path.exists():
-            pop_rows = enrich_pop_rows(load_json(pop_json_path), chart_date)
-            if pop_rows:
-                combined_pop_html += f'<div class="day-hdr">{date_label}</div>\n'
-                combined_pop_html += build_pop_rows_html(pop_rows, history, chart_date, track_album_map, cover_map)
 
     if not valid_dates:
         raise ValueError("Aucun JSON trouvé pour les dates fournies")
@@ -909,8 +889,6 @@ def generate_multi(chart_dates: list[str], header_img: Path | None = None) -> Pa
     sec_style = f'style="background:{handle_color};border-top:2px solid {handle_color};"'
 
     pop_section_html = ""
-    if combined_pop_html:
-        pop_section_html = f'<div class="section-hdr" {sec_style}>France Pop Chart</div>\n{COL_HEADS_HTML}\n{combined_pop_html}'
 
     first_fmt = datetime.strptime(valid_dates[0],  "%Y-%m-%d").strftime("%B %d")
     last_fmt  = datetime.strptime(valid_dates[-1], "%Y-%m-%d").strftime("%B %d, %Y")
