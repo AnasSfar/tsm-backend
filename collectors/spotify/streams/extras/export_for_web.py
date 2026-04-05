@@ -894,7 +894,10 @@ def export_swift_top_100_from_csv(*, songs_by_id: dict[str, dict] | None = None)
 
     def _int(v):
         try:
-            return int(v) if v not in (None, "", "None") else None
+            if v in (None, "", "None"):
+                return None
+            # Handle floats in CSV (e.g., "2573.0")
+            return int(float(v))
         except (ValueError, TypeError):
             return None
 
@@ -904,32 +907,206 @@ def export_swift_top_100_from_csv(*, songs_by_id: dict[str, dict] | None = None)
         except (ValueError, TypeError):
             return None
 
+    def _format_points(value: float | int) -> str:
+        """Format points for display: 1000 → 1k, 1523 → 1.5k, etc."""
+        if not value or value == 0:
+            return "0"
+        if value < 1000:
+            return str(int(value))
+        if value < 1_000_000:
+            return f"{value/1000:.1f}k".rstrip('0').rstrip('.')
+        return f"{value/1_000_000:.1f}M".rstrip('0').rstrip('.')
+
+    def _format_value(n) -> str:
+        """Format large numbers: ≥1M → '1.25M', ≥1k → '450.8k', else integer."""
+        if n is None:
+            return "0"
+        n = float(n)
+        if n >= 1_000_000:
+            s = f"{n / 1_000_000:.2f}M"
+            # Strip trailing zeros after decimal but keep at least one digit
+            s = s.rstrip("0").rstrip(".")
+            if "." not in s and "M" in s:
+                pass  # already clean
+            return s if s.endswith("M") else s + "M"
+        if n >= 1_000:
+            return f"{n / 1_000:.1f}k"
+        return str(int(round(n)))
+
+    def _normalize_remix_title(title: str) -> str:
+        """Extract base title from remix/acoustic/karaoke variants.
+        
+        E.g.:
+        - "Wildest Dreams - R3hab Remix" → "Wildest Dreams"
+        - "Lover (Remix) [feat. Shawn Mendes]" → "Lover"
+        - "Illicit Affairs (Acoustic Version)" → "Illicit Affairs"
+        - "Back to December - Acoustic" → "Back to December"
+        - "Don't Blame Me - Karaoke Version" → "Don't Blame Me"
+        - "Mine - POP Mix" → "Mine"
+        - "cardigan - cabin in candlelight version" → "cardigan"
+        - "willow - lonely witch version" → "willow"
+        """
+        if not title:
+            return title
+        
+        # Remove common remix/version/karaoke suffixes
+        title = re.sub(r'\s*-\s*(R3hab\s+)?Remix.*$', '', title, flags=re.IGNORECASE)
+        title = re.sub(r'\s*-\s*.*Karaoke.*$', '', title, flags=re.IGNORECASE)
+        title = re.sub(r'\s*-\s*Acoustic.*$', '', title, flags=re.IGNORECASE)
+        title = re.sub(r'\s*-\s*.*Version.*$', '', title, flags=re.IGNORECASE)
+        title = re.sub(r'\s*-\s*.*Mix.*$', '', title, flags=re.IGNORECASE)
+        title = re.sub(r'\s*\(.*Remix.*\).*$', '', title, flags=re.IGNORECASE)
+        title = re.sub(r'\s*\(.*Mix.*\).*$', '', title, flags=re.IGNORECASE)
+        title = re.sub(r'\s*\[feat\..*\].*$', '', title, flags=re.IGNORECASE)
+        
+        return title.strip()
+
+    # Load song canonical info from discography (song_family -> canonical title + image)
+    song_family_info = {}
+    
+    # Load from songs.json (flat list)
+    if MISC_JSON_SRC.exists():
+        try:
+            with open(MISC_JSON_SRC, encoding="utf-8") as f:
+                misc_data = json.load(f)
+                for track in misc_data:
+                    sf = track.get("song_family")
+                    if sf and sf not in song_family_info:
+                        song_family_info[sf] = {
+                            "title": track.get("title", ""),
+                            "image_url": track.get("image_url"),
+                        }
+        except Exception:
+            pass
+    
+    # Load from album JSONs (has more complete info)
+    if ALBUMS_DIR_SRC.exists():
+        try:
+            for album_file in ALBUMS_DIR_SRC.glob("*.json"):
+                with open(album_file, encoding="utf-8") as f:
+                    album_data = json.load(f)
+                    if isinstance(album_data, dict) and "sections" in album_data:
+                        for section in album_data.get("sections", []):
+                            for track in section.get("tracks", []):
+                                sf = track.get("song_family")
+                                if sf and sf not in song_family_info:
+                                    song_family_info[sf] = {
+                                        "title": track.get("title", ""),
+                                        "image_url": track.get("image_url"),
+                                    }
+                    elif isinstance(album_data, list):
+                        for track in album_data:
+                            sf = track.get("song_family")
+                            if sf and sf not in song_family_info:
+                                song_family_info[sf] = {
+                                    "title": track.get("title", ""),
+                                    "image_url": track.get("image_url"),
+                                }
+        except Exception:
+            pass
+
     # week_start column exists in the history CSV.
     week_start = next((r.get("week_start") for r in week_rows if r.get("week_start")), None)
+    
     entries = []
     for r in sorted(week_rows, key=lambda x: _int(x.get("rank")) or 9999):
         track_id = (r.get("track_id") or "").strip()
         song = (songs_by_id or {}).get(track_id) if track_id else None
+
+        # Get canonical info from song_family if available
+        song_family = (song or {}).get("song_family") if song else None
+        canonical_info = song_family_info.get(song_family) if song_family else {}
+
+        # Use canonical title and image if available, otherwise normalize the remix title
+        if canonical_info.get("title"):
+            display_title = canonical_info.get("title")
+        elif song and song.get("title"):
+            display_title = _normalize_remix_title(song.get("title"))
+        else:
+            display_title = _normalize_remix_title(r.get("title", ""))
+
+        display_image = canonical_info.get("image_url") or song.get("image_url") if song else None
+
+        # New units model
+        units_am      = _int(r.get("units_am")) or 0
+        units_spotify = _int(r.get("units_spotify")) or 0
+        units_charts  = _int(r.get("units_charts")) or 0
+        units_surplus = _int(r.get("units_surplus")) or 0
+        total_units   = _int(r.get("total_units")) or 0
+        streams_pct   = _float(r.get("streams_pct")) or 0.0
+        airplay_pct   = _float(r.get("airplay_pct")) or 0.0
+
+        # AM sub-units (raw score × 1000)
+        am_ts_score     = _float(r.get("am_ts_score")) or 0.0
+        am_global_score = _float(r.get("am_global_score")) or 0.0
+        am_ts_units     = round(am_ts_score * 1000)
+        am_global_units = round(am_global_score * 1000)
+
+        points = _float(r.get("points")) or 0.0
+
+        # change field: "+3", "-1", "NEW", "="
+        rank_change = _int(r.get("rank_change"))
+        prev_rank   = _int(r.get("prev_rank"))
+        if prev_rank is None:
+            change = "NEW"
+        elif rank_change and rank_change > 0:
+            change = f"+{rank_change}"
+        elif rank_change and rank_change < 0:
+            change = str(rank_change)
+        else:
+            change = "="
+
         entries.append({
+            # Identité
             "rank": _int(r.get("rank")),
+            "change": change,
             "track_id": track_id or None,
-            "title": r.get("title"),
+            "song_title": display_title,
+            "title": display_title,          # compat
+            "album_era": (song or {}).get("primary_album"),
             "primary_album": (song or {}).get("primary_album"),
             "spotify_url": (song or {}).get("spotify_url"),
-            "image_url": (song or {}).get("image_url"),
+            "image_url": display_image,
+            # Units totaux
+            "units": _format_value(total_units),
+            "total_units": total_units,
+            "units_am": units_am,
+            "units_spotify": units_spotify,
+            "units_charts": units_charts,
+            "units_surplus": units_surplus,
+            # AM sub-colonnes
+            "am_ts_units": am_ts_units,
+            "am_ts_units_display": _format_value(am_ts_units) if am_ts_units > 0 else None,
+            "am_global_units": am_global_units,
+            "am_global_units_display": _format_value(am_global_units) if am_global_units > 0 else None,
+            # Spotify sub-colonnes (charts = streams on-chart, surplus = off-chart)
+            "units_charts_display": _format_value(units_charts) if units_charts > 0 else None,
+            "units_surplus_display": _format_value(units_surplus) if units_surplus > 0 else None,
+            # Répartition %
+            "streams_pct": streams_pct,
+            "airplay_pct": airplay_pct,
+            "sales_pct": 0,
+            # Points normalisés
+            "points": points,
+            "points_display": _format_points(points) if points > 0 else "0",
+            # Streams bruts (compat)
             "weekly_streams": _int(r.get("weekly_streams")) or 0,
+            # Bonus
             "bonus_points": _int(r.get("bonus_points")) or 0,
-            "points": _int(r.get("points")) or 0,
+            "bonus_points_display": (r.get("bonus_points_display") or "").strip() or None,
+            # Chart meta
             "global_best_rank": _int(r.get("global_best_rank")),
-            "apple_music_global_best_rank": _int(r.get("apple_music_global_best_rank")),
-            "apple_music_global_charting": bool(_int(r.get("apple_music_global_best_rank"))),
-            "apple_music_ts_top_songs_best_rank": _int(r.get("apple_music_ts_top_songs_best_rank")),
-            "apple_music_ts_top_songs_charting": bool(_int(r.get("apple_music_ts_top_songs_best_rank"))),
-            "prev_rank": _int(r.get("prev_rank")),
-            "rank_change": _int(r.get("rank_change")),
+            "am_ts_score": _float(r.get("am_ts_score")),
+            "am_global_score": _float(r.get("am_global_score")),
+            # Historique
+            "prev_rank": prev_rank,
+            "rank_change": rank_change,
             "percentage_change": _float(r.get("percentage_change")),
             "weeks_on_chart": _int(r.get("weeks_on_chart")),
             "peak_position": _int(r.get("peak_position")),
+            "times_at_peak": _int(r.get("times_at_peak")),
+            "peak": _int(r.get("peak_position")),
+            "woc": _int(r.get("weeks_on_chart")),
         })
 
     payload = {

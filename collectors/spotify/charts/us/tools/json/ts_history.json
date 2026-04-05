@@ -889,6 +889,42 @@
       "streams": 617067,
       "previous_rank": 290,
       "peak_rank": 1
+    },
+    "2026-03-30": {
+      "rank": 28,
+      "streams": 647959,
+      "previous_rank": 290,
+      "peak_rank": 1
+    },
+    "2026-03-31": {
+      "rank": 25,
+      "streams": 661860,
+      "previous_rank": 280,
+      "peak_rank": 1
+    },
+    "2026-04-01": {
+      "rank": 26,
+      "streams": 652073,
+      "previous_rank": 250,
+      "peak_rank": 1
+    },
+    "2026-04-02": {
+      "rank": 27,
+      "streams": 654635,
+      "previous_rank": 260,
+      "peak_rank": 1
+    },
+    "2026-04-03": {
+      "rank": 27,
+      "streams": 670540,
+      "previous_rank": 270,
+      "peak_rank": 1
+    },
+    "2026-04-04": {
+      "rank": 27,
+      "streams": 670540,
+      "previous_rank": 270,
+      "peak_rank": 1
     }
   },
   "Opalite": {
@@ -1244,6 +1280,42 @@
       "previous_rank": 530,
       "peak_rank": 2
     },
+    "2026-03-30": {
+      "rank": 71,
+      "streams": 473858,
+      "previous_rank": 740,
+      "peak_rank": 2
+    },
+    "2026-03-31": {
+      "rank": 52,
+      "streams": 509958,
+      "previous_rank": 710,
+      "peak_rank": 2
+    },
+    "2026-04-01": {
+      "rank": 52,
+      "streams": 492812,
+      "previous_rank": 520,
+      "peak_rank": 2
+    },
+    "2026-04-02": {
+      "rank": 57,
+      "streams": 489790,
+      "previous_rank": 520,
+      "peak_rank": 2
+    },
+    "2026-04-03": {
+      "rank": 60,
+      "streams": 498395,
+      "previous_rank": 570,
+      "peak_rank": 2
+    },
+    "2026-04-04": {
+      "rank": 60,
+      "streams": 498395,
+      "previous_rank": 570,
+      "peak_rank": 2
+    },
     "2026-03-22": {
       "rank": 62,
       "streams": 457392,
@@ -1344,6 +1416,17 @@
     "2025-10-03": {
       "rank": 5,
       "streams": 323455
+    },
+    "2026-03-31": {
+      "rank": 37,
+      "streams": 602167,
+      "peak_rank": 3
+    },
+    "2026-04-01": {
+      "rank": 93,
+      "streams": 426179,
+      "previous_rank": 370,
+      "peak_rank": 3
     }
   },
   "Father Figure": {
@@ -7478,6 +7561,12 @@
     }
   },
   "Style": {
+    "2026-04-04": {
+      "rank": 177,
+      "streams": 352486,
+      "previous_rank": 1920,
+      "peak_rank": 8
+    },
     "2026-03-25": {
       "rank": 179,
       "streams": 341484,
@@ -7498,6 +7587,23 @@
       "rank": 197,
       "streams": 315227,
       "previous_rank": 1980,
+      "peak_rank": 8
+    },
+    "2026-04-01": {
+      "rank": 193,
+      "streams": 334273,
+      "peak_rank": 8
+    },
+    "2026-04-02": {
+      "rank": 192,
+      "streams": 337531,
+      "previous_rank": 1930,
+      "peak_rank": 8
+    },
+    "2026-04-03": {
+      "rank": 177,
+      "streams": 352486,
+      "previous_rank": 1920,
       "peak_rank": 8
     }
   }

@@ -919,6 +919,12 @@
       "streams": 154309,
       "previous_rank": 350,
       "peak_rank": 2
+    },
+    "2026-04-04": {
+      "rank": 34,
+      "streams": 165536,
+      "previous_rank": 400,
+      "peak_rank": 2
     }
   },
   "Opalite": {
@@ -1299,6 +1305,12 @@
       "rank": 195,
       "streams": 70163,
       "previous_rank": 1740,
+      "peak_rank": 8
+    },
+    "2026-04-04": {
+      "rank": 172,
+      "streams": 76632,
+      "previous_rank": 1950,
       "peak_rank": 8
     },
     "2026-03-26": {
@@ -7483,6 +7495,14 @@
       "rank": 101,
       "streams": 29049,
       "peak_rank": 101
+    }
+  },
+  "Style": {
+    "2026-04-04": {
+      "rank": 177,
+      "streams": 352486,
+      "previous_rank": 1920,
+      "peak_rank": 8
     }
   },
   "I Don’t Wanna Live Forever (Fifty Shades Darker)": {

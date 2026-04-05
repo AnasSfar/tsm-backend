@@ -527,7 +527,7 @@ async function renderSong(rgn, name) {
       <span style="justify-content:center">Rank</span>
       <span class="r">Streams</span>
       <span class="r">Δ Streams</span>
-      <span class="r">Δ Rank</span>
+      <span class="r">+/- Rank</span>
       <span style="justify-content:center">Peak</span>
     </div>
     ${histHtml}

@@ -739,7 +739,7 @@ def generate_tweet(ts_df, chart_date, ts_history) -> str:
     return header
 
 
-def process_one(requested_date: str, ts_history):
+def process_one(requested_date: str, ts_history, *, force: bool = False):
     t_total = time.time()
     print(f"Scrape du chart global pour {requested_date} ...")
 
@@ -819,7 +819,7 @@ def process_one(requested_date: str, ts_history):
     print(f"  [écriture fichiers] {time.time() - t0:.1f}s")
 
     t0 = time.time()
-    append_to_archive_csv(actual_chart_date, ts_df)
+    append_to_archive_csv(actual_chart_date, ts_df, force=force)
     print(f"  [archive CSV] {time.time() - t0:.1f}s")
 
     print(f"OK {actual_chart_date} -> {out_dir}/")
@@ -840,9 +840,31 @@ def _date_in_archive_csv(chart_date: str) -> bool:
     return False
 
 
-def append_to_archive_csv(chart_date: str, ts_df) -> None:
-    """Appende les données TS du jour dans db/charts_history_global.csv si absentes."""
-    if ts_df is None or ts_df.empty or _date_in_archive_csv(chart_date):
+def _remove_date_from_archive_csv(chart_date: str) -> None:
+    """Supprime toutes les lignes de chart_date dans charts_history_global.csv."""
+    if not ARCHIVE_CSV.exists():
+        return
+    import csv as _csv
+    FIELDNAMES = ["date", "song_name", "rank", "streams", "previous_rank", "peak_rank", "total_days", "streak", "movement"]
+    with ARCHIVE_CSV.open("r", newline="", encoding="utf-8") as f:
+        kept = [r for r in _csv.DictReader(f) if (r.get("date") or "").strip() != chart_date]
+    with ARCHIVE_CSV.open("w", newline="", encoding="utf-8") as f:
+        w = _csv.DictWriter(f, fieldnames=FIELDNAMES, extrasaction="ignore")
+        w.writeheader()
+        w.writerows(kept)
+    print(f"  Archive CSV: {chart_date} supprimé ({len(kept)} lignes restantes)")
+
+
+def append_to_archive_csv(chart_date: str, ts_df, *, force: bool = False) -> None:
+    """Appende les données TS du jour dans db/charts_history_global.csv si absentes.
+
+    Si force=True, supprime d'abord l'entrée existante pour chart_date.
+    """
+    if ts_df is None or ts_df.empty:
+        return
+    if force:
+        _remove_date_from_archive_csv(chart_date)
+    elif _date_in_archive_csv(chart_date):
         return
     import csv as _csv
 
@@ -925,7 +947,10 @@ def main():
 
     run_all = "--all" in args
     run_relog = "--relog" in args
-    target = None if run_all or run_relog else (args[0] if args else None)
+    run_reexport = "--reexport" in args
+    force = "--force" in args
+    non_flag_args = [a for a in args if not a.startswith("--")]
+    target = None if (run_all or run_relog) else (non_flag_args[0] if non_flag_args else None)
 
     h = load(TS_HISTORY_PATH)
 
@@ -981,7 +1006,19 @@ def main():
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", target):
         raise RuntimeError("Date invalide, format attendu: YYYY-MM-DD")
 
-    process_one(target, h)
+    if run_reexport:
+        # Reexporte depuis ts_all_songs.csv existant sans re-scraper Spotify
+        csv_path = get_out_dir(target) / "ts_all_songs.csv"
+        if not csv_path.exists():
+            raise RuntimeError(f"ts_all_songs.csv introuvable pour {target}: {csv_path}")
+        ts_df = pd.read_csv(csv_path)
+        if ts_df.empty:
+            raise RuntimeError(f"ts_all_songs.csv vide pour {target}")
+        append_to_archive_csv(target, ts_df, force=True)
+        print(f"Reexport OK {target} -> {len(ts_df)} chansons dans charts_history_global.csv")
+        return
+
+    process_one(target, h, force=force)
     save(h, TS_HISTORY_PATH)
     print(f"ts_history updated - {len(h)} chansons")
 

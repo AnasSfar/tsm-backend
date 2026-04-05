@@ -3273,5 +3273,148 @@
       "melodic"
     ],
     "is_pop": false
+  },
+  "kanye west|||circles": {
+    "artist": "Kanye West",
+    "track": "CIRCLES",
+    "tags": [],
+    "is_pop": false
+  },
+  "taylor swift|||elizabeth taylor": {
+    "artist": "Taylor Swift",
+    "track": "Elizabeth Taylor",
+    "tags": [
+      "pop",
+      "who put katy perry?",
+      "baroque pop",
+      "soty",
+      "olivia rodrigo"
+    ],
+    "is_pop": true,
+    "album": "The Life of a Showgirl",
+    "release_date": "2025-10-03"
+  },
+  "america|||a horse with no name": {
+    "artist": "America",
+    "track": "A Horse with No Name",
+    "tags": [
+      "classic rock",
+      "70s",
+      "soft rock",
+      "rock",
+      "folk",
+      "folk rock",
+      "america",
+      "oldies",
+      "acoustic",
+      "a horse with no name"
+    ],
+    "is_pop": false
+  },
+  "brent faiyaz|||butterflies.": {
+    "artist": "Brent Faiyaz",
+    "track": "butterflies.",
+    "tags": [
+      "contemporary rnb"
+    ],
+    "is_pop": false
+  },
+  "temper city|||self aware": {
+    "artist": "Temper City",
+    "track": "Self Aware",
+    "tags": [],
+    "is_pop": false
+  },
+  "harry styles|||as it was": {
+    "artist": "Harry Styles",
+    "track": "As It Was",
+    "tags": [
+      "pop",
+      "rock and roll over",
+      "wsum 91.7 fm madison",
+      "synthpop",
+      "indie pop",
+      "pop rock",
+      "rock",
+      "british",
+      "harry's house",
+      "new wave"
+    ],
+    "is_pop": true
+  },
+  "riley green|||don't mind if i do": {
+    "artist": "Riley Green",
+    "track": "Don't Mind If I Do",
+    "tags": [],
+    "is_pop": false
+  },
+  "michael jackson|||billie jean": {
+    "artist": "Michael Jackson",
+    "track": "Billie Jean",
+    "tags": [
+      "pop",
+      "80s",
+      "michael jackson",
+      "dance",
+      "disco",
+      "funk",
+      "king of pop",
+      "soul",
+      "billie jean",
+      "rnb"
+    ],
+    "is_pop": true
+  },
+  "zach top|||i never lie": {
+    "artist": "Zach Top",
+    "track": "I Never Lie",
+    "tags": [],
+    "is_pop": false
+  },
+  "daniel caesar|||superpowers": {
+    "artist": "Daniel Caesar",
+    "track": "Superpowers",
+    "tags": [
+      "soul",
+      "pop",
+      "neo-soul",
+      "rnb",
+      "treasure"
+    ],
+    "is_pop": true
+  },
+  "linkin park|||numb": {
+    "artist": "Linkin Park",
+    "track": "Numb",
+    "tags": [
+      "rock",
+      "nu metal",
+      "alternative rock",
+      "linkin park",
+      "alternative",
+      "metal",
+      "hard rock",
+      "00s",
+      "numb",
+      "alternative metal"
+    ],
+    "is_pop": false
+  },
+  "coldplay|||viva la vida": {
+    "artist": "Coldplay",
+    "track": "Viva La Vida",
+    "tags": [
+      "alternative",
+      "rock",
+      "coldplay",
+      "alternative rock",
+      "viva la vida",
+      "british",
+      "britpop",
+      "pop",
+      "indie",
+      "beautiful"
+    ],
+    "is_pop": false
   }
 }

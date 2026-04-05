@@ -357,11 +357,14 @@ def data_ready(d: date) -> bool:
     return chart_csv_path(d).exists() and tweet_path(d).exists()
 
 
-def run_filter(d: date) -> str | None:
-    log("STEP", f"Lancement de filter.py pour {d}")
+def run_filter(d: date, *, force: bool = False) -> str | None:
+    log("STEP", f"Lancement de filter.py pour {d}{' (--force)' if force else ''}")
 
+    cmd = [sys.executable, str(FILTER_SCRIPT), str(d)]
+    if force:
+        cmd.append("--force")
     result = subprocess.run(
-        [sys.executable, str(FILTER_SCRIPT), str(d)],
+        cmd,
         capture_output=True,
         text=True,
         encoding="utf-8",
@@ -608,7 +611,7 @@ def main() -> None:
             log("INFO", f"tweet.txt existant chargé pour {d} ({len(content)} caractères)")
             results[d] = content
         else:
-            content = run_filter(d)
+            content = run_filter(d, force=force)
             if content:
                 results[d] = content
             else:

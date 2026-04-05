@@ -1,14 +1,18 @@
 {
   "The Fate of Ophelia": {
-    "days": 178,
-    "date": "2026-03-29"
+    "days": 180,
+    "date": "2026-04-04"
   },
   "Opalite": {
-    "days": 94,
-    "date": "2026-03-29"
+    "days": 80,
+    "date": "2026-04-04"
   },
   "Style": {
-    "days": 3,
-    "date": "2026-03-29"
+    "days": 8,
+    "date": "2026-04-04"
+  },
+  "Elizabeth Taylor": {
+    "days": 16,
+    "date": "2026-04-01"
   }
 }

@@ -42,6 +42,7 @@ CHARTS_GLOBAL_CSV = _DB_DIR / "charts_history_global.csv"
 APPLE_MUSIC_GLOBAL_CSV = _DB_DIR / "apple_music_global.csv"
 APPLE_MUSIC_TS_TOP_SONGS_CSV = _DB_DIR / "apple_music_ts_top_songs.csv"
 SWIFT_TOP_100_HISTORY_CSV = _DB_DIR / "swift_top_100_history.csv"
+SWIFT_TOP_100_BONUSES_JSON = _DB_DIR / "swift_top_100_bonuses.json"
 
 DISCOGRAPHY_DIR = _DB_DIR / "discography"
 ALBUMS_DIR = DISCOGRAPHY_DIR / "albums"
@@ -96,6 +97,20 @@ def _normalize_title(value: str) -> str:
     s = " ".join(s.split())
     return s
 
+def _format_number(value: int | float | None, decimals: int = 2) -> str:
+    """Format a number with K/M/B suffixes. E.g., 1234567 → '1.23M'."""
+    if value is None or value == 0:
+        return "0"
+    
+    value = float(value)
+    if abs(value) < 1_000:
+        return str(int(value)) if value == int(value) else f"{value:.{decimals}f}".rstrip('0').rstrip('.')
+    elif abs(value) < 1_000_000:
+        return f"{value / 1_000:.{decimals}f}".rstrip('0').rstrip('.') + "k"
+    elif abs(value) < 1_000_000_000:
+        return f"{value / 1_000_000:.{decimals}f}".rstrip('0').rstrip('.') + "M"
+    else:
+        return f"{value / 1_000_000_000:.{decimals}f}".rstrip('0').rstrip('.') + "B"
 
 @dataclass(frozen=True)
 class TrackMeta:
@@ -264,25 +279,84 @@ def _best_global_rank_by_title(*, week_dates: set[str], logger: Logger) -> dict[
     return best
 
 
-def _bonus_points(best_rank: int | None) -> int:
-    if best_rank is None:
-        return 0
-    if best_rank <= 10:
-        return 500_000
-    if best_rank <= 50:
-        return 200_000
-    return 0
+
+def _weekly_charts_streams_by_title(*, week_dates: set[str], logger: Logger) -> dict[str, int]:
+    """Return normalized_title -> total filtered Spotify Global chart streams over the week."""
+    totals: dict[str, int] = {}
+    if not CHARTS_GLOBAL_CSV.exists():
+        return totals
+
+    def _to_int(v: str | None) -> int:
+        try:
+            return int((v or "").strip())
+        except Exception:
+            return 0
+
+    # Deduplicate: (key, streams_value) seen set to detect stale re-scraped data
+    # (same exact stream count for the same song on two different days = scraper repeated previous day)
+    seen: set[tuple[str, int]] = set()
+
+    with CHARTS_GLOBAL_CSV.open("r", newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            day = (row.get("date") or "").strip()
+            if day not in week_dates:
+                continue
+            title = (row.get("song_name") or "").strip()
+            streams = _to_int(row.get("streams"))
+            if not title or streams <= 0:
+                continue
+            key = _normalize_title(title)
+            if not key:
+                continue
+            dedup_key = (key, streams)
+            if dedup_key in seen:
+                continue
+            seen.add(dedup_key)
+            totals[key] = totals.get(key, 0) + streams
+
+    return totals
 
 
-def _best_apple_music_global_rank_by_title(*, week_dates: set[str], logger: Logger) -> dict[str, int]:
-    """Return normalized_title -> best (min) Apple Music Global rank during the week.
+def _load_bonuses(chart_date: str) -> dict[str, int]:
+    """Return {track_id: bonus_points} for the given week-ending date.
 
-    Data source: db/apple_music_global.csv
+    Config file: db/swift_top_100_bonuses.json
+    Format: [{"track_id": "...", "week_end": "YYYY-MM-DD", "bonus": 600, "reason": "..."}]
     """
-    best: dict[str, int] = {}
+    if not SWIFT_TOP_100_BONUSES_JSON.exists():
+        return {}
+    try:
+        entries = json.loads(SWIFT_TOP_100_BONUSES_JSON.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    result: dict[str, int] = {}
+    for entry in entries:
+        if (entry.get("week_end") or "").strip() == chart_date:
+            tid = (entry.get("track_id") or "").strip()
+            bonus = entry.get("bonus", 0)
+            if tid and isinstance(bonus, (int, float)) and bonus > 0:
+                result[tid] = result.get(tid, 0) + int(bonus)
+    return result
+
+
+def _rank_to_am_units_score(rank: int) -> float:
+    """Loi de puissance : 500 / rang^0.75. Rang 1 → 500.0, Rang 100 → ~15.8."""
+    if rank < 1:
+        return 0.0
+    return 500.0 / (rank ** 0.75)
+
+
+def _weekly_apple_music_global_points(*, week_dates: set[str], logger: Logger) -> dict[str, float]:
+    """Return normalized_title -> sum of daily AM Global raw scores over the week.
+
+    Formula: 500 / rank^0.75 per day (power law). Best rank per (title, day) kept.
+    Multiply by 1000 externally when computing units_am.
+    """
+    scores: dict[str, float] = {}
     if not APPLE_MUSIC_GLOBAL_CSV.exists():
         logger.log(f"[swift_top_100] Missing file: {APPLE_MUSIC_GLOBAL_CSV} (Apple Music disabled)")
-        return best
+        return scores
 
     def _to_int(v: str | None) -> int | None:
         try:
@@ -290,6 +364,7 @@ def _best_apple_music_global_rank_by_title(*, week_dates: set[str], logger: Logg
         except Exception:
             return None
 
+    best_per_day: dict[tuple[str, str], int] = {}
     matched_rows = 0
     with APPLE_MUSIC_GLOBAL_CSV.open("r", newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
@@ -297,41 +372,38 @@ def _best_apple_music_global_rank_by_title(*, week_dates: set[str], logger: Logg
             day = (row.get("date") or "").strip()
             if day not in week_dates:
                 continue
-
-            # Prefer explicit chart_type == global when present; keep backwards-compat rows.
             chart_type = (row.get("chart_type") or "").strip().lower()
             if chart_type and chart_type != "global":
                 continue
-
             title = (row.get("song_name") or "").strip()
             rank = _to_int(row.get("rank"))
-            if not title or not rank:
+            if not title or not rank or rank < 1 or rank > 100:
                 continue
-            if rank < 1 or rank > 100:
-                continue
-
             key = _normalize_title(title)
             if not key:
                 continue
-
-            prev = best.get(key)
-            if prev is None or rank < prev:
-                best[key] = rank
+            cell = (key, day)
+            if cell not in best_per_day or rank < best_per_day[cell]:
+                best_per_day[cell] = rank
             matched_rows += 1
 
+    for (key, _), rank in best_per_day.items():
+        scores[key] = scores.get(key, 0.0) + _rank_to_am_units_score(rank)
+
     logger.log(f"[swift_top_100] Apple Music Global rows in window: {matched_rows}")
-    return best
+    return scores
 
 
-def _best_apple_music_ts_top_songs_rank_by_title(*, week_dates: set[str], logger: Logger) -> dict[str, int]:
-    """Return normalized_title -> best (min) rank in Apple Music 'TS Top Songs' during the week.
+def _weekly_apple_music_ts_points(*, week_dates: set[str], logger: Logger) -> dict[str, float]:
+    """Return normalized_title -> sum of daily AM TS Top Songs raw scores over the week.
 
-    Data source: db/apple_music_ts_top_songs.csv
+    Formula: 500 / rank^0.75 per day (power law). Best rank per (title, day) kept.
+    Multiply by 1000 externally when computing units_am.
     """
-    best: dict[str, int] = {}
+    scores: dict[str, float] = {}
     if not APPLE_MUSIC_TS_TOP_SONGS_CSV.exists():
         logger.log(f"[swift_top_100] Missing file: {APPLE_MUSIC_TS_TOP_SONGS_CSV} (Apple Music TS Top Songs disabled)")
-        return best
+        return scores
 
     def _to_int(v: str | None) -> int | None:
         try:
@@ -339,6 +411,7 @@ def _best_apple_music_ts_top_songs_rank_by_title(*, week_dates: set[str], logger
         except Exception:
             return None
 
+    best_per_day: dict[tuple[str, str], int] = {}
     matched_rows = 0
     with APPLE_MUSIC_TS_TOP_SONGS_CSV.open("r", newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
@@ -348,20 +421,21 @@ def _best_apple_music_ts_top_songs_rank_by_title(*, week_dates: set[str], logger
                 continue
             title = (row.get("song_name") or "").strip()
             rank = _to_int(row.get("rank"))
-            if not title or not rank:
-                continue
-            if rank < 1 or rank > 100:
+            if not title or not rank or rank < 1 or rank > 100:
                 continue
             key = _normalize_title(title)
             if not key:
                 continue
-            prev = best.get(key)
-            if prev is None or rank < prev:
-                best[key] = rank
+            cell = (key, day)
+            if cell not in best_per_day or rank < best_per_day[cell]:
+                best_per_day[cell] = rank
             matched_rows += 1
 
+    for (key, _), rank in best_per_day.items():
+        scores[key] = scores.get(key, 0.0) + _rank_to_am_units_score(rank)
+
     logger.log(f"[swift_top_100] Apple Music TS Top Songs rows in window: {matched_rows}")
-    return best
+    return scores
 
 
 def _load_existing_history_excluding_date(chart_date: str, logger: Logger) -> list[dict]:
@@ -378,10 +452,10 @@ def _load_existing_history_excluding_date(chart_date: str, logger: Logger) -> li
     return [r for r in rows if (r.get("date") or "").strip() != chart_date]
 
 
-def _history_stats(rows: list[dict]) -> tuple[dict[str, int], dict[str, int]]:
-    """Return (weeks_on_chart_by_track, peak_position_by_track)."""
+def _history_stats(rows: list[dict]) -> tuple[dict[str, int], dict[str, int], dict[str, int]]:
+    """Return (weeks_on_chart_by_track, peak_position_by_track, times_at_peak_by_track)."""
     seen_weeks: dict[str, set[str]] = {}
-    peaks: dict[str, int] = {}
+    all_ranks: dict[str, list[int]] = {}
 
     def _to_int(v: str | None) -> int | None:
         try:
@@ -395,16 +469,14 @@ def _history_stats(rows: list[dict]) -> tuple[dict[str, int], dict[str, int]]:
         rk = _to_int(row.get("rank"))
         if not tid or not d:
             continue
-        if tid not in seen_weeks:
-            seen_weeks[tid] = set()
-        seen_weeks[tid].add(d)
+        seen_weeks.setdefault(tid, set()).add(d)
         if rk:
-            prev = peaks.get(tid)
-            if prev is None or rk < prev:
-                peaks[tid] = rk
+            all_ranks.setdefault(tid, []).append(rk)
 
     weeks_on_chart = {tid: len(ds) for tid, ds in seen_weeks.items()}
-    return weeks_on_chart, peaks
+    peaks = {tid: min(ranks) for tid, ranks in all_ranks.items()}
+    times_at_peak = {tid: ranks.count(peaks[tid]) for tid, ranks in all_ranks.items()}
+    return weeks_on_chart, peaks, times_at_peak
 
 
 def _write_history_csv(rows: list[dict], logger: Logger) -> None:
@@ -416,17 +488,26 @@ def _write_history_csv(rows: list[dict], logger: Logger) -> None:
         "track_id",
         "title",
         "weekly_streams",
+        "units_am",
+        "units_spotify",
+        "units_charts",
+        "units_surplus",
+        "total_units",
+        "streams_pct",
+        "airplay_pct",
+        "sales_pct",
         "bonus_points",
         "points",
         "global_best_rank",
-        "apple_music_global_best_rank",
-        "apple_music_ts_top_songs_best_rank",
+        "am_ts_score",
+        "am_global_score",
         "prev_rank",
         "prev_points",
         "rank_change",
         "percentage_change",
         "weeks_on_chart",
         "peak_position",
+        "times_at_peak",
     ]
 
     with SWIFT_TOP_100_HISTORY_CSV.open("w", newline="", encoding="utf-8") as f:
@@ -472,16 +553,6 @@ def _build_week_chart(
                 for d, s in h_daily.items():
                     primary_daily[d] = max(primary_daily.get(d, 0), s)
 
-    # Compute daily rank-based points: each day, rank all tracks by daily streams.
-    # Points per day = max(0, 101 - daily_rank).  Max over 7 days = 700 pts.
-    all_tids = set(daily_streams.keys())
-    daily_points: dict[str, int] = {tid: 0 for tid in all_tids}
-    for day in sorted(week_set):
-        day_streams = [(tid, daily_streams[tid].get(day, 0)) for tid in all_tids]
-        day_streams.sort(key=lambda x: -x[1])
-        for rank_idx, (tid, _) in enumerate(day_streams):
-            daily_points[tid] += max(0, 101 - (rank_idx + 1))
-
     best_rank = _best_global_rank_by_title(week_dates=week_set, logger=logger)
 
     scored: list[dict] = []
@@ -492,7 +563,8 @@ def _build_week_chart(
         title = meta.title if meta else tid
         norm_title = _normalize_title(title)
         br = best_rank.get(norm_title)
-        points = round(daily_points.get(tid, 0) * 1000 / 700)
+        # Points calculated later after top-100 selection (need sum of top 100 streams)
+        points = wk_streams
         scored.append(
             {
                 "track_id": tid,
@@ -516,7 +588,21 @@ def _build_week_chart(
         reverse=True,
     )
 
-    top = scored[:100]
+    # Deduplicate by normalized title: same song may have multiple Spotify IDs.
+    seen_titles: set[str] = set()
+    deduped: list[dict] = []
+    for r in scored:
+        key = _normalize_title(r.get("title") or "")
+        if key not in seen_titles:
+            seen_titles.add(key)
+            deduped.append(r)
+
+    top = deduped[:100]
+
+    # Points: 1 pt per 30 000 Spotify streams (predictable, ~800 pts for a 25M-streams #1)
+    for r in top:
+        r["points"] = round(r["weekly_streams"] / 30_000, 2)
+
     points_by_track = {r["track_id"]: r for r in top}
     rank_by_track = {r["track_id"]: i for i, r in enumerate(top, 1)}
 
@@ -563,13 +649,22 @@ def run(
     curr_points, curr_ranks = _build_week_chart(week_end=chart_date, tracks=tracks, logger=logger)
     prev_points, prev_ranks = _build_week_chart(week_end=prev_week_end, tracks=tracks, logger=logger)
 
-    am_best_rank = _best_apple_music_global_rank_by_title(week_dates=week_set, logger=logger)
-    am_ts_best_rank = _best_apple_music_ts_top_songs_rank_by_title(week_dates=week_set, logger=logger)
+    am_best_rank = _weekly_apple_music_global_points(week_dates=week_set, logger=logger)
+    am_ts_best_rank = _weekly_apple_music_ts_points(week_dates=week_set, logger=logger)
+    charts_streams_by_title = _weekly_charts_streams_by_title(week_dates=week_set, logger=logger)
 
     chart_date_str = _format_date(chart_date)
 
+    bonuses = _load_bonuses(chart_date_str)
+    if bonuses:
+        logger.log(f"[swift_top_100] Bonuses applied: {bonuses}")
+        for tid, bonus in bonuses.items():
+            if tid in curr_points:
+                curr_points[tid]["bonus_points"] = bonus
+                curr_points[tid]["points"] = round(curr_points[tid]["points"] + bonus, 2)
+
     existing_rows = _load_existing_history_excluding_date(chart_date_str, logger)
-    weeks_on_chart_by_track, peak_by_track = _history_stats(existing_rows)
+    weeks_on_chart_by_track, peak_by_track, times_at_peak_by_track = _history_stats(existing_rows)
 
     out_entries: list[dict] = []
     snapshot_entries: list[dict] = []
@@ -588,11 +683,30 @@ def run(
             pct_change = ((row["points"] - prev_points_value) / prev_points_value) * 100
 
         weeks_on_chart = weeks_on_chart_by_track.get(tid, 0) + 1
-        peak_position = min(peak_by_track.get(tid, 9999), rank)
+        hist_peak = peak_by_track.get(tid, 9999)
+        peak_position = min(hist_peak, rank)
+        hist_times = times_at_peak_by_track.get(tid, 0)
+        times_at_peak = hist_times + (1 if rank <= hist_peak else 0)
 
         key = _normalize_title(row["title"])
-        am_rank = am_best_rank.get(key)
-        am_ts_rank = am_ts_best_rank.get(key)
+        weekly_streams = row["weekly_streams"]
+
+        # Apple Music units (loi de puissance × 1000)
+        am_ts_raw = am_ts_best_rank.get(key, 0.0)
+        am_global_raw = am_best_rank.get(key, 0.0)
+        units_am = round((am_ts_raw + am_global_raw) * 1000)
+
+        # Spotify units (on-chart + surplus × 0.7)
+        units_charts = charts_streams_by_title.get(key, 0)
+        units_surplus = max(0, weekly_streams - units_charts)
+        units_spotify = round(units_charts + units_surplus * 0.7)
+
+        # Total (pas de données iTunes)
+        total_units = units_spotify + units_am
+
+        # Répartition (points calculés après — placeholder 0)
+        streams_pct = round(units_spotify / total_units * 100, 1) if total_units else 0.0
+        airplay_pct = round(units_am / total_units * 100, 1) if total_units else 0.0
 
         out_entries.append(
             {
@@ -601,18 +715,27 @@ def run(
                 "rank": rank,
                 "track_id": tid,
                 "title": row["title"],
-                "weekly_streams": row["weekly_streams"],
+                "weekly_streams": weekly_streams,
+                "units_am": units_am,
+                "units_spotify": units_spotify,
+                "units_charts": units_charts,
+                "units_surplus": units_surplus,
+                "total_units": total_units,
+                "streams_pct": streams_pct,
+                "airplay_pct": airplay_pct,
+                "sales_pct": 0,
                 "bonus_points": row["bonus_points"],
-                "points": row["points"],
+                "points": 0,  # calculé après normalisation
                 "global_best_rank": row.get("global_best_rank"),
-                "apple_music_global_best_rank": am_rank,
-                "apple_music_ts_top_songs_best_rank": am_ts_rank,
+                "am_ts_score": round(am_ts_raw, 2),
+                "am_global_score": round(am_global_raw, 2),
                 "prev_rank": pr,
                 "prev_points": prev_points_value,
                 "rank_change": rank_change,
                 "percentage_change": pct_change,
                 "weeks_on_chart": weeks_on_chart,
                 "peak_position": peak_position,
+                "times_at_peak": times_at_peak,
             }
         )
 
@@ -624,21 +747,62 @@ def run(
                 "primary_album": meta.primary_album if meta else None,
                 "spotify_url": meta.spotify_url if meta else None,
                 "image_url": (meta.image_url if meta and meta.image_url else None),
-                "weekly_streams": row["weekly_streams"],
+                "weekly_streams": weekly_streams,
+                "units_am": units_am,
+                "units_spotify": units_spotify,
+                "units_charts": units_charts,
+                "units_surplus": units_surplus,
+                "total_units": total_units,
+                "units": _format_number(total_units),
+                "am_ts_units_display": _format_number(round(am_ts_raw * 1000)),
+                "am_global_units_display": _format_number(round(am_global_raw * 1000)),
+                "units_charts_display": _format_number(units_charts),
+                "units_surplus_display": _format_number(units_surplus),
+                "streams_pct": streams_pct,
+                "airplay_pct": airplay_pct,
+                "sales_pct": 0,
                 "bonus_points": row["bonus_points"],
-                "points": row["points"],
+                "points": 0,  # calculé après normalisation
                 "global_best_rank": row.get("global_best_rank"),
-                "apple_music_global_best_rank": am_rank,
-                "apple_music_global_charting": bool(am_rank),
-                "apple_music_ts_top_songs_best_rank": am_ts_rank,
-                "apple_music_ts_top_songs_charting": bool(am_ts_rank),
+                "am_ts_score": round(am_ts_raw, 2),
+                "am_global_score": round(am_global_raw, 2),
                 "prev_rank": pr,
                 "rank_change": rank_change,
                 "percentage_change": pct_change,
                 "weeks_on_chart": weeks_on_chart,
                 "peak_position": peak_position,
+                "times_at_peak": times_at_peak,
             }
         )
+
+    # Normalisation dynamique des points : somme top 100 / 15 000
+    sum_total_units = sum(e["total_units"] for e in out_entries)
+    factor = sum_total_units / 15_000 if sum_total_units > 0 else 1.0
+    for e in out_entries:
+        bonus = e.get("bonus_points") or 0
+        base = round(e["total_units"] / factor, 1)
+        e["points"] = round(base + bonus, 1)
+    for e in snapshot_entries:
+        bonus = e.get("bonus_points") or 0
+        base = round(e["total_units"] / factor, 1)
+        points = round(base + bonus, 1)
+        e["points"] = points
+        e["points_display"] = _format_number(points)
+
+    # Reclassify by total_units (Spotify + Apple Music combined)
+    snapshot_entries.sort(
+        key=lambda e: (
+            e.get("total_units") or 0,
+            e.get("weekly_streams") or 0,
+            (e.get("title") or "").casefold(),
+            e.get("track_id") or "",
+        ),
+        reverse=True,
+    )
+    
+    # Reassign ranks based on total_units ordering
+    for i, e in enumerate(snapshot_entries, 1):
+        e["rank"] = i
 
     if dry_run:
         logger.log("[swift_top_100] DRY-RUN: no files written")
