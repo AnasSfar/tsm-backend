@@ -230,32 +230,6 @@
       ]
     },
     {
-      "section": "standalone",
-      "track_count": 1,
-      "tracks": [
-        {
-          "title": "All Of The Girls You Loved Before",
-          "url": "https://open.spotify.com/intl-fr/track/4P9Q0GojKVXpRTJCaL3kyy",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 1,
-          "base_title": "All Of The Girls You Loved Before",
-          "album": "Lover",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "All Of The Girls You Loved Before",
-          "song_family": "all_of_the_girls_you_loved_before",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2738481d8f15859aa5bae75ee17",
-          "historical_track_ids": []
-        }
-      ]
-    },
-    {
       "album": "Lover",
       "section": "standalone",
       "track_count": 1,
