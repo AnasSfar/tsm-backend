@@ -15,7 +15,18 @@
       "Bash(cmd /c \"del /f C:\\\\Users\\\\sfara\\\\Documents\\\\GitHub\\\\tsm-backend\\\\.git\\\\index.lock\")",
       "Bash(git commit -m ':*)",
       "Bash(git -C /c/Users/sfara/Documents/GitHub/tsm-backend add -A)",
-      "Bash(cmd /c \"handle.exe C:\\\\Users\\\\sfara\\\\Documents\\\\GitHub\\\\tsm-backend\\\\.git\\\\index.lock 2>nul || tasklist | findstr -i git\")"
+      "Bash(cmd /c \"handle.exe C:\\\\Users\\\\sfara\\\\Documents\\\\GitHub\\\\tsm-backend\\\\.git\\\\index.lock 2>nul || tasklist | findstr -i git\")",
+      "Bash(git -C /c/Users/sfara/Documents/GitHub/tsm-frontend branch --show-current)",
+      "Bash(git -C /c/Users/sfara/Documents/GitHub/tsm-frontend log --oneline -3)",
+      "Bash(git -C /c/Users/sfara/Documents/GitHub/tsm-frontend ls-tree -r april13 --name-only)",
+      "Bash(git -C /c/Users/sfara/Documents/GitHub/tsm-frontend diff main april13 -- frontend/src/pages/ComingSoon.jsx)",
+      "Bash(git -C /c/Users/sfara/Documents/GitHub/tsm-frontend show april13:frontend/src/pages/ComingSoon.jsx)",
+      "Bash(git -C /c/Users/sfara/Documents/GitHub/tsm-frontend status --short)",
+      "Bash(git -C /c/Users/sfara/Documents/GitHub/tsm-frontend add frontend/src/pages/ComingSoon.jsx)",
+      "Bash(git -C /c/Users/sfara/Documents/GitHub/tsm-frontend commit -m ':*)",
+      "WebFetch(domain:rapidapi.com)",
+      "Bash(grep -l \"Life of a Showgirl\" \"c:\\\\Users\\\\sfara\\\\Documents\\\\GitHub\\\\tsm-backend\\\\db\\\\discography\\\\albums\"/*.json)",
+      "Bash(find \"c:\\\\Users\\\\sfara\\\\Documents\\\\GitHub\\\\tsm-backend\" -name \"*.py\" -type f -exec grep -l \"\\\\.cookies\\\\|\\\\.post\\\\|csrf\" {} \\\\;)"
     ],
     "additionalDirectories": [
       "C:\\Users\\sfara\\Documents\\GitHub\\tsm-backend\\.git"
