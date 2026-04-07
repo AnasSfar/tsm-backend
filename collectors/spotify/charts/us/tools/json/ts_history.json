@@ -921,9 +921,21 @@
       "peak_rank": 1
     },
     "2026-04-04": {
-      "rank": 27,
-      "streams": 670540,
+      "rank": 26,
+      "streams": 647171,
       "previous_rank": 270,
+      "peak_rank": 1
+    },
+    "2026-04-05": {
+      "rank": 29,
+      "streams": 528966,
+      "previous_rank": 260,
+      "peak_rank": 1
+    },
+    "2026-04-06": {
+      "rank": 29,
+      "streams": 528966,
+      "previous_rank": 260,
       "peak_rank": 1
     }
   },
@@ -1311,9 +1323,21 @@
       "peak_rank": 2
     },
     "2026-04-04": {
-      "rank": 60,
-      "streams": 498395,
-      "previous_rank": 570,
+      "rank": 64,
+      "streams": 480763,
+      "previous_rank": 600,
+      "peak_rank": 2
+    },
+    "2026-04-05": {
+      "rank": 78,
+      "streams": 388092,
+      "previous_rank": 640,
+      "peak_rank": 2
+    },
+    "2026-04-06": {
+      "rank": 78,
+      "streams": 388092,
+      "previous_rank": 640,
       "peak_rank": 2
     },
     "2026-03-22": {
@@ -7561,12 +7585,6 @@
     }
   },
   "Style": {
-    "2026-04-04": {
-      "rank": 177,
-      "streams": 352486,
-      "previous_rank": 1920,
-      "peak_rank": 8
-    },
     "2026-03-25": {
       "rank": 179,
       "streams": 341484,
@@ -7604,6 +7622,12 @@
       "rank": 177,
       "streams": 352486,
       "previous_rank": 1920,
+      "peak_rank": 8
+    },
+    "2026-04-04": {
+      "rank": 182,
+      "streams": 334971,
+      "previous_rank": 1770,
       "peak_rank": 8
     }
   }

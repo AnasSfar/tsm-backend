@@ -18,6 +18,7 @@ HISTORY_CSV_PATH = _DB_ROOT / "streams_history.csv"
 DISCOGRAPHY_DIR  = _DB_ROOT / "discography"
 ALBUMS_DIR_SRC   = DISCOGRAPHY_DIR / "albums"
 MISC_JSON_SRC    = DISCOGRAPHY_DIR / "songs.json"
+MISC_EXTRA_JSON_SRC = DISCOGRAPHY_DIR / "misc.json"
 COVERS_JSON_PATH = DISCOGRAPHY_DIR / "covers.json"
 
 SITE_DATA_DIR    = ROOT / "site" / "data"
@@ -170,11 +171,12 @@ def load_tracks_from_discography() -> list[dict]:
     seen: dict[str, dict] = {}
 
     all_sections = load_album_sections_flat()
-    if MISC_JSON_SRC.exists():
-        try:
-            all_sections.extend(json.loads(MISC_JSON_SRC.read_text(encoding="utf-8")))
-        except Exception:
-            pass
+    for misc_src in (MISC_JSON_SRC, MISC_EXTRA_JSON_SRC):
+        if misc_src.exists():
+            try:
+                all_sections.extend(json.loads(misc_src.read_text(encoding="utf-8")))
+            except Exception:
+                pass
 
     for section in all_sections:
         for track in section.get("tracks", []):
@@ -549,11 +551,12 @@ def build_discography_index() -> tuple[dict, list[dict]]:
     misc_groups: list[dict] = []
     misc_all_track_ids: list[str] = []
 
-    if MISC_JSON_SRC.exists():
-        raw_misc: list[dict] = json.loads(
-            MISC_JSON_SRC.read_text(encoding="utf-8")
-        )
+    raw_misc: list[dict] = []
+    for misc_src in (MISC_JSON_SRC, MISC_EXTRA_JSON_SRC):
+        if misc_src.exists():
+            raw_misc.extend(json.loads(misc_src.read_text(encoding="utf-8")))
 
+    if raw_misc:
         groups_order: list[str] = []
         groups_data: dict[str, list[dict]] = {}
         for data in raw_misc:
@@ -1124,6 +1127,20 @@ def export_swift_top_100_from_csv(*, songs_by_id: dict[str, dict] | None = None)
 
 
 def export_for_web() -> None:
+    # ── Export charts France corrigés ─────────────────────────────
+    fr_charts_src = _REPO_ROOT / "collectors" / "spotify" / "charts" / "fr" / "history"
+    fr_charts_dst = ROOT / "site" / "data" / "charts_fr"
+    fr_charts_dst.mkdir(parents=True, exist_ok=True)
+    count = 0
+    for year_dir in sorted(fr_charts_src.glob("20*")):
+        for month_dir in sorted(year_dir.glob("*")):
+            for day_dir in sorted(month_dir.glob("*")):
+                src_file = day_dir / f"ts_chart_{day_dir.name}.json"
+                if src_file.exists():
+                    dst_file = fr_charts_dst / f"{day_dir.name}.json"
+                    shutil.copy2(src_file, dst_file)
+                    count += 1
+    print(f"[EXPORT] {count} charts France exportés vers {fr_charts_dst}")
     SITE_DATA_DIR.mkdir(parents=True, exist_ok=True)
     print(f"ROOT     = {ROOT}")
     print(f"HISTORY  = {HISTORY_CSV_PATH}")

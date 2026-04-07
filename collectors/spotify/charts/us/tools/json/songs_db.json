@@ -3416,5 +3416,124 @@
       "beautiful"
     ],
     "is_pop": false
+  },
+  "natasha bedingfield|||unwritten": {
+    "artist": "Natasha Bedingfield",
+    "track": "Unwritten",
+    "tags": [
+      "pop",
+      "female vocalists",
+      "natasha bedingfield",
+      "british",
+      "dance",
+      "singer-songwriter",
+      "happy",
+      "00s",
+      "female vocalist",
+      "positive"
+    ],
+    "is_pop": true
+  },
+  "morgan wallen|||love somebody": {
+    "artist": "Morgan Wallen",
+    "track": "Love Somebody",
+    "tags": [],
+    "is_pop": false
+  },
+  "jon pardi|||head over boots": {
+    "artist": "Jon Pardi",
+    "track": "Head Over Boots",
+    "tags": [],
+    "is_pop": false
+  },
+  "lil peep|||nuts": {
+    "artist": "Lil Peep",
+    "track": "nuts",
+    "tags": [
+      "lil peep",
+      "nuts",
+      "rock",
+      "hip hop",
+      "trap",
+      "emo rap",
+      "lgbt rap",
+      "cloud rap",
+      "darth approved",
+      "lil darkie"
+    ],
+    "is_pop": false
+  },
+  "frank ocean|||lost": {
+    "artist": "Frank Ocean",
+    "track": "Lost",
+    "tags": [
+      "rnb",
+      "soul",
+      "neo-soul",
+      "r&b",
+      "hip-hop",
+      "alternative rnb",
+      "american",
+      "pop",
+      "rhythm and blues",
+      "r'n'b"
+    ],
+    "is_pop": false
+  },
+  "morgan wallen|||more than my hometown": {
+    "artist": "Morgan Wallen",
+    "track": "More Than My Hometown",
+    "tags": [
+      "country",
+      "country pop",
+      "2020",
+      "2020s"
+    ],
+    "is_pop": true
+  },
+  "eagles|||take it easy - 2013 remaster": {
+    "artist": "Eagles",
+    "track": "Take It Easy - 2013 Remaster",
+    "tags": [
+      "country",
+      "country rock",
+      "mistagged",
+      "top2000"
+    ],
+    "is_pop": false
+  },
+  "fleetwood mac|||everywhere - 2017 remaster": {
+    "artist": "Fleetwood Mac",
+    "track": "Everywhere - 2017 Remaster",
+    "tags": [
+      "80s",
+      "rock",
+      "soft rock",
+      "happy morning",
+      "pop rock",
+      "alternative rock",
+      "pop",
+      "feel good",
+      "yacht rock",
+      "dream pop"
+    ],
+    "is_pop": false
+  },
+  "tom petty and the heartbreakers|||mary jane's last dance": {
+    "artist": "Tom Petty and the Heartbreakers",
+    "track": "Mary Jane's Last Dance",
+    "tags": [
+      "classic rock",
+      "rock",
+      "tom petty",
+      "80s",
+      "90s",
+      "harmonica",
+      "singer-songwriter",
+      "american",
+      "southern rock",
+      "marijuana"
+    ],
+    "is_pop": false
   }
 }

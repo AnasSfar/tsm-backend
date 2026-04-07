@@ -409,7 +409,7 @@ def main():
         notify(
             NTFY_TOPIC,
             tweet_content,
-            title="Taylor Swift FR - PostÃ©",
+            title="Taylor Swift UK - PostÃ©",
             tags="white_check_mark,musical_note",
         )
     else:

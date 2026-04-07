@@ -1,10 +1,11 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 Scrape Spotify UK directement depuis la page charts, puis filtre Taylor Swift,
-appelle Last.fm / MusicBrainz.
+calcule le ranking Pop, appelle Last.fm / MusicBrainz.
 
 Genere :
 - ts_all_songs.csv
+- ts_pop_songs.csv
 - tweet.txt
 
 Usage :
@@ -16,7 +17,9 @@ import io
 import json
 import re
 import sys
+import threading
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -42,7 +45,7 @@ _UA          = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                 "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36")
 MUSICBRAINZ_BASE = "https://musicbrainz.org/ws/2/"
 MUSICBRAINZ_HEADERS = {
-    "User-Agent": "SpotifyUKChartTracker/1.0 (chart-tracker@example.com)",
+    "User-Agent": "SpotifyFRChartTracker/1.0 (chart-tracker@example.com)",
     "Accept": "application/json",
 }
 
@@ -52,6 +55,7 @@ DATA_DIR    = _TOOLS.parent / "history"             # = fr/history/
 SESSION_FILE  = _TOOLS / "json" / "spotify_session.json"
 LOCAL_DB_FILE = _TOOLS / "json" / "songs_db.json"
 TS_HISTORY_PATH     = _TOOLS / "json" / "ts_history.json"
+TS_POP_HISTORY_PATH = _TOOLS / "json" / "ts_pop_history.json"
 TOTAL_DAYS_PATH     = _TOOLS / "json" / "total_days.json"
 ARCHIVE_CSV   = Path(__file__).resolve().parents[6] / "db" / "charts_history_uk.csv"
 _BEARER_CACHE = _TOOLS / "json" / "bearer_cache.json"
@@ -60,6 +64,9 @@ _TOKEN_TTL    = 50 * 60  # 50 minutes (conservateur)
 SLEEP_SECONDS = 0.20
 TS_NAME = "Taylor Swift"
 CHART_ID = "regional-gb-daily"
+POP_WORKERS = 8  # Nombre de workers parallèles pour Last.fm
+
+_db_lock = threading.Lock()
 
 
 def norm(s):
@@ -208,18 +215,27 @@ def get_track_tags_album(artist, track):
         except Exception:
             pass
 
-
     return tags, album
+
+
+def is_pop(tags):
+    if not tags:
+        return False
+    if any("k-pop" in t or "kpop" in t for t in tags):
+        return False
+    return any("pop" in t for t in tags[:3])
+
 
 def get_song_data(db, artist, track, fetch_release_date=True):
     key = f"{norm(artist)}|||{norm(track)}"
     if key in db:
         e = db[key]
         tags = e.get("tags", [])
-        return tags, e.get("album"), e.get("release_date", ""), False
+        return tags, e.get("album"), e.get("release_date", ""), e.get("is_pop", is_pop(tags)), False
 
     time.sleep(SLEEP_SECONDS)
     tags, album = get_track_tags_album(artist, track)
+    pop = is_pop(tags)
     release_date = ""
 
     if fetch_release_date:
@@ -230,13 +246,72 @@ def get_song_data(db, artist, track, fetch_release_date=True):
         "artist": artist,
         "track": track,
         "tags": tags,
+        "is_pop": pop,
         "album": album,
         "release_date": release_date,
     }
-    return tags, album, release_date, True
+    return tags, album, release_date, pop, True
 
 
-# â”€â”€ API helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+def get_pop_for_nonts(db, artist, track):
+    key = f"{norm(artist)}|||{norm(track)}"
+    if key in db:
+        e = db[key]
+        tags = e.get("tags", [])
+        return e.get("is_pop", is_pop(tags))
+
+    time.sleep(SLEEP_SECONDS)
+    try:
+        data = lastfm_get({
+            "method": "track.gettoptags",
+            "api_key": LASTFM_API_KEY,
+            "artist": artist,
+            "track": track,
+            "format": "json",
+            "autocorrect": "1",
+        })
+        tags = [norm(x["name"]) for x in data.get("toptags", {}).get("tag", []) if isinstance(x, dict)]
+        tags = [t for t in tags if t]
+    except Exception:
+        tags = []
+
+    pop = is_pop(tags)
+    db[key] = {"artist": artist, "track": track, "tags": tags, "is_pop": pop}
+    return pop
+
+
+def _classify_pop_threadsafe(db, artist, track) -> bool:
+    """Version thread-safe de get_pop_for_nonts pour usage avec ThreadPoolExecutor."""
+    key = f"{norm(artist)}|||{norm(track)}"
+    with _db_lock:
+        if key in db:
+            e = db[key]
+            tags = e.get("tags", [])
+            return e.get("is_pop", is_pop(tags))
+
+    time.sleep(SLEEP_SECONDS)
+    try:
+        data = lastfm_get({
+            "method": "track.gettoptags",
+            "api_key": LASTFM_API_KEY,
+            "artist": artist,
+            "track": track,
+            "format": "json",
+            "autocorrect": "1",
+        })
+        tags = [norm(x["name"]) for x in data.get("toptags", {}).get("tag", []) if isinstance(x, dict)]
+        tags = [t for t in tags if t]
+    except Exception:
+        tags = []
+
+    pop = is_pop(tags)
+    with _db_lock:
+        if key not in db:
+            db[key] = {"artist": artist, "track": track, "tags": tags, "is_pop": pop}
+    return pop
+
+
+# ── API helpers ──────────────────────────────────────────────────────────────
 
 def _load_cached_token() -> str | None:
     """Retourne le token en cache s'il est encore valide, sinon None."""
@@ -306,7 +381,7 @@ def _get_bearer_token() -> str:
             pass
 
     if not token_holder:
-        raise RuntimeError("Bearer token introuvable — verifiez spotify_session.json")
+        raise RuntimeError("Bearer token introuvable — vérifiez spotify_session.json")
     _save_cached_token(token_holder[0])
     return token_holder[0]
 
@@ -339,8 +414,8 @@ def _parse_api_entries(data: dict) -> list[dict]:
 
 def _fetch_via_api(chart_date: str) -> list[dict] | None:
     """
-    Tente de rÃ©cupÃ©rer le chart via l'API interne Spotify.
-    Retourne rows ou None si l'API Ã©choue.
+    Tente de récupérer le chart via l'API interne Spotify.
+    Retourne rows ou None si l'API échoue.
     """
     try:
         token = _get_bearer_token()
@@ -356,15 +431,15 @@ def _fetch_via_api(chart_date: str) -> list[dict] | None:
             if resp.status_code == 200:
                 rows = _parse_api_entries(resp.json())
                 if rows:
-                    print(f"  API OK â€” {len(rows)} lignes pour {chart_date}")
+                    print(f"  API OK — {len(rows)} lignes pour {chart_date}")
                     return rows
         return None
     except Exception as e:
-        print(f"  API Ã©chec ({e}), fallback Playwrightâ€¦")
+        print(f"  API échec ({e}), fallback Playwright…")
         return None
 
 
-# â”€â”€ Parsing HTML (fallback) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ── Parsing HTML (fallback) ──────────────────────────────────────────────────
 
 def parse_chart_text(body_text: str) -> list[dict]:
     text = body_text.replace("\r\n", "\n").replace("\r", "\n")
@@ -379,7 +454,7 @@ def parse_chart_text(body_text: str) -> list[dict]:
         ^\s*(?P<delta>.+?)\s*$\n
         ^\s*(?P<track>.+?)\s*$\n
         ^\s*(?P<artist>.+?)\s*$\n
-        ^\s*(?P<peak>\d{1,3})\s+(?P<prev>\d{1,3}|[â€“â€”-])\s+(?P<streak>\d{1,4})\s+(?P<streams>\d{1,3}(?:,\d{3})+)\s*$
+        ^\s*(?P<peak>\d{1,3})\s+(?P<prev>\d{1,3}|[–—-])\s+(?P<streak>\d{1,4})\s+(?P<streams>\d{1,3}(?:,\d{3})+)\s*$
         """,
         re.MULTILINE | re.VERBOSE,
     )
@@ -417,9 +492,9 @@ def parse_chart_text(body_text: str) -> list[dict]:
 
 def scrape_chart_rows(chart_date: str) -> list[dict]:
     """
-    RÃ©cupÃ¨re le chart Spotify FR.
+    Récupère le chart Spotify FR.
     Tente d'abord l'API interne (rapide, pas de browser actif).
-    Fallback sur Playwright + parsing HTML si l'API Ã©choue.
+    Fallback sur Playwright + parsing HTML si l'API échoue.
     """
     if not SESSION_FILE.exists():
         raise RuntimeError("spotify_session.json introuvable")
@@ -428,7 +503,7 @@ def scrape_chart_rows(chart_date: str) -> list[dict]:
     if api_result is not None:
         return api_result
 
-    print("  Fallback Playwrightâ€¦")
+    print("  Fallback Playwright…")
     url = f"https://charts.spotify.com/charts/view/{CHART_ID}/{chart_date}"
     last_error = None
 
@@ -474,7 +549,7 @@ def scrape_chart_rows(chart_date: str) -> list[dict]:
 
                 current_url = page.url.lower()
                 if "login" in current_url or "accounts.spotify.com" in current_url:
-                    raise RuntimeError("Session Spotify expirÃ©e ou non connectÃ©e")
+                    raise RuntimeError("Session Spotify expirée ou non connectée")
 
                 body_text = (page.locator("body").inner_text() or "").strip()
                 if "Log in with Spotify" in body_text:
@@ -509,14 +584,14 @@ def scrape_chart_rows(chart_date: str) -> list[dict]:
                     debug_dir = get_out_dir(chart_date)
                     debug_dir.mkdir(parents=True, exist_ok=True)
                     (debug_dir / "debug_body.txt").write_text(body_text, encoding="utf-8")
-                    print(f"  DEBUG: {len(rows)} lignes seulement â€” debug_body.txt sauvegarde")
+                    print(f"  DEBUG: {len(rows)} lignes seulement — debug_body.txt sauvegarde")
 
                 if not rows:
                     debug_dir = get_out_dir(chart_date)
                     debug_dir.mkdir(parents=True, exist_ok=True)
                     (debug_dir / "debug_page.html").write_text(page.content(), encoding="utf-8")
                     (debug_dir / "debug_body.txt").write_text(body_text, encoding="utf-8")
-                    raise RuntimeError("Aucune ligne dÃ©tectÃ©e")
+                    raise RuntimeError("Aucune ligne détectée")
 
                 # Extract album art URLs and map to rows by position
                 # Filter to album-art prefix only (ab67616d) to avoid artist
@@ -557,16 +632,16 @@ def scrape_chart_rows(chart_date: str) -> list[dict]:
                                 row["total_days"] = int(m.group(1))
                                 print(f"  total_days {track}: {row['total_days']}")
                             else:
-                                print(f"  total_days non parsÃ© pour {track}: {container_text!r}")
+                                print(f"  total_days non parsé pour {track}: {container_text!r}")
                         else:
-                            print(f"  'Total days on chart' non trouvÃ© dans DOM pour {track}")
+                            print(f"  'Total days on chart' non trouvé dans DOM pour {track}")
                         el.click(timeout=3000)
                         try:
                             page.wait_for_selector("text=Total days on chart", state="hidden", timeout=500)
                         except Exception:
                             pass
                     except Exception as td_err:
-                        print(f"  total_days ignorÃ© pour {track}: {td_err}")
+                        print(f"  total_days ignoré pour {track}: {td_err}")
 
                 # Fallback: use last known total_days from cache + delta for songs where scraping failed
                 if TOTAL_DAYS_PATH.exists():
@@ -627,7 +702,20 @@ def _fmt_ts_song_line(row, chart_date, ts_history) -> str:
     return line
 
 
-def write_log(log, ts_df, chart_date, ts_history):
+def _fmt_ts_pop_line(row) -> str:
+    track = str(row["track_name"])
+    pop_total = row.get("pop_total_days")
+    try:
+        import math
+        if isinstance(pop_total, float) and math.isnan(pop_total):
+            pop_total = None
+    except Exception:
+        pass
+    dp = fmt_delta(row["pop_rank"], row.get("previous_pop_rank"), total_days=pop_total)
+    return f"- #{int(row['pop_rank'])} ({dp}) {track}"
+
+
+def write_log(log, ts_df, ts_pop, chart_date, ts_history):
     log.log(f"Taylor Swift on {chart_date} :")
     log.log("")
     log.log("Spotify UK :")
@@ -643,6 +731,13 @@ def write_log(log, ts_df, chart_date, ts_history):
         entry = ts_history.get(track, {}).get(yesterday, {})
         log.log(f"(OUT) {track} | last position #{entry.get('rank', '?')}")
 
+    log.log("")
+    log.log("Spotify UK (Pop) :")
+    if ts_pop is None or ts_pop.empty:
+        log.log("- Aucune chanson TS dans le Top Pop.")
+    else:
+        for _, row in ts_pop.sort_values("pop_rank").iterrows():
+            log.log(_fmt_ts_pop_line(row))
 
 
 def _fmt_date(chart_date: str) -> str:
@@ -650,7 +745,7 @@ def _fmt_date(chart_date: str) -> str:
     return d.strftime("%A, %B %d %Y")
 
 
-def generate_tweet(ts_df, chart_date, ts_history) -> str:
+def generate_tweet(ts_df, ts_pop, chart_date, ts_history) -> str:
     header = f"Taylor Swift on {_fmt_date(chart_date)}"
     lines = [header, "", "Spotify UK :", ""]
 
@@ -665,6 +760,12 @@ def generate_tweet(ts_df, chart_date, ts_history) -> str:
         entry = ts_history.get(track, {}).get(yesterday, {})
         lines.append(f"(OUT) {track} | last position #{entry.get('rank', '?')}")
 
+    lines += ["", "Spotify UK (Pop) :", ""]
+    if ts_pop is None or ts_pop.empty:
+        lines.append("- Aucune chanson TS dans le Top Pop.")
+    else:
+        for _, row in ts_pop.sort_values("pop_rank").iterrows():
+            lines.append(_fmt_ts_pop_line(row))
 
     full = "\n".join(lines)
     if len(full) <= 280:
@@ -674,7 +775,7 @@ def generate_tweet(ts_df, chart_date, ts_history) -> str:
 
 def process_one(chart_date: str, db, ts_history):
     t_total = time.time()
-    print(f"Scrape du chart UK pour {chart_date} ...")
+    print(f"Scrape du chart US pour {chart_date} ...")
 
     t0 = time.time()
     rows = scrape_chart_rows(chart_date)
@@ -685,7 +786,7 @@ def process_one(chart_date: str, db, ts_history):
 
     df = pd.DataFrame(rows)
     if df.empty:
-        raise RuntimeError(f"Aucune donnee exploitable pour {chart_date}")
+        raise RuntimeError(f"Aucune donnée exploitable pour {chart_date}")
 
     if not df["artist_names"].astype(str).str.contains(TS_NAME, case=False, na=False).any():
         out_dir = get_out_dir(chart_date)
@@ -696,13 +797,14 @@ def process_one(chart_date: str, db, ts_history):
 
     n = len(df)
     tags_col  = [""] * n
+    pop_col   = [False] * n
     album_col = [""] * n
     rd_col    = [""] * n
     days_col  = [""] * n
     new_calls = 0
     cd = parse_date(chart_date)
 
-    # Chansons TS : enrichissement Last.fm/MusicBrainz + historique
+    # Pass 1 : chansons TS — séquentiel (met à jour ts_history)
     t0 = time.time()
     for idx, (_, row) in enumerate(df.iterrows()):
         if TS_NAME.lower() not in str(row["artist_names"]).lower():
@@ -710,7 +812,7 @@ def process_one(chart_date: str, db, ts_history):
         track  = str(row["track_name"])
         artist = str(row["artist_names"]).split(",")[0].strip()
         rank   = int(row["rank"])
-        tags, album, release_date, fetched = get_song_data(db, artist, track, fetch_release_date=True)
+        tags, album, release_date, pop, fetched = get_song_data(db, artist, track, fetch_release_date=True)
         update(
             ts_history, track, chart_date, rank, row.get("streams"),
             previous_rank=row.get("previous_rank"), peak_rank=row.get("peak_rank"),
@@ -724,18 +826,45 @@ def process_one(chart_date: str, db, ts_history):
         rd_col[idx]    = release_date or ""
         rd = parse_date(release_date)
         days_col[idx]  = (cd - rd).days if rd and cd else ""
+        pop_col[idx]   = pop
     print(f"  [enrichissement TS] {time.time() - t0:.1f}s")
 
+    # Pass 2 : chansons non-TS — classification pop parallèle
+    t0 = time.time()
+    non_ts_items = [
+        (idx, str(row["artist_names"]).split(",")[0].strip(), str(row["track_name"]))
+        for idx, (_, row) in enumerate(df.iterrows())
+        if TS_NAME.lower() not in str(row["artist_names"]).lower()
+    ]
+    with ThreadPoolExecutor(max_workers=POP_WORKERS) as executor:
+        futures = {
+            executor.submit(_classify_pop_threadsafe, db, artist, track): idx
+            for idx, artist, track in non_ts_items
+        }
+        for future in as_completed(futures):
+            pop_col[futures[future]] = future.result()
+    print(f"  [filtrage pop — {len(non_ts_items)} chansons, {POP_WORKERS} workers] {time.time() - t0:.1f}s")
+
     df["lastfm_tags"]        = tags_col
+    df["pop_flag"]           = pop_col
     df["album"]              = album_col
     df["release_date"]       = rd_col
     df["days_since_release"] = days_col
 
-    t0 = time.time()
+    pop_df = df[df["pop_flag"]].sort_values("rank").copy()
+    pop_df.insert(0, "pop_rank", range(1, len(pop_df) + 1))
+
+    pop_prev = pop_df[
+        pop_df["previous_rank"].notna() & (pop_df["previous_rank"] > 0)
+    ].sort_values("previous_rank")
+    prev_map = {idx: i + 1 for i, idx in enumerate(pop_prev.index)}
+    pop_df["previous_pop_rank"] = pop_df.index.map(prev_map)
+
     out_dir = get_out_dir(chart_date)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    ts_df = df[df["artist_names"].astype(str).str.contains(TS_NAME, case=False, na=False)].copy()
+    ts_df  = df[df["artist_names"].astype(str).str.contains(TS_NAME, case=False, na=False)].copy()
+    ts_pop = pop_df[pop_df["artist_names"].astype(str).str.contains(TS_NAME, case=False, na=False)].copy()
 
     # Calculer DAYS (total unique) et STREAK (consécutif)
     if not ts_df.empty:
@@ -750,8 +879,35 @@ def process_one(chart_date: str, db, ts_history):
         ts_df["total_days"] = total_days_list
         ts_df["streak"] = streak_list
 
+    # Pop history
+    try:
+        ts_pop_history = json.loads(TS_POP_HISTORY_PATH.read_text(encoding="utf-8")) if TS_POP_HISTORY_PATH.exists() else {}
+    except Exception:
+        ts_pop_history = {}
+
+    if not ts_pop.empty:
+        pop_total_days_list = []
+        for _, row in ts_pop.iterrows():
+            track = str(row["track_name"])
+            past = sum(1 for d in ts_pop_history.get(track, []) if d < chart_date)
+            pop_total_days_list.append(past)
+        ts_pop = ts_pop.copy()
+        ts_pop["pop_total_days"] = pop_total_days_list
+        for _, row in ts_pop.iterrows():
+            track = str(row["track_name"])
+            if track not in ts_pop_history:
+                ts_pop_history[track] = []
+            if chart_date not in ts_pop_history[track]:
+                ts_pop_history[track].append(chart_date)
+        TS_POP_HISTORY_PATH.write_text(
+            json.dumps(ts_pop_history, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+
+    t0 = time.time()
     ts_df.to_csv(out_dir / "ts_all_songs.csv", index=False)
     update_total_days_file(ts_df, chart_date)
+    if not ts_pop.empty:
+        ts_pop.to_csv(out_dir / "ts_pop_songs.csv", index=False)
 
     def _clean_row(r):
         return {k: (None if (isinstance(v, float) and str(v) == "nan") else v) for k, v in r.items()}
@@ -760,12 +916,17 @@ def process_one(chart_date: str, db, ts_history):
     (out_dir / f"ts_chart_{chart_date}.json").write_text(
         json.dumps(ts_rows_json, ensure_ascii=False), encoding="utf-8"
     )
+    if not ts_pop.empty:
+        ts_pop_rows_json = [_clean_row(r) for r in ts_pop.to_dict(orient="records")]
+        (out_dir / f"ts_pop_{chart_date}.json").write_text(
+            json.dumps(ts_pop_rows_json, ensure_ascii=False), encoding="utf-8"
+        )
 
     log = Logger()
-    write_log(log, ts_df, chart_date, ts_history)
-    tweet = generate_tweet(ts_df, chart_date, ts_history)
+    write_log(log, ts_df, ts_pop, chart_date, ts_history)
+    tweet = generate_tweet(ts_df, ts_pop, chart_date, ts_history)
     (out_dir / "tweet.txt").write_text(tweet, encoding="utf-8")
-    print(f"  [ecriture fichiers] {time.time() - t0:.1f}s")
+    print(f"  [écriture fichiers] {time.time() - t0:.1f}s")
 
     t0 = time.time()
     append_to_archive_csv(chart_date, ts_df)
@@ -791,7 +952,7 @@ def _date_in_archive_csv(chart_date: str) -> bool:
 
 
 def append_to_archive_csv(chart_date: str, ts_df) -> None:
-    """Appende les donnÃ©es TS du jour dans db/charts_history_uk.csv si absentes."""
+    """Appende les données TS du jour dans db/charts_history_fr.csv si absentes."""
     if ts_df is None or ts_df.empty or _date_in_archive_csv(chart_date):
         return
     import csv as _csv
@@ -819,11 +980,11 @@ def append_to_archive_csv(chart_date: str, ts_df) -> None:
                 _v(row.get("total_days")),
                 _v(row.get("streak")),
             ])
-    print(f"  Archive CSV mise Ã  jour pour {chart_date} ({len(ts_df)} chansons)")
+    print(f"  Archive CSV mise à jour pour {chart_date} ({len(ts_df)} chansons)")
 
 
 def seed_from_archive_csv() -> dict:
-    """Charge db/charts_history_uk.csv comme base historique initiale."""
+    """Charge db/charts_history_fr.csv comme base historique initiale."""
     import csv as _csv
     history = {}
     if not ARCHIVE_CSV.exists():
@@ -846,7 +1007,7 @@ def seed_from_archive_csv() -> dict:
                     previous_rank=row.get("previous_rank"),
                     peak_rank=row.get("peak_rank"),
                 )
-        print(f"  Archive CSV: {sum(len(v) for v in history.values())} entrÃ©es chargÃ©es ({len(history)} chansons)")
+        print(f"  Archive CSV: {sum(len(v) for v in history.values())} entrées chargées ({len(history)} chansons)")
     except Exception as e:
         print(f"  Avertissement: impossible de lire l'archive CSV: {e}")
     return history
@@ -895,7 +1056,13 @@ def main():
 
     db = load_db()
     h = load(TS_HISTORY_PATH)
+
     if run_relog:
+        try:
+            ts_pop_history = json.loads(TS_POP_HISTORY_PATH.read_text(encoding="utf-8")) if TS_POP_HISTORY_PATH.exists() else {}
+        except Exception:
+            ts_pop_history = {}
+
         for year_dir in sorted(DATA_DIR.iterdir()):
             if not year_dir.is_dir() or not re.match(r"^\d{4}$", year_dir.name):
                 continue
@@ -909,13 +1076,25 @@ def main():
                         continue
 
                     ts_df = pd.read_csv(day_dir / "ts_all_songs.csv")
+                    ts_pop = None
+                    if (day_dir / "ts_pop_songs.csv").exists():
+                        ts_pop = pd.read_csv(day_dir / "ts_pop_songs.csv")
+                        if ts_pop is not None and not ts_pop.empty:
+                            chart_date = day_dir.name
+                            pop_total_days_list = []
+                            for _, row in ts_pop.iterrows():
+                                track = str(row["track_name"])
+                                past = sum(1 for d in ts_pop_history.get(track, []) if d < chart_date)
+                                pop_total_days_list.append(past)
+                            ts_pop = ts_pop.copy()
+                            ts_pop["pop_total_days"] = pop_total_days_list
+
                     log = Logger()
-                    write_log(log, ts_df, day_dir.name, h)
-                    tweet = generate_tweet(ts_df, day_dir.name, h)
+                    write_log(log, ts_df, ts_pop, day_dir.name, h)
+                    tweet = generate_tweet(ts_df, ts_pop, day_dir.name, h)
                     (day_dir / "tweet.txt").write_text(tweet, encoding="utf-8")
                     print(f"  OK {day_dir.name} regenere")
         return
-
 
     if run_all:
         dates = discover_dates()
@@ -950,26 +1129,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

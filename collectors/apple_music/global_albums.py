@@ -33,9 +33,6 @@ FIELDNAMES = [
     "release_date",
     "genre_names",
 ]
-STOREFRONTS = ["fr", "us"]
-
-
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Collect Apple Music global top album chart for Taylor Swift.")
     parser.add_argument("--date", dest="run_date", default=date.today().isoformat())
@@ -44,9 +41,17 @@ def parse_args() -> argparse.Namespace:
 
 
 def fetch_global_albums(session) -> list[dict]:
-    for storefront in STOREFRONTS:
+    """Aggregate TS albums across all storefronts, keeping best rank per album ID."""
+    from core.config import COUNTRIES
+
+    best: dict[str, dict] = {}  # apple_music_id → best entry
+
+    for storefront in COUNTRIES:
         url = f"https://amp-api-edge.music.apple.com/v1/catalog/{storefront}/charts?types=albums&limit=100"
-        resp = session.get(url)
+        try:
+            resp = session.get(url)
+        except Exception:
+            continue
         if resp.status_code == 401:
             raise RuntimeError("Unauthorized while calling Apple Music charts API")
         if resp.status_code != 200:
@@ -56,20 +61,24 @@ def fetch_global_albums(session) -> list[dict]:
         if not albums_block:
             continue
         items = (albums_block[0] or {}).get("data", [])
-        if len(items) < 5:
+        if not items:
             continue
 
-        albums = []
         for idx, item in enumerate(items, start=1):
             attrs = item.get("attributes", {}) or {}
             if not is_taylor_swift_song(item, attrs):
                 continue
-            genre_names = " | ".join(attrs.get("genreNames") or [])
-            albums.append(
-                {
+            album_id = str(item.get("id", ""))
+            if not album_id:
+                continue
+            # Keep entry with best (lowest) rank across all storefronts
+            existing = best.get(album_id)
+            if existing is None or idx < existing["rank"]:
+                genre_names = " | ".join(attrs.get("genreNames") or [])
+                best[album_id] = {
                     "country": storefront,
                     "album_name": clean_text(attrs.get("name", "")),
-                    "apple_music_id": str(item.get("id", "")),
+                    "apple_music_id": album_id,
                     "rank": idx,
                     "image_url": build_artwork_url(attrs.get("artwork"), size=500),
                     "url": attrs.get("url", ""),
@@ -77,10 +86,8 @@ def fetch_global_albums(session) -> list[dict]:
                     "release_date": attrs.get("releaseDate", ""),
                     "genre_names": genre_names,
                 }
-            )
-        if albums:
-            return albums
-    return []
+
+    return sorted(best.values(), key=lambda x: x["rank"])
 
 
 def main() -> None:

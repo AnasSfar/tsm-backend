@@ -225,18 +225,18 @@ def _clean_int(value: object) -> Optional[int]:
         return None
 
 
+
 def _get_bearer_token_and_regions() -> tuple[str, dict[str, str]]:
     """
-    Open Playwright, intercept the first internal-API request to get the Bearer
-    token, then call the overview endpoint to discover all available country
-    chart regions dynamically.
-
-    Returns (token, regions) where regions = {code_lower: readable_name}.
+    Récupère le Bearer token via Playwright et extrait la liste exhaustive des régions
+    en combinant l'API overview ET le HTML de charts.spotify.com.
     """
     import requests as _requests
+    from bs4 import BeautifulSoup
 
     token_holder: list[str] = []
     api_host = _API_BASE.split("//")[1].split("/")[0]
+    html_holder: list[str] = []
 
     def _on_request(req: Any) -> None:
         if api_host in req.url and not token_holder:
@@ -266,6 +266,8 @@ def _get_bearer_token_and_regions() -> tuple[str, dict[str, str]]:
         deadline = time.time() + 20
         while not token_holder and time.time() < deadline:
             page.wait_for_timeout(300)
+        # Récupérer le HTML de la page pour extraire les régions
+        html_holder.append(page.content())
     finally:
         try:
             browser.close()
@@ -282,7 +284,7 @@ def _get_bearer_token_and_regions() -> tuple[str, dict[str, str]]:
         )
     token = token_holder[0]
 
-    # Discover all available regions from the overview endpoint
+    # 1. API overview
     headers = {
         "Authorization": f"Bearer {token}",
         "Accept":        "application/json",
@@ -292,13 +294,39 @@ def _get_bearer_token_and_regions() -> tuple[str, dict[str, str]]:
     resp = _requests.get(_OVERVIEW_URL, headers=headers, timeout=15)
     resp.raise_for_status()
     country_filters = resp.json().get("countryFilters") or []
-    regions: dict[str, str] = {
+    api_regions: dict[str, str] = {
         c["code"].lower(): c["readableName"]
         for c in country_filters
         if c.get("code") and c.get("readableName")
     }
-    print(f"[INFO] Discovered {len(regions)} regions from API")
-    return token, regions
+
+    # 2. Extraction HTML exhaustive
+    html = html_holder[0] if html_holder else ""
+    soup = BeautifulSoup(html, "html.parser")
+    region_map = {}
+    # Cherche tous les <option> dans les menus déroulants (country/region)
+    for select in soup.find_all("select"):
+        for opt in select.find_all("option"):
+            code = opt.get("value", "").lower()
+            name = opt.text.strip()
+            if code and name and code != "global":
+                region_map[code] = name
+    # Parfois, les régions sont dans un objet JS global (window.__INITIAL_STATE__)
+    # On tente de parser les codes présents dans le HTML brut
+    import re as _re
+    for m in _re.finditer(r'"code":"([a-zA-Z0-9_-]+)","readableName":"([^"]+)"', html):
+        code, name = m.group(1).lower(), m.group(2)
+        if code and name:
+            region_map[code] = name
+
+    # 3. Fusionne toutes les sources (API + HTML)
+    all_regions = dict(api_regions)
+    for code, name in region_map.items():
+        if code not in all_regions:
+            all_regions[code] = name
+
+    print(f"[INFO] Discovered {len(all_regions)} regions (API + HTML)")
+    return token, all_regions
 
 
 def _parse_ts_entries(data: dict) -> list[dict]:
@@ -418,9 +446,27 @@ def main() -> int:
     token, regions = _get_bearer_token_and_regions()
     print(f"[INFO] Token acquired. {len(regions)} regions to fetch.")
 
-    print(f"[INFO] Fetching {len(regions)} regions (semaphore={SEMAPHORE})…")
+
+    # Pré-skip des pays déjà présents pour cette date
+    already_done = set()
+    if OUTPUT_PATH.exists():
+        try:
+            with open(OUTPUT_PATH, encoding="utf-8") as f:
+                data = json.load(f)
+            if data.get("date") == chart_date and "by_track" in data:
+                for entries in data["by_track"].values():
+                    for entry in entries:
+                        if "country" in entry:
+                            already_done.add(entry["country"])
+            if already_done:
+                print(f"[INFO] Skipping {len(already_done)} regions already present for {chart_date}")
+        except Exception as e:
+            print(f"[WARN] Could not parse existing output: {e}")
+
+    regions_to_fetch = {k: v for k, v in regions.items() if k not in already_done}
+    print(f"[INFO] Fetching {len(regions_to_fetch)} regions (semaphore={SEMAPHORE})…")
     t0 = time.perf_counter()
-    by_region = asyncio.run(_run_async(chart_date, token, regions))
+    by_region = asyncio.run(_run_async(chart_date, token, regions_to_fetch))
     print(f"[INFO] Done in {time.perf_counter() - t0:.1f}s")
 
     print("[INFO] Resolving track IDs…")

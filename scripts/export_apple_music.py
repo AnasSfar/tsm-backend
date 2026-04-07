@@ -61,8 +61,10 @@ def normalize_date(row: dict[str, Any]) -> str:
 def normalize_song_entry(row: dict[str, Any]) -> dict[str, Any]:
     previous_rank = to_int(row.get("previous_rank") or row.get("prev_rank"))
     genre_names_raw = clean_str(row.get("genre_names"))
+    video_name = clean_str(row.get("video_name"))
     return {
-        "song_name": clean_str(row.get("song_name") or row.get("title") or row.get("track_name")),
+        "song_name": clean_str(row.get("song_name") or row.get("title") or row.get("track_name") or video_name),
+        "video_name": video_name,
         "apple_music_id": clean_str(row.get("apple_music_id") or row.get("song_id") or row.get("id")),
         "rank": to_int(row.get("rank")),
         "previous_rank": previous_rank if previous_rank else None,
@@ -162,9 +164,7 @@ def build_ranked_video_series(rows: list[dict[str, Any]]) -> tuple[dict[str, Any
         d = normalize_date(row)
         if not d:
             continue
-        entry = normalize_song_entry(row)
-        entry["video_name"] = clean_str(row.get("video_name"))
-        by_date[d].append(entry)
+        by_date[d].append(normalize_song_entry(row))
     for d in list(by_date.keys()):
         by_date[d] = sort_entries(by_date[d])
     dates = sorted(by_date.keys())

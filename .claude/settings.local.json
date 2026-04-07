@@ -2,7 +2,23 @@
   "permissions": {
     "allow": [
       "Bash(python -c ':*)",
-      "Bash(python tools/script/filter.py --reexport 2026-04-03)"
+      "Bash(python tools/script/filter.py --reexport 2026-04-03)",
+      "Read(//c/Users/sfara/AppData/Local/Temp/claude/c--Users-sfara-Documents-GitHub-tsm-backend/3767aa76-61dd-4343-93be-3dc4d453b3af/tasks/**)",
+      "Bash(curl -s \"http://localhost:8003/api/apple-music\")",
+      "Bash(git -C \"c:/Users/sfara/Documents/GitHub/tsm-backend\" log --oneline -10)",
+      "Bash(git -C \"c:/Users/sfara/Documents/GitHub/tsm-backend\" show 888e2f2b -- db/charts_history_fr.csv)",
+      "Bash(git -C \"c:/Users/sfara/Documents/GitHub/tsm-backend\" diff 888e2f2b HEAD -- db/charts_history_fr.csv)",
+      "Bash(git -C \"c:/Users/sfara/Documents/GitHub/tsm-backend\" show b124be93 -- db/charts_history_fr.csv)",
+      "Bash(git -C \"c:/Users/sfara/Documents/GitHub/tsm-backend\" diff b124be93^ b124be93 -- db/charts_history_fr.csv)",
+      "Bash(git -C \"c:/Users/sfara/Documents/GitHub/tsm-backend\" log --all --oneline -- db/charts_history_fr.csv)",
+      "Bash(git add:*)",
+      "Bash(cmd /c \"del /f C:\\\\Users\\\\sfara\\\\Documents\\\\GitHub\\\\tsm-backend\\\\.git\\\\index.lock\")",
+      "Bash(git commit -m ':*)",
+      "Bash(git -C /c/Users/sfara/Documents/GitHub/tsm-backend add -A)",
+      "Bash(cmd /c \"handle.exe C:\\\\Users\\\\sfara\\\\Documents\\\\GitHub\\\\tsm-backend\\\\.git\\\\index.lock 2>nul || tasklist | findstr -i git\")"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\sfara\\Documents\\GitHub\\tsm-backend\\.git"
     ]
   }
 }

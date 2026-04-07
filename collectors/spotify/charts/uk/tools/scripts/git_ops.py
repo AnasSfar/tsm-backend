@@ -1,6 +1,6 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """
-git_ops.py - Git commit/push operations for UK charts daily.
+git_ops.py — Git commit/push operations for UK charts daily.
 """
 import subprocess
 from datetime import date
@@ -29,12 +29,11 @@ def git_commit_and_push(repo_root: Path) -> None:
             subprocess.run(["git", "push"], cwd=str(repo_root), check=True)
             print(f"[{_now()}] [INFO] Git commit + push done.")
         else:
-            print(f"[{_now()}] [INFO] Rien Ã  commit.")
+            print(f"[{_now()}] [INFO] Nothing to commit.")
     except subprocess.CalledProcessError as e:
-        print(f"[{_now()}] [WARN] Git commit/push Ã©chouÃ© : {e}")
+        print(f"[{_now()}] [WARN] Git commit/push failed: {e}")
 
 
 def _now() -> str:
     from datetime import datetime
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-

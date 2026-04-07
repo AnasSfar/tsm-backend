@@ -36,6 +36,7 @@ DATA_DIR = ROOT / "data"
 _DB_ROOT = _REPO_ROOT / "db"
 
 HISTORY_PATH = _DB_ROOT / "streams_history.csv"
+ARTIST_MONTHLY_HISTORY_PATH = _DB_ROOT / "artist_monthly_listeners_history.csv"
 FAILED_PATH = DATA_DIR / "not_found_today.csv"
 PENDING_LOG_PATH = DATA_DIR / "pending_debug_today.csv"
 LAST_SUCCESSFUL_UPDATE_JSON = DATA_DIR / "last_successful_updates.json"
@@ -693,9 +694,67 @@ def save_artist_metadata(data: dict) -> None:
     )
 
 
+def upsert_artist_monthly_history(*, day: str, monthly_listeners: int | None, monthly_rank: int | None) -> None:
+    """Upsert a single day of artist monthly listeners/rank into a small CSV history.
+
+    This allows the frontend (or any other consumer) to compute deltas reliably,
+    even when the API only returns the current snapshot.
+    """
+
+    if not day:
+        return
+    if monthly_listeners is None and monthly_rank is None:
+        return
+
+    ARTIST_MONTHLY_HISTORY_PATH.parent.mkdir(parents=True, exist_ok=True)
+    fieldnames = ["date", "monthly_listeners", "monthly_rank"]
+
+    rows: list[dict] = []
+    if ARTIST_MONTHLY_HISTORY_PATH.exists():
+        try:
+            with ARTIST_MONTHLY_HISTORY_PATH.open("r", encoding="utf-8", newline="") as f:
+                rows = list(csv.DictReader(f))
+        except Exception:
+            rows = []
+
+    updated = False
+    for row in rows:
+        if (row.get("date") or "").strip() == day:
+            row["monthly_listeners"] = "" if monthly_listeners is None else str(int(monthly_listeners))
+            row["monthly_rank"] = "" if monthly_rank is None else str(int(monthly_rank))
+            updated = True
+            break
+
+    if not updated:
+        rows.append(
+            {
+                "date": day,
+                "monthly_listeners": "" if monthly_listeners is None else str(int(monthly_listeners)),
+                "monthly_rank": "" if monthly_rank is None else str(int(monthly_rank)),
+            }
+        )
+
+    with ARTIST_MONTHLY_HISTORY_PATH.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+
+
 def update_artist_metadata(pre_scraped: dict | None = None) -> dict:
     existing = load_existing_artist_metadata()
     scraped = pre_scraped if pre_scraped is not None else scrape_artist_metadata()
+
+    today = get_scrape_date_str()
+    existing_updated_at = (existing.get("updated_at") or "").strip()
+    prev_monthly_listeners = None
+    prev_monthly_rank = None
+
+    if existing_updated_at and existing_updated_at != today:
+        prev_monthly_listeners = existing.get("monthly_listeners")
+        prev_monthly_rank = existing.get("monthly_rank")
+    else:
+        prev_monthly_listeners = existing.get("previous_monthly_listeners")
+        prev_monthly_rank = existing.get("previous_monthly_rank")
 
     merged = {
         "name": scraped.get("name") or existing.get("name") or "Taylor Swift",
@@ -711,10 +770,18 @@ def update_artist_metadata(pre_scraped: dict | None = None) -> dict:
             if scraped.get("monthly_rank") is not None
             else existing.get("monthly_rank")
         ),
-        "updated_at": get_scrape_date_str(),
+        "previous_monthly_listeners": prev_monthly_listeners,
+        "previous_monthly_rank": prev_monthly_rank,
+        "updated_at": today,
     }
 
     save_artist_metadata(merged)
+
+    upsert_artist_monthly_history(
+        day=today,
+        monthly_listeners=merged.get("monthly_listeners"),
+        monthly_rank=merged.get("monthly_rank"),
+    )
 
     print(
         "Artist metadata updated | "

@@ -1167,11 +1167,31 @@ def main() -> None:
     
     # Calculate percentage gain: compare daily streams today vs yesterday
     pct_str = ""
-    if daily is not None and daily > 0 and daily_yesterday and daily_yesterday > 0:
+    if daily is not None and daily_yesterday and daily_yesterday > 0:
         pct_gain = ((daily - daily_yesterday) / daily_yesterday) * 100
-        pct_str = f"({pct_gain:+.1f}%)"
+        pct_str = f"(+{pct_gain:.1f}%)" if pct_gain > 0 else f"({pct_gain:.1f}%)"
     
-    tweet = f"[STREAMS] | {track['title']} earned {total_tweet} streams on {date_fmt}. The song gained {daily_tweet} streams {pct_str}"
+    # Format date as 'April 6th, 2026'
+    def ordinal(n):
+        if 10 <= n % 100 <= 20:
+            suffix = 'th'
+        else:
+            suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(n % 10, 'th')
+        return str(n) + suffix
+
+    date_obj = datetime.strptime(stats_date, "%Y-%m-%d")
+    date_fmt_long = date_obj.strftime("%B {S}, %Y").replace('{S}', ordinal(date_obj.day))
+
+    # Compose tweet in requested format
+    tweet_lines = []
+    tweet_lines.append(f'"{track["title"]}" by Taylor Swift received {daily_tweet} streams yesterday, {date_fmt_long}.')
+    if daily is not None and daily_yesterday is not None:
+        diff = daily - daily_yesterday
+        diff_str = f"rose {abs(diff):,} streams {pct_str}" if diff > 0 else f"fell {abs(diff):,} streams {pct_str}"
+        tweet_lines.append(f'The song {diff_str} to a total of {total_tweet} total streams.')
+    else:
+        tweet_lines.append(f'Total streams: {total_tweet}.')
+    tweet = "\n\n".join(tweet_lines)
     print(f"\nTweet : {tweet}")
     
     # Post to Twitter if requested

@@ -1,0 +1,33 @@
+{
+  "track_id": "1LLXZFeAHK9R4xUramtUKw",
+  "title": "London Boy",
+  "primary_album": "Lover",
+  "spotify_url": "https://open.spotify.com/track/1LLXZFeAHK9R4xUramtUKw",
+  "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
+  "peak_position": 99,
+  "times_at_peak": 1,
+  "weeks_on_chart": 1,
+  "history": [
+    {
+      "date": "2026-04-03",
+      "week_start": "2026-03-28",
+      "rank": 99,
+      "change": "=",
+      "points": 40.8,
+      "total_units": 559208,
+      "units_am": 0,
+      "units_spotify": 559208,
+      "units_charts": 0,
+      "units_surplus": 798868,
+      "am_ts_units": 0,
+      "am_global_units": 0,
+      "streams_pct": 100.0,
+      "airplay_pct": 0.0,
+      "weekly_streams": 798868,
+      "weeks_on_chart": 1,
+      "peak_position": 99,
+      "times_at_peak": 1,
+      "percentage_change": 2.778849864917016
+    }
+  ]
+}
