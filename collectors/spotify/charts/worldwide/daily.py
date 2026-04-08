@@ -4,6 +4,9 @@ Fetch Spotify daily charts for all available countries in parallel, keep only
 Taylor Swift songs, resolve track IDs, and write
 website/site/data/charts_worldwide.json.
 
+Also writes a per-date snapshot to:
+collectors/spotify/charts/worldwide/history/YYYY/MM/YYYY-MM-DD/ts_worldwide_YYYY-MM-DD.json
+
 The list of countries is discovered dynamically from the Spotify Charts API
 overview endpoint (auth/v1/overview/GLOBAL) — no hardcoded country list.
 
@@ -47,6 +50,7 @@ from playwright.sync_api import sync_playwright
 ROOT         = Path(__file__).resolve().parents[4]
 SESSION_FILE = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "spotify_session.json"
 OUTPUT_PATH  = ROOT / "website" / "site" / "data" / "charts_worldwide.json"
+HISTORY_ROOT = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "history"
 
 WEBSITE_SONGS_PATH = ROOT / "website" / "site" / "data" / "songs.json"
 DISCO_SONGS_PATH   = ROOT / "db" / "discography" / "songs.json"
@@ -89,10 +93,13 @@ def _possible_keys(title: str) -> set[str]:
     keys = set()
     n = _normalize_text(title)
     s = _simplify_title(title)
-    if n: keys.add(n)
-    if s: keys.add(s)
+    if n:
+        keys.add(n)
+    if s:
+        keys.add(s)
     s2 = s.replace("'", "").replace("\u2019", "")
-    if s2: keys.add(s2)
+    if s2:
+        keys.add(s2)
     return {k for k in keys if k}
 
 
@@ -218,6 +225,7 @@ def resolve_track_id(
 def _clean_int(value: object) -> Optional[int]:
     if value is None:
         return None
+
     try:
         n = int(float(str(value).strip()))
         return n if n > 0 else None
@@ -225,6 +233,15 @@ def _clean_int(value: object) -> Optional[int]:
         return None
 
 
+def _worldwide_history_path(chart_date: str) -> Path:
+    d = datetime.strptime(chart_date, "%Y-%m-%d").date()
+    return (
+        HISTORY_ROOT
+        / str(d.year)
+        / f"{d.month:02d}"
+        / chart_date
+        / f"ts_worldwide_{chart_date}.json"
+    )
 
 def _get_bearer_token_and_regions() -> tuple[str, dict[str, str]]:
     """
@@ -537,12 +554,21 @@ def main() -> int:
               + ", ".join(sorted(names)[:5]) + ("…" if len(names) > 5 else ""))
 
     output = {"date": chart_date, "by_track": by_track}
+
+    per_date_path = _worldwide_history_path(chart_date)
+    per_date_path.parent.mkdir(parents=True, exist_ok=True)
+    per_date_path.write_text(
+        json.dumps(output, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    print(f"[DONE] Written → {per_date_path}")
+
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(
         json.dumps(output, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
-    print(f"[DONE] Written → {OUTPUT_PATH}")
+    print(f"[DONE] Written latest → {OUTPUT_PATH}")
     maybe_upload_to_r2()
     return 0
 

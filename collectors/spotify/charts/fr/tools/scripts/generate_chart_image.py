@@ -786,6 +786,14 @@ def generate(chart_date: str, header_img: Path | None = None) -> Path:
             page    = browser.new_page(viewport={"width": 800, "height": 200}, device_scale_factor=2)
             page.goto(f"file:///{html_tmp.as_posix()}", wait_until="load")
             page.wait_for_load_state("networkidle", timeout=3000)
+            try:
+                full_h = page.evaluate("() => document.body.scrollHeight")
+                full_h = int(full_h) if full_h else 200
+                full_h = max(200, min(full_h, 6000))
+                page.set_viewport_size({"width": 800, "height": full_h})
+                page.wait_for_load_state("networkidle", timeout=3000)
+            except Exception:
+                pass
             page.locator("body").screenshot(path=str(out_path))
             browser.close()
     finally:
@@ -831,6 +839,14 @@ def generate_all_headers(chart_date: str) -> list[Path]:
                 page = browser.new_page(viewport={"width": 860, "height": 200}, device_scale_factor=2)
                 page.goto(f"file:///{html_tmp.as_posix()}", wait_until="load")
                 page.wait_for_load_state("networkidle", timeout=3000)
+                try:
+                    full_h = page.evaluate("() => document.body.scrollHeight")
+                    full_h = int(full_h) if full_h else 200
+                    full_h = max(200, min(full_h, 6000))
+                    page.set_viewport_size({"width": 860, "height": full_h})
+                    page.wait_for_load_state("networkidle", timeout=3000)
+                except Exception:
+                    pass
                 page.locator("body").screenshot(path=str(out_path))
                 page.close()
                 print(f"OK: {out_path.name}")
@@ -925,6 +941,14 @@ def generate_multi(chart_dates: list[str], header_img: Path | None = None) -> Pa
             page    = browser.new_page(viewport={"width": 800, "height": 200}, device_scale_factor=2)
             page.goto(f"file:///{html_tmp.as_posix()}", wait_until="load")
             page.wait_for_load_state("networkidle", timeout=3000)
+            try:
+                full_h = page.evaluate("() => document.body.scrollHeight")
+                full_h = int(full_h) if full_h else 200
+                full_h = max(200, min(full_h, 6000))
+                page.set_viewport_size({"width": 800, "height": full_h})
+                page.wait_for_load_state("networkidle", timeout=3000)
+            except Exception:
+                pass
             page.locator("body").screenshot(path=str(out_path))
             browser.close()
     finally:

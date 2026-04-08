@@ -24,6 +24,14 @@ HISTORY_DIR = ROOT / "website" / "site" / "history"
 SITE_DATA_DIR = ROOT / "website" / "site" / "data"
 APPLE_MUSIC_IMAGES_DIR = SITE_DATA_DIR / "apple-music-images"
 DB_DIR = ROOT / "db"
+WORLDWIDE_CHARTS_HISTORY_DIR = (
+    ROOT
+    / "collectors"
+    / "spotify"
+    / "charts"
+    / "worldwide"
+    / "history"
+)
 
 DATE_RE = re.compile(r"(\d{4}-\d{2}-\d{2})")
 R2_REQUIRED_ENV_VARS = (
@@ -318,6 +326,26 @@ def upload_static_data(
         obj = load_json(path)
         data = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
         tasks.append((full_key, data, "application/json; charset=utf-8"))
+
+    # Worldwide charts per-date snapshots
+    # Produced by collectors/spotify/charts/worldwide/daily.py
+    # Upload to history/charts_worldwide/YYYY-MM-DD.json so the API can serve historical worldwide data.
+    if WORLDWIDE_CHARTS_HISTORY_DIR.exists():
+        worldwide_files = sorted(WORLDWIDE_CHARTS_HISTORY_DIR.rglob("ts_worldwide_*.json"))
+        for path in worldwide_files:
+            m = DATE_RE.search(path.name)
+            if not m:
+                continue
+            chart_date = m.group(1)
+            full_key = f"{history_prefix}/charts_worldwide/{chart_date}.json"
+            try:
+                obj = load_json(path)
+            except Exception:
+                # Keep upload robust even if one file is malformed.
+                print(f"[SKIP] invalid worldwide snapshot: {path}")
+                continue
+            data = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+            tasks.append((full_key, data, "application/json; charset=utf-8"))
 
     uploaded = 0
     unchanged = 0

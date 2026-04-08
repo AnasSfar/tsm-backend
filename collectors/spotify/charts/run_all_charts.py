@@ -27,7 +27,7 @@ POSTING_RUNNERS = [
 
 NO_POST_RUNNERS = [
     ("us-no-post", CHARTS_ROOT / "us" / "daily.py", ["--no-post"]),
-    ("uk-no-post", CHARTS_ROOT / "uk" / "daily_no_post.py", []),
+    ("uk-no-post", CHARTS_ROOT / "uk" / "daily.py", ["--no-post"]),
     ("worldwide", CHARTS_ROOT / "worldwide" / "daily.py", []),
 ]
 
@@ -104,9 +104,17 @@ def main() -> int:
         help="Print commands without executing them.",
     )
     parser.add_argument(
+        "--skip-uk",
+        action="store_true",
+        help="Skip UK no-post chart runner (UK runs by default).",
+    )
+    parser.add_argument(
         "--include-uk-no-post",
         action="store_true",
-        help="Also run UK no-post script after global/fr/us-no-post.",
+        help=(
+            "(Deprecated) Also run UK no-post script after global/fr/us-no-post. "
+            "UK now runs by default; use --skip-uk to disable."
+        ),
     )
     parser.add_argument(
         "--no-post",
@@ -124,15 +132,17 @@ def main() -> int:
     failures: list[tuple[str, int]] = []
     child_env = _build_child_env()
 
+    run_uk = (not args.skip_uk) or args.include_uk_no_post
+
     parallel_runners = list(POSTING_RUNNERS)
     sequential_runners = [NO_POST_RUNNERS[0]]
-    if args.include_uk_no_post:
+    if run_uk:
         sequential_runners.append(NO_POST_RUNNERS[1])
     sequential_runners.append(NO_POST_RUNNERS[2])   # worldwide — always last
 
-    print("Running Spotify chart dailies for: global + fr (parallel), then us-no-post, worldwide")
-    if args.include_uk_no_post:
-        print("Also running: uk-no-post")
+    print("Running Spotify chart dailies for: global + fr (parallel), then us-no-post, uk-no-post, worldwide")
+    if not run_uk:
+        print("UK disabled: --skip-uk")
     if args.no_post:
         print("Twitter posting disabled: --no-post")
     if forwarded:
@@ -170,7 +180,7 @@ def main() -> int:
     if failures and args.stop_on_error:
         print("Stopping due to --stop-on-error")
     else:
-        print("[PHASE] Sequential: us-no-post, uk-no-post (optional), worldwide")
+        print("[PHASE] Sequential: us-no-post, uk-no-post, worldwide")
         for region, script_path, runner_args in sequential_runners:
             merged_args = list(dict.fromkeys([*runner_args, *forwarded]))
             code = _run_region(
