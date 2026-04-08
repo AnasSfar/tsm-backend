@@ -291,15 +291,22 @@ def _get_bearer_token_and_regions() -> tuple[str, dict[str, str]]:
         "Referer":       "https://charts.spotify.com/",
         "User-Agent":    _UA,
     }
-    for _attempt in range(1, 4):
-        resp = _requests.get(_OVERVIEW_URL, headers=headers, timeout=15)
-        if resp.status_code == 429:
-            wait = int(resp.headers.get("Retry-After", 10))
-            print(f"[WARN] Overview 429 — retry dans {wait}s (tentative {_attempt}/3)")
+    _attempt = 0
+    while True:
+        _attempt += 1
+        try:
+            resp = _requests.get(_OVERVIEW_URL, headers=headers, timeout=15)
+            if resp.status_code == 429:
+                wait = int(resp.headers.get("Retry-After", 30))
+                print(f"[WARN] Overview 429 — retry dans {wait}s (tentative {_attempt})")
+                time.sleep(wait)
+                continue
+            resp.raise_for_status()
+            break
+        except Exception as exc:
+            wait = min(30 * _attempt, 300)
+            print(f"[WARN] Overview erreur ({exc}) — retry dans {wait}s (tentative {_attempt})")
             time.sleep(wait)
-            continue
-        resp.raise_for_status()
-        break
     country_filters = resp.json().get("countryFilters") or []
     api_regions: dict[str, str] = {
         c["code"].lower(): c["readableName"]
@@ -382,7 +389,9 @@ async def _fetch_region(
 ) -> tuple[str, list[dict]]:
     chart_id = "regional-global-daily" if region == "global" else f"regional-{region}-daily"
     url = f"{_API_BASE}/{chart_id}/{chart_date}"
-    for attempt in range(1, 4):
+    attempt = 0
+    while True:
+        attempt += 1
         async with sem:
             try:
                 async with session.get(
@@ -395,17 +404,24 @@ async def _fetch_region(
                         rows = _parse_ts_entries(data)
                         print(f"  [{region:>6}] {len(rows)} TS entries ({chart_date})")
                         return region, rows
-                    # 404 = this chart doesn't exist for this date yet, skip silently
                     if resp.status == 404:
+                        # Chart absent pour cette région à cette date — donnée valide vide
                         return region, []
-                    print(f"  [{region:>6}] HTTP {resp.status} tentative {attempt}/3 ({chart_date})")
+                    if resp.status == 429:
+                        wait = int(resp.headers.get("Retry-After", 30))
+                        print(f"  [{region:>6}] 429 — retry dans {wait}s (tentative {attempt})")
+                        await asyncio.sleep(wait)
+                        continue
+                    if 400 <= resp.status < 500:
+                        # Autre 4xx non récupérable
+                        print(f"  [{region:>6}] HTTP {resp.status} — abandon")
+                        return region, []
+                    print(f"  [{region:>6}] HTTP {resp.status} — retry dans 10s (tentative {attempt})")
             except asyncio.TimeoutError:
-                print(f"  [{region:>6}] timeout tentative {attempt}/3 ({chart_date})")
+                print(f"  [{region:>6}] timeout — retry dans 10s (tentative {attempt})")
             except Exception as exc:
-                print(f"  [{region:>6}] error tentative {attempt}/3 ({chart_date}): {exc}")
-        if attempt < 3:
-            await asyncio.sleep(5)
-    return region, []
+                print(f"  [{region:>6}] erreur ({exc}) — retry dans 10s (tentative {attempt})")
+        await asyncio.sleep(min(10 * attempt, 60))
 
 
 async def _run_async(chart_date: str, token: str, regions: dict[str, str]) -> dict[str, list[dict]]:
@@ -537,9 +553,14 @@ def maybe_upload_to_r2() -> None:
         return
 
     print("[STEP] Uploading exported data to R2")
-    result = subprocess.run([sys.executable, str(r2_script)], check=False, cwd=str(ROOT))
-    if result.returncode != 0:
-        raise RuntimeError(f"R2 upload failed with code {result.returncode}")
+    for attempt in range(1, 6):
+        result = subprocess.run([sys.executable, str(r2_script)], check=False, cwd=str(ROOT))
+        if result.returncode == 0:
+            return
+        wait = 30 * attempt
+        print(f"[WARN] R2 upload failed (exit {result.returncode}), retry dans {wait}s (tentative {attempt}/5)")
+        time.sleep(wait)
+    print("[ERROR] R2 upload failed après 5 tentatives — poursuite sans upload")
 
 
 if __name__ == "__main__":
