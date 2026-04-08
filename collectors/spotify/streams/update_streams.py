@@ -69,6 +69,7 @@ HILL_INITIAL       = 6      # point de départ (MAX_PARALLEL_PAGES comme plafond
 PROBE_CANDIDATES = 10  # top N tracks (by streams) used as probe candidates
 
 PENDING_RETRY_SLEEP_SECONDS = 1 * 60
+POST_BETWEEN_STREAMS_POSTS_SECONDS = 3 * 60
 INCREMENTAL_PUBLISH_ON_UPDATE = False
 
 NOT_FOUND_STREAK_PATH = DATA_DIR / "not_found_streak.json"
@@ -3000,28 +3001,47 @@ def main():
     )
     print("Streams history CSV done.")
 
+    def _run_streams_post(cmd: list[str], *, label: str, should_post: bool, state: dict[str, int]) -> None:
+        if should_post and state["posted_count"] > 0:
+            print(
+                f"Waiting {POST_BETWEEN_STREAMS_POSTS_SECONDS // 60} minutes "
+                f"before next Twitter post ({label})..."
+            )
+            time.sleep(POST_BETWEEN_STREAMS_POSTS_SECONDS)
+
+        subprocess.run(cmd, check=False)
+
+        if should_post:
+            state["posted_count"] += 1
+
+    post_state = {"posted_count": 0}
+
     if debug_daily_mode:
         print("[DEBUG-DAILY] Skip: Twitter, forecast, images, git, notify.")
     else:
         if no_post_mode:
             print("Skipping Twitter post (--no-post).")
-            subprocess.run(
+            _run_streams_post(
                 [
                     sys.executable,
                     str(_SCRIPT_DIR / "tools" / "scripts" / "post_streams_twitter.py"),
                     summary["stats_date"],
                     "--no-post",
                 ],
-                check=False,
+                label="streams image (no-post)",
+                should_post=False,
+                state=post_state,
             )
         else:
             if not summary.get("all_done"):
                 print("Skipping Twitter post: not all tracks are done yet.")
             else:
                 print("Posting streams image to Twitter...")
-                subprocess.run(
+                _run_streams_post(
                     [sys.executable, str(_SCRIPT_DIR / "tools" / "scripts" / "post_streams_twitter.py"), summary["stats_date"]],
-                    check=False,
+                    label="streams image",
+                    should_post=True,
+                    state=post_state,
                 )
                 print("Twitter post done.")
 
@@ -3064,17 +3084,21 @@ def main():
         if all_album_tracks_done(summary["stats_date"]):
             if no_post_mode:
                 print("100% des tracks albums/* presents -> generation image top 10...")
-                subprocess.run(
+                _run_streams_post(
                     [sys.executable, str(post_script), summary["stats_date"], "--no-post"],
-                    check=False,
+                    label="top-10 image (no-post)",
+                    should_post=False,
+                    state=post_state,
                 )
             elif not summary.get("all_done"):
                 print("Skipping top-10 Twitter post: not all tracks are done yet.")
             else:
                 print("100% des tracks albums/* presents -> generation image top 10...")
-                subprocess.run(
+                _run_streams_post(
                     [sys.executable, str(post_script), summary["stats_date"]],
-                    check=False,
+                    label="top-10 image",
+                    should_post=True,
+                    state=post_state,
                 )
         else:
             missing = load_album_track_ids() - load_history_track_ids_for_date(summary["stats_date"])
@@ -3097,9 +3121,11 @@ def main():
                 ]
                 if not no_post_mode:
                     album_cmd.append("--post")
-                subprocess.run(
+                _run_streams_post(
                     album_cmd,
-                    check=False,
+                    label=f"album update ({_alb})",
+                    should_post=not no_post_mode,
+                    state=post_state,
                 )
             else:
                 try:

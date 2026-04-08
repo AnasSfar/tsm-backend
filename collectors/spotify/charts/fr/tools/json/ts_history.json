@@ -937,6 +937,12 @@
       "streams": 142614,
       "previous_rank": 370,
       "peak_rank": 2
+    },
+    "2026-04-07": {
+      "rank": 38,
+      "streams": 139805,
+      "previous_rank": 360,
+      "peak_rank": 2
     }
   },
   "Opalite": {
@@ -1335,6 +1341,12 @@
       "rank": 184,
       "streams": 65437,
       "previous_rank": 1930,
+      "peak_rank": 8
+    },
+    "2026-04-07": {
+      "rank": 182,
+      "streams": 66100,
+      "previous_rank": 1840,
       "peak_rank": 8
     },
     "2026-03-26": {
