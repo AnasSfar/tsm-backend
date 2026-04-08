@@ -291,8 +291,15 @@ def _get_bearer_token_and_regions() -> tuple[str, dict[str, str]]:
         "Referer":       "https://charts.spotify.com/",
         "User-Agent":    _UA,
     }
-    resp = _requests.get(_OVERVIEW_URL, headers=headers, timeout=15)
-    resp.raise_for_status()
+    for _attempt in range(1, 4):
+        resp = _requests.get(_OVERVIEW_URL, headers=headers, timeout=15)
+        if resp.status_code == 429:
+            wait = int(resp.headers.get("Retry-After", 10))
+            print(f"[WARN] Overview 429 — retry dans {wait}s (tentative {_attempt}/3)")
+            time.sleep(wait)
+            continue
+        resp.raise_for_status()
+        break
     country_filters = resp.json().get("countryFilters") or []
     api_regions: dict[str, str] = {
         c["code"].lower(): c["readableName"]
@@ -375,25 +382,29 @@ async def _fetch_region(
 ) -> tuple[str, list[dict]]:
     chart_id = "regional-global-daily" if region == "global" else f"regional-{region}-daily"
     url = f"{_API_BASE}/{chart_id}/{chart_date}"
-    async with sem:
-        try:
-            async with session.get(
-                url,
-                headers=headers,
-                timeout=aiohttp.ClientTimeout(total=30),
-            ) as resp:
-                if resp.status == 200:
-                    data = await resp.json(content_type=None)
-                    rows = _parse_ts_entries(data)
-                    print(f"  [{region:>6}] {len(rows)} TS entries ({chart_date})")
-                    return region, rows
-                # 404 = this chart doesn't exist for this date yet, skip silently
-                if resp.status != 404:
-                    print(f"  [{region:>6}] HTTP {resp.status} ({chart_date})")
-        except asyncio.TimeoutError:
-            print(f"  [{region:>6}] timeout ({chart_date})")
-        except Exception as exc:
-            print(f"  [{region:>6}] error ({chart_date}): {exc}")
+    for attempt in range(1, 4):
+        async with sem:
+            try:
+                async with session.get(
+                    url,
+                    headers=headers,
+                    timeout=aiohttp.ClientTimeout(total=30),
+                ) as resp:
+                    if resp.status == 200:
+                        data = await resp.json(content_type=None)
+                        rows = _parse_ts_entries(data)
+                        print(f"  [{region:>6}] {len(rows)} TS entries ({chart_date})")
+                        return region, rows
+                    # 404 = this chart doesn't exist for this date yet, skip silently
+                    if resp.status == 404:
+                        return region, []
+                    print(f"  [{region:>6}] HTTP {resp.status} tentative {attempt}/3 ({chart_date})")
+            except asyncio.TimeoutError:
+                print(f"  [{region:>6}] timeout tentative {attempt}/3 ({chart_date})")
+            except Exception as exc:
+                print(f"  [{region:>6}] error tentative {attempt}/3 ({chart_date}): {exc}")
+        if attempt < 3:
+            await asyncio.sleep(5)
     return region, []
 
 

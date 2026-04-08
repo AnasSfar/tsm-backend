@@ -412,10 +412,10 @@ def _parse_api_entries(data: dict) -> list[dict]:
     return rows
 
 
-def _fetch_via_api(chart_date: str) -> list[dict] | None:
+def _fetch_via_api(chart_date: str, retries: int = 3, retry_delay: float = 5.0) -> list[dict] | None:
     """
     Tente de récupérer le chart via l'API interne Spotify.
-    Retourne rows ou None si l'API échoue.
+    Retourne rows ou None si l'API échoue après tous les essais.
     """
     try:
         token = _get_bearer_token()
@@ -425,13 +425,20 @@ def _fetch_via_api(chart_date: str) -> list[dict] | None:
             "Referer": "https://charts.spotify.com/",
             "User-Agent": _UA,
         }
-        url  = f"{_API_BASE}/{CHART_ID}/{chart_date}"
-        resp = requests.get(url, headers=headers, timeout=30)
-        if resp.status_code == 200:
-            rows = _parse_api_entries(resp.json())
-            if rows:
-                print(f"  API OK — {len(rows)} lignes pour {chart_date}")
-                return rows
+        url = f"{_API_BASE}/{CHART_ID}/{chart_date}"
+        for attempt in range(1, retries + 1):
+            try:
+                resp = requests.get(url, headers=headers, timeout=30)
+                if resp.status_code == 200:
+                    rows = _parse_api_entries(resp.json())
+                    if rows:
+                        print(f"  API OK — {len(rows)} lignes pour {chart_date}")
+                        return rows
+                print(f"  API tentative {attempt}/{retries} — HTTP {resp.status_code}")
+            except Exception as e:
+                print(f"  API tentative {attempt}/{retries} — erreur: {e}")
+            if attempt < retries:
+                time.sleep(retry_delay)
         return None
     except Exception as e:
         print(f"  API échec ({e}), fallback Playwright…")
