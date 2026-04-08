@@ -454,6 +454,11 @@ def main() -> int:
         action="store_true",
         help="Accepted for compatibility; this script never posts to Twitter.",
     )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Accepted for compatibility; ignored by this script.",
+    )
     args = parser.parse_args()
 
     raw_date = args.date or args.date_pos or str(date.today() - timedelta(days=1))
