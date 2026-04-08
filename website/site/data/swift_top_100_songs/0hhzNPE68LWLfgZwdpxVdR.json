@@ -1,0 +1,33 @@
+{
+  "track_id": "0hhzNPE68LWLfgZwdpxVdR",
+  "title": "us. (feat. Taylor Swift)",
+  "primary_album": "Standalone & Extras",
+  "spotify_url": "https://open.spotify.com/track/0hhzNPE68LWLfgZwdpxVdR",
+  "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2736e2101520787791370f4a96b",
+  "peak_position": 91,
+  "times_at_peak": 1,
+  "weeks_on_chart": 1,
+  "history": [
+    {
+      "date": "2026-04-06",
+      "week_start": "2026-03-31",
+      "rank": 91,
+      "change": "NEW",
+      "points": 57.7,
+      "total_units": 791332,
+      "units_am": 107194,
+      "units_spotify": 684138,
+      "units_charts": 0,
+      "units_surplus": 977340,
+      "am_ts_units": 107190,
+      "am_global_units": 0,
+      "streams_pct": 86.5,
+      "airplay_pct": 13.5,
+      "weekly_streams": 977340,
+      "weeks_on_chart": 1,
+      "peak_position": 91,
+      "times_at_peak": 1,
+      "percentage_change": null
+    }
+  ]
+}
