@@ -57,7 +57,7 @@ LOCAL_DB_FILE = _TOOLS / "json" / "songs_db.json"
 TS_HISTORY_PATH     = _TOOLS / "json" / "ts_history.json"
 TS_POP_HISTORY_PATH = _TOOLS / "json" / "ts_pop_history.json"
 TOTAL_DAYS_PATH     = _TOOLS / "json" / "total_days.json"
-ARCHIVE_CSV   = Path(__file__).resolve().parents[6] / "db" / "charts_history_fr.csv"
+ARCHIVE_CSV   = Path(__file__).resolve().parents[6] / "db" / "charts_history_us.csv"
 _BEARER_CACHE = _TOOLS / "json" / "bearer_cache.json"
 _TOKEN_TTL    = 50 * 60  # 50 minutes (conservateur)
 

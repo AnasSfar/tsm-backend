@@ -280,17 +280,24 @@ def upload_static_data(
         full_key = f"{data_prefix}/{r2_key.split('/', 1)[1]}"
         tasks.append((full_key, src.read_bytes(), content_type))
 
+    # Charts CSVs: store in db/ as charts_history_<region>.csv.
+    # Frontend API loader may try both `charts_history_<region>.csv` and `charts_<region>.csv`.
+    # Upload both keys so R2-only production does not 404 on the first attempt.
     csv_mappings = [
-        ("charts_history_global.csv", "data/charts_global.csv"),
-        ("charts_history_fr.csv",     "data/charts_fr.csv"),
+        ("charts_history_global.csv", ["data/charts_global.csv", "data/charts_history_global.csv"]),
+        ("charts_history_fr.csv",     ["data/charts_fr.csv",     "data/charts_history_fr.csv"]),
+        ("charts_history_us.csv",     ["data/charts_us.csv",     "data/charts_history_us.csv"]),
+        ("charts_history_uk.csv",     ["data/charts_uk.csv",     "data/charts_history_uk.csv"]),
     ]
-    for filename, r2_key in csv_mappings:
+    for filename, r2_keys in csv_mappings:
         src = DB_DIR / filename
         if not src.exists():
             print(f"[SKIP] absent: {src}")
             continue
-        full_key = f"{data_prefix}/{r2_key.split('/', 1)[1]}"
-        tasks.append((full_key, src.read_bytes(), "text/csv; charset=utf-8"))
+        data = src.read_bytes()
+        for r2_key in r2_keys:
+            full_key = f"{data_prefix}/{r2_key.split('/', 1)[1]}"
+            tasks.append((full_key, data, "text/csv; charset=utf-8"))
 
     index_path = HISTORY_DIR / "index.json"
     if index_path.exists():
