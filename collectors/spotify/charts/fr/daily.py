@@ -222,10 +222,14 @@ def page_available(d: date) -> bool:
                 pass
 
 
-def run_filter(d: date) -> str | None:
+def run_filter(d: date, *, replace_date: bool) -> str | None:
     log("STEP", f"Lancement de filter.py pour {d}")
+    args = [sys.executable, str(FILTER_SCRIPT)]
+    if replace_date:
+        args.append("--replace-date")
+    args.append(str(d))
     result = subprocess.run(
-        [sys.executable, str(FILTER_SCRIPT), str(d)],
+        args,
         capture_output=True,
         text=True,
         encoding="utf-8",
@@ -279,6 +283,7 @@ def maybe_upload_to_r2() -> None:
 def main():
     force = "--force" in sys.argv
     no_post = "--no-post" in sys.argv
+    replace_date = "--replace-date" in sys.argv or force
     date_args = [a for a in sys.argv[1:] if not a.startswith("--")]
 
     # Mode manuel : python daily.py [--force] [YYYY-MM-DD]
@@ -337,7 +342,7 @@ def main():
     # Traiter chaque date non-postée
     results: dict[date, str] = {}
     for d in unposted:
-        content = run_filter(d)
+        content = run_filter(d, replace_date=replace_date)
         if content:
             results[d] = content
         else:

@@ -44,6 +44,9 @@ TS_HISTORY_PATH  = _TOOLS / "json" / "ts_history.json"
 TOTAL_DAYS_PATH  = _TOOLS / "json" / "total_days.json"
 ARCHIVE_CSV = Path(__file__).resolve().parents[6] / "db" / "charts_history_global.csv"
 
+if ARCHIVE_CSV.name != "charts_history_global.csv":
+    raise RuntimeError(f"Invalid ARCHIVE_CSV target for Global: {ARCHIVE_CSV}")
+
 PAGE_TIMEOUT_MS = 60_000
 MAX_SCROLL_STABLE = 3
 SCROLL_WAIT_MS = 500

@@ -503,6 +503,7 @@ def _write_history_csv(rows: list[dict], logger: Logger) -> None:
         "am_global_score",
         "prev_rank",
         "prev_points",
+        "change",
         "rank_change",
         "percentage_change",
         "weeks_on_chart",
@@ -647,7 +648,6 @@ def run(
     logger.log(f"[swift_top_100] Discography tracks indexed: {len(tracks)}")
 
     curr_points, curr_ranks = _build_week_chart(week_end=chart_date, tracks=tracks, logger=logger)
-    prev_points, prev_ranks = _build_week_chart(week_end=prev_week_end, tracks=tracks, logger=logger)
 
     am_best_rank = _weekly_apple_music_global_points(week_dates=week_set, logger=logger)
     am_ts_best_rank = _weekly_apple_music_ts_points(week_dates=week_set, logger=logger)
@@ -666,6 +666,14 @@ def run(
     existing_rows = _load_existing_history_excluding_date(chart_date_str, logger)
     weeks_on_chart_by_track, peak_by_track, times_at_peak_by_track = _history_stats(existing_rows)
 
+    is_first_run = len(existing_rows) == 0
+    if is_first_run:
+        logger.log("[swift_top_100] No existing history — first run, all entries will be NEW")
+        prev_points: dict = {}
+        prev_ranks: dict = {}
+    else:
+        prev_points, prev_ranks = _build_week_chart(week_end=prev_week_end, tracks=tracks, logger=logger)
+
     out_entries: list[dict] = []
     snapshot_entries: list[dict] = []
 
@@ -677,9 +685,10 @@ def run(
         prev_row = prev_points.get(tid)
         prev_points_value = prev_row.get("points") if prev_row else None
 
-        rank_change = (pr - rank) if pr else None
+        change = "NEW" if pr is None else None
+        rank_change = (pr - rank) if pr is not None else None
         pct_change = None
-        if prev_points_value and prev_points_value > 0:
+        if pr is not None and prev_points_value and prev_points_value > 0:
             pct_change = ((row["points"] - prev_points_value) / prev_points_value) * 100
 
         weeks_on_chart = weeks_on_chart_by_track.get(tid, 0) + 1
@@ -731,6 +740,7 @@ def run(
                 "am_global_score": round(am_global_raw, 2),
                 "prev_rank": pr,
                 "prev_points": prev_points_value,
+                "change": change,
                 "rank_change": rank_change,
                 "percentage_change": pct_change,
                 "weeks_on_chart": weeks_on_chart,
@@ -767,6 +777,7 @@ def run(
                 "am_ts_score": round(am_ts_raw, 2),
                 "am_global_score": round(am_global_raw, 2),
                 "prev_rank": pr,
+                "change": change,
                 "rank_change": rank_change,
                 "percentage_change": pct_change,
                 "weeks_on_chart": weeks_on_chart,

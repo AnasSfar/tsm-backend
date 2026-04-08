@@ -57,9 +57,24 @@ ARCHIVE_CSV   = Path(__file__).resolve().parents[6] / "db" / "charts_history_fr.
 _BEARER_CACHE = _TOOLS / "json" / "bearer_cache.json"
 _TOKEN_TTL    = 50 * 60  # 50 minutes (conservateur)
 
+if ARCHIVE_CSV.name != "charts_history_fr.csv":
+    raise RuntimeError(f"Invalid ARCHIVE_CSV target for FR: {ARCHIVE_CSV}")
+
 SLEEP_SECONDS = 0.20
 TS_NAME = "Taylor Swift"
 CHART_ID = "regional-fr-daily"
+
+ARCHIVE_COLUMNS = [
+    "date",
+    "song_name",
+    "rank",
+    "streams",
+    "previous_rank",
+    "peak_rank",
+    "total_days",
+    "streak",
+    "movement",
+]
 
 
 def norm(s):
@@ -676,7 +691,7 @@ def generate_tweet(ts_df, chart_date, ts_history) -> str:
     return header
 
 
-def process_one(chart_date: str, db, ts_history):
+def process_one(chart_date: str, db, ts_history, *, replace_date: bool = False):
     t_total = time.time()
     print(f"Scrape du chart France pour {chart_date} ...")
 
@@ -774,7 +789,7 @@ def process_one(chart_date: str, db, ts_history):
     print(f"  [écriture fichiers] {time.time() - t0:.1f}s")
 
     t0 = time.time()
-    append_to_archive_csv(chart_date, ts_df)
+    append_to_archive_csv(chart_date, ts_df, replace_date=replace_date)
     print(f"  [archive CSV] {time.time() - t0:.1f}s")
 
     print(f"  OK {chart_date} -> {out_dir}/")
@@ -796,9 +811,56 @@ def _date_in_archive_csv(chart_date: str) -> bool:
     return False
 
 
-def append_to_archive_csv(chart_date: str, ts_df) -> None:
-    """Appende les données TS du jour dans db/charts_history_fr.csv si absentes."""
-    if ts_df is None or ts_df.empty or _date_in_archive_csv(chart_date):
+def _rewrite_archive_excluding_dates(dates_to_remove: set[str]) -> None:
+    if not ARCHIVE_CSV.exists():
+        return
+    tmp_path = ARCHIVE_CSV.with_suffix(ARCHIVE_CSV.suffix + ".tmp")
+    removed = 0
+
+    with ARCHIVE_CSV.open("r", encoding="utf-8", newline="") as src, tmp_path.open(
+        "w", encoding="utf-8", newline=""
+    ) as dst:
+        import csv as _csv
+
+        reader = _csv.reader(src)
+        writer = _csv.writer(dst)
+
+        header = next(reader, None)
+        if not header:
+            writer.writerow(ARCHIVE_COLUMNS)
+            header = ARCHIVE_COLUMNS
+        else:
+            writer.writerow(ARCHIVE_COLUMNS)
+
+        header_map = {name: idx for idx, name in enumerate(header)}
+        date_idx = header_map.get("date", 0)
+
+        for row in reader:
+            if not row:
+                continue
+            row_date = (row[date_idx] if date_idx < len(row) else "").strip()
+            if row_date and row_date in dates_to_remove:
+                removed += 1
+                continue
+
+            record = {name: (row[idx] if idx < len(row) else "") for name, idx in header_map.items()}
+            writer.writerow([record.get(col, "") for col in ARCHIVE_COLUMNS])
+
+    tmp_path.replace(ARCHIVE_CSV)
+    print(f"  Archive CSV réécrite: {removed} ligne(s) supprimée(s)")
+
+
+def append_to_archive_csv(chart_date: str, ts_df, *, replace_date: bool = False) -> None:
+    """Appende les données TS du jour dans db/charts_history_fr.csv.
+
+    - Par défaut, n'écrit pas si la date existe déjà (idempotent).
+    - Si replace_date=True, supprime d'abord toutes les lignes de cette date puis ré-écrit.
+    """
+    if ts_df is None or ts_df.empty:
+        return
+    if replace_date:
+        _rewrite_archive_excluding_dates({chart_date})
+    elif _date_in_archive_csv(chart_date):
         return
     import csv as _csv
 
@@ -809,21 +871,32 @@ def append_to_archive_csv(chart_date: str, ts_df) -> None:
             return ""
         return val
 
-    write_header = not ARCHIVE_CSV.exists()
+    write_header = (not ARCHIVE_CSV.exists()) or (ARCHIVE_CSV.stat().st_size == 0)
     with ARCHIVE_CSV.open("a", newline="", encoding="utf-8") as f:
         w = _csv.writer(f)
         if write_header:
-            w.writerow(["date", "song_name", "rank", "streams", "previous_rank", "peak_rank", "total_days", "streak"])
+            w.writerow(ARCHIVE_COLUMNS)
         for _, row in ts_df.iterrows():
+            rank_val = clean_int(row.get("rank"))
+            prev_val = clean_int(row.get("previous_rank"))
+            peak_val = clean_int(row.get("peak_rank"))
+            total_days_val = clean_int(row.get("total_days"))
+            movement = fmt_delta(
+                rank=rank_val,
+                previous_rank=prev_val,
+                peak_rank=peak_val,
+                total_days=total_days_val,
+            )
             w.writerow([
                 chart_date,
                 _v(row.get("track_name")),
-                _v(row.get("rank")),
-                _v(row.get("streams")),
-                _v(row.get("previous_rank")),
-                _v(row.get("peak_rank")),
-                _v(row.get("total_days")),
-                _v(row.get("streak")),
+                _v(rank_val),
+                _v(clean_int(row.get("streams"))),
+                _v(prev_val),
+                _v(peak_val),
+                _v(total_days_val),
+                _v(clean_int(row.get("streak"))),
+                _v(movement),
             ])
     print(f"  Archive CSV mise à jour pour {chart_date} ({len(ts_df)} chansons)")
 
@@ -897,7 +970,9 @@ def main():
     args = sys.argv[1:]
     run_all = "--all" in args
     run_relog = "--relog" in args
-    target = None if run_all or run_relog else (args[0] if args else None)
+    replace_date = "--replace-date" in args
+    date_args = [a for a in args if not a.startswith("--")]
+    target = None if run_all or run_relog else (date_args[0] if date_args else None)
 
     db = load_db()
     h = load(TS_HISTORY_PATH)
@@ -948,7 +1023,7 @@ def main():
     if not target:
         raise RuntimeError("Donne une date: python filter.py YYYY-MM-DD")
 
-    process_one(target, db, h)
+    process_one(target, db, h, replace_date=replace_date)
     save_db(db)
     history = rebuild_from_ts_csvs(DATA_DIR, initial=seed_from_archive_csv())
     save(history, TS_HISTORY_PATH)

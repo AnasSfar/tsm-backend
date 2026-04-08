@@ -61,6 +61,9 @@ ARCHIVE_CSV   = Path(__file__).resolve().parents[6] / "db" / "charts_history_uk.
 _BEARER_CACHE = _TOOLS / "json" / "bearer_cache.json"
 _TOKEN_TTL    = 50 * 60  # 50 minutes (conservateur)
 
+if ARCHIVE_CSV.name != "charts_history_uk.csv":
+    raise RuntimeError(f"Invalid ARCHIVE_CSV target for UK: {ARCHIVE_CSV}")
+
 SLEEP_SECONDS = 0.20
 TS_NAME = "Taylor Swift"
 CHART_ID = "regional-gb-daily"
