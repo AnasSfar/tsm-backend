@@ -425,14 +425,13 @@ def _fetch_via_api(chart_date: str) -> list[dict] | None:
             "Referer": "https://charts.spotify.com/",
             "User-Agent": _UA,
         }
-        for route in [chart_date, "latest"]:
-            url  = f"{_API_BASE}/{CHART_ID}/{route}"
-            resp = requests.get(url, headers=headers, timeout=30)
-            if resp.status_code == 200:
-                rows = _parse_api_entries(resp.json())
-                if rows:
-                    print(f"  API OK — {len(rows)} lignes pour {chart_date}")
-                    return rows
+        url  = f"{_API_BASE}/{CHART_ID}/{chart_date}"
+        resp = requests.get(url, headers=headers, timeout=30)
+        if resp.status_code == 200:
+            rows = _parse_api_entries(resp.json())
+            if rows:
+                print(f"  API OK — {len(rows)} lignes pour {chart_date}")
+                return rows
         return None
     except Exception as e:
         print(f"  API échec ({e}), fallback Playwright…")

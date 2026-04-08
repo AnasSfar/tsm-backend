@@ -374,27 +374,26 @@ async def _fetch_region(
     headers: dict[str, str],
 ) -> tuple[str, list[dict]]:
     chart_id = "regional-global-daily" if region == "global" else f"regional-{region}-daily"
-    for route in [chart_date, "latest"]:
-        url = f"{_API_BASE}/{chart_id}/{route}"
-        async with sem:
-            try:
-                async with session.get(
-                    url,
-                    headers=headers,
-                    timeout=aiohttp.ClientTimeout(total=30),
-                ) as resp:
-                    if resp.status == 200:
-                        data = await resp.json(content_type=None)
-                        rows = _parse_ts_entries(data)
-                        print(f"  [{region:>6}] {len(rows)} TS entries ({route})")
-                        return region, rows
-                    # 404 = this chart doesn't exist for this date yet, skip silently
-                    if resp.status != 404:
-                        print(f"  [{region:>6}] HTTP {resp.status} ({route})")
-            except asyncio.TimeoutError:
-                print(f"  [{region:>6}] timeout ({route})")
-            except Exception as exc:
-                print(f"  [{region:>6}] error ({route}): {exc}")
+    url = f"{_API_BASE}/{chart_id}/{chart_date}"
+    async with sem:
+        try:
+            async with session.get(
+                url,
+                headers=headers,
+                timeout=aiohttp.ClientTimeout(total=30),
+            ) as resp:
+                if resp.status == 200:
+                    data = await resp.json(content_type=None)
+                    rows = _parse_ts_entries(data)
+                    print(f"  [{region:>6}] {len(rows)} TS entries ({chart_date})")
+                    return region, rows
+                # 404 = this chart doesn't exist for this date yet, skip silently
+                if resp.status != 404:
+                    print(f"  [{region:>6}] HTTP {resp.status} ({chart_date})")
+        except asyncio.TimeoutError:
+            print(f"  [{region:>6}] timeout ({chart_date})")
+        except Exception as exc:
+            print(f"  [{region:>6}] error ({chart_date}): {exc}")
     return region, []
 
 
