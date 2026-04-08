@@ -3,502 +3,162 @@
   "by_track": {
     "53iuhJlwXhSER5J2IYYv1W": [
       {
-        "country": "cz",
-        "country_name": "Czech Republic",
-        "rank": 8,
-        "streams": 21488,
-        "peak_rank": 1,
-        "total_days": 186
-      },
-      {
-        "country": "de",
-        "country_name": "Germany",
+        "country": "ch",
+        "country_name": "Switzerland",
         "rank": 9,
-        "streams": 172515,
+        "streams": 23220,
         "peak_rank": 1,
         "total_days": 186
       },
       {
-        "country": "at",
-        "country_name": "Austria",
-        "rank": 12,
-        "streams": 16284,
+        "country": "ae",
+        "country_name": "UAE",
+        "rank": 15,
+        "streams": 8103,
         "peak_rank": 1,
         "total_days": 186
       },
       {
-        "country": "be",
-        "country_name": "Belgium",
-        "rank": 12,
-        "streams": 33693,
+        "country": "gb",
+        "country_name": "United Kingdom",
+        "rank": 25,
+        "streams": 187139,
         "peak_rank": 1,
         "total_days": 186
       },
       {
-        "country": "global",
-        "country_name": "Global",
-        "rank": 14,
-        "streams": 3361899,
+        "country": "se",
+        "country_name": "Sweden",
+        "rank": 30,
+        "streams": 40180,
         "peak_rank": 1,
         "total_days": 186
       },
       {
-        "country": "ca",
-        "country_name": "Canada",
-        "rank": 14,
-        "streams": 111836,
+        "country": "us",
+        "country_name": "USA",
+        "rank": 34,
+        "streams": 594073,
         "peak_rank": 1,
         "total_days": 186
       },
       {
-        "country": "no",
-        "country_name": "Norway",
-        "rank": 16,
-        "streams": 33385,
+        "country": "sk",
+        "country_name": "Slovakia",
+        "rank": 38,
+        "streams": 5785,
         "peak_rank": 1,
         "total_days": 186
       },
       {
-        "country": "lu",
-        "country_name": "Luxembourg",
-        "rank": 17,
-        "streams": 1785,
+        "country": "es",
+        "country_name": "Spain",
+        "rank": 83,
+        "streams": 87161,
         "peak_rank": 1,
         "total_days": 186
       },
       {
-        "country": "sg",
-        "country_name": "Singapore",
-        "rank": 19,
-        "streams": 25381,
-        "peak_rank": 1,
-        "total_days": 186
-      },
-      {
-        "country": "sa",
-        "country_name": "Saudi Arabia",
-        "rank": 22,
-        "streams": 7758,
-        "peak_rank": 1,
-        "total_days": 32
-      },
-      {
-        "country": "au",
-        "country_name": "Australia",
-        "rank": 23,
-        "streams": 112216,
-        "peak_rank": 1,
-        "total_days": 186
-      },
-      {
-        "country": "my",
-        "country_name": "Malaysia",
-        "rank": 23,
-        "streams": 40732,
-        "peak_rank": 1,
-        "total_days": 186
-      },
-      {
-        "country": "nl",
-        "country_name": "Netherlands",
-        "rank": 23,
-        "streams": 83750,
-        "peak_rank": 1,
-        "total_days": 186
-      },
-      {
-        "country": "pt",
-        "country_name": "Portugal",
-        "rank": 27,
-        "streams": 23743,
-        "peak_rank": 1,
-        "total_days": 186
-      },
-      {
-        "country": "ie",
-        "country_name": "Ireland",
-        "rank": 29,
-        "streams": 22421,
-        "peak_rank": 1,
-        "total_days": 186
-      },
-      {
-        "country": "nz",
-        "country_name": "New Zealand",
-        "rank": 29,
-        "streams": 16823,
-        "peak_rank": 1,
-        "total_days": 186
-      },
-      {
-        "country": "fr",
-        "country_name": "France",
-        "rank": 36,
-        "streams": 142614,
+        "country": "uy",
+        "country_name": "Uruguay",
+        "rank": 109,
+        "streams": 4181,
         "peak_rank": 2,
         "total_days": 186
       },
       {
-        "country": "dk",
-        "country_name": "Denmark",
-        "rank": 43,
-        "streams": 21478,
-        "peak_rank": 1,
-        "total_days": 186
-      },
-      {
-        "country": "is",
-        "country_name": "Iceland",
-        "rank": 49,
-        "streams": 1194,
-        "peak_rank": 1,
-        "total_days": 103
-      },
-      {
-        "country": "hu",
-        "country_name": "Hungary",
-        "rank": 57,
-        "streams": 10665,
-        "peak_rank": 1,
-        "total_days": 186
-      },
-      {
-        "country": "hk",
-        "country_name": "Hong Kong",
-        "rank": 59,
-        "streams": 7319,
-        "peak_rank": 2,
-        "total_days": 186
-      },
-      {
-        "country": "il",
-        "country_name": "Israel",
-        "rank": 63,
-        "streams": 13490,
-        "peak_rank": 6,
-        "total_days": 186
-      },
-      {
-        "country": "fi",
-        "country_name": "Finland",
-        "rank": 72,
-        "streams": 11010,
-        "peak_rank": 4,
-        "total_days": 186
-      },
-      {
-        "country": "lv",
-        "country_name": "Latvia",
-        "rank": 76,
-        "streams": 1831,
-        "peak_rank": 1,
-        "total_days": 186
-      },
-      {
-        "country": "lt",
-        "country_name": "Lithuania",
-        "rank": 80,
-        "streams": 2490,
-        "peak_rank": 1,
-        "total_days": 186
-      },
-      {
-        "country": "pl",
-        "country_name": "Poland",
-        "rank": 86,
-        "streams": 42206,
-        "peak_rank": 4,
-        "total_days": 186
-      },
-      {
-        "country": "br",
-        "country_name": "Brazil",
-        "rank": 95,
-        "streams": 217800,
-        "peak_rank": 2,
-        "total_days": 186
-      },
-      {
-        "country": "it",
-        "country_name": "Italy",
-        "rank": 95,
-        "streams": 72175,
+        "country": "tw",
+        "country_name": "Taiwan",
+        "rank": 124,
+        "streams": 16219,
         "peak_rank": 3,
         "total_days": 186
       },
       {
-        "country": "ph",
-        "country_name": "Philippines",
-        "rank": 105,
-        "streams": 158904,
-        "peak_rank": 1,
-        "total_days": 186
-      },
-      {
-        "country": "ee",
-        "country_name": "Estonia",
-        "rank": 106,
-        "streams": 1490,
-        "peak_rank": 1,
-        "total_days": 186
-      },
-      {
-        "country": "pa",
-        "country_name": "Panama",
-        "rank": 116,
-        "streams": 3746,
-        "peak_rank": 3,
-        "total_days": 186
-      },
-      {
-        "country": "py",
-        "country_name": "Paraguay",
-        "rank": 119,
-        "streams": 5478,
-        "peak_rank": 4,
+        "country": "za",
+        "country_name": "South Africa",
+        "rank": 194,
+        "streams": 13877,
+        "peak_rank": 14,
         "total_days": 1
-      },
-      {
-        "country": "ar",
-        "country_name": "Argentina",
-        "rank": 128,
-        "streams": 52136,
-        "peak_rank": 2,
-        "total_days": 1
-      },
-      {
-        "country": "id",
-        "country_name": "Indonesia",
-        "rank": 133,
-        "streams": 218701,
-        "peak_rank": 36,
-        "total_days": 134
-      },
-      {
-        "country": "cl",
-        "country_name": "Chile",
-        "rank": 140,
-        "streams": 36957,
-        "peak_rank": 9,
-        "total_days": 2
-      },
-      {
-        "country": "ma",
-        "country_name": "Morocco",
-        "rank": 177,
-        "streams": 5452,
-        "peak_rank": 28,
-        "total_days": 3
       }
     ],
     "3yWuTOYDztXjZxdE2cIRUa": [
       {
-        "country": "sg",
-        "country_name": "Singapore",
-        "rank": 39,
-        "streams": 18521,
-        "peak_rank": 3,
-        "total_days": 186
-      },
-      {
-        "country": "ca",
-        "country_name": "Canada",
-        "rank": 44,
-        "streams": 74372,
+        "country": "gb",
+        "country_name": "United Kingdom",
+        "rank": 63,
+        "streams": 115712,
         "peak_rank": 2,
         "total_days": 102
       },
       {
-        "country": "au",
-        "country_name": "Australia",
-        "rank": 52,
-        "streams": 74616,
-        "peak_rank": 2,
-        "total_days": 186
-      },
-      {
-        "country": "be",
-        "country_name": "Belgium",
-        "rank": 65,
-        "streams": 17232,
-        "peak_rank": 2,
-        "total_days": 95
-      },
-      {
-        "country": "nl",
-        "country_name": "Netherlands",
-        "rank": 67,
-        "streams": 43138,
-        "peak_rank": 3,
-        "total_days": 101
-      },
-      {
-        "country": "global",
-        "country_name": "Global",
-        "rank": 76,
-        "streams": 1753190,
-        "peak_rank": 2,
-        "total_days": 186
-      },
-      {
-        "country": "ie",
-        "country_name": "Ireland",
-        "rank": 80,
-        "streams": 13253,
+        "country": "us",
+        "country_name": "USA",
+        "rank": 75,
+        "streams": 442321,
         "peak_rank": 2,
         "total_days": 102
       },
       {
-        "country": "nz",
-        "country_name": "New Zealand",
-        "rank": 84,
-        "streams": 10473,
+        "country": "ae",
+        "country_name": "UAE",
+        "rank": 87,
+        "streams": 4001,
         "peak_rank": 1,
         "total_days": 186
       },
       {
-        "country": "hk",
-        "country_name": "Hong Kong",
-        "rank": 90,
-        "streams": 5620,
-        "peak_rank": 5,
-        "total_days": 186
-      },
-      {
-        "country": "de",
-        "country_name": "Germany",
-        "rank": 99,
-        "streams": 75195,
-        "peak_rank": 2,
-        "total_days": 101
-      },
-      {
-        "country": "at",
-        "country_name": "Austria",
-        "rank": 100,
-        "streams": 7581,
-        "peak_rank": 2,
+        "country": "ch",
+        "country_name": "Switzerland",
+        "rank": 115,
+        "streams": 9322,
+        "peak_rank": 1,
         "total_days": 102
       },
       {
-        "country": "my",
-        "country_name": "Malaysia",
-        "rank": 119,
-        "streams": 21003,
-        "peak_rank": 7,
-        "total_days": 186
-      },
-      {
-        "country": "ph",
-        "country_name": "Philippines",
-        "rank": 156,
-        "streams": 133516,
-        "peak_rank": 3,
-        "total_days": 186
-      },
-      {
-        "country": "fr",
-        "country_name": "France",
-        "rank": 184,
-        "streams": 65437,
-        "peak_rank": 8,
-        "total_days": 8
-      },
-      {
-        "country": "no",
-        "country_name": "Norway",
-        "rank": 189,
-        "streams": 9182,
-        "peak_rank": 2,
-        "total_days": 1
-      }
-    ],
-    "0ug5NqcwcFR2xrfTkc7k8e": [
-      {
-        "country": "sg",
-        "country_name": "Singapore",
-        "rank": 103,
-        "streams": 10639,
-        "peak_rank": 4,
-        "total_days": 102
-      },
-      {
-        "country": "ie",
-        "country_name": "Ireland",
-        "rank": 140,
-        "streams": 10409,
-        "peak_rank": 13,
-        "total_days": 80
-      },
-      {
-        "country": "au",
-        "country_name": "Australia",
+        "country": "tw",
+        "country_name": "Taiwan",
         "rank": 170,
-        "streams": 48003,
-        "peak_rank": 6,
-        "total_days": 70
-      },
-      {
-        "country": "global",
-        "country_name": "Global",
-        "rank": 178,
-        "streams": 1235506,
-        "peak_rank": 12,
-        "total_days": 31
-      },
-      {
-        "country": "my",
-        "country_name": "Malaysia",
-        "rank": 182,
-        "streams": 18119,
-        "peak_rank": 30,
-        "total_days": 1
-      },
-      {
-        "country": "ph",
-        "country_name": "Philippines",
-        "rank": 185,
-        "streams": 122174,
-        "peak_rank": 12,
-        "total_days": 13
+        "streams": 14069,
+        "peak_rank": 9,
+        "total_days": 186
       }
     ],
     "1BxfuPKGuaTgP7aM0Bbdwr": [
       {
-        "country": "sg",
-        "country_name": "Singapore",
-        "rank": 101,
-        "streams": 10685,
-        "peak_rank": 1,
-        "total_days": 1118
+        "country": "ae",
+        "country_name": "UAE",
+        "rank": 159,
+        "streams": 3077,
+        "peak_rank": 2,
+        "total_days": 6
       },
       {
-        "country": "hk",
-        "country_name": "Hong Kong",
-        "rank": 132,
-        "streams": 4608,
-        "peak_rank": 5,
-        "total_days": 10
+        "country": "tw",
+        "country_name": "Taiwan",
+        "rank": 188,
+        "streams": 13590,
+        "peak_rank": 2,
+        "total_days": 3
       }
     ],
-    "4R2kfaDFhslZEMJqAFNpdd": [
+    "0ug5NqcwcFR2xrfTkc7k8e": [
       {
-        "country": "sa",
-        "country_name": "Saudi Arabia",
-        "rank": 200,
-        "streams": 3132,
-        "peak_rank": 29,
-        "total_days": 2
-      }
-    ],
-    "2OzhQlSqBEmt7hmkYxfT6m": [
+        "country": "gb",
+        "country_name": "United Kingdom",
+        "rank": 169,
+        "streams": 81665,
+        "peak_rank": 14,
+        "total_days": 34
+      },
       {
-        "country": "sg",
-        "country_name": "Singapore",
-        "rank": 171,
-        "streams": 8502,
-        "peak_rank": 1,
-        "total_days": 1
+        "country": "ae",
+        "country_name": "UAE",
+        "rank": 182,
+        "streams": 2825,
+        "peak_rank": 24,
+        "total_days": 36
       }
     ]
   }
