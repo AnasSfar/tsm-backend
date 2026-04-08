@@ -415,7 +415,7 @@ def validate_monotonic(rows: list[dict], title: str) -> list[dict]:
 
     Les lignes sont supposées triées par date asc.
     """
-    from datetime import date as _d, timedelta
+    from datetime import date as _d
 
     clean: list[dict] = []
     prev_streams: int | None = None
@@ -441,11 +441,12 @@ def validate_monotonic(rows: list[dict], title: str) -> list[dict]:
             removed += 1
             continue
 
-        # 3. Calcul daily depuis les totaux validés (jours consécutifs seulement)
-        curr_date_obj = _d.fromisoformat(d)
-        if prev_streams is not None and prev_date_obj is not None and curr_date_obj == prev_date_obj + timedelta(days=1):
+        # 3. Calcul daily = diff depuis le dernier point valide (consécutif ou non)
+        #    → premier point : "" (pas de référence)
+        #    → tous les autres : total[J] - total[J-1], même s'il y a un trou
+        if prev_streams is not None:
             r = {**r, "daily_streams": s - prev_streams}
-        # Sinon reste "" (première ligne ou trou dans les dates)
+        # Sinon reste "" (premier point uniquement)
 
         clean.append(r)
         prev_streams  = s
