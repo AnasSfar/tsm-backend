@@ -3535,5 +3535,45 @@
       "marijuana"
     ],
     "is_pop": false
+  },
+  "sabrina carpenter|||house tour": {
+    "artist": "Sabrina Carpenter",
+    "track": "House Tour",
+    "tags": [
+      "new jack swing",
+      "minneapolis sound",
+      "synth funk",
+      "freestyle",
+      "pop",
+      "female vocalist",
+      "sexy",
+      "trip hop",
+      "dance-pop",
+      "rnb"
+    ],
+    "is_pop": false
+  },
+  "green day|||brain stew": {
+    "artist": "Green Day",
+    "track": "Brain Stew",
+    "tags": [
+      "punk rock",
+      "punk",
+      "rock",
+      "90s",
+      "green day",
+      "alternative rock",
+      "alternative",
+      "pop punk",
+      "887 cimx",
+      "1996"
+    ],
+    "is_pop": false
+  },
+  "don toliver|||tiramisu": {
+    "artist": "Don Toliver",
+    "track": "Tiramisu",
+    "tags": [],
+    "is_pop": false
   }
 }
