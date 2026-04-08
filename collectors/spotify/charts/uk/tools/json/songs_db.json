@@ -1,1 +1,3512 @@
-{}
+{
+  "taylor swift|||the fate of ophelia": {
+    "artist": "Taylor Swift",
+    "track": "The Fate of Ophelia",
+    "tags": [
+      "pop",
+      "best of 2025",
+      "synthpop",
+      "baroque pop",
+      "soty"
+    ],
+    "is_pop": true,
+    "album": "The Life of a Showgirl",
+    "release_date": "2025-10-03"
+  },
+  "taylor swift|||opalite": {
+    "artist": "Taylor Swift",
+    "track": "Opalite",
+    "tags": [
+      "synthpop",
+      "pop",
+      "soft rock",
+      "rnb",
+      "soty"
+    ],
+    "is_pop": true,
+    "album": "The Life of a Showgirl",
+    "release_date": ""
+  },
+  "taylor swift|||style": {
+    "artist": "Taylor Swift",
+    "track": "Style",
+    "tags": [
+      "pop",
+      "synthpop",
+      "taylor swift",
+      "love at first listen",
+      "1989"
+    ],
+    "is_pop": true,
+    "album": "1989",
+    "release_date": ""
+  },
+  "pinkpantheress|||stateside + zara larsson": {
+    "artist": "PinkPantheress",
+    "track": "Stateside + Zara Larsson",
+    "tags": [
+      "electroclash",
+      "pop",
+      "skweee",
+      "electro house",
+      "bmson",
+      "bitpop",
+      "female vocalist",
+      "i like it",
+      "duet",
+      "dance-pop"
+    ],
+    "is_pop": true
+  },
+  "olivia dean|||man i need": {
+    "artist": "Olivia Dean",
+    "track": "Man I Need",
+    "tags": [
+      "pop",
+      "soul",
+      "love",
+      "rnb",
+      "sweet",
+      "female vocalists",
+      "british",
+      "r&b",
+      "2025",
+      "uk number one"
+    ],
+    "is_pop": true
+  },
+  "raye|||where is my husband!": {
+    "artist": "RAYE",
+    "track": "WHERE IS MY HUSBAND!",
+    "tags": [
+      "big band",
+      "pop soul",
+      "go-go",
+      "contemporary rnb",
+      "motown sound",
+      "soul",
+      "british",
+      "neo-soul",
+      "love at first listen",
+      "jazz pop"
+    ],
+    "is_pop": true
+  },
+  "dave|||raindance (feat. tems)": {
+    "artist": "Dave",
+    "track": "Raindance (feat. Tems)",
+    "tags": [
+      "hip-hop",
+      "rap",
+      "neo-soul",
+      "uk hip-hop",
+      "afrobeats",
+      "afrosoul",
+      "alternative rnb",
+      "tems"
+    ],
+    "is_pop": false
+  },
+  "bella kay|||iloveitiloveitiloveit": {
+    "artist": "Bella Kay",
+    "track": "iloveitiloveitiloveit",
+    "tags": [],
+    "is_pop": false
+  },
+  "sombr|||homewrecker": {
+    "artist": "sombr",
+    "track": "Homewrecker",
+    "tags": [
+      "pop",
+      "2026",
+      "tate mcrae brother",
+      "better than addison rae"
+    ],
+    "is_pop": true
+  },
+  "dominic fike|||babydoll": {
+    "artist": "Dominic Fike",
+    "track": "Babydoll",
+    "tags": [
+      "chill",
+      "alternative",
+      "indie",
+      "pop",
+      "indie rock",
+      "indie pop",
+      "alternative pop"
+    ],
+    "is_pop": false
+  },
+  "sam fender|||rein me in (with olivia dean)": {
+    "artist": "Sam Fender",
+    "track": "Rein Me In (with Olivia Dean)",
+    "tags": [
+      "tinnitus"
+    ],
+    "is_pop": false
+  },
+  "olivia dean|||so easy (to fall in love)": {
+    "artist": "Olivia Dean",
+    "track": "So Easy (To Fall In Love)",
+    "tags": [
+      "bossa nova",
+      "jazz",
+      "indie pop",
+      "pop",
+      "dream pop",
+      "british",
+      "jazz pop",
+      "keeping diva alive in 2025",
+      "uk number two",
+      "playlista rmf fm"
+    ],
+    "is_pop": true
+  },
+  "harry styles|||american girls": {
+    "artist": "Harry Styles",
+    "track": "American Girls",
+    "tags": [
+      "soty",
+      "julia mofada"
+    ],
+    "is_pop": false
+  },
+  "alex warren|||fever dream": {
+    "artist": "Alex Warren",
+    "track": "FEVER DREAM",
+    "tags": [
+      "linedance 2026",
+      "playlista rmf fm"
+    ],
+    "is_pop": false
+  },
+  "djo|||end of beginning": {
+    "artist": "Djo",
+    "track": "End of Beginning",
+    "tags": [
+      "metalcore",
+      "deathcore",
+      "rock",
+      "death metal",
+      "post metal",
+      "porngrind",
+      "neoclassical metal",
+      "true norwegian black metal",
+      "depressive suicidal black metal",
+      "slam death metal"
+    ],
+    "is_pop": false
+  },
+  "olivia dean|||nice to each other": {
+    "artist": "Olivia Dean",
+    "track": "Nice To Each Other",
+    "tags": [],
+    "is_pop": false
+  },
+  "dominic fike|||white keys": {
+    "artist": "Dominic Fike",
+    "track": "White Keys",
+    "tags": [],
+    "is_pop": false
+  },
+  "sombr|||12 to 12": {
+    "artist": "sombr",
+    "track": "12 to 12",
+    "tags": [
+      "disco",
+      "rock",
+      "fun",
+      "pop",
+      "victor",
+      "pop rock",
+      "vinnie",
+      "playlista rmf fm",
+      "2025",
+      "fuck tiktokers"
+    ],
+    "is_pop": false
+  },
+  "raye|||click clack symphony. (feat. hans zimmer)": {
+    "artist": "RAYE",
+    "track": "Click Clack Symphony. (feat. Hans Zimmer)",
+    "tags": [
+      "rnb",
+      "classical",
+      "chamber pop",
+      "orchestral pop",
+      "art pop",
+      "baroque pop",
+      "progressive pop",
+      "avant-pop"
+    ],
+    "is_pop": true
+  },
+  "zara larsson|||lush life": {
+    "artist": "Zara Larsson",
+    "track": "Lush Life",
+    "tags": [
+      "pop",
+      "electropop",
+      "swedish",
+      "zara larsson",
+      "2015",
+      "female vocalists",
+      "summer",
+      "love at first listen",
+      "dance pop",
+      "electronic"
+    ],
+    "is_pop": true
+  },
+  "alex warren|||ordinary": {
+    "artist": "Alex Warren",
+    "track": "Ordinary",
+    "tags": [
+      "pop",
+      "us number one",
+      "love",
+      "country",
+      "folk",
+      "techno",
+      "american",
+      "musik",
+      "adult contemporary",
+      "ballad"
+    ],
+    "is_pop": true
+  },
+  "sienna spiro|||the visitor": {
+    "artist": "SIENNA SPIRO",
+    "track": "The Visitor",
+    "tags": [],
+    "is_pop": false
+  },
+  "tame impala|||dracula - jennie remix": {
+    "artist": "Tame Impala",
+    "track": "Dracula - JENNIE Remix",
+    "tags": [
+      "loonaids",
+      "buwygfibsara",
+      "julia mofada",
+      "glindas"
+    ],
+    "is_pop": false
+  },
+  "sombr|||back to friends": {
+    "artist": "sombr",
+    "track": "back to friends",
+    "tags": [
+      "wsum 91.7 fm madison",
+      "rock and roll over",
+      "the morning show",
+      "indie pop",
+      "indie rock",
+      "alternative rock",
+      "alternative pop",
+      "dark rock",
+      "musik",
+      "pop rock"
+    ],
+    "is_pop": false
+  },
+  "the killers|||mr. brightside": {
+    "artist": "The Killers",
+    "track": "Mr. Brightside",
+    "tags": [
+      "rock",
+      "indie rock",
+      "indie",
+      "alternative",
+      "alternative rock",
+      "the killers",
+      "00s",
+      "american",
+      "pop",
+      "love"
+    ],
+    "is_pop": false
+  },
+  "sienna spiro|||die on this hill": {
+    "artist": "SIENNA SPIRO",
+    "track": "Die On This Hill",
+    "tags": [
+      "soul",
+      "jazz",
+      "piano",
+      "ballad",
+      "souk",
+      "breakup"
+    ],
+    "is_pop": false
+  },
+  "bruno mars|||i just might": {
+    "artist": "Bruno Mars",
+    "track": "I Just Might",
+    "tags": [
+      "american",
+      "party",
+      "wake-up song",
+      "us number one",
+      "linedance 2026",
+      "2026",
+      "early 26",
+      "bruno mars",
+      "playlista rmf fm"
+    ],
+    "is_pop": false
+  },
+  "huntr/x|||golden": {
+    "artist": "HUNTR/X",
+    "track": "Golden",
+    "tags": [
+      "k-pop",
+      "soundtrack",
+      "kpop",
+      "korean",
+      "2025",
+      "netflix",
+      "ost",
+      "colours",
+      "spotify",
+      "musical"
+    ],
+    "is_pop": false
+  },
+  "fleetwood mac|||dreams - 2004 remaster": {
+    "artist": "Fleetwood Mac",
+    "track": "Dreams - 2004 Remaster",
+    "tags": [
+      "rock",
+      "classic rock",
+      "soft rock",
+      "jazz",
+      "pop rock",
+      "blues",
+      "yacht rock",
+      "country pop",
+      "mistagged",
+      "psychedelic pop"
+    ],
+    "is_pop": false
+  },
+  "the goo goo dolls|||iris": {
+    "artist": "The Goo Goo Dolls",
+    "track": "Iris",
+    "tags": [],
+    "is_pop": false
+  },
+  "disco lines|||no broke boys": {
+    "artist": "Disco Lines",
+    "track": "No Broke Boys",
+    "tags": [
+      "tech house",
+      "edm",
+      "pop edm",
+      "pop",
+      "house",
+      "electronic",
+      "dance",
+      "fav",
+      "dance-pop",
+      "electro house"
+    ],
+    "is_pop": true
+  },
+  "kanye west|||father (feat. travis scott)": {
+    "artist": "Kanye West",
+    "track": "FATHER (feat. Travis Scott)",
+    "tags": [],
+    "is_pop": false
+  },
+  "olivia dean|||ok love you bye": {
+    "artist": "Olivia Dean",
+    "track": "Ok Love You Bye",
+    "tags": [
+      "pop",
+      "soul",
+      "indie soul",
+      "rnb",
+      "pop soul"
+    ],
+    "is_pop": true
+  },
+  "harry styles|||aperture": {
+    "artist": "Harry Styles",
+    "track": "Aperture",
+    "tags": [
+      "house",
+      "electronic",
+      "synthpop",
+      "alternative",
+      "disco",
+      "british",
+      "progressive house",
+      "soty",
+      "alt-pop",
+      "baltimore club"
+    ],
+    "is_pop": true
+  },
+  "sombr|||undressed": {
+    "artist": "sombr",
+    "track": "undressed",
+    "tags": [
+      "indie rock",
+      "rock",
+      "sad",
+      "american",
+      "good left undone",
+      "lilith owns this music",
+      "wsum 91.7 fm madison",
+      "playlista rmf fm",
+      "have i heard you before with dj t"
+    ],
+    "is_pop": false
+  },
+  "olivia dean|||the hardest part": {
+    "artist": "Olivia Dean",
+    "track": "The Hardest Part",
+    "tags": [],
+    "is_pop": false
+  },
+  "ravyn lenae|||love me not": {
+    "artist": "Ravyn Lenae",
+    "track": "Love Me Not",
+    "tags": [
+      "soul",
+      "pop soul",
+      "rock",
+      "rnb",
+      "neo-soul",
+      "pop rock",
+      "my top songs",
+      "lilith owns this music",
+      "melhores 2024",
+      "uk number two"
+    ],
+    "is_pop": true
+  },
+  "zara larsson|||midnight sun": {
+    "artist": "Zara Larsson",
+    "track": "Midnight Sun",
+    "tags": [
+      "pop",
+      "jersey club",
+      "atmospheric drum and bass",
+      "dance pop",
+      "bubblegum bass",
+      "jersey drill",
+      "swedish",
+      "dopamine",
+      "female vocalist",
+      "heard live"
+    ],
+    "is_pop": true
+  },
+  "kanye west|||all the love (feat. andre troutman)": {
+    "artist": "Kanye West",
+    "track": "ALL THE LOVE (feat. Andre Troutman)",
+    "tags": [],
+    "is_pop": false
+  },
+  "raye|||i know you're hurting.": {
+    "artist": "RAYE",
+    "track": "I Know You're Hurting.",
+    "tags": [],
+    "is_pop": false
+  },
+  "white noise radiance|||rain sounds for sleeping, pt. 06 (continuous no gaps)": {
+    "artist": "White Noise Radiance",
+    "track": "Rain Sounds for Sleeping, Pt. 06 (Continuous No Gaps)",
+    "tags": [],
+    "is_pop": false
+  },
+  "sean paul|||(when you gonna) give it up to me - radio version": {
+    "artist": "Sean Paul",
+    "track": "(When You Gonna) Give It Up to Me - Radio Version",
+    "tags": [
+      "keyshia cole",
+      "dancehall",
+      "2006",
+      "sean paul"
+    ],
+    "is_pop": false
+  },
+  "dream supplier|||clean baby sleep white noise (loopable)": {
+    "artist": "Dream Supplier",
+    "track": "Clean Baby Sleep White Noise (Loopable)",
+    "tags": [],
+    "is_pop": false
+  },
+  "olivia dean|||baby steps": {
+    "artist": "Olivia Dean",
+    "track": "Baby Steps",
+    "tags": [],
+    "is_pop": false
+  },
+  "olivia dean|||dive": {
+    "artist": "Olivia Dean",
+    "track": "Dive",
+    "tags": [
+      "pop soul",
+      "soul",
+      "pop",
+      "neo-soul",
+      "contemporary rnb",
+      "top 2000 2025",
+      "top 2000"
+    ],
+    "is_pop": true
+  },
+  "fleetwood mac|||the chain - 2004 remaster": {
+    "artist": "Fleetwood Mac",
+    "track": "The Chain - 2004 Remaster",
+    "tags": [
+      "rock",
+      "classic rock",
+      "soft rock",
+      "blues rock",
+      "folk rock",
+      "yacht rock",
+      "pop",
+      "country rock",
+      "pop rock",
+      "importado_do_spotify"
+    ],
+    "is_pop": false
+  },
+  "tame impala|||dracula": {
+    "artist": "Tame Impala",
+    "track": "Dracula",
+    "tags": [
+      "psychedelic",
+      "synthpop",
+      "synth funk",
+      "nu-disco",
+      "rock",
+      "disco",
+      "psychedelic rock",
+      "boogie",
+      "dance pop",
+      "dance-pop"
+    ],
+    "is_pop": true
+  },
+  "olivia dean|||a couple minutes": {
+    "artist": "Olivia Dean",
+    "track": "A Couple Minutes",
+    "tags": [],
+    "is_pop": false
+  },
+  "sabrina carpenter|||manchild": {
+    "artist": "Sabrina Carpenter",
+    "track": "Manchild",
+    "tags": [
+      "pop",
+      "rnb",
+      "synthpop",
+      "country",
+      "country pop",
+      "urban cowboy",
+      "pop rock",
+      "2025",
+      "europop",
+      "misandry"
+    ],
+    "is_pop": true
+  },
+  "gunna|||wgft (feat. burna boy)": {
+    "artist": "Gunna",
+    "track": "wgft (feat. Burna Boy)",
+    "tags": [],
+    "is_pop": false
+  },
+  "fleetwood mac|||everywhere - 2017 remaster": {
+    "artist": "Fleetwood Mac",
+    "track": "Everywhere - 2017 Remaster",
+    "tags": [
+      "80s",
+      "rock",
+      "happy morning",
+      "soft rock",
+      "pop",
+      "alternative rock",
+      "pop rock",
+      "dream pop",
+      "feel good",
+      "yacht rock"
+    ],
+    "is_pop": false
+  },
+  "kings of leon|||sex on fire": {
+    "artist": "Kings of Leon",
+    "track": "Sex on Fire",
+    "tags": [
+      "rock",
+      "indie rock",
+      "alternative",
+      "indie",
+      "i fucking love this song",
+      "kings of leon",
+      "alternative rock",
+      "sexy",
+      "southern rock",
+      "sex on fire"
+    ],
+    "is_pop": false
+  },
+  "harry styles|||sign of the times": {
+    "artist": "Harry Styles",
+    "track": "Sign of the Times",
+    "tags": [
+      "rock",
+      "alternative",
+      "pop",
+      "indie",
+      "british",
+      "2017",
+      "soft rock",
+      "pop rock",
+      "alternative rock",
+      "2010s"
+    ],
+    "is_pop": true
+  },
+  "bts|||swim": {
+    "artist": "BTS",
+    "track": "SWIM",
+    "tags": [
+      "swim",
+      "fya",
+      "body to body",
+      "please",
+      "merry go round",
+      "aliens",
+      "one more night",
+      "arirang",
+      "into the sun",
+      "like animals"
+    ],
+    "is_pop": false
+  },
+  "gigi perez|||sailor song": {
+    "artist": "Gigi Perez",
+    "track": "Sailor Song",
+    "tags": [
+      "wsum 91.7 fm madison",
+      "my top songs",
+      "rock and roll over",
+      "indie folk",
+      "versus verses",
+      "folk",
+      "love",
+      "indie",
+      "acoustic",
+      "pop"
+    ],
+    "is_pop": false
+  },
+  "vance joy|||riptide": {
+    "artist": "Vance Joy",
+    "track": "Riptide",
+    "tags": [
+      "folk",
+      "indie",
+      "australian",
+      "alternative",
+      "indie folk",
+      "2013",
+      "pop",
+      "indie pop",
+      "singer-songwriter",
+      "2014"
+    ],
+    "is_pop": false
+  },
+  "the neighbourhood|||sweater weather": {
+    "artist": "The Neighbourhood",
+    "track": "Sweater Weather",
+    "tags": [
+      "indie",
+      "alternative",
+      "chill",
+      "summer",
+      "can't stop listening",
+      "indie rock",
+      "alternative rock",
+      "indie pop",
+      "2013",
+      "rock"
+    ],
+    "is_pop": false
+  },
+  "central cee|||wagwan": {
+    "artist": "Central Cee",
+    "track": "WAGWAN",
+    "tags": [],
+    "is_pop": false
+  },
+  "dream supplier|||clean baby sleep white noise (loopable no fade)": {
+    "artist": "Dream Supplier",
+    "track": "Clean Baby Sleep White Noise (Loopable no fade)",
+    "tags": [],
+    "is_pop": false
+  },
+  "drake|||one dance": {
+    "artist": "Drake",
+    "track": "One Dance",
+    "tags": [
+      "kyla",
+      "drake",
+      "wizkid",
+      "pop",
+      "dancehall",
+      "2016",
+      "hip-hop",
+      "ovo",
+      "aubrey",
+      "drizzy"
+    ],
+    "is_pop": false
+  },
+  "gracie abrams|||that’s so true": {
+    "artist": "Gracie Abrams",
+    "track": "That’s So True",
+    "tags": [
+      "peter",
+      "female vocalist",
+      "singer-songwriter",
+      "love at first listen",
+      "my top songs",
+      "pop",
+      "indie pop",
+      "overrated",
+      "female vocalists",
+      "mm"
+    ],
+    "is_pop": false
+  },
+  "ella langley|||choosin' texas": {
+    "artist": "Ella Langley",
+    "track": "Choosin' Texas",
+    "tags": [
+      "love",
+      "country",
+      "fav",
+      "female vocalists",
+      "texas",
+      "contemporary country",
+      "on the road",
+      "linedance 2026",
+      "modern country",
+      "2025"
+    ],
+    "is_pop": false
+  },
+  "the kooks|||naive": {
+    "artist": "The Kooks",
+    "track": "Naive",
+    "tags": [],
+    "is_pop": false
+  },
+  "noah kahan|||porch light": {
+    "artist": "Noah Kahan",
+    "track": "Porch Light",
+    "tags": [],
+    "is_pop": false
+  },
+  "raye|||winter woman.": {
+    "artist": "RAYE",
+    "track": "Winter Woman.",
+    "tags": [],
+    "is_pop": false
+  },
+  "red hot chili peppers|||can't stop": {
+    "artist": "Red Hot Chili Peppers",
+    "track": "Can't Stop",
+    "tags": [
+      "rock",
+      "alternative rock",
+      "funk",
+      "alternative",
+      "red hot chili peppers",
+      "funk rock",
+      "00s",
+      "american",
+      "rhcp",
+      "hard rock"
+    ],
+    "is_pop": false
+  },
+  "harry styles|||taste back": {
+    "artist": "Harry Styles",
+    "track": "Taste Back",
+    "tags": [
+      "italy",
+      "yearning"
+    ],
+    "is_pop": false
+  },
+  "benson boone|||beautiful things": {
+    "artist": "Benson Boone",
+    "track": "Beautiful Things",
+    "tags": [
+      "pop",
+      "pop rock",
+      "my top songs",
+      "emo",
+      "post-hardcore",
+      "american",
+      "ballad",
+      "post grunge",
+      "suz",
+      "radio"
+    ],
+    "is_pop": true
+  },
+  "don toliver|||e85": {
+    "artist": "Don Toliver",
+    "track": "E85",
+    "tags": [],
+    "is_pop": false
+  },
+  "raye|||the whatsapp shakespeare.": {
+    "artist": "RAYE",
+    "track": "The WhatsApp Shakespeare.",
+    "tags": [],
+    "is_pop": false
+  },
+  "radiohead|||creep": {
+    "artist": "Radiohead",
+    "track": "Creep",
+    "tags": [
+      "alternative",
+      "alternative rock",
+      "rock",
+      "indie",
+      "radiohead",
+      "90s",
+      "british",
+      "indie rock",
+      "melancholy",
+      "sad"
+    ],
+    "is_pop": false
+  },
+  "the script|||the man who can't be moved": {
+    "artist": "The Script",
+    "track": "The Man Who Can't Be Moved",
+    "tags": [
+      "pop",
+      "rock",
+      "the script",
+      "love",
+      "mellow",
+      "irish",
+      "indie",
+      "pop rock",
+      "alternative",
+      "beautiful"
+    ],
+    "is_pop": true
+  },
+  "chappell roan|||pink pony club": {
+    "artist": "Chappell Roan",
+    "track": "Pink Pony Club",
+    "tags": [
+      "pop",
+      "synthpop",
+      "indie pop",
+      "indie",
+      "pop rock",
+      "dance-pop",
+      "new wave",
+      "female singer",
+      "modern rock",
+      "radio"
+    ],
+    "is_pop": true
+  },
+  "gorillaz|||feel good inc.": {
+    "artist": "Gorillaz",
+    "track": "Feel Good Inc.",
+    "tags": [
+      "alternative",
+      "electronic",
+      "hip-hop",
+      "rock",
+      "gorillaz",
+      "00s",
+      "trip-hop",
+      "alternative rock",
+      "dance",
+      "british"
+    ],
+    "is_pop": false
+  },
+  "milky|||just the way you are": {
+    "artist": "Milky",
+    "track": "Just The Way You Are",
+    "tags": [
+      "dance",
+      "electronic",
+      "house",
+      "pop",
+      "00s",
+      "italian",
+      "party",
+      "europop",
+      "playlista rmf fm",
+      "disco house"
+    ],
+    "is_pop": false
+  },
+  "bella kay|||the sick": {
+    "artist": "Bella Kay",
+    "track": "The Sick",
+    "tags": [
+      "olivia rodrigo",
+      "billie eilish",
+      "tate mcrae",
+      "bella kay"
+    ],
+    "is_pop": false
+  },
+  "billie eilish|||birds of a feather": {
+    "artist": "Billie Eilish",
+    "track": "BIRDS OF A FEATHER",
+    "tags": [
+      "peter",
+      "alt-pop",
+      "2024",
+      "pop",
+      "olivia",
+      "radio",
+      "love",
+      "indie pop",
+      "sophisti-pop",
+      "my top songs"
+    ],
+    "is_pop": true
+  },
+  "olivia dean|||let alone the one you love": {
+    "artist": "Olivia Dean",
+    "track": "Let Alone The One You Love",
+    "tags": [],
+    "is_pop": false
+  },
+  "olivia dean|||i've seen it": {
+    "artist": "Olivia Dean",
+    "track": "I've Seen It",
+    "tags": [],
+    "is_pop": false
+  },
+  "tame impala|||the less i know the better": {
+    "artist": "Tame Impala",
+    "track": "The Less I Know The Better",
+    "tags": [
+      "psychedelic",
+      "psychedelic pop",
+      "indie",
+      "neo-psychedelia",
+      "disco",
+      "synthpop",
+      "rock",
+      "funk",
+      "synth funk",
+      "alternative"
+    ],
+    "is_pop": true
+  },
+  "fleetwood mac|||landslide": {
+    "artist": "Fleetwood Mac",
+    "track": "Landslide",
+    "tags": [
+      "classic rock",
+      "70s",
+      "female vocalists",
+      "acoustic",
+      "rock",
+      "fleetwood mac",
+      "stevie nicks",
+      "christine mcvie",
+      "soft rock",
+      "mellow"
+    ],
+    "is_pop": false
+  },
+  "chappell roan|||good luck, babe!": {
+    "artist": "Chappell Roan",
+    "track": "Good Luck, Babe!",
+    "tags": [
+      "synthpop",
+      "baroque pop",
+      "pop",
+      "new wave",
+      "pop rock",
+      "2024",
+      "indie pop",
+      "lesbian",
+      "gay pop",
+      "my top songs"
+    ],
+    "is_pop": true
+  },
+  "malcolm todd|||earrings": {
+    "artist": "Malcolm Todd",
+    "track": "Earrings",
+    "tags": [
+      "pop",
+      "indie",
+      "alternative"
+    ],
+    "is_pop": true
+  },
+  "stereophonics|||dakota": {
+    "artist": "Stereophonics",
+    "track": "Dakota",
+    "tags": [
+      "rock",
+      "indie",
+      "indie rock",
+      "britpop",
+      "alternative",
+      "british",
+      "stereophonics",
+      "alternative rock",
+      "00s",
+      "love"
+    ],
+    "is_pop": false
+  },
+  "the cure|||boys don't cry": {
+    "artist": "The Cure",
+    "track": "Boys Don't Cry",
+    "tags": [
+      "new wave",
+      "80s",
+      "post-punk",
+      "rock",
+      "alternative",
+      "the cure",
+      "british",
+      "alternative rock",
+      "indie",
+      "70s"
+    ],
+    "is_pop": false
+  },
+  "the police|||every breath you take": {
+    "artist": "The Police",
+    "track": "Every Breath You Take",
+    "tags": [
+      "80s",
+      "rock",
+      "classic rock",
+      "pop",
+      "the police",
+      "new wave",
+      "british",
+      "soft rock",
+      "sting",
+      "ballad"
+    ],
+    "is_pop": false
+  },
+  "madonna|||into the groove": {
+    "artist": "Madonna",
+    "track": "Into the Groove",
+    "tags": [
+      "pop",
+      "80s",
+      "dance",
+      "female vocalists",
+      "madonna",
+      "1985",
+      "party",
+      "sexy",
+      "dance-pop",
+      "american"
+    ],
+    "is_pop": true
+  },
+  "raye|||life boat.": {
+    "artist": "RAYE",
+    "track": "Life Boat.",
+    "tags": [],
+    "is_pop": false
+  },
+  "alex warren|||carry you home": {
+    "artist": "Alex Warren",
+    "track": "Carry You Home",
+    "tags": [
+      "my top songs",
+      "love",
+      "country",
+      "pop",
+      "folk pop",
+      "country-pop",
+      "a",
+      "olivia",
+      "real",
+      "male vocalists"
+    ],
+    "is_pop": false
+  },
+  "tlc|||no scrubs": {
+    "artist": "TLC",
+    "track": "No Scrubs",
+    "tags": [
+      "rnb",
+      "90s",
+      "pop",
+      "female vocalists",
+      "hip-hop",
+      "tlc",
+      "r&b",
+      "1999",
+      "soul",
+      "hip hop"
+    ],
+    "is_pop": true
+  },
+  "sam fender|||seventeen going under": {
+    "artist": "Sam Fender",
+    "track": "Seventeen Going Under",
+    "tags": [
+      "indie rock",
+      "rock",
+      "pop",
+      "indie",
+      "british",
+      "heartland rock",
+      "songs that make you hurt",
+      "man! i love this song",
+      "top nice tracks",
+      "lovethatindiestuff"
+    ],
+    "is_pop": true
+  },
+  "red hot chili peppers|||scar tissue": {
+    "artist": "Red Hot Chili Peppers",
+    "track": "Scar Tissue",
+    "tags": [
+      "rock",
+      "alternative rock",
+      "alternative",
+      "funk",
+      "red hot chili peppers",
+      "funk rock",
+      "90s",
+      "1999",
+      "american",
+      "chill"
+    ],
+    "is_pop": false
+  },
+  "empire of the sun|||we are the people": {
+    "artist": "Empire Of The Sun",
+    "track": "We Are The People",
+    "tags": [
+      "electronic",
+      "indie",
+      "synthpop",
+      "pop",
+      "australian",
+      "summer",
+      "love at first listen",
+      "music thats so good you cry",
+      "dreamy",
+      "dance"
+    ],
+    "is_pop": true
+  },
+  "the verve|||bitter sweet symphony - remastered 2016": {
+    "artist": "The Verve",
+    "track": "Bitter Sweet Symphony - Remastered 2016",
+    "tags": [
+      "chamber pop",
+      "britpop",
+      "neo-psychedelia",
+      "post-britpop",
+      "dream pop",
+      "symphonic rock",
+      "trip hop",
+      "baggy",
+      "importado_do_spotify",
+      "orchestral"
+    ],
+    "is_pop": true
+  },
+  "raye|||beware.. the south london lover boy.": {
+    "artist": "RAYE",
+    "track": "Beware.. The South London Lover Boy.",
+    "tags": [],
+    "is_pop": false
+  },
+  "bad bunny|||dtmf": {
+    "artist": "Bad Bunny",
+    "track": "DtMF",
+    "tags": [
+      "latin",
+      "melodic",
+      "vocal",
+      "reggaeton",
+      "moderate",
+      "plena",
+      "spanish",
+      "king of pop",
+      "soft",
+      "danceable"
+    ],
+    "is_pop": false
+  },
+  "harry styles|||coming up roses": {
+    "artist": "Harry Styles",
+    "track": "Coming Up Roses",
+    "tags": [],
+    "is_pop": false
+  },
+  "raye|||joy. (feat. amma & absolutely)": {
+    "artist": "RAYE",
+    "track": "Joy. (feat. Amma & Absolutely)",
+    "tags": [],
+    "is_pop": false
+  },
+  "sienna spiro|||you stole the show": {
+    "artist": "SIENNA SPIRO",
+    "track": "You Stole The Show",
+    "tags": [],
+    "is_pop": false
+  },
+  "natasha bedingfield|||unwritten": {
+    "artist": "Natasha Bedingfield",
+    "track": "Unwritten",
+    "tags": [
+      "pop",
+      "female vocalists",
+      "natasha bedingfield",
+      "british",
+      "dance",
+      "singer-songwriter",
+      "happy",
+      "female vocalist",
+      "00s",
+      "positive"
+    ],
+    "is_pop": true
+  },
+  "bruno mars|||risk it all": {
+    "artist": "Bruno Mars",
+    "track": "Risk It All",
+    "tags": [
+      "latin pop",
+      "pop",
+      "bruno mars",
+      "europa plus"
+    ],
+    "is_pop": true
+  },
+  "kings of leon|||use somebody": {
+    "artist": "Kings of Leon",
+    "track": "Use Somebody",
+    "tags": [
+      "rock",
+      "indie rock",
+      "alternative",
+      "indie",
+      "southern rock",
+      "alternative rock",
+      "kings of leon",
+      "00s",
+      "american",
+      "use somebody"
+    ],
+    "is_pop": false
+  },
+  "sabrina carpenter|||espresso": {
+    "artist": "Sabrina Carpenter",
+    "track": "Espresso",
+    "tags": [
+      "pop",
+      "nu-disco",
+      "dance-pop",
+      "boogie",
+      "espresso",
+      "2024",
+      "disco",
+      "soty",
+      "best of 2024",
+      "my top songs"
+    ],
+    "is_pop": true
+  },
+  "kanye west|||all falls down": {
+    "artist": "Kanye West",
+    "track": "All Falls Down",
+    "tags": [
+      "hip-hop",
+      "kanye west",
+      "rap",
+      "hip hop",
+      "2004",
+      "pop rap",
+      "rnb",
+      "melodic",
+      "american",
+      "00s"
+    ],
+    "is_pop": false
+  },
+  "noah kahan|||stick season": {
+    "artist": "Noah Kahan",
+    "track": "Stick Season",
+    "tags": [
+      "indie folk",
+      "guitar",
+      "indie",
+      "singer-songwriter",
+      "folk",
+      "acoustic",
+      "pop",
+      "sad",
+      "indie pop",
+      "alternative"
+    ],
+    "is_pop": false
+  },
+  "nelly furtado|||promiscuous": {
+    "artist": "Nelly Furtado",
+    "track": "Promiscuous",
+    "tags": [
+      "pop",
+      "dance",
+      "hip-hop",
+      "rnb",
+      "female vocalists",
+      "nelly furtado",
+      "party",
+      "00s",
+      "sexy",
+      "timbaland"
+    ],
+    "is_pop": true
+  },
+  "teddy swims|||lose control": {
+    "artist": "Teddy Swims",
+    "track": "Lose Control",
+    "tags": [
+      "soul",
+      "pop",
+      "vocals",
+      "rnb",
+      "4stars",
+      "one track mind",
+      "emotional",
+      "good left undone",
+      "us number one",
+      "my top songs"
+    ],
+    "is_pop": true
+  },
+  "hozier|||take me to church": {
+    "artist": "Hozier",
+    "track": "Take Me To Church",
+    "tags": [
+      "indie",
+      "soul",
+      "kick",
+      "favorite track right now",
+      "indie rock",
+      "rock",
+      "hozier",
+      "2013",
+      "10s",
+      "wsum 91.7 fm madison"
+    ],
+    "is_pop": false
+  },
+  "kanye west|||king": {
+    "artist": "Kanye West",
+    "track": "KING",
+    "tags": [
+      "king",
+      "trap",
+      "outro",
+      "skibidi toilet",
+      "anti semetic"
+    ],
+    "is_pop": false
+  },
+  "myles smith|||stargazing": {
+    "artist": "Myles Smith",
+    "track": "Stargazing",
+    "tags": [
+      "groovy",
+      "instrumental",
+      "loud",
+      "melodic",
+      "my top songs",
+      "moderate",
+      "pop",
+      "british",
+      "upbeat",
+      "radio"
+    ],
+    "is_pop": false
+  },
+  "arctic monkeys|||505": {
+    "artist": "Arctic Monkeys",
+    "track": "505",
+    "tags": [
+      "indie rock",
+      "indie",
+      "british",
+      "rock",
+      "alternative",
+      "alternative rock",
+      "arctic monkeys",
+      "beautiful",
+      "melancholy",
+      "00s"
+    ],
+    "is_pop": false
+  },
+  "harry styles|||ready, steady, go!": {
+    "artist": "Harry Styles",
+    "track": "Ready, Steady, Go!",
+    "tags": [
+      "tears for fears",
+      "change",
+      "julia mofada"
+    ],
+    "is_pop": false
+  },
+  "kendrick lamar|||all the stars (with sza) - from \"black panther: the album\"": {
+    "artist": "Kendrick Lamar",
+    "track": "All The Stars (with SZA) - From \"Black Panther: The Album\"",
+    "tags": [
+      "sza",
+      "pop",
+      "kendrick lamar",
+      "spotify top 100 vol 1"
+    ],
+    "is_pop": true
+  },
+  "frank ocean|||nights": {
+    "artist": "Frank Ocean",
+    "track": "Nights",
+    "tags": [
+      "masterpiece",
+      "art pop",
+      "alternative rnb",
+      "alternative",
+      "neo-soul",
+      "rnb",
+      "hip-hop",
+      "downtempo",
+      "frank ocean",
+      "rap"
+    ],
+    "is_pop": true
+  },
+  "prince|||purple rain": {
+    "artist": "Prince",
+    "track": "Purple Rain",
+    "tags": [
+      "80s",
+      "pop",
+      "rock",
+      "soul",
+      "funk",
+      "prince",
+      "1984",
+      "ballad",
+      "purple rain",
+      "love"
+    ],
+    "is_pop": true
+  },
+  "tate mcrae|||sports car": {
+    "artist": "Tate McRae",
+    "track": "Sports car",
+    "tags": [
+      "pop",
+      "so close to what",
+      "electropop",
+      "rnb",
+      "dance-pop",
+      "contemporary rnb",
+      "dance",
+      "2025",
+      "2020s",
+      "europa plus"
+    ],
+    "is_pop": true
+  },
+  "the long faces|||jane!": {
+    "artist": "The Long Faces",
+    "track": "Jane!",
+    "tags": [
+      "indie rock",
+      "alternative rock",
+      "post-punk"
+    ],
+    "is_pop": false
+  },
+  "addison rae|||fame is a gun": {
+    "artist": "Addison Rae",
+    "track": "Fame is a Gun",
+    "tags": [
+      "electropop",
+      "pop",
+      "synthpop",
+      "electroclash",
+      "dance-pop",
+      "electronic",
+      "house",
+      "europop",
+      "indie sleaze",
+      "electro house"
+    ],
+    "is_pop": true
+  },
+  "drake|||headlines": {
+    "artist": "Drake",
+    "track": "Headlines",
+    "tags": [
+      "rap",
+      "hip-hop",
+      "2011",
+      "hip hop",
+      "drake",
+      "canadian",
+      "fun",
+      "young money",
+      "chill",
+      "loved"
+    ],
+    "is_pop": false
+  },
+  "rihanna|||kiss it better": {
+    "artist": "Rihanna",
+    "track": "Kiss It Better",
+    "tags": [
+      "rnb",
+      "pop",
+      "love at first listen",
+      "alternative",
+      "2016",
+      "alternative rnb",
+      "r&b",
+      "neo-soul",
+      "hip-hop",
+      "female vocalists"
+    ],
+    "is_pop": true
+  },
+  "the cranberries|||linger": {
+    "artist": "The Cranberries",
+    "track": "Linger",
+    "tags": [
+      "rock",
+      "90s",
+      "female vocalists",
+      "alternative",
+      "irish",
+      "alternative rock",
+      "pop",
+      "the cranberries",
+      "soft rock",
+      "mellow"
+    ],
+    "is_pop": false
+  },
+  "coldplay|||yellow": {
+    "artist": "Coldplay",
+    "track": "Yellow",
+    "tags": [
+      "rock",
+      "alternative",
+      "coldplay",
+      "alternative rock",
+      "britpop",
+      "british",
+      "love",
+      "00s",
+      "yellow",
+      "mellow"
+    ],
+    "is_pop": false
+  },
+  "raye|||nightingale lane.": {
+    "artist": "RAYE",
+    "track": "Nightingale Lane.",
+    "tags": [
+      "soul",
+      "jazz",
+      "blues",
+      "rnb"
+    ],
+    "is_pop": false
+  },
+  "esdeekid|||phantom": {
+    "artist": "EsDeeKid",
+    "track": "Phantom",
+    "tags": [
+      "gangsta rap",
+      "uk hip hop",
+      "hardcore hip hop",
+      "uk rap",
+      "dark plugg",
+      "jerk",
+      "rap",
+      "drill",
+      "hip-hop",
+      "uk hip-hop"
+    ],
+    "is_pop": false
+  },
+  "wheatus|||teenage dirtbag": {
+    "artist": "Wheatus",
+    "track": "Teenage Dirtbag",
+    "tags": [
+      "rock",
+      "alternative",
+      "alternative rock",
+      "90s",
+      "pop",
+      "pop punk",
+      "00s",
+      "pop rock",
+      "wheatus",
+      "happy"
+    ],
+    "is_pop": false
+  },
+  "kanye west|||punch drunk": {
+    "artist": "Kanye West",
+    "track": "PUNCH DRUNK",
+    "tags": [],
+    "is_pop": false
+  },
+  "florence + the machine|||dog days are over": {
+    "artist": "Florence + The Machine",
+    "track": "Dog Days Are Over",
+    "tags": [
+      "indie",
+      "female vocalists",
+      "alternative",
+      "indie pop",
+      "british",
+      "florence and the machine",
+      "pop",
+      "happy",
+      "upbeat",
+      "2009"
+    ],
+    "is_pop": false
+  },
+  "tears for fears|||everybody wants to rule the world": {
+    "artist": "Tears For Fears",
+    "track": "Everybody Wants To Rule The World",
+    "tags": [
+      "80s",
+      "new wave",
+      "pop",
+      "tears for fears",
+      "rock",
+      "synth pop",
+      "synthpop",
+      "british",
+      "1985",
+      "classic rock"
+    ],
+    "is_pop": true
+  },
+  "fleetwood mac|||silver springs - 2004 remaster": {
+    "artist": "Fleetwood Mac",
+    "track": "Silver Springs - 2004 Remaster",
+    "tags": [
+      "soft rock",
+      "psychedelic pop",
+      "folk pop",
+      "rock",
+      "indie",
+      "classic rock",
+      "alternative",
+      "powerful",
+      "recommended",
+      "colors"
+    ],
+    "is_pop": true
+  },
+  "evanescence|||bring me to life": {
+    "artist": "Evanescence",
+    "track": "Bring Me To Life",
+    "tags": [
+      "rock",
+      "gothic rock",
+      "female vocalists",
+      "evanescence",
+      "gothic",
+      "alternative",
+      "alternative rock",
+      "metal",
+      "gothic metal",
+      "nu metal"
+    ],
+    "is_pop": false
+  },
+  "anotr|||talk to you": {
+    "artist": "ANOTR",
+    "track": "Talk To You",
+    "tags": [],
+    "is_pop": false
+  },
+  "bella kay|||steady": {
+    "artist": "Bella Kay",
+    "track": "Steady",
+    "tags": [
+      "ktya core"
+    ],
+    "is_pop": false
+  },
+  "lady gaga|||die with a smile": {
+    "artist": "Lady Gaga",
+    "track": "Die With A Smile",
+    "tags": [
+      "bruno mars",
+      "soft rock",
+      "ballad",
+      "pop",
+      "pop rock",
+      "lady gaga",
+      "duet",
+      "2024",
+      "pop soul",
+      "best of 2024"
+    ],
+    "is_pop": false
+  },
+  "tate mcrae|||just keep watching (from f1® the movie)": {
+    "artist": "Tate McRae",
+    "track": "Just Keep Watching (From F1® The Movie)",
+    "tags": [
+      "égera",
+      "electropop",
+      "victor",
+      "soundtrack",
+      "formula 1",
+      "f1",
+      "brazilian funk",
+      "justkeepwatching",
+      "dariacore",
+      "my top songs"
+    ],
+    "is_pop": true
+  },
+  "noah kahan|||the great divide": {
+    "artist": "Noah Kahan",
+    "track": "The Great Divide",
+    "tags": [
+      "singer-songwriter",
+      "folk rock",
+      "heartland rock",
+      "indie folk"
+    ],
+    "is_pop": false
+  },
+  "nirvana|||smells like teen spirit": {
+    "artist": "Nirvana",
+    "track": "Smells Like Teen Spirit",
+    "tags": [
+      "grunge",
+      "rock",
+      "alternative",
+      "90s",
+      "nirvana",
+      "alternative rock",
+      "anthem",
+      "punk",
+      "classic rock",
+      "hard rock"
+    ],
+    "is_pop": false
+  },
+  "raye|||i will overcome.": {
+    "artist": "RAYE",
+    "track": "I Will Overcome.",
+    "tags": [],
+    "is_pop": false
+  },
+  "justin bieber|||daisies": {
+    "artist": "Justin Bieber",
+    "track": "DAISIES",
+    "tags": [
+      "essaehdagiselledapandlr",
+      "pop",
+      "pop rock",
+      "guitar",
+      "acoustic pop",
+      "black metal",
+      "canadian",
+      "contemporary rnb",
+      "singer songwriter",
+      "mistagged"
+    ],
+    "is_pop": true
+  },
+  "kanye west|||flashing lights": {
+    "artist": "Kanye West",
+    "track": "Flashing Lights",
+    "tags": [
+      "hip-hop",
+      "rap",
+      "hip hop",
+      "kanye west",
+      "rnb",
+      "pop rap",
+      "00s",
+      "electronic",
+      "2007",
+      "electropop"
+    ],
+    "is_pop": false
+  },
+  "the killers|||somebody told me": {
+    "artist": "The Killers",
+    "track": "Somebody Told Me",
+    "tags": [
+      "rock",
+      "indie rock",
+      "indie",
+      "alternative",
+      "the killers",
+      "alternative rock",
+      "00s",
+      "pop",
+      "britpop",
+      "american"
+    ],
+    "is_pop": false
+  },
+  "lola young|||messy": {
+    "artist": "Lola Young",
+    "track": "Messy",
+    "tags": [
+      "indie rock",
+      "rock",
+      "indie pop",
+      "neo-psychedelia",
+      "post-punk revival",
+      "british",
+      "20s",
+      "playlista rmf fm",
+      "uk number one",
+      "grammy winning song"
+    ],
+    "is_pop": true
+  },
+  "raye|||goodbye henry. (feat. al green)": {
+    "artist": "RAYE",
+    "track": "Goodbye Henry. (feat. Al Green)",
+    "tags": [],
+    "is_pop": false
+  },
+  "radiohead|||let down": {
+    "artist": "Radiohead",
+    "track": "Let Down",
+    "tags": [
+      "alternative",
+      "alternative rock",
+      "rock",
+      "radiohead",
+      "beautiful",
+      "90s",
+      "indie",
+      "british",
+      "art rock",
+      "melancholy"
+    ],
+    "is_pop": false
+  },
+  "mark ronson|||valerie (feat. amy winehouse) - version revisited": {
+    "artist": "Mark Ronson",
+    "track": "Valerie (feat. Amy Winehouse) - Version Revisited",
+    "tags": [
+      "soul",
+      "jazz",
+      "blues",
+      "swing",
+      "amy winehouse",
+      "pop",
+      "rnb",
+      "jazz pop",
+      "pop soul",
+      "mark ronson"
+    ],
+    "is_pop": false
+  },
+  "sabrina carpenter|||taste": {
+    "artist": "Sabrina Carpenter",
+    "track": "Taste",
+    "tags": [
+      "pop",
+      "pop rock",
+      "sabrina carpenter",
+      "2024",
+      "synthpop",
+      "taste",
+      "slacker rock",
+      "soft rock",
+      "female vocalists",
+      "dance-pop"
+    ],
+    "is_pop": true
+  },
+  "katy perry|||the one that got away": {
+    "artist": "Katy Perry",
+    "track": "The One That Got Away",
+    "tags": [
+      "pop",
+      "katy perry",
+      "female vocalists",
+      "love",
+      "relax",
+      "dance",
+      "cool",
+      "cute",
+      "2011",
+      "sweet"
+    ],
+    "is_pop": true
+  },
+  "linkin park|||in the end": {
+    "artist": "Linkin Park",
+    "track": "In the End",
+    "tags": [
+      "rock",
+      "nu metal",
+      "alternative rock",
+      "linkin park",
+      "alternative",
+      "metal",
+      "rapcore",
+      "alternative metal",
+      "hard rock",
+      "in the end"
+    ],
+    "is_pop": false
+  },
+  "fleetwood mac|||go your own way - 2004 remaster": {
+    "artist": "Fleetwood Mac",
+    "track": "Go Your Own Way - 2004 Remaster",
+    "tags": [
+      "late 70s rock",
+      "70s",
+      "soft rock",
+      "classic rock",
+      "pop rock",
+      "aor",
+      "power pop",
+      "fleetwood mac",
+      "breakup",
+      "cathartic"
+    ],
+    "is_pop": false
+  },
+  "hozier|||too sweet": {
+    "artist": "Hozier",
+    "track": "Too Sweet",
+    "tags": [
+      "2024",
+      "pop soul",
+      "love",
+      "pop",
+      "pop rock",
+      "all music",
+      "irish",
+      "good vocals",
+      "20s",
+      "bassline"
+    ],
+    "is_pop": true
+  },
+  "bts|||body to body": {
+    "artist": "BTS",
+    "track": "Body to Body",
+    "tags": [
+      "k-pop",
+      "korean",
+      "kpop",
+      "alt-pop",
+      "uk bass",
+      "boom bap",
+      "pop rap",
+      "aprhodity",
+      "mavi",
+      "fusion gugak"
+    ],
+    "is_pop": false
+  },
+  "she & him|||i thought i saw your face today": {
+    "artist": "She & Him",
+    "track": "I Thought I Saw Your Face Today",
+    "tags": [
+      "indie",
+      "whistling",
+      "folk",
+      "piano",
+      "female vocalists",
+      "acoustic",
+      "indie folk",
+      "love",
+      "summer",
+      "beautiful"
+    ],
+    "is_pop": false
+  },
+  "calvin harris|||feel so close - radio edit": {
+    "artist": "Calvin Harris",
+    "track": "Feel So Close - Radio Edit",
+    "tags": [],
+    "is_pop": false
+  },
+  "harry styles|||as it was": {
+    "artist": "Harry Styles",
+    "track": "As It Was",
+    "tags": [
+      "pop",
+      "rock and roll over",
+      "wsum 91.7 fm madison",
+      "synthpop",
+      "indie pop",
+      "rock",
+      "pop rock",
+      "british",
+      "harry's house",
+      "new wave"
+    ],
+    "is_pop": true
+  },
+  "empire of the sun|||walking on a dream": {
+    "artist": "Empire Of The Sun",
+    "track": "Walking On A Dream",
+    "tags": [
+      "electronic",
+      "indie",
+      "poptron",
+      "indie electronic",
+      "pop",
+      "australian",
+      "synthpop",
+      "electropop",
+      "dance",
+      "summer"
+    ],
+    "is_pop": true
+  },
+  "oasis|||don't look back in anger - remastered": {
+    "artist": "Oasis",
+    "track": "Don't Look Back In Anger - Remastered",
+    "tags": [
+      "britpop",
+      "rock",
+      "punk",
+      "alternative rock",
+      "bad brains",
+      "beastie boys",
+      "oasis",
+      "whydoievenlikeoasis",
+      "britgoth",
+      "romantic tritones"
+    ],
+    "is_pop": true
+  },
+  "alex warren|||eternity": {
+    "artist": "Alex Warren",
+    "track": "Eternity",
+    "tags": [
+      "gospel choir"
+    ],
+    "is_pop": false
+  },
+  "olivia dean|||lady lady": {
+    "artist": "Olivia Dean",
+    "track": "Lady Lady",
+    "tags": [
+      "soul",
+      "rnb",
+      "house spider",
+      "wsum 91.7 fm madison"
+    ],
+    "is_pop": false
+  },
+  "esdeekid|||century": {
+    "artist": "EsDeeKid",
+    "track": "Century",
+    "tags": [],
+    "is_pop": false
+  },
+  "shaboozey|||a bar song (tipsy)": {
+    "artist": "Shaboozey",
+    "track": "A Bar Song (Tipsy)",
+    "tags": [
+      "country",
+      "country rap",
+      "my top songs",
+      "pop",
+      "american",
+      "hip-hop",
+      "rap",
+      "contemporary country",
+      "southern hip hop",
+      "country pop"
+    ],
+    "is_pop": false
+  },
+  "franz ferdinand|||take me out": {
+    "artist": "Franz Ferdinand",
+    "track": "Take Me Out",
+    "tags": [
+      "indie",
+      "indie rock",
+      "rock",
+      "alternative",
+      "franz ferdinand",
+      "alternative rock",
+      "british",
+      "britpop",
+      "00s",
+      "scottish"
+    ],
+    "is_pop": false
+  },
+  "haven.|||i run": {
+    "artist": "HAVEN.",
+    "track": "I Run",
+    "tags": [
+      "ai"
+    ],
+    "is_pop": false
+  },
+  "toto|||africa": {
+    "artist": "TOTO",
+    "track": "Africa",
+    "tags": [
+      "80s",
+      "classic rock",
+      "rock",
+      "soft rock",
+      "pop",
+      "toto",
+      "africa",
+      "pop rock",
+      "oldies",
+      "1982"
+    ],
+    "is_pop": false
+  },
+  "train|||drops of jupiter (tell me)": {
+    "artist": "Train",
+    "track": "Drops of Jupiter (Tell Me)",
+    "tags": [
+      "rock",
+      "alternative",
+      "pop rock",
+      "pop",
+      "alternative rock",
+      "2001",
+      "00s",
+      "train",
+      "adult contemporary",
+      "2000s"
+    ],
+    "is_pop": true
+  },
+  "crowded house|||don't dream it's over": {
+    "artist": "Crowded House",
+    "track": "Don't Dream It's Over",
+    "tags": [
+      "80s",
+      "pop",
+      "rock",
+      "classic rock",
+      "crowded house",
+      "ballad",
+      "australian",
+      "soft rock",
+      "new wave",
+      "alternative"
+    ],
+    "is_pop": true
+  },
+  "chrystal|||the days - notion remix": {
+    "artist": "Chrystal",
+    "track": "The Days - NOTION Remix",
+    "tags": [
+      "house",
+      "deep house",
+      "uk garage"
+    ],
+    "is_pop": false
+  },
+  "arctic monkeys|||do i wanna know?": {
+    "artist": "Arctic Monkeys",
+    "track": "Do I Wanna Know?",
+    "tags": [
+      "indie rock",
+      "indie",
+      "alternative",
+      "rock",
+      "arctic monkeys",
+      "alternative rock",
+      "british",
+      "2013",
+      "sexy",
+      "2013 single"
+    ],
+    "is_pop": false
+  },
+  "julia wolf|||in my room": {
+    "artist": "Julia Wolf",
+    "track": "In My Room",
+    "tags": [
+      "dark pop",
+      "alternative pop",
+      "volcrynz",
+      "barbara paris loves it"
+    ],
+    "is_pop": true
+  },
+  "charli xcx|||chains of love": {
+    "artist": "Charli xcx",
+    "track": "Chains of Love",
+    "tags": [
+      "synthpop",
+      "darkwave",
+      "alt-pop",
+      "dark pop",
+      "seductive pop",
+      "synthwave",
+      "europa plus"
+    ],
+    "is_pop": true
+  },
+  "rihanna|||only girl (in the world)": {
+    "artist": "Rihanna",
+    "track": "Only Girl (In The World)",
+    "tags": [
+      "dance",
+      "pop",
+      "rihanna",
+      "female vocalists",
+      "electronic",
+      "2010",
+      "rnb",
+      "electropop",
+      "party",
+      "dance-pop"
+    ],
+    "is_pop": true
+  },
+  "weezer|||go away": {
+    "artist": "Weezer",
+    "track": "Go Away",
+    "tags": [
+      "alternative rock",
+      "rock",
+      "indie",
+      "power pop",
+      "pop",
+      "10s",
+      "80s",
+      "folk",
+      "new wave",
+      "electronic"
+    ],
+    "is_pop": false
+  },
+  "rihanna|||don't stop the music": {
+    "artist": "Rihanna",
+    "track": "Don't Stop The Music",
+    "tags": [
+      "dance",
+      "pop",
+      "rihanna",
+      "rnb",
+      "female vocalists",
+      "party",
+      "electronic",
+      "00s",
+      "r&b",
+      "sexy"
+    ],
+    "is_pop": true
+  },
+  "kanye west|||whatever works": {
+    "artist": "Kanye West",
+    "track": "WHATEVER WORKS",
+    "tags": [],
+    "is_pop": false
+  },
+  "coldplay|||viva la vida": {
+    "artist": "Coldplay",
+    "track": "Viva La Vida",
+    "tags": [
+      "alternative",
+      "rock",
+      "coldplay",
+      "alternative rock",
+      "viva la vida",
+      "british",
+      "britpop",
+      "pop",
+      "indie",
+      "beautiful"
+    ],
+    "is_pop": false
+  },
+  "sam fender|||people watching": {
+    "artist": "Sam Fender",
+    "track": "People Watching",
+    "tags": [
+      "the morning show",
+      "wsum 91.7 fm madison",
+      "indie rock",
+      "heartland rock",
+      "alternative rock",
+      "saxophone",
+      "20s",
+      "wake-up song",
+      "lovethatindiestuff",
+      "goat"
+    ],
+    "is_pop": false
+  },
+  "the kooks|||she moves in her own way": {
+    "artist": "The Kooks",
+    "track": "She Moves In Her Own Way",
+    "tags": [
+      "indie",
+      "indie rock",
+      "british",
+      "alternative",
+      "rock",
+      "the kooks",
+      "britpop",
+      "happy",
+      "love",
+      "00s"
+    ],
+    "is_pop": false
+  },
+  "sonny fodera|||think about us": {
+    "artist": "Sonny Fodera",
+    "track": "Think About Us",
+    "tags": [],
+    "is_pop": false
+  },
+  "childish gambino|||les": {
+    "artist": "Childish Gambino",
+    "track": "Les",
+    "tags": [],
+    "is_pop": false
+  },
+  "nickelback|||how you remind me": {
+    "artist": "Nickelback",
+    "track": "How You Remind Me",
+    "tags": [
+      "rock",
+      "alternative rock",
+      "nickelback",
+      "hard rock",
+      "alternative",
+      "canadian",
+      "post-grunge",
+      "00s",
+      "grunge",
+      "male vocalists"
+    ],
+    "is_pop": false
+  },
+  "oasis|||wonderwall - remastered": {
+    "artist": "Oasis",
+    "track": "Wonderwall - Remastered",
+    "tags": [
+      "rock",
+      "britpop",
+      "alternative rock",
+      "alternative",
+      "indie",
+      "pop rock",
+      "pop",
+      "madchester",
+      "acoustic rock",
+      "90s"
+    ],
+    "is_pop": true
+  },
+  "fred again..|||victory lap": {
+    "artist": "Fred again..",
+    "track": "Victory Lap",
+    "tags": [
+      "grime",
+      "rap",
+      "electronic",
+      "hip-hop",
+      "dubstep",
+      "uk hip hop",
+      "uk hip-hop",
+      "uk rap",
+      "edm",
+      "skepta"
+    ],
+    "is_pop": false
+  },
+  "macklemore|||can't hold us (feat. ray dalton)": {
+    "artist": "Macklemore",
+    "track": "Can't Hold Us (feat. Ray Dalton)",
+    "tags": [
+      "hip-hop",
+      "rap",
+      "pop rap",
+      "pop",
+      "nostalgic",
+      "fav",
+      "dance-pop",
+      "bop",
+      "neo-soul",
+      "deep house"
+    ],
+    "is_pop": true
+  },
+  "snow patrol|||chasing cars": {
+    "artist": "Snow Patrol",
+    "track": "Chasing Cars",
+    "tags": [
+      "indie",
+      "alternative",
+      "rock",
+      "indie rock",
+      "love",
+      "snow patrol",
+      "alternative rock",
+      "beautiful",
+      "britpop",
+      "pop"
+    ],
+    "is_pop": false
+  },
+  "kanye west|||homecoming": {
+    "artist": "Kanye West",
+    "track": "Homecoming",
+    "tags": [
+      "hip-hop",
+      "rap",
+      "kanye west",
+      "hip hop",
+      "chris martin",
+      "chicago",
+      "pop rap",
+      "2007",
+      "piano",
+      "00s"
+    ],
+    "is_pop": false
+  },
+  "esdeekid|||4 raws": {
+    "artist": "EsDeeKid",
+    "track": "4 Raws",
+    "tags": [
+      "trap",
+      "gangsta rap",
+      "hardcore hip hop",
+      "uk hip hop",
+      "cloud rap",
+      "chicago drill",
+      "wave",
+      "999",
+      "homoerotic",
+      "tread"
+    ],
+    "is_pop": false
+  },
+  "the cranberries|||zombie - 2025 remastered": {
+    "artist": "The Cranberries",
+    "track": "Zombie - 2025 Remastered",
+    "tags": [],
+    "is_pop": false
+  },
+  "marvin gaye|||ain't no mountain high enough": {
+    "artist": "Marvin Gaye",
+    "track": "Ain't No Mountain High Enough",
+    "tags": [
+      "soul",
+      "motown",
+      "60s",
+      "oldies",
+      "marvin gaye",
+      "rhythm and blues",
+      "funk",
+      "rnb",
+      "male vocalists",
+      "70s"
+    ],
+    "is_pop": false
+  },
+  "rihanna|||breakin' dishes": {
+    "artist": "Rihanna",
+    "track": "Breakin' Dishes",
+    "tags": [
+      "rnb",
+      "pop",
+      "dance",
+      "rihanna",
+      "female vocalists",
+      "00s",
+      "r&b",
+      "hip-hop",
+      "club",
+      "dance-pop"
+    ],
+    "is_pop": true
+  },
+  "rihanna|||s&m": {
+    "artist": "Rihanna",
+    "track": "S&M",
+    "tags": [
+      "pop",
+      "dance",
+      "female vocalists",
+      "rihanna",
+      "electronic",
+      "sexy",
+      "party",
+      "rnb",
+      "electropop",
+      "sex"
+    ],
+    "is_pop": true
+  },
+  "eminem|||love the way you lie": {
+    "artist": "Eminem",
+    "track": "Love The Way You Lie",
+    "tags": [
+      "955 wkqi",
+      "rap",
+      "hip-hop",
+      "love",
+      "hip hop",
+      "eminem",
+      "emotional",
+      "pop",
+      "rihanna",
+      "2010"
+    ],
+    "is_pop": false
+  },
+  "arctic monkeys|||i wanna be yours": {
+    "artist": "Arctic Monkeys",
+    "track": "I Wanna Be Yours",
+    "tags": [
+      "indie rock",
+      "alternative",
+      "indie",
+      "british",
+      "rock",
+      "sexy",
+      "2013",
+      "alternative rock",
+      "love",
+      "arctic monkeys"
+    ],
+    "is_pop": false
+  },
+  "black eyed peas|||meet me halfway": {
+    "artist": "Black Eyed Peas",
+    "track": "Meet Me Halfway",
+    "tags": [
+      "pop",
+      "hip-hop",
+      "black eyed peas",
+      "dance",
+      "rap",
+      "personal",
+      "i wish i could make a video for this",
+      "dance all night",
+      "i can imagine that song in a movie",
+      "love"
+    ],
+    "is_pop": true
+  },
+  "gracie abrams|||i love you, i'm sorry": {
+    "artist": "Gracie Abrams",
+    "track": "I Love You, I'm Sorry",
+    "tags": [
+      "my top songs",
+      "peter",
+      "indie",
+      "female vocalist",
+      "indie pop",
+      "singer-songwriter",
+      "pop",
+      "chill",
+      "los angeles",
+      "emo"
+    ],
+    "is_pop": false
+  },
+  "raye|||escapism.": {
+    "artist": "RAYE",
+    "track": "Escapism.",
+    "tags": [
+      "alternative rnb",
+      "trip hop",
+      "hip hop",
+      "rap",
+      "uk hip hop",
+      "neo-soul",
+      "rnb",
+      "pop rap",
+      "raye",
+      "jazz rap"
+    ],
+    "is_pop": false
+  },
+  "jeff buckley|||lover, you should've come over": {
+    "artist": "Jeff Buckley",
+    "track": "Lover, You Should've Come Over",
+    "tags": [
+      "rock",
+      "singer-songwriter",
+      "beautiful",
+      "love",
+      "jeff buckley",
+      "alternative rock",
+      "90s",
+      "mellow",
+      "alternative",
+      "sad"
+    ],
+    "is_pop": false
+  },
+  "harry styles|||pop": {
+    "artist": "Harry Styles",
+    "track": "Pop",
+    "tags": [],
+    "is_pop": false
+  },
+  "french montana|||unforgettable": {
+    "artist": "French Montana",
+    "track": "Unforgettable",
+    "tags": [
+      "afrobeats",
+      "rap",
+      "2017",
+      "hip hop",
+      "dancehall",
+      "hip-hop",
+      "rnb",
+      "2010s",
+      "swae lee",
+      "summer"
+    ],
+    "is_pop": false
+  },
+  "foo fighters|||everlong": {
+    "artist": "Foo Fighters",
+    "track": "Everlong",
+    "tags": [
+      "rock",
+      "alternative rock",
+      "90s",
+      "alternative",
+      "foo fighters",
+      "grunge",
+      "post-grunge",
+      "hard rock",
+      "dave grohl",
+      "beautiful"
+    ],
+    "is_pop": false
+  },
+  "bruno mars|||locked out of heaven": {
+    "artist": "Bruno Mars",
+    "track": "Locked out of Heaven",
+    "tags": [
+      "pop",
+      "rnb",
+      "bruno mars",
+      "10s",
+      "2012",
+      "male vocalists",
+      "american",
+      "cant even express how much i love this song",
+      "2010s",
+      "dance"
+    ],
+    "is_pop": true
+  },
+  "harry styles|||are you listening yet?": {
+    "artist": "Harry Styles",
+    "track": "Are You Listening Yet?",
+    "tags": [],
+    "is_pop": false
+  },
+  "dominic fike|||3 nights": {
+    "artist": "Dominic Fike",
+    "track": "3 Nights",
+    "tags": [
+      "pop",
+      "indie pop",
+      "10s",
+      "alternative pop",
+      "indie rock",
+      "alternative rock",
+      "alternative",
+      "love this",
+      "pop rock",
+      "vibe"
+    ],
+    "is_pop": true
+  },
+  "calvin harris|||blessings": {
+    "artist": "Calvin Harris",
+    "track": "Blessings",
+    "tags": [
+      "europa plus",
+      "chill house",
+      "eurohit top 40"
+    ],
+    "is_pop": false
+  },
+  "mac miller|||the spins": {
+    "artist": "Mac Miller",
+    "track": "The Spins",
+    "tags": [
+      "hip-hop",
+      "rap",
+      "hip hop",
+      "alternative hip-hop",
+      "weed",
+      "mac miller",
+      "loud has a fat cock and danny is hot",
+      "indie",
+      "money",
+      "pop"
+    ],
+    "is_pop": false
+  },
+  "michael jackson|||billie jean": {
+    "artist": "Michael Jackson",
+    "track": "Billie Jean",
+    "tags": [
+      "pop",
+      "80s",
+      "michael jackson",
+      "dance",
+      "disco",
+      "funk",
+      "king of pop",
+      "soul",
+      "billie jean",
+      "rnb"
+    ],
+    "is_pop": true
+  },
+  "florence + the machine|||you've got the love": {
+    "artist": "Florence + The Machine",
+    "track": "You've Got The Love",
+    "tags": [
+      "indie",
+      "female vocalists",
+      "british",
+      "alternative",
+      "cover",
+      "indie pop",
+      "pop",
+      "florence and the machine",
+      "soul",
+      "love"
+    ],
+    "is_pop": false
+  },
+  "bruno mars|||that's what i like": {
+    "artist": "Bruno Mars",
+    "track": "That's What I Like",
+    "tags": [
+      "funk",
+      "rnb",
+      "new jack swing",
+      "2010s",
+      "2016",
+      "pop",
+      "american",
+      "bruno mars",
+      "love at first listen",
+      "2017"
+    ],
+    "is_pop": false
+  },
+  "rihanna|||we found love": {
+    "artist": "Rihanna",
+    "track": "We Found Love",
+    "tags": [],
+    "is_pop": false
+  },
+  "candi staton|||young hearts run free": {
+    "artist": "Candi Staton",
+    "track": "Young Hearts Run Free",
+    "tags": [
+      "disco",
+      "soul",
+      "70s",
+      "female vocalists",
+      "1976",
+      "dance",
+      "pop",
+      "young hearts run free",
+      "candi staton",
+      "happy"
+    ],
+    "is_pop": false
+  },
+  "nelly furtado|||maneater": {
+    "artist": "Nelly Furtado",
+    "track": "Maneater",
+    "tags": [
+      "pop",
+      "dance",
+      "female vocalists",
+      "nelly furtado",
+      "rnb",
+      "cult",
+      "sexy",
+      "party",
+      "canadian",
+      "00s"
+    ],
+    "is_pop": true
+  },
+  "amy winehouse|||tears dry on their own": {
+    "artist": "Amy Winehouse",
+    "track": "Tears Dry On Their Own",
+    "tags": [
+      "soul",
+      "jazz",
+      "female vocalists",
+      "amy winehouse",
+      "british",
+      "pop",
+      "singer-songwriter",
+      "blues",
+      "00s",
+      "female vocalist"
+    ],
+    "is_pop": false
+  },
+  "estelle|||american boy": {
+    "artist": "Estelle",
+    "track": "American Boy",
+    "tags": [
+      "rnb",
+      "pop",
+      "female vocalists",
+      "soul",
+      "hip-hop",
+      "estelle",
+      "american boy",
+      "kanye west",
+      "party",
+      "2008"
+    ],
+    "is_pop": true
+  },
+  "onerepublic|||counting stars": {
+    "artist": "OneRepublic",
+    "track": "Counting Stars",
+    "tags": [
+      "pop rock",
+      "rock",
+      "pop",
+      "love at first listen",
+      "kick",
+      "alternative",
+      "melancholic",
+      "onerepublic",
+      "2013",
+      "one republic"
+    ],
+    "is_pop": true
+  },
+  "pitbull|||give me everything (feat. nayer)": {
+    "artist": "Pitbull",
+    "track": "Give Me Everything (feat. Nayer)",
+    "tags": [
+      "ne-yo",
+      "afrojack",
+      "hip hop",
+      "rap",
+      "dance",
+      "hip-hop",
+      "pitbull",
+      "nayer",
+      "got7 reis do kpop"
+    ],
+    "is_pop": false
+  },
+  "katseye|||gabriela": {
+    "artist": "KATSEYE",
+    "track": "Gabriela",
+    "tags": [
+      "latin pop",
+      "pop",
+      "soty",
+      "leo",
+      "latin",
+      "fav",
+      "rnb",
+      "drama",
+      "playlista rmf fm",
+      "pop reggae"
+    ],
+    "is_pop": true
+  },
+  "keane|||somewhere only we know": {
+    "artist": "Keane",
+    "track": "Somewhere Only We Know",
+    "tags": [
+      "britpop",
+      "indie",
+      "alternative",
+      "rock",
+      "keane",
+      "british",
+      "piano rock",
+      "pop",
+      "alternative rock",
+      "piano"
+    ],
+    "is_pop": true
+  },
+  "guns n' roses|||sweet child o' mine": {
+    "artist": "Guns N' Roses",
+    "track": "Sweet Child O' Mine",
+    "tags": [
+      "rock",
+      "hard rock",
+      "classic rock",
+      "80s",
+      "guns n roses",
+      "heavy metal",
+      "slash",
+      "metal",
+      "guitar",
+      "sweet child o' mine"
+    ],
+    "is_pop": false
+  },
+  "journey|||don't stop believin' (2022 remaster)": {
+    "artist": "Journey",
+    "track": "Don't Stop Believin' (2022 Remaster)",
+    "tags": [
+      "classic rock",
+      "rock",
+      "my top songs",
+      "arena rock",
+      "1981",
+      "my music library",
+      "journey"
+    ],
+    "is_pop": false
+  },
+  "saja boys|||soda pop": {
+    "artist": "Saja Boys",
+    "track": "Soda Pop",
+    "tags": [
+      "k-pop",
+      "korean",
+      "kpop",
+      "saja boys",
+      "musik",
+      "spotify",
+      "ost",
+      "jinu da lili",
+      "netflix",
+      "lilith owns this music"
+    ],
+    "is_pop": false
+  },
+  "queen|||don't stop me now - remastered 2011": {
+    "artist": "Queen",
+    "track": "Don't Stop Me Now - Remastered 2011",
+    "tags": [
+      "rock",
+      "pop rock",
+      "piano rock",
+      "classic rock",
+      "power pop",
+      "hard rock",
+      "queen",
+      "happy",
+      "glam rock",
+      "pop"
+    ],
+    "is_pop": true
+  },
+  "drake|||passionfruit": {
+    "artist": "Drake",
+    "track": "Passionfruit",
+    "tags": [
+      "tropical house",
+      "rnb",
+      "house",
+      "2017",
+      "chill",
+      "dancehall",
+      "dance",
+      "drake",
+      "contemporary rnb",
+      "2010s"
+    ],
+    "is_pop": false
+  },
+  "rosé|||apt.": {
+    "artist": "ROSÉ",
+    "track": "APT.",
+    "tags": [
+      "pop rock",
+      "rock",
+      "pop",
+      "peter",
+      "song of the year",
+      "soty",
+      "pop-rock",
+      "2k24",
+      "acheimagra",
+      "slay"
+    ],
+    "is_pop": true
+  },
+  "the weeknd|||starboy": {
+    "artist": "The Weeknd",
+    "track": "Starboy",
+    "tags": [
+      "rnb",
+      "pop",
+      "2016",
+      "electropop",
+      "daft punk",
+      "electronic",
+      "synthpop",
+      "the weeknd",
+      "2010s",
+      "alternative rnb"
+    ],
+    "is_pop": true
+  },
+  "dire straits|||sultans of swing": {
+    "artist": "Dire Straits",
+    "track": "Sultans Of Swing",
+    "tags": [
+      "classic rock",
+      "rock",
+      "80s",
+      "dire straits",
+      "guitar",
+      "blues rock",
+      "70s",
+      "blues",
+      "british",
+      "sultans of swing"
+    ],
+    "is_pop": false
+  },
+  "teddy swims|||the door": {
+    "artist": "Teddy Swims",
+    "track": "The Door",
+    "tags": [
+      "pop",
+      "soul",
+      "american",
+      "breakup",
+      "male vocalists",
+      "chacha",
+      "radio",
+      "playlista rmf fm",
+      "linedance 2024",
+      "my top songs"
+    ],
+    "is_pop": true
+  },
+  "billy joel|||piano man": {
+    "artist": "Billy Joel",
+    "track": "Piano Man",
+    "tags": [
+      "classic rock",
+      "piano",
+      "singer-songwriter",
+      "billy joel",
+      "rock",
+      "70s",
+      "pop",
+      "80s",
+      "soft rock",
+      "harmonica"
+    ],
+    "is_pop": false
+  },
+  "linkin park|||numb": {
+    "artist": "Linkin Park",
+    "track": "Numb",
+    "tags": [
+      "rock",
+      "nu metal",
+      "alternative rock",
+      "linkin park",
+      "alternative",
+      "metal",
+      "hard rock",
+      "00s",
+      "numb",
+      "alternative metal"
+    ],
+    "is_pop": false
+  },
+  "walk the moon|||shut up and dance": {
+    "artist": "WALK THE MOON",
+    "track": "Shut Up and Dance",
+    "tags": [
+      "indie pop",
+      "pop",
+      "rock",
+      "dance",
+      "pop rock",
+      "american",
+      "indie",
+      "2010s",
+      "2014",
+      "alternative"
+    ],
+    "is_pop": true
+  },
+  "kelly clarkson|||since u been gone": {
+    "artist": "Kelly Clarkson",
+    "track": "Since U Been Gone",
+    "tags": [
+      "pop",
+      "female vocalists",
+      "kelly clarkson",
+      "pop rock",
+      "rock",
+      "00s",
+      "kick",
+      "american",
+      "dance",
+      "2004"
+    ],
+    "is_pop": true
+  },
+  "miley cyrus|||party in the u.s.a.": {
+    "artist": "Miley Cyrus",
+    "track": "Party In The U.S.A.",
+    "tags": [
+      "pop",
+      "miley cyrus",
+      "guilty pleasure",
+      "dance",
+      "party in the usa",
+      "female vocalists",
+      "catchy",
+      "teen pop",
+      "summer",
+      "disney"
+    ],
+    "is_pop": true
+  },
+  "kanye west|||heartless": {
+    "artist": "Kanye West",
+    "track": "Heartless",
+    "tags": [
+      "kanye west",
+      "hip hop",
+      "hip-hop",
+      "rap",
+      "rnb",
+      "heartless",
+      "pop",
+      "00s",
+      "r&b",
+      "2008"
+    ],
+    "is_pop": false
+  },
+  "fleetwood mac|||little lies - 2017 remaster": {
+    "artist": "Fleetwood Mac",
+    "track": "Little Lies - 2017 Remaster",
+    "tags": [
+      "rock",
+      "80s",
+      "pop",
+      "soft rock",
+      "spoken",
+      "pop rock",
+      "instrumental",
+      "moderate",
+      "bittersweet",
+      "classic rock"
+    ],
+    "is_pop": true
+  },
+  "outkast|||hey ya!": {
+    "artist": "Outkast",
+    "track": "Hey Ya!",
+    "tags": [
+      "hip-hop",
+      "funk",
+      "dance",
+      "pop",
+      "hip hop",
+      "00s",
+      "outkast",
+      "party",
+      "2003",
+      "rap"
+    ],
+    "is_pop": false
+  },
+  "fetty wap|||trap queen": {
+    "artist": "Fetty Wap",
+    "track": "Trap Queen",
+    "tags": [
+      "hip-hop",
+      "rap",
+      "trap",
+      "dope shit",
+      "fetty wap",
+      "2015",
+      "pop rap",
+      "favorites 2015",
+      "rappers that sing",
+      "futuristic swag"
+    ],
+    "is_pop": false
+  },
+  "timbaland|||the way i are": {
+    "artist": "Timbaland",
+    "track": "The Way I Are",
+    "tags": [
+      "timbaland",
+      "hip-hop",
+      "dance",
+      "rnb",
+      "pop",
+      "the way i are",
+      "party",
+      "hip hop",
+      "rap",
+      "2007"
+    ],
+    "is_pop": false
+  },
+  "disney|||zoo": {
+    "artist": "Disney",
+    "track": "Zoo",
+    "tags": [],
+    "is_pop": false
+  },
+  "coldplay|||sparks": {
+    "artist": "Coldplay",
+    "track": "Sparks",
+    "tags": [
+      "rock",
+      "alternative",
+      "britpop",
+      "coldplay",
+      "mellow",
+      "alternative rock",
+      "british",
+      "indie",
+      "acoustic",
+      "pop"
+    ],
+    "is_pop": true
+  },
+  "frank ocean|||lost": {
+    "artist": "Frank Ocean",
+    "track": "Lost",
+    "tags": [
+      "rnb",
+      "soul",
+      "r&b",
+      "neo-soul",
+      "hip-hop",
+      "alternative rnb",
+      "american",
+      "pop",
+      "rhythm and blues",
+      "r'n'b"
+    ],
+    "is_pop": false
+  },
+  "bryan adams|||summer of '69": {
+    "artist": "Bryan Adams",
+    "track": "Summer Of '69",
+    "tags": [
+      "rock",
+      "80s",
+      "classic rock",
+      "bryan adams",
+      "canadian",
+      "pop",
+      "summer",
+      "male vocalists",
+      "party",
+      "pop rock"
+    ],
+    "is_pop": false
+  },
+  "creedence clearwater revival|||have you ever seen the rain": {
+    "artist": "Creedence Clearwater Revival",
+    "track": "Have You Ever Seen The Rain",
+    "tags": [
+      "classic rock",
+      "70s",
+      "rock",
+      "southern rock",
+      "oldies",
+      "creedence clearwater revival",
+      "60s",
+      "folk rock",
+      "folk",
+      "country rock"
+    ],
+    "is_pop": false
+  },
+  "bruce springsteen|||dancing in the dark": {
+    "artist": "Bruce Springsteen",
+    "track": "Dancing In the Dark",
+    "tags": [
+      "rock",
+      "80s",
+      "classic rock",
+      "bruce springsteen",
+      "pop",
+      "singer-songwriter",
+      "1984",
+      "american",
+      "heartland rock",
+      "male vocalists"
+    ],
+    "is_pop": false
+  },
+  "mazzy star|||fade into you": {
+    "artist": "Mazzy Star",
+    "track": "Fade Into You",
+    "tags": [
+      "lush",
+      "female vocalists",
+      "dream pop",
+      "mellow",
+      "alternative",
+      "indie",
+      "90s",
+      "beautiful",
+      "dreamy",
+      "love"
+    ],
+    "is_pop": true
+  },
+  "temper city|||self aware": {
+    "artist": "Temper City",
+    "track": "Self Aware",
+    "tags": [],
+    "is_pop": false
+  },
+  "sabrina carpenter|||house tour": {
+    "artist": "Sabrina Carpenter",
+    "track": "House Tour",
+    "tags": [
+      "new jack swing",
+      "minneapolis sound",
+      "synth funk",
+      "freestyle",
+      "pop",
+      "female vocalist",
+      "sexy",
+      "trip hop",
+      "dance-pop",
+      "rnb"
+    ],
+    "is_pop": false
+  },
+  "sabrina carpenter|||tears": {
+    "artist": "Sabrina Carpenter",
+    "track": "Tears",
+    "tags": [
+      "disco",
+      "sexy",
+      "dance-pop",
+      "pop",
+      "boogie",
+      "2025",
+      "nu-disco",
+      "2020s",
+      "female vocalist",
+      "american"
+    ],
+    "is_pop": true
+  },
+  "declan mckenna|||brazil": {
+    "artist": "Declan McKenna",
+    "track": "Brazil",
+    "tags": [
+      "indie",
+      "alternative",
+      "indie rock",
+      "rock",
+      "i think we re friends now with dj toast",
+      "wsum 91.7 fm madison",
+      "folk",
+      "violao",
+      "estudo",
+      "clipe"
+    ],
+    "is_pop": false
+  },
+  "chris rainbow|||be like a woman": {
+    "artist": "Chris Rainbow",
+    "track": "Be Like a Woman",
+    "tags": [
+      "soft rock",
+      "7"
+    ],
+    "is_pop": false
+  },
+  "disclosure|||latch": {
+    "artist": "Disclosure",
+    "track": "Latch",
+    "tags": [],
+    "is_pop": false
+  },
+  "two door cinema club|||what you know": {
+    "artist": "Two Door Cinema Club",
+    "track": "What You Know",
+    "tags": [
+      "indie",
+      "british",
+      "electronic",
+      "indie rock",
+      "indie pop",
+      "rock",
+      "two door cinema club",
+      "2010",
+      "love at first listen",
+      "pop"
+    ],
+    "is_pop": false
+  }
+}
