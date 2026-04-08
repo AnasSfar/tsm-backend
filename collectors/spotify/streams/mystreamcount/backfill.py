@@ -379,12 +379,12 @@ def fetch_track_data(
     return data, status, False
 
 
-# ── Parser ─────────────────────────────────────────────────────────────────────
+# ── Parser + validation ────────────────────────────────────────────────────────
 
 def parse_msc_response(data: dict, track_id: str) -> list[dict]:
     """
     data = {"2024-01-15": {"total": 325060652, "daily": 12450}, ...}
-    Returns list of row dicts with track_id tagged.
+    Returns list of row dicts with track_id tagged, sorted by date asc.
     """
     rows: list[dict] = []
     for date_str, values in data.items():
@@ -395,14 +395,66 @@ def parse_msc_response(data: dict, track_id: str) -> list[dict]:
         total = values.get("total")
         if total is None:
             continue
-        daily = values.get("daily")
         rows.append({
             "date":          date_str,
             "track_id":      track_id,
             "streams":       int(total),
-            "daily_streams": int(daily) if daily is not None else "",
+            "daily_streams": "",  # recalculé depuis les totaux dans validate_monotonic
         })
+    rows.sort(key=lambda r: r["date"])
     return rows
+
+
+def validate_monotonic(rows: list[dict], title: str) -> list[dict]:
+    """
+    Nettoie les données MSC corrompues :
+      1. Supprime les lignes avec streams <= 0 (donnée absente)
+      2. Supprime les lignes où le total décroît (impossible physiquement)
+      3. Recalcule daily_streams depuis les totaux validés pour les jours consécutifs
+         (les daily MSC sont faux quand les totaux alternent entre vraie/fausse valeur)
+
+    Les lignes sont supposées triées par date asc.
+    """
+    from datetime import date as _d, timedelta
+
+    clean: list[dict] = []
+    prev_streams: int | None = None
+    prev_date_obj: _d | None = None
+    removed = 0
+
+    for r in rows:
+        s = r["streams"]
+        d = r["date"]
+
+        # 1. Streams nuls ou négatifs
+        if s <= 0:
+            print(f"  [WARN] streams=0 ignoré : {d}")
+            removed += 1
+            continue
+
+        # 2. Total décroissant
+        if prev_streams is not None and s < prev_streams:
+            print(
+                f"  [WARN] décroissance ignorée : {prev_date_obj} {prev_streams:,}"
+                f" → {d} {s:,}  (Δ={s - prev_streams:,})"
+            )
+            removed += 1
+            continue
+
+        # 3. Calcul daily depuis les totaux validés (jours consécutifs seulement)
+        curr_date_obj = _d.fromisoformat(d)
+        if prev_streams is not None and prev_date_obj is not None and curr_date_obj == prev_date_obj + timedelta(days=1):
+            r = {**r, "daily_streams": s - prev_streams}
+        # Sinon reste "" (première ligne ou trou dans les dates)
+
+        clean.append(r)
+        prev_streams  = s
+        prev_date_obj = curr_date_obj
+
+    if removed:
+        print(f"  {removed} ligne(s) corrompue(s) supprimée(s) pour «{title}»")
+
+    return clean
 
 
 # ── Post-merge export ─────────────────────────────────────────────────────────
@@ -456,12 +508,13 @@ def run(tracks: list[dict], dry_run: bool) -> None:
 
         if status == "ok" and data:
             rows = parse_msc_response(data, tid)
+            rows = validate_monotonic(rows, title)
             # Show only rows that would actually be inserted
             insertable = [
                 r for r in rows
                 if (min_date_per_track.get(tid) is None or r["date"] < min_date_per_track[tid])
             ]
-            print(f"  {len(rows)} dates reçues  |  {len(insertable)} avant {min_d}")
+            print(f"  {len(rows)} dates valides  |  {len(insertable)} avant {min_d}")
             all_new_rows.extend(rows)
             state["done"].add(tid)
         elif status == "error":
