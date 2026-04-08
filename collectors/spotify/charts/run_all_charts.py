@@ -175,11 +175,18 @@ def main() -> int:
             if code != 0:
                 failures.append((region, code))
 
+    print("[PHASE] Parallel done")
+    if failures:
+        print("[WARN ] Parallel phase reported failures:")
+        for region, code in failures:
+            print(f"- {region} (exit {code})")
     print()
 
     if failures and args.stop_on_error:
-        print("Stopping due to --stop-on-error")
+        print("Stopping due to --stop-on-error after parallel phase")
     else:
+        if failures:
+            print("[INFO ] Continuing with sequential phase despite parallel failures")
         print("[PHASE] Sequential: us-no-post, uk-no-post, worldwide")
         for region, script_path, runner_args in sequential_runners:
             merged_args = list(dict.fromkeys([*runner_args, *forwarded]))
@@ -198,6 +205,8 @@ def main() -> int:
                     print()
                     break
             print()
+
+        print("[PHASE] Sequential done")
 
     total = _format_seconds(time.perf_counter() - started)
     print(f"Total runtime: {total}")

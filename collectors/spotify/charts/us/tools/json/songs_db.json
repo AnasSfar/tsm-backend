@@ -3575,5 +3575,107 @@
     "track": "Tiramisu",
     "tags": [],
     "is_pop": false
+  },
+  "three days grace|||i hate everything about you": {
+    "artist": "Three Days Grace",
+    "track": "I Hate Everything About You",
+    "tags": [
+      "alternative rock",
+      "rock",
+      "alternative",
+      "hard rock",
+      "three days grace",
+      "metal",
+      "post-grunge",
+      "alternative metal",
+      "angry",
+      "canadian"
+    ],
+    "is_pop": false
+  },
+  "nickelback|||how you remind me": {
+    "artist": "Nickelback",
+    "track": "How You Remind Me",
+    "tags": [
+      "rock",
+      "alternative rock",
+      "nickelback",
+      "hard rock",
+      "alternative",
+      "canadian",
+      "post-grunge",
+      "00s",
+      "grunge",
+      "male vocalists"
+    ],
+    "is_pop": false
+  },
+  "sza|||snooze": {
+    "artist": "SZA",
+    "track": "Snooze",
+    "tags": [
+      "rnb",
+      "trip hop",
+      "sza",
+      "female vocalist",
+      "neo-soul",
+      "alternative r&b",
+      "pop rock",
+      "female vocalists",
+      "american",
+      "alt-pop"
+    ],
+    "is_pop": false
+  },
+  "bruno mars|||just the way you are": {
+    "artist": "Bruno Mars",
+    "track": "Just the Way You Are",
+    "tags": [
+      "pop",
+      "bruno mars",
+      "rnb",
+      "love",
+      "male vocalists",
+      "2010",
+      "r&b",
+      "romantic",
+      "american",
+      "just the way you are"
+    ],
+    "is_pop": true
+  },
+  "joji|||slow dancing in the dark": {
+    "artist": "Joji",
+    "track": "SLOW DANCING IN THE DARK",
+    "tags": [
+      "alternative rnb",
+      "joji",
+      "joji eu te amo",
+      "indie",
+      "electronic",
+      "hip-hop",
+      "rnb",
+      "lo-fi hip-hop",
+      "ambient pop",
+      "future bass"
+    ],
+    "is_pop": false
+  },
+  "tame impala|||borderline": {
+    "artist": "Tame Impala",
+    "track": "Borderline",
+    "tags": [
+      "psychedelic",
+      "metal",
+      "psychedelic pop",
+      "rock",
+      "pop",
+      "synthpop",
+      "neo-psychedelia",
+      "disco",
+      "groovy",
+      "loud"
+    ],
+    "is_pop": true
   }
 }

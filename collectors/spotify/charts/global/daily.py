@@ -549,7 +549,7 @@ def maybe_upload_to_r2() -> None:
     log("STEP", "Uploading exported data to R2")
     result = subprocess.run([sys.executable, str(r2_script)], check=False, cwd=str(_REPO_ROOT))
     if result.returncode != 0:
-        raise RuntimeError(f"R2 upload failed with code {result.returncode}")
+        log("WARN", f"R2 upload failed with code {result.returncode} (non-blocking)")
 
 
 def main() -> None:
@@ -664,23 +664,29 @@ def main() -> None:
         maybe_upload_to_r2()
 
         if NTFY_TOPIC:
-            notify(
-                NTFY_TOPIC,
-                tweet_content,
-                title="Taylor Swift Global - Posté",
-                tags="white_check_mark,earth_globe_europe-africa",
-            )
+            try:
+                notify(
+                    NTFY_TOPIC,
+                    tweet_content,
+                    title="Taylor Swift Global - Posté",
+                    tags="white_check_mark,earth_globe_europe-africa",
+                )
+            except Exception as e:
+                log("WARN", f"ntfy notification failed (non-blocking): {e}")
     else:
         log("ERROR", "Publication Twitter échouée, posted.lock non créé")
 
         if NTFY_TOPIC:
-            notify(
-                NTFY_TOPIC,
-                "La publication Twitter a échoué.",
-                title="Taylor Swift Global - Erreur",
-                tags="x,warning",
-                priority="high",
-            )
+            try:
+                notify(
+                    NTFY_TOPIC,
+                    "La publication Twitter a échoué.",
+                    title="Taylor Swift Global - Erreur",
+                    tags="x,warning",
+                    priority="high",
+                )
+            except Exception as e:
+                log("WARN", f"ntfy notification failed (non-blocking): {e}")
 
         sys.exit(1)
 
