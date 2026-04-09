@@ -22,7 +22,9 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import re
+import subprocess
 import sys
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
@@ -525,6 +527,45 @@ def _write_snapshot_json(payload: dict, logger: Logger) -> None:
     logger.log(f"[swift_top_100] Wrote snapshot JSON: {OUTPUT_JSON}")
 
 
+def _maybe_upload_to_r2(*, logger: Logger) -> None:
+    # Load repo-level .env if available so scheduled/manual runs share the same config source.
+    try:
+        from dotenv import load_dotenv  # type: ignore
+
+        load_dotenv(_REPO_ROOT / ".env", override=True)
+    except Exception:
+        pass
+
+    if os.getenv("UPLOAD_TO_R2", "").strip().lower() in ("0", "false", "no"):
+        logger.log("[swift_top_100] R2 upload skipped (UPLOAD_TO_R2 explicitly disabled)")
+        return
+
+    required_env = ["R2_ACCOUNT_ID", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY"]
+    missing = [name for name in required_env if not os.getenv(name, "").strip()]
+    if missing:
+        logger.log("[swift_top_100] R2 upload skipped: missing env var(s): " + ", ".join(missing))
+        return
+
+    r2_script = _REPO_ROOT / "scripts" / "r2.py"
+    if not r2_script.exists():
+        logger.log(f"[swift_top_100] R2 upload script missing: {r2_script}")
+        return
+
+    logger.log("[swift_top_100] Uploading exported data to R2...")
+    try:
+        completed = subprocess.run(
+            [sys.executable, str(r2_script)],
+            cwd=str(_REPO_ROOT),
+            check=False,
+        )
+        if completed.returncode == 0:
+            logger.log("[swift_top_100] R2 upload completed")
+        else:
+            logger.log(f"[swift_top_100] R2 upload failed (exit code {completed.returncode})")
+    except Exception as exc:
+        logger.log(f"[swift_top_100] R2 upload failed (exception): {exc}")
+
+
 def _build_week_chart(
     *,
     week_end: date,
@@ -815,6 +856,27 @@ def run(
     for i, e in enumerate(snapshot_entries, 1):
         e["rank"] = i
 
+    # Keep CSV/history fields aligned with the final ranking used in the snapshot/UI.
+    final_rank_by_track = {e["track_id"]: e["rank"] for e in snapshot_entries}
+    out_by_track = {e["track_id"]: e for e in out_entries}
+
+    for tid, out in out_by_track.items():
+        final_rank = final_rank_by_track.get(tid)
+        if final_rank is None:
+            continue
+        out["rank"] = final_rank
+        hist_peak = peak_by_track.get(tid, 9999)
+        hist_times = times_at_peak_by_track.get(tid, 0)
+        out["peak_position"] = min(hist_peak, final_rank)
+        out["times_at_peak"] = hist_times + (1 if final_rank <= hist_peak else 0)
+
+    for snap in snapshot_entries:
+        out = out_by_track.get(snap["track_id"])
+        if not out:
+            continue
+        snap["peak_position"] = out["peak_position"]
+        snap["times_at_peak"] = out["times_at_peak"]
+
     if dry_run:
         logger.log("[swift_top_100] DRY-RUN: no files written")
     else:
@@ -846,6 +908,8 @@ def run(
                 logger.log(f"[swift_top_100] Wrote chart image: {image_output}")
             except Exception as exc:
                 logger.log(f"[swift_top_100] Image generation failed (skipped): {exc}")
+
+        _maybe_upload_to_r2(logger=logger)
 
     # Save log
     logs_dir = _SCRIPT_DIR / "logs"

@@ -10,3 +10,6 @@
 [swift_top_100] No existing history — first run, all entries will be NEW
 [swift_top_100] Wrote history CSV: C:\Users\sfara\Documents\GitHub\tsm-backend\db\swift_top_100_history.csv (100 rows)
 [swift_top_100] Wrote snapshot JSON: C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100.json
+[swift_top_100] Wrote chart image: C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100.png
+[swift_top_100] Uploading exported data to R2...
+[swift_top_100] R2 upload completed

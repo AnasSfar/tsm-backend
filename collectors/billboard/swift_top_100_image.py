@@ -29,6 +29,7 @@ _DEFAULT_INPUT = _REPO_ROOT / "website" / "site" / "data" / "swift_top_100.json"
 _DEFAULT_OUTPUT = _REPO_ROOT / "website" / "site" / "data" / "swift_top_100.png"
 
 _IMG_CACHE: dict[str, str] = {}
+_DATA_URI_CACHE: dict[str, str] = {}
 
 
 def _placeholder_data_uri() -> str:
@@ -72,6 +73,49 @@ def url_to_data_uri(url: str | None) -> str:
     if last_exc:
         pass
     return _IMG_CACHE[url]
+
+
+def _file_to_data_uri(path: Path) -> str | None:
+    key = str(path.resolve())
+    cached = _DATA_URI_CACHE.get(key)
+    if cached:
+        return cached
+
+    try:
+        data = path.read_bytes()
+    except Exception:
+        return None
+
+    suffix = path.suffix.lower()
+    mime = {
+        ".png": "image/png",
+        ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg",
+        ".gif": "image/gif",
+        ".webp": "image/webp",
+        ".svg": "image/svg+xml",
+    }.get(suffix, "application/octet-stream")
+
+    data_b64 = base64.b64encode(data).decode("ascii")
+    result = f"data:{mime};base64,{data_b64}"
+    _DATA_URI_CACHE[key] = result
+    return result
+
+
+def _tayboard_logo_data_uri() -> str | None:
+    candidates = [
+        _REPO_ROOT / "website" / "site" / "icons" / "billboard.png",
+        _REPO_ROOT / "icons" / "billboard.png",
+        _REPO_ROOT.parent / "tsm-frontend" / "icons" / "billboard.png",
+        _REPO_ROOT.parent / "tsm-frontend" / "icons" / "billboard.gif",
+    ]
+    for path in candidates:
+        if not path.exists() or not path.is_file():
+            continue
+        uri = _file_to_data_uri(path)
+        if uri:
+            return uri
+    return None
 
 
 def _fmt_int(value: Any) -> str:
@@ -120,6 +164,7 @@ def build_html(
     width: int,
 ) -> str:
     chart_date = str(payload.get("chart_date") or "").strip()
+    logo_uri = _tayboard_logo_data_uri()
     entries = payload.get("entries")
     if not isinstance(entries, list):
         entries = []
@@ -149,8 +194,9 @@ def build_html(
             "<th class='c-rank'>#</th>"
             "<th class='c-delta'>+/-</th>"
             "<th class='c-song'>Song</th>"
-        "<th class='c-am'>AM</th>"
+            "<th class='c-am'>AM</th>"
             "<th class='c-gl'>GL</th>"
+            "<th class='c-units'>Units</th>"
             "<th class='c-points'>Points</th>"
             "<th class='c-pct'>%</th>"
             "<th class='c-peak'>Peak</th>"
@@ -176,6 +222,7 @@ def build_html(
                 gl_s = f"#{int(gl)}" if gl is not None and gl != "" else "—"
             except Exception:
                 gl_s = "—"
+            units_s = html.escape(str(e.get("units") or "—"))
             pct = _fmt_pct(e.get("percentage_change"))
             peak = e.get("peak_position")
             woc = e.get("weeks_on_chart")
@@ -186,10 +233,15 @@ def build_html(
             img = html.escape(img)
 
             peak_s = "—"
+            peak_is_best = False
             try:
-                peak_s = f"#{int(peak)}" if peak is not None and peak != "" else "—"
+                peak_i = int(peak) if peak is not None and peak != "" else None
+                if peak_i is not None:
+                    peak_s = f"#{peak_i}"
+                    peak_is_best = peak_i == int(r["rank"])
             except Exception:
                 peak_s = "—"
+                peak_is_best = False
 
             woc_s = "—"
             try:
@@ -213,9 +265,11 @@ def build_html(
             )
             out.append(f"<td class='num am'>{html.escape(am_s)}</td>")
             out.append(f"<td class='num gl'>{html.escape(gl_s)}</td>")
+            out.append(f"<td class='num units'>{units_s}</td>")
             out.append(f"<td class='num points'>{points}</td>")
             out.append(f"<td class='num pct'>{html.escape(pct)}</td>")
-            out.append(f"<td class='num peak'>{html.escape(peak_s)}</td>")
+            peak_cls = "num peak best" if peak_is_best else "num peak"
+            out.append(f"<td class='{peak_cls}'>{html.escape(peak_s)}</td>")
             out.append(f"<td class='num woc'>{html.escape(woc_s)}</td>")
             out.append("</tr>")
         out.append("</tbody></table>")
@@ -253,7 +307,7 @@ def build_html(
 
     .head {{
       display: flex;
-      align-items: baseline;
+            align-items: center;
       justify-content: space-between;
       gap: 24px;
       padding-bottom: 12px;
@@ -261,10 +315,26 @@ def build_html(
       margin-bottom: 14px;
     }}
 
+        .head-title {{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }}
+
+        .head-title img {{
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            border-radius: 5px;
+            flex: 0 0 auto;
+        }}
+
     .head h1 {{
       margin: 0;
       font-size: 22px;
       letter-spacing: 0.2px;
+            line-height: 1.1;
     }}
 
     .head .sub {{
@@ -284,22 +354,23 @@ def build_html(
       width: 100%;
       border-collapse: collapse;
       table-layout: fixed;
-      font-size: 12px;
+            font-size: 11.5px;
     }}
 
     thead th {{
-      text-align: left;
+            text-align: center;
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--muted);
-      padding: 8px 8px;
+            padding: 7px 7px;
       border-bottom: 1px solid var(--line);
       background: #fafafa;
+            vertical-align: middle;
     }}
 
     tbody td {{
-      padding: 7px 8px;
+            padding: 5px 7px;
       border-bottom: 1px solid var(--line2);
       vertical-align: middle;
     }}
@@ -329,14 +400,14 @@ def build_html(
     .mini-song {{
       display: flex;
       align-items: center;
-      gap: 10px;
+            gap: 8px;
       min-width: 0;
     }}
 
     .mini-song img {{
-      width: 34px;
-      height: 34px;
-      border-radius: 6px;
+            width: 28px;
+            height: 28px;
+            border-radius: 5px;
       object-fit: cover;
       background: #eeeeee;
       flex: 0 0 auto;
@@ -348,30 +419,45 @@ def build_html(
 
     .title {{
       font-weight: 650;
+            line-height: 1.15;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }}
 
     .album {{
-      margin-top: 2px;
-      font-size: 11px;
+            margin-top: 1px;
+            font-size: 10px;
       color: var(--muted);
+            line-height: 1.1;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }}
 
-        td.num, th.c-am, th.c-gl, th.c-points, th.c-pct, th.c-peak, th.c-woc {{
+        td.num, th.c-am, th.c-gl, th.c-units, th.c-points, th.c-pct, th.c-peak, th.c-woc {{
       text-align: right;
       font-variant-numeric: tabular-nums;
     }}
 
+        td.num.points, th.c-points, td.num.units, th.c-units {{
+            color: #7c3aed;
+            font-weight: 700;
+        }}
+
+        td.num.peak.best {{
+            background: #fef9c3;
+            color: #92400e;
+            font-weight: 700;
+            border-radius: 6px;
+        }}
+
     th.c-rank {{ width: 36px; }}
     th.c-delta {{ width: 44px; }}
-    th.c-song {{ width: 300px; }}
+        th.c-song {{ width: 265px; }}
     th.c-am {{ width: 52px; }}
     th.c-gl {{ width: 52px; }}
+        th.c-units {{ width: 72px; }}
     th.c-points {{ width: 92px; }}
     th.c-pct {{ width: 58px; }}
     th.c-peak {{ width: 56px; }}
@@ -380,6 +466,10 @@ def build_html(
 
     title = "Swift Top 100"
     sub = f"Week ending {html.escape(chart_date)}" if chart_date else ""
+
+    logo_html = (
+        f"<img src='{html.escape(logo_uri)}' alt=''/>" if logo_uri else ""
+    )
 
     return f"""<!doctype html>
 <html>
@@ -391,7 +481,10 @@ def build_html(
 <body>
   <div class='page'>
     <div class='head'>
-      <h1>{html.escape(title)}</h1>
+            <div class='head-title'>
+                {logo_html}
+                <h1>{html.escape(title)}</h1>
+            </div>
       <p class='sub'>{sub}</p>
     </div>
     <div class='grid'>
