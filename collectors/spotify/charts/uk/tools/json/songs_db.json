@@ -3508,5 +3508,85 @@
       "pop"
     ],
     "is_pop": false
+  },
+  "robin s|||show me love": {
+    "artist": "Robin S",
+    "track": "Show Me Love",
+    "tags": [
+      "dance",
+      "house",
+      "90s",
+      "female vocalists",
+      "pop",
+      "electronic",
+      "vocal house",
+      "eurodance",
+      "classic house",
+      "american"
+    ],
+    "is_pop": false
+  },
+  "stella lefty|||boston": {
+    "artist": "STELLA LEFTY",
+    "track": "Boston",
+    "tags": [],
+    "is_pop": false
+  },
+  "prospa|||free your mind": {
+    "artist": "Prospa",
+    "track": "Free Your Mind",
+    "tags": [],
+    "is_pop": false
+  },
+  "calvin harris|||summer": {
+    "artist": "Calvin Harris",
+    "track": "Summer",
+    "tags": [
+      "dance",
+      "summer",
+      "house",
+      "electronic",
+      "2014",
+      "electro",
+      "calvin harris",
+      "pop",
+      "summer 2014",
+      "male vocalists"
+    ],
+    "is_pop": false
+  },
+  "pitbull|||time of our lives": {
+    "artist": "Pitbull",
+    "track": "Time of Our Lives",
+    "tags": [
+      "pop",
+      "party",
+      "ne-yo",
+      "2015",
+      "pitbull",
+      "thank you olivia",
+      "house",
+      "hip-hop",
+      "club",
+      "2010s"
+    ],
+    "is_pop": true
+  },
+  "bob marley & the wailers|||could you be loved": {
+    "artist": "Bob Marley & The Wailers",
+    "track": "Could You Be Loved",
+    "tags": [
+      "reggae",
+      "bob marley",
+      "roots reggae",
+      "80s",
+      "jamaican",
+      "bob marley and the wailers",
+      "jamaica",
+      "1980",
+      "summer",
+      "party"
+    ],
+    "is_pop": false
   }
 }
