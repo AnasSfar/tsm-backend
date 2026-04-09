@@ -3677,5 +3677,11 @@
       "loud"
     ],
     "is_pop": true
+  },
+  "stella lefty|||boston": {
+    "artist": "STELLA LEFTY",
+    "track": "Boston",
+    "tags": [],
+    "is_pop": false
   }
 }
