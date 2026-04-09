@@ -156,370 +156,37 @@ def _delta_label(entry: dict[str, Any]) -> tuple[str, str]:
     return "0", "flat"
 
 
+def _sorted_rows(payload: dict[str, Any], limit: int) -> list[dict[str, Any]]:
+        entries = payload.get("entries")
+        if not isinstance(entries, list):
+                return []
+        rows: list[dict[str, Any]] = []
+        for e in entries:
+                if not isinstance(e, dict):
+                        continue
+                try:
+                        rank = int(e.get("rank"))
+                except Exception:
+                        continue
+                rows.append({"rank": rank, "e": e})
+        rows.sort(key=lambda r: r["rank"])
+        return rows[: max(0, int(limit))]
+
+
 def build_html(
-    *,
-    payload: dict[str, Any],
-    columns: int,
-    limit: int,
-    width: int,
-) -> str:
-    chart_date = str(payload.get("chart_date") or "").strip()
-    logo_uri = _tayboard_logo_data_uri()
-    entries = payload.get("entries")
-    if not isinstance(entries, list):
-        entries = []
+        *,
+        payload: dict[str, Any],
+        rows: list[dict[str, Any]],
+            page.set_content(html_doc, wait_until="load")
+            page.wait_for_timeout(80)
 
-    rows: list[dict[str, Any]] = []
-    for e in entries:
-        if not isinstance(e, dict):
-            continue
-        try:
-            rank = int(e.get("rank"))
-        except Exception:
-            continue
-        rows.append({"rank": rank, "e": e})
+            if idx == 1:
+                target = output_path
+            else:
+                target = output_path.with_name(f"{output_path.stem}_{idx}{output_path.suffix}")
 
-    rows.sort(key=lambda r: r["rank"])
-    rows = rows[: max(0, int(limit))]
+            page.screenshot(path=str(target), full_page=True)
 
-    columns = max(1, int(columns))
-    per_col = (len(rows) + columns - 1) // columns
-    chunks = [rows[i : i + per_col] for i in range(0, len(rows), per_col)]
-
-    def _render_table(chunk: list[dict[str, Any]]) -> str:
-        out = []
-        out.append("<table>")
-        out.append(
-            "<thead><tr>"
-            "<th class='c-rank'>#</th>"
-            "<th class='c-delta'>+/-</th>"
-            "<th class='c-song'>Song</th>"
-            "<th class='c-am'>AM</th>"
-            "<th class='c-gl'>GL</th>"
-            "<th class='c-units'>Units</th>"
-            "<th class='c-points'>Points</th>"
-            "<th class='c-pct'>%</th>"
-            "<th class='c-peak'>Peak</th>"
-            "<th class='c-woc'>WoC</th>"
-            "</tr></thead>"
-        )
-        out.append("<tbody>")
-        for r in chunk:
-            e = r["e"]
-            title = html.escape(str(e.get("title") or ""))
-            album = html.escape(str(e.get("primary_album") or ""))
-            points = _fmt_int(e.get("points"))
-            am = e.get("apple_music_ts_top_songs_best_rank")
-            am_s = "—"
-            try:
-                am_s = f"#{int(am)}" if am is not None and am != "" else "—"
-            except Exception:
-                am_s = "—"
-
-            gl = e.get("apple_music_global_best_rank")
-            gl_s = "—"
-            try:
-                gl_s = f"#{int(gl)}" if gl is not None and gl != "" else "—"
-            except Exception:
-                gl_s = "—"
-            units_s = html.escape(str(e.get("units") or "—"))
-            pct = _fmt_pct(e.get("percentage_change"))
-            peak = e.get("peak_position")
-            woc = e.get("weeks_on_chart")
-
-            delta, delta_cls = _delta_label(e)
-
-            img = url_to_data_uri(e.get("image_url"))
-            img = html.escape(img)
-
-            peak_s = "—"
-            peak_is_best = False
-            try:
-                peak_i = int(peak) if peak is not None and peak != "" else None
-                if peak_i is not None:
-                    peak_s = f"#{peak_i}"
-                    peak_is_best = peak_i == int(r["rank"])
-            except Exception:
-                peak_s = "—"
-                peak_is_best = False
-
-            woc_s = "—"
-            try:
-                woc_s = str(int(woc)) if woc is not None and woc != "" else "—"
-            except Exception:
-                woc_s = "—"
-
-            out.append("<tr>")
-            out.append(f"<td class='rank'>{r['rank']}</td>")
-            out.append(f"<td class='delta {delta_cls}'>{html.escape(delta)}</td>")
-            out.append(
-                "<td class='song'>"
-                "<div class='mini-song'>"
-                f"<img src='{img}' alt=''/>"
-                "<div class='mini-song-text'>"
-                f"<div class='title'>{title}</div>"
-                f"<div class='album'>{album}</div>"
-                "</div>"
-                "</div>"
-                "</td>"
-            )
-            out.append(f"<td class='num am'>{html.escape(am_s)}</td>")
-            out.append(f"<td class='num gl'>{html.escape(gl_s)}</td>")
-            out.append(f"<td class='num units'>{units_s}</td>")
-            out.append(f"<td class='num points'>{points}</td>")
-            out.append(f"<td class='num pct'>{html.escape(pct)}</td>")
-            peak_cls = "num peak best" if peak_is_best else "num peak"
-            out.append(f"<td class='{peak_cls}'>{html.escape(peak_s)}</td>")
-            out.append(f"<td class='num woc'>{html.escape(woc_s)}</td>")
-            out.append("</tr>")
-        out.append("</tbody></table>")
-        return "".join(out)
-
-    tables_html = "".join(f"<div class='table-wrap'>{_render_table(c)}</div>" for c in chunks)
-
-    grid_cols = " ".join(["1fr"] * len(chunks))
-
-    css = f"""
-    :root {{
-      --bg: #ffffff;
-      --text: #111111;
-      --muted: #6b7280;
-      --line: #e5e7eb;
-      --line2: #f3f4f6;
-      --up: #16a34a;
-      --down: #dc2626;
-      --new: #0f172a;
-    }}
-
-    html, body {{
-      margin: 0;
-      padding: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
-    }}
-
-    .page {{
-      width: {int(width)}px;
-      padding: 24px 28px 30px;
-      box-sizing: border-box;
-    }}
-
-    .head {{
-      display: flex;
-            align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--line);
-      margin-bottom: 14px;
-    }}
-
-        .head-title {{
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            min-width: 0;
-        }}
-
-        .head-title img {{
-            width: 24px;
-            height: 24px;
-            object-fit: contain;
-            border-radius: 5px;
-            flex: 0 0 auto;
-        }}
-
-    .head h1 {{
-      margin: 0;
-      font-size: 22px;
-      letter-spacing: 0.2px;
-            line-height: 1.1;
-    }}
-
-    .head .sub {{
-      margin: 0;
-      font-size: 13px;
-      color: var(--muted);
-      white-space: nowrap;
-    }}
-
-    .grid {{
-      display: grid;
-      grid-template-columns: {grid_cols};
-      gap: 18px;
-    }}
-
-    table {{
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-            font-size: 11.5px;
-    }}
-
-    thead th {{
-            text-align: center;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--muted);
-            padding: 7px 7px;
-      border-bottom: 1px solid var(--line);
-      background: #fafafa;
-            vertical-align: middle;
-    }}
-
-    tbody td {{
-            padding: 5px 7px;
-      border-bottom: 1px solid var(--line2);
-      vertical-align: middle;
-    }}
-
-    td.rank {{
-      width: 36px;
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-    }}
-
-    td.delta {{
-      width: 44px;
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-    }}
-
-    td.delta.up {{ color: var(--up); }}
-    td.delta.down {{ color: var(--down); }}
-    td.delta.new {{ color: var(--new); }}
-    td.delta.flat {{ color: var(--muted); }}
-
-        td.song {{
-            width: 300px;
-      overflow: hidden;
-    }}
-
-    .mini-song {{
-      display: flex;
-      align-items: center;
-            gap: 8px;
-      min-width: 0;
-    }}
-
-    .mini-song img {{
-            width: 28px;
-            height: 28px;
-            border-radius: 5px;
-      object-fit: cover;
-      background: #eeeeee;
-      flex: 0 0 auto;
-    }}
-
-    .mini-song-text {{
-      min-width: 0;
-    }}
-
-    .title {{
-      font-weight: 650;
-            line-height: 1.15;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }}
-
-    .album {{
-            margin-top: 1px;
-            font-size: 10px;
-      color: var(--muted);
-            line-height: 1.1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }}
-
-        td.num, th.c-am, th.c-gl, th.c-units, th.c-points, th.c-pct, th.c-peak, th.c-woc {{
-      text-align: right;
-      font-variant-numeric: tabular-nums;
-    }}
-
-        td.num.points, th.c-points, td.num.units, th.c-units {{
-            color: #7c3aed;
-            font-weight: 700;
-        }}
-
-        td.num.peak.best {{
-            background: #fef9c3;
-            color: #92400e;
-            font-weight: 700;
-            border-radius: 6px;
-        }}
-
-    th.c-rank {{ width: 36px; }}
-    th.c-delta {{ width: 44px; }}
-        th.c-song {{ width: 265px; }}
-    th.c-am {{ width: 52px; }}
-    th.c-gl {{ width: 52px; }}
-        th.c-units {{ width: 72px; }}
-    th.c-points {{ width: 92px; }}
-    th.c-pct {{ width: 58px; }}
-    th.c-peak {{ width: 56px; }}
-    th.c-woc {{ width: 52px; }}
-    """
-
-    title = "Swift Top 100"
-    sub = f"Week ending {html.escape(chart_date)}" if chart_date else ""
-
-    logo_html = (
-        f"<img src='{html.escape(logo_uri)}' alt=''/>" if logo_uri else ""
-    )
-
-    return f"""<!doctype html>
-<html>
-<head>
-<meta charset='utf-8'/>
-<meta name='viewport' content='width=device-width, initial-scale=1'/>
-<style>{css}</style>
-</head>
-<body>
-  <div class='page'>
-    <div class='head'>
-            <div class='head-title'>
-                {logo_html}
-                <h1>{html.escape(title)}</h1>
-            </div>
-      <p class='sub'>{sub}</p>
-    </div>
-    <div class='grid'>
-      {tables_html}
-    </div>
-  </div>
-</body>
-</html>"""
-
-
-def render_png(
-    *,
-    payload: dict[str, Any],
-    output_path: Path,
-    columns: int = 2,
-    limit: int = 100,
-    width: int = 1400,
-    scale: int = 2,
-) -> None:
-    html_doc = build_html(payload=payload, columns=columns, limit=limit, width=width)
-
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-
-    # Import Playwright only when needed (keeps import-time failures localized).
-    from playwright.sync_api import sync_playwright
-
-    with sync_playwright() as p:
-        browser = p.chromium.launch()
-        page = browser.new_page(
-            viewport={"width": int(width), "height": 900},
-            device_scale_factor=int(scale),
-        )
-        page.set_content(html_doc, wait_until="load")
-        page.wait_for_timeout(100)  # tiny settle for layout
-        page.screenshot(path=str(output_path), full_page=True)
         browser.close()
 
 
@@ -532,7 +199,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Render Swift Top 100 to a PNG")
     p.add_argument("--input", default=str(_DEFAULT_INPUT), help="Path to swift_top_100.json")
     p.add_argument("--output", default=str(_DEFAULT_OUTPUT), help="Output PNG path")
-    p.add_argument("--columns", type=int, default=2, help="Number of table columns")
+    p.add_argument("--columns", type=int, default=1, help="Number of table columns (deprecated)")
     p.add_argument("--limit", type=int, default=100, help="Number of rows to render")
     p.add_argument("--width", type=int, default=1400, help="Viewport/page width in px")
     p.add_argument("--scale", type=int, default=2, help="Device scale factor")
