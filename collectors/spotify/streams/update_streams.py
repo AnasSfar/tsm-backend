@@ -999,7 +999,7 @@ def get_all_last_history_totals() -> dict[str, int]:
     with HISTORY_PATH.open("r", newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            track_id = row.get("track_id", "").strip()
+            track_id = (row.get("track_id") or "").strip()
             try:
                 result[track_id] = int(row["streams"])
             except Exception:
