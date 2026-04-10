@@ -26,7 +26,9 @@
       "Bash(git -C /c/Users/sfara/Documents/GitHub/tsm-frontend commit -m ':*)",
       "WebFetch(domain:rapidapi.com)",
       "Bash(grep -l \"Life of a Showgirl\" \"c:\\\\Users\\\\sfara\\\\Documents\\\\GitHub\\\\tsm-backend\\\\db\\\\discography\\\\albums\"/*.json)",
-      "Bash(find \"c:\\\\Users\\\\sfara\\\\Documents\\\\GitHub\\\\tsm-backend\" -name \"*.py\" -type f -exec grep -l \"\\\\.cookies\\\\|\\\\.post\\\\|csrf\" {} \\\\;)"
+      "Bash(find \"c:\\\\Users\\\\sfara\\\\Documents\\\\GitHub\\\\tsm-backend\" -name \"*.py\" -type f -exec grep -l \"\\\\.cookies\\\\|\\\\.post\\\\|csrf\" {} \\\\;)",
+      "Bash(git -C \"c:/Users/sfara/Documents/GitHub/tsm-frontend\" log --oneline -3 -- \"public/icons/taypic.jpg\" \"public/icons/taypic-mob.jpg\")",
+      "Bash(git -C \"c:/Users/sfara/Documents/GitHub/tsm-frontend\" ls-files --others --exclude-standard)"
     ],
     "additionalDirectories": [
       "C:\\Users\\sfara\\Documents\\GitHub\\tsm-backend\\.git"
