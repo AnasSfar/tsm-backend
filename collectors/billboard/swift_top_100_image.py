@@ -104,6 +104,7 @@ def _file_to_data_uri(path: Path) -> str | None:
 
 def _tayboard_logo_data_uri() -> str | None:
     candidates = [
+        _REPO_ROOT.parent / "tsm-frontend" / "frontend" / "public" / "icons" / "billboard.png",
         _REPO_ROOT / "website" / "site" / "icons" / "billboard.png",
         _REPO_ROOT / "icons" / "billboard.png",
         _REPO_ROOT.parent / "tsm-frontend" / "icons" / "billboard.png",
@@ -179,8 +180,10 @@ def build_html(
     columns: int,
     limit: int,
     width: int,
+    offset: int = 0,
 ) -> str:
     chart_date = str(payload.get("chart_date") or "").strip()
+    week_start = str(payload.get("week_start") or "").strip()
     entries = payload.get("entries")
     if not isinstance(entries, list):
         entries = []
@@ -196,142 +199,218 @@ def build_html(
         rows.append({"rank": rank, "e": e})
 
     rows.sort(key=lambda r: r["rank"])
-    rows = rows[: max(0, int(limit))]
+    start = max(0, int(offset))
+    rows = rows[start : start + max(0, int(limit))]
 
     columns = max(1, int(columns))
     per_col = (len(rows) + columns - 1) // columns
     chunks = [rows[i : i + per_col] for i in range(0, len(rows), per_col)]
 
+    def _delta_badge(e: dict[str, Any]) -> str:
+        change = e.get("change")
+        rank_change = e.get("rank_change")
+        if change == "NEW":
+            return "<span class='badge badge-new'>NEW</span>"
+        if change == "RE":
+            return "<span class='badge badge-re'>RE</span>"
+        try:
+            rc = int(rank_change)
+        except Exception:
+            return "<span class='badge badge-eq'>=</span>"
+        if rc == 0:
+            return "<span class='badge badge-eq'>=</span>"
+        if rc > 0:
+            return f"<span class='badge badge-up'>+{rc}</span>"
+        return f"<span class='badge badge-down'>{rc}</span>"
+
     def _render_table(chunk: list[dict[str, Any]]) -> str:
         out = []
         out.append("<table>")
         out.append(
-            "<thead><tr>"
-            "<th class='c-rank'>#</th>"
-            "<th class='c-delta'>+/-</th>"
-            "<th class='c-song'>Song</th>"
-        "<th class='c-am'>AM</th>"
-            "<th class='c-gl'>GL</th>"
-            "<th class='c-points'>Points</th>"
-            "<th class='c-pct'>%</th>"
-            "<th class='c-peak'>Peak</th>"
-            "<th class='c-woc'>WoC</th>"
-            "</tr></thead>"
+            "<thead>"
+            "<tr>"
+            "<th rowspan='2' class='c-rank'>Rank</th>"
+            "<th rowspan='2' class='c-delta'>+/−</th>"
+            "<th rowspan='2' class='c-song'>Song</th>"
+            "<th rowspan='2' class='c-points'>Points</th>"
+            "<th rowspan='2' class='c-pct'>%</th>"
+            "<th rowspan='2' class='c-peak'>Peak</th>"
+            "<th rowspan='2' class='c-woc'>WoC</th>"
+            "<th colspan='2' class='c-group c-group-am'>Apple Music</th>"
+            "<th colspan='2' class='c-group c-group-spotify'>Spotify</th>"
+            "<th rowspan='2' class='c-units'>Units</th>"
+            "</tr>"
+            "<tr>"
+            "<th class='c-am'>TS</th>"
+            "<th class='c-gl'>Global</th>"
+            "<th class='c-charts'>Charts</th>"
+            "<th class='c-streams'>Streams</th>"
+            "</tr>"
+            "</thead>"
         )
         out.append("<tbody>")
         for r in chunk:
             e = r["e"]
+            rank = r["rank"]
             title = html.escape(str(e.get("title") or ""))
             album = html.escape(str(e.get("primary_album") or ""))
-            points = _fmt_int(e.get("points"))
-            am = e.get("apple_music_ts_top_songs_best_rank")
-            am_s = "—"
-            try:
-                am_s = f"#{int(am)}" if am is not None and am != "" else "—"
-            except Exception:
-                am_s = "—"
+            points_s = html.escape(str(e.get("points_display") or _fmt_int(e.get("points"))))
 
-            gl = e.get("apple_music_global_best_rank")
-            gl_s = "—"
-            try:
-                gl_s = f"#{int(gl)}" if gl is not None and gl != "" else "—"
-            except Exception:
-                gl_s = "—"
-            pct = _fmt_pct(e.get("percentage_change"))
+            change = e.get("change")
+            pct_val = e.get("percentage_change")
+            if change == "NEW":
+                pct_s = "NEW"
+                pct_cls = "pct-new"
+            elif change == "RE":
+                pct_s = "RE"
+                pct_cls = "pct-re"
+            else:
+                pct_s = _fmt_pct(pct_val)
+                try:
+                    pct_cls = "pct-up" if float(pct_val) >= 0 else "pct-down"
+                except Exception:
+                    pct_cls = ""
+
             peak = e.get("peak_position")
-            woc = e.get("weeks_on_chart")
-
-            delta, delta_cls = _delta_label(e)
-
-            img = url_to_data_uri(e.get("image_url"))
-            img = html.escape(img)
-
+            times_at_peak = e.get("times_at_peak")
+            is_at_peak = peak is not None and peak == rank
+            peak_cls = " peak-best" if is_at_peak else ""
             peak_s = "—"
             try:
-                peak_s = f"#{int(peak)}" if peak is not None and peak != "" else "—"
+                if peak is not None and peak != "":
+                    tap = ""
+                    try:
+                        tap_n = int(times_at_peak)
+                        if tap_n > 0:
+                            tap = f" <span class='times-at-peak'>\u00d7{tap_n}</span>"
+                    except Exception:
+                        pass
+                    peak_s = f"#{int(peak)}{tap}"
             except Exception:
                 peak_s = "—"
 
+            woc = e.get("weeks_on_chart")
             woc_s = "—"
             try:
                 woc_s = str(int(woc)) if woc is not None and woc != "" else "—"
             except Exception:
-                woc_s = "—"
+                pass
+
+            am_s = html.escape(str(e.get("am_ts_units_display") or "—"))
+            gl_s = html.escape(str(e.get("am_global_units_display") or "—"))
+            charts_s = html.escape(str(e.get("units_charts_display") or "—"))
+            streams_s = html.escape(str(e.get("units_surplus_display") or "—"))
+            units_s = html.escape(str(e.get("units") or "—"))
+
+            img = url_to_data_uri(e.get("image_url"))
+            img = html.escape(img)
+
+            delta_html = _delta_badge(e)
 
             out.append("<tr>")
-            out.append(f"<td class='rank'>{r['rank']}</td>")
-            out.append(f"<td class='delta {delta_cls}'>{html.escape(delta)}</td>")
+            out.append(f"<td class='td-rank'>{rank}</td>")
+            out.append(f"<td class='td-delta'>{delta_html}</td>")
             out.append(
-                "<td class='song'>"
+                "<td class='td-song'>"
                 "<div class='mini-song'>"
                 f"<img src='{img}' alt=''/>"
                 "<div class='mini-song-text'>"
-                f"<div class='title'>{title}</div>"
-                f"<div class='album'>{album}</div>"
+                f"<div class='song-title'>{title}</div>"
+                f"<div class='song-album'>{album}</div>"
                 "</div>"
                 "</div>"
                 "</td>"
             )
-            out.append(f"<td class='num am'>{html.escape(am_s)}</td>")
-            out.append(f"<td class='num gl'>{html.escape(gl_s)}</td>")
-            out.append(f"<td class='num points'>{points}</td>")
-            out.append(f"<td class='num pct'>{html.escape(pct)}</td>")
-            out.append(f"<td class='num peak'>{html.escape(peak_s)}</td>")
-            out.append(f"<td class='num woc'>{html.escape(woc_s)}</td>")
+            out.append(f"<td class='td-num td-points'>{points_s}</td>")
+            out.append(f"<td class='td-num td-pct {pct_cls}'>{html.escape(pct_s)}</td>")
+            out.append(f"<td class='td-num td-peak{peak_cls}'>{peak_s}</td>")
+            out.append(f"<td class='td-num td-woc'>{woc_s}</td>")
+            out.append(f"<td class='td-num td-am'>{am_s}</td>")
+            out.append(f"<td class='td-num td-gl'>{gl_s}</td>")
+            out.append(f"<td class='td-num td-charts'>{charts_s}</td>")
+            out.append(f"<td class='td-num td-streams'>{streams_s}</td>")
+            out.append(f"<td class='td-num td-units'>{units_s}</td>")
             out.append("</tr>")
         out.append("</tbody></table>")
         return "".join(out)
 
     tables_html = "".join(f"<div class='table-wrap'>{_render_table(c)}</div>" for c in chunks)
-
     grid_cols = " ".join(["1fr"] * len(chunks))
 
-    css = f"""
-    :root {{
-      --bg: #ffffff;
-      --text: #111111;
-      --muted: #6b7280;
-      --line: #e5e7eb;
-      --line2: #f3f4f6;
-      --up: #16a34a;
-      --down: #dc2626;
-      --new: #0f172a;
-    }}
+    if week_start and chart_date:
+        sub = f"{html.escape(week_start)} \u2013 {html.escape(chart_date)}"
+    elif chart_date:
+        sub = f"Week ending {html.escape(chart_date)}"
+    else:
+        sub = ""
 
+    # Rank range label for multi-image sets
+    if rows:
+        rank_label = f"#{rows[0]['rank']} \u2013 #{rows[-1]['rank']}"
+        sub = f"{sub} &nbsp;·&nbsp; {rank_label}" if sub else rank_label
+
+    logo_uri = _tayboard_logo_data_uri()
+    logo_html = f"<img class='head-logo' src='{logo_uri}' alt='TayBoard'/>" if logo_uri else ""
+
+    css = f"""
     html, body {{
       margin: 0;
       padding: 0;
-      background: var(--bg);
-      color: var(--text);
+      background: #f8f9fb;
+      color: #111111;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
     }}
 
     .page {{
       width: {int(width)}px;
-      padding: 24px 28px 30px;
+      padding: 20px 24px 28px;
       box-sizing: border-box;
     }}
 
-    .head {{
+    /* Section card */
+    .section-card {{
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      padding: 18px 20px 20px;
+    }}
+
+    /* Header */
+    .section-head {{
       display: flex;
-      align-items: baseline;
       justify-content: space-between;
-      gap: 24px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--line);
+      align-items: center;
+      gap: 16px;
       margin-bottom: 14px;
     }}
 
-    .head h1 {{
-      margin: 0;
-      font-size: 22px;
-      letter-spacing: 0.2px;
+    .head-left {{
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }}
 
-    .head .sub {{
+    .head-logo {{
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      border-radius: 6px;
+    }}
+
+    .section-head h2 {{
       margin: 0;
-      font-size: 13px;
-      color: var(--muted);
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: #111111;
+    }}
+
+    .section-head .sub {{
+      margin: 0;
+      font-size: 12px;
+      color: #6b7280;
       white-space: nowrap;
     }}
 
@@ -341,56 +420,109 @@ def build_html(
       gap: 18px;
     }}
 
+    .table-wrap {{
+      overflow: hidden;
+    }}
+
     table {{
       width: 100%;
       border-collapse: collapse;
-      table-layout: fixed;
       font-size: 12px;
     }}
 
+    /* Header rows */
     thead th {{
-      text-align: left;
-      font-size: 11px;
+      font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: var(--muted);
-      padding: 8px 8px;
-      border-bottom: 1px solid var(--line);
+      color: #6b7280;
+      padding: 6px 8px;
+      border-bottom: 1px solid #e5e7eb;
       background: #fafafa;
+      white-space: nowrap;
+      text-align: center;
     }}
 
+    /* Group header row */
+    .c-group-am {{
+      background: rgba(225, 29, 72, 0.10);
+      color: #e11d48;
+      font-weight: 700;
+      font-size: 10px;
+      text-align: center;
+      letter-spacing: 0.04em;
+      border-bottom: none !important;
+    }}
+
+    .c-group-spotify {{
+      background: rgba(16, 185, 129, 0.10);
+      color: #10b981;
+      font-weight: 700;
+      font-size: 10px;
+      text-align: center;
+      letter-spacing: 0.04em;
+      border-bottom: none !important;
+    }}
+
+    /* Sub-header colors */
+    .c-points {{ color: #7c3aed; font-weight: 700; }}
+    .c-pct    {{ color: #7c3aed; font-weight: 700; }}
+    .c-peak   {{ color: #d97706; font-weight: 700; }}
+    .c-woc    {{ color: #d97706; font-weight: 700; }}
+    .c-am     {{ background: rgba(225, 29, 72, 0.05); color: #e11d48; font-weight: 600; }}
+    .c-gl     {{ background: rgba(225, 29, 72, 0.05); color: #e11d48; font-weight: 600; }}
+    .c-charts  {{ background: rgba(16, 185, 129, 0.05); color: #10b981; font-weight: 600; }}
+    .c-streams {{ background: rgba(16, 185, 129, 0.05); color: #10b981; font-weight: 600; }}
+    .c-units   {{ background: rgba(139, 92, 246, 0.05); color: #8b5cf6; font-weight: 600; }}
+
+    /* Body rows */
     tbody td {{
-      padding: 7px 8px;
-      border-bottom: 1px solid var(--line2);
+      padding: 5px 8px;
+      border-bottom: 1px solid #f3f4f6;
       vertical-align: middle;
     }}
 
-    td.rank {{
-      width: 36px;
+    /* Rank */
+    .td-rank {{
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      text-align: center;
+      color: #111111;
+      white-space: nowrap;
+    }}
+
+    .td-delta {{
+      text-align: center;
+      white-space: nowrap;
+    }}
+
+    /* Badges */
+    .badge {{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 34px;
+      padding: 3px 7px;
+      border-radius: 20px;
+      font-size: 11px;
       font-weight: 700;
-      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
     }}
+    .badge-new  {{ background: #dbeafe; color: #1d4ed8; }}
+    .badge-re   {{ background: #ede9fe; color: #6d28d9; }}
+    .badge-up   {{ background: #dcfce7; color: #15803d; }}
+    .badge-down {{ background: #fee2e2; color: #b91c1c; }}
+    .badge-eq   {{ background: #f1f5f9; color: #64748b; }}
 
-    td.delta {{
-      width: 44px;
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-    }}
-
-    td.delta.up {{ color: var(--up); }}
-    td.delta.down {{ color: var(--down); }}
-    td.delta.new {{ color: var(--new); }}
-    td.delta.flat {{ color: var(--muted); }}
-
-        td.song {{
-            width: 300px;
-      overflow: hidden;
-    }}
+    /* Song cell */
+    .td-song {{ overflow: hidden; }}
 
     .mini-song {{
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       min-width: 0;
     }}
 
@@ -403,44 +535,75 @@ def build_html(
       flex: 0 0 auto;
     }}
 
-    .mini-song-text {{
-      min-width: 0;
-    }}
+    .mini-song-text {{ min-width: 0; }}
 
-    .title {{
-      font-weight: 650;
+    .song-title {{
+      font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }}
 
-    .album {{
-      margin-top: 2px;
-      font-size: 11px;
-      color: var(--muted);
+    .song-album {{
+      margin-top: 1px;
+      font-size: 10.5px;
+      color: #6b7280;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }}
 
-        td.num, th.c-am, th.c-gl, th.c-points, th.c-pct, th.c-peak, th.c-woc {{
-      text-align: right;
+    /* Numeric cells */
+    .td-num {{
+      text-align: center;
       font-variant-numeric: tabular-nums;
+      white-space: nowrap;
     }}
 
-    th.c-rank {{ width: 36px; }}
-    th.c-delta {{ width: 44px; }}
-    th.c-song {{ width: 300px; }}
-    th.c-am {{ width: 52px; }}
-    th.c-gl {{ width: 52px; }}
-    th.c-points {{ width: 92px; }}
-    th.c-pct {{ width: 58px; }}
-    th.c-peak {{ width: 56px; }}
-    th.c-woc {{ width: 52px; }}
+    /* Column-specific tints on data cells */
+    td.td-points {{ color: #7c3aed !important; font-weight: 600; }}
+    .td-pct    {{ font-weight: 600; }}
+    .td-am     {{ background: rgba(225, 29, 72, 0.05); color: #e11d48; font-weight: 600; }}
+    .td-gl     {{ background: rgba(225, 29, 72, 0.05); color: #e11d48; font-weight: 600; }}
+    .td-charts  {{ background: rgba(16, 185, 129, 0.05); color: #10b981; font-weight: 600; }}
+    .td-streams {{ background: rgba(16, 185, 129, 0.05); color: #10b981; font-weight: 600; }}
+    .td-units   {{ background: rgba(139, 92, 246, 0.05); color: #8b5cf6; font-weight: 600; }}
+
+    /* Peak best highlight */
+    .td-peak.peak-best {{
+      background: #fef9c3;
+      color: #92400e;
+      font-weight: 700;
+      border-radius: 6px;
+    }}
+
+    .times-at-peak {{
+      font-size: 10px;
+      color: #6b7280;
+      font-weight: 500;
+    }}
+
+    /* Pct colors */
+    .pct-up   {{ color: #15803d; }}
+    .pct-down {{ color: #b91c1c; }}
+    .pct-new, .pct-re {{ color: #6b7280; }}
+
+    /* Column widths */
+    .c-rank    {{ width: 44px; }}
+    .c-delta   {{ width: 60px; }}
+    .c-song    {{ width: 230px; }}
+    .c-points  {{ width: 54px; }}
+    .c-pct     {{ width: 50px; }}
+    .c-peak    {{ width: 62px; }}
+    .c-woc     {{ width: 36px; }}
+    .c-am      {{ width: 52px; }}
+    .c-gl      {{ width: 56px; }}
+    .c-charts  {{ width: 58px; }}
+    .c-streams {{ width: 58px; }}
+    .c-units   {{ width: 54px; }}
     """
 
-    title = "Swift Top 100"
-    sub = f"Week ending {html.escape(chart_date)}" if chart_date else ""
+    page_title = str(payload.get("title") or "Swift Top 100")
 
     return f"""<!doctype html>
 <html>
@@ -451,12 +614,17 @@ def build_html(
 </head>
 <body>
   <div class='page'>
-    <div class='head'>
-      <h1>{html.escape(title)}</h1>
-      <p class='sub'>{sub}</p>
-    </div>
-    <div class='grid'>
-      {tables_html}
+    <div class='section-card'>
+      <div class='section-head'>
+        <div class='head-left'>
+          {logo_html}
+          <h2>{html.escape(page_title)}</h2>
+        </div>
+        <span class='sub'>{sub}</span>
+      </div>
+      <div class='grid'>
+        {tables_html}
+      </div>
     </div>
   </div>
 </body>
@@ -471,8 +639,9 @@ def render_png(
     limit: int = 100,
     width: int = 1400,
     scale: int = 2,
+    offset: int = 0,
 ) -> None:
-    html_doc = build_html(payload=payload, columns=columns, limit=limit, width=width)
+    html_doc = build_html(payload=payload, columns=columns, limit=limit, width=width, offset=offset)
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -500,6 +669,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Render Swift Top 100 to a PNG")
     p.add_argument("--input", default=str(_DEFAULT_INPUT), help="Path to swift_top_100.json")
     p.add_argument("--output", default=str(_DEFAULT_OUTPUT), help="Output PNG path")
+    p.add_argument("--week", type=str, default=None, help="Semaine à générer au format YYYY-MM-DD (remplace --input)")
     p.add_argument("--columns", type=int, default=1, help="Number of table columns (deprecated)")
     p.add_argument("--limit", type=int, default=100, help="Number of rows to render")
     p.add_argument("--width", type=int, default=1400, help="Viewport/page width in px")
@@ -509,8 +679,22 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
-    in_path = Path(args.input)
-    out_path = Path(args.output)
+
+    # Gestion du paramètre --week
+    if args.week:
+        # On construit le chemin du fichier pour la semaine demandée
+        week_str = args.week.strip()
+        # Ex: website/site/data/swift_top_100-2026-04-03.json
+        week_input = _DEFAULT_INPUT.parent / f"swift_top_100-{week_str}.json"
+        in_path = week_input
+        # Si l'utilisateur n'a pas spécifié --output, on adapte aussi le nom du PNG
+        if args.output == str(_DEFAULT_OUTPUT):
+            out_path = _DEFAULT_OUTPUT.parent / f"swift_top_100-{week_str}.png"
+        else:
+            out_path = Path(args.output)
+    else:
+        in_path = Path(args.input)
+        out_path = Path(args.output)
 
     payload = load_payload(in_path)
     render_png(

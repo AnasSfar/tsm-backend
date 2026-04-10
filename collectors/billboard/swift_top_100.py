@@ -660,11 +660,6 @@ def run(
     *,
     chart_date: date | None,
     dry_run: bool,
-    generate_image: bool,
-    image_output: Path,
-    image_columns: int,
-    image_width: int,
-    image_scale: int,
 ) -> int:
     logger = Logger()
 
@@ -885,6 +880,7 @@ def run(
         _write_history_csv(combined_rows, logger)
 
         payload = {
+            "title": "Swift Top 100",
             "chart_date": chart_date_str,
             "week_start": _format_date(week_start),
             "week_end": chart_date_str,
@@ -893,21 +889,34 @@ def run(
         }
         _write_snapshot_json(payload, logger)
 
-        if generate_image:
-            try:
-                from swift_top_100_image import render_png
-
+        # Génération automatique de 4 images de 25 chansons
+        try:
+            from swift_top_100_image import render_png
+            import shutil
+            # Génération des images dans website/site/data/
+            image_paths = []
+            for i in range(4):
+                out_path = _SITE_DATA_DIR / f"swift_top_100_{i+1}.png"
                 render_png(
                     payload=payload,
-                    output_path=image_output,
-                    columns=image_columns,
-                    limit=100,
-                    width=image_width,
-                    scale=image_scale,
+                    output_path=out_path,
+                    columns=1,
+                    limit=25,
+                    offset=i * 25,
+                    width=1400,
+                    scale=2,
                 )
-                logger.log(f"[swift_top_100] Wrote chart image: {image_output}")
-            except Exception as exc:
-                logger.log(f"[swift_top_100] Image generation failed (skipped): {exc}")
+                logger.log(f"[swift_top_100] Wrote chart image: {out_path}")
+                image_paths.append(out_path)
+            # Copie dans collectors/billboard/history/<date>/
+            history_dir = _SCRIPT_DIR / "history" / chart_date_str
+            history_dir.mkdir(parents=True, exist_ok=True)
+            for i, src in enumerate(image_paths, 1):
+                dst = history_dir / f"swift_top_100_{i}.png"
+                shutil.copy2(src, dst)
+                logger.log(f"[swift_top_100] Copied image to: {dst}")
+        except Exception as exc:
+            logger.log(f"[swift_top_100] Image generation failed (skipped): {exc}")
 
         _maybe_upload_to_r2(logger=logger)
 
@@ -924,16 +933,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Generate Swift Top 100 weekly chart")
     p.add_argument("--date", dest="date", default=None, help="Week ending date (YYYY-MM-DD)")
     p.add_argument("--dry-run", dest="dry_run", action="store_true", help="Compute only; do not write files")
-    p.add_argument("--image", dest="image", action="store_true", help="Also generate a PNG chart image")
-    p.add_argument(
-        "--image-output",
-        dest="image_output",
-        default=str(OUTPUT_PNG),
-        help="Output PNG path (default: website/site/data/swift_top_100.png)",
-    )
-    p.add_argument("--image-columns", dest="image_columns", type=int, default=2, help="Table columns in PNG")
-    p.add_argument("--image-width", dest="image_width", type=int, default=1400, help="PNG width in px")
-    p.add_argument("--image-scale", dest="image_scale", type=int, default=2, help="Device scale factor")
+    # Suppression des options image, tout est généré par défaut
     return p.parse_args(argv)
 
 
@@ -943,11 +943,6 @@ def main(argv: list[str] | None = None) -> None:
     code = run(
         chart_date=chart_date,
         dry_run=bool(args.dry_run),
-        generate_image=bool(args.image),
-        image_output=Path(args.image_output),
-        image_columns=int(args.image_columns),
-        image_width=int(args.image_width),
-        image_scale=int(args.image_scale),
     )
     raise SystemExit(code)
 
