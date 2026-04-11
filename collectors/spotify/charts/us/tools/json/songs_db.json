@@ -3683,5 +3683,147 @@
     "track": "Boston",
     "tags": [],
     "is_pop": false
+  },
+  "katseye|||pinky up": {
+    "artist": "KATSEYE",
+    "track": "PINKY UP",
+    "tags": [],
+    "is_pop": false
+  },
+  "ella langley|||country boy's dream girl": {
+    "artist": "Ella Langley",
+    "track": "Country Boy's Dream Girl",
+    "tags": [],
+    "is_pop": false
+  },
+  "the kid laroi|||nights like this": {
+    "artist": "The Kid LAROI",
+    "track": "NIGHTS LIKE THIS",
+    "tags": [
+      "hip-hop",
+      "rap",
+      "trip-hop",
+      "alternative rap",
+      "calm",
+      "nighttime",
+      "alternative hip-hop",
+      "alternative rnb",
+      "trippy",
+      "buwygfibsara"
+    ],
+    "is_pop": false
+  },
+  "justin bieber|||yukon": {
+    "artist": "Justin Bieber",
+    "track": "YUKON",
+    "tags": [
+      "2025",
+      "pop",
+      "indie pop",
+      "rnb",
+      "fav",
+      "bedroom pop",
+      "downtempo",
+      "justin bieber",
+      "alternative rnb",
+      "nachspiel"
+    ],
+    "is_pop": true
+  },
+  "ella langley|||girl you're taking home": {
+    "artist": "Ella Langley",
+    "track": "girl you're taking home",
+    "tags": [],
+    "is_pop": false
+  },
+  "ella langley|||bottom of your boots": {
+    "artist": "Ella Langley",
+    "track": "Bottom Of Your Boots",
+    "tags": [],
+    "is_pop": false
+  },
+  "lady gaga|||runway": {
+    "artist": "Lady Gaga",
+    "track": "RUNWAY",
+    "tags": [],
+    "is_pop": false
+  },
+  "ella langley|||we know us": {
+    "artist": "Ella Langley",
+    "track": "We Know Us",
+    "tags": [],
+    "is_pop": false
+  },
+  "ella langley|||speaking terms": {
+    "artist": "Ella Langley",
+    "track": "Speaking Terms",
+    "tags": [],
+    "is_pop": false
+  },
+  "ella langley|||low lights": {
+    "artist": "Ella Langley",
+    "track": "Low Lights",
+    "tags": [],
+    "is_pop": false
+  },
+  "ella langley|||i gotta quit": {
+    "artist": "Ella Langley",
+    "track": "I Gotta Quit",
+    "tags": [],
+    "is_pop": false
+  },
+  "ella langley|||broken": {
+    "artist": "Ella Langley",
+    "track": "Broken",
+    "tags": [],
+    "is_pop": false
+  },
+  "ella langley|||you & me time": {
+    "artist": "Ella Langley",
+    "track": "You & Me Time",
+    "tags": [],
+    "is_pop": false
+  },
+  "teddy swims|||mr. know it all": {
+    "artist": "Teddy Swims",
+    "track": "Mr. Know It All",
+    "tags": [],
+    "is_pop": false
+  },
+  "ella langley|||it wasn't god who made honky tonk angels": {
+    "artist": "Ella Langley",
+    "track": "It Wasn't God Who Made Honky Tonk Angels",
+    "tags": [],
+    "is_pop": false
+  },
+  "dj khaled|||one of them (with future & lil baby)": {
+    "artist": "DJ Khaled",
+    "track": "One of Them (with Future & Lil Baby)",
+    "tags": [],
+    "is_pop": false
+  },
+  "ella langley|||butterfly season (feat. miranda lambert)": {
+    "artist": "Ella Langley",
+    "track": "Butterfly Season (feat. Miranda Lambert)",
+    "tags": [],
+    "is_pop": false
+  },
+  "ella langley|||most good things do - acoustic": {
+    "artist": "Ella Langley",
+    "track": "Most Good Things Do - Acoustic",
+    "tags": [],
+    "is_pop": false
+  },
+  "ella langley|||somethin' simple": {
+    "artist": "Ella Langley",
+    "track": "Somethin' Simple",
+    "tags": [],
+    "is_pop": false
+  },
+  "ella langley|||last call for us": {
+    "artist": "Ella Langley",
+    "track": "Last Call For Us",
+    "tags": [],
+    "is_pop": false
   }
 }
