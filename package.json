@@ -1,5 +1,8 @@
 {
   "scripts": {
     "postinstall": "node ./scripts/ensure-node-modules-tsconfig.cjs"
+  },
+  "dependencies": {
+    "prop-types": "^15.8.1"
   }
 }
