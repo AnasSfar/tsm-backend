@@ -3588,5 +3588,116 @@
       "party"
     ],
     "is_pop": false
+  },
+  "katseye|||pinky up": {
+    "artist": "KATSEYE",
+    "track": "PINKY UP",
+    "tags": [],
+    "is_pop": false
+  },
+  "sabrina carpenter|||please please please": {
+    "artist": "Sabrina Carpenter",
+    "track": "Please Please Please",
+    "tags": [
+      "pop",
+      "country pop",
+      "synthpop",
+      "my top songs",
+      "female vocalist",
+      "us number one",
+      "yacht rock",
+      "sabrina carpenter",
+      "2024",
+      "sassy"
+    ],
+    "is_pop": true
+  },
+  "j. cole|||no role modelz": {
+    "artist": "J. Cole",
+    "track": "No Role Modelz",
+    "tags": [
+      "hip-hop",
+      "rap",
+      "j cole",
+      "hip hop",
+      "pop rap",
+      "2014",
+      "conscious hip hop",
+      "american",
+      "jazz rap",
+      "winter"
+    ],
+    "is_pop": false
+  },
+  "teddy swims|||mr. know it all": {
+    "artist": "Teddy Swims",
+    "track": "Mr. Know It All",
+    "tags": [],
+    "is_pop": false
+  },
+  "justin bieber|||beauty and a beat": {
+    "artist": "Justin Bieber",
+    "track": "Beauty And A Beat",
+    "tags": [
+      "pop",
+      "dance",
+      "male vocalists",
+      "hip-hop",
+      "nicki minaj",
+      "electropop",
+      "canadian",
+      "justin bieber",
+      "dance pop",
+      "rap"
+    ],
+    "is_pop": true
+  },
+  "lady gaga|||runway": {
+    "artist": "Lady Gaga",
+    "track": "RUNWAY",
+    "tags": [],
+    "is_pop": false
+  },
+  "ella langley|||be her": {
+    "artist": "Ella Langley",
+    "track": "Be Her",
+    "tags": [
+      "linedance 2026"
+    ],
+    "is_pop": false
+  },
+  "michael jackson|||beat it": {
+    "artist": "Michael Jackson",
+    "track": "Beat It",
+    "tags": [
+      "pop",
+      "80s",
+      "michael jackson",
+      "dance",
+      "rock",
+      "king of pop",
+      "beat it",
+      "male vocalists",
+      "funk",
+      "american"
+    ],
+    "is_pop": true
+  },
+  "post malone|||i had some help (feat. morgan wallen)": {
+    "artist": "Post Malone",
+    "track": "I Had Some Help (Feat. Morgan Wallen)",
+    "tags": [
+      "country",
+      "pop",
+      "p artist",
+      "duet",
+      "country pop",
+      "song of the summer",
+      "2024",
+      "morgan wallen",
+      "post malone",
+      "linedance 2024"
+    ],
+    "is_pop": true
   }
 }
