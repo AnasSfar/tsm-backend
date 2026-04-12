@@ -3699,5 +3699,79 @@
       "linedance 2024"
     ],
     "is_pop": true
+  },
+  "sabrina carpenter|||when did you get hot?": {
+    "artist": "Sabrina Carpenter",
+    "track": "When Did You Get Hot?",
+    "tags": [
+      "hip hop soul",
+      "trip hop",
+      "contemporary rnb",
+      "pop",
+      "female vocalist",
+      "sexy",
+      "rnb",
+      "narusasu",
+      "g minor",
+      "new jack swing"
+    ],
+    "is_pop": false
+  },
+  "justin bieber|||confident - single version": {
+    "artist": "Justin Bieber",
+    "track": "Confident - Single Version",
+    "tags": [],
+    "is_pop": false
+  },
+  "sabrina carpenter|||nobody’s son": {
+    "artist": "Sabrina Carpenter",
+    "track": "Nobody’s Son",
+    "tags": [
+      "synthpop",
+      "europop",
+      "ska",
+      "reggae",
+      "pop",
+      "female vocalist",
+      "new wave",
+      "snl",
+      "synth pop",
+      "pop reggae"
+    ],
+    "is_pop": true
+  },
+  "justin bieber|||yukon": {
+    "artist": "Justin Bieber",
+    "track": "YUKON",
+    "tags": [
+      "2025",
+      "pop",
+      "indie pop",
+      "rnb",
+      "fav",
+      "bedroom pop",
+      "downtempo",
+      "justin bieber",
+      "alternative rnb",
+      "nachspiel"
+    ],
+    "is_pop": true
+  },
+  "justin bieber|||sorry": {
+    "artist": "Justin Bieber",
+    "track": "Sorry",
+    "tags": [
+      "pop",
+      "dancehall",
+      "tropical house",
+      "2015",
+      "justin bieber",
+      "party",
+      "dance",
+      "moombahton",
+      "dancehall pop",
+      "canadian"
+    ],
+    "is_pop": true
   }
 }
