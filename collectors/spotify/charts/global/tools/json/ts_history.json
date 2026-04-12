@@ -6018,9 +6018,9 @@
       "peak_rank": 1
     },
     "2026-04-11": {
-      "rank": 14,
-      "streams": 3588995,
-      "previous_rank": 130,
+      "rank": 11,
+      "streams": 3499126,
+      "previous_rank": 140,
       "peak_rank": 1
     }
   },
@@ -7005,9 +7005,9 @@
       "peak_rank": 2
     },
     "2026-04-11": {
-      "rank": 81,
-      "streams": 1831243,
-      "previous_rank": 720,
+      "rank": 79,
+      "streams": 1781522,
+      "previous_rank": 810,
       "peak_rank": 2
     }
   },
@@ -8836,6 +8836,11 @@
       "rank": 196,
       "streams": 1223240,
       "previous_rank": 1340,
+      "peak_rank": 12
+    },
+    "2026-04-11": {
+      "rank": 191,
+      "streams": 1279920,
       "peak_rank": 12
     }
   },
