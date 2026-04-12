@@ -9,7 +9,7 @@ from __future__ import annotations
 import argparse
 from datetime import date, datetime
 
-from core.config import ARTIST_ID, COUNTRIES, DB_DIR, SCRIPTS_DIR
+from core.config import COUNTRIES, DB_DIR, SCRIPTS_DIR
 from core.csv_utils import load_previous_ranks, rewrite_for_snapshot
 from core.export import maybe_run_export
 from core.filters import build_artwork_url, clean_text, is_taylor_swift_song, rank_key
@@ -44,50 +44,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def fetch_country(session, country: str) -> list[dict]:
-    """Fetch TS albums per country using the artist albums endpoint.
-
-    Falls back to the general album chart filtered to TS if the artist
-    endpoint returns nothing.
-    """
-    # Primary: artist albums endpoint (returns all TS albums for that storefront)
-    url = (
-        f"https://amp-api-edge.music.apple.com/v1/catalog/{country}/artists/{ARTIST_ID}"
-        f"/albums?limit=100"
-    )
-    try:
-        resp = session.get(url)
-        if resp.status_code == 401:
-            raise RuntimeError("Unauthorized while calling Apple Music API")
-        if resp.status_code == 200:
-            items = resp.json().get("data", [])
-            if items:
-                albums = []
-                for idx, item in enumerate(items, start=1):
-                    attrs = item.get("attributes", {}) or {}
-                    album_name = clean_text(attrs.get("name", ""))
-                    if not album_name:
-                        continue
-                    genre_names = " | ".join([g for g in (attrs.get("genreNames") or []) if g])
-                    albums.append(
-                        {
-                            "album_name": album_name,
-                            "apple_music_id": str(item.get("id", "")),
-                            "rank": idx,
-                            "image_url": build_artwork_url(attrs.get("artwork"), size=500),
-                            "url": attrs.get("url", ""),
-                            "artist_name": clean_text(attrs.get("artistName", "")),
-                            "release_date": attrs.get("releaseDate", ""),
-                            "genre_names": genre_names,
-                        }
-                    )
-                if albums:
-                    return albums
-    except RuntimeError:
-        raise
-    except Exception:
-        pass
-
-    # Fallback: general album chart filtered to TS
+    """Fetch TS albums from the country top albums chart."""
     url = f"https://amp-api-edge.music.apple.com/v1/catalog/{country}/charts?types=albums&limit=100"
     resp = session.get(url)
     if resp.status_code == 400:
