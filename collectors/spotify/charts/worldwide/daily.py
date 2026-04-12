@@ -356,7 +356,52 @@ def _get_bearer_token_and_regions() -> tuple[str, dict[str, str]]:
         if code not in all_regions:
             all_regions[code] = name
 
-    print(f"[INFO] Discovered {len(all_regions)} regions (API + HTML)")
+    # 4. Garantit les régions clés toujours présentes
+    REQUIRED_REGIONS = {
+        "global": "Global",
+        "fr": "France",
+        "us": "United States",
+        "gb": "United Kingdom",
+        "de": "Germany",
+        "au": "Australia",
+        "ca": "Canada",
+        "br": "Brazil",
+        "mx": "Mexico",
+        "es": "Spain",
+        "it": "Italy",
+        "nl": "Netherlands",
+        "se": "Sweden",
+        "no": "Norway",
+        "fi": "Finland",
+        "pl": "Poland",
+        "at": "Austria",
+        "ch": "Switzerland",
+        "be": "Belgium",
+        "pt": "Portugal",
+        "nz": "New Zealand",
+        "ie": "Ireland",
+        "jp": "Japan",
+        "sg": "Singapore",
+        "ph": "Philippines",
+        "id": "Indonesia",
+        "my": "Malaysia",
+        "tw": "Taiwan",
+        "ar": "Argentina",
+        "cl": "Chile",
+        "co": "Colombia",
+        "pe": "Peru",
+        "za": "South Africa",
+        "in": "India",
+    }
+    added = []
+    for code, name in REQUIRED_REGIONS.items():
+        if code not in all_regions:
+            all_regions[code] = name
+            added.append(code)
+    if added:
+        print(f"[INFO] Force-added {len(added)} required regions: {', '.join(added)}")
+
+    print(f"[INFO] Discovered {len(all_regions)} regions total (API + HTML + required)")
     return token, all_regions
 
 

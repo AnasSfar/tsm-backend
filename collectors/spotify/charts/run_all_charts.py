@@ -21,8 +21,8 @@ R2_ENV_VARS = (
 )
 
 POSTING_RUNNERS = [
-    ("global", CHARTS_ROOT / "global" / "daily.py", []),
-    ("fr", CHARTS_ROOT / "fr" / "daily.py", []),
+    ("global", CHARTS_ROOT / "global" / "daily.py", ["--force"]),
+    ("fr", CHARTS_ROOT / "fr" / "daily.py", ["--force"]),
 ]
 
 NO_POST_RUNNERS = [
