@@ -3825,5 +3825,85 @@
     "track": "Last Call For Us",
     "tags": [],
     "is_pop": false
+  },
+  "sabrina carpenter|||please please please": {
+    "artist": "Sabrina Carpenter",
+    "track": "Please Please Please",
+    "tags": [
+      "pop",
+      "country pop",
+      "synthpop",
+      "my top songs",
+      "female vocalist",
+      "us number one",
+      "yacht rock",
+      "sabrina carpenter",
+      "2024",
+      "sassy"
+    ],
+    "is_pop": true
+  },
+  "usher|||yeah! (feat. lil jon & ludacris)": {
+    "artist": "USHER",
+    "track": "Yeah! (feat. Lil Jon & Ludacris)",
+    "tags": [
+      "pop",
+      "dance",
+      "r&b",
+      "hip-hop",
+      "2004",
+      "2000s",
+      "rnb",
+      "00s",
+      "hip hop",
+      "iconic"
+    ],
+    "is_pop": true
+  },
+  "justin bieber|||beauty and a beat": {
+    "artist": "Justin Bieber",
+    "track": "Beauty And A Beat",
+    "tags": [
+      "pop",
+      "dance",
+      "male vocalists",
+      "hip-hop",
+      "nicki minaj",
+      "electropop",
+      "canadian",
+      "justin bieber",
+      "dance pop",
+      "rap"
+    ],
+    "is_pop": true
+  },
+  "justin bieber|||confident - single version": {
+    "artist": "Justin Bieber",
+    "track": "Confident - Single Version",
+    "tags": [],
+    "is_pop": false
+  },
+  "sabrina carpenter|||taste": {
+    "artist": "Sabrina Carpenter",
+    "track": "Taste",
+    "tags": [
+      "pop",
+      "pop rock",
+      "sabrina carpenter",
+      "2024",
+      "synthpop",
+      "taste",
+      "slacker rock",
+      "soft rock",
+      "female vocalists",
+      "dance-pop"
+    ],
+    "is_pop": true
+  },
+  "disclosure|||latch": {
+    "artist": "Disclosure",
+    "track": "Latch",
+    "tags": [],
+    "is_pop": false
   }
 }
