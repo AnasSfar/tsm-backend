@@ -392,6 +392,39 @@ def _get_bearer_token_and_regions() -> tuple[str, dict[str, str]]:
         "pe": "Peru",
         "za": "South Africa",
         "in": "India",
+        # Additional confirmed Spotify Charts markets
+        "ae": "United Arab Emirates",
+        "cz": "Czech Republic",
+        "dk": "Denmark",
+        "ee": "Estonia",
+        "hk": "Hong Kong",
+        "hu": "Hungary",
+        "is": "Iceland",
+        "il": "Israel",
+        "kr": "South Korea",
+        "lt": "Lithuania",
+        "lu": "Luxembourg",
+        "lv": "Latvia",
+        "pa": "Panama",
+        "py": "Paraguay",
+        "ro": "Romania",
+        "sa": "Saudi Arabia",
+        "sk": "Slovakia",
+        "th": "Thailand",
+        "tr": "Turkey",
+        "uy": "Uruguay",
+        "vn": "Vietnam",
+        "bg": "Bulgaria",
+        "bo": "Bolivia",
+        "cr": "Costa Rica",
+        "cy": "Cyprus",
+        "do": "Dominican Republic",
+        "ec": "Ecuador",
+        "gt": "Guatemala",
+        "hn": "Honduras",
+        "ni": "Nicaragua",
+        "si": "Slovenia",
+        "sv": "El Salvador",
     }
     added = []
     for code, name in REQUIRED_REGIONS.items():
@@ -541,12 +574,14 @@ def main() -> int:
 
 
     # Pré-skip des pays déjà présents pour cette date
-    already_done = set()
+    already_done: set[str] = set()
+    existing_by_track: dict[str, list[dict]] = {}
     if OUTPUT_PATH.exists():
         try:
             with open(OUTPUT_PATH, encoding="utf-8") as f:
                 data = json.load(f)
             if data.get("date") == chart_date and "by_track" in data:
+                existing_by_track = data["by_track"]
                 for entries in data["by_track"].values():
                     for entry in entries:
                         if "country" in entry:
@@ -586,6 +621,21 @@ def main() -> int:
                 "peak_rank":    row["peak_rank"],
                 "total_days":   row["total_days"],
             })
+
+    # Merge back already-skipped entries from the previous run of the same date.
+    # Without this, re-runs would silently discard countries collected in earlier runs.
+    if existing_by_track and already_done:
+        for track_id, old_entries in existing_by_track.items():
+            kept = [e for e in old_entries if e.get("country") in already_done]
+            if not kept:
+                continue
+            if track_id not in by_track:
+                by_track[track_id] = kept
+            else:
+                new_countries = {e["country"] for e in by_track[track_id]}
+                for entry in kept:
+                    if entry["country"] not in new_countries:
+                        by_track[track_id].append(entry)
 
     # Sort each track's country list by rank
     for entries in by_track.values():

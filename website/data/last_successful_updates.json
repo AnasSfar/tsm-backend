@@ -1,88 +1,16 @@
 {
-  "generated_at": "2026-04-12",
-  "stats_date": "2026-04-11",
+  "generated_at": "2026-04-13",
+  "stats_date": "2026-04-12",
   "track_ids": [
-    "2x0WlnmfG39ZuDmstl9xfX",
-    "3JNaLxAymiSUMrmjOarjeo",
-    "4e3ZNTAV6PCrdYMUrUlMpQ",
-    "0kAZ3H6G9Zac4PMpmobMkj",
-    "0zo975x58DlXbZllWvfYhg",
-    "2Sy2oGjP5RYB4cLVoDU0Gz",
-    "05kJkr80XEaZeN8kxyQoFp",
-    "6vLpy7UPYuOa75Bkqocrcw",
-    "1zz0XSmHCFd57ne04UAp38",
-    "1alAo6dYalSx8yZUn17JxF"
+    "5kHMfzgLZP95O9NBy0ku4v"
   ],
   "tracks": [
     {
-      "track_id": "2x0WlnmfG39ZuDmstl9xfX",
-      "title": "End Game",
-      "spotify_url": "https://open.spotify.com/track/2x0WlnmfG39ZuDmstl9xfX",
-      "streams": 623175766,
-      "daily_streams": 132769
-    },
-    {
-      "track_id": "3JNaLxAymiSUMrmjOarjeo",
-      "title": "The Fate of Ophelia - The Chainsmokers Remix",
-      "spotify_url": "https://open.spotify.com/track/3JNaLxAymiSUMrmjOarjeo",
-      "streams": 15151689,
-      "daily_streams": 52094
-    },
-    {
-      "track_id": "4e3ZNTAV6PCrdYMUrUlMpQ",
-      "title": "Electric Touch (feat. Fall Out Boy) (Taylor's Version) (From The Vault)",
-      "spotify_url": "https://open.spotify.com/track/4e3ZNTAV6PCrdYMUrUlMpQ",
-      "streams": 122654346,
-      "daily_streams": 31221
-    },
-    {
-      "track_id": "0kAZ3H6G9Zac4PMpmobMkj",
-      "title": "If This Was A Movie (Taylor's Version)",
-      "spotify_url": "https://open.spotify.com/track/0kAZ3H6G9Zac4PMpmobMkj",
-      "streams": 96107815,
-      "daily_streams": 29961
-    },
-    {
-      "track_id": "0zo975x58DlXbZllWvfYhg",
-      "title": "When Emma Falls in Love (Taylor's Version) (From The Vault)",
-      "spotify_url": "https://open.spotify.com/track/0zo975x58DlXbZllWvfYhg",
-      "streams": 110751520,
-      "daily_streams": 25792
-    },
-    {
-      "track_id": "2Sy2oGjP5RYB4cLVoDU0Gz",
-      "title": "Delicate - Seeb Remix",
-      "spotify_url": "https://open.spotify.com/track/2Sy2oGjP5RYB4cLVoDU0Gz",
-      "streams": 52650273,
-      "daily_streams": 13036
-    },
-    {
-      "track_id": "05kJkr80XEaZeN8kxyQoFp",
-      "title": "Lavender Haze - Acoustic Version",
-      "spotify_url": "https://open.spotify.com/track/05kJkr80XEaZeN8kxyQoFp",
-      "streams": 34002793,
-      "daily_streams": 6805
-    },
-    {
-      "track_id": "6vLpy7UPYuOa75Bkqocrcw",
-      "title": "Tell Me Why",
-      "spotify_url": "https://open.spotify.com/track/6vLpy7UPYuOa75Bkqocrcw",
-      "streams": 35529731,
-      "daily_streams": 5898
-    },
-    {
-      "track_id": "1zz0XSmHCFd57ne04UAp38",
-      "title": "Look What You Made Me Do - Karaoke Version",
-      "spotify_url": "https://open.spotify.com/track/1zz0XSmHCFd57ne04UAp38",
-      "streams": 775697,
-      "daily_streams": 293
-    },
-    {
-      "track_id": "1alAo6dYalSx8yZUn17JxF",
-      "title": "Christmas Tree Farm - Recorded Live at the 2019 iHeartRadio Jingle Ball",
-      "spotify_url": "https://open.spotify.com/track/1alAo6dYalSx8yZUn17JxF",
-      "streams": 2929574,
-      "daily_streams": 244
+      "track_id": "5kHMfzgLZP95O9NBy0ku4v",
+      "title": "I Can See You (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/5kHMfzgLZP95O9NBy0ku4v",
+      "streams": 341650929,
+      "daily_streams": 68195
     }
   ]
 }

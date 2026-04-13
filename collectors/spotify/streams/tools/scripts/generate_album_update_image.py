@@ -1493,7 +1493,8 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
 
     return (
         f'📈| "{canonical_name}" received {total_daily_fmt} streams yesterday, {date_fmt}.{album_pct_str}\n\n'
-        f'"{selected_song}" was the {label} with {track_daily_fmt} streams{track_pct_str}.'
+        f'"{selected_song}" was the {label} with {track_daily_fmt} streams{track_pct_str}.\n\n'
+        f"See full update here : https://thetsmuseum.app/streams/latest ❤️‍🔥"
     )
 
 
