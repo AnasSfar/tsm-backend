@@ -3773,5 +3773,209 @@
       "canadian"
     ],
     "is_pop": true
+  },
+  "justin bieber|||love yourself": {
+    "artist": "Justin Bieber",
+    "track": "Love Yourself",
+    "tags": [
+      "pop",
+      "justin bieber",
+      "acoustic",
+      "love at first listen",
+      "ed sheeran",
+      "my top songs",
+      "acoustic pop",
+      "2010s",
+      "us number one",
+      "2015"
+    ],
+    "is_pop": true
+  },
+  "dj snake|||let me love you": {
+    "artist": "DJ Snake",
+    "track": "Let Me Love You",
+    "tags": [
+      "electronic",
+      "justin bieber",
+      "tropical house",
+      "electropop",
+      "2016",
+      "house",
+      "pop",
+      "dance-pop",
+      "edm",
+      "dance"
+    ],
+    "is_pop": false
+  },
+  "justin bieber|||one less lonely girl": {
+    "artist": "Justin Bieber",
+    "track": "One Less Lonely Girl",
+    "tags": [
+      "justin bieber",
+      "pop",
+      "one less lonely girl",
+      "love",
+      "i love justin bieber",
+      "rnb",
+      "canadian",
+      "catchy",
+      "r&b",
+      "love songs"
+    ],
+    "is_pop": true
+  },
+  "justin bieber|||baby": {
+    "artist": "Justin Bieber",
+    "track": "Baby",
+    "tags": [
+      "pop",
+      "justin bieber",
+      "rnb",
+      "love",
+      "fun",
+      "guilty pleasure",
+      "romantic",
+      "baby",
+      "love it",
+      "2010"
+    ],
+    "is_pop": true
+  },
+  "justin bieber|||ghost": {
+    "artist": "Justin Bieber",
+    "track": "Ghost",
+    "tags": [
+      "pop",
+      "electronic",
+      "synth-pop",
+      "dance",
+      "2021",
+      "dnb",
+      "my top songs",
+      "2020s",
+      "electropop",
+      "dance-pop"
+    ],
+    "is_pop": true
+  },
+  "justin bieber|||what do you mean?": {
+    "artist": "Justin Bieber",
+    "track": "What Do You Mean?",
+    "tags": [
+      "pop",
+      "2015",
+      "tropical house",
+      "canadian",
+      "justin bieber",
+      "dance",
+      "electronic",
+      "dance-pop",
+      "rnb",
+      "party"
+    ],
+    "is_pop": true
+  },
+  "sean kingston|||eenie meenie": {
+    "artist": "Sean Kingston",
+    "track": "Eenie Meenie",
+    "tags": [
+      "funny",
+      "eenie meenie",
+      "2010",
+      "rnb",
+      "cd",
+      "andrew",
+      "dance-pop",
+      "dance time",
+      "b flat minor",
+      "john"
+    ],
+    "is_pop": false
+  },
+  "justin bieber|||never say never": {
+    "artist": "Justin Bieber",
+    "track": "Never Say Never",
+    "tags": [
+      "pop",
+      "male vocalists",
+      "jaden smith",
+      "r&b",
+      "justin bieber",
+      "2010",
+      "rnb",
+      "move your body",
+      "2011",
+      "my top songs"
+    ],
+    "is_pop": true
+  },
+  "justin bieber|||company": {
+    "artist": "Justin Bieber",
+    "track": "Company",
+    "tags": [
+      "pop",
+      "electropop",
+      "canadian",
+      "rnb",
+      "2010s",
+      "my top songs",
+      "2016",
+      "male vocalist",
+      "contemporary rnb",
+      "electronic"
+    ],
+    "is_pop": true
+  },
+  "sabrina carpenter|||juno": {
+    "artist": "Sabrina Carpenter",
+    "track": "Juno",
+    "tags": [
+      "pop",
+      "pop rock",
+      "ovulation",
+      "female vocalist",
+      "indie pop",
+      "horny",
+      "dance",
+      "wake-up song",
+      "happy pop",
+      "explicit"
+    ],
+    "is_pop": true
+  },
+  "justin bieber|||boyfriend": {
+    "artist": "Justin Bieber",
+    "track": "Boyfriend",
+    "tags": [
+      "pop",
+      "sexy",
+      "2012",
+      "rnb",
+      "biebstep",
+      "justin bieber",
+      "canadian",
+      "post-bieb",
+      "r&b",
+      "love at first listen"
+    ],
+    "is_pop": true
+  },
+  "the kid laroi|||stay (with justin bieber)": {
+    "artist": "The Kid LAROI",
+    "track": "STAY (with Justin Bieber)",
+    "tags": [
+      "pop rap",
+      "pop rock",
+      "synthpop",
+      "2021",
+      "justin bieber",
+      "2020s",
+      "pop",
+      "the kid laroi",
+      "rock",
+      "new wave"
+    ],
+    "is_pop": true
   }
 }
