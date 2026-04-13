@@ -50,6 +50,9 @@ CHARTS_GLOBAL_HISTORY_DIR = ROOT.parent / "charts" / "global" / "history"
 TWITTER_SESSION = ROOT.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json"
 HANDLE          = "@swiftiescharts"
 
+# Nouveau : logo à gauche du handle
+HANDLE_ICON_PATH = Path(r"C:\Users\sfara\Documents\GitHub\tsm-frontend\icons\logo.gif")
+
 sys.path.insert(0, str(ROOT.parent))   # collectors/spotify/ for core.*
 
 INCLUDED_EDITIONS = {"standard", "deluxe", "acoustic", "anthology", "original"}
@@ -230,7 +233,13 @@ def _file_to_data_uri(path: Path) -> str:
         return ""
     try:
         ext = path.suffix.lower().lstrip(".")
-        ct = {"jpg": "image/jpeg", "jpeg": "image/jpeg", "png": "image/png", "webp": "image/webp"}.get(ext, "image/png")
+        ct = {
+            "jpg": "image/jpeg",
+            "jpeg": "image/jpeg",
+            "png": "image/png",
+            "webp": "image/webp",
+            "gif": "image/gif",
+        }.get(ext, "image/png")
         return f"data:{ct};base64,{base64.b64encode(path.read_bytes()).decode()}"
     except Exception:
         return ""
@@ -683,12 +692,12 @@ CSS = """
 body{
   font-family:Inter,-apple-system,'Helvetica Neue',Arial,sans-serif;
   background:#ffffff;
-    width:var(--body-w, 880px);
+  width:var(--body-w, 880px);
   padding:12px;
   color:#101828;
 }
 .container{
-    width:100%;
+  width:100%;
   border-radius:20px;
   overflow:hidden;
   box-shadow:0 10px 30px rgba(16,24,40,.08),0 2px 8px rgba(16,24,40,.05);
@@ -697,61 +706,74 @@ body{
 /* ── header ── */
 .hdr{
   height:110px;
-    display:flex;align-items:center;gap:14px;
-    padding:0 16px;
+  display:flex;align-items:center;gap:14px;
+  padding:0 16px;
   position:relative;overflow:hidden;
   background:linear-gradient(135deg, rgba(29,185,84,.15) 0%, rgba(21,136,62,.08) 100%);
   border-bottom:2px solid rgba(29,185,84,.15);
 }
 .hdr-overlay{
   position:absolute;inset:0;
-    background:linear-gradient(90deg, rgba(0,0,0,0.58) 0%, rgba(0,0,0,0.34) 36%, rgba(0,0,0,0.12) 66%, rgba(0,0,0,0.0) 100%);
+  background:linear-gradient(90deg, rgba(0,0,0,0.58) 0%, rgba(0,0,0,0.34) 36%, rgba(0,0,0,0.12) 66%, rgba(0,0,0,0.0) 100%);
   pointer-events:none;
 }
 .hdr-cover{
-    width:72px;height:72px;border-radius:10px;
+  width:72px;height:72px;border-radius:10px;
   flex-shrink:0;object-fit:cover;
   box-shadow:0 4px 14px rgba(0,0,0,.15);
-    position:relative;
-    z-index:1;
+  position:relative;
+  z-index:1;
 }
 .hdr-cover-ph{
-    width:72px;height:72px;border-radius:10px;
+  width:72px;height:72px;border-radius:10px;
   background:linear-gradient(135deg,#e8f5ee 0%,#d4f1e0 100%);
-    flex-shrink:0;
-    position:relative;
-    z-index:1;
+  flex-shrink:0;
+  position:relative;
+  z-index:1;
 }
 .hdr-text{
-    display:flex;flex-direction:column;gap:4px;
-    min-width:0;
-    max-width:calc(100% - 92px);
-    position:relative;
-    z-index:1;
+  display:flex;flex-direction:column;gap:4px;
+  min-width:0;
+  max-width:calc(100% - 92px);
+  position:relative;
+  z-index:1;
 }
 .hdr-title{color:#101828;font-size:22px;font-weight:800;letter-spacing:-.4px;line-height:1.2}
 .hdr-sub{color:#667085;font-size:14px;font-weight:600;line-height:1.3}
-.hdr-handle{font-size:12px;font-weight:700;line-height:1.3}
+.hdr-handle{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  font-weight:700;
+  line-height:1.3;
+}
+.hdr-handle-icon{
+  width:14px;
+  height:14px;
+  object-fit:contain;
+  flex-shrink:0;
+}
 .hdr-title,.hdr-sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .hdr-sub .sep{opacity:.72;margin:0 6px}
 .hdr-date-chip{
-    display:inline-block;
-    padding:1px 8px;
-    border-radius:999px;
-    font-weight:800;
-    letter-spacing:.01em;
-    color:var(--hdr-date-fg);
-    background:var(--hdr-date-bg);
-    border:1px solid var(--hdr-date-br);
+  display:inline-block;
+  padding:1px 8px;
+  border-radius:999px;
+  font-weight:800;
+  letter-spacing:.01em;
+  color:var(--hdr-date-fg);
+  background:var(--hdr-date-bg);
+  border:1px solid var(--hdr-date-br);
 }
 /* ── column headers ── */
 .col-heads{
   display:grid;
-    grid-template-columns:var(--grid-cols);
-    column-gap:8px;
+  grid-template-columns:var(--grid-cols);
+  column-gap:8px;
   padding:6px 18px;
-    background:var(--tint-bg);
-    border-bottom:1px solid var(--tint-border);
+  background:var(--tint-bg);
+  border-bottom:1px solid var(--tint-border);
 }
 .col-heads span{
   font-size:10px;font-weight:700;text-transform:uppercase;
@@ -763,11 +785,11 @@ body{
 /* ── song rows ── */
 .song-row{
   display:grid;
-    grid-template-columns:var(--grid-cols);
-    column-gap:8px;
+  grid-template-columns:var(--grid-cols);
+  column-gap:8px;
   align-items:center;
-    padding:0 18px;
-    height:var(--row-h);
+  padding:0 18px;
+  height:var(--row-h);
   border-bottom:1px solid rgba(16,24,40,.04);
   background:#ffffff;
 }
@@ -779,9 +801,9 @@ body{
 .col-song{display:flex;flex-direction:column;justify-content:center;min-width:0}
 .song-title{
   font-size:13px;font-weight:600;color:#101828;
-    display:block;
-    text-align:center;
-    white-space:nowrap;overflow:visible;text-overflow:clip;
+  display:block;
+  text-align:center;
+  white-space:nowrap;overflow:visible;text-overflow:clip;
 }
 .song-title.has-tag{font-size:12.5px}
 .song-row.no-filter .col-song{grid-column:2/5}
@@ -793,9 +815,9 @@ body{
 .song-row.no-filter .pct-col{grid-column:7}
 .song-row.no-filter .total-col{grid-column:8}
 .song-ver{
-    display:block;
+  display:block;
   font-size:11px;color:#9aa5b4;font-weight:400;
-    text-align:center;
+  text-align:center;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .col-num{
@@ -811,18 +833,18 @@ body{
 /* ── section total ── */
 .sec-total{
   display:grid;
-    grid-template-columns:var(--grid-cols);
-    column-gap:8px;
+  grid-template-columns:var(--grid-cols);
+  column-gap:8px;
   align-items:center;
   padding:6px 18px;
   height:36px;
-    box-shadow:inset 5px 0 0 var(--sec-accent);
+  box-shadow:inset 5px 0 0 var(--sec-accent);
   background:var(--sec-bg);
   font-weight:700;
 }
 .sec-label{
   grid-column:1/3;
-    font-size:12px;color:var(--sec-accent);
+  font-size:12px;color:var(--sec-accent);
   padding-left:2px;
 }
 .sec-num{
@@ -832,16 +854,16 @@ body{
 }
 .tot-chip-wrap{display:flex;align-items:center;justify-content:flex-end;width:100%}
 .tot-chip{
-    display:inline-flex;
-    align-items:center;
-    justify-content:space-between;
-    width:100%;
-    gap:10px;
-    min-height:24px;
-    padding:2px 12px;
-    border-radius:8px;
-    border:1px solid rgba(16,24,40,.15);
-    background:rgba(255,255,255,.72);
+  display:inline-flex;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+  gap:10px;
+  min-height:24px;
+  padding:2px 12px;
+  border-radius:8px;
+  border:1px solid rgba(16,24,40,.15);
+  background:rgba(255,255,255,.72);
 }
 .tot-chip-val{font-size:12px;font-weight:800;color:#101828;white-space:nowrap;display:inline-flex;justify-content:flex-end;min-width:0}
 .tot-chip-val.chip-pos{color:#067647}
@@ -853,13 +875,13 @@ body{
 /* ── grand total ── */
 .era-total{
   display:grid;
-    grid-template-columns:var(--grid-cols);
-    column-gap:8px;
+  grid-template-columns:var(--grid-cols);
+  column-gap:8px;
   align-items:center;
   padding:6px 18px;
   height:38px;
   background:linear-gradient(135deg, #0d1117 0%, #1a1f26 100%);
-    border-top:2px solid var(--tint-border);
+  border-top:2px solid var(--tint-border);
 }
 .era-label{
   grid-column:1/3;
@@ -874,8 +896,8 @@ body{
 .era-main-wrap{grid-column:5/9}
 .era-total.no-filter .era-main-wrap{grid-column:3/7}
 .era-total .tot-chip{
-    border-color:rgba(255,255,255,.28);
-    background:rgba(255,255,255,.12);
+  border-color:rgba(255,255,255,.28);
+  background:rgba(255,255,255,.12);
 }
 .era-total .tot-chip-val{color:rgba(255,255,255,.95)}
 .era-total .tot-chip-val.chip-pos{color:#7ce9a4}
@@ -883,10 +905,10 @@ body{
 .era-total .tot-chip-val.chip-neutral{color:rgba(255,255,255,.82)}
 /* ── footer ── */
 .ftr{
-    background:var(--tint-bg);
+  background:var(--tint-bg);
   padding:7px 18px;
   display:flex;justify-content:space-between;align-items:center;
-    border-top:1px solid var(--tint-border);
+  border-top:1px solid var(--tint-border);
 }
 .ftr-handle{font-size:12px;font-weight:700}
 .ftr-date{font-size:12px;color:#667085;font-weight:500}
@@ -1119,6 +1141,7 @@ def build_html(
     section_palette: list[str] | None = None,
     show_filter_cols: bool = False,
     layout: dict | None = None,
+    handle_icon_uri: str = "",
 ) -> str:
     from datetime import datetime
     date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
@@ -1156,6 +1179,12 @@ def build_html(
         cover_html = f'<img class="hdr-cover" src="{cover_uri}" />'
     else:
         cover_html = '<div class="hdr-cover-ph"></div>'
+
+    # handle icon
+    if handle_icon_uri:
+        handle_icon_html = f'<img class="hdr-handle-icon" src="{handle_icon_uri}" alt="">'
+    else:
+        handle_icon_html = ""
 
     # alternate row color based on dominant
     alt_row_css = f"rgba({dr},{dg},{db},0.05)"
@@ -1200,13 +1229,13 @@ def build_html(
             total_streams += hd.get("streams") or 0
             total_change  += hd.get("change") or 0
         total_filtered = sum(
-                (hist.get(t["track_id"], {}).get("filtered_streams") or 0)
-                for sec in sections for t in sec["tracks"]
+            (hist.get(t["track_id"], {}).get("filtered_streams") or 0)
+            for sec in sections for t in sec["tracks"]
         )
         total_filtered_count = sum(
-                1
-                for sec in sections for t in sec["tracks"]
-                if hist.get(t["track_id"], {}).get("filtered_streams") is not None
+            1
+            for sec in sections for t in sec["tracks"]
+            if hist.get(t["track_id"], {}).get("filtered_streams") is not None
         )
         total_daily_filtered = sum(
             (hist.get(t["track_id"], {}).get("daily") or 0)
@@ -1220,34 +1249,34 @@ def build_html(
         tot_chg_s, tot_pct_s, chg_cls = fmt_chg(total_change, total_pct)
 
         if show_filter_cols:
-                total_flt_disp = total_filtered if total_filtered_count > 0 else None
-                total_rate_disp = (
-                    (100 - (total_filtered / total_daily_filtered * 100))
-                    if (total_filtered_count > 0 and total_daily_filtered > 0)
-                        else None
-                )
-                total_flt_text = fmt_optional_num(total_flt_disp) or "—"
-                total_rate_text = fmt_rate(total_rate_disp) or "—"
-                filter_chip = _build_totals_chip([
-                    (total_flt_text, ""),
-                    (total_rate_text, "chip-neutral"),
-                ])
+            total_flt_disp = total_filtered if total_filtered_count > 0 else None
+            total_rate_disp = (
+                (100 - (total_filtered / total_daily_filtered * 100))
+                if (total_filtered_count > 0 and total_daily_filtered > 0)
+                else None
+            )
+            total_flt_text = fmt_optional_num(total_flt_disp) or "—"
+            total_rate_text = fmt_rate(total_rate_disp) or "—"
+            filter_chip = _build_totals_chip([
+                (total_flt_text, ""),
+                (total_rate_text, "chip-neutral"),
+            ])
 
-                total_main_chip = _build_totals_chip([
-                    (f"+{fmt_num(total_daily)}", ""),
-                    (tot_chg_s, _chip_cls(chg_cls)),
-                    (tot_pct_s or "—", _chip_cls(chg_cls)),
-                    (fmt_num(total_streams), ""),
-                ])
+            total_main_chip = _build_totals_chip([
+                (f"+{fmt_num(total_daily)}", ""),
+                (tot_chg_s, _chip_cls(chg_cls)),
+                (tot_pct_s or "—", _chip_cls(chg_cls)),
+                (fmt_num(total_streams), ""),
+            ])
 
-                era_html = f"""<div class="era-total">
+            era_html = f"""<div class="era-total">
     <div class="era-label">Total</div>
     <div class="tot-chip-wrap era-filter-wrap">{filter_chip}</div>
     <div class="tot-chip-wrap era-main-wrap">{total_main_chip}</div>
 </div>
 """
         else:
-                era_html = f"""<div class="era-total no-filter">
+            era_html = f"""<div class="era-total no-filter">
     <div class="era-label">Total</div>
     <div class="era-num" style="grid-column:3">+{fmt_num(total_daily)}</div>
     <div class="era-num {chg_cls}" style="grid-column:4">{tot_chg_s}</div>
@@ -1266,14 +1295,17 @@ def build_html(
 <div class="container">
   <div class="hdr" style="{hdr_bg}">
     {hdr_overlay}
-        {cover_html}
-        <div class="hdr-text">
-            <div class="hdr-title" style="{hdr_text_color}">{album_name}</div>
-            <div class="hdr-sub" style="{hdr_sub_color}">Taylor Swift<span class="sep">&middot;</span><span class="hdr-date-chip">{date_fmt}</span></div>
-            <div class="hdr-handle" style="color:{dominant_hex}">{HANDLE}</div>
+    {cover_html}
+    <div class="hdr-text">
+      <div class="hdr-title" style="{hdr_text_color}">{album_name}</div>
+      <div class="hdr-sub" style="{hdr_sub_color}">Taylor Swift<span class="sep">&middot;</span><span class="hdr-date-chip">{date_fmt}</span></div>
+      <div class="hdr-handle" style="color:{dominant_hex}">
+        {handle_icon_html}
+        <span>{HANDLE}</span>
+      </div>
     </div>
   </div>
-    {col_heads_html}
+  {col_heads_html}
   {rows_html}
   {era_html}
   <div class="ftr">
@@ -1325,12 +1357,17 @@ def generate(album_name: str, target_date: str | None = None) -> Path:
     # prefetch cover image
     print("[album_update] Téléchargement de la cover...")
     cover_uri = _url_to_data_uri(cover_url) if cover_url else ""
+
     layout = _compute_layout_metrics(sections, show_filter_cols)
     hdr_target_w = (layout["body_width_px"] - 2 * BODY_PADDING_CSS) * RENDER_DPR
     hdr_target_h = HEADER_HEIGHT_CSS * RENDER_DPR
     header_uri = _prepare_header_for_render(header_img, hdr_target_w, hdr_target_h) if header_img else ""
 
     section_palette = _section_palette_colors(header_img, max_colors=max(3, len(sections))) if header_img else []
+
+    # Nouveau : icône du handle
+    handle_icon_uri = _file_to_data_uri(HANDLE_ICON_PATH)
+
     html = build_html(
         album_name,
         sections,
@@ -1342,6 +1379,7 @@ def generate(album_name: str, target_date: str | None = None) -> Path:
         section_palette=section_palette,
         show_filter_cols=show_filter_cols,
         layout=layout,
+        handle_icon_uri=handle_icon_uri,
     )
 
     album_slug = re.sub(r"[^a-z0-9]+", "_", album_name.lower()).strip("_")
@@ -1401,7 +1439,7 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
     # Calculate album percentage change
     # change = daily_today - daily_yesterday, so daily_yesterday = daily_today - change
     total_daily_yesterday = total_daily - sum(hist.get(t["track_id"], {}).get("change") or 0 for t in tracks)
-    
+
     album_pct = None
     if total_daily_yesterday and total_daily_yesterday > 0:
         album_change = total_daily - total_daily_yesterday
@@ -1424,7 +1462,7 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
     selected_song = "Unknown"
     track_daily = 0
     track_pct = None
-    
+
     if scored:
         if all(item["pct"] < 0 for item in scored):
             best = max(scored, key=lambda x: x["pct"])
@@ -1440,13 +1478,13 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
     date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
     total_daily_fmt = f"{int(total_daily):,}"
     track_daily_fmt = f"{int(track_daily):,}"
-    
+
     # Format album percentage
     album_pct_str = ""
     if album_pct is not None:
         sign = "+" if album_pct >= 0 else "−"
         album_pct_str = f" ({sign}{abs(album_pct):.1f}%)"
-    
+
     # Format track percentage
     track_pct_str = ""
     if track_pct is not None:
