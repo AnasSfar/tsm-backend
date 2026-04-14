@@ -693,14 +693,12 @@ body{
   font-family:Inter,-apple-system,'Helvetica Neue',Arial,sans-serif;
   background:#ffffff;
   width:var(--body-w, 880px);
-  padding:12px;
+  padding:0;
   color:#101828;
 }
 .container{
   width:100%;
-  border-radius:20px;
   overflow:hidden;
-  box-shadow:0 10px 30px rgba(16,24,40,.08),0 2px 8px rgba(16,24,40,.05);
   background:#ffffff;
 }
 /* ── header ── */

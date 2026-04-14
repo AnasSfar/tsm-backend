@@ -413,13 +413,11 @@ body{
     radial-gradient(circle at 84% 16%, rgba(126,87,255,.10), transparent 32%),
     linear-gradient(180deg,#f4f7f8 0%,#edf3f4 100%);
   width:800px;
-  padding:16px;
+  padding:0;
   color:#101828;
 }
 .container{
-  border-radius:18px;
   overflow:hidden;
-  box-shadow:0 14px 40px rgba(16,24,40,.10),0 2px 8px rgba(16,24,40,.06);
 }
 .hdr{
   padding:20px 22px;
