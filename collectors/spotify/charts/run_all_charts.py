@@ -182,6 +182,22 @@ def main() -> int:
             print(f"- {region} (exit {code})")
     print()
 
+    if not args.dry_run:
+        print("[STEP ] Exporting web data + R2 upload...")
+        export_env = child_env.copy()
+        export_env["UPLOAD_TO_R2"] = "1"
+        result = subprocess.run(
+            [sys.executable, str(REPO_ROOT / "scripts" / "export_for_web.py")],
+            cwd=str(REPO_ROOT),
+            check=False,
+            env=export_env,
+        )
+        if result.returncode == 0:
+            print("[STEP ] Web export done.")
+        else:
+            print(f"[WARN ] Web export exited with code {result.returncode}")
+        print()
+
     if failures and args.stop_on_error:
         print("Stopping due to --stop-on-error after parallel phase")
     else:
