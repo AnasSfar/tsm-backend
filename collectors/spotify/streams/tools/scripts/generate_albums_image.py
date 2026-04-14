@@ -405,7 +405,7 @@ body{
 .hdr-sub{color:rgba(255,255,255,.85);font-size:13px;margin-top:4px}
 .col-heads{
   display:grid;
-  grid-template-columns:44px 54px minmax(160px,1fr) 130px 130px 110px;
+  grid-template-columns:44px minmax(160px,1fr) 130px 130px 110px;
   column-gap:8px;
   padding:7px 14px;
   background:rgba(241,245,246,.95);
@@ -505,7 +505,7 @@ def build_rows_html(rows: list[dict], image_cache: dict[str, str]) -> str:
     {art_html}
     <div class="album-name">{album}</div>
   </div>
-  <div class="col-num pos">+{fmt_num(daily)}</div>
+  <div class="col-num">+{fmt_num(daily)}</div>
   <div class="col-num {delta_cls}">
     <div class="delta-wrap">
       <span class="delta-num">{delta_num}</span>

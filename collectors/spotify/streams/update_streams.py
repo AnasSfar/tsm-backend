@@ -3080,6 +3080,18 @@ def main():
         )
         print("Image URLs and track_covers.json done.")
 
+        # ── Albums daily image ────────────────────────────────────────────────
+        _albums_post_script = _SCRIPT_DIR / "tools" / "scripts" / "post_albums_twitter.py"
+        _albums_cmd = [sys.executable, str(_albums_post_script), summary["stats_date"]]
+        if no_post_mode:
+            _albums_cmd.append("--no-post")
+        _run_streams_post(
+            _albums_cmd,
+            label="albums daily image",
+            should_post=not no_post_mode,
+            state=post_state,
+        )
+
         post_script = _SCRIPT_DIR / "tools" / "scripts" / "post_streams_twitter.py"
         if all_album_tracks_done(summary["stats_date"]):
             if no_post_mode:
