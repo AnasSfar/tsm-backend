@@ -164,8 +164,12 @@ def _parse_api_entries(data: dict) -> list[dict]:
 
 def _fetch_via_api(chart_date: str) -> tuple[list[dict], str] | None:
     """
-    Tente de récupérer le chart via l'API interne Spotify.
-    Retourne (rows, actual_date) ou None si l'API échoue.
+    Tente de récupérer le chart via l'API interne Spotify pour la date exacte demandée.
+    Retourne (rows, chart_date) ou None si l'API échoue.
+
+    Note : le fallback "latest" a été retiré intentionnellement — "latest" peut pointer
+    vers un autre jour que chart_date, ce qui stockerait des données du mauvais jour
+    sous la mauvaise date. Le fallback Playwright (appelant) valide lui-même la date.
     """
     try:
         token = _get_bearer_token()
@@ -175,25 +179,15 @@ def _fetch_via_api(chart_date: str) -> tuple[list[dict], str] | None:
             "Referer": "https://charts.spotify.com/",
             "User-Agent": _UA,
         }
-        for route in [chart_date, "latest"]:
-            url  = f"{_API_BASE}/{CHART_ID}/{route}"
-            resp = _requests.get(url, headers=headers, timeout=30)
-            if resp.status_code == 200:
-                data = resp.json()
-                rows = _parse_api_entries(data)
-                if not rows:
-                    continue
-                # Pour "latest", extraire la vraie date depuis peakDate du premier entry
-                if route == "latest":
-                    actual = (data.get("entries") or [{}])[0].get(
-                        "chartEntryData", {}
-                    ).get("peakDate") or chart_date
-                    # peakDate n'est pas forcément la date du chart — utiliser chart_date comme fallback
-                    actual = chart_date
-                else:
-                    actual = chart_date
-                print(f"  API OK — {len(rows)} lignes pour {actual}")
-                return rows, actual
+        url  = f"{_API_BASE}/{CHART_ID}/{chart_date}"
+        resp = _requests.get(url, headers=headers, timeout=30)
+        if resp.status_code == 200:
+            data = resp.json()
+            rows = _parse_api_entries(data)
+            if rows:
+                print(f"  API OK — {len(rows)} lignes pour {chart_date}")
+                return rows, chart_date
+        print(f"  API : date {chart_date} indisponible (status {resp.status_code}), fallback Playwright…")
         return None
     except Exception as e:
         print(f"  API échec ({e}), fallback Playwright…")
