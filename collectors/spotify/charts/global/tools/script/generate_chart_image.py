@@ -264,7 +264,7 @@ def get_pct(today, ref):
 
 def rank_change(rank, previous_rank, total_days=None):
     if previous_rank is None:
-        if total_days and int(total_days) > 0:
+        if total_days and int(total_days) > 1:
             return "RE-ENTRY", "chg-re"
         return "NEW", "chg-new"
     delta = int(previous_rank) - int(rank)
