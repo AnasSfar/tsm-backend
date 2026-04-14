@@ -3001,6 +3001,10 @@ def main():
     )
     print("Streams history CSV done.")
 
+    print("Re-exporting web data...")
+    export_for_web.export_for_web()
+    print("Web export done.")
+
     def _run_streams_post(cmd: list[str], *, label: str, should_post: bool, state: dict[str, int]) -> None:
         if should_post and state["posted_count"] > 0:
             print(
@@ -3044,10 +3048,6 @@ def main():
                     state=post_state,
                 )
                 print("Twitter post done.")
-
-    print("Re-exporting web data...")
-    export_for_web.export_for_web()
-    print("Web export done.")
 
     if artist_thread is not None:
         print("Updating artist metadata...")
