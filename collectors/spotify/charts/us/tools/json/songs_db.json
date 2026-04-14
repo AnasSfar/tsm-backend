@@ -4058,5 +4058,45 @@
       "dance"
     ],
     "is_pop": false
+  },
+  "justin bieber|||one less lonely girl": {
+    "artist": "Justin Bieber",
+    "track": "One Less Lonely Girl",
+    "tags": [
+      "justin bieber",
+      "pop",
+      "one less lonely girl",
+      "love",
+      "i love justin bieber",
+      "rnb",
+      "canadian",
+      "catchy",
+      "r&b",
+      "love songs"
+    ],
+    "is_pop": true
+  },
+  "justin bieber|||favorite girl": {
+    "artist": "Justin Bieber",
+    "track": "Favorite Girl",
+    "tags": [],
+    "is_pop": false
+  },
+  "sabrina carpenter|||nobody’s son": {
+    "artist": "Sabrina Carpenter",
+    "track": "Nobody’s Son",
+    "tags": [
+      "synthpop",
+      "europop",
+      "ska",
+      "reggae",
+      "pop",
+      "female vocalist",
+      "new wave",
+      "snl",
+      "synth pop",
+      "pop reggae"
+    ],
+    "is_pop": true
   }
 }
