@@ -4098,5 +4098,90 @@
       "pop reggae"
     ],
     "is_pop": true
+  },
+  "justin bieber|||never say never": {
+    "artist": "Justin Bieber",
+    "track": "Never Say Never",
+    "tags": [
+      "pop",
+      "male vocalists",
+      "jaden smith",
+      "r&b",
+      "justin bieber",
+      "rnb",
+      "2010",
+      "my top songs",
+      "move your body",
+      "2011"
+    ],
+    "is_pop": true
+  },
+  "justin bieber|||that should be me": {
+    "artist": "Justin Bieber",
+    "track": "That Should Be Me",
+    "tags": [
+      "pop",
+      "justin bieber",
+      "r&b",
+      "love at first listen",
+      "2010",
+      "<3",
+      "canadian",
+      "10s",
+      "ballads",
+      "sad"
+    ],
+    "is_pop": true
+  },
+  "jack ü|||where are ü now (with justin bieber)": {
+    "artist": "Jack Ü",
+    "track": "Where Are Ü Now (with Justin Bieber)",
+    "tags": [
+      "pop",
+      "rap",
+      "justin bieber",
+      "rnb",
+      "2015",
+      "diplo",
+      "dance",
+      "romantic lyrics",
+      "sonny moore",
+      "10s"
+    ],
+    "is_pop": true
+  },
+  "the chainsmokers|||roses": {
+    "artist": "The Chainsmokers",
+    "track": "Roses",
+    "tags": [
+      "future bass",
+      "pop",
+      "2015",
+      "electronic",
+      "driving",
+      "electropop",
+      "mellow",
+      "club",
+      "house",
+      "summer"
+    ],
+    "is_pop": true
+  },
+  "justin bieber|||boyfriend": {
+    "artist": "Justin Bieber",
+    "track": "Boyfriend",
+    "tags": [
+      "pop",
+      "sexy",
+      "2012",
+      "rnb",
+      "biebstep",
+      "justin bieber",
+      "canadian",
+      "post-bieb",
+      "r&b",
+      "love at first listen"
+    ],
+    "is_pop": true
   }
 }
