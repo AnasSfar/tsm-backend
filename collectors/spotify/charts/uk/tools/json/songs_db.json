@@ -4051,5 +4051,45 @@
     "track": "Favorite Girl",
     "tags": [],
     "is_pop": false
+  },
+  "sabrina carpenter|||busy woman": {
+    "artist": "Sabrina Carpenter",
+    "track": "Busy Woman",
+    "tags": [
+      "pop",
+      "bubblegum pop",
+      "female vocalist",
+      "country",
+      "peter",
+      "i love this",
+      "love at first listen",
+      "wes",
+      "pop perfection",
+      "homophobic"
+    ],
+    "is_pop": true
+  },
+  "noah kahan|||northern attitude": {
+    "artist": "Noah Kahan",
+    "track": "Northern Attitude",
+    "tags": [
+      "indie",
+      "folk",
+      "love",
+      "acoustic",
+      "indie folk",
+      "ily",
+      "alternative",
+      "folk song",
+      "indie song",
+      "the rabbit hole"
+    ],
+    "is_pop": false
+  },
+  "f3miii|||noble": {
+    "artist": "F3miii",
+    "track": "NOBLE",
+    "tags": [],
+    "is_pop": false
   }
 }
