@@ -397,65 +397,72 @@ class TokenManager:
         self._lock = threading.Lock()
         self._recapturing = threading.Event()
 
+
     def capture(self) -> bool:
-        """Ouvre Playwright, charge une track, capture les tokens. Retourne True si succès."""
-        tokens: dict = {}
+        """Ouvre Playwright, charge une track, capture les tokens. Retourne True si succès. Retry x2 si échec."""
+        MAX_ATTEMPTS = 2
+        for attempt in range(1, MAX_ATTEMPTS + 1):
+            tokens: dict = {}
 
-        def on_request(req):
-            if "api-partner.spotify.com" in req.url and not tokens.get("bearer"):
-                auth = req.headers.get("authorization", "")
-                ct   = req.headers.get("client-token", "")
-                if auth.startswith("Bearer ") and ct:
-                    tokens["bearer"]       = auth[7:]
-                    tokens["client_token"] = ct
+            def on_request(req):
+                if "api-partner.spotify.com" in req.url and not tokens.get("bearer"):
+                    auth = req.headers.get("authorization", "")
+                    ct   = req.headers.get("client-token", "")
+                    if auth.startswith("Bearer ") and ct:
+                        tokens["bearer"]       = auth[7:]
+                        tokens["client_token"] = ct
 
-        if LOG_MODE != "quiet":
-            print("TokenManager: capture des tokens Spotify via Playwright…")
-        ctx_kwargs: dict = {
-            "user_agent": (
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                "AppleWebKit/537.36 Chrome/133.0.0.0 Safari/537.36"
-            ),
-        }
-        if _SESSION_FILE.exists():
-            ctx_kwargs["storage_state"] = str(_SESSION_FILE)
-
-        p = sync_playwright().start()
-        browser = None
-        try:
-            browser = p.chromium.launch(
-                headless=HEADLESS,
-                args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
-            )
-            ctx  = browser.new_context(**ctx_kwargs)
-            page = ctx.new_page()
-            page.on("request", on_request)
-            page.goto(
-                "https://open.spotify.com/track/0V3wPSX9ygBnCm8psDIegu",
-                wait_until="domcontentloaded",
-                timeout=30_000,
-            )
-            deadline = time.time() + 20
-            while not tokens.get("bearer") and time.time() < deadline:
-                page.wait_for_timeout(300)
-        except Exception as e:
-            print(f"TokenManager: erreur capture: {e}")
-        finally:
-            try:
-                browser.close()
-            except Exception:
-                pass
-            try:
-                p.stop()
-            except Exception:
-                pass
-
-        if tokens.get("bearer"):
-            with self._lock:
-                self._tokens = tokens
             if LOG_MODE != "quiet":
-                print(f"TokenManager: Bearer capturé ({tokens['bearer'][:20]}…)")
-            return True
+                print(f"TokenManager: capture des tokens Spotify via Playwright… (tentative {attempt})")
+            ctx_kwargs: dict = {
+                "user_agent": (
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                    "AppleWebKit/537.36 Chrome/133.0.0.0 Safari/537.36"
+                ),
+            }
+            if _SESSION_FILE.exists():
+                ctx_kwargs["storage_state"] = str(_SESSION_FILE)
+
+            p = sync_playwright().start()
+            browser = None
+            try:
+                browser = p.chromium.launch(
+                    headless=HEADLESS,
+                    args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
+                )
+                ctx  = browser.new_context(**ctx_kwargs)
+                page = ctx.new_page()
+                page.on("request", on_request)
+                page.goto(
+                    "https://open.spotify.com/track/0V3wPSX9ygBnCm8psDIegu",
+                    wait_until="domcontentloaded",
+                    timeout=60_000,  # timeout augmenté à 60s
+                )
+                deadline = time.time() + 40  # double le temps d'attente max
+                while not tokens.get("bearer") and time.time() < deadline:
+                    page.wait_for_timeout(300)
+            except Exception as e:
+                print(f"TokenManager: erreur capture (tentative {attempt}): {e}")
+            finally:
+                try:
+                    browser.close()
+                except Exception:
+                    pass
+                try:
+                    p.stop()
+                except Exception:
+                    pass
+
+            if tokens.get("bearer"):
+                with self._lock:
+                    self._tokens = tokens
+                if LOG_MODE != "quiet":
+                    print(f"TokenManager: Bearer capturé ({tokens['bearer'][:20]}…)")
+                return True
+            if LOG_MODE != "quiet":
+                print(f"TokenManager: tentative {attempt} échouée")
+            # petite pause avant retry
+            time.sleep(2)
         if LOG_MODE != "quiet":
             print("TokenManager: échec — fallback Playwright pour toutes les tracks")
         return False
