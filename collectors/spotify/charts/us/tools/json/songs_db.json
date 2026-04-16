@@ -4183,5 +4183,39 @@
       "love at first listen"
     ],
     "is_pop": true
+  },
+  "karol g|||si antes te hubiera conocido": {
+    "artist": "KAROL G",
+    "track": "Si Antes Te Hubiera Conocido",
+    "tags": [
+      "wsum 91.7 fm madison",
+      "connoisseur of the vibe",
+      "latin",
+      "merengue",
+      "pop",
+      "spanish",
+      "party",
+      "latino",
+      "dr",
+      "latin pop"
+    ],
+    "is_pop": false
+  },
+  "mac miller|||cinderella (feat. ty dolla $ign)": {
+    "artist": "Mac Miller",
+    "track": "Cinderella (feat. Ty Dolla $ign)",
+    "tags": [
+      "love",
+      "rap",
+      "sad",
+      "hip-hop",
+      "waiting",
+      "tag",
+      "perfect",
+      "real",
+      "peak",
+      "mac miller"
+    ],
+    "is_pop": false
   }
 }
