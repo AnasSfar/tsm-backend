@@ -4091,5 +4091,17 @@
     "track": "NOBLE",
     "tags": [],
     "is_pop": false
+  },
+  "michael jackson|||dirty diana - 2012 remaster": {
+    "artist": "Michael Jackson",
+    "track": "Dirty Diana - 2012 Remaster",
+    "tags": [
+      "hard rock",
+      "rock",
+      "aor",
+      "pop rock",
+      "nostalgic"
+    ],
+    "is_pop": false
   }
 }
