@@ -4103,5 +4103,39 @@
       "nostalgic"
     ],
     "is_pop": false
+  },
+  "tame impala|||borderline": {
+    "artist": "Tame Impala",
+    "track": "Borderline",
+    "tags": [
+      "psychedelic",
+      "metal",
+      "psychedelic pop",
+      "rock",
+      "pop",
+      "neo-psychedelia",
+      "synthpop",
+      "loud",
+      "disco",
+      "groovy"
+    ],
+    "is_pop": true
+  },
+  "eminem|||without me": {
+    "artist": "Eminem",
+    "track": "Without Me",
+    "tags": [
+      "rap",
+      "hip-hop",
+      "eminem",
+      "hip hop",
+      "00s",
+      "2002",
+      "pop",
+      "american",
+      "without me",
+      "funny"
+    ],
+    "is_pop": false
   }
 }
