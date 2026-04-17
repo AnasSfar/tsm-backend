@@ -4217,5 +4217,34 @@
       "mac miller"
     ],
     "is_pop": false
+  },
+  "fuerza regida|||tu sancho": {
+    "artist": "Fuerza Regida",
+    "track": "TU SANCHO",
+    "tags": [],
+    "is_pop": false
+  },
+  "french montana|||unforgettable": {
+    "artist": "French Montana",
+    "track": "Unforgettable",
+    "tags": [
+      "afrobeats",
+      "rap",
+      "2017",
+      "hip hop",
+      "rnb",
+      "dancehall",
+      "hip-hop",
+      "2010s",
+      "swae lee",
+      "summer"
+    ],
+    "is_pop": false
+  },
+  "fuerza regida|||marlboro rojo": {
+    "artist": "Fuerza Regida",
+    "track": "Marlboro Rojo",
+    "tags": [],
+    "is_pop": false
   }
 }
