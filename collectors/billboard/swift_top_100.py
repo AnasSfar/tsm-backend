@@ -523,8 +523,14 @@ def _write_history_csv(rows: list[dict], logger: Logger) -> None:
 
 def _write_snapshot_json(payload: dict, logger: Logger) -> None:
     _SITE_DATA_DIR.mkdir(parents=True, exist_ok=True)
-    OUTPUT_JSON.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
-    logger.log(f"[swift_top_100] Wrote snapshot JSON: {OUTPUT_JSON}")
+    # Ajout de la date dans le nom du fichier snapshot
+    chart_date = payload.get("chart_date")
+    if chart_date:
+        output_json = _SITE_DATA_DIR / f"swift_top_100_{chart_date}.json"
+    else:
+        output_json = OUTPUT_JSON
+    output_json.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    logger.log(f"[swift_top_100] Wrote snapshot JSON: {output_json}")
 
 
 def _maybe_upload_to_r2(*, logger: Logger) -> None:
@@ -722,7 +728,9 @@ def run(
         prev_points_value = prev_row.get("points") if prev_row else None
 
         change = "NEW" if pr is None else None
-        rank_change = (pr - rank) if pr is not None else None
+        # Utilise le vrai rang de la chanson cette semaine pour le calcul du rank_change
+        curr_rank = row.get("rank", rank)
+        rank_change = pr - curr_rank if pr is not None and curr_rank is not None else None
         pct_change = None
         if pr is not None and prev_points_value and prev_points_value > 0:
             pct_change = ((row["points"] - prev_points_value) / prev_points_value) * 100
@@ -731,7 +739,13 @@ def run(
         hist_peak = peak_by_track.get(tid, 9999)
         peak_position = min(hist_peak, rank)
         hist_times = times_at_peak_by_track.get(tid, 0)
-        times_at_peak = hist_times + (1 if rank <= hist_peak else 0)
+        # Correction du calcul du nombre de semaines au peak
+        if rank < hist_peak:
+            times_at_peak = 1
+        elif rank == hist_peak:
+            times_at_peak = hist_times + 1
+        else:
+            times_at_peak = hist_times
 
         key = _normalize_title(row["title"])
         weekly_streams = row["weekly_streams"]
@@ -851,6 +865,12 @@ def run(
     for i, e in enumerate(snapshot_entries, 1):
         e["rank"] = i
 
+    # Après avoir assigné les bons ranks, recalcule rank_change pour chaque entrée
+    for e in snapshot_entries:
+        pr = e.get("prev_rank")
+        curr_rank = e.get("rank")
+        e["rank_change"] = pr - curr_rank if pr is not None and curr_rank is not None else None
+
     # Keep CSV/history fields aligned with the final ranking used in the snapshot/UI.
     final_rank_by_track = {e["track_id"]: e["rank"] for e in snapshot_entries}
     out_by_track = {e["track_id"]: e for e in out_entries}
@@ -863,7 +883,13 @@ def run(
         hist_peak = peak_by_track.get(tid, 9999)
         hist_times = times_at_peak_by_track.get(tid, 0)
         out["peak_position"] = min(hist_peak, final_rank)
-        out["times_at_peak"] = hist_times + (1 if final_rank <= hist_peak else 0)
+        # Correction du calcul du nombre de semaines au peak (final)
+        if final_rank < hist_peak:
+            out["times_at_peak"] = 1
+        elif final_rank == hist_peak:
+            out["times_at_peak"] = hist_times + 1
+        else:
+            out["times_at_peak"] = hist_times
 
     for snap in snapshot_entries:
         out = out_by_track.get(snap["track_id"])
