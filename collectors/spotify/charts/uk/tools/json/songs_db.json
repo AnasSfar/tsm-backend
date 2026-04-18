@@ -4137,5 +4137,41 @@
       "funny"
     ],
     "is_pop": false
+  },
+  "lana del rey|||first light": {
+    "artist": "Lana Del Rey",
+    "track": "First Light",
+    "tags": [],
+    "is_pop": false
+  },
+  "tyla|||she did it again (feat. zara larsson)": {
+    "artist": "Tyla",
+    "track": "SHE DID IT AGAIN (feat. Zara Larsson)",
+    "tags": [],
+    "is_pop": false
+  },
+  "sombr|||potential": {
+    "artist": "sombr",
+    "track": "Potential",
+    "tags": [],
+    "is_pop": false
+  },
+  "olivia rodrigo|||drop dead": {
+    "artist": "Olivia Rodrigo",
+    "track": "drop dead",
+    "tags": [],
+    "is_pop": false
+  },
+  "lewis capaldi|||stay love": {
+    "artist": "Lewis Capaldi",
+    "track": "Stay Love",
+    "tags": [],
+    "is_pop": false
+  },
+  "calvin harris|||feel so close - instrumental": {
+    "artist": "Calvin Harris",
+    "track": "Feel So Close - Instrumental",
+    "tags": [],
+    "is_pop": false
   }
 }
