@@ -4246,5 +4246,64 @@
     "track": "Marlboro Rojo",
     "tags": [],
     "is_pop": false
+  },
+  "kacey musgraves|||middle of nowhere": {
+    "artist": "Kacey Musgraves",
+    "track": "Middle of Nowhere",
+    "tags": [],
+    "is_pop": false
+  },
+  "john summit|||shades of blue": {
+    "artist": "John Summit",
+    "track": "SHADES OF BLUE",
+    "tags": [],
+    "is_pop": false
+  },
+  "sombr|||potential": {
+    "artist": "sombr",
+    "track": "Potential",
+    "tags": [],
+    "is_pop": false
+  },
+  "tyla|||she did it again (feat. zara larsson)": {
+    "artist": "Tyla",
+    "track": "SHE DID IT AGAIN (feat. Zara Larsson)",
+    "tags": [],
+    "is_pop": false
+  },
+  "los gemelos de sinaloa|||ferrari": {
+    "artist": "Los Gemelos De Sinaloa",
+    "track": "FERRARI",
+    "tags": [],
+    "is_pop": false
+  },
+  "olivia rodrigo|||drop dead": {
+    "artist": "Olivia Rodrigo",
+    "track": "drop dead",
+    "tags": [],
+    "is_pop": false
+  },
+  "lana del rey|||first light": {
+    "artist": "Lana Del Rey",
+    "track": "First Light",
+    "tags": [],
+    "is_pop": false
+  },
+  "olivia rodrigo|||deja vu": {
+    "artist": "Olivia Rodrigo",
+    "track": "deja vu",
+    "tags": [
+      "pop",
+      "pop rock",
+      "psychedelic pop",
+      "indie pop",
+      "2021",
+      "art pop",
+      "rock",
+      "sour",
+      "2020s",
+      "alt-pop"
+    ],
+    "is_pop": true
   }
 }
