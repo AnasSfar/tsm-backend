@@ -2354,22 +2354,7 @@ def run_update(
     if priority_top_50_ids and len(priority_top_50_ids) < 50:
         print(f"Warning: only {len(priority_top_50_ids)} priority track(s) found from previous day.")
 
-    # ── Pre-scrape artist page for top 10 tracks ──────────────────────────────
-    track_lookup = build_track_lookup(tracks)
-    artist_top_titles = scrape_artist_top_tracks() if LOG_MODE != "quiet" else {}
     pre_scraped: dict[str, int] = {}
-    for norm_title, stream_count in artist_top_titles.items():
-        matches = track_lookup.get(norm_title, [])
-        if len(matches) == 1:
-            tid = matches[0]["track_id"]
-            pre_scraped[tid] = stream_count
-            if LOG_MODE == "verbose":
-                print(f"  [artist page] {matches[0]['title']} -> {stream_count:,}")
-        elif len(matches) > 1:
-            if LOG_MODE == "verbose":
-                print(f"  [artist page] ambiguous title '{norm_title}', skipping")
-    if LOG_MODE == "verbose":
-        print(f"  {len(pre_scraped)} track(s) pre-scraped from artist page")
 
     already_done_for_stats_date = load_history_track_ids_for_date(stats_date)
 
@@ -2774,15 +2759,6 @@ def main():
             sys.exit(1)
         run_debug_total_replace(stats_date)
         return
-
-    print("Loading discography and checking for new extra tracks...")
-    try:
-        _backfill_cmd = [sys.executable, str(_SCRIPT_DIR / "extras" / "backfill_from_kworb.py")]
-        if dry_run_mode:
-            _backfill_cmd.append("--dry-run")
-        subprocess.run(_backfill_cmd, check=False)
-    except Exception as e:
-        print(f"  [INFO] Backfill skipped: {e}")
 
     active_track_ids = load_active_track_ids_from_discography()
     tracks = load_tracks_from_discography(active_track_ids)
