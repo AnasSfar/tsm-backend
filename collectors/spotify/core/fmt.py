@@ -20,8 +20,8 @@ def fmt_delta(rank, previous_rank, peak_rank=None, total_days=None) -> str:
     if prev <= 0:
         # prev <= 0 means no previous rank (new entry or re-entry)
         try:
-            # RE: has been on chart before (total_days indicates chart history)
-            if total_days and int(total_days) > 0:
+            # RE: has been on chart before (total_days > 1 means it appeared on a prior day)
+            if total_days and int(total_days) > 1:
                 return "RE"
         except (TypeError, ValueError):
             pass
