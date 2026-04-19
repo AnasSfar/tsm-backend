@@ -1,11 +1,11 @@
 {
   "The Fate of Ophelia": {
-    "days": 197,
-    "date": "2026-04-17"
+    "days": 1,
+    "date": "2025-10-03"
   },
   "Opalite": {
-    "days": 196,
-    "date": "2026-04-17"
+    "days": 1,
+    "date": "2025-10-03"
   },
   "Style": {
     "days": 372,
@@ -144,8 +144,8 @@
     "date": "2024-04-19"
   },
   "august": {
-    "days": 261,
-    "date": "2024-04-19"
+    "days": 379,
+    "date": "2025-10-03"
   },
   "Is It Over Now? (Taylor's Version) (From The Vault)": {
     "days": 175,
@@ -154,5 +154,49 @@
   "Lover": {
     "days": 304,
     "date": "2024-04-19"
+  },
+  "Elizabeth Taylor": {
+    "days": 1,
+    "date": "2025-10-03"
+  },
+  "Father Figure": {
+    "days": 1,
+    "date": "2025-10-03"
+  },
+  "Eldest Daughter": {
+    "days": 1,
+    "date": "2025-10-03"
+  },
+  "Actually Romantic": {
+    "days": 1,
+    "date": "2025-10-03"
+  },
+  "The Life of a Showgirl (feat. Sabrina Carpenter)": {
+    "days": 1,
+    "date": "2025-10-03"
+  },
+  "CANCELLED!": {
+    "days": 1,
+    "date": "2025-10-03"
+  },
+  "Wood": {
+    "days": 1,
+    "date": "2025-10-03"
+  },
+  "Ruin The Friendship": {
+    "days": 1,
+    "date": "2025-10-03"
+  },
+  "Wi$h Li$t": {
+    "days": 1,
+    "date": "2025-10-03"
+  },
+  "Honey": {
+    "days": 1,
+    "date": "2025-10-03"
+  },
+  "cardigan": {
+    "days": 527,
+    "date": "2025-10-03"
   }
 }
