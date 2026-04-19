@@ -75,7 +75,7 @@ def main():
     date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
     tweet = (
             f"Taylor Swift's most streamed songs yesterday ({date_fmt}) :\n\n"
-            f"See full update here : https://thetsmuseum.app/streams/latest ❤️‍🔥"
+            f"Celebrate with us #2YearsOfTTPD here : https://thetsmuseum.app/2yearsofttpd 🤍"
         )
 
     print(f"Tweet: {tweet}")
