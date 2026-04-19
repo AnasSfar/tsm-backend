@@ -2518,12 +2518,6 @@
       "streams": 114383,
       "previous_rank": 71
     },
-    "2024-04-19": {
-      "rank": 71,
-      "streams": 115176,
-      "previous_rank": 60,
-      "peak_rank": 36
-    },
     "2024-04-18": {
       "rank": 60,
       "streams": 104731,
@@ -3530,6 +3524,12 @@
     "2023-09-01": {
       "rank": 156,
       "streams": 59504
+    },
+    "2024-04-19": {
+      "rank": 71,
+      "streams": 115176,
+      "previous_rank": 600,
+      "peak_rank": 36
     }
   },
   "Fortnight (feat. Post Malone)": {
@@ -4130,12 +4130,6 @@
       "rank": 130,
       "streams": 80915,
       "previous_rank": 57
-    },
-    "2024-04-19": {
-      "rank": 57,
-      "streams": 129800,
-      "previous_rank": 1,
-      "peak_rank": 57
     }
   },
   "Down Bad": {
@@ -4423,34 +4417,6 @@
       "rank": 60,
       "streams": 126413,
       "peak_rank": 60
-    }
-  },
-  "I Can Fix Him (No Really I Can)": {
-    "2024-04-19": {
-      "rank": 80,
-      "streams": 107997,
-      "peak_rank": 80
-    }
-  },
-  "The Smallest Man Who Ever Lived": {
-    "2024-04-19": {
-      "rank": 92,
-      "streams": 102621,
-      "peak_rank": 92
-    }
-  },
-  "The Alchemy": {
-    "2024-04-19": {
-      "rank": 101,
-      "streams": 97480,
-      "peak_rank": 101
-    }
-  },
-  "Clara Bow": {
-    "2024-04-19": {
-      "rank": 115,
-      "streams": 90733,
-      "peak_rank": 115
     }
   },
   "You're Losing Me (From The Vault)": {
@@ -7605,6 +7571,41 @@
       "peak_rank": 101
     }
   },
+  "Who’s Afraid of Little Old Me?": {
+    "2024-04-19": {
+      "rank": 57,
+      "streams": 129800,
+      "peak_rank": 57
+    }
+  },
+  "I Can Fix Him (No Really I Can)": {
+    "2024-04-19": {
+      "rank": 80,
+      "streams": 107997,
+      "peak_rank": 80
+    }
+  },
+  "The Smallest Man Who Ever Lived": {
+    "2024-04-19": {
+      "rank": 92,
+      "streams": 102621,
+      "peak_rank": 92
+    }
+  },
+  "The Alchemy": {
+    "2024-04-19": {
+      "rank": 101,
+      "streams": 97480,
+      "peak_rank": 101
+    }
+  },
+  "Clara Bow": {
+    "2024-04-19": {
+      "rank": 115,
+      "streams": 90733,
+      "peak_rank": 115
+    }
+  },
   "I Don’t Wanna Live Forever (Fifty Shades Darker)": {
     "2017-01-17": {
       "rank": 22,
@@ -7908,13 +7909,6 @@
       "rank": 200,
       "streams": 19084,
       "peak_rank": 2
-    }
-  },
-  "Who’s Afraid of Little Old Me?": {
-    "2024-04-19": {
-      "rank": 57,
-      "streams": 129800,
-      "peak_rank": 57
     }
   }
 }

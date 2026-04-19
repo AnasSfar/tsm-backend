@@ -602,23 +602,6 @@ date,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,movement
 2024-04-20,Guilty as Sin?,170,69806,62,,2,2,-108
 2024-04-20,Fresh Out The Slammer,184,66972,60,,2,2,-124
 2024-04-20,loml,197,65408,74,,2,2,-123
-2024-04-19,Fortnight (feat. Post Malone),11,257361,-1,11,1,1,RE
-2024-04-19,The Tortured Poets Department,28,187526,-1,28,1,1,RE
-2024-04-19,My Boy Only Breaks His Favorite Toys,33,179294,-1,33,1,1,RE
-2024-04-19,"So Long, London",35,172851,-1,35,1,1,RE
-2024-04-19,Down Bad,38,168470,-1,38,1,1,RE
-2024-04-19,But Daddy I Love Him,49,150377,-1,49,1,1,RE
-2024-04-19,Florida!!! (feat. Florence + The Machine),52,143830,-1,52,1,1,RE
-2024-04-19,I Can Do It With a Broken Heart,56,131611,-1,56,1,1,RE
-2024-04-19,Who's Afraid of Little Old Me?,57,129800,-1,57,1,1,RE
-2024-04-19,Fresh Out The Slammer,60,126413,-1,60,1,1,RE
-2024-04-19,Guilty as Sin?,62,124466,-1,62,1,1,RE
-2024-04-19,Cruel Summer,71,115176,60,36,439,399,-11
-2024-04-19,loml,74,114526,-1,74,1,1,RE
-2024-04-19,I Can Fix Him (No Really I Can),80,107997,-1,80,1,1,RE
-2024-04-19,The Smallest Man Who Ever Lived,92,102621,-1,92,1,1,RE
-2024-04-19,The Alchemy,101,97480,-1,101,1,1,RE
-2024-04-19,Clara Bow,115,90733,-1,115,1,1,RE
 2024-04-18,Cruel Summer,60,104731,63,36,438,398,+3
 2024-04-17,Cruel Summer,63,101493,58,36,437,397,-5
 2024-04-16,Cruel Summer,58,101803,61,36,436,396,+3
@@ -1456,3 +1439,20 @@ date,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,movement
 2026-04-15,The Fate of Ophelia,44,132226,420,2,191,69,+376
 2026-04-16,The Fate of Ophelia,46,128646,440,2,192,70,+394
 2026-04-17,The Fate of Ophelia,51,140540,460,2,193,71,+409
+2024-04-19,Fortnight (feat. Post Malone),11,257361,,11,1,1,RE
+2024-04-19,The Tortured Poets Department,28,187526,,28,1,1,RE
+2024-04-19,My Boy Only Breaks His Favorite Toys,33,179294,,33,1,1,RE
+2024-04-19,"So Long, London",35,172851,,35,1,1,RE
+2024-04-19,Down Bad,38,168470,,38,1,1,RE
+2024-04-19,But Daddy I Love Him,49,150377,,49,1,1,RE
+2024-04-19,Florida!!! (feat. Florence + The Machine),52,143830,,52,1,1,RE
+2024-04-19,I Can Do It With a Broken Heart,56,131611,,56,1,1,RE
+2024-04-19,Who’s Afraid of Little Old Me?,57,129800,,57,1,1,RE
+2024-04-19,Fresh Out The Slammer,60,126413,,60,1,1,RE
+2024-04-19,Guilty as Sin?,62,124466,,62,1,1,RE
+2024-04-19,Cruel Summer,71,115176,600,36,198,116,+529
+2024-04-19,loml,74,114526,,74,1,1,RE
+2024-04-19,I Can Fix Him (No Really I Can),80,107997,,80,1,1,RE
+2024-04-19,The Smallest Man Who Ever Lived,92,102621,,92,1,1,RE
+2024-04-19,The Alchemy,101,97480,,101,1,1,RE
+2024-04-19,Clara Bow,115,90733,,115,1,1,RE

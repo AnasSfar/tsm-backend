@@ -42761,5 +42761,57 @@
     "track": "MÉLANCOLIE CRUELLE",
     "tags": [],
     "is_pop": false
+  },
+  "taylor swift|||i can fix him (no really i can)": {
+    "artist": "Taylor Swift",
+    "track": "I Can Fix Him (No Really I Can)",
+    "tags": [
+      "singer-songwriter",
+      "pop",
+      "love at first listen",
+      "sexy",
+      "soty"
+    ],
+    "album": "THE TORTURED POETS DEPARTMENT",
+    "release_date": "2024-04-19"
+  },
+  "taylor swift|||the smallest man who ever lived": {
+    "artist": "Taylor Swift",
+    "track": "The Smallest Man Who Ever Lived",
+    "tags": [
+      "pop",
+      "singer-songwriter",
+      "best of 2024",
+      "colleen hoover",
+      "chatgpt"
+    ],
+    "album": "THE TORTURED POETS DEPARTMENT",
+    "release_date": ""
+  },
+  "taylor swift|||the alchemy": {
+    "artist": "Taylor Swift",
+    "track": "The Alchemy",
+    "tags": [
+      "chatgpt",
+      "pop",
+      "best of 2024",
+      "singer-songwriter",
+      "colleen hoover"
+    ],
+    "album": "THE TORTURED POETS DEPARTMENT",
+    "release_date": ""
+  },
+  "taylor swift|||clara bow": {
+    "artist": "Taylor Swift",
+    "track": "Clara Bow",
+    "tags": [
+      "pop",
+      "singer-songwriter",
+      "chatgpt",
+      "colleen hoover",
+      "taylor swift"
+    ],
+    "album": "THE TORTURED POETS DEPARTMENT",
+    "release_date": ""
   }
 }
