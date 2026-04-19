@@ -6338,5 +6338,971 @@
     "track": "That's My Girl",
     "tags": [],
     "is_pop": false
+  },
+  "taylor swift|||father figure": {
+    "artist": "Taylor Swift",
+    "track": "Father Figure",
+    "tags": [
+      "soty",
+      "best of 2025",
+      "pop",
+      "synthpop",
+      "gaypop"
+    ],
+    "is_pop": true,
+    "album": "The Life of a Showgirl",
+    "release_date": ""
+  },
+  "taylor swift|||eldest daughter": {
+    "artist": "Taylor Swift",
+    "track": "Eldest Daughter",
+    "tags": [
+      "pop",
+      "2020s",
+      "sad",
+      "experimental",
+      "show tunes"
+    ],
+    "is_pop": true,
+    "album": "The Life of a Showgirl",
+    "release_date": ""
+  },
+  "taylor swift|||wood": {
+    "artist": "Taylor Swift",
+    "track": "Wood",
+    "tags": [
+      "pop",
+      "funk",
+      "disco",
+      "sexy",
+      "soul"
+    ],
+    "is_pop": true,
+    "album": "The Life of a Showgirl",
+    "release_date": ""
+  },
+  "taylor swift|||actually romantic": {
+    "artist": "Taylor Swift",
+    "track": "Actually Romantic",
+    "tags": [
+      "pop rock",
+      "power pop",
+      "ended flopli xcx",
+      "best of 2025",
+      "rnb"
+    ],
+    "is_pop": true,
+    "album": "The Life of a Showgirl",
+    "release_date": ""
+  },
+  "taylor swift|||wi$h li$t": {
+    "artist": "Taylor Swift",
+    "track": "Wi$h Li$t",
+    "tags": [
+      "pop",
+      "synthpop",
+      "fav",
+      "synth pop",
+      "racist"
+    ],
+    "is_pop": true,
+    "album": "The Life of a Showgirl",
+    "release_date": ""
+  },
+  "taylor swift|||ruin the friendship": {
+    "artist": "Taylor Swift",
+    "track": "Ruin The Friendship",
+    "tags": [
+      "pop",
+      "country pop",
+      "peter",
+      "soft rock",
+      "folk"
+    ],
+    "is_pop": true,
+    "album": "The Life of a Showgirl",
+    "release_date": ""
+  },
+  "taylor swift|||cancelled!": {
+    "artist": "Taylor Swift",
+    "track": "CANCELLED!",
+    "tags": [
+      "pop",
+      "soty",
+      "rock",
+      "female vocalist",
+      "singer-songwriter"
+    ],
+    "is_pop": true,
+    "album": "The Life of a Showgirl",
+    "release_date": ""
+  },
+  "taylor swift|||the life of a showgirl (feat. sabrina carpenter)": {
+    "artist": "Taylor Swift",
+    "track": "The Life of a Showgirl (feat. Sabrina Carpenter)",
+    "tags": [
+      "pop",
+      "power pop",
+      "rnb",
+      "disco",
+      "gaypop"
+    ],
+    "is_pop": true,
+    "album": null,
+    "release_date": ""
+  },
+  "taylor swift|||honey": {
+    "artist": "Taylor Swift",
+    "track": "Honey",
+    "tags": [
+      "rnb",
+      "pop",
+      "soft rock",
+      "metal",
+      "female vocalist"
+    ],
+    "is_pop": true,
+    "album": "The Life of a Showgirl",
+    "release_date": ""
+  },
+  "tate mcrae|||tit for tat": {
+    "artist": "Tate McRae",
+    "track": "TIT FOR TAT",
+    "tags": [
+      "trap pop",
+      "rnb contemporary",
+      "better than addison rae",
+      "electropop",
+      "alternative pop",
+      "alternative",
+      "electronic",
+      "rnb",
+      "canadian pop",
+      "canada"
+    ],
+    "is_pop": true
+  },
+  "tyler|||sugar on my tongue": {
+    "artist": "Tyler",
+    "track": "Sugar On My Tongue",
+    "tags": [],
+    "is_pop": false
+  },
+  "saja boys|||your idol": {
+    "artist": "Saja Boys",
+    "track": "Your Idol",
+    "tags": [
+      "saja boys",
+      "kpop demon hunters",
+      "korean",
+      "k-pop",
+      "male vocalists",
+      "boyband",
+      "kpop",
+      "male rapper",
+      "netflix",
+      "musik"
+    ],
+    "is_pop": false
+  },
+  "huntr/x|||takedown": {
+    "artist": "HUNTR/X",
+    "track": "Takedown",
+    "tags": [
+      "k-pop",
+      "soundtrack",
+      "kpop",
+      "ost",
+      "netflix",
+      "pop",
+      "musical",
+      "korean",
+      "musik",
+      "masterpiece"
+    ],
+    "is_pop": false
+  },
+  "saja boys|||soda pop": {
+    "artist": "Saja Boys",
+    "track": "Soda Pop",
+    "tags": [
+      "korean",
+      "k-pop",
+      "saja boys",
+      "kpop",
+      "musik",
+      "spotify",
+      "ost",
+      "jinu da lili",
+      "netflix",
+      "lilith owns this music"
+    ],
+    "is_pop": false
+  },
+  "sabrina carpenter|||when did you get hot?": {
+    "artist": "Sabrina Carpenter",
+    "track": "When Did You Get Hot?",
+    "tags": [
+      "hip hop soul",
+      "trip hop",
+      "contemporary rnb",
+      "pop",
+      "rnb",
+      "female vocalist",
+      "sexy",
+      "narusasu",
+      "g minor",
+      "new jack swing"
+    ],
+    "is_pop": false
+  },
+  "huntr/x|||what it sounds like": {
+    "artist": "HUNTR/X",
+    "track": "What It Sounds Like",
+    "tags": [
+      "k-pop",
+      "soundtrack",
+      "kpop",
+      "ost",
+      "kpop demon hunters",
+      "netflix",
+      "english",
+      "musical",
+      "musik",
+      "masterpiece"
+    ],
+    "is_pop": false
+  },
+  "huntr/x|||how it’s done": {
+    "artist": "HUNTR/X",
+    "track": "How It’s Done",
+    "tags": [
+      "k-pop",
+      "soundtrack",
+      "kpop",
+      "netflix",
+      "korean",
+      "musical",
+      "ost",
+      "movie musical",
+      "musik",
+      "masterpiece"
+    ],
+    "is_pop": false
+  },
+  "diplo|||wish (feat. trippie redd) - trippie mix": {
+    "artist": "Diplo",
+    "track": "Wish (feat. Trippie Redd) - Trippie Mix",
+    "tags": [],
+    "is_pop": false
+  },
+  "luke combs|||days like these": {
+    "artist": "Luke Combs",
+    "track": "Days Like These",
+    "tags": [],
+    "is_pop": false
+  },
+  "morgan wallen|||just in case": {
+    "artist": "Morgan Wallen",
+    "track": "Just In Case",
+    "tags": [],
+    "is_pop": false
+  },
+  "sabrina carpenter|||tears": {
+    "artist": "Sabrina Carpenter",
+    "track": "Tears",
+    "tags": [
+      "disco",
+      "sexy",
+      "pop",
+      "dance-pop",
+      "boogie",
+      "nu-disco",
+      "2025",
+      "2020s",
+      "female vocalist",
+      "american"
+    ],
+    "is_pop": true
+  },
+  "radiohead|||let down": {
+    "artist": "Radiohead",
+    "track": "Let Down",
+    "tags": [
+      "alternative",
+      "alternative rock",
+      "rock",
+      "radiohead",
+      "beautiful",
+      "90s",
+      "indie",
+      "british",
+      "art rock",
+      "melancholy"
+    ],
+    "is_pop": false
+  },
+  "girl in red|||we fell in love in october": {
+    "artist": "girl in red",
+    "track": "we fell in love in october",
+    "tags": [
+      "dream pop",
+      "singer-songwriter",
+      "indie pop",
+      "bedroom pop",
+      "my top songs",
+      "female vocalists",
+      "jangle pop",
+      "soft",
+      "romantic",
+      "chillout"
+    ],
+    "is_pop": true
+  },
+  "rumi|||free": {
+    "artist": "Rumi",
+    "track": "Free",
+    "tags": [
+      "k-pop",
+      "kpop",
+      "kpop demon hunters",
+      "special"
+    ],
+    "is_pop": false
+  },
+  "tate mcrae|||just keep watching (from f1® the movie)": {
+    "artist": "Tate McRae",
+    "track": "Just Keep Watching (From F1® The Movie)",
+    "tags": [
+      "égera",
+      "electropop",
+      "victor",
+      "soundtrack",
+      "formula 1",
+      "f1",
+      "brazilian funk",
+      "my top songs",
+      "justkeepwatching",
+      "dariacore"
+    ],
+    "is_pop": true
+  },
+  "benson boone|||mystical magical": {
+    "artist": "Benson Boone",
+    "track": "Mystical Magical",
+    "tags": [
+      "pop",
+      "rock",
+      "grindcore",
+      "american",
+      "best of 2025",
+      "2025",
+      "pop rock",
+      "fernandacoxta",
+      "2020s",
+      "playlista rmf fm"
+    ],
+    "is_pop": true
+  },
+  "rauw alejandro|||qué pasaría...": {
+    "artist": "Rauw Alejandro",
+    "track": "Qué Pasaría...",
+    "tags": [
+      "puerto rican pop",
+      "reggaeton"
+    ],
+    "is_pop": true
+  },
+  "tate mcrae|||revolving door": {
+    "artist": "Tate McRae",
+    "track": "Revolving door",
+    "tags": [
+      "israel",
+      "putin",
+      "my top songs",
+      "jersey club",
+      "rhodacore",
+      "horny pop",
+      "barbara paris loves it",
+      "ended you fucking fag",
+      "slutty music",
+      "joandarco"
+    ],
+    "is_pop": false
+  },
+  "twice|||takedown (jeongyeon, jihyo, chaeyoung) (from the netflix film kpop demon hunters)": {
+    "artist": "TWICE",
+    "track": "TAKEDOWN (JEONGYEON, JIHYO, CHAEYOUNG) (from the Netflix film KPop Demon Hunters)",
+    "tags": [],
+    "is_pop": false
+  },
+  "twice|||strategy (from the netflix film kpop demon hunters)": {
+    "artist": "TWICE",
+    "track": "Strategy (from the Netflix film KPop Demon Hunters)",
+    "tags": [
+      "netflix",
+      "soundtrack",
+      "kpop demon hunters",
+      "suzui loves this song"
+    ],
+    "is_pop": false
+  },
+  "hudson westbrook|||house again": {
+    "artist": "Hudson Westbrook",
+    "track": "House Again",
+    "tags": [],
+    "is_pop": false
+  },
+  "chappell roan|||the subway": {
+    "artist": "Chappell Roan",
+    "track": "The Subway",
+    "tags": [
+      "dream pop",
+      "soft rock",
+      "jangle pop",
+      "pop rock",
+      "pop",
+      "saskatchewan",
+      "songamongas",
+      "sapphic",
+      "chappellkath",
+      "songas"
+    ],
+    "is_pop": true
+  },
+  "drake|||nokia": {
+    "artist": "Drake",
+    "track": "NOKIA",
+    "tags": [
+      "pop rap",
+      "drake",
+      "atlanta bass",
+      "2025",
+      "electro",
+      "a minor",
+      "goated",
+      "jook",
+      "trapsoul",
+      "2020s"
+    ],
+    "is_pop": true
+  },
+  "olivia dean|||dive": {
+    "artist": "Olivia Dean",
+    "track": "Dive",
+    "tags": [
+      "pop soul",
+      "soul",
+      "pop",
+      "neo-soul",
+      "top 2000",
+      "contemporary rnb",
+      "top 2000 2025"
+    ],
+    "is_pop": true
+  },
+  "jimin|||who": {
+    "artist": "Jimin",
+    "track": "Who",
+    "tags": [
+      "soty",
+      "jimin",
+      "it boy",
+      "pop",
+      "who",
+      "k-pop",
+      "muse",
+      "1b club",
+      "song of the year",
+      "amazing"
+    ],
+    "is_pop": false
+  },
+  "tate mcrae|||she's all i wanna be": {
+    "artist": "Tate McRae",
+    "track": "she's all i wanna be",
+    "tags": [
+      "pop",
+      "punk",
+      "pop rock",
+      "power pop",
+      "female vocalists",
+      "female vocalist",
+      "pop punk",
+      "2022",
+      "2020s",
+      "badass"
+    ],
+    "is_pop": true
+  },
+  "wifiskeleton|||nope your too late i already died": {
+    "artist": "wifiskeleton",
+    "track": "Nope your too late i already died",
+    "tags": [
+      "indie rock",
+      "alternative rock",
+      "slacker rock",
+      "american",
+      "emo-pop",
+      "20s",
+      "cp",
+      "bedroom pop",
+      "cheer the fuck up bruh"
+    ],
+    "is_pop": false
+  },
+  "leon thomas|||mutt": {
+    "artist": "Leon Thomas",
+    "track": "MUTT",
+    "tags": [
+      "rnb",
+      "soul",
+      "dog",
+      "neo-soul",
+      "gtst s35",
+      "gtst",
+      "hip hop soul"
+    ],
+    "is_pop": false
+  },
+  "hozier|||work song": {
+    "artist": "Hozier",
+    "track": "Work Song",
+    "tags": [
+      "soul",
+      "singer-songwriter",
+      "pop",
+      "irish",
+      "ballad",
+      "indie",
+      "blues",
+      "indie rock",
+      "2010s",
+      "2014"
+    ],
+    "is_pop": true
+  },
+  "lil tecca|||dark thoughts": {
+    "artist": "Lil Tecca",
+    "track": "Dark Thoughts",
+    "tags": [
+      "rap",
+      "hip-hop",
+      "song of the year",
+      "funky",
+      "alternative rap",
+      "synthpop",
+      "groovy",
+      "fem",
+      "shit tags",
+      "furry"
+    ],
+    "is_pop": false
+  },
+  "youngboy never broke again|||make no sense": {
+    "artist": "YoungBoy Never Broke Again",
+    "track": "Make No Sense",
+    "tags": [
+      "gangsta rap",
+      "southern hip hop",
+      "g-funk",
+      "pop rap",
+      "trap",
+      "youngboy never broke again"
+    ],
+    "is_pop": false
+  },
+  "lord huron|||the night we met": {
+    "artist": "Lord Huron",
+    "track": "The Night We Met",
+    "tags": [
+      "indie",
+      "folk",
+      "indie folk",
+      "bumpin",
+      "wsum 91.7 fm madison",
+      "13 reasons why",
+      "novo amor",
+      "psychedelic",
+      "2015",
+      "seasonal"
+    ],
+    "is_pop": false
+  },
+  "jimin|||be mine": {
+    "artist": "Jimin",
+    "track": "Be Mine",
+    "tags": [
+      "soty",
+      "k-pop",
+      "innacore",
+      "mlm",
+      "yaaaas",
+      "i love you jimin",
+      "i love be mine so much"
+    ],
+    "is_pop": false
+  },
+  "kendrick lamar|||tv off (feat. lefty gunplay)": {
+    "artist": "Kendrick Lamar",
+    "track": "tv off (feat. lefty gunplay)",
+    "tags": [
+      "g-funk",
+      "hyphy",
+      "ratchet music",
+      "hardcore hip hop",
+      "west coast hip hop",
+      "mustard",
+      "hip-hop",
+      "lefty gunplay",
+      "hip hop",
+      "rap"
+    ],
+    "is_pop": false
+  },
+  "youngboy never broke again|||nevada": {
+    "artist": "YoungBoy Never Broke Again",
+    "track": "Nevada",
+    "tags": [],
+    "is_pop": false
+  },
+  "leon thomas|||just how you are": {
+    "artist": "Leon Thomas",
+    "track": "Just How You Are",
+    "tags": [],
+    "is_pop": false
+  },
+  "addison rae|||diet pepsi": {
+    "artist": "Addison Rae",
+    "track": "Diet Pepsi",
+    "tags": [
+      "pop",
+      "alt-pop",
+      "peter",
+      "contemporary rnb",
+      "chillstep",
+      "rnb",
+      "alternative rnb",
+      "best of 2024",
+      "edm pop",
+      "key change"
+    ],
+    "is_pop": true
+  },
+  "katseye|||gnarly": {
+    "artist": "KATSEYE",
+    "track": "Gnarly",
+    "tags": [
+      "hyperpop",
+      "hybrid trap",
+      "deconstructed club",
+      "wsum 91.7 fm madison",
+      "pop court with manda m",
+      "pop",
+      "camp",
+      "trap metal",
+      "pop rap",
+      "industrial"
+    ],
+    "is_pop": true
+  },
+  "rosé|||apt.": {
+    "artist": "ROSÉ",
+    "track": "APT.",
+    "tags": [
+      "pop rock",
+      "rock",
+      "pop",
+      "peter",
+      "song of the year",
+      "soty",
+      "pop-rock",
+      "slay",
+      "2k24",
+      "acheimagra"
+    ],
+    "is_pop": true
+  },
+  "cigarettes after sex|||apocalypse": {
+    "artist": "Cigarettes After Sex",
+    "track": "Apocalypse",
+    "tags": [
+      "dream pop",
+      "indie",
+      "slowcore",
+      "indie rock",
+      "pop",
+      "rock",
+      "indie pop",
+      "personal favourites",
+      "night",
+      "alternative"
+    ],
+    "is_pop": true
+  },
+  "doja cat|||jealous type": {
+    "artist": "Doja Cat",
+    "track": "Jealous Type",
+    "tags": [
+      "synth funk",
+      "freestyle",
+      "vie",
+      "dance-pop",
+      "new jack swing",
+      "edu e marco",
+      "pop",
+      "pop rap",
+      "minneapolis sound",
+      "rap"
+    ],
+    "is_pop": false
+  },
+  "bryson tiller|||don't": {
+    "artist": "Bryson Tiller",
+    "track": "Don't",
+    "tags": [
+      "rnb",
+      "trap",
+      "lap dance",
+      "alternative rnb",
+      "soul",
+      "sexy",
+      "hip-hop",
+      "urban",
+      "olivia",
+      "american"
+    ],
+    "is_pop": false
+  },
+  "paramore|||still into you": {
+    "artist": "Paramore",
+    "track": "Still into You",
+    "tags": [
+      "rock",
+      "pop",
+      "2013",
+      "pop rock",
+      "kick",
+      "catchy",
+      "love at first listen",
+      "paramore",
+      "power pop",
+      "new wave"
+    ],
+    "is_pop": true
+  },
+  "charli xcx|||party 4 u": {
+    "artist": "Charli xcx",
+    "track": "party 4 u",
+    "tags": [
+      "bubblegum bass",
+      "electropop",
+      "hyperpop",
+      "art pop",
+      "pop rap",
+      "alternative rnb",
+      "hip hop",
+      "rnb",
+      "future bass",
+      "electronic"
+    ],
+    "is_pop": true
+  },
+  "daniel caesar|||best part (feat. h.e.r.)": {
+    "artist": "Daniel Caesar",
+    "track": "Best Part (feat. H.E.R.)",
+    "tags": [
+      "rnb",
+      "soul",
+      "chill",
+      "love",
+      "r n b",
+      "special",
+      "loving",
+      "musiclist",
+      "daniel caesar",
+      "h.e.r."
+    ],
+    "is_pop": false
+  },
+  "tate mcrae|||run for the hills": {
+    "artist": "Tate McRae",
+    "track": "run for the hills",
+    "tags": [
+      "pop",
+      "indie",
+      "female vocalist",
+      "sexy",
+      "rnb",
+      "indie pop",
+      "alternative",
+      "trap",
+      "alt-pop",
+      "hot"
+    ],
+    "is_pop": true
+  },
+  "junior h|||mientras duermes": {
+    "artist": "Junior H",
+    "track": "MIENTRAS DUERMES",
+    "tags": [],
+    "is_pop": false
+  },
+  "earth|||september": {
+    "artist": "Earth",
+    "track": "September",
+    "tags": [],
+    "is_pop": false
+  },
+  "alex warren|||eternity": {
+    "artist": "Alex Warren",
+    "track": "Eternity",
+    "tags": [
+      "gospel choir"
+    ],
+    "is_pop": false
+  },
+  "sabrina carpenter|||my man on willpower": {
+    "artist": "Sabrina Carpenter",
+    "track": "My Man on Willpower",
+    "tags": [
+      "pop",
+      "female vocalist",
+      "soft rock",
+      "pop rock",
+      "r n b",
+      "disco",
+      "future pop",
+      "urban cowboy",
+      "snl",
+      "love at first listen"
+    ],
+    "is_pop": true
+  },
+  "bruno mars|||it will rain": {
+    "artist": "Bruno Mars",
+    "track": "It Will Rain",
+    "tags": [
+      "pop",
+      "soul",
+      "love",
+      "soundtrack",
+      "bruno mars",
+      "male vocalists",
+      "<3",
+      "rnb",
+      "10s",
+      "2011"
+    ],
+    "is_pop": true
+  },
+  "tate mcrae|||it's ok i'm ok": {
+    "artist": "Tate McRae",
+    "track": "It's ok I'm ok",
+    "tags": [
+      "dance-pop",
+      "pop",
+      "rnb",
+      "dance",
+      "dance pop",
+      "hip hop",
+      "electropop",
+      "my song mine",
+      "ended katy",
+      "2024"
+    ],
+    "is_pop": true
+  },
+  "laufey|||lover girl": {
+    "artist": "Laufey",
+    "track": "Lover Girl",
+    "tags": [
+      "bossa nova",
+      "laufeyy",
+      "pop",
+      "jazz",
+      "brazil",
+      "jazz fusion",
+      "jazz pop",
+      "kiki owns this song",
+      "2025"
+    ],
+    "is_pop": true
+  },
+  "bigxthaplug|||all the way (feat. bailey zimmerman)": {
+    "artist": "BigXthaPlug",
+    "track": "All The Way (feat. Bailey Zimmerman)",
+    "tags": [],
+    "is_pop": false
+  },
+  "three days grace|||animal i have become": {
+    "artist": "Three Days Grace",
+    "track": "Animal I Have Become",
+    "tags": [
+      "alternative rock",
+      "rock",
+      "hard rock",
+      "alternative",
+      "three days grace",
+      "post-grunge",
+      "alternative metal",
+      "animal i have become",
+      "metal",
+      "canadian"
+    ],
+    "is_pop": false
+  },
+  "sabrina carpenter|||go go juice": {
+    "artist": "Sabrina Carpenter",
+    "track": "Go Go Juice",
+    "tags": [
+      "country pop",
+      "pop rock",
+      "urban cowboy",
+      "female vocalist",
+      "aprhodity",
+      "alcohol",
+      "loveparanoia"
+    ],
+    "is_pop": true
+  },
+  "offset|||ric flair drip (with metro boomin)": {
+    "artist": "Offset",
+    "track": "Ric Flair Drip (with Metro Boomin)",
+    "tags": [
+      "trap",
+      "southern hip hop",
+      "ratchet music",
+      "hyphy",
+      "cloud rap",
+      "pop rap",
+      "metro boomin",
+      "offset",
+      "nervous music"
+    ],
+    "is_pop": false
+  },
+  "lorde|||ribs": {
+    "artist": "Lorde",
+    "track": "Ribs",
+    "tags": [
+      "synthpop",
+      "pop",
+      "art pop",
+      "electronic",
+      "indietronica",
+      "olivia",
+      "new zealand",
+      "indie",
+      "electropop",
+      "alt-pop"
+    ],
+    "is_pop": true
+  },
+  "sam barber|||indigo (feat. avery anna)": {
+    "artist": "Sam Barber",
+    "track": "Indigo (feat. Avery Anna)",
+    "tags": [],
+    "is_pop": false
   }
 }

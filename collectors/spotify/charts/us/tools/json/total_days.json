@@ -1,19 +1,19 @@
 {
   "The Fate of Ophelia": {
-    "days": 197,
-    "date": "2026-04-17"
+    "days": 1,
+    "date": "2025-10-03"
   },
   "Opalite": {
-    "days": 196,
-    "date": "2026-04-17"
+    "days": 1,
+    "date": "2025-10-03"
   },
   "Style": {
     "days": 276,
     "date": "2026-04-08"
   },
   "Elizabeth Taylor": {
-    "days": 16,
-    "date": "2026-04-01"
+    "days": 1,
+    "date": "2025-10-03"
   },
   "Fortnight (feat. Post Malone)": {
     "days": 1,
@@ -140,12 +140,12 @@
     "date": "2024-04-19"
   },
   "Cruel Summer": {
-    "days": 526,
-    "date": "2024-04-19"
+    "days": 900,
+    "date": "2025-10-03"
   },
   "august": {
-    "days": 416,
-    "date": "2024-04-19"
+    "days": 512,
+    "date": "2025-10-03"
   },
   "Anti-Hero": {
     "days": 541,
@@ -156,12 +156,12 @@
     "date": "2024-04-19"
   },
   "Lover": {
-    "days": 485,
-    "date": "2024-04-19"
+    "days": 491,
+    "date": "2025-10-03"
   },
   "cardigan": {
-    "days": 536,
-    "date": "2024-04-19"
+    "days": 567,
+    "date": "2025-10-03"
   },
   "Don’t Blame Me": {
     "days": 603,
@@ -170,5 +170,41 @@
   "Karma": {
     "days": 464,
     "date": "2024-04-19"
+  },
+  "Father Figure": {
+    "days": 1,
+    "date": "2025-10-03"
+  },
+  "Eldest Daughter": {
+    "days": 1,
+    "date": "2025-10-03"
+  },
+  "Wood": {
+    "days": 1,
+    "date": "2025-10-03"
+  },
+  "Actually Romantic": {
+    "days": 1,
+    "date": "2025-10-03"
+  },
+  "Wi$h Li$t": {
+    "days": 1,
+    "date": "2025-10-03"
+  },
+  "Ruin The Friendship": {
+    "days": 1,
+    "date": "2025-10-03"
+  },
+  "CANCELLED!": {
+    "days": 1,
+    "date": "2025-10-03"
+  },
+  "The Life of a Showgirl (feat. Sabrina Carpenter)": {
+    "days": 1,
+    "date": "2025-10-03"
+  },
+  "Honey": {
+    "days": 1,
+    "date": "2025-10-03"
   }
 }
