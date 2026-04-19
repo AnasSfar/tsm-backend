@@ -303,18 +303,6 @@ date,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,movement
 2025-10-04,Wood,71,123396,28,,2,2,-43
 2025-10-04,Wi$h Li$t,72,122692,27,,2,2,-45
 2025-10-04,Honey,91,105197,36,,2,2,-55
-2025-10-03,The Fate of Ophelia,2,476365,,,1,1,RE
-2025-10-03,Elizabeth Taylor,5,323455,,,1,1,RE
-2025-10-03,Opalite,8,310631,,,1,1,RE
-2025-10-03,Father Figure,14,273554,,,1,1,RE
-2025-10-03,Eldest Daughter,18,253378,,,1,1,RE
-2025-10-03,CANCELLED!,20,249570,,,1,1,RE
-2025-10-03,Actually Romantic,21,243248,,,1,1,RE
-2025-10-03,The Life of a Showgirl (feat. Sabrina Carpenter),22,241988,,,1,1,RE
-2025-10-03,Ruin The Friendship,23,237680,,,1,1,RE
-2025-10-03,Wi$h Li$t,27,230260,,,1,1,RE
-2025-10-03,Wood,28,226036,,,1,1,RE
-2025-10-03,Honey,36,198422,,,1,1,RE
 2024-09-03,Cruel Summer,181,54730,178,,576,536,-3
 2024-09-02,Cruel Summer,178,56438,181,36,575,535,+3
 2024-09-01,Cruel Summer,181,54569,191,36,574,534,+10
@@ -1456,3 +1444,15 @@ date,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,movement
 2024-04-19,The Smallest Man Who Ever Lived,92,102621,,92,1,1,NEW
 2024-04-19,The Alchemy,101,97480,,101,1,1,NEW
 2024-04-19,Clara Bow,115,90733,,115,1,1,NEW
+2025-10-03,The Fate of Ophelia,2,476365,,2,1,1,NEW
+2025-10-03,Elizabeth Taylor,5,323455,,5,1,1,NEW
+2025-10-03,Opalite,8,310631,,8,1,1,NEW
+2025-10-03,Father Figure,14,273554,,14,1,1,NEW
+2025-10-03,Eldest Daughter,18,253378,,18,1,1,NEW
+2025-10-03,CANCELLED!,20,249570,,20,1,1,NEW
+2025-10-03,Actually Romantic,21,243248,,21,1,1,NEW
+2025-10-03,The Life of a Showgirl (feat. Sabrina Carpenter),22,241988,,22,1,1,NEW
+2025-10-03,Ruin The Friendship,23,237680,,23,1,1,NEW
+2025-10-03,Wi$h Li$t,27,230260,,27,1,1,NEW
+2025-10-03,Wood,28,226036,,28,1,1,NEW
+2025-10-03,Honey,36,198422,,36,1,1,NEW

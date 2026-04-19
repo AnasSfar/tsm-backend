@@ -838,10 +838,6 @@
       "streams": 281216,
       "previous_rank": 2
     },
-    "2025-10-03": {
-      "rank": 2,
-      "streams": 476365
-    },
     "2026-03-22": {
       "rank": 30,
       "streams": 136108,
@@ -1002,6 +998,11 @@
       "rank": 51,
       "streams": 140540,
       "previous_rank": 460,
+      "peak_rank": 2
+    },
+    "2025-10-03": {
+      "rank": 2,
+      "streams": 476365,
       "peak_rank": 2
     }
   },
@@ -1336,10 +1337,6 @@
       "streams": 180785,
       "previous_rank": 8
     },
-    "2025-10-03": {
-      "rank": 8,
-      "streams": 310631
-    },
     "2026-03-23": {
       "rank": 199,
       "streams": 61647,
@@ -1421,6 +1418,11 @@
       "previous_rank": 1930,
       "peak_rank": 8
     },
+    "2025-10-03": {
+      "rank": 8,
+      "streams": 310631,
+      "peak_rank": 8
+    },
     "2026-03-26": {
       "rank": 191,
       "streams": 61618,
@@ -1495,7 +1497,8 @@
     },
     "2025-10-03": {
       "rank": 5,
-      "streams": 323455
+      "streams": 323455,
+      "peak_rank": 5
     }
   },
   "Father Figure": {
@@ -1551,7 +1554,8 @@
     },
     "2025-10-03": {
       "rank": 14,
-      "streams": 273554
+      "streams": 273554,
+      "peak_rank": 14
     }
   },
   "CANCELLED!": {
@@ -1601,7 +1605,8 @@
     },
     "2025-10-03": {
       "rank": 20,
-      "streams": 249570
+      "streams": 249570,
+      "peak_rank": 20
     }
   },
   "The Life of a Showgirl (feat. Sabrina Carpenter)": {
@@ -1642,7 +1647,8 @@
     },
     "2025-10-03": {
       "rank": 22,
-      "streams": 241988
+      "streams": 241988,
+      "peak_rank": 22
     }
   },
   "Actually Romantic": {
@@ -1678,7 +1684,8 @@
     },
     "2025-10-03": {
       "rank": 21,
-      "streams": 243248
+      "streams": 243248,
+      "peak_rank": 21
     }
   },
   "Eldest Daughter": {
@@ -1714,7 +1721,8 @@
     },
     "2025-10-03": {
       "rank": 18,
-      "streams": 253378
+      "streams": 253378,
+      "peak_rank": 18
     }
   },
   "Wood": {
@@ -1750,7 +1758,8 @@
     },
     "2025-10-03": {
       "rank": 28,
-      "streams": 226036
+      "streams": 226036,
+      "peak_rank": 28
     }
   },
   "Wi$h Li$t": {
@@ -1786,7 +1795,8 @@
     },
     "2025-10-03": {
       "rank": 27,
-      "streams": 230260
+      "streams": 230260,
+      "peak_rank": 27
     }
   },
   "Ruin The Friendship": {
@@ -1822,7 +1832,8 @@
     },
     "2025-10-03": {
       "rank": 23,
-      "streams": 237680
+      "streams": 237680,
+      "peak_rank": 23
     }
   },
   "Honey": {
@@ -1853,7 +1864,8 @@
     },
     "2025-10-03": {
       "rank": 36,
-      "streams": 198422
+      "streams": 198422,
+      "peak_rank": 36
     }
   },
   "Cruel Summer": {
