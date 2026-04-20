@@ -13,7 +13,8 @@ _REPO_ROOT  = _SCRIPT_DIR.parents[3]
 ROOT        = _REPO_ROOT / "website"
 _DB_ROOT    = _REPO_ROOT / "db"
 
-HISTORY_CSV_PATH = _DB_ROOT / "streams_history.csv"
+HISTORY_CSV_PATH      = _DB_ROOT / "streams_history.csv"
+HISTORY_FULL_CSV_PATH = _DB_ROOT / "streams_history_full.csv"
 
 DISCOGRAPHY_DIR  = _DB_ROOT / "discography"
 ALBUMS_DIR_SRC   = DISCOGRAPHY_DIR / "albums"
@@ -214,39 +215,41 @@ def load_tracks_from_discography() -> list[dict]:
     return list(seen.values())
 
 
-def load_raw_history() -> tuple[list[str], dict[str, dict[str, dict]]]:
-    if not HISTORY_CSV_PATH.exists():
-        return [], {}
-
-    by_date: dict[str, dict[str, dict]] = defaultdict(dict)
-
-    with HISTORY_CSV_PATH.open("r", newline="", encoding="utf-8") as f:
+def _read_history_csv(path: Path, by_date: dict) -> None:
+    """Read one history CSV into by_date, overwriting any existing (date, track_id) entries."""
+    with path.open("r", newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
-
         for row in reader:
             date_value = (row.get("date") or "").strip()
-            track_id = (row.get("track_id") or "").strip()
-
+            track_id   = (row.get("track_id") or "").strip()
             if not date_value or not track_id:
                 continue
-
             streams_raw = (row.get("streams") or "").strip()
-            daily_raw = (row.get("daily_streams") or "").strip()
-
+            daily_raw   = (row.get("daily_streams") or "").strip()
             try:
                 streams = int(streams_raw) if streams_raw else None
             except ValueError:
                 streams = None
-
             try:
                 daily_streams = int(daily_raw) if daily_raw else None
             except ValueError:
                 daily_streams = None
-
             by_date[date_value][track_id] = {
                 "streams": streams,
                 "daily_streams": daily_streams,
             }
+
+
+def load_raw_history() -> tuple[list[str], dict[str, dict[str, dict]]]:
+    by_date: dict[str, dict[str, dict]] = defaultdict(dict)
+
+    # Load historical backfill first (lower priority)
+    if HISTORY_FULL_CSV_PATH.exists():
+        _read_history_csv(HISTORY_FULL_CSV_PATH, by_date)
+
+    # Load live data second — overwrites any overlapping (date, track_id) entries
+    if HISTORY_CSV_PATH.exists():
+        _read_history_csv(HISTORY_CSV_PATH, by_date)
 
     return sorted(by_date.keys()), dict(by_date)
 
