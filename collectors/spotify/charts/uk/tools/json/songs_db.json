@@ -7148,5 +7148,45 @@
       "romantic"
     ],
     "is_pop": false
+  },
+  "olivia rodrigo|||deja vu": {
+    "artist": "Olivia Rodrigo",
+    "track": "deja vu",
+    "tags": [
+      "pop",
+      "pop rock",
+      "psychedelic pop",
+      "indie pop",
+      "2021",
+      "art pop",
+      "rock",
+      "sour",
+      "2020s",
+      "alt-pop"
+    ],
+    "is_pop": true
+  },
+  "justin bieber|||speed demon": {
+    "artist": "Justin Bieber",
+    "track": "SPEED DEMON",
+    "tags": [],
+    "is_pop": false
+  },
+  "olivia rodrigo|||drivers license": {
+    "artist": "Olivia Rodrigo",
+    "track": "drivers license",
+    "tags": [
+      "batch-test",
+      "pop",
+      "sad",
+      "bedroom pop",
+      "2021",
+      "sour",
+      "ballad",
+      "teen pop",
+      "olivia rodrigo",
+      "2020s"
+    ],
+    "is_pop": true
   }
 }
