@@ -1489,8 +1489,18 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
         sign = "+" if track_pct >= 0 else "−"
         track_pct_str = f" ({sign}{abs(track_pct):.1f}%)"
 
+    # TODAY ONLY (2026-04-20): TTPD 2nd anniversary special note
+    is_ttpd_anniversary = (
+        target_date == "2026-04-19"
+        and "tortured poets" in canonical_name.lower()
+    )
+    if is_ttpd_anniversary:
+        first_line = f'📈| "{canonical_name}" received {total_daily_fmt} streams on its second anniversary, April 19th 2026.{album_pct_str}'
+    else:
+        first_line = f'📈| "{canonical_name}" received {total_daily_fmt} streams yesterday, {date_fmt}.{album_pct_str}'
+
     return (
-        f'📈| "{canonical_name}" received {total_daily_fmt} streams yesterday, {date_fmt}.{album_pct_str}\n\n'
+        f"{first_line}\n\n"
         f'"{selected_song}" was the {label} with {track_daily_fmt} streams{track_pct_str}.\n\n'
         f"See full update here : https://thetsmuseum.app/streams/latest 🤍"
     )

@@ -3063,6 +3063,43 @@ def main():
         )
         print("Image URLs and track_covers.json done.")
 
+        # ── Album update images (priority order) ──────────────────────────────
+        # TODAY ONLY (2026-04-20): TTPD posted first, before albums daily and top-10
+        _ALBUM_UPDATE_TARGETS = [
+            "THE TORTURED POETS DEPARTMENT",
+            "The Life of a Showgirl",
+        ]
+        _album_img_script = _SCRIPT_DIR / "tools" / "scripts" / "generate_album_update_image.py"
+        for _alb in _ALBUM_UPDATE_TARGETS:
+            if album_tracks_done_for(_alb, summary["stats_date"]):
+                print(f"Generating album update image: {_alb} ...")
+                album_cmd = [
+                    sys.executable,
+                    str(_album_img_script),
+                    _alb,
+                    summary["stats_date"],
+                ]
+                if not no_post_mode:
+                    album_cmd.append("--post")
+                _run_streams_post(
+                    album_cmd,
+                    label=f"album update ({_alb})",
+                    should_post=not no_post_mode,
+                    state=post_state,
+                )
+            else:
+                try:
+                    _sections = load_album_sections_flat()
+                    _alb_ids = {
+                        extract_track_id(t.get("url") or t.get("spotify_url") or "")
+                        for sec in _sections if sec.get("album") == _alb
+                        for t in sec.get("tracks", [])
+                    } - {""}
+                    _done = load_history_track_ids_for_date(summary["stats_date"])
+                    print(f"Album update skipped ({_alb}): {len(_alb_ids - _done)}/{len(_alb_ids)} tracks manquants.")
+                except Exception:
+                    print(f"Album update skipped ({_alb}): impossible de vérifier les tracks.")
+
         # ── Albums daily image ────────────────────────────────────────────────
         _albums_post_script = _SCRIPT_DIR / "tools" / "scripts" / "post_albums_twitter.py"
         _albums_cmd = [sys.executable, str(_albums_post_script), summary["stats_date"]]
@@ -3098,42 +3135,6 @@ def main():
         else:
             missing = load_album_track_ids() - load_history_track_ids_for_date(summary["stats_date"])
             print(f"Image top 10 ignorée : {len(missing)} track(s) albums/* manquant(s) pour {summary['stats_date']}.")
-
-        # ── Album update images (priority order) ──────────────────────────────
-        _ALBUM_UPDATE_TARGETS = [
-            "The Life of a Showgirl",
-            "THE TORTURED POETS DEPARTMENT",
-        ]
-        _album_img_script = _SCRIPT_DIR / "tools" / "scripts" / "generate_album_update_image.py"
-        for _alb in _ALBUM_UPDATE_TARGETS:
-            if album_tracks_done_for(_alb, summary["stats_date"]):
-                print(f"Generating album update image: {_alb} ...")
-                album_cmd = [
-                    sys.executable,
-                    str(_album_img_script),
-                    _alb,
-                    summary["stats_date"],
-                ]
-                if not no_post_mode:
-                    album_cmd.append("--post")
-                _run_streams_post(
-                    album_cmd,
-                    label=f"album update ({_alb})",
-                    should_post=not no_post_mode,
-                    state=post_state,
-                )
-            else:
-                try:
-                    _sections = load_album_sections_flat()
-                    _alb_ids = {
-                        extract_track_id(t.get("url") or t.get("spotify_url") or "")
-                        for sec in _sections if sec.get("album") == _alb
-                        for t in sec.get("tracks", [])
-                    } - {""}
-                    _done = load_history_track_ids_for_date(summary["stats_date"])
-                    print(f"Album update skipped ({_alb}): {len(_alb_ids - _done)}/{len(_alb_ids)} tracks manquants.")
-                except Exception:
-                    print(f"Album update skipped ({_alb}): impossible de vérifier les tracks.")
 
         print("Git commit and push...")
         git_commit_and_push(_REPO_ROOT, f"daily final export {summary['stats_date']}")

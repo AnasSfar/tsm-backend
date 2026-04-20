@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Any
 
 import boto3
+import botocore.exceptions
 from dotenv import load_dotenv
 
 load_dotenv(str(Path(__file__).resolve().parents[1] / ".env"), override=True)
@@ -117,10 +118,13 @@ def upload_bytes_if_changed(
                 },
             )
             return True
-        except Exception:
+        except Exception as exc:
             if attempt == retries:
                 raise
-            time.sleep(min(2 ** attempt, 5))
+            # SSL EOF / connection reset needs a fresh boto3 client
+            if isinstance(exc, (botocore.exceptions.SSLError, botocore.exceptions.ConnectionError)):
+                client = get_s3_client()
+            time.sleep(min(2 ** attempt, 8))
 
     return True
 

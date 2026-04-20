@@ -37,7 +37,7 @@ POP_HISTORY_PATH    = _TOOLS / "json" / "ts_pop_history.json"
 DISCOGRAPHY_ROOT    = Path(__file__).parents[6] / "db" / "discography"
 COVERS_PATH         = DISCOGRAPHY_ROOT / "covers.json"
 HEADERS_DIR         = _TOOLS / "headers"
-HANDLE           = "@thefateofanas"
+HANDLE           = "@theflameofanas"
 
 
 # ---------------------------------------------------------------------------
