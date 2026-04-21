@@ -18,13 +18,10 @@ REPO_ROOT = HERE.parents[1]
 
 SCRIPTS = [
     HERE / "ts_page.py",
-    HERE / "top_music_videos.py",
     HERE / "global.py",
     HERE / "global_albums.py",
-    HERE / "genre_charts.py",
     HERE / "country_charts.py",
     HERE / "country_albums.py",
-    HERE / "music_video_charts.py",
 ]
 
 

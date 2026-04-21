@@ -68,7 +68,7 @@ HILL_INITIAL       = 6      # point de départ (MAX_PARALLEL_PAGES comme plafond
 
 PROBE_CANDIDATES = 10  # top N tracks (by streams) used as probe candidates
 
-PENDING_RETRY_SLEEP_SECONDS = 1 * 60
+PENDING_RETRY_SLEEP_SECONDS = 10
 POST_BETWEEN_STREAMS_POSTS_SECONDS = 3 * 60
 INCREMENTAL_PUBLISH_ON_UPDATE = False
 
@@ -2155,12 +2155,6 @@ def _worker(
                     break
             time.sleep(1)
 
-    p = sync_playwright().start()
-    context = launch_persistent_worker_context(p, worker_id)
-    # Réutiliser l'onglet about:blank ouvert automatiquement par le profil persistant
-    page = context.pages[0] if context.pages else context.new_page()
-    page.route("**/*", block_unneeded)
-
     _api_session = _requests.Session()
 
     try:
@@ -2195,7 +2189,7 @@ def _worker(
                 if LOG_MODE == "verbose":
                     print(f"  [pre-scraped] {track['title']} -> {total:,}")
             elif token_mgr is not None and token_mgr.available:
-                # Primary: API GraphQL Spotify (3 attempts before Playwright fallback)
+                # Primary: API GraphQL Spotify (3 attempts)
                 api_result = None
                 for _api_attempt in range(3):
                     api_result = fetch_playcount_api(track["track_id"], token_mgr, _api_session)
@@ -2206,14 +2200,11 @@ def _worker(
                 if api_result is not None:
                     total, raw, scrape_status = api_result, str(api_result), "ok"
                 else:
-                    # Fallback: Playwright (last resort)
-                    total, raw, scrape_status, _ = scrape_track_total(
-                        page, track["title"], track["spotify_url"]
-                    )
+                    scrape_status = "error"
+                    total, raw = None, ""
             else:
-                total, raw, scrape_status, _ = scrape_track_total(
-                    page, track["title"], track["spotify_url"]
-                )
+                scrape_status = "error"
+                total, raw = None, ""
 
             if adaptive is not None:
                 adaptive.record(got_429=(scrape_status == "timeout"))
@@ -2305,14 +2296,6 @@ def _worker(
             print("Worker finished.")
         try:
             _api_session.close()
-        except Exception:
-            pass
-        try:
-            context.close()
-        except Exception:
-            pass
-        try:
-            p.stop()
         except Exception:
             pass
 
@@ -2430,9 +2413,9 @@ def run_update(
         ]
         if retry_candidates:
             print(
-                f"\n  {len(retry_candidates)} failure(s) — retry dans 30s avec {min(3, len(retry_candidates))} workers..."
+                f"\n  {len(retry_candidates)} failure(s) — retry dans 10s avec {min(3, len(retry_candidates))} workers..."
             )
-            time.sleep(30)
+            time.sleep(10)
 
             retry_queue: Queue = Queue()
             for idx, r in enumerate(retry_candidates, 1):
@@ -2825,35 +2808,13 @@ def main():
                 while not api_probe["can_start_full_run"]:
                     print()
                     print("Spotify does not appear to have started the next daily update yet.")
-                    print("Retrying in 1 minute...")
-                    time.sleep(60)
+                    print("Retrying in 10 seconds...")
+                    time.sleep(10)
                     print("Running probe check... [API]")
                     api_probe = _probe_via_api(probe_tracks, token_mgr)
                     _print_probe(api_probe)
             else:
-                # Fallback: Playwright
-                _p = sync_playwright().start()
-                _browser = launch_browser(_p)
-                _context = _browser.new_context(locale="fr-FR")
-                _page = _context.new_page()
-                _page.route("**/*", block_unneeded)
-
-                try:
-                    while True:
-                        print("Running probe check... [Playwright]")
-                        probe = _probe_on_page(probe_tracks, _page)
-                        _print_probe(probe)
-
-                        if probe["can_start_full_run"]:
-                            break
-
-                        print()
-                        print("Spotify does not appear to have started the next daily update yet.")
-                        print("Retrying in 1 minute...")
-                        time.sleep(60)
-                finally:
-                    _browser.close()
-                    _p.stop()
+                print("Probe via API unavailable (no token) — skipping probe, starting run.")
     elif done_tracks_before_run < total_tracks and not debug_daily_mode:
         print("Partial progress already exists for this stats date.")
         print("Skipping probe and resuming unfinished tracks.")
@@ -2928,10 +2889,7 @@ def main():
         print("Committing partial progress before retry...")
         git_commit_and_push(_REPO_ROOT, f"partial export {summary['stats_date']} (before retry {retry_round})")
 
-        print(
-            f"Waiting {PENDING_RETRY_SLEEP_SECONDS // 60} minutes before retry "
-            f"(round {retry_round})..."
-        )
+        print(f"Waiting {PENDING_RETRY_SLEEP_SECONDS}s before retry (round {retry_round})...")
         time.sleep(PENDING_RETRY_SLEEP_SECONDS)
 
         print()
