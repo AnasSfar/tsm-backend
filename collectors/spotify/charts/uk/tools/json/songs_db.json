@@ -7188,5 +7188,39 @@
       "2020s"
     ],
     "is_pop": true
+  },
+  "justin bieber|||one time": {
+    "artist": "Justin Bieber",
+    "track": "One Time",
+    "tags": [
+      "justin bieber",
+      "pop",
+      "one time",
+      "love",
+      "rnb",
+      "justin-bieber-one-time",
+      "<3",
+      "hip-hop",
+      "r&b",
+      "romantic"
+    ],
+    "is_pop": true
+  },
+  "madonna|||like a prayer": {
+    "artist": "Madonna",
+    "track": "Like a Prayer",
+    "tags": [
+      "pop",
+      "80s",
+      "madonna",
+      "dance",
+      "female vocalists",
+      "1989",
+      "classic",
+      "rock",
+      "like a prayer",
+      "gospel"
+    ],
+    "is_pop": true
   }
 }
