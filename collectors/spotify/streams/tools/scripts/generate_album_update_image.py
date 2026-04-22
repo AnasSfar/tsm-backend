@@ -885,6 +885,7 @@ body{
   grid-column:1/3;
   font-size:14px;font-weight:800;color:rgba(255,255,255,.95);
   padding-left:2px;
+  display:flex;align-items:center;
 }
 .era-num{
   font-size:14px;font-weight:800;color:rgba(255,255,255,.95);
@@ -941,7 +942,7 @@ def _estimate_title_width_px(text: str, font_size_px: float = 13.0) -> float:
 def _compute_layout_metrics(sections: list[dict], show_filter_cols: bool) -> dict:
     """Compute dynamic grid/body sizing to avoid extra whitespace in final PNG."""
     total_tracks = sum(len(s["tracks"]) for s in sections)
-    row_h = max(26, min(52, 26 + (16 - total_tracks) * 2))
+    row_h = max(20, min(36, 20 + (16 - total_tracks) * 2))
 
     titles = [
         _shorten_title(t.get("title_clean") or "")

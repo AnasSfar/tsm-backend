@@ -395,32 +395,32 @@ body{
   overflow:hidden;
 }
 .hdr{
-  padding:20px 22px;
-  display:flex;align-items:center;gap:16px;
+  padding:22px 26px;
+  display:flex;align-items:center;gap:18px;
 }
-.hdr-logo{width:52px;height:52px;flex-shrink:0}
-.hdr-title{color:#fff;font-size:22px;font-weight:800;letter-spacing:-.3px}
-.hdr-sub{color:rgba(255,255,255,.85);font-size:13px;margin-top:4px}
+.hdr-logo{width:64px;height:64px;flex-shrink:0}
+.hdr-title{color:#fff;font-size:26px;font-weight:800;letter-spacing:-.3px}
+.hdr-sub{color:rgba(255,255,255,.85);font-size:15px;margin-top:5px}
 .col-heads{
   display:grid;
-  grid-template-columns:44px minmax(160px,1fr) 130px 130px 110px;
+  grid-template-columns:52px minmax(160px,1fr) 130px 130px 110px;
   column-gap:8px;
-  padding:7px 14px;
+  padding:9px 18px;
   background:rgba(241,245,246,.95);
   border-bottom:1px solid rgba(16,24,40,.07);
 }
 .col-heads span{
-  font-size:10px;font-weight:700;text-transform:uppercase;
+  font-size:11px;font-weight:700;text-transform:uppercase;
   letter-spacing:.07em;color:#667085;
   display:flex;align-items:center;
 }
 .col-heads .right{justify-content:flex-end}
 .album-card{
   display:grid;
-  grid-template-columns:44px minmax(160px,1fr) 130px 130px 110px;
+  grid-template-columns:52px minmax(160px,1fr) 130px 130px 110px;
   column-gap:8px;
   align-items:center;
-  padding:9px 14px;
+  padding:7px 18px;
   background:rgba(255,255,255,.82);
   border-bottom:1px solid rgba(16,24,40,.05);
 }
@@ -430,42 +430,42 @@ body{
   border-left:3px solid #ebc44c;
 }
 .col-rank{
-  font-size:17px;font-weight:900;color:#0b1f44;
+  font-size:21px;font-weight:900;color:#0b1f44;
   letter-spacing:-.04em;
   display:flex;align-items:center;justify-content:center;
 }
-.col-album{display:flex;align-items:center;gap:10px;min-width:0}
+.col-album{display:flex;align-items:center;gap:12px;min-width:0}
 .art{
-  width:42px;height:42px;border-radius:6px;
+  width:54px;height:54px;border-radius:7px;
   flex-shrink:0;object-fit:cover;
   box-shadow:0 2px 8px rgba(0,0,0,.12);
 }
 .art-ph{
-  width:42px;height:42px;border-radius:6px;
+  width:54px;height:54px;border-radius:7px;
   background:#dde3ea;flex-shrink:0;
 }
 .album-name{
-  font-size:13px;font-weight:700;color:#101828;
+  font-size:15px;font-weight:700;color:#101828;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .col-num{
-  font-size:12px;color:#344054;font-weight:500;
+  font-size:14px;color:#344054;font-weight:500;
   display:flex;align-items:center;justify-content:flex-end;
 }
 .pos{color:#067647;font-weight:600}
 .neg{color:#b42318;font-weight:600}
 .neutral{color:#667085}
-.delta-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
-.delta-num{font-size:12px;font-weight:600}
-.delta-pct{font-size:10px;font-weight:500;opacity:.85}
+.delta-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.delta-num{font-size:13px;font-weight:600}
+.delta-pct{font-size:11px;font-weight:500;opacity:.85}
 .ftr{
   background:rgba(241,245,246,.96);
-  padding:8px 16px;
+  padding:11px 20px;
   display:flex;justify-content:space-between;align-items:center;
   border-top:1px solid rgba(16,24,40,.07);
 }
-.ftr-handle{font-size:11px;color:#1db954;font-weight:700}
-.ftr-date{font-size:11px;color:#667085;font-weight:500}
+.ftr-handle{font-size:13px;color:#1db954;font-weight:700}
+.ftr-date{font-size:13px;color:#667085;font-weight:500}
 """
 
 SPOTIFY_SVG = """<svg class="hdr-logo" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">

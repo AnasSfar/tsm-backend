@@ -44,7 +44,7 @@ ALBUMS_DIR   = DB_DIR / "discography" / "albums"
 HEADERS_DIR  = _TOOLS / "headers"
 HANDLE       = "@swiftiescharts"
 
-TOP_N = 10
+TOP_N = 15
 
 # ---------------------------------------------------------------------------
 # Header image + dominant colour (same helpers as chart image)
@@ -420,32 +420,32 @@ body{
   overflow:hidden;
 }
 .hdr{
-  padding:20px 22px;
-  display:flex;align-items:center;gap:16px;
+  padding:22px 26px;
+  display:flex;align-items:center;gap:18px;
 }
-.hdr-logo{width:52px;height:52px;flex-shrink:0}
-.hdr-title{color:#fff;font-size:22px;font-weight:800;letter-spacing:-.3px}
-.hdr-sub{color:rgba(255,255,255,.85);font-size:13px;margin-top:4px}
+.hdr-logo{width:64px;height:64px;flex-shrink:0}
+.hdr-title{color:#fff;font-size:26px;font-weight:800;letter-spacing:-.3px}
+.hdr-sub{color:rgba(255,255,255,.85);font-size:15px;margin-top:5px}
 .col-heads{
   display:grid;
-  grid-template-columns:44px 54px minmax(160px,1fr) 130px 130px 110px;
+  grid-template-columns:52px 50px minmax(160px,1fr) 130px 130px 110px;
   column-gap:8px;
-  padding:7px 14px;
+  padding:9px 18px;
   background:rgba(241,245,246,.95);
   border-bottom:1px solid rgba(16,24,40,.07);
 }
 .col-heads span{
-  font-size:10px;font-weight:700;text-transform:uppercase;
+  font-size:11px;font-weight:700;text-transform:uppercase;
   letter-spacing:.07em;color:#667085;
   display:flex;align-items:center;
 }
 .col-heads .right{justify-content:flex-end}
 .song-card{
   display:grid;
-  grid-template-columns:44px 54px minmax(160px,1fr) 130px 130px 110px;
+  grid-template-columns:52px 50px minmax(160px,1fr) 130px 130px 110px;
   column-gap:8px;
   align-items:center;
-  padding:9px 14px;
+  padding:7px 18px;
   background:rgba(255,255,255,.82);
   border-bottom:1px solid rgba(16,24,40,.05);
 }
@@ -455,52 +455,52 @@ body{
   border-left:3px solid #ebc44c;
 }
 .col-rank{
-  font-size:17px;font-weight:900;color:#0b1f44;
+  font-size:21px;font-weight:900;color:#0b1f44;
   letter-spacing:-.04em;
   display:flex;align-items:center;justify-content:center;
 }
-.col-song{display:flex;align-items:center;gap:10px;min-width:0}
+.col-song{display:flex;align-items:center;gap:12px;min-width:0}
 .art{
-  width:42px;height:42px;border-radius:6px;
+  width:54px;height:54px;border-radius:7px;
   flex-shrink:0;object-fit:cover;
   box-shadow:0 2px 8px rgba(0,0,0,.12);
 }
 .art-ph{
-  width:42px;height:42px;border-radius:6px;
+  width:54px;height:54px;border-radius:7px;
   background:#dde3ea;flex-shrink:0;
 }
 .song-info{min-width:0}
 .song-title{
-  font-size:13px;font-weight:700;color:#101828;
+  font-size:15px;font-weight:700;color:#101828;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
-.song-artist{font-size:11px;color:#667085;margin-top:2px}
+.song-artist{font-size:13px;color:#667085;margin-top:3px}
 .col-num{
-  font-size:12px;color:#344054;font-weight:500;
+  font-size:14px;color:#344054;font-weight:500;
   display:flex;align-items:center;justify-content:flex-end;
 }
 .col-chg{
-  font-size:11px;font-weight:700;
+  font-size:13px;font-weight:700;
   display:flex;align-items:center;justify-content:center;
 }
 .chg-up{color:#067647}
 .chg-dn{color:#b42318}
 .chg-eq{color:#9ca3af}
-.chg-new{color:#5bbde4;font-size:10px;font-weight:800}
+.chg-new{color:#5bbde4;font-size:11px;font-weight:800}
 .pos{color:#067647;font-weight:600}
 .neg{color:#b42318;font-weight:600}
 .neutral{color:#667085}
-.delta-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
-.delta-num{font-size:12px;font-weight:600}
-.delta-pct{font-size:10px;font-weight:500;opacity:.85}
+.delta-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.delta-num{font-size:13px;font-weight:600}
+.delta-pct{font-size:11px;font-weight:500;opacity:.85}
 .ftr{
   background:rgba(241,245,246,.96);
-  padding:8px 16px;
+  padding:11px 20px;
   display:flex;justify-content:space-between;align-items:center;
   border-top:1px solid rgba(16,24,40,.07);
 }
-.ftr-handle{font-size:11px;color:#1db954;font-weight:700}
-.ftr-date{font-size:11px;color:#667085;font-weight:500}
+.ftr-handle{font-size:13px;color:#1db954;font-weight:700}
+.ftr-date{font-size:13px;color:#667085;font-weight:500}
 """
 
 SPOTIFY_SVG = """<svg class="hdr-logo" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
@@ -584,7 +584,7 @@ def build_rows_html(top_rows: list[dict], cover_map: dict, track_album_map: dict
       <div class="song-artist">{artist}</div>
     </div>
   </div>
-  <div class="col-num">{fmt_num(daily)}</div>
+  <div class="col-num"><strong>{fmt_num(daily)}</strong></div>
   <div class="col-num {delta_cls}">
     <div class="delta-wrap">
       <span class="delta-num">{delta_num}</span>
@@ -625,14 +625,14 @@ def build_html(top_rows: list[dict], target_date: str, cover_map: dict, track_al
     {SPOTIFY_SVG}
     <div>
       <div class="hdr-title">Taylor Swift · Daily Streams</div>
-            <div class="hdr-sub">Top {top_n} Most Streamed · {date_fmt}</div>
+            <div class="hdr-sub">Taylor Swift's top {top_n} most streamed songs · {date_fmt}</div>
     </div>
   </div>
   <div class="col-heads">
-    <span>Pos</span>
-    <span>Chg</span>
+    <span>Rank</span>
+    <span>+/-</span>
     <span>Track</span>
-    <span class="right">Daily Streams</span>
+    <span class="right">Daily</span>
     <span class="right">vs Yesterday</span>
     <span class="right">Total</span>
   </div>
