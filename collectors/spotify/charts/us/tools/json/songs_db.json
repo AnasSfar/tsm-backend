@@ -7310,5 +7310,22 @@
     "track": "SPEED DEMON",
     "tags": [],
     "is_pop": false
+  },
+  "daniel caesar|||get you (feat. kali uchis)": {
+    "artist": "Daniel Caesar",
+    "track": "Get You (feat. Kali Uchis)",
+    "tags": [
+      "rnb",
+      "alternative rnb",
+      "indie",
+      "sexy",
+      "pop",
+      "indie pop",
+      "alternative pop",
+      "melodic",
+      "english",
+      "canada"
+    ],
+    "is_pop": false
   }
 }
