@@ -7239,5 +7239,22 @@
       "alternative rock"
     ],
     "is_pop": false
+  },
+  "avicii|||wake me up": {
+    "artist": "Avicii",
+    "track": "Wake Me Up",
+    "tags": [
+      "dance",
+      "electronic",
+      "2013",
+      "pop",
+      "avicii",
+      "house",
+      "summer 2013",
+      "edm",
+      "country",
+      "progressive house"
+    ],
+    "is_pop": false
   }
 }
