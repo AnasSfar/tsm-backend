@@ -3024,8 +3024,8 @@ def main():
         # ── Album update images (priority order) ──────────────────────────────
         # TODAY ONLY (2026-04-20): TTPD posted first, before albums daily and top-10
         _ALBUM_UPDATE_TARGETS = [
-            "THE TORTURED POETS DEPARTMENT",
             "The Life of a Showgirl",
+            "THE TORTURED POETS DEPARTMENT",
         ]
         _album_img_script = _SCRIPT_DIR / "tools" / "scripts" / "generate_album_update_image.py"
         for _alb in _ALBUM_UPDATE_TARGETS:
