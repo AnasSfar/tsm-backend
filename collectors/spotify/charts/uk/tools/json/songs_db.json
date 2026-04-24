@@ -7256,5 +7256,56 @@
       "progressive house"
     ],
     "is_pop": false
+  },
+  "michael jackson|||don't stop 'til you get enough": {
+    "artist": "Michael Jackson",
+    "track": "Don't Stop 'Til You Get Enough",
+    "tags": [
+      "pop",
+      "disco",
+      "dance",
+      "80s",
+      "michael jackson",
+      "funk",
+      "70s",
+      "soul",
+      "1979",
+      "king of pop"
+    ],
+    "is_pop": true
+  },
+  "michael jackson|||the way you make me feel - 2012 remaster": {
+    "artist": "Michael Jackson",
+    "track": "The Way You Make Me Feel - 2012 Remaster",
+    "tags": [
+      "my top songs",
+      "80s",
+      "rnb",
+      "pop",
+      "rhythm and blues",
+      "1987",
+      "dance pop",
+      "motown sound",
+      "new jack swing",
+      "michael jackson"
+    ],
+    "is_pop": false
+  },
+  "michael jackson|||smooth criminal - 2012 remaster": {
+    "artist": "Michael Jackson",
+    "track": "Smooth Criminal - 2012 Remaster",
+    "tags": [
+      "pop",
+      "rnb",
+      "funk",
+      "80s",
+      "1988",
+      "new jack swing",
+      "michael jackson",
+      "synth funk",
+      "soul",
+      "dance"
+    ],
+    "is_pop": true
   }
 }
