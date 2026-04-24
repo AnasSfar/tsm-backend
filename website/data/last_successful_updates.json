@@ -1,16 +1,72 @@
 {
-  "generated_at": "2026-04-22",
-  "stats_date": "2026-04-21",
+  "generated_at": "2026-04-24",
+  "stats_date": "2026-04-23",
   "track_ids": [
-    "7vf4GBEJmv0uXojpr5qPMX"
+    "5xPsybHWRHbTYO44xnREY5",
+    "1K39ty6o1sHwwlZwO6a7wK",
+    "0lx2cLdOt3piJbcaXIV74f",
+    "45R112Jz5hQeKgITXgSXzs",
+    "62HoDY1Km6lm47haFpUn9c",
+    "0hhzNPE68LWLfgZwdpxVdR",
+    "77sMIMlNaSURUAXq5coCxE",
+    "62E2nR0od0M5HYxuYLaDz7"
   ],
   "tracks": [
     {
-      "track_id": "7vf4GBEJmv0uXojpr5qPMX",
-      "title": "Opalite - Official Music Video Extended Version Part 1",
-      "spotify_url": "https://open.spotify.com/track/7vf4GBEJmv0uXojpr5qPMX",
-      "streams": 1147670,
-      "daily_streams": 805
+      "track_id": "5xPsybHWRHbTYO44xnREY5",
+      "title": "Love Story",
+      "spotify_url": "https://open.spotify.com/track/5xPsybHWRHbTYO44xnREY5",
+      "streams": 1119325466,
+      "daily_streams": 413965
+    },
+    {
+      "track_id": "1K39ty6o1sHwwlZwO6a7wK",
+      "title": "Wildest Dreams (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/1K39ty6o1sHwwlZwO6a7wK",
+      "streams": 1019287408,
+      "daily_streams": 257456
+    },
+    {
+      "track_id": "0lx2cLdOt3piJbcaXIV74f",
+      "title": "willow",
+      "spotify_url": "https://open.spotify.com/track/0lx2cLdOt3piJbcaXIV74f",
+      "streams": 1082354204,
+      "daily_streams": 232261
+    },
+    {
+      "track_id": "45R112Jz5hQeKgITXgSXzs",
+      "title": "Karma",
+      "spotify_url": "https://open.spotify.com/track/45R112Jz5hQeKgITXgSXzs",
+      "streams": 1015687192,
+      "daily_streams": 226883
+    },
+    {
+      "track_id": "62HoDY1Km6lm47haFpUn9c",
+      "title": "Eldest Daughter",
+      "spotify_url": "https://open.spotify.com/track/62HoDY1Km6lm47haFpUn9c",
+      "streams": 206269802,
+      "daily_streams": 219200
+    },
+    {
+      "track_id": "0hhzNPE68LWLfgZwdpxVdR",
+      "title": "us. (feat. Taylor Swift)",
+      "spotify_url": "https://open.spotify.com/track/0hhzNPE68LWLfgZwdpxVdR",
+      "streams": 289164059,
+      "daily_streams": 157676
+    },
+    {
+      "track_id": "77sMIMlNaSURUAXq5coCxE",
+      "title": "Fearless (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/77sMIMlNaSURUAXq5coCxE",
+      "streams": 461326645,
+      "daily_streams": 142115
+    },
+    {
+      "track_id": "62E2nR0od0M5HYxuYLaDz7",
+      "title": "The Black Dog",
+      "spotify_url": "https://open.spotify.com/track/62E2nR0od0M5HYxuYLaDz7",
+      "streams": 214123731,
+      "daily_streams": 126599
     }
   ]
 }
