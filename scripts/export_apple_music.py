@@ -120,20 +120,34 @@ def sort_entries(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
     )
 
 
+def _song_key(name: Any) -> str:
+    return str(name or "").strip().casefold()
+
+
 def build_ranked_series(rows: list[dict[str, Any]]) -> tuple[dict[str, Any], dict[str, list[dict[str, Any]]], list[str]]:
     by_date: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    song_dates: dict[str, set[str]] = defaultdict(set)
 
     for row in rows:
         d = normalize_date(row)
         if not d:
             continue
-        by_date[d].append(normalize_song_entry(row))
-
-    for d in list(by_date.keys()):
-        by_date[d] = sort_entries(by_date[d])
+        entry = normalize_song_entry(row)
+        by_date[d].append(entry)
+        song_dates[_song_key(entry["song_name"])].add(d)
 
     dates = sorted(by_date.keys())
     latest = dates[-1] if dates else None
+
+    if latest:
+        for entry in by_date[latest]:
+            if entry.get("previous_rank") is None:
+                past = song_dates.get(_song_key(entry["song_name"]), set()) - {latest}
+                if past:
+                    entry["is_reentry"] = True
+
+    for d in list(by_date.keys()):
+        by_date[d] = sort_entries(by_date[d])
 
     current = {
         "date": latest,
@@ -185,20 +199,31 @@ def build_country(rows: list[dict[str, Any]]) -> tuple[dict[str, Any] | None, di
     # history format attendu par ton JS:
     # historyData.country[date][country] = [...]
     by_date: dict[str, dict[str, list[dict[str, Any]]]] = defaultdict(lambda: defaultdict(list))
+    song_dates: dict[tuple[str, str], set[str]] = defaultdict(set)
 
     for row in rows:
         d = normalize_date(row)
         country = clean_str(row.get("country")).lower()
         if not d or not country:
             continue
-        by_date[d][country].append(normalize_song_entry(row))
+        entry = normalize_song_entry(row)
+        by_date[d][country].append(entry)
+        song_dates[(country, _song_key(entry["song_name"]))].add(d)
+
+    dates = sorted(by_date.keys())
+    latest = dates[-1] if dates else None
+
+    if latest:
+        for country, entries in by_date[latest].items():
+            for entry in entries:
+                if entry.get("previous_rank") is None:
+                    past = song_dates.get((country, _song_key(entry["song_name"])), set()) - {latest}
+                    if past:
+                        entry["is_reentry"] = True
 
     for d, countries in by_date.items():
         for country, entries in list(countries.items()):
             countries[country] = sort_entries(entries)
-
-    dates = sorted(by_date.keys())
-    latest = dates[-1] if dates else None
 
     current = None
     if latest:
@@ -261,20 +286,31 @@ def build_genre(rows: list[dict[str, Any]]) -> tuple[dict[str, Any] | None, dict
 
 def build_country_albums(rows: list[dict[str, Any]]) -> tuple[dict[str, Any] | None, dict[str, dict[str, list[dict[str, Any]]]], list[str]]:
     by_date: dict[str, dict[str, list[dict[str, Any]]]] = defaultdict(lambda: defaultdict(list))
+    album_dates: dict[tuple[str, str], set[str]] = defaultdict(set)
 
     for row in rows:
         d = normalize_date(row)
         country = clean_str(row.get("country")).lower()
         if not d or not country:
             continue
-        by_date[d][country].append(normalize_album_entry(row))
+        entry = normalize_album_entry(row)
+        by_date[d][country].append(entry)
+        album_dates[(country, _song_key(entry["album_name"]))].add(d)
+
+    dates = sorted(by_date.keys())
+    latest = dates[-1] if dates else None
+
+    if latest:
+        for country, entries in by_date[latest].items():
+            for entry in entries:
+                if entry.get("previous_rank") is None:
+                    past = album_dates.get((country, _song_key(entry["album_name"])), set()) - {latest}
+                    if past:
+                        entry["is_reentry"] = True
 
     for d, countries in by_date.items():
         for country, entries in list(countries.items()):
             countries[country] = sort_entries(entries)
-
-    dates = sorted(by_date.keys())
-    latest = dates[-1] if dates else None
 
     current = None
     if latest:
