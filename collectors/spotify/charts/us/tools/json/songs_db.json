@@ -7470,5 +7470,63 @@
       "american"
     ],
     "is_pop": true
+  },
+  "michael jackson|||don't stop 'til you get enough": {
+    "artist": "Michael Jackson",
+    "track": "Don't Stop 'Til You Get Enough",
+    "tags": [
+      "pop",
+      "disco",
+      "dance",
+      "80s",
+      "michael jackson",
+      "funk",
+      "70s",
+      "soul",
+      "1979",
+      "king of pop"
+    ],
+    "is_pop": true
+  },
+  "noah kahan|||a few of your own": {
+    "artist": "Noah Kahan",
+    "track": "A Few Of Your Own",
+    "tags": [],
+    "is_pop": false
+  },
+  "noah kahan|||orbiter": {
+    "artist": "Noah Kahan",
+    "track": "Orbiter",
+    "tags": [],
+    "is_pop": false
+  },
+  "michael jackson|||rock with you - single version": {
+    "artist": "Michael Jackson",
+    "track": "Rock with You - Single Version",
+    "tags": [
+      "pop",
+      "funk",
+      "soul",
+      "disco",
+      "michael jackson",
+      "rnb",
+      "80s",
+      "-675498407",
+      "oldies",
+      "rock"
+    ],
+    "is_pop": true
+  },
+  "noah kahan|||lighthouse": {
+    "artist": "Noah Kahan",
+    "track": "Lighthouse",
+    "tags": [],
+    "is_pop": false
+  },
+  "noah kahan|||staying still": {
+    "artist": "Noah Kahan",
+    "track": "Staying Still",
+    "tags": [],
+    "is_pop": false
   }
 }
