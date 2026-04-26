@@ -7437,5 +7437,68 @@
       "soul"
     ],
     "is_pop": true
+  },
+  "michael jackson|||p.y.t. (pretty young thing)": {
+    "artist": "Michael Jackson",
+    "track": "P.Y.T. (Pretty Young Thing)",
+    "tags": [
+      "pop",
+      "80s",
+      "michael jackson",
+      "funk",
+      "soul",
+      "dance",
+      "wrong track streaming",
+      "king of pop",
+      "american",
+      "1982"
+    ],
+    "is_pop": true
+  },
+  "noah kahan|||staying still": {
+    "artist": "Noah Kahan",
+    "track": "Staying Still",
+    "tags": [],
+    "is_pop": false
+  },
+  "michael jackson|||man in the mirror - 2012 remaster": {
+    "artist": "Michael Jackson",
+    "track": "Man in the Mirror - 2012 Remaster",
+    "tags": [
+      "adult contemporary",
+      "gospel",
+      "sophisti-pop",
+      "pop soul",
+      "rnb",
+      "pop",
+      "80s",
+      "1988",
+      "nostalgic",
+      "new jack swing"
+    ],
+    "is_pop": true
+  },
+  "noah kahan|||lighthouse": {
+    "artist": "Noah Kahan",
+    "track": "Lighthouse",
+    "tags": [],
+    "is_pop": false
+  },
+  "michael jackson|||human nature": {
+    "artist": "Michael Jackson",
+    "track": "Human Nature",
+    "tags": [
+      "pop",
+      "80s",
+      "michael jackson",
+      "soul",
+      "rnb",
+      "king of pop",
+      "male vocalists",
+      "beautiful",
+      "smooth",
+      "r&b"
+    ],
+    "is_pop": true
   }
 }
