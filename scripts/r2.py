@@ -296,10 +296,11 @@ def upload_static_data(
     # Frontend API loader may try both `charts_history_<region>.csv` and `charts_<region>.csv`.
     # Upload both keys so R2-only production does not 404 on the first attempt.
     csv_mappings = [
-        ("charts_history_global.csv", ["data/charts_global.csv", "data/charts_history_global.csv"]),
-        ("charts_history_fr.csv",     ["data/charts_fr.csv",     "data/charts_history_fr.csv"]),
-        ("charts_history_us.csv",     ["data/charts_us.csv",     "data/charts_history_us.csv"]),
-        ("charts_history_uk.csv",     ["data/charts_uk.csv",     "data/charts_history_uk.csv"]),
+        ("charts_history_global.csv",       ["data/charts_global.csv",      "data/charts_history_global.csv"]),
+        ("charts_history_fr.csv",           ["data/charts_fr.csv",          "data/charts_history_fr.csv"]),
+        ("charts_history_us.csv",           ["data/charts_us.csv",          "data/charts_history_us.csv"]),
+        ("charts_history_uk.csv",           ["data/charts_uk.csv",          "data/charts_history_uk.csv"]),
+        ("youtube_views_history.csv",       ["data/youtube_views.csv",      "data/youtube_views_history.csv"]),
     ]
     for filename, r2_keys in csv_mappings:
         src = DB_DIR / filename
