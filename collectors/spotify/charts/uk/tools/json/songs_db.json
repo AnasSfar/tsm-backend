@@ -7500,5 +7500,73 @@
       "r&b"
     ],
     "is_pop": true
+  },
+  "michael jackson|||chicago": {
+    "artist": "Michael Jackson",
+    "track": "Chicago",
+    "tags": [
+      "pop",
+      "funk",
+      "dance",
+      "hip-hop",
+      "rnb",
+      "king of pop",
+      "catchy",
+      "male vocalists",
+      "sou",
+      "dancinha"
+    ],
+    "is_pop": true
+  },
+  "the jackson 5|||i want you back": {
+    "artist": "The Jackson 5",
+    "track": "I Want You Back",
+    "tags": [
+      "motown",
+      "soul",
+      "70s",
+      "pop",
+      "funk",
+      "michael jackson",
+      "oldies",
+      "the jackson 5",
+      "disco",
+      "jackson 5"
+    ],
+    "is_pop": false
+  },
+  "michael jackson|||wanna be startin' somethin'": {
+    "artist": "Michael Jackson",
+    "track": "Wanna Be Startin' Somethin'",
+    "tags": [
+      "pop",
+      "80s",
+      "michael jackson",
+      "dance",
+      "funk",
+      "king of pop",
+      "soul",
+      "disco",
+      "male vocalists",
+      "1982"
+    ],
+    "is_pop": true
+  },
+  "michael jackson|||thriller": {
+    "artist": "Michael Jackson",
+    "track": "Thriller",
+    "tags": [
+      "pop",
+      "80s",
+      "michael jackson",
+      "dance",
+      "funk",
+      "halloween",
+      "king of pop",
+      "disco",
+      "classic",
+      "male vocalists"
+    ],
+    "is_pop": true
   }
 }
