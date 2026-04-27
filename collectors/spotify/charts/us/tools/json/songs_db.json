@@ -7528,5 +7528,90 @@
     "track": "Staying Still",
     "tags": [],
     "is_pop": false
+  },
+  "marvin gaye|||ain't no mountain high enough": {
+    "artist": "Marvin Gaye",
+    "track": "Ain't No Mountain High Enough",
+    "tags": [
+      "soul",
+      "motown",
+      "60s",
+      "oldies",
+      "marvin gaye",
+      "rhythm and blues",
+      "funk",
+      "rnb",
+      "male vocalists",
+      "70s"
+    ],
+    "is_pop": false
+  },
+  "michael jackson|||human nature": {
+    "artist": "Michael Jackson",
+    "track": "Human Nature",
+    "tags": [
+      "pop",
+      "80s",
+      "michael jackson",
+      "soul",
+      "rnb",
+      "king of pop",
+      "male vocalists",
+      "beautiful",
+      "smooth",
+      "r&b"
+    ],
+    "is_pop": true
+  },
+  "michael jackson|||p.y.t. (pretty young thing)": {
+    "artist": "Michael Jackson",
+    "track": "P.Y.T. (Pretty Young Thing)",
+    "tags": [
+      "pop",
+      "80s",
+      "michael jackson",
+      "funk",
+      "soul",
+      "dance",
+      "wrong track streaming",
+      "king of pop",
+      "american",
+      "1982"
+    ],
+    "is_pop": true
+  },
+  "michael jackson|||chicago": {
+    "artist": "Michael Jackson",
+    "track": "Chicago",
+    "tags": [
+      "pop",
+      "funk",
+      "dance",
+      "hip-hop",
+      "rnb",
+      "king of pop",
+      "catchy",
+      "male vocalists",
+      "sou",
+      "dancinha"
+    ],
+    "is_pop": true
+  },
+  "michael jackson|||smooth criminal - 2012 remaster": {
+    "artist": "Michael Jackson",
+    "track": "Smooth Criminal - 2012 Remaster",
+    "tags": [
+      "pop",
+      "rnb",
+      "funk",
+      "80s",
+      "1988",
+      "new jack swing",
+      "michael jackson",
+      "synth funk",
+      "soul",
+      "dance"
+    ],
+    "is_pop": true
   }
 }
