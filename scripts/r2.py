@@ -33,6 +33,16 @@ WORLDWIDE_CHARTS_HISTORY_DIR = (
     / "worldwide"
     / "history"
 )
+WORLDWIDE_TOTAL_DAYS_PATH = (
+    ROOT
+    / "collectors"
+    / "spotify"
+    / "charts"
+    / "worldwide"
+    / "tools"
+    / "json"
+    / "total_days.json"
+)
 
 DATE_RE = re.compile(r"(\d{4}-\d{2}-\d{2})")
 R2_REQUIRED_ENV_VARS = (
@@ -280,6 +290,15 @@ def upload_static_data(
         full_key = f"{data_prefix}/{r2_key.split('/', 1)[1]}"
         data = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
         tasks.append((full_key, data, "application/json; charset=utf-8"))
+
+    # Upload worldwide total_days store (produced by backfill_total_days.py / daily.py)
+    if WORLDWIDE_TOTAL_DAYS_PATH.exists():
+        obj = load_json(WORLDWIDE_TOTAL_DAYS_PATH)
+        full_key = f"{data_prefix}/charts_worldwide_total_days.json"
+        payload = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+        tasks.append((full_key, payload, "application/json; charset=utf-8"))
+    else:
+        print(f"[SKIP] absent: {WORLDWIDE_TOTAL_DAYS_PATH}")
 
     binary_mappings = [
         ("swift_top_100.png", "data/swift_top_100.png", "image/png"),

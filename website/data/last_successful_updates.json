@@ -1,48 +1,16 @@
 {
-  "generated_at": "2026-04-26",
-  "stats_date": "2026-04-25",
+  "generated_at": "2026-04-27",
+  "stats_date": "2026-04-26",
   "track_ids": [
-    "72jCZdH0Lhg93z6Z4hBjgj",
-    "6kl8thRysTeVV3WvKxgZAy",
-    "0JIdBrXGSJXS72zjF9ss9u",
-    "51A8eKvvZz9uydvIZ7xRSV",
-    "4fWDgRZa0GKE5KZNhE9MQa"
+    "0tQ9vBYpldCuikPsbgOVKA"
   ],
   "tracks": [
     {
-      "track_id": "72jCZdH0Lhg93z6Z4hBjgj",
-      "title": "I Knew You Were Trouble.",
-      "spotify_url": "https://open.spotify.com/track/72jCZdH0Lhg93z6Z4hBjgj",
-      "streams": 1111490670,
-      "daily_streams": 493251
-    },
-    {
-      "track_id": "6kl8thRysTeVV3WvKxgZAy",
-      "title": "Who's Afraid of Little Old Me?",
-      "spotify_url": "https://open.spotify.com/track/6kl8thRysTeVV3WvKxgZAy",
-      "streams": 434317507,
-      "daily_streams": 171829
-    },
-    {
-      "track_id": "0JIdBrXGSJXS72zjF9ss9u",
-      "title": "I'm Only Me When I'm With You",
-      "spotify_url": "https://open.spotify.com/track/0JIdBrXGSJXS72zjF9ss9u",
-      "streams": 67975559,
-      "daily_streams": 15400
-    },
-    {
-      "track_id": "51A8eKvvZz9uydvIZ7xRSV",
-      "title": "Superstar (Taylor's Version)",
-      "spotify_url": "https://open.spotify.com/track/51A8eKvvZz9uydvIZ7xRSV",
-      "streams": 48663597,
-      "daily_streams": 10018
-    },
-    {
-      "track_id": "4fWDgRZa0GKE5KZNhE9MQa",
-      "title": "Hey Stephen",
-      "spotify_url": "https://open.spotify.com/track/4fWDgRZa0GKE5KZNhE9MQa",
-      "streams": 55877933,
-      "daily_streams": 8853
+      "track_id": "0tQ9vBYpldCuikPsbgOVKA",
+      "title": "Untouchable (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/0tQ9vBYpldCuikPsbgOVKA",
+      "streams": 86450992,
+      "daily_streams": 36443
     }
   ]
 }

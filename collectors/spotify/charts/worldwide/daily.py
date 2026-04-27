@@ -47,10 +47,11 @@ from playwright.sync_api import sync_playwright
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
 # collectors/spotify/charts/worldwide/daily.py → parents[4] = tsm-backend/
-ROOT         = Path(__file__).resolve().parents[4]
-SESSION_FILE = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "spotify_session.json"
-OUTPUT_PATH  = ROOT / "website" / "site" / "data" / "charts_worldwide.json"
-HISTORY_ROOT = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "history"
+ROOT            = Path(__file__).resolve().parents[4]
+SESSION_FILE    = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "spotify_session.json"
+OUTPUT_PATH     = ROOT / "website" / "site" / "data" / "charts_worldwide.json"
+HISTORY_ROOT    = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "history"
+TOTAL_DAYS_PATH = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "json" / "total_days.json"
 
 WEBSITE_SONGS_PATH = ROOT / "website" / "site" / "data" / "songs.json"
 DISCO_SONGS_PATH   = ROOT / "db" / "discography" / "songs.json"
@@ -653,6 +654,14 @@ def main() -> int:
         except Exception as exc:
             print(f"[WARN] Could not load previous day snapshot ({prev_date}): {exc}")
 
+    # Load persistent total_days store seeded by backfill_total_days.py.
+    total_days_store: dict[str, int] = {}
+    if TOTAL_DAYS_PATH.exists():
+        try:
+            total_days_store = json.loads(TOTAL_DAYS_PATH.read_text(encoding="utf-8"))
+        except Exception as exc:
+            print(f"[WARN] Could not load total_days store: {exc}")
+
     for track_id, entries in by_track.items():
         prev_entries = prev_by_track.get(track_id, [])
         prev_by_country = {e["country"]: e for e in prev_entries}
@@ -667,6 +676,20 @@ def main() -> int:
             else:
                 entry["stream_change"] = None
                 entry["stream_change_pct"] = None
+
+            key = f"{track_id}|{entry['country']}"
+            stored = total_days_store.get(key, 0)
+            entry["total_days"] = stored + 1
+            total_days_store[key] = stored + 1
+
+    try:
+        TOTAL_DAYS_PATH.parent.mkdir(parents=True, exist_ok=True)
+        TOTAL_DAYS_PATH.write_text(
+            json.dumps(total_days_store, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+    except Exception as exc:
+        print(f"[WARN] Could not save total_days store: {exc}")
 
     # Sort each track's country list by rank
     for entries in by_track.values():
