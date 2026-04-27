@@ -613,13 +613,18 @@ def main() -> int:
             if not track_id:
                 unresolved.append({"region": region, "track_name": row["track_name"]})
                 continue
+            prev_rank = row.get("previous_rank")
+            rank = row["rank"]
+            rank_change = (prev_rank - rank) if (prev_rank and rank) else None
             by_track.setdefault(track_id, []).append({
-                "country":      region,
-                "country_name": country_name,
-                "rank":         row["rank"],
-                "streams":      row["streams"],
-                "peak_rank":    row["peak_rank"],
-                "total_days":   row["total_days"],
+                "country":        region,
+                "country_name":   country_name,
+                "rank":           rank,
+                "previous_rank":  prev_rank,
+                "rank_change":    rank_change,
+                "streams":        row["streams"],
+                "peak_rank":      row["peak_rank"],
+                "total_days":     row["total_days"],
             })
 
     # Merge back already-skipped entries from the previous run of the same date.
@@ -636,6 +641,32 @@ def main() -> int:
                 for entry in kept:
                     if entry["country"] not in new_countries:
                         by_track[track_id].append(entry)
+
+    # Enrich with stream_change / stream_change_pct from previous day's snapshot
+    prev_date = (datetime.strptime(chart_date, "%Y-%m-%d").date() - timedelta(days=1)).strftime("%Y-%m-%d")
+    prev_path = _worldwide_history_path(prev_date)
+    prev_by_track: dict[str, list[dict]] = {}
+    if prev_path.exists():
+        try:
+            prev_data = json.loads(prev_path.read_text(encoding="utf-8"))
+            prev_by_track = prev_data.get("by_track", {})
+        except Exception as exc:
+            print(f"[WARN] Could not load previous day snapshot ({prev_date}): {exc}")
+
+    for track_id, entries in by_track.items():
+        prev_entries = prev_by_track.get(track_id, [])
+        prev_by_country = {e["country"]: e for e in prev_entries}
+        for entry in entries:
+            prev = prev_by_country.get(entry["country"])
+            prev_streams = prev.get("streams") if prev else None
+            curr_streams = entry.get("streams")
+            if prev_streams and curr_streams and prev_streams > 0:
+                stream_change = curr_streams - prev_streams
+                entry["stream_change"] = stream_change
+                entry["stream_change_pct"] = round(stream_change / prev_streams * 100, 2)
+            else:
+                entry["stream_change"] = None
+                entry["stream_change_pct"] = None
 
     # Sort each track's country list by rank
     for entries in by_track.values():
