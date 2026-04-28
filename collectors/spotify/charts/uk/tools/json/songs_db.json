@@ -7568,5 +7568,39 @@
       "male vocalists"
     ],
     "is_pop": true
+  },
+  "michael jackson|||bad - 2012 remaster": {
+    "artist": "Michael Jackson",
+    "track": "Bad - 2012 Remaster",
+    "tags": [
+      "pop",
+      "1987",
+      "rock",
+      "80s",
+      "synth funk",
+      "new jack swing",
+      "dance pop",
+      "lip biting good",
+      "john landis",
+      "europa plus"
+    ],
+    "is_pop": true
+  },
+  "michael jackson|||remember the time": {
+    "artist": "Michael Jackson",
+    "track": "Remember the Time",
+    "tags": [
+      "pop",
+      "michael jackson",
+      "90s",
+      "dance",
+      "rnb",
+      "new jack swing",
+      "king of pop",
+      "soul",
+      "american",
+      "80s"
+    ],
+    "is_pop": true
   }
 }
