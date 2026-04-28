@@ -1,0 +1,51 @@
+{
+  "track_id": "3hUxzQpSfdDqwM3ZTFQY0K",
+  "title": "august",
+  "primary_album": "folklore",
+  "spotify_url": "https://open.spotify.com/track/3hUxzQpSfdDqwM3ZTFQY0K",
+  "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+  "peak_position": 10,
+  "times_at_peak": 2,
+  "weeks_on_chart": 3,
+  "history": [
+    {
+      "date": "2026-04-08",
+      "rank": 50,
+      "points": 88.7,
+      "change": "RE",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 1163490,
+      "units_charts": 0,
+      "units_surplus": 1402340,
+      "am_ts_units": 181850,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-10",
+      "rank": 10,
+      "points": 267.8,
+      "change": null,
+      "rank_change": 21,
+      "percentage_change": 136.71599718111344,
+      "total_units": 3749709,
+      "units_charts": 0,
+      "units_surplus": 5038570,
+      "am_ts_units": 222710,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-22",
+      "rank": 10,
+      "points": 273.2,
+      "change": null,
+      "rank_change": -2,
+      "percentage_change": -0.059808612440187994,
+      "total_units": 3770067,
+      "units_charts": 0,
+      "units_surplus": 5013064,
+      "am_ts_units": 260920,
+      "am_global_units": 0
+    }
+  ]
+}

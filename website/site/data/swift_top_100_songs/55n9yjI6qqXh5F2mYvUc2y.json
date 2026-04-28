@@ -1,0 +1,64 @@
+{
+  "track_id": "55n9yjI6qqXh5F2mYvUc2y",
+  "title": "I Don't Wanna Live Forever (Fifty Shades Darker)",
+  "primary_album": "Standalone & Extras",
+  "spotify_url": "https://open.spotify.com/track/55n9yjI6qqXh5F2mYvUc2y",
+  "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27363d77f99117b28af9f656918",
+  "peak_position": 10,
+  "times_at_peak": 2,
+  "weeks_on_chart": 4,
+  "history": [
+    {
+      "date": "2026-04-08",
+      "rank": 10,
+      "points": 264.9,
+      "change": "RE",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 3473454,
+      "units_charts": 0,
+      "units_surplus": 4587401,
+      "am_ts_units": 262270,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-10",
+      "rank": 12,
+      "points": 253.6,
+      "change": "NEW",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 3550883,
+      "units_charts": 0,
+      "units_surplus": 4623826,
+      "am_ts_units": 314210,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-15",
+      "rank": 10,
+      "points": 263.4,
+      "change": null,
+      "rank_change": -1,
+      "percentage_change": -3.0,
+      "total_units": 3518212,
+      "units_charts": 0,
+      "units_surplus": 4449947,
+      "am_ts_units": 403250,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-22",
+      "rank": 12,
+      "points": 246.0,
+      "change": null,
+      "rank_change": -1,
+      "percentage_change": -4.449538191869495,
+      "total_units": 3394752,
+      "units_charts": 0,
+      "units_surplus": 4252039,
+      "am_ts_units": 418330,
+      "am_global_units": 0
+    }
+  ]
+}

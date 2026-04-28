@@ -1,0 +1,103 @@
+{
+  "track_id": "2NlmmAjGYrrjAp0MED5rGx",
+  "title": "Bad Blood",
+  "primary_album": "1989",
+  "spotify_url": "https://open.spotify.com/track/2NlmmAjGYrrjAp0MED5rGx",
+  "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a",
+  "peak_position": 42,
+  "times_at_peak": 1,
+  "weeks_on_chart": 7,
+  "history": [
+    {
+      "date": "2026-03-18",
+      "rank": 53,
+      "points": 80.8,
+      "change": "RE",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 968745,
+      "units_charts": 0,
+      "units_surplus": 1383921,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-03-25",
+      "rank": 47,
+      "points": 91.9,
+      "change": null,
+      "rank_change": 6,
+      "percentage_change": 7.8,
+      "total_units": 1129831,
+      "units_charts": 0,
+      "units_surplus": 1491704,
+      "am_ts_units": 85640,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-01",
+      "rank": 46,
+      "points": 96.4,
+      "change": null,
+      "rank_change": 3,
+      "percentage_change": 4.3,
+      "total_units": 1325360,
+      "units_charts": 0,
+      "units_surplus": 1556213,
+      "am_ts_units": 236010,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-08",
+      "rank": 48,
+      "points": 93.6,
+      "change": null,
+      "rank_change": 0,
+      "percentage_change": -2.5,
+      "total_units": 1227522,
+      "units_charts": 0,
+      "units_surplus": 1517442,
+      "am_ts_units": 165310,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-10",
+      "rank": 50,
+      "points": 92.7,
+      "change": null,
+      "rank_change": 0,
+      "percentage_change": 1.3637249172024213,
+      "total_units": 1297770,
+      "units_charts": 0,
+      "units_surplus": 1560981,
+      "am_ts_units": 205080,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-15",
+      "rank": 42,
+      "points": 104.0,
+      "change": null,
+      "rank_change": 8,
+      "percentage_change": 4.1,
+      "total_units": 1389412,
+      "units_charts": 0,
+      "units_surplus": 1579247,
+      "am_ts_units": 283940,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-22",
+      "rank": 43,
+      "points": 105.2,
+      "change": null,
+      "rank_change": 6,
+      "percentage_change": -2.3366261398176364,
+      "total_units": 1452075,
+      "units_charts": 0,
+      "units_surplus": 1542249,
+      "am_ts_units": 372500,
+      "am_global_units": 0
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "track_id": "0P9wLFurlgumLXuqFEpw52",
+  "title": "the 1",
+  "primary_album": "folklore",
+  "spotify_url": "https://open.spotify.com/track/0P9wLFurlgumLXuqFEpw52",
+  "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+  "peak_position": 42,
+  "times_at_peak": 1,
+  "weeks_on_chart": 4,
+  "history": [
+    {
+      "date": "2026-04-08",
+      "rank": 42,
+      "points": 103.8,
+      "change": "RE",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 1361200,
+      "units_charts": 0,
+      "units_surplus": 1717435,
+      "am_ts_units": 159000,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-10",
+      "rank": 45,
+      "points": 99.7,
+      "change": "NEW",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 1396322,
+      "units_charts": 0,
+      "units_surplus": 1735541,
+      "am_ts_units": 181440,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-15",
+      "rank": 45,
+      "points": 100.3,
+      "change": null,
+      "rank_change": -5,
+      "percentage_change": -4.1,
+      "total_units": 1339868,
+      "units_charts": 0,
+      "units_surplus": 1646201,
+      "am_ts_units": 187530,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-22",
+      "rank": 47,
+      "points": 97.3,
+      "change": null,
+      "rank_change": -1,
+      "percentage_change": 0.2915983233096477,
+      "total_units": 1342992,
+      "units_charts": 0,
+      "units_surplus": 1650807,
+      "am_ts_units": 187430,
+      "am_global_units": 0
+    }
+  ]
+}

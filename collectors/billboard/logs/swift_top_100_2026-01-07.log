@@ -1,0 +1,27 @@
+[swift_top_100] Starting
+[swift_top_100] chart_date=2026-01-07 week_start=2026-01-01
+[swift_top_100] prev_week_end=2025-12-31
+[swift_top_100] Discography tracks indexed: 529
+[swift_top_100] Streams rows per date: 2026-01-01:377, 2026-01-02:377, 2026-01-03:377, 2026-01-04:377, 2026-01-05:377, 2026-01-06:377, 2026-01-07:377
+[swift_top_100] Global charts rows in window: 20
+[swift_top_100] Built chart week_end=2026-01-07: 100 entries (candidates=377)
+[swift_top_100] Apple Music Global rows in window: 0
+[swift_top_100] Apple Music TS Top Songs rows in window: 0
+[swift_top_100] Streams rows per date: 2025-12-25:377, 2025-12-26:377, 2025-12-27:377, 2025-12-28:377, 2025-12-29:377, 2025-12-30:377, 2025-12-31:377
+[swift_top_100] Global charts rows in window: 20
+[swift_top_100] Built chart week_end=2025-12-31: 100 entries (candidates=377)
+[swift_top_100] Wrote history CSV: C:\Users\sfara\Documents\GitHub\tsm-backend\db\swift_top_100_history.csv (7100 rows)
+[swift_top_100] Wrote snapshot JSON: C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100_2026-01-07.json
+[swift_top_100] Wrote latest JSON: C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100.json
+[swift_top_100] Wrote snapshot index: C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100_index.json (69 entries)
+[swift_top_100] Generated 185 song history files in C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100_songs
+[swift_top_100] Wrote chart image: C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100_1.png
+[swift_top_100] Wrote chart image: C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100_2.png
+[swift_top_100] Wrote chart image: C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100_3.png
+[swift_top_100] Wrote chart image: C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100_4.png
+[swift_top_100] Copied image to: C:\Users\sfara\Documents\GitHub\tsm-backend\collectors\billboard\history\2026-01-07\swift_top_100_1.png
+[swift_top_100] Copied image to: C:\Users\sfara\Documents\GitHub\tsm-backend\collectors\billboard\history\2026-01-07\swift_top_100_2.png
+[swift_top_100] Copied image to: C:\Users\sfara\Documents\GitHub\tsm-backend\collectors\billboard\history\2026-01-07\swift_top_100_3.png
+[swift_top_100] Copied image to: C:\Users\sfara\Documents\GitHub\tsm-backend\collectors\billboard\history\2026-01-07\swift_top_100_4.png
+[swift_top_100] Uploading exported data to R2...
+[swift_top_100] R2 upload completed

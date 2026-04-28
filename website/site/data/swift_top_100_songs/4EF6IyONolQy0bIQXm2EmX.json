@@ -1,0 +1,25 @@
+{
+  "track_id": "4EF6IyONolQy0bIQXm2EmX",
+  "title": "The Albatross",
+  "primary_album": "THE TORTURED POETS DEPARTMENT",
+  "spotify_url": "https://open.spotify.com/track/4EF6IyONolQy0bIQXm2EmX",
+  "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
+  "peak_position": 90,
+  "times_at_peak": 1,
+  "weeks_on_chart": 1,
+  "history": [
+    {
+      "date": "2025-04-23",
+      "rank": 90,
+      "points": 72.0,
+      "change": "NEW",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 673210,
+      "units_charts": 0,
+      "units_surplus": 961729,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    }
+  ]
+}

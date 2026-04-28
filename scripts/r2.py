@@ -300,6 +300,31 @@ def upload_static_data(
     else:
         print(f"[SKIP] absent: {WORLDWIDE_TOTAL_DAYS_PATH}")
 
+    # TayBoard snapshot index
+    index_path = SITE_DATA_DIR / "swift_top_100_index.json"
+    if index_path.exists():
+        tasks.append((f"{data_prefix}/swift_top_100_index.json", index_path.read_bytes(), "application/json; charset=utf-8"))
+
+    # Per-song TayBoard history files: swift_top_100_songs/{track_id}.json
+    songs_dir = SITE_DATA_DIR / "swift_top_100_songs"
+    if songs_dir.exists():
+        for song_path in sorted(songs_dir.glob("*.json")):
+            r2_key = f"{data_prefix}/swift_top_100_songs/{song_path.name}"
+            try:
+                tasks.append((r2_key, song_path.read_bytes(), "application/json; charset=utf-8"))
+            except Exception:
+                print(f"[SKIP] invalid song file: {song_path}")
+
+    # Historical TayBoard snapshots: swift_top_100_YYYY-MM-DD.json
+    for snapshot_path in sorted(SITE_DATA_DIR.glob("swift_top_100_????-??-??.json")):
+        r2_key = f"{data_prefix}/{snapshot_path.name}"
+        try:
+            obj = load_json(snapshot_path)
+            data = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+            tasks.append((r2_key, data, "application/json; charset=utf-8"))
+        except Exception:
+            print(f"[SKIP] invalid snapshot: {snapshot_path}")
+
     binary_mappings = [
         ("swift_top_100.png", "data/swift_top_100.png", "image/png"),
     ]

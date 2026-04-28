@@ -1,0 +1,64 @@
+{
+  "track_id": "6rZVy6FIG7lSJQMFXHo12z",
+  "title": "New Romantics",
+  "primary_album": "1989",
+  "spotify_url": "https://open.spotify.com/track/6rZVy6FIG7lSJQMFXHo12z",
+  "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2",
+  "peak_position": 77,
+  "times_at_peak": 1,
+  "weeks_on_chart": 4,
+  "history": [
+    {
+      "date": "2025-06-11",
+      "rank": 82,
+      "points": 72.5,
+      "change": "RE",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 729352,
+      "units_charts": 0,
+      "units_surplus": 1041932,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    },
+    {
+      "date": "2025-08-13",
+      "rank": 82,
+      "points": 71.7,
+      "change": "RE",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 703720,
+      "units_charts": 0,
+      "units_surplus": 1005315,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    },
+    {
+      "date": "2025-08-20",
+      "rank": 77,
+      "points": 72.5,
+      "change": null,
+      "rank_change": 5,
+      "percentage_change": 26.5,
+      "total_units": 890527,
+      "units_charts": 0,
+      "units_surplus": 1272181,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    },
+    {
+      "date": "2025-08-27",
+      "rank": 100,
+      "points": 54.2,
+      "change": null,
+      "rank_change": -23,
+      "percentage_change": -30.8,
+      "total_units": 616328,
+      "units_charts": 0,
+      "units_surplus": 880468,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    }
+  ]
+}

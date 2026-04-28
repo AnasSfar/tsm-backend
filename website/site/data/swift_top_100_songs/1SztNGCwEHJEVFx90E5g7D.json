@@ -1,0 +1,25 @@
+{
+  "track_id": "1SztNGCwEHJEVFx90E5g7D",
+  "title": "High Infidelity",
+  "primary_album": "Midnights",
+  "spotify_url": "https://open.spotify.com/track/1SztNGCwEHJEVFx90E5g7D",
+  "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+  "peak_position": 87,
+  "times_at_peak": 1,
+  "weeks_on_chart": 1,
+  "history": [
+    {
+      "date": "2025-04-30",
+      "rank": 87,
+      "points": 74.8,
+      "change": "NEW",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 712684,
+      "units_charts": 0,
+      "units_surplus": 1018120,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    }
+  ]
+}

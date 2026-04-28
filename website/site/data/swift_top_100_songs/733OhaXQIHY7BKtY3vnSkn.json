@@ -1,0 +1,77 @@
+{
+  "track_id": "733OhaXQIHY7BKtY3vnSkn",
+  "title": "How You Get The Girl (Taylor's Version)",
+  "primary_album": "1989 (Taylor's Version)",
+  "spotify_url": "https://open.spotify.com/track/733OhaXQIHY7BKtY3vnSkn",
+  "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
+  "peak_position": 96,
+  "times_at_peak": 1,
+  "weeks_on_chart": 5,
+  "history": [
+    {
+      "date": "2025-01-29",
+      "rank": 100,
+      "points": 48.2,
+      "change": "RE",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 447794,
+      "units_charts": 0,
+      "units_surplus": 639705,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    },
+    {
+      "date": "2025-02-05",
+      "rank": 100,
+      "points": 46.0,
+      "change": null,
+      "rank_change": 0,
+      "percentage_change": -4.6,
+      "total_units": 427363,
+      "units_charts": 0,
+      "units_surplus": 610519,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    },
+    {
+      "date": "2025-02-19",
+      "rank": 96,
+      "points": 47.5,
+      "change": "RE",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 413975,
+      "units_charts": 0,
+      "units_surplus": 591393,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    },
+    {
+      "date": "2025-02-26",
+      "rank": 99,
+      "points": 49.7,
+      "change": null,
+      "rank_change": -3,
+      "percentage_change": 3.0,
+      "total_units": 426555,
+      "units_charts": 0,
+      "units_surplus": 609364,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    },
+    {
+      "date": "2025-03-05",
+      "rank": 99,
+      "points": 48.4,
+      "change": null,
+      "rank_change": 0,
+      "percentage_change": -5.5,
+      "total_units": 403221,
+      "units_charts": 0,
+      "units_surplus": 576030,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    }
+  ]
+}

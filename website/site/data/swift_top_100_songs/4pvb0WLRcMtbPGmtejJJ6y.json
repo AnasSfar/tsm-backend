@@ -1,0 +1,51 @@
+{
+  "track_id": "4pvb0WLRcMtbPGmtejJJ6y",
+  "title": "exile (feat. Bon Iver)",
+  "primary_album": "folklore",
+  "spotify_url": "https://open.spotify.com/track/4pvb0WLRcMtbPGmtejJJ6y",
+  "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+  "peak_position": 24,
+  "times_at_peak": 1,
+  "weeks_on_chart": 3,
+  "history": [
+    {
+      "date": "2026-04-08",
+      "rank": 86,
+      "points": 57.4,
+      "change": "RE",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 753305,
+      "units_charts": 0,
+      "units_surplus": 840373,
+      "am_ts_units": 165040,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-10",
+      "rank": 24,
+      "points": 161.0,
+      "change": null,
+      "rank_change": 38,
+      "percentage_change": 131.5478999528079,
+      "total_units": 2254728,
+      "units_charts": 0,
+      "units_surplus": 2944047,
+      "am_ts_units": 193890,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-22",
+      "rank": 25,
+      "points": 158.1,
+      "change": null,
+      "rank_change": -2,
+      "percentage_change": -3.5111341273951324,
+      "total_units": 2182174,
+      "units_charts": 0,
+      "units_surplus": 2794839,
+      "am_ts_units": 225790,
+      "am_global_units": 0
+    }
+  ]
+}

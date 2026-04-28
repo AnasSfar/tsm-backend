@@ -1,0 +1,90 @@
+{
+  "track_id": "4zmKGsrXjLmljb5fTaBTot",
+  "title": "Snow On The Beach (feat. More Lana Del Rey)",
+  "primary_album": "Midnights",
+  "spotify_url": "https://open.spotify.com/track/4zmKGsrXjLmljb5fTaBTot",
+  "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+  "peak_position": 85,
+  "times_at_peak": 1,
+  "weeks_on_chart": 6,
+  "history": [
+    {
+      "date": "2026-03-18",
+      "rank": 89,
+      "points": 50.8,
+      "change": "RE",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 609246,
+      "units_charts": 0,
+      "units_surplus": 870351,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-03-25",
+      "rank": 86,
+      "points": 50.8,
+      "change": null,
+      "rank_change": 3,
+      "percentage_change": -5.0,
+      "total_units": 625155,
+      "units_charts": 0,
+      "units_surplus": 827222,
+      "am_ts_units": 46100,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-01",
+      "rank": 85,
+      "points": 55.9,
+      "change": null,
+      "rank_change": 6,
+      "percentage_change": 4.5,
+      "total_units": 768993,
+      "units_charts": 0,
+      "units_surplus": 864337,
+      "am_ts_units": 163960,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-08",
+      "rank": 91,
+      "points": 53.2,
+      "change": null,
+      "rank_change": -2,
+      "percentage_change": -3.5,
+      "total_units": 697449,
+      "units_charts": 0,
+      "units_surplus": 834471,
+      "am_ts_units": 113320,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-10",
+      "rank": 94,
+      "points": 52.2,
+      "change": null,
+      "rank_change": -2,
+      "percentage_change": -1.262714836899344,
+      "total_units": 731493,
+      "units_charts": 0,
+      "units_surplus": 844605,
+      "am_ts_units": 140270,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-15",
+      "rank": 87,
+      "points": 56.9,
+      "change": null,
+      "rank_change": 8,
+      "percentage_change": -0.7,
+      "total_units": 759502,
+      "units_charts": 0,
+      "units_surplus": 828700,
+      "am_ts_units": 179410,
+      "am_global_units": 0
+    }
+  ]
+}

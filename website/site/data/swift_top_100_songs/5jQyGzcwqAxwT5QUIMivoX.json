@@ -1,0 +1,64 @@
+{
+  "track_id": "5jQyGzcwqAxwT5QUIMivoX",
+  "title": "mirrorball",
+  "primary_album": "folklore",
+  "spotify_url": "https://open.spotify.com/track/5jQyGzcwqAxwT5QUIMivoX",
+  "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+  "peak_position": 62,
+  "times_at_peak": 1,
+  "weeks_on_chart": 4,
+  "history": [
+    {
+      "date": "2026-04-08",
+      "rank": 64,
+      "points": 72.6,
+      "change": "RE",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 952094,
+      "units_charts": 0,
+      "units_surplus": 1337547,
+      "am_ts_units": 15810,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-10",
+      "rank": 70,
+      "points": 67.7,
+      "change": "NEW",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 947472,
+      "units_charts": 0,
+      "units_surplus": 1330944,
+      "am_ts_units": 15810,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-15",
+      "rank": 62,
+      "points": 74.4,
+      "change": null,
+      "rank_change": -2,
+      "percentage_change": -4.2,
+      "total_units": 994044,
+      "units_charts": 0,
+      "units_surplus": 1280969,
+      "am_ts_units": 97370,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-22",
+      "rank": 78,
+      "points": 64.7,
+      "change": null,
+      "rank_change": -14,
+      "percentage_change": -4.074941451990637,
+      "total_units": 892468,
+      "units_charts": 0,
+      "units_surplus": 1228906,
+      "am_ts_units": 32230,
+      "am_global_units": 0
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "track_id": "4R2kfaDFhslZEMJqAFNpdd",
+  "title": "cardigan",
+  "primary_album": "folklore",
+  "spotify_url": "https://open.spotify.com/track/4R2kfaDFhslZEMJqAFNpdd",
+  "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+  "peak_position": 8,
+  "times_at_peak": 2,
+  "weeks_on_chart": 4,
+  "history": [
+    {
+      "date": "2026-04-01",
+      "rank": 55,
+      "points": 79.3,
+      "change": "RE",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 1090000,
+      "units_charts": 0,
+      "units_surplus": 869906,
+      "am_ts_units": 481070,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-08",
+      "rank": 40,
+      "points": 110.3,
+      "change": null,
+      "rank_change": 48,
+      "percentage_change": 86.7,
+      "total_units": 1446181,
+      "units_charts": 0,
+      "units_surplus": 1624229,
+      "am_ts_units": 309220,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-10",
+      "rank": 8,
+      "points": 317.3,
+      "change": null,
+      "rank_change": 7,
+      "percentage_change": 75.68105710924068,
+      "total_units": 4443602,
+      "units_charts": 0,
+      "units_surplus": 5823163,
+      "am_ts_units": 367390,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-22",
+      "rank": 8,
+      "points": 312.5,
+      "change": null,
+      "rank_change": -2,
+      "percentage_change": -4.164259833009508,
+      "total_units": 4313514,
+      "units_charts": 0,
+      "units_surplus": 5475093,
+      "am_ts_units": 480950,
+      "am_global_units": 0
+    }
+  ]
+}

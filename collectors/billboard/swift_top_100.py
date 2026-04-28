@@ -521,16 +521,111 @@ def _write_history_csv(rows: list[dict], logger: Logger) -> None:
     logger.log(f"[swift_top_100] Wrote history CSV: {SWIFT_TOP_100_HISTORY_CSV} ({len(rows)} rows)")
 
 
+def _generate_song_files(logger: Logger) -> None:
+    """Generate per-song history JSON files from all dated snapshots."""
+    songs_dir = _SITE_DATA_DIR / "swift_top_100_songs"
+    songs_dir.mkdir(parents=True, exist_ok=True)
+
+    snapshot_files = sorted(_SITE_DATA_DIR.glob("swift_top_100_????-??-??.json"))
+    if not snapshot_files:
+        logger.log("[swift_top_100] No snapshot files found for song file generation")
+        return
+
+    by_track: dict[str, dict] = {}
+
+    for snapshot_path in snapshot_files:
+        try:
+            payload = json.loads(snapshot_path.read_text(encoding="utf-8"))
+        except Exception as exc:
+            logger.log(f"[swift_top_100] Skipping {snapshot_path.name}: {exc}")
+            continue
+
+        chart_date = payload.get("chart_date") or snapshot_path.stem[len("swift_top_100_"):]
+        for entry in (payload.get("entries") or []):
+            tid = entry.get("track_id")
+            if not tid:
+                continue
+
+            if tid not in by_track:
+                by_track[tid] = {
+                    "track_id": tid,
+                    "title": entry.get("title", ""),
+                    "primary_album": entry.get("primary_album"),
+                    "spotify_url": entry.get("spotify_url"),
+                    "image_url": entry.get("image_url"),
+                    "history": [],
+                }
+            else:
+                if entry.get("image_url"):
+                    by_track[tid]["image_url"] = entry["image_url"]
+                if entry.get("primary_album"):
+                    by_track[tid]["primary_album"] = entry["primary_album"]
+
+            am_ts_score = entry.get("am_ts_score") or 0.0
+            am_global_score = entry.get("am_global_score") or 0.0
+            by_track[tid]["history"].append({
+                "date": chart_date,
+                "rank": entry.get("rank"),
+                "points": entry.get("points"),
+                "change": entry.get("change"),
+                "rank_change": entry.get("rank_change"),
+                "percentage_change": entry.get("percentage_change"),
+                "total_units": entry.get("total_units"),
+                "units_charts": entry.get("units_charts"),
+                "units_surplus": entry.get("units_surplus"),
+                "am_ts_units": round(am_ts_score * 1000),
+                "am_global_units": round(am_global_score * 1000),
+            })
+
+    written = 0
+    for tid, data in by_track.items():
+        history = data["history"]
+        ranks = [h["rank"] for h in history if h.get("rank")]
+        peak = min(ranks) if ranks else None
+        times_at_peak = ranks.count(peak) if peak else 0
+        out = {
+            "track_id": tid,
+            "title": data["title"],
+            "primary_album": data.get("primary_album"),
+            "spotify_url": data.get("spotify_url"),
+            "image_url": data.get("image_url"),
+            "peak_position": peak,
+            "times_at_peak": times_at_peak,
+            "weeks_on_chart": len(history),
+            "history": history,
+        }
+        (songs_dir / f"{tid}.json").write_text(
+            json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+        written += 1
+
+    logger.log(f"[swift_top_100] Generated {written} song history files in {songs_dir}")
+
+
+def _rebuild_snapshot_index(logger: Logger) -> None:
+    """Rebuild swift_top_100_index.json from all dated snapshot files on disk."""
+    dates = []
+    for p in _SITE_DATA_DIR.glob("swift_top_100_????-??-??.json"):
+        date_str = p.stem[len("swift_top_100_"):]
+        dates.append(date_str)
+    dates.sort(reverse=True)
+    index_path = _SITE_DATA_DIR / "swift_top_100_index.json"
+    index_path.write_text(json.dumps(dates, ensure_ascii=False), encoding="utf-8")
+    logger.log(f"[swift_top_100] Wrote snapshot index: {index_path} ({len(dates)} entries)")
+
+
 def _write_snapshot_json(payload: dict, logger: Logger) -> None:
     _SITE_DATA_DIR.mkdir(parents=True, exist_ok=True)
-    # Ajout de la date dans le nom du fichier snapshot
+    content = json.dumps(payload, ensure_ascii=False, indent=2)
     chart_date = payload.get("chart_date")
     if chart_date:
-        output_json = _SITE_DATA_DIR / f"swift_top_100_{chart_date}.json"
-    else:
-        output_json = OUTPUT_JSON
-    output_json.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
-    logger.log(f"[swift_top_100] Wrote snapshot JSON: {output_json}")
+        dated_json = _SITE_DATA_DIR / f"swift_top_100_{chart_date}.json"
+        dated_json.write_text(content, encoding="utf-8")
+        logger.log(f"[swift_top_100] Wrote snapshot JSON: {dated_json}")
+    # Always update the "latest" file so R2 stays current
+    OUTPUT_JSON.write_text(content, encoding="utf-8")
+    logger.log(f"[swift_top_100] Wrote latest JSON: {OUTPUT_JSON}")
+    _rebuild_snapshot_index(logger)
 
 
 def _maybe_upload_to_r2(*, logger: Logger) -> None:
@@ -727,13 +822,13 @@ def run(
         prev_row = prev_points.get(tid)
         prev_points_value = prev_row.get("points") if prev_row else None
 
-        change = "NEW" if pr is None else None
-        # Utilise le vrai rang de la chanson cette semaine pour le calcul du rank_change
+        if pr is None:
+            change = "RE" if weeks_on_chart_by_track.get(tid, 0) > 0 else "NEW"
+        else:
+            change = None
+        # rank_change sera recalculé après le re-ranking final (lignes 882-886)
         curr_rank = row.get("rank", rank)
         rank_change = pr - curr_rank if pr is not None and curr_rank is not None else None
-        pct_change = None
-        if pr is not None and prev_points_value and prev_points_value > 0:
-            pct_change = ((row["points"] - prev_points_value) / prev_points_value) * 100
 
         weeks_on_chart = weeks_on_chart_by_track.get(tid, 0) + 1
         hist_peak = peak_by_track.get(tid, 9999)
@@ -749,6 +844,12 @@ def run(
 
         key = _normalize_title(row["title"])
         weekly_streams = row["weekly_streams"]
+
+        # % de variation des streams Spotify semaine sur semaine (comparable week-over-week)
+        pct_change = None
+        prev_streams_val = prev_row.get("weekly_streams") if prev_row else None
+        if pr is not None and prev_streams_val and prev_streams_val > 0:
+            pct_change = round(((weekly_streams - prev_streams_val) / prev_streams_val) * 100, 1)
 
         # Apple Music units (loi de puissance × 1000)
         am_ts_raw = am_ts_best_rank.get(key, 0.0)
@@ -880,6 +981,8 @@ def run(
         if final_rank is None:
             continue
         out["rank"] = final_rank
+        prev_r = out.get("prev_rank")
+        out["rank_change"] = (int(prev_r) - final_rank) if prev_r is not None else None
         hist_peak = peak_by_track.get(tid, 9999)
         hist_times = times_at_peak_by_track.get(tid, 0)
         out["peak_position"] = min(hist_peak, final_rank)
@@ -914,6 +1017,7 @@ def run(
             "entries": snapshot_entries,
         }
         _write_snapshot_json(payload, logger)
+        _generate_song_files(logger)
 
         # Génération automatique de 4 images de 25 chansons
         try:
@@ -955,16 +1059,87 @@ def run(
     return 0
 
 
+def _all_stream_dates() -> list[date]:
+    """Return sorted list of all dates present in streams_history.csv."""
+    dates: set[date] = set()
+    if not STREAMS_HISTORY_CSV.exists():
+        return []
+    with STREAMS_HISTORY_CSV.open("r", newline="", encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            d = _parse_iso_date(row.get("date") or "")
+            if d:
+                dates.add(d)
+    return sorted(dates)
+
+
+def _backfill_week_ends(stream_dates: list[date]) -> list[date]:
+    """Return all Wednesdays (week-end Thu→Wed) that have complete 7-day data."""
+    date_set = set(stream_dates)
+    result = []
+    for d in stream_dates:
+        if d.weekday() != 2:  # 2 = Wednesday
+            continue
+        week_start = d - timedelta(days=6)  # Thursday
+        if all((week_start + timedelta(days=i)) in date_set for i in range(7)):
+            result.append(d)
+    return result
+
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Generate Swift Top 100 weekly chart")
     p.add_argument("--date", dest="date", default=None, help="Week ending date (YYYY-MM-DD)")
+    p.add_argument("--backfill", dest="backfill", action="store_true",
+                   help="Generate all available weekly snapshots from streams history")
+    p.add_argument("--force", dest="force", action="store_true",
+                   help="With --backfill: regenerate weeks that already have a snapshot")
+    p.add_argument("--streams-csv", dest="streams_csv", default=None,
+                   help="Path to streams CSV to use instead of streams_history.csv")
+    p.add_argument("--rebuild-index", dest="rebuild_index", action="store_true",
+                   help="Rebuild swift_top_100_index.json from existing snapshots and upload to R2")
+    p.add_argument("--generate-songs", dest="generate_songs", action="store_true",
+                   help="Regenerate all per-song history JSON files from existing snapshots and upload to R2")
     p.add_argument("--dry-run", dest="dry_run", action="store_true", help="Compute only; do not write files")
-    # Suppression des options image, tout est généré par défaut
     return p.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
+
+    if args.streams_csv:
+        global STREAMS_HISTORY_CSV
+        STREAMS_HISTORY_CSV = Path(args.streams_csv).resolve()
+        print(f"[swift_top_100] Using streams CSV: {STREAMS_HISTORY_CSV}")
+
+    if args.generate_songs:
+        logger = Logger()
+        _generate_song_files(logger)
+        _maybe_upload_to_r2(logger=logger)
+        raise SystemExit(0)
+
+    if args.rebuild_index:
+        logger = Logger()
+        _rebuild_snapshot_index(logger)
+        _maybe_upload_to_r2(logger=logger)
+        raise SystemExit(0)
+
+    if args.backfill:
+        stream_dates = _all_stream_dates()
+        week_ends = _backfill_week_ends(stream_dates)
+        if not week_ends:
+            print("[swift_top_100] No complete weeks found in streams data.")
+            raise SystemExit(1)
+        print(f"[swift_top_100] Backfill: {len(week_ends)} weeks found "
+              f"({_format_date(week_ends[0])} → {_format_date(week_ends[-1])})")
+        for week_end in week_ends:
+            snapshot_path = _SITE_DATA_DIR / f"swift_top_100_{_format_date(week_end)}.json"
+            if snapshot_path.exists() and not args.force:
+                print(f"[swift_top_100] Skip {_format_date(week_end)} (already exists, use --force to regenerate)")
+                continue
+            print(f"[swift_top_100] Generating week ending {_format_date(week_end)} ...")
+            run(chart_date=week_end, dry_run=bool(args.dry_run))
+        print("[swift_top_100] Backfill complete.")
+        raise SystemExit(0)
+
     chart_date = _parse_iso_date(args.date) if args.date else None
     code = run(
         chart_date=chart_date,

@@ -1,0 +1,103 @@
+{
+  "track_id": "43y1WpBdnEy5TR9aZoSQL9",
+  "title": "I Wish You Would (Taylor's Version)",
+  "primary_album": "1989 (Taylor's Version)",
+  "spotify_url": "https://open.spotify.com/track/43y1WpBdnEy5TR9aZoSQL9",
+  "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
+  "peak_position": 97,
+  "times_at_peak": 1,
+  "weeks_on_chart": 7,
+  "history": [
+    {
+      "date": "2025-01-08",
+      "rank": 100,
+      "points": 46.0,
+      "change": "RE",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 428248,
+      "units_charts": 0,
+      "units_surplus": 611783,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    },
+    {
+      "date": "2025-01-15",
+      "rank": 99,
+      "points": 47.7,
+      "change": null,
+      "rank_change": 1,
+      "percentage_change": 2.2,
+      "total_units": 437588,
+      "units_charts": 0,
+      "units_surplus": 625125,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    },
+    {
+      "date": "2025-01-22",
+      "rank": 98,
+      "points": 47.2,
+      "change": null,
+      "rank_change": 1,
+      "percentage_change": -0.0,
+      "total_units": 437508,
+      "units_charts": 0,
+      "units_surplus": 625012,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    },
+    {
+      "date": "2025-01-29",
+      "rank": 99,
+      "points": 48.6,
+      "change": null,
+      "rank_change": -1,
+      "percentage_change": 3.2,
+      "total_units": 451422,
+      "units_charts": 0,
+      "units_surplus": 644889,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    },
+    {
+      "date": "2025-02-05",
+      "rank": 99,
+      "points": 47.2,
+      "change": null,
+      "rank_change": 0,
+      "percentage_change": -2.7,
+      "total_units": 439050,
+      "units_charts": 0,
+      "units_surplus": 627215,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    },
+    {
+      "date": "2025-02-26",
+      "rank": 97,
+      "points": 49.9,
+      "change": "RE",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 428348,
+      "units_charts": 0,
+      "units_surplus": 611926,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    },
+    {
+      "date": "2025-03-05",
+      "rank": 98,
+      "points": 48.6,
+      "change": null,
+      "rank_change": -1,
+      "percentage_change": -5.5,
+      "total_units": 404988,
+      "units_charts": 0,
+      "units_surplus": 578554,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    }
+  ]
+}

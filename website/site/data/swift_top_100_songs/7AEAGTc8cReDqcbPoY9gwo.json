@@ -1,0 +1,103 @@
+{
+  "track_id": "7AEAGTc8cReDqcbPoY9gwo",
+  "title": "We Are Never Ever Getting Back Together",
+  "primary_album": "Red",
+  "spotify_url": "https://open.spotify.com/track/7AEAGTc8cReDqcbPoY9gwo",
+  "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+  "peak_position": 47,
+  "times_at_peak": 1,
+  "weeks_on_chart": 7,
+  "history": [
+    {
+      "date": "2026-03-18",
+      "rank": 58,
+      "points": 73.2,
+      "change": "RE",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 877240,
+      "units_charts": 0,
+      "units_surplus": 1253200,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-03-25",
+      "rank": 80,
+      "points": 60.1,
+      "change": null,
+      "rank_change": -22,
+      "percentage_change": -21.8,
+      "total_units": 738838,
+      "units_charts": 0,
+      "units_surplus": 980627,
+      "am_ts_units": 52400,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-01",
+      "rank": 47,
+      "points": 88.9,
+      "change": null,
+      "rank_change": 35,
+      "percentage_change": 46.1,
+      "total_units": 1221422,
+      "units_charts": 0,
+      "units_surplus": 1432721,
+      "am_ts_units": 218520,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-08",
+      "rank": 54,
+      "points": 83.0,
+      "change": null,
+      "rank_change": -3,
+      "percentage_change": -5.1,
+      "total_units": 1088215,
+      "units_charts": 0,
+      "units_surplus": 1359963,
+      "am_ts_units": 136240,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-10",
+      "rank": 59,
+      "points": 79.3,
+      "change": null,
+      "rank_change": -3,
+      "percentage_change": -4.082509669101845,
+      "total_units": 1110476,
+      "units_charts": 0,
+      "units_surplus": 1339187,
+      "am_ts_units": 173050,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-15",
+      "rank": 53,
+      "points": 84.6,
+      "change": null,
+      "rank_change": 3,
+      "percentage_change": -3.4,
+      "total_units": 1129723,
+      "units_charts": 0,
+      "units_surplus": 1313106,
+      "am_ts_units": 210550,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-22",
+      "rank": 55,
+      "points": 82.2,
+      "change": null,
+      "rank_change": 7,
+      "percentage_change": 1.2108750285583596,
+      "total_units": 1133899,
+      "units_charts": 0,
+      "units_surplus": 1328949,
+      "am_ts_units": 203630,
+      "am_global_units": 0
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "track_id": "3nRmDz7qGCvsMS30rGGY0x",
+  "title": "Welcome To New York",
+  "primary_album": "1989",
+  "spotify_url": "https://open.spotify.com/track/3nRmDz7qGCvsMS30rGGY0x",
+  "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a",
+  "peak_position": 99,
+  "times_at_peak": 1,
+  "weeks_on_chart": 1,
+  "history": [
+    {
+      "date": "2025-06-11",
+      "rank": 99,
+      "points": 57.7,
+      "change": "NEW",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 579890,
+      "units_charts": 0,
+      "units_surplus": 828415,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    }
+  ]
+}

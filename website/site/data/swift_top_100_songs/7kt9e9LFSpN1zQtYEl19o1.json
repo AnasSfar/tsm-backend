@@ -1,0 +1,38 @@
+{
+  "track_id": "7kt9e9LFSpN1zQtYEl19o1",
+  "title": "this is me trying",
+  "primary_album": "folklore",
+  "spotify_url": "https://open.spotify.com/track/7kt9e9LFSpN1zQtYEl19o1",
+  "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+  "peak_position": 53,
+  "times_at_peak": 1,
+  "weeks_on_chart": 2,
+  "history": [
+    {
+      "date": "2026-04-10",
+      "rank": 53,
+      "points": 85.3,
+      "change": "NEW",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 1194776,
+      "units_charts": 0,
+      "units_surplus": 1589431,
+      "am_ts_units": 82170,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-22",
+      "rank": 56,
+      "points": 81.8,
+      "change": null,
+      "rank_change": -4,
+      "percentage_change": -5.400078833267643,
+      "total_units": 1128646,
+      "units_charts": 0,
+      "units_surplus": 1439925,
+      "am_ts_units": 120700,
+      "am_global_units": 0
+    }
+  ]
+}

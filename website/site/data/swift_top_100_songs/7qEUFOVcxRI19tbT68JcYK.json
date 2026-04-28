@@ -1,0 +1,64 @@
+{
+  "track_id": "7qEUFOVcxRI19tbT68JcYK",
+  "title": "Everything Has Changed (feat. Ed Sheeran) (Taylor's Version)",
+  "primary_album": "Red (Taylor's Version)",
+  "spotify_url": "https://open.spotify.com/track/7qEUFOVcxRI19tbT68JcYK",
+  "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+  "peak_position": 91,
+  "times_at_peak": 1,
+  "weeks_on_chart": 4,
+  "history": [
+    {
+      "date": "2026-03-18",
+      "rank": 91,
+      "points": 50.1,
+      "change": "RE",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 600534,
+      "units_charts": 0,
+      "units_surplus": 857905,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-01",
+      "rank": 94,
+      "points": 42.8,
+      "change": "RE",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 588533,
+      "units_charts": 0,
+      "units_surplus": 840762,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-08",
+      "rank": 100,
+      "points": 41.2,
+      "change": null,
+      "rank_change": -7,
+      "percentage_change": -8.2,
+      "total_units": 540522,
+      "units_charts": 0,
+      "units_surplus": 772174,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-15",
+      "rank": 99,
+      "points": 40.0,
+      "change": null,
+      "rank_change": 1,
+      "percentage_change": -1.2,
+      "total_units": 534166,
+      "units_charts": 0,
+      "units_surplus": 763095,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    }
+  ]
+}

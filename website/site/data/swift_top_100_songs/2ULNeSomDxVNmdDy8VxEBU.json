@@ -1,0 +1,25 @@
+{
+  "track_id": "2ULNeSomDxVNmdDy8VxEBU",
+  "title": "22",
+  "primary_album": "Red",
+  "spotify_url": "https://open.spotify.com/track/2ULNeSomDxVNmdDy8VxEBU",
+  "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+  "peak_position": 94,
+  "times_at_peak": 1,
+  "weeks_on_chart": 1,
+  "history": [
+    {
+      "date": "2026-03-25",
+      "rank": 94,
+      "points": 46.2,
+      "change": "NEW",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 568390,
+      "units_charts": 0,
+      "units_surplus": 757816,
+      "am_ts_units": 37920,
+      "am_global_units": 0
+    }
+  ]
+}

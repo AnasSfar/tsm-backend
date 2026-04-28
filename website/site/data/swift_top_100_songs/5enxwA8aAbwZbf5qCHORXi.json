@@ -1,0 +1,103 @@
+{
+  "track_id": "5enxwA8aAbwZbf5qCHORXi",
+  "title": "All Too Well (10 Minute Version) (Taylor's Version) (From The Vault)",
+  "primary_album": "Red (Taylor's Version)",
+  "spotify_url": "https://open.spotify.com/track/5enxwA8aAbwZbf5qCHORXi",
+  "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+  "peak_position": 11,
+  "times_at_peak": 1,
+  "weeks_on_chart": 7,
+  "history": [
+    {
+      "date": "2026-03-18",
+      "rank": 13,
+      "points": 203.5,
+      "change": "RE",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 2438969,
+      "units_charts": 0,
+      "units_surplus": 3484242,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-03-25",
+      "rank": 11,
+      "points": 202.5,
+      "change": null,
+      "rank_change": 2,
+      "percentage_change": -0.7,
+      "total_units": 2490890,
+      "units_charts": 0,
+      "units_surplus": 3461213,
+      "am_ts_units": 68040,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-01",
+      "rank": 14,
+      "points": 193.6,
+      "change": null,
+      "rank_change": -3,
+      "percentage_change": -1.9,
+      "total_units": 2661569,
+      "units_charts": 0,
+      "units_surplus": 3395828,
+      "am_ts_units": 284490,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-08",
+      "rank": 16,
+      "points": 187.9,
+      "change": null,
+      "rank_change": -4,
+      "percentage_change": -3.5,
+      "total_units": 2464583,
+      "units_charts": 0,
+      "units_surplus": 3276741,
+      "am_ts_units": 170860,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-10",
+      "rank": 18,
+      "points": 179.6,
+      "change": null,
+      "rank_change": -5,
+      "percentage_change": -1.5271947843172222,
+      "total_units": 2515104,
+      "units_charts": 0,
+      "units_surplus": 3307662,
+      "am_ts_units": 199740,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-15",
+      "rank": 15,
+      "points": 195.1,
+      "change": null,
+      "rank_change": -1,
+      "percentage_change": 2.9,
+      "total_units": 2605284,
+      "units_charts": 0,
+      "units_surplus": 3372156,
+      "am_ts_units": 244780,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-04-22",
+      "rank": 16,
+      "points": 189.2,
+      "change": null,
+      "rank_change": -1,
+      "percentage_change": -0.008896005693435554,
+      "total_units": 2611052,
+      "units_charts": 0,
+      "units_surplus": 3371956,
+      "am_ts_units": 250680,
+      "am_global_units": 0
+    }
+  ]
+}
