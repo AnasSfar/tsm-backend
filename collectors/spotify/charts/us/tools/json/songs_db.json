@@ -7613,5 +7613,57 @@
       "dance"
     ],
     "is_pop": true
+  },
+  "michael jackson|||remember the time": {
+    "artist": "Michael Jackson",
+    "track": "Remember the Time",
+    "tags": [
+      "pop",
+      "michael jackson",
+      "90s",
+      "dance",
+      "rnb",
+      "new jack swing",
+      "king of pop",
+      "soul",
+      "american",
+      "80s"
+    ],
+    "is_pop": true
+  },
+  "michael jackson|||dirty diana - 2012 remaster": {
+    "artist": "Michael Jackson",
+    "track": "Dirty Diana - 2012 Remaster",
+    "tags": [
+      "hard rock",
+      "rock",
+      "aor",
+      "pop rock",
+      "nostalgic"
+    ],
+    "is_pop": false
+  },
+  "michael jackson|||the way you make me feel - 2012 remaster": {
+    "artist": "Michael Jackson",
+    "track": "The Way You Make Me Feel - 2012 Remaster",
+    "tags": [
+      "my top songs",
+      "80s",
+      "rnb",
+      "pop",
+      "rhythm and blues",
+      "1987",
+      "dance pop",
+      "motown sound",
+      "new jack swing",
+      "michael jackson"
+    ],
+    "is_pop": false
+  },
+  "f3miii|||noble": {
+    "artist": "F3miii",
+    "track": "NOBLE",
+    "tags": [],
+    "is_pop": false
   }
 }
