@@ -7602,5 +7602,22 @@
       "80s"
     ],
     "is_pop": true
+  },
+  "michael jackson|||you rock my world": {
+    "artist": "Michael Jackson",
+    "track": "You Rock My World",
+    "tags": [
+      "pop",
+      "michael jackson",
+      "rnb",
+      "dance",
+      "80s",
+      "soul",
+      "king of pop",
+      "00s",
+      "2001",
+      "groovy"
+    ],
+    "is_pop": true
   }
 }
