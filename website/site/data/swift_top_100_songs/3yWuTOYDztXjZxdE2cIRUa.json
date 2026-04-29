@@ -5,8 +5,8 @@
   "spotify_url": "https://open.spotify.com/track/3yWuTOYDztXjZxdE2cIRUa",
   "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
   "peak_position": 2,
-  "times_at_peak": 30,
-  "weeks_on_chart": 30,
+  "times_at_peak": 29,
+  "weeks_on_chart": 29,
   "history": [
     {
       "date": "2025-10-08",
@@ -313,7 +313,7 @@
       "points": 1209.2,
       "change": null,
       "rank_change": 0,
-      "percentage_change": -4.7,
+      "percentage_change": 124.7,
       "total_units": 14495560,
       "units_charts": 14359033,
       "units_surplus": 195039,
@@ -323,7 +323,7 @@
     {
       "date": "2026-03-25",
       "rank": 2,
-      "points": 1174.5,
+      "points": 1222.9,
       "change": null,
       "rank_change": 0,
       "percentage_change": -5.4,
@@ -336,7 +336,7 @@
     {
       "date": "2026-04-01",
       "rank": 2,
-      "points": 1154.4,
+      "points": 1151.2,
       "change": null,
       "rank_change": 0,
       "percentage_change": -2.8,
@@ -349,7 +349,7 @@
     {
       "date": "2026-04-08",
       "rank": 2,
-      "points": 1081.5,
+      "points": 1036.8,
       "change": null,
       "rank_change": 0,
       "percentage_change": -6.0,
@@ -360,22 +360,9 @@
       "am_global_units": 162430
     },
     {
-      "date": "2026-04-10",
-      "rank": 2,
-      "points": 1030.8,
-      "change": null,
-      "rank_change": 0,
-      "percentage_change": -5.107349767124835,
-      "total_units": 14435569,
-      "units_charts": 12383795,
-      "units_surplus": 146454,
-      "am_ts_units": 1783810,
-      "am_global_units": 165440
-    },
-    {
       "date": "2026-04-15",
       "rank": 2,
-      "points": 1089.6,
+      "points": 1035.8,
       "change": null,
       "rank_change": 0,
       "percentage_change": -1.9,
@@ -391,7 +378,7 @@
       "points": 1033.6,
       "change": null,
       "rank_change": 0,
-      "percentage_change": -2.521151414956726,
+      "percentage_change": -2.5,
       "total_units": 14265455,
       "units_charts": 11888514,
       "units_surplus": 139922,

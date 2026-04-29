@@ -6,7 +6,7 @@
   "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
   "peak_position": 48,
   "times_at_peak": 2,
-  "weeks_on_chart": 66,
+  "weeks_on_chart": 65,
   "history": [
     {
       "date": "2025-01-08",
@@ -819,8 +819,8 @@
       "rank": 95,
       "points": 46.1,
       "change": null,
-      "rank_change": -9,
-      "percentage_change": -2.6,
+      "rank_change": -12,
+      "percentage_change": 120.6,
       "total_units": 552952,
       "units_charts": 0,
       "units_surplus": 789932,
@@ -829,10 +829,10 @@
     },
     {
       "date": "2026-03-25",
-      "rank": 97,
-      "points": 44.4,
+      "rank": 84,
+      "points": 46.2,
       "change": null,
-      "rank_change": -2,
+      "rank_change": 11,
       "percentage_change": -1.2,
       "total_units": 546277,
       "units_charts": 0,
@@ -843,27 +843,14 @@
     {
       "date": "2026-04-01",
       "rank": 100,
-      "points": 40.9,
+      "points": 40.8,
       "change": null,
-      "rank_change": -6,
+      "rank_change": -21,
       "percentage_change": -0.2,
       "total_units": 562660,
       "units_charts": 0,
       "units_surplus": 778940,
       "am_ts_units": 17400,
-      "am_global_units": 0
-    },
-    {
-      "date": "2026-04-15",
-      "rank": 100,
-      "points": 39.5,
-      "change": "RE",
-      "rank_change": null,
-      "percentage_change": null,
-      "total_units": 527459,
-      "units_charts": 0,
-      "units_surplus": 753513,
-      "am_ts_units": 0,
       "am_global_units": 0
     }
   ]
