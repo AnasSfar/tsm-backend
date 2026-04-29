@@ -61,8 +61,11 @@ def rewrite_for_snapshot(
             for r in new_rows
         ]
         if prev_rows == new_comparable:
-            print(f"[skip] snapshot identical to previous ({prev_keys[0]}), not writing")
-            return
+            prev_day = prev_keys[0][:10]
+            new_day = scraped_at[:10]
+            if prev_day == new_day:
+                print(f"[skip] snapshot identical to previous ({prev_keys[0]}), not writing")
+                return
 
     filtered = [r for r in existing if r.get("scraped_at") != scraped_at]
     write_csv_rows(csv_path, fieldnames, [*filtered, *new_rows])

@@ -10,16 +10,10 @@
 [swift_top_100] Streams rows per date: 2026-04-09:529, 2026-04-10:529, 2026-04-11:529, 2026-04-12:529, 2026-04-13:529, 2026-04-14:529, 2026-04-15:529
 [swift_top_100] Global charts rows in window: 18
 [swift_top_100] Built chart week_end=2026-04-15: 100 entries (candidates=529)
-[swift_top_100] Wrote history CSV: C:\Users\sfara\Documents\GitHub\tsm-backend\db\swift_top_100_history.csv (900 rows)
-[swift_top_100] Wrote snapshot JSON: C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100_2026-04-22.json
-[swift_top_100] Wrote latest JSON: C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100.json
-[swift_top_100] Wrote chart image: C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100_1.png
-[swift_top_100] Wrote chart image: C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100_2.png
-[swift_top_100] Wrote chart image: C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100_3.png
-[swift_top_100] Wrote chart image: C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100_4.png
-[swift_top_100] Copied image to: C:\Users\sfara\Documents\GitHub\tsm-backend\collectors\billboard\history\2026-04-22\swift_top_100_1.png
-[swift_top_100] Copied image to: C:\Users\sfara\Documents\GitHub\tsm-backend\collectors\billboard\history\2026-04-22\swift_top_100_2.png
-[swift_top_100] Copied image to: C:\Users\sfara\Documents\GitHub\tsm-backend\collectors\billboard\history\2026-04-22\swift_top_100_3.png
-[swift_top_100] Copied image to: C:\Users\sfara\Documents\GitHub\tsm-backend\collectors\billboard\history\2026-04-22\swift_top_100_4.png
-[swift_top_100] Uploading exported data to R2...
-[swift_top_100] R2 upload completed
+[swift_top_100] Wrote history CSV: /mnt/c/users/sfara/Documents/GitHub/tsm-backend/db/swift_top_100_history.csv (6800 rows)
+[swift_top_100] Wrote snapshot JSON: /mnt/c/users/sfara/Documents/GitHub/tsm-backend/website/site/data/swift_top_100_2026-04-22.json
+[swift_top_100] Wrote latest JSON: /mnt/c/users/sfara/Documents/GitHub/tsm-backend/website/site/data/swift_top_100.json
+[swift_top_100] Wrote snapshot index: /mnt/c/users/sfara/Documents/GitHub/tsm-backend/website/site/data/swift_top_100_index.json (68 entries)
+[swift_top_100] Generated 184 song history files in /mnt/c/users/sfara/Documents/GitHub/tsm-backend/website/site/data/swift_top_100_songs
+[swift_top_100] Image generation failed (skipped): No module named 'playwright'
+[swift_top_100] R2 upload skipped: missing env var(s): R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY
