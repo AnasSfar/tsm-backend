@@ -1,15 +1,15 @@
 ▶ TayBoard TOP 100 · 2026-04-29  week=2026-04-23→2026-04-29  prev=2026-04-22
   discography    : 529 tracks indexed
   streams        : 529 songs · 7/7 days covered
-  spotify_charts : 12 rows
+  spotify_charts : 14 rows
   top100         : 100 entries ranked (529 candidates)
   apple_global   : 12 rows
   apple_ts       : 1000 rows
-  history        : 68 prior weeks loaded
+  history        : 67 prior weeks loaded
   streams        : 531 songs · 7/7 days covered
   spotify_charts : 14 rows
   top100         : 100 entries ranked (529 candidates)
-✔ CSV  → swift_top_100_history.csv (6900 rows)
+✔ CSV  → swift_top_100_history.csv (6800 rows)
 ✔ JSON → swift_top_100_2026-04-29.json
 ✔ JSON → swift_top_100.json (latest)
 ✔ IDX  → swift_top_100_index.json (69 dates)
@@ -18,5 +18,3 @@
 ✔ PNG  → swift_top_100_2.png
 ✔ PNG  → swift_top_100_3.png
 ✔ PNG  → swift_top_100_4.png
-  r2             : uploading...
-✔ r2             : upload complete

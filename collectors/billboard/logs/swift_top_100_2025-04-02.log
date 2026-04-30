@@ -12,11 +12,6 @@
 ✔ CSV  → swift_top_100_history.csv (1300 rows)
 ✔ JSON → swift_top_100_2025-04-02.json
 ✔ JSON → swift_top_100.json (latest)
-✔ IDX  → swift_top_100_index.json (68 dates)
+✔ IDX  → swift_top_100_index.json (69 dates)
 ✔ songs          → 169 history files
-✔ PNG  → swift_top_100_1.png
-✔ PNG  → swift_top_100_2.png
-✔ PNG  → swift_top_100_3.png
-✔ PNG  → swift_top_100_4.png
-  r2             : uploading...
-✔ r2             : upload complete
+  images         : skipped (backfill)

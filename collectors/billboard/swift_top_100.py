@@ -796,6 +796,8 @@ def run(
     *,
     chart_date: date | None,
     dry_run: bool,
+    skip_r2: bool = False,
+    skip_images: bool = False,
 ) -> int:
     logger = Logger()
 
@@ -1071,34 +1073,38 @@ def run(
         _generate_song_files(logger)
 
         # Génération automatique de 4 images de 25 chansons
-        try:
-            from swift_top_100_image import render_png
-            import shutil
-            # Génération des images dans website/site/data/
-            image_paths = []
-            for i in range(4):
-                out_path = _SITE_DATA_DIR / f"swift_top_100_{i+1}.png"
-                render_png(
-                    payload=payload,
-                    output_path=out_path,
-                    columns=1,
-                    limit=25,
-                    offset=i * 25,
-                    width=1400,
-                    scale=2,
-                )
-                logger.log(f"✔ PNG  → {out_path.name}")
-                image_paths.append(out_path)
-            # Copie dans collectors/billboard/history/<date>/
-            history_dir = _SCRIPT_DIR / "history" / chart_date_str
-            history_dir.mkdir(parents=True, exist_ok=True)
-            for i, src in enumerate(image_paths, 1):
-                dst = history_dir / f"swift_top_100_{i}.png"
-                shutil.copy2(src, dst)
-        except Exception as exc:
-            logger.log(f"⚠ image          : generation failed — {exc}")
+        if skip_images:
+            logger.log("  images         : skipped (backfill)")
+        else:
+            try:
+                from swift_top_100_image import render_png
+                import shutil
+                # Génération des images dans website/site/data/
+                image_paths = []
+                for i in range(4):
+                    out_path = _SITE_DATA_DIR / f"swift_top_100_{i+1}.png"
+                    render_png(
+                        payload=payload,
+                        output_path=out_path,
+                        columns=1,
+                        limit=25,
+                        offset=i * 25,
+                        width=1400,
+                        scale=2,
+                    )
+                    logger.log(f"✔ PNG  → {out_path.name}")
+                    image_paths.append(out_path)
+                # Copie dans collectors/billboard/history/<date>/
+                history_dir = _SCRIPT_DIR / "history" / chart_date_str
+                history_dir.mkdir(parents=True, exist_ok=True)
+                for i, src in enumerate(image_paths, 1):
+                    dst = history_dir / f"swift_top_100_{i}.png"
+                    shutil.copy2(src, dst)
+            except Exception as exc:
+                logger.log(f"⚠ image          : generation failed — {exc}")
 
-        _maybe_upload_to_r2(logger=logger)
+        if not skip_r2:
+            _maybe_upload_to_r2(logger=logger)
 
     # Save log
     logs_dir = _SCRIPT_DIR / "logs"
@@ -1180,14 +1186,18 @@ def main(argv: list[str] | None = None) -> None:
             raise SystemExit(1)
         print(f"[swift_top_100] Backfill: {len(week_ends)} weeks found "
               f"({_format_date(week_ends[0])} → {_format_date(week_ends[-1])})")
+        last_week_end = week_ends[-1]
         for week_end in week_ends:
             snapshot_path = _SITE_DATA_DIR / f"swift_top_100_{_format_date(week_end)}.json"
             if snapshot_path.exists() and not args.force:
                 print(f"[swift_top_100] Skip {_format_date(week_end)} (already exists, use --force to regenerate)")
                 continue
             print(f"[swift_top_100] Generating week ending {_format_date(week_end)} ...")
-            run(chart_date=week_end, dry_run=bool(args.dry_run))
+            is_last = week_end == last_week_end
+            run(chart_date=week_end, dry_run=bool(args.dry_run), skip_r2=True, skip_images=not is_last)
         print("[swift_top_100] Backfill complete.")
+        if not args.dry_run:
+            _maybe_upload_to_r2(logger=Logger())
         raise SystemExit(0)
 
     chart_date = _parse_iso_date(args.date) if args.date else None

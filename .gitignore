@@ -31,7 +31,8 @@ twitter_post.txt
 # mystreamcount backfill state
 collectors/spotify/streams/mystreamcount/state.json
 collectors/spotify/streams/mystreamcount/state.tmp
-
+collectors/billboard/history
+collectors/billboard/logs
 # Images
 *.png
 *.jpg

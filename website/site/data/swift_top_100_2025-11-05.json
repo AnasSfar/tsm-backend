@@ -3,7 +3,7 @@
   "chart_date": "2025-11-05",
   "week_start": "2025-10-30",
   "week_end": "2025-11-05",
-  "generated_at": "2026-04-30T09:57:35.548668+00:00",
+  "generated_at": "2026-04-30T21:11:04.685133+00:00",
   "entries": [
     {
       "rank": 1,
@@ -276,9 +276,9 @@
       "global_best_rank": 68,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
-      "prev_rank": 9,
+      "prev_rank": 8,
       "change": null,
-      "rank_change": 1,
+      "rank_change": 0,
       "percentage_change": -22.2,
       "weeks_on_chart": 5,
       "peak_position": 6,
@@ -311,9 +311,9 @@
       "global_best_rank": 89,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
-      "prev_rank": 10,
+      "prev_rank": 9,
       "change": null,
-      "rank_change": 1,
+      "rank_change": 0,
       "percentage_change": -23.1,
       "weeks_on_chart": 5,
       "peak_position": 9,
@@ -346,9 +346,9 @@
       "global_best_rank": 91,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
-      "prev_rank": 11,
+      "prev_rank": 10,
       "change": null,
-      "rank_change": 1,
+      "rank_change": 0,
       "percentage_change": -23.3,
       "weeks_on_chart": 5,
       "peak_position": 9,
@@ -381,11 +381,11 @@
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
-      "prev_rank": 8,
+      "prev_rank": 12,
       "change": null,
-      "rank_change": -3,
+      "rank_change": 1,
       "percentage_change": -5.7,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 1,
       "times_at_peak": 4,
       "points_display": "392.7"
@@ -416,9 +416,9 @@
       "global_best_rank": 117,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
-      "prev_rank": 12,
+      "prev_rank": 11,
       "change": null,
-      "rank_change": 0,
+      "rank_change": -1,
       "percentage_change": -23.5,
       "weeks_on_chart": 5,
       "peak_position": 11,
@@ -455,9 +455,9 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -6.6,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 1,
-      "times_at_peak": 5,
+      "times_at_peak": 4,
       "points_display": "320.2"
     },
     {
@@ -490,7 +490,7 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -1.2,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 4,
       "times_at_peak": 13,
       "points_display": "241.7"
@@ -525,7 +525,7 @@
       "change": null,
       "rank_change": 1,
       "percentage_change": -2.2,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 1,
       "times_at_peak": 30,
       "points_display": "218.8"
@@ -560,7 +560,7 @@
       "change": null,
       "rank_change": 1,
       "percentage_change": -1.2,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 2,
       "times_at_peak": 1,
       "points_display": "218.5"
@@ -595,7 +595,7 @@
       "change": null,
       "rank_change": -2,
       "percentage_change": -9.3,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 4,
       "times_at_peak": 4,
       "points_display": "216.2"
@@ -630,7 +630,7 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -7.1,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 4,
       "times_at_peak": 7,
       "points_display": "197.2"
@@ -665,7 +665,7 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -3.7,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 6,
       "times_at_peak": 7,
       "points_display": "171.9"
@@ -700,7 +700,7 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": 2.6,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 4,
       "times_at_peak": 1,
       "points_display": "168"
@@ -735,7 +735,7 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -3.2,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 7,
       "times_at_peak": 2,
       "points_display": "158.1"
@@ -770,7 +770,7 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -1.1,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 9,
       "times_at_peak": 2,
       "points_display": "149.8"
@@ -805,7 +805,7 @@
       "change": null,
       "rank_change": 2,
       "percentage_change": -2.1,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 12,
       "times_at_peak": 16,
       "points_display": "140"
@@ -840,7 +840,7 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -9.3,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 4,
       "times_at_peak": 1,
       "points_display": "136.3"
@@ -875,7 +875,7 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -9.6,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 11,
       "times_at_peak": 1,
       "points_display": "133.8"
@@ -910,9 +910,9 @@
       "change": null,
       "rank_change": 1,
       "percentage_change": 1.7,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 15,
-      "times_at_peak": 6,
+      "times_at_peak": 5,
       "points_display": "121.9"
     },
     {
@@ -945,7 +945,7 @@
       "change": null,
       "rank_change": 1,
       "percentage_change": -3.9,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 10,
       "times_at_peak": 1,
       "points_display": "114"
@@ -980,7 +980,7 @@
       "change": null,
       "rank_change": -2,
       "percentage_change": -10.8,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 7,
       "times_at_peak": 1,
       "points_display": "107.9"
@@ -1015,7 +1015,7 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -2.0,
-      "weeks_on_chart": 41,
+      "weeks_on_chart": 40,
       "peak_position": 13,
       "times_at_peak": 1,
       "points_display": "107.5"
@@ -1050,7 +1050,7 @@
       "change": null,
       "rank_change": 1,
       "percentage_change": -4.9,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 13,
       "times_at_peak": 2,
       "points_display": "96.6"
@@ -1085,7 +1085,7 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -8.9,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 16,
       "times_at_peak": 1,
       "points_display": "95.9"
@@ -1120,8 +1120,8 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -3.9,
-      "weeks_on_chart": 44,
-      "peak_position": 12,
+      "weeks_on_chart": 43,
+      "peak_position": 14,
       "times_at_peak": 1,
       "points_display": "95.6"
     },
@@ -1155,7 +1155,7 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -3.5,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 12,
       "times_at_peak": 1,
       "points_display": "93.9"
@@ -1190,7 +1190,7 @@
       "change": null,
       "rank_change": 1,
       "percentage_change": -3.2,
-      "weeks_on_chart": 41,
+      "weeks_on_chart": 40,
       "peak_position": 20,
       "times_at_peak": 6,
       "points_display": "78.7"
@@ -1225,7 +1225,7 @@
       "change": null,
       "rank_change": 5,
       "percentage_change": 9.8,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 18,
       "times_at_peak": 1,
       "points_display": "78.6"
@@ -1260,7 +1260,7 @@
       "change": null,
       "rank_change": -2,
       "percentage_change": -13.3,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 22,
       "times_at_peak": 3,
       "points_display": "77.9"
@@ -1295,7 +1295,7 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -5.8,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 14,
       "times_at_peak": 1,
       "points_display": "74.8"
@@ -1330,7 +1330,7 @@
       "change": null,
       "rank_change": 1,
       "percentage_change": 3.0,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 18,
       "times_at_peak": 4,
       "points_display": "74.1"
@@ -1365,7 +1365,7 @@
       "change": null,
       "rank_change": -2,
       "percentage_change": -8.4,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 16,
       "times_at_peak": 2,
       "points_display": "71.5"
@@ -1400,7 +1400,7 @@
       "change": null,
       "rank_change": -2,
       "percentage_change": -7.3,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 19,
       "times_at_peak": 1,
       "points_display": "68.8"
@@ -1435,7 +1435,7 @@
       "change": null,
       "rank_change": 4,
       "percentage_change": 1.8,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 27,
       "times_at_peak": 4,
       "points_display": "66.1"
@@ -1470,7 +1470,7 @@
       "change": null,
       "rank_change": 5,
       "percentage_change": 2.5,
-      "weeks_on_chart": 22,
+      "weeks_on_chart": 21,
       "peak_position": 25,
       "times_at_peak": 1,
       "points_display": "64.2"
@@ -1505,7 +1505,7 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -7.8,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 21,
       "times_at_peak": 2,
       "points_display": "63.1"
@@ -1540,7 +1540,7 @@
       "change": null,
       "rank_change": -3,
       "percentage_change": -12.3,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 41,
       "times_at_peak": 2,
       "points_display": "60.9"
@@ -1575,7 +1575,7 @@
       "change": null,
       "rank_change": -2,
       "percentage_change": -8.0,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 21,
       "times_at_peak": 1,
       "points_display": "60.4"
@@ -1610,7 +1610,7 @@
       "change": null,
       "rank_change": -2,
       "percentage_change": -8.7,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 29,
       "times_at_peak": 1,
       "points_display": "59.8"
@@ -1645,7 +1645,7 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -8.4,
-      "weeks_on_chart": 42,
+      "weeks_on_chart": 41,
       "peak_position": 25,
       "times_at_peak": 1,
       "points_display": "58.4"
@@ -1680,7 +1680,7 @@
       "change": null,
       "rank_change": 2,
       "percentage_change": -3.5,
-      "weeks_on_chart": 24,
+      "weeks_on_chart": 23,
       "peak_position": 26,
       "times_at_peak": 1,
       "points_display": "57.7"
@@ -1715,7 +1715,7 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -7.5,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 25,
       "times_at_peak": 1,
       "points_display": "57.2"
@@ -1750,7 +1750,7 @@
       "change": null,
       "rank_change": 4,
       "percentage_change": 1.5,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 37,
       "times_at_peak": 3,
       "points_display": "54.1"
@@ -1785,7 +1785,7 @@
       "change": null,
       "rank_change": 8,
       "percentage_change": 4.5,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 35,
       "times_at_peak": 1,
       "points_display": "53.6"
@@ -1820,8 +1820,8 @@
       "change": null,
       "rank_change": -3,
       "percentage_change": -12.4,
-      "weeks_on_chart": 24,
-      "peak_position": 17,
+      "weeks_on_chart": 23,
+      "peak_position": 25,
       "times_at_peak": 1,
       "points_display": "52.8"
     },
@@ -1855,7 +1855,7 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -5.9,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 29,
       "times_at_peak": 1,
       "points_display": "52.5"
@@ -1890,7 +1890,7 @@
       "change": null,
       "rank_change": -3,
       "percentage_change": -9.5,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 38,
       "times_at_peak": 1,
       "points_display": "51.6"
@@ -1925,7 +1925,7 @@
       "change": null,
       "rank_change": 1,
       "percentage_change": -2.8,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 41,
       "times_at_peak": 1,
       "points_display": "51"
@@ -1960,7 +1960,7 @@
       "change": null,
       "rank_change": 5,
       "percentage_change": 2.5,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 32,
       "times_at_peak": 1,
       "points_display": "50"
@@ -1995,7 +1995,7 @@
       "change": null,
       "rank_change": 5,
       "percentage_change": 3.5,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 22,
       "times_at_peak": 1,
       "points_display": "49.9"
@@ -2030,7 +2030,7 @@
       "change": null,
       "rank_change": -3,
       "percentage_change": -6.4,
-      "weeks_on_chart": 43,
+      "weeks_on_chart": 42,
       "peak_position": 36,
       "times_at_peak": 1,
       "points_display": "49.7"
@@ -2065,7 +2065,7 @@
       "change": null,
       "rank_change": -6,
       "percentage_change": -9.0,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 39,
       "times_at_peak": 1,
       "points_display": "49.4"
@@ -2100,7 +2100,7 @@
       "change": null,
       "rank_change": -3,
       "percentage_change": -7.0,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 33,
       "times_at_peak": 1,
       "points_display": "48.7"
@@ -2135,7 +2135,7 @@
       "change": null,
       "rank_change": -3,
       "percentage_change": -10.6,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 27,
       "times_at_peak": 1,
       "points_display": "46.2"
@@ -2170,7 +2170,7 @@
       "change": null,
       "rank_change": 1,
       "percentage_change": -7.5,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 30,
       "times_at_peak": 1,
       "points_display": "44.6"
@@ -2205,7 +2205,7 @@
       "change": null,
       "rank_change": 5,
       "percentage_change": -1.4,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 32,
       "times_at_peak": 1,
       "points_display": "44"
@@ -2240,7 +2240,7 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -8.2,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 37,
       "times_at_peak": 1,
       "points_display": "43.6"
@@ -2275,7 +2275,7 @@
       "change": null,
       "rank_change": 2,
       "percentage_change": -2.5,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 41,
       "times_at_peak": 1,
       "points_display": "43.6"
@@ -2310,7 +2310,7 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -5.4,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 44,
       "times_at_peak": 2,
       "points_display": "43.5"
@@ -2345,7 +2345,7 @@
       "change": null,
       "rank_change": 2,
       "percentage_change": -0.7,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 26,
       "times_at_peak": 1,
       "points_display": "43.2"
@@ -2380,7 +2380,7 @@
       "change": null,
       "rank_change": -2,
       "percentage_change": -6.7,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 26,
       "times_at_peak": 1,
       "points_display": "42.2"
@@ -2415,7 +2415,7 @@
       "change": null,
       "rank_change": -9,
       "percentage_change": -14.4,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 44,
       "times_at_peak": 1,
       "points_display": "41.9"
@@ -2450,7 +2450,7 @@
       "change": null,
       "rank_change": 1,
       "percentage_change": -0.1,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 42,
       "times_at_peak": 2,
       "points_display": "40.9"
@@ -2485,7 +2485,7 @@
       "change": null,
       "rank_change": 1,
       "percentage_change": -0.1,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 35,
       "times_at_peak": 3,
       "points_display": "40.8"
@@ -2520,7 +2520,7 @@
       "change": null,
       "rank_change": 1,
       "percentage_change": 0.4,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 54,
       "times_at_peak": 1,
       "points_display": "40.4"
@@ -2555,7 +2555,7 @@
       "change": null,
       "rank_change": -3,
       "percentage_change": -3.9,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 38,
       "times_at_peak": 1,
       "points_display": "39.7"
@@ -2590,7 +2590,7 @@
       "change": null,
       "rank_change": 2,
       "percentage_change": -1.3,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 27,
       "times_at_peak": 1,
       "points_display": "38.6"
@@ -2625,7 +2625,7 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -5.4,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 44,
       "times_at_peak": 1,
       "points_display": "38"
@@ -2660,7 +2660,7 @@
       "change": null,
       "rank_change": 6,
       "percentage_change": 3.9,
-      "weeks_on_chart": 43,
+      "weeks_on_chart": 42,
       "peak_position": 66,
       "times_at_peak": 1,
       "points_display": "36.8"
@@ -2695,7 +2695,7 @@
       "change": null,
       "rank_change": 2,
       "percentage_change": -1.7,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 37,
       "times_at_peak": 1,
       "points_display": "36.6"
@@ -2730,7 +2730,7 @@
       "change": null,
       "rank_change": -3,
       "percentage_change": -7.3,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 28,
       "times_at_peak": 1,
       "points_display": "36.4"
@@ -2765,7 +2765,7 @@
       "change": null,
       "rank_change": 1,
       "percentage_change": -1.5,
-      "weeks_on_chart": 43,
+      "weeks_on_chart": 42,
       "peak_position": 67,
       "times_at_peak": 2,
       "points_display": "36"
@@ -2800,7 +2800,7 @@
       "change": null,
       "rank_change": -2,
       "percentage_change": -5.2,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 41,
       "times_at_peak": 2,
       "points_display": "35.3"
@@ -2870,7 +2870,7 @@
       "change": null,
       "rank_change": 7,
       "percentage_change": 8.3,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 33,
       "times_at_peak": 1,
       "points_display": "33.6"
@@ -2905,7 +2905,7 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -3.7,
-      "weeks_on_chart": 23,
+      "weeks_on_chart": 22,
       "peak_position": 75,
       "times_at_peak": 1,
       "points_display": "33.5"
@@ -2940,7 +2940,7 @@
       "change": null,
       "rank_change": -3,
       "percentage_change": -7.2,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 67,
       "times_at_peak": 1,
       "points_display": "33.4"
@@ -3045,7 +3045,7 @@
       "change": null,
       "rank_change": -3,
       "percentage_change": -7.4,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 32,
       "times_at_peak": 1,
       "points_display": "31.3"
@@ -3080,7 +3080,7 @@
       "change": null,
       "rank_change": -3,
       "percentage_change": -6.3,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 32,
       "times_at_peak": 1,
       "points_display": "31.3"
@@ -3115,7 +3115,7 @@
       "change": null,
       "rank_change": -3,
       "percentage_change": -6.6,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 45,
       "times_at_peak": 1,
       "points_display": "31.1"
@@ -3150,8 +3150,8 @@
       "change": "RE",
       "rank_change": null,
       "percentage_change": null,
-      "weeks_on_chart": 43,
-      "peak_position": 64,
+      "weeks_on_chart": 42,
+      "peak_position": 69,
       "times_at_peak": 1,
       "points_display": "30"
     },
@@ -3220,7 +3220,7 @@
       "change": null,
       "rank_change": -2,
       "percentage_change": -6.3,
-      "weeks_on_chart": 43,
+      "weeks_on_chart": 42,
       "peak_position": 36,
       "times_at_peak": 1,
       "points_display": "29"
@@ -3255,7 +3255,7 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -3.0,
-      "weeks_on_chart": 42,
+      "weeks_on_chart": 41,
       "peak_position": 69,
       "times_at_peak": 1,
       "points_display": "28.9"
@@ -3290,7 +3290,7 @@
       "change": null,
       "rank_change": -3,
       "percentage_change": -7.2,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 54,
       "times_at_peak": 1,
       "points_display": "28.5"
@@ -3325,7 +3325,7 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -4.5,
-      "weeks_on_chart": 19,
+      "weeks_on_chart": 18,
       "peak_position": 70,
       "times_at_peak": 1,
       "points_display": "28.4"
@@ -3395,7 +3395,7 @@
       "change": null,
       "rank_change": -5,
       "percentage_change": -7.2,
-      "weeks_on_chart": 44,
+      "weeks_on_chart": 43,
       "peak_position": 39,
       "times_at_peak": 2,
       "points_display": "28.3"
@@ -3430,7 +3430,7 @@
       "change": null,
       "rank_change": -2,
       "percentage_change": -3.6,
-      "weeks_on_chart": 20,
+      "weeks_on_chart": 19,
       "peak_position": 27,
       "times_at_peak": 1,
       "points_display": "28.3"
@@ -3465,7 +3465,7 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -2.6,
-      "weeks_on_chart": 43,
+      "weeks_on_chart": 42,
       "peak_position": 47,
       "times_at_peak": 1,
       "points_display": "28.1"

@@ -5,14 +5,14 @@
   top100         : 100 entries ranked (430 candidates)
   apple_global   : 0 rows
   apple_ts       : 0 rows
-  history        : 43 prior weeks loaded
+  history        : 42 prior weeks loaded
   streams        : 433 songs · 7/7 days covered
   spotify_charts : 84 rows
   top100         : 100 entries ranked (430 candidates)
-✔ CSV  → swift_top_100_history.csv (4400 rows)
+✔ CSV  → swift_top_100_history.csv (4300 rows)
 ✔ JSON → swift_top_100_2025-11-05.json
 ✔ JSON → swift_top_100.json (latest)
-✔ IDX  → swift_top_100_index.json (68 dates)
+✔ IDX  → swift_top_100_index.json (69 dates)
 ✔ songs          → 169 history files
 ✔ PNG  → swift_top_100_1.png
 ✔ PNG  → swift_top_100_2.png
