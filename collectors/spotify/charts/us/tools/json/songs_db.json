@@ -7665,5 +7665,22 @@
     "track": "NOBLE",
     "tags": [],
     "is_pop": false
+  },
+  "michael jackson|||bad - 2012 remaster": {
+    "artist": "Michael Jackson",
+    "track": "Bad - 2012 Remaster",
+    "tags": [
+      "pop",
+      "1987",
+      "rock",
+      "80s",
+      "synth funk",
+      "new jack swing",
+      "dance pop",
+      "lip biting good",
+      "europa plus",
+      "john landis"
+    ],
+    "is_pop": true
   }
 }
