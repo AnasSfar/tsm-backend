@@ -5,8 +5,8 @@
   "spotify_url": "https://open.spotify.com/track/3yWuTOYDztXjZxdE2cIRUa",
   "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
   "peak_position": 2,
-  "times_at_peak": 29,
-  "weeks_on_chart": 29,
+  "times_at_peak": 30,
+  "weeks_on_chart": 30,
   "history": [
     {
       "date": "2025-10-08",
@@ -384,6 +384,19 @@
       "units_surplus": 972117,
       "am_ts_units": 2081110,
       "am_global_units": 197880
+    },
+    {
+      "date": "2026-04-29",
+      "rank": 2,
+      "points": 962.0,
+      "change": null,
+      "rank_change": 0,
+      "percentage_change": -16.3,
+      "total_units": 12131951,
+      "units_charts": 9959850,
+      "units_surplus": 806769,
+      "am_ts_units": 1486510,
+      "am_global_units": 120850
     }
   ]
 }
