@@ -8,6 +8,7 @@ on:
 jobs:
   update-streams:
     runs-on: ubuntu-latest
+    environment: .env
     env:
       R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
       R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
