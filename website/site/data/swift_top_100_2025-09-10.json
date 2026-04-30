@@ -3,7 +3,7 @@
   "chart_date": "2025-09-10",
   "week_start": "2025-09-04",
   "week_end": "2025-09-10",
-  "generated_at": "2026-04-30T21:09:34.924706+00:00",
+  "generated_at": "2026-04-30T21:42:00.236396+00:00",
   "entries": [
     {
       "rank": 1,
@@ -27,7 +27,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 1217.6,
+      "points": 180.8,
       "global_best_rank": 96,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -35,10 +35,10 @@
       "change": null,
       "rank_change": 1,
       "percentage_change": -11.3,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 1,
       "times_at_peak": 1,
-      "points_display": "1.22k"
+      "points_display": "180.8"
     },
     {
       "rank": 2,
@@ -62,7 +62,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 1189.8,
+      "points": 176.7,
       "global_best_rank": 92,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -70,10 +70,10 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -19.7,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 1,
-      "times_at_peak": 4,
-      "points_display": "1.19k"
+      "times_at_peak": 5,
+      "points_display": "176.7"
     },
     {
       "rank": 3,
@@ -97,18 +97,18 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 695.8,
+      "points": 103.4,
       "global_best_rank": 106,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
       "prev_rank": 3,
       "change": null,
       "rank_change": 0,
-      "percentage_change": -11.8,
-      "weeks_on_chart": 35,
+      "percentage_change": -11.9,
+      "weeks_on_chart": 36,
       "peak_position": 1,
       "times_at_peak": 30,
-      "points_display": "695.8"
+      "points_display": "103.4"
     },
     {
       "rank": 4,
@@ -132,7 +132,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 448.6,
+      "points": 66.6,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -140,10 +140,10 @@
       "change": null,
       "rank_change": 3,
       "percentage_change": -6.9,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 4,
       "times_at_peak": 2,
-      "points_display": "448.6"
+      "points_display": "66.6"
     },
     {
       "rank": 5,
@@ -167,18 +167,18 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 430.3,
+      "points": 63.9,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
       "prev_rank": 4,
       "change": null,
       "rank_change": -1,
-      "percentage_change": -7.3,
-      "weeks_on_chart": 35,
+      "percentage_change": -20.2,
+      "weeks_on_chart": 36,
       "peak_position": 2,
       "times_at_peak": 1,
-      "points_display": "430.3"
+      "points_display": "63.9"
     },
     {
       "rank": 6,
@@ -202,7 +202,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 414.2,
+      "points": 61.5,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -210,10 +210,10 @@
       "change": null,
       "rank_change": 2,
       "percentage_change": -7.4,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 4,
       "times_at_peak": 7,
-      "points_display": "414.2"
+      "points_display": "61.5"
     },
     {
       "rank": 7,
@@ -237,18 +237,18 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 392.7,
+      "points": 58.3,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
       "prev_rank": 6,
       "change": null,
       "rank_change": -1,
-      "percentage_change": -9.7,
-      "weeks_on_chart": 35,
+      "percentage_change": -22.4,
+      "weeks_on_chart": 36,
       "peak_position": 4,
       "times_at_peak": 13,
-      "points_display": "392.7"
+      "points_display": "58.3"
     },
     {
       "rank": 8,
@@ -272,18 +272,18 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 363.7,
+      "points": 54.0,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
       "prev_rank": 5,
       "change": null,
       "rank_change": -3,
-      "percentage_change": -15.4,
-      "weeks_on_chart": 35,
+      "percentage_change": -31.9,
+      "weeks_on_chart": 36,
       "peak_position": 4,
       "times_at_peak": 1,
-      "points_display": "363.7"
+      "points_display": "54"
     },
     {
       "rank": 9,
@@ -307,7 +307,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 361.8,
+      "points": 53.7,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -315,10 +315,10 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -12.7,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 6,
       "times_at_peak": 7,
-      "points_display": "361.8"
+      "points_display": "53.7"
     },
     {
       "rank": 10,
@@ -342,7 +342,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 358.0,
+      "points": 53.2,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -350,10 +350,10 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -4.8,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 7,
       "times_at_peak": 2,
-      "points_display": "358"
+      "points_display": "53.2"
     },
     {
       "rank": 11,
@@ -377,7 +377,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 270.9,
+      "points": 40.2,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -385,10 +385,10 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -11.3,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 9,
       "times_at_peak": 2,
-      "points_display": "270.9"
+      "points_display": "40.2"
     },
     {
       "rank": 12,
@@ -412,7 +412,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 251.5,
+      "points": 37.3,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -420,10 +420,10 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -7.5,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 12,
       "times_at_peak": 16,
-      "points_display": "251.5"
+      "points_display": "37.3"
     },
     {
       "rank": 13,
@@ -447,7 +447,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 223.3,
+      "points": 33.2,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -455,10 +455,10 @@
       "change": null,
       "rank_change": 1,
       "percentage_change": -12.1,
-      "weeks_on_chart": 32,
+      "weeks_on_chart": 33,
       "peak_position": 13,
       "times_at_peak": 1,
-      "points_display": "223.3"
+      "points_display": "33.2"
     },
     {
       "rank": 14,
@@ -482,7 +482,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 220.0,
+      "points": 32.7,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -490,10 +490,10 @@
       "change": null,
       "rank_change": 3,
       "percentage_change": -7.4,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 12,
       "times_at_peak": 1,
-      "points_display": "220"
+      "points_display": "32.7"
     },
     {
       "rank": 15,
@@ -517,7 +517,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 219.9,
+      "points": 32.7,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -525,10 +525,10 @@
       "change": null,
       "rank_change": -2,
       "percentage_change": -14.5,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 13,
       "times_at_peak": 2,
-      "points_display": "219.9"
+      "points_display": "32.7"
     },
     {
       "rank": 16,
@@ -552,7 +552,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 213.4,
+      "points": 31.7,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -560,10 +560,10 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -12.5,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 10,
       "times_at_peak": 1,
-      "points_display": "213.4"
+      "points_display": "31.7"
     },
     {
       "rank": 17,
@@ -587,7 +587,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 207.6,
+      "points": 30.8,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -595,10 +595,10 @@
       "change": null,
       "rank_change": 2,
       "percentage_change": -10.0,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 15,
-      "times_at_peak": 5,
-      "points_display": "207.6"
+      "times_at_peak": 6,
+      "points_display": "30.8"
     },
     {
       "rank": 18,
@@ -622,7 +622,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 198.4,
+      "points": 29.5,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -630,10 +630,10 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -16.1,
-      "weeks_on_chart": 35,
-      "peak_position": 14,
+      "weeks_on_chart": 36,
+      "peak_position": 12,
       "times_at_peak": 1,
-      "points_display": "198.4"
+      "points_display": "29.5"
     },
     {
       "rank": 19,
@@ -657,7 +657,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 187.5,
+      "points": 27.8,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -665,10 +665,10 @@
       "change": null,
       "rank_change": 1,
       "percentage_change": -8.7,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 12,
       "times_at_peak": 1,
-      "points_display": "187.5"
+      "points_display": "27.8"
     },
     {
       "rank": 20,
@@ -692,7 +692,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 180.1,
+      "points": 26.8,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -700,10 +700,10 @@
       "change": null,
       "rank_change": -5,
       "percentage_change": -28.5,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 14,
       "times_at_peak": 1,
-      "points_display": "180.1"
+      "points_display": "26.8"
     },
     {
       "rank": 21,
@@ -727,7 +727,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 179.6,
+      "points": 26.7,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -735,10 +735,10 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -6.1,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 16,
       "times_at_peak": 1,
-      "points_display": "179.6"
+      "points_display": "26.7"
     },
     {
       "rank": 22,
@@ -762,7 +762,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 161.7,
+      "points": 24.0,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -770,10 +770,10 @@
       "change": null,
       "rank_change": 7,
       "percentage_change": 5.0,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 22,
       "times_at_peak": 1,
-      "points_display": "161.7"
+      "points_display": "24"
     },
     {
       "rank": 23,
@@ -797,7 +797,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 160.0,
+      "points": 23.8,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -805,10 +805,10 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -16.3,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 21,
       "times_at_peak": 2,
-      "points_display": "160"
+      "points_display": "23.8"
     },
     {
       "rank": 24,
@@ -832,7 +832,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 157.7,
+      "points": 23.4,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -840,10 +840,10 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -11.7,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 7,
       "times_at_peak": 1,
-      "points_display": "157.7"
+      "points_display": "23.4"
     },
     {
       "rank": 25,
@@ -867,7 +867,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 148.1,
+      "points": 22.0,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -875,10 +875,10 @@
       "change": null,
       "rank_change": 3,
       "percentage_change": -6.9,
-      "weeks_on_chart": 32,
+      "weeks_on_chart": 33,
       "peak_position": 20,
       "times_at_peak": 6,
-      "points_display": "148.1"
+      "points_display": "22"
     },
     {
       "rank": 26,
@@ -902,7 +902,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 147.5,
+      "points": 21.9,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -910,10 +910,10 @@
       "change": null,
       "rank_change": 1,
       "percentage_change": -13.0,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 19,
       "times_at_peak": 1,
-      "points_display": "147.5"
+      "points_display": "21.9"
     },
     {
       "rank": 27,
@@ -937,7 +937,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 144.7,
+      "points": 21.5,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -945,10 +945,10 @@
       "change": null,
       "rank_change": -2,
       "percentage_change": -15.8,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 18,
       "times_at_peak": 4,
-      "points_display": "144.7"
+      "points_display": "21.5"
     },
     {
       "rank": 28,
@@ -972,7 +972,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 139.6,
+      "points": 20.7,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -980,10 +980,10 @@
       "change": null,
       "rank_change": -4,
       "percentage_change": -19.1,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 21,
       "times_at_peak": 1,
-      "points_display": "139.6"
+      "points_display": "20.7"
     },
     {
       "rank": 29,
@@ -1007,7 +1007,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 135.3,
+      "points": 20.1,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1015,10 +1015,10 @@
       "change": null,
       "rank_change": -3,
       "percentage_change": -20.9,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 16,
       "times_at_peak": 2,
-      "points_display": "135.3"
+      "points_display": "20.1"
     },
     {
       "rank": 30,
@@ -1042,7 +1042,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 134.7,
+      "points": 20.0,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1050,10 +1050,10 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -11.4,
-      "weeks_on_chart": 15,
+      "weeks_on_chart": 16,
       "peak_position": 26,
       "times_at_peak": 1,
-      "points_display": "134.7"
+      "points_display": "20"
     },
     {
       "rank": 31,
@@ -1077,7 +1077,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 133.1,
+      "points": 19.8,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1085,10 +1085,10 @@
       "change": null,
       "rank_change": 1,
       "percentage_change": -11.0,
-      "weeks_on_chart": 13,
+      "weeks_on_chart": 14,
       "peak_position": 25,
       "times_at_peak": 1,
-      "points_display": "133.1"
+      "points_display": "19.8"
     },
     {
       "rank": 32,
@@ -1112,7 +1112,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 129.8,
+      "points": 19.3,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1120,10 +1120,10 @@
       "change": null,
       "rank_change": 1,
       "percentage_change": -12.9,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 30,
       "times_at_peak": 1,
-      "points_display": "129.8"
+      "points_display": "19.3"
     },
     {
       "rank": 33,
@@ -1147,7 +1147,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 127.8,
+      "points": 19.0,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1155,10 +1155,10 @@
       "change": null,
       "rank_change": -2,
       "percentage_change": -15.0,
-      "weeks_on_chart": 15,
-      "peak_position": 25,
+      "weeks_on_chart": 16,
+      "peak_position": 17,
       "times_at_peak": 1,
-      "points_display": "127.8"
+      "points_display": "19"
     },
     {
       "rank": 34,
@@ -1182,7 +1182,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 123.7,
+      "points": 18.4,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1190,10 +1190,10 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -9.7,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 27,
       "times_at_peak": 4,
-      "points_display": "123.7"
+      "points_display": "18.4"
     },
     {
       "rank": 35,
@@ -1217,7 +1217,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 121.1,
+      "points": 18.0,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1225,10 +1225,10 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -10.0,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 18,
       "times_at_peak": 1,
-      "points_display": "121.1"
+      "points_display": "18"
     },
     {
       "rank": 36,
@@ -1252,7 +1252,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 115.1,
+      "points": 17.1,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1260,10 +1260,10 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -12.5,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 29,
       "times_at_peak": 1,
-      "points_display": "115.1"
+      "points_display": "17.1"
     },
     {
       "rank": 37,
@@ -1287,7 +1287,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 109.5,
+      "points": 16.3,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1295,10 +1295,10 @@
       "change": null,
       "rank_change": 2,
       "percentage_change": -9.5,
-      "weeks_on_chart": 34,
+      "weeks_on_chart": 35,
       "peak_position": 36,
       "times_at_peak": 1,
-      "points_display": "109.5"
+      "points_display": "16.3"
     },
     {
       "rank": 38,
@@ -1322,7 +1322,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 108.5,
+      "points": 16.1,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1330,10 +1330,10 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -17.3,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 26,
       "times_at_peak": 1,
-      "points_display": "108.5"
+      "points_display": "16.1"
     },
     {
       "rank": 39,
@@ -1357,7 +1357,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 105.8,
+      "points": 15.7,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1365,10 +1365,10 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -13.0,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 27,
       "times_at_peak": 1,
-      "points_display": "105.8"
+      "points_display": "15.7"
     },
     {
       "rank": 40,
@@ -1392,7 +1392,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 104.0,
+      "points": 15.5,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1400,10 +1400,10 @@
       "change": null,
       "rank_change": 5,
       "percentage_change": -6.0,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 35,
       "times_at_peak": 1,
-      "points_display": "104"
+      "points_display": "15.5"
     },
     {
       "rank": 41,
@@ -1427,7 +1427,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 102.4,
+      "points": 15.2,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1435,10 +1435,10 @@
       "change": null,
       "rank_change": 2,
       "percentage_change": -9.1,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 32,
       "times_at_peak": 1,
-      "points_display": "102.4"
+      "points_display": "15.2"
     },
     {
       "rank": 42,
@@ -1462,7 +1462,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 101.3,
+      "points": 15.0,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1470,10 +1470,10 @@
       "change": null,
       "rank_change": 4,
       "percentage_change": -8.2,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 37,
       "times_at_peak": 3,
-      "points_display": "101.3"
+      "points_display": "15"
     },
     {
       "rank": 43,
@@ -1497,7 +1497,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 101.2,
+      "points": 15.0,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1505,10 +1505,10 @@
       "change": null,
       "rank_change": 10,
       "percentage_change": -4.1,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 43,
       "times_at_peak": 1,
-      "points_display": "101.2"
+      "points_display": "15"
     },
     {
       "rank": 44,
@@ -1532,7 +1532,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 100.1,
+      "points": 14.9,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1540,10 +1540,10 @@
       "change": null,
       "rank_change": 6,
       "percentage_change": -7.3,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 33,
       "times_at_peak": 1,
-      "points_display": "100.1"
+      "points_display": "14.9"
     },
     {
       "rank": 45,
@@ -1567,7 +1567,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 98.4,
+      "points": 14.6,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1575,10 +1575,10 @@
       "change": null,
       "rank_change": 4,
       "percentage_change": -9.7,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 32,
       "times_at_peak": 1,
-      "points_display": "98.4"
+      "points_display": "14.6"
     },
     {
       "rank": 46,
@@ -1602,7 +1602,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 96.3,
+      "points": 14.3,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1610,10 +1610,10 @@
       "change": null,
       "rank_change": 2,
       "percentage_change": -12.6,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 39,
       "times_at_peak": 1,
-      "points_display": "96.3"
+      "points_display": "14.3"
     },
     {
       "rank": 47,
@@ -1637,7 +1637,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 94.5,
+      "points": 14.0,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1645,10 +1645,10 @@
       "change": null,
       "rank_change": -3,
       "percentage_change": -15.7,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 25,
       "times_at_peak": 1,
-      "points_display": "94.5"
+      "points_display": "14"
     },
     {
       "rank": 48,
@@ -1672,7 +1672,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 92.1,
+      "points": 13.7,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1680,10 +1680,10 @@
       "change": null,
       "rank_change": -8,
       "percentage_change": -20.6,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 37,
       "times_at_peak": 1,
-      "points_display": "92.1"
+      "points_display": "13.7"
     },
     {
       "rank": 49,
@@ -1707,7 +1707,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 91.8,
+      "points": 13.6,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1715,10 +1715,10 @@
       "change": null,
       "rank_change": 3,
       "percentage_change": -13.5,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 26,
       "times_at_peak": 1,
-      "points_display": "91.8"
+      "points_display": "13.6"
     },
     {
       "rank": 50,
@@ -1742,7 +1742,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 91.8,
+      "points": 13.6,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1750,10 +1750,10 @@
       "change": null,
       "rank_change": -3,
       "percentage_change": -16.8,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 22,
       "times_at_peak": 1,
-      "points_display": "91.8"
+      "points_display": "13.6"
     },
     {
       "rank": 51,
@@ -1777,7 +1777,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 91.5,
+      "points": 13.6,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1785,10 +1785,10 @@
       "change": null,
       "rank_change": 5,
       "percentage_change": -11.3,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 44,
       "times_at_peak": 2,
-      "points_display": "91.5"
+      "points_display": "13.6"
     },
     {
       "rank": 52,
@@ -1812,7 +1812,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 90.6,
+      "points": 13.5,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1820,10 +1820,10 @@
       "change": null,
       "rank_change": 2,
       "percentage_change": -13.7,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 35,
       "times_at_peak": 3,
-      "points_display": "90.6"
+      "points_display": "13.5"
     },
     {
       "rank": 53,
@@ -1847,7 +1847,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 90.3,
+      "points": 13.4,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1855,10 +1855,10 @@
       "change": null,
       "rank_change": -2,
       "percentage_change": -15.0,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 41,
       "times_at_peak": 1,
-      "points_display": "90.3"
+      "points_display": "13.4"
     },
     {
       "rank": 54,
@@ -1882,7 +1882,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 90.2,
+      "points": 13.4,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1890,10 +1890,10 @@
       "change": null,
       "rank_change": 1,
       "percentage_change": -13.6,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 38,
       "times_at_peak": 1,
-      "points_display": "90.2"
+      "points_display": "13.4"
     },
     {
       "rank": 55,
@@ -1917,7 +1917,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 90.2,
+      "points": 13.4,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1925,10 +1925,10 @@
       "change": null,
       "rank_change": -14,
       "percentage_change": -20.1,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 41,
       "times_at_peak": 2,
-      "points_display": "90.2"
+      "points_display": "13.4"
     },
     {
       "rank": 56,
@@ -1952,7 +1952,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 89.4,
+      "points": 13.3,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1960,10 +1960,10 @@
       "change": null,
       "rank_change": -14,
       "percentage_change": -20.6,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 42,
       "times_at_peak": 2,
-      "points_display": "89.4"
+      "points_display": "13.3"
     },
     {
       "rank": 57,
@@ -1987,7 +1987,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 89.0,
+      "points": 13.2,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -1995,10 +1995,10 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -10.9,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 37,
       "times_at_peak": 1,
-      "points_display": "89"
+      "points_display": "13.2"
     },
     {
       "rank": 58,
@@ -2022,7 +2022,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 85.4,
+      "points": 12.7,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2030,10 +2030,10 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -10.1,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 27,
       "times_at_peak": 1,
-      "points_display": "85.4"
+      "points_display": "12.7"
     },
     {
       "rank": 59,
@@ -2057,7 +2057,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 81.0,
+      "points": 12.0,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2065,10 +2065,10 @@
       "change": null,
       "rank_change": 1,
       "percentage_change": -9.9,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 54,
       "times_at_peak": 1,
-      "points_display": "81"
+      "points_display": "12"
     },
     {
       "rank": 60,
@@ -2092,7 +2092,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 79.0,
+      "points": 11.7,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2100,10 +2100,10 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -16.3,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 28,
       "times_at_peak": 1,
-      "points_display": "79"
+      "points_display": "11.7"
     },
     {
       "rank": 61,
@@ -2127,7 +2127,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 76.8,
+      "points": 11.4,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2135,10 +2135,10 @@
       "change": null,
       "rank_change": 4,
       "percentage_change": -6.4,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 44,
       "times_at_peak": 1,
-      "points_display": "76.8"
+      "points_display": "11.4"
     },
     {
       "rank": 62,
@@ -2162,7 +2162,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 74.7,
+      "points": 11.1,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2170,10 +2170,10 @@
       "change": null,
       "rank_change": 4,
       "percentage_change": -7.9,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 28,
       "times_at_peak": 1,
-      "points_display": "74.7"
+      "points_display": "11.1"
     },
     {
       "rank": 63,
@@ -2197,7 +2197,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 73.9,
+      "points": 11.0,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2205,10 +2205,10 @@
       "change": null,
       "rank_change": -2,
       "percentage_change": -17.4,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 36,
       "times_at_peak": 1,
-      "points_display": "73.9"
+      "points_display": "11"
     },
     {
       "rank": 64,
@@ -2232,7 +2232,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 73.0,
+      "points": 10.8,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2240,10 +2240,10 @@
       "change": null,
       "rank_change": -2,
       "percentage_change": -17.8,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 39,
       "times_at_peak": 2,
-      "points_display": "73"
+      "points_display": "10.8"
     },
     {
       "rank": 65,
@@ -2267,7 +2267,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 72.9,
+      "points": 10.8,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2275,10 +2275,10 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -11.7,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 30,
       "times_at_peak": 1,
-      "points_display": "72.9"
+      "points_display": "10.8"
     },
     {
       "rank": 66,
@@ -2302,7 +2302,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 72.8,
+      "points": 10.8,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2310,10 +2310,10 @@
       "change": null,
       "rank_change": -3,
       "percentage_change": -13.3,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 44,
       "times_at_peak": 1,
-      "points_display": "72.8"
+      "points_display": "10.8"
     },
     {
       "rank": 67,
@@ -2337,7 +2337,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 69.6,
+      "points": 10.3,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2345,10 +2345,10 @@
       "change": null,
       "rank_change": 10,
       "percentage_change": -1.8,
-      "weeks_on_chart": 34,
+      "weeks_on_chart": 35,
       "peak_position": 67,
       "times_at_peak": 1,
-      "points_display": "69.6"
+      "points_display": "10.3"
     },
     {
       "rank": 68,
@@ -2372,7 +2372,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 68.8,
+      "points": 10.2,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2380,10 +2380,10 @@
       "change": null,
       "rank_change": 6,
       "percentage_change": -7.2,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 62,
       "times_at_peak": 1,
-      "points_display": "68.8"
+      "points_display": "10.2"
     },
     {
       "rank": 69,
@@ -2407,7 +2407,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 67.6,
+      "points": 10.0,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2415,10 +2415,10 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -13.0,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 32,
       "times_at_peak": 1,
-      "points_display": "67.6"
+      "points_display": "10"
     },
     {
       "rank": 70,
@@ -2442,7 +2442,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 66.6,
+      "points": 9.9,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2450,10 +2450,10 @@
       "change": null,
       "rank_change": -3,
       "percentage_change": -17.4,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 55,
       "times_at_peak": 1,
-      "points_display": "66.6"
+      "points_display": "9.9"
     },
     {
       "rank": 71,
@@ -2477,7 +2477,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 66.3,
+      "points": 9.8,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2488,7 +2488,7 @@
       "weeks_on_chart": 26,
       "peak_position": 64,
       "times_at_peak": 1,
-      "points_display": "66.3"
+      "points_display": "9.8"
     },
     {
       "rank": 72,
@@ -2512,7 +2512,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 65.7,
+      "points": 9.8,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2523,7 +2523,7 @@
       "weeks_on_chart": 32,
       "peak_position": 45,
       "times_at_peak": 1,
-      "points_display": "65.7"
+      "points_display": "9.8"
     },
     {
       "rank": 73,
@@ -2547,7 +2547,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 65.5,
+      "points": 9.7,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2555,10 +2555,10 @@
       "change": null,
       "rank_change": -3,
       "percentage_change": -14.2,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 32,
       "times_at_peak": 1,
-      "points_display": "65.5"
+      "points_display": "9.7"
     },
     {
       "rank": 74,
@@ -2582,7 +2582,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 65.3,
+      "points": 9.7,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2590,10 +2590,10 @@
       "change": null,
       "rank_change": -5,
       "percentage_change": -14.5,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 67,
       "times_at_peak": 1,
-      "points_display": "65.3"
+      "points_display": "9.7"
     },
     {
       "rank": 75,
@@ -2617,7 +2617,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 64.5,
+      "points": 9.6,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2625,10 +2625,10 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -11.3,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 34,
       "times_at_peak": 1,
-      "points_display": "64.5"
+      "points_display": "9.6"
     },
     {
       "rank": 76,
@@ -2652,7 +2652,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 63.3,
+      "points": 9.4,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2660,10 +2660,10 @@
       "change": null,
       "rank_change": 3,
       "percentage_change": -9.7,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 45,
       "times_at_peak": 1,
-      "points_display": "63.3"
+      "points_display": "9.4"
     },
     {
       "rank": 77,
@@ -2687,7 +2687,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 63.3,
+      "points": 9.4,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2695,10 +2695,10 @@
       "change": null,
       "rank_change": 3,
       "percentage_change": -7.6,
-      "weeks_on_chart": 34,
+      "weeks_on_chart": 35,
       "peak_position": 77,
       "times_at_peak": 2,
-      "points_display": "63.3"
+      "points_display": "9.4"
     },
     {
       "rank": 78,
@@ -2722,7 +2722,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 63.1,
+      "points": 9.4,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2730,10 +2730,10 @@
       "change": null,
       "rank_change": -2,
       "percentage_change": -12.7,
-      "weeks_on_chart": 14,
+      "weeks_on_chart": 15,
       "peak_position": 27,
       "times_at_peak": 1,
-      "points_display": "63.1"
+      "points_display": "9.4"
     },
     {
       "rank": 79,
@@ -2757,7 +2757,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 63.0,
+      "points": 9.4,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2765,10 +2765,10 @@
       "change": null,
       "rank_change": -8,
       "percentage_change": -17.3,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 43,
       "times_at_peak": 1,
-      "points_display": "63"
+      "points_display": "9.4"
     },
     {
       "rank": 80,
@@ -2792,7 +2792,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 62.3,
+      "points": 9.3,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2800,10 +2800,10 @@
       "change": null,
       "rank_change": -7,
       "percentage_change": -16.0,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 54,
       "times_at_peak": 1,
-      "points_display": "62.3"
+      "points_display": "9.3"
     },
     {
       "rank": 81,
@@ -2827,7 +2827,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 61.5,
+      "points": 9.1,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2835,10 +2835,10 @@
       "change": null,
       "rank_change": -3,
       "percentage_change": -13.1,
-      "weeks_on_chart": 35,
-      "peak_position": 69,
+      "weeks_on_chart": 36,
+      "peak_position": 64,
       "times_at_peak": 1,
-      "points_display": "61.5"
+      "points_display": "9.1"
     },
     {
       "rank": 82,
@@ -2862,7 +2862,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 60.0,
+      "points": 8.9,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2870,10 +2870,10 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -10.2,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 33,
       "times_at_peak": 1,
-      "points_display": "60"
+      "points_display": "8.9"
     },
     {
       "rank": 83,
@@ -2897,7 +2897,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 57.8,
+      "points": 8.6,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2905,10 +2905,10 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -12.4,
-      "weeks_on_chart": 34,
+      "weeks_on_chart": 35,
       "peak_position": 69,
       "times_at_peak": 1,
-      "points_display": "57.8"
+      "points_display": "8.6"
     },
     {
       "rank": 84,
@@ -2932,7 +2932,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 57.3,
+      "points": 8.5,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2940,10 +2940,10 @@
       "change": null,
       "rank_change": 5,
       "percentage_change": -6.5,
-      "weeks_on_chart": 13,
+      "weeks_on_chart": 14,
       "peak_position": 70,
       "times_at_peak": 1,
-      "points_display": "57.3"
+      "points_display": "8.5"
     },
     {
       "rank": 85,
@@ -2967,7 +2967,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 57.2,
+      "points": 8.5,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -2975,10 +2975,10 @@
       "change": null,
       "rank_change": 1,
       "percentage_change": -9.3,
-      "weeks_on_chart": 33,
+      "weeks_on_chart": 34,
       "peak_position": 69,
       "times_at_peak": 1,
-      "points_display": "57.2"
+      "points_display": "8.5"
     },
     {
       "rank": 86,
@@ -3002,7 +3002,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 56.4,
+      "points": 8.4,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -3010,10 +3010,10 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -10.9,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 54,
       "times_at_peak": 1,
-      "points_display": "56.4"
+      "points_display": "8.4"
     },
     {
       "rank": 87,
@@ -3037,7 +3037,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 56.4,
+      "points": 8.4,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -3045,10 +3045,10 @@
       "change": null,
       "rank_change": -4,
       "percentage_change": -13.7,
-      "weeks_on_chart": 14,
+      "weeks_on_chart": 15,
       "peak_position": 75,
       "times_at_peak": 1,
-      "points_display": "56.4"
+      "points_display": "8.4"
     },
     {
       "rank": 88,
@@ -3072,7 +3072,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 55.8,
+      "points": 8.3,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -3083,7 +3083,7 @@
       "weeks_on_chart": 33,
       "peak_position": 77,
       "times_at_peak": 1,
-      "points_display": "55.8"
+      "points_display": "8.3"
     },
     {
       "rank": 89,
@@ -3107,7 +3107,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 55.3,
+      "points": 8.2,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -3115,10 +3115,10 @@
       "change": null,
       "rank_change": -5,
       "percentage_change": -14.1,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 47,
       "times_at_peak": 1,
-      "points_display": "55.3"
+      "points_display": "8.2"
     },
     {
       "rank": 90,
@@ -3142,7 +3142,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 53.4,
+      "points": 7.9,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -3150,10 +3150,10 @@
       "change": null,
       "rank_change": -2,
       "percentage_change": -14.8,
-      "weeks_on_chart": 35,
+      "weeks_on_chart": 36,
       "peak_position": 37,
       "times_at_peak": 1,
-      "points_display": "53.4"
+      "points_display": "7.9"
     },
     {
       "rank": 91,
@@ -3177,7 +3177,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 53.2,
+      "points": 7.9,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -3185,10 +3185,10 @@
       "change": null,
       "rank_change": -4,
       "percentage_change": -15.3,
-      "weeks_on_chart": 21,
+      "weeks_on_chart": 22,
       "peak_position": 80,
       "times_at_peak": 1,
-      "points_display": "53.2"
+      "points_display": "7.9"
     },
     {
       "rank": 92,
@@ -3212,7 +3212,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 50.8,
+      "points": 7.5,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -3220,10 +3220,10 @@
       "change": null,
       "rank_change": 2,
       "percentage_change": -10.4,
-      "weeks_on_chart": 25,
+      "weeks_on_chart": 26,
       "peak_position": 87,
       "times_at_peak": 1,
-      "points_display": "50.8"
+      "points_display": "7.5"
     },
     {
       "rank": 93,
@@ -3247,7 +3247,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 49.8,
+      "points": 7.4,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -3255,10 +3255,10 @@
       "change": null,
       "rank_change": -2,
       "percentage_change": -13.1,
-      "weeks_on_chart": 14,
+      "weeks_on_chart": 15,
       "peak_position": 41,
       "times_at_peak": 1,
-      "points_display": "49.8"
+      "points_display": "7.4"
     },
     {
       "rank": 94,
@@ -3282,7 +3282,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 49.6,
+      "points": 7.4,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -3290,10 +3290,10 @@
       "change": null,
       "rank_change": -4,
       "percentage_change": -14.8,
-      "weeks_on_chart": 32,
+      "weeks_on_chart": 33,
       "peak_position": 89,
       "times_at_peak": 6,
-      "points_display": "49.6"
+      "points_display": "7.4"
     },
     {
       "rank": 95,
@@ -3317,7 +3317,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 49.5,
+      "points": 7.4,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -3325,10 +3325,10 @@
       "change": null,
       "rank_change": -3,
       "percentage_change": -13.1,
-      "weeks_on_chart": 31,
+      "weeks_on_chart": 32,
       "peak_position": 84,
       "times_at_peak": 2,
-      "points_display": "49.5"
+      "points_display": "7.4"
     },
     {
       "rank": 96,
@@ -3352,7 +3352,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 48.4,
+      "points": 7.2,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -3360,10 +3360,10 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -13.4,
-      "weeks_on_chart": 24,
+      "weeks_on_chart": 25,
       "peak_position": 91,
       "times_at_peak": 4,
-      "points_display": "48.4"
+      "points_display": "7.2"
     },
     {
       "rank": 97,
@@ -3387,7 +3387,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 48.0,
+      "points": 7.1,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -3398,7 +3398,7 @@
       "weeks_on_chart": 5,
       "peak_position": 90,
       "times_at_peak": 1,
-      "points_display": "48"
+      "points_display": "7.1"
     },
     {
       "rank": 98,
@@ -3422,7 +3422,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 47.7,
+      "points": 7.1,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -3433,7 +3433,7 @@
       "weeks_on_chart": 2,
       "peak_position": 98,
       "times_at_peak": 1,
-      "points_display": "47.7"
+      "points_display": "7.1"
     },
     {
       "rank": 99,
@@ -3457,7 +3457,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 47.3,
+      "points": 7.0,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -3468,7 +3468,7 @@
       "weeks_on_chart": 1,
       "peak_position": 99,
       "times_at_peak": 1,
-      "points_display": "47.3"
+      "points_display": "7"
     },
     {
       "rank": 100,
@@ -3492,7 +3492,7 @@
       "airplay_pct": 0.0,
       "sales_pct": 0,
       "bonus_points": 0,
-      "points": 47.0,
+      "points": 7.0,
       "global_best_rank": null,
       "am_ts_score": 0.0,
       "am_global_score": 0.0,
@@ -3503,7 +3503,7 @@
       "weeks_on_chart": 18,
       "peak_position": 72,
       "times_at_peak": 1,
-      "points_display": "47"
+      "points_display": "7"
     }
   ]
 }

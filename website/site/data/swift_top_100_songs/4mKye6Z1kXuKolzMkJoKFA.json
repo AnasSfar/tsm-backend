@@ -11,7 +11,7 @@
     {
       "date": "2025-11-05",
       "rank": 96,
-      "points": 28.3,
+      "points": 6.8,
       "change": "NEW",
       "rank_change": null,
       "percentage_change": null,
@@ -24,7 +24,7 @@
     {
       "date": "2025-11-12",
       "rank": 58,
-      "points": 53.2,
+      "points": 11.5,
       "change": null,
       "rank_change": 38,
       "percentage_change": 69.2,
@@ -37,7 +37,7 @@
     {
       "date": "2025-11-19",
       "rank": 39,
-      "points": 78.0,
+      "points": 15.6,
       "change": null,
       "rank_change": 19,
       "percentage_change": 35.7,
@@ -50,7 +50,7 @@
     {
       "date": "2025-11-26",
       "rank": 29,
-      "points": 125.1,
+      "points": 23.4,
       "change": null,
       "rank_change": 10,
       "percentage_change": 49.7,
@@ -63,7 +63,7 @@
     {
       "date": "2025-12-03",
       "rank": 13,
-      "points": 237.4,
+      "points": 41.0,
       "change": null,
       "rank_change": 16,
       "percentage_change": 75.3,
@@ -76,7 +76,7 @@
     {
       "date": "2025-12-10",
       "rank": 9,
-      "points": 291.9,
+      "points": 50.8,
       "change": null,
       "rank_change": 4,
       "percentage_change": 23.7,
@@ -89,7 +89,7 @@
     {
       "date": "2025-12-17",
       "rank": 8,
-      "points": 304.9,
+      "points": 54.5,
       "change": null,
       "rank_change": 1,
       "percentage_change": 7.4,
@@ -102,10 +102,10 @@
     {
       "date": "2025-12-24",
       "rank": 3,
-      "points": 692.5,
+      "points": 124.7,
       "change": null,
       "rank_change": 5,
-      "percentage_change": 72.5,
+      "percentage_change": 128.6,
       "total_units": 12466000,
       "units_charts": 10200453,
       "units_surplus": 3236495,
@@ -115,10 +115,10 @@
     {
       "date": "2025-12-31",
       "rank": 8,
-      "points": 346.2,
+      "points": 56.7,
       "change": null,
       "rank_change": -5,
-      "percentage_change": -51.1,
+      "percentage_change": -54.5,
       "total_units": 5667197,
       "units_charts": 3565306,
       "units_surplus": 3002702,

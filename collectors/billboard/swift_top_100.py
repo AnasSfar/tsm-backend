@@ -847,6 +847,7 @@ def run(
         logger.log("  history        : first run — all entries NEW")
         prev_points: dict = {}
         prev_ranks: dict = {}
+        prev_total_units_by_track: dict = {}
     else:
         prior_weeks = len({(r.get("date") or "").strip() for r in existing_rows if r.get("date")})
         logger.log(f"  history        : {prior_weeks} prior week{'s' if prior_weeks != 1 else ''} loaded")
@@ -861,8 +862,14 @@ def run(
                 for r in _prev_week_rows
                 if r.get("track_id") and r.get("rank")
             }
+            prev_total_units_by_track = {
+                r["track_id"]: int(r["total_units"])
+                for r in _prev_week_rows
+                if r.get("track_id") and r.get("total_units")
+            }
         else:
             prev_ranks = _spotify_prev_ranks
+            prev_total_units_by_track = {}
 
     out_entries: list[dict] = []
     snapshot_entries: list[dict] = []
@@ -898,12 +905,6 @@ def run(
         key = _normalize_title(row["title"])
         weekly_streams = row["weekly_streams"]
 
-        # % de variation des streams Spotify semaine sur semaine (comparable week-over-week)
-        pct_change = None
-        prev_streams_val = prev_row.get("weekly_streams") if prev_row else None
-        if pr is not None and prev_streams_val and prev_streams_val > 0:
-            pct_change = round(((weekly_streams - prev_streams_val) / prev_streams_val) * 100, 1)
-
         # Apple Music units (loi de puissance × 1000)
         am_ts_raw = am_ts_best_rank.get(key, 0.0)
         am_global_raw = am_best_rank.get(key, 0.0)
@@ -916,6 +917,12 @@ def run(
 
         # Total (pas de données iTunes)
         total_units = units_spotify + units_am
+
+        # % de variation des total_units semaine sur semaine
+        pct_change = None
+        prev_total_units_val = prev_total_units_by_track.get(tid)
+        if pr is not None and prev_total_units_val and prev_total_units_val > 0:
+            pct_change = round(((total_units - prev_total_units_val) / prev_total_units_val) * 100, 1)
 
         # Répartition (points calculés après — placeholder 0)
         streams_pct = round(units_spotify / total_units * 100, 1) if total_units else 0.0
@@ -990,17 +997,12 @@ def run(
             }
         )
 
-    # Normalisation dynamique des points : somme top 100 / 15 000
-    sum_total_units = sum(e["total_units"] for e in out_entries)
-    factor = sum_total_units / 15_000 if sum_total_units > 0 else 1.0
     for e in out_entries:
         bonus = e.get("bonus_points") or 0
-        base = round(e["total_units"] / factor, 1)
-        e["points"] = round(base + bonus, 1)
+        e["points"] = round(e["total_units"] / 100_000 + bonus, 1)
     for e in snapshot_entries:
         bonus = e.get("bonus_points") or 0
-        base = round(e["total_units"] / factor, 1)
-        points = round(base + bonus, 1)
+        points = round(e["total_units"] / 100_000 + bonus, 1)
         e["points"] = points
         e["points_display"] = _format_number(points)
 

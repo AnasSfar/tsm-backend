@@ -11,7 +11,7 @@
     {
       "date": "2025-01-08",
       "rank": 86,
-      "points": 64.4,
+      "points": 8.7,
       "change": "NEW",
       "rank_change": null,
       "percentage_change": null,
@@ -24,7 +24,7 @@
     {
       "date": "2025-01-15",
       "rank": 85,
-      "points": 66.9,
+      "points": 9.1,
       "change": null,
       "rank_change": 1,
       "percentage_change": 5.0,
@@ -37,7 +37,7 @@
     {
       "date": "2025-01-22",
       "rank": 85,
-      "points": 67.0,
+      "points": 9.3,
       "change": null,
       "rank_change": 0,
       "percentage_change": 1.7,
@@ -50,7 +50,7 @@
     {
       "date": "2025-01-29",
       "rank": 86,
-      "points": 67.8,
+      "points": 9.4,
       "change": null,
       "rank_change": -1,
       "percentage_change": 1.0,
@@ -63,7 +63,7 @@
     {
       "date": "2025-02-05",
       "rank": 86,
-      "points": 66.9,
+      "points": 9.3,
       "change": null,
       "rank_change": 0,
       "percentage_change": -1.1,
@@ -76,7 +76,7 @@
     {
       "date": "2025-02-12",
       "rank": 85,
-      "points": 67.8,
+      "points": 9.3,
       "change": null,
       "rank_change": 1,
       "percentage_change": -0.4,
@@ -89,7 +89,7 @@
     {
       "date": "2025-02-19",
       "rank": 83,
-      "points": 67.6,
+      "points": 8.9,
       "change": null,
       "rank_change": 2,
       "percentage_change": -3.8,
@@ -102,10 +102,10 @@
     {
       "date": "2025-02-26",
       "rank": 87,
-      "points": 66.5,
+      "points": 8.6,
       "change": null,
       "rank_change": -4,
-      "percentage_change": -3.0,
+      "percentage_change": -3.1,
       "total_units": 863911,
       "units_charts": 0,
       "units_surplus": 1234159,
@@ -115,7 +115,7 @@
     {
       "date": "2025-03-05",
       "rank": 82,
-      "points": 70.0,
+      "points": 8.5,
       "change": null,
       "rank_change": 5,
       "percentage_change": -1.9,
@@ -128,7 +128,7 @@
     {
       "date": "2025-03-12",
       "rank": 78,
-      "points": 73.0,
+      "points": 8.8,
       "change": null,
       "rank_change": 4,
       "percentage_change": 3.8,
@@ -141,7 +141,7 @@
     {
       "date": "2025-03-19",
       "rank": 85,
-      "points": 67.6,
+      "points": 8.4,
       "change": null,
       "rank_change": -7,
       "percentage_change": -5.1,
@@ -154,7 +154,7 @@
     {
       "date": "2025-03-26",
       "rank": 82,
-      "points": 70.3,
+      "points": 8.7,
       "change": null,
       "rank_change": 3,
       "percentage_change": 3.8,
@@ -167,7 +167,7 @@
     {
       "date": "2025-04-02",
       "rank": 82,
-      "points": 71.2,
+      "points": 8.5,
       "change": null,
       "rank_change": 0,
       "percentage_change": -1.8,
@@ -180,7 +180,7 @@
     {
       "date": "2025-04-09",
       "rank": 80,
-      "points": 72.8,
+      "points": 9.0,
       "change": null,
       "rank_change": 2,
       "percentage_change": 5.7,
@@ -193,7 +193,7 @@
     {
       "date": "2025-04-16",
       "rank": 82,
-      "points": 71.2,
+      "points": 8.8,
       "change": null,
       "rank_change": -2,
       "percentage_change": -2.2,
@@ -206,7 +206,7 @@
     {
       "date": "2025-04-23",
       "rank": 87,
-      "points": 68.7,
+      "points": 8.5,
       "change": null,
       "rank_change": -5,
       "percentage_change": -3.9,
@@ -219,7 +219,7 @@
     {
       "date": "2025-04-30",
       "rank": 83,
-      "points": 69.1,
+      "points": 8.7,
       "change": null,
       "rank_change": 4,
       "percentage_change": 3.4,
@@ -232,7 +232,7 @@
     {
       "date": "2025-05-07",
       "rank": 83,
-      "points": 70.1,
+      "points": 8.7,
       "change": null,
       "rank_change": 0,
       "percentage_change": -0.8,
@@ -245,7 +245,7 @@
     {
       "date": "2025-05-14",
       "rank": 85,
-      "points": 68.3,
+      "points": 8.5,
       "change": null,
       "rank_change": -2,
       "percentage_change": -1.5,
@@ -258,7 +258,7 @@
     {
       "date": "2025-05-21",
       "rank": 85,
-      "points": 67.9,
+      "points": 8.3,
       "change": null,
       "rank_change": 0,
       "percentage_change": -2.8,
@@ -271,7 +271,7 @@
     {
       "date": "2025-05-28",
       "rank": 86,
-      "points": 67.6,
+      "points": 8.3,
       "change": null,
       "rank_change": -1,
       "percentage_change": 0.3,
