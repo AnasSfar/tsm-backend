@@ -1,0 +1,38 @@
+{
+  "track_id": "11UaQaEp2LvdspTyyuE3ur",
+  "title": "Haunted",
+  "primary_album": "Speak Now",
+  "spotify_url": "https://open.spotify.com/track/11UaQaEp2LvdspTyyuE3ur",
+  "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
+  "peak_position": 78,
+  "times_at_peak": 1,
+  "weeks_on_chart": 2,
+  "history": [
+    {
+      "date": "2025-06-04",
+      "rank": 78,
+      "points": 80.5,
+      "change": "NEW",
+      "rank_change": null,
+      "percentage_change": null,
+      "total_units": 1227566,
+      "units_charts": 0,
+      "units_surplus": 1753665,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    },
+    {
+      "date": "2025-06-11",
+      "rank": 91,
+      "points": 64.8,
+      "change": null,
+      "rank_change": -13,
+      "percentage_change": -28.3,
+      "total_units": 880641,
+      "units_charts": 0,
+      "units_surplus": 1258058,
+      "am_ts_units": 0,
+      "am_global_units": 0
+    }
+  ]
+}

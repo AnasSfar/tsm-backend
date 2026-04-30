@@ -4,36 +4,10 @@
   "primary_album": "evermore",
   "spotify_url": "https://open.spotify.com/track/3k7ne7VmH43ZPWxPdvPUgR",
   "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
-  "peak_position": 97,
+  "peak_position": 100,
   "times_at_peak": 1,
-  "weeks_on_chart": 3,
+  "weeks_on_chart": 1,
   "history": [
-    {
-      "date": "2025-01-08",
-      "rank": 99,
-      "points": 46.3,
-      "change": null,
-      "rank_change": 1,
-      "percentage_change": 821.4,
-      "total_units": 431787,
-      "units_charts": 0,
-      "units_surplus": 616839,
-      "am_ts_units": 0,
-      "am_global_units": 0
-    },
-    {
-      "date": "2025-01-15",
-      "rank": 97,
-      "points": 48.1,
-      "change": null,
-      "rank_change": 2,
-      "percentage_change": 2.1,
-      "total_units": 440756,
-      "units_charts": 0,
-      "units_surplus": 629651,
-      "am_ts_units": 0,
-      "am_global_units": 0
-    },
     {
       "date": "2025-01-22",
       "rank": 100,

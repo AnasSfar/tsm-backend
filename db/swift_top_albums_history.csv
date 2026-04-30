@@ -1,0 +1,871 @@
+date,week_start,rank,album_id,title,weekly_streams,track_count,prev_rank,change,rank_change,percentage_change,weeks_on_chart,peak_position,times_at_peak
+2025-01-08,2025-01-02,1,lover,Lover,37414980,14,,NEW,,,1,1,1
+2025-01-08,2025-01-02,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,32804066,9,,NEW,,,1,2,1
+2025-01-08,2025-01-02,3,reputation,reputation,27517542,14,,NEW,,,1,3,1
+2025-01-08,2025-01-02,4,midnights,Midnights,24864780,15,,NEW,,,1,4,1
+2025-01-08,2025-01-02,5,1989,1989,14985187,4,,NEW,,,1,5,1
+2025-01-08,2025-01-02,6,evermore,evermore,14666969,13,,NEW,,,1,6,1
+2025-01-08,2025-01-02,7,fearless_taylor_s_version,Fearless (Taylor's Version),11533166,4,,NEW,,,1,7,1
+2025-01-08,2025-01-02,8,1989_taylor_s_version,1989 (Taylor's Version),8068265,9,,NEW,,,1,8,1
+2025-01-08,2025-01-02,9,red_taylor_s_version,Red (Taylor's Version),7462034,6,,NEW,,,1,9,1
+2025-01-08,2025-01-02,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),5342723,6,,NEW,,,1,10,1
+2025-01-08,2025-01-02,11,speak_now,Speak Now,2815234,2,,NEW,,,1,11,1
+2025-01-08,2025-01-02,12,taylor_swift,Taylor Swift,1754531,2,,NEW,,,1,12,1
+2025-01-08,2025-01-02,13,folklore,folklore,1014407,1,,NEW,,,1,13,1
+2025-01-08,2025-01-02,14,the_taylor_swift_holiday_collection,The Taylor Swift Holiday Collection,743200,1,,NEW,,,1,14,1
+2025-01-15,2025-01-09,1,lover,Lover,37645638,14,1,,0,0.6,2,1,2
+2025-01-15,2025-01-09,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,32618290,9,2,,0,-0.6,2,2,2
+2025-01-15,2025-01-09,3,reputation,reputation,27133612,14,3,,0,-1.4,2,3,2
+2025-01-15,2025-01-09,4,midnights,Midnights,24891032,15,4,,0,0.1,2,4,2
+2025-01-15,2025-01-09,5,evermore,evermore,14711936,13,6,,1,0.3,2,5,1
+2025-01-15,2025-01-09,6,1989,1989,14655902,4,5,,-1,-2.2,2,5,1
+2025-01-15,2025-01-09,7,fearless_taylor_s_version,Fearless (Taylor's Version),11526584,4,7,,0,-0.1,2,7,2
+2025-01-15,2025-01-09,8,1989_taylor_s_version,1989 (Taylor's Version),8308186,9,8,,0,3.0,2,8,2
+2025-01-15,2025-01-09,9,red_taylor_s_version,Red (Taylor's Version),7460071,6,9,,0,-0.0,2,9,2
+2025-01-15,2025-01-09,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),6004634,7,10,,0,12.4,2,10,2
+2025-01-15,2025-01-09,11,speak_now,Speak Now,2868580,2,11,,0,1.9,2,11,2
+2025-01-15,2025-01-09,12,taylor_swift,Taylor Swift,1739112,2,12,,0,-0.9,2,12,2
+2025-01-15,2025-01-09,13,folklore,folklore,1039660,1,13,,0,2.5,2,13,2
+2025-01-22,2025-01-16,1,lover,Lover,38068796,14,1,,0,1.1,3,1,3
+2025-01-22,2025-01-16,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,32626433,9,2,,0,0.0,3,2,3
+2025-01-22,2025-01-16,3,reputation,reputation,28303832,14,3,,0,4.3,3,3,3
+2025-01-22,2025-01-16,4,midnights,Midnights,24998518,15,4,,0,0.4,3,4,3
+2025-01-22,2025-01-16,5,1989,1989,15484132,4,6,,1,5.7,3,5,2
+2025-01-22,2025-01-16,6,evermore,evermore,14384859,13,5,,-1,-2.2,3,5,1
+2025-01-22,2025-01-16,7,fearless_taylor_s_version,Fearless (Taylor's Version),11893323,4,7,,0,3.2,3,7,3
+2025-01-22,2025-01-16,8,1989_taylor_s_version,1989 (Taylor's Version),8969787,10,8,,0,8.0,3,8,3
+2025-01-22,2025-01-16,9,red_taylor_s_version,Red (Taylor's Version),7463731,6,9,,0,0.0,3,9,3
+2025-01-22,2025-01-16,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),5386615,6,10,,0,-10.3,3,10,3
+2025-01-22,2025-01-16,11,speak_now,Speak Now,2989766,2,11,,0,4.2,3,11,3
+2025-01-22,2025-01-16,12,taylor_swift,Taylor Swift,1788636,2,12,,0,2.8,3,12,3
+2025-01-22,2025-01-16,13,folklore,folklore,1026831,1,13,,0,-1.2,3,13,3
+2025-01-29,2025-01-23,1,lover,Lover,38234140,14,1,,0,0.4,4,1,4
+2025-01-29,2025-01-23,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,31997668,9,2,,0,-1.9,4,2,4
+2025-01-29,2025-01-23,3,reputation,reputation,28820513,14,3,,0,1.8,4,3,4
+2025-01-29,2025-01-23,4,midnights,Midnights,25020603,15,4,,0,0.1,4,4,4
+2025-01-29,2025-01-23,5,1989,1989,15526756,4,5,,0,0.3,4,5,3
+2025-01-29,2025-01-23,6,evermore,evermore,13719684,12,6,,0,-4.6,4,5,1
+2025-01-29,2025-01-23,7,fearless_taylor_s_version,Fearless (Taylor's Version),12520613,5,7,,0,5.3,4,7,4
+2025-01-29,2025-01-23,8,1989_taylor_s_version,1989 (Taylor's Version),9211190,10,8,,0,2.7,4,8,4
+2025-01-29,2025-01-23,9,red_taylor_s_version,Red (Taylor's Version),7558147,6,9,,0,1.3,4,9,4
+2025-01-29,2025-01-23,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),5495128,6,10,,0,2.0,4,10,4
+2025-01-29,2025-01-23,11,speak_now,Speak Now,3069918,2,11,,0,2.7,4,11,4
+2025-01-29,2025-01-23,12,taylor_swift,Taylor Swift,1822952,2,12,,0,1.9,4,12,4
+2025-01-29,2025-01-23,13,folklore,folklore,1012131,1,13,,0,-1.4,4,13,4
+2025-02-05,2025-01-30,1,lover,Lover,37069443,14,1,,0,-3.0,5,1,5
+2025-02-05,2025-01-30,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,34022213,9,2,,0,6.3,5,2,5
+2025-02-05,2025-01-30,3,reputation,reputation,28583294,14,3,,0,-0.8,5,3,5
+2025-02-05,2025-01-30,4,midnights,Midnights,24634322,15,4,,0,-1.5,5,4,5
+2025-02-05,2025-01-30,5,1989,1989,15674484,4,5,,0,1.0,5,5,4
+2025-02-05,2025-01-30,6,evermore,evermore,13160503,12,6,,0,-4.1,5,5,1
+2025-02-05,2025-01-30,7,fearless_taylor_s_version,Fearless (Taylor's Version),12558210,5,7,,0,0.3,5,7,5
+2025-02-05,2025-01-30,8,1989_taylor_s_version,1989 (Taylor's Version),8996652,10,8,,0,-2.3,5,8,5
+2025-02-05,2025-01-30,9,red_taylor_s_version,Red (Taylor's Version),7368484,6,9,,0,-2.5,5,9,5
+2025-02-05,2025-01-30,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),5340146,6,10,,0,-2.8,5,10,5
+2025-02-05,2025-01-30,11,speak_now,Speak Now,3062409,2,11,,0,-0.2,5,11,5
+2025-02-05,2025-01-30,12,taylor_swift,Taylor Swift,1866798,2,12,,0,2.4,5,12,5
+2025-02-05,2025-01-30,13,folklore,folklore,985968,1,13,,0,-2.6,5,13,5
+2025-02-12,2025-02-06,1,lover,Lover,36815566,14,1,,0,-0.7,6,1,6
+2025-02-12,2025-02-06,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,32744362,9,2,,0,-3.8,6,2,6
+2025-02-12,2025-02-06,3,reputation,reputation,27231805,14,3,,0,-4.7,6,3,6
+2025-02-12,2025-02-06,4,midnights,Midnights,23817758,15,4,,0,-3.3,6,4,6
+2025-02-12,2025-02-06,5,1989,1989,15674324,4,5,,0,-0.0,6,5,5
+2025-02-12,2025-02-06,6,evermore,evermore,12683918,12,6,,0,-3.6,6,5,1
+2025-02-12,2025-02-06,7,fearless_taylor_s_version,Fearless (Taylor's Version),12438577,5,7,,0,-1.0,6,7,6
+2025-02-12,2025-02-06,8,1989_taylor_s_version,1989 (Taylor's Version),8063726,9,8,,0,-10.4,6,8,6
+2025-02-12,2025-02-06,9,red_taylor_s_version,Red (Taylor's Version),7799613,7,9,,0,5.9,6,9,6
+2025-02-12,2025-02-06,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),5161047,6,10,,0,-3.4,6,10,6
+2025-02-12,2025-02-06,11,speak_now,Speak Now,3095663,2,11,,0,1.1,6,11,6
+2025-02-12,2025-02-06,12,taylor_swift,Taylor Swift,1847787,2,12,,0,-1.0,6,12,6
+2025-02-12,2025-02-06,13,folklore,folklore,942521,1,13,,0,-4.4,6,13,6
+2025-02-19,2025-02-13,1,lover,Lover,36627954,14,1,,0,-0.5,7,1,7
+2025-02-19,2025-02-13,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,28910212,9,2,,0,-11.7,7,2,7
+2025-02-19,2025-02-13,3,reputation,reputation,26595436,14,3,,0,-2.3,7,3,7
+2025-02-19,2025-02-13,4,midnights,Midnights,23092488,15,4,,0,-3.0,7,4,7
+2025-02-19,2025-02-13,5,1989,1989,14913548,4,5,,0,-4.9,7,5,6
+2025-02-19,2025-02-13,6,fearless_taylor_s_version,Fearless (Taylor's Version),12879841,5,7,,1,3.5,7,6,1
+2025-02-19,2025-02-13,7,evermore,evermore,12242918,12,6,,-1,-3.5,7,5,1
+2025-02-19,2025-02-13,8,1989_taylor_s_version,1989 (Taylor's Version),7784329,9,8,,0,-3.5,7,8,7
+2025-02-19,2025-02-13,9,red_taylor_s_version,Red (Taylor's Version),7119532,6,9,,0,-8.7,7,9,7
+2025-02-19,2025-02-13,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),5686073,7,10,,0,10.2,7,10,7
+2025-02-19,2025-02-13,11,speak_now,Speak Now,3134606,2,11,,0,1.3,7,11,7
+2025-02-19,2025-02-13,12,taylor_swift,Taylor Swift,1861501,2,12,,0,0.7,7,12,7
+2025-02-19,2025-02-13,13,folklore,folklore,903194,1,13,,0,-4.2,7,13,7
+2025-02-26,2025-02-20,1,lover,Lover,34597939,14,1,,0,-5.5,8,1,8
+2025-02-26,2025-02-20,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,28044018,9,2,,0,-3.0,8,2,8
+2025-02-26,2025-02-20,3,reputation,reputation,25322033,13,3,,0,-4.8,8,3,8
+2025-02-26,2025-02-20,4,midnights,Midnights,24170425,15,4,,0,4.7,8,4,8
+2025-02-26,2025-02-20,5,1989,1989,15148616,4,5,,0,1.6,8,5,7
+2025-02-26,2025-02-20,6,evermore,evermore,12673968,12,7,,1,3.5,8,5,1
+2025-02-26,2025-02-20,7,fearless_taylor_s_version,Fearless (Taylor's Version),12214447,5,6,,-1,-5.2,8,6,1
+2025-02-26,2025-02-20,8,1989_taylor_s_version,1989 (Taylor's Version),9363563,11,8,,0,20.3,8,8,8
+2025-02-26,2025-02-20,9,red_taylor_s_version,Red (Taylor's Version),7154287,6,9,,0,0.5,8,9,8
+2025-02-26,2025-02-20,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),4987394,6,10,,0,-12.3,8,10,8
+2025-02-26,2025-02-20,11,speak_now,Speak Now,3083997,2,11,,0,-1.6,8,11,8
+2025-02-26,2025-02-20,12,taylor_swift,Taylor Swift,1771479,2,12,,0,-4.8,8,12,8
+2025-02-26,2025-02-20,13,folklore,folklore,953374,1,13,,0,5.6,8,13,8
+2025-03-05,2025-02-27,1,lover,Lover,33190182,14,1,,0,-4.1,9,1,9
+2025-03-05,2025-02-27,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,30089118,9,2,,0,7.3,9,2,9
+2025-03-05,2025-02-27,3,reputation,reputation,24228665,14,3,,0,-4.3,9,3,9
+2025-03-05,2025-02-27,4,midnights,Midnights,22477283,15,4,,0,-7.0,9,4,9
+2025-03-05,2025-02-27,5,1989,1989,14697150,4,5,,0,-3.0,9,5,8
+2025-03-05,2025-02-27,6,evermore,evermore,11962469,12,6,,0,-5.6,9,5,1
+2025-03-05,2025-02-27,7,fearless_taylor_s_version,Fearless (Taylor's Version),11867617,5,7,,0,-2.8,9,6,1
+2025-03-05,2025-02-27,8,1989_taylor_s_version,1989 (Taylor's Version),8304596,10,8,,0,-11.3,9,8,9
+2025-03-05,2025-02-27,9,red_taylor_s_version,Red (Taylor's Version),6883618,6,9,,0,-3.8,9,9,9
+2025-03-05,2025-02-27,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),4842384,6,10,,0,-2.9,9,10,9
+2025-03-05,2025-02-27,11,speak_now,Speak Now,3061723,2,11,,0,-0.7,9,11,9
+2025-03-05,2025-02-27,12,taylor_swift,Taylor Swift,1736032,2,12,,0,-2.0,9,12,9
+2025-03-05,2025-02-27,13,folklore,folklore,885000,1,13,,0,-7.2,9,13,9
+2025-03-12,2025-03-06,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,48672314,23,2,,1,61.8,10,1,1
+2025-03-12,2025-03-06,2,lover,Lover,36162871,16,1,,-1,9.0,10,1,9
+2025-03-12,2025-03-06,3,reputation,reputation,23177176,12,3,,0,-4.3,10,3,10
+2025-03-12,2025-03-06,4,midnights,Midnights,21819321,13,4,,0,-2.9,10,4,10
+2025-03-12,2025-03-06,5,1989_taylor_s_version,1989 (Taylor's Version),15149014,12,8,,3,82.4,10,5,1
+2025-03-12,2025-03-06,6,1989,1989,12819496,3,5,,-1,-12.8,10,5,8
+2025-03-12,2025-03-06,7,fearless_taylor_s_version,Fearless (Taylor's Version),11500435,4,7,,0,-3.1,10,6,1
+2025-03-12,2025-03-06,8,evermore,evermore,7210916,5,6,,-2,-39.7,10,5,1
+2025-03-12,2025-03-06,9,red_taylor_s_version,Red (Taylor's Version),6117068,5,9,,0,-11.1,10,9,10
+2025-03-12,2025-03-06,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),3895660,4,10,,0,-19.6,10,10,10
+2025-03-12,2025-03-06,11,speak_now,Speak Now,2115020,1,11,,0,-30.9,10,11,10
+2025-03-12,2025-03-06,12,taylor_swift,Taylor Swift,1204276,1,12,,0,-30.6,10,12,10
+2025-03-12,2025-03-06,13,folklore,folklore,904873,1,13,,0,2.2,10,13,10
+2025-03-19,2025-03-13,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,49304649,24,1,,0,1.3,11,1,2
+2025-03-19,2025-03-13,2,lover,Lover,35647078,15,2,,0,-1.4,11,1,9
+2025-03-19,2025-03-13,3,reputation,reputation,23759732,12,3,,0,2.5,11,3,11
+2025-03-19,2025-03-13,4,midnights,Midnights,21772026,13,4,,0,-0.2,11,4,11
+2025-03-19,2025-03-13,5,1989_taylor_s_version,1989 (Taylor's Version),16667802,12,5,,0,10.0,11,5,2
+2025-03-19,2025-03-13,6,1989,1989,12656471,3,6,,0,-1.3,11,5,8
+2025-03-19,2025-03-13,7,fearless_taylor_s_version,Fearless (Taylor's Version),11504892,4,7,,0,0.0,11,6,1
+2025-03-19,2025-03-13,8,evermore,evermore,7169484,5,8,,0,-0.6,11,5,1
+2025-03-19,2025-03-13,9,speak_now_taylor_s_version,Speak Now (Taylor's Version),6450101,5,10,,1,65.6,11,9,1
+2025-03-19,2025-03-13,10,red_taylor_s_version,Red (Taylor's Version),6202983,5,9,,-1,1.4,11,9,10
+2025-03-19,2025-03-13,11,taylor_swift,Taylor Swift,1220623,1,12,,1,1.4,11,11,1
+2025-03-19,2025-03-13,12,folklore,folklore,913144,1,13,,1,0.9,11,12,1
+2025-03-26,2025-03-20,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,49846950,25,1,,0,1.1,12,1,3
+2025-03-26,2025-03-20,2,lover,Lover,35658279,15,2,,0,0.0,12,1,9
+2025-03-26,2025-03-20,3,reputation,reputation,23746140,12,3,,0,-0.1,12,3,12
+2025-03-26,2025-03-20,4,midnights,Midnights,21653155,13,4,,0,-0.5,12,4,12
+2025-03-26,2025-03-20,5,1989_taylor_s_version,1989 (Taylor's Version),16508158,12,5,,0,-1.0,12,5,3
+2025-03-26,2025-03-20,6,1989,1989,12697885,3,6,,0,0.3,12,5,8
+2025-03-26,2025-03-20,7,fearless_taylor_s_version,Fearless (Taylor's Version),11525732,4,7,,0,0.2,12,6,1
+2025-03-26,2025-03-20,8,speak_now_taylor_s_version,Speak Now (Taylor's Version),6430285,5,9,,1,-0.3,12,8,1
+2025-03-26,2025-03-20,9,red_taylor_s_version,Red (Taylor's Version),6248354,5,10,,1,0.7,12,9,11
+2025-03-26,2025-03-20,10,evermore,evermore,6242417,4,8,,-2,-12.9,12,5,1
+2025-03-26,2025-03-20,11,taylor_swift,Taylor Swift,1220407,1,11,,0,-0.0,12,11,2
+2025-03-26,2025-03-20,12,folklore,folklore,899662,1,12,,0,-1.5,12,12,2
+2025-04-02,2025-03-27,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,49346928,25,1,,0,-1.0,13,1,4
+2025-04-02,2025-03-27,2,lover,Lover,34377875,15,2,,0,-3.6,13,1,9
+2025-04-02,2025-03-27,3,reputation,reputation,23066215,12,3,,0,-2.9,13,3,13
+2025-04-02,2025-03-27,4,midnights,Midnights,20705976,13,4,,0,-4.4,13,4,13
+2025-04-02,2025-03-27,5,1989_taylor_s_version,1989 (Taylor's Version),16054248,12,5,,0,-2.7,13,5,4
+2025-04-02,2025-03-27,6,1989,1989,12417665,3,6,,0,-2.2,13,5,8
+2025-04-02,2025-03-27,7,fearless_taylor_s_version,Fearless (Taylor's Version),11110714,4,7,,0,-3.6,13,6,1
+2025-04-02,2025-03-27,8,speak_now_taylor_s_version,Speak Now (Taylor's Version),6318371,5,8,,0,-1.7,13,8,2
+2025-04-02,2025-03-27,9,evermore,evermore,6144492,4,10,,1,-1.6,13,5,1
+2025-04-02,2025-03-27,10,red_taylor_s_version,Red (Taylor's Version),5973958,5,9,,-1,-4.4,13,9,11
+2025-04-02,2025-03-27,11,taylor_swift,Taylor Swift,1167056,1,11,,0,-4.4,13,11,3
+2025-04-02,2025-03-27,12,folklore,folklore,871326,1,12,,0,-3.1,13,12,3
+2025-04-09,2025-04-03,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,52623784,25,1,,0,6.6,14,1,5
+2025-04-09,2025-04-03,2,lover,Lover,34297025,14,2,,0,-0.2,14,1,9
+2025-04-09,2025-04-03,3,reputation,reputation,23251937,12,3,,0,0.8,14,3,14
+2025-04-09,2025-04-03,4,midnights,Midnights,21444802,13,4,,0,3.6,14,4,14
+2025-04-09,2025-04-03,5,1989_taylor_s_version,1989 (Taylor's Version),16727242,12,5,,0,4.2,14,5,5
+2025-04-09,2025-04-03,6,1989,1989,12851363,3,6,,0,3.5,14,5,8
+2025-04-09,2025-04-03,7,fearless_taylor_s_version,Fearless (Taylor's Version),11662804,4,7,,0,5.0,14,6,1
+2025-04-09,2025-04-03,8,speak_now_taylor_s_version,Speak Now (Taylor's Version),7333809,6,8,,0,16.1,14,8,3
+2025-04-09,2025-04-03,9,evermore,evermore,6301797,4,9,,0,2.6,14,5,1
+2025-04-09,2025-04-03,10,red_taylor_s_version,Red (Taylor's Version),6196116,5,10,,0,3.7,14,9,11
+2025-04-09,2025-04-03,11,taylor_swift,Taylor Swift,1242599,1,11,,0,6.5,14,11,4
+2025-04-09,2025-04-03,12,folklore,folklore,897292,1,12,,0,3.0,14,12,4
+2025-04-16,2025-04-10,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,53047024,25,1,,0,0.8,15,1,6
+2025-04-16,2025-04-10,2,lover,Lover,35305801,15,2,,0,2.9,15,1,9
+2025-04-16,2025-04-10,3,reputation,reputation,23140680,12,3,,0,-0.5,15,3,15
+2025-04-16,2025-04-10,4,midnights,Midnights,20936818,13,4,,0,-2.4,15,4,15
+2025-04-16,2025-04-10,5,1989_taylor_s_version,1989 (Taylor's Version),16682847,12,5,,0,-0.3,15,5,6
+2025-04-16,2025-04-10,6,1989,1989,12962863,3,6,,0,0.9,15,5,8
+2025-04-16,2025-04-10,7,fearless_taylor_s_version,Fearless (Taylor's Version),11632135,4,7,,0,-0.3,15,6,1
+2025-04-16,2025-04-10,8,speak_now_taylor_s_version,Speak Now (Taylor's Version),6514812,5,8,,0,-11.2,15,8,4
+2025-04-16,2025-04-10,9,red_taylor_s_version,Red (Taylor's Version),6281338,5,10,,1,1.4,15,9,12
+2025-04-16,2025-04-10,10,evermore,evermore,6190369,4,9,,-1,-1.8,15,5,1
+2025-04-16,2025-04-10,11,taylor_swift,Taylor Swift,1248139,1,11,,0,0.4,15,11,5
+2025-04-16,2025-04-10,12,folklore,folklore,886310,1,12,,0,-1.2,15,12,5
+2025-04-23,2025-04-17,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,60052266,27,1,,0,13.2,16,1,7
+2025-04-23,2025-04-17,2,lover,Lover,34145396,15,2,,0,-3.3,16,1,9
+2025-04-23,2025-04-17,3,reputation,reputation,22751836,12,3,,0,-1.7,16,3,16
+2025-04-23,2025-04-17,4,midnights,Midnights,20310050,13,4,,0,-3.0,16,4,16
+2025-04-23,2025-04-17,5,1989_taylor_s_version,1989 (Taylor's Version),14526506,10,5,,0,-12.9,16,5,7
+2025-04-23,2025-04-17,6,1989,1989,12618967,3,6,,0,-2.7,16,5,8
+2025-04-23,2025-04-17,7,fearless_taylor_s_version,Fearless (Taylor's Version),11343852,4,7,,0,-2.5,16,6,1
+2025-04-23,2025-04-17,8,speak_now_taylor_s_version,Speak Now (Taylor's Version),6248207,5,8,,0,-4.1,16,8,5
+2025-04-23,2025-04-17,9,red_taylor_s_version,Red (Taylor's Version),6157808,5,9,,0,-2.0,16,9,13
+2025-04-23,2025-04-17,10,evermore,evermore,6015460,4,10,,0,-2.8,16,5,1
+2025-04-23,2025-04-17,11,taylor_swift,Taylor Swift,1233225,1,11,,0,-1.2,16,11,6
+2025-04-23,2025-04-17,12,folklore,folklore,873139,1,12,,0,-1.5,16,12,6
+2025-04-30,2025-04-24,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,53142679,25,1,,0,-11.5,17,1,8
+2025-04-30,2025-04-24,2,lover,Lover,37157082,15,2,,0,8.8,17,1,9
+2025-04-30,2025-04-24,3,reputation,reputation,23369760,12,3,,0,2.7,17,3,17
+2025-04-30,2025-04-24,4,midnights,Midnights,22211478,14,4,,0,9.4,17,4,17
+2025-04-30,2025-04-24,5,1989_taylor_s_version,1989 (Taylor's Version),16100051,11,5,,0,10.8,17,5,8
+2025-04-30,2025-04-24,6,1989,1989,13004502,3,6,,0,3.1,17,5,8
+2025-04-30,2025-04-24,7,fearless_taylor_s_version,Fearless (Taylor's Version),12265733,4,7,,0,8.1,17,6,1
+2025-04-30,2025-04-24,8,red_taylor_s_version,Red (Taylor's Version),7792556,5,9,,1,26.5,17,8,1
+2025-04-30,2025-04-24,9,speak_now_taylor_s_version,Speak Now (Taylor's Version),6709265,5,8,,-1,7.4,17,8,5
+2025-04-30,2025-04-24,10,evermore,evermore,6191509,4,10,,0,2.9,17,5,1
+2025-04-30,2025-04-24,11,taylor_swift,Taylor Swift,1246031,1,11,,0,1.0,17,11,7
+2025-04-30,2025-04-24,12,folklore,folklore,929176,1,12,,0,6.4,17,12,7
+2025-05-07,2025-05-01,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,49229879,25,1,,0,-7.4,18,1,9
+2025-05-07,2025-05-01,2,lover,Lover,36453212,15,2,,0,-1.9,18,1,9
+2025-05-07,2025-05-01,3,reputation,reputation,23131922,12,3,,0,-1.0,18,3,18
+2025-05-07,2025-05-01,4,midnights,Midnights,20795789,13,4,,0,-6.4,18,4,18
+2025-05-07,2025-05-01,5,1989_taylor_s_version,1989 (Taylor's Version),15872158,11,5,,0,-1.4,18,5,9
+2025-05-07,2025-05-01,6,1989,1989,13082185,3,6,,0,0.6,18,5,8
+2025-05-07,2025-05-01,7,fearless_taylor_s_version,Fearless (Taylor's Version),12429700,4,7,,0,1.3,18,6,1
+2025-05-07,2025-05-01,8,red_taylor_s_version,Red (Taylor's Version),7514964,5,8,,0,-3.6,18,8,2
+2025-05-07,2025-05-01,9,speak_now_taylor_s_version,Speak Now (Taylor's Version),7410719,6,9,,0,10.5,18,8,5
+2025-05-07,2025-05-01,10,evermore,evermore,6040208,4,10,,0,-2.4,18,5,1
+2025-05-07,2025-05-01,11,taylor_swift,Taylor Swift,1234033,1,11,,0,-1.0,18,11,8
+2025-05-07,2025-05-01,12,folklore,folklore,897372,1,12,,0,-3.4,18,12,8
+2025-05-14,2025-05-08,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,49097025,25,1,,0,-0.3,19,1,10
+2025-05-14,2025-05-08,2,lover,Lover,36461109,15,2,,0,0.0,19,1,9
+2025-05-14,2025-05-08,3,reputation,reputation,23386068,12,3,,0,1.1,19,3,19
+2025-05-14,2025-05-08,4,midnights,Midnights,21196132,13,4,,0,1.9,19,4,19
+2025-05-14,2025-05-08,5,1989_taylor_s_version,1989 (Taylor's Version),15929439,11,5,,0,0.4,19,5,10
+2025-05-14,2025-05-08,6,1989,1989,13283034,3,6,,0,1.5,19,5,8
+2025-05-14,2025-05-08,7,fearless_taylor_s_version,Fearless (Taylor's Version),12501985,4,7,,0,0.6,19,6,1
+2025-05-14,2025-05-08,8,speak_now_taylor_s_version,Speak Now (Taylor's Version),7540605,6,9,,1,1.8,19,8,6
+2025-05-14,2025-05-08,9,red_taylor_s_version,Red (Taylor's Version),7081206,5,8,,-1,-5.8,19,8,2
+2025-05-14,2025-05-08,10,evermore,evermore,6165378,4,10,,0,2.1,19,5,1
+2025-05-14,2025-05-08,11,taylor_swift,Taylor Swift,1270468,1,11,,0,3.0,19,11,9
+2025-05-14,2025-05-08,12,folklore,folklore,910284,1,12,,0,1.4,19,12,9
+2025-05-21,2025-05-15,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,45685067,24,1,,0,-6.9,20,1,11
+2025-05-21,2025-05-15,2,lover,Lover,36011237,15,2,,0,-1.2,20,1,9
+2025-05-21,2025-05-15,3,reputation,reputation,23368435,12,3,,0,-0.1,20,3,20
+2025-05-21,2025-05-15,4,midnights,Midnights,20379302,13,4,,0,-3.9,20,4,20
+2025-05-21,2025-05-15,5,1989_taylor_s_version,1989 (Taylor's Version),16245029,12,5,,0,2.0,20,5,11
+2025-05-21,2025-05-15,6,1989,1989,13137080,3,6,,0,-1.1,20,5,8
+2025-05-21,2025-05-15,7,fearless_taylor_s_version,Fearless (Taylor's Version),12130837,4,7,,0,-3.0,20,6,1
+2025-05-21,2025-05-15,8,speak_now_taylor_s_version,Speak Now (Taylor's Version),7411695,6,8,,0,-1.7,20,8,7
+2025-05-21,2025-05-15,9,red_taylor_s_version,Red (Taylor's Version),6932079,5,9,,0,-2.1,20,8,2
+2025-05-21,2025-05-15,10,evermore,evermore,5988331,4,10,,0,-2.9,20,5,1
+2025-05-21,2025-05-15,11,taylor_swift,Taylor Swift,1210961,1,11,,0,-4.7,20,11,10
+2025-05-21,2025-05-15,12,folklore,folklore,909630,1,12,,0,-0.1,20,12,10
+2025-05-28,2025-05-22,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,43768702,23,1,,0,-4.2,21,1,12
+2025-05-28,2025-05-22,2,lover,Lover,35923032,15,2,,0,-0.2,21,1,9
+2025-05-28,2025-05-22,3,reputation,reputation,26530808,12,3,,0,13.5,21,3,21
+2025-05-28,2025-05-22,4,midnights,Midnights,20421855,13,4,,0,0.2,21,4,21
+2025-05-28,2025-05-22,5,1989_taylor_s_version,1989 (Taylor's Version),16218215,12,5,,0,-0.2,21,5,12
+2025-05-28,2025-05-22,6,1989,1989,13554619,3,6,,0,3.2,21,5,8
+2025-05-28,2025-05-22,7,fearless_taylor_s_version,Fearless (Taylor's Version),12503389,4,7,,0,3.1,21,6,1
+2025-05-28,2025-05-22,8,speak_now_taylor_s_version,Speak Now (Taylor's Version),7304472,6,8,,0,-1.4,21,8,8
+2025-05-28,2025-05-22,9,red_taylor_s_version,Red (Taylor's Version),6928295,5,9,,0,-0.1,21,8,2
+2025-05-28,2025-05-22,10,evermore,evermore,6693983,5,10,,0,11.8,21,5,1
+2025-05-28,2025-05-22,11,taylor_swift,Taylor Swift,1212169,1,11,,0,0.1,21,11,11
+2025-05-28,2025-05-22,12,folklore,folklore,907132,1,12,,0,-0.3,21,12,11
+2025-06-04,2025-05-29,1,reputation,reputation,53673149,15,3,,2,102.3,22,1,1
+2025-06-04,2025-05-29,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,44335720,22,1,,-1,1.3,22,1,12
+2025-06-04,2025-05-29,3,lover,Lover,38928637,15,2,,-1,8.4,22,1,9
+2025-06-04,2025-05-29,4,midnights,Midnights,21381610,12,4,,0,4.7,22,4,22
+2025-06-04,2025-05-29,5,1989,1989,20036971,4,6,,1,47.8,22,5,9
+2025-06-04,2025-05-29,6,1989_taylor_s_version,1989 (Taylor's Version),13770346,8,5,,-1,-15.1,22,5,12
+2025-06-04,2025-05-29,7,fearless_taylor_s_version,Fearless (Taylor's Version),13561783,4,7,,0,8.5,22,6,1
+2025-06-04,2025-05-29,8,red_taylor_s_version,Red (Taylor's Version),7513048,5,9,,1,8.4,22,8,3
+2025-06-04,2025-05-29,9,speak_now,Speak Now,7139323,3,,RE,,,11,9,1
+2025-06-04,2025-05-29,10,evermore,evermore,6300309,4,10,,0,-5.9,22,5,1
+2025-06-04,2025-05-29,11,speak_now_taylor_s_version,Speak Now (Taylor's Version),4549008,4,8,,-3,-37.7,22,8,8
+2025-06-04,2025-05-29,12,taylor_swift,Taylor Swift,4190532,3,11,,-1,245.7,22,11,11
+2025-06-04,2025-05-29,13,folklore,folklore,999783,1,12,,-1,10.2,22,12,11
+2025-06-11,2025-06-05,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,40237886,22,2,,1,-9.2,23,1,13
+2025-06-11,2025-06-05,2,reputation,reputation,39758231,15,1,,-1,-25.9,23,1,1
+2025-06-11,2025-06-05,3,lover,Lover,36815128,15,3,,0,-5.4,23,1,9
+2025-06-11,2025-06-05,4,1989,1989,23013666,6,5,,1,14.9,23,4,1
+2025-06-11,2025-06-05,5,midnights,Midnights,20479121,13,4,,-1,-4.2,23,4,22
+2025-06-11,2025-06-05,6,fearless_taylor_s_version,Fearless (Taylor's Version),12149193,4,7,,1,-10.4,23,6,2
+2025-06-11,2025-06-05,7,1989_taylor_s_version,1989 (Taylor's Version),10727422,7,6,,-1,-22.1,23,5,12
+2025-06-11,2025-06-05,8,red_taylor_s_version,Red (Taylor's Version),6297712,5,8,,0,-16.2,23,8,4
+2025-06-11,2025-06-05,9,evermore,evermore,5810615,4,10,,1,-7.8,23,5,1
+2025-06-11,2025-06-05,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),5643442,4,11,,1,24.1,23,8,8
+2025-06-11,2025-06-05,11,speak_now,Speak Now,3636550,2,9,,-2,-49.1,12,9,1
+2025-06-11,2025-06-05,12,taylor_swift,Taylor Swift,2415601,2,12,,0,-42.4,23,11,11
+2025-06-11,2025-06-05,13,folklore,folklore,963331,1,13,,0,-3.6,23,12,11
+2025-06-18,2025-06-12,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,39048049,23,1,,0,-3.0,24,1,14
+2025-06-18,2025-06-12,2,lover,Lover,36694542,15,3,,1,-0.3,24,1,9
+2025-06-18,2025-06-12,3,reputation,reputation,31563134,15,2,,-1,-20.6,24,1,1
+2025-06-18,2025-06-12,4,midnights,Midnights,19230026,13,5,,1,-6.1,24,4,23
+2025-06-18,2025-06-12,5,1989,1989,17711826,3,4,,-1,-23.0,24,4,1
+2025-06-18,2025-06-12,6,fearless_taylor_s_version,Fearless (Taylor's Version),11978701,4,6,,0,-1.4,24,6,3
+2025-06-18,2025-06-12,7,1989_taylor_s_version,1989 (Taylor's Version),11760445,9,7,,0,9.6,24,5,12
+2025-06-18,2025-06-12,8,red_taylor_s_version,Red (Taylor's Version),6843611,5,8,,0,8.7,24,8,5
+2025-06-18,2025-06-12,9,evermore,evermore,5642927,4,9,,0,-2.9,24,5,1
+2025-06-18,2025-06-12,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),5290440,4,10,,0,-6.3,24,8,8
+2025-06-18,2025-06-12,11,speak_now,Speak Now,2743650,2,11,,0,-24.6,13,9,1
+2025-06-18,2025-06-12,12,taylor_swift,Taylor Swift,2120239,2,12,,0,-12.2,24,11,11
+2025-06-18,2025-06-12,13,folklore,folklore,967835,1,13,,0,0.5,24,12,11
+2025-06-25,2025-06-19,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,36470116,22,1,,0,-6.6,25,1,15
+2025-06-25,2025-06-19,2,lover,Lover,35582737,15,2,,0,-3.0,25,1,9
+2025-06-25,2025-06-19,3,reputation,reputation,29428082,15,3,,0,-6.8,25,1,1
+2025-06-25,2025-06-19,4,midnights,Midnights,18487135,13,4,,0,-3.9,25,4,24
+2025-06-25,2025-06-19,5,1989,1989,17839957,3,5,,0,0.7,25,4,1
+2025-06-25,2025-06-19,6,1989_taylor_s_version,1989 (Taylor's Version),12090163,10,7,,1,2.8,25,5,12
+2025-06-25,2025-06-19,7,fearless_taylor_s_version,Fearless (Taylor's Version),11616447,4,6,,-1,-3.0,25,6,3
+2025-06-25,2025-06-19,8,red_taylor_s_version,Red (Taylor's Version),6596805,5,8,,0,-3.6,25,8,6
+2025-06-25,2025-06-19,9,evermore,evermore,5437563,4,9,,0,-3.6,25,5,1
+2025-06-25,2025-06-19,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),5054752,4,10,,0,-4.5,25,8,8
+2025-06-25,2025-06-19,11,speak_now,Speak Now,2627719,2,11,,0,-4.2,14,9,1
+2025-06-25,2025-06-19,12,taylor_swift,Taylor Swift,2086940,2,12,,0,-1.6,25,11,11
+2025-06-25,2025-06-19,13,folklore,folklore,921255,1,13,,0,-4.8,25,12,11
+2025-07-02,2025-06-26,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,36721333,23,1,,0,0.7,26,1,16
+2025-07-02,2025-06-26,2,lover,Lover,34075058,15,2,,0,-4.2,26,1,9
+2025-07-02,2025-06-26,3,reputation,reputation,26464086,13,3,,0,-10.1,26,1,1
+2025-07-02,2025-06-26,4,midnights,Midnights,18106749,13,4,,0,-2.1,26,4,25
+2025-07-02,2025-06-26,5,1989,1989,17420786,3,5,,0,-2.3,26,4,1
+2025-07-02,2025-06-26,6,1989_taylor_s_version,1989 (Taylor's Version),11806332,10,6,,0,-2.3,26,5,12
+2025-07-02,2025-06-26,7,fearless_taylor_s_version,Fearless (Taylor's Version),11147117,4,7,,0,-4.0,26,6,3
+2025-07-02,2025-06-26,8,red_taylor_s_version,Red (Taylor's Version),6102355,5,8,,0,-7.5,26,8,7
+2025-07-02,2025-06-26,9,evermore,evermore,6033602,5,9,,0,11.0,26,5,1
+2025-07-02,2025-06-26,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),4914469,4,10,,0,-2.8,26,8,8
+2025-07-02,2025-06-26,11,speak_now,Speak Now,2393094,2,11,,0,-8.9,15,9,1
+2025-07-02,2025-06-26,12,taylor_swift,Taylor Swift,2016642,2,12,,0,-3.4,26,11,11
+2025-07-02,2025-06-26,13,folklore,folklore,904891,1,13,,0,-1.8,26,12,11
+2025-07-09,2025-07-03,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,35193461,23,1,,0,-4.2,27,1,17
+2025-07-09,2025-07-03,2,lover,Lover,33859464,15,2,,0,-0.6,27,1,9
+2025-07-09,2025-07-03,3,reputation,reputation,24345232,12,3,,0,-8.0,27,1,1
+2025-07-09,2025-07-03,4,1989,1989,17475723,3,5,,1,0.3,27,4,2
+2025-07-09,2025-07-03,5,midnights,Midnights,17411904,13,4,,-1,-3.8,27,4,25
+2025-07-09,2025-07-03,6,fearless_taylor_s_version,Fearless (Taylor's Version),11404171,4,7,,1,2.3,27,6,4
+2025-07-09,2025-07-03,7,1989_taylor_s_version,1989 (Taylor's Version),11304694,10,6,,-1,-4.2,27,5,12
+2025-07-09,2025-07-03,8,speak_now_taylor_s_version,Speak Now (Taylor's Version),6045942,5,10,,2,23.0,27,8,9
+2025-07-09,2025-07-03,9,red_taylor_s_version,Red (Taylor's Version),5995297,5,8,,-1,-1.8,27,8,7
+2025-07-09,2025-07-03,10,evermore,evermore,5936740,5,9,,-1,-1.6,27,5,1
+2025-07-09,2025-07-03,11,speak_now,Speak Now,2358538,2,11,,0,-1.4,16,9,1
+2025-07-09,2025-07-03,12,taylor_swift,Taylor Swift,1979425,2,12,,0,-1.8,27,11,11
+2025-07-09,2025-07-03,13,folklore,folklore,898024,1,13,,0,-0.8,27,12,11
+2025-07-16,2025-07-10,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,35709931,23,1,,0,1.5,28,1,18
+2025-07-16,2025-07-10,2,lover,Lover,35186906,16,2,,0,3.9,28,1,9
+2025-07-16,2025-07-10,3,reputation,reputation,24622346,12,3,,0,1.1,28,1,1
+2025-07-16,2025-07-10,4,midnights,Midnights,17871937,13,5,,1,2.6,28,4,26
+2025-07-16,2025-07-10,5,1989,1989,17720317,3,4,,-1,1.4,28,4,2
+2025-07-16,2025-07-10,6,1989_taylor_s_version,1989 (Taylor's Version),11483445,10,7,,1,1.6,28,5,12
+2025-07-16,2025-07-10,7,fearless_taylor_s_version,Fearless (Taylor's Version),11360551,4,6,,-1,-0.4,28,6,4
+2025-07-16,2025-07-10,8,evermore,evermore,6112893,5,10,,2,3.0,28,5,1
+2025-07-16,2025-07-10,9,red_taylor_s_version,Red (Taylor's Version),6081119,5,9,,0,1.4,28,8,7
+2025-07-16,2025-07-10,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),5917288,5,8,,-2,-2.1,28,8,9
+2025-07-16,2025-07-10,11,speak_now,Speak Now,2353069,2,11,,0,-0.2,17,9,1
+2025-07-16,2025-07-10,12,taylor_swift,Taylor Swift,1288777,1,12,,0,-34.9,28,11,11
+2025-07-16,2025-07-10,13,folklore,folklore,895277,1,13,,0,-0.3,28,12,11
+2025-07-23,2025-07-17,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,36303745,23,1,,0,1.7,29,1,19
+2025-07-23,2025-07-17,2,lover,Lover,35902250,15,2,,0,2.0,29,1,9
+2025-07-23,2025-07-17,3,reputation,reputation,25406060,12,3,,0,3.2,29,1,1
+2025-07-23,2025-07-17,4,midnights,Midnights,19954935,14,4,,0,11.7,29,4,27
+2025-07-23,2025-07-17,5,1989,1989,17947803,3,5,,0,1.3,29,4,2
+2025-07-23,2025-07-17,6,1989_taylor_s_version,1989 (Taylor's Version),12134606,10,6,,0,5.7,29,5,12
+2025-07-23,2025-07-17,7,fearless_taylor_s_version,Fearless (Taylor's Version),11835654,4,7,,0,4.2,29,6,4
+2025-07-23,2025-07-17,8,red_taylor_s_version,Red (Taylor's Version),6876831,5,9,,1,13.1,29,8,8
+2025-07-23,2025-07-17,9,evermore,evermore,6175991,5,8,,-1,1.0,29,5,1
+2025-07-23,2025-07-17,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),5780955,5,10,,0,-2.3,29,8,9
+2025-07-23,2025-07-17,11,speak_now,Speak Now,2431809,2,11,,0,3.3,18,9,1
+2025-07-23,2025-07-17,12,taylor_swift,Taylor Swift,1273849,1,12,,0,-1.2,29,11,11
+2025-07-23,2025-07-17,13,folklore,folklore,947004,1,13,,0,5.8,29,12,11
+2025-07-30,2025-07-24,1,lover,Lover,37472637,16,2,,1,4.4,30,1,10
+2025-07-30,2025-07-24,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,37091810,23,1,,-1,2.2,30,1,19
+2025-07-30,2025-07-24,3,reputation,reputation,25664855,12,3,,0,1.0,30,1,1
+2025-07-30,2025-07-24,4,midnights,Midnights,20005631,14,4,,0,0.3,30,4,28
+2025-07-30,2025-07-24,5,1989,1989,18634822,3,5,,0,3.8,30,4,2
+2025-07-30,2025-07-24,6,1989_taylor_s_version,1989 (Taylor's Version),12070741,10,6,,0,-0.5,30,5,12
+2025-07-30,2025-07-24,7,fearless_taylor_s_version,Fearless (Taylor's Version),12001312,4,7,,0,1.4,30,6,4
+2025-07-30,2025-07-24,8,red_taylor_s_version,Red (Taylor's Version),7064829,5,8,,0,2.7,30,8,9
+2025-07-30,2025-07-24,9,evermore,evermore,6425874,5,9,,0,4.0,30,5,1
+2025-07-30,2025-07-24,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),5080661,4,10,,0,-12.1,30,8,9
+2025-07-30,2025-07-24,11,speak_now,Speak Now,2439906,2,11,,0,0.3,19,9,1
+2025-07-30,2025-07-24,12,taylor_swift,Taylor Swift,1297977,1,12,,0,1.9,30,11,11
+2025-07-30,2025-07-24,13,folklore,folklore,1103421,1,13,,0,16.5,30,12,11
+2025-08-06,2025-07-31,1,lover,Lover,37495775,16,1,,0,0.1,31,1,11
+2025-08-06,2025-07-31,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,37440079,23,2,,0,0.9,31,1,19
+2025-08-06,2025-07-31,3,reputation,reputation,25360873,12,3,,0,-1.2,31,1,1
+2025-08-06,2025-07-31,4,midnights,Midnights,20135290,14,4,,0,0.6,31,4,29
+2025-08-06,2025-07-31,5,1989,1989,18717038,3,5,,0,0.4,31,4,2
+2025-08-06,2025-07-31,6,fearless_taylor_s_version,Fearless (Taylor's Version),12663738,4,7,,1,5.5,31,6,5
+2025-08-06,2025-07-31,7,1989_taylor_s_version,1989 (Taylor's Version),12199783,10,6,,-1,1.1,31,5,12
+2025-08-06,2025-07-31,8,red_taylor_s_version,Red (Taylor's Version),6915094,5,8,,0,-2.1,31,8,10
+2025-08-06,2025-07-31,9,evermore,evermore,6857391,5,9,,0,6.7,31,5,1
+2025-08-06,2025-07-31,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),5071456,4,10,,0,-0.2,31,8,9
+2025-08-06,2025-07-31,11,speak_now,Speak Now,2447718,2,11,,0,0.3,20,9,1
+2025-08-06,2025-07-31,12,folklore,folklore,1353510,1,13,,1,22.7,31,12,12
+2025-08-06,2025-07-31,13,taylor_swift,Taylor Swift,1276017,1,12,,-1,-1.7,31,11,11
+2025-08-13,2025-08-07,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,41512760,23,2,,1,10.9,32,1,20
+2025-08-13,2025-08-07,2,lover,Lover,39308362,16,1,,-1,4.8,32,1,11
+2025-08-13,2025-08-07,3,reputation,reputation,30740351,13,3,,0,21.2,32,1,1
+2025-08-13,2025-08-07,4,1989,1989,21474105,5,5,,1,14.7,32,4,3
+2025-08-13,2025-08-07,5,midnights,Midnights,21234605,13,4,,-1,5.5,32,4,29
+2025-08-13,2025-08-07,6,fearless_taylor_s_version,Fearless (Taylor's Version),12771899,4,6,,0,0.9,32,6,6
+2025-08-13,2025-08-07,7,1989_taylor_s_version,1989 (Taylor's Version),12437054,9,7,,0,1.9,32,5,12
+2025-08-13,2025-08-07,8,red_taylor_s_version,Red (Taylor's Version),7681192,5,8,,0,11.1,32,8,11
+2025-08-13,2025-08-07,9,evermore,evermore,6129513,4,9,,0,-10.6,32,5,1
+2025-08-13,2025-08-07,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),5457826,4,10,,0,7.6,32,8,9
+2025-08-13,2025-08-07,11,speak_now,Speak Now,2667482,2,11,,0,9.0,21,9,1
+2025-08-13,2025-08-07,12,taylor_swift,Taylor Swift,1333656,1,13,,1,4.5,32,11,11
+2025-08-13,2025-08-07,13,folklore,folklore,1196722,1,12,,-1,-11.6,32,12,12
+2025-08-20,2025-08-14,1,lover,Lover,50064919,16,2,,1,27.4,33,1,12
+2025-08-20,2025-08-14,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,49287396,23,1,,-1,18.7,33,1,20
+2025-08-20,2025-08-14,3,reputation,reputation,39188316,13,3,,0,27.5,33,1,1
+2025-08-20,2025-08-14,4,1989,1989,26857317,5,4,,0,25.1,33,4,4
+2025-08-20,2025-08-14,5,midnights,Midnights,26399642,13,5,,0,24.3,33,4,29
+2025-08-20,2025-08-14,6,1989_taylor_s_version,1989 (Taylor's Version),14672618,9,7,,1,18.0,33,5,12
+2025-08-20,2025-08-14,7,fearless_taylor_s_version,Fearless (Taylor's Version),14190329,4,6,,-1,11.1,33,6,6
+2025-08-20,2025-08-14,8,red_taylor_s_version,Red (Taylor's Version),8992290,5,8,,0,17.1,33,8,12
+2025-08-20,2025-08-14,9,evermore,evermore,7065793,4,9,,0,15.3,33,5,1
+2025-08-20,2025-08-14,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),6365278,4,10,,0,16.6,33,8,9
+2025-08-20,2025-08-14,11,speak_now,Speak Now,2937616,2,11,,0,10.1,22,9,1
+2025-08-20,2025-08-14,12,taylor_swift,Taylor Swift,1475312,1,12,,0,10.6,33,11,11
+2025-08-20,2025-08-14,13,folklore,folklore,1344753,1,13,,0,12.4,33,12,12
+2025-08-27,2025-08-21,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,53113242,24,2,,1,7.8,34,1,21
+2025-08-27,2025-08-21,2,lover,Lover,47090778,16,1,,-1,-5.9,34,1,12
+2025-08-27,2025-08-21,3,reputation,reputation,32058238,12,3,,0,-18.2,34,1,1
+2025-08-27,2025-08-21,4,midnights,Midnights,25763674,14,5,,1,-2.4,34,4,30
+2025-08-27,2025-08-21,5,1989,1989,21211086,4,4,,-1,-21.0,34,4,4
+2025-08-27,2025-08-21,6,1989_taylor_s_version,1989 (Taylor's Version),14615337,9,6,,0,-0.4,34,5,12
+2025-08-27,2025-08-21,7,fearless_taylor_s_version,Fearless (Taylor's Version),14588498,4,7,,0,2.8,34,6,6
+2025-08-27,2025-08-21,8,red_taylor_s_version,Red (Taylor's Version),8917183,5,8,,0,-0.8,34,8,13
+2025-08-27,2025-08-21,9,evermore,evermore,7159719,4,9,,0,1.3,34,5,1
+2025-08-27,2025-08-21,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),6319962,4,10,,0,-0.7,34,8,9
+2025-08-27,2025-08-21,11,speak_now,Speak Now,2898886,2,11,,0,-1.3,23,9,1
+2025-08-27,2025-08-21,12,taylor_swift,Taylor Swift,1411673,1,12,,0,-4.3,34,11,11
+2025-08-27,2025-08-21,13,folklore,folklore,1300780,1,13,,0,-3.3,34,12,12
+2025-09-03,2025-08-28,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,50124632,23,1,,0,-5.6,35,1,22
+2025-09-03,2025-08-28,2,lover,Lover,47570861,16,2,,0,1.0,35,1,12
+2025-09-03,2025-08-28,3,reputation,reputation,30866750,12,3,,0,-3.7,35,1,1
+2025-09-03,2025-08-28,4,midnights,Midnights,23333895,13,4,,0,-9.4,35,4,31
+2025-09-03,2025-08-28,5,1989,1989,21804966,3,5,,0,2.8,35,4,4
+2025-09-03,2025-08-28,6,fearless_taylor_s_version,Fearless (Taylor's Version),16784756,5,7,,1,15.1,35,6,7
+2025-09-03,2025-08-28,7,1989_taylor_s_version,1989 (Taylor's Version),14835692,10,6,,-1,1.5,35,5,12
+2025-09-03,2025-08-28,8,red_taylor_s_version,Red (Taylor's Version),8761913,5,8,,0,-1.7,35,8,14
+2025-09-03,2025-08-28,9,evermore,evermore,8171260,5,9,,0,14.1,35,5,1
+2025-09-03,2025-08-28,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),6405361,4,10,,0,1.4,35,8,9
+2025-09-03,2025-08-28,11,speak_now,Speak Now,2949961,2,11,,0,1.8,24,9,1
+2025-09-03,2025-08-28,12,taylor_swift,Taylor Swift,1400427,1,12,,0,-0.8,35,11,11
+2025-09-03,2025-08-28,13,folklore,folklore,1263288,1,13,,0,-2.9,35,12,12
+2025-09-10,2025-09-04,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,42378355,23,1,,0,-15.5,36,1,23
+2025-09-10,2025-09-04,2,lover,Lover,40880731,16,2,,0,-14.1,36,1,12
+2025-09-10,2025-09-04,3,reputation,reputation,26638423,12,3,,0,-13.7,36,1,1
+2025-09-10,2025-09-04,4,midnights,Midnights,21478433,14,4,,0,-8.0,36,4,32
+2025-09-10,2025-09-04,5,1989,1989,19748120,3,5,,0,-9.4,36,4,4
+2025-09-10,2025-09-04,6,fearless_taylor_s_version,Fearless (Taylor's Version),14859280,5,6,,0,-11.5,36,6,8
+2025-09-10,2025-09-04,7,1989_taylor_s_version,1989 (Taylor's Version),12215683,9,7,,0,-17.7,36,5,12
+2025-09-10,2025-09-04,8,red_taylor_s_version,Red (Taylor's Version),7786782,5,8,,0,-11.1,36,8,15
+2025-09-10,2025-09-04,9,evermore,evermore,7656295,5,9,,0,-6.3,36,5,1
+2025-09-10,2025-09-04,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),5294884,4,10,,0,-17.3,36,8,9
+2025-09-10,2025-09-04,11,speak_now,Speak Now,2576064,2,11,,0,-12.7,25,9,1
+2025-09-10,2025-09-04,12,taylor_swift,Taylor Swift,1226588,1,12,,0,-12.4,36,11,11
+2025-09-10,2025-09-04,13,folklore,folklore,1096643,1,13,,0,-13.2,36,12,12
+2025-09-17,2025-09-11,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,39708647,23,1,,0,-6.3,37,1,24
+2025-09-17,2025-09-11,2,lover,Lover,38472595,16,2,,0,-5.9,37,1,12
+2025-09-17,2025-09-11,3,reputation,reputation,25901984,12,3,,0,-2.8,37,1,1
+2025-09-17,2025-09-11,4,midnights,Midnights,21190162,14,4,,0,-1.3,37,4,33
+2025-09-17,2025-09-11,5,1989,1989,18969688,3,5,,0,-3.9,37,4,4
+2025-09-17,2025-09-11,6,fearless_taylor_s_version,Fearless (Taylor's Version),13629785,4,6,,0,-8.3,37,6,9
+2025-09-17,2025-09-11,7,1989_taylor_s_version,1989 (Taylor's Version),12203534,9,7,,0,-0.1,37,5,12
+2025-09-17,2025-09-11,8,evermore,evermore,8255786,6,9,,1,7.8,37,5,1
+2025-09-17,2025-09-11,9,red_taylor_s_version,Red (Taylor's Version),7476159,5,8,,-1,-4.0,37,8,15
+2025-09-17,2025-09-11,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),5015482,4,10,,0,-5.3,37,8,9
+2025-09-17,2025-09-11,11,speak_now,Speak Now,2436075,2,11,,0,-5.4,26,9,1
+2025-09-17,2025-09-11,12,taylor_swift,Taylor Swift,1168500,1,12,,0,-4.7,37,11,11
+2025-09-17,2025-09-11,13,folklore,folklore,1072108,1,13,,0,-2.2,37,12,12
+2025-09-24,2025-09-18,1,lover,Lover,41912305,16,2,,1,8.9,38,1,13
+2025-09-24,2025-09-18,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,40663452,22,1,,-1,2.4,38,1,24
+2025-09-24,2025-09-18,3,reputation,reputation,38922397,14,3,,0,50.3,38,1,1
+2025-09-24,2025-09-18,4,midnights,Midnights,22299548,14,4,,0,5.2,38,4,34
+2025-09-24,2025-09-18,5,1989,1989,19254740,3,5,,0,1.5,38,4,4
+2025-09-24,2025-09-18,6,1989_taylor_s_version,1989 (Taylor's Version),14909974,9,7,,1,22.2,38,5,12
+2025-09-24,2025-09-18,7,fearless_taylor_s_version,Fearless (Taylor's Version),14412801,4,6,,-1,5.7,38,6,9
+2025-09-24,2025-09-18,8,red_taylor_s_version,Red (Taylor's Version),7967238,5,9,,1,6.6,38,8,16
+2025-09-24,2025-09-18,9,evermore,evermore,7629147,5,8,,-1,-7.6,38,5,1
+2025-09-24,2025-09-18,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),5263955,4,10,,0,5.0,38,8,9
+2025-09-24,2025-09-18,11,speak_now,Speak Now,2482517,2,11,,0,1.9,27,9,1
+2025-09-24,2025-09-18,12,taylor_swift,Taylor Swift,1280172,1,12,,0,9.6,38,11,11
+2025-09-24,2025-09-18,13,folklore,folklore,1107039,1,13,,0,3.3,38,12,12
+2025-10-01,2025-09-25,1,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,42970474,23,2,,1,5.7,39,1,25
+2025-10-01,2025-09-25,2,lover,Lover,39408926,16,1,,-1,-6.0,39,1,13
+2025-10-01,2025-09-25,3,reputation,reputation,34741067,12,3,,0,-10.7,39,1,1
+2025-10-01,2025-09-25,4,midnights,Midnights,22823580,14,4,,0,2.3,39,4,35
+2025-10-01,2025-09-25,5,1989,1989,19407923,3,5,,0,0.8,39,4,4
+2025-10-01,2025-09-25,6,1989_taylor_s_version,1989 (Taylor's Version),13932398,9,6,,0,-6.6,39,5,12
+2025-10-01,2025-09-25,7,fearless_taylor_s_version,Fearless (Taylor's Version),13136108,4,7,,0,-8.9,39,6,9
+2025-10-01,2025-09-25,8,evermore,evermore,8944444,6,9,,1,17.2,39,5,1
+2025-10-01,2025-09-25,9,red_taylor_s_version,Red (Taylor's Version),7455947,5,8,,-1,-6.4,39,8,16
+2025-10-01,2025-09-25,10,speak_now_taylor_s_version,Speak Now (Taylor's Version),5051999,4,10,,0,-4.0,39,8,9
+2025-10-01,2025-09-25,11,speak_now,Speak Now,2344881,2,11,,0,-5.5,28,9,1
+2025-10-01,2025-09-25,12,taylor_swift,Taylor Swift,1257427,1,12,,0,-1.8,39,11,11
+2025-10-01,2025-09-25,13,folklore,folklore,1138737,1,13,,0,2.9,39,12,12
+2025-10-08,2025-10-02,1,the_life_of_a_showgirl,The Life of a Showgirl,809328117,12,,NEW,,,1,1,1
+2025-10-08,2025-10-02,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,43748643,21,1,,-1,1.8,40,1,25
+2025-10-08,2025-10-02,3,lover,Lover,36782402,14,2,,-1,-6.7,40,1,13
+2025-10-08,2025-10-02,4,reputation,reputation,32255501,12,3,,-1,-7.2,40,1,1
+2025-10-08,2025-10-02,5,midnights,Midnights,21366035,12,4,,-1,-6.4,40,4,35
+2025-10-08,2025-10-02,6,1989,1989,18796921,3,5,,-1,-3.1,40,4,4
+2025-10-08,2025-10-02,7,1989_taylor_s_version,1989 (Taylor's Version),14497804,8,6,,-1,4.1,40,5,12
+2025-10-08,2025-10-02,8,fearless_taylor_s_version,Fearless (Taylor's Version),11835247,4,7,,-1,-9.9,40,6,9
+2025-10-08,2025-10-02,9,evermore,evermore,9837158,6,8,,-1,10.0,40,5,1
+2025-10-08,2025-10-02,10,red_taylor_s_version,Red (Taylor's Version),4852791,3,9,,-1,-34.9,40,8,16
+2025-10-08,2025-10-02,11,speak_now_taylor_s_version,Speak Now (Taylor's Version),2176706,1,10,,-1,-56.9,40,8,9
+2025-10-08,2025-10-02,12,speak_now,Speak Now,1308611,1,11,,-1,-44.2,29,9,1
+2025-10-08,2025-10-02,13,taylor_swift,Taylor Swift,1142045,1,12,,-1,-9.2,40,11,11
+2025-10-08,2025-10-02,14,folklore,folklore,1100137,1,13,,-1,-3.4,40,12,12
+2025-10-15,2025-10-09,1,the_life_of_a_showgirl,The Life of a Showgirl,486949692,12,1,,0,-39.8,2,1,2
+2025-10-15,2025-10-09,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,37009372,19,2,,0,-15.4,41,1,25
+2025-10-15,2025-10-09,3,lover,Lover,34011262,15,3,,0,-7.5,41,1,13
+2025-10-15,2025-10-09,4,reputation,reputation,29418326,12,4,,0,-8.8,41,1,1
+2025-10-15,2025-10-09,5,midnights,Midnights,19221448,12,5,,0,-10.0,41,4,35
+2025-10-15,2025-10-09,6,1989,1989,17648260,3,6,,0,-6.1,41,4,4
+2025-10-15,2025-10-09,7,1989_taylor_s_version,1989 (Taylor's Version),13398989,8,7,,0,-7.6,41,5,12
+2025-10-15,2025-10-09,8,fearless_taylor_s_version,Fearless (Taylor's Version),10807346,4,8,,0,-8.7,41,6,9
+2025-10-15,2025-10-09,9,evermore,evermore,7954099,6,9,,0,-19.1,41,5,1
+2025-10-15,2025-10-09,10,red_taylor_s_version,Red (Taylor's Version),6174715,5,10,,0,27.2,41,8,16
+2025-10-15,2025-10-09,11,speak_now_taylor_s_version,Speak Now (Taylor's Version),1979754,1,11,,0,-9.0,41,8,9
+2025-10-15,2025-10-09,12,speak_now,Speak Now,1190909,1,12,,0,-9.0,30,9,1
+2025-10-15,2025-10-09,13,taylor_swift,Taylor Swift,1104233,1,13,,0,-3.3,41,11,11
+2025-10-15,2025-10-09,14,folklore,folklore,1023799,1,14,,0,-6.9,41,12,12
+2025-10-22,2025-10-16,1,the_life_of_a_showgirl,The Life of a Showgirl,326281322,12,1,,0,-33.0,3,1,3
+2025-10-22,2025-10-16,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,34444381,19,2,,0,-6.9,42,1,25
+2025-10-22,2025-10-16,3,lover,Lover,33421083,16,3,,0,-1.7,42,1,13
+2025-10-22,2025-10-16,4,reputation,reputation,28304343,12,4,,0,-3.8,42,1,1
+2025-10-22,2025-10-16,5,midnights,Midnights,19237041,13,5,,0,0.1,42,4,35
+2025-10-22,2025-10-16,6,1989,1989,16967151,3,6,,0,-3.9,42,4,4
+2025-10-22,2025-10-16,7,1989_taylor_s_version,1989 (Taylor's Version),10965369,7,7,,0,-18.2,42,5,12
+2025-10-22,2025-10-16,8,fearless_taylor_s_version,Fearless (Taylor's Version),10581787,4,8,,0,-2.1,42,6,9
+2025-10-22,2025-10-16,9,evermore,evermore,7115512,5,9,,0,-10.5,42,5,1
+2025-10-22,2025-10-16,10,red_taylor_s_version,Red (Taylor's Version),5742395,5,10,,0,-7.0,42,8,16
+2025-10-22,2025-10-16,11,speak_now_taylor_s_version,Speak Now (Taylor's Version),1993047,1,11,,0,0.7,42,8,9
+2025-10-22,2025-10-16,12,speak_now,Speak Now,1209239,1,12,,0,1.5,31,9,1
+2025-10-22,2025-10-16,13,taylor_swift,Taylor Swift,1022463,1,13,,0,-7.4,42,11,11
+2025-10-22,2025-10-16,14,folklore,folklore,883568,1,14,,0,-13.7,42,12,12
+2025-10-29,2025-10-23,1,the_life_of_a_showgirl,The Life of a Showgirl,255098765,12,1,,0,-21.8,4,1,4
+2025-10-29,2025-10-23,2,lover,Lover,32962932,16,3,,1,-1.4,43,1,13
+2025-10-29,2025-10-23,3,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,32083760,19,2,,-1,-6.9,43,1,25
+2025-10-29,2025-10-23,4,reputation,reputation,27078907,12,4,,0,-4.3,43,1,1
+2025-10-29,2025-10-23,5,midnights,Midnights,18944651,13,5,,0,-1.5,43,4,35
+2025-10-29,2025-10-23,6,1989,1989,17310801,3,6,,0,2.0,43,4,4
+2025-10-29,2025-10-23,7,fearless_taylor_s_version,Fearless (Taylor's Version),10159426,4,8,,1,-4.0,43,6,9
+2025-10-29,2025-10-23,8,1989_taylor_s_version,1989 (Taylor's Version),9173613,6,7,,-1,-16.3,43,5,12
+2025-10-29,2025-10-23,9,evermore,evermore,7622072,6,9,,0,7.1,43,5,1
+2025-10-29,2025-10-23,10,red_taylor_s_version,Red (Taylor's Version),5710185,5,10,,0,-0.6,43,8,16
+2025-10-29,2025-10-23,11,speak_now_taylor_s_version,Speak Now (Taylor's Version),1938188,1,11,,0,-2.8,43,8,9
+2025-10-29,2025-10-23,12,speak_now,Speak Now,1197988,1,12,,0,-0.9,32,9,1
+2025-10-29,2025-10-23,13,taylor_swift,Taylor Swift,1022016,1,13,,0,-0.0,43,11,11
+2025-10-29,2025-10-23,14,folklore,folklore,862359,1,14,,0,-2.4,43,12,12
+2025-11-05,2025-10-30,1,the_life_of_a_showgirl,The Life of a Showgirl,212817001,12,1,,0,-16.6,5,1,5
+2025-11-05,2025-10-30,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,30311158,19,3,,1,-5.5,44,1,25
+2025-11-05,2025-10-30,3,lover,Lover,30285207,14,2,,-1,-8.1,44,1,13
+2025-11-05,2025-10-30,4,reputation,reputation,26061007,12,4,,0,-3.8,44,1,1
+2025-11-05,2025-10-30,5,1989,1989,17146609,3,6,,1,-0.9,44,4,4
+2025-11-05,2025-10-30,6,midnights,Midnights,16812442,12,5,,-1,-11.3,44,4,35
+2025-11-05,2025-10-30,7,fearless_taylor_s_version,Fearless (Taylor's Version),9745291,4,7,,0,-4.1,44,6,9
+2025-11-05,2025-10-30,8,1989_taylor_s_version,1989 (Taylor's Version),9492434,7,8,,0,3.5,44,5,12
+2025-11-05,2025-10-30,9,evermore,evermore,8772594,7,9,,0,15.1,44,5,1
+2025-11-05,2025-10-30,10,red_taylor_s_version,Red (Taylor's Version),5476671,5,10,,0,-4.1,44,8,16
+2025-11-05,2025-10-30,11,speak_now_taylor_s_version,Speak Now (Taylor's Version),1862681,1,11,,0,-3.9,44,8,9
+2025-11-05,2025-10-30,12,speak_now,Speak Now,1108242,1,12,,0,-7.5,33,9,1
+2025-11-05,2025-10-30,13,taylor_swift,Taylor Swift,990908,1,13,,0,-3.0,44,11,11
+2025-11-05,2025-10-30,14,the_taylor_swift_holiday_collection,The Taylor Swift Holiday Collection,916460,1,,RE,,,2,14,2
+2025-11-05,2025-10-30,15,folklore,folklore,770012,1,14,,-1,-10.7,44,12,12
+2025-11-12,2025-11-06,1,the_life_of_a_showgirl,The Life of a Showgirl,181196472,12,1,,0,-14.9,6,1,6
+2025-11-12,2025-11-06,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,29599989,19,2,,0,-2.3,45,1,25
+2025-11-12,2025-11-06,3,lover,Lover,29550560,14,3,,0,-2.4,45,1,13
+2025-11-12,2025-11-06,4,reputation,reputation,24635311,12,4,,0,-5.5,45,1,1
+2025-11-12,2025-11-06,5,1989,1989,16767017,3,5,,0,-2.2,45,4,4
+2025-11-12,2025-11-06,6,midnights,Midnights,15905800,12,6,,0,-5.4,45,4,35
+2025-11-12,2025-11-06,7,1989_taylor_s_version,1989 (Taylor's Version),10369921,8,8,,1,9.2,45,5,12
+2025-11-12,2025-11-06,8,fearless_taylor_s_version,Fearless (Taylor's Version),9641766,4,7,,-1,-1.1,45,6,9
+2025-11-12,2025-11-06,9,evermore,evermore,8501976,7,9,,0,-3.1,45,5,1
+2025-11-12,2025-11-06,10,red_taylor_s_version,Red (Taylor's Version),5419049,5,10,,0,-1.1,45,8,16
+2025-11-12,2025-11-06,11,speak_now_taylor_s_version,Speak Now (Taylor's Version),1888035,1,11,,0,1.4,45,8,9
+2025-11-12,2025-11-06,12,the_taylor_swift_holiday_collection,The Taylor Swift Holiday Collection,1562745,1,14,,2,70.5,3,12,1
+2025-11-12,2025-11-06,13,speak_now,Speak Now,1169732,1,12,,-1,5.5,34,9,1
+2025-11-12,2025-11-06,14,taylor_swift,Taylor Swift,982730,1,13,,-1,-0.8,45,11,11
+2025-11-19,2025-11-13,1,the_life_of_a_showgirl,The Life of a Showgirl,160762802,12,1,,0,-11.3,7,1,7
+2025-11-19,2025-11-13,2,lover,Lover,29873371,15,3,,1,1.1,46,1,13
+2025-11-19,2025-11-13,3,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,29866954,19,2,,-1,0.9,46,1,25
+2025-11-19,2025-11-13,4,reputation,reputation,23151660,11,4,,0,-6.0,46,1,1
+2025-11-19,2025-11-13,5,1989,1989,18201929,3,5,,0,8.6,46,4,4
+2025-11-19,2025-11-13,6,midnights,Midnights,15283533,11,6,,0,-3.9,46,4,35
+2025-11-19,2025-11-13,7,fearless_taylor_s_version,Fearless (Taylor's Version),9760724,4,8,,1,1.2,46,6,9
+2025-11-19,2025-11-13,8,1989_taylor_s_version,1989 (Taylor's Version),9358341,8,7,,-1,-9.8,46,5,12
+2025-11-19,2025-11-13,9,evermore,evermore,8529486,7,9,,0,0.3,46,5,1
+2025-11-19,2025-11-13,10,red_taylor_s_version,Red (Taylor's Version),5128986,5,10,,0,-5.4,46,8,16
+2025-11-19,2025-11-13,11,the_taylor_swift_holiday_collection,The Taylor Swift Holiday Collection,2127887,1,12,,1,36.2,4,11,1
+2025-11-19,2025-11-13,12,speak_now_taylor_s_version,Speak Now (Taylor's Version),1928989,1,11,,-1,2.2,46,8,9
+2025-11-19,2025-11-13,13,speak_now,Speak Now,1224492,1,13,,0,4.7,35,9,1
+2025-11-19,2025-11-13,14,taylor_swift,Taylor Swift,983111,1,14,,0,0.0,46,11,11
+2025-11-19,2025-11-13,15,folklore,folklore,772633,1,,RE,,,45,12,12
+2025-11-26,2025-11-20,1,the_life_of_a_showgirl,The Life of a Showgirl,144829041,12,1,,0,-9.9,8,1,8
+2025-11-26,2025-11-20,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,29878462,20,3,,1,0.0,47,1,25
+2025-11-26,2025-11-20,3,lover,Lover,27788112,14,2,,-1,-7.0,47,1,13
+2025-11-26,2025-11-20,4,reputation,reputation,21577486,11,4,,0,-6.8,47,1,1
+2025-11-26,2025-11-20,5,1989,1989,17084417,3,5,,0,-6.1,47,4,4
+2025-11-26,2025-11-20,6,midnights,Midnights,15101979,11,6,,0,-1.2,47,4,35
+2025-11-26,2025-11-20,7,1989_taylor_s_version,1989 (Taylor's Version),9408910,8,8,,1,0.5,47,5,12
+2025-11-26,2025-11-20,8,fearless_taylor_s_version,Fearless (Taylor's Version),9319092,4,7,,-1,-4.5,47,6,9
+2025-11-26,2025-11-20,9,evermore,evermore,8582182,7,9,,0,0.6,47,5,1
+2025-11-26,2025-11-20,10,red_taylor_s_version,Red (Taylor's Version),5136042,5,10,,0,0.1,47,8,16
+2025-11-26,2025-11-20,11,the_taylor_swift_holiday_collection,The Taylor Swift Holiday Collection,3176996,1,11,,0,49.3,5,11,2
+2025-11-26,2025-11-20,12,speak_now,Speak Now,3168936,2,13,,1,158.8,36,9,1
+2025-11-26,2025-11-20,13,taylor_swift,Taylor Swift,1021287,1,14,,1,3.9,47,11,11
+2025-11-26,2025-11-20,14,folklore,folklore,740774,1,15,,1,-4.1,46,12,12
+2025-12-03,2025-11-27,1,the_life_of_a_showgirl,The Life of a Showgirl,127412470,12,1,,0,-12.0,9,1,9
+2025-12-03,2025-11-27,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,29042914,20,2,,0,-2.8,48,1,25
+2025-12-03,2025-11-27,3,lover,Lover,26330763,14,3,,0,-5.2,48,1,13
+2025-12-03,2025-11-27,4,reputation,reputation,21049698,12,4,,0,-2.4,48,1,1
+2025-12-03,2025-11-27,5,1989,1989,15877576,3,5,,0,-7.1,48,4,4
+2025-12-03,2025-11-27,6,midnights,Midnights,14361351,11,6,,0,-4.9,48,4,35
+2025-12-03,2025-11-27,7,1989_taylor_s_version,1989 (Taylor's Version),9169032,8,7,,0,-2.5,48,5,12
+2025-12-03,2025-11-27,8,fearless_taylor_s_version,Fearless (Taylor's Version),8972662,4,8,,0,-3.7,48,6,9
+2025-12-03,2025-11-27,9,evermore,evermore,8379809,7,9,,0,-2.4,48,5,1
+2025-12-03,2025-11-27,10,the_taylor_swift_holiday_collection,The Taylor Swift Holiday Collection,5585165,1,11,,1,75.8,6,10,1
+2025-12-03,2025-11-27,11,red_taylor_s_version,Red (Taylor's Version),5190866,5,10,,-1,1.1,48,8,16
+2025-12-03,2025-11-27,12,speak_now,Speak Now,3368597,2,12,,0,6.3,37,9,1
+2025-12-03,2025-11-27,13,taylor_swift,Taylor Swift,923396,1,13,,0,-9.6,48,11,11
+2025-12-10,2025-12-04,1,the_life_of_a_showgirl,The Life of a Showgirl,122212067,12,1,,0,-4.1,10,1,10
+2025-12-10,2025-12-04,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,33119388,21,2,,0,14.0,49,1,25
+2025-12-10,2025-12-04,3,lover,Lover,27507654,13,3,,0,4.5,49,1,13
+2025-12-10,2025-12-04,4,reputation,reputation,22042502,12,4,,0,4.7,49,1,1
+2025-12-10,2025-12-04,5,1989,1989,16562300,3,5,,0,4.3,49,4,4
+2025-12-10,2025-12-04,6,midnights,Midnights,14932466,11,6,,0,4.0,49,4,35
+2025-12-10,2025-12-04,7,fearless_taylor_s_version,Fearless (Taylor's Version),9932144,4,8,,1,10.7,49,6,9
+2025-12-10,2025-12-04,8,1989_taylor_s_version,1989 (Taylor's Version),9605813,8,7,,-1,4.8,49,5,12
+2025-12-10,2025-12-04,9,the_taylor_swift_holiday_collection,The Taylor Swift Holiday Collection,7665401,2,10,,1,37.2,7,9,1
+2025-12-10,2025-12-04,10,evermore,evermore,7521339,6,9,,-1,-10.2,49,5,1
+2025-12-10,2025-12-04,11,red_taylor_s_version,Red (Taylor's Version),5289004,5,11,,0,1.9,49,8,16
+2025-12-10,2025-12-04,12,speak_now,Speak Now,3573361,2,12,,0,6.1,38,9,1
+2025-12-10,2025-12-04,13,taylor_swift,Taylor Swift,860237,1,13,,0,-6.8,49,11,11
+2025-12-17,2025-12-11,1,the_life_of_a_showgirl,The Life of a Showgirl,119787753,12,1,,0,-2.0,11,1,11
+2025-12-17,2025-12-11,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,35236532,21,2,,0,6.4,50,1,25
+2025-12-17,2025-12-11,3,lover,Lover,29748027,14,3,,0,8.1,50,1,13
+2025-12-17,2025-12-11,4,reputation,reputation,26026289,13,4,,0,18.1,50,1,1
+2025-12-17,2025-12-11,5,1989,1989,17721897,3,5,,0,7.0,50,4,4
+2025-12-17,2025-12-11,6,midnights,Midnights,16006661,11,6,,0,7.2,50,4,35
+2025-12-17,2025-12-11,7,fearless_taylor_s_version,Fearless (Taylor's Version),10282350,4,7,,0,3.5,50,6,9
+2025-12-17,2025-12-11,8,1989_taylor_s_version,1989 (Taylor's Version),8516650,6,8,,0,-11.3,50,5,12
+2025-12-17,2025-12-11,9,the_taylor_swift_holiday_collection,The Taylor Swift Holiday Collection,8331216,2,9,,0,8.7,8,9,2
+2025-12-17,2025-12-11,10,evermore,evermore,7884338,6,10,,0,4.8,50,5,1
+2025-12-17,2025-12-11,11,red_taylor_s_version,Red (Taylor's Version),5558405,5,11,,0,5.1,50,8,16
+2025-12-17,2025-12-11,12,speak_now,Speak Now,3537699,2,12,,0,-1.0,39,9,1
+2025-12-17,2025-12-11,13,taylor_swift,Taylor Swift,902072,1,13,,0,4.9,50,11,11
+2025-12-24,2025-12-18,1,the_life_of_a_showgirl,The Life of a Showgirl,114955148,12,1,,0,-4.0,12,1,12
+2025-12-24,2025-12-18,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,35052299,20,2,,0,-0.5,51,1,25
+2025-12-24,2025-12-18,3,lover,Lover,28718746,13,3,,0,-3.5,51,1,13
+2025-12-24,2025-12-18,4,reputation,reputation,25138317,13,4,,0,-3.4,51,1,1
+2025-12-24,2025-12-18,5,1989,1989,18437547,3,5,,0,4.0,51,4,4
+2025-12-24,2025-12-18,6,midnights,Midnights,18082115,13,6,,0,13.0,51,4,35
+2025-12-24,2025-12-18,7,the_taylor_swift_holiday_collection,The Taylor Swift Holiday Collection,14126671,2,9,,2,69.6,9,7,1
+2025-12-24,2025-12-18,8,fearless_taylor_s_version,Fearless (Taylor's Version),10189688,4,7,,-1,-0.9,51,6,9
+2025-12-24,2025-12-18,9,1989_taylor_s_version,1989 (Taylor's Version),8706374,6,8,,-1,2.2,51,5,12
+2025-12-24,2025-12-18,10,evermore,evermore,7826745,6,10,,0,-0.7,51,5,1
+2025-12-24,2025-12-18,11,red_taylor_s_version,Red (Taylor's Version),5431181,5,11,,0,-2.3,51,8,16
+2025-12-24,2025-12-18,12,speak_now,Speak Now,3525082,2,12,,0,-0.4,40,9,1
+2025-12-24,2025-12-18,13,taylor_swift,Taylor Swift,849806,1,13,,0,-5.8,51,11,11
+2025-12-31,2025-12-25,1,the_life_of_a_showgirl,The Life of a Showgirl,106917512,12,1,,0,-7.0,13,1,13
+2025-12-31,2025-12-25,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,30277017,20,2,,0,-13.6,52,1,25
+2025-12-31,2025-12-25,3,lover,Lover,27621959,13,3,,0,-3.8,52,1,13
+2025-12-31,2025-12-25,4,reputation,reputation,22393228,12,4,,0,-10.9,52,1,1
+2025-12-31,2025-12-25,5,1989,1989,17814241,3,5,,0,-3.4,52,4,4
+2025-12-31,2025-12-25,6,midnights,Midnights,16154192,13,6,,0,-10.7,52,4,35
+2025-12-31,2025-12-25,7,fearless_taylor_s_version,Fearless (Taylor's Version),9264221,4,8,,1,-9.1,52,6,9
+2025-12-31,2025-12-25,8,1989_taylor_s_version,1989 (Taylor's Version),8510784,7,9,,1,-2.2,52,5,12
+2025-12-31,2025-12-25,9,evermore,evermore,7340532,6,10,,1,-6.2,52,5,1
+2025-12-31,2025-12-25,10,the_taylor_swift_holiday_collection,The Taylor Swift Holiday Collection,6280081,1,7,,-3,-55.5,10,7,1
+2025-12-31,2025-12-25,11,red_taylor_s_version,Red (Taylor's Version),5020120,5,11,,0,-7.6,52,8,16
+2025-12-31,2025-12-25,12,speak_now,Speak Now,3124479,2,12,,0,-11.4,41,9,1
+2025-12-31,2025-12-25,13,taylor_swift,Taylor Swift,818592,1,13,,0,-3.7,52,11,11
+2025-12-31,2025-12-25,14,speak_now_taylor_s_version,Speak Now (Taylor's Version),691919,1,,RE,,,47,8,9
+2026-01-07,2026-01-01,1,the_life_of_a_showgirl,The Life of a Showgirl,104261283,12,1,,0,-2.5,14,1,14
+2026-01-07,2026-01-01,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,30834961,20,2,,0,1.8,53,1,25
+2026-01-07,2026-01-01,3,lover,Lover,29456643,14,3,,0,6.6,53,1,13
+2026-01-07,2026-01-01,4,reputation,reputation,24991555,12,4,,0,11.6,53,1,1
+2026-01-07,2026-01-01,5,1989,1989,18445562,3,5,,0,3.5,53,4,4
+2026-01-07,2026-01-01,6,midnights,Midnights,17322487,13,6,,0,7.2,53,4,35
+2026-01-07,2026-01-01,7,fearless_taylor_s_version,Fearless (Taylor's Version),9666137,4,7,,0,4.3,53,6,9
+2026-01-07,2026-01-01,8,1989_taylor_s_version,1989 (Taylor's Version),8360934,6,8,,0,-1.8,53,5,12
+2026-01-07,2026-01-01,9,evermore,evermore,6756501,5,9,,0,-8.0,53,5,1
+2026-01-07,2026-01-01,10,red_taylor_s_version,Red (Taylor's Version),5093780,5,11,,1,1.5,53,8,16
+2026-01-07,2026-01-01,11,speak_now,Speak Now,2992801,2,12,,1,-4.2,42,9,1
+2026-01-07,2026-01-01,12,taylor_swift,Taylor Swift,882618,1,13,,1,7.8,53,11,11
+2026-01-07,2026-01-01,13,the_taylor_swift_holiday_collection,The Taylor Swift Holiday Collection,746341,1,10,,-3,-88.1,11,7,1
+2026-01-07,2026-01-01,14,speak_now_taylor_s_version,Speak Now (Taylor's Version),717518,1,14,,0,3.7,48,8,9
+2026-01-14,2026-01-08,1,the_life_of_a_showgirl,The Life of a Showgirl,107442256,12,1,,0,3.1,15,1,15
+2026-01-14,2026-01-08,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,33473725,20,2,,0,8.6,54,1,25
+2026-01-14,2026-01-08,3,lover,Lover,30642260,13,3,,0,4.0,54,1,13
+2026-01-14,2026-01-08,4,reputation,reputation,25150975,12,4,,0,0.6,54,1,1
+2026-01-14,2026-01-08,5,1989,1989,19899943,3,5,,0,7.9,54,4,4
+2026-01-14,2026-01-08,6,midnights,Midnights,18026944,13,6,,0,4.1,54,4,35
+2026-01-14,2026-01-08,7,1989_taylor_s_version,1989 (Taylor's Version),10693097,8,8,,1,27.9,54,5,12
+2026-01-14,2026-01-08,8,fearless_taylor_s_version,Fearless (Taylor's Version),10644139,4,7,,-1,10.1,54,6,9
+2026-01-14,2026-01-08,9,evermore,evermore,6824415,5,9,,0,1.0,54,5,1
+2026-01-14,2026-01-08,10,red_taylor_s_version,Red (Taylor's Version),5419638,5,10,,0,6.4,54,8,16
+2026-01-14,2026-01-08,11,speak_now,Speak Now,3119442,2,11,,0,4.2,43,9,1
+2026-01-14,2026-01-08,12,taylor_swift,Taylor Swift,922583,1,12,,0,4.5,54,11,11
+2026-01-14,2026-01-08,13,speak_now_taylor_s_version,Speak Now (Taylor's Version),803145,1,14,,1,11.9,49,8,9
+2026-01-21,2026-01-15,1,the_life_of_a_showgirl,The Life of a Showgirl,98156717,12,1,,0,-8.6,16,1,16
+2026-01-21,2026-01-15,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,32496814,20,2,,0,-2.9,55,1,25
+2026-01-21,2026-01-15,3,lover,Lover,31338551,14,3,,0,2.3,55,1,13
+2026-01-21,2026-01-15,4,reputation,reputation,24834126,12,4,,0,-1.3,55,1,1
+2026-01-21,2026-01-15,5,1989,1989,20452251,3,5,,0,2.8,55,4,4
+2026-01-21,2026-01-15,6,midnights,Midnights,17382715,13,6,,0,-3.6,55,4,35
+2026-01-21,2026-01-15,7,fearless_taylor_s_version,Fearless (Taylor's Version),10657275,4,8,,1,0.1,55,6,9
+2026-01-21,2026-01-15,8,1989_taylor_s_version,1989 (Taylor's Version),10357958,8,7,,-1,-3.1,55,5,12
+2026-01-21,2026-01-15,9,evermore,evermore,6514267,5,9,,0,-4.5,55,5,1
+2026-01-21,2026-01-15,10,red_taylor_s_version,Red (Taylor's Version),5316871,5,10,,0,-1.9,55,8,16
+2026-01-21,2026-01-15,11,speak_now,Speak Now,3231611,2,11,,0,3.6,44,9,1
+2026-01-21,2026-01-15,12,taylor_swift,Taylor Swift,932666,1,12,,0,1.1,55,11,11
+2026-01-28,2026-01-22,1,the_life_of_a_showgirl,The Life of a Showgirl,90823524,12,1,,0,-7.5,17,1,17
+2026-01-28,2026-01-22,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,30943769,20,2,,0,-4.8,56,1,25
+2026-01-28,2026-01-22,3,lover,Lover,30756215,15,3,,0,-1.9,56,1,13
+2026-01-28,2026-01-22,4,reputation,reputation,22952602,11,4,,0,-7.6,56,1,1
+2026-01-28,2026-01-22,5,1989,1989,20797766,3,5,,0,1.7,56,4,4
+2026-01-28,2026-01-22,6,midnights,Midnights,16578301,13,6,,0,-4.6,56,4,35
+2026-01-28,2026-01-22,7,fearless_taylor_s_version,Fearless (Taylor's Version),10247990,4,7,,0,-3.8,56,6,9
+2026-01-28,2026-01-22,8,1989_taylor_s_version,1989 (Taylor's Version),10172892,8,8,,0,-1.8,56,5,12
+2026-01-28,2026-01-22,9,evermore,evermore,6179883,5,9,,0,-5.1,56,5,1
+2026-01-28,2026-01-22,10,red_taylor_s_version,Red (Taylor's Version),5207044,5,10,,0,-2.1,56,8,16
+2026-01-28,2026-01-22,11,speak_now,Speak Now,3138088,2,11,,0,-2.9,45,9,1
+2026-01-28,2026-01-22,12,taylor_swift,Taylor Swift,853406,1,12,,0,-8.5,56,11,11
+2026-02-04,2026-01-29,1,the_life_of_a_showgirl,The Life of a Showgirl,86506337,12,1,,0,-4.8,18,1,18
+2026-02-04,2026-01-29,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,31727168,20,2,,0,2.5,57,1,25
+2026-02-04,2026-01-29,3,lover,Lover,31396864,15,3,,0,2.1,57,1,13
+2026-02-04,2026-01-29,4,reputation,reputation,22686213,11,4,,0,-1.2,57,1,1
+2026-02-04,2026-01-29,5,1989,1989,21603327,3,5,,0,3.9,57,4,4
+2026-02-04,2026-01-29,6,midnights,Midnights,16793496,13,6,,0,1.3,57,4,35
+2026-02-04,2026-01-29,7,1989_taylor_s_version,1989 (Taylor's Version),10508518,8,8,,1,3.3,57,5,12
+2026-02-04,2026-01-29,8,fearless_taylor_s_version,Fearless (Taylor's Version),10341877,4,7,,-1,0.9,57,6,9
+2026-02-04,2026-01-29,9,evermore,evermore,6132883,5,9,,0,-0.8,57,5,1
+2026-02-04,2026-01-29,10,red_taylor_s_version,Red (Taylor's Version),5108999,5,10,,0,-1.9,57,8,16
+2026-02-04,2026-01-29,11,speak_now,Speak Now,3411053,2,11,,0,8.7,46,9,1
+2026-02-04,2026-01-29,12,taylor_swift,Taylor Swift,867897,1,12,,0,1.7,57,11,11
+2026-02-11,2026-02-05,1,the_life_of_a_showgirl,The Life of a Showgirl,101386349,12,1,,0,17.2,19,1,19
+2026-02-11,2026-02-05,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,32252115,20,2,,0,1.7,58,1,25
+2026-02-11,2026-02-05,3,lover,Lover,31146970,14,3,,0,-0.8,58,1,13
+2026-02-11,2026-02-05,4,1989,1989,24429562,4,5,,1,13.1,58,4,5
+2026-02-11,2026-02-05,5,reputation,reputation,24326309,12,4,,-1,7.2,58,1,1
+2026-02-11,2026-02-05,6,midnights,Midnights,16833592,13,6,,0,0.2,58,4,35
+2026-02-11,2026-02-05,7,fearless_taylor_s_version,Fearless (Taylor's Version),10625505,4,8,,1,2.7,58,6,9
+2026-02-11,2026-02-05,8,1989_taylor_s_version,1989 (Taylor's Version),7170473,6,7,,-1,-31.8,58,5,12
+2026-02-11,2026-02-05,9,evermore,evermore,5941869,5,9,,0,-3.1,58,5,1
+2026-02-11,2026-02-05,10,red_taylor_s_version,Red (Taylor's Version),5171586,5,10,,0,1.2,58,8,16
+2026-02-11,2026-02-05,11,speak_now,Speak Now,4067656,3,11,,0,19.2,47,9,1
+2026-02-11,2026-02-05,12,taylor_swift,Taylor Swift,879740,1,12,,0,1.4,58,11,11
+2026-02-18,2026-02-12,1,the_life_of_a_showgirl,The Life of a Showgirl,84325910,12,1,,0,-16.8,20,1,20
+2026-02-18,2026-02-12,2,lover,Lover,32958081,15,3,,1,5.8,59,1,13
+2026-02-18,2026-02-12,3,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,30606129,20,2,,-1,-5.1,59,1,25
+2026-02-18,2026-02-12,4,reputation,reputation,22755134,11,5,,1,-6.5,59,1,1
+2026-02-18,2026-02-12,5,1989,1989,21706259,3,4,,-1,-11.1,59,4,5
+2026-02-18,2026-02-12,6,midnights,Midnights,16304590,13,6,,0,-3.1,59,4,35
+2026-02-18,2026-02-12,7,fearless_taylor_s_version,Fearless (Taylor's Version),10543622,4,7,,0,-0.8,59,6,9
+2026-02-18,2026-02-12,8,1989_taylor_s_version,1989 (Taylor's Version),10241293,8,8,,0,42.8,59,5,12
+2026-02-18,2026-02-12,9,red_taylor_s_version,Red (Taylor's Version),5053284,5,10,,1,-2.3,59,8,16
+2026-02-18,2026-02-12,10,evermore,evermore,4998920,4,9,,-1,-15.9,59,5,1
+2026-02-18,2026-02-12,11,speak_now_taylor_s_version,Speak Now (Taylor's Version),2116459,1,,RE,,,50,8,9
+2026-02-18,2026-02-12,12,speak_now,Speak Now,1809477,2,11,,-1,-55.5,48,9,1
+2026-02-18,2026-02-12,13,taylor_swift,Taylor Swift,901168,1,12,,-1,2.4,59,11,11
+2026-02-25,2026-02-19,1,the_life_of_a_showgirl,The Life of a Showgirl,77513429,12,1,,0,-8.1,21,1,21
+2026-02-25,2026-02-19,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,31082181,20,3,,1,1.6,60,1,25
+2026-02-25,2026-02-19,3,lover,Lover,29804552,15,2,,-1,-9.6,60,1,13
+2026-02-25,2026-02-19,4,1989,1989,22302908,4,5,,1,2.7,60,4,6
+2026-02-25,2026-02-19,5,reputation,reputation,21968193,11,4,,-1,-3.5,60,1,1
+2026-02-25,2026-02-19,6,midnights,Midnights,16248129,13,6,,0,-0.3,60,4,35
+2026-02-25,2026-02-19,7,fearless_taylor_s_version,Fearless (Taylor's Version),9925528,4,7,,0,-5.9,60,6,9
+2026-02-25,2026-02-19,8,1989_taylor_s_version,1989 (Taylor's Version),6623040,6,8,,0,-35.3,60,5,12
+2026-02-25,2026-02-19,9,evermore,evermore,5737343,5,10,,1,14.8,60,5,1
+2026-02-25,2026-02-19,10,red_taylor_s_version,Red (Taylor's Version),5105984,5,9,,-1,1.0,60,8,16
+2026-02-25,2026-02-19,11,speak_now,Speak Now,3822861,3,12,,1,111.3,49,9,1
+2026-02-25,2026-02-19,12,taylor_swift,Taylor Swift,864762,1,13,,1,-4.0,60,11,11
+2026-03-04,2026-02-26,1,the_life_of_a_showgirl,The Life of a Showgirl,76063691,12,1,,0,-1.9,22,1,22
+2026-03-04,2026-02-26,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,31057166,20,2,,0,-0.1,61,1,25
+2026-03-04,2026-02-26,3,lover,Lover,30558699,15,3,,0,2.5,61,1,13
+2026-03-04,2026-02-26,4,1989,1989,23634910,4,4,,0,6.0,61,4,7
+2026-03-04,2026-02-26,5,reputation,reputation,22180159,11,5,,0,1.0,61,1,1
+2026-03-04,2026-02-26,6,midnights,Midnights,16320151,13,6,,0,0.4,61,4,35
+2026-03-04,2026-02-26,7,fearless_taylor_s_version,Fearless (Taylor's Version),10037764,4,7,,0,1.1,61,6,9
+2026-03-04,2026-02-26,8,1989_taylor_s_version,1989 (Taylor's Version),6489108,6,8,,0,-2.0,61,5,12
+2026-03-04,2026-02-26,9,red_taylor_s_version,Red (Taylor's Version),5735493,6,10,,1,12.3,61,8,16
+2026-03-04,2026-02-26,10,evermore,evermore,4840880,4,9,,-1,-15.6,61,5,1
+2026-03-04,2026-02-26,11,speak_now,Speak Now,3838463,3,11,,0,0.4,50,9,1
+2026-03-04,2026-02-26,12,taylor_swift,Taylor Swift,901709,1,12,,0,4.3,61,11,11
+2026-03-11,2026-03-05,1,the_life_of_a_showgirl,The Life of a Showgirl,70818007,12,1,,0,-6.9,23,1,23
+2026-03-11,2026-03-05,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,30552080,20,2,,0,-1.6,62,1,25
+2026-03-11,2026-03-05,3,lover,Lover,29264045,14,3,,0,-4.2,62,1,13
+2026-03-11,2026-03-05,4,1989,1989,23731700,4,4,,0,0.4,62,4,8
+2026-03-11,2026-03-05,5,reputation,reputation,23035463,12,5,,0,3.9,62,1,1
+2026-03-11,2026-03-05,6,midnights,Midnights,17031158,14,6,,0,4.4,62,4,35
+2026-03-11,2026-03-05,7,fearless_taylor_s_version,Fearless (Taylor's Version),9568094,4,7,,0,-4.7,62,6,9
+2026-03-11,2026-03-05,8,1989_taylor_s_version,1989 (Taylor's Version),6443237,6,8,,0,-0.7,62,5,12
+2026-03-11,2026-03-05,9,evermore,evermore,5443833,5,10,,1,12.5,62,5,1
+2026-03-11,2026-03-05,10,red_taylor_s_version,Red (Taylor's Version),5036441,5,9,,-1,-12.2,62,8,16
+2026-03-11,2026-03-05,11,speak_now,Speak Now,3084627,2,11,,0,-19.6,51,9,1
+2026-03-11,2026-03-05,12,red,Red,1261139,1,,NEW,,,1,12,1
+2026-03-11,2026-03-05,13,taylor_swift,Taylor Swift,915108,1,12,,-1,1.5,62,11,11
+2026-03-18,2026-03-12,1,the_life_of_a_showgirl,The Life of a Showgirl,66957790,12,1,,0,-5.5,24,1,24
+2026-03-18,2026-03-12,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,30697790,20,2,,0,0.5,63,1,25
+2026-03-18,2026-03-12,3,lover,Lover,28313385,13,3,,0,-3.2,63,1,13
+2026-03-18,2026-03-12,4,reputation,reputation,26351654,12,5,,1,14.4,63,1,1
+2026-03-18,2026-03-12,5,1989,1989,25814907,5,4,,-1,8.8,63,4,8
+2026-03-18,2026-03-12,6,midnights,Midnights,17416489,13,6,,0,2.3,63,4,35
+2026-03-18,2026-03-12,7,fearless_taylor_s_version,Fearless (Taylor's Version),10567266,5,7,,0,10.4,63,6,9
+2026-03-18,2026-03-12,8,red_taylor_s_version,Red (Taylor's Version),6649960,4,10,,2,32.0,63,8,17
+2026-03-18,2026-03-12,9,1989_taylor_s_version,1989 (Taylor's Version),5544479,5,8,,-1,-13.9,63,5,12
+2026-03-18,2026-03-12,10,evermore,evermore,5393143,4,9,,-1,-0.9,63,5,1
+2026-03-18,2026-03-12,11,red,Red,4334814,2,12,,1,243.7,2,11,1
+2026-03-18,2026-03-12,12,speak_now,Speak Now,3127557,2,11,,-1,1.4,52,9,1
+2026-03-18,2026-03-12,13,taylor_swift,Taylor Swift,899252,1,13,,0,-1.7,63,11,11
+2026-03-25,2026-03-19,1,the_life_of_a_showgirl,The Life of a Showgirl,63765359,12,1,,0,-4.8,25,1,25
+2026-03-25,2026-03-19,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,30655322,20,2,,0,-0.1,64,1,25
+2026-03-25,2026-03-19,3,lover,Lover,28113254,13,3,,0,-0.7,64,1,13
+2026-03-25,2026-03-19,4,1989,1989,25905315,5,5,,1,0.4,64,4,9
+2026-03-25,2026-03-19,5,reputation,reputation,25632643,12,4,,-1,-2.7,64,1,1
+2026-03-25,2026-03-19,6,midnights,Midnights,17126233,13,6,,0,-1.7,64,4,35
+2026-03-25,2026-03-19,7,fearless_taylor_s_version,Fearless (Taylor's Version),10203393,5,7,,0,-3.4,64,6,9
+2026-03-25,2026-03-19,8,1989_taylor_s_version,1989 (Taylor's Version),5847511,5,9,,1,5.5,64,5,12
+2026-03-25,2026-03-19,9,red_taylor_s_version,Red (Taylor's Version),5680387,3,8,,-1,-14.6,64,8,17
+2026-03-25,2026-03-19,10,evermore,evermore,5358834,4,10,,0,-0.6,64,5,1
+2026-03-25,2026-03-19,11,red,Red,5021150,3,11,,0,15.8,3,11,2
+2026-03-25,2026-03-19,12,speak_now,Speak Now,2968340,2,12,,0,-5.1,53,9,1
+2026-03-25,2026-03-19,13,taylor_swift,Taylor Swift,932114,1,13,,0,3.7,64,11,11
+2026-04-01,2026-03-26,1,the_life_of_a_showgirl,The Life of a Showgirl,65603035,12,1,,0,2.9,26,1,26
+2026-04-01,2026-03-26,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,31947781,20,2,,0,4.2,65,1,25
+2026-04-01,2026-03-26,3,lover,Lover,28150805,13,3,,0,0.1,65,1,13
+2026-04-01,2026-03-26,4,1989,1989,26671700,5,4,,0,3.0,65,4,10
+2026-04-01,2026-03-26,5,reputation,reputation,23770742,12,5,,0,-7.3,65,1,1
+2026-04-01,2026-03-26,6,midnights,Midnights,16536892,12,6,,0,-3.4,65,4,35
+2026-04-01,2026-03-26,7,fearless_taylor_s_version,Fearless (Taylor's Version),10341630,5,7,,0,1.4,65,6,9
+2026-04-01,2026-03-26,8,red_taylor_s_version,Red (Taylor's Version),6538660,4,9,,1,15.1,65,8,18
+2026-04-01,2026-03-26,9,1989_taylor_s_version,1989 (Taylor's Version),5820482,5,8,,-1,-0.5,65,5,12
+2026-04-01,2026-03-26,10,evermore,evermore,5509417,4,10,,0,2.8,65,5,1
+2026-04-01,2026-03-26,11,red,Red,4783229,2,11,,0,-4.7,4,11,3
+2026-04-01,2026-03-26,12,speak_now,Speak Now,3072931,2,12,,0,3.5,54,9,1
+2026-04-01,2026-03-26,13,taylor_swift,Taylor Swift,965361,1,13,,0,3.6,65,11,11
+2026-04-01,2026-03-26,14,folklore,folklore,869906,1,,RE,,,47,12,12
+2026-04-08,2026-04-02,1,the_life_of_a_showgirl,The Life of a Showgirl,60745766,12,1,,0,-7.4,27,1,27
+2026-04-08,2026-04-02,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,29720919,18,2,,0,-7.0,66,1,25
+2026-04-08,2026-04-02,3,lover,Lover,27955338,13,3,,0,-0.7,66,1,13
+2026-04-08,2026-04-02,4,1989,1989,26421610,5,4,,0,-0.9,66,4,11
+2026-04-08,2026-04-02,5,reputation,reputation,19802389,10,5,,0,-16.7,66,1,1
+2026-04-08,2026-04-02,6,midnights,Midnights,15342504,11,6,,0,-7.2,66,4,35
+2026-04-08,2026-04-02,7,fearless_taylor_s_version,Fearless (Taylor's Version),10327009,5,7,,0,-0.1,66,6,9
+2026-04-08,2026-04-02,8,folklore,folklore,9521228,6,14,,6,994.5,48,8,1
+2026-04-08,2026-04-02,9,red_taylor_s_version,Red (Taylor's Version),6221452,4,8,,-1,-4.9,66,8,18
+2026-04-08,2026-04-02,10,1989_taylor_s_version,1989 (Taylor's Version),5681193,5,9,,-1,-2.4,66,5,12
+2026-04-08,2026-04-02,11,evermore,evermore,5441419,4,10,,-1,-1.2,66,5,1
+2026-04-08,2026-04-02,12,red,Red,4630132,2,11,,-1,-3.2,5,11,3
+2026-04-08,2026-04-02,13,speak_now,Speak Now,2975641,2,12,,-1,-3.2,55,9,1
+2026-04-08,2026-04-02,14,taylor_swift,Taylor Swift,921076,1,13,,-1,-4.6,66,11,11
+2026-04-15,2026-04-09,1,the_life_of_a_showgirl,The Life of a Showgirl,58838618,12,1,,0,-3.1,28,1,28
+2026-04-15,2026-04-09,2,the_tortured_poets_department,THE TORTURED POETS DEPARTMENT,30596633,19,2,,0,2.9,67,1,25
+2026-04-15,2026-04-09,3,lover,Lover,28275113,13,3,,0,1.1,67,1,13
+2026-04-15,2026-04-09,4,1989,1989,25941170,5,4,,0,-1.8,67,4,12
+2026-04-15,2026-04-09,5,reputation,reputation,19771310,10,5,,0,-0.2,67,1,1
+2026-04-15,2026-04-09,6,midnights,Midnights,16186704,12,6,,0,5.5,67,4,35
+2026-04-15,2026-04-09,7,fearless_taylor_s_version,Fearless (Taylor's Version),10731440,5,7,,0,3.9,67,6,9
+2026-04-15,2026-04-09,8,red_taylor_s_version,Red (Taylor's Version),7284667,5,9,,1,17.1,67,8,19
+2026-04-15,2026-04-09,9,1989_taylor_s_version,1989 (Taylor's Version),5750557,5,10,,1,1.2,67,5,12
+2026-04-15,2026-04-09,10,folklore,folklore,5488247,3,8,,-2,-42.4,49,8,1
+2026-04-15,2026-04-09,11,evermore,evermore,5299201,4,11,,0,-2.6,67,5,1
+2026-04-15,2026-04-09,12,red,Red,4584103,2,12,,0,-1.0,6,11,3
+2026-04-15,2026-04-09,13,speak_now,Speak Now,3100865,2,13,,0,4.2,56,9,1
+2026-04-15,2026-04-09,14,taylor_swift,Taylor Swift,916507,1,14,,0,-0.5,67,11,11
