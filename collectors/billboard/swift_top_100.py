@@ -806,6 +806,10 @@ def run(
         logger.log(f"⚠ no dates found in {STREAMS_HISTORY_CSV.name}")
         return 2
 
+    # Chart weeks end on Wednesday (Thu→Wed). Snap back if date is not a Wednesday.
+    while chart_date.weekday() != 2:
+        chart_date -= timedelta(days=1)
+
     week_start, _ = _week_dates(chart_date)
     _, day_list = _week_dates(chart_date)
     week_set = set(day_list)
@@ -844,7 +848,19 @@ def run(
     else:
         prior_weeks = len({(r.get("date") or "").strip() for r in existing_rows if r.get("date")})
         logger.log(f"  history        : {prior_weeks} prior week{'s' if prior_weeks != 1 else ''} loaded")
-        prev_points, prev_ranks = _build_week_chart(week_end=prev_week_end, tracks=tracks, logger=logger)
+        prev_points, _spotify_prev_ranks = _build_week_chart(week_end=prev_week_end, tracks=tracks, logger=logger)
+        # Use stored final ranks (total_units-based) for correct rank_change.
+        # _build_week_chart ranks by Spotify streams only, but final ranks use total_units.
+        _prev_week_str = _format_date(prev_week_end)
+        _prev_week_rows = [r for r in existing_rows if (r.get("date") or "").strip() == _prev_week_str]
+        if _prev_week_rows:
+            prev_ranks = {
+                r["track_id"]: int(r["rank"])
+                for r in _prev_week_rows
+                if r.get("track_id") and r.get("rank")
+            }
+        else:
+            prev_ranks = _spotify_prev_ranks
 
     out_entries: list[dict] = []
     snapshot_entries: list[dict] = []

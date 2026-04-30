@@ -15,6 +15,8 @@ import sys
 import random
 
 import requests as _requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
@@ -85,6 +87,48 @@ APP_VERSION   = "1.2.87.30.gc764ebf1"
 _SESSION_FILE = _SCRIPT_DIR.parents[0] / "charts/global/tools/json/spotify_session.json"
 
 START_TIME = None
+
+# ── Live update signal ────────────────────────────────────────────────────────
+_UPDATE_SIGNAL_SENT = threading.Event()
+
+
+def _upload_update_signal(stats_date: str) -> None:
+    """Upload data/update_signal.json to R2 when the first track update lands."""
+    from datetime import timezone, datetime as _dt
+    try:
+        import boto3 as _boto3
+    except ImportError:
+        return
+
+    r2_account = os.getenv("R2_ACCOUNT_ID", "").strip()
+    r2_key_id  = os.getenv("R2_ACCESS_KEY_ID", "").strip()
+    r2_secret  = os.getenv("R2_SECRET_ACCESS_KEY", "").strip()
+    r2_bucket  = os.getenv("R2_BUCKET", "").strip()
+
+    if not all([r2_account, r2_key_id, r2_secret, r2_bucket]):
+        return
+
+    payload = json.dumps({
+        "updated_at": _dt.now(timezone.utc).isoformat(),
+        "date": stats_date,
+    }).encode("utf-8")
+
+    try:
+        s3 = _boto3.client(
+            "s3",
+            endpoint_url=f"https://{r2_account}.r2.cloudflarestorage.com",
+            aws_access_key_id=r2_key_id,
+            aws_secret_access_key=r2_secret,
+        )
+        s3.put_object(
+            Bucket=r2_bucket,
+            Key="data/update_signal.json",
+            Body=payload,
+            ContentType="application/json",
+        )
+        print(f"[signal] Update signal uploaded for {stats_date}")
+    except Exception as e:
+        print(f"[signal] Upload failed (non-blocking): {e}")
 
 
 def print_help() -> None:
@@ -387,71 +431,84 @@ class AdaptiveWorkerState:
                 self._win_start = time.time()
 
 
-def _fetch_tokens_via_pw_request() -> dict:
+def _fetch_tokens_via_http() -> dict:
     """
-    Récupère Bearer + client-token via Playwright APIRequestContext.
-    Envoie des requêtes HTTP avec le fingerprint browser (pas de chargement de page).
-    Beaucoup plus léger que goto() sur connexion lente.
+    Récupère Bearer + client-token via requêtes HTTP directes (requests, sans Playwright).
+    Utilise un retry adapter (3 tentatives, backoff) comme Apple Music.
     Retourne un dict avec 'bearer' et 'client_token', ou {} si échec.
     """
-    ctx_kwargs: dict = {
-        "user_agent": (
+    headers = {
+        "User-Agent": (
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
             "AppleWebKit/537.36 Chrome/133.0.0.0 Safari/537.36"
         ),
-        "extra_http_headers": {
-            "Accept": "application/json",
-            "Accept-Language": "fr-FR,fr;q=0.9",
-        },
+        "Accept": "application/json",
+        "Accept-Language": "fr-FR,fr;q=0.9",
     }
+
+    cookies: dict = {}
     if _SESSION_FILE.exists():
-        ctx_kwargs["storage_state"] = str(_SESSION_FILE)
-
-    p = sync_playwright().start()
-    try:
-        req_ctx = p.request.new_context(**ctx_kwargs)
-
-        # Étape 1 : Bearer token (endpoint léger, réponse ~200 octets)
         try:
-            resp = req_ctx.get(
-                "https://open.spotify.com/get_access_token",
-                params={"reason": "transport", "productType": "web_player"},
-                timeout=30_000,
-            )
-            bearer = resp.json().get("accessToken", "") if resp.ok else ""
-        except Exception:
-            bearer = ""
-
-        if not bearer:
-            return {}
-
-        # Étape 2 : client-token
-        try:
-            ct_resp = req_ctx.post(
-                "https://clienttoken.spotify.com/v1/clienttoken",
-                data=json.dumps({
-                    "client_data": {
-                        "client_version": APP_VERSION,
-                        "client_id": "d8a5ed958d274c2e8ee717e6a4b0971d",
-                        "js_sdk_data": {},
-                    }
-                }),
-                headers={"content-type": "application/json"},
-                timeout=30_000,
-            )
-            body = ct_resp.json() if ct_resp.ok else {}
-            client_token = body.get("granted_token", {}).get("token", "")
-        except Exception:
-            client_token = ""
-
-        if bearer and client_token:
-            return {"bearer": bearer, "client_token": client_token}
-        return {}
-    finally:
-        try:
-            p.stop()
+            session_data = json.loads(_SESSION_FILE.read_text(encoding="utf-8"))
+            for cookie in session_data.get("cookies", []):
+                cookies[cookie["name"]] = cookie["value"]
         except Exception:
             pass
+
+    retry = Retry(
+        total=3,
+        connect=3,
+        read=3,
+        backoff_factor=1.0,
+        status_forcelist=(500, 502, 503, 504),
+        raise_on_status=False,
+    )
+    session = _requests.Session()
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount("https://", adapter)
+    session.headers.update(headers)
+    if cookies:
+        session.cookies.update(cookies)
+
+    try:
+        resp = session.get(
+            "https://open.spotify.com/get_access_token",
+            params={"reason": "transport", "productType": "web_player"},
+            timeout=30,
+        )
+        bearer = resp.json().get("accessToken", "") if resp.ok else ""
+    except Exception:
+        bearer = ""
+    finally:
+        pass
+
+    if not bearer:
+        session.close()
+        return {}
+
+    try:
+        ct_resp = session.post(
+            "https://clienttoken.spotify.com/v1/clienttoken",
+            json={
+                "client_data": {
+                    "client_version": APP_VERSION,
+                    "client_id": "d8a5ed958d274c2e8ee717e6a4b0971d",
+                    "js_sdk_data": {},
+                }
+            },
+            headers={"content-type": "application/json"},
+            timeout=30,
+        )
+        body = ct_resp.json() if ct_resp.ok else {}
+        client_token = body.get("granted_token", {}).get("token", "")
+    except Exception:
+        client_token = ""
+    finally:
+        session.close()
+
+    if bearer and client_token:
+        return {"bearer": bearer, "client_token": client_token}
+    return {}
 
 
 def _test_tokens(tokens: dict) -> bool:
@@ -474,15 +531,6 @@ def _test_tokens(tokens: dict) -> bool:
     except Exception:
         return False
 
-
-def _block_for_token_capture(route):
-    """Pendant la capture de tokens, autorise HTML + JS + appels API Spotify, bloque tout le reste."""
-    rt = route.request.resource_type
-    url = route.request.url
-    if rt in ("document", "script") or "api-partner.spotify.com" in url or "clienttoken.spotify.com" in url:
-        route.continue_()
-    else:
-        route.abort()
 
 
 class TokenManager:
@@ -529,8 +577,8 @@ class TokenManager:
     def _try_via_http(self) -> bool:
         """Essaie de récupérer les tokens via HTTP pur (sp_dc + endpoints Spotify). Pas de Playwright."""
         if LOG_MODE != "quiet":
-            print("TokenManager: tentative HTTP directe (Playwright request, pas de page)…")
-        tokens = _fetch_tokens_via_pw_request()
+            print("TokenManager: tentative HTTP directe…")
+        tokens = _fetch_tokens_via_http()
         if tokens.get("bearer"):
             with self._lock:
                 self._tokens = tokens
@@ -543,7 +591,7 @@ class TokenManager:
         return False
 
     def capture(self) -> bool:
-        """Essaie dans l'ordre : cache disque → HTTP direct → Playwright (x3)."""
+        """Essaie dans l'ordre : cache disque → HTTP direct → Playwright (x5)."""
         if self._try_cached():
             return True
         if self._try_via_http():
@@ -583,9 +631,6 @@ class TokenManager:
                 )
                 ctx  = browser.new_context(**ctx_kwargs)
                 page = ctx.new_page()
-                # Blocker agressif : seuls JS + appels API Spotify passent,
-                # tout le reste (images, CSS, fonts, médias) est bloqué.
-                page.route("**/*", _block_for_token_capture)
                 page.on("request", on_request)
                 try:
                     page.goto(url, wait_until="commit", timeout=240_000)
@@ -616,8 +661,9 @@ class TokenManager:
             if LOG_MODE != "quiet":
                 print(f"TokenManager: tentative {attempt} échouée")
             time.sleep(10)
+
         if LOG_MODE != "quiet":
-            print("TokenManager: échec — fallback Playwright pour toutes les tracks")
+            print("TokenManager: échec — tous les modes de capture ont échoué")
         return False
 
     def get(self) -> dict:
@@ -1940,6 +1986,12 @@ def try_apply_track_update(
 
         status = "updated"
 
+        if not _UPDATE_SIGNAL_SENT.is_set():
+            _UPDATE_SIGNAL_SENT.set()
+            threading.Thread(
+                target=_upload_update_signal, args=(stats_date,), daemon=True
+            ).start()
+
         incremental_publish_update(
             track=track,
             stats_date=stats_date,
@@ -2383,26 +2435,13 @@ def _worker(
                     failed_results.append(dict(result))
 
             elif scrape_status == "not_found" or total is None:
-                # Retry immédiat pour les tracks du top-50 avant de passer aux suivantes
-                if track["track_id"] in priority_top_50_ids:
+                # Retry API immédiat pour les tracks du top-50
+                if track["track_id"] in priority_top_50_ids and token_mgr is not None and token_mgr.available:
                     for _retry in range(2):
-                        try:
-                            page.wait_for_timeout(5000)
-                        except Exception:
-                            pass
-                        if token_mgr is not None and token_mgr.available:
-                            api_result = fetch_playcount_api(track["track_id"], token_mgr, _api_session)
-                            if api_result is not None:
-                                total, raw, scrape_status = api_result, str(api_result), "ok"
-                            else:
-                                total, raw, scrape_status, _ = scrape_track_total(
-                                    page, track["title"], track["spotify_url"]
-                                )
-                        else:
-                            total, raw, scrape_status, _ = scrape_track_total(
-                                page, track["title"], track["spotify_url"]
-                            )
-                        if scrape_status == "ok" and total is not None:
+                        time.sleep(5)
+                        api_result = fetch_playcount_api(track["track_id"], token_mgr, _api_session)
+                        if api_result is not None:
+                            total, raw, scrape_status = api_result, str(api_result), "ok"
                             break
 
                 if scrape_status == "ok" and total is not None:
@@ -2921,7 +2960,9 @@ def main():
 
     # Capture des tokens API (une seule fois pour tout le run)
     token_mgr = TokenManager()
-    token_mgr.capture()
+    if not token_mgr.capture():
+        print("TokenManager: échec — impossible d'obtenir les tokens Spotify. Vérifiez la connexion.")
+        sys.exit(1)
 
     should_run_probe = (
         done_tracks_before_run == 0

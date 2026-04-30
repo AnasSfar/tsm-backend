@@ -43,7 +43,20 @@ else:
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
 import aiohttp
+import requests as _requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 from playwright.sync_api import sync_playwright
+
+def _build_http_session() -> _requests.Session:
+    retry = Retry(total=3, connect=3, read=3, backoff_factor=1.0,
+                  status_forcelist=(500, 502, 503, 504), raise_on_status=False)
+    s = _requests.Session()
+    s.mount("https://", HTTPAdapter(max_retries=retry))
+    s.mount("http://",  HTTPAdapter(max_retries=retry))
+    return s
+
+_http = _build_http_session()
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
 # collectors/spotify/charts/worldwide/daily.py → parents[4] = tsm-backend/
@@ -249,7 +262,6 @@ def _get_bearer_token_and_regions() -> tuple[str, dict[str, str]]:
     Récupère le Bearer token via Playwright et extrait la liste exhaustive des régions
     en combinant l'API overview ET le HTML de charts.spotify.com.
     """
-    import requests as _requests
     from bs4 import BeautifulSoup
 
     token_holder: list[str] = []
@@ -313,7 +325,7 @@ def _get_bearer_token_and_regions() -> tuple[str, dict[str, str]]:
     while True:
         _attempt += 1
         try:
-            resp = _requests.get(_OVERVIEW_URL, headers=headers, timeout=15)
+            resp = _http.get(_OVERVIEW_URL, headers=headers, timeout=15)
             if resp.status_code == 429:
                 wait = int(resp.headers.get("Retry-After", 30))
                 print(f"[WARN] Overview 429 — retry dans {wait}s (tentative {_attempt})")

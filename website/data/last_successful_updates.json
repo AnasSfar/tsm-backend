@@ -1,6 +1,4240 @@
 {
   "generated_at": "2026-04-30",
   "stats_date": "2026-04-29",
-  "track_ids": [],
-  "tracks": []
+  "track_ids": [
+    "53iuhJlwXhSER5J2IYYv1W",
+    "3yWuTOYDztXjZxdE2cIRUa",
+    "0ug5NqcwcFR2xrfTkc7k8e",
+    "1BxfuPKGuaTgP7aM0Bbdwr",
+    "1u8c2t2Cy7UBoG4ArRcF5g",
+    "0cqRj7pUJDkTCEsJkx8snD",
+    "4R2kfaDFhslZEMJqAFNpdd",
+    "3hUxzQpSfdDqwM3ZTFQY0K",
+    "1dGr1c8CrMLDpV6mPbImSI",
+    "2OzhQlSqBEmt7hmkYxfT6m",
+    "2y5aJvzXhHPA94U5GFAcXe",
+    "55n9yjI6qqXh5F2mYvUc2y",
+    "5enxwA8aAbwZbf5qCHORXi",
+    "3AKV7Mvo2Mx4tb39iPvPlT",
+    "72jCZdH0Lhg93z6Z4hBjgj",
+    "6YvqWjhGD8mB5QXcbcUKtx",
+    "1qrpoAMXodY6895hGKoUpA",
+    "1R0a2iXumgCiFb7HEZ7gUE",
+    "4A4A6dwl5DqdqrZaEtKGPR",
+    "7G6TDmGJXDoBaV6NGj3Yic",
+    "6oVxXO5oQ4pTpO8RSnkzvv",
+    "0W0iAC1VGlB82PI6elxFYf",
+    "4pvb0WLRcMtbPGmtejJJ6y",
+    "5xPsybHWRHbTYO44xnREY5",
+    "6NFyWDv5CjfwuzoCkw47Xf",
+    "0V3wPSX9ygBnCm8psDIegu",
+    "1fzAuUVbzlhZ1lJAx9PtY6",
+    "1MgV7FIyNxIG7WzMRJV5HC",
+    "0Oju1YcbPCJuUQQWoZNdJK",
+    "4dgf2DYVJbtmy8zAYLs4c7",
+    "5eXgqtg3T8Av0m1FUaGHex",
+    "2TEQvxxQabwLQMqWMg1qGu",
+    "03bTIHJElXZ0O0jqOQvAbY",
+    "62V2ZHslgQV98gH4AuVXnr",
+    "2yLa0QULdQr0qAIvVwN6B5",
+    "04S1pkp1VaIqjg8zZqknR5",
+    "3YkNIrAvbKNrrwwEd7NVLl",
+    "4D7BCuvgdJlYvlX5WlN54t",
+    "1J1ldDi3rMQlRi49gaba0a",
+    "0VE4kBnHJUgtMf0dy6DRmW",
+    "1P17dC1amhFzptugyAO7Il",
+    "3RauEVgRgj1IuWdJ9fDs70",
+    "1K39ty6o1sHwwlZwO6a7wK",
+    "3sW3oSbzsfecv9XoUdGs7h",
+    "0Jlcvv8IykzHaSmj49uNW8",
+    "0P9wLFurlgumLXuqFEpw52",
+    "2x3mwb96B6TquRqMtbxUE1",
+    "2NlmmAjGYrrjAp0MED5rGx",
+    "5ylJtmaWPJ33cW3En7WOu0",
+    "1appZ3c336FkPvCuywfmrs",
+    "4qmFC3Jz5aQ0erlk2OSi2X",
+    "2F3N9tdombb64aW6VtZOdo",
+    "0lx2cLdOt3piJbcaXIV74f",
+    "45R112Jz5hQeKgITXgSXzs",
+    "22bPsP2jCgbLUvh82U0Z3M",
+    "4y5bvROuBDPr5fuwXbIBZR",
+    "1GwMQaZz6Au3QLDbjbMdme",
+    "7kt9e9LFSpN1zQtYEl19o1",
+    "3rWDp9tBPQR9z6U5YyRSK4",
+    "2NmsngXHeC1GQ9wWrzhOMf",
+    "1hjRhYpWyqDpPahmSlUTlc",
+    "62HoDY1Km6lm47haFpUn9c",
+    "7AEAGTc8cReDqcbPoY9gwo",
+    "6kl8thRysTeVV3WvKxgZAy",
+    "3zwMVvkBe2qIKDObWgXw4N",
+    "0sY6ZUTh4yoctD8VIXz339",
+    "6RRNNciQGZEXnqk8SQ9yv5",
+    "2XXwLdtuAcE0HSCu61ijAb",
+    "6VsvKPJ4xjVNKpI8VVZ3SV",
+    "0ZNU020wNYvgW84iljPkPP",
+    "5jQyGzcwqAxwT5QUIMivoX",
+    "045ZeOHPIzhxxsm8bq5kyE",
+    "3pHkh7d0lzM2AldUtz2x37",
+    "3Vevii7qKqrmW8CcyzBHDl",
+    "18WFFUIsewmA8g31KAeo3e",
+    "3nsfB1vus2qaloUdcBZvDu",
+    "0CD7DzeCsuPJygddqlUVYa",
+    "4OAuvHryIVv4kMDNSLuPt6",
+    "4GBbcyrbDzwRtQjrsDRywK",
+    "3CWq0pAKKTWb0K4yiglDc4",
+    "12M5uqx0ZuwkpLp5rJim1a",
+    "5og4Qzt92jJzVDkOtSEilb",
+    "214nt20w5wOxJnY462klLw",
+    "3eX0NZfLtGzoLUxPNvRfqm",
+    "77sMIMlNaSURUAXq5coCxE",
+    "1kcwpPDQnqEqmezzXdJTCP",
+    "3ZVFcD8Wlw9T9klGqmJf9F",
+    "3qoftcUZaUOncvIYjFSPdE",
+    "4bBDkw2KBMX0tcgAaXC83Q",
+    "1tuNqJOtRQVHvONR8Lg3MZ",
+    "3NMrVbIVWT3fPXBj0rNDKG",
+    "5jQI2r1RdgtuT8S3iG8zFC",
+    "1ZY1PqizIl78geGM4xWlEA",
+    "3fO566xJgwxIa3qGCGBvIC",
+    "6IG3sQ8s9nfk6TUlVzRhbN",
+    "2x0WlnmfG39ZuDmstl9xfX",
+    "4svZDCRz4cJoneBpjpx8DJ",
+    "5hQSXkFgbxjZo9uCwd11so",
+    "0hhzNPE68LWLfgZwdpxVdR",
+    "45wMBGri1PORPjM9PwFfrS",
+    "5l6GqSxplqnZbLg0LTPQeG",
+    "2Rk4JlNc2TPmZe2af99d45",
+    "4WBEj8TeGtRPNJdOmT3WJW",
+    "1SymEzIT3H8UZfibCs3TYi",
+    "5YqltLsjdqFtvqE7Nrysvs",
+    "15DeqWWQB4dcEWzJg15VrN",
+    "2CYVETnhM9aytqrazYYwrK",
+    "5QUIK7ZtziW8kGWo8RqopF",
+    "3z6XUommYDWPHeFhmhhT6j",
+    "1LLXZFeAHK9R4xUramtUKw",
+    "0PurA4JVJ8YQgSVopY8fn6",
+    "4OmFmE0fzcMG6g0Y8p4eSD",
+    "2ULNeSomDxVNmdDy8VxEBU",
+    "62E2nR0od0M5HYxuYLaDz7",
+    "4zmKGsrXjLmljb5fTaBTot",
+    "5Bedn0svl0ZD7RGmJkmKKw",
+    "3zMDGj4D8ogaYgAIZPeU7S",
+    "1QQii3pa5m8MEda0nbkjfw",
+    "2Eeur20xVqfUoM3Q7EFPFt",
+    "4ojxSyrEraN7d46BMBPThZ",
+    "1rmEsOezwf2lmIZTMAO5Ag",
+    "7HuBDWi18s4aJM8UFnNheH",
+    "3yII7UwgLF6K5zW3xad3MP",
+    "79uDOz0zuuWS7HWxzMmTa2",
+    "2VuqMjgoKaOHNM8HpxtXKx",
+    "73W5aXorr5vxrySFcoZqIN",
+    "2913xXOVAIDAqxzV2g4VcU",
+    "6AtZLIzUINvExIUy4QhdjP",
+    "6KJqZcs9XDgVck7Lg9QOTC",
+    "2vJ7QvyCiR4DaHxwO58izA",
+    "7qEUFOVcxRI19tbT68JcYK",
+    "3xYJScVfxByb61dYHTwiby",
+    "1By2VQkUN0Frd8mKNV5NYC",
+    "2dgFqt3w9xIQRjhPtwNk3D",
+    "4P9Q0GojKVXpRTJCaL3kyy",
+    "17yraMKqmZIKAv3iaGcoLX",
+    "3hlGuz3loYoLfI3bpwieWq",
+    "4txojlesMFQZGWxwz2EeqB",
+    "3pv7Q5v2dpdefwdWIvE7yH",
+    "2L09RYwH5Pjzca6PmbUAw3",
+    "1xwAWUI6Dj0WGC3KiUPN0O",
+    "7G0gBu6nLdhFDPRLc0HdDG",
+    "1wtOxkiel43cVs0Yux5Q4h",
+    "6PlBKImSl4AZoxBU7F649D",
+    "3nRmDz7qGCvsMS30rGGY0x",
+    "12ntTeqEeTg7GAVpe8Mhpl",
+    "01K4zKU104LyJ8gMb7227B",
+    "4hqJ4bSlYJOXb6Z4SRmzxs",
+    "3CCRVu4F91Qp2mnGjmWBrf",
+    "5kI4eCXXzyuIUXjQra0Cxi",
+    "05GsNucq8Bngd9fnd4fRa0",
+    "3O5osWf1rSoKMwe6E9ZaXP",
+    "0TyGh27YQ5LknmiDhCzJiT",
+    "4CkgMiMqZ5JzW9iYXSTMTL",
+    "0lKUBmEyQfzsQHozyeXzES",
+    "43rA71bccXFGD4C8GOpIlN",
+    "7I7JbDv63ZJJsSi24DyJrz",
+    "5kHMfzgLZP95O9NBy0ku4v",
+    "5chnRTB9qMK3W1M41SnU9s",
+    "4d9PtIEVij9jW5OaLinH66",
+    "1XjHRolIXL2M1EEOUsGGR4",
+    "5M787RexsAiVYjQusM98CV",
+    "670fUmXf4KQekzbEgaXyPA",
+    "0qUnBLZ8bJqUNEeQgayL9t",
+    "2YWtcWi3a83pdEg3Gif4Pd",
+    "7F5oktn5YOsR9eR5YsFtqb",
+    "59KOoHFcw5XfICnO57holu",
+    "71CBDRKmF2VeRKYMG1DFBh",
+    "6rZVy6FIG7lSJQMFXHo12z",
+    "19CSr8rwW05VJL2F91KFNK",
+    "5BK0uqwY9DNfZ630STAEaq",
+    "73YUReisjb3A9ActdLLjJQ",
+    "0heeNYlwOGuUSe7TgUD27B",
+    "7MbT4I8qGntX4fMdqMQgke",
+    "4EF6IyONolQy0bIQXm2EmX",
+    "7gdwoOmi258QJq0hmQ4hto",
+    "60hGQrn24APqEFSLObLeDc",
+    "3RaT22zZsxVYxxKR7TAaYF",
+    "6MWoRt97mnSTXZhu3ggi9C",
+    "1hR8BSuEqPCCZfv93zzzz9",
+    "5tWxKWq1DSP1s9WQ5PWuqu",
+    "1Zai5UJ2di3qEuR2HeT2s8",
+    "5YL553x8sHderRBDlm3NM3",
+    "4pNApnaUWAL2J4KO2eqokq",
+    "6xsEAm6w9oMQYYg3jkEkMT",
+    "5PxFv9yJEg9dxvbZggykro",
+    "7ogK4lJDVDMU6A6vYR5rvD",
+    "6sQckd3Z8NPxVVKUnavY1F",
+    "0eFQWVz0qIxDOvhLpZ40P7",
+    "32mVHdy0bi1XKgr0ajsBlG",
+    "1DTRUYVd8rYpla9hhVVwjo",
+    "2o2sgVJIgFXk8GQjWTgI6U",
+    "2QDyYdZyhlP2fp79KZX8Bi",
+    "0KztjtD3ytzgYjUKIVfBnW",
+    "07NxDD1iKCHbAldceD7QLP",
+    "3MytWN8L7shNYzGl4tAKRp",
+    "64FzgoLZ3oXu2SriZblHic",
+    "0cITLOYn1Sv4q27zZPqlNK",
+    "6GXgd1BPD9bUpqw5AntGV5",
+    "08fa9LFcFBTcilB3iq2e2A",
+    "1SztNGCwEHJEVFx90E5g7D",
+    "10GRRCR5fctuOF4GFmATJI",
+    "6pYNq0ZwpPVazKzsqpf0G8",
+    "0g4fMVo4JjwnIpTfFfLdxS",
+    "3JNaLxAymiSUMrmjOarjeo",
+    "3k7ne7VmH43ZPWxPdvPUgR",
+    "1MaqkdFNIKPdpQGDzme5ss",
+    "733OhaXQIHY7BKtY3vnSkn",
+    "7zMcNqs55Mxer82bvZFkpg",
+    "5vyxXfD5gLlyPxGZMEjtmd",
+    "6zV8AVM9eVfdG7Qahwd64R",
+    "6dTA6y0C2ReQklntzZl8l3",
+    "0y6kdSRCVQhSsHSpWvTUm7",
+    "0v4z1tuZvn6LGknom9Qx7d",
+    "6HRsJu8vcnzYDN4t0570FY",
+    "4s8BIKx4Zh6ryAEz8RTlaU",
+    "2CnjDMdpRjlWv04Xk3s6MW",
+    "43y1WpBdnEy5TR9aZoSQL9",
+    "0NwGC0v03ysCYINtg6ns58",
+    "1HCdems7PQZRj42QDWLA0A",
+    "6M9ppdfFjR1AbpUl3Y8DcV",
+    "0E3Vtmgzk067KASoo0HwzV",
+    "4tMzIAFTFdqGBQLdfbPces",
+    "1ULabO0PEsdJekqVH6G10G",
+    "3i9UVldZOE0aD0JnyfAZZ0",
+    "5xXqyjLicvEpch72qEryFT",
+    "6INztpNwOTlfSKTuPo0HOP",
+    "4AYtqFyFbX0Xkc2wtcygTr",
+    "73qMN9bXy7MSPwwGfH3wQr",
+    "6lzc0Al0zfZOIFsFvBS1ki",
+    "1zU8j1x3yi9xalMF96pzKp",
+    "1kdWw77ZpYOkhxeuhzU1j6",
+    "0tQ9vBYpldCuikPsbgOVKA",
+    "46NGAvL695VnbcSeTmQWmM",
+    "6aLOekfwbytwWvQftxTEF0",
+    "2r9CbjYgFhtAmcFv1cSquB",
+    "2EFZ9emtKWEglWUQGEQ3P9",
+    "6N1K5OVVCopBjGViHs2IvP",
+    "6LZaxlycSWrJZ4Volb25qx",
+    "1n3b9Eekoy3S9ZSZ5DmTW1",
+    "1msEuwSBneBKpVCZQcFTsU",
+    "16MVSD0mGI4RMQT83Qzm69",
+    "30Y4CV7A6YqtQtTTo7Ue4j",
+    "0Om9WAB5RS09L80DyOfTNa",
+    "4e3ZNTAV6PCrdYMUrUlMpQ",
+    "7C0w28EsX0Um2FrZs9gso2",
+    "5t1wMjV9ldVDdYs4l7mG2g",
+    "6qAcApH8obo8eqatCKUHd9",
+    "3S7HNKPakdwNEBFIVTL6dZ",
+    "4ABYxlb92WBIjHu7TIKmml",
+    "0kAZ3H6G9Zac4PMpmobMkj",
+    "0q6vsjvnCIWrtwRckCV7y0",
+    "35rdVq36LMHQX0Suw9a6tK",
+    "1qwClaxDb5fCrLjXaAmB35",
+    "6wfugRLamFsTRbPcCpNnP7",
+    "7J4b3LVCIGO4CMBDFLPoP6",
+    "2nqio0SfWg6gh2eCtfuMa5",
+    "1D27z8xNzjW0Mwwt1NCWhJ",
+    "4XMP3zVxrnr58T0tjIHvpR",
+    "550erGcdD9n6PnwxrvYqZT",
+    "4bXCcoesMt8u99xMsbLr9U",
+    "3Z2nTctPsTsgqqJm5fCSvG",
+    "1SmiQ65iSAbPto6gPFlBYm",
+    "1cSFlSBdpT4F5vb1frQ231",
+    "1gejz5ROvJBUb6WJzkMAcc",
+    "0z9UVN8VBHJ9HdfYsOuuNf",
+    "0zo975x58DlXbZllWvfYhg",
+    "3oGVx9RBmiYGv5ZCecWLkx",
+    "2bzUVEvpZ7At5cYz1kOLI9",
+    "0NRHj8hDwwmSPaA41o379r",
+    "2RJnNdu4pb3MypbBroHU0T",
+    "6Q237Ts37YGYRIi5Vy5lVX",
+    "7A2cNLRT0YJc1yjxHlKihs",
+    "4IQkfUsrwXol38VV3U7t7T",
+    "6iiAfo4wTA2CVC3Uwx9uh8",
+    "3yNJkriPzWjkkDAWHIAVUq",
+    "7dXKdjpOaH2iwfFKmUj7aq",
+    "6XDBA3QWX51lDJ0oZbaJJN",
+    "4uuEGH5SVuzkkSFjo2DEiY",
+    "7eQj6r5PIdYKEIZjucBMcq",
+    "4e5ayHsOLJNLTGfjau2mEw",
+    "37jfioVu3Bd2Du9bteXNDU",
+    "7HC7R2D8WjXVcUHJyEGjRs",
+    "4UBWugj5D20ZveyzdGpqvD",
+    "4axSuOg3BqsowKjRpj59RU",
+    "5gRYrtvyVyaCRvLt56OfuV",
+    "1yFjBRQVhRdcdnrTE5LuyD",
+    "3K2es3gElMRJ3qvmPW442g",
+    "5jAIouBES8LWMiriuNq170",
+    "2m3ObD945KvpE5y9A1eUWm",
+    "4i6cwNY6oIUU2XZxPIw82Y",
+    "4A2LfnduSTsE8u0ecYROxE",
+    "3fGnrtrtL1IHSX9t4DKOYf",
+    "77VotUUL79U10TAnYdqwvr",
+    "48A0aShHlovDfTMucMrE66",
+    "6iWMI5oOhWrDbLbjmwTWFq",
+    "6ON9UuIq49xXY9GPmHIYRp",
+    "11UaQaEp2LvdspTyyuE3ur",
+    "06zIBqLC9ZRm5i0iMf0kHI",
+    "12nBPF4Rh4XLFJV0YLN7uj",
+    "7y16ygjcEcfo1VYKxmgVZY",
+    "2JoJrsEV15OzbijS47lids",
+    "4CHpVfAhuxNJ3ibExe6kxO",
+    "5pcjystBtalYeqaiXCcgEY",
+    "4yf9OivCH2lmQWN8mzpCC6",
+    "0DMVrlMUn01M0IcpDbwgu7",
+    "7eResoqEJJAVTkQYSqvO3P",
+    "3JilapcaOXzjR9gtvCY8FO",
+    "1kTPQnabROVkW9bUXdCGrB",
+    "40PXEOFLJc7UIpLMrhSfW1",
+    "4evLyY5Ue1Wesc61t2KXAU",
+    "6hKfPNnVlA2cgTgKj6Vgcw",
+    "01QdEx6kFr78ZejhQtWR5m",
+    "0JIdBrXGSJXS72zjF9ss9u",
+    "73OX8GdpOeGzKC6OvGSbsv",
+    "2zfgVd034GlUvk7LqBHl6u",
+    "2QrQCMel6v2JiLxqrg4p2O",
+    "0k0vFacOHNuArLWMiH60p7",
+    "2slqvGLwzZZYsT4K4Y1GBC",
+    "1Fj0T1XKuhRu7EZzJ7NJIK",
+    "2oWpe2L8ypC080BxpDVuTY",
+    "4pJi1rVt9GNegU9kywjg4z",
+    "7N015NTIWGjQDddHUdHPoO",
+    "0lJWmQO1fw1Tr2p2M1m5cw",
+    "7an1exwMnfYRcdVQm0yDev",
+    "7nWui6jiMM2m9qFmET1Mtj",
+    "0ttGLmxI0mAkMblE6iRm2S",
+    "3EPgWM1zfTSzEc0z4AwWTM",
+    "2BUTSRKPGRsyc9FnsC5Udd",
+    "34V9RiEPe8MNdU32qJsJa1",
+    "3ExweHKZF9B752DPQByRVT",
+    "4qUijfYU8EoIWiY6oSyrgT",
+    "1n2wszmJyVkw6FHqyLnQsY",
+    "1gaLZjPrDnHQWJds2Jg4KT",
+    "5mdNyCS7ttVcAyVYOIFEjs",
+    "51A8eKvvZz9uydvIZ7xRSV",
+    "2ZoOmCSgj0ypVAmGd1ve4y",
+    "6K0CJLVXqbGMeJSmJ4ENKK",
+    "786NsUYn4GGUf8AOt0SQhP",
+    "5VDHMi7own9vDZjiwDES1e",
+    "2Sy2oGjP5RYB4cLVoDU0Gz",
+    "7ryS0xBZNYjQqql34GCkDp",
+    "5OOd01o2YS1QFwdpVLds3r",
+    "2QA3IixpRcKyOdG7XDzRgv",
+    "3lXekiVK1ZPZbKconsys73",
+    "1zxrcAk6eiytfavqriMcKT",
+    "0UAdDYrkCvVQftaKpL6q5f",
+    "5eGX87IiKsGuzS3iw4CfCX",
+    "2NIBaWXdjaTDmytjjwbEfP",
+    "0gPmM1WtVRg3uENW3o8bfx",
+    "5d2Kn9oAAh9S2EbyCo1i52",
+    "0qsSmObOgBZfuMIwfAQDBP",
+    "1EQn3Uc5AyUXoiPLeyCrrg",
+    "2JHzTARFUispsjZHKhrxxO",
+    "1spLfUJxtyVyiKKTegQ2r4",
+    "4fWDgRZa0GKE5KZNhE9MQa",
+    "7wo2UNeQBowm28hfAJsEMz",
+    "2DF2sUvgHFKJ5TQGjm6n3T",
+    "5YbZZ2gYfvW1UvHHF4pVaD",
+    "7vvIpJZye5cRR6De1LKM0m",
+    "4MGexoZc12lqE0hYkq9YYx",
+    "2yceD2hx5HhOLgkm1CITCi",
+    "3oF7Or7T35yhQbGxbCGvRX",
+    "5VwFkx7JOimOGTYfha5rs1",
+    "5kYFVSQoPu7yRpfiHBwMUk",
+    "0vvt4IZOMkRug195S4MUq0",
+    "2d3d9xZutJjmUpntiyHt3F",
+    "1qLeEu4iXEclkLwoBlMiou",
+    "4qyalTRMRH5YuEntvvMvq0",
+    "2hmafYGj1CXYKIYcMnX4lj",
+    "0RFCHlNuTeUHIB36VuVbOL",
+    "4N419mmxYybTfAECy5j4dw",
+    "560uQyz3p5G9WdnMX39xc6",
+    "3kfgJql90tzgoxByioAMXR",
+    "05kJkr80XEaZeN8kxyQoFp",
+    "4pFvEWbjBpPUdYRQly0THs",
+    "1P5QpwOgXJuoVTm3CWbnLY",
+    "0vqI4ZIMuifeKeItGiWbPj",
+    "08J4bMHbILkwSIhbtrcvjN",
+    "6mqyTq948oap5AkyTsd6XF",
+    "2wtHlpYSgC7xEdD3DrSHNL",
+    "5RaBeejGtdPEszYEKYECs2",
+    "16M9Rxid0nXhVmme7lzVwN",
+    "6IH2Z54gYPLqgJtxZjX80i",
+    "1Ygm9KdH3wbzDekO8JgxcW",
+    "5QKhg4r4Ibt0LVTmWEXTEg",
+    "0GxW5K0qzrq7L1jwSY5OmY",
+    "0fAbfDiuQiUwV7FUcFfRGY",
+    "6vLpy7UPYuOa75Bkqocrcw",
+    "6F67FNdOBNMFzxdj1CQ5pL",
+    "2msvOEbkK50foYf9BMXr2X",
+    "4mKye6Z1kXuKolzMkJoKFA",
+    "28tIMaewZuGR8urkvFhQyA",
+    "5KByGq0JijSSDcy0qzuINs",
+    "2M4tVhRXucLE9M3STv21Yi",
+    "5KxZfCXXmVvKhPo8hQz2pS",
+    "4cOWq0cVsKjxaQpRMbDoH1",
+    "6WWvcA62QlnRguluWAk6bv",
+    "6ovFJkdau79DuXEvQjPaNH",
+    "0RdcBnAXyH2YZZvcBVu2k6",
+    "1yDJcXc549N6AabNBzFAku",
+    "2fgiBCtbWo8pijF6M7pN1i",
+    "3tGq7hWDCtrnL83y5OGual",
+    "1u4HUiREUR6vX1W1RYG2Tm",
+    "1mh5dObNoOvCfHmXnhvDEK",
+    "4YHHz3VIXgNDGdoL9xC1tx",
+    "0U0etHtpARihOUUY8Akc7y",
+    "77d7q9TNbsIDmRTDPkPv3L",
+    "77p4fRpoeiZMtUy3P9kN21",
+    "6C0H8ts9M6deezz0yYR6LK",
+    "04xrhDrQ2WOW8GLwu7kbc0",
+    "62rlxI6g2PNaWsHoiRryto",
+    "0QTBsdoJhamY3Aid3fOsOd",
+    "4yyKppX85ZkmlGOC2toBZA",
+    "20QSU9vg05qYSDVgOTAwPp",
+    "2NnrAdjE9cPdMklonMBuAv",
+    "2Ta5c5Z6DvM8GX0U1polSo",
+    "0hFF0aqyjDwDh6SQwRbTyx",
+    "06FXaDDdg0BzXl15cthMS5",
+    "4lD3RXyvHpJsM3BhIEC4aA",
+    "6cf6rLb8qcklvJv90W6HCW",
+    "0BSmbCIY36iw04azzJ3S0S",
+    "5AsmAjBSSQjRPWgAYIp8tm",
+    "2R7C9dDqv1UPycvepBFziA",
+    "13MAWVUSkbGMUi6I7RowRK",
+    "2evEoQAhIMaa9PfjTT5skG",
+    "7FKbTRXXIWVFQmPH8zGfU0",
+    "0cEG04R5cldkTLzK6phlcn",
+    "3r9fAceWmaDFvbNiTnFiLr",
+    "1IsquhJFJ0qcFZI7FeAEuN",
+    "5G9AVKld9q7DCrmoY42raf",
+    "0XfTh16YcKPzdxMPTeKTAq",
+    "2IprIjGNRlj3TfqUWCAo0C",
+    "7Bjf96uNizpvXLvNyOJpst",
+    "36a08nLG1xazGaaVKK0vv7",
+    "5fOV54t6mMYv3H9CsnvU81",
+    "3Ng1BPUR5qf6vQ1AizIA0D",
+    "4KB3zBArZ1rHRExilzycaV",
+    "4mqgn90sCeVSYqcoftTQTd",
+    "12xIjI9A9UlB6zEc7kyZ06",
+    "5XkJj6sV2XLMaURdmdXgNx",
+    "5F7hpFKLmWgMHGxQuwssuv",
+    "7BT9K9BDqq6HI2oWH5UMZQ",
+    "3RNDw7yywLNyawDKV99hTx",
+    "7JKwboSAWRHJI5U1XGTqS3",
+    "6KF9xd2hBLuexrmBX4vUWD",
+    "60oZARTE1kCh5ntBfeO1XB",
+    "3vM04liQIPwzatRCDvWvba",
+    "1VCcPLfDiR1S9PJaSp5qm5",
+    "3lm4L3pPL32PFy74dR17OR",
+    "4GS68CE8nKLIKjjapiSm2I",
+    "1hm4V38egkiHOgxTUpu0zg",
+    "6znB7YZhMJT2B83zfbiyLq",
+    "4XiypEn8iKbeP1TbTqdfk5",
+    "6hH37tyeRdyan1mAppmVor",
+    "6505MLhnqTDDg4tjoUz2Wp",
+    "2PGIFYRG1XWsPqNG14hgD1",
+    "5k9RjjuYyOMCLL81U8FaHT",
+    "1aBJNc2thaKyh5THWzIqHX",
+    "5QkzyLUb4ggojNDp8G2OxX",
+    "6SYwJcqaltK2WFRmD1unUV",
+    "4YrpqEBNuz7IMsZtUP6bNQ",
+    "42TAweWJJ9YlQ47T5nesu5",
+    "7kjSmkSo15pHlkb0mOQtfj",
+    "4DbI1rr4IQ2bc8nejy9ttd",
+    "72GIZuUXo14oyrS0si3Rgc",
+    "5SkuikJwvwfEvNyCepGkq3",
+    "2NGGvVcfb2m2NbVaXHC3gb",
+    "0wAvTNz81YTUhLFWuWJSAV",
+    "6NUy8xajng5zMSGJRKniAG",
+    "7yndkPYP6YQQLBpPsizDfh",
+    "7mFiEij8AXPUZB7aKLbUlQ",
+    "5yrrh7VYFMCNjUOIMzGNp5",
+    "1g09DZjQ7yBommCT6POY2n",
+    "6FJemhBlVTGTCgrrrLam3D",
+    "0Nw8hv79MLJa1yjtsEgz08",
+    "6JNM6pLKbXMGG2opeExCb2",
+    "68QyrSzpnoU04AAhE5z8lj",
+    "4RBKAqJ3qyvvriDG0s9IJ3",
+    "3QFB14MOUf3imlyISNmrbT",
+    "5EwypOO9NEI7MvjPOYZtWk",
+    "5zOKuItOTZhRCGtPrDYmlj",
+    "4aBW31cmkA7BLColUsMEeZ",
+    "1cJkUN5LAotktryx2nPCr7",
+    "0ISHfeb30gj4CSWUZYuesj",
+    "31JVjy3XWnh6C2zf4kLCXN",
+    "7vf4GBEJmv0uXojpr5qPMX",
+    "1Qicm51crXMvUuH4SMjobT",
+    "0ThxqUZ9PwS6n0UT5i1XH6",
+    "71IScwIe7bcIlpnlkbKVQw",
+    "5g7RMU3cV7zXWH244BLe7G",
+    "7EWLNUpx0QWUCYfmBJS9qb",
+    "7pM01Cfj8vt7z3qI2TveNT",
+    "7GZ3KDorsc1yWndEtzGTjf",
+    "50ho0AOvkm8E5l8zf7OfJI",
+    "5lA0yK8S5tP3xoaRMCp4Ug",
+    "4JQm7ebhsrt10wmrP6AfXL",
+    "4FoV729rw7IhoKlMZW5K5V",
+    "4MbHDiHQjhmoVAV75G04Ql",
+    "4twNUyTpLMPWokYmCdFDCH",
+    "0yisH8r0f3Mkq34kjzUlCV",
+    "4e6QU4gpfZj9xxcK856RgG",
+    "4VbErhGDMTnvPAnt5z70DL",
+    "4TtyvyI42C0KFnbDZvNC8Y",
+    "4eTXfpHxhxVofrBUjAhPMg",
+    "4DjevQhsPWULcondN4mRh5",
+    "7EvU9pRoJ9Xs7anx0P7tEc",
+    "5a9hUL6ZuiagZhazwrtwHF",
+    "1VPHQriwOsy5aGHLwwZyho",
+    "5JtXBqKLdfzwedmlUjjqAm",
+    "5Iadj8IBPrt634WW0yGPRI",
+    "1zz0XSmHCFd57ne04UAp38",
+    "6N6V2v89hS4N9ossON5f9R",
+    "4omftH10jc82Sj8VJ395C7",
+    "69o9kr9UexjzeZDE8yD8dQ",
+    "2k0w1FGqvzVPgQ9VdTaJpe",
+    "1alAo6dYalSx8yZUn17JxF",
+    "7bdyzcQ0onk60hfsxDCd2X",
+    "4cag67C3v9ToeFivUwDUsE",
+    "2hecdut2HWM5JMHqLTWThq",
+    "3ZfvKQxJp4zZshiJsRPoD1",
+    "3ZHTwJzCNDFvjLpVQiqpH6",
+    "5EsfyTD26nlVQ0DtYo16uJ",
+    "13tYZVTtzLUJTlM7m1ivbi",
+    "5oJUjUsBZcqyEhOdpif37h",
+    "2GZNZLMvT3gjCEPd6NNvvQ",
+    "0MtU9ETYyVX8YPBDCYPdMb",
+    "7Ae2hYOcJmLbGCYIA3M1VM",
+    "4i0M7glXqIIRKPwbLtpExi"
+  ],
+  "tracks": [
+    {
+      "track_id": "53iuhJlwXhSER5J2IYYv1W",
+      "title": "The Fate of Ophelia",
+      "spotify_url": "https://open.spotify.com/track/53iuhJlwXhSER5J2IYYv1W",
+      "streams": 1316133475,
+      "daily_streams": 3210700
+    },
+    {
+      "track_id": "3yWuTOYDztXjZxdE2cIRUa",
+      "title": "Opalite",
+      "spotify_url": "https://open.spotify.com/track/3yWuTOYDztXjZxdE2cIRUa",
+      "streams": 697901252,
+      "daily_streams": 1703909
+    },
+    {
+      "track_id": "0ug5NqcwcFR2xrfTkc7k8e",
+      "title": "Style",
+      "spotify_url": "https://open.spotify.com/track/0ug5NqcwcFR2xrfTkc7k8e",
+      "streams": 1754194403,
+      "daily_streams": 1273199
+    },
+    {
+      "track_id": "1BxfuPKGuaTgP7aM0Bbdwr",
+      "title": "Cruel Summer",
+      "spotify_url": "https://open.spotify.com/track/1BxfuPKGuaTgP7aM0Bbdwr",
+      "streams": 3333330379,
+      "daily_streams": 1179430
+    },
+    {
+      "track_id": "1u8c2t2Cy7UBoG4ArRcF5g",
+      "title": "Blank Space",
+      "spotify_url": "https://open.spotify.com/track/1u8c2t2Cy7UBoG4ArRcF5g",
+      "streams": 2426857153,
+      "daily_streams": 1181662
+    },
+    {
+      "track_id": "0cqRj7pUJDkTCEsJkx8snD",
+      "title": "Shake It Off",
+      "spotify_url": "https://open.spotify.com/track/0cqRj7pUJDkTCEsJkx8snD",
+      "streams": 1875578477,
+      "daily_streams": 826453
+    },
+    {
+      "track_id": "4R2kfaDFhslZEMJqAFNpdd",
+      "title": "cardigan",
+      "spotify_url": "https://open.spotify.com/track/4R2kfaDFhslZEMJqAFNpdd",
+      "streams": 1970930539,
+      "daily_streams": 833419
+    },
+    {
+      "track_id": "3hUxzQpSfdDqwM3ZTFQY0K",
+      "title": "august",
+      "spotify_url": "https://open.spotify.com/track/3hUxzQpSfdDqwM3ZTFQY0K",
+      "streams": 1778717065,
+      "daily_streams": 749928
+    },
+    {
+      "track_id": "1dGr1c8CrMLDpV6mPbImSI",
+      "title": "Lover",
+      "spotify_url": "https://open.spotify.com/track/1dGr1c8CrMLDpV6mPbImSI",
+      "streams": 2029964064,
+      "daily_streams": 678234
+    },
+    {
+      "track_id": "2OzhQlSqBEmt7hmkYxfT6m",
+      "title": "Fortnight (feat. Post Malone)",
+      "spotify_url": "https://open.spotify.com/track/2OzhQlSqBEmt7hmkYxfT6m",
+      "streams": 1166722552,
+      "daily_streams": 718425
+    },
+    {
+      "track_id": "2y5aJvzXhHPA94U5GFAcXe",
+      "title": "I Don't Wanna Live Forever (Fifty Shades Darker)",
+      "spotify_url": "https://open.spotify.com/track/2y5aJvzXhHPA94U5GFAcXe",
+      "streams": 2124947949,
+      "daily_streams": 642423
+    },
+    {
+      "track_id": "55n9yjI6qqXh5F2mYvUc2y",
+      "title": "I Don't Wanna Live Forever (Fifty Shades Darker)",
+      "spotify_url": "https://open.spotify.com/track/55n9yjI6qqXh5F2mYvUc2y",
+      "streams": 2124947949,
+      "daily_streams": 642423
+    },
+    {
+      "track_id": "5enxwA8aAbwZbf5qCHORXi",
+      "title": "All Too Well (10 Minute Version) (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/5enxwA8aAbwZbf5qCHORXi",
+      "streams": 1198749624,
+      "daily_streams": 550538
+    },
+    {
+      "track_id": "3AKV7Mvo2Mx4tb39iPvPlT",
+      "title": "Elizabeth Taylor",
+      "spotify_url": "https://open.spotify.com/track/3AKV7Mvo2Mx4tb39iPvPlT",
+      "streams": 337892520,
+      "daily_streams": 531504
+    },
+    {
+      "track_id": "72jCZdH0Lhg93z6Z4hBjgj",
+      "title": "I Knew You Were Trouble.",
+      "spotify_url": "https://open.spotify.com/track/72jCZdH0Lhg93z6Z4hBjgj",
+      "streams": 1113430952,
+      "daily_streams": 483019
+    },
+    {
+      "track_id": "6YvqWjhGD8mB5QXcbcUKtx",
+      "title": "Love Story (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/6YvqWjhGD8mB5QXcbcUKtx",
+      "streams": 1180940344,
+      "daily_streams": 513557
+    },
+    {
+      "track_id": "1qrpoAMXodY6895hGKoUpA",
+      "title": "You Belong With Me (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/1qrpoAMXodY6895hGKoUpA",
+      "streams": 1087992126,
+      "daily_streams": 495063
+    },
+    {
+      "track_id": "1R0a2iXumgCiFb7HEZ7gUE",
+      "title": "Don't Blame Me",
+      "spotify_url": "https://open.spotify.com/track/1R0a2iXumgCiFb7HEZ7gUE",
+      "streams": 1593440726,
+      "daily_streams": 490481
+    },
+    {
+      "track_id": "4A4A6dwl5DqdqrZaEtKGPR",
+      "title": "Wildest Dreams",
+      "spotify_url": "https://open.spotify.com/track/4A4A6dwl5DqdqrZaEtKGPR",
+      "streams": 1182007592,
+      "daily_streams": 486890
+    },
+    {
+      "track_id": "7G6TDmGJXDoBaV6NGj3Yic",
+      "title": "You Belong With Me",
+      "spotify_url": "https://open.spotify.com/track/7G6TDmGJXDoBaV6NGj3Yic",
+      "streams": 829912913,
+      "daily_streams": 448008
+    },
+    {
+      "track_id": "6oVxXO5oQ4pTpO8RSnkzvv",
+      "title": "Dress",
+      "spotify_url": "https://open.spotify.com/track/6oVxXO5oQ4pTpO8RSnkzvv",
+      "streams": 577166788,
+      "daily_streams": 461512
+    },
+    {
+      "track_id": "0W0iAC1VGlB82PI6elxFYf",
+      "title": "Guilty as Sin?",
+      "spotify_url": "https://open.spotify.com/track/0W0iAC1VGlB82PI6elxFYf",
+      "streams": 572859443,
+      "daily_streams": 438452
+    },
+    {
+      "track_id": "4pvb0WLRcMtbPGmtejJJ6y",
+      "title": "exile (feat. Bon Iver)",
+      "spotify_url": "https://open.spotify.com/track/4pvb0WLRcMtbPGmtejJJ6y",
+      "streams": 1085243351,
+      "daily_streams": 441195
+    },
+    {
+      "track_id": "5xPsybHWRHbTYO44xnREY5",
+      "title": "Love Story",
+      "spotify_url": "https://open.spotify.com/track/5xPsybHWRHbTYO44xnREY5",
+      "streams": 1121793650,
+      "daily_streams": 481252
+    },
+    {
+      "track_id": "6NFyWDv5CjfwuzoCkw47Xf",
+      "title": "Delicate",
+      "spotify_url": "https://open.spotify.com/track/6NFyWDv5CjfwuzoCkw47Xf",
+      "streams": 1321411909,
+      "daily_streams": 444648
+    },
+    {
+      "track_id": "0V3wPSX9ygBnCm8psDIegu",
+      "title": "Anti-Hero",
+      "spotify_url": "https://open.spotify.com/track/0V3wPSX9ygBnCm8psDIegu",
+      "streams": 1999836606,
+      "daily_streams": 429553
+    },
+    {
+      "track_id": "1fzAuUVbzlhZ1lJAx9PtY6",
+      "title": "Daylight",
+      "spotify_url": "https://open.spotify.com/track/1fzAuUVbzlhZ1lJAx9PtY6",
+      "streams": 709314479,
+      "daily_streams": 415357
+    },
+    {
+      "track_id": "1MgV7FIyNxIG7WzMRJV5HC",
+      "title": "my tears ricochet",
+      "spotify_url": "https://open.spotify.com/track/1MgV7FIyNxIG7WzMRJV5HC",
+      "streams": 840896112,
+      "daily_streams": 400910
+    },
+    {
+      "track_id": "0Oju1YcbPCJuUQQWoZNdJK",
+      "title": "my tears ricochet",
+      "spotify_url": "https://open.spotify.com/track/0Oju1YcbPCJuUQQWoZNdJK",
+      "streams": 840896112,
+      "daily_streams": 400910
+    },
+    {
+      "track_id": "4dgf2DYVJbtmy8zAYLs4c7",
+      "title": "I Can Do It With a Broken Heart",
+      "spotify_url": "https://open.spotify.com/track/4dgf2DYVJbtmy8zAYLs4c7",
+      "streams": 818989816,
+      "daily_streams": 380128
+    },
+    {
+      "track_id": "5eXgqtg3T8Av0m1FUaGHex",
+      "title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
+      "spotify_url": "https://open.spotify.com/track/5eXgqtg3T8Av0m1FUaGHex",
+      "streams": 265919409,
+      "daily_streams": 360443
+    },
+    {
+      "track_id": "2TEQvxxQabwLQMqWMg1qGu",
+      "title": "Wi$h Li$t",
+      "spotify_url": "https://open.spotify.com/track/2TEQvxxQabwLQMqWMg1qGu",
+      "streams": 267508231,
+      "daily_streams": 346635
+    },
+    {
+      "track_id": "03bTIHJElXZ0O0jqOQvAbY",
+      "title": "Father Figure",
+      "spotify_url": "https://open.spotify.com/track/03bTIHJElXZ0O0jqOQvAbY",
+      "streams": 302037375,
+      "daily_streams": 360598
+    },
+    {
+      "track_id": "62V2ZHslgQV98gH4AuVXnr",
+      "title": "Ruin The Friendship",
+      "spotify_url": "https://open.spotify.com/track/62V2ZHslgQV98gH4AuVXnr",
+      "streams": 217511562,
+      "daily_streams": 329162
+    },
+    {
+      "track_id": "2yLa0QULdQr0qAIvVwN6B5",
+      "title": "...Ready For It?",
+      "spotify_url": "https://open.spotify.com/track/2yLa0QULdQr0qAIvVwN6B5",
+      "streams": 1018890116,
+      "daily_streams": 324807
+    },
+    {
+      "track_id": "04S1pkp1VaIqjg8zZqknR5",
+      "title": "Enchanted",
+      "spotify_url": "https://open.spotify.com/track/04S1pkp1VaIqjg8zZqknR5",
+      "streams": 1018093208,
+      "daily_streams": 325877
+    },
+    {
+      "track_id": "3YkNIrAvbKNrrwwEd7NVLl",
+      "title": "loml",
+      "spotify_url": "https://open.spotify.com/track/3YkNIrAvbKNrrwwEd7NVLl",
+      "streams": 369446918,
+      "daily_streams": 299068
+    },
+    {
+      "track_id": "4D7BCuvgdJlYvlX5WlN54t",
+      "title": "You're On Your Own, Kid",
+      "spotify_url": "https://open.spotify.com/track/4D7BCuvgdJlYvlX5WlN54t",
+      "streams": 862336893,
+      "daily_streams": 308985
+    },
+    {
+      "track_id": "1J1ldDi3rMQlRi49gaba0a",
+      "title": "So High School",
+      "spotify_url": "https://open.spotify.com/track/1J1ldDi3rMQlRi49gaba0a",
+      "streams": 405403050,
+      "daily_streams": 291583
+    },
+    {
+      "track_id": "0VE4kBnHJUgtMf0dy6DRmW",
+      "title": "Getaway Car",
+      "spotify_url": "https://open.spotify.com/track/0VE4kBnHJUgtMf0dy6DRmW",
+      "streams": 915411462,
+      "daily_streams": 299488
+    },
+    {
+      "track_id": "1P17dC1amhFzptugyAO7Il",
+      "title": "Look What You Made Me Do",
+      "spotify_url": "https://open.spotify.com/track/1P17dC1amhFzptugyAO7Il",
+      "streams": 1430371348,
+      "daily_streams": 295841
+    },
+    {
+      "track_id": "3RauEVgRgj1IuWdJ9fDs70",
+      "title": "The Man",
+      "spotify_url": "https://open.spotify.com/track/3RauEVgRgj1IuWdJ9fDs70",
+      "streams": 1008708889,
+      "daily_streams": 268580
+    },
+    {
+      "track_id": "1K39ty6o1sHwwlZwO6a7wK",
+      "title": "Wildest Dreams (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/1K39ty6o1sHwwlZwO6a7wK",
+      "streams": 1020789850,
+      "daily_streams": 285757
+    },
+    {
+      "track_id": "3sW3oSbzsfecv9XoUdGs7h",
+      "title": "Enchanted (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/3sW3oSbzsfecv9XoUdGs7h",
+      "streams": 517917098,
+      "daily_streams": 271359
+    },
+    {
+      "track_id": "0Jlcvv8IykzHaSmj49uNW8",
+      "title": "the 1",
+      "spotify_url": "https://open.spotify.com/track/0Jlcvv8IykzHaSmj49uNW8",
+      "streams": 775869369,
+      "daily_streams": 269947
+    },
+    {
+      "track_id": "0P9wLFurlgumLXuqFEpw52",
+      "title": "the 1",
+      "spotify_url": "https://open.spotify.com/track/0P9wLFurlgumLXuqFEpw52",
+      "streams": 775869369,
+      "daily_streams": 269947
+    },
+    {
+      "track_id": "2x3mwb96B6TquRqMtbxUE1",
+      "title": "Actually Romantic",
+      "spotify_url": "https://open.spotify.com/track/2x3mwb96B6TquRqMtbxUE1",
+      "streams": 232588096,
+      "daily_streams": 264126
+    },
+    {
+      "track_id": "2NlmmAjGYrrjAp0MED5rGx",
+      "title": "Bad Blood",
+      "spotify_url": "https://open.spotify.com/track/2NlmmAjGYrrjAp0MED5rGx",
+      "streams": 745327147,
+      "daily_streams": 247961
+    },
+    {
+      "track_id": "5ylJtmaWPJ33cW3En7WOu0",
+      "title": "Wood",
+      "spotify_url": "https://open.spotify.com/track/5ylJtmaWPJ33cW3En7WOu0",
+      "streams": 235715280,
+      "daily_streams": 262282
+    },
+    {
+      "track_id": "1appZ3c336FkPvCuywfmrs",
+      "title": "CANCELLED!",
+      "spotify_url": "https://open.spotify.com/track/1appZ3c336FkPvCuywfmrs",
+      "streams": 225233207,
+      "daily_streams": 264258
+    },
+    {
+      "track_id": "4qmFC3Jz5aQ0erlk2OSi2X",
+      "title": "Honey",
+      "spotify_url": "https://open.spotify.com/track/4qmFC3Jz5aQ0erlk2OSi2X",
+      "streams": 188621558,
+      "daily_streams": 252332
+    },
+    {
+      "track_id": "2F3N9tdombb64aW6VtZOdo",
+      "title": "Down Bad",
+      "spotify_url": "https://open.spotify.com/track/2F3N9tdombb64aW6VtZOdo",
+      "streams": 527490874,
+      "daily_streams": 250702
+    },
+    {
+      "track_id": "0lx2cLdOt3piJbcaXIV74f",
+      "title": "willow",
+      "spotify_url": "https://open.spotify.com/track/0lx2cLdOt3piJbcaXIV74f",
+      "streams": 1083683540,
+      "daily_streams": 244609
+    },
+    {
+      "track_id": "45R112Jz5hQeKgITXgSXzs",
+      "title": "Karma",
+      "spotify_url": "https://open.spotify.com/track/45R112Jz5hQeKgITXgSXzs",
+      "streams": 1016966881,
+      "daily_streams": 239715
+    },
+    {
+      "track_id": "22bPsP2jCgbLUvh82U0Z3M",
+      "title": "The Way I Loved You (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/22bPsP2jCgbLUvh82U0Z3M",
+      "streams": 588367424,
+      "daily_streams": 222453
+    },
+    {
+      "track_id": "4y5bvROuBDPr5fuwXbIBZR",
+      "title": "Paper Rings",
+      "spotify_url": "https://open.spotify.com/track/4y5bvROuBDPr5fuwXbIBZR",
+      "streams": 836470548,
+      "daily_streams": 218617
+    },
+    {
+      "track_id": "1GwMQaZz6Au3QLDbjbMdme",
+      "title": "Call It What You Want",
+      "spotify_url": "https://open.spotify.com/track/1GwMQaZz6Au3QLDbjbMdme",
+      "streams": 584628515,
+      "daily_streams": 239074
+    },
+    {
+      "track_id": "7kt9e9LFSpN1zQtYEl19o1",
+      "title": "this is me trying",
+      "spotify_url": "https://open.spotify.com/track/7kt9e9LFSpN1zQtYEl19o1",
+      "streams": 577618962,
+      "daily_streams": 219896
+    },
+    {
+      "track_id": "3rWDp9tBPQR9z6U5YyRSK4",
+      "title": "Midnight Rain",
+      "spotify_url": "https://open.spotify.com/track/3rWDp9tBPQR9z6U5YyRSK4",
+      "streams": 853379768,
+      "daily_streams": 219457
+    },
+    {
+      "track_id": "2NmsngXHeC1GQ9wWrzhOMf",
+      "title": "illicit affairs",
+      "spotify_url": "https://open.spotify.com/track/2NmsngXHeC1GQ9wWrzhOMf",
+      "streams": 616994188,
+      "daily_streams": 207261
+    },
+    {
+      "track_id": "1hjRhYpWyqDpPahmSlUTlc",
+      "title": "Style (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/1hjRhYpWyqDpPahmSlUTlc",
+      "streams": 425906054,
+      "daily_streams": 215919
+    },
+    {
+      "track_id": "62HoDY1Km6lm47haFpUn9c",
+      "title": "Eldest Daughter",
+      "spotify_url": "https://open.spotify.com/track/62HoDY1Km6lm47haFpUn9c",
+      "streams": 207467963,
+      "daily_streams": 213800
+    },
+    {
+      "track_id": "7AEAGTc8cReDqcbPoY9gwo",
+      "title": "We Are Never Ever Getting Back Together",
+      "spotify_url": "https://open.spotify.com/track/7AEAGTc8cReDqcbPoY9gwo",
+      "streams": 803372935,
+      "daily_streams": 204031
+    },
+    {
+      "track_id": "6kl8thRysTeVV3WvKxgZAy",
+      "title": "Who's Afraid of Little Old Me?",
+      "spotify_url": "https://open.spotify.com/track/6kl8thRysTeVV3WvKxgZAy",
+      "streams": 435076450,
+      "daily_streams": 208619
+    },
+    {
+      "track_id": "3zwMVvkBe2qIKDObWgXw4N",
+      "title": "right where you left me - bonus track",
+      "spotify_url": "https://open.spotify.com/track/3zwMVvkBe2qIKDObWgXw4N",
+      "streams": 502652816,
+      "daily_streams": 238578
+    },
+    {
+      "track_id": "0sY6ZUTh4yoctD8VIXz339",
+      "title": "champagne problems",
+      "spotify_url": "https://open.spotify.com/track/0sY6ZUTh4yoctD8VIXz339",
+      "streams": 826983125,
+      "daily_streams": 210189
+    },
+    {
+      "track_id": "6RRNNciQGZEXnqk8SQ9yv5",
+      "title": "You Need To Calm Down",
+      "spotify_url": "https://open.spotify.com/track/6RRNNciQGZEXnqk8SQ9yv5",
+      "streams": 1133007611,
+      "daily_streams": 202841
+    },
+    {
+      "track_id": "2XXwLdtuAcE0HSCu61ijAb",
+      "title": "My Boy Only Breaks His Favorite Toys",
+      "spotify_url": "https://open.spotify.com/track/2XXwLdtuAcE0HSCu61ijAb",
+      "streams": 407959582,
+      "daily_streams": 197985
+    },
+    {
+      "track_id": "6VsvKPJ4xjVNKpI8VVZ3SV",
+      "title": "invisible string",
+      "spotify_url": "https://open.spotify.com/track/6VsvKPJ4xjVNKpI8VVZ3SV",
+      "streams": 525858424,
+      "daily_streams": 191885
+    },
+    {
+      "track_id": "0ZNU020wNYvgW84iljPkPP",
+      "title": "mirrorball",
+      "spotify_url": "https://open.spotify.com/track/0ZNU020wNYvgW84iljPkPP",
+      "streams": 579770214,
+      "daily_streams": 193213
+    },
+    {
+      "track_id": "5jQyGzcwqAxwT5QUIMivoX",
+      "title": "mirrorball",
+      "spotify_url": "https://open.spotify.com/track/5jQyGzcwqAxwT5QUIMivoX",
+      "streams": 579770214,
+      "daily_streams": 193213
+    },
+    {
+      "track_id": "045ZeOHPIzhxxsm8bq5kyE",
+      "title": "Out Of The Woods (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/045ZeOHPIzhxxsm8bq5kyE",
+      "streams": 262703414,
+      "daily_streams": 197417
+    },
+    {
+      "track_id": "3pHkh7d0lzM2AldUtz2x37",
+      "title": "The Archer",
+      "spotify_url": "https://open.spotify.com/track/3pHkh7d0lzM2AldUtz2x37",
+      "streams": 554840967,
+      "daily_streams": 188430
+    },
+    {
+      "track_id": "3Vevii7qKqrmW8CcyzBHDl",
+      "title": "So Long, London",
+      "spotify_url": "https://open.spotify.com/track/3Vevii7qKqrmW8CcyzBHDl",
+      "streams": 423765017,
+      "daily_streams": 189971
+    },
+    {
+      "track_id": "18WFFUIsewmA8g31KAeo3e",
+      "title": "The Prophecy",
+      "spotify_url": "https://open.spotify.com/track/18WFFUIsewmA8g31KAeo3e",
+      "streams": 270461802,
+      "daily_streams": 175305
+    },
+    {
+      "track_id": "3nsfB1vus2qaloUdcBZvDu",
+      "title": "All Too Well (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/3nsfB1vus2qaloUdcBZvDu",
+      "streams": 386057555,
+      "daily_streams": 206239
+    },
+    {
+      "track_id": "0CD7DzeCsuPJygddqlUVYa",
+      "title": "\"Slut!\" (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/0CD7DzeCsuPJygddqlUVYa",
+      "streams": 448378595,
+      "daily_streams": 173653
+    },
+    {
+      "track_id": "4OAuvHryIVv4kMDNSLuPt6",
+      "title": "Red (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/4OAuvHryIVv4kMDNSLuPt6",
+      "streams": 444287288,
+      "daily_streams": 182993
+    },
+    {
+      "track_id": "4GBbcyrbDzwRtQjrsDRywK",
+      "title": "The Smallest Man Who Ever Lived",
+      "spotify_url": "https://open.spotify.com/track/4GBbcyrbDzwRtQjrsDRywK",
+      "streams": 340838299,
+      "daily_streams": 173877
+    },
+    {
+      "track_id": "3CWq0pAKKTWb0K4yiglDc4",
+      "title": "You're Losing Me (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/3CWq0pAKKTWb0K4yiglDc4",
+      "streams": 386555570,
+      "daily_streams": 171551
+    },
+    {
+      "track_id": "12M5uqx0ZuwkpLp5rJim1a",
+      "title": "Cornelia Street",
+      "spotify_url": "https://open.spotify.com/track/12M5uqx0ZuwkpLp5rJim1a",
+      "streams": 452801254,
+      "daily_streams": 167163
+    },
+    {
+      "track_id": "5og4Qzt92jJzVDkOtSEilb",
+      "title": "But Daddy I Love Him",
+      "spotify_url": "https://open.spotify.com/track/5og4Qzt92jJzVDkOtSEilb",
+      "streams": 376308650,
+      "daily_streams": 171538
+    },
+    {
+      "track_id": "214nt20w5wOxJnY462klLw",
+      "title": "Miss Americana & The Heartbreak Prince",
+      "spotify_url": "https://open.spotify.com/track/214nt20w5wOxJnY462klLw",
+      "streams": 560877044,
+      "daily_streams": 167945
+    },
+    {
+      "track_id": "3eX0NZfLtGzoLUxPNvRfqm",
+      "title": "Maroon",
+      "spotify_url": "https://open.spotify.com/track/3eX0NZfLtGzoLUxPNvRfqm",
+      "streams": 613510600,
+      "daily_streams": 181079
+    },
+    {
+      "track_id": "77sMIMlNaSURUAXq5coCxE",
+      "title": "Fearless (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/77sMIMlNaSURUAXq5coCxE",
+      "streams": 462261252,
+      "daily_streams": 162540
+    },
+    {
+      "track_id": "1kcwpPDQnqEqmezzXdJTCP",
+      "title": "imgonnagetyouback",
+      "spotify_url": "https://open.spotify.com/track/1kcwpPDQnqEqmezzXdJTCP",
+      "streams": 256023999,
+      "daily_streams": 163384
+    },
+    {
+      "track_id": "3ZVFcD8Wlw9T9klGqmJf9F",
+      "title": "Florida!!! (feat. Florence + The Machine)",
+      "spotify_url": "https://open.spotify.com/track/3ZVFcD8Wlw9T9klGqmJf9F",
+      "streams": 331111971,
+      "daily_streams": 157380
+    },
+    {
+      "track_id": "3qoftcUZaUOncvIYjFSPdE",
+      "title": "Bejeweled",
+      "spotify_url": "https://open.spotify.com/track/3qoftcUZaUOncvIYjFSPdE",
+      "streams": 713659936,
+      "daily_streams": 174331
+    },
+    {
+      "track_id": "4bBDkw2KBMX0tcgAaXC83Q",
+      "title": "Labyrinth",
+      "spotify_url": "https://open.spotify.com/track/4bBDkw2KBMX0tcgAaXC83Q",
+      "streams": 401192404,
+      "daily_streams": 176528
+    },
+    {
+      "track_id": "1tuNqJOtRQVHvONR8Lg3MZ",
+      "title": "The Alchemy",
+      "spotify_url": "https://open.spotify.com/track/1tuNqJOtRQVHvONR8Lg3MZ",
+      "streams": 280916876,
+      "daily_streams": 161787
+    },
+    {
+      "track_id": "3NMrVbIVWT3fPXBj0rNDKG",
+      "title": "The Tortured Poets Department",
+      "spotify_url": "https://open.spotify.com/track/3NMrVbIVWT3fPXBj0rNDKG",
+      "streams": 333068699,
+      "daily_streams": 158659
+    },
+    {
+      "track_id": "5jQI2r1RdgtuT8S3iG8zFC",
+      "title": "Lavender Haze",
+      "spotify_url": "https://open.spotify.com/track/5jQI2r1RdgtuT8S3iG8zFC",
+      "streams": 888363214,
+      "daily_streams": 169112
+    },
+    {
+      "track_id": "1ZY1PqizIl78geGM4xWlEA",
+      "title": "Gorgeous",
+      "spotify_url": "https://open.spotify.com/track/1ZY1PqizIl78geGM4xWlEA",
+      "streams": 741985294,
+      "daily_streams": 158771
+    },
+    {
+      "track_id": "3fO566xJgwxIa3qGCGBvIC",
+      "title": "Fresh Out The Slammer",
+      "spotify_url": "https://open.spotify.com/track/3fO566xJgwxIa3qGCGBvIC",
+      "streams": 256203678,
+      "daily_streams": 160071
+    },
+    {
+      "track_id": "6IG3sQ8s9nfk6TUlVzRhbN",
+      "title": "Is It Over Now? (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/6IG3sQ8s9nfk6TUlVzRhbN",
+      "streams": 584538315,
+      "daily_streams": 157914
+    },
+    {
+      "track_id": "2x0WlnmfG39ZuDmstl9xfX",
+      "title": "End Game",
+      "spotify_url": "https://open.spotify.com/track/2x0WlnmfG39ZuDmstl9xfX",
+      "streams": 625605413,
+      "daily_streams": 158429
+    },
+    {
+      "track_id": "4svZDCRz4cJoneBpjpx8DJ",
+      "title": "I Did Something Bad",
+      "spotify_url": "https://open.spotify.com/track/4svZDCRz4cJoneBpjpx8DJ",
+      "streams": 580611226,
+      "daily_streams": 159090
+    },
+    {
+      "track_id": "5hQSXkFgbxjZo9uCwd11so",
+      "title": "False God",
+      "spotify_url": "https://open.spotify.com/track/5hQSXkFgbxjZo9uCwd11so",
+      "streams": 375967259,
+      "daily_streams": 172964
+    },
+    {
+      "track_id": "0hhzNPE68LWLfgZwdpxVdR",
+      "title": "us. (feat. Taylor Swift)",
+      "spotify_url": "https://open.spotify.com/track/0hhzNPE68LWLfgZwdpxVdR",
+      "streams": 290044117,
+      "daily_streams": 158667
+    },
+    {
+      "track_id": "45wMBGri1PORPjM9PwFfrS",
+      "title": "Blank Space (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/45wMBGri1PORPjM9PwFfrS",
+      "streams": 367777755,
+      "daily_streams": 154447
+    },
+    {
+      "track_id": "5l6GqSxplqnZbLg0LTPQeG",
+      "title": "Back To December",
+      "spotify_url": "https://open.spotify.com/track/5l6GqSxplqnZbLg0LTPQeG",
+      "streams": 503338655,
+      "daily_streams": 155095
+    },
+    {
+      "track_id": "2Rk4JlNc2TPmZe2af99d45",
+      "title": "ME! (feat. Brendon Urie of Panic! At The Disco)",
+      "spotify_url": "https://open.spotify.com/track/2Rk4JlNc2TPmZe2af99d45",
+      "streams": 979995799,
+      "daily_streams": 139829
+    },
+    {
+      "track_id": "4WBEj8TeGtRPNJdOmT3WJW",
+      "title": "This Love (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/4WBEj8TeGtRPNJdOmT3WJW",
+      "streams": 372877348,
+      "daily_streams": 151829
+    },
+    {
+      "track_id": "1SymEzIT3H8UZfibCs3TYi",
+      "title": "Afterglow",
+      "spotify_url": "https://open.spotify.com/track/1SymEzIT3H8UZfibCs3TYi",
+      "streams": 510075466,
+      "daily_streams": 135157
+    },
+    {
+      "track_id": "5YqltLsjdqFtvqE7Nrysvs",
+      "title": "We Are Never Ever Getting Back Together (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/5YqltLsjdqFtvqE7Nrysvs",
+      "streams": 481026646,
+      "daily_streams": 138024
+    },
+    {
+      "track_id": "15DeqWWQB4dcEWzJg15VrN",
+      "title": "Our Song",
+      "spotify_url": "https://open.spotify.com/track/15DeqWWQB4dcEWzJg15VrN",
+      "streams": 461817313,
+      "daily_streams": 137914
+    },
+    {
+      "track_id": "2CYVETnhM9aytqrazYYwrK",
+      "title": "Mr. Perfectly Fine (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/2CYVETnhM9aytqrazYYwrK",
+      "streams": 472695824,
+      "daily_streams": 138591
+    },
+    {
+      "track_id": "5QUIK7ZtziW8kGWo8RqopF",
+      "title": "Now That We Don't Talk (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/5QUIK7ZtziW8kGWo8RqopF",
+      "streams": 432785033,
+      "daily_streams": 124240
+    },
+    {
+      "track_id": "3z6XUommYDWPHeFhmhhT6j",
+      "title": "Message In A Bottle (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/3z6XUommYDWPHeFhmhhT6j",
+      "streams": 285854651,
+      "daily_streams": 133062
+    },
+    {
+      "track_id": "1LLXZFeAHK9R4xUramtUKw",
+      "title": "London Boy",
+      "spotify_url": "https://open.spotify.com/track/1LLXZFeAHK9R4xUramtUKw",
+      "streams": 435627095,
+      "daily_streams": 118004
+    },
+    {
+      "track_id": "0PurA4JVJ8YQgSVopY8fn6",
+      "title": "tolerate it",
+      "spotify_url": "https://open.spotify.com/track/0PurA4JVJ8YQgSVopY8fn6",
+      "streams": 437001904,
+      "daily_streams": 122027
+    },
+    {
+      "track_id": "4OmFmE0fzcMG6g0Y8p4eSD",
+      "title": "Better Man (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/4OmFmE0fzcMG6g0Y8p4eSD",
+      "streams": 205416202,
+      "daily_streams": 117473
+    },
+    {
+      "track_id": "2ULNeSomDxVNmdDy8VxEBU",
+      "title": "22",
+      "spotify_url": "https://open.spotify.com/track/2ULNeSomDxVNmdDy8VxEBU",
+      "streams": 465130239,
+      "daily_streams": 123108
+    },
+    {
+      "track_id": "62E2nR0od0M5HYxuYLaDz7",
+      "title": "The Black Dog",
+      "spotify_url": "https://open.spotify.com/track/62E2nR0od0M5HYxuYLaDz7",
+      "streams": 214778637,
+      "daily_streams": 121025
+    },
+    {
+      "track_id": "4zmKGsrXjLmljb5fTaBTot",
+      "title": "Snow On The Beach (feat. More Lana Del Rey)",
+      "spotify_url": "https://open.spotify.com/track/4zmKGsrXjLmljb5fTaBTot",
+      "streams": 294973359,
+      "daily_streams": 122505
+    },
+    {
+      "track_id": "5Bedn0svl0ZD7RGmJkmKKw",
+      "title": "How Did It End?",
+      "spotify_url": "https://open.spotify.com/track/5Bedn0svl0ZD7RGmJkmKKw",
+      "streams": 218813636,
+      "daily_streams": 114924
+    },
+    {
+      "track_id": "3zMDGj4D8ogaYgAIZPeU7S",
+      "title": "Peter",
+      "spotify_url": "https://open.spotify.com/track/3zMDGj4D8ogaYgAIZPeU7S",
+      "streams": 173199012,
+      "daily_streams": 110302
+    },
+    {
+      "track_id": "1QQii3pa5m8MEda0nbkjfw",
+      "title": "Mastermind",
+      "spotify_url": "https://open.spotify.com/track/1QQii3pa5m8MEda0nbkjfw",
+      "streams": 460656445,
+      "daily_streams": 124244
+    },
+    {
+      "track_id": "2Eeur20xVqfUoM3Q7EFPFt",
+      "title": "the last great american dynasty",
+      "spotify_url": "https://open.spotify.com/track/2Eeur20xVqfUoM3Q7EFPFt",
+      "streams": 459367872,
+      "daily_streams": 121361
+    },
+    {
+      "track_id": "4ojxSyrEraN7d46BMBPThZ",
+      "title": "the last great american dynasty",
+      "spotify_url": "https://open.spotify.com/track/4ojxSyrEraN7d46BMBPThZ",
+      "streams": 459367872,
+      "daily_streams": 121361
+    },
+    {
+      "track_id": "1rmEsOezwf2lmIZTMAO5Ag",
+      "title": "Chloe or Sam or Sophia or Marcus",
+      "spotify_url": "https://open.spotify.com/track/1rmEsOezwf2lmIZTMAO5Ag",
+      "streams": 166931828,
+      "daily_streams": 108705
+    },
+    {
+      "track_id": "7HuBDWi18s4aJM8UFnNheH",
+      "title": "King Of My Heart",
+      "spotify_url": "https://open.spotify.com/track/7HuBDWi18s4aJM8UFnNheH",
+      "streams": 371750029,
+      "daily_streams": 112446
+    },
+    {
+      "track_id": "3yII7UwgLF6K5zW3xad3MP",
+      "title": "22 (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/3yII7UwgLF6K5zW3xad3MP",
+      "streams": 411051737,
+      "daily_streams": 109181
+    },
+    {
+      "track_id": "79uDOz0zuuWS7HWxzMmTa2",
+      "title": "Back To December (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/79uDOz0zuuWS7HWxzMmTa2",
+      "streams": 301922683,
+      "daily_streams": 108523
+    },
+    {
+      "track_id": "2VuqMjgoKaOHNM8HpxtXKx",
+      "title": "The Great War",
+      "spotify_url": "https://open.spotify.com/track/2VuqMjgoKaOHNM8HpxtXKx",
+      "streams": 379178866,
+      "daily_streams": 124097
+    },
+    {
+      "track_id": "73W5aXorr5vxrySFcoZqIN",
+      "title": "Renegade",
+      "spotify_url": "https://open.spotify.com/track/73W5aXorr5vxrySFcoZqIN",
+      "streams": 191326497,
+      "daily_streams": 102701
+    },
+    {
+      "track_id": "2913xXOVAIDAqxzV2g4VcU",
+      "title": "The Bolter",
+      "spotify_url": "https://open.spotify.com/track/2913xXOVAIDAqxzV2g4VcU",
+      "streams": 164249691,
+      "daily_streams": 100100
+    },
+    {
+      "track_id": "6AtZLIzUINvExIUy4QhdjP",
+      "title": "I Knew You Were Trouble (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/6AtZLIzUINvExIUy4QhdjP",
+      "streams": 501417285,
+      "daily_streams": 109093
+    },
+    {
+      "track_id": "6KJqZcs9XDgVck7Lg9QOTC",
+      "title": "seven",
+      "spotify_url": "https://open.spotify.com/track/6KJqZcs9XDgVck7Lg9QOTC",
+      "streams": 407162538,
+      "daily_streams": 102842
+    },
+    {
+      "track_id": "2vJ7QvyCiR4DaHxwO58izA",
+      "title": "seven",
+      "spotify_url": "https://open.spotify.com/track/2vJ7QvyCiR4DaHxwO58izA",
+      "streams": 407162538,
+      "daily_streams": 102842
+    },
+    {
+      "track_id": "7qEUFOVcxRI19tbT68JcYK",
+      "title": "Everything Has Changed (feat. Ed Sheeran) (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/7qEUFOVcxRI19tbT68JcYK",
+      "streams": 234392048,
+      "daily_streams": 106427
+    },
+    {
+      "track_id": "3xYJScVfxByb61dYHTwiby",
+      "title": "Hits Different",
+      "spotify_url": "https://open.spotify.com/track/3xYJScVfxByb61dYHTwiby",
+      "streams": 287687832,
+      "daily_streams": 125994
+    },
+    {
+      "track_id": "1By2VQkUN0Frd8mKNV5NYC",
+      "title": "Better Than Revenge",
+      "spotify_url": "https://open.spotify.com/track/1By2VQkUN0Frd8mKNV5NYC",
+      "streams": 250127556,
+      "daily_streams": 105061
+    },
+    {
+      "track_id": "2dgFqt3w9xIQRjhPtwNk3D",
+      "title": "Death By A Thousand Cuts",
+      "spotify_url": "https://open.spotify.com/track/2dgFqt3w9xIQRjhPtwNk3D",
+      "streams": 373413874,
+      "daily_streams": 106678
+    },
+    {
+      "track_id": "4P9Q0GojKVXpRTJCaL3kyy",
+      "title": "All Of The Girls You Loved Before",
+      "spotify_url": "https://open.spotify.com/track/4P9Q0GojKVXpRTJCaL3kyy",
+      "streams": 480205641,
+      "daily_streams": 104317
+    },
+    {
+      "track_id": "17yraMKqmZIKAv3iaGcoLX",
+      "title": "All Of The Girls You Loved Before",
+      "spotify_url": "https://open.spotify.com/track/17yraMKqmZIKAv3iaGcoLX",
+      "streams": 480205641,
+      "daily_streams": 104317
+    },
+    {
+      "track_id": "3hlGuz3loYoLfI3bpwieWq",
+      "title": "I Hate It Here",
+      "spotify_url": "https://open.spotify.com/track/3hlGuz3loYoLfI3bpwieWq",
+      "streams": 176354876,
+      "daily_streams": 100862
+    },
+    {
+      "track_id": "4txojlesMFQZGWxwz2EeqB",
+      "title": "Would've, Could've, Should've",
+      "spotify_url": "https://open.spotify.com/track/4txojlesMFQZGWxwz2EeqB",
+      "streams": 364055260,
+      "daily_streams": 113545
+    },
+    {
+      "track_id": "3pv7Q5v2dpdefwdWIvE7yH",
+      "title": "Shake It Off (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/3pv7Q5v2dpdefwdWIvE7yH",
+      "streams": 228827195,
+      "daily_streams": 104112
+    },
+    {
+      "track_id": "2L09RYwH5Pjzca6PmbUAw3",
+      "title": "Sweet Nothing",
+      "spotify_url": "https://open.spotify.com/track/2L09RYwH5Pjzca6PmbUAw3",
+      "streams": 370019936,
+      "daily_streams": 106821
+    },
+    {
+      "track_id": "1xwAWUI6Dj0WGC3KiUPN0O",
+      "title": "Vigilante Shit",
+      "spotify_url": "https://open.spotify.com/track/1xwAWUI6Dj0WGC3KiUPN0O",
+      "streams": 513439110,
+      "daily_streams": 107875
+    },
+    {
+      "track_id": "7G0gBu6nLdhFDPRLc0HdDG",
+      "title": "Mine (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/7G0gBu6nLdhFDPRLc0HdDG",
+      "streams": 278481485,
+      "daily_streams": 95948
+    },
+    {
+      "track_id": "1wtOxkiel43cVs0Yux5Q4h",
+      "title": "Snow On The Beach (feat. Lana Del Rey)",
+      "spotify_url": "https://open.spotify.com/track/1wtOxkiel43cVs0Yux5Q4h",
+      "streams": 522477218,
+      "daily_streams": 104655
+    },
+    {
+      "track_id": "6PlBKImSl4AZoxBU7F649D",
+      "title": "The Fate of Ophelia - Loud Luxury Remix",
+      "spotify_url": "https://open.spotify.com/track/6PlBKImSl4AZoxBU7F649D",
+      "streams": 25266270,
+      "daily_streams": 93011
+    },
+    {
+      "track_id": "3nRmDz7qGCvsMS30rGGY0x",
+      "title": "Welcome To New York",
+      "spotify_url": "https://open.spotify.com/track/3nRmDz7qGCvsMS30rGGY0x",
+      "streams": 299400573,
+      "daily_streams": 98420
+    },
+    {
+      "track_id": "12ntTeqEeTg7GAVpe8Mhpl",
+      "title": "marjorie",
+      "spotify_url": "https://open.spotify.com/track/12ntTeqEeTg7GAVpe8Mhpl",
+      "streams": 318141122,
+      "daily_streams": 95457
+    },
+    {
+      "track_id": "01K4zKU104LyJ8gMb7227B",
+      "title": "Nothing New (feat. Phoebe Bridgers) (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/01K4zKU104LyJ8gMb7227B",
+      "streams": 300222269,
+      "daily_streams": 94571
+    },
+    {
+      "track_id": "4hqJ4bSlYJOXb6Z4SRmzxs",
+      "title": "Long Live (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/4hqJ4bSlYJOXb6Z4SRmzxs",
+      "streams": 222197617,
+      "daily_streams": 94110
+    },
+    {
+      "track_id": "3CCRVu4F91Qp2mnGjmWBrf",
+      "title": "Say Don't Go (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/3CCRVu4F91Qp2mnGjmWBrf",
+      "streams": 285478714,
+      "daily_streams": 101778
+    },
+    {
+      "track_id": "5kI4eCXXzyuIUXjQra0Cxi",
+      "title": "betty",
+      "spotify_url": "https://open.spotify.com/track/5kI4eCXXzyuIUXjQra0Cxi",
+      "streams": 455135103,
+      "daily_streams": 96736
+    },
+    {
+      "track_id": "05GsNucq8Bngd9fnd4fRa0",
+      "title": "Begin Again (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/05GsNucq8Bngd9fnd4fRa0",
+      "streams": 166191985,
+      "daily_streams": 87989
+    },
+    {
+      "track_id": "3O5osWf1rSoKMwe6E9ZaXP",
+      "title": "evermore (feat. Bon Iver)",
+      "spotify_url": "https://open.spotify.com/track/3O5osWf1rSoKMwe6E9ZaXP",
+      "streams": 302481704,
+      "daily_streams": 89490
+    },
+    {
+      "track_id": "0TyGh27YQ5LknmiDhCzJiT",
+      "title": "You Are In Love (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/0TyGh27YQ5LknmiDhCzJiT",
+      "streams": 163228918,
+      "daily_streams": 98654
+    },
+    {
+      "track_id": "4CkgMiMqZ5JzW9iYXSTMTL",
+      "title": "I Bet You Think About Me (feat. Chris Stapleton) (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/4CkgMiMqZ5JzW9iYXSTMTL",
+      "streams": 286962448,
+      "daily_streams": 91952
+    },
+    {
+      "track_id": "0lKUBmEyQfzsQHozyeXzES",
+      "title": "Clean (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/0lKUBmEyQfzsQHozyeXzES",
+      "streams": 178936073,
+      "daily_streams": 93330
+    },
+    {
+      "track_id": "43rA71bccXFGD4C8GOpIlN",
+      "title": "I Forgot That You Existed",
+      "spotify_url": "https://open.spotify.com/track/43rA71bccXFGD4C8GOpIlN",
+      "streams": 416434759,
+      "daily_streams": 94901
+    },
+    {
+      "track_id": "7I7JbDv63ZJJsSi24DyJrz",
+      "title": "Dancing With Our Hands Tied",
+      "spotify_url": "https://open.spotify.com/track/7I7JbDv63ZJJsSi24DyJrz",
+      "streams": 341704639,
+      "daily_streams": 92899
+    },
+    {
+      "track_id": "5kHMfzgLZP95O9NBy0ku4v",
+      "title": "I Can See You (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/5kHMfzgLZP95O9NBy0ku4v",
+      "streams": 342963660,
+      "daily_streams": 86354
+    },
+    {
+      "track_id": "5chnRTB9qMK3W1M41SnU9s",
+      "title": "I Can Fix Him (No Really I Can)",
+      "spotify_url": "https://open.spotify.com/track/5chnRTB9qMK3W1M41SnU9s",
+      "streams": 187284510,
+      "daily_streams": 83149
+    },
+    {
+      "track_id": "4d9PtIEVij9jW5OaLinH66",
+      "title": "Clara Bow",
+      "spotify_url": "https://open.spotify.com/track/4d9PtIEVij9jW5OaLinH66",
+      "streams": 176784314,
+      "daily_streams": 84388
+    },
+    {
+      "track_id": "1XjHRolIXL2M1EEOUsGGR4",
+      "title": "cowboy like me",
+      "spotify_url": "https://open.spotify.com/track/1XjHRolIXL2M1EEOUsGGR4",
+      "streams": 259208804,
+      "daily_streams": 83832
+    },
+    {
+      "track_id": "5M787RexsAiVYjQusM98CV",
+      "title": "New Romantics (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/5M787RexsAiVYjQusM98CV",
+      "streams": 221719736,
+      "daily_streams": 84826
+    },
+    {
+      "track_id": "670fUmXf4KQekzbEgaXyPA",
+      "title": "dorothea",
+      "spotify_url": "https://open.spotify.com/track/670fUmXf4KQekzbEgaXyPA",
+      "streams": 232918653,
+      "daily_streams": 80106
+    },
+    {
+      "track_id": "0qUnBLZ8bJqUNEeQgayL9t",
+      "title": "Out Of The Woods",
+      "spotify_url": "https://open.spotify.com/track/0qUnBLZ8bJqUNEeQgayL9t",
+      "streams": 367579172,
+      "daily_streams": 80577
+    },
+    {
+      "track_id": "2YWtcWi3a83pdEg3Gif4Pd",
+      "title": "I Think He Knows",
+      "spotify_url": "https://open.spotify.com/track/2YWtcWi3a83pdEg3Gif4Pd",
+      "streams": 347605556,
+      "daily_streams": 74368
+    },
+    {
+      "track_id": "7F5oktn5YOsR9eR5YsFtqb",
+      "title": "New Year's Day",
+      "spotify_url": "https://open.spotify.com/track/7F5oktn5YOsR9eR5YsFtqb",
+      "streams": 273778515,
+      "daily_streams": 77076
+    },
+    {
+      "track_id": "59KOoHFcw5XfICnO57holu",
+      "title": "Last Kiss (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/59KOoHFcw5XfICnO57holu",
+      "streams": 138892417,
+      "daily_streams": 73282
+    },
+    {
+      "track_id": "71CBDRKmF2VeRKYMG1DFBh",
+      "title": "Bigger Than The Whole Sky",
+      "spotify_url": "https://open.spotify.com/track/71CBDRKmF2VeRKYMG1DFBh",
+      "streams": 252182957,
+      "daily_streams": 80183
+    },
+    {
+      "track_id": "6rZVy6FIG7lSJQMFXHo12z",
+      "title": "New Romantics",
+      "spotify_url": "https://open.spotify.com/track/6rZVy6FIG7lSJQMFXHo12z",
+      "streams": 330110108,
+      "daily_streams": 75884
+    },
+    {
+      "track_id": "19CSr8rwW05VJL2F91KFNK",
+      "title": "ivy",
+      "spotify_url": "https://open.spotify.com/track/19CSr8rwW05VJL2F91KFNK",
+      "streams": 287620640,
+      "daily_streams": 71723
+    },
+    {
+      "track_id": "5BK0uqwY9DNfZ630STAEaq",
+      "title": "gold rush",
+      "spotify_url": "https://open.spotify.com/track/5BK0uqwY9DNfZ630STAEaq",
+      "streams": 360380895,
+      "daily_streams": 71213
+    },
+    {
+      "track_id": "73YUReisjb3A9ActdLLjJQ",
+      "title": "happiness",
+      "spotify_url": "https://open.spotify.com/track/73YUReisjb3A9ActdLLjJQ",
+      "streams": 245763433,
+      "daily_streams": 68613
+    },
+    {
+      "track_id": "0heeNYlwOGuUSe7TgUD27B",
+      "title": "Question...?",
+      "spotify_url": "https://open.spotify.com/track/0heeNYlwOGuUSe7TgUD27B",
+      "streams": 363757092,
+      "daily_streams": 81136
+    },
+    {
+      "track_id": "7MbT4I8qGntX4fMdqMQgke",
+      "title": "peace",
+      "spotify_url": "https://open.spotify.com/track/7MbT4I8qGntX4fMdqMQgke",
+      "streams": 271388176,
+      "daily_streams": 68669
+    },
+    {
+      "track_id": "4EF6IyONolQy0bIQXm2EmX",
+      "title": "The Albatross",
+      "spotify_url": "https://open.spotify.com/track/4EF6IyONolQy0bIQXm2EmX",
+      "streams": 146036399,
+      "daily_streams": 70105
+    },
+    {
+      "track_id": "7gdwoOmi258QJq0hmQ4hto",
+      "title": "Everything Has Changed",
+      "spotify_url": "https://open.spotify.com/track/7gdwoOmi258QJq0hmQ4hto",
+      "streams": 315183006,
+      "daily_streams": 61159
+    },
+    {
+      "track_id": "60hGQrn24APqEFSLObLeDc",
+      "title": "Highway Don't Care",
+      "spotify_url": "https://open.spotify.com/track/60hGQrn24APqEFSLObLeDc",
+      "streams": 288031783,
+      "daily_streams": 68835
+    },
+    {
+      "track_id": "3RaT22zZsxVYxxKR7TAaYF",
+      "title": "no body, no crime (feat. HAIM)",
+      "spotify_url": "https://open.spotify.com/track/3RaT22zZsxVYxxKR7TAaYF",
+      "streams": 349218399,
+      "daily_streams": 70181
+    },
+    {
+      "track_id": "6MWoRt97mnSTXZhu3ggi9C",
+      "title": "hoax",
+      "spotify_url": "https://open.spotify.com/track/6MWoRt97mnSTXZhu3ggi9C",
+      "streams": 245248172,
+      "daily_streams": 68495
+    },
+    {
+      "track_id": "1hR8BSuEqPCCZfv93zzzz9",
+      "title": "Welcome To New York (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/1hR8BSuEqPCCZfv93zzzz9",
+      "streams": 186929244,
+      "daily_streams": 66162
+    },
+    {
+      "track_id": "5tWxKWq1DSP1s9WQ5PWuqu",
+      "title": "Paris",
+      "spotify_url": "https://open.spotify.com/track/5tWxKWq1DSP1s9WQ5PWuqu",
+      "streams": 242366897,
+      "daily_streams": 73167
+    },
+    {
+      "track_id": "1Zai5UJ2di3qEuR2HeT2s8",
+      "title": "I Look in People's Windows",
+      "spotify_url": "https://open.spotify.com/track/1Zai5UJ2di3qEuR2HeT2s8",
+      "streams": 132603210,
+      "daily_streams": 66765
+    },
+    {
+      "track_id": "5YL553x8sHderRBDlm3NM3",
+      "title": "White Horse (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/5YL553x8sHderRBDlm3NM3",
+      "streams": 155241389,
+      "daily_streams": 67280
+    },
+    {
+      "track_id": "4pNApnaUWAL2J4KO2eqokq",
+      "title": "Come Back...Be Here (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/4pNApnaUWAL2J4KO2eqokq",
+      "streams": 160158047,
+      "daily_streams": 67085
+    },
+    {
+      "track_id": "6xsEAm6w9oMQYYg3jkEkMT",
+      "title": "Bad Blood (feat. Kendrick Lamar)",
+      "spotify_url": "https://open.spotify.com/track/6xsEAm6w9oMQYYg3jkEkMT",
+      "streams": 228213724,
+      "daily_streams": 62367
+    },
+    {
+      "track_id": "5PxFv9yJEg9dxvbZggykro",
+      "title": "So It Goes...",
+      "spotify_url": "https://open.spotify.com/track/5PxFv9yJEg9dxvbZggykro",
+      "streams": 247765419,
+      "daily_streams": 69465
+    },
+    {
+      "track_id": "7ogK4lJDVDMU6A6vYR5rvD",
+      "title": "thanK you aIMee",
+      "spotify_url": "https://open.spotify.com/track/7ogK4lJDVDMU6A6vYR5rvD",
+      "streams": 136815151,
+      "daily_streams": 63849
+    },
+    {
+      "track_id": "6sQckd3Z8NPxVVKUnavY1F",
+      "title": "'tis the damn season",
+      "spotify_url": "https://open.spotify.com/track/6sQckd3Z8NPxVVKUnavY1F",
+      "streams": 341661092,
+      "daily_streams": 63878
+    },
+    {
+      "track_id": "0eFQWVz0qIxDOvhLpZ40P7",
+      "title": "the lakes - bonus track",
+      "spotify_url": "https://open.spotify.com/track/0eFQWVz0qIxDOvhLpZ40P7",
+      "streams": 211626661,
+      "daily_streams": 62925
+    },
+    {
+      "track_id": "32mVHdy0bi1XKgr0ajsBlG",
+      "title": "Picture To Burn",
+      "spotify_url": "https://open.spotify.com/track/32mVHdy0bi1XKgr0ajsBlG",
+      "streams": 255055765,
+      "daily_streams": 62407
+    },
+    {
+      "track_id": "1DTRUYVd8rYpla9hhVVwjo",
+      "title": "The Manuscript",
+      "spotify_url": "https://open.spotify.com/track/1DTRUYVd8rYpla9hhVVwjo",
+      "streams": 108676089,
+      "daily_streams": 61999
+    },
+    {
+      "track_id": "2o2sgVJIgFXk8GQjWTgI6U",
+      "title": "long story short",
+      "spotify_url": "https://open.spotify.com/track/2o2sgVJIgFXk8GQjWTgI6U",
+      "streams": 260592383,
+      "daily_streams": 64859
+    },
+    {
+      "track_id": "2QDyYdZyhlP2fp79KZX8Bi",
+      "title": "mad woman",
+      "spotify_url": "https://open.spotify.com/track/2QDyYdZyhlP2fp79KZX8Bi",
+      "streams": 274108131,
+      "daily_streams": 64618
+    },
+    {
+      "track_id": "0KztjtD3ytzgYjUKIVfBnW",
+      "title": "Mean",
+      "spotify_url": "https://open.spotify.com/track/0KztjtD3ytzgYjUKIVfBnW",
+      "streams": 267520929,
+      "daily_streams": 62307
+    },
+    {
+      "track_id": "07NxDD1iKCHbAldceD7QLP",
+      "title": "This Is Why We Can't Have Nice Things",
+      "spotify_url": "https://open.spotify.com/track/07NxDD1iKCHbAldceD7QLP",
+      "streams": 283785331,
+      "daily_streams": 65656
+    },
+    {
+      "track_id": "3MytWN8L7shNYzGl4tAKRp",
+      "title": "Sparks Fly (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/3MytWN8L7shNYzGl4tAKRp",
+      "streams": 188145869,
+      "daily_streams": 59210
+    },
+    {
+      "track_id": "64FzgoLZ3oXu2SriZblHic",
+      "title": "Bad Blood (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/64FzgoLZ3oXu2SriZblHic",
+      "streams": 154164096,
+      "daily_streams": 60879
+    },
+    {
+      "track_id": "0cITLOYn1Sv4q27zZPqlNK",
+      "title": "Red",
+      "spotify_url": "https://open.spotify.com/track/0cITLOYn1Sv4q27zZPqlNK",
+      "streams": 295949200,
+      "daily_streams": 59285
+    },
+    {
+      "track_id": "6GXgd1BPD9bUpqw5AntGV5",
+      "title": "All You Had To Do Was Stay (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/6GXgd1BPD9bUpqw5AntGV5",
+      "streams": 160572417,
+      "daily_streams": 60647
+    },
+    {
+      "track_id": "08fa9LFcFBTcilB3iq2e2A",
+      "title": "epiphany",
+      "spotify_url": "https://open.spotify.com/track/08fa9LFcFBTcilB3iq2e2A",
+      "streams": 235748730,
+      "daily_streams": 60124
+    },
+    {
+      "track_id": "1SztNGCwEHJEVFx90E5g7D",
+      "title": "High Infidelity",
+      "spotify_url": "https://open.spotify.com/track/1SztNGCwEHJEVFx90E5g7D",
+      "streams": 201635823,
+      "daily_streams": 275542
+    },
+    {
+      "track_id": "10GRRCR5fctuOF4GFmATJI",
+      "title": "Dear Reader",
+      "spotify_url": "https://open.spotify.com/track/10GRRCR5fctuOF4GFmATJI",
+      "streams": 178063520,
+      "daily_streams": 72021
+    },
+    {
+      "track_id": "6pYNq0ZwpPVazKzsqpf0G8",
+      "title": "The Very First Night (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/6pYNq0ZwpPVazKzsqpf0G8",
+      "streams": 229704699,
+      "daily_streams": 58231
+    },
+    {
+      "track_id": "0g4fMVo4JjwnIpTfFfLdxS",
+      "title": "Cassandra",
+      "spotify_url": "https://open.spotify.com/track/0g4fMVo4JjwnIpTfFfLdxS",
+      "streams": 124534519,
+      "daily_streams": 57016
+    },
+    {
+      "track_id": "3JNaLxAymiSUMrmjOarjeo",
+      "title": "The Fate of Ophelia - The Chainsmokers Remix",
+      "spotify_url": "https://open.spotify.com/track/3JNaLxAymiSUMrmjOarjeo",
+      "streams": 16097336,
+      "daily_streams": 52585
+    },
+    {
+      "track_id": "3k7ne7VmH43ZPWxPdvPUgR",
+      "title": "coney island (feat. The National)",
+      "spotify_url": "https://open.spotify.com/track/3k7ne7VmH43ZPWxPdvPUgR",
+      "streams": 233645188,
+      "daily_streams": 52930
+    },
+    {
+      "track_id": "1MaqkdFNIKPdpQGDzme5ss",
+      "title": "Two Is Better Than One (feat. Taylor Swift)",
+      "spotify_url": "https://open.spotify.com/track/1MaqkdFNIKPdpQGDzme5ss",
+      "streams": 174975003,
+      "daily_streams": 51033
+    },
+    {
+      "track_id": "733OhaXQIHY7BKtY3vnSkn",
+      "title": "How You Get The Girl (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/733OhaXQIHY7BKtY3vnSkn",
+      "streams": 123461678,
+      "daily_streams": 52915
+    },
+    {
+      "track_id": "7zMcNqs55Mxer82bvZFkpg",
+      "title": "Teardrops On My Guitar - Radio Single Remix",
+      "spotify_url": "https://open.spotify.com/track/7zMcNqs55Mxer82bvZFkpg",
+      "streams": 264722074,
+      "daily_streams": 51311
+    },
+    {
+      "track_id": "5vyxXfD5gLlyPxGZMEjtmd",
+      "title": "Crazier",
+      "spotify_url": "https://open.spotify.com/track/5vyxXfD5gLlyPxGZMEjtmd",
+      "streams": 146791048,
+      "daily_streams": 50600
+    },
+    {
+      "track_id": "6zV8AVM9eVfdG7Qahwd64R",
+      "title": "Fearless",
+      "spotify_url": "https://open.spotify.com/track/6zV8AVM9eVfdG7Qahwd64R",
+      "streams": 150023867,
+      "daily_streams": 47709
+    },
+    {
+      "track_id": "6dTA6y0C2ReQklntzZl8l3",
+      "title": "The Story Of Us (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/6dTA6y0C2ReQklntzZl8l3",
+      "streams": 148036327,
+      "daily_streams": 52529
+    },
+    {
+      "track_id": "0y6kdSRCVQhSsHSpWvTUm7",
+      "title": "The Last Time (feat. Gary Lightbody of Snow Patrol) (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/0y6kdSRCVQhSsHSpWvTUm7",
+      "streams": 165295658,
+      "daily_streams": 56517
+    },
+    {
+      "track_id": "0v4z1tuZvn6LGknom9Qx7d",
+      "title": "Babe (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/0v4z1tuZvn6LGknom9Qx7d",
+      "streams": 168398082,
+      "daily_streams": 53048
+    },
+    {
+      "track_id": "6HRsJu8vcnzYDN4t0570FY",
+      "title": "Wonderland (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/6HRsJu8vcnzYDN4t0570FY",
+      "streams": 123702978,
+      "daily_streams": 51792
+    },
+    {
+      "track_id": "4s8BIKx4Zh6ryAEz8RTlaU",
+      "title": "Foolish One (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/4s8BIKx4Zh6ryAEz8RTlaU",
+      "streams": 137506837,
+      "daily_streams": 54094
+    },
+    {
+      "track_id": "2CnjDMdpRjlWv04Xk3s6MW",
+      "title": "Robin",
+      "spotify_url": "https://open.spotify.com/track/2CnjDMdpRjlWv04Xk3s6MW",
+      "streams": 95446767,
+      "daily_streams": 49892
+    },
+    {
+      "track_id": "43y1WpBdnEy5TR9aZoSQL9",
+      "title": "I Wish You Would (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/43y1WpBdnEy5TR9aZoSQL9",
+      "streams": 138921236,
+      "daily_streams": 49796
+    },
+    {
+      "track_id": "0NwGC0v03ysCYINtg6ns58",
+      "title": "Better Than Revenge (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/0NwGC0v03ysCYINtg6ns58",
+      "streams": 182382830,
+      "daily_streams": 45708
+    },
+    {
+      "track_id": "1HCdems7PQZRj42QDWLA0A",
+      "title": "Timeless (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/1HCdems7PQZRj42QDWLA0A",
+      "streams": 129814318,
+      "daily_streams": 47865
+    },
+    {
+      "track_id": "6M9ppdfFjR1AbpUl3Y8DcV",
+      "title": "Suburban Legends (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/6M9ppdfFjR1AbpUl3Y8DcV",
+      "streams": 160181823,
+      "daily_streams": 45618
+    },
+    {
+      "track_id": "0E3Vtmgzk067KASoo0HwzV",
+      "title": "Opalite - BUNT. Remix",
+      "spotify_url": "https://open.spotify.com/track/0E3Vtmgzk067KASoo0HwzV",
+      "streams": 5561985,
+      "daily_streams": 42247
+    },
+    {
+      "track_id": "4tMzIAFTFdqGBQLdfbPces",
+      "title": "Haunted (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/4tMzIAFTFdqGBQLdfbPces",
+      "streams": 127611339,
+      "daily_streams": 45012
+    },
+    {
+      "track_id": "1ULabO0PEsdJekqVH6G10G",
+      "title": "I Know Places (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/1ULabO0PEsdJekqVH6G10G",
+      "streams": 119958052,
+      "daily_streams": 43898
+    },
+    {
+      "track_id": "3i9UVldZOE0aD0JnyfAZZ0",
+      "title": "Lover (Remix) [feat. Shawn Mendes]",
+      "spotify_url": "https://open.spotify.com/track/3i9UVldZOE0aD0JnyfAZZ0",
+      "streams": 332127226,
+      "daily_streams": 43454
+    },
+    {
+      "track_id": "5xXqyjLicvEpch72qEryFT",
+      "title": "Speak Now (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/5xXqyjLicvEpch72qEryFT",
+      "streams": 146893447,
+      "daily_streams": 40839
+    },
+    {
+      "track_id": "6INztpNwOTlfSKTuPo0HOP",
+      "title": "The Alcott (feat. Taylor Swift)",
+      "spotify_url": "https://open.spotify.com/track/6INztpNwOTlfSKTuPo0HOP",
+      "streams": 101883468,
+      "daily_streams": 41658
+    },
+    {
+      "track_id": "4AYtqFyFbX0Xkc2wtcygTr",
+      "title": "Soon You'll Get Better (feat. The Chicks)",
+      "spotify_url": "https://open.spotify.com/track/4AYtqFyFbX0Xkc2wtcygTr",
+      "streams": 179749317,
+      "daily_streams": 39862
+    },
+    {
+      "track_id": "73qMN9bXy7MSPwwGfH3wQr",
+      "title": "Sad Beautiful Tragic (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/73qMN9bXy7MSPwwGfH3wQr",
+      "streams": 136735963,
+      "daily_streams": 43255
+    },
+    {
+      "track_id": "6lzc0Al0zfZOIFsFvBS1ki",
+      "title": "State Of Grace (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/6lzc0Al0zfZOIFsFvBS1ki",
+      "streams": 163044564,
+      "daily_streams": 41757
+    },
+    {
+      "track_id": "1zU8j1x3yi9xalMF96pzKp",
+      "title": "Dear John (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/1zU8j1x3yi9xalMF96pzKp",
+      "streams": 150829566,
+      "daily_streams": 41028
+    },
+    {
+      "track_id": "1kdWw77ZpYOkhxeuhzU1j6",
+      "title": "it's time to go - bonus track",
+      "spotify_url": "https://open.spotify.com/track/1kdWw77ZpYOkhxeuhzU1j6",
+      "streams": 150565715,
+      "daily_streams": 44152
+    },
+    {
+      "track_id": "0tQ9vBYpldCuikPsbgOVKA",
+      "title": "Untouchable (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/0tQ9vBYpldCuikPsbgOVKA",
+      "streams": 86570015,
+      "daily_streams": 38936
+    },
+    {
+      "track_id": "46NGAvL695VnbcSeTmQWmM",
+      "title": "Sparks Fly",
+      "spotify_url": "https://open.spotify.com/track/46NGAvL695VnbcSeTmQWmM",
+      "streams": 210323706,
+      "daily_streams": 40338
+    },
+    {
+      "track_id": "6aLOekfwbytwWvQftxTEF0",
+      "title": "All You Had To Do Was Stay",
+      "spotify_url": "https://open.spotify.com/track/6aLOekfwbytwWvQftxTEF0",
+      "streams": 246921833,
+      "daily_streams": 41221
+    },
+    {
+      "track_id": "2r9CbjYgFhtAmcFv1cSquB",
+      "title": "I Almost Do (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/2r9CbjYgFhtAmcFv1cSquB",
+      "streams": 126886804,
+      "daily_streams": 38995
+    },
+    {
+      "track_id": "2EFZ9emtKWEglWUQGEQ3P9",
+      "title": "Never Grow Up (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/2EFZ9emtKWEglWUQGEQ3P9",
+      "streams": 90135097,
+      "daily_streams": 38465
+    },
+    {
+      "track_id": "6N1K5OVVCopBjGViHs2IvP",
+      "title": "The Joker And The Queen (feat. Taylor Swift)",
+      "spotify_url": "https://open.spotify.com/track/6N1K5OVVCopBjGViHs2IvP",
+      "streams": 228071423,
+      "daily_streams": 39471
+    },
+    {
+      "track_id": "6LZaxlycSWrJZ4Volb25qx",
+      "title": "Mine",
+      "spotify_url": "https://open.spotify.com/track/6LZaxlycSWrJZ4Volb25qx",
+      "streams": 253013993,
+      "daily_streams": 39851
+    },
+    {
+      "track_id": "1n3b9Eekoy3S9ZSZ5DmTW1",
+      "title": "All Too Well (Sad Girl Autumn Version) - Recorded at Long Pond Studios",
+      "spotify_url": "https://open.spotify.com/track/1n3b9Eekoy3S9ZSZ5DmTW1",
+      "streams": 74539093,
+      "daily_streams": 38448
+    },
+    {
+      "track_id": "1msEuwSBneBKpVCZQcFTsU",
+      "title": "Forever & Always (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/1msEuwSBneBKpVCZQcFTsU",
+      "streams": 148652008,
+      "daily_streams": 36588
+    },
+    {
+      "track_id": "16MVSD0mGI4RMQT83Qzm69",
+      "title": "Should've Said No",
+      "spotify_url": "https://open.spotify.com/track/16MVSD0mGI4RMQT83Qzm69",
+      "streams": 158033166,
+      "daily_streams": 37612
+    },
+    {
+      "track_id": "30Y4CV7A6YqtQtTTo7Ue4j",
+      "title": "Mean (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/30Y4CV7A6YqtQtTTo7Ue4j",
+      "streams": 140035147,
+      "daily_streams": 36574
+    },
+    {
+      "track_id": "0Om9WAB5RS09L80DyOfTNa",
+      "title": "Tim McGraw",
+      "spotify_url": "https://open.spotify.com/track/0Om9WAB5RS09L80DyOfTNa",
+      "streams": 166587976,
+      "daily_streams": 36571
+    },
+    {
+      "track_id": "4e3ZNTAV6PCrdYMUrUlMpQ",
+      "title": "Electric Touch (feat. Fall Out Boy) (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/4e3ZNTAV6PCrdYMUrUlMpQ",
+      "streams": 123260842,
+      "daily_streams": 37155
+    },
+    {
+      "track_id": "7C0w28EsX0Um2FrZs9gso2",
+      "title": "Glitch",
+      "spotify_url": "https://open.spotify.com/track/7C0w28EsX0Um2FrZs9gso2",
+      "streams": 158981373,
+      "daily_streams": 49006
+    },
+    {
+      "track_id": "5t1wMjV9ldVDdYs4l7mG2g",
+      "title": "Opalite - Ely Oaks Remix",
+      "spotify_url": "https://open.spotify.com/track/5t1wMjV9ldVDdYs4l7mG2g",
+      "streams": 3350407,
+      "daily_streams": 34629
+    },
+    {
+      "track_id": "6qAcApH8obo8eqatCKUHd9",
+      "title": "Bad Blood (feat. Kendrick Lamar) (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/6qAcApH8obo8eqatCKUHd9",
+      "streams": 137529679,
+      "daily_streams": 36038
+    },
+    {
+      "track_id": "3S7HNKPakdwNEBFIVTL6dZ",
+      "title": "Treacherous (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/3S7HNKPakdwNEBFIVTL6dZ",
+      "streams": 146044597,
+      "daily_streams": 36031
+    },
+    {
+      "track_id": "4ABYxlb92WBIjHu7TIKmml",
+      "title": "Castles Crumbling (feat. Hayley Williams) (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/4ABYxlb92WBIjHu7TIKmml",
+      "streams": 117496325,
+      "daily_streams": 34972
+    },
+    {
+      "track_id": "0kAZ3H6G9Zac4PMpmobMkj",
+      "title": "If This Was A Movie (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/0kAZ3H6G9Zac4PMpmobMkj",
+      "streams": 96679844,
+      "daily_streams": 35303
+    },
+    {
+      "track_id": "0q6vsjvnCIWrtwRckCV7y0",
+      "title": "If This Was A Movie (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/0q6vsjvnCIWrtwRckCV7y0",
+      "streams": 96679844,
+      "daily_streams": 35303
+    },
+    {
+      "track_id": "35rdVq36LMHQX0Suw9a6tK",
+      "title": "closure",
+      "spotify_url": "https://open.spotify.com/track/35rdVq36LMHQX0Suw9a6tK",
+      "streams": 157735099,
+      "daily_streams": 35210
+    },
+    {
+      "track_id": "1qwClaxDb5fCrLjXaAmB35",
+      "title": "Wi$h Li$t - Settled Down Acoustic Version",
+      "spotify_url": "https://open.spotify.com/track/1qwClaxDb5fCrLjXaAmB35",
+      "streams": 14888731,
+      "daily_streams": 32165
+    },
+    {
+      "track_id": "6wfugRLamFsTRbPcCpNnP7",
+      "title": "How You Get The Girl",
+      "spotify_url": "https://open.spotify.com/track/6wfugRLamFsTRbPcCpNnP7",
+      "streams": 194476257,
+      "daily_streams": 34555
+    },
+    {
+      "track_id": "7J4b3LVCIGO4CMBDFLPoP6",
+      "title": "Holy Ground (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/7J4b3LVCIGO4CMBDFLPoP6",
+      "streams": 118644908,
+      "daily_streams": 33034
+    },
+    {
+      "track_id": "2nqio0SfWg6gh2eCtfuMa5",
+      "title": "Fifteen (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/2nqio0SfWg6gh2eCtfuMa5",
+      "streams": 133652958,
+      "daily_streams": 32146
+    },
+    {
+      "track_id": "1D27z8xNzjW0Mwwt1NCWhJ",
+      "title": "Last Kiss",
+      "spotify_url": "https://open.spotify.com/track/1D27z8xNzjW0Mwwt1NCWhJ",
+      "streams": 140664298,
+      "daily_streams": 31020
+    },
+    {
+      "track_id": "4XMP3zVxrnr58T0tjIHvpR",
+      "title": "All Too Well",
+      "spotify_url": "https://open.spotify.com/track/4XMP3zVxrnr58T0tjIHvpR",
+      "streams": 272169381,
+      "daily_streams": 33131
+    },
+    {
+      "track_id": "550erGcdD9n6PnwxrvYqZT",
+      "title": "Hey Stephen (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/550erGcdD9n6PnwxrvYqZT",
+      "streams": 120014078,
+      "daily_streams": 30515
+    },
+    {
+      "track_id": "4bXCcoesMt8u99xMsbLr9U",
+      "title": "Clean",
+      "spotify_url": "https://open.spotify.com/track/4bXCcoesMt8u99xMsbLr9U",
+      "streams": 216699605,
+      "daily_streams": 30138
+    },
+    {
+      "track_id": "3Z2nTctPsTsgqqJm5fCSvG",
+      "title": "The Fate of Ophelia - Alone In My Tower Acoustic Version",
+      "spotify_url": "https://open.spotify.com/track/3Z2nTctPsTsgqqJm5fCSvG",
+      "streams": 16974741,
+      "daily_streams": 27998
+    },
+    {
+      "track_id": "1SmiQ65iSAbPto6gPFlBYm",
+      "title": "It's Nice To Have A Friend",
+      "spotify_url": "https://open.spotify.com/track/1SmiQ65iSAbPto6gPFlBYm",
+      "streams": 162899295,
+      "daily_streams": 28485
+    },
+    {
+      "track_id": "1cSFlSBdpT4F5vb1frQ231",
+      "title": "The Other Side Of The Door (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/1cSFlSBdpT4F5vb1frQ231",
+      "streams": 98006598,
+      "daily_streams": 28372
+    },
+    {
+      "track_id": "1gejz5ROvJBUb6WJzkMAcc",
+      "title": "Fortnight (feat. Post Malone) - BLOND:ISH Remix",
+      "spotify_url": "https://open.spotify.com/track/1gejz5ROvJBUb6WJzkMAcc",
+      "streams": 41286032,
+      "daily_streams": 31196
+    },
+    {
+      "track_id": "0z9UVN8VBHJ9HdfYsOuuNf",
+      "title": "Safe & Sound - from The Hunger Games Soundtrack",
+      "spotify_url": "https://open.spotify.com/track/0z9UVN8VBHJ9HdfYsOuuNf",
+      "streams": 257230800,
+      "daily_streams": 27764
+    },
+    {
+      "track_id": "0zo975x58DlXbZllWvfYhg",
+      "title": "When Emma Falls in Love (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/0zo975x58DlXbZllWvfYhg",
+      "streams": 111210770,
+      "daily_streams": 27488
+    },
+    {
+      "track_id": "3oGVx9RBmiYGv5ZCecWLkx",
+      "title": "Forever Winter (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/3oGVx9RBmiYGv5ZCecWLkx",
+      "streams": 123113326,
+      "daily_streams": 27682
+    },
+    {
+      "track_id": "2bzUVEvpZ7At5cYz1kOLI9",
+      "title": "Gasoline (feat. Taylor Swift)",
+      "spotify_url": "https://open.spotify.com/track/2bzUVEvpZ7At5cYz1kOLI9",
+      "streams": 88188091,
+      "daily_streams": 27421
+    },
+    {
+      "track_id": "0NRHj8hDwwmSPaA41o379r",
+      "title": "The Moment I Knew (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/0NRHj8hDwwmSPaA41o379r",
+      "streams": 96124229,
+      "daily_streams": 26131
+    },
+    {
+      "track_id": "2RJnNdu4pb3MypbBroHU0T",
+      "title": "Safe & Sound (feat. Joy Williams and John Paul White) (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/2RJnNdu4pb3MypbBroHU0T",
+      "streams": 83372369,
+      "daily_streams": 25291
+    },
+    {
+      "track_id": "6Q237Ts37YGYRIi5Vy5lVX",
+      "title": "Safe & Sound (feat. Joy Williams and John Paul White) (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/6Q237Ts37YGYRIi5Vy5lVX",
+      "streams": 83372369,
+      "daily_streams": 25291
+    },
+    {
+      "track_id": "7A2cNLRT0YJc1yjxHlKihs",
+      "title": "Starlight (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/7A2cNLRT0YJc1yjxHlKihs",
+      "streams": 94926731,
+      "daily_streams": 25558
+    },
+    {
+      "track_id": "4IQkfUsrwXol38VV3U7t7T",
+      "title": "Run (feat. Ed Sheeran) (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/4IQkfUsrwXol38VV3U7t7T",
+      "streams": 167865197,
+      "daily_streams": 26373
+    },
+    {
+      "track_id": "6iiAfo4wTA2CVC3Uwx9uh8",
+      "title": "You're Not Sorry (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/6iiAfo4wTA2CVC3Uwx9uh8",
+      "streams": 98946202,
+      "daily_streams": 26174
+    },
+    {
+      "track_id": "3yNJkriPzWjkkDAWHIAVUq",
+      "title": "Ours (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/3yNJkriPzWjkkDAWHIAVUq",
+      "streams": 82699034,
+      "daily_streams": 25361
+    },
+    {
+      "track_id": "7dXKdjpOaH2iwfFKmUj7aq",
+      "title": "Speak Now",
+      "spotify_url": "https://open.spotify.com/track/7dXKdjpOaH2iwfFKmUj7aq",
+      "streams": 162457483,
+      "daily_streams": 24897
+    },
+    {
+      "track_id": "6XDBA3QWX51lDJ0oZbaJJN",
+      "title": "Long Live",
+      "spotify_url": "https://open.spotify.com/track/6XDBA3QWX51lDJ0oZbaJJN",
+      "streams": 117572394,
+      "daily_streams": 24398
+    },
+    {
+      "track_id": "4uuEGH5SVuzkkSFjo2DEiY",
+      "title": "Don't You (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/4uuEGH5SVuzkkSFjo2DEiY",
+      "streams": 93627244,
+      "daily_streams": 24943
+    },
+    {
+      "track_id": "7eQj6r5PIdYKEIZjucBMcq",
+      "title": "Stay Stay Stay (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/7eQj6r5PIdYKEIZjucBMcq",
+      "streams": 114159565,
+      "daily_streams": 24506
+    },
+    {
+      "track_id": "4e5ayHsOLJNLTGfjau2mEw",
+      "title": "The Lucky One (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/4e5ayHsOLJNLTGfjau2mEw",
+      "streams": 101290180,
+      "daily_streams": 24639
+    },
+    {
+      "track_id": "37jfioVu3Bd2Du9bteXNDU",
+      "title": "Cruel Summer - LP Giobbi Remix",
+      "spotify_url": "https://open.spotify.com/track/37jfioVu3Bd2Du9bteXNDU",
+      "streams": 45302879,
+      "daily_streams": 24148
+    },
+    {
+      "track_id": "7HC7R2D8WjXVcUHJyEGjRs",
+      "title": "Breathe (feat. Colbie Caillat) (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/7HC7R2D8WjXVcUHJyEGjRs",
+      "streams": 88244629,
+      "daily_streams": 23700
+    },
+    {
+      "track_id": "4UBWugj5D20ZveyzdGpqvD",
+      "title": "Elizabeth Taylor - So Glamorous Cabaret Version",
+      "spotify_url": "https://open.spotify.com/track/4UBWugj5D20ZveyzdGpqvD",
+      "streams": 9688046,
+      "daily_streams": 23818
+    },
+    {
+      "track_id": "4axSuOg3BqsowKjRpj59RU",
+      "title": "Carolina - From The Motion Picture “Where The Crawdads Sing”",
+      "spotify_url": "https://open.spotify.com/track/4axSuOg3BqsowKjRpj59RU",
+      "streams": 94729667,
+      "daily_streams": 23520
+    },
+    {
+      "track_id": "5gRYrtvyVyaCRvLt56OfuV",
+      "title": "I Wish You Would",
+      "spotify_url": "https://open.spotify.com/track/5gRYrtvyVyaCRvLt56OfuV",
+      "streams": 168703945,
+      "daily_streams": 24370
+    },
+    {
+      "track_id": "1yFjBRQVhRdcdnrTE5LuyD",
+      "title": "White Horse",
+      "spotify_url": "https://open.spotify.com/track/1yFjBRQVhRdcdnrTE5LuyD",
+      "streams": 126188989,
+      "daily_streams": 24146
+    },
+    {
+      "track_id": "3K2es3gElMRJ3qvmPW442g",
+      "title": "Dear John",
+      "spotify_url": "https://open.spotify.com/track/3K2es3gElMRJ3qvmPW442g",
+      "streams": 156269034,
+      "daily_streams": 23653
+    },
+    {
+      "track_id": "5jAIouBES8LWMiriuNq170",
+      "title": "State Of Grace (Acoustic Version) (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/5jAIouBES8LWMiriuNq170",
+      "streams": 72752864,
+      "daily_streams": 22070
+    },
+    {
+      "track_id": "2m3ObD945KvpE5y9A1eUWm",
+      "title": "Jump Then Fall (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/2m3ObD945KvpE5y9A1eUWm",
+      "streams": 77123441,
+      "daily_streams": 23222
+    },
+    {
+      "track_id": "4i6cwNY6oIUU2XZxPIw82Y",
+      "title": "Karma (feat. Ice Spice)",
+      "spotify_url": "https://open.spotify.com/track/4i6cwNY6oIUU2XZxPIw82Y",
+      "streams": 114901844,
+      "daily_streams": 26804
+    },
+    {
+      "track_id": "4A2LfnduSTsE8u0ecYROxE",
+      "title": "You Are In Love",
+      "spotify_url": "https://open.spotify.com/track/4A2LfnduSTsE8u0ecYROxE",
+      "streams": 160322791,
+      "daily_streams": 22940
+    },
+    {
+      "track_id": "3fGnrtrtL1IHSX9t4DKOYf",
+      "title": "Cornelia Street - Live From Paris",
+      "spotify_url": "https://open.spotify.com/track/3fGnrtrtL1IHSX9t4DKOYf",
+      "streams": 84054682,
+      "daily_streams": 21934
+    },
+    {
+      "track_id": "77VotUUL79U10TAnYdqwvr",
+      "title": "The Way I Loved You",
+      "spotify_url": "https://open.spotify.com/track/77VotUUL79U10TAnYdqwvr",
+      "streams": 84245058,
+      "daily_streams": 22364
+    },
+    {
+      "track_id": "48A0aShHlovDfTMucMrE66",
+      "title": "Begin Again",
+      "spotify_url": "https://open.spotify.com/track/48A0aShHlovDfTMucMrE66",
+      "streams": 145181300,
+      "daily_streams": 20734
+    },
+    {
+      "track_id": "6iWMI5oOhWrDbLbjmwTWFq",
+      "title": "Wonderland",
+      "spotify_url": "https://open.spotify.com/track/6iWMI5oOhWrDbLbjmwTWFq",
+      "streams": 166600089,
+      "daily_streams": 22464
+    },
+    {
+      "track_id": "6ON9UuIq49xXY9GPmHIYRp",
+      "title": "The Best Day (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/6ON9UuIq49xXY9GPmHIYRp",
+      "streams": 71725038,
+      "daily_streams": 22689
+    },
+    {
+      "track_id": "11UaQaEp2LvdspTyyuE3ur",
+      "title": "Haunted",
+      "spotify_url": "https://open.spotify.com/track/11UaQaEp2LvdspTyyuE3ur",
+      "streams": 119162709,
+      "daily_streams": 21907
+    },
+    {
+      "track_id": "06zIBqLC9ZRm5i0iMf0kHI",
+      "title": "Renegade - Pop Version",
+      "spotify_url": "https://open.spotify.com/track/06zIBqLC9ZRm5i0iMf0kHI",
+      "streams": 26793611,
+      "daily_streams": 21946
+    },
+    {
+      "track_id": "12nBPF4Rh4XLFJV0YLN7uj",
+      "title": "Innocent (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/12nBPF4Rh4XLFJV0YLN7uj",
+      "streams": 68029417,
+      "daily_streams": 21008
+    },
+    {
+      "track_id": "7y16ygjcEcfo1VYKxmgVZY",
+      "title": "Opalite - Life Is A Song Acoustic Version",
+      "spotify_url": "https://open.spotify.com/track/7y16ygjcEcfo1VYKxmgVZY",
+      "streams": 10438010,
+      "daily_streams": 20499
+    },
+    {
+      "track_id": "2JoJrsEV15OzbijS47lids",
+      "title": "Today Was A Fairytale (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/2JoJrsEV15OzbijS47lids",
+      "streams": 73234974,
+      "daily_streams": 20311
+    },
+    {
+      "track_id": "4CHpVfAhuxNJ3ibExe6kxO",
+      "title": "You All Over Me (feat. Maren Morris) (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/4CHpVfAhuxNJ3ibExe6kxO",
+      "streams": 133357708,
+      "daily_streams": 21147
+    },
+    {
+      "track_id": "5pcjystBtalYeqaiXCcgEY",
+      "title": "You All Over Me (feat. Maren Morris) (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/5pcjystBtalYeqaiXCcgEY",
+      "streams": 133357708,
+      "daily_streams": 21147
+    },
+    {
+      "track_id": "4yf9OivCH2lmQWN8mzpCC6",
+      "title": "Fifteen",
+      "spotify_url": "https://open.spotify.com/track/4yf9OivCH2lmQWN8mzpCC6",
+      "streams": 132024105,
+      "daily_streams": 19446
+    },
+    {
+      "track_id": "0DMVrlMUn01M0IcpDbwgu7",
+      "title": "Girl At Home (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/0DMVrlMUn01M0IcpDbwgu7",
+      "streams": 78475675,
+      "daily_streams": 20948
+    },
+    {
+      "track_id": "7eResoqEJJAVTkQYSqvO3P",
+      "title": "That's When (feat. Keith Urban) (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/7eResoqEJJAVTkQYSqvO3P",
+      "streams": 101161240,
+      "daily_streams": 21291
+    },
+    {
+      "track_id": "3JilapcaOXzjR9gtvCY8FO",
+      "title": "Never Grow Up",
+      "spotify_url": "https://open.spotify.com/track/3JilapcaOXzjR9gtvCY8FO",
+      "streams": 99814346,
+      "daily_streams": 19717
+    },
+    {
+      "track_id": "1kTPQnabROVkW9bUXdCGrB",
+      "title": "This Love",
+      "spotify_url": "https://open.spotify.com/track/1kTPQnabROVkW9bUXdCGrB",
+      "streams": 121187662,
+      "daily_streams": 19445
+    },
+    {
+      "track_id": "40PXEOFLJc7UIpLMrhSfW1",
+      "title": "Babe (feat. Taylor Swift)",
+      "spotify_url": "https://open.spotify.com/track/40PXEOFLJc7UIpLMrhSfW1",
+      "streams": 123359218,
+      "daily_streams": 18568
+    },
+    {
+      "track_id": "4evLyY5Ue1Wesc61t2KXAU",
+      "title": "Superman (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/4evLyY5Ue1Wesc61t2KXAU",
+      "streams": 58201458,
+      "daily_streams": 18840
+    },
+    {
+      "track_id": "6hKfPNnVlA2cgTgKj6Vgcw",
+      "title": "Ruin The Friendship - My Advice Version",
+      "spotify_url": "https://open.spotify.com/track/6hKfPNnVlA2cgTgKj6Vgcw",
+      "streams": 7953881,
+      "daily_streams": 17359
+    },
+    {
+      "track_id": "01QdEx6kFr78ZejhQtWR5m",
+      "title": "Forever & Always (Piano Version) (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/01QdEx6kFr78ZejhQtWR5m",
+      "streams": 69474161,
+      "daily_streams": 18553
+    },
+    {
+      "track_id": "0JIdBrXGSJXS72zjF9ss9u",
+      "title": "I'm Only Me When I'm With You",
+      "spotify_url": "https://open.spotify.com/track/0JIdBrXGSJXS72zjF9ss9u",
+      "streams": 68043428,
+      "daily_streams": 18953
+    },
+    {
+      "track_id": "73OX8GdpOeGzKC6OvGSbsv",
+      "title": "A Place in this World",
+      "spotify_url": "https://open.spotify.com/track/73OX8GdpOeGzKC6OvGSbsv",
+      "streams": 57248545,
+      "daily_streams": 18323
+    },
+    {
+      "track_id": "2zfgVd034GlUvk7LqBHl6u",
+      "title": "I Know Places",
+      "spotify_url": "https://open.spotify.com/track/2zfgVd034GlUvk7LqBHl6u",
+      "streams": 146949215,
+      "daily_streams": 18073
+    },
+    {
+      "track_id": "2QrQCMel6v2JiLxqrg4p2O",
+      "title": "Mary's Song (Oh My My My)",
+      "spotify_url": "https://open.spotify.com/track/2QrQCMel6v2JiLxqrg4p2O",
+      "streams": 63510939,
+      "daily_streams": 18471
+    },
+    {
+      "track_id": "0k0vFacOHNuArLWMiH60p7",
+      "title": "Tell Me Why (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/0k0vFacOHNuArLWMiH60p7",
+      "streams": 75192175,
+      "daily_streams": 18039
+    },
+    {
+      "track_id": "2slqvGLwzZZYsT4K4Y1GBC",
+      "title": "Only The Young - Featured in Miss Americana",
+      "spotify_url": "https://open.spotify.com/track/2slqvGLwzZZYsT4K4Y1GBC",
+      "streams": 140356522,
+      "daily_streams": 17955
+    },
+    {
+      "track_id": "1Fj0T1XKuhRu7EZzJ7NJIK",
+      "title": "Delicate - Recorded at The Tracking Room Nashville",
+      "spotify_url": "https://open.spotify.com/track/1Fj0T1XKuhRu7EZzJ7NJIK",
+      "streams": 52984469,
+      "daily_streams": 18286
+    },
+    {
+      "track_id": "2oWpe2L8ypC080BxpDVuTY",
+      "title": "Anti-Hero - Kungs Remix",
+      "spotify_url": "https://open.spotify.com/track/2oWpe2L8ypC080BxpDVuTY",
+      "streams": 41236541,
+      "daily_streams": 16246
+    },
+    {
+      "track_id": "4pJi1rVt9GNegU9kywjg4z",
+      "title": "Teardrops on My Guitar - Pop Version",
+      "spotify_url": "https://open.spotify.com/track/4pJi1rVt9GNegU9kywjg4z",
+      "streams": 47095063,
+      "daily_streams": 16295
+    },
+    {
+      "track_id": "7N015NTIWGjQDddHUdHPoO",
+      "title": "exile (feat. Bon Iver) - the long pond studio sessions",
+      "spotify_url": "https://open.spotify.com/track/7N015NTIWGjQDddHUdHPoO",
+      "streams": 62417401,
+      "daily_streams": 15618
+    },
+    {
+      "track_id": "0lJWmQO1fw1Tr2p2M1m5cw",
+      "title": "Both of Us (feat. Taylor Swift)",
+      "spotify_url": "https://open.spotify.com/track/0lJWmQO1fw1Tr2p2M1m5cw",
+      "streams": 87308535,
+      "daily_streams": 20667
+    },
+    {
+      "track_id": "7an1exwMnfYRcdVQm0yDev",
+      "title": "Cold As You",
+      "spotify_url": "https://open.spotify.com/track/7an1exwMnfYRcdVQm0yDev",
+      "streams": 58403650,
+      "daily_streams": 16069
+    },
+    {
+      "track_id": "7nWui6jiMM2m9qFmET1Mtj",
+      "title": "Ronan (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/7nWui6jiMM2m9qFmET1Mtj",
+      "streams": 58519144,
+      "daily_streams": 15182
+    },
+    {
+      "track_id": "0ttGLmxI0mAkMblE6iRm2S",
+      "title": "Opalite - Chris Lake Remix",
+      "spotify_url": "https://open.spotify.com/track/0ttGLmxI0mAkMblE6iRm2S",
+      "streams": 2786176,
+      "daily_streams": 15133
+    },
+    {
+      "track_id": "3EPgWM1zfTSzEc0z4AwWTM",
+      "title": "cardigan - the long pond studio sessions",
+      "spotify_url": "https://open.spotify.com/track/3EPgWM1zfTSzEc0z4AwWTM",
+      "streams": 34843811,
+      "daily_streams": 14373
+    },
+    {
+      "track_id": "2BUTSRKPGRsyc9FnsC5Udd",
+      "title": "Fortnight (feat. Post Malone) - Acoustic Version",
+      "spotify_url": "https://open.spotify.com/track/2BUTSRKPGRsyc9FnsC5Udd",
+      "streams": 20957122,
+      "daily_streams": 14628
+    },
+    {
+      "track_id": "34V9RiEPe8MNdU32qJsJa1",
+      "title": "We Were Happy (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/34V9RiEPe8MNdU32qJsJa1",
+      "streams": 75904958,
+      "daily_streams": 14428
+    },
+    {
+      "track_id": "3ExweHKZF9B752DPQByRVT",
+      "title": "Change (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/3ExweHKZF9B752DPQByRVT",
+      "streams": 59070109,
+      "daily_streams": 14689
+    },
+    {
+      "track_id": "4qUijfYU8EoIWiY6oSyrgT",
+      "title": "Bye Bye Baby (Taylor's Version) (From The Vault)",
+      "spotify_url": "https://open.spotify.com/track/4qUijfYU8EoIWiY6oSyrgT",
+      "streams": 71173230,
+      "daily_streams": 14144
+    },
+    {
+      "track_id": "1n2wszmJyVkw6FHqyLnQsY",
+      "title": "Come In With The Rain (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/1n2wszmJyVkw6FHqyLnQsY",
+      "streams": 54091015,
+      "daily_streams": 13921
+    },
+    {
+      "track_id": "1gaLZjPrDnHQWJds2Jg4KT",
+      "title": "this is me trying - the long pond studio sessions",
+      "spotify_url": "https://open.spotify.com/track/1gaLZjPrDnHQWJds2Jg4KT",
+      "streams": 29270919,
+      "daily_streams": 12511
+    },
+    {
+      "track_id": "5mdNyCS7ttVcAyVYOIFEjs",
+      "title": "my tears ricochet - the long pond studio sessions",
+      "spotify_url": "https://open.spotify.com/track/5mdNyCS7ttVcAyVYOIFEjs",
+      "streams": 31750734,
+      "daily_streams": 13662
+    },
+    {
+      "track_id": "51A8eKvvZz9uydvIZ7xRSV",
+      "title": "Superstar (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/51A8eKvvZz9uydvIZ7xRSV",
+      "streams": 48710170,
+      "daily_streams": 12934
+    },
+    {
+      "track_id": "2ZoOmCSgj0ypVAmGd1ve4y",
+      "title": "Stay Beautiful",
+      "spotify_url": "https://open.spotify.com/track/2ZoOmCSgj0ypVAmGd1ve4y",
+      "streams": 47009572,
+      "daily_streams": 13091
+    },
+    {
+      "track_id": "6K0CJLVXqbGMeJSmJ4ENKK",
+      "title": "Tied Together with a Smile",
+      "spotify_url": "https://open.spotify.com/track/6K0CJLVXqbGMeJSmJ4ENKK",
+      "streams": 45404221,
+      "daily_streams": 13129
+    },
+    {
+      "track_id": "786NsUYn4GGUf8AOt0SQhP",
+      "title": "State Of Grace",
+      "spotify_url": "https://open.spotify.com/track/786NsUYn4GGUf8AOt0SQhP",
+      "streams": 68451165,
+      "daily_streams": 12301
+    },
+    {
+      "track_id": "5VDHMi7own9vDZjiwDES1e",
+      "title": "Wildest Dreams - R3hab Remix",
+      "spotify_url": "https://open.spotify.com/track/5VDHMi7own9vDZjiwDES1e",
+      "streams": 17415295,
+      "daily_streams": 12054
+    },
+    {
+      "track_id": "2Sy2oGjP5RYB4cLVoDU0Gz",
+      "title": "Delicate - Seeb Remix",
+      "spotify_url": "https://open.spotify.com/track/2Sy2oGjP5RYB4cLVoDU0Gz",
+      "streams": 52854656,
+      "daily_streams": 12529
+    },
+    {
+      "track_id": "7ryS0xBZNYjQqql34GCkDp",
+      "title": "Daylight - Live From Paris",
+      "spotify_url": "https://open.spotify.com/track/7ryS0xBZNYjQqql34GCkDp",
+      "streams": 35881395,
+      "daily_streams": 12008
+    },
+    {
+      "track_id": "5OOd01o2YS1QFwdpVLds3r",
+      "title": "Invisible",
+      "spotify_url": "https://open.spotify.com/track/5OOd01o2YS1QFwdpVLds3r",
+      "streams": 46318220,
+      "daily_streams": 12509
+    },
+    {
+      "track_id": "2QA3IixpRcKyOdG7XDzRgv",
+      "title": "The Outside",
+      "spotify_url": "https://open.spotify.com/track/2QA3IixpRcKyOdG7XDzRgv",
+      "streams": 41861736,
+      "daily_streams": 12657
+    },
+    {
+      "track_id": "3lXekiVK1ZPZbKconsys73",
+      "title": "The Story Of Us",
+      "spotify_url": "https://open.spotify.com/track/3lXekiVK1ZPZbKconsys73",
+      "streams": 52988937,
+      "daily_streams": 11245
+    },
+    {
+      "track_id": "1zxrcAk6eiytfavqriMcKT",
+      "title": "Forever & Always",
+      "spotify_url": "https://open.spotify.com/track/1zxrcAk6eiytfavqriMcKT",
+      "streams": 60799330,
+      "daily_streams": 11280
+    },
+    {
+      "track_id": "0UAdDYrkCvVQftaKpL6q5f",
+      "title": "the lakes - original version",
+      "spotify_url": "https://open.spotify.com/track/0UAdDYrkCvVQftaKpL6q5f",
+      "streams": 56713946,
+      "daily_streams": 10516
+    },
+    {
+      "track_id": "5eGX87IiKsGuzS3iw4CfCX",
+      "title": "September - Recorded at The Tracking Room Nashville",
+      "spotify_url": "https://open.spotify.com/track/5eGX87IiKsGuzS3iw4CfCX",
+      "streams": 81856295,
+      "daily_streams": 10794
+    },
+    {
+      "track_id": "2NIBaWXdjaTDmytjjwbEfP",
+      "title": "Eyes Open (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/2NIBaWXdjaTDmytjjwbEfP",
+      "streams": 51073894,
+      "daily_streams": 10359
+    },
+    {
+      "track_id": "0gPmM1WtVRg3uENW3o8bfx",
+      "title": "Eyes Open (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/0gPmM1WtVRg3uENW3o8bfx",
+      "streams": 51073894,
+      "daily_streams": 10359
+    },
+    {
+      "track_id": "5d2Kn9oAAh9S2EbyCo1i52",
+      "title": "Holy Ground",
+      "spotify_url": "https://open.spotify.com/track/5d2Kn9oAAh9S2EbyCo1i52",
+      "streams": 60531158,
+      "daily_streams": 10816
+    },
+    {
+      "track_id": "0qsSmObOgBZfuMIwfAQDBP",
+      "title": "Breathe",
+      "spotify_url": "https://open.spotify.com/track/0qsSmObOgBZfuMIwfAQDBP",
+      "streams": 75373275,
+      "daily_streams": 10745
+    },
+    {
+      "track_id": "1EQn3Uc5AyUXoiPLeyCrrg",
+      "title": "Ours",
+      "spotify_url": "https://open.spotify.com/track/1EQn3Uc5AyUXoiPLeyCrrg",
+      "streams": 78523787,
+      "daily_streams": 10130
+    },
+    {
+      "track_id": "2JHzTARFUispsjZHKhrxxO",
+      "title": "Eldest Daughter - Now You're Home Acoustic Version",
+      "spotify_url": "https://open.spotify.com/track/2JHzTARFUispsjZHKhrxxO",
+      "streams": 4872910,
+      "daily_streams": 9961
+    },
+    {
+      "track_id": "1spLfUJxtyVyiKKTegQ2r4",
+      "title": "A Perfectly Good Heart",
+      "spotify_url": "https://open.spotify.com/track/1spLfUJxtyVyiKKTegQ2r4",
+      "streams": 35084562,
+      "daily_streams": 10639
+    },
+    {
+      "track_id": "4fWDgRZa0GKE5KZNhE9MQa",
+      "title": "Hey Stephen",
+      "spotify_url": "https://open.spotify.com/track/4fWDgRZa0GKE5KZNhE9MQa",
+      "streams": 55916085,
+      "daily_streams": 10499
+    },
+    {
+      "track_id": "7wo2UNeQBowm28hfAJsEMz",
+      "title": "Birch",
+      "spotify_url": "https://open.spotify.com/track/7wo2UNeQBowm28hfAJsEMz",
+      "streams": 20202282,
+      "daily_streams": 9315
+    },
+    {
+      "track_id": "2DF2sUvgHFKJ5TQGjm6n3T",
+      "title": "The Life of a Showgirl (feat. Sabrina Carpenter) - Dressing Room Rehearsal Version",
+      "spotify_url": "https://open.spotify.com/track/2DF2sUvgHFKJ5TQGjm6n3T",
+      "streams": 5558565,
+      "daily_streams": 9996
+    },
+    {
+      "track_id": "5YbZZ2gYfvW1UvHHF4pVaD",
+      "title": "The Best Day",
+      "spotify_url": "https://open.spotify.com/track/5YbZZ2gYfvW1UvHHF4pVaD",
+      "streams": 46115514,
+      "daily_streams": 9869
+    },
+    {
+      "track_id": "7vvIpJZye5cRR6De1LKM0m",
+      "title": "The Last Time",
+      "spotify_url": "https://open.spotify.com/track/7vvIpJZye5cRR6De1LKM0m",
+      "streams": 73257906,
+      "daily_streams": 9818
+    },
+    {
+      "track_id": "4MGexoZc12lqE0hYkq9YYx",
+      "title": "august - the long pond studio sessions",
+      "spotify_url": "https://open.spotify.com/track/4MGexoZc12lqE0hYkq9YYx",
+      "streams": 28778395,
+      "daily_streams": 9112
+    },
+    {
+      "track_id": "2yceD2hx5HhOLgkm1CITCi",
+      "title": "mirrorball - the long pond studio sessions",
+      "spotify_url": "https://open.spotify.com/track/2yceD2hx5HhOLgkm1CITCi",
+      "streams": 23321669,
+      "daily_streams": 9049
+    },
+    {
+      "track_id": "3oF7Or7T35yhQbGxbCGvRX",
+      "title": "Death By A Thousand Cuts - Live From Paris",
+      "spotify_url": "https://open.spotify.com/track/3oF7Or7T35yhQbGxbCGvRX",
+      "streams": 45773902,
+      "daily_streams": 9399
+    },
+    {
+      "track_id": "5VwFkx7JOimOGTYfha5rs1",
+      "title": "I Almost Do",
+      "spotify_url": "https://open.spotify.com/track/5VwFkx7JOimOGTYfha5rs1",
+      "streams": 67556842,
+      "daily_streams": 8810
+    },
+    {
+      "track_id": "5kYFVSQoPu7yRpfiHBwMUk",
+      "title": "Treacherous",
+      "spotify_url": "https://open.spotify.com/track/5kYFVSQoPu7yRpfiHBwMUk",
+      "streams": 60809914,
+      "daily_streams": 8721
+    },
+    {
+      "track_id": "0vvt4IZOMkRug195S4MUq0",
+      "title": "If This Was A Movie",
+      "spotify_url": "https://open.spotify.com/track/0vvt4IZOMkRug195S4MUq0",
+      "streams": 49429165,
+      "daily_streams": 8489
+    },
+    {
+      "track_id": "2d3d9xZutJjmUpntiyHt3F",
+      "title": "Anti-Hero - Acoustic Version",
+      "spotify_url": "https://open.spotify.com/track/2d3d9xZutJjmUpntiyHt3F",
+      "streams": 38364825,
+      "daily_streams": 8745
+    },
+    {
+      "track_id": "1qLeEu4iXEclkLwoBlMiou",
+      "title": "Stay Stay Stay",
+      "spotify_url": "https://open.spotify.com/track/1qLeEu4iXEclkLwoBlMiou",
+      "streams": 63166598,
+      "daily_streams": 8472
+    },
+    {
+      "track_id": "4qyalTRMRH5YuEntvvMvq0",
+      "title": "Come Back...Be Here",
+      "spotify_url": "https://open.spotify.com/track/4qyalTRMRH5YuEntvvMvq0",
+      "streams": 47143046,
+      "daily_streams": 8323
+    },
+    {
+      "track_id": "2hmafYGj1CXYKIYcMnX4lj",
+      "title": "cardigan - cabin in candlelight version",
+      "spotify_url": "https://open.spotify.com/track/2hmafYGj1CXYKIYcMnX4lj",
+      "streams": 47421119,
+      "daily_streams": 8045
+    },
+    {
+      "track_id": "0RFCHlNuTeUHIB36VuVbOL",
+      "title": "Sweeter Than Fiction - From \"One Chance\" Soundtrack",
+      "spotify_url": "https://open.spotify.com/track/0RFCHlNuTeUHIB36VuVbOL",
+      "streams": 25894041,
+      "daily_streams": 8437
+    },
+    {
+      "track_id": "4N419mmxYybTfAECy5j4dw",
+      "title": "You're Not Sorry",
+      "spotify_url": "https://open.spotify.com/track/4N419mmxYybTfAECy5j4dw",
+      "streams": 51508388,
+      "daily_streams": 8151
+    },
+    {
+      "track_id": "560uQyz3p5G9WdnMX39xc6",
+      "title": "illicit affairs - the long pond studio sessions",
+      "spotify_url": "https://open.spotify.com/track/560uQyz3p5G9WdnMX39xc6",
+      "streams": 21450390,
+      "daily_streams": 7825
+    },
+    {
+      "track_id": "3kfgJql90tzgoxByioAMXR",
+      "title": "Innocent",
+      "spotify_url": "https://open.spotify.com/track/3kfgJql90tzgoxByioAMXR",
+      "streams": 57433877,
+      "daily_streams": 7740
+    },
+    {
+      "track_id": "05kJkr80XEaZeN8kxyQoFp",
+      "title": "Lavender Haze - Acoustic Version",
+      "spotify_url": "https://open.spotify.com/track/05kJkr80XEaZeN8kxyQoFp",
+      "streams": 34127245,
+      "daily_streams": 7736
+    },
+    {
+      "track_id": "4pFvEWbjBpPUdYRQly0THs",
+      "title": "Today Was A Fairytale",
+      "spotify_url": "https://open.spotify.com/track/4pFvEWbjBpPUdYRQly0THs",
+      "streams": 35644099,
+      "daily_streams": 7722
+    },
+    {
+      "track_id": "1P5QpwOgXJuoVTm3CWbnLY",
+      "title": "Today Was A Fairytale - US Version",
+      "spotify_url": "https://open.spotify.com/track/1P5QpwOgXJuoVTm3CWbnLY",
+      "streams": 35644099,
+      "daily_streams": 7722
+    },
+    {
+      "track_id": "0vqI4ZIMuifeKeItGiWbPj",
+      "title": "Starlight",
+      "spotify_url": "https://open.spotify.com/track/0vqI4ZIMuifeKeItGiWbPj",
+      "streams": 48178687,
+      "daily_streams": 7339
+    },
+    {
+      "track_id": "08J4bMHbILkwSIhbtrcvjN",
+      "title": "the 1 - the long pond studio sessions",
+      "spotify_url": "https://open.spotify.com/track/08J4bMHbILkwSIhbtrcvjN",
+      "streams": 24586466,
+      "daily_streams": 7280
+    },
+    {
+      "track_id": "6mqyTq948oap5AkyTsd6XF",
+      "title": "the lakes - the long pond studio sessions",
+      "spotify_url": "https://open.spotify.com/track/6mqyTq948oap5AkyTsd6XF",
+      "streams": 21283729,
+      "daily_streams": 7522
+    },
+    {
+      "track_id": "2wtHlpYSgC7xEdD3DrSHNL",
+      "title": "The Lucky One",
+      "spotify_url": "https://open.spotify.com/track/2wtHlpYSgC7xEdD3DrSHNL",
+      "streams": 48304477,
+      "daily_streams": 7102
+    },
+    {
+      "track_id": "5RaBeejGtdPEszYEKYECs2",
+      "title": "Love Story (Taylor's Version) - Elvira Remix",
+      "spotify_url": "https://open.spotify.com/track/5RaBeejGtdPEszYEKYECs2",
+      "streams": 40619955,
+      "daily_streams": 6977
+    },
+    {
+      "track_id": "16M9Rxid0nXhVmme7lzVwN",
+      "title": "Anti-Hero (feat. Bleachers)",
+      "spotify_url": "https://open.spotify.com/track/16M9Rxid0nXhVmme7lzVwN",
+      "streams": 27200702,
+      "daily_streams": 7213
+    },
+    {
+      "track_id": "6IH2Z54gYPLqgJtxZjX80i",
+      "title": "Back To December - Acoustic",
+      "spotify_url": "https://open.spotify.com/track/6IH2Z54gYPLqgJtxZjX80i",
+      "streams": 81737667,
+      "daily_streams": 6895
+    },
+    {
+      "track_id": "1Ygm9KdH3wbzDekO8JgxcW",
+      "title": "...Ready For It? - BloodPop® Remix",
+      "spotify_url": "https://open.spotify.com/track/1Ygm9KdH3wbzDekO8JgxcW",
+      "streams": 30056915,
+      "daily_streams": 6567
+    },
+    {
+      "track_id": "5QKhg4r4Ibt0LVTmWEXTEg",
+      "title": "Sad Beautiful Tragic",
+      "spotify_url": "https://open.spotify.com/track/5QKhg4r4Ibt0LVTmWEXTEg",
+      "streams": 44018056,
+      "daily_streams": 6872
+    },
+    {
+      "track_id": "0GxW5K0qzrq7L1jwSY5OmY",
+      "title": "Mine - POP Mix",
+      "spotify_url": "https://open.spotify.com/track/0GxW5K0qzrq7L1jwSY5OmY",
+      "streams": 56928965,
+      "daily_streams": 6734
+    },
+    {
+      "track_id": "0fAbfDiuQiUwV7FUcFfRGY",
+      "title": "Mine - POP Mix",
+      "spotify_url": "https://open.spotify.com/track/0fAbfDiuQiUwV7FUcFfRGY",
+      "streams": 56928965,
+      "daily_streams": 6734
+    },
+    {
+      "track_id": "6vLpy7UPYuOa75Bkqocrcw",
+      "title": "Tell Me Why",
+      "spotify_url": "https://open.spotify.com/track/6vLpy7UPYuOa75Bkqocrcw",
+      "streams": 35637598,
+      "daily_streams": 6632
+    },
+    {
+      "track_id": "6F67FNdOBNMFzxdj1CQ5pL",
+      "title": "Lavender Haze - Snakehips Remix",
+      "spotify_url": "https://open.spotify.com/track/6F67FNdOBNMFzxdj1CQ5pL",
+      "streams": 19062574,
+      "daily_streams": 7142
+    },
+    {
+      "track_id": "2msvOEbkK50foYf9BMXr2X",
+      "title": "Lover - First Dance Remix",
+      "spotify_url": "https://open.spotify.com/track/2msvOEbkK50foYf9BMXr2X",
+      "streams": 30397641,
+      "daily_streams": 6269
+    },
+    {
+      "track_id": "4mKye6Z1kXuKolzMkJoKFA",
+      "title": "Christmas Tree Farm",
+      "spotify_url": "https://open.spotify.com/track/4mKye6Z1kXuKolzMkJoKFA",
+      "streams": 288195763,
+      "daily_streams": 6371
+    },
+    {
+      "track_id": "28tIMaewZuGR8urkvFhQyA",
+      "title": "the last great american dynasty - the long pond studio sessions",
+      "spotify_url": "https://open.spotify.com/track/28tIMaewZuGR8urkvFhQyA",
+      "streams": 18607340,
+      "daily_streams": 6190
+    },
+    {
+      "track_id": "5KByGq0JijSSDcy0qzuINs",
+      "title": "invisible string - the long pond studio sessions",
+      "spotify_url": "https://open.spotify.com/track/5KByGq0JijSSDcy0qzuINs",
+      "streams": 17447515,
+      "daily_streams": 6079
+    },
+    {
+      "track_id": "2M4tVhRXucLE9M3STv21Yi",
+      "title": "Lavender Haze - Felix Jaehn Remix",
+      "spotify_url": "https://open.spotify.com/track/2M4tVhRXucLE9M3STv21Yi",
+      "streams": 29399455,
+      "daily_streams": 5853
+    },
+    {
+      "track_id": "5KxZfCXXmVvKhPo8hQz2pS",
+      "title": "Lavender Haze - Felix Jaehn Remix",
+      "spotify_url": "https://open.spotify.com/track/5KxZfCXXmVvKhPo8hQz2pS",
+      "streams": 29399455,
+      "daily_streams": 5853
+    },
+    {
+      "track_id": "4cOWq0cVsKjxaQpRMbDoH1",
+      "title": "seven - the long pond studio sessions",
+      "spotify_url": "https://open.spotify.com/track/4cOWq0cVsKjxaQpRMbDoH1",
+      "streams": 18108428,
+      "daily_streams": 5885
+    },
+    {
+      "track_id": "6WWvcA62QlnRguluWAk6bv",
+      "title": "Jump Then Fall",
+      "spotify_url": "https://open.spotify.com/track/6WWvcA62QlnRguluWAk6bv",
+      "streams": 28949183,
+      "daily_streams": 5459
+    },
+    {
+      "track_id": "6ovFJkdau79DuXEvQjPaNH",
+      "title": "Untouchable",
+      "spotify_url": "https://open.spotify.com/track/6ovFJkdau79DuXEvQjPaNH",
+      "streams": 26418259,
+      "daily_streams": 5444
+    },
+    {
+      "track_id": "0RdcBnAXyH2YZZvcBVu2k6",
+      "title": "Change",
+      "spotify_url": "https://open.spotify.com/track/0RdcBnAXyH2YZZvcBVu2k6",
+      "streams": 30764310,
+      "daily_streams": 5793
+    },
+    {
+      "track_id": "1yDJcXc549N6AabNBzFAku",
+      "title": "The Other Side Of The Door",
+      "spotify_url": "https://open.spotify.com/track/1yDJcXc549N6AabNBzFAku",
+      "streams": 18111808,
+      "daily_streams": 5258
+    },
+    {
+      "track_id": "2fgiBCtbWo8pijF6M7pN1i",
+      "title": "The Archer - Live From Paris",
+      "spotify_url": "https://open.spotify.com/track/2fgiBCtbWo8pijF6M7pN1i",
+      "streams": 15404522,
+      "daily_streams": 5000
+    },
+    {
+      "track_id": "3tGq7hWDCtrnL83y5OGual",
+      "title": "Message In A Bottle (Fat Max G Remix) (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/3tGq7hWDCtrnL83y5OGual",
+      "streams": 24822319,
+      "daily_streams": 5269
+    },
+    {
+      "track_id": "1u4HUiREUR6vX1W1RYG2Tm",
+      "title": "All Too Well (10 Minute Version) (The Short Film)",
+      "spotify_url": "https://open.spotify.com/track/1u4HUiREUR6vX1W1RYG2Tm",
+      "streams": 17158951,
+      "daily_streams": 5214
+    },
+    {
+      "track_id": "1mh5dObNoOvCfHmXnhvDEK",
+      "title": "betty - the long pond studio sessions",
+      "spotify_url": "https://open.spotify.com/track/1mh5dObNoOvCfHmXnhvDEK",
+      "streams": 16891307,
+      "daily_streams": 5200
+    },
+    {
+      "track_id": "4YHHz3VIXgNDGdoL9xC1tx",
+      "title": "peace - the long pond studio sessions",
+      "spotify_url": "https://open.spotify.com/track/4YHHz3VIXgNDGdoL9xC1tx",
+      "streams": 14912673,
+      "daily_streams": 4960
+    },
+    {
+      "track_id": "0U0etHtpARihOUUY8Akc7y",
+      "title": "willow - lonely witch version",
+      "spotify_url": "https://open.spotify.com/track/0U0etHtpARihOUUY8Akc7y",
+      "streams": 19953381,
+      "daily_streams": 5095
+    },
+    {
+      "track_id": "77d7q9TNbsIDmRTDPkPv3L",
+      "title": "willow - lonely witch version",
+      "spotify_url": "https://open.spotify.com/track/77d7q9TNbsIDmRTDPkPv3L",
+      "streams": 19953381,
+      "daily_streams": 5095
+    },
+    {
+      "track_id": "77p4fRpoeiZMtUy3P9kN21",
+      "title": "willow - 90's trend remix",
+      "spotify_url": "https://open.spotify.com/track/77p4fRpoeiZMtUy3P9kN21",
+      "streams": 15978375,
+      "daily_streams": 5183
+    },
+    {
+      "track_id": "6C0H8ts9M6deezz0yYR6LK",
+      "title": "Anti-Hero - ILLENIUM Remix",
+      "spotify_url": "https://open.spotify.com/track/6C0H8ts9M6deezz0yYR6LK",
+      "streams": 21059897,
+      "daily_streams": 5084
+    },
+    {
+      "track_id": "04xrhDrQ2WOW8GLwu7kbc0",
+      "title": "mad woman - the long pond studio sessions",
+      "spotify_url": "https://open.spotify.com/track/04xrhDrQ2WOW8GLwu7kbc0",
+      "streams": 14718809,
+      "daily_streams": 5162
+    },
+    {
+      "track_id": "62rlxI6g2PNaWsHoiRryto",
+      "title": "Haunted - Acoustic Version",
+      "spotify_url": "https://open.spotify.com/track/62rlxI6g2PNaWsHoiRryto",
+      "streams": 28207851,
+      "daily_streams": 4963
+    },
+    {
+      "track_id": "0QTBsdoJhamY3Aid3fOsOd",
+      "title": "hoax - the long pond studio sessions",
+      "spotify_url": "https://open.spotify.com/track/0QTBsdoJhamY3Aid3fOsOd",
+      "streams": 16525428,
+      "daily_streams": 5211
+    },
+    {
+      "track_id": "4yyKppX85ZkmlGOC2toBZA",
+      "title": "epiphany - the long pond studio sessions",
+      "spotify_url": "https://open.spotify.com/track/4yyKppX85ZkmlGOC2toBZA",
+      "streams": 13599568,
+      "daily_streams": 4835
+    },
+    {
+      "track_id": "20QSU9vg05qYSDVgOTAwPp",
+      "title": "Wood - Track by Track",
+      "spotify_url": "https://open.spotify.com/track/20QSU9vg05qYSDVgOTAwPp",
+      "streams": 800578,
+      "daily_streams": 3558
+    },
+    {
+      "track_id": "2NnrAdjE9cPdMklonMBuAv",
+      "title": "willow - dancing witch version (Elvira remix)",
+      "spotify_url": "https://open.spotify.com/track/2NnrAdjE9cPdMklonMBuAv",
+      "streams": 43412856,
+      "daily_streams": 4966
+    },
+    {
+      "track_id": "2Ta5c5Z6DvM8GX0U1polSo",
+      "title": "willow - dancing witch version (Elvira remix)",
+      "spotify_url": "https://open.spotify.com/track/2Ta5c5Z6DvM8GX0U1polSo",
+      "streams": 43412856,
+      "daily_streams": 4966
+    },
+    {
+      "track_id": "0hFF0aqyjDwDh6SQwRbTyx",
+      "title": "I Can Do It With a Broken Heart - Dombresky Remix",
+      "spotify_url": "https://open.spotify.com/track/0hFF0aqyjDwDh6SQwRbTyx",
+      "streams": 7966508,
+      "daily_streams": 4460
+    },
+    {
+      "track_id": "06FXaDDdg0BzXl15cthMS5",
+      "title": "Should've Said No - The 3D Concert Experience",
+      "spotify_url": "https://open.spotify.com/track/06FXaDDdg0BzXl15cthMS5",
+      "streams": 15441579,
+      "daily_streams": 4246
+    },
+    {
+      "track_id": "4lD3RXyvHpJsM3BhIEC4aA",
+      "title": "Lover - Live From Paris",
+      "spotify_url": "https://open.spotify.com/track/4lD3RXyvHpJsM3BhIEC4aA",
+      "streams": 14014874,
+      "daily_streams": 4044
+    },
+    {
+      "track_id": "6cf6rLb8qcklvJv90W6HCW",
+      "title": "Girl At Home",
+      "spotify_url": "https://open.spotify.com/track/6cf6rLb8qcklvJv90W6HCW",
+      "streams": 25557007,
+      "daily_streams": 4166
+    },
+    {
+      "track_id": "0BSmbCIY36iw04azzJ3S0S",
+      "title": "Drops Of Jupiter - Live/2011",
+      "spotify_url": "https://open.spotify.com/track/0BSmbCIY36iw04azzJ3S0S",
+      "streams": 14767010,
+      "daily_streams": 4081
+    },
+    {
+      "track_id": "5AsmAjBSSQjRPWgAYIp8tm",
+      "title": "The Moment I Knew",
+      "spotify_url": "https://open.spotify.com/track/5AsmAjBSSQjRPWgAYIp8tm",
+      "streams": 34530555,
+      "daily_streams": 4218
+    },
+    {
+      "track_id": "2R7C9dDqv1UPycvepBFziA",
+      "title": "Superman",
+      "spotify_url": "https://open.spotify.com/track/2R7C9dDqv1UPycvepBFziA",
+      "streams": 28384069,
+      "daily_streams": 4049
+    },
+    {
+      "track_id": "13MAWVUSkbGMUi6I7RowRK",
+      "title": "Forever & Always - Piano Version",
+      "spotify_url": "https://open.spotify.com/track/13MAWVUSkbGMUi6I7RowRK",
+      "streams": 30010259,
+      "daily_streams": 3993
+    },
+    {
+      "track_id": "2evEoQAhIMaa9PfjTT5skG",
+      "title": "Beautiful Ghosts - From The Motion Picture Soundtrack \"Cats\"",
+      "spotify_url": "https://open.spotify.com/track/2evEoQAhIMaa9PfjTT5skG",
+      "streams": 20500017,
+      "daily_streams": 3716
+    },
+    {
+      "track_id": "7FKbTRXXIWVFQmPH8zGfU0",
+      "title": "The Man - Live From Paris",
+      "spotify_url": "https://open.spotify.com/track/7FKbTRXXIWVFQmPH8zGfU0",
+      "streams": 24037170,
+      "daily_streams": 3645
+    },
+    {
+      "track_id": "0cEG04R5cldkTLzK6phlcn",
+      "title": "Come In With The Rain",
+      "spotify_url": "https://open.spotify.com/track/0cEG04R5cldkTLzK6phlcn",
+      "streams": 19279516,
+      "daily_streams": 3854
+    },
+    {
+      "track_id": "3r9fAceWmaDFvbNiTnFiLr",
+      "title": "Elizabeth Taylor - Track by Track",
+      "spotify_url": "https://open.spotify.com/track/3r9fAceWmaDFvbNiTnFiLr",
+      "streams": 1820398,
+      "daily_streams": 3769
+    },
+    {
+      "track_id": "1IsquhJFJ0qcFZI7FeAEuN",
+      "title": "Back To December/Apologize/You're Not Sorry - Live/2011/Medley",
+      "spotify_url": "https://open.spotify.com/track/1IsquhJFJ0qcFZI7FeAEuN",
+      "streams": 14810238,
+      "daily_streams": 3155
+    },
+    {
+      "track_id": "5G9AVKld9q7DCrmoY42raf",
+      "title": "State Of Grace - Acoustic",
+      "spotify_url": "https://open.spotify.com/track/5G9AVKld9q7DCrmoY42raf",
+      "streams": 25863948,
+      "daily_streams": 2931
+    },
+    {
+      "track_id": "0XfTh16YcKPzdxMPTeKTAq",
+      "title": "SuperStar",
+      "spotify_url": "https://open.spotify.com/track/0XfTh16YcKPzdxMPTeKTAq",
+      "streams": 15887190,
+      "daily_streams": 3256
+    },
+    {
+      "track_id": "2IprIjGNRlj3TfqUWCAo0C",
+      "title": "Last Christmas",
+      "spotify_url": "https://open.spotify.com/track/2IprIjGNRlj3TfqUWCAo0C",
+      "streams": 44024462,
+      "daily_streams": 2945
+    },
+    {
+      "track_id": "7Bjf96uNizpvXLvNyOJpst",
+      "title": "You Need To Calm Down - Clean Bandit Remix",
+      "spotify_url": "https://open.spotify.com/track/7Bjf96uNizpvXLvNyOJpst",
+      "streams": 18535263,
+      "daily_streams": 2862
+    },
+    {
+      "track_id": "36a08nLG1xazGaaVKK0vv7",
+      "title": "You Need To Calm Down - Live From Paris",
+      "spotify_url": "https://open.spotify.com/track/36a08nLG1xazGaaVKK0vv7",
+      "streams": 10002984,
+      "daily_streams": 2944
+    },
+    {
+      "track_id": "5fOV54t6mMYv3H9CsnvU81",
+      "title": "ME! - Live From Paris",
+      "spotify_url": "https://open.spotify.com/track/5fOV54t6mMYv3H9CsnvU81",
+      "streams": 9767079,
+      "daily_streams": 2781
+    },
+    {
+      "track_id": "3Ng1BPUR5qf6vQ1AizIA0D",
+      "title": "Wildest Dreams (Arr. Lawson for Harp)",
+      "spotify_url": "https://open.spotify.com/track/3Ng1BPUR5qf6vQ1AizIA0D",
+      "streams": 1863933,
+      "daily_streams": 2649
+    },
+    {
+      "track_id": "4KB3zBArZ1rHRExilzycaV",
+      "title": "I Want You Back - Live/2011",
+      "spotify_url": "https://open.spotify.com/track/4KB3zBArZ1rHRExilzycaV",
+      "streams": 8005181,
+      "daily_streams": 2442
+    },
+    {
+      "track_id": "4mqgn90sCeVSYqcoftTQTd",
+      "title": "Red - Original Demo Recording",
+      "spotify_url": "https://open.spotify.com/track/4mqgn90sCeVSYqcoftTQTd",
+      "streams": 19243985,
+      "daily_streams": 2455
+    },
+    {
+      "track_id": "12xIjI9A9UlB6zEc7kyZ06",
+      "title": "Carolina - \"Where The Crawdads Sing\" - Video Edition",
+      "spotify_url": "https://open.spotify.com/track/12xIjI9A9UlB6zEc7kyZ06",
+      "streams": 11928946,
+      "daily_streams": 2542
+    },
+    {
+      "track_id": "5XkJj6sV2XLMaURdmdXgNx",
+      "title": "willow - moonlit witch version",
+      "spotify_url": "https://open.spotify.com/track/5XkJj6sV2XLMaURdmdXgNx",
+      "streams": 10744194,
+      "daily_streams": 2208
+    },
+    {
+      "track_id": "5F7hpFKLmWgMHGxQuwssuv",
+      "title": "willow - moonlit witch version",
+      "spotify_url": "https://open.spotify.com/track/5F7hpFKLmWgMHGxQuwssuv",
+      "streams": 10744194,
+      "daily_streams": 2208
+    },
+    {
+      "track_id": "7BT9K9BDqq6HI2oWH5UMZQ",
+      "title": "Treacherous - Original Demo Recording",
+      "spotify_url": "https://open.spotify.com/track/7BT9K9BDqq6HI2oWH5UMZQ",
+      "streams": 18061751,
+      "daily_streams": 2312
+    },
+    {
+      "track_id": "3RNDw7yywLNyawDKV99hTx",
+      "title": "Love Story - Digital Dog Remix",
+      "spotify_url": "https://open.spotify.com/track/3RNDw7yywLNyawDKV99hTx",
+      "streams": 11510367,
+      "daily_streams": 2166
+    },
+    {
+      "track_id": "7JKwboSAWRHJI5U1XGTqS3",
+      "title": "Big Star (with Taylor Swift) - Live",
+      "spotify_url": "https://open.spotify.com/track/7JKwboSAWRHJI5U1XGTqS3",
+      "streams": 6989846,
+      "daily_streams": 2501
+    },
+    {
+      "track_id": "6KF9xd2hBLuexrmBX4vUWD",
+      "title": "Bette Davis Eyes - Live/2011",
+      "spotify_url": "https://open.spotify.com/track/6KF9xd2hBLuexrmBX4vUWD",
+      "streams": 9980698,
+      "daily_streams": 2031
+    },
+    {
+      "track_id": "60oZARTE1kCh5ntBfeO1XB",
+      "title": "Teardrops On My Guitar",
+      "spotify_url": "https://open.spotify.com/track/60oZARTE1kCh5ntBfeO1XB",
+      "streams": 14541395,
+      "daily_streams": 1611
+    },
+    {
+      "track_id": "3vM04liQIPwzatRCDvWvba",
+      "title": "The Last Time - Karaoke Version",
+      "spotify_url": "https://open.spotify.com/track/3vM04liQIPwzatRCDvWvba",
+      "streams": 1800185,
+      "daily_streams": 1882
+    },
+    {
+      "track_id": "1VCcPLfDiR1S9PJaSp5qm5",
+      "title": "Opalite - Skream Remix",
+      "spotify_url": "https://open.spotify.com/track/1VCcPLfDiR1S9PJaSp5qm5",
+      "streams": 649602,
+      "daily_streams": 2233
+    },
+    {
+      "track_id": "3lm4L3pPL32PFy74dR17OR",
+      "title": "Enchanted - Live/2011",
+      "spotify_url": "https://open.spotify.com/track/3lm4L3pPL32PFy74dR17OR",
+      "streams": 9172739,
+      "daily_streams": 1777
+    },
+    {
+      "track_id": "4GS68CE8nKLIKjjapiSm2I",
+      "title": "betty - Live from the 2020 Academy of Country Music Awards",
+      "spotify_url": "https://open.spotify.com/track/4GS68CE8nKLIKjjapiSm2I",
+      "streams": 11393187,
+      "daily_streams": 1720
+    },
+    {
+      "track_id": "1hm4V38egkiHOgxTUpu0zg",
+      "title": "betty - Live from the 2020 Academy of Country Music Awards",
+      "spotify_url": "https://open.spotify.com/track/1hm4V38egkiHOgxTUpu0zg",
+      "streams": 11393187,
+      "daily_streams": 1720
+    },
+    {
+      "track_id": "6znB7YZhMJT2B83zfbiyLq",
+      "title": "Haunted - Live/2011",
+      "spotify_url": "https://open.spotify.com/track/6znB7YZhMJT2B83zfbiyLq",
+      "streams": 7389030,
+      "daily_streams": 1691
+    },
+    {
+      "track_id": "4XiypEn8iKbeP1TbTqdfk5",
+      "title": "Anti-Hero - Roosevelt Remix",
+      "spotify_url": "https://open.spotify.com/track/4XiypEn8iKbeP1TbTqdfk5",
+      "streams": 4744083,
+      "daily_streams": 1810
+    },
+    {
+      "track_id": "6hH37tyeRdyan1mAppmVor",
+      "title": "Last Kiss - Live/2011",
+      "spotify_url": "https://open.spotify.com/track/6hH37tyeRdyan1mAppmVor",
+      "streams": 7123533,
+      "daily_streams": 1692
+    },
+    {
+      "track_id": "6505MLhnqTDDg4tjoUz2Wp",
+      "title": "Better Than Revenge - Live/2011",
+      "spotify_url": "https://open.spotify.com/track/6505MLhnqTDDg4tjoUz2Wp",
+      "streams": 7830395,
+      "daily_streams": 1655
+    },
+    {
+      "track_id": "2PGIFYRG1XWsPqNG14hgD1",
+      "title": "I Can Do It With a Broken Heart - Instrumental",
+      "spotify_url": "https://open.spotify.com/track/2PGIFYRG1XWsPqNG14hgD1",
+      "streams": 5131986,
+      "daily_streams": 1693
+    },
+    {
+      "track_id": "5k9RjjuYyOMCLL81U8FaHT",
+      "title": "The Fate of Ophelia - Track by Track",
+      "spotify_url": "https://open.spotify.com/track/5k9RjjuYyOMCLL81U8FaHT",
+      "streams": 1718107,
+      "daily_streams": 1599
+    },
+    {
+      "track_id": "1aBJNc2thaKyh5THWzIqHX",
+      "title": "Sparks Fly - Live/2011",
+      "spotify_url": "https://open.spotify.com/track/1aBJNc2thaKyh5THWzIqHX",
+      "streams": 10301279,
+      "daily_streams": 1608
+    },
+    {
+      "track_id": "5QkzyLUb4ggojNDp8G2OxX",
+      "title": "Long Live - Live/2011",
+      "spotify_url": "https://open.spotify.com/track/5QkzyLUb4ggojNDp8G2OxX",
+      "streams": 7533814,
+      "daily_streams": 1539
+    },
+    {
+      "track_id": "6SYwJcqaltK2WFRmD1unUV",
+      "title": "Delicate - Sawyr And Ryan Tedder Mix",
+      "spotify_url": "https://open.spotify.com/track/6SYwJcqaltK2WFRmD1unUV",
+      "streams": 8749004,
+      "daily_streams": 1621
+    },
+    {
+      "track_id": "4YrpqEBNuz7IMsZtUP6bNQ",
+      "title": "Anti-Hero - Jayda G Remix",
+      "spotify_url": "https://open.spotify.com/track/4YrpqEBNuz7IMsZtUP6bNQ",
+      "streams": 9600692,
+      "daily_streams": 1528
+    },
+    {
+      "track_id": "42TAweWJJ9YlQ47T5nesu5",
+      "title": "The Life of a Showgirl - Track by Track",
+      "spotify_url": "https://open.spotify.com/track/42TAweWJJ9YlQ47T5nesu5",
+      "streams": 962083,
+      "daily_streams": 2320
+    },
+    {
+      "track_id": "7kjSmkSo15pHlkb0mOQtfj",
+      "title": "Lavender Haze - Tensnake Remix",
+      "spotify_url": "https://open.spotify.com/track/7kjSmkSo15pHlkb0mOQtfj",
+      "streams": 4633734,
+      "daily_streams": 1503
+    },
+    {
+      "track_id": "4DbI1rr4IQ2bc8nejy9ttd",
+      "title": "Dear John - Live/2011",
+      "spotify_url": "https://open.spotify.com/track/4DbI1rr4IQ2bc8nejy9ttd",
+      "streams": 7697814,
+      "daily_streams": 1523
+    },
+    {
+      "track_id": "72GIZuUXo14oyrS0si3Rgc",
+      "title": "The Story Of Us - Live",
+      "spotify_url": "https://open.spotify.com/track/72GIZuUXo14oyrS0si3Rgc",
+      "streams": 8158247,
+      "daily_streams": 1437
+    },
+    {
+      "track_id": "5SkuikJwvwfEvNyCepGkq3",
+      "title": "Opalite - Track by Track",
+      "spotify_url": "https://open.spotify.com/track/5SkuikJwvwfEvNyCepGkq3",
+      "streams": 1413734,
+      "daily_streams": 1411
+    },
+    {
+      "track_id": "2NGGvVcfb2m2NbVaXHC3gb",
+      "title": "Father Figure - Track by Track",
+      "spotify_url": "https://open.spotify.com/track/2NGGvVcfb2m2NbVaXHC3gb",
+      "streams": 1347973,
+      "daily_streams": 1381
+    },
+    {
+      "track_id": "0wAvTNz81YTUhLFWuWJSAV",
+      "title": "Eldest Daughter - Track by Track",
+      "spotify_url": "https://open.spotify.com/track/0wAvTNz81YTUhLFWuWJSAV",
+      "streams": 1257310,
+      "daily_streams": 1348
+    },
+    {
+      "track_id": "6NUy8xajng5zMSGJRKniAG",
+      "title": "Ruin The Friendship - Track by Track",
+      "spotify_url": "https://open.spotify.com/track/6NUy8xajng5zMSGJRKniAG",
+      "streams": 1161840,
+      "daily_streams": 1287
+    },
+    {
+      "track_id": "7yndkPYP6YQQLBpPsizDfh",
+      "title": "Mine - Live/2011",
+      "spotify_url": "https://open.spotify.com/track/7yndkPYP6YQQLBpPsizDfh",
+      "streams": 7962585,
+      "daily_streams": 1279
+    },
+    {
+      "track_id": "7mFiEij8AXPUZB7aKLbUlQ",
+      "title": "Mean - Live/2011",
+      "spotify_url": "https://open.spotify.com/track/7mFiEij8AXPUZB7aKLbUlQ",
+      "streams": 7929976,
+      "daily_streams": 1304
+    },
+    {
+      "track_id": "5yrrh7VYFMCNjUOIMzGNp5",
+      "title": "Wi$h Li$t - Track by Track",
+      "spotify_url": "https://open.spotify.com/track/5yrrh7VYFMCNjUOIMzGNp5",
+      "streams": 1106465,
+      "daily_streams": 1298
+    },
+    {
+      "track_id": "1g09DZjQ7yBommCT6POY2n",
+      "title": "Christmases When You Were Mine",
+      "spotify_url": "https://open.spotify.com/track/1g09DZjQ7yBommCT6POY2n",
+      "streams": 11561756,
+      "daily_streams": 1340
+    },
+    {
+      "track_id": "6FJemhBlVTGTCgrrrLam3D",
+      "title": "Actually Romantic - Track by Track",
+      "spotify_url": "https://open.spotify.com/track/6FJemhBlVTGTCgrrrLam3D",
+      "streams": 1144452,
+      "daily_streams": 1227
+    },
+    {
+      "track_id": "0Nw8hv79MLJa1yjtsEgz08",
+      "title": "Ronan",
+      "spotify_url": "https://open.spotify.com/track/0Nw8hv79MLJa1yjtsEgz08",
+      "streams": 7667238,
+      "daily_streams": 1246
+    },
+    {
+      "track_id": "6JNM6pLKbXMGG2opeExCb2",
+      "title": "CANCELLED! - Track by Track",
+      "spotify_url": "https://open.spotify.com/track/6JNM6pLKbXMGG2opeExCb2",
+      "streams": 1072686,
+      "daily_streams": 1191
+    },
+    {
+      "track_id": "68QyrSzpnoU04AAhE5z8lj",
+      "title": "Ours - Live/2011",
+      "spotify_url": "https://open.spotify.com/track/68QyrSzpnoU04AAhE5z8lj",
+      "streams": 7428603,
+      "daily_streams": 1145
+    },
+    {
+      "track_id": "4RBKAqJ3qyvvriDG0s9IJ3",
+      "title": "Love Story - Live From Clear Channel Stripped 2008",
+      "spotify_url": "https://open.spotify.com/track/4RBKAqJ3qyvvriDG0s9IJ3",
+      "streams": 2875805,
+      "daily_streams": 1091
+    },
+    {
+      "track_id": "3QFB14MOUf3imlyISNmrbT",
+      "title": "Speak Now - Live/2011",
+      "spotify_url": "https://open.spotify.com/track/3QFB14MOUf3imlyISNmrbT",
+      "streams": 7005004,
+      "daily_streams": 1196
+    },
+    {
+      "track_id": "5EwypOO9NEI7MvjPOYZtWk",
+      "title": "Honey - Track by Track",
+      "spotify_url": "https://open.spotify.com/track/5EwypOO9NEI7MvjPOYZtWk",
+      "streams": 1035823,
+      "daily_streams": 1121
+    },
+    {
+      "track_id": "5zOKuItOTZhRCGtPrDYmlj",
+      "title": "Macavity - From The Motion Picture Soundtrack \"Cats\"",
+      "spotify_url": "https://open.spotify.com/track/5zOKuItOTZhRCGtPrDYmlj",
+      "streams": 4366919,
+      "daily_streams": 1029
+    },
+    {
+      "track_id": "4aBW31cmkA7BLColUsMEeZ",
+      "title": "Beautiful Eyes - Live From Clear Channel Stripped 2008",
+      "spotify_url": "https://open.spotify.com/track/4aBW31cmkA7BLColUsMEeZ",
+      "streams": 2577381,
+      "daily_streams": 958
+    },
+    {
+      "track_id": "1cJkUN5LAotktryx2nPCr7",
+      "title": "Silent Night",
+      "spotify_url": "https://open.spotify.com/track/1cJkUN5LAotktryx2nPCr7",
+      "streams": 8211515,
+      "daily_streams": 1029
+    },
+    {
+      "track_id": "0ISHfeb30gj4CSWUZYuesj",
+      "title": "Cruel Summer - LP Giobbi Remix - Extended Version",
+      "spotify_url": "https://open.spotify.com/track/0ISHfeb30gj4CSWUZYuesj",
+      "streams": 1269804,
+      "daily_streams": 944
+    },
+    {
+      "track_id": "31JVjy3XWnh6C2zf4kLCXN",
+      "title": "Christmas Must Be Something More",
+      "spotify_url": "https://open.spotify.com/track/31JVjy3XWnh6C2zf4kLCXN",
+      "streams": 9783732,
+      "daily_streams": 836
+    },
+    {
+      "track_id": "7vf4GBEJmv0uXojpr5qPMX",
+      "title": "Opalite - Official Music Video Extended Version Part 1",
+      "spotify_url": "https://open.spotify.com/track/7vf4GBEJmv0uXojpr5qPMX",
+      "streams": 1154630,
+      "daily_streams": 855
+    },
+    {
+      "track_id": "1Qicm51crXMvUuH4SMjobT",
+      "title": "Style - Karaoke Version",
+      "spotify_url": "https://open.spotify.com/track/1Qicm51crXMvUuH4SMjobT",
+      "streams": 896982,
+      "daily_streams": 615
+    },
+    {
+      "track_id": "0ThxqUZ9PwS6n0UT5i1XH6",
+      "title": "Lavender Haze - Jungle Remix",
+      "spotify_url": "https://open.spotify.com/track/0ThxqUZ9PwS6n0UT5i1XH6",
+      "streams": 3107768,
+      "daily_streams": 847
+    },
+    {
+      "track_id": "71IScwIe7bcIlpnlkbKVQw",
+      "title": "Santa Baby",
+      "spotify_url": "https://open.spotify.com/track/71IScwIe7bcIlpnlkbKVQw",
+      "streams": 16802950,
+      "daily_streams": 866
+    },
+    {
+      "track_id": "5g7RMU3cV7zXWH244BLe7G",
+      "title": "Fearless - Live From Clear Channel Stripped 2008",
+      "spotify_url": "https://open.spotify.com/track/5g7RMU3cV7zXWH244BLe7G",
+      "streams": 1769968,
+      "daily_streams": 734
+    },
+    {
+      "track_id": "7EWLNUpx0QWUCYfmBJS9qb",
+      "title": "Opalite - Official Music Video Extended Version Part 2",
+      "spotify_url": "https://open.spotify.com/track/7EWLNUpx0QWUCYfmBJS9qb",
+      "streams": 1056742,
+      "daily_streams": 667
+    },
+    {
+      "track_id": "7pM01Cfj8vt7z3qI2TveNT",
+      "title": "Fortnight (feat. Post Malone) - Cults Remix",
+      "spotify_url": "https://open.spotify.com/track/7pM01Cfj8vt7z3qI2TveNT",
+      "streams": 2135331,
+      "daily_streams": 675
+    },
+    {
+      "track_id": "7GZ3KDorsc1yWndEtzGTjf",
+      "title": "White Christmas",
+      "spotify_url": "https://open.spotify.com/track/7GZ3KDorsc1yWndEtzGTjf",
+      "streams": 8606216,
+      "daily_streams": 582
+    },
+    {
+      "track_id": "50ho0AOvkm8E5l8zf7OfJI",
+      "title": "Christmas Tree Farm - Old Timey Version",
+      "spotify_url": "https://open.spotify.com/track/50ho0AOvkm8E5l8zf7OfJI",
+      "streams": 15249333,
+      "daily_streams": 649
+    },
+    {
+      "track_id": "5lA0yK8S5tP3xoaRMCp4Ug",
+      "title": "Love Story - Pop Mix",
+      "spotify_url": "https://open.spotify.com/track/5lA0yK8S5tP3xoaRMCp4Ug",
+      "streams": 4536290,
+      "daily_streams": 586
+    },
+    {
+      "track_id": "4JQm7ebhsrt10wmrP6AfXL",
+      "title": "I Know Places - Voice Memo",
+      "spotify_url": "https://open.spotify.com/track/4JQm7ebhsrt10wmrP6AfXL",
+      "streams": 6407794,
+      "daily_streams": 512
+    },
+    {
+      "track_id": "4FoV729rw7IhoKlMZW5K5V",
+      "title": "I Know Places - Voice Memo",
+      "spotify_url": "https://open.spotify.com/track/4FoV729rw7IhoKlMZW5K5V",
+      "streams": 6407794,
+      "daily_streams": 512
+    },
+    {
+      "track_id": "4MbHDiHQjhmoVAV75G04Ql",
+      "title": "Untouchable - Live From Clear Channel Stripped 2008",
+      "spotify_url": "https://open.spotify.com/track/4MbHDiHQjhmoVAV75G04Ql",
+      "streams": 1144752,
+      "daily_streams": 569
+    },
+    {
+      "track_id": "4twNUyTpLMPWokYmCdFDCH",
+      "title": "...Ready For It? - Karaoke Version",
+      "spotify_url": "https://open.spotify.com/track/4twNUyTpLMPWokYmCdFDCH",
+      "streams": 940008,
+      "daily_streams": 452
+    },
+    {
+      "track_id": "0yisH8r0f3Mkq34kjzUlCV",
+      "title": "Blank Space - Voice Memo",
+      "spotify_url": "https://open.spotify.com/track/0yisH8r0f3Mkq34kjzUlCV",
+      "streams": 5217201,
+      "daily_streams": 506
+    },
+    {
+      "track_id": "4e6QU4gpfZj9xxcK856RgG",
+      "title": "Blank Space - Voice Memo",
+      "spotify_url": "https://open.spotify.com/track/4e6QU4gpfZj9xxcK856RgG",
+      "streams": 5217201,
+      "daily_streams": 506
+    },
+    {
+      "track_id": "4VbErhGDMTnvPAnt5z70DL",
+      "title": "You're Not Sorry - CSI Remix",
+      "spotify_url": "https://open.spotify.com/track/4VbErhGDMTnvPAnt5z70DL",
+      "streams": 2538923,
+      "daily_streams": 477
+    },
+    {
+      "track_id": "4TtyvyI42C0KFnbDZvNC8Y",
+      "title": "I Wish You Would - Voice Memo",
+      "spotify_url": "https://open.spotify.com/track/4TtyvyI42C0KFnbDZvNC8Y",
+      "streams": 4920253,
+      "daily_streams": 435
+    },
+    {
+      "track_id": "4eTXfpHxhxVofrBUjAhPMg",
+      "title": "I Wish You Would - Voice Memo",
+      "spotify_url": "https://open.spotify.com/track/4eTXfpHxhxVofrBUjAhPMg",
+      "streams": 4920253,
+      "daily_streams": 435
+    },
+    {
+      "track_id": "4DjevQhsPWULcondN4mRh5",
+      "title": "Teardrops On My Guitar - Live From Clear Channel Stripped 2008",
+      "spotify_url": "https://open.spotify.com/track/4DjevQhsPWULcondN4mRh5",
+      "streams": 1064591,
+      "daily_streams": 425
+    },
+    {
+      "track_id": "7EvU9pRoJ9Xs7anx0P7tEc",
+      "title": "Picture To Burn - Live From Clear Channel Stripped 2008",
+      "spotify_url": "https://open.spotify.com/track/7EvU9pRoJ9Xs7anx0P7tEc",
+      "streams": 1036245,
+      "daily_streams": 380
+    },
+    {
+      "track_id": "5a9hUL6ZuiagZhazwrtwHF",
+      "title": "Should've Said No - Live From Clear Channel Stripped 2008",
+      "spotify_url": "https://open.spotify.com/track/5a9hUL6ZuiagZhazwrtwHF",
+      "streams": 1059051,
+      "daily_streams": 354
+    },
+    {
+      "track_id": "1VPHQriwOsy5aGHLwwZyho",
+      "title": "Call It What You Want - Karaoke Version",
+      "spotify_url": "https://open.spotify.com/track/1VPHQriwOsy5aGHLwwZyho",
+      "streams": 558824,
+      "daily_streams": 370
+    },
+    {
+      "track_id": "5JtXBqKLdfzwedmlUjjqAm",
+      "title": "Don't Blame Me - Karaoke Version",
+      "spotify_url": "https://open.spotify.com/track/5JtXBqKLdfzwedmlUjjqAm",
+      "streams": 862616,
+      "daily_streams": 316
+    },
+    {
+      "track_id": "5Iadj8IBPrt634WW0yGPRI",
+      "title": "Delicate - Karaoke Version",
+      "spotify_url": "https://open.spotify.com/track/5Iadj8IBPrt634WW0yGPRI",
+      "streams": 652344,
+      "daily_streams": 344
+    },
+    {
+      "track_id": "1zz0XSmHCFd57ne04UAp38",
+      "title": "Look What You Made Me Do - Karaoke Version",
+      "spotify_url": "https://open.spotify.com/track/1zz0XSmHCFd57ne04UAp38",
+      "streams": 780710,
+      "daily_streams": 289
+    },
+    {
+      "track_id": "6N6V2v89hS4N9ossON5f9R",
+      "title": "Blank Space - Karaoke Version",
+      "spotify_url": "https://open.spotify.com/track/6N6V2v89hS4N9ossON5f9R",
+      "streams": 797519,
+      "daily_streams": 263
+    },
+    {
+      "track_id": "4omftH10jc82Sj8VJ395C7",
+      "title": "Shake It Off - Karaoke Version",
+      "spotify_url": "https://open.spotify.com/track/4omftH10jc82Sj8VJ395C7",
+      "streams": 631746,
+      "daily_streams": 244
+    },
+    {
+      "track_id": "69o9kr9UexjzeZDE8yD8dQ",
+      "title": "Change - Live From Clear Channel Stripped 2008",
+      "spotify_url": "https://open.spotify.com/track/69o9kr9UexjzeZDE8yD8dQ",
+      "streams": 753666,
+      "daily_streams": 311
+    },
+    {
+      "track_id": "2k0w1FGqvzVPgQ9VdTaJpe",
+      "title": "Dress - Karaoke Version",
+      "spotify_url": "https://open.spotify.com/track/2k0w1FGqvzVPgQ9VdTaJpe",
+      "streams": 387228,
+      "daily_streams": 322
+    },
+    {
+      "track_id": "1alAo6dYalSx8yZUn17JxF",
+      "title": "Christmas Tree Farm - Recorded Live at the 2019 iHeartRadio Jingle Ball",
+      "spotify_url": "https://open.spotify.com/track/1alAo6dYalSx8yZUn17JxF",
+      "streams": 2934073,
+      "daily_streams": 273
+    },
+    {
+      "track_id": "7bdyzcQ0onk60hfsxDCd2X",
+      "title": "Getaway Car - Karaoke Version",
+      "spotify_url": "https://open.spotify.com/track/7bdyzcQ0onk60hfsxDCd2X",
+      "streams": 532700,
+      "daily_streams": 216
+    },
+    {
+      "track_id": "4cag67C3v9ToeFivUwDUsE",
+      "title": "End Game - Karaoke Version",
+      "spotify_url": "https://open.spotify.com/track/4cag67C3v9ToeFivUwDUsE",
+      "streams": 450271,
+      "daily_streams": 206
+    },
+    {
+      "track_id": "2hecdut2HWM5JMHqLTWThq",
+      "title": "I Did Something Bad - Karaoke Version",
+      "spotify_url": "https://open.spotify.com/track/2hecdut2HWM5JMHqLTWThq",
+      "streams": 528696,
+      "daily_streams": 223
+    },
+    {
+      "track_id": "3ZfvKQxJp4zZshiJsRPoD1",
+      "title": "Dancing With Our Hands Tied - Karaoke Version",
+      "spotify_url": "https://open.spotify.com/track/3ZfvKQxJp4zZshiJsRPoD1",
+      "streams": 401529,
+      "daily_streams": 197
+    },
+    {
+      "track_id": "3ZHTwJzCNDFvjLpVQiqpH6",
+      "title": "Gorgeous - Karaoke Version",
+      "spotify_url": "https://open.spotify.com/track/3ZHTwJzCNDFvjLpVQiqpH6",
+      "streams": 410958,
+      "daily_streams": 170
+    },
+    {
+      "track_id": "5EsfyTD26nlVQ0DtYo16uJ",
+      "title": "King Of My Heart - Karaoke Version",
+      "spotify_url": "https://open.spotify.com/track/5EsfyTD26nlVQ0DtYo16uJ",
+      "streams": 374198,
+      "daily_streams": 160
+    },
+    {
+      "track_id": "13tYZVTtzLUJTlM7m1ivbi",
+      "title": "New Year's Day - Karaoke Version",
+      "spotify_url": "https://open.spotify.com/track/13tYZVTtzLUJTlM7m1ivbi",
+      "streams": 388106,
+      "daily_streams": 182
+    },
+    {
+      "track_id": "5oJUjUsBZcqyEhOdpif37h",
+      "title": "So It Goes... - Karaoke Version",
+      "spotify_url": "https://open.spotify.com/track/5oJUjUsBZcqyEhOdpif37h",
+      "streams": 330509,
+      "daily_streams": 192
+    },
+    {
+      "track_id": "2GZNZLMvT3gjCEPd6NNvvQ",
+      "title": "Love Story - Instrumental with BGV",
+      "spotify_url": "https://open.spotify.com/track/2GZNZLMvT3gjCEPd6NNvvQ",
+      "streams": 641642,
+      "daily_streams": 153
+    },
+    {
+      "track_id": "0MtU9ETYyVX8YPBDCYPdMb",
+      "title": "This Is Why We Can't Have Nice Things - Karaoke Version",
+      "spotify_url": "https://open.spotify.com/track/0MtU9ETYyVX8YPBDCYPdMb",
+      "streams": 347976,
+      "daily_streams": 180
+    },
+    {
+      "track_id": "7Ae2hYOcJmLbGCYIA3M1VM",
+      "title": "Hey Stephen - Commentary",
+      "spotify_url": "https://open.spotify.com/track/7Ae2hYOcJmLbGCYIA3M1VM",
+      "streams": 574449,
+      "daily_streams": 127
+    },
+    {
+      "track_id": "4i0M7glXqIIRKPwbLtpExi",
+      "title": "Love Story - J Stax Radio Mix",
+      "spotify_url": "https://open.spotify.com/track/4i0M7glXqIIRKPwbLtpExi",
+      "streams": 1407203,
+      "daily_streams": 92
+    }
+  ]
 }

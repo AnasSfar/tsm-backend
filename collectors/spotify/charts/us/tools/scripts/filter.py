@@ -30,7 +30,19 @@ else:
 
 import pandas as pd
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 from playwright.sync_api import sync_playwright
+
+def _build_http_session() -> requests.Session:
+    retry = Retry(total=3, connect=3, read=3, backoff_factor=1.0,
+                  status_forcelist=(500, 502, 503, 504), raise_on_status=False)
+    s = requests.Session()
+    s.mount("https://", HTTPAdapter(max_retries=retry))
+    s.mount("http://",  HTTPAdapter(max_retries=retry))
+    return s
+
+_http = _build_http_session()
 
 sys.path.insert(0, str(Path(__file__).parents[4]))
 from core.fmt import fmt_delta, fmt_streams, fmt_streams_delta
@@ -145,7 +157,7 @@ def save_db(db):
 
 
 def lastfm_get(params):
-    r = requests.get(LASTFM_BASE, params=params, timeout=30)
+    r = _http.get(LASTFM_BASE, params=params, timeout=30)
     if r.status_code != 200:
         raise RuntimeError(f"HTTP {r.status_code}")
     data = r.json()
@@ -156,7 +168,7 @@ def lastfm_get(params):
 
 def get_release_date_from_musicbrainz(artist, track):
     try:
-        r = requests.get(
+        r = _http.get(
             MUSICBRAINZ_BASE + "recording",
             params={
                 "query": f'recording:"{track}" AND artist:"{artist}"',
@@ -431,7 +443,7 @@ def _fetch_via_api(chart_date: str, retries: int = 3, retry_delay: float = 5.0) 
         url = f"{_API_BASE}/{CHART_ID}/{chart_date}"
         for attempt in range(1, retries + 1):
             try:
-                resp = requests.get(url, headers=headers, timeout=30)
+                resp = _http.get(url, headers=headers, timeout=30)
                 if resp.status_code == 200:
                     rows = _parse_api_entries(resp.json())
                     if rows:

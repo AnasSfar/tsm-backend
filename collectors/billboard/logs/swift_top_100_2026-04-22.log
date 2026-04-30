@@ -9,14 +9,5 @@
   streams        : 531 songs · 7/7 days covered
   spotify_charts : 18 rows
   top100         : 100 entries ranked (529 candidates)
-✔ CSV  → swift_top_100_history.csv (6800 rows)
-✔ JSON → swift_top_100_2026-04-22.json
-✔ JSON → swift_top_100.json (latest)
-✔ IDX  → swift_top_100_index.json (68 dates)
 ✔ songs          → 169 history files
-✔ PNG  → swift_top_100_1.png
-✔ PNG  → swift_top_100_2.png
-✔ PNG  → swift_top_100_3.png
-✔ PNG  → swift_top_100_4.png
-  r2             : uploading...
-✔ r2             : upload complete
+⚠ image          : generation failed — No module named 'swift_top_100_image'
