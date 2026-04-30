@@ -388,13 +388,13 @@
     {
       "date": "2026-04-29",
       "rank": 33,
-      "points": 122.9,
+      "points": 123.3,
       "change": null,
       "rank_change": 1,
-      "percentage_change": -14.0,
-      "total_units": 1549711,
+      "percentage_change": 1.4,
+      "total_units": 1793176,
       "units_charts": 0,
-      "units_surplus": 1946934,
+      "units_surplus": 2294742,
       "am_ts_units": 186860,
       "am_global_units": 0
     }

@@ -882,13 +882,13 @@
     {
       "date": "2026-04-29",
       "rank": 97,
-      "points": 50.3,
+      "points": 52.1,
       "change": null,
       "rank_change": -7,
-      "percentage_change": -16.2,
-      "total_units": 634024,
+      "percentage_change": 0.2,
+      "total_units": 757593,
       "units_charts": 0,
-      "units_surplus": 905748,
+      "units_surplus": 1082276,
       "am_ts_units": 0,
       "am_global_units": 0
     }

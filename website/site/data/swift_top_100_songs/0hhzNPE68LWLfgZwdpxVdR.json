@@ -49,14 +49,14 @@
     },
     {
       "date": "2026-04-29",
-      "rank": 81,
-      "points": 59.4,
+      "rank": 82,
+      "points": 59.1,
       "change": null,
-      "rank_change": 12,
-      "percentage_change": -15.7,
-      "total_units": 748752,
+      "rank_change": 11,
+      "percentage_change": -0.5,
+      "total_units": 859819,
       "units_charts": 0,
-      "units_surplus": 879067,
+      "units_surplus": 1037734,
       "am_ts_units": 133410,
       "am_global_units": 0
     }

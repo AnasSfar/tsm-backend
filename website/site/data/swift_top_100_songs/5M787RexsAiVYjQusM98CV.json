@@ -843,13 +843,13 @@
     {
       "date": "2026-04-29",
       "rank": 98,
-      "points": 47.6,
+      "points": 49.0,
       "change": null,
       "rank_change": -3,
-      "percentage_change": -16.3,
-      "total_units": 600060,
+      "percentage_change": -0.7,
+      "total_units": 712557,
       "units_charts": 0,
-      "units_surplus": 857228,
+      "units_surplus": 1017938,
       "am_ts_units": 0,
       "am_global_units": 0
     }
