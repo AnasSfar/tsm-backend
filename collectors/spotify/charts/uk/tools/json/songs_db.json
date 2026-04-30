@@ -7619,5 +7619,22 @@
       "groovy"
     ],
     "is_pop": true
+  },
+  "katy perry|||last friday night (t.g.i.f.)": {
+    "artist": "Katy Perry",
+    "track": "Last Friday Night (T.G.I.F.)",
+    "tags": [
+      "pop",
+      "dance",
+      "katy perry",
+      "female vocalists",
+      "fun",
+      "party",
+      "pop rock",
+      "love at first listen",
+      "summer",
+      "2010"
+    ],
+    "is_pop": true
   }
 }
