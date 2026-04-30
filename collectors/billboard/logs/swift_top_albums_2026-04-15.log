@@ -1,0 +1,16 @@
+▶ TayBoard Albums · 2026-04-15  week=2026-04-09→2026-04-15  prev=2026-04-08
+  discography    : 17 albums, 503 tracks indexed
+  source         : 100 songs for 2026-04-15
+  unmatched      : 2 tracks not linked to any album
+  top            : 14 albums ranked
+  history        : 66 prior weeks loaded
+  source         : 100 songs for 2026-04-08
+  unmatched      : 2 tracks not linked to any album
+  top            : 14 albums ranked
+✔ CSV  → swift_top_albums_history.csv (870 rows)
+✔ JSON → swift_top_albums_2026-04-15.json
+✔ JSON → swift_top_albums.json (latest)
+✔ IDX  → swift_top_albums_index.json (67 dates)
+✔ PNG  → swift_top_albums.png
+  r2             : uploading...
+✔ r2             : upload complete

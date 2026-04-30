@@ -1,19 +1,22 @@
-[swift_top_100] Starting
-[swift_top_100] chart_date=2026-04-22 week_start=2026-04-16
-[swift_top_100] prev_week_end=2026-04-15
-[swift_top_100] Discography tracks indexed: 529
-[swift_top_100] Streams rows per date: 2026-04-16:529, 2026-04-17:529, 2026-04-18:529, 2026-04-19:529, 2026-04-20:529, 2026-04-21:529, 2026-04-22:529
-[swift_top_100] Global charts rows in window: 14
-[swift_top_100] Built chart week_end=2026-04-22: 100 entries (candidates=529)
-[swift_top_100] Apple Music Global rows in window: 16
-[swift_top_100] Apple Music TS Top Songs rows in window: 1400
-[swift_top_100] Streams rows per date: 2026-04-09:529, 2026-04-10:529, 2026-04-11:529, 2026-04-12:529, 2026-04-13:529, 2026-04-14:529, 2026-04-15:529
-[swift_top_100] Global charts rows in window: 18
-[swift_top_100] Built chart week_end=2026-04-15: 100 entries (candidates=529)
-[swift_top_100] Wrote history CSV: /mnt/c/users/sfara/Documents/GitHub/tsm-backend/db/swift_top_100_history.csv (6800 rows)
-[swift_top_100] Wrote snapshot JSON: /mnt/c/users/sfara/Documents/GitHub/tsm-backend/website/site/data/swift_top_100_2026-04-22.json
-[swift_top_100] Wrote latest JSON: /mnt/c/users/sfara/Documents/GitHub/tsm-backend/website/site/data/swift_top_100.json
-[swift_top_100] Wrote snapshot index: /mnt/c/users/sfara/Documents/GitHub/tsm-backend/website/site/data/swift_top_100_index.json (68 entries)
-[swift_top_100] Generated 184 song history files in /mnt/c/users/sfara/Documents/GitHub/tsm-backend/website/site/data/swift_top_100_songs
-[swift_top_100] Image generation failed (skipped): No module named 'playwright'
-[swift_top_100] R2 upload skipped: missing env var(s): R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY
+▶ TayBoard TOP 100 · 2026-04-22  week=2026-04-16→2026-04-22  prev=2026-04-15
+  discography    : 529 tracks indexed
+  streams        : 531 songs · 7/7 days covered
+  spotify_charts : 14 rows
+  top100         : 100 entries ranked (529 candidates)
+  apple_global   : 16 rows
+  apple_ts       : 1400 rows
+  history        : 67 prior weeks loaded
+  streams        : 531 songs · 7/7 days covered
+  spotify_charts : 18 rows
+  top100         : 100 entries ranked (529 candidates)
+✔ CSV  → swift_top_100_history.csv (6800 rows)
+✔ JSON → swift_top_100_2026-04-22.json
+✔ JSON → swift_top_100.json (latest)
+✔ IDX  → swift_top_100_index.json (68 dates)
+✔ songs          → 169 history files
+✔ PNG  → swift_top_100_1.png
+✔ PNG  → swift_top_100_2.png
+✔ PNG  → swift_top_100_3.png
+✔ PNG  → swift_top_100_4.png
+  r2             : uploading...
+✔ r2             : upload complete

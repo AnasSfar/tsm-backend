@@ -1,0 +1,14 @@
+▶ TayBoard Albums · 2025-05-07  week=2025-05-01→2025-05-07  prev=2025-04-30
+  discography    : 17 albums, 503 tracks indexed
+  source         : 100 songs for 2025-05-07
+  top            : 12 albums ranked
+  history        : 17 prior weeks loaded
+  source         : 100 songs for 2025-04-30
+  top            : 12 albums ranked
+✔ CSV  → swift_top_albums_history.csv (227 rows)
+✔ JSON → swift_top_albums_2025-05-07.json
+✔ JSON → swift_top_albums.json (latest)
+✔ IDX  → swift_top_albums_index.json (18 dates)
+✔ PNG  → swift_top_albums.png
+  r2             : uploading...
+✔ r2             : upload complete

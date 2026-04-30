@@ -13,8 +13,7 @@ _REPO_ROOT  = _SCRIPT_DIR.parents[3]
 ROOT        = _REPO_ROOT / "website"
 _DB_ROOT    = _REPO_ROOT / "db"
 
-HISTORY_CSV_PATH      = _DB_ROOT / "streams_history.csv"
-HISTORY_FULL_CSV_PATH = _DB_ROOT / "streams_history_full.csv"
+HISTORY_CSV_PATH = _DB_ROOT / "streams_history.csv"
 
 DISCOGRAPHY_DIR  = _DB_ROOT / "discography"
 ALBUMS_DIR_SRC   = DISCOGRAPHY_DIR / "albums"
@@ -242,15 +241,8 @@ def _read_history_csv(path: Path, by_date: dict) -> None:
 
 def load_raw_history() -> tuple[list[str], dict[str, dict[str, dict]]]:
     by_date: dict[str, dict[str, dict]] = defaultdict(dict)
-
-    # Load historical backfill first (lower priority)
-    if HISTORY_FULL_CSV_PATH.exists():
-        _read_history_csv(HISTORY_FULL_CSV_PATH, by_date)
-
-    # Load live data second — overwrites any overlapping (date, track_id) entries
     if HISTORY_CSV_PATH.exists():
         _read_history_csv(HISTORY_CSV_PATH, by_date)
-
     return sorted(by_date.keys()), dict(by_date)
 
 

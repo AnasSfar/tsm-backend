@@ -10,7 +10,7 @@ Strategy:
   - Walks backwards day by day from the anchor using source daily values
   - Source values take priority over existing streams_history.csv for overlapping dates
   - Tracks not found in source are kept unchanged from streams_history.csv
-  - Output is written to a NEW file (streams_history_full.csv); original is untouched
+  - Output is written directly to streams_history.csv (in-place merge)
 
 Usage:
   # Single file
@@ -39,7 +39,7 @@ if hasattr(sys.stderr, "reconfigure"):
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 HISTORY_CSV = REPO_ROOT / "db" / "streams_history.csv"
-OUTPUT_CSV  = REPO_ROOT / "db" / "streams_history_full.csv"
+OUTPUT_CSV  = REPO_ROOT / "db" / "streams_history.csv"
 ALBUMS_DIR  = REPO_ROOT / "db" / "discography" / "albums"
 SONGS_JSON  = REPO_ROOT / "db" / "discography" / "songs.json"
 
@@ -77,6 +77,15 @@ def normalize_title(t: str) -> str:
     t = t.lower().strip()
     t = t.replace("(", " ").replace(")", " ")
     t = re.sub(r"\s*-\s*", " ", t)
+    t = re.sub(r"\s+", " ", t).strip()
+    return t
+
+
+def normalize_aggressive(t: str) -> str:
+    """Strip all punctuation/symbols, keep only letters, digits and spaces."""
+    t = t.lower().strip()
+    t = re.sub(r"[^\w\s]", " ", t)   # remove all non-word chars (keeps letters/digits/_)
+    t = t.replace("_", " ")
     t = re.sub(r"\s+", " ", t).strip()
     return t
 
@@ -275,7 +284,7 @@ def main():
     parser = argparse.ArgumentParser(description="Merge daily stream CSVs into a new history file")
     parser.add_argument("csv_files", nargs="+", help="One or more pivot CSV files to import")
     parser.add_argument("--dry-run", action="store_true", help="Preview without writing")
-    parser.add_argument("--output", default=str(OUTPUT_CSV), help="Output CSV path (default: streams_history_full.csv)")
+    parser.add_argument("--output", default=str(OUTPUT_CSV), help="Output CSV path (default: streams_history.csv)")
     args = parser.parse_args()
 
     for p in args.csv_files:
@@ -399,9 +408,6 @@ def main():
         writer.writerows(all_rows)
 
     print(f"\n[OK] Written {len(all_rows)} rows to {out_path}")
-    print(f"     Original streams_history.csv untouched.")
-    print(f"\nTo use this file, rename it:")
-    print(f"  cp db/streams_history_full.csv db/streams_history.csv")
     print(f"Then regenerate the site:")
     print(f"  python scripts/export_for_web.py")
 

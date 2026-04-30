@@ -53,6 +53,7 @@ MAX_PARALLEL_PAGES = 10
 PAGE_GOTO_TIMEOUT_MS = 20_000
 DEBUG_PAGE_PREVIEW = False
 BROWSER_CACHE_DIR = _SCRIPT_DIR / "tools" / "browser_cache"
+_TOKEN_CACHE_PATH = _SCRIPT_DIR / "tools" / ".token_cache.json"
 
 # Logging
 # - default: compact output
@@ -386,10 +387,109 @@ class AdaptiveWorkerState:
                 self._win_start = time.time()
 
 
+def _fetch_tokens_via_pw_request() -> dict:
+    """
+    Récupère Bearer + client-token via Playwright APIRequestContext.
+    Envoie des requêtes HTTP avec le fingerprint browser (pas de chargement de page).
+    Beaucoup plus léger que goto() sur connexion lente.
+    Retourne un dict avec 'bearer' et 'client_token', ou {} si échec.
+    """
+    ctx_kwargs: dict = {
+        "user_agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 Chrome/133.0.0.0 Safari/537.36"
+        ),
+        "extra_http_headers": {
+            "Accept": "application/json",
+            "Accept-Language": "fr-FR,fr;q=0.9",
+        },
+    }
+    if _SESSION_FILE.exists():
+        ctx_kwargs["storage_state"] = str(_SESSION_FILE)
+
+    p = sync_playwright().start()
+    try:
+        req_ctx = p.request.new_context(**ctx_kwargs)
+
+        # Étape 1 : Bearer token (endpoint léger, réponse ~200 octets)
+        try:
+            resp = req_ctx.get(
+                "https://open.spotify.com/get_access_token",
+                params={"reason": "transport", "productType": "web_player"},
+                timeout=30_000,
+            )
+            bearer = resp.json().get("accessToken", "") if resp.ok else ""
+        except Exception:
+            bearer = ""
+
+        if not bearer:
+            return {}
+
+        # Étape 2 : client-token
+        try:
+            ct_resp = req_ctx.post(
+                "https://clienttoken.spotify.com/v1/clienttoken",
+                data=json.dumps({
+                    "client_data": {
+                        "client_version": APP_VERSION,
+                        "client_id": "d8a5ed958d274c2e8ee717e6a4b0971d",
+                        "js_sdk_data": {},
+                    }
+                }),
+                headers={"content-type": "application/json"},
+                timeout=30_000,
+            )
+            body = ct_resp.json() if ct_resp.ok else {}
+            client_token = body.get("granted_token", {}).get("token", "")
+        except Exception:
+            client_token = ""
+
+        if bearer and client_token:
+            return {"bearer": bearer, "client_token": client_token}
+        return {}
+    finally:
+        try:
+            p.stop()
+        except Exception:
+            pass
+
+
+def _test_tokens(tokens: dict) -> bool:
+    """Vérifie si les tokens sont encore valides via un appel GraphQL léger."""
+    body = {
+        "operationName": "getTrack",
+        "variables": {"uri": "spotify:track:0V3wPSX9ygBnCm8psDIegu"},
+        "extensions": {"persistedQuery": {"version": 1, "sha256Hash": GETTRACK_HASH}},
+    }
+    headers = {
+        "authorization": f"Bearer {tokens['bearer']}",
+        "client-token": tokens["client_token"],
+        "app-platform": "WebPlayer",
+        "spotify-app-version": APP_VERSION,
+        "content-type": "application/json",
+    }
+    try:
+        resp = _requests.post(GRAPHQL_URL, json=body, headers=headers, timeout=(5, 10))
+        return resp.status_code == 200
+    except Exception:
+        return False
+
+
+def _block_for_token_capture(route):
+    """Pendant la capture de tokens, autorise HTML + JS + appels API Spotify, bloque tout le reste."""
+    rt = route.request.resource_type
+    url = route.request.url
+    if rt in ("document", "script") or "api-partner.spotify.com" in url or "clienttoken.spotify.com" in url:
+        route.continue_()
+    else:
+        route.abort()
+
+
 class TokenManager:
     """
     Capture Bearer + client-token depuis Spotify une seule fois via Playwright.
     Thread-safe : sur 401, un seul thread re-capture, les autres attendent.
+    Les tokens sont mis en cache sur disque pour éviter Playwright si encore valides.
     """
 
     def __init__(self) -> None:
@@ -397,10 +497,59 @@ class TokenManager:
         self._lock = threading.Lock()
         self._recapturing = threading.Event()
 
+    def _save_cache(self, tokens: dict) -> None:
+        try:
+            _TOKEN_CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+            _TOKEN_CACHE_PATH.write_text(json.dumps(tokens), encoding="utf-8")
+        except Exception:
+            pass
+
+    def _try_cached(self) -> bool:
+        """Charge les tokens depuis le cache disque et vérifie leur validité. Retourne True si réutilisables."""
+        if not _TOKEN_CACHE_PATH.exists():
+            return False
+        try:
+            tokens = json.loads(_TOKEN_CACHE_PATH.read_text(encoding="utf-8"))
+        except Exception:
+            return False
+        if not tokens.get("bearer") or not tokens.get("client_token"):
+            return False
+        if LOG_MODE != "quiet":
+            print("TokenManager: test des tokens en cache…")
+        if _test_tokens(tokens):
+            with self._lock:
+                self._tokens = tokens
+            if LOG_MODE != "quiet":
+                print(f"TokenManager: tokens en cache valides ({tokens['bearer'][:20]}…)")
+            return True
+        if LOG_MODE != "quiet":
+            print("TokenManager: tokens en cache expirés")
+        return False
+
+    def _try_via_http(self) -> bool:
+        """Essaie de récupérer les tokens via HTTP pur (sp_dc + endpoints Spotify). Pas de Playwright."""
+        if LOG_MODE != "quiet":
+            print("TokenManager: tentative HTTP directe (Playwright request, pas de page)…")
+        tokens = _fetch_tokens_via_pw_request()
+        if tokens.get("bearer"):
+            with self._lock:
+                self._tokens = tokens
+            self._save_cache(tokens)
+            if LOG_MODE != "quiet":
+                print(f"TokenManager: Bearer capturé via HTTP ({tokens['bearer'][:20]}…)")
+            return True
+        if LOG_MODE != "quiet":
+            print("TokenManager: échec HTTP direct")
+        return False
 
     def capture(self) -> bool:
-        """Ouvre Playwright, charge une track, capture les tokens. Retourne True si succès. Retry x2 si échec."""
-        MAX_ATTEMPTS = 2
+        """Essaie dans l'ordre : cache disque → HTTP direct → Playwright (x3)."""
+        if self._try_cached():
+            return True
+        if self._try_via_http():
+            return True
+
+        MAX_ATTEMPTS = 5
         for attempt in range(1, MAX_ATTEMPTS + 1):
             tokens: dict = {}
 
@@ -423,6 +572,8 @@ class TokenManager:
             if _SESSION_FILE.exists():
                 ctx_kwargs["storage_state"] = str(_SESSION_FILE)
 
+            url = "https://open.spotify.com/track/0V3wPSX9ygBnCm8psDIegu"
+
             p = sync_playwright().start()
             browser = None
             try:
@@ -432,15 +583,17 @@ class TokenManager:
                 )
                 ctx  = browser.new_context(**ctx_kwargs)
                 page = ctx.new_page()
+                # Blocker agressif : seuls JS + appels API Spotify passent,
+                # tout le reste (images, CSS, fonts, médias) est bloqué.
+                page.route("**/*", _block_for_token_capture)
                 page.on("request", on_request)
-                page.goto(
-                    "https://open.spotify.com/track/0V3wPSX9ygBnCm8psDIegu",
-                    wait_until="domcontentloaded",
-                    timeout=60_000,  # timeout augmenté à 60s
-                )
-                deadline = time.time() + 40  # double le temps d'attente max
+                try:
+                    page.goto(url, wait_until="commit", timeout=240_000)
+                except Exception as goto_err:
+                    print(f"TokenManager: goto échoué ({goto_err!s:.120}), attente token quand même…")
+                deadline = time.time() + 120
                 while not tokens.get("bearer") and time.time() < deadline:
-                    page.wait_for_timeout(300)
+                    page.wait_for_timeout(500)
             except Exception as e:
                 print(f"TokenManager: erreur capture (tentative {attempt}): {e}")
             finally:
@@ -456,13 +609,13 @@ class TokenManager:
             if tokens.get("bearer"):
                 with self._lock:
                     self._tokens = tokens
+                self._save_cache(tokens)
                 if LOG_MODE != "quiet":
                     print(f"TokenManager: Bearer capturé ({tokens['bearer'][:20]}…)")
                 return True
             if LOG_MODE != "quiet":
                 print(f"TokenManager: tentative {attempt} échouée")
-            # petite pause avant retry
-            time.sleep(2)
+            time.sleep(10)
         if LOG_MODE != "quiet":
             print("TokenManager: échec — fallback Playwright pour toutes les tracks")
         return False
@@ -3096,6 +3249,26 @@ def main():
 
         print("Git commit and push...")
         git_commit_and_push(_REPO_ROOT, f"daily final export {summary['stats_date']}")
+
+        # Wednesday = end of the chart week → generate Swift Top 100
+        try:
+            from datetime import date as _date
+            _stats_date = _date.fromisoformat(summary["stats_date"])
+            if _stats_date.weekday() == 2:  # 2 = Wednesday
+                print(f"\nWednesday detected — generating Swift Top 100 for {summary['stats_date']} ...")
+                swift_top_100_script = _REPO_ROOT / "collectors" / "billboard" / "swift_top_100.py"
+                result = subprocess.run(
+                    [sys.executable, str(swift_top_100_script), "--date", summary["stats_date"]],
+                    cwd=str(_REPO_ROOT),
+                    check=False,
+                )
+                if result.returncode == 0:
+                    print("✔ Swift Top 100 generated successfully.")
+                    git_commit_and_push(_REPO_ROOT, f"charts swift top 100 {summary['stats_date']}")
+                else:
+                    print(f"⚠ Swift Top 100 exited with code {result.returncode}.")
+        except Exception as _exc:
+            print(f"⚠ Swift Top 100 trigger failed — {_exc}")
 
     elapsed = time.perf_counter() - START_TIME
     print()

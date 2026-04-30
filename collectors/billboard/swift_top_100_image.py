@@ -603,7 +603,7 @@ def build_html(
     .c-units   {{ width: 54px; }}
     """
 
-    page_title = str(payload.get("title") or "Swift Top 100")
+    page_title = str(payload.get("title") or "TayBoard TOP 100")
 
     return f"""<!doctype html>
 <html>

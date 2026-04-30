@@ -40,6 +40,7 @@ _DB_DIR = _REPO_ROOT / "db"
 _SITE_DATA_DIR = _REPO_ROOT / "website" / "site" / "data"
 
 STREAMS_HISTORY_CSV = _DB_DIR / "streams_history.csv"
+STREAMS_HISTORY_FULL_CSV = _DB_DIR / "streams_history_full.csv"
 CHARTS_GLOBAL_CSV = _DB_DIR / "charts_history_global.csv"
 APPLE_MUSIC_GLOBAL_CSV = _DB_DIR / "apple_music_global.csv"
 APPLE_MUSIC_TS_TOP_SONGS_CSV = _DB_DIR / "apple_music_ts_top_songs.csv"
@@ -184,20 +185,33 @@ def _iter_discography_tracks() -> list[TrackMeta]:
     return list(items.values())
 
 
+def _active_streams_csvs() -> list[Path]:
+    """Return the streams CSV paths to read from (auto-merged when both exist)."""
+    # streams_history_full.csv is read first (older data); streams_history.csv adds newer dates.
+    # If the user overrode STREAMS_HISTORY_CSV via --streams-csv, use only that.
+    if STREAMS_HISTORY_CSV != _DB_DIR / "streams_history.csv":
+        return [STREAMS_HISTORY_CSV]
+    paths = []
+    if STREAMS_HISTORY_FULL_CSV.exists():
+        paths.append(STREAMS_HISTORY_FULL_CSV)
+    if STREAMS_HISTORY_CSV.exists():
+        paths.append(STREAMS_HISTORY_CSV)
+    return paths or [STREAMS_HISTORY_CSV]
+
+
 def _latest_streams_date() -> date | None:
-    if not STREAMS_HISTORY_CSV.exists():
-        return None
-
     latest: date | None = None
-    with STREAMS_HISTORY_CSV.open("r", newline="", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            d = _parse_iso_date(row.get("date") or "")
-            if d is None:
-                continue
-            if latest is None or d > latest:
-                latest = d
-
+    for csv_path in _active_streams_csvs():
+        if not csv_path.exists():
+            continue
+        with csv_path.open("r", newline="", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                d = _parse_iso_date(row.get("date") or "")
+                if d is None:
+                    continue
+                if latest is None or d > latest:
+                    latest = d
     return latest
 
 
@@ -212,14 +226,15 @@ def _aggregate_weekly_streams(
 ) -> tuple[dict[str, int], dict[str, int], dict[str, dict[str, int]]]:
     """Return (weekly_streams_by_track, row_count_by_date, daily_streams_by_track).
 
-    daily_streams_by_track: {track_id: {date_str: streams}}
+    Reads from all available streams CSVs (full + rolling), deduplicating by (date, track_id).
     """
     weekly: dict[str, int] = {}
     counts: dict[str, int] = {d: 0 for d in week_dates}
     daily: dict[str, dict[str, int]] = {}
 
-    if not STREAMS_HISTORY_CSV.exists():
-        logger.log(f"[swift_top_100] Missing file: {STREAMS_HISTORY_CSV}")
+    active_paths = _active_streams_csvs()
+    if not any(p.exists() for p in active_paths):
+        logger.log("⚠ missing        : no streams CSV found")
         return weekly, counts, daily
 
     def _to_int(v: str | None) -> int:
@@ -228,19 +243,27 @@ def _aggregate_weekly_streams(
         except Exception:
             return 0
 
-    with STREAMS_HISTORY_CSV.open("r", newline="", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            day = (row.get("date") or "").strip()
-            if day not in week_dates:
-                continue
-            track_id = (row.get("track_id") or "").strip()
-            if not track_id:
-                continue
-            streams = _to_int(row.get("daily_streams"))
-            counts[day] = counts.get(day, 0) + 1
-            weekly[track_id] = weekly.get(track_id, 0) + streams
-            daily.setdefault(track_id, {})[day] = daily.get(track_id, {}).get(day, 0) + streams
+    seen: set[tuple[str, str]] = set()  # (date, track_id) — deduplicate across CSVs
+    for csv_path in active_paths:
+        if not csv_path.exists():
+            continue
+        with csv_path.open("r", newline="", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                day = (row.get("date") or "").strip()
+                if day not in week_dates:
+                    continue
+                track_id = (row.get("track_id") or "").strip()
+                if not track_id:
+                    continue
+                key = (day, track_id)
+                if key in seen:
+                    continue
+                seen.add(key)
+                streams = _to_int(row.get("daily_streams"))
+                counts[day] = counts.get(day, 0) + 1
+                weekly[track_id] = weekly.get(track_id, 0) + streams
+                daily.setdefault(track_id, {})[day] = streams
 
     return weekly, counts, daily
 
@@ -249,7 +272,7 @@ def _best_global_rank_by_title(*, week_dates: set[str], logger: Logger) -> dict[
     """Return normalized_title -> best rank (min)."""
     best: dict[str, int] = {}
     if not CHARTS_GLOBAL_CSV.exists():
-        logger.log(f"[swift_top_100] Missing file: {CHARTS_GLOBAL_CSV} (bonus disabled)")
+        logger.log("  spotify_charts : missing — bonus disabled")
         return best
 
     def _to_int(v: str | None) -> int | None:
@@ -277,7 +300,7 @@ def _best_global_rank_by_title(*, week_dates: set[str], logger: Logger) -> dict[
                 best[key] = rank
             matched_rows += 1
 
-    logger.log(f"[swift_top_100] Global charts rows in window: {matched_rows}")
+    logger.log(f"  spotify_charts : {matched_rows} rows")
     return best
 
 
@@ -357,7 +380,7 @@ def _weekly_apple_music_global_points(*, week_dates: set[str], logger: Logger) -
     """
     scores: dict[str, float] = {}
     if not APPLE_MUSIC_GLOBAL_CSV.exists():
-        logger.log(f"[swift_top_100] Missing file: {APPLE_MUSIC_GLOBAL_CSV} (Apple Music disabled)")
+        logger.log("  apple_global   : missing — AM disabled")
         return scores
 
     def _to_int(v: str | None) -> int | None:
@@ -392,7 +415,7 @@ def _weekly_apple_music_global_points(*, week_dates: set[str], logger: Logger) -
     for (key, _), rank in best_per_day.items():
         scores[key] = scores.get(key, 0.0) + _rank_to_am_units_score(rank)
 
-    logger.log(f"[swift_top_100] Apple Music Global rows in window: {matched_rows}")
+    logger.log(f"  apple_global   : {matched_rows} rows")
     return scores
 
 
@@ -404,7 +427,7 @@ def _weekly_apple_music_ts_points(*, week_dates: set[str], logger: Logger) -> di
     """
     scores: dict[str, float] = {}
     if not APPLE_MUSIC_TS_TOP_SONGS_CSV.exists():
-        logger.log(f"[swift_top_100] Missing file: {APPLE_MUSIC_TS_TOP_SONGS_CSV} (Apple Music TS Top Songs disabled)")
+        logger.log("  apple_ts       : missing — AM TS disabled")
         return scores
 
     def _to_int(v: str | None) -> int | None:
@@ -436,11 +459,11 @@ def _weekly_apple_music_ts_points(*, week_dates: set[str], logger: Logger) -> di
     for (key, _), rank in best_per_day.items():
         scores[key] = scores.get(key, 0.0) + _rank_to_am_units_score(rank)
 
-    logger.log(f"[swift_top_100] Apple Music TS Top Songs rows in window: {matched_rows}")
+    logger.log(f"  apple_ts       : {matched_rows} rows")
     return scores
 
 
-def _load_existing_history_excluding_date(chart_date: str, logger: Logger) -> list[dict]:
+def _load_existing_history_before_date(chart_date: str, logger: Logger) -> list[dict]:
     if not SWIFT_TOP_100_HISTORY_CSV.exists():
         return []
 
@@ -448,10 +471,10 @@ def _load_existing_history_excluding_date(chart_date: str, logger: Logger) -> li
         with SWIFT_TOP_100_HISTORY_CSV.open("r", newline="", encoding="utf-8") as f:
             rows = list(csv.DictReader(f))
     except Exception as exc:
-        logger.log(f"[swift_top_100] Failed to read history CSV: {exc}")
+        logger.log(f"⚠ history        : failed to read CSV — {exc}")
         return []
 
-    return [r for r in rows if (r.get("date") or "").strip() != chart_date]
+    return [r for r in rows if (r.get("date") or "").strip() < chart_date]
 
 
 def _history_stats(rows: list[dict]) -> tuple[dict[str, int], dict[str, int], dict[str, int]]:
@@ -518,7 +541,7 @@ def _write_history_csv(rows: list[dict], logger: Logger) -> None:
         writer.writeheader()
         writer.writerows(rows)
 
-    logger.log(f"[swift_top_100] Wrote history CSV: {SWIFT_TOP_100_HISTORY_CSV} ({len(rows)} rows)")
+    logger.log(f"✔ CSV  → {SWIFT_TOP_100_HISTORY_CSV.name} ({len(rows)} rows)")
 
 
 def _generate_song_files(logger: Logger) -> None:
@@ -528,7 +551,7 @@ def _generate_song_files(logger: Logger) -> None:
 
     snapshot_files = sorted(_SITE_DATA_DIR.glob("swift_top_100_????-??-??.json"))
     if not snapshot_files:
-        logger.log("[swift_top_100] No snapshot files found for song file generation")
+        logger.log("  songs          : no snapshot files found")
         return
 
     by_track: dict[str, dict] = {}
@@ -537,7 +560,7 @@ def _generate_song_files(logger: Logger) -> None:
         try:
             payload = json.loads(snapshot_path.read_text(encoding="utf-8"))
         except Exception as exc:
-            logger.log(f"[swift_top_100] Skipping {snapshot_path.name}: {exc}")
+            logger.log(f"⚠ snapshot       : skipping {snapshot_path.name} — {exc}")
             continue
 
         chart_date = payload.get("chart_date") or snapshot_path.stem[len("swift_top_100_"):]
@@ -599,7 +622,7 @@ def _generate_song_files(logger: Logger) -> None:
         )
         written += 1
 
-    logger.log(f"[swift_top_100] Generated {written} song history files in {songs_dir}")
+    logger.log(f"✔ songs          → {written} history files")
 
 
 def _rebuild_snapshot_index(logger: Logger) -> None:
@@ -611,7 +634,7 @@ def _rebuild_snapshot_index(logger: Logger) -> None:
     dates.sort(reverse=True)
     index_path = _SITE_DATA_DIR / "swift_top_100_index.json"
     index_path.write_text(json.dumps(dates, ensure_ascii=False), encoding="utf-8")
-    logger.log(f"[swift_top_100] Wrote snapshot index: {index_path} ({len(dates)} entries)")
+    logger.log(f"✔ IDX  → {index_path.name} ({len(dates)} dates)")
 
 
 def _write_snapshot_json(payload: dict, logger: Logger) -> None:
@@ -621,10 +644,10 @@ def _write_snapshot_json(payload: dict, logger: Logger) -> None:
     if chart_date:
         dated_json = _SITE_DATA_DIR / f"swift_top_100_{chart_date}.json"
         dated_json.write_text(content, encoding="utf-8")
-        logger.log(f"[swift_top_100] Wrote snapshot JSON: {dated_json}")
+        logger.log(f"✔ JSON → {dated_json.name}")
     # Always update the "latest" file so R2 stays current
     OUTPUT_JSON.write_text(content, encoding="utf-8")
-    logger.log(f"[swift_top_100] Wrote latest JSON: {OUTPUT_JSON}")
+    logger.log(f"✔ JSON → {OUTPUT_JSON.name} (latest)")
     _rebuild_snapshot_index(logger)
 
 
@@ -638,21 +661,21 @@ def _maybe_upload_to_r2(*, logger: Logger) -> None:
         pass
 
     if os.getenv("UPLOAD_TO_R2", "").strip().lower() in ("0", "false", "no"):
-        logger.log("[swift_top_100] R2 upload skipped (UPLOAD_TO_R2 explicitly disabled)")
+        logger.log("  r2             : skipped (UPLOAD_TO_R2=0)")
         return
 
     required_env = ["R2_ACCOUNT_ID", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY"]
     missing = [name for name in required_env if not os.getenv(name, "").strip()]
     if missing:
-        logger.log("[swift_top_100] R2 upload skipped: missing env var(s): " + ", ".join(missing))
+        logger.log("  r2             : skipped — missing env: " + ", ".join(missing))
         return
 
     r2_script = _REPO_ROOT / "scripts" / "r2.py"
     if not r2_script.exists():
-        logger.log(f"[swift_top_100] R2 upload script missing: {r2_script}")
+        logger.log("⚠ r2             : script not found")
         return
 
-    logger.log("[swift_top_100] Uploading exported data to R2...")
+    logger.log("  r2             : uploading...")
     try:
         completed = subprocess.run(
             [sys.executable, str(r2_script)],
@@ -660,11 +683,11 @@ def _maybe_upload_to_r2(*, logger: Logger) -> None:
             check=False,
         )
         if completed.returncode == 0:
-            logger.log("[swift_top_100] R2 upload completed")
+            logger.log("✔ r2             : upload complete")
         else:
-            logger.log(f"[swift_top_100] R2 upload failed (exit code {completed.returncode})")
+            logger.log(f"⚠ r2             : upload failed (exit code {completed.returncode})")
     except Exception as exc:
-        logger.log(f"[swift_top_100] R2 upload failed (exception): {exc}")
+        logger.log(f"⚠ r2             : upload failed — {exc}")
 
 
 def _build_week_chart(
@@ -678,23 +701,19 @@ def _build_week_chart(
     week_set = set(day_list)
 
     weekly_streams, row_counts, daily_streams = _aggregate_weekly_streams(week_dates=week_set, logger=logger)
-    logger.log(
-        "[swift_top_100] Streams rows per date: "
-        + ", ".join(f"{d}:{row_counts.get(d, 0)}" for d in sorted(week_set))
-    )
+    days_covered = sum(1 for c in row_counts.values() if c > 0)
+    logger.log(f"  streams        : {len(weekly_streams)} songs · {days_covered}/{len(week_set)} days covered")
 
-    # Merge historical track IDs streams into their primary track ID.
-    # Uses max() to avoid double-counting when both IDs tracked the same streams in parallel.
-    # For true re-releases (non-overlapping periods), one of the two values will be 0 so max == sum.
+    # Merge historical track IDs streams into their primary track ID (cumulative sum).
     for meta in tracks.values():
         for h_id in meta.historical_track_ids:
             if h_id in weekly_streams:
-                weekly_streams[meta.track_id] = max(weekly_streams.get(meta.track_id, 0), weekly_streams.pop(h_id))
+                weekly_streams[meta.track_id] = weekly_streams.get(meta.track_id, 0) + weekly_streams.pop(h_id)
             if h_id in daily_streams:
                 h_daily = daily_streams.pop(h_id)
                 primary_daily = daily_streams.setdefault(meta.track_id, {})
                 for d, s in h_daily.items():
-                    primary_daily[d] = max(primary_daily.get(d, 0), s)
+                    primary_daily[d] = primary_daily.get(d, 0) + s
 
     best_rank = _best_global_rank_by_title(week_dates=week_set, logger=logger)
 
@@ -731,14 +750,33 @@ def _build_week_chart(
         reverse=True,
     )
 
-    # Deduplicate by normalized title: same song may have multiple Spotify IDs.
-    seen_titles: set[str] = set()
-    deduped: list[dict] = []
+    # Merge all versions with the same normalized title (original + Taylor's Version, remixes, etc.)
+    # scored is sorted desc by streams, so the first entry per title is the primary (most streamed).
+    merged_by_title: dict[str, dict] = {}
     for r in scored:
         key = _normalize_title(r.get("title") or "")
-        if key not in seen_titles:
-            seen_titles.add(key)
-            deduped.append(r)
+        if key not in merged_by_title:
+            merged_by_title[key] = dict(r)
+        else:
+            existing = merged_by_title[key]
+            existing["weekly_streams"] += r["weekly_streams"]
+            existing["points"] += r["weekly_streams"]
+            br = r.get("global_best_rank")
+            if br is not None:
+                prev_br = existing.get("global_best_rank")
+                if prev_br is None or br < prev_br:
+                    existing["global_best_rank"] = br
+
+    deduped = sorted(
+        merged_by_title.values(),
+        key=lambda r: (
+            r.get("points") or 0,
+            r.get("weekly_streams") or 0,
+            (r.get("title") or "").casefold(),
+            r.get("track_id") or "",
+        ),
+        reverse=True,
+    )
 
     top = deduped[:100]
 
@@ -749,10 +787,7 @@ def _build_week_chart(
     points_by_track = {r["track_id"]: r for r in top}
     rank_by_track = {r["track_id"]: i for i, r in enumerate(top, 1)}
 
-    logger.log(
-        f"[swift_top_100] Built chart week_end={_format_date(week_end)}: "
-        f"{len(top)} entries (candidates={len(scored)})"
-    )
+    logger.log(f"  top100         : {len(top)} entries ranked ({len(scored)} candidates)")
 
     return points_by_track, rank_by_track
 
@@ -764,12 +799,11 @@ def run(
 ) -> int:
     logger = Logger()
 
-    logger.log("[swift_top_100] Starting")
     if chart_date is None:
         chart_date = _latest_streams_date()
 
     if chart_date is None:
-        logger.log(f"[swift_top_100] No dates found in {STREAMS_HISTORY_CSV}")
+        logger.log(f"⚠ no dates found in {STREAMS_HISTORY_CSV.name}")
         return 2
 
     week_start, _ = _week_dates(chart_date)
@@ -777,12 +811,11 @@ def run(
     week_set = set(day_list)
     prev_week_end = chart_date - timedelta(days=7)
 
-    logger.log(f"[swift_top_100] chart_date={_format_date(chart_date)} week_start={_format_date(week_start)}")
-    logger.log(f"[swift_top_100] prev_week_end={_format_date(prev_week_end)}")
+    logger.log(f"▶ TayBoard TOP 100 · {_format_date(chart_date)}  week={_format_date(week_start)}→{_format_date(chart_date)}  prev={_format_date(prev_week_end)}")
 
     tracks_list = _iter_discography_tracks()
     tracks = {t.track_id: t for t in tracks_list}
-    logger.log(f"[swift_top_100] Discography tracks indexed: {len(tracks)}")
+    logger.log(f"  discography    : {len(tracks)} tracks indexed")
 
     curr_points, curr_ranks = _build_week_chart(week_end=chart_date, tracks=tracks, logger=logger)
 
@@ -794,21 +827,23 @@ def run(
 
     bonuses = _load_bonuses(chart_date_str)
     if bonuses:
-        logger.log(f"[swift_top_100] Bonuses applied: {bonuses}")
+        logger.log(f"  bonuses        : {len(bonuses)} applied")
         for tid, bonus in bonuses.items():
             if tid in curr_points:
                 curr_points[tid]["bonus_points"] = bonus
                 curr_points[tid]["points"] = round(curr_points[tid]["points"] + bonus, 2)
 
-    existing_rows = _load_existing_history_excluding_date(chart_date_str, logger)
+    existing_rows = _load_existing_history_before_date(chart_date_str, logger)
     weeks_on_chart_by_track, peak_by_track, times_at_peak_by_track = _history_stats(existing_rows)
 
     is_first_run = len(existing_rows) == 0
     if is_first_run:
-        logger.log("[swift_top_100] No existing history — first run, all entries will be NEW")
+        logger.log("  history        : first run — all entries NEW")
         prev_points: dict = {}
         prev_ranks: dict = {}
     else:
+        prior_weeks = len({(r.get("date") or "").strip() for r in existing_rows if r.get("date")})
+        logger.log(f"  history        : {prior_weeks} prior week{'s' if prior_weeks != 1 else ''} loaded")
         prev_points, prev_ranks = _build_week_chart(week_end=prev_week_end, tracks=tracks, logger=logger)
 
     out_entries: list[dict] = []
@@ -1002,14 +1037,14 @@ def run(
         snap["times_at_peak"] = out["times_at_peak"]
 
     if dry_run:
-        logger.log("[swift_top_100] DRY-RUN: no files written")
+        logger.log("⚠ DRY-RUN — no files written")
     else:
         combined_rows = existing_rows + out_entries
         combined_rows.sort(key=lambda r: ((r.get("date") or ""), int(r.get("rank") or 9999), r.get("track_id") or ""))
         _write_history_csv(combined_rows, logger)
 
         payload = {
-            "title": "Swift Top 100",
+            "title": "TayBoard TOP 100",
             "chart_date": chart_date_str,
             "week_start": _format_date(week_start),
             "week_end": chart_date_str,
@@ -1036,7 +1071,7 @@ def run(
                     width=1400,
                     scale=2,
                 )
-                logger.log(f"[swift_top_100] Wrote chart image: {out_path}")
+                logger.log(f"✔ PNG  → {out_path.name}")
                 image_paths.append(out_path)
             # Copie dans collectors/billboard/history/<date>/
             history_dir = _SCRIPT_DIR / "history" / chart_date_str
@@ -1044,9 +1079,8 @@ def run(
             for i, src in enumerate(image_paths, 1):
                 dst = history_dir / f"swift_top_100_{i}.png"
                 shutil.copy2(src, dst)
-                logger.log(f"[swift_top_100] Copied image to: {dst}")
         except Exception as exc:
-            logger.log(f"[swift_top_100] Image generation failed (skipped): {exc}")
+            logger.log(f"⚠ image          : generation failed — {exc}")
 
         _maybe_upload_to_r2(logger=logger)
 

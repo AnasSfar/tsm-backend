@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import argparse
 import os
 import subprocess
 import sys
@@ -74,6 +75,10 @@ def run_script(script_path: Path, scraped_at: str) -> int:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--no-post", action="store_true")
+    parser.parse_known_args()
+
     scraped_at = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
     print(f"[Apple Music] Starting full run — scraped_at={scraped_at}")
 

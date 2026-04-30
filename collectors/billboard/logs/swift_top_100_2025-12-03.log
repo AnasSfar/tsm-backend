@@ -1,27 +1,22 @@
-[swift_top_100] Starting
-[swift_top_100] chart_date=2025-12-03 week_start=2025-11-27
-[swift_top_100] prev_week_end=2025-11-26
-[swift_top_100] Discography tracks indexed: 529
-[swift_top_100] Streams rows per date: 2025-11-27:376, 2025-11-28:377, 2025-11-29:377, 2025-11-30:377, 2025-12-01:377, 2025-12-02:377, 2025-12-03:377
-[swift_top_100] Global charts rows in window: 22
-[swift_top_100] Built chart week_end=2025-12-03: 100 entries (candidates=377)
-[swift_top_100] Apple Music Global rows in window: 0
-[swift_top_100] Apple Music TS Top Songs rows in window: 0
-[swift_top_100] Streams rows per date: 2025-11-20:376, 2025-11-21:376, 2025-11-22:376, 2025-11-23:376, 2025-11-24:376, 2025-11-25:376, 2025-11-26:376
-[swift_top_100] Global charts rows in window: 33
-[swift_top_100] Built chart week_end=2025-11-26: 100 entries (candidates=376)
-[swift_top_100] Wrote history CSV: C:\Users\sfara\Documents\GitHub\tsm-backend\db\swift_top_100_history.csv (7100 rows)
-[swift_top_100] Wrote snapshot JSON: C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100_2025-12-03.json
-[swift_top_100] Wrote latest JSON: C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100.json
-[swift_top_100] Wrote snapshot index: C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100_index.json (69 entries)
-[swift_top_100] Generated 185 song history files in C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100_songs
-[swift_top_100] Wrote chart image: C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100_1.png
-[swift_top_100] Wrote chart image: C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100_2.png
-[swift_top_100] Wrote chart image: C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100_3.png
-[swift_top_100] Wrote chart image: C:\Users\sfara\Documents\GitHub\tsm-backend\website\site\data\swift_top_100_4.png
-[swift_top_100] Copied image to: C:\Users\sfara\Documents\GitHub\tsm-backend\collectors\billboard\history\2025-12-03\swift_top_100_1.png
-[swift_top_100] Copied image to: C:\Users\sfara\Documents\GitHub\tsm-backend\collectors\billboard\history\2025-12-03\swift_top_100_2.png
-[swift_top_100] Copied image to: C:\Users\sfara\Documents\GitHub\tsm-backend\collectors\billboard\history\2025-12-03\swift_top_100_3.png
-[swift_top_100] Copied image to: C:\Users\sfara\Documents\GitHub\tsm-backend\collectors\billboard\history\2025-12-03\swift_top_100_4.png
-[swift_top_100] Uploading exported data to R2...
-[swift_top_100] R2 upload completed
+▶ TayBoard TOP 100 · 2025-12-03  week=2025-11-27→2025-12-03  prev=2025-11-26
+  discography    : 529 tracks indexed
+  streams        : 435 songs · 7/7 days covered
+  spotify_charts : 22 rows
+  top100         : 100 entries ranked (432 candidates)
+  apple_global   : 0 rows
+  apple_ts       : 0 rows
+  history        : 47 prior weeks loaded
+  streams        : 434 songs · 7/7 days covered
+  spotify_charts : 33 rows
+  top100         : 100 entries ranked (431 candidates)
+✔ CSV  → swift_top_100_history.csv (4800 rows)
+✔ JSON → swift_top_100_2025-12-03.json
+✔ JSON → swift_top_100.json (latest)
+✔ IDX  → swift_top_100_index.json (68 dates)
+✔ songs          → 169 history files
+✔ PNG  → swift_top_100_1.png
+✔ PNG  → swift_top_100_2.png
+✔ PNG  → swift_top_100_3.png
+✔ PNG  → swift_top_100_4.png
+  r2             : uploading...
+✔ r2             : upload complete
