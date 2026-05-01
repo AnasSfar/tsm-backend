@@ -3,7 +3,7 @@
   "chart_date": "2026-04-22",
   "week_start": "2026-04-16",
   "week_end": "2026-04-22",
-  "generated_at": "2026-05-01T08:44:28.363880+00:00",
+  "generated_at": "2026-05-01T14:50:22.394370+00:00",
   "entries": [
     {
       "rank": 1,
@@ -182,11 +182,11 @@
     },
     {
       "rank": 6,
-      "track_id": "55n9yjI6qqXh5F2mYvUc2y",
+      "track_id": "2y5aJvzXhHPA94U5GFAcXe",
       "title": "I Don't Wanna Live Forever (Fifty Shades Darker)",
-      "primary_album": "Standalone & Extras",
-      "spotify_url": "https://open.spotify.com/track/55n9yjI6qqXh5F2mYvUc2y",
-      "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27363d77f99117b28af9f656918",
+      "primary_album": "reputation",
+      "spotify_url": "https://open.spotify.com/track/2y5aJvzXhHPA94U5GFAcXe",
+      "image_url": "https://i.scdn.co/image/ab67616d0000b2735997605214d568d73fd365c2",
       "weekly_streams": 8504078,
       "units_am": 418325,
       "units_spotify": 5952855,
@@ -210,7 +210,7 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -3.9,
-      "weeks_on_chart": 3,
+      "weeks_on_chart": 68,
       "peak_position": 5,
       "times_at_peak": 2,
       "points_display": "63.7"
@@ -602,10 +602,10 @@
     },
     {
       "rank": 18,
-      "track_id": "0Oju1YcbPCJuUQQWoZNdJK",
+      "track_id": "1MgV7FIyNxIG7WzMRJV5HC",
       "title": "my tears ricochet",
       "primary_album": "folklore",
-      "spotify_url": "https://open.spotify.com/track/0Oju1YcbPCJuUQQWoZNdJK",
+      "spotify_url": "https://open.spotify.com/track/1MgV7FIyNxIG7WzMRJV5HC",
       "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
       "weekly_streams": 4133762,
       "units_am": 199297,
@@ -2660,7 +2660,7 @@
       "change": null,
       "rank_change": -5,
       "percentage_change": -2.2,
-      "weeks_on_chart": 37,
+      "weeks_on_chart": 38,
       "peak_position": 62,
       "times_at_peak": 2,
       "points_display": "9.6"
@@ -3262,10 +3262,10 @@
     },
     {
       "rank": 94,
-      "track_id": "2vJ7QvyCiR4DaHxwO58izA",
+      "track_id": "6KJqZcs9XDgVck7Lg9QOTC",
       "title": "seven",
       "primary_album": "folklore",
-      "spotify_url": "https://open.spotify.com/track/2vJ7QvyCiR4DaHxwO58izA",
+      "spotify_url": "https://open.spotify.com/track/6KJqZcs9XDgVck7Lg9QOTC",
       "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
       "weekly_streams": 1065072,
       "units_am": 15931,

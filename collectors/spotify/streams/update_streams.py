@@ -1273,7 +1273,7 @@ def get_previous_total_before_date(track_id: str, stats_date: str) -> int | None
 def has_real_update(previous_streams: int | None, new_streams: int) -> bool:
     if previous_streams is None:
         return True
-    if new_streams <= previous_streams:
+    if new_streams == previous_streams:
         return False
     if new_streams - previous_streams > MAX_DAILY_INCREASE:
         if LOG_MODE != "quiet":
@@ -1971,7 +1971,7 @@ def try_apply_track_update(
         real_update = False
     elif total < last_total:
         reason = "lower_than_previous"
-        real_update = False
+        real_update = True
     elif total - last_total > MAX_DAILY_INCREASE:
         reason = f"anomaly_delta_gt_{MAX_DAILY_INCREASE}"
         real_update = False
@@ -2076,6 +2076,13 @@ class ProgressLogger:
             or (now - self._last_summary_t) >= (60 if self.mode == "quiet" else 30)
             or (self.done % (50 if self.mode == "quiet" else 25) == 0)
         )
+
+        if status == "pending":
+            print(
+                f"{prefix} PENDING | {title} | "
+                f"total={format_int(result.get('streams'))} prev={format_int(result.get('previous_streams'))} "
+                f"reason={result.get('reason')}"
+            )
 
         if important:
             print(f"{prefix} {status.upper()} | {title} | ETA {eta}")
@@ -3059,14 +3066,6 @@ def main():
         and not summary["all_done"]
         and summary["pending_this_run"] > 0
     ):
-        # Skip retries if very few tracks are pending (likely won't update today)
-        if summary["pending_this_run"] < 10:
-            print()
-            print(
-                f"⚠ Only {summary['pending_this_run']} pending track(s) — skipping retries."
-            )
-            break
-
         # Don't retry on first run of the day if there are zero real updates
         # This means Spotify hasn't done its daily update yet - wait for next run instead
         if retry_round == 0 and is_first_run_of_day and has_zero_real_updates:
