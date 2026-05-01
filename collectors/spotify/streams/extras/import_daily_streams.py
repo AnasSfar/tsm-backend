@@ -90,6 +90,16 @@ def normalize_aggressive(t: str) -> str:
     return t
 
 
+def normalize_no_apostrophe(t: str) -> str:
+    """Like normalize_title but removes apostrophes instead of keeping them."""
+    t = t.lower().strip()
+    t = t.replace("'", "").replace("’", "").replace("‘", "")
+    t = t.replace("(", " ").replace(")", " ")
+    t = re.sub(r"\s*-\s*", " ", t)
+    t = re.sub(r"\s+", " ", t).strip()
+    return t
+
+
 def parse_int(val: str) -> int | None:
     """Parse a stream value that may use non-breaking space or comma as thousands sep."""
     val = val.strip().replace("\xa0", "").replace("\u202f", "").replace(" ", "").replace(",", "")
@@ -105,10 +115,21 @@ def parse_int(val: str) -> int | None:
 # Loaders
 # ---------------------------------------------------------------------------
 
-def load_title_map() -> tuple[dict[str, str], dict[str, str]]:
-    """Return (exact_map, fuzzy_map): {normalized_title -> track_id}."""
+def strip_trailing_parens(t: str) -> str:
+    """Strip all trailing parenthetical suffixes: 'Foo (Bar) (Baz)' -> 'Foo'."""
+    result = re.sub(r"(\s*\([^)]*\))+\s*$", "", t).strip()
+    return result if result != t else ""
+
+
+def load_title_map() -> tuple[dict[str, str], dict[str, str], dict[str, str]]:
+    """Return (exact_map, fuzzy_map, base_map): {normalized_title -> track_id}.
+
+    base_map uses titles with trailing parentheticals stripped, as a fallback
+    for source files that omit subtitles like '(Fifty Shades Darker)'.
+    """
     exact_map: dict[str, str] = {}
     fuzzy_map: dict[str, str] = {}
+    base_map:  dict[str, str] = {}
 
     def index_tracks(tracks):
         for track in tracks:
@@ -124,6 +145,22 @@ def load_title_map() -> tuple[dict[str, str], dict[str, str]]:
                     exact_map[exact] = tid
                 if fuzzy and fuzzy not in fuzzy_map:
                     fuzzy_map[fuzzy] = tid
+                # Also index with apostrophes removed (for source files with "dont" etc.)
+                no_apos = normalize_no_apostrophe(key)
+                if no_apos and no_apos not in fuzzy_map and no_apos not in base_map:
+                    base_map[no_apos] = tid
+
+                base = strip_trailing_parens(key)
+                if base:
+                    base_exact = base.lower().strip()
+                    base_fuzzy = normalize_title(base)
+                    base_no_apos = normalize_no_apostrophe(base)
+                    if base_exact and base_exact not in exact_map and base_exact not in base_map:
+                        base_map[base_exact] = tid
+                    if base_fuzzy and base_fuzzy not in fuzzy_map and base_fuzzy not in base_map:
+                        base_map[base_fuzzy] = tid
+                    if base_no_apos and base_no_apos not in fuzzy_map and base_no_apos not in base_map:
+                        base_map[base_no_apos] = tid
 
     for album_file in sorted(ALBUMS_DIR.glob("*.json")):
         with open(album_file, encoding="utf-8") as f:
@@ -136,7 +173,7 @@ def load_title_map() -> tuple[dict[str, str], dict[str, str]]:
     for section in songs_data:
         index_tracks(section.get("tracks", []))
 
-    return exact_map, fuzzy_map
+    return exact_map, fuzzy_map, base_map
 
 
 def load_history() -> dict[str, dict[str, dict]]:
@@ -293,8 +330,8 @@ def main():
             sys.exit(1)
 
     print("Loading title -> track_id mapping...")
-    exact_map, fuzzy_map = load_title_map()
-    print(f"  {len(exact_map)} exact titles indexed")
+    exact_map, fuzzy_map, base_map = load_title_map()
+    print(f"  {len(exact_map)} exact titles indexed, {len(base_map)} base-title fallbacks")
 
     print("Loading existing streams_history.csv ...")
     existing = load_history()
@@ -310,6 +347,12 @@ def main():
     unmatched: list[str] = []
     no_anchor: list[str] = []
 
+    # First pass: resolve all titles to track_ids and merge dailies per track_id.
+    # This handles cases where the same song appears under slightly different titles
+    # across files (e.g. "I Dont Wanna Live Forever" vs "I Don't Wanna Live Forever"),
+    # ensuring the 2025 and 2026 data for the same track are combined before anchor lookup.
+    resolved: dict[str, dict[str, int | None]] = {}  # track_id -> merged dailies
+
     for title, dailies in source_data.items():
         expanded = expand_abbrs(title)
         track_id = (
@@ -317,19 +360,30 @@ def main():
             or exact_map.get(expanded)
             or fuzzy_map.get(normalize_title(title))
             or fuzzy_map.get(normalize_title(expanded))
+            or base_map.get(title)
+            or base_map.get(expanded)
+            or base_map.get(normalize_title(title))
+            or base_map.get(normalize_title(expanded))
+            or base_map.get(normalize_no_apostrophe(title))
+            or base_map.get(normalize_no_apostrophe(expanded))
         )
         if track_id is None:
             unmatched.append(title)
             continue
+        merged = resolved.setdefault(track_id, {})
+        for date, val in dailies.items():
+            if val is not None or date not in merged:
+                merged[date] = val
 
+    for track_id, dailies in resolved.items():
         existing_for_tid = existing.get(track_id)
         if not existing_for_tid:
-            no_anchor.append(title)
+            no_anchor.append(track_id)
             continue
 
         anchor_date, anchor_streams = find_best_anchor(existing_for_tid, dailies)
         if anchor_date is None:
-            no_anchor.append(title)
+            no_anchor.append(track_id)
             continue
 
         history = build_full_history(anchor_date, anchor_streams, dailies)
