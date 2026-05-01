@@ -7636,5 +7636,22 @@
       "2010"
     ],
     "is_pop": true
+  },
+  "gwen stefani|||the sweet escape": {
+    "artist": "Gwen Stefani",
+    "track": "The Sweet Escape",
+    "tags": [
+      "pop",
+      "female vocalists",
+      "gwen stefani",
+      "dance",
+      "rnb",
+      "fun",
+      "00s",
+      "happy",
+      "party",
+      "the sweet escape"
+    ],
+    "is_pop": true
   }
 }
