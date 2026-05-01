@@ -3059,6 +3059,14 @@ def main():
         and not summary["all_done"]
         and summary["pending_this_run"] > 0
     ):
+        # Skip retries if very few tracks are pending (likely won't update today)
+        if summary["pending_this_run"] < 10:
+            print()
+            print(
+                f"⚠ Only {summary['pending_this_run']} pending track(s) — skipping retries."
+            )
+            break
+
         # Don't retry on first run of the day if there are zero real updates
         # This means Spotify hasn't done its daily update yet - wait for next run instead
         if retry_round == 0 and is_first_run_of_day and has_zero_real_updates:

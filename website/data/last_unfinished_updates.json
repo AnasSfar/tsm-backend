@@ -1,6 +1,21 @@
 {
-  "generated_at": "2026-04-30",
-  "stats_date": "2026-04-29",
-  "track_ids": [],
-  "tracks": []
+  "generated_at": "2026-05-01",
+  "stats_date": "2026-04-30",
+  "track_ids": [
+    "20QSU9vg05qYSDVgOTAwPp"
+  ],
+  "tracks": [
+    {
+      "track_id": "20QSU9vg05qYSDVgOTAwPp",
+      "title": "Wood - Track by Track",
+      "spotify_url": "https://open.spotify.com/track/20QSU9vg05qYSDVgOTAwPp",
+      "status": "pending",
+      "streams": 800436,
+      "daily_streams": null,
+      "previous_streams": 800578,
+      "delta": -142,
+      "reason": "lower_than_previous",
+      "raw": "800436"
+    }
+  ]
 }

@@ -7682,5 +7682,22 @@
       "john landis"
     ],
     "is_pop": true
+  },
+  "the jackson 5|||i want you back": {
+    "artist": "The Jackson 5",
+    "track": "I Want You Back",
+    "tags": [
+      "motown",
+      "soul",
+      "70s",
+      "pop",
+      "funk",
+      "michael jackson",
+      "oldies",
+      "the jackson 5",
+      "disco",
+      "jackson 5"
+    ],
+    "is_pop": false
   }
 }
