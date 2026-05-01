@@ -680,7 +680,9 @@
           "version_tag": "featured__taylors_version__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2734f719ea76d1b7048664b8fec",
           "display_era": "Red",
-          "historical_track_ids": []
+          "historical_track_ids": [
+            "6Q237Ts37YGYRIi5Vy5lVX"
+          ]
         }
       ]
     },
@@ -688,29 +690,7 @@
       "album": "Red (Taylor's Version)",
       "section": "kworb_extras",
       "track_count": 1,
-      "tracks": [
-        {
-          "title": "Safe & Sound (feat. Joy Williams and John Paul White) (Taylor's Version)",
-          "url": "https://open.spotify.com/intl-fr/track/6Q237Ts37YGYRIi5Vy5lVX",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Kworb Extras",
-          "display_order": 9999,
-          "base_title": "Safe & Sound (feat. Joy Williams and John Paul White) (Taylor's Version)",
-          "album": "Red (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Safe & Sound (feat. Joy Williams and John Paul White) (Taylor's Version)",
-          "song_family": "safe_sound_feat_joy_williams_and_john_paul_white_taylors_version",
-          "version_tag": null,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273e508c5f5080d8a6c9db576df",
-          "display_era": "Red",
-          "historical_track_ids": []
-        }
-      ]
+      "tracks": []
     }
   ]
 }

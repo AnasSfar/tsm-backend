@@ -5,26 +5,6 @@
     "track_count": 146,
     "tracks": [
       {
-        "title": "I Don't Wanna Live Forever (Fifty Shades Darker)",
-        "url": "https://open.spotify.com/intl-fr/track/55n9yjI6qqXh5F2mYvUc2y",
-        "type": "standalone",
-        "edition": "extras",
-        "display_section": "Kworb Extras",
-        "display_order": 9999,
-        "base_title": "I Don't Wanna Live Forever (Fifty Shades Darker)",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "I Don't Wanna Live Forever (Fifty Shades Darker)",
-        "song_family": "i_dont_wanna_live_forever_fifty_shades_darker",
-        "version_tag": null,
-        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27363d77f99117b28af9f656918",
-        "historical_track_ids": []
-      },
-      {
         "title": "All Of The Girls You Loved Before",
         "url": "https://open.spotify.com/intl-fr/track/17yraMKqmZIKAv3iaGcoLX",
         "type": "standalone",
@@ -362,26 +342,6 @@
         "song_family": "cornelia_street_live_from_paris",
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273eec5bf14fcf7c92ec8166027",
-        "historical_track_ids": []
-      },
-      {
-        "title": "Safe & Sound (feat. Joy Williams and John Paul White) (Taylor's Version)",
-        "url": "https://open.spotify.com/intl-fr/track/6Q237Ts37YGYRIi5Vy5lVX",
-        "type": "standalone",
-        "edition": "extras",
-        "display_section": "Kworb Extras",
-        "display_order": 9999,
-        "base_title": "Safe & Sound (feat. Joy Williams and John Paul White) (Taylor's Version)",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "Safe & Sound (feat. Joy Williams and John Paul White) (Taylor's Version)",
-        "song_family": "safe_sound_feat_joy_williams_and_john_paul_white_taylors_version",
-        "version_tag": null,
-        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273e508c5f5080d8a6c9db576df",
         "historical_track_ids": []
       },
       {

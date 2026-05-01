@@ -4,13 +4,13 @@
   "primary_album": "Midnights",
   "spotify_url": "https://open.spotify.com/track/1xwAWUI6Dj0WGC3KiUPN0O",
   "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
-  "peak_position": 79,
+  "peak_position": 78,
   "times_at_peak": 2,
-  "weeks_on_chart": 21,
+  "weeks_on_chart": 20,
   "history": [
     {
       "date": "2025-01-08",
-      "rank": 82,
+      "rank": 81,
       "points": 9.7,
       "change": "NEW",
       "rank_change": null,
@@ -23,7 +23,7 @@
     },
     {
       "date": "2025-01-15",
-      "rank": 82,
+      "rank": 81,
       "points": 9.7,
       "change": null,
       "rank_change": 0,
@@ -36,7 +36,7 @@
     },
     {
       "date": "2025-01-22",
-      "rank": 79,
+      "rank": 78,
       "points": 10.3,
       "change": null,
       "rank_change": 3,
@@ -49,7 +49,7 @@
     },
     {
       "date": "2025-01-29",
-      "rank": 79,
+      "rank": 78,
       "points": 10.5,
       "change": null,
       "rank_change": 0,
@@ -62,7 +62,7 @@
     },
     {
       "date": "2025-02-05",
-      "rank": 83,
+      "rank": 82,
       "points": 9.9,
       "change": null,
       "rank_change": -4,
@@ -75,7 +75,7 @@
     },
     {
       "date": "2025-02-12",
-      "rank": 83,
+      "rank": 82,
       "points": 9.4,
       "change": null,
       "rank_change": 0,
@@ -88,7 +88,7 @@
     },
     {
       "date": "2025-02-19",
-      "rank": 84,
+      "rank": 83,
       "points": 8.9,
       "change": null,
       "rank_change": -1,
@@ -101,7 +101,7 @@
     },
     {
       "date": "2025-02-26",
-      "rank": 83,
+      "rank": 82,
       "points": 9.4,
       "change": null,
       "rank_change": 1,
@@ -114,7 +114,7 @@
     },
     {
       "date": "2025-03-05",
-      "rank": 84,
+      "rank": 83,
       "points": 8.4,
       "change": null,
       "rank_change": -1,
@@ -127,10 +127,10 @@
     },
     {
       "date": "2025-03-12",
-      "rank": 85,
+      "rank": 87,
       "points": 8.1,
       "change": null,
-      "rank_change": -1,
+      "rank_change": -4,
       "percentage_change": -2.8,
       "total_units": 813657,
       "units_charts": 0,
@@ -140,7 +140,7 @@
     },
     {
       "date": "2025-03-19",
-      "rank": 87,
+      "rank": 89,
       "points": 8.0,
       "change": null,
       "rank_change": -2,
@@ -153,7 +153,7 @@
     },
     {
       "date": "2025-03-26",
-      "rank": 89,
+      "rank": 91,
       "points": 7.9,
       "change": null,
       "rank_change": -2,
@@ -166,7 +166,7 @@
     },
     {
       "date": "2025-04-02",
-      "rank": 90,
+      "rank": 92,
       "points": 7.6,
       "change": null,
       "rank_change": -1,
@@ -179,7 +179,7 @@
     },
     {
       "date": "2025-04-09",
-      "rank": 91,
+      "rank": 93,
       "points": 7.8,
       "change": null,
       "rank_change": -1,
@@ -192,7 +192,7 @@
     },
     {
       "date": "2025-04-16",
-      "rank": 95,
+      "rank": 97,
       "points": 7.6,
       "change": null,
       "rank_change": -4,
@@ -205,7 +205,7 @@
     },
     {
       "date": "2025-04-23",
-      "rank": 98,
+      "rank": 100,
       "points": 7.3,
       "change": null,
       "rank_change": -3,
@@ -218,7 +218,7 @@
     },
     {
       "date": "2025-04-30",
-      "rank": 95,
+      "rank": 97,
       "points": 7.7,
       "change": null,
       "rank_change": 3,
@@ -231,7 +231,7 @@
     },
     {
       "date": "2025-05-07",
-      "rank": 96,
+      "rank": 98,
       "points": 7.4,
       "change": null,
       "rank_change": -1,
@@ -244,7 +244,7 @@
     },
     {
       "date": "2025-05-14",
-      "rank": 95,
+      "rank": 97,
       "points": 7.5,
       "change": null,
       "rank_change": 1,
@@ -256,25 +256,12 @@
       "am_global_units": 0
     },
     {
-      "date": "2025-05-21",
-      "rank": 98,
-      "points": 7.2,
-      "change": null,
-      "rank_change": -3,
-      "percentage_change": -3.5,
-      "total_units": 722671,
-      "units_charts": 0,
-      "units_surplus": 1032387,
-      "am_ts_units": 0,
-      "am_global_units": 0
-    },
-    {
       "date": "2025-05-28",
-      "rank": 95,
+      "rank": 98,
       "points": 7.3,
-      "change": null,
-      "rank_change": 3,
-      "percentage_change": 1.0,
+      "change": "RE",
+      "rank_change": null,
+      "percentage_change": null,
       "total_units": 729553,
       "units_charts": 0,
       "units_surplus": 1042218,

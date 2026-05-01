@@ -155,26 +155,6 @@
       "track_count": 24,
       "tracks": [
         {
-          "title": "the 1",
-          "url": "https://open.spotify.com/intl-fr/track/0Jlcvv8IykzHaSmj49uNW8",
-          "type": "track",
-          "edition": "standard",
-          "display_section": "Standard Edition",
-          "display_order": 1,
-          "base_title": "the 1",
-          "album": "folklore",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "the 1",
-          "song_family": "the_1",
-          "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
-          "historical_track_ids": []
-        },
-        {
           "title": "cardigan",
           "url": "https://open.spotify.com/intl-fr/track/4R2kfaDFhslZEMJqAFNpdd",
           "type": "track",
@@ -195,26 +175,6 @@
           "historical_track_ids": [
             "7zcnlq38eqNWyUF6eNaB5Z"
           ]
-        },
-        {
-          "title": "the last great american dynasty",
-          "url": "https://open.spotify.com/intl-fr/track/2Eeur20xVqfUoM3Q7EFPFt",
-          "type": "track",
-          "edition": "standard",
-          "display_section": "Standard Edition",
-          "display_order": 3,
-          "base_title": "the last great american dynasty",
-          "album": "folklore",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "the last great american dynasty",
-          "song_family": "the_last_great_american_dynasty",
-          "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
-          "historical_track_ids": []
         },
         {
           "title": "exile (feat. Bon Iver)",
@@ -259,27 +219,9 @@
           "song_family": "my_tears_ricochet",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
-          "historical_track_ids": []
-        },
-        {
-          "title": "mirrorball",
-          "url": "https://open.spotify.com/intl-fr/track/0ZNU020wNYvgW84iljPkPP",
-          "type": "track",
-          "edition": "standard",
-          "display_section": "Standard Edition",
-          "display_order": 6,
-          "base_title": "mirrorball",
-          "album": "folklore",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "mirrorball",
-          "song_family": "mirrorball",
-          "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
-          "historical_track_ids": []
+          "historical_track_ids": [
+            "0Oju1YcbPCJuUQQWoZNdJK"
+          ]
         },
         {
           "title": "seven",
@@ -299,7 +241,9 @@
           "song_family": "seven",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
-          "historical_track_ids": []
+          "historical_track_ids": [
+            "2vJ7QvyCiR4DaHxwO58izA"
+          ]
         },
         {
           "title": "august",
@@ -401,7 +345,9 @@
           "song_family": "mirrorball",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
-          "historical_track_ids": []
+          "historical_track_ids": [
+            "0ZNU020wNYvgW84iljPkPP"
+          ]
         },
         {
           "title": "mad woman",
@@ -440,26 +386,6 @@
           "title_clean": "epiphany",
           "song_family": "epiphany",
           "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
-          "historical_track_ids": []
-        },
-        {
-          "title": "my tears ricochet",
-          "url": "https://open.spotify.com/intl-fr/track/0Oju1YcbPCJuUQQWoZNdJK",
-          "type": "track",
-          "edition": "standard",
-          "display_section": "Standard Edition",
-          "display_order": 13,
-          "base_title": "my tears ricochet",
-          "album": "folklore",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "my tears ricochet",
-          "song_family": "my_tears_ricochet",
-          "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
           "historical_track_ids": []
         },
@@ -524,26 +450,6 @@
           "historical_track_ids": []
         },
         {
-          "title": "seven",
-          "url": "https://open.spotify.com/intl-fr/track/2vJ7QvyCiR4DaHxwO58izA",
-          "type": "track",
-          "edition": "standard",
-          "display_section": "Standard Edition",
-          "display_order": 16,
-          "base_title": "seven",
-          "album": "folklore",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "seven",
-          "song_family": "seven",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
-          "historical_track_ids": []
-        },
-        {
           "title": "the 1",
           "url": "https://open.spotify.com/intl-fr/track/0P9wLFurlgumLXuqFEpw52",
           "type": "track",
@@ -561,7 +467,9 @@
           "song_family": "the_1",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
-          "historical_track_ids": []
+          "historical_track_ids": [
+            "0Jlcvv8IykzHaSmj49uNW8"
+          ]
         },
         {
           "title": "the last great american dynasty",
@@ -581,7 +489,9 @@
           "song_family": "the_last_great_american_dynasty",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
-          "historical_track_ids": []
+          "historical_track_ids": [
+            "2Eeur20xVqfUoM3Q7EFPFt"
+          ]
         }
       ]
     },

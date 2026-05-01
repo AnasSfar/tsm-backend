@@ -4,7 +4,7 @@
   "primary_album": "reputation",
   "spotify_url": "https://open.spotify.com/track/7F5oktn5YOsR9eR5YsFtqb",
   "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
-  "peak_position": 48,
+  "peak_position": 50,
   "times_at_peak": 1,
   "weeks_on_chart": 5,
   "history": [
@@ -23,7 +23,7 @@
     },
     {
       "date": "2025-06-04",
-      "rank": 67,
+      "rank": 66,
       "points": 13.6,
       "change": "RE",
       "rank_change": null,
@@ -36,10 +36,10 @@
     },
     {
       "date": "2025-06-11",
-      "rank": 93,
+      "rank": 95,
       "points": 8.4,
       "change": null,
-      "rank_change": -26,
+      "rank_change": -29,
       "percentage_change": -38.2,
       "total_units": 838034,
       "units_charts": 0,
@@ -49,7 +49,7 @@
     },
     {
       "date": "2025-12-31",
-      "rank": 88,
+      "rank": 90,
       "points": 7.4,
       "change": "RE",
       "rank_change": null,
@@ -62,7 +62,7 @@
     },
     {
       "date": "2026-01-07",
-      "rank": 48,
+      "rank": 50,
       "points": 12.5,
       "change": null,
       "rank_change": 40,

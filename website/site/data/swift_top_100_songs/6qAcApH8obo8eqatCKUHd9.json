@@ -4,13 +4,13 @@
   "primary_album": "1989 (Taylor's Version)",
   "spotify_url": "https://open.spotify.com/track/6qAcApH8obo8eqatCKUHd9",
   "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-  "peak_position": 17,
+  "peak_position": 21,
   "times_at_peak": 2,
   "weeks_on_chart": 3,
   "history": [
     {
       "date": "2025-02-12",
-      "rank": 17,
+      "rank": 21,
       "points": 29.8,
       "change": "NEW",
       "rank_change": null,
@@ -23,7 +23,7 @@
     },
     {
       "date": "2025-02-19",
-      "rank": 17,
+      "rank": 21,
       "points": 28.9,
       "change": null,
       "rank_change": 0,
@@ -36,7 +36,7 @@
     },
     {
       "date": "2025-02-26",
-      "rank": 19,
+      "rank": 23,
       "points": 26.4,
       "change": null,
       "rank_change": -2,
