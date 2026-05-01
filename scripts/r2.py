@@ -124,6 +124,7 @@ def upload_bytes_if_changed(
                 key,
                 ExtraArgs={
                     "ContentType": content_type,
+                    "CacheControl": "max-age=60, stale-while-revalidate=30",
                     "Metadata": {"sha256": body_hash},
                 },
             )

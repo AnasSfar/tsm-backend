@@ -3,7 +3,7 @@
   "chart_date": "2026-04-22",
   "week_start": "2026-04-16",
   "week_end": "2026-04-22",
-  "generated_at": "2026-05-01T14:50:22.394370+00:00",
+  "generated_at": "2026-05-01T15:00:39.854159+00:00",
   "entries": [
     {
       "rank": 1,
@@ -2066,8 +2066,8 @@
       "rank_change": -2,
       "percentage_change": -2.8,
       "weeks_on_chart": 5,
-      "peak_position": 56,
-      "times_at_peak": 1,
+      "peak_position": 57,
+      "times_at_peak": 2,
       "points_display": "11.4"
     },
     {
@@ -2172,7 +2172,7 @@
       "percentage_change": 11.4,
       "weeks_on_chart": 6,
       "peak_position": 62,
-      "times_at_peak": 4,
+      "times_at_peak": 1,
       "points_display": "11.2"
     },
     {
@@ -2451,7 +2451,7 @@
       "rank_change": 8,
       "percentage_change": 9.3,
       "weeks_on_chart": 67,
-      "peak_position": 43,
+      "peak_position": 35,
       "times_at_peak": 1,
       "points_display": "10.1"
     },
@@ -2662,7 +2662,7 @@
       "percentage_change": -2.2,
       "weeks_on_chart": 38,
       "peak_position": 62,
-      "times_at_peak": 2,
+      "times_at_peak": 1,
       "points_display": "9.6"
     },
     {
@@ -2871,7 +2871,7 @@
       "rank_change": -5,
       "percentage_change": -2.9,
       "weeks_on_chart": 47,
-      "peak_position": 72,
+      "peak_position": 73,
       "times_at_peak": 1,
       "points_display": "9"
     },

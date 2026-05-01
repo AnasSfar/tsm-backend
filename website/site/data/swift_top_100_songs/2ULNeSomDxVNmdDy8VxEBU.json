@@ -4,13 +4,13 @@
   "primary_album": "Red",
   "spotify_url": "https://open.spotify.com/track/2ULNeSomDxVNmdDy8VxEBU",
   "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
-  "peak_position": 56,
-  "times_at_peak": 1,
+  "peak_position": 57,
+  "times_at_peak": 3,
   "weeks_on_chart": 6,
   "history": [
     {
       "date": "2026-03-25",
-      "rank": 56,
+      "rank": 57,
       "points": 10.9,
       "change": "NEW",
       "rank_change": null,
@@ -23,7 +23,7 @@
     },
     {
       "date": "2026-04-01",
-      "rank": 57,
+      "rank": 58,
       "points": 12.1,
       "change": null,
       "rank_change": -1,
@@ -36,7 +36,7 @@
     },
     {
       "date": "2026-04-08",
-      "rank": 59,
+      "rank": 60,
       "points": 11.0,
       "change": null,
       "rank_change": -2,
@@ -52,7 +52,7 @@
       "rank": 57,
       "points": 11.8,
       "change": null,
-      "rank_change": 2,
+      "rank_change": 3,
       "percentage_change": 6.9,
       "total_units": 1177486,
       "units_charts": 0,

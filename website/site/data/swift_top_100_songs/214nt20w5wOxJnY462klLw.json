@@ -803,10 +803,10 @@
     },
     {
       "date": "2026-03-11",
-      "rank": 77,
+      "rank": 78,
       "points": 8.1,
       "change": null,
-      "rank_change": -1,
+      "rank_change": -2,
       "percentage_change": -3.4,
       "total_units": 807897,
       "units_charts": 0,
@@ -816,7 +816,7 @@
     },
     {
       "date": "2026-03-18",
-      "rank": 80,
+      "rank": 81,
       "points": 8.1,
       "change": null,
       "rank_change": -3,
@@ -829,7 +829,7 @@
     },
     {
       "date": "2026-03-25",
-      "rank": 72,
+      "rank": 73,
       "points": 9.4,
       "change": null,
       "rank_change": 8,
@@ -842,7 +842,7 @@
     },
     {
       "date": "2026-04-01",
-      "rank": 66,
+      "rank": 67,
       "points": 10.4,
       "change": null,
       "rank_change": 6,
@@ -855,7 +855,7 @@
     },
     {
       "date": "2026-04-08",
-      "rank": 66,
+      "rank": 67,
       "points": 10.2,
       "change": null,
       "rank_change": 0,
@@ -871,7 +871,7 @@
       "rank": 66,
       "points": 10.2,
       "change": null,
-      "rank_change": 0,
+      "rank_change": 1,
       "percentage_change": 0.3,
       "total_units": 1023059,
       "units_charts": 0,

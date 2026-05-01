@@ -4,23 +4,10 @@
   "primary_album": null,
   "spotify_url": null,
   "image_url": null,
-  "peak_position": 88,
+  "peak_position": 94,
   "times_at_peak": 1,
-  "weeks_on_chart": 2,
+  "weeks_on_chart": 1,
   "history": [
-    {
-      "date": "2026-03-18",
-      "rank": 88,
-      "points": 7.7,
-      "change": "NEW",
-      "rank_change": null,
-      "percentage_change": null,
-      "total_units": 771452,
-      "units_charts": 0,
-      "units_surplus": 1102075,
-      "am_ts_units": 0,
-      "am_global_units": 0
-    },
     {
       "date": "2026-04-01",
       "rank": 94,

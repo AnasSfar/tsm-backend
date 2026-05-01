@@ -4,13 +4,13 @@
   "primary_album": null,
   "spotify_url": null,
   "image_url": null,
-  "peak_position": 54,
+  "peak_position": 55,
   "times_at_peak": 2,
   "weeks_on_chart": 3,
   "history": [
     {
       "date": "2026-03-18",
-      "rank": 54,
+      "rank": 55,
       "points": 12.2,
       "change": "NEW",
       "rank_change": null,
@@ -23,7 +23,7 @@
     },
     {
       "date": "2026-03-25",
-      "rank": 54,
+      "rank": 55,
       "points": 11.8,
       "change": null,
       "rank_change": 0,
@@ -36,7 +36,7 @@
     },
     {
       "date": "2026-04-01",
-      "rank": 56,
+      "rank": 57,
       "points": 12.2,
       "change": null,
       "rank_change": -2,

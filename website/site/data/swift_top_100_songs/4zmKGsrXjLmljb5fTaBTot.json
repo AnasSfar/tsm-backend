@@ -673,7 +673,7 @@
     },
     {
       "date": "2026-03-18",
-      "rank": 58,
+      "rank": 59,
       "points": 10.8,
       "change": "RE",
       "rank_change": null,
@@ -686,7 +686,7 @@
     },
     {
       "date": "2026-03-25",
-      "rank": 59,
+      "rank": 60,
       "points": 10.8,
       "change": null,
       "rank_change": -1,
@@ -699,7 +699,7 @@
     },
     {
       "date": "2026-04-01",
-      "rank": 55,
+      "rank": 56,
       "points": 12.3,
       "change": null,
       "rank_change": 4,
@@ -715,7 +715,7 @@
       "rank": 56,
       "points": 11.5,
       "change": null,
-      "rank_change": -1,
+      "rank_change": 0,
       "percentage_change": -6.2,
       "total_units": 1151823,
       "units_charts": 0,
