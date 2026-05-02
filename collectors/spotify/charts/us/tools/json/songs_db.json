@@ -7699,5 +7699,52 @@
       "jackson 5"
     ],
     "is_pop": false
+  },
+  "alex warren|||fine place to die": {
+    "artist": "Alex Warren",
+    "track": "FINE PLACE TO DIE",
+    "tags": [],
+    "is_pop": false
+  },
+  "kacey musgraves|||horses and divorces (feat. miranda lambert)": {
+    "artist": "Kacey Musgraves",
+    "track": "Horses and Divorces (feat. Miranda Lambert)",
+    "tags": [],
+    "is_pop": false
+  },
+  "kacey musgraves|||i believe in ghosts": {
+    "artist": "Kacey Musgraves",
+    "track": "I Believe In Ghosts",
+    "tags": [],
+    "is_pop": false
+  },
+  "madonna|||bring your love": {
+    "artist": "Madonna",
+    "track": "Bring Your Love",
+    "tags": [],
+    "is_pop": false
+  },
+  "isaiah rashad|||boy in red": {
+    "artist": "Isaiah Rashad",
+    "track": "BOY IN RED",
+    "tags": [],
+    "is_pop": false
+  },
+  "kacey musgraves|||dry spell": {
+    "artist": "Kacey Musgraves",
+    "track": "Dry Spell",
+    "tags": [
+      "emotional",
+      "country",
+      "relatable",
+      "love at first listen"
+    ],
+    "is_pop": false
+  },
+  "kacey musgraves|||back on the wagon": {
+    "artist": "Kacey Musgraves",
+    "track": "Back On The Wagon",
+    "tags": [],
+    "is_pop": false
   }
 }

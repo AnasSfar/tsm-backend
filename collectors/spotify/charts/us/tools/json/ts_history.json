@@ -87448,6 +87448,12 @@
       "previous_rank": 610,
       "peak_rank": 1
     },
+    "2026-05-01": {
+      "rank": 53,
+      "streams": 585752,
+      "previous_rank": 580,
+      "peak_rank": 1
+    },
     "2026-04-04": {
       "rank": 26,
       "streams": 647171,
@@ -88700,6 +88706,12 @@
       "rank": 127,
       "streams": 411835,
       "previous_rank": 1210,
+      "peak_rank": 2
+    },
+    "2026-05-01": {
+      "rank": 138,
+      "streams": 418945,
+      "previous_rank": 1270,
       "peak_rank": 2
     },
     "2026-04-04": {
