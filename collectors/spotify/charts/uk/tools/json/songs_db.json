@@ -7653,5 +7653,35 @@
       "the sweet escape"
     ],
     "is_pop": true
+  },
+  "alex warren|||fine place to die": {
+    "artist": "Alex Warren",
+    "track": "FINE PLACE TO DIE",
+    "tags": [],
+    "is_pop": false
+  },
+  "zara larsson|||eurosummer - girls trip": {
+    "artist": "Zara Larsson",
+    "track": "Eurosummer - Girls Trip",
+    "tags": [],
+    "is_pop": false
+  },
+  "zara larsson|||midnight sun - girls trip": {
+    "artist": "Zara Larsson",
+    "track": "Midnight Sun - Girls Trip",
+    "tags": [],
+    "is_pop": false
+  },
+  "madonna|||bring your love": {
+    "artist": "Madonna",
+    "track": "Bring Your Love",
+    "tags": [],
+    "is_pop": false
+  },
+  "the chemical brothers|||go": {
+    "artist": "The Chemical Brothers",
+    "track": "Go",
+    "tags": [],
+    "is_pop": false
   }
 }
