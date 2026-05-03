@@ -7746,5 +7746,39 @@
     "track": "Back On The Wagon",
     "tags": [],
     "is_pop": false
+  },
+  "miley cyrus|||party in the u.s.a.": {
+    "artist": "Miley Cyrus",
+    "track": "Party In The U.S.A.",
+    "tags": [
+      "pop",
+      "miley cyrus",
+      "guilty pleasure",
+      "dance",
+      "party in the usa",
+      "female vocalists",
+      "catchy",
+      "teen pop",
+      "summer",
+      "disney"
+    ],
+    "is_pop": true
+  },
+  "michael jackson|||thriller": {
+    "artist": "Michael Jackson",
+    "track": "Thriller",
+    "tags": [
+      "pop",
+      "80s",
+      "michael jackson",
+      "dance",
+      "funk",
+      "halloween",
+      "king of pop",
+      "disco",
+      "classic",
+      "male vocalists"
+    ],
+    "is_pop": true
   }
 }
