@@ -3,7 +3,7 @@
   "chart_date": "2026-04-29",
   "week_start": "2026-04-23",
   "week_end": "2026-04-29",
-  "generated_at": "2026-04-30T23:13:22.802661+00:00",
+  "generated_at": "2026-05-03T11:48:39.213893+00:00",
   "entries": [
     {
       "rank": 1,
@@ -24,9 +24,9 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -2.7,
-      "weeks_on_chart": 30,
+      "weeks_on_chart": 1,
       "peak_position": 1,
-      "times_at_peak": 30
+      "times_at_peak": 1
     },
     {
       "rank": 2,
@@ -43,11 +43,11 @@
       "am_ts_units_display": "—",
       "am_global_units_display": "—",
       "units_charts_display": "—",
-      "prev_rank": 3,
+      "prev_rank": 2,
       "change": null,
-      "rank_change": 1,
+      "rank_change": 0,
       "percentage_change": -0.1,
-      "weeks_on_chart": 69,
+      "weeks_on_chart": 31,
       "peak_position": 2,
       "times_at_peak": 1
     },
@@ -66,13 +66,13 @@
       "am_ts_units_display": "—",
       "am_global_units_display": "—",
       "units_charts_display": "—",
-      "prev_rank": 2,
+      "prev_rank": 6,
       "change": null,
-      "rank_change": -1,
-      "percentage_change": -15.3,
-      "weeks_on_chart": 69,
-      "peak_position": 1,
-      "times_at_peak": 39
+      "rank_change": 3,
+      "percentage_change": 24.6,
+      "weeks_on_chart": 31,
+      "peak_position": 3,
+      "times_at_peak": 1
     },
     {
       "rank": 4,
@@ -89,16 +89,39 @@
       "am_ts_units_display": "—",
       "am_global_units_display": "—",
       "units_charts_display": "—",
-      "prev_rank": 4,
+      "prev_rank": 3,
       "change": null,
-      "rank_change": 0,
+      "rank_change": -1,
       "percentage_change": -8.5,
-      "weeks_on_chart": 69,
-      "peak_position": 2,
-      "times_at_peak": 18
+      "weeks_on_chart": 31,
+      "peak_position": 1,
+      "times_at_peak": 21
     },
     {
       "rank": 5,
+      "album_id": "reputation",
+      "title": "reputation",
+      "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+      "spotify_url": "https://open.spotify.com/intl-fr/album/6DEjYFkNZh67HP7R9PSZvv",
+      "weekly_streams": 26707702,
+      "track_count": 10,
+      "points": 890.26,
+      "points_display": "890.26",
+      "units": "26.71M",
+      "units_surplus_display": "26.71M",
+      "am_ts_units_display": "—",
+      "am_global_units_display": "—",
+      "units_charts_display": "—",
+      "prev_rank": 5,
+      "change": null,
+      "rank_change": 0,
+      "percentage_change": -3.7,
+      "weeks_on_chart": 31,
+      "peak_position": 1,
+      "times_at_peak": 2
+    },
+    {
+      "rank": 6,
       "album_id": "lover",
       "title": "Lover",
       "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
@@ -112,36 +135,13 @@
       "am_ts_units_display": "—",
       "am_global_units_display": "—",
       "units_charts_display": "—",
-      "prev_rank": 5,
+      "prev_rank": 4,
       "change": null,
-      "rank_change": 0,
+      "rank_change": -2,
       "percentage_change": -6.2,
-      "weeks_on_chart": 69,
-      "peak_position": 2,
-      "times_at_peak": 19
-    },
-    {
-      "rank": 6,
-      "album_id": "reputation",
-      "title": "reputation",
-      "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
-      "spotify_url": "https://open.spotify.com/intl-fr/album/6DEjYFkNZh67HP7R9PSZvv",
-      "weekly_streams": 18249662,
-      "track_count": 9,
-      "points": 608.32,
-      "points_display": "608.32",
-      "units": "18.25M",
-      "units_surplus_display": "18.25M",
-      "am_ts_units_display": "—",
-      "am_global_units_display": "—",
-      "units_charts_display": "—",
-      "prev_rank": 6,
-      "change": null,
-      "rank_change": 0,
-      "percentage_change": 5.0,
-      "weeks_on_chart": 69,
-      "peak_position": 2,
-      "times_at_peak": 2
+      "weeks_on_chart": 31,
+      "peak_position": 1,
+      "times_at_peak": 7
     },
     {
       "rank": 7,
@@ -162,9 +162,9 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -3.6,
-      "weeks_on_chart": 69,
-      "peak_position": 7,
-      "times_at_peak": 28
+      "weeks_on_chart": 31,
+      "peak_position": 2,
+      "times_at_peak": 8
     },
     {
       "rank": 8,
@@ -185,9 +185,9 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -0.6,
-      "weeks_on_chart": 69,
+      "weeks_on_chart": 31,
       "peak_position": 4,
-      "times_at_peak": 20
+      "times_at_peak": 1
     },
     {
       "rank": 9,
@@ -208,7 +208,7 @@
       "change": null,
       "rank_change": 1,
       "percentage_change": 4.6,
-      "weeks_on_chart": 69,
+      "weeks_on_chart": 31,
       "peak_position": 9,
       "times_at_peak": 1
     },
@@ -231,9 +231,9 @@
       "change": null,
       "rank_change": -1,
       "percentage_change": -1.1,
-      "weeks_on_chart": 69,
-      "peak_position": 9,
-      "times_at_peak": 32
+      "weeks_on_chart": 31,
+      "peak_position": 4,
+      "times_at_peak": 13
     },
     {
       "rank": 11,
@@ -254,8 +254,8 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -0.0,
-      "weeks_on_chart": 50,
-      "peak_position": 9,
+      "weeks_on_chart": 12,
+      "peak_position": 11,
       "times_at_peak": 1
     },
     {
@@ -277,9 +277,9 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -2.5,
-      "weeks_on_chart": 69,
-      "peak_position": 6,
-      "times_at_peak": 3
+      "weeks_on_chart": 31,
+      "peak_position": 8,
+      "times_at_peak": 2
     },
     {
       "rank": 13,
@@ -300,9 +300,9 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": -2.3,
-      "weeks_on_chart": 69,
-      "peak_position": 10,
-      "times_at_peak": 3
+      "weeks_on_chart": 31,
+      "peak_position": 8,
+      "times_at_peak": 5
     },
     {
       "rank": 14,
@@ -323,9 +323,9 @@
       "change": null,
       "rank_change": 0,
       "percentage_change": 0.1,
-      "weeks_on_chart": 69,
-      "peak_position": 9,
-      "times_at_peak": 12
+      "weeks_on_chart": 31,
+      "peak_position": 6,
+      "times_at_peak": 2
     }
   ]
 }
