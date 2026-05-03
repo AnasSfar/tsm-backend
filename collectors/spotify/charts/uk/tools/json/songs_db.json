@@ -7683,5 +7683,39 @@
     "track": "Go",
     "tags": [],
     "is_pop": false
+  },
+  "ac/dc|||thunderstruck": {
+    "artist": "AC/DC",
+    "track": "Thunderstruck",
+    "tags": [
+      "hard rock",
+      "rock",
+      "classic rock",
+      "heavy metal",
+      "acdc",
+      "90s",
+      "ac/dc",
+      "rock n roll",
+      "metal",
+      "australian"
+    ],
+    "is_pop": false
+  },
+  "the jacksons|||blame it on the boogie": {
+    "artist": "The Jacksons",
+    "track": "Blame It on the Boogie",
+    "tags": [
+      "disco",
+      "70s",
+      "funk",
+      "soul",
+      "dance",
+      "pop",
+      "michael jackson",
+      "motown",
+      "the jacksons",
+      "blame it on the boogie"
+    ],
+    "is_pop": false
   }
 }
