@@ -7717,5 +7717,34 @@
       "blame it on the boogie"
     ],
     "is_pop": false
+  },
+  "michael jackson|||black or white": {
+    "artist": "Michael Jackson",
+    "track": "Black or White",
+    "tags": [
+      "pop",
+      "michael jackson",
+      "90s",
+      "dance",
+      "80s",
+      "king of pop",
+      "rock",
+      "american",
+      "funk",
+      "soul"
+    ],
+    "is_pop": true
+  },
+  "cortis|||redred": {
+    "artist": "CORTIS",
+    "track": "REDRED",
+    "tags": [],
+    "is_pop": false
+  },
+  "the prophec|||ek nishani": {
+    "artist": "The PropheC",
+    "track": "Ek Nishani",
+    "tags": [],
+    "is_pop": false
   }
 }
