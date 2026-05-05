@@ -7780,5 +7780,11 @@
       "male vocalists"
     ],
     "is_pop": true
+  },
+  "cortis|||redred": {
+    "artist": "CORTIS",
+    "track": "REDRED",
+    "tags": [],
+    "is_pop": false
   }
 }
