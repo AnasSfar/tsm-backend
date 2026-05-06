@@ -21,7 +21,7 @@ def _warp_connect() -> None:
     cli = str(_WARP_CLI) if _WARP_CLI.exists() else "warp-cli"
     try:
         subprocess.run([cli, "connect"], timeout=15, check=False, capture_output=True)
-        time.sleep(2)
+        time.sleep(8)
         print("[WARP] connecté")
     except Exception as e:
         print(f"[WARP] impossible de connecter ({e})")
