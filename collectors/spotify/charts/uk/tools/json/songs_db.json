@@ -7746,5 +7746,28 @@
     "track": "Ek Nishani",
     "tags": [],
     "is_pop": false
+  },
+  "sienna spiro|||material lover": {
+    "artist": "SIENNA SPIRO",
+    "track": "Material Lover",
+    "tags": [],
+    "is_pop": false
+  },
+  "katy perry|||legendary lovers": {
+    "artist": "Katy Perry",
+    "track": "Legendary Lovers",
+    "tags": [
+      "pop",
+      "epic",
+      "legendary",
+      "love at first listen",
+      "queen of pop",
+      "katy perry",
+      "female vocalists",
+      "prism",
+      "max martin",
+      "2013"
+    ],
+    "is_pop": true
   }
 }
