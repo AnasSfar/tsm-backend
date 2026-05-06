@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import concurrent.futures
 import csv
 import io
 import json
@@ -281,16 +282,18 @@ def main() -> None:
                 "streams": to_int(row.get("streams")),
             })
 
-    uploaded = 0
-
-    for track_id, points in by_track.items():
+    def _upload_track(track_id: str, points: list) -> None:
         points.sort(key=lambda x: x["date"])
+        upload_json_bytes({"track_id": track_id, "points": points}, f"{R2_PREFIX}/{track_id}.json")
 
-        upload_json_bytes(
-            {"track_id": track_id, "points": points},
-            f"{R2_PREFIX}/{track_id}.json"
-        )
-        uploaded += 1
+    with concurrent.futures.ThreadPoolExecutor(max_workers=32) as executor:
+        futures = [
+            executor.submit(_upload_track, track_id, points)
+            for track_id, points in by_track.items()
+        ]
+        concurrent.futures.wait(futures)
+
+    uploaded = len(by_track)
 
     if unresolved:
         upload_json_bytes({"unresolved": unresolved}, f"{R2_PREFIX}/_unresolved.json")

@@ -56,6 +56,7 @@ PAGE_GOTO_TIMEOUT_MS = 20_000
 DEBUG_PAGE_PREVIEW = False
 BROWSER_CACHE_DIR = _SCRIPT_DIR / "tools" / "browser_cache"
 _TOKEN_CACHE_PATH = _SCRIPT_DIR / "tools" / ".token_cache.json"
+_WARP_CLI = Path(r"C:\Program Files\Cloudflare\Cloudflare WARP\warp-cli.exe")
 
 # Logging
 # - default: compact output
@@ -71,8 +72,8 @@ HILL_INITIAL       = 6      # point de départ (MAX_PARALLEL_PAGES comme plafond
 
 PROBE_CANDIDATES = 10  # top N tracks (by streams) used as probe candidates
 
-PENDING_RETRY_SLEEP_SECONDS = 10
-POST_BETWEEN_STREAMS_POSTS_SECONDS = 3 * 60
+PENDING_RETRY_SLEEP_SECONDS = 0
+POST_BETWEEN_STREAMS_POSTS_SECONDS = 30
 INCREMENTAL_PUBLISH_ON_UPDATE = False
 
 NOT_FOUND_STREAK_PATH = DATA_DIR / "not_found_streak.json"
@@ -90,6 +91,76 @@ START_TIME = None
 
 # ── Live update signal ────────────────────────────────────────────────────────
 _UPDATE_SIGNAL_SENT = threading.Event()
+
+# ── Per-track incremental R2 upload ──────────────────────────────────────────
+_R2_TRACK_PREFIX = os.getenv("SPOTIFY_R2_TRACK_PREFIX", "history-by-track")
+
+
+def _push_track_history_to_r2(track_id: str) -> None:
+    """Read this track's full history from CSV and upload to R2. Runs in a daemon thread."""
+    if os.getenv("UPLOAD_TO_R2", "").strip().lower() in ("0", "false", "no", "off"):
+        return
+
+    r2_account = os.getenv("R2_ACCOUNT_ID", "").strip()
+    r2_key_id  = os.getenv("R2_ACCESS_KEY_ID", "").strip()
+    r2_secret  = os.getenv("R2_SECRET_ACCESS_KEY", "").strip()
+    r2_bucket  = os.getenv("R2_BUCKET", "").strip()
+    if not all([r2_account, r2_key_id, r2_secret, r2_bucket]):
+        return
+
+    try:
+        import boto3 as _boto3
+    except ImportError:
+        return
+
+    points: list[dict] = []
+    try:
+        with HISTORY_PATH.open("r", newline="", encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                if (row.get("track_id") or "").strip() != track_id:
+                    continue
+                d = (row.get("date") or "").strip()
+                s_raw = (row.get("streams") or "").strip()
+                if not d or not s_raw:
+                    continue
+                try:
+                    pt: dict = {"date": d, "streams": int(s_raw)}
+                    ds = (row.get("daily_streams") or "").strip()
+                    if ds:
+                        pt["daily_streams"] = int(ds)
+                    points.append(pt)
+                except Exception:
+                    pass
+    except Exception:
+        return
+
+    if not points:
+        return
+
+    points.sort(key=lambda x: x["date"])
+    payload = json.dumps(
+        {"track_id": track_id, "points": points},
+        ensure_ascii=False, separators=(",", ":"),
+    ).encode("utf-8")
+
+    try:
+        s3 = _boto3.client(
+            "s3",
+            endpoint_url=f"https://{r2_account}.r2.cloudflarestorage.com",
+            aws_access_key_id=r2_key_id,
+            aws_secret_access_key=r2_secret,
+        )
+        s3.put_object(
+            Bucket=r2_bucket,
+            Key=f"{_R2_TRACK_PREFIX}/{track_id}.json",
+            Body=payload,
+            ContentType="application/json; charset=utf-8",
+        )
+        if LOG_MODE == "verbose":
+            print(f"  [r2] {track_id} → {len(points)} points uploaded")
+    except Exception as e:
+        if LOG_MODE == "verbose":
+            print(f"  [r2] upload failed for {track_id}: {e}")
 
 
 def _upload_update_signal(stats_date: str) -> None:
@@ -533,6 +604,25 @@ def _test_tokens(tokens: dict) -> bool:
 
 
 
+def _warp_connect() -> None:
+    cli = str(_WARP_CLI) if _WARP_CLI.exists() else "warp-cli"
+    try:
+        subprocess.run([cli, "connect"], timeout=15, check=False, capture_output=True)
+        time.sleep(2)
+        print("TokenManager: WARP connecté")
+    except Exception as e:
+        print(f"TokenManager: impossible de connecter WARP ({e})")
+
+
+def _warp_disconnect() -> None:
+    cli = str(_WARP_CLI) if _WARP_CLI.exists() else "warp-cli"
+    try:
+        subprocess.run([cli, "disconnect"], timeout=10, check=False, capture_output=True)
+        print("TokenManager: WARP déconnecté")
+    except Exception:
+        pass
+
+
 class TokenManager:
     """
     Capture Bearer + client-token depuis Spotify une seule fois via Playwright.
@@ -594,77 +684,81 @@ class TokenManager:
         """Essaie dans l'ordre : cache disque → HTTP direct → Playwright (x5)."""
         if self._try_cached():
             return True
-        if self._try_via_http():
-            return True
-
-        MAX_ATTEMPTS = 5
-        for attempt in range(1, MAX_ATTEMPTS + 1):
-            tokens: dict = {}
-
-            def on_request(req):
-                if "api-partner.spotify.com" in req.url and not tokens.get("bearer"):
-                    auth = req.headers.get("authorization", "")
-                    ct   = req.headers.get("client-token", "")
-                    if auth.startswith("Bearer ") and ct:
-                        tokens["bearer"]       = auth[7:]
-                        tokens["client_token"] = ct
-
-            if LOG_MODE != "quiet":
-                print(f"TokenManager: capture des tokens Spotify via Playwright… (tentative {attempt})")
-            ctx_kwargs: dict = {
-                "user_agent": (
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                    "AppleWebKit/537.36 Chrome/133.0.0.0 Safari/537.36"
-                ),
-            }
-            if _SESSION_FILE.exists():
-                ctx_kwargs["storage_state"] = str(_SESSION_FILE)
-
-            url = "https://open.spotify.com/track/0V3wPSX9ygBnCm8psDIegu"
-
-            p = sync_playwright().start()
-            browser = None
-            try:
-                browser = p.chromium.launch(
-                    headless=HEADLESS,
-                    args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
-                )
-                ctx  = browser.new_context(**ctx_kwargs)
-                page = ctx.new_page()
-                page.on("request", on_request)
-                try:
-                    page.goto(url, wait_until="commit", timeout=240_000)
-                except Exception as goto_err:
-                    print(f"TokenManager: goto échoué ({goto_err!s:.120}), attente token quand même…")
-                deadline = time.time() + 120
-                while not tokens.get("bearer") and time.time() < deadline:
-                    page.wait_for_timeout(500)
-            except Exception as e:
-                print(f"TokenManager: erreur capture (tentative {attempt}): {e}")
-            finally:
-                try:
-                    browser.close()
-                except Exception:
-                    pass
-                try:
-                    p.stop()
-                except Exception:
-                    pass
-
-            if tokens.get("bearer"):
-                with self._lock:
-                    self._tokens = tokens
-                self._save_cache(tokens)
-                if LOG_MODE != "quiet":
-                    print(f"TokenManager: Bearer capturé ({tokens['bearer'][:20]}…)")
+        _warp_connect()
+        try:
+            if self._try_via_http():
                 return True
-            if LOG_MODE != "quiet":
-                print(f"TokenManager: tentative {attempt} échouée")
-            time.sleep(10)
 
-        if LOG_MODE != "quiet":
-            print("TokenManager: échec — tous les modes de capture ont échoué")
-        return False
+            MAX_ATTEMPTS = 5
+            for attempt in range(1, MAX_ATTEMPTS + 1):
+                tokens: dict = {}
+
+                def on_request(req):
+                    if "api-partner.spotify.com" in req.url and not tokens.get("bearer"):
+                        auth = req.headers.get("authorization", "")
+                        ct   = req.headers.get("client-token", "")
+                        if auth.startswith("Bearer ") and ct:
+                            tokens["bearer"]       = auth[7:]
+                            tokens["client_token"] = ct
+
+                if LOG_MODE != "quiet":
+                    print(f"TokenManager: capture des tokens Spotify via Playwright… (tentative {attempt})")
+                ctx_kwargs: dict = {
+                    "user_agent": (
+                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                        "AppleWebKit/537.36 Chrome/133.0.0.0 Safari/537.36"
+                    ),
+                }
+                if _SESSION_FILE.exists():
+                    ctx_kwargs["storage_state"] = str(_SESSION_FILE)
+
+                url = "https://open.spotify.com/track/0V3wPSX9ygBnCm8psDIegu"
+
+                p = sync_playwright().start()
+                browser = None
+                try:
+                    browser = p.chromium.launch(
+                        headless=HEADLESS,
+                        args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
+                    )
+                    ctx  = browser.new_context(**ctx_kwargs)
+                    page = ctx.new_page()
+                    page.on("request", on_request)
+                    try:
+                        page.goto(url, wait_until="commit", timeout=240_000)
+                    except Exception as goto_err:
+                        print(f"TokenManager: goto échoué ({goto_err!s:.120}), attente token quand même…")
+                    deadline = time.time() + 120
+                    while not tokens.get("bearer") and time.time() < deadline:
+                        page.wait_for_timeout(500)
+                except Exception as e:
+                    print(f"TokenManager: erreur capture (tentative {attempt}): {e}")
+                finally:
+                    try:
+                        browser.close()
+                    except Exception:
+                        pass
+                    try:
+                        p.stop()
+                    except Exception:
+                        pass
+
+                if tokens.get("bearer"):
+                    with self._lock:
+                        self._tokens = tokens
+                    self._save_cache(tokens)
+                    if LOG_MODE != "quiet":
+                        print(f"TokenManager: Bearer capturé ({tokens['bearer'][:20]}…)")
+                    return True
+                if LOG_MODE != "quiet":
+                    print(f"TokenManager: tentative {attempt} échouée")
+                time.sleep(10)
+
+            if LOG_MODE != "quiet":
+                print("TokenManager: échec — tous les modes de capture ont échoué")
+            return False
+        finally:
+            _warp_disconnect()
 
     def get(self) -> dict:
         with self._lock:
@@ -1984,6 +2078,10 @@ def try_apply_track_update(
         with lock:
             append_history_row(row)
 
+        threading.Thread(
+            target=_push_track_history_to_r2, args=(track_id,), daemon=True
+        ).start()
+
         status = "updated"
 
         if not _UPDATE_SIGNAL_SENT.is_set():
@@ -2200,8 +2298,8 @@ def fetch_playcount_api(
                 resp = session.post(GRAPHQL_URL, json=body, headers=headers, timeout=(5, 15))
             except Exception:
                 # Network hiccup — retry
-                time.sleep(min(10.0, backoff) + random.random() * 0.25)
-                backoff *= 1.8
+                time.sleep(min(3.0, backoff) + random.random() * 0.1)
+                backoff *= 1.5
                 continue
 
             code = resp.status_code
@@ -2236,15 +2334,14 @@ def fetch_playcount_api(
                     wait_s = float(ra)
                 except Exception:
                     wait_s = backoff
-                # cap to avoid stalling forever; add jitter
-                wait_s = min(30.0, max(1.0, wait_s)) + random.random() * 0.35
+                wait_s = min(15.0, max(0.5, wait_s)) + random.random() * 0.1
                 time.sleep(wait_s)
-                backoff = min(30.0, backoff * 1.8)
+                backoff = min(15.0, backoff * 1.5)
                 continue
 
             if code in {408, 500, 502, 503, 504}:
-                time.sleep(min(20.0, backoff) + random.random() * 0.25)
-                backoff *= 1.8
+                time.sleep(min(5.0, backoff) + random.random() * 0.1)
+                backoff *= 1.5
                 continue
 
             # Other errors are not transient.
@@ -2358,27 +2455,24 @@ def _worker(
     pre_scraped: dict | None = None,
     token_mgr: "TokenManager | None" = None,
 ):
-    # Hill climbing : attendre que ce slot soit activé avant d'ouvrir le browser.
-    # Les threads dormants ne consomment pas de mémoire/CPU tant que target < worker_id.
     if adaptive is not None:
         while True:
             with adaptive.lock:
                 if worker_id < adaptive.target:
                     break
-            time.sleep(1)
+            time.sleep(0.1)
 
     _api_session = _requests.Session()
 
     try:
         while True:
-            # Hill climbing : drain si la cible redescend sous notre id
             if adaptive is not None:
                 while True:
                     with adaptive.lock:
                         target = adaptive.target
                     if worker_id < target:
                         break
-                    time.sleep(2)
+                    time.sleep(0.1)
 
             try:
                 item = queue.get_nowait()
@@ -2407,8 +2501,6 @@ def _worker(
                     api_result = fetch_playcount_api(track["track_id"], token_mgr, _api_session)
                     if api_result is not None:
                         break
-                    if _api_attempt < 2:
-                        time.sleep(1)
                 if api_result is not None:
                     total, raw, scrape_status = api_result, str(api_result), "ok"
                 else:
@@ -2445,7 +2537,6 @@ def _worker(
                 # Retry API immédiat pour les tracks du top-50
                 if track["track_id"] in priority_top_50_ids and token_mgr is not None and token_mgr.available:
                     for _retry in range(2):
-                        time.sleep(5)
                         api_result = fetch_playcount_api(track["track_id"], token_mgr, _api_session)
                         if api_result is not None:
                             total, raw, scrape_status = api_result, str(api_result), "ok"
@@ -2612,9 +2703,8 @@ def run_update(
         ]
         if retry_candidates:
             print(
-                f"\n  {len(retry_candidates)} failure(s) — retry dans 10s avec {min(3, len(retry_candidates))} workers..."
+                f"\n  {len(retry_candidates)} failure(s) — retry immédiat avec {min(3, len(retry_candidates))} workers..."
             )
-            time.sleep(10)
 
             retry_queue: Queue = Queue()
             for idx, r in enumerate(retry_candidates, 1):
@@ -3009,8 +3099,8 @@ def main():
                 while not api_probe["can_start_full_run"]:
                     print()
                     print("Spotify does not appear to have started the next daily update yet.")
-                    print("Retrying in 10 seconds...")
-                    time.sleep(10)
+                    print("Retrying in 2 seconds...")
+                    time.sleep(2)
                     print("Running probe check... [API]")
                     api_probe = _probe_via_api(probe_tracks, token_mgr)
                     _print_probe(api_probe)
@@ -3090,9 +3180,6 @@ def main():
         print("Committing partial progress before retry...")
         git_commit_and_push(_REPO_ROOT, f"partial export {summary['stats_date']} (before retry {retry_round})")
 
-        print(f"Waiting {PENDING_RETRY_SLEEP_SECONDS}s before retry (round {retry_round})...")
-        time.sleep(PENDING_RETRY_SLEEP_SECONDS)
-
         print()
         print("=" * 70)
         print(f"Retry round {retry_round}")
@@ -3150,7 +3237,7 @@ def main():
     def _run_streams_post(cmd: list[str], *, label: str, should_post: bool, state: dict[str, int]) -> None:
         if should_post and state["posted_count"] > 0:
             print(
-                f"Waiting {POST_BETWEEN_STREAMS_POSTS_SECONDS // 60} minutes "
+                f"Waiting {POST_BETWEEN_STREAMS_POSTS_SECONDS}s "
                 f"before next Twitter post ({label})..."
             )
             time.sleep(POST_BETWEEN_STREAMS_POSTS_SECONDS)

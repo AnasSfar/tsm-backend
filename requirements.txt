@@ -17,6 +17,9 @@ python-dotenv>=0.19.0
 # Image processing (for album cover fetching)
 Pillow>=9.0.0
 
+# Data processing (used by filter.py in chart collectors)
+pandas>=2.0.0
+
 # Optional: Web scraping and parsing
 beautifulsoup4>=4.11.0
 lxml>=4.9.0

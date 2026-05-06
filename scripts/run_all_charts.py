@@ -12,6 +12,27 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 CHARTS_ROOT = REPO_ROOT / "collectors" / "spotify" / "charts"
 
+_WARP_CLI = Path(r"C:\Program Files\Cloudflare\Cloudflare WARP\warp-cli.exe")
+
+
+def _warp_connect() -> None:
+    cli = str(_WARP_CLI) if _WARP_CLI.exists() else "warp-cli"
+    try:
+        subprocess.run([cli, "connect"], timeout=15, check=False, capture_output=True)
+        time.sleep(2)
+        print("[WARP] connecté")
+    except Exception as e:
+        print(f"[WARP] impossible de connecter ({e})")
+
+
+def _warp_disconnect() -> None:
+    cli = str(_WARP_CLI) if _WARP_CLI.exists() else "warp-cli"
+    try:
+        subprocess.run([cli, "disconnect"], timeout=10, check=False, capture_output=True)
+        print("[WARP] déconnecté")
+    except Exception:
+        pass
+
 CHART_RUNNERS = [
     ("global",    CHARTS_ROOT / "global"    / "daily.py"),
     ("fr",        CHARTS_ROOT / "fr"        / "daily.py"),
@@ -138,4 +159,8 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    _warp_connect()
+    try:
+        raise SystemExit(main())
+    finally:
+        _warp_disconnect()

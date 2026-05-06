@@ -51,7 +51,7 @@ R2_REQUIRED_ENV_VARS = (
     "R2_SECRET_ACCESS_KEY",
 )
 
-MAX_WORKERS = 10
+MAX_WORKERS = 32
 
 
 def get_env(name: str) -> str:

@@ -60,7 +60,23 @@ HEADERS = {
 
 COUNTRIES = _list_from_env(
     "APPLE_MUSIC_COUNTRIES",
-    ["us", "fr", "gb", "de", "au", "ca", "jp", "br", "mx", "it", "es", "nl", "se"],
+    [
+        # North America
+        "us", "ca", "mx",
+        # South America
+        "ar", "br", "cl", "co", "cr", "do", "ec", "gt", "hn", "pa", "pe", "py", "sv", "uy",
+        # Europe
+        "at", "be", "bg", "ch", "cz", "de", "dk", "ee", "es", "fi", "fr", "gb",
+        "gr", "hr", "hu", "ie", "is", "it", "lt", "lu", "lv", "mk", "mt", "nl",
+        "no", "pl", "pt", "ro", "rs", "se", "si", "sk", "tr", "ua",
+        # Middle East
+        "ae", "bh", "il", "jo", "kw", "lb", "om", "qa", "sa",
+        # Africa
+        "eg", "gh", "ke", "ma", "ng", "tn", "tz", "za",
+        # Asia-Pacific
+        "au", "cn", "hk", "id", "in", "jp", "kz", "mo", "mn", "my",
+        "nz", "ph", "pk", "sg", "th", "tw", "vn",
+    ],
 )
 GENRES = [
     ("14", "Pop"),
@@ -68,4 +84,7 @@ GENRES = [
     ("18", "Hip-Hop/Rap"),
     ("21", "Rock"),
     ("10", "Singer/Songwriter"),
+    ("20", "Alternative"),
+    ("15", "R&B/Soul"),
+    ("17", "Dance"),
 ]
