@@ -4,9 +4,9 @@
   "primary_album": "1989",
   "spotify_url": "https://open.spotify.com/track/3nRmDz7qGCvsMS30rGGY0x",
   "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a",
-  "peak_position": 73,
+  "peak_position": 72,
   "times_at_peak": 1,
-  "weeks_on_chart": 48,
+  "weeks_on_chart": 49,
   "history": [
     {
       "date": "2025-06-04",
@@ -630,6 +630,19 @@
       "units_charts": 0,
       "units_surplus": 1091220,
       "am_ts_units": 106410,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-05-06",
+      "rank": 72,
+      "points": 8.8,
+      "change": null,
+      "rank_change": 8,
+      "percentage_change": 1.4,
+      "total_units": 882014,
+      "units_charts": 0,
+      "units_surplus": 1137206,
+      "am_ts_units": 85970,
       "am_global_units": 0
     }
   ]
