@@ -7769,5 +7769,11 @@
       "2013"
     ],
     "is_pop": true
+  },
+  "gracie abrams|||that's so true": {
+    "artist": "Gracie Abrams",
+    "track": "That's So True",
+    "tags": [],
+    "is_pop": false
   }
 }

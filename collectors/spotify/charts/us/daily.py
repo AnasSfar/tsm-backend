@@ -341,7 +341,6 @@ def main():
 
         log("INFO", f"TerminÃ© avec succÃ¨s ({len(processed)} date(s) postÃ©e(s))")
 
-        git_commit_and_push(_REPO_ROOT)
         maybe_upload_to_r2()
 
         notify(

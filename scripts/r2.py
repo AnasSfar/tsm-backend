@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Any
 
 import boto3
+import botocore.config
 import botocore.exceptions
 from dotenv import load_dotenv
 
@@ -75,6 +76,11 @@ def get_s3_client():
         aws_access_key_id=access_key_id,
         aws_secret_access_key=secret_access_key,
         region_name="auto",
+        config=botocore.config.Config(
+            connect_timeout=10,
+            read_timeout=30,
+            retries={"max_attempts": 3, "mode": "standard"},
+        ),
     )
 
 
