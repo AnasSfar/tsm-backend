@@ -7798,5 +7798,22 @@
     "track": "Freakin' Out",
     "tags": [],
     "is_pop": false
+  },
+  "plain white t's|||hey there delilah": {
+    "artist": "Plain White T's",
+    "track": "Hey There Delilah",
+    "tags": [
+      "acoustic",
+      "indie",
+      "love",
+      "rock",
+      "alternative",
+      "emo",
+      "pop",
+      "mellow",
+      "hey there delilah",
+      "plain white ts"
+    ],
+    "is_pop": false
   }
 }

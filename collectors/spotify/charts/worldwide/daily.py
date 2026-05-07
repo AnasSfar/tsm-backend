@@ -61,7 +61,9 @@ _http = _build_http_session()
 # ── Paths ─────────────────────────────────────────────────────────────────────
 # collectors/spotify/charts/worldwide/daily.py → parents[4] = tsm-backend/
 ROOT            = Path(__file__).resolve().parents[4]
-SESSION_FILE    = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "spotify_session.json"
+SESSION_FILE        = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "spotify_session.json"
+_BEARER_CACHE_FILE  = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "bearer_cache.json"
+_BEARER_TOKEN_TTL   = 50 * 60
 OUTPUT_PATH     = ROOT / "website" / "site" / "data" / "charts_worldwide.json"
 HISTORY_ROOT    = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "history"
 TOTAL_DAYS_PATH = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "json" / "total_days.json"
@@ -257,82 +259,99 @@ def _worldwide_history_path(chart_date: str) -> Path:
         / f"ts_worldwide_{chart_date}.json"
     )
 
+def _load_cached_bearer() -> str | None:
+    try:
+        data = json.loads(_BEARER_CACHE_FILE.read_text(encoding="utf-8"))
+        if time.time() - float(data.get("ts", 0)) < _BEARER_TOKEN_TTL:
+            token = str(data.get("token") or "").strip()
+            return token or None
+    except Exception:
+        pass
+    return None
+
+
 def _get_bearer_token_and_regions() -> tuple[str, dict[str, str]]:
     """
-    Récupère le Bearer token via Playwright et extrait la liste exhaustive des régions
-    en combinant l'API overview ET le HTML de charts.spotify.com.
+    Récupère le Bearer token via le cache global si disponible, sinon via Playwright.
+    Extrait la liste des régions via l'API overview (+ HTML si Playwright a tourné).
     """
     from bs4 import BeautifulSoup
 
-    _MAX_PW_ATTEMPTS = 3
-    _PW_RETRY_DELAY = 15
-    api_host = _API_BASE.split("//")[1].split("/")[0]
+    cached_token = _load_cached_bearer()
+    if cached_token:
+        print("[INFO] Bearer token récupéré depuis le cache global.", flush=True)
+        token = cached_token
+        html_holder: list[str] = []
+    else:
+        _MAX_PW_ATTEMPTS = 3
+        _PW_RETRY_DELAY = 15
+        api_host = _API_BASE.split("//")[1].split("/")[0]
 
-    token_holder: list[str] = []
-    html_holder: list[str] = []
-
-    for pw_attempt in range(_MAX_PW_ATTEMPTS):
-        if pw_attempt > 0:
-            print(f"[INFO] Playwright retry {pw_attempt}/{_MAX_PW_ATTEMPTS - 1} (attente {_PW_RETRY_DELAY}s)…", flush=True)
-            time.sleep(_PW_RETRY_DELAY)
-
-        token_holder = []
+        token_holder: list[str] = []
         html_holder = []
 
-        def _on_request(req: Any, _th: list = token_holder, _ah: str = api_host) -> None:
-            if _ah in req.url and not _th:
-                auth = req.headers.get("authorization", "")
-                if auth.startswith("Bearer "):
-                    _th.append(auth[7:])
+        for pw_attempt in range(_MAX_PW_ATTEMPTS):
+            if pw_attempt > 0:
+                print(f"[INFO] Playwright retry {pw_attempt}/{_MAX_PW_ATTEMPTS - 1} (attente {_PW_RETRY_DELAY}s)…", flush=True)
+                time.sleep(_PW_RETRY_DELAY)
 
-        p = sync_playwright().start()
-        browser = None
-        _pw_error: Exception | None = None
-        try:
-            browser = p.chromium.launch(
-                headless=True,
-                args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
-            )
-            ctx = browser.new_context(
-                storage_state=str(SESSION_FILE),
-                user_agent=_UA,
-                viewport={"width": 1280, "height": 800},
-            )
-            page = ctx.new_page()
-            page.on("request", _on_request)
-            page.goto(
-                "https://charts.spotify.com/",
-                wait_until="networkidle",
-                timeout=45_000,
-            )
-            deadline = time.time() + 20
-            while not token_holder and time.time() < deadline:
-                page.wait_for_timeout(300)
-            html_holder.append(page.content())
-        except Exception as e:
-            _pw_error = e
-            print(f"[WARN] Playwright tentative {pw_attempt + 1} échouée: {e}", flush=True)
-        finally:
+            token_holder = []
+            html_holder = []
+
+            def _on_request(req: Any, _th: list = token_holder, _ah: str = api_host) -> None:
+                if _ah in req.url and not _th:
+                    auth = req.headers.get("authorization", "")
+                    if auth.startswith("Bearer "):
+                        _th.append(auth[7:])
+
+            p = sync_playwright().start()
+            browser = None
+            _pw_error: Exception | None = None
             try:
-                if browser:
-                    browser.close()
-            except Exception:
-                pass
-            try:
-                p.stop()
-            except Exception:
-                pass
+                browser = p.chromium.launch(
+                    headless=True,
+                    args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
+                )
+                ctx = browser.new_context(
+                    storage_state=str(SESSION_FILE),
+                    user_agent=_UA,
+                    viewport={"width": 1280, "height": 800},
+                )
+                page = ctx.new_page()
+                page.on("request", _on_request)
+                page.goto(
+                    "https://charts.spotify.com/",
+                    wait_until="networkidle",
+                    timeout=45_000,
+                )
+                deadline = time.time() + 20
+                while not token_holder and time.time() < deadline:
+                    page.wait_for_timeout(300)
+                html_holder.append(page.content())
+            except Exception as e:
+                _pw_error = e
+                print(f"[WARN] Playwright tentative {pw_attempt + 1} échouée: {e}", flush=True)
+            finally:
+                try:
+                    if browser:
+                        browser.close()
+                except Exception:
+                    pass
+                try:
+                    p.stop()
+                except Exception:
+                    pass
 
-        if _pw_error is None:
-            break
-        if pw_attempt == _MAX_PW_ATTEMPTS - 1:
-            raise _pw_error
+            if _pw_error is None:
+                break
+            if pw_attempt == _MAX_PW_ATTEMPTS - 1:
+                raise _pw_error
 
-    if not token_holder:
-        raise RuntimeError(
-            "Bearer token not found — check global/tools/json/spotify_session.json"
-        )
-    token = token_holder[0]
+        if not token_holder:
+            raise RuntimeError(
+                "Bearer token not found — check global/tools/json/spotify_session.json"
+            )
+        token = token_holder[0]
 
     # 1. API overview
     headers = {

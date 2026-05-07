@@ -131,6 +131,19 @@ def past_cutoff() -> bool:
 _FILTER_BEARER_CACHE = ROOT / "tools" / "json" / "bearer_cache.json"
 _API_CHARTS_BASE = "https://charts-spotify-com-service.spotify.com/auth/v0/charts"
 _TOKEN_TTL = 50 * 60
+_UNAVAILABLE_MARKERS = (
+    "Aucune ligne",
+    "HTTP 404",
+    "pas encore publi",
+    "déjà traité",
+    "deja traite",
+    "latest pointe vers",
+)
+
+
+def looks_like_unavailable_chart(output: str) -> bool:
+    normalized = output.casefold()
+    return any(marker.casefold() in normalized for marker in _UNAVAILABLE_MARKERS)
 
 
 def page_available(d: date) -> bool | None:
@@ -156,7 +169,7 @@ def page_available(d: date) -> bool | None:
         return None
 
 
-def run_filter(d: date) -> str | None:
+def run_filter(d: date) -> tuple[str | None, bool]:
     log("STEP", f"Lancement de filter.py pour {d}")
     result = subprocess.run(
         [sys.executable, str(FILTER_SCRIPT), str(d)],
@@ -176,16 +189,17 @@ def run_filter(d: date) -> str | None:
 
     if result.returncode != 0:
         log("ERROR", f"filter.py a Ã©chouÃ© (code {result.returncode})")
-        return None
+        unavailable = looks_like_unavailable_chart(f"{result.stdout}\n{result.stderr}")
+        return None, unavailable
 
     tp = tweet_path(d)
     if not tp.exists():
         log("ERROR", "tweet.txt introuvable aprÃ¨s filter.py")
-        return None
+        return None, False
 
     content = tp.read_text(encoding="utf-8")
     log("INFO", f"tweet.txt chargÃ© ({len(content)} caractÃ¨res)")
-    return content
+    return content, False
 
 
 def build_multi_tweet(dates: list[date]) -> str:
@@ -207,7 +221,7 @@ def maybe_upload_to_r2() -> None:
     log("STEP", "Uploading exported data to R2")
     result = subprocess.run([sys.executable, str(r2_script)], check=False, cwd=str(_REPO_ROOT))
     if result.returncode != 0:
-        raise RuntimeError(f"R2 upload failed with code {result.returncode}")
+        log("WARN", f"R2 upload failed with code {result.returncode} (non-blocking)")
 
 
 def main():
@@ -274,14 +288,21 @@ def main():
 
     # Traiter chaque date non-postÃ©e
     results: dict[date, str] = {}
+    unavailable_dates: list[date] = []
     for d in unposted:
-        content = run_filter(d)
+        content, unavailable = run_filter(d)
         if content:
             results[d] = content
+        elif unavailable:
+            unavailable_dates.append(d)
+            log("WARN", f"Chart {d} indisponible ou latest dÃ©jÃ  traitÃ©, date ignorÃ©e")
         else:
             log("WARN", f"filter.py a Ã©chouÃ© pour {d}, date ignorÃ©e")
 
     if not results:
+        if unavailable_dates and len(unavailable_dates) == len(unposted):
+            log("WARN", f"Aucun nouveau chart disponible: {[str(d) for d in unavailable_dates]}")
+            return
         log("ERROR", "Aucun traitement rÃ©ussi")
         sys.exit(1)
 

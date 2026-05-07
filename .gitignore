@@ -23,16 +23,43 @@ env/
 # Generated browser runtime data (Playwright Chrome profiles)
 **/tools/json/chrome_profile/**
 **/tools/browser_cache/**
+*.txt
+*.html
+*.json
 
 # Common runtime artifacts
 *.lock
 twitter_post.txt
+
+# Log files
+*.log
+
+# CSV data files
+*.csv
+
+# Chart history data (generated)
+collectors/spotify/charts/*/history/
+collectors/spotify/charts/worldwide/history/
+collectors/spotify/charts/artists_global/history/
+
+# Token / session caches
+**/bearer_cache.json
+collectors/apple_music/tools/json/apple_music_token.json
+collectors/spotify/streams/tools/.token_cache.json
+
+# Website generated data
+website/site/data/charts_*/
+website/site/data/charts_*.json
+website/site/data/applemusic*.json
+website/site/data/billboard.json
 
 # mystreamcount backfill state
 collectors/spotify/streams/mystreamcount/state.json
 collectors/spotify/streams/mystreamcount/state.tmp
 collectors/billboard/history
 collectors/billboard/logs
+collectors\spotify\streams\history
+
 # Images
 *.png
 *.jpg

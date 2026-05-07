@@ -3,14 +3,17 @@ from __future__ import annotations
 
 import argparse
 import concurrent.futures
+import json
 import os
 import re
 import subprocess
 import sys
 import threading
 import time
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
+import requests
 from dotenv import load_dotenv
 
 CHARTS_ROOT = Path(__file__).resolve().parent
@@ -25,7 +28,7 @@ def _warp_connect() -> None:
         t0 = time.perf_counter()
         print("[WARP] connexion en cours...")
         subprocess.run([cli, "connect"], timeout=15, check=False, capture_output=True)
-        time.sleep(8)
+        time.sleep(15)
         print(f"[WARP] connecté ({_fmt(time.perf_counter() - t0)})")
     except Exception as e:
         print(f"[WARP] impossible de connecter ({e})")
@@ -42,6 +45,15 @@ def _warp_disconnect() -> None:
 
 REPO_ENV_FILE = REPO_ROOT / ".env"
 R2_ENV_VARS = ("R2_ACCOUNT_ID", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY")
+SPOTIFY_API_BASE = "https://charts-spotify-com-service.spotify.com/auth/v0/charts"
+SPOTIFY_CHARTS_URL = "https://charts.spotify.com/charts/view/regional-global-daily/latest"
+SPOTIFY_SESSION = CHARTS_ROOT / "global" / "tools" / "json" / "spotify_session.json"
+SPOTIFY_TOKEN_TTL = 50 * 60
+AVAILABILITY_RETRY_SECONDS = 10
+SPOTIFY_UA = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+)
 
 # global et fr postent dès leur collecte terminée (pas d'attente de worldwide)
 # us/uk/worldwide ne postent pas
@@ -52,6 +64,29 @@ COLLECT_RUNNERS: list[tuple[str, Path, list[str]]] = [
     ("uk",        CHARTS_ROOT / "uk"        / "daily.py", ["--no-post"]),
     ("worldwide", CHARTS_ROOT / "worldwide" / "daily.py", []),
 ]
+
+CHART_AVAILABILITY: dict[str, str] = {
+    "global": "regional-global-daily",
+    "fr": "regional-fr-daily",
+    "us": "regional-us-daily",
+    "uk": "regional-gb-daily",
+}
+
+# posted.lock path mirrors each daily.py: {region}/history/YYYY/MM/date/posted.lock
+def _posted_lock(name: str, target: date) -> Path:
+    return CHARTS_ROOT / name / "history" / str(target.year) / f"{target.month:02d}" / str(target) / "posted.lock"
+
+
+def _already_done(runners: list[tuple[str, Path, list[str]]], target: date) -> bool:
+    names = [n for n, _, _ in runners if n in CHART_AVAILABILITY]
+    if not names:
+        return False
+    done = [n for n in names if _posted_lock(n, target).exists()]
+    missing = [n for n in names if n not in done]
+    if missing:
+        return False
+    print(f"[SKIP] posted.lock présent pour toutes les régions ({', '.join(done)}) — déjà terminé pour {target}")
+    return True
 
 
 _active_procs: list[subprocess.Popen] = []
@@ -82,6 +117,157 @@ def _build_env() -> dict[str, str]:
     if missing:
         print(f"[WARN] R2 vars manquantes: {', '.join(missing)}")
     return env
+
+
+def _bearer_cache_path(name: str) -> Path:
+    return CHARTS_ROOT / name / "tools" / "json" / "bearer_cache.json"
+
+
+def _load_cached_bearer(name: str) -> str | None:
+    try:
+        data = json.loads(_bearer_cache_path(name).read_text(encoding="utf-8"))
+        if time.time() - float(data.get("ts", 0)) < SPOTIFY_TOKEN_TTL:
+            token = str(data.get("token") or "").strip()
+            return token or None
+    except Exception:
+        return None
+    return None
+
+
+def _save_bearer_to_caches(token: str, names: list[str]) -> None:
+    payload = json.dumps({"token": token, "ts": time.time()})
+    for name in names:
+        try:
+            path = _bearer_cache_path(name)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(payload, encoding="utf-8")
+        except Exception as e:
+            print(f"[WARN] cache bearer {name} non sauvegarde: {e}")
+
+
+def _acquire_bearer_token(names: list[str], *, refresh: bool = False) -> str:
+    if not refresh:
+        for name in names:
+            token = _load_cached_bearer(name)
+            if token:
+                return token
+
+    print("[CHECK] token Spotify absent/expire, recuperation via Playwright...")
+    from playwright.sync_api import sync_playwright
+
+    token_holder: list[str] = []
+    api_host = SPOTIFY_API_BASE.split("//", 1)[1].split("/", 1)[0]
+
+    def _on_request(req) -> None:
+        if api_host in req.url and not token_holder:
+            auth = req.headers.get("authorization", "")
+            if auth.startswith("Bearer "):
+                token_holder.append(auth[7:])
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch(
+            headless=True,
+            args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
+        )
+        try:
+            context = browser.new_context(
+                storage_state=str(SPOTIFY_SESSION),
+                user_agent=SPOTIFY_UA,
+                viewport={"width": 1280, "height": 800},
+            )
+            page = context.new_page()
+            page.on("request", _on_request)
+            page.goto(SPOTIFY_CHARTS_URL, wait_until="domcontentloaded", timeout=30_000)
+            deadline = time.time() + 20
+            while not token_holder and time.time() < deadline:
+                page.wait_for_timeout(300)
+        finally:
+            browser.close()
+
+    if not token_holder:
+        raise RuntimeError(f"Bearer token introuvable avec {SPOTIFY_SESSION}")
+
+    token = token_holder[0]
+    _save_bearer_to_caches(token, names)
+    return token
+
+
+def _extract_target_date(forwarded: list[str]) -> date:
+    for value in forwarded:
+        if value.startswith("--"):
+            continue
+        try:
+            return datetime.strptime(value, "%Y-%m-%d").date()
+        except ValueError:
+            continue
+    return date.today() - timedelta(days=1)
+
+
+def _chart_available(chart_id: str, target: date, token: str) -> tuple[bool, str]:
+    try:
+        resp = requests.get(
+            f"{SPOTIFY_API_BASE}/{chart_id}/{target}",
+            headers={
+                "Authorization": f"Bearer {token}",
+                "Accept": "application/json",
+                "Referer": "https://charts.spotify.com/",
+                "User-Agent": SPOTIFY_UA,
+            },
+            timeout=15,
+        )
+    except Exception as e:
+        short = str(e).split("\n")[0][:120]
+        return False, f"réseau: {short}"
+
+    if resp.status_code == 200:
+        try:
+            entries = resp.json().get("entries") or []
+        except Exception:
+            entries = []
+        return bool(entries), f"HTTP 200 ({len(entries)} lignes)"
+    return False, f"HTTP {resp.status_code}"
+
+
+def _wait_for_charts_available(
+    runners: list[tuple[str, Path, list[str]]],
+    *,
+    target: date,
+    dry_run: bool,
+) -> None:
+    names = [name for name, _, _ in runners if name in CHART_AVAILABILITY]
+    if dry_run or not names:
+        return
+
+    probe = next((n for n in ("global", "fr", "us", "uk") if n in names), names[0])
+    probe_chart = CHART_AVAILABILITY[probe]
+
+    attempt = 1
+    refresh_token = False
+    print(f"\n[CHECK] disponibilite Spotify pour {target} (via {probe})")
+    while not _stop_event.is_set():
+        try:
+            token = _acquire_bearer_token(names, refresh=refresh_token)
+            refresh_token = False
+        except Exception as e:
+            print(f"[CHECK] tentative #{attempt}: token indisponible ({e})")
+            time.sleep(AVAILABILITY_RETRY_SECONDS)
+            attempt += 1
+            continue
+
+        ok, detail = _chart_available(probe_chart, target, token)
+        print(f"[CHECK] tentative #{attempt}: {probe}={detail}")
+        if ok:
+            print(f"[CHECK] charts disponibles pour {target}")
+            return
+        if "HTTP 401" in detail or "HTTP 403" in detail:
+            refresh_token = True
+
+        is_network_err = detail.startswith("réseau:")
+        wait = 5 if is_network_err else AVAILABILITY_RETRY_SECONDS
+        label = "tunnel WARP" if is_network_err else "chart indisponible"
+        print(f"[CHECK] {label} - retry dans {wait}s")
+        time.sleep(wait)
+        attempt += 1
 
 
 _KEEP_LEVELS = {"ERROR", "WARN", "STEP"}
@@ -221,6 +407,11 @@ def main() -> int:
             continue
         extra = ["--no-post"] if args.no_post and name in {"global", "fr"} else []
         collect_runners.append((name, script, fixed + extra))
+
+    target_date = _extract_target_date(forwarded)
+    if not args.dry_run and _already_done(collect_runners, target_date):
+        return 0
+    _wait_for_charts_available(collect_runners, target=target_date, dry_run=args.dry_run)
 
     # Collecte de toutes les régions en parallèle (global+fr postent dès qu'ils sont prêts)
     names_str = ", ".join(n for n, _, _ in collect_runners)

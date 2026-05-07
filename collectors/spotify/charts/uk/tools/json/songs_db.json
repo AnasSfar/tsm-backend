@@ -7775,5 +7775,22 @@
     "track": "That's So True",
     "tags": [],
     "is_pop": false
+  },
+  "shakira|||hips don't lie (feat. wyclef jean)": {
+    "artist": "Shakira",
+    "track": "Hips Don't Lie (feat. Wyclef Jean)",
+    "tags": [
+      "pop",
+      "latin",
+      "dance",
+      "reggaeton",
+      "shakira",
+      "00s",
+      "2000s",
+      "wyclef jean",
+      "2006",
+      "cumbia"
+    ],
+    "is_pop": true
   }
 }

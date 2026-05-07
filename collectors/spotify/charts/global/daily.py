@@ -295,6 +295,20 @@ def _check_page_once(page, target_date: date, chart_id: str = CHART_ID) -> bool:
 _FILTER_BEARER_CACHE = ROOT / "tools" / "json" / "bearer_cache.json"
 _API_CHARTS_BASE = "https://charts-spotify-com-service.spotify.com/auth/v0/charts"
 _TOKEN_TTL = 50 * 60
+_UNAVAILABLE_MARKERS = (
+    "Aucune ligne",
+    "HTTP 404",
+    "pas encore publi",
+    "déjà traité",
+    "deja traite",
+    "latest pointe vers",
+    "latest (",
+)
+
+
+def looks_like_unavailable_chart(output: str) -> bool:
+    normalized = output.casefold()
+    return any(marker.casefold() in normalized for marker in _UNAVAILABLE_MARKERS)
 
 
 def _api_chart_available(target_date: date) -> bool | None:
@@ -348,7 +362,7 @@ def data_ready(d: date) -> bool:
     return chart_csv_path(d).exists() and tweet_path(d).exists()
 
 
-def run_filter(d: date, *, force: bool = False) -> str | None:
+def run_filter(d: date, *, force: bool = False) -> tuple[str | None, bool]:
     log("STEP", f"Lancement de filter.py pour {d}{' (--force)' if force else ''}")
 
     cmd = [sys.executable, str(FILTER_SCRIPT), str(d)]
@@ -372,16 +386,17 @@ def run_filter(d: date, *, force: bool = False) -> str | None:
 
     if result.returncode != 0:
         log("ERROR", f"filter.py a échoué (code {result.returncode})")
-        return None
+        unavailable = looks_like_unavailable_chart(f"{result.stdout}\n{result.stderr}")
+        return None, unavailable
 
     tp = tweet_path(d)
     if not tp.exists():
         log("ERROR", f"tweet.txt introuvable après filter.py pour {d}")
-        return None
+        return None, False
 
     content = tp.read_text(encoding="utf-8")
     log("INFO", f"tweet.txt chargé ({len(content)} caractères)")
-    return content
+    return content, False
 
 
 def build_tweet_content(processed: list[date]) -> str:
@@ -596,19 +611,26 @@ def main() -> None:
             continue
 
     results: dict[date, str] = {}
+    unavailable_dates: list[date] = []
     for d in unposted:
         if data_ready(d) and not force:
             content = tweet_path(d).read_text(encoding="utf-8")
             log("INFO", f"tweet.txt existant chargé pour {d} ({len(content)} caractères)")
             results[d] = content
         else:
-            content = run_filter(d, force=force)
+            content, unavailable = run_filter(d, force=force)
             if content:
                 results[d] = content
+            elif unavailable:
+                unavailable_dates.append(d)
+                log("WARN", f"Chart {d} indisponible ou latest déjà traité, date ignorée")
             else:
                 log("WARN", f"filter.py a échoué pour {d}, date ignorée")
 
     if not results:
+        if unavailable_dates and len(unavailable_dates) == len(unposted):
+            log("WARN", f"Aucun nouveau chart disponible: {[str(d) for d in unavailable_dates]}")
+            return
         log("ERROR", "Aucun traitement réussi")
         sys.exit(1)
 
