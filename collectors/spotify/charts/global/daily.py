@@ -292,64 +292,55 @@ def _check_page_once(page, target_date: date, chart_id: str = CHART_ID) -> bool:
     return available
 
 
+_FILTER_BEARER_CACHE = ROOT / "tools" / "json" / "bearer_cache.json"
+_API_CHARTS_BASE = "https://charts-spotify-com-service.spotify.com/auth/v0/charts"
+_TOKEN_TTL = 50 * 60
+
+
+def _api_chart_available(target_date: date) -> bool | None:
+    """Vérifie la disponibilité du chart via l'API Spotify (sans Playwright).
+    Retourne True si dispo, False si pas encore publiée, None si token absent/expiré."""
+    import json as _json
+    import requests as _req
+    try:
+        if not _FILTER_BEARER_CACHE.exists():
+            return None
+        data = _json.loads(_FILTER_BEARER_CACHE.read_text(encoding="utf-8"))
+        if time.time() - data.get("ts", 0) >= _TOKEN_TTL:
+            return None
+        token = data.get("token")
+        if not token:
+            return None
+        url = f"{_API_CHARTS_BASE}/{CHART_ID}/{target_date}"
+        resp = _req.get(url, headers={"Authorization": f"Bearer {token}", "User-Agent": "Mozilla/5.0"}, timeout=15)
+        log("CHECK", f"API status {resp.status_code} pour {target_date}")
+        return resp.status_code == 200
+    except Exception as e:
+        log("CHECK", f"Erreur check API: {e}")
+        return None
+
+
 def wait_for_page(target_date: date) -> bool:
-    """Attend que la page soit disponible, browser gardé ouvert entre les tentatives."""
-    if not SPOTIFY_SESSION.exists():
-        log("ERROR", f"Session Spotify introuvable: {SPOTIFY_SESSION}")
-        return False
-
-    with sync_playwright() as p:
-        browser = p.chromium.launch(
-            headless=True,
-            args=[
-                "--disable-blink-features=AutomationControlled",
-                "--disable-dev-shm-usage",
-                "--no-sandbox",
-            ],
-        )
-        context = browser.new_context(
-            storage_state=str(SPOTIFY_SESSION),
-            viewport={"width": 1400, "height": 2000},
-            user_agent=(
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                "AppleWebKit/537.36 (KHTML, like Gecko) "
-                "Chrome/133.0.0.0 Safari/537.36"
-            ),
-            locale="en-US",
-        )
-        page = context.new_page()
-        page.set_default_navigation_timeout(PAGE_TIMEOUT_MS)
-        page.set_default_timeout(PAGE_TIMEOUT_MS)
-
-        attempt = 1
-        try:
-            while True:
-                if past_cutoff():
-                    log("WARN", f"{CUTOFF_HOUR}h{CUTOFF_MINUTE:02d} atteint — page {target_date} toujours indisponible, abandon")
-                    return False
-
-                log("WAIT", f"Vérification tentative #{attempt} pour {target_date}")
-                if _check_page_once(page, target_date, CHART_ID):
-                    log("INFO", f"Page de {target_date} détectée (tentative #{attempt})")
-                    return True
-
-                log("WAIT", f"Page {target_date} pas encore exploitable, retry #{attempt} dans {RETRY_SECONDS // 60} min")
-                attempt += 1
-                time.sleep(RETRY_SECONDS)
-                # Le browser reste ouvert — next iteration fait juste page.goto()
-
-        except Exception as e:
-            log("CHECK", f"Erreur générale: {e}")
+    """Attend que le chart soit disponible via l'API Spotify (sans Playwright)."""
+    attempt = 1
+    while True:
+        if past_cutoff():
+            log("WARN", f"{CUTOFF_HOUR}h{CUTOFF_MINUTE:02d} atteint — page {target_date} toujours indisponible, abandon")
             return False
-        finally:
-            try:
-                context.close()
-            except Exception:
-                pass
-            try:
-                browser.close()
-            except Exception:
-                pass
+
+        log("WAIT", f"Vérification tentative #{attempt} pour {target_date}")
+        avail = _api_chart_available(target_date)
+
+        if avail is True:
+            log("INFO", f"Page de {target_date} détectée (API, tentative #{attempt})")
+            return True
+        if avail is None:
+            log("INFO", "Token absent/expiré — passage direct à filter.py")
+            return True
+
+        log("WAIT", f"Page {target_date} pas encore exploitable, retry #{attempt} dans {RETRY_SECONDS // 60} min")
+        attempt += 1
+        time.sleep(RETRY_SECONDS)
 
 
 def data_ready(d: date) -> bool:
@@ -660,7 +651,6 @@ def main() -> None:
         log("INFO", f"Terminé avec succès ({len(processed)} date(s) postée(s))")
 
         migrate_archive_csv(MIGRATE_SCRIPT)
-        git_commit_and_push(_REPO_ROOT)
         maybe_upload_to_r2()
 
         if NTFY_TOPIC:

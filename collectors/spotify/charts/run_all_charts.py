@@ -40,19 +40,14 @@ def _warp_disconnect() -> None:
 REPO_ENV_FILE = REPO_ROOT / ".env"
 R2_ENV_VARS = ("R2_ACCOUNT_ID", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY")
 
-# Phase 1 — collecte des données, tous en parallèle, pas de post Twitter
+# global et fr postent dès leur collecte terminée (pas d'attente de worldwide)
+# us/uk/worldwide ne postent pas
 COLLECT_RUNNERS: list[tuple[str, Path, list[str]]] = [
-    ("global",    CHARTS_ROOT / "global"    / "daily.py", ["--force", "--no-post"]),
-    ("fr",        CHARTS_ROOT / "fr"        / "daily.py", ["--force", "--no-post"]),
+    ("global",    CHARTS_ROOT / "global"    / "daily.py", ["--force"]),
+    ("fr",        CHARTS_ROOT / "fr"        / "daily.py", ["--force"]),
     ("us",        CHARTS_ROOT / "us"        / "daily.py", ["--no-post"]),
     ("uk",        CHARTS_ROOT / "uk"        / "daily.py", ["--no-post"]),
     ("worldwide", CHARTS_ROOT / "worldwide" / "daily.py", []),
-]
-
-# Phase 2 — post Twitter uniquement (données déjà prêtes depuis phase 1)
-POST_RUNNERS: list[tuple[str, Path, list[str]]] = [
-    ("global-post", CHARTS_ROOT / "global" / "daily.py", []),
-    ("fr-post",     CHARTS_ROOT / "fr"     / "daily.py", []),
 ]
 
 
@@ -138,18 +133,20 @@ def main() -> int:
     parser.add_argument("--skip-uk", action="store_true", help="Skip UK chart.")
     args, passthrough = parser.parse_known_args()
 
-    # passthrough args ne vont qu'en phase 1 (collecte), pas au post
     forwarded = list(passthrough)
 
     started = time.perf_counter()
     env = _build_env()
 
-    collect_runners = [
-        r for r in COLLECT_RUNNERS
-        if not (r[0] == "uk" and args.skip_uk)
-    ]
+    # global et fr reçoivent --no-post si demandé, sinon ils postent dès leur collecte terminée
+    collect_runners = []
+    for name, script, fixed in COLLECT_RUNNERS:
+        if args.skip_uk and name == "uk":
+            continue
+        extra = ["--no-post"] if args.no_post and name in {"global", "fr"} else []
+        collect_runners.append((name, script, fixed + extra))
 
-    # Phase 1 : collecte de toutes les régions en parallèle
+    # Collecte de toutes les régions en parallèle (global+fr postent dès qu'ils sont prêts)
     t_phase1 = time.perf_counter()
     failures = _run_parallel(collect_runners, forwarded=forwarded, dry_run=args.dry_run, env=env)
     print(f"[PHASE1] collecte terminée ({_fmt(time.perf_counter() - t_phase1)})")
@@ -160,13 +157,6 @@ def main() -> int:
         if args.stop_on_error:
             print(f"[FAIL] stop-on-error — {_fmt(time.perf_counter() - started)}")
             return 1
-
-    # Phase 2 : post Twitter pour global + fr (données déjà prêtes)
-    if not args.no_post:
-        post_runners = [r for r in POST_RUNNERS if r[0].removesuffix("-post") not in {n for n, _ in failures}]
-        if post_runners:
-            post_failures = _run_parallel(post_runners, forwarded=[], dry_run=args.dry_run, env=env)
-            failures.extend(post_failures)
 
     if not args.dry_run:
         t_export = time.perf_counter()

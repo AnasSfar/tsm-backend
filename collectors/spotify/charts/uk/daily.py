@@ -128,98 +128,32 @@ def past_cutoff() -> bool:
     )
 
 
-def page_available(d: date) -> bool:
-    url = f"https://charts.spotify.com/charts/view/{CHART_ID}/{d}"
-    log("CHECK", f"Ouverture {url}")
+_FILTER_BEARER_CACHE = ROOT / "tools" / "json" / "bearer_cache.json"
+_API_CHARTS_BASE = "https://charts-spotify-com-service.spotify.com/auth/v0/charts"
+_TOKEN_TTL = 50 * 60
 
-    with sync_playwright() as p:
-        browser = None
-        context = None
-        try:
-            browser = p.chromium.launch(
-                headless=True,
-                args=[
-                    "--disable-blink-features=AutomationControlled",
-                    "--disable-dev-shm-usage",
-                    "--no-sandbox",
-                ],
-            )
 
-            if not SPOTIFY_SESSION.exists():
-                log("ERROR", f"Session Spotify introuvable: {SPOTIFY_SESSION}")
-                return False
-
-            context = browser.new_context(
-                storage_state=str(SPOTIFY_SESSION),
-                viewport={"width": 1400, "height": 2000},
-                user_agent=(
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                    "AppleWebKit/537.36 (KHTML, like Gecko) "
-                    "Chrome/133.0.0.0 Safari/537.36"
-                ),
-                locale="en-US",
-            )
-
-            page = context.new_page()
-            page.set_default_navigation_timeout(60_000)
-            page.set_default_timeout(60_000)
-
-            page.goto(url, wait_until="domcontentloaded", timeout=60_000)
-            try:
-                page.wait_for_function(
-                    "() => document.querySelectorAll('img[src*=\"i.scdn.co\"]').length > 5",
-                    timeout=10000,
-                )
-            except Exception:
-                pass
-
-            current_url = page.url.lower()
-            log("CHECK", f"URL finale: {page.url}")
-
-            if "login" in current_url or "accounts.spotify.com" in current_url:
-                log("CHECK", "Session Spotify expirÃ©e ou non connectÃ©e")
-                return False
-
-            body_text = (page.locator("body").inner_text() or "").strip()
-            body_text_lower = body_text.lower()
-
-            log("CHECK", f"Longueur texte: {len(body_text)}")
-
-            has_streams      = bool(re.search(r"\b\d{1,3}(?:[,.\s]\d{3})+\b", body_text))
-            has_chart_header = (
-                (("track" in body_text_lower) or ("titre" in body_text_lower))
-                and (("streams" in body_text_lower) or ("ecoutes" in body_text_lower) or ("écoutes" in body_text_lower))
-            )
-            has_rank_line    = bool(re.search(r"(?m)^\s*(?:1|2|3|4|5)\s*$", body_text))
-            try:
-                has_download_button = page.locator("button[aria-labelledby='csv_download']").count() > 0
-            except Exception:
-                has_download_button = False
-
-            log("CHECK", f"has_streams={has_streams}")
-            log("CHECK", f"has_chart_header={has_chart_header}")
-            log("CHECK", f"has_rank_line={has_rank_line}")
-            log("CHECK", f"has_download_button={has_download_button}")
-
-            available = has_download_button or (has_streams and (has_chart_header or has_rank_line)) or (has_chart_header and has_rank_line)
-            log("CHECK", f"Page exploitable: {'oui' if available else 'non'}")
-            return available
-
-        except Exception as e:
-            log("CHECK", f"Erreur: {e}")
-            return False
-
-        finally:
-            try:
-                if context:
-                    context.close()
-            except Exception:
-                pass
-            try:
-                if browser:
-                    browser.close()
-            except Exception:
-                pass
+def page_available(d: date) -> bool | None:
+    """Vérifie la disponibilité du chart via l'API Spotify (sans Playwright).
+    Retourne True si dispo, False si pas encore publiée, None si token absent/expiré."""
+    import json as _json
+    import requests as _req
+    try:
+        if not _FILTER_BEARER_CACHE.exists():
+            return None
+        data = _json.loads(_FILTER_BEARER_CACHE.read_text(encoding="utf-8"))
+        if time.time() - data.get("ts", 0) >= _TOKEN_TTL:
+            return None
+        token = data.get("token")
+        if not token:
+            return None
+        url = f"{_API_CHARTS_BASE}/{CHART_ID}/{d}"
+        resp = _req.get(url, headers={"Authorization": f"Bearer {token}", "User-Agent": "Mozilla/5.0"}, timeout=15)
+        log("CHECK", f"API status {resp.status_code} pour {d}")
+        return resp.status_code == 200
+    except Exception as e:
+        log("CHECK", f"Erreur check API: {e}")
+        return None
 
 
 def run_filter(d: date) -> str | None:
@@ -325,9 +259,13 @@ def main():
             log("WARN", f"{CUTOFF_HOUR}h{CUTOFF_MINUTE:02d} atteint — page {target} toujours indisponible, abandon")
             return
 
-        log("WAIT", f"VÃ©rification tentative #{attempt} pour {target}")
-        if page_available(target):
-            log("INFO", f"Page de {target} dÃ©tectÃ©e")
+        log("WAIT", f"Vérification tentative #{attempt} pour {target}")
+        avail = page_available(target)
+        if avail is True:
+            log("INFO", f"Page de {target} détectée (API)")
+            break
+        if avail is None:
+            log("INFO", "Token absent/expiré — passage direct à filter.py")
             break
 
         log("WAIT", f"Page {target} pas encore exploitable, retry #{attempt} dans {RETRY_SECONDS // 60} min")
