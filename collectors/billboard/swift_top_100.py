@@ -842,12 +842,22 @@ def run(
     existing_rows = _load_existing_history_before_date(chart_date_str, logger)
     weeks_on_chart_by_track, peak_by_track, times_at_peak_by_track = _history_stats(existing_rows)
 
+    # Index history by normalized title for fallback when track_id changes across versions
+    # (e.g. "Love Story (Taylor's Version)" vs "Love Story" → same merged entry)
+    _hist_tid_by_title: dict[str, str] = {}
+    for _r in existing_rows:
+        _k = _normalize_title(_r.get("title") or "")
+        _t = (_r.get("track_id") or "").strip()
+        if _k and _t and _k not in _hist_tid_by_title:
+            _hist_tid_by_title[_k] = _t
+
     is_first_run = len(existing_rows) == 0
     if is_first_run:
         logger.log("  history        : first run — all entries NEW")
         prev_points: dict = {}
         prev_ranks: dict = {}
         prev_total_units_by_track: dict = {}
+        _prev_tid_by_title: dict = {}
     else:
         prior_weeks = len({(r.get("date") or "").strip() for r in existing_rows if r.get("date")})
         logger.log(f"  history        : {prior_weeks} prior week{'s' if prior_weeks != 1 else ''} loaded")
@@ -856,6 +866,11 @@ def run(
         # _build_week_chart ranks by Spotify streams only, but final ranks use total_units.
         _prev_week_str = _format_date(prev_week_end)
         _prev_week_rows = [r for r in existing_rows if (r.get("date") or "").strip() == _prev_week_str]
+        _prev_tid_by_title = {
+            _normalize_title(r.get("title") or ""): r["track_id"]
+            for r in _prev_week_rows
+            if r.get("track_id") and _normalize_title(r.get("title") or "")
+        }
         if _prev_week_rows:
             prev_ranks = {
                 r["track_id"]: int(r["rank"])
@@ -880,20 +895,30 @@ def run(
 
         pr = prev_ranks.get(tid)
         prev_row = prev_points.get(tid)
+        # Fallback: look up by normalized title when track_id changed between versions
+        _title_key = _normalize_title(row.get("title") or "")
+        _alt_prev_tid = _prev_tid_by_title.get(_title_key)
+        if pr is None and _alt_prev_tid and _alt_prev_tid != tid:
+            pr = prev_ranks.get(_alt_prev_tid)
+            if pr is not None and prev_row is None:
+                prev_row = prev_points.get(_alt_prev_tid)
         prev_points_value = prev_row.get("points") if prev_row else None
 
+        _alt_hist_tid = _hist_tid_by_title.get(_title_key)
+        _eff_tid = tid if tid in weeks_on_chart_by_track else (_alt_hist_tid or tid)
+
         if pr is None:
-            change = "RE" if weeks_on_chart_by_track.get(tid, 0) > 0 else "NEW"
+            change = "RE" if weeks_on_chart_by_track.get(_eff_tid, 0) > 0 else "NEW"
         else:
             change = None
-        # rank_change sera recalculé après le re-ranking final (lignes 882-886)
+        # rank_change sera recalculé après le re-ranking final
         curr_rank = row.get("rank", rank)
         rank_change = pr - curr_rank if pr is not None and curr_rank is not None else None
 
-        weeks_on_chart = weeks_on_chart_by_track.get(tid, 0) + 1
-        hist_peak = peak_by_track.get(tid, 9999)
+        weeks_on_chart = weeks_on_chart_by_track.get(_eff_tid, 0) + 1
+        hist_peak = peak_by_track.get(_eff_tid, 9999)
         peak_position = min(hist_peak, rank)
-        hist_times = times_at_peak_by_track.get(tid, 0)
+        hist_times = times_at_peak_by_track.get(_eff_tid, 0)
         # Correction du calcul du nombre de semaines au peak
         if rank < hist_peak:
             times_at_peak = 1
@@ -920,7 +945,9 @@ def run(
 
         # % de variation des total_units semaine sur semaine
         pct_change = None
-        prev_total_units_val = prev_total_units_by_track.get(tid)
+        prev_total_units_val = prev_total_units_by_track.get(tid) or (
+            prev_total_units_by_track.get(_alt_prev_tid) if _alt_prev_tid else None
+        )
         if pr is not None and prev_total_units_val and prev_total_units_val > 0:
             pct_change = round(((total_units - prev_total_units_val) / prev_total_units_val) * 100, 1)
 

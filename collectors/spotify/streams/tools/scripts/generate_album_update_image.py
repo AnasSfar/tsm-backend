@@ -48,6 +48,8 @@ COVERS_PATH     = DB_DIR / "discography" / "covers.json"
 HEADERS_DIR     = DB_DIR / "discography" / "headers"
 CHARTS_GLOBAL_HISTORY_DIR = ROOT.parent / "charts" / "global" / "history"
 TWITTER_SESSION = ROOT.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json"
+
+sys.path.insert(0, str(ROOT))
 HANDLE          = "@swiftiescharts"
 
 # Nouveau : logo à gauche du handle
@@ -1451,6 +1453,7 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
         if pct is None:
             continue
         scored.append({
+            "track_id": t.get("track_id"),
             "title": t.get("title_clean") or "Unknown",
             "pct": pct,
             "daily": h.get("daily") or 0,
@@ -1461,6 +1464,7 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
     selected_song = "Unknown"
     track_daily = 0
     track_pct = None
+    selected_track_id = None
 
     if scored:
         if all(item["pct"] < 0 for item in scored):
@@ -1472,6 +1476,7 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
         selected_song = _shorten_title(best["title"])
         track_daily = best.get("daily", 0)
         track_pct = best.get("pct")
+        selected_track_id = best.get("track_id")
 
     # Format data for tweet
     date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
@@ -1490,6 +1495,16 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
         sign = "+" if track_pct >= 0 else "−"
         track_pct_str = f" ({sign}{abs(track_pct):.1f}%)"
 
+    best_day_line = ""
+    if selected_track_id and label == "biggest gainer":
+        try:
+            from best_day_since import best_day_since_for_track, row_label
+            best_day = best_day_since_for_track(selected_track_id, target_date, min_days=14)
+            if best_day:
+                best_day_line = f"\nIt earned its {row_label(best_day)}."
+        except Exception as e:
+            print(f"[album_update] Best-day-since note skipped: {e}")
+
     # TODAY ONLY (2026-04-20): TTPD 2nd anniversary special note
     is_ttpd_anniversary = (
         target_date == "2026-04-19"
@@ -1502,7 +1517,7 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
 
     return (
         f"{first_line}\n\n"
-        f'"{selected_song}" was the {label} with {track_daily_fmt} streams{track_pct_str}.\n\n'
+        f'"{selected_song}" was the {label} with {track_daily_fmt} streams{track_pct_str}.{best_day_line}\n\n'
         f"See full update here : https://thetsmuseum.app/streams/latest ❤️‍🔥"
     )
 

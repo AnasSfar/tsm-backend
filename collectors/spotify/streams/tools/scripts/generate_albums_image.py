@@ -126,6 +126,17 @@ def fmt_delta(today, yesterday) -> tuple[str, str, str]:
     return "=", pct_s, "neutral"
 
 
+def rank_change(rank: int, prev_rank) -> tuple[str, str]:
+    if prev_rank is None:
+        return "NEW", "chg-new"
+    delta = int(prev_rank) - rank
+    if delta > 0:
+        return f"▲{delta}", "chg-up"
+    if delta < 0:
+        return f"▼{abs(delta)}", "chg-dn"
+    return "=", "chg-eq"
+
+
 # ---------------------------------------------------------------------------
 # Data loading
 # ---------------------------------------------------------------------------
@@ -214,13 +225,18 @@ def load_album_track_map() -> dict[str, dict]:
     return result
 
 
-def load_history(target_date: str) -> tuple[dict, dict]:
-    """Returns (today: {track_id: {streams, daily}}, yesterday: same)."""
-    yesterday = str(date_cls.fromisoformat(target_date) - timedelta(days=1))
-    day_before = str(date_cls.fromisoformat(target_date) - timedelta(days=2))
+def load_history(target_date: str) -> tuple[dict, dict, dict]:
+    """Returns today, yesterday, and same weekday last week track history maps."""
+    target_day = date_cls.fromisoformat(target_date)
+    yesterday = str(target_day - timedelta(days=1))
+    day_before = str(target_day - timedelta(days=2))
+    last_week = str(target_day - timedelta(days=7))
+    last_week_prev = str(target_day - timedelta(days=8))
     today: dict[str, dict] = {}
     yest:  dict[str, dict] = {}
     before: dict[str, dict] = {}
+    week: dict[str, dict] = {}
+    week_before: dict[str, dict] = {}
 
     def _parse_optional_int(raw: str | None) -> int | None:
         s = (raw or "").strip()
@@ -234,7 +250,7 @@ def load_history(target_date: str) -> tuple[dict, dict]:
     with open(HISTORY_PATH, newline="", encoding="utf-8") as f:
         for row in csv.DictReader(f):
             d = row["date"]
-            if d not in (target_date, yesterday, day_before):
+            if d not in (target_date, yesterday, day_before, last_week, last_week_prev):
                 continue
             entry = {
                 "streams":       int(row["streams"] or 0),
@@ -242,6 +258,10 @@ def load_history(target_date: str) -> tuple[dict, dict]:
             }
             if d == target_date:
                 today[row["track_id"]] = entry
+            elif d == last_week:
+                week[row["track_id"]] = entry
+            elif d == last_week_prev:
+                week_before[row["track_id"]] = entry
             else:
                 if d == yesterday:
                     yest[row["track_id"]] = entry
@@ -261,8 +281,9 @@ def load_history(target_date: str) -> tuple[dict, dict]:
 
     _fill_missing_daily(today, yest)
     _fill_missing_daily(yest, before)
+    _fill_missing_daily(week, week_before)
 
-    return today, yest
+    return today, yest, week
 
 
 def get_latest_date() -> str:
@@ -276,7 +297,7 @@ def get_latest_date() -> str:
     return latest
 
 
-def build_album_rows(today: dict, yest: dict, track_map: dict, covers: dict) -> list[dict]:
+def build_album_rows(today: dict, yest: dict, week: dict, track_map: dict, covers: dict) -> list[dict]:
     """
     Agrège les streams par album (éditions incluses seulement).
     Retourne une liste triée par daily_streams desc.
@@ -312,6 +333,7 @@ def build_album_rows(today: dict, yest: dict, track_map: dict, covers: dict) -> 
             "streams":       0,
             "daily_streams": 0,
             "yest_daily":    0,
+            "week_daily":    0,
             "cover_url":     cover_url,
         }
 
@@ -321,13 +343,16 @@ def build_album_rows(today: dict, yest: dict, track_map: dict, covers: dict) -> 
                 if t is None:
                     continue
                 y = yest.get(track_id, {})
+                w = week.get(track_id, {})
                 albums[album]["streams"]       += t["streams"]
                 albums[album]["daily_streams"] += (t.get("daily_streams") or 0)
                 albums[album]["yest_daily"]    += (y.get("daily_streams") or 0)
+                albums[album]["week_daily"]    += (w.get("daily_streams") or 0)
             continue
 
         best_today: dict[tuple[str, str], str] = {}
         best_yest: dict[tuple[str, str], str] = {}
+        best_week: dict[tuple[str, str], str] = {}
 
         for track_id, info in album_tracks:
             fam = (info.get("song_family") or "").strip() or track_id
@@ -346,6 +371,12 @@ def build_album_rows(today: dict, yest: dict, track_map: dict, covers: dict) -> 
                 if prev_id is None or _best_key(y) > _best_key(yest.get(prev_id)):
                     best_yest[key] = track_id
 
+            w = week.get(track_id)
+            if w is not None:
+                prev_id = best_week.get(key)
+                if prev_id is None or _best_key(w) > _best_key(week.get(prev_id)):
+                    best_week[key] = track_id
+
         for track_id in best_today.values():
             t = today.get(track_id)
             if t is None:
@@ -359,7 +390,22 @@ def build_album_rows(today: dict, yest: dict, track_map: dict, covers: dict) -> 
                 continue
             albums[album]["yest_daily"] += (y.get("daily_streams") or 0)
 
+        for track_id in best_week.values():
+            w = week.get(track_id)
+            if w is None:
+                continue
+            albums[album]["week_daily"] += (w.get("daily_streams") or 0)
+
+    yest_ranked = sorted(
+        [r for r in albums.values() if r.get("yest_daily")],
+        key=lambda r: r["yest_daily"],
+        reverse=True,
+    )
+    yest_rank_by_album = {r["album"]: i + 1 for i, r in enumerate(yest_ranked)}
+
     rows = sorted(albums.values(), key=lambda r: r["daily_streams"], reverse=True)
+    for row in rows:
+        row["prev_rank"] = yest_rank_by_album.get(row["album"])
     return rows
 
 
@@ -387,7 +433,7 @@ body{
     radial-gradient(circle at 12% 18%, rgba(29,185,84,.13), transparent 30%),
     radial-gradient(circle at 84% 16%, rgba(126,87,255,.10), transparent 32%),
     linear-gradient(180deg,#f4f7f8 0%,#edf3f4 100%);
-  width:800px;
+  width:1000px;
   padding:0;
   color:#101828;
 }
@@ -403,8 +449,8 @@ body{
 .hdr-sub{color:rgba(255,255,255,.85);font-size:15px;margin-top:5px}
 .col-heads{
   display:grid;
-  grid-template-columns:52px minmax(160px,1fr) 130px 130px 110px;
-  column-gap:8px;
+  grid-template-columns:48px 46px minmax(220px,1fr) 138px 132px 132px 128px;
+  column-gap:10px;
   padding:9px 18px;
   background:rgba(241,245,246,.95);
   border-bottom:1px solid rgba(16,24,40,.07);
@@ -417,10 +463,11 @@ body{
 .col-heads .right{justify-content:flex-end}
 .album-card{
   display:grid;
-  grid-template-columns:52px minmax(160px,1fr) 130px 130px 110px;
-  column-gap:8px;
+  grid-template-columns:48px 46px minmax(220px,1fr) 138px 132px 132px 128px;
+  column-gap:10px;
   align-items:center;
-  padding:7px 18px;
+  height:48px;
+  padding:0 18px;
   background:rgba(255,255,255,.82);
   border-bottom:1px solid rgba(16,24,40,.05);
 }
@@ -430,34 +477,47 @@ body{
   border-left:3px solid #ebc44c;
 }
 .col-rank{
-  font-size:21px;font-weight:900;color:#0b1f44;
+  font-size:17px;font-weight:900;color:#0b1f44;
   letter-spacing:-.04em;
   display:flex;align-items:center;justify-content:center;
 }
-.col-album{display:flex;align-items:center;gap:12px;min-width:0}
+.col-chg{
+  font-size:11px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+}
+.chg-up{color:#067647}
+.chg-dn{color:#b42318}
+.chg-eq{color:#9ca3af}
+.chg-new{color:#5bbde4;font-size:10px;font-weight:800}
+.col-album{display:flex;align-items:center;gap:9px;min-width:0}
 .art{
-  width:54px;height:54px;border-radius:7px;
+  width:38px;height:38px;border-radius:6px;
   flex-shrink:0;object-fit:cover;
   box-shadow:0 2px 8px rgba(0,0,0,.12);
 }
 .art-ph{
-  width:54px;height:54px;border-radius:7px;
+  width:38px;height:38px;border-radius:6px;
   background:#dde3ea;flex-shrink:0;
 }
 .album-name{
-  font-size:15px;font-weight:700;color:#101828;
+  font-size:13.5px;font-weight:700;color:#101828;
+  line-height:1.15;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .col-num{
-  font-size:14px;color:#344054;font-weight:500;
+  font-size:12.5px;color:#344054;font-weight:500;
   display:flex;align-items:center;justify-content:flex-end;
+}
+.col-num.daily-val{
+  color:#101828;
+  font-weight:800;
 }
 .pos{color:#067647;font-weight:600}
 .neg{color:#b42318;font-weight:600}
 .neutral{color:#667085}
-.delta-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
-.delta-num{font-size:13px;font-weight:600}
-.delta-pct{font-size:11px;font-weight:500;opacity:.85}
+.delta-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
+.delta-num{font-size:12px;font-weight:700}
+.delta-pct{font-size:10px;font-weight:500;opacity:.85}
 .ftr{
   background:rgba(241,245,246,.96);
   padding:11px 20px;
@@ -481,6 +541,7 @@ def build_rows_html(rows: list[dict], image_cache: dict[str, str]) -> str:
         daily = row["daily_streams"]
         total = row["streams"]
         yest  = row["yest_daily"]
+        week  = row["week_daily"]
         cover = row["cover_url"]
 
         cover_uri = image_cache.get(cover, cover) if cover else ""
@@ -490,6 +551,8 @@ def build_rows_html(rows: list[dict], image_cache: dict[str, str]) -> str:
         )
 
         delta_num, delta_pct, delta_cls = fmt_delta(daily, yest)
+        week_num, week_pct, week_cls = fmt_delta(daily, week)
+        chg_text, chg_css = rank_change(rank, row.get("prev_rank"))
 
         card_cls = "album-card"
         if rank == 1:
@@ -499,15 +562,22 @@ def build_rows_html(rows: list[dict], image_cache: dict[str, str]) -> str:
 
         html += f"""<div class="{card_cls}">
   <div class="col-rank">#{rank}</div>
+  <div class="col-chg {chg_css}">{chg_text}</div>
   <div class="col-album">
     {art_html}
     <div class="album-name">{album}</div>
   </div>
-  <div class="col-num"><strong>+{fmt_num(daily)}</strong></div>
+  <div class="col-num daily-val">+{fmt_num(daily)}</div>
   <div class="col-num {delta_cls}">
     <div class="delta-wrap">
       <span class="delta-num">{delta_num}</span>
       {f'<span class="delta-pct">{delta_pct}</span>' if delta_pct else ''}
+    </div>
+  </div>
+  <div class="col-num {week_cls}">
+    <div class="delta-wrap">
+      <span class="delta-num">{week_num}</span>
+      {f'<span class="delta-pct">{week_pct}</span>' if week_pct else ''}
     </div>
   </div>
   <div class="col-num">{fmt_num(total)}</div>
@@ -547,9 +617,11 @@ def build_html(rows: list[dict], target_date: str, image_cache: dict[str, str]) 
   </div>
   <div class="col-heads">
     <span>#</span>
+    <span>+/-</span>
     <span>Album</span>
     <span class="right">Daily Streams</span>
     <span class="right">vs Yesterday</span>
+    <span class="right">vs Last Week</span>
     <span class="right">Total</span>
   </div>
   {rows_html}
@@ -572,12 +644,12 @@ def generate(target_date: str | None = None) -> Path:
 
     covers        = load_covers()
     track_map     = load_album_track_map()
-    today, yest   = load_history(target_date)
+    today, yest, week = load_history(target_date)
 
     if not today:
         raise ValueError(f"Aucune donnée pour {target_date}")
 
-    rows = build_album_rows(today, yest, track_map, covers)
+    rows = build_album_rows(today, yest, week, track_map, covers)
     print(f"[albums_image] {len(rows)} albums")
     for i, r in enumerate(rows, 1):
         print(f"  #{i:2d} {r['album']:<45} daily={r['daily_streams']:>12,}  total={r['streams']:>15,}")
@@ -597,7 +669,7 @@ def generate(target_date: str | None = None) -> Path:
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
-            page    = browser.new_page(viewport={"width": 800, "height": 200}, device_scale_factor=2)
+            page    = browser.new_page(viewport={"width": 1000, "height": 200}, device_scale_factor=2)
             page.goto(f"file:///{tmp_html.as_posix()}", wait_until="load")
             page.wait_for_timeout(300)
             page.locator("body").screenshot(path=str(out_path))

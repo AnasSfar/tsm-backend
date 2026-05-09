@@ -3,9 +3,10 @@
 spotlight.py — scrape une chanson et génère une image "spotlight" carrée, puis poste sur Twitter.
 
 Usage:
+  python spotlight.py "Cruel Summer"
   python spotlight.py "Cruel Summer" 2026-03-21
   python spotlight.py "Cruel Summer" 2026-03-21 --no-post
-  python spotlight.py --url https://open.spotify.com/track/1BxfuPKGuaTgP7aM0Bbdwr 2026-03-21
+  python spotlight.py --url https://open.spotify.com/track/1BxfuPKGuaTgP7aM0Bbdwr
 
 Options:
   --no-post   : Generate image but skip Twitter posting (default: will post)
@@ -56,14 +57,14 @@ TWITTER_SESSION = SCRIPT_DIR.parent / "charts" / "global" / "tools" / "json" / "
 
 sys.path.insert(0, str(SCRIPT_DIR.parent))  # collectors/spotify/ for core.*
 
-HANDLE          = "@swiftiescharts"
+HANDLE          = "@tsmuseum13"
 PAGE_TIMEOUT_MS = 20_000
 
 # ── API GraphQL Spotify ───────────────────────────────────────────────────────
 GRAPHQL_URL   = "https://api-partner.spotify.com/pathfinder/v2/query"
 GETTRACK_HASH = "612585ae06ba435ad26369870deaae23b5c8800a256cd8a57e08eddc25a37294"
 APP_VERSION   = "1.2.87.30.gc764ebf1"
-API_RETRY_SLEEP_SECONDS = 60
+API_RETRY_SLEEP_SECONDS = 10
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 def _norm(s: str) -> str:
@@ -579,17 +580,17 @@ def load_covers() -> dict:
     }
 
 # ── History ───────────────────────────────────────────────────────────────────
-def load_history_for_track(track_id: str, stats_date: str) -> tuple[int | None, int | None, int | None, int | None]:
-    """Returns (total_today, total_yesterday, daily_today, daily_yesterday).
+def load_history_for_track(track_id: str, stats_date: str) -> tuple[int | None, int | None, int | None, int | None, int | None]:
+    """Returns (total_today, total_yesterday, daily_today, daily_yesterday, daily_last_week).
     daily_* sont lus directement depuis la colonne daily_streams du CSV.
     """
     d0 = date_cls.fromisoformat(stats_date)
-    dates = {str(d0): "today", str(d0 - timedelta(1)): "y1"}
+    dates = {str(d0): "today", str(d0 - timedelta(1)): "y1", str(d0 - timedelta(7)): "w1"}
     totals:  dict[str, int] = {}
     dailies: dict[str, int] = {}
 
     if not HISTORY_PATH.exists():
-        return None, None, None, None
+        return None, None, None, None, None
 
     with HISTORY_PATH.open(newline="", encoding="utf-8") as f:
         for row in csv.DictReader(f):
@@ -610,7 +611,8 @@ def load_history_for_track(track_id: str, stats_date: str) -> tuple[int | None, 
             except ValueError:
                 pass
 
-    return totals.get("today"), totals.get("y1"), dailies.get("today"), dailies.get("y1")
+    return totals.get("today"), totals.get("y1"), dailies.get("today"), dailies.get("y1"), dailies.get("w1")
+
 
 # ── Scraping ──────────────────────────────────────────────────────────────────
 def _block_unneeded(route) -> None:
@@ -926,7 +928,8 @@ def _build_html(
     title: str,
     artist: str,
     daily: int | None,
-    daily_yesterday: int | None,
+    comparison_daily: int | None,
+    comparison_label: str,
     total: int,
     cover_uri: str,
     gradient: str,
@@ -941,10 +944,10 @@ def _build_html(
     daily_prefix = "+" if has_daily else ""
     total_fmt = _fmt(total)
 
-    # vs Yesterday = variation de daily (today_daily - yesterday_daily)
-    if daily is not None and daily_yesterday is not None and daily_yesterday > 0:
-        delta     = daily - daily_yesterday
-        pct       = delta / daily_yesterday * 100
+    # Variation de daily streams vs selected comparison baseline.
+    if daily is not None and comparison_daily is not None and comparison_daily > 0:
+        delta     = daily - comparison_daily
+        pct       = delta / comparison_daily * 100
         sign      = "+" if delta >= 0 else "−"
         vs_str    = f"{sign}{_fmt(abs(delta))}"
         pct_str   = f"{pct:+.1f}%"
@@ -987,7 +990,7 @@ def _build_html(
       </div>
       <div class="stat-row">
                 <div class="stat-card {highlight_vs}" {highlight_vs_style}>
-          <div class="stat-label">vs Yesterday</div>
+          <div class="stat-label">vs {comparison_label}</div>
           <div class="stat-val {vs_cls}">{vs_str}</div>
           <div class="stat-sub">{pct_str}</div>
         </div>
@@ -1011,7 +1014,8 @@ def generate_spotlight_image(
     track: dict,
     total_scraped: int,
     total_yesterday: int | None,
-    daily_yesterday: int | None,
+    comparison_daily: int | None,
+    comparison_label: str,
     cover_url: str,
     stats_date: str,
     highlight: str = "total",
@@ -1035,7 +1039,8 @@ def generate_spotlight_image(
         title           = track["title"],
         artist          = track.get("artist", "Taylor Swift"),
         daily           = daily,
-        daily_yesterday = daily_yesterday,
+        comparison_daily = comparison_daily,
+        comparison_label = comparison_label,
         total           = total_scraped,
         cover_uri       = cover_uri,
         gradient        = gradient,
@@ -1071,30 +1076,38 @@ def generate_spotlight_image(
 def main() -> None:
     parser = argparse.ArgumentParser(description="Spotlight image for one Taylor Swift track with Twitter posting.")
     parser.add_argument("title", nargs="?", help="Track title (or use --url for Spotify URL)")
-    parser.add_argument("date",  help="Stats date YYYY-MM-DD (required)")
+    parser.add_argument("date", nargs="?", help="Stats date YYYY-MM-DD (default: yesterday)")
     parser.add_argument("--url",       help="Spotify track URL (alternative to title)")
     parser.add_argument("--no-post",   action="store_true", help="Generate image but skip Twitter posting (default: will post)")
     parser.add_argument("--no-scrape", action="store_true", help="Use history CSV total only, skip API and scraping")
     parser.add_argument("--post",      action="store_true", help="[Deprecated] Explicitly post to Twitter (now default)")
     parser.add_argument(
+        "--compare",
+        choices=["yesterday", "last-week"],
+        default="yesterday",
+        help="Comparison used in the tweet text: yesterday or last-week.",
+    )
+    parser.add_argument(
         "--highlight",
         choices=["vs", "total"],
-        default="total",
+        default="vs",
         help="Which stat card to emphasize: 'vs' (vs yesterday) or 'total' (total streams).",
     )
     args = parser.parse_args()
+
+    if args.url and args.date is None and args.title and _validate_date(args.title):
+        args.date = args.title
+        args.title = None
 
     query = args.url or args.title
     if not query:
         parser.print_help()
         sys.exit(1)
 
-    # Validate date format
-    if not _validate_date(args.date):
-        print(f"Invalid date format: {args.date!r}. Use YYYY-MM-DD.")
+    stats_date = args.date or str(date_cls.today() - timedelta(days=1))
+    if not _validate_date(stats_date):
+        print(f"Invalid date format: {stats_date!r}. Use YYYY-MM-DD.")
         sys.exit(1)
-
-    stats_date = args.date
 
     tracks = load_all_tracks()
     track  = find_track(query, tracks)
@@ -1105,8 +1118,8 @@ def main() -> None:
     print(f"Track      : {track['title']} [{track['track_id']}]")
     print(f"Stats date : {stats_date}")
 
-    total_today_hist, total_yesterday, daily_today_hist, daily_yesterday = load_history_for_track(track["track_id"], stats_date)
-    print(f"History    : today={total_today_hist}, yesterday={total_yesterday}, daily_today={daily_today_hist}, daily_yesterday={daily_yesterday}")
+    total_today_hist, total_yesterday, daily_today_hist, daily_yesterday, daily_last_week = load_history_for_track(track["track_id"], stats_date)
+    print(f"History    : today={total_today_hist}, yesterday={total_yesterday}, daily_today={daily_today_hist}, daily_yesterday={daily_yesterday}, daily_last_week={daily_last_week}")
 
     # Validate history data: if daily==0 and we have yesterday data, it's not fully updated yet
     history_is_valid = True
@@ -1139,11 +1152,15 @@ def main() -> None:
     if not cover_url:
         print("Warning: no cover found.")
 
+    comparison_daily = daily_last_week if args.compare == "last-week" else daily_yesterday
+    comparison_label = "Last Week" if args.compare == "last-week" else "Yesterday"
+
     img_path = generate_spotlight_image(
         track           = track,
         total_scraped   = total_scraped,
         total_yesterday = total_yesterday,
-        daily_yesterday = daily_yesterday,
+        comparison_daily = comparison_daily,
+        comparison_label = comparison_label,
         cover_url       = cover_url,
         stats_date      = stats_date,
         highlight       = args.highlight,
@@ -1154,22 +1171,11 @@ def main() -> None:
     
     # Generate tweet text (shown in all cases)
     from datetime import datetime
-    date_obj = datetime.strptime(stats_date, "%Y-%m-%d")
-    date_fmt = date_obj.strftime("%B %d")
-    
     daily = (total_scraped - total_yesterday) if total_yesterday else None
-    daily_fmt = _fmt(daily) if daily and daily >= 0 else "?"
-    total_fmt = _fmt(total_scraped)
     
     # For tweet text, use simpler formatting without special unicode characters
     daily_tweet = f"{int(daily):,}" if daily and daily >= 0 else "?"
     total_tweet = f"{int(total_scraped):,}"
-    
-    # Calculate percentage gain: compare daily streams today vs yesterday
-    pct_str = ""
-    if daily is not None and daily_yesterday and daily_yesterday > 0:
-        pct_gain = ((daily - daily_yesterday) / daily_yesterday) * 100
-        pct_str = f"(+{pct_gain:.1f}%)" if pct_gain > 0 else f"({pct_gain:.1f}%)"
     
     # Format date as 'April 6th, 2026'
     def ordinal(n):
@@ -1180,17 +1186,38 @@ def main() -> None:
         return str(n) + suffix
 
     date_obj = datetime.strptime(stats_date, "%Y-%m-%d")
-    date_fmt_long = date_obj.strftime("%B {S}, %Y").replace('{S}', ordinal(date_obj.day))
+    date_fmt_long = date_obj.strftime("%A, %B {S}, %Y").replace('{S}', ordinal(date_obj.day))
+
+    def movement_line(current_daily: int | None, baseline_daily: int | None, label: str) -> str | None:
+        if current_daily is None or baseline_daily is None or baseline_daily <= 0:
+            return None
+        diff = current_daily - baseline_daily
+        pct = diff / baseline_daily * 100
+        verb = "rose" if diff > 0 else "fell" if diff < 0 else "remained stable"
+        diff_fmt = f"{abs(int(diff)):,}"
+        pct_fmt = f"{pct:+.1f}%"
+        if diff == 0:
+            return f"The song remained stable [0.0%] compared to {label}."
+        return f"The song {verb} {diff_fmt} streams [{pct_fmt}] compared to {label}."
 
     # Compose tweet in requested format
     tweet_lines = []
-    tweet_lines.append(f'"{track["title"]}" by Taylor Swift received {daily_tweet} streams yesterday, {date_fmt_long}.')
-    if daily is not None and daily_yesterday is not None:
-        diff = daily - daily_yesterday
-        diff_str = f"rose {abs(diff):,} streams {pct_str}" if diff > 0 else f"fell {abs(diff):,} streams {pct_str}"
-        tweet_lines.append(f'The song {diff_str} to a total of {total_tweet} total streams.')
+    tweet_lines.append(f'📈 "{track["title"]}" by Taylor Swift received {daily_tweet} streams yesterday, {date_fmt_long}.')
+    if args.compare == "last-week":
+        comparison = movement_line(daily, daily_last_week, "last week")
+    else:
+        comparison = movement_line(daily, daily_yesterday, "yesterday")
+    if comparison:
+        tweet_lines.append(comparison)
     else:
         tweet_lines.append(f'Total streams: {total_tweet}.')
+    try:
+        from best_day_since import best_day_since_for_track, row_label
+        best_day = best_day_since_for_track(track["track_id"], stats_date, min_days=14)
+        if best_day:
+            tweet_lines.append(f"The song earned its {row_label(best_day)}.")
+    except Exception as e:
+        print(f"Best-day-since note skipped: {e}")
     tweet = "\n\n".join(tweet_lines)
     print(f"\nTweet : {tweet}")
     

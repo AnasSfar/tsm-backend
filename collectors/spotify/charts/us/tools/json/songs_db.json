@@ -7815,5 +7815,51 @@
       "plain white ts"
     ],
     "is_pop": false
+  },
+  "charli xcx|||rock music": {
+    "artist": "Charli xcx",
+    "track": "Rock Music",
+    "tags": [],
+    "is_pop": false
+  },
+  "rihanna|||umbrella": {
+    "artist": "Rihanna",
+    "track": "Umbrella",
+    "tags": [
+      "pop",
+      "rnb",
+      "rihanna",
+      "female vocalists",
+      "dance",
+      "hip-hop",
+      "2007",
+      "r&b",
+      "umbrella",
+      "00s"
+    ],
+    "is_pop": true
+  },
+  "gracie abrams|||that's so true": {
+    "artist": "Gracie Abrams",
+    "track": "That's So True",
+    "tags": [],
+    "is_pop": false
+  },
+  "michael jackson|||you rock my world": {
+    "artist": "Michael Jackson",
+    "track": "You Rock My World",
+    "tags": [
+      "pop",
+      "michael jackson",
+      "rnb",
+      "dance",
+      "80s",
+      "soul",
+      "king of pop",
+      "00s",
+      "2001",
+      "groovy"
+    ],
+    "is_pop": true
   }
 }

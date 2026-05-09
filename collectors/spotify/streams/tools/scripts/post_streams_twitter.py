@@ -23,7 +23,6 @@ sys.path.insert(0, str(SCRIPT_DIR.parents[2]))             # collectors/spotify/
 from core.twitter import post_with_image
 
 import generate_streams_image
-import generate_albums_image
 
 
 def main():
@@ -64,12 +63,6 @@ def main():
     # Generate images
     print(f"Generating streams image for {target_date}...")
     image_path = generate_streams_image.generate(target_date, top_n=top_n)
-
-    print(f"Generating albums image for {target_date}...")
-    try:
-        generate_albums_image.generate(target_date)
-    except Exception as e:
-        print(f"Warning: albums image generation failed: {e}")
 
     # Build tweet text
     date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
