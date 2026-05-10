@@ -7792,5 +7792,42 @@
       "cumbia"
     ],
     "is_pop": true
+  },
+  "charli xcx|||rock music": {
+    "artist": "Charli xcx",
+    "track": "Rock Music",
+    "tags": [],
+    "is_pop": false
+  },
+  "calvin harris|||satisfy": {
+    "artist": "Calvin Harris",
+    "track": "Satisfy",
+    "tags": [],
+    "is_pop": false
+  },
+  "gotye|||somebody that i used to know": {
+    "artist": "Gotye",
+    "track": "Somebody That I Used To Know",
+    "tags": [
+      "indie",
+      "alternative",
+      "electronic",
+      "australian",
+      "love at first listen",
+      "pop",
+      "indie pop",
+      "beautiful",
+      "2011",
+      "love"
+    ],
+    "is_pop": false
+  },
+  "jaÿ-z|||empire state of mind": {
+    "artist": "JAŸ-Z",
+    "track": "Empire State Of Mind",
+    "tags": [
+      "jay-z"
+    ],
+    "is_pop": false
   }
 }

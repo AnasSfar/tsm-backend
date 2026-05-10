@@ -17,7 +17,6 @@ import argparse
 import csv
 import json
 import re
-import sys
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -32,9 +31,6 @@ ALBUMS_DIR = DISCOGRAPHY_DIR / "albums"
 SONGS_JSON = DISCOGRAPHY_DIR / "songs.json"
 DEFAULT_OUTPUT = REPO_ROOT / "website" / "site" / "data" / "best_day_since.json"
 HISTORY_START_DATE = date(2025, 1, 1)
-TWITTER_SESSION = SCRIPT_DIR.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json"
-
-sys.path.insert(0, str(SCRIPT_DIR.parent))
 
 
 @dataclass(frozen=True)
@@ -251,13 +247,6 @@ def format_int(value: int | None) -> str:
     return "?" if value is None else f"{value:,}"
 
 
-def safe_print(text: str) -> None:
-    try:
-        print(text)
-    except UnicodeEncodeError:
-        print(text.encode("ascii", errors="replace").decode("ascii"))
-
-
 def sort_key(row: dict) -> tuple[int, int, int]:
     is_record = 1 if row["kind"] in {"best_ever", "before_history"} else 0
     days_since = row.get("days_since") or 0
@@ -303,82 +292,12 @@ def format_long_date(value: str) -> str:
     return d.strftime("%B {S}, %Y").replace("{S}", ordinal(d.day))
 
 
-def format_short_date(value: str) -> str:
-    if value == "ever":
-        return "ever"
-    if value == "before 2025":
-        return "before 2025"
-    d = date.fromisoformat(value)
-    return f"{d.strftime('%b')} {d.day}, {d.year}"
-
-
-def format_compact(value: int | None) -> str:
-    if value is None:
-        return "?"
-    if value >= 1_000_000:
-        return f"{value / 1_000_000:.2f}M".rstrip("0").rstrip(".")
-    if value >= 1_000:
-        return f"{value / 1_000:.1f}K".rstrip("0").rstrip(".")
-    return str(value)
-
-
 def row_label(row: dict) -> str:
     if row["kind"] == "best_ever":
         return "best day ever"
     if row["kind"] == "before_history":
         return "best day since before 2025"
     return f"best day since {format_long_date(row['best_day_since'])}"
-
-
-def short_row_label(row: dict) -> str:
-    if row["kind"] == "best_ever":
-        return "best ever"
-    if row["kind"] == "before_history":
-        return "since before 2025"
-    return f"since {format_short_date(row['best_day_since'])}"
-
-
-def build_tweet(rows: list[dict], target_date: date) -> str:
-    top = rows[:3]
-    if not top:
-        return ""
-
-    date_text = f"{target_date.strftime('%b')} {target_date.day}, {target_date.year}"
-    lines = [f"🏆 | Taylor Swift songs with a notable best streaming day yesterday ({date_text})"]
-
-    for index, row in enumerate(top, 1):
-        title = row["title"]
-        if len(title) > 34:
-            title = title[:31].rstrip() + "..."
-        lines.append(f"{index}. {title} — {format_compact(row['daily_streams'])}, {short_row_label(row)}")
-
-    tweet = "\n".join(lines)
-    if len(tweet) <= 280:
-        return tweet
-
-    top = rows[:2]
-    lines = [f"🏆 | Taylor Swift songs with a notable best streaming day yesterday ({date_text})"]
-    for index, row in enumerate(top, 1):
-        title = row["title"]
-        if len(title) > 32:
-            title = title[:29].rstrip() + "..."
-        lines.append(f"{index}. {title} — {format_compact(row['daily_streams'])}, {short_row_label(row)}")
-    return "\n".join(lines)
-
-
-def post_tweet(tweet: str) -> bool:
-    if not tweet:
-        print("No best day since tweet to post.")
-        return False
-    if not TWITTER_SESSION.exists():
-        print(f"Twitter session not found: {TWITTER_SESSION}")
-        return False
-    from core.twitter import post_thread
-    return post_thread([tweet], TWITTER_SESSION)
-
-
-def post_lock_path(target_date: date) -> Path:
-    return SCRIPT_DIR / "history" / str(target_date.year) / f"{target_date.month:02d}" / target_date.isoformat() / "best_day_since_posted.lock"
 
 
 def main() -> None:
@@ -389,9 +308,6 @@ def main() -> None:
     parser.add_argument("--include-extras", action="store_true", help="Include songs.json extras too")
     parser.add_argument("--output", default=str(DEFAULT_OUTPUT), help="JSON output path")
     parser.add_argument("--no-write", action="store_true", help="Print only, do not write JSON")
-    parser.add_argument("--post", action="store_true", help="Post a short best-day-since summary to Twitter")
-    parser.add_argument("--no-post", action="store_true", help="Skip Twitter posting")
-    parser.add_argument("--force-post", action="store_true", help="Post even if the date lock already exists")
     args = parser.parse_args()
 
     tracks = load_tracks(include_extras=args.include_extras)
@@ -443,21 +359,6 @@ def main() -> None:
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
         print(f"Wrote {output}")
-
-    tweet = build_tweet(rows, target_date)
-    if tweet:
-        safe_print(f"Tweet ({len(tweet)} chars):\n{tweet}")
-    if args.post and not args.no_post:
-        lock = post_lock_path(target_date)
-        if lock.exists() and not args.force_post:
-            print(f"Already posted best-day-since for {target_date.isoformat()}, skipping.")
-            return
-        if not post_tweet(tweet):
-            sys.exit(1)
-        lock.parent.mkdir(parents=True, exist_ok=True)
-        lock.touch()
-    elif args.no_post:
-        print("Twitter post skipped (--no-post).")
 
 
 if __name__ == "__main__":

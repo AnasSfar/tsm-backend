@@ -1,14 +1,76 @@
 #!/usr/bin/env python3
-"""Post Twitter via Playwright (profil Chrome persistant) — partage Fr + Global."""
+"""Post Twitter via Playwright (profil Chrome persistant) - partage Fr + Global."""
 import json
+import os
+import tempfile
 import time
+from contextlib import contextmanager
 from pathlib import Path
 from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeout
+
+TWITTER_POST_LOCK = Path(tempfile.gettempdir()) / "tsm_twitter_post.lock"
+TWITTER_POST_LOCK_TIMEOUT = 15 * 60
 
 
 def _profile_dir(session_file: Path) -> Path:
     """Dossier du profil Chrome persistant, a cote du fichier de session."""
     return Path(session_file).parent / "chrome_profile"
+
+
+@contextmanager
+def _twitter_post_lock(timeout: int = TWITTER_POST_LOCK_TIMEOUT):
+    """Serialize browser posts so parallel chart jobs do not race in X."""
+    start = time.time()
+    fd = None
+    while fd is None:
+        try:
+            fd = os.open(str(TWITTER_POST_LOCK), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            os.write(fd, str(os.getpid()).encode("ascii", errors="ignore"))
+        except FileExistsError:
+            if time.time() - start > timeout:
+                try:
+                    if time.time() - TWITTER_POST_LOCK.stat().st_mtime > timeout:
+                        TWITTER_POST_LOCK.unlink()
+                        continue
+                except FileNotFoundError:
+                    continue
+                raise TimeoutError(f"Twitter post lock timeout: {TWITTER_POST_LOCK}")
+            time.sleep(2)
+
+    try:
+        yield
+    finally:
+        if fd is not None:
+            os.close(fd)
+        try:
+            TWITTER_POST_LOCK.unlink()
+        except FileNotFoundError:
+            pass
+
+
+def _wait_post_submitted(page, timeout_ms: int = 20_000) -> bool:
+    """Return True only when X appears to have accepted the post."""
+    try:
+        page.wait_for_url("**/status/**", timeout=timeout_ms)
+        return True
+    except PlaywrightTimeout:
+        pass
+
+    try:
+        page.locator("[data-testid='tweetTextarea_0']").first.wait_for(state="detached", timeout=5_000)
+        return True
+    except PlaywrightTimeout:
+        pass
+
+    try:
+        editor = page.locator("[data-testid='tweetTextarea_0']").first
+        if editor.count() and editor.is_visible(timeout=1_000):
+            print(f"X Post non confirme, l'editeur est encore ouvert. URL actuelle: {page.url}")
+            return False
+    except Exception:
+        return True
+
+    return True
 
 
 def _launch(p, profile_dir: Path):
@@ -152,34 +214,34 @@ def post_thread(tweets: list[str], session_file: Path) -> bool:
                 time.sleep(2)
 
             success = True
-            for i, tweet in enumerate(tweets, 1):
-                try:
-                    if previous_url and "/status/" in previous_url:
-                        page.goto(previous_url, wait_until="domcontentloaded")
-                        time.sleep(2)
-                        page.locator("[data-testid='reply']").first.click(timeout=10_000)
-                    else:
-                        page.goto("https://x.com/compose/post", wait_until="domcontentloaded")
-
-                    time.sleep(2)
-                    editor = page.locator("[data-testid='tweetTextarea_0']").first
-                    editor.click(timeout=10_000)
-                    editor.fill(tweet)
-                    time.sleep(1)
-                    page.locator(
-                        "[data-testid='tweetButton'], [data-testid='tweetButtonInline']"
-                    ).first.click(timeout=10_000)
+            with _twitter_post_lock():
+                for i, tweet in enumerate(tweets, 1):
                     try:
-                        page.wait_for_url("**status**", timeout=8_000)
-                    except PlaywrightTimeout:
-                        time.sleep(3)
-                    previous_url = page.url
-                    print(f"OK Tweet {i}/{len(tweets)} publie")
+                        if previous_url and "/status/" in previous_url:
+                            page.goto(previous_url, wait_until="domcontentloaded")
+                            time.sleep(2)
+                            page.locator("[data-testid='reply']").first.click(timeout=10_000)
+                        else:
+                            page.goto("https://x.com/compose/post", wait_until="domcontentloaded")
 
-                except Exception as e:
-                    print(f"X Erreur tweet {i}: {e}")
-                    success = False
-                    break
+                        time.sleep(2)
+                        editor = page.locator("[data-testid='tweetTextarea_0']").first
+                        editor.click(timeout=10_000)
+                        editor.fill(tweet)
+                        time.sleep(1)
+                        page.locator(
+                            "[data-testid='tweetButton'], [data-testid='tweetButtonInline']"
+                        ).first.click(timeout=10_000)
+                        if not _wait_post_submitted(page):
+                            success = False
+                            break
+                        previous_url = page.url
+                        print(f"OK Tweet {i}/{len(tweets)} publie")
+
+                    except Exception as e:
+                        print(f"X Erreur tweet {i}: {e}")
+                        success = False
+                        break
 
         finally:
             context.close()
@@ -194,7 +256,7 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
     profile_dir  = _profile_dir(session_file)
 
     if not (profile_dir / "Default").exists():
-        print("Aucun profil Twitter trouvé. Connexion initiale requise...")
+        print("Aucun profil Twitter trouve. Connexion initiale requise...")
         setup_session(session_file)
 
     with sync_playwright() as p:
@@ -205,7 +267,7 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
             time.sleep(2)
 
             if "login" in page.url:
-                print("Session expirée. Reconnexion automatique...")
+                print("Session expiree. Reconnexion automatique...")
                 credentials = _load_credentials(session_file)
                 if credentials:
                     _auto_login(page, credentials["username"], credentials["password"], credentials.get("email", ""))
@@ -217,31 +279,30 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
                 page.goto("https://x.com/home", wait_until="domcontentloaded")
                 time.sleep(2)
 
-            page.goto("https://x.com/compose/post", wait_until="domcontentloaded")
-            time.sleep(2)
+            with _twitter_post_lock():
+                page.goto("https://x.com/compose/post", wait_until="domcontentloaded")
+                time.sleep(2)
 
-            # Attach image via hidden file input
-            file_input = page.locator("input[type='file'][accept*='image']").first
-            file_input.set_input_files(str(image_path))
-            time.sleep(3)
-
-            # Add tweet text
-            editor = page.locator("[data-testid='tweetTextarea_0']").first
-            editor.click(timeout=10_000)
-            editor.fill(tweet)
-            time.sleep(1)
-
-            # Post
-            page.locator(
-                "[data-testid='tweetButton'], [data-testid='tweetButtonInline']"
-            ).first.click(timeout=10_000)
-            try:
-                page.wait_for_url("**status**", timeout=8_000)
-            except PlaywrightTimeout:
+                # Attach image via hidden file input
+                file_input = page.locator("input[type='file'][accept*='image']").first
+                file_input.set_input_files(str(image_path))
                 time.sleep(3)
 
-            print("OK Tweet avec image publié")
-            return True
+                # Add tweet text
+                editor = page.locator("[data-testid='tweetTextarea_0']").first
+                editor.click(timeout=10_000)
+                editor.fill(tweet)
+                time.sleep(1)
+
+                # Post
+                page.locator(
+                    "[data-testid='tweetButton'], [data-testid='tweetButtonInline']"
+                ).first.click(timeout=10_000)
+                if not _wait_post_submitted(page):
+                    return False
+
+                print("OK Tweet avec image publie")
+                return True
 
         except Exception as e:
             print(f"X Erreur post_with_image: {e}")

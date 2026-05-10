@@ -49,41 +49,78 @@ def _short_album(name: str, *, limit: int = 42) -> str:
     return name[: limit - 1].rstrip() + "..."
 
 
-def _history_dates() -> list[str]:
-    dates = set()
+def _album_daily_series(album: str, track_map: dict) -> dict[str, int]:
+    album_tracks = [
+        (track_id, info)
+        for track_id, info in track_map.items()
+        if info.get("album") == album
+    ]
+    if not album_tracks:
+        return {}
+
+    wanted_ids = {track_id for track_id, _ in album_tracks}
+    rows_by_date: dict[str, dict[str, dict]] = {}
     with open(generate_albums_image.HISTORY_PATH, newline="", encoding="utf-8") as f:
         for row in csv.DictReader(f):
+            track_id = row.get("track_id")
+            if track_id not in wanted_ids:
+                continue
             d = (row.get("date") or "").strip()
-            if d:
-                dates.add(d)
-    return sorted(dates)
+            if not d:
+                continue
+            try:
+                streams = int(row.get("streams") or 0)
+            except Exception:
+                streams = 0
+            try:
+                daily = int(row.get("daily_streams") or 0)
+            except Exception:
+                daily = 0
+            rows_by_date.setdefault(d, {})[track_id] = {
+                "streams": streams,
+                "daily_streams": daily,
+            }
+
+    def best_key(entry: dict | None) -> tuple[int, int]:
+        if not entry:
+            return (-1, -1)
+        return (int(entry.get("daily_streams") or 0), int(entry.get("streams") or 0))
+
+    series: dict[str, int] = {}
+    for d, day_rows in rows_by_date.items():
+        best_by_group: dict[tuple[str, str], str] = {}
+        for track_id, info in album_tracks:
+            entry = day_rows.get(track_id)
+            if entry is None:
+                continue
+            fam = (info.get("song_family") or "").strip() or track_id
+            sec = (info.get("display_section") or "").strip().lower()
+            key = (fam, sec)
+            prev_id = best_by_group.get(key)
+            if prev_id is None or best_key(entry) > best_key(day_rows.get(prev_id)):
+                best_by_group[key] = track_id
+        series[d] = sum(
+            int(day_rows[track_id].get("daily_streams") or 0)
+            for track_id in best_by_group.values()
+            if track_id in day_rows
+        )
+    return series
 
 
-def _album_daily_for_date(album: str, target_date: str, track_map: dict, covers: dict) -> int | None:
-    try:
-        today, yest, week = generate_albums_image.load_history(target_date)
-        rows = generate_albums_image.build_album_rows(today, yest, week, track_map, covers)
-    except Exception:
-        return None
-    row = next((r for r in rows if r.get("album") == album), None)
-    if not row:
-        return None
-    return int(row.get("daily_streams") or 0)
-
-
-def _album_best_day_label(album: str, target_date: str, current_daily: int, track_map: dict, covers: dict, *, min_days: int = 14) -> str:
+def _album_best_day_label(album: str, target_date: str, current_daily: int, track_map: dict, *, min_days: int = 14) -> str:
     if current_daily <= 0:
         return ""
 
     target = date.fromisoformat(target_date)
-    previous_dates = [d for d in _history_dates() if d < target_date]
+    series = _album_daily_series(album, track_map)
+    previous_dates = [d for d in sorted(series) if d < target_date]
     if not previous_dates:
         return ""
 
     first_available = None
     last_at_or_above = None
     for d in previous_dates:
-        daily = _album_daily_for_date(album, d, track_map, covers)
+        daily = series.get(d)
         if daily is None:
             continue
         point_date = date.fromisoformat(d)
@@ -136,14 +173,12 @@ def build_tweet_with_best_day(rows: list[dict], target_date: str) -> str:
         return tweet
 
     _, row = biggest_gain
-    covers = generate_albums_image.load_covers()
     track_map = generate_albums_image.load_album_track_map()
     label = _album_best_day_label(
         row["album"],
         target_date,
         int(row.get("daily_streams") or 0),
         track_map,
-        covers,
     )
     if not label:
         return tweet

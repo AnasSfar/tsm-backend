@@ -416,7 +416,7 @@ def generate_image(processed: list[date]) -> Path | None:
         image_path = ROOT / "history" / str(d.year) / f"{d.month:02d}" / str(d) / "chart_image.png"
         img_args = [sys.executable, str(GENERATE_IMAGE_SCRIPT), str(d)]
     else:
-        image_path = ROOT / "chart_image_multi.png"
+        image_path = GENERATE_IMAGE_SCRIPT.parent / "chart_image_multi.png"
         img_args = [sys.executable, str(GENERATE_IMAGE_SCRIPT)] + [str(d) for d in processed]
 
     img_result = subprocess.run(

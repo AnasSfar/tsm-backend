@@ -7861,5 +7861,28 @@
       "groovy"
     ],
     "is_pop": true
+  },
+  "sienna spiro|||material lover": {
+    "artist": "SIENNA SPIRO",
+    "track": "Material Lover",
+    "tags": [],
+    "is_pop": false
+  },
+  "michael jackson|||they don't care about us": {
+    "artist": "Michael Jackson",
+    "track": "They Don't Care About Us",
+    "tags": [
+      "pop",
+      "michael jackson",
+      "dance",
+      "king of pop",
+      "80s",
+      "90s",
+      "male vocalists",
+      "funk",
+      "american",
+      "soul"
+    ],
+    "is_pop": true
   }
 }

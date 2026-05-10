@@ -1,16 +1,24 @@
 {
-  "generated_at": "2026-05-09",
-  "stats_date": "2026-05-08",
+  "generated_at": "2026-05-10",
+  "stats_date": "2026-05-09",
   "track_ids": [
-    "2IprIjGNRlj3TfqUWCAo0C"
+    "6LZaxlycSWrJZ4Volb25qx",
+    "3ExweHKZF9B752DPQByRVT"
   ],
   "tracks": [
     {
-      "track_id": "2IprIjGNRlj3TfqUWCAo0C",
-      "title": "Last Christmas",
-      "spotify_url": "https://open.spotify.com/track/2IprIjGNRlj3TfqUWCAo0C",
-      "streams": 44049648,
-      "daily_streams": 2844
+      "track_id": "6LZaxlycSWrJZ4Volb25qx",
+      "title": "Mine",
+      "spotify_url": "https://open.spotify.com/track/6LZaxlycSWrJZ4Volb25qx",
+      "streams": 253406709,
+      "daily_streams": 37429
+    },
+    {
+      "track_id": "3ExweHKZF9B752DPQByRVT",
+      "title": "Change (Taylor's Version)",
+      "spotify_url": "https://open.spotify.com/track/3ExweHKZF9B752DPQByRVT",
+      "streams": 59205100,
+      "daily_streams": 12304
     }
   ]
 }
