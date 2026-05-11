@@ -72,7 +72,7 @@ def oembed_image(track_url: str) -> str | None:
 # ── load reference data ────────────────────────────────────────────────────
 
 print("Loading songs.json …")
-with open(SONGS_JSON, encoding="utf-8") as f:
+with open(SONGS_JSON, encoding="utf-8-sig") as f:
     songs_data = json.load(f)
 
 # track_id → image_url
@@ -86,7 +86,7 @@ for s in songs_data.get("songs", []):
 print(f"  {len(tid_to_img)} tracks with images in songs.json")
 
 print("Loading covers.json …")
-with open(COVERS_JSON, encoding="utf-8") as f:
+with open(COVERS_JSON, encoding="utf-8-sig") as f:
     covers_data: dict = json.load(f)
 
 # album_name (lower) → cover_url
@@ -122,7 +122,7 @@ still_missing = 0
 print(f"\nProcessing {len(edition_files)} edition files …\n")
 
 for path in edition_files:
-    with open(path, encoding="utf-8") as f:
+    with open(path, encoding="utf-8-sig") as f:
         data = json.load(f)
 
     # Support both list-of-sections format and single dict-with-tracks format
@@ -179,7 +179,7 @@ for path in edition_files:
 print("\nGenerating track_covers.json for ts_tracker.html …")
 
 if HIST_JSON.exists():
-    with open(HIST_JSON, encoding="utf-8") as f:
+    with open(HIST_JSON, encoding="utf-8-sig") as f:
         hist = json.load(f)
     chart_names = list(hist.keys())
     print(f"  {len(chart_names)} songs in ts_history.json")
@@ -229,7 +229,7 @@ if chart_names:
 
     songs_disco = DISCO_DIR / "songs.json"
     if songs_disco.exists():
-        sections = json.loads(songs_disco.read_text(encoding="utf-8"))
+        sections = json.loads(songs_disco.read_text(encoding="utf-8-sig"))
         for section in sections:
             for t in section.get("tracks", []):
                 img = t.get("image_url", "")
@@ -263,7 +263,7 @@ if chart_names:
         # Build a map from normalised title → image_url from all edition files
         edition_map: dict[str, str] = {}
         for path in edition_files:
-            with open(path, encoding="utf-8") as f:
+            with open(path, encoding="utf-8-sig") as f:
                 data = json.load(f)
             for t in data.get("tracks", []):
                 img = t.get("image_url", "")
