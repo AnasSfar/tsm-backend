@@ -1,4 +1,4 @@
-[
+﻿[
   {
     "album": "Standalone & Extras",
     "section": "collabs_and_features",
@@ -214,7 +214,7 @@
         "url": "https://open.spotify.com/intl-fr/track/7JKwboSAWRHJI5U1XGTqS3",
         "type": "standalone",
         "edition": "extras",
-        "display_section": "Kworb Extras",
+        "display_section": "Extras",
         "display_order": 9999,
         "base_title": "Big Star (with Taylor Swift) - Live",
         "album": "Standalone & Extras",

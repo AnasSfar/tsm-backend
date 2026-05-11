@@ -1,4 +1,4 @@
-{
+﻿{
   "album": "Red",
   "section_count": 8,
   "track_count": 29,
@@ -607,7 +607,7 @@
           "url": "https://open.spotify.com/intl-fr/track/3vM04liQIPwzatRCDvWvba",
           "type": "standalone",
           "edition": "extras",
-          "display_section": "Kworb Extras",
+          "display_section": "Extras",
           "display_order": 9999,
           "base_title": "The Last Time - Karaoke Version",
           "album": "Red",
@@ -628,7 +628,7 @@
           "url": "https://open.spotify.com/intl-fr/track/5AsmAjBSSQjRPWgAYIp8tm",
           "type": "standalone",
           "edition": "extras",
-          "display_section": "Kworb Extras",
+          "display_section": "Extras",
           "display_order": 9999,
           "base_title": "The Moment I Knew",
           "album": "Red",

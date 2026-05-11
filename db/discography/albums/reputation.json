@@ -1,4 +1,4 @@
-{
+﻿{
   "album": "reputation",
   "section_count": 7,
   "track_count": 38,
@@ -340,7 +340,7 @@
       "track_count": 4,
       "tracks": [
         {
-          "title": "...Ready For It? - BloodPop® Remix",
+          "title": "...Ready For It? - BloodPopÂ® Remix",
           "url": "https://open.spotify.com/intl-fr/track/1Ygm9KdH3wbzDekO8JgxcW",
           "type": "remix",
           "edition": "extras",
@@ -353,7 +353,7 @@
           "artists": [
             "Taylor Swift"
           ],
-          "title_clean": "...Ready For It? - BloodPop® Remix",
+          "title_clean": "...Ready For It? - BloodPopÂ® Remix",
           "song_family": "ready_for_it",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d41ccf8f43721c045a969300",
@@ -762,20 +762,20 @@
       "track_count": 1,
       "tracks": [
         {
-          "title": "...Ready For It? - BloodPopÂ® Remix",
+          "title": "...Ready For It? - BloodPopÃ‚Â® Remix",
           "url": "https://open.spotify.com/intl-fr/track/1Ygm9KdH3wbzDekO8JgxcW",
           "type": "standalone",
           "edition": "extras",
-          "display_section": "Kworb Extras",
+          "display_section": "Extras",
           "display_order": 9999,
-          "base_title": "...Ready For It? - BloodPopÂ® Remix",
+          "base_title": "...Ready For It? - BloodPopÃ‚Â® Remix",
           "album": "reputation",
           "primary_artist": "Taylor Swift",
           "featured_artists": [],
           "artists": [
             "Taylor Swift"
           ],
-          "title_clean": "...Ready For It? - BloodPopÂ® Remix",
+          "title_clean": "...Ready For It? - BloodPopÃ‚Â® Remix",
           "song_family": "ready_for_it_bloodpopa_remix",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d41ccf8f43721c045a969300",

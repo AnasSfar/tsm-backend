@@ -147,7 +147,7 @@ def load_album_sections_flat() -> list[dict]:
     sections: list[dict] = []
     for album_file in sorted(ALBUMS_DIR_SRC.glob("*.json"), key=lambda p: p.name.casefold()):
         try:
-            payload = json.loads(album_file.read_text(encoding="utf-8"))
+            payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
         except Exception:
             continue
 
@@ -174,7 +174,7 @@ def load_tracks_from_discography() -> list[dict]:
     for misc_src in (MISC_JSON_SRC, MISC_EXTRA_JSON_SRC):
         if misc_src.exists():
             try:
-                all_sections.extend(json.loads(misc_src.read_text(encoding="utf-8")))
+                all_sections.extend(json.loads(misc_src.read_text(encoding="utf-8-sig")))
             except Exception:
                 pass
 
@@ -445,6 +445,43 @@ def read_json(path: Path) -> dict:
         return json.load(f)
 
 
+def merge_album_sections_by_display_label(sections: list[dict]) -> list[dict]:
+    merged: dict[str, dict] = {}
+    order: list[str] = []
+
+    for section in sections:
+        for track in section.get("tracks", []):
+            label = (
+                track.get("display_section")
+                or section.get("display_section")
+                or section.get("name")
+                or "Other Editions"
+            )
+            key = normalize_title_for_site(label)
+
+            if key not in merged:
+                merged[key] = {
+                    **section,
+                    "name": label,
+                    "tracks": [],
+                    "track_ids": [],
+                    "track_count": 0,
+                }
+                order.append(key)
+
+            target = merged[key]
+            seen_ids = set(target.get("track_ids", []))
+            track_id = track.get("track_id")
+            if not track_id or track_id in seen_ids:
+                continue
+            target["tracks"].append(track)
+            target["track_ids"].append(track_id)
+            target["track_count"] = len(target["track_ids"])
+            seen_ids.add(track_id)
+
+    return [merged[key] for key in order if merged[key].get("track_count", 0) > 0]
+
+
 def build_discography_index() -> tuple[dict, list[dict]]:
     track_appearances_by_id: dict[str, list[dict]] = defaultdict(list)
     albums_payload: list[dict] = []
@@ -549,7 +586,7 @@ def build_discography_index() -> tuple[dict, list[dict]]:
     raw_misc: list[dict] = []
     for misc_src in (MISC_JSON_SRC, MISC_EXTRA_JSON_SRC):
         if misc_src.exists():
-            raw_misc.extend(json.loads(misc_src.read_text(encoding="utf-8")))
+                raw_misc.extend(json.loads(misc_src.read_text(encoding="utf-8-sig")))
 
     if raw_misc:
         groups_order: list[str] = []
@@ -684,6 +721,10 @@ def build_discography_index() -> tuple[dict, list[dict]]:
             "track_ids":   list(dict.fromkeys(misc_all_track_ids)),
             "track_count": len(list(dict.fromkeys(misc_all_track_ids))),
         })
+
+    for album in albums_payload:
+        if album.get("kind") == "album":
+            album["sections"] = merge_album_sections_by_display_label(album.get("sections", []))
 
     return dict(track_appearances_by_id), albums_payload
 

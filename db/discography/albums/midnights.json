@@ -1,4 +1,4 @@
-{
+﻿{
   "album": "Midnights",
   "section_count": 6,
   "track_count": 35,
@@ -735,7 +735,7 @@
           "url": "https://open.spotify.com/intl-fr/track/05kJkr80XEaZeN8kxyQoFp",
           "type": "standalone",
           "edition": "extras",
-          "display_section": "Kworb Extras",
+          "display_section": "Extras",
           "display_order": 9999,
           "base_title": "Lavender Haze - Acoustic Version",
           "album": "Midnights",

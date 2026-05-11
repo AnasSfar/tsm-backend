@@ -1,4 +1,4 @@
-{
+﻿{
   "album": "Fearless (Taylor's Version)",
   "section_count": 5,
   "track_count": 30,
@@ -632,7 +632,7 @@
           "url": "https://open.spotify.com/intl-fr/track/0q6vsjvnCIWrtwRckCV7y0",
           "type": "standalone",
           "edition": "extras",
-          "display_section": "Kworb Extras",
+          "display_section": "Extras",
           "display_order": 9999,
           "base_title": "If This Was A Movie (Taylor's Version)",
           "album": "Fearless (Taylor's Version)",

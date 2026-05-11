@@ -1,4 +1,4 @@
-[
+﻿[
   {
     "album": "Standalone & Extras",
     "section": "misc_standalone",
@@ -328,7 +328,7 @@
         "url": "https://open.spotify.com/intl-fr/track/6KF9xd2hBLuexrmBX4vUWD",
         "type": "standalone",
         "edition": "extras",
-        "display_section": "Kworb Extras",
+        "display_section": "Extras",
         "display_order": 9999,
         "base_title": "Bette Davis Eyes - Live/2011",
         "album": "Standalone & Extras",
@@ -348,7 +348,7 @@
         "url": "https://open.spotify.com/intl-fr/track/0BSmbCIY36iw04azzJ3S0S",
         "type": "standalone",
         "edition": "extras",
-        "display_section": "Kworb Extras",
+        "display_section": "Extras",
         "display_order": 9999,
         "base_title": "Drops Of Jupiter - Live/2011",
         "album": "Standalone & Extras",
@@ -368,7 +368,7 @@
         "url": "https://open.spotify.com/intl-fr/track/4KB3zBArZ1rHRExilzycaV",
         "type": "standalone",
         "edition": "extras",
-        "display_section": "Kworb Extras",
+        "display_section": "Extras",
         "display_order": 9999,
         "base_title": "I Want You Back - Live/2011",
         "album": "Standalone & Extras",
