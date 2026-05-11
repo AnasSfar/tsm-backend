@@ -165,7 +165,7 @@ def _iter_disco_tracks() -> Iterable[Dict[str, Any]]:
     if DISCO_ALBUMS_DIR.exists():
         for album_file in sorted(DISCO_ALBUMS_DIR.glob("*.json"),
                                  key=lambda p: p.name.casefold()):
-            payload = json.loads(album_file.read_text(encoding="utf-8"))
+            payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
             if not isinstance(payload, dict):
                 continue
             album_name = payload.get("album", "")

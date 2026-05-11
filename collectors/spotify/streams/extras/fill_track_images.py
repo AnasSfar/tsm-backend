@@ -73,7 +73,7 @@ def load_tracks_missing_images() -> list[dict]:
     if ALBUMS_DIR.exists():
         for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
             try:
-                payload = json.loads(album_file.read_text(encoding="utf-8"))
+                payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
             except Exception:
                 continue
             album_name = payload.get("album", "") if isinstance(payload, dict) else ""
@@ -284,7 +284,7 @@ def propagate_to_jsons(found: dict[str, str]) -> None:
     if ALBUMS_DIR.exists():
         for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
             try:
-                payload = json.loads(album_file.read_text(encoding="utf-8"))
+                payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
             except Exception:
                 continue
             if not isinstance(payload, dict):

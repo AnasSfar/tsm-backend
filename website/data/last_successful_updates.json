@@ -1,24 +1,16 @@
 {
-  "generated_at": "2026-05-10",
-  "stats_date": "2026-05-09",
+  "generated_at": "2026-05-11",
+  "stats_date": "2026-05-10",
   "track_ids": [
-    "6LZaxlycSWrJZ4Volb25qx",
-    "3ExweHKZF9B752DPQByRVT"
+    "5F7hpFKLmWgMHGxQuwssuv"
   ],
   "tracks": [
     {
-      "track_id": "6LZaxlycSWrJZ4Volb25qx",
-      "title": "Mine",
-      "spotify_url": "https://open.spotify.com/track/6LZaxlycSWrJZ4Volb25qx",
-      "streams": 253406709,
-      "daily_streams": 37429
-    },
-    {
-      "track_id": "3ExweHKZF9B752DPQByRVT",
-      "title": "Change (Taylor's Version)",
-      "spotify_url": "https://open.spotify.com/track/3ExweHKZF9B752DPQByRVT",
-      "streams": 59205100,
-      "daily_streams": 12304
+      "track_id": "5F7hpFKLmWgMHGxQuwssuv",
+      "title": "willow - moonlit witch version",
+      "spotify_url": "https://open.spotify.com/track/5F7hpFKLmWgMHGxQuwssuv",
+      "streams": 10766734,
+      "daily_streams": 1863
     }
   ]
 }

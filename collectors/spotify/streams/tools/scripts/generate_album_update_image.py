@@ -378,7 +378,7 @@ def load_album_sections(album_name: str) -> list[dict]:
     target_payload = None
     for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
         try:
-            payload = json.loads(album_file.read_text(encoding="utf-8"))
+            payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
         except Exception:
             continue
         if isinstance(payload, dict) and (payload.get("album") or "").lower() == album_name.lower():
@@ -618,7 +618,7 @@ def load_cover_url(album_name: str) -> str:
     try:
         if ALBUMS_DIR.exists():
             for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
-                payload = json.loads(album_file.read_text(encoding="utf-8"))
+                payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
                 if not isinstance(payload, dict) or (payload.get("album") or "").lower() != album_name.lower():
                     continue
                 for section in payload.get("sections", []):

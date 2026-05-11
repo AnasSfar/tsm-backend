@@ -139,7 +139,7 @@ def build_track_album_map() -> dict:
     if albums_dir.exists():
         for album_file in sorted(albums_dir.glob("*.json"), key=lambda p: p.name.casefold()):
             try:
-                payload = json.loads(album_file.read_text(encoding="utf-8"))
+                payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
             except Exception:
                 continue
             album_name = payload.get("album", "") if isinstance(payload, dict) else ""
@@ -177,7 +177,7 @@ def _get_track_image_map() -> dict:
         if albums_dir.exists():
             for album_file in sorted(albums_dir.glob("*.json"), key=lambda p: p.name.casefold()):
                 try:
-                    payload = json.loads(album_file.read_text(encoding="utf-8"))
+                    payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
                     for section in payload.get("sections", []) if isinstance(payload, dict) else []:
                         for track in section.get("tracks", []):
                             title = track.get("title", "")

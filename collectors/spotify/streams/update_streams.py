@@ -362,7 +362,7 @@ def load_album_sections_flat() -> list[dict]:
     sections: list[dict] = []
     for album_file in sorted(DB_ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
         try:
-            payload = json.loads(album_file.read_text(encoding="utf-8"))
+            payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
         except Exception:
             continue
 
@@ -1276,7 +1276,7 @@ def load_active_track_ids_from_discography() -> set[str]:
 
     if DB_SONGS_JSON.exists():
         try:
-            sections = json.loads(DB_SONGS_JSON.read_text(encoding="utf-8"))
+            sections = json.loads(DB_SONGS_JSON.read_text(encoding="utf-8-sig"))
         except Exception:
             sections = []
         for data in sections:
@@ -1659,7 +1659,7 @@ def load_tracks_from_discography(active_track_ids: set[str] | None = None) -> li
     all_sections = load_album_sections_flat()
     if DB_SONGS_JSON.exists():
         try:
-            all_sections.extend(json.loads(DB_SONGS_JSON.read_text(encoding="utf-8")))
+            all_sections.extend(json.loads(DB_SONGS_JSON.read_text(encoding="utf-8-sig")))
         except Exception:
             pass
 
@@ -1921,7 +1921,7 @@ def remove_track_from_discography(track_id: str) -> int:
     if DB_ALBUMS_DIR.exists():
         for album_file in sorted(DB_ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
             try:
-                payload = json.loads(album_file.read_text(encoding="utf-8"))
+                payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
             except Exception:
                 continue
             if not isinstance(payload, dict):
@@ -1959,7 +1959,7 @@ def remove_track_from_discography(track_id: str) -> int:
 
     if DB_SONGS_JSON.exists():
         try:
-            sections = json.loads(DB_SONGS_JSON.read_text(encoding="utf-8"))
+            sections = json.loads(DB_SONGS_JSON.read_text(encoding="utf-8-sig"))
         except Exception:
             sections = []
 

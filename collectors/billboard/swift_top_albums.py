@@ -126,7 +126,7 @@ def _iter_discography_albums() -> list[AlbumMeta]:
 
     for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
         try:
-            payload = json.loads(album_file.read_text(encoding="utf-8"))
+            payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
         except Exception:
             continue
         if not isinstance(payload, dict):

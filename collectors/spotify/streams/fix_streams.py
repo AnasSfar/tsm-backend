@@ -334,7 +334,7 @@ def load_tracks_from_discography() -> list[dict]:
     if ALBUMS_DIR.exists():
         for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
             try:
-                payload = json.loads(album_file.read_text(encoding="utf-8"))
+                payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
             except Exception:
                 continue
             for section in payload.get("sections", []) if isinstance(payload, dict) else []:

@@ -19,7 +19,7 @@ for album_file in sorted((DISCO_DIR / "albums").glob("*.json")):
             print_track(track)
 
 # Standalone & extras (direct tracks)
-with open(DISCO_DIR / "songs.json", encoding="utf-8") as f:
+with open(DISCO_DIR / "songs.json", encoding="utf-8-sig") as f:
     extras = json.load(f)
 for group in extras:
     for track in group.get("tracks", []):

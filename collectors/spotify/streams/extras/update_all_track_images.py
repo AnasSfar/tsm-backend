@@ -100,7 +100,7 @@ def update_track_images() -> int:
     if ALBUMS_DIR.exists():
         for album_file in sorted(ALBUMS_DIR.glob("*.json")):
             try:
-                payload = json.loads(album_file.read_text(encoding="utf-8"))
+                payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
             except Exception:
                 continue
 

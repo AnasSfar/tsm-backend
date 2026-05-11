@@ -111,7 +111,7 @@ def load_track_album_map() -> dict:
     if ALBUMS_DIR.exists():
         for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
             try:
-                payload = json.loads(album_file.read_text(encoding="utf-8"))
+                payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
             except Exception:
                 continue
             album_name = payload.get("album", "") if isinstance(payload, dict) else ""
@@ -163,14 +163,14 @@ def load_song_db() -> dict:
     if ALBUMS_DIR.exists():
         for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
             try:
-                payload = json.loads(album_file.read_text(encoding="utf-8"))
+                payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
                 _consume_sections(payload.get("sections", []) if isinstance(payload, dict) else [], album_file.name)
             except Exception as e:
                 print(f"Erreur {album_file.name}: {e}")
 
     if (DB_DIR / "discography" / "songs.json").exists():
         try:
-            _consume_sections(json.loads((DB_DIR / "discography" / "songs.json").read_text(encoding="utf-8")), "songs.json")
+            _consume_sections(json.loads((DB_DIR / "discography" / "songs.json").read_text(encoding="utf-8-sig")), "songs.json")
         except Exception as e:
             print(f"Erreur songs.json: {e}")
     return result
@@ -239,7 +239,7 @@ def _get_song_family_single_image_map() -> dict:
     if ALBUMS_DIR.exists():
         for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
             try:
-                payload = json.loads(album_file.read_text(encoding="utf-8"))
+                payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
             except Exception:
                 continue
             for section in payload.get("sections", []) if isinstance(payload, dict) else []:
@@ -251,7 +251,7 @@ def _get_song_family_single_image_map() -> dict:
     
     if (DB_DIR / "discography" / "songs.json").exists():
         try:
-            groups = json.loads((DB_DIR / "discography" / "songs.json").read_text(encoding="utf-8"))
+            groups = json.loads((DB_DIR / "discography" / "songs.json").read_text(encoding="utf-8-sig"))
         except Exception:
             groups = []
         for group in groups:

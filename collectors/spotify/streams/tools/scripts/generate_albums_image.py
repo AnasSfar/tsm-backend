@@ -206,7 +206,7 @@ def load_album_track_map() -> dict[str, dict]:
     if ALBUMS_DIR.exists():
         for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
             try:
-                payload = json.loads(album_file.read_text(encoding="utf-8"))
+                payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
                 if not isinstance(payload, dict):
                     continue
                 _consume_sections(

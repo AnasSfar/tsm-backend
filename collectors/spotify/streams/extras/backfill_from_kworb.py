@@ -129,7 +129,7 @@ def existing_track_ids() -> set[str]:
     if ALBUMS_DIR_PATH.exists():
         for album_file in sorted(ALBUMS_DIR_PATH.glob("*.json"), key=lambda p: p.name.casefold()):
             try:
-                payload = json.loads(album_file.read_text(encoding="utf-8"))
+                payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
             except Exception:
                 continue
             for section in payload.get("sections", []) if isinstance(payload, dict) else []:
@@ -156,7 +156,7 @@ def existing_title_slugs() -> set[str]:
     if ALBUMS_DIR_PATH.exists():
         for album_file in sorted(ALBUMS_DIR_PATH.glob("*.json"), key=lambda p: p.name.casefold()):
             try:
-                payload = json.loads(album_file.read_text(encoding="utf-8"))
+                payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
             except Exception:
                 continue
             album_name = payload.get("album", "") if isinstance(payload, dict) else ""

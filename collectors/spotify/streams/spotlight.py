@@ -406,7 +406,7 @@ def load_all_tracks() -> list[dict]:
     if ALBUMS_DIR.exists():
         for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
             try:
-                payload = json.loads(album_file.read_text(encoding="utf-8"))
+                payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
             except Exception:
                 continue
             album_name = payload.get("album", "") if isinstance(payload, dict) else ""
@@ -494,7 +494,7 @@ def _get_song_family_single_image_map() -> dict:
     if ALBUMS_DIR.exists():
         for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
             try:
-                payload = json.loads(album_file.read_text(encoding="utf-8"))
+                payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
             except Exception:
                 continue
             album_name = payload.get("album", "") if isinstance(payload, dict) else ""
