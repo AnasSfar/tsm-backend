@@ -79,7 +79,7 @@ def _discover_day_dirs(data_root: Path) -> list[Path]:
 def _load_existing_dates(csv_path: Path) -> set[str]:
     if not csv_path.exists():
         return set()
-    with open(csv_path, newline="", encoding="utf-8") as f:
+    with open(csv_path, newline="", encoding="utf-8-sig") as f:
         return {row["date"] for row in csv.DictReader(f)}
 
 
@@ -161,7 +161,7 @@ def _parse_tweet(path: Path) -> list[dict]:
 def _parse_ts_all_songs_csv(path: Path) -> list[dict]:
     """Parse a ts_all_songs.csv file (Taylor Swift rows only)."""
     entries = []
-    with open(path, newline="", encoding="utf-8") as f:
+    with open(path, newline="", encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
             if "Taylor Swift" not in row.get("artist_names", ""):
                 continue
@@ -240,7 +240,7 @@ def _collect_global(existing_dates: set[str]) -> list[dict]:
     # 2. ts_history.json — fill dates not covered by per-day files
     history_path = GLOBAL_DIR / "ts_history.json"
     if history_path.exists():
-        history: dict = json.loads(history_path.read_text(encoding="utf-8"))
+        history: dict = json.loads(history_path.read_text(encoding="utf-8-sig"))
         hist_new = 0
         for song_name, dates in history.items():
             for date_str, values in dates.items():

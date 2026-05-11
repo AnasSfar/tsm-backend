@@ -170,7 +170,7 @@ def _iter_discography_tracks() -> list[TrackMeta]:
     # Misc songs.json (sections list)
     if MISC_JSON.exists():
         try:
-            payload = json.loads(MISC_JSON.read_text(encoding="utf-8"))
+            payload = json.loads(MISC_JSON.read_text(encoding="utf-8-sig"))
         except Exception:
             payload = None
         if isinstance(payload, list):
@@ -204,7 +204,7 @@ def _latest_streams_date() -> date | None:
     for csv_path in _active_streams_csvs():
         if not csv_path.exists():
             continue
-        with csv_path.open("r", newline="", encoding="utf-8") as f:
+        with csv_path.open("r", newline="", encoding="utf-8-sig") as f:
             reader = csv.DictReader(f)
             for row in reader:
                 d = _parse_iso_date(row.get("date") or "")
@@ -247,7 +247,7 @@ def _aggregate_weekly_streams(
     for csv_path in active_paths:
         if not csv_path.exists():
             continue
-        with csv_path.open("r", newline="", encoding="utf-8") as f:
+        with csv_path.open("r", newline="", encoding="utf-8-sig") as f:
             reader = csv.DictReader(f)
             for row in reader:
                 day = (row.get("date") or "").strip()
@@ -282,7 +282,7 @@ def _best_global_rank_by_title(*, week_dates: set[str], logger: Logger) -> dict[
             return None
 
     matched_rows = 0
-    with CHARTS_GLOBAL_CSV.open("r", newline="", encoding="utf-8") as f:
+    with CHARTS_GLOBAL_CSV.open("r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
             day = (row.get("date") or "").strip()
@@ -321,7 +321,7 @@ def _weekly_charts_streams_by_title(*, week_dates: set[str], logger: Logger) -> 
     # (same exact stream count for the same song on two different days = scraper repeated previous day)
     seen: set[tuple[str, int]] = set()
 
-    with CHARTS_GLOBAL_CSV.open("r", newline="", encoding="utf-8") as f:
+    with CHARTS_GLOBAL_CSV.open("r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
             day = (row.get("date") or "").strip()
@@ -352,7 +352,7 @@ def _load_bonuses(chart_date: str) -> dict[str, int]:
     if not SWIFT_TOP_100_BONUSES_JSON.exists():
         return {}
     try:
-        entries = json.loads(SWIFT_TOP_100_BONUSES_JSON.read_text(encoding="utf-8"))
+        entries = json.loads(SWIFT_TOP_100_BONUSES_JSON.read_text(encoding="utf-8-sig"))
     except Exception:
         return {}
     result: dict[str, int] = {}
@@ -391,7 +391,7 @@ def _weekly_apple_music_global_points(*, week_dates: set[str], logger: Logger) -
 
     best_per_day: dict[tuple[str, str], int] = {}
     matched_rows = 0
-    with APPLE_MUSIC_GLOBAL_CSV.open("r", newline="", encoding="utf-8") as f:
+    with APPLE_MUSIC_GLOBAL_CSV.open("r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
             day = (row.get("date") or "").strip()
@@ -438,7 +438,7 @@ def _weekly_apple_music_ts_points(*, week_dates: set[str], logger: Logger) -> di
 
     best_per_day: dict[tuple[str, str], int] = {}
     matched_rows = 0
-    with APPLE_MUSIC_TS_TOP_SONGS_CSV.open("r", newline="", encoding="utf-8") as f:
+    with APPLE_MUSIC_TS_TOP_SONGS_CSV.open("r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
             day = (row.get("date") or "").strip()
@@ -468,7 +468,7 @@ def _load_existing_history_before_date(chart_date: str, logger: Logger) -> list[
         return []
 
     try:
-        with SWIFT_TOP_100_HISTORY_CSV.open("r", newline="", encoding="utf-8") as f:
+        with SWIFT_TOP_100_HISTORY_CSV.open("r", newline="", encoding="utf-8-sig") as f:
             rows = list(csv.DictReader(f))
     except Exception as exc:
         logger.log(f"⚠ history        : failed to read CSV — {exc}")
@@ -558,7 +558,7 @@ def _generate_song_files(logger: Logger) -> None:
 
     for snapshot_path in snapshot_files:
         try:
-            payload = json.loads(snapshot_path.read_text(encoding="utf-8"))
+            payload = json.loads(snapshot_path.read_text(encoding="utf-8-sig"))
         except Exception as exc:
             logger.log(f"⚠ snapshot       : skipping {snapshot_path.name} — {exc}")
             continue
@@ -1149,7 +1149,7 @@ def _all_stream_dates() -> list[date]:
     dates: set[date] = set()
     if not STREAMS_HISTORY_CSV.exists():
         return []
-    with STREAMS_HISTORY_CSV.open("r", newline="", encoding="utf-8") as f:
+    with STREAMS_HISTORY_CSV.open("r", newline="", encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
             d = _parse_iso_date(row.get("date") or "")
             if d:

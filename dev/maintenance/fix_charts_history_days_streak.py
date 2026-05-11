@@ -33,7 +33,7 @@ def load_history_from_csvs():
             continue
             
         print(f"Chargement {csv_path.name}...")
-        with open(csv_path, newline="", encoding="utf-8") as f:
+        with open(csv_path, newline="", encoding="utf-8-sig") as f:
             reader = csv.DictReader(f)
             for row in reader:
                 date = row["date"]
@@ -58,7 +58,7 @@ def fix_csv(csv_path, history):
     rows = []
     fieldnames = None
     
-    with open(csv_path, newline="", encoding="utf-8") as f:
+    with open(csv_path, newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         fieldnames = reader.fieldnames
         

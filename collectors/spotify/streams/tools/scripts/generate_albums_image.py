@@ -145,7 +145,7 @@ def load_covers() -> dict:
     """Returns {normalized_album_title → cover_url}."""
     if not COVERS_PATH.exists():
         return {}
-    covers = json.loads(COVERS_PATH.read_text(encoding="utf-8"))
+    covers = json.loads(COVERS_PATH.read_text(encoding="utf-8-sig"))
     result = {}
     for v in covers.values():
         key = _norm(v.get("title", ""))
@@ -219,7 +219,7 @@ def load_album_track_map() -> dict[str, dict]:
 
     if SONGS_JSON.exists():
         try:
-            _consume_sections(json.loads(SONGS_JSON.read_text(encoding="utf-8")), allow_all_non_extras=True)
+            _consume_sections(json.loads(SONGS_JSON.read_text(encoding="utf-8-sig")), allow_all_non_extras=True)
         except Exception as e:
             print(f"Erreur {SONGS_JSON.name}: {e}")
     return result
@@ -247,7 +247,7 @@ def load_history(target_date: str) -> tuple[dict, dict, dict]:
         except Exception:
             return None
 
-    with open(HISTORY_PATH, newline="", encoding="utf-8") as f:
+    with open(HISTORY_PATH, newline="", encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
             d = row["date"]
             if d not in (target_date, yesterday, day_before, last_week, last_week_prev):
@@ -288,7 +288,7 @@ def load_history(target_date: str) -> tuple[dict, dict, dict]:
 
 def get_latest_date() -> str:
     latest = ""
-    with open(HISTORY_PATH, newline="", encoding="utf-8") as f:
+    with open(HISTORY_PATH, newline="", encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
             if row["date"] > latest:
                 latest = row["date"]

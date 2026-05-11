@@ -300,7 +300,7 @@ def upload_main_json_files(client: BaseClient, bucket: str, dry_run: bool) -> in
         local_path, r2_key = item
         if not local_path.exists():
             return r2_key, None
-        payload = json.loads(local_path.read_text(encoding="utf-8"))
+        payload = json.loads(local_path.read_text(encoding="utf-8-sig"))
         changed = upload_json_if_changed(client, bucket, r2_key, payload, dry_run=dry_run)
         return r2_key, changed
 

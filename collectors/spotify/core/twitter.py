@@ -95,7 +95,7 @@ def _launch(p, profile_dir: Path):
 def _load_credentials(session_file: Path) -> dict | None:
     """Lit username/password depuis le fichier de session si presents."""
     try:
-        data = json.loads(Path(session_file).read_text(encoding="utf-8"))
+        data = json.loads(Path(session_file).read_text(encoding="utf-8-sig"))
         if "username" in data and "password" in data:
             return {
                 "username": data["username"],

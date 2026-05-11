@@ -361,7 +361,7 @@ def _load_all_tracks_from_json() -> list[dict]:
                 all_sections.append(item)
 
     if _SONGS_JSON.exists():
-        all_sections.extend(json.loads(_SONGS_JSON.read_text(encoding="utf-8")))
+        all_sections.extend(json.loads(_SONGS_JSON.read_text(encoding="utf-8-sig")))
 
     for section in all_sections:
             for t in section.get("tracks", []):
@@ -384,7 +384,7 @@ def _seeded_track_ids() -> set[str]:
     if not HISTORY_PATH.exists():
         return set()
     ids: set[str] = set()
-    with HISTORY_PATH.open("r", newline="", encoding="utf-8") as f:
+    with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
             if row.get("track_id"):
                 ids.add(row["track_id"])
@@ -415,7 +415,7 @@ def apply_to_history(scraped: dict[str, int]) -> None:
     rows: list[dict] = []
 
     if HISTORY_PATH.exists():
-        with HISTORY_PATH.open("r", newline="", encoding="utf-8") as f:
+        with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
             reader = csv.DictReader(f)
             if reader.fieldnames:
                 fieldnames = list(reader.fieldnames)

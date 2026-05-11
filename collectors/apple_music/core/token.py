@@ -38,7 +38,7 @@ def _load_cached_token() -> Optional[str]:
     if not TOKEN_CACHE_PATH.exists():
         return None
     try:
-        payload = json.loads(TOKEN_CACHE_PATH.read_text(encoding="utf-8"))
+        payload = json.loads(TOKEN_CACHE_PATH.read_text(encoding="utf-8-sig"))
     except Exception:
         return None
     token = payload.get("token")

@@ -78,7 +78,7 @@ MILESTONES = [
 def load_album_covers() -> dict:
     if not COVERS_JSON_PATH.exists():
         return {}
-    with COVERS_JSON_PATH.open("r", encoding="utf-8") as f:
+    with COVERS_JSON_PATH.open("r", encoding="utf-8-sig") as f:
         return json.load(f)
 
 
@@ -216,7 +216,7 @@ def load_tracks_from_discography() -> list[dict]:
 
 def _read_history_csv(path: Path, by_date: dict) -> None:
     """Read one history CSV into by_date, overwriting any existing (date, track_id) entries."""
-    with path.open("r", newline="", encoding="utf-8") as f:
+    with path.open("r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
             date_value = (row.get("date") or "").strip()
@@ -441,7 +441,7 @@ def add_ranks(songs: list[dict]) -> list[dict]:
 
 
 def read_json(path: Path) -> dict:
-    with path.open("r", encoding="utf-8") as f:
+    with path.open("r", encoding="utf-8-sig") as f:
         return json.load(f)
 
 
@@ -854,7 +854,7 @@ def _load_billboard_from_csv() -> dict | None:
     if not BILLBOARD_CSV_PATH.exists():
         return None
 
-    with open(BILLBOARD_CSV_PATH, newline="", encoding="utf-8") as f:
+    with open(BILLBOARD_CSV_PATH, newline="", encoding="utf-8-sig") as f:
         rows = list(csv.DictReader(f))
 
     if not rows:
@@ -920,7 +920,7 @@ def export_swift_top_100_from_csv(*, songs_by_id: dict[str, dict] | None = None)
     if not SWIFT_TOP_100_CSV_PATH.exists():
         return
 
-    with open(SWIFT_TOP_100_CSV_PATH, newline="", encoding="utf-8") as f:
+    with open(SWIFT_TOP_100_CSV_PATH, newline="", encoding="utf-8-sig") as f:
         rows = list(csv.DictReader(f))
 
     if not rows:
@@ -1006,7 +1006,7 @@ def export_swift_top_100_from_csv(*, songs_by_id: dict[str, dict] | None = None)
     # Load from songs.json (flat list)
     if MISC_JSON_SRC.exists():
         try:
-            with open(MISC_JSON_SRC, encoding="utf-8") as f:
+            with open(MISC_JSON_SRC, encoding="utf-8-sig") as f:
                 misc_data = json.load(f)
                 for track in misc_data:
                     sf = track.get("song_family")
@@ -1022,7 +1022,7 @@ def export_swift_top_100_from_csv(*, songs_by_id: dict[str, dict] | None = None)
     if ALBUMS_DIR_SRC.exists():
         try:
             for album_file in ALBUMS_DIR_SRC.glob("*.json"):
-                with open(album_file, encoding="utf-8") as f:
+                with open(album_file, encoding="utf-8-sig") as f:
                     album_data = json.load(f)
                     if isinstance(album_data, dict) and "sections" in album_data:
                         for section in album_data.get("sections", []):

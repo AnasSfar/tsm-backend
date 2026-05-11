@@ -122,7 +122,7 @@ def build_cover_map() -> dict:
     """Returns {normalized_album_title → cover_url} from covers.json."""
     if not COVERS_PATH.exists():
         return {}
-    covers = json.loads(COVERS_PATH.read_text(encoding="utf-8"))
+    covers = json.loads(COVERS_PATH.read_text(encoding="utf-8-sig"))
     result = {}
     for v in covers.values():
         key = _norm(v.get("title", ""))
@@ -152,7 +152,7 @@ def build_track_album_map() -> dict:
     songs_file = DISCOGRAPHY_ROOT / "songs.json"
     if songs_file.exists():
         try:
-            sections = json.loads(songs_file.read_text(encoding="utf-8"))
+            sections = json.loads(songs_file.read_text(encoding="utf-8-sig"))
         except Exception:
             sections = []
         for section in sections:
@@ -190,7 +190,7 @@ def _get_track_image_map() -> dict:
         songs_path = DISCOGRAPHY_ROOT / "songs.json"
         if songs_path.exists():
             try:
-                songs = json.loads(songs_path.read_text(encoding="utf-8"))
+                songs = json.loads(songs_path.read_text(encoding="utf-8-sig"))
                 for track in songs:
                     title = track.get("title", "")
                     img = (track.get("image_url") or "").strip()
@@ -231,7 +231,7 @@ def get_album_cover(
 # ---------------------------------------------------------------------------
 
 def load_json(path: Path):
-    return json.loads(path.read_text(encoding="utf-8"))
+    return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
 def fmt_streams(n) -> str:
@@ -448,7 +448,7 @@ def get_out_songs(chart_date: str, current_rows: list[dict]) -> list[dict]:
     try:
         current_names = {str(r.get("song_name", "") or r.get("track_name", "")).lower() for r in current_rows}
         out_rows = []
-        with open(csv_path, newline="", encoding="utf-8") as f:
+        with open(csv_path, newline="", encoding="utf-8-sig") as f:
             for row in csv.DictReader(f):
                 name = str(row.get("song_name", "") or row.get("track_name", ""))
                 row["track_name"] = name

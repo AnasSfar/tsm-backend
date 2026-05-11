@@ -140,7 +140,7 @@ def existing_track_ids() -> set[str]:
                         ids.add(m.group(1))
 
     if SONGS_JSON_PATH.exists():
-        for section in json.loads(SONGS_JSON_PATH.read_text(encoding="utf-8")):
+        for section in json.loads(SONGS_JSON_PATH.read_text(encoding="utf-8-sig")):
             for t in section.get("tracks", []):
                 url = (t.get("url") or t.get("spotify_url") or "").strip()
                 m = TRACK_ID_RE.search(url)
@@ -169,7 +169,7 @@ def existing_title_slugs() -> set[str]:
                 all_sections.append(item)
 
     if SONGS_JSON_PATH.exists():
-        all_sections.extend(json.loads(SONGS_JSON_PATH.read_text(encoding="utf-8")))
+        all_sections.extend(json.loads(SONGS_JSON_PATH.read_text(encoding="utf-8-sig")))
 
     for section in all_sections:
             for t in section.get("tracks", []):
@@ -180,7 +180,7 @@ def existing_title_slugs() -> set[str]:
 
 
 def add_to_songs_json(new_tracks: list[dict]) -> int:
-    data: list[dict] = json.loads(SONGS_JSON_PATH.read_text(encoding="utf-8"))
+    data: list[dict] = json.loads(SONGS_JSON_PATH.read_text(encoding="utf-8-sig"))
 
     # Cherche ou crée la section kworb_extras
     group = next(

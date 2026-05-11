@@ -93,7 +93,7 @@ def _load_cache(path: Path) -> dict[str, dict]:
     if not path.exists():
         return {}
     try:
-        data = json.loads(path.read_text(encoding="utf-8"))
+        data = json.loads(path.read_text(encoding="utf-8-sig"))
     except Exception:
         return {}
     return data if isinstance(data, dict) else {}
@@ -272,7 +272,7 @@ def _load_cached_token() -> Optional[str]:
     if not BEARER_CACHE_FILE.exists():
         return None
     try:
-        payload = json.loads(BEARER_CACHE_FILE.read_text(encoding="utf-8"))
+        payload = json.loads(BEARER_CACHE_FILE.read_text(encoding="utf-8-sig"))
     except Exception:
         return None
 
@@ -517,7 +517,7 @@ def _load_state_file(output_csv: Path) -> tuple[dict[str, SongState], Optional[s
     if not STATE_FILE.exists():
         return {}, None
     try:
-        payload = json.loads(STATE_FILE.read_text(encoding="utf-8"))
+        payload = json.loads(STATE_FILE.read_text(encoding="utf-8-sig"))
     except Exception:
         return {}, None
 

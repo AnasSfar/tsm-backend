@@ -354,7 +354,7 @@ def load_tracks_from_discography() -> list[dict]:
 
     if SONGS_JSON.exists():
         try:
-            sections = json.loads(SONGS_JSON.read_text(encoding="utf-8"))
+            sections = json.loads(SONGS_JSON.read_text(encoding="utf-8-sig"))
         except Exception:
             sections = []
         for section in sections:
@@ -377,7 +377,7 @@ def load_tracks_from_discography() -> list[dict]:
 def load_csv_rows() -> tuple[list[str], list[dict]]:
     if not HISTORY_PATH.exists():
         return [], []
-    with HISTORY_PATH.open("r", newline="", encoding="utf-8") as f:
+    with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         fieldnames = list(reader.fieldnames or [])
         rows = list(reader)
@@ -445,7 +445,7 @@ def _worker(
     # Injecter la session Spotify (cookies) si disponible
     if SESSION_PATH.exists():
         try:
-            session_data = json.loads(SESSION_PATH.read_text(encoding="utf-8"))
+            session_data = json.loads(SESSION_PATH.read_text(encoding="utf-8-sig"))
             cookies = session_data.get("cookies", [])
             if cookies:
                 context.add_cookies(cookies)

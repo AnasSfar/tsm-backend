@@ -145,7 +145,7 @@ def load_apple_music_images() -> dict[str, str]:
         return images
     
     try:
-        with open(APPLE_MUSIC_CSV, "r", encoding="utf-8") as f:
+        with open(APPLE_MUSIC_CSV, "r", encoding="utf-8-sig") as f:
             reader = csv.DictReader(f)
             for row in reader:
                 image_url = (row.get("image_url") or "").strip()
@@ -163,7 +163,7 @@ def load_songs() -> list[dict]:
         return []
     
     try:
-        return json.loads(SONGS_JSON_PATH.read_text(encoding="utf-8"))
+        return json.loads(SONGS_JSON_PATH.read_text(encoding="utf-8-sig"))
     except Exception:
         return []
 

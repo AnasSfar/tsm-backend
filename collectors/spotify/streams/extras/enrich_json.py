@@ -132,7 +132,7 @@ def enrich_track(track: dict, album_name: str) -> dict:
 
 
 def process_file(path: Path) -> None:
-    data = json.loads(path.read_text(encoding="utf-8"))
+    data = json.loads(path.read_text(encoding="utf-8-sig"))
 
     tracks = data.get("tracks")
     if not isinstance(tracks, list):
@@ -191,7 +191,7 @@ def process_songs_json():
     if not path.exists():
         return
 
-    data = json.loads(path.read_text(encoding="utf-8"))
+    data = json.loads(path.read_text(encoding="utf-8-sig"))
     songs = data.get("songs", [])
 
     if not isinstance(songs, list):

@@ -43,7 +43,7 @@ def _to_int(v: str | None) -> int:
     except Exception:
         return 0
 
-with CHARTS_GLOBAL_CSV.open("r", newline="", encoding="utf-8") as f:
+with CHARTS_GLOBAL_CSV.open("r", newline="", encoding="utf-8-sig") as f:
     reader = csv.DictReader(f)
     for row in reader:
         day = (row.get("date") or "").strip()

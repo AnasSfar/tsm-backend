@@ -22,7 +22,7 @@ lock = threading.Lock()
 def load_songs(path: Path) -> list[dict]:
     if not path.exists():
         raise FileNotFoundError(f"Fichier introuvable: {path}")
-    data = json.loads(path.read_text(encoding="utf-8"))
+    data = json.loads(path.read_text(encoding="utf-8-sig"))
     if not isinstance(data, list):
         raise ValueError("songs.json doit contenir une liste")
     return data

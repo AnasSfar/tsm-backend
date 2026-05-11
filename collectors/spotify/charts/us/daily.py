@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 daily.py - US
 Scrape la page Spotify Charts, filtre TS, met a jour ts_history, et poste le tweet.
@@ -154,7 +154,7 @@ def page_available(d: date) -> bool | None:
     try:
         if not _FILTER_BEARER_CACHE.exists():
             return None
-        data = _json.loads(_FILTER_BEARER_CACHE.read_text(encoding="utf-8"))
+        data = _json.loads(_FILTER_BEARER_CACHE.read_text(encoding="utf-8-sig"))
         if time.time() - data.get("ts", 0) >= _TOKEN_TTL:
             return None
         token = data.get("token")
@@ -197,7 +197,7 @@ def run_filter(d: date) -> tuple[str | None, bool]:
         log("ERROR", "tweet.txt introuvable aprÃ¨s filter.py")
         return None, False
 
-    content = tp.read_text(encoding="utf-8")
+    content = tp.read_text(encoding="utf-8-sig")
     log("INFO", f"tweet.txt chargÃ© ({len(content)} caractÃ¨res)")
     return content, False
 

@@ -34,7 +34,7 @@ if ALBUMS_DIR.exists():
 
 songs_file = DISCOGRAPHY / "songs.json"
 if songs_file.exists():
-    all_sections.extend(json.loads(songs_file.read_text(encoding="utf-8")))
+    all_sections.extend(json.loads(songs_file.read_text(encoding="utf-8-sig")))
 
 for data in all_sections:
     album = data.get("album")

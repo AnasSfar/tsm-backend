@@ -24,7 +24,7 @@ FIELDNAMES = ["date", "track_id", "streams", "daily_streams"]
 def _load_existing_dates() -> set[str]:
     if not HISTORY_CSV_PATH.exists():
         return set()
-    with open(HISTORY_CSV_PATH, newline="", encoding="utf-8") as f:
+    with open(HISTORY_CSV_PATH, newline="", encoding="utf-8-sig") as f:
         return {row["date"] for row in csv.DictReader(f)}
 
 
@@ -43,7 +43,7 @@ def main() -> None:
             skipped += 1
             continue
 
-        day_data: dict = json.loads(path.read_text(encoding="utf-8"))
+        day_data: dict = json.loads(path.read_text(encoding="utf-8-sig"))
         for track_id, values in day_data.items():
             new_rows.append({
                 "date":          date_str,

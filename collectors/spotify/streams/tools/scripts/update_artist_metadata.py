@@ -229,7 +229,7 @@ def load_existing_artist_metadata() -> dict:
         return {}
 
     try:
-        return json.loads(ARTIST_PATH.read_text(encoding="utf-8"))
+        return json.loads(ARTIST_PATH.read_text(encoding="utf-8-sig"))
     except Exception:
         return {}
 

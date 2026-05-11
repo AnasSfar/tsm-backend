@@ -90,7 +90,7 @@ def load_tracks_missing_images() -> list[dict]:
         if not path.exists():
             continue
         try:
-            all_sections.extend(json.loads(path.read_text(encoding="utf-8")))
+            all_sections.extend(json.loads(path.read_text(encoding="utf-8-sig")))
         except Exception:
             continue
 
@@ -266,7 +266,7 @@ def propagate_to_jsons(found: dict[str, str]) -> None:
         path = DISCO_DIR / fname
         if not path.exists():
             continue
-        data = json.loads(path.read_text(encoding="utf-8"))
+        data = json.loads(path.read_text(encoding="utf-8-sig"))
         changed = False
         sections = data if isinstance(data, list) else [data]
         for section in sections:
@@ -303,7 +303,7 @@ def propagate_to_jsons(found: dict[str, str]) -> None:
 
     # website/site/data/songs.json (dict with "songs" list)
     if SITE_SONGS.exists():
-        data = json.loads(SITE_SONGS.read_text(encoding="utf-8"))
+        data = json.loads(SITE_SONGS.read_text(encoding="utf-8-sig"))
         changed = False
         for song in data.get("songs", []):
             tid = song.get("track_id")

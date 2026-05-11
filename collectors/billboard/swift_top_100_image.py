@@ -661,7 +661,7 @@ def render_png(
 
 
 def load_payload(path: Path) -> dict[str, Any]:
-    obj = json.loads(path.read_text(encoding="utf-8"))
+    obj = json.loads(path.read_text(encoding="utf-8-sig"))
     return obj if isinstance(obj, dict) else {}
 
 

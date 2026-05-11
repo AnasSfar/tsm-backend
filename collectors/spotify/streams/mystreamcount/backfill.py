@@ -86,7 +86,7 @@ def build_session() -> requests.Session:
 def load_state() -> dict:
     if STATE_PATH.exists():
         try:
-            raw = json.loads(STATE_PATH.read_text(encoding="utf-8"))
+            raw = json.loads(STATE_PATH.read_text(encoding="utf-8-sig"))
             return {
                 "done":            set(raw.get("done", [])),
                 "playwright_mode": bool(raw.get("playwright_mode", False)),
@@ -111,7 +111,7 @@ def save_state(state: dict) -> None:
 # ── Discography ────────────────────────────────────────────────────────────────
 
 def load_tracks_from_album(album_path: Path) -> list[dict]:
-    data = json.loads(album_path.read_text(encoding="utf-8"))
+    data = json.loads(album_path.read_text(encoding="utf-8-sig"))
     seen: set[str] = set()
     result: list[dict] = []
     for section in data.get("sections", []):
@@ -139,7 +139,7 @@ def load_csv_index() -> tuple[list[dict], dict[str, str]]:
     """Returns (all_rows, min_date_per_track)."""
     rows: list[dict] = []
     if HISTORY_PATH.exists():
-        with HISTORY_PATH.open("r", newline="", encoding="utf-8") as f:
+        with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
             rows = list(csv.DictReader(f))
 
     min_date: dict[str, str] = {}

@@ -76,7 +76,7 @@ def _warp_disconnect() -> None:
 
 def _load_cached_token() -> str | None:
     try:
-        data = json.loads(BEARER_CACHE.read_text(encoding="utf-8"))
+        data = json.loads(BEARER_CACHE.read_text(encoding="utf-8-sig"))
         if time.time() - float(data.get("ts", 0)) < TOKEN_TTL:
             token = str(data.get("token") or "").strip()
             return token or None

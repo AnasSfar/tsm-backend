@@ -22,7 +22,7 @@ _REPO_ROOT   = _SCRIPT_DIR.parents[1]
 
 BILLBOARD_CSV_PATH = _REPO_ROOT / "db" / "billboard_history.csv"
 LIENS_PATH = _REPO_ROOT / "config" / "links" / "billboard.json"
-liens = json.loads(LIENS_PATH.read_text(encoding="utf-8"))
+liens = json.loads(LIENS_PATH.read_text(encoding="utf-8-sig"))
 
 URL_HOT_100    = liens.get("billboard hot 100", "")
 URL_BB200      = liens.get("billboard 200", "")
@@ -218,7 +218,7 @@ def _save_to_csv(result: dict) -> None:
 
     existing_rows: list[dict] = []
     if BILLBOARD_CSV_PATH.exists():
-        with open(BILLBOARD_CSV_PATH, newline="", encoding="utf-8") as f:
+        with open(BILLBOARD_CSV_PATH, newline="", encoding="utf-8-sig") as f:
             existing_rows = [r for r in csv.DictReader(f) if r.get("date") != date]
 
     new_rows: list[dict] = []

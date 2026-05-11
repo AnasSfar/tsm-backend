@@ -36,7 +36,7 @@ def load(path: Path = None) -> dict:
     p = path or Path(TS_HISTORY_FILE)
     if p.exists():
         try:
-            return json.loads(p.read_text(encoding="utf-8"))
+            return json.loads(p.read_text(encoding="utf-8-sig"))
         except (OSError, json.JSONDecodeError):
             print(f"[history] JSON invalide, fichier ignoré: {p}")
             return {}
@@ -110,7 +110,7 @@ def rebuild_from_csvs(root: Path, chart_id_prefix: str) -> dict:
             print(f"  ⚠  Date invalide : {csv_path.parent} — ignoré")
             continue
         try:
-            with open(csv_path, newline="", encoding="utf-8") as f:
+            with open(csv_path, newline="", encoding="utf-8-sig") as f:
                 rows = list(csv.DictReader(f))
         except Exception as e:
             print(f"  ✗ {csv_path} : {e}")

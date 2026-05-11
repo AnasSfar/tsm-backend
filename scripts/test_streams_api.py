@@ -134,7 +134,7 @@ def fetch_playcount(track_id: str, tokens: dict, session: requests.Session) -> i
 # ── Chargement des tracks ────────────────────────────────────────────────────
 
 def load_tracks() -> list[tuple[str, str]]:
-    songs = json.loads(SONGS_JSON.read_text(encoding="utf-8"))
+    songs = json.loads(SONGS_JSON.read_text(encoding="utf-8-sig"))
     tracks = []
     for section in songs:
         for t in section.get("tracks", []):

@@ -107,7 +107,7 @@ def get_songs_present_yesterday(chart_date, ts_history):
 def update_total_days_file(ts_df, chart_date: str) -> None:
     path = TOTAL_DAYS_PATH
     try:
-        data = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+        data = json.loads(path.read_text(encoding="utf-8-sig")) if path.exists() else {}
     except Exception:
         data = {}
     for _, row in ts_df.iterrows():
@@ -143,7 +143,7 @@ def normalize_track_name(s: str) -> str:
 def load_db():
     if LOCAL_DB_FILE.exists():
         try:
-            return json.loads(LOCAL_DB_FILE.read_text(encoding="utf-8"))
+            return json.loads(LOCAL_DB_FILE.read_text(encoding="utf-8-sig"))
         except Exception:
             return {}
     return {}
@@ -333,7 +333,7 @@ def _load_cached_token() -> str | None:
     try:
         if not _BEARER_CACHE.exists():
             return None
-        data = json.loads(_BEARER_CACHE.read_text(encoding="utf-8"))
+        data = json.loads(_BEARER_CACHE.read_text(encoding="utf-8-sig"))
         if time.time() - data.get("ts", 0) < _TOKEN_TTL:
             return data.get("token") or None
     except Exception:
@@ -667,7 +667,7 @@ def scrape_chart_rows(chart_date: str) -> list[dict]:
                 # Fallback: use last known total_days from cache + delta for songs where scraping failed
                 if TOTAL_DAYS_PATH.exists():
                     try:
-                        cached_td = json.loads(TOTAL_DAYS_PATH.read_text(encoding="utf-8"))
+                        cached_td = json.loads(TOTAL_DAYS_PATH.read_text(encoding="utf-8-sig"))
                         for row in rows:
                             if TS_NAME.lower() not in str(row.get("artist_names", "")).lower():
                                 continue
@@ -902,7 +902,7 @@ def process_one(chart_date: str, db, ts_history):
 
     # Pop history
     try:
-        ts_pop_history = json.loads(TS_POP_HISTORY_PATH.read_text(encoding="utf-8")) if TS_POP_HISTORY_PATH.exists() else {}
+        ts_pop_history = json.loads(TS_POP_HISTORY_PATH.read_text(encoding="utf-8-sig")) if TS_POP_HISTORY_PATH.exists() else {}
     except Exception:
         ts_pop_history = {}
 
@@ -1012,7 +1012,7 @@ def seed_from_archive_csv() -> dict:
         print(f"  Avertissement: archive CSV introuvable ({ARCHIVE_CSV})")
         return history
     try:
-        with ARCHIVE_CSV.open(newline="", encoding="utf-8") as f:
+        with ARCHIVE_CSV.open(newline="", encoding="utf-8-sig") as f:
             for row in _csv.DictReader(f):
                 date = (row.get("date") or "").strip()
                 name = (row.get("song_name") or "").strip()
@@ -1080,7 +1080,7 @@ def main():
 
     if run_relog:
         try:
-            ts_pop_history = json.loads(TS_POP_HISTORY_PATH.read_text(encoding="utf-8")) if TS_POP_HISTORY_PATH.exists() else {}
+            ts_pop_history = json.loads(TS_POP_HISTORY_PATH.read_text(encoding="utf-8-sig")) if TS_POP_HISTORY_PATH.exists() else {}
         except Exception:
             ts_pop_history = {}
 

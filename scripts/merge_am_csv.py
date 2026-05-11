@@ -18,7 +18,7 @@ PAIRS = [
 def read_csv(path: Path) -> list[dict]:
     if not path.exists():
         return []
-    with path.open("r", newline="", encoding="utf-8") as f:
+    with path.open("r", newline="", encoding="utf-8-sig") as f:
         return list(csv.DictReader(f))
 
 

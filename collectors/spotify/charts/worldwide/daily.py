@@ -150,7 +150,7 @@ def _title_fields(item: Dict[str, Any]) -> list[str]:
 
 def _iter_website_songs() -> Iterable[Dict[str, Any]]:
     if WEBSITE_SONGS_PATH.exists():
-        data = json.loads(WEBSITE_SONGS_PATH.read_text(encoding="utf-8"))
+        data = json.loads(WEBSITE_SONGS_PATH.read_text(encoding="utf-8-sig"))
         if isinstance(data, list):
             yield from (x for x in data if isinstance(x, dict))
         elif isinstance(data, dict) and isinstance(data.get("songs"), list):
@@ -159,7 +159,7 @@ def _iter_website_songs() -> Iterable[Dict[str, Any]]:
 
 def _iter_disco_tracks() -> Iterable[Dict[str, Any]]:
     if DISCO_SONGS_PATH.exists():
-        data = json.loads(DISCO_SONGS_PATH.read_text(encoding="utf-8"))
+        data = json.loads(DISCO_SONGS_PATH.read_text(encoding="utf-8-sig"))
         if isinstance(data, list):
             yield from (x for x in data if isinstance(x, dict))
     if DISCO_ALBUMS_DIR.exists():
@@ -199,7 +199,7 @@ def build_track_lookup() -> Dict[str, str]:
 def build_manual_mapping() -> Dict[str, str]:
     if not MANUAL_MAP_PATH.exists():
         return {}
-    data = json.loads(MANUAL_MAP_PATH.read_text(encoding="utf-8"))
+    data = json.loads(MANUAL_MAP_PATH.read_text(encoding="utf-8-sig"))
     if not isinstance(data, dict):
         return {}
     out: Dict[str, str] = {}
@@ -261,7 +261,7 @@ def _worldwide_history_path(chart_date: str) -> Path:
 
 def _load_cached_bearer() -> str | None:
     try:
-        data = json.loads(_BEARER_CACHE_FILE.read_text(encoding="utf-8"))
+        data = json.loads(_BEARER_CACHE_FILE.read_text(encoding="utf-8-sig"))
         if time.time() - float(data.get("ts", 0)) < _BEARER_TOKEN_TTL:
             token = str(data.get("token") or "").strip()
             return token or None
@@ -630,7 +630,7 @@ def main() -> int:
     existing_by_track: dict[str, list[dict]] = {}
     if OUTPUT_PATH.exists():
         try:
-            with open(OUTPUT_PATH, encoding="utf-8") as f:
+            with open(OUTPUT_PATH, encoding="utf-8-sig") as f:
                 data = json.load(f)
             if data.get("date") == chart_date and "by_track" in data:
                 existing_by_track = data["by_track"]
@@ -700,7 +700,7 @@ def main() -> int:
     prev_by_track: dict[str, list[dict]] = {}
     if prev_path.exists():
         try:
-            prev_data = json.loads(prev_path.read_text(encoding="utf-8"))
+            prev_data = json.loads(prev_path.read_text(encoding="utf-8-sig"))
             prev_by_track = prev_data.get("by_track", {})
         except Exception as exc:
             print(f"[WARN] Could not load previous day snapshot ({prev_date}): {exc}")
@@ -709,7 +709,7 @@ def main() -> int:
     total_days_store: dict[str, int] = {}
     if TOTAL_DAYS_PATH.exists():
         try:
-            total_days_store = json.loads(TOTAL_DAYS_PATH.read_text(encoding="utf-8"))
+            total_days_store = json.loads(TOTAL_DAYS_PATH.read_text(encoding="utf-8-sig"))
         except Exception as exc:
             print(f"[WARN] Could not load total_days store: {exc}")
 

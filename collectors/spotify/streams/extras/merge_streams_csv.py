@@ -26,7 +26,7 @@ FIELDNAMES = ["date", "track_id", "streams", "daily_streams"]
 
 def read_csv(path: Path, merged: dict) -> int:
     count = 0
-    with path.open("r", newline="", encoding="utf-8") as f:
+    with path.open("r", newline="", encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
             date = (row.get("date") or "").strip()
             track_id = (row.get("track_id") or "").strip()

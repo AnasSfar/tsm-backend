@@ -54,7 +54,7 @@ def block_unneeded(route):
 def load_covers() -> dict:
     if not COVERS_PATH.exists():
         raise FileNotFoundError(f"Missing file: {COVERS_PATH}")
-    return json.loads(COVERS_PATH.read_text(encoding="utf-8"))
+    return json.loads(COVERS_PATH.read_text(encoding="utf-8-sig"))
 
 
 def save_covers(data: dict) -> None:

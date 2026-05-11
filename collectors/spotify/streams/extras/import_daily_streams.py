@@ -163,12 +163,12 @@ def load_title_map() -> tuple[dict[str, str], dict[str, str], dict[str, str]]:
                         base_map[base_no_apos] = tid
 
     for album_file in sorted(ALBUMS_DIR.glob("*.json")):
-        with open(album_file, encoding="utf-8") as f:
+        with open(album_file, encoding="utf-8-sig") as f:
             data = json.load(f)
         for section in data.get("sections", []):
             index_tracks(section.get("tracks", []))
 
-    with open(SONGS_JSON, encoding="utf-8") as f:
+    with open(SONGS_JSON, encoding="utf-8-sig") as f:
         songs_data = json.load(f)
     for section in songs_data:
         index_tracks(section.get("tracks", []))

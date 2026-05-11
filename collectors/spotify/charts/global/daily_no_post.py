@@ -176,7 +176,7 @@ def run_filter(d: date) -> str | None:
         log("ERROR", "tweet.txt introuvable après filter.py")
         return None
 
-    content = tweet_path.read_text(encoding="utf-8")
+    content = tweet_path.read_text(encoding="utf-8-sig")
     log("INFO", f"tweet.txt chargé ({len(content)} caractères)")
     return content
 

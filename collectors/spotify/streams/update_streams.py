@@ -116,7 +116,7 @@ def _push_track_history_to_r2(track_id: str) -> None:
 
     points: list[dict] = []
     try:
-        with HISTORY_PATH.open("r", newline="", encoding="utf-8") as f:
+        with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
             for row in csv.DictReader(f):
                 if (row.get("track_id") or "").strip() != track_id:
                     continue
@@ -582,7 +582,7 @@ def _fetch_tokens_via_http() -> dict:
     cookies: dict = {}
     if _SESSION_FILE.exists():
         try:
-            session_data = json.loads(_SESSION_FILE.read_text(encoding="utf-8"))
+            session_data = json.loads(_SESSION_FILE.read_text(encoding="utf-8-sig"))
             for cookie in session_data.get("cookies", []):
                 cookies[cookie["name"]] = cookie["value"]
         except Exception:
@@ -716,7 +716,7 @@ class TokenManager:
         if not _TOKEN_CACHE_PATH.exists():
             return False
         try:
-            tokens = json.loads(_TOKEN_CACHE_PATH.read_text(encoding="utf-8"))
+            tokens = json.loads(_TOKEN_CACHE_PATH.read_text(encoding="utf-8-sig"))
         except Exception:
             return False
         if not tokens.get("bearer") or not tokens.get("client_token"):
@@ -1053,7 +1053,7 @@ def load_existing_artist_metadata() -> dict:
         return {}
 
     try:
-        return json.loads(ARTIST_PATH.read_text(encoding="utf-8"))
+        return json.loads(ARTIST_PATH.read_text(encoding="utf-8-sig"))
     except Exception:
         return {}
 
@@ -1303,7 +1303,7 @@ def get_last_stats_date_in_history() -> str | None:
         return None
 
     last_date = None
-    with HISTORY_PATH.open("r", newline="", encoding="utf-8") as f:
+    with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
             d = (row.get("date") or "").strip()
@@ -1316,7 +1316,7 @@ def delete_history_rows_for_date(target_date: str) -> int:
     if not HISTORY_PATH.exists():
         return 0
 
-    with HISTORY_PATH.open("r", newline="", encoding="utf-8") as f:
+    with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         rows = list(reader)
         fieldnames = reader.fieldnames or ["date", "track_id", "streams", "daily_streams"]
@@ -1336,7 +1336,7 @@ def dedupe_history_rows_by_date_track() -> int:
     if not HISTORY_PATH.exists():
         return 0
 
-    with HISTORY_PATH.open("r", newline="", encoding="utf-8") as f:
+    with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         rows = list(reader)
         fieldnames = reader.fieldnames or ["date", "track_id", "streams", "daily_streams"]
@@ -1371,7 +1371,7 @@ def load_history_rows() -> list[dict]:
     if not HISTORY_PATH.exists():
         return []
 
-    with HISTORY_PATH.open("r", newline="", encoding="utf-8") as f:
+    with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
         return list(csv.DictReader(f))
 
 
@@ -1529,7 +1529,7 @@ def load_history_track_ids_for_date(stats_date: str) -> set[str]:
         return set()
 
     done = set()
-    with HISTORY_PATH.open("r", newline="", encoding="utf-8") as f:
+    with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
             if (row.get("date") or "").strip() == stats_date:
@@ -1544,7 +1544,7 @@ def get_last_history_total(track_id: str) -> int | None:
         return None
 
     last = None
-    with HISTORY_PATH.open("r", newline="", encoding="utf-8") as f:
+    with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
             if row.get("track_id") == track_id:
@@ -1560,7 +1560,7 @@ def get_all_last_history_totals() -> dict[str, int]:
     result: dict[str, int] = {}
     if not HISTORY_PATH.exists():
         return result
-    with HISTORY_PATH.open("r", newline="", encoding="utf-8") as f:
+    with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
             track_id = (row.get("track_id") or "").strip()
@@ -1576,7 +1576,7 @@ def get_history_total_for_date(track_id: str, stats_date: str) -> int | None:
         return None
 
     value = None
-    with HISTORY_PATH.open("r", newline="", encoding="utf-8") as f:
+    with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
             if (row.get("track_id") or "").strip() != track_id:
@@ -1601,7 +1601,7 @@ def get_previous_total_before_date(track_id: str, stats_date: str) -> int | None
     best_date = None
     best_total = None
 
-    with HISTORY_PATH.open("r", newline="", encoding="utf-8") as f:
+    with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
             if (row.get("track_id") or "").strip() != track_id:
@@ -1713,7 +1713,7 @@ def load_track_priorities_from_specific_date(target_date: str) -> dict[str, int]
     if not HISTORY_PATH.exists():
         return result
 
-    with HISTORY_PATH.open("r", newline="", encoding="utf-8") as f:
+    with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
             if (row.get("date") or "").strip() != target_date:
@@ -1879,7 +1879,7 @@ def load_last_unfinished_update_track_ids(stats_date: str | None = None) -> set[
         return set()
 
     try:
-        payload = json.loads(LAST_UNFINISHED_UPDATE_JSON.read_text(encoding="utf-8"))
+        payload = json.loads(LAST_UNFINISHED_UPDATE_JSON.read_text(encoding="utf-8-sig"))
     except Exception:
         return set()
 
@@ -1895,7 +1895,7 @@ def load_not_found_streak() -> dict:
     if not NOT_FOUND_STREAK_PATH.exists():
         return {}
     try:
-        return json.loads(NOT_FOUND_STREAK_PATH.read_text(encoding="utf-8"))
+        return json.loads(NOT_FOUND_STREAK_PATH.read_text(encoding="utf-8-sig"))
     except Exception:
         return {}
 

@@ -125,7 +125,7 @@ def _bearer_cache_path(name: str) -> Path:
 
 def _load_cached_bearer(name: str) -> str | None:
     try:
-        data = json.loads(_bearer_cache_path(name).read_text(encoding="utf-8"))
+        data = json.loads(_bearer_cache_path(name).read_text(encoding="utf-8-sig"))
         if time.time() - float(data.get("ts", 0)) < SPOTIFY_TOKEN_TTL:
             token = str(data.get("token") or "").strip()
             return token or None

@@ -11,7 +11,7 @@ from .filters import rank_key
 def read_csv_rows(csv_path: Path) -> list[dict[str, str]]:
     if not csv_path.exists() or csv_path.stat().st_size == 0:
         return []
-    with csv_path.open(newline="", encoding="utf-8") as handle:
+    with csv_path.open(newline="", encoding="utf-8-sig") as handle:
         return list(csv.DictReader(handle))
 
 

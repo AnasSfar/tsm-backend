@@ -319,7 +319,7 @@ def _api_chart_available(target_date: date) -> bool | None:
     try:
         if not _FILTER_BEARER_CACHE.exists():
             return None
-        data = _json.loads(_FILTER_BEARER_CACHE.read_text(encoding="utf-8"))
+        data = _json.loads(_FILTER_BEARER_CACHE.read_text(encoding="utf-8-sig"))
         if time.time() - data.get("ts", 0) >= _TOKEN_TTL:
             return None
         token = data.get("token")
@@ -394,7 +394,7 @@ def run_filter(d: date, *, force: bool = False) -> tuple[str | None, bool]:
         log("ERROR", f"tweet.txt introuvable après filter.py pour {d}")
         return None, False
 
-    content = tp.read_text(encoding="utf-8")
+    content = tp.read_text(encoding="utf-8-sig")
     log("INFO", f"tweet.txt chargé ({len(content)} caractères)")
     return content, False
 
@@ -614,7 +614,7 @@ def main() -> None:
     unavailable_dates: list[date] = []
     for d in unposted:
         if data_ready(d) and not force:
-            content = tweet_path(d).read_text(encoding="utf-8")
+            content = tweet_path(d).read_text(encoding="utf-8-sig")
             log("INFO", f"tweet.txt existant chargé pour {d} ({len(content)} caractères)")
             results[d] = content
         else:

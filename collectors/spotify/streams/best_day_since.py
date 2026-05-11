@@ -94,7 +94,7 @@ def load_song_sections() -> list[dict]:
     if not SONGS_JSON.exists():
         return []
     try:
-        payload = json.loads(SONGS_JSON.read_text(encoding="utf-8"))
+        payload = json.loads(SONGS_JSON.read_text(encoding="utf-8-sig"))
     except Exception:
         return []
     return payload if isinstance(payload, list) else []
@@ -131,7 +131,7 @@ def load_history() -> dict[str, list[Point]]:
     if not HISTORY_PATH.exists():
         return history
 
-    with HISTORY_PATH.open(newline="", encoding="utf-8") as f:
+    with HISTORY_PATH.open(newline="", encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
             track_id = (row.get("track_id") or "").strip()
             date_raw = (row.get("date") or "").strip()

@@ -469,7 +469,7 @@ def load_history_for_album(
         except Exception:
             return None
 
-    with open(HISTORY_PATH, newline="", encoding="utf-8") as f:
+    with open(HISTORY_PATH, newline="", encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
             tid = row.get("track_id") or ""
             if tid not in all_ids:
@@ -544,7 +544,7 @@ def load_global_chart_filtered_for_album(sections: list[dict], target_date: str)
         return {}, False
 
     try:
-        entries = json.loads(json_path.read_text(encoding="utf-8"))
+        entries = json.loads(json_path.read_text(encoding="utf-8-sig"))
         if not isinstance(entries, list):
             return {}, False
     except Exception:
@@ -572,7 +572,7 @@ def load_global_chart_filtered_for_album(sections: list[dict], target_date: str)
     # Daily streams for filter rate denominator (same day only)
     daily_map: dict[str, int] = {}
     all_ids = {t["track_id"] for sec in sections for t in sec["tracks"]}
-    with open(HISTORY_PATH, newline="", encoding="utf-8") as f:
+    with open(HISTORY_PATH, newline="", encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
             if row.get("date") != target_date:
                 continue
@@ -605,7 +605,7 @@ def load_cover_url(album_name: str) -> str:
     # 1) Primary source: covers.json
     try:
         if COVERS_PATH.exists():
-            covers = json.loads(COVERS_PATH.read_text(encoding="utf-8"))
+            covers = json.loads(COVERS_PATH.read_text(encoding="utf-8-sig"))
             for v in covers.values():
                 if (v.get("title") or "").lower() == album_name.lower():
                     url = v.get("cover_url", "")
@@ -678,7 +678,7 @@ def pick_header_image(album_name: str) -> Path | None:
 
 def get_latest_date() -> str:
     latest = ""
-    with open(HISTORY_PATH, newline="", encoding="utf-8") as f:
+    with open(HISTORY_PATH, newline="", encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
             if row["date"] > latest:
                 latest = row["date"]

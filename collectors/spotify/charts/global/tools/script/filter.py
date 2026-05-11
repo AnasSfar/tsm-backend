@@ -67,7 +67,7 @@ def _load_cached_token() -> str | None:
     try:
         if not _BEARER_CACHE.exists():
             return None
-        data = json.loads(_BEARER_CACHE.read_text(encoding="utf-8"))
+        data = json.loads(_BEARER_CACHE.read_text(encoding="utf-8-sig"))
         if time.time() - data.get("ts", 0) < _TOKEN_TTL:
             return data.get("token") or None
     except Exception:
@@ -244,7 +244,7 @@ def get_songs_present_yesterday(chart_date, ts_history):
 def update_total_days_file(ts_df, chart_date: str) -> None:
     path = TOTAL_DAYS_PATH
     try:
-        data = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+        data = json.loads(path.read_text(encoding="utf-8-sig")) if path.exists() else {}
     except Exception:
         data = {}
     for _, row in ts_df.iterrows():
@@ -490,7 +490,7 @@ def extract_total_days_for_ts_rows(page, rows: list[dict], chart_date: str) -> N
     # Fallback: use last known total_days from cache + delta for songs where scraping failed
     if TOTAL_DAYS_PATH.exists():
         try:
-            cached_td = json.loads(TOTAL_DAYS_PATH.read_text(encoding="utf-8"))
+            cached_td = json.loads(TOTAL_DAYS_PATH.read_text(encoding="utf-8-sig"))
             for row in rows:
                 if TS_NAME.lower() not in str(row.get("artist_names", "")).lower():
                     continue
@@ -843,7 +843,7 @@ def _remove_date_from_archive_csv(chart_date: str) -> None:
         return
     import csv as _csv
     FIELDNAMES = ["date", "song_name", "rank", "streams", "previous_rank", "peak_rank", "total_days", "streak", "movement"]
-    with ARCHIVE_CSV.open("r", newline="", encoding="utf-8") as f:
+    with ARCHIVE_CSV.open("r", newline="", encoding="utf-8-sig") as f:
         kept = [r for r in _csv.DictReader(f) if (r.get("date") or "").strip() != chart_date]
     with ARCHIVE_CSV.open("w", newline="", encoding="utf-8") as f:
         w = _csv.DictWriter(f, fieldnames=FIELDNAMES, extrasaction="ignore")

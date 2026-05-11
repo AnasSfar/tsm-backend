@@ -60,7 +60,7 @@ def _album_daily_series(album: str, track_map: dict) -> dict[str, int]:
 
     wanted_ids = {track_id for track_id, _ in album_tracks}
     rows_by_date: dict[str, dict[str, dict]] = {}
-    with open(generate_albums_image.HISTORY_PATH, newline="", encoding="utf-8") as f:
+    with open(generate_albums_image.HISTORY_PATH, newline="", encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
             track_id = row.get("track_id")
             if track_id not in wanted_ids:

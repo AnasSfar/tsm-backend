@@ -10,7 +10,7 @@ def delete_day(target_date: str) -> None:
         print(f"Fichier introuvable: {HISTORY_PATH}")
         return
 
-    data = json.loads(HISTORY_PATH.read_text(encoding="utf-8"))
+    data = json.loads(HISTORY_PATH.read_text(encoding="utf-8-sig"))
 
     dates = data.get("dates", [])
     by_date = data.get("by_date", {})

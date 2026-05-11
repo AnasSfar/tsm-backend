@@ -12,7 +12,7 @@ def print_track(track):
 
 # Albums (sections > tracks)
 for album_file in sorted((DISCO_DIR / "albums").glob("*.json")):
-    with open(album_file, encoding="utf-8") as f:
+    with open(album_file, encoding="utf-8-sig") as f:
         album = json.load(f)
     for section in album.get("sections", []):
         for track in section.get("tracks", []):

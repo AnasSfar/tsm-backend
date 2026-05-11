@@ -112,7 +112,7 @@ def _load_covers() -> dict[str, dict]:
     if not COVERS_JSON.exists():
         return {}
     try:
-        return json.loads(COVERS_JSON.read_text(encoding="utf-8"))
+        return json.loads(COVERS_JSON.read_text(encoding="utf-8-sig"))
     except Exception:
         return {}
 
@@ -178,7 +178,7 @@ def _iter_discography_albums() -> list[AlbumMeta]:
 def _load_song_history() -> list[dict]:
     if not SWIFT_TOP_100_HISTORY_CSV.exists():
         return []
-    with SWIFT_TOP_100_HISTORY_CSV.open("r", newline="", encoding="utf-8") as f:
+    with SWIFT_TOP_100_HISTORY_CSV.open("r", newline="", encoding="utf-8-sig") as f:
         return list(csv.DictReader(f))
 
 
@@ -254,7 +254,7 @@ def _load_existing_history_before_date(chart_date: str, logger: Logger) -> list[
     if not SWIFT_TOP_ALBUMS_HISTORY_CSV.exists():
         return []
     try:
-        with SWIFT_TOP_ALBUMS_HISTORY_CSV.open("r", newline="", encoding="utf-8") as f:
+        with SWIFT_TOP_ALBUMS_HISTORY_CSV.open("r", newline="", encoding="utf-8-sig") as f:
             rows = list(csv.DictReader(f))
     except Exception as exc:
         logger.log(f"⚠ history        : failed to read CSV — {exc}")

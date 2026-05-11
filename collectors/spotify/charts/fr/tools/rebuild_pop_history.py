@@ -38,7 +38,7 @@ def load_songs_db() -> dict:
     if not SONGS_DB_PATH.exists():
         print(f"WARN: songs_db.json introuvable ({SONGS_DB_PATH})")
         return {}
-    return json.loads(SONGS_DB_PATH.read_text(encoding="utf-8"))
+    return json.loads(SONGS_DB_PATH.read_text(encoding="utf-8-sig"))
 
 
 def is_pop_in_db(db: dict, track: str) -> bool:
@@ -67,7 +67,7 @@ def discover_dates() -> list[str]:
 def tracks_from_pop_csv(path: Path) -> list[str]:
     """Read ts_pop_songs.csv and return TS track names with pop_flag=True."""
     tracks = []
-    with open(path, newline="", encoding="utf-8") as f:
+    with open(path, newline="", encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
             flag = str(row.get("pop_flag", "")).strip().lower()
             artist = str(row.get("artist_names", ""))
@@ -80,7 +80,7 @@ def tracks_from_pop_csv(path: Path) -> list[str]:
 def tracks_from_all_csv(path: Path) -> list[str]:
     """Read ts_all_songs.csv and return TS tracks where pop_flag=True."""
     tracks = []
-    with open(path, newline="", encoding="utf-8") as f:
+    with open(path, newline="", encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
             flag   = str(row.get("pop_flag", "")).strip().lower()
             artist = str(row.get("artist_names", ""))
@@ -103,7 +103,7 @@ def tracks_from_log(path: Path, db: dict) -> list[str]:
     Parse log.txt, extract TS songs listed under the streaming section,
     then keep only those that are is_pop=True in songs_db.
     """
-    text = path.read_text(encoding="utf-8")
+    text = path.read_text(encoding="utf-8-sig")
 
     # Find the streaming section (between "Spotify France :" and "Spotify France (Pop) :")
     m = re.search(r"Spotify France\s*:\s*\n(.*?)(?=Spotify France \(Pop\)|$)", text, re.DOTALL)

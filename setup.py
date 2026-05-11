@@ -3,7 +3,7 @@ from pathlib import Path
 
 # Read README
 readme_file = Path(__file__).parent / "README_FULL.md"
-long_description = readme_file.read_text(encoding="utf-8") if readme_file.exists() else ""
+long_description = readme_file.read_text(encoding="utf-8-sig") if readme_file.exists() else ""
 
 setup(
     name="tsm-backend",

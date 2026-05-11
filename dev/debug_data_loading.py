@@ -97,7 +97,7 @@ songs_json = DISCOGRAPHY_DIR / "songs.json"
 if albums_dir.exists():
     for album_file in sorted(albums_dir.glob("*.json"))[:2]:
         try:
-            payload = json.loads(album_file.read_text(encoding="utf-8"))
+            payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
             for section in payload.get("sections", []):
                 for track in section.get("tracks", []):
                     url = (track.get("url") or "").strip()
@@ -111,7 +111,7 @@ if albums_dir.exists():
 # From songs.json
 if songs_json.exists():
     try:
-        payload = json.loads(songs_json.read_text(encoding="utf-8"))
+        payload = json.loads(songs_json.read_text(encoding="utf-8-sig"))
         if isinstance(payload, list):
             for section in payload:
                 for track in section.get("tracks", []):

@@ -420,7 +420,7 @@ def load_all_tracks() -> list[dict]:
 
     if SONGS_JSON.exists():
         try:
-            all_sections.extend(json.loads(SONGS_JSON.read_text(encoding="utf-8")))
+            all_sections.extend(json.loads(SONGS_JSON.read_text(encoding="utf-8-sig")))
         except Exception:
             pass
 
@@ -508,7 +508,7 @@ def _get_song_family_single_image_map() -> dict:
     
     if SONGS_JSON.exists():
         try:
-            all_sections.extend(json.loads(SONGS_JSON.read_text(encoding="utf-8")))
+            all_sections.extend(json.loads(SONGS_JSON.read_text(encoding="utf-8-sig")))
         except Exception:
             pass
     
@@ -572,7 +572,7 @@ def get_cover_url(track: dict, covers: dict) -> str:
 def load_covers() -> dict:
     if not COVERS_PATH.exists():
         return {}
-    covers = json.loads(COVERS_PATH.read_text(encoding="utf-8"))
+    covers = json.loads(COVERS_PATH.read_text(encoding="utf-8-sig"))
     return {
         _norm(v.get("title", "")): v["cover_url"]
         for v in covers.values()
@@ -592,7 +592,7 @@ def load_history_for_track(track_id: str, stats_date: str) -> tuple[int | None, 
     if not HISTORY_PATH.exists():
         return None, None, None, None, None
 
-    with HISTORY_PATH.open(newline="", encoding="utf-8") as f:
+    with HISTORY_PATH.open(newline="", encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
             if row.get("track_id") != track_id:
                 continue

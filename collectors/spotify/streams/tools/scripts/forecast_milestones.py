@@ -73,7 +73,7 @@ def parse_iso_date(value: str) -> date:
 
 
 def load_json(path: Path):
-    return json.loads(path.read_text(encoding="utf-8"))
+    return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
 def load_history_bundle() -> dict:

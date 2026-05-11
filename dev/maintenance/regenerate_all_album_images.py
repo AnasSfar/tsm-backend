@@ -21,7 +21,7 @@ def get_all_albums() -> list[str]:
     try:
         albums = {}
         for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
-            payload = json.loads(album_file.read_text(encoding="utf-8"))
+            payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
             album = payload.get("album") if isinstance(payload, dict) else None
             if album and album not in albums:
                 albums[album] = True

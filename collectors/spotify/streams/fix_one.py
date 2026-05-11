@@ -114,7 +114,7 @@ def load_tracks() -> list[dict]:
                         }
 
     if SONGS_JSON.exists():
-        for section in json.loads(SONGS_JSON.read_text(encoding="utf-8")):
+        for section in json.loads(SONGS_JSON.read_text(encoding="utf-8-sig")):
             album = section.get("album", "")
             for track in section.get("tracks", []):
                 url = (track.get("url") or track.get("spotify_url") or "").strip()
@@ -166,7 +166,7 @@ def find_tracks(query: str, tracks: list[dict]) -> list[dict]:
 def load_csv() -> tuple[list[str], list[dict]]:
     if not HISTORY_PATH.exists():
         return ["date", "track_id", "streams", "daily_streams"], []
-    with HISTORY_PATH.open("r", newline="", encoding="utf-8") as f:
+    with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         fieldnames = list(reader.fieldnames or [])
         rows = list(reader)
@@ -283,7 +283,7 @@ def _r2_upload_track(track_id: str) -> None:
         m = date_re.search(path.stem)
         if not m:
             continue
-        data = json.loads(path.read_text(encoding="utf-8"))
+        data = json.loads(path.read_text(encoding="utf-8-sig"))
         if track_id not in data:
             continue
         v = data[track_id]

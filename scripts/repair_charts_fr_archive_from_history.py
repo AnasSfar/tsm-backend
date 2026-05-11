@@ -49,7 +49,7 @@ def _load_fr_history_rows(history_root: Path, chart_date: str) -> list[dict]:
     csv_path = day_dir / "ts_all_songs.csv"
 
     if json_path.exists():
-        payload = json.loads(json_path.read_text(encoding="utf-8"))
+        payload = json.loads(json_path.read_text(encoding="utf-8-sig"))
         if not isinstance(payload, list):
             raise RuntimeError(f"Invalid JSON payload in {json_path}")
         rows = payload

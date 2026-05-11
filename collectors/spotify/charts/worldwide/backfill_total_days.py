@@ -61,7 +61,7 @@ def _build_song_name_to_track_id() -> dict[str, str]:
         if not path.exists():
             continue
         try:
-            data = json.loads(path.read_text(encoding="utf-8"))
+            data = json.loads(path.read_text(encoding="utf-8-sig"))
         except Exception:
             continue
         songs = data if isinstance(data, list) else data.get("songs", [])
@@ -114,7 +114,7 @@ def main() -> None:
     history_counts: dict[str, int] = {}
     for path in snapshot_files:
         try:
-            data = json.loads(path.read_text(encoding="utf-8"))
+            data = json.loads(path.read_text(encoding="utf-8-sig"))
         except Exception as exc:
             print(f"[WARN] Skipping {path.name}: {exc}")
             continue

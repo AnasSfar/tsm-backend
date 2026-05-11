@@ -74,7 +74,7 @@ MISC_SECTION_DEFAULT = "misc_standalone"
 
 
 def read_json(path: Path) -> Any:
-    with path.open("r", encoding="utf-8") as f:
+    with path.open("r", encoding="utf-8-sig") as f:
         return json.load(f)
 
 
@@ -95,7 +95,7 @@ def backup_file(path: Path) -> None:
 def read_csv(path: Path) -> list[dict[str, str]]:
     if not path.exists():
         return []
-    with path.open("r", newline="", encoding="utf-8") as f:
+    with path.open("r", newline="", encoding="utf-8-sig") as f:
         return list(csv.DictReader(f))
 
 

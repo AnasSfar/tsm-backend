@@ -33,7 +33,7 @@ def load_cache() -> dict:
     """Load last-updated times for each track."""
     if CACHE_FILE.exists() and not FORCE:
         try:
-            return json.loads(CACHE_FILE.read_text(encoding="utf-8"))
+            return json.loads(CACHE_FILE.read_text(encoding="utf-8-sig"))
         except Exception:
             pass
     return {}
@@ -141,7 +141,7 @@ def update_track_images() -> int:
     songs_file = DISCO_DIR / "songs.json"
     if songs_file.exists():
         try:
-            songs_data = json.loads(songs_file.read_text(encoding="utf-8"))
+            songs_data = json.loads(songs_file.read_text(encoding="utf-8-sig"))
             for section in songs_data if isinstance(songs_data, list) else []:
                 for track in section.get("tracks", []) if isinstance(section, dict) else []:
                     spotify_url = track.get("url", "").strip()
@@ -179,7 +179,7 @@ def update_track_images() -> int:
             if file_path == songs_file:
                 payload = songs_data
             else:
-                payload = json.loads(file_path.read_text(encoding="utf-8"))
+                payload = json.loads(file_path.read_text(encoding="utf-8-sig"))
             
             file_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
             print(f"  [SAVED] {file_path.name}")

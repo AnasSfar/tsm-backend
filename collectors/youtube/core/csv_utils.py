@@ -14,7 +14,7 @@ from typing import Iterable
 def read_csv_rows(path: Path) -> list[dict[str, str]]:
     if not path.exists() or path.stat().st_size == 0:
         return []
-    with path.open(newline="", encoding="utf-8") as f:
+    with path.open(newline="", encoding="utf-8-sig") as f:
         return list(csv.DictReader(f))
 
 
