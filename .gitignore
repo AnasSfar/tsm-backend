@@ -41,6 +41,11 @@ twitter_post.txt
 collectors/spotify/charts/*/history/
 collectors/spotify/charts/worldwide/history/
 collectors/spotify/charts/artists_global/history/
+collectors/spotify/charts/worldwide/json/
+
+# Twitter session & Chrome profile data
+collectors/spotify/charts/worldwide/tools/json/twitter_session.json
+collectors/spotify/charts/worldwide/tools/json/chrome_profile/
 
 # Token / session caches
 **/bearer_cache.json
@@ -66,3 +71,9 @@ collectors\spotify\streams\history
 *.jpeg
 *.gif
 *.webp
+
+twitter_session.json
+log
+*.old
+LOCK
+f_*

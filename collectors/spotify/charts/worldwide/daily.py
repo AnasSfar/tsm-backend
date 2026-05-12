@@ -48,6 +48,11 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from playwright.sync_api import sync_playwright
 
+_CORE_DIR = Path(__file__).resolve().parents[4] / "collectors" / "spotify"
+if str(_CORE_DIR) not in sys.path:
+    sys.path.insert(0, str(_CORE_DIR))
+from core.twitter import post_thread, split_tweets
+
 def _build_http_session() -> _requests.Session:
     retry = Retry(total=3, connect=3, read=3, backoff_factor=1.0,
                   status_forcelist=(500, 502, 503, 504), raise_on_status=False)
@@ -67,6 +72,7 @@ _BEARER_TOKEN_TTL   = 50 * 60
 OUTPUT_PATH     = ROOT / "website" / "site" / "data" / "charts_worldwide.json"
 HISTORY_ROOT    = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "history"
 TOTAL_DAYS_PATH = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "json" / "total_days.json"
+TWITTER_SESSION = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "json" / "twitter_session.json"
 
 WEBSITE_SONGS_PATH = ROOT / "website" / "site" / "data" / "songs.json"
 DISCO_SONGS_PATH   = ROOT / "db" / "discography" / "songs.json"
@@ -82,6 +88,30 @@ _UA        = (
 TS_NAME         = "Taylor Swift"
 SEMAPHORE       = 10
 _OVERVIEW_URL   = "https://charts-spotify-com-service.spotify.com/auth/v1/overview/GLOBAL"
+
+_ALBUM_EMOJI: list[tuple[str, str]] = [
+    ("the life of a showgirl", "❤️‍🔥"),
+    ("the tortured poets department", "🤍"),
+    ("midnights", "💙"),
+    ("evermore", "🤎"),
+    ("folklore", "🩶"),
+    ("lover", "🩷"),
+    ("reputation", "🖤"),
+    ("1989", "🩵"),
+    ("red", "❤️"),
+    ("speak now", "💜"),
+    ("fearless", "💛"),
+    ("taylor swift", "💚"),
+]
+
+
+def _album_emoji(album: str) -> str:
+    al = album.lower().strip()
+    for key, emoji in _ALBUM_EMOJI:
+        if al.startswith(key) or key in al:
+            return emoji
+    return "🎵"
+
 
 # ── Text normalisation helpers (inlined from scripts/chartr2.py) ──────────────
 _TRACK_ID_RE  = re.compile(r"track/([A-Za-z0-9]+)")
@@ -148,9 +178,14 @@ def _title_fields(item: Dict[str, Any]) -> list[str]:
     ]
 
 
+def _load_json(path: Path) -> Any:
+    # utf-8-sig strips one BOM; lstrip handles a double-BOM edge case
+    return json.loads(path.read_text(encoding="utf-8-sig").lstrip("﻿"))
+
+
 def _iter_website_songs() -> Iterable[Dict[str, Any]]:
     if WEBSITE_SONGS_PATH.exists():
-        data = json.loads(WEBSITE_SONGS_PATH.read_text(encoding="utf-8-sig"))
+        data = _load_json(WEBSITE_SONGS_PATH)
         if isinstance(data, list):
             yield from (x for x in data if isinstance(x, dict))
         elif isinstance(data, dict) and isinstance(data.get("songs"), list):
@@ -159,13 +194,13 @@ def _iter_website_songs() -> Iterable[Dict[str, Any]]:
 
 def _iter_disco_tracks() -> Iterable[Dict[str, Any]]:
     if DISCO_SONGS_PATH.exists():
-        data = json.loads(DISCO_SONGS_PATH.read_text(encoding="utf-8-sig"))
+        data = _load_json(DISCO_SONGS_PATH)
         if isinstance(data, list):
             yield from (x for x in data if isinstance(x, dict))
     if DISCO_ALBUMS_DIR.exists():
         for album_file in sorted(DISCO_ALBUMS_DIR.glob("*.json"),
                                  key=lambda p: p.name.casefold()):
-            payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
+            payload = _load_json(album_file)
             if not isinstance(payload, dict):
                 continue
             album_name = payload.get("album", "")
@@ -199,7 +234,7 @@ def build_track_lookup() -> Dict[str, str]:
 def build_manual_mapping() -> Dict[str, str]:
     if not MANUAL_MAP_PATH.exists():
         return {}
-    data = json.loads(MANUAL_MAP_PATH.read_text(encoding="utf-8-sig"))
+    data = _load_json(MANUAL_MAP_PATH)
     if not isinstance(data, dict):
         return {}
     out: Dict[str, str] = {}
@@ -599,7 +634,7 @@ def main() -> int:
     parser.add_argument(
         "--no-post",
         action="store_true",
-        help="Accepted for compatibility; this script never posts to Twitter.",
+        help="Skip Twitter post.",
     )
     parser.add_argument(
         "--force",
@@ -653,7 +688,29 @@ def main() -> int:
     track_lookup  = build_track_lookup()
     manual_lookup = build_manual_mapping()
 
+    id_to_name: dict[str, str] = {}
+    id_to_album: dict[str, str] = {}
+    for _item in _iter_website_songs():
+        _tid = _get_track_id_from_item(_item)
+        if _tid:
+            _name = (_item.get("title") or _item.get("name") or "").strip()
+            if _name:
+                id_to_name.setdefault(_tid, _name)
+            _album = (_item.get("album") or "").strip()
+            if _album:
+                id_to_album.setdefault(_tid, _album)
+    for _item in _iter_disco_tracks():
+        _tid = _get_track_id_from_item(_item)
+        if _tid:
+            _name = (_item.get("title") or _item.get("name") or "").strip()
+            if _name:
+                id_to_name.setdefault(_tid, _name)
+            _album = (_item.get("album") or "").strip()
+            if _album:
+                id_to_album.setdefault(_tid, _album)
+
     by_track: dict[str, list[dict]] = {}
+    track_names: dict[str, str] = {}
     unresolved: list[dict]          = []
 
     for region, rows in by_region.items():
@@ -665,6 +722,7 @@ def main() -> int:
             if not track_id:
                 unresolved.append({"region": region, "track_name": row["track_name"]})
                 continue
+            track_names.setdefault(track_id, row["track_name"])
             prev_rank = row.get("previous_rank")
             rank = row["rank"]
             rank_change = (prev_rank - rank) if (prev_rank and rank) else None
@@ -770,6 +828,64 @@ def main() -> int:
     )
     print(f"[DONE] Written latest → {OUTPUT_PATH}")
     maybe_upload_to_r2()
+
+    if not args.no_post and TWITTER_SESSION.exists():
+        has_prev = prev_path.exists()
+        locks_dir = per_date_path.parent
+        date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
+        sorted_tracks = sorted(by_track.items(), key=lambda kv: len(kv[1]), reverse=True)
+        url = "🔗 See full update here : https://thetsmuseum.app/charts?region=overall&view=today"
+        reentry_items: list[tuple[str, str]] = []
+        regular_items: list[tuple[str, str]] = []
+
+        for track_id, entries in sorted_tracks:
+            song_name = track_names.get(track_id) or id_to_name.get(track_id) or track_id
+            count = len(entries)
+            prev_count = len(prev_by_track.get(track_id, []))
+            emoji = _album_emoji(id_to_album.get(track_id, ""))
+
+            if has_prev and prev_count == 0:
+                if count == 1:
+                    e = entries[0]
+                    region_name = e.get("country_name") or e.get("country", "")
+                    rank = e.get("rank", "?")
+                    streams = e.get("streams")
+                    streams_str = f"{streams:,}" if streams else "N/A"
+                    tweet = (
+                        f'{emoji} | "{song_name}" has re-entered the {region_name} Spotify Charts '
+                        f"at #{rank} with {streams_str} streams, yesterday ({date_fmt}).\n\n{url}"
+                    )
+                else:
+                    tweet = (
+                        f'{emoji} | "{song_name}" has re-entered the Spotify Charts in {count} countries '
+                        f"yesterday ({date_fmt}).\n\n{url}"
+                    )
+                reentry_items.append((track_id, tweet))
+            else:
+                if has_prev:
+                    diff = count - prev_count
+                    diff_str = f"+{diff}" if diff >= 0 else str(diff)
+                    country_str = f"{count} countries ({diff_str})"
+                else:
+                    country_str = f"{count} countries"
+                regular_items.append((track_id, f'{emoji} | "{song_name}" charted in {country_str} yesterday ({date_fmt}).\n\n{url}'))
+
+        all_items = reentry_items + regular_items
+        pending = [(tid, tw) for tid, tw in all_items if not (locks_dir / f"posted_{tid}.lock").exists()]
+        print(f"[INFO] {len(all_items)} song(s) total, {len(pending)} to post ({len(all_items) - len(pending)} already done).")
+
+        first = True
+        for track_id, tweet in pending:
+            if not first:
+                time.sleep(30)
+            first = False
+            ok = post_thread([tweet], TWITTER_SESSION)
+            if ok:
+                (locks_dir / f"posted_{track_id}.lock").touch()
+                print(f"[INFO] Posted: {track_id}")
+            else:
+                print(f"[WARN] Failed: {track_id}")
+
     return 0
 
 

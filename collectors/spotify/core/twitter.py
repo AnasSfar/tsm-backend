@@ -121,9 +121,12 @@ def _auto_login(page, username: str, password: str, email: str = ""):
     time.sleep(0.5)
 
     # Bouton Suivant
-    next_btn = page.locator("[data-testid='LoginForm_Login_Button']")
-    next_btn.wait_for(state="visible", timeout=5_000)
-    next_btn.click()
+    try:
+        next_btn = page.locator("[data-testid='LoginForm_Login_Button']")
+        next_btn.wait_for(state="visible", timeout=5_000)
+        next_btn.click()
+    except PlaywrightTimeout:
+        username_input.press("Enter")
     time.sleep(2)
 
     # X demande souvent de ressaisir le username (ou email/telephone) avant le mot de passe
@@ -145,9 +148,12 @@ def _auto_login(page, username: str, password: str, email: str = ""):
     time.sleep(0.5)
 
     # Bouton Connexion
-    login_btn = page.locator("[data-testid='LoginForm_Login_Button']")
-    login_btn.wait_for(state="visible", timeout=5_000)
-    login_btn.click()
+    try:
+        login_btn = page.locator("[data-testid='LoginForm_Login_Button']")
+        login_btn.wait_for(state="visible", timeout=5_000)
+        login_btn.click()
+    except PlaywrightTimeout:
+        pwd_input.press("Enter")
     time.sleep(4)
 
     # Verification que la connexion a reussi

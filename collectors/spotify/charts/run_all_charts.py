@@ -440,6 +440,19 @@ def main() -> int:
         if rc_export != 0:
             failures.append(("export", rc_export))
 
+    if not args.dry_run:
+        print("\n[PHASE3] génération des images de cards worldwide...")
+        rc_cards = _run(
+            "cards",
+            CHARTS_ROOT / "worldwide" / "tools" / "scripts" / "generate_card_images.py",
+            [],
+            dry_run=False,
+            env=env,
+            verbose=args.verbose,
+        )
+        if rc_cards != 0:
+            failures.append(("cards", rc_cards))
+
     total = _fmt(time.perf_counter() - started)
     if failures:
         print(f"[FAIL] {', '.join(n for n, _ in failures)} — {total}")
