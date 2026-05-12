@@ -487,7 +487,7 @@ def _get_bearer_token_and_regions() -> tuple[str, dict[str, str]]:
         "hk": "Hong Kong",
         "hu": "Hungary",
         "is": "Iceland",
-        "il": "Israel",
+        "il": "Occupied Palestine",
         "kr": "South Korea",
         "lt": "Lithuania",
         "lu": "Luxembourg",
@@ -639,7 +639,7 @@ def main() -> int:
     parser.add_argument(
         "--force",
         action="store_true",
-        help="Accepted for compatibility; ignored by this script.",
+        help="Re-fetch all regions even if already present for this date.",
     )
     args = parser.parse_args()
 
@@ -660,10 +660,10 @@ def main() -> int:
     print(f"[INFO] Token acquired. {len(regions)} regions to fetch.")
 
 
-    # Pré-skip des pays déjà présents pour cette date
+    # Pré-skip des pays déjà présents pour cette date (sauf si --force)
     already_done: set[str] = set()
     existing_by_track: dict[str, list[dict]] = {}
-    if OUTPUT_PATH.exists():
+    if not args.force and OUTPUT_PATH.exists():
         try:
             with open(OUTPUT_PATH, encoding="utf-8-sig") as f:
                 data = json.load(f)

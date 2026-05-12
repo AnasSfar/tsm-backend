@@ -58,11 +58,12 @@ SPOTIFY_UA = (
 # global et fr postent dès leur collecte terminée (pas d'attente de worldwide)
 # us/uk/worldwide ne postent pas
 COLLECT_RUNNERS: list[tuple[str, Path, list[str]]] = [
-    ("global",    CHARTS_ROOT / "global"    / "daily.py", ["--force"]),
-    ("fr",        CHARTS_ROOT / "fr"        / "daily.py", ["--force"]),
-    ("us",        CHARTS_ROOT / "us"        / "daily.py", ["--no-post"]),
-    ("uk",        CHARTS_ROOT / "uk"        / "daily.py", ["--no-post"]),
-    ("worldwide", CHARTS_ROOT / "worldwide" / "daily.py", []),
+    ("global",         CHARTS_ROOT / "global"         / "daily.py",         ["--force"]),
+    ("fr",             CHARTS_ROOT / "fr"             / "daily.py",         ["--force"]),
+    ("us",             CHARTS_ROOT / "us"             / "daily.py",         ["--no-post"]),
+    ("uk",             CHARTS_ROOT / "uk"             / "daily.py",         ["--no-post"]),
+    ("worldwide",      CHARTS_ROOT / "worldwide"      / "daily.py",         ["--force"]),
+    ("artists_global", CHARTS_ROOT / "artists_global" / "artist_global_daily.py", ["--no-upload"]),
 ]
 
 CHART_AVAILABILITY: dict[str, str] = {
@@ -386,48 +387,81 @@ def _run_parallel(
     return failures
 
 
+_ALL_POST_PARTS = {"global", "fr", "cards", "artists_global"}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run all Spotify chart daily scripts.")
     parser.add_argument("--stop-on-error", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
-    parser.add_argument("--no-post", action="store_true", help="Skip Twitter posting.")
+    parser.add_argument(
+        "--post",
+        nargs="+",
+        choices=sorted(_ALL_POST_PARTS),
+        metavar="PART",
+        default=None,
+        help=(
+            "Parties à poster sur Twitter: cards, fr, global, worldwide. "
+            "Défaut: toutes. Exemple: --post global fr"
+        ),
+    )
+    parser.add_argument("--no-post", action="store_true", help="Désactive tout le posting Twitter (équivalent à --post sans arguments).")
+    parser.add_argument("--force-cards", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--skip-uk", action="store_true", help="Skip UK chart.")
     parser.add_argument("--verbose", "-v", action="store_true", help="Affiche la sortie complète des scripts.")
     args, passthrough = parser.parse_known_args()
 
     forwarded = list(passthrough)
 
+    # Détermine quelles parties postent sur Twitter
+    if args.no_post:
+        post_parts: set[str] = set()
+    elif args.post is not None:
+        post_parts = set(args.post)
+    else:
+        post_parts = {"global", "fr", "cards", "artists_global"}  # défaut: tout poster
+
     started = time.perf_counter()
     env = _build_env()
 
-    # global et fr reçoivent --no-post si demandé, sinon ils postent dès leur collecte terminée
     collect_runners = []
     for name, script, fixed in COLLECT_RUNNERS:
         if args.skip_uk and name == "uk":
             continue
-        extra = ["--no-post"] if args.no_post and name in {"global", "fr"} else []
+        # worldwide/daily.py ne poste jamais : generate_card_images.py (PHASE3) gère ça avec images
+        # artists_global ne poste jamais : generate_artist_chart_image.py (PHASE4) gère ça
+        if name in {"worldwide", "artists_global"}:
+            extra = ["--no-post"] if "--no-post" not in fixed else []
+        else:
+            extra = ["--no-post"] if name in {"global", "fr"} and name not in post_parts else []
         collect_runners.append((name, script, fixed + extra))
 
     target_date = _extract_target_date(forwarded)
-    if not args.dry_run and _already_done(collect_runners, target_date):
-        return 0
-    _wait_for_charts_available(collect_runners, target=target_date, dry_run=args.dry_run)
 
-    # Collecte de toutes les régions en parallèle (global+fr postent dès qu'ils sont prêts)
-    names_str = ", ".join(n for n, _, _ in collect_runners)
-    print(f"\n[PHASE1] collecte en parallèle: {names_str}")
-    t_phase1 = time.perf_counter()
-    failures = _run_parallel(collect_runners, forwarded=forwarded, dry_run=args.dry_run, env=env, verbose=args.verbose)
-    print(f"[PHASE1] collecte terminée ({_fmt(time.perf_counter() - t_phase1)})")
+    # Si on ne poste que les cards, pas besoin de collecter — les données sont déjà là
+    needs_collect = post_parts != {"cards"}
 
-    if failures:
-        failed_names = {n for n, _ in failures}
-        print(f"[WARN] Echecs collecte: {', '.join(failed_names)}")
-        if args.stop_on_error:
-            print(f"[FAIL] stop-on-error — {_fmt(time.perf_counter() - started)}")
-            return 1
+    failures: list[tuple[str, int]] = []
 
-    if not args.dry_run:
+    if needs_collect:
+        if not args.dry_run and args.post is None and _already_done(collect_runners, target_date):
+            return 0
+        _wait_for_charts_available(collect_runners, target=target_date, dry_run=args.dry_run)
+
+        names_str = ", ".join(n for n, _, _ in collect_runners)
+        print(f"\n[PHASE1] collecte en parallèle: {names_str}")
+        t_phase1 = time.perf_counter()
+        failures = _run_parallel(collect_runners, forwarded=forwarded, dry_run=args.dry_run, env=env, verbose=args.verbose)
+        print(f"[PHASE1] collecte terminée ({_fmt(time.perf_counter() - t_phase1)})")
+
+        if failures:
+            failed_names = {n for n, _ in failures}
+            print(f"[WARN] Echecs collecte: {', '.join(failed_names)}")
+            if args.stop_on_error:
+                print(f"[FAIL] stop-on-error — {_fmt(time.perf_counter() - started)}")
+                return 1
+
+    if not args.dry_run and needs_collect:
         print("\n[PHASE2] export web + upload R2...")
         rc_export = _run(
             "export",
@@ -440,18 +474,33 @@ def main() -> int:
         if rc_export != 0:
             failures.append(("export", rc_export))
 
-    if not args.dry_run:
-        print("\n[PHASE3] génération des images de cards worldwide...")
+    if not args.dry_run and "cards" in post_parts:
+        print("\n[PHASE3] génération et publication des card images worldwide...")
+        cards_args = [str(target_date), "--post", "--force", "--min-countries", "1"]
         rc_cards = _run(
             "cards",
             CHARTS_ROOT / "worldwide" / "tools" / "scripts" / "generate_card_images.py",
-            [],
+            cards_args,
             dry_run=False,
             env=env,
             verbose=args.verbose,
         )
         if rc_cards != 0:
             failures.append(("cards", rc_cards))
+
+    if not args.dry_run and "artists_global" in post_parts:
+        print("\n[PHASE4] génération et publication de l'image artist global chart...")
+        artist_img_args = [str(target_date)]
+        rc_artist = _run(
+            "artists_global_image",
+            CHARTS_ROOT / "artists_global" / "tools" / "scripts" / "generate_artist_chart_image.py",
+            artist_img_args,
+            dry_run=False,
+            env=env,
+            verbose=args.verbose,
+        )
+        if rc_artist != 0:
+            failures.append(("artists_global_image", rc_artist))
 
     total = _fmt(time.perf_counter() - started)
     if failures:
@@ -462,7 +511,15 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    _warp_connect()
+    # WARP inutile si on ne fait que poster les cards (pas de collecte Spotify)
+    _parsed_args = sys.argv[1:]
+    _cards_only = "--post" in _parsed_args and (
+        _parsed_args[_parsed_args.index("--post") + 1] == "cards"
+        if "--post" in _parsed_args and _parsed_args.index("--post") + 1 < len(_parsed_args)
+        else False
+    )
+    if not _cards_only:
+        _warp_connect()
     try:
         raise SystemExit(main())
     except KeyboardInterrupt:
@@ -471,4 +528,5 @@ if __name__ == "__main__":
         _kill_all()
         sys.exit(130)
     finally:
-        _warp_disconnect()
+        if not _cards_only:
+            _warp_disconnect()

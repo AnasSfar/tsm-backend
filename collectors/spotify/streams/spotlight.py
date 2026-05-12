@@ -223,7 +223,7 @@ class TokenManager:
         try:
             browser = p.chromium.launch(
                 headless=True,
-                args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
+                args=["--disable-blink-features=AutomationControlled", "--no-sandbox", "--no-proxy-server"],
             )
             ctx  = browser.new_context(**ctx_kwargs)
             page = ctx.new_page()
@@ -1093,6 +1093,10 @@ def main() -> None:
         default="vs",
         help="Which stat card to emphasize: 'vs' (vs yesterday) or 'total' (total streams).",
     )
+    parser.add_argument(
+        "--session",
+        help="Path to a Twitter session JSON file (overrides the default session).",
+    )
     args = parser.parse_args()
 
     if args.url and args.date is None and args.title and _validate_date(args.title):
@@ -1222,14 +1226,15 @@ def main() -> None:
     print(f"\nTweet : {tweet}")
     
     # Post to Twitter if requested
+    twitter_session = Path(args.session) if args.session else TWITTER_SESSION
     if post_requested:
-        if not TWITTER_SESSION.exists():
-            print(f"Twitter session not found: {TWITTER_SESSION}")
+        if not twitter_session.exists():
+            print(f"Twitter session not found: {twitter_session}")
             print("Generate image successfully, but skipping Twitter post.")
         else:
             try:
                 from core.twitter import post_with_image
-                success = post_with_image(tweet, img_path, TWITTER_SESSION)
+                success = post_with_image(tweet, img_path, twitter_session)
                 if success:
                     print("✓ Posté avec succès.")
                 else:

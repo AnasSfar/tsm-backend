@@ -32,13 +32,15 @@ try:
 except ImportError:
     pass
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[4]
 CHARTS_ROOT = ROOT / "collectors" / "spotify" / "charts"
 COLLECTOR_ROOT = CHARTS_ROOT / "artists_global"
 
 CHART_ID = "artist-global-daily"
 API_BASE = "https://charts-spotify-com-service.spotify.com/auth/v0/charts"
 CHART_URL = f"https://charts.spotify.com/charts/view/{CHART_ID}/latest"
+# Use the songs chart page to acquire the bearer token (more reliable than artist chart page)
+_TOKEN_ACQUIRE_URL = "https://charts.spotify.com/charts/view/regional-global-daily/latest"
 SESSION_FILE = CHARTS_ROOT / "global" / "tools" / "json" / "spotify_session.json"
 BEARER_CACHE = CHARTS_ROOT / "global" / "tools" / "json" / "bearer_cache.json"
 OUTPUT_PATH = ROOT / "website" / "site" / "data" / "charts_artists_global.json"
@@ -136,7 +138,7 @@ def _get_bearer_token(*, refresh: bool = False) -> str:
                     )
                     page = context.new_page()
                     page.on("request", _on_request)
-                    page.goto(CHART_URL, wait_until="domcontentloaded", timeout=30_000)
+                    page.goto(_TOKEN_ACQUIRE_URL, wait_until="domcontentloaded", timeout=30_000)
                     deadline = time.time() + 20
                     while not token_holder and time.time() < deadline:
                         page.wait_for_timeout(300)

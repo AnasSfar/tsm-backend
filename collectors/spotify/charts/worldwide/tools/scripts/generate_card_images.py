@@ -28,6 +28,10 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 from urllib.request import Request, urlopen
 
+import os
+import tempfile
+import time
+
 from playwright.sync_api import sync_playwright
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -38,7 +42,44 @@ ROOT           = Path(__file__).resolve().parents[6]
 WORLDWIDE_JSON = ROOT / "website" / "site" / "data" / "charts_worldwide.json"
 SONGS_JSON     = ROOT / "website" / "site" / "data" / "songs.json"
 HISTORY_ROOT   = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "history"
-LOGO_PATH      = Path(__file__).parents[7] / "tsm-frontend" / "frontend" / "public" / "icons" / "logo.gif"
+LOGO_PATH        = Path(__file__).parents[7] / "tsm-frontend" / "frontend" / "public" / "icons" / "logo.gif"
+TWITTER_SESSION  = Path(__file__).resolve().parents[1] / "json" / "twitter_session.json"
+
+_CORE = ROOT / "collectors" / "spotify" / "core"
+if str(_CORE) not in sys.path:
+    sys.path.insert(0, str(_CORE))
+from twitter import post_with_image as _post_with_image  # noqa: E402
+
+# Shared lock with core/twitter.py — prevents running Playwright while Twitter
+# posting scripts are also using a browser (same lock file, same semantics).
+_TWITTER_POST_LOCK = Path(tempfile.gettempdir()) / "tsm_twitter_post.lock"
+_LOCK_TIMEOUT = 15 * 60  # seconds
+
+
+def _wait_for_twitter_lock() -> None:
+    """Block until no Twitter posting script holds the browser lock."""
+    start = time.time()
+    while True:
+        try:
+            fd = os.open(str(_TWITTER_POST_LOCK), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            os.write(fd, str(os.getpid()).encode("ascii", errors="ignore"))
+            os.close(fd)
+            return
+        except FileExistsError:
+            elapsed = time.time() - start
+            if elapsed > _LOCK_TIMEOUT:
+                print("[WARN] Twitter post lock timeout — forcing continue")
+                return
+            if elapsed < 5:
+                print("[INFO] Twitter posting in progress — attente...", flush=True)
+            time.sleep(2)
+
+
+def _release_twitter_lock() -> None:
+    try:
+        _TWITTER_POST_LOCK.unlink()
+    except FileNotFoundError:
+        pass
 
 
 def _logo_data_uri() -> str:
@@ -242,10 +283,16 @@ def _stream_pct_html(entry: dict) -> str:
     return f'<span class="oct-stream-delta {css}"> ({sign}{pct:.1f}%)</span>'
 
 
+_NAME_OVERRIDES: dict[str, str] = {
+    "il": "Occupied Palestine",
+    "Israel": "Occupied Palestine",
+}
+
 def _country_label(code: str, name: str) -> str:
     if code.lower() in ("global", "glob"):
         return "Global"
-    return name or code.upper()
+    label = name or code.upper()
+    return _NAME_OVERRIDES.get(code, _NAME_OVERRIDES.get(label, label))
 
 
 # ── HTML builder ──────────────────────────────────────────────────────────────
@@ -486,9 +533,50 @@ def _build_card_html(song: dict, entries: list[dict], palette: dict[str, str], c
 </html>"""
 
 
+# ── Tweet builder ─────────────────────────────────────────────────────────────
+
+_ALBUM_EMOJI: list[tuple[str, str]] = [
+    ("the life of a showgirl", "❤️‍🔥"),
+    ("the tortured poets department", "🤍"),
+    ("midnights", "💙"),
+    ("evermore", "🤎"),
+    ("folklore", "🩶"),
+    ("lover", "🩷"),
+    ("reputation", "🖤"),
+    ("1989", "🩵"),
+    ("red", "❤️"),
+    ("speak now", "💜"),
+    ("fearless", "💛"),
+    ("taylor swift", "💚"),
+]
+
+_OVERALL_URL = "🔗 See full update here : https://thetsmuseum.app/charts?region=overall&view=today"
+
+
+def _album_emoji(album: str) -> str:
+    al = album.lower().strip()
+    for key, emoji in _ALBUM_EMOJI:
+        if al.startswith(key) or key in al:
+            return emoji
+    return "🎵"
+
+
+def _build_tweet(song: dict, entries: list[dict], chart_date: str) -> str:
+    title    = song.get("title", "Unknown")
+    album    = song.get("primary_album", "")
+    emoji    = _album_emoji(album)
+    count    = len(entries)
+    try:
+        date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    except Exception:
+        date_fmt = chart_date
+    country_str = "one country" if count == 1 else f"{count} countries"
+    return f'{emoji} | "{title}" charted in {country_str} yesterday ({date_fmt}).\n\n{_OVERALL_URL}'
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
-def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3) -> int:
+def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3, force: bool = False, post: bool = False) -> int:
     palette = THEMES.get(theme)
     if palette is None:
         print(f"[ERROR] Thème inconnu: {theme!r}. Choix: {', '.join(THEMES)}")
@@ -514,36 +602,83 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
 
     d       = datetime.strptime(chart_date, "%Y-%m-%d").date()
     out_dir = HISTORY_ROOT / str(d.year) / f"{d.month:02d}" / chart_date / "cards"
+
+    index_path = out_dir / "cards_index.json"
+    if index_path.exists() and not force:
+        try:
+            existing = json.loads(index_path.read_text(encoding="utf-8"))
+            n = len(existing.get("cards", []))
+            print(f"[SKIP] Cards déjà générées pour {chart_date} ({n} images) — utilise --force pour refaire")
+            return 0
+        except Exception:
+            pass
+
     out_dir.mkdir(parents=True, exist_ok=True)
 
     tracks = [(tid, entries) for tid, entries in by_track.items() if len(entries) >= min_countries]
     print(f"[INFO] {len(tracks)} tracks, thème={theme!r}, min_countries={min_countries}")
 
     generated: list[str] = []
+    to_post: list[tuple[Path, str]] = []  # (image_path, tweet_text)
 
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True, args=["--no-sandbox"])
-        page = browser.new_page(viewport={"width": 860, "height": 900})
-
-        for i, (track_id, entries) in enumerate(tracks, 1):
-            meta      = song_meta.get(track_id, {})
-            title_raw = meta.get("title", track_id)
-            slug      = _slugify(title_raw)
-            out_path  = out_dir / f"{slug}.png"
-
-            print(f"  [{i:3d}/{len(tracks)}] {title_raw[:50]}", end="", flush=True)
-            html_content = _build_card_html(meta, entries, palette, chart_date)
+    # Load already-posted slugs to avoid re-posting on --force reruns
+    posted_path = out_dir / "posted_cards.json"
+    already_posted: set[str] = set()
+    if post:
+        if posted_path.exists():
             try:
-                page.set_content(html_content, wait_until="domcontentloaded")
-                card = page.locator("#card")
-                card.wait_for(state="visible", timeout=5000)
-                card.screenshot(path=str(out_path))
-                generated.append(out_path.name)
-                print(f"  → {out_path.name}")
-            except Exception as e:
-                print(f"  [WARN] échec: {e}")
+                data = json.loads(posted_path.read_text(encoding="utf-8"))
+                # Support both {"posted": [...slugs...]} and legacy {"cards": [...filenames...]}
+                if "posted" in data:
+                    already_posted = set(data["posted"])
+                else:
+                    already_posted = {Path(f).stem for f in data.get("cards", [])}
+            except Exception:
+                pass
+        elif index_path.exists():
+            # Cards were generated before posted_cards.json existed — assume all were posted
+            try:
+                slugs = [Path(f).stem for f in json.loads(index_path.read_text(encoding="utf-8")).get("cards", [])]
+                already_posted = set(slugs)
+                posted_path.write_text(
+                    json.dumps({"date": chart_date, "posted": sorted(already_posted)}, ensure_ascii=False, indent=2),
+                    encoding="utf-8",
+                )
+                print(f"[INFO] posted_cards.json créé depuis cards_index.json ({len(already_posted)} slugs)")
+            except Exception:
+                pass
 
-        browser.close()
+    _wait_for_twitter_lock()
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True, args=["--no-sandbox", "--force-color-profile=srgb"])
+            page = browser.new_page(viewport={"width": 860, "height": 900}, device_scale_factor=4)
+
+            for i, (track_id, entries) in enumerate(tracks, 1):
+                meta      = song_meta.get(track_id, {})
+                title_raw = meta.get("title", track_id)
+                slug      = _slugify(title_raw)
+                out_path  = out_dir / f"{slug}.png"
+
+                print(f"  [{i:3d}/{len(tracks)}] {title_raw[:50]}", end="", flush=True)
+                html_content = _build_card_html(meta, entries, palette, chart_date)
+                try:
+                    page.set_content(html_content, wait_until="domcontentloaded")
+                    card = page.locator("#card")
+                    card.wait_for(state="visible", timeout=5000)
+                    card.screenshot(path=str(out_path))
+                    generated.append(out_path.name)
+                    print(f"  → {out_path.name}")
+                    if post and slug not in already_posted:
+                        to_post.append((out_path, _build_tweet(meta, entries, chart_date)))
+                    elif post:
+                        print(f"    [SKIP] déjà posté")
+                except Exception as e:
+                    print(f"  [WARN] échec: {e}")
+
+            browser.close()
+    finally:
+        _release_twitter_lock()
 
     index_path = out_dir / "cards_index.json"
     index_path.write_text(
@@ -551,6 +686,31 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
         encoding="utf-8",
     )
     print(f"[DONE] {len(generated)} images → {out_dir}")
+
+    if post and to_post:
+        print(f"[STEP] Publication de {len(to_post)} card(s) sur Twitter...")
+        ok = err = 0
+        newly_posted: list[str] = []
+        first = True
+        for img_path, tweet_text in to_post:
+            slug = img_path.stem
+            if not first:
+                time.sleep(30)
+            first = False
+            if _post_with_image(tweet_text, img_path, TWITTER_SESSION):
+                ok += 1
+                newly_posted.append(slug)
+            else:
+                err += 1
+                print(f"[WARN] Echec post: {img_path.name}")
+        # Persist posted slugs
+        all_posted = sorted(already_posted | set(newly_posted))
+        posted_path.write_text(
+            json.dumps({"date": chart_date, "posted": all_posted}, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        print(f"[STEP] Twitter: {ok} postés, {err} échecs")
+
     return 0
 
 
@@ -563,6 +723,10 @@ def main() -> int:
                         help=f"Palette de couleurs (défaut: showgirl). Choix: {', '.join(THEMES)}")
     parser.add_argument("--min-countries", type=int, default=3,
                         help="Nombre minimum de pays pour inclure un track (défaut: 3)")
+    parser.add_argument("--force", action="store_true",
+                        help="Régénère les images même si elles existent déjà pour cette date")
+    parser.add_argument("--post", action="store_true",
+                        help="Poste chaque card sur Twitter après génération")
     args = parser.parse_args()
 
     raw_date = args.date or args.date_pos or str(date.today() - timedelta(days=1))
@@ -572,7 +736,7 @@ def main() -> int:
         print(f"[ERROR] Date invalide: {raw_date!r}")
         return 1
 
-    return generate(chart_date, theme=args.theme, min_countries=args.min_countries)
+    return generate(chart_date, theme=args.theme, min_countries=args.min_countries, force=args.force, post=args.post)
 
 
 if __name__ == "__main__":
