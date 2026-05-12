@@ -51,6 +51,9 @@ DB_SONGS_JSON = DISCOGRAPHY_DIR / "songs.json"
 ARTIST_PATH = DISCOGRAPHY_DIR / "artist.json"
 ARTIST_URL = "https://open.spotify.com/artist/06HL4z0CvFAxyc27GXpf02"
 
+# Spotify daily update happens around this local hour; before it, we're still in the previous day's window
+SPOTIFY_UPDATE_HOUR = 15
+
 HEADLESS = True
 MAX_PARALLEL_PAGES = 10
 PAGE_GOTO_TIMEOUT_MS = 20_000
@@ -320,7 +323,11 @@ def get_scrape_date_str() -> str:
 
 
 def get_stats_date_str() -> str:
-    return (date.today() - timedelta(days=1)).isoformat()
+    from datetime import datetime as _dt
+    now = _dt.now()
+    # Before SPOTIFY_UPDATE_HOUR the new day's data isn't out yet — still in the previous window
+    lag = 1 if now.hour >= SPOTIFY_UPDATE_HOUR else 2
+    return (date.today() - timedelta(days=lag)).isoformat()
 
 
 def get_previous_stats_date_str(stats_date: str) -> str:
@@ -788,20 +795,30 @@ class TokenManager:
                 try:
                     browser = p.chromium.launch(
                         headless=HEADLESS,
-                        args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
+                        args=["--disable-blink-features=AutomationControlled", "--no-sandbox", "--no-proxy-server"],
                     )
                     ctx  = browser.new_context(**ctx_kwargs)
                     page = ctx.new_page()
                     page.on("request", on_request)
                     try:
-                        page.goto(url, wait_until="commit", timeout=240_000)
+                        page.goto(url, wait_until="commit", timeout=30_000)
                     except Exception as goto_err:
-                        print(f"TokenManager: goto échoué ({goto_err!s:.120})")
-                        # Network error → browser instance is stale, let outer loop retry fresh
+                        print(f"TokenManager: goto échoué — {goto_err!s:.200}")
                         raise
-                    deadline = time.time() + 120
+
+                    final_url = page.url
+                    if "accounts.spotify.com" in final_url or "login" in final_url:
+                        print(f"TokenManager: redirect login detecte ({final_url})")
+                        print("TokenManager: session expiree - lance scripts/refresh_spotify_session.py")
+                        return False
+
+                    print(f"TokenManager: page chargee: {final_url}")
+                    deadline = time.time() + 30
                     while not tokens.get("bearer") and time.time() < deadline:
                         page.wait_for_timeout(500)
+
+                    if not tokens.get("bearer"):
+                        print(f"TokenManager: aucun appel api-partner intercepte apres 30s (URL: {page.url})")
                 except Exception as e:
                     if "goto échoué" not in str(e):
                         print(f"TokenManager: erreur capture (tentative {attempt}): {e}")
@@ -824,7 +841,7 @@ class TokenManager:
                     return True
                 if LOG_MODE != "quiet":
                     print(f"TokenManager: tentative {attempt} échouée")
-                time.sleep(10)
+                time.sleep(3)
 
             if LOG_MODE != "quiet":
                 print("TokenManager: échec — tous les modes de capture ont échoué")
@@ -3404,14 +3421,43 @@ def main():
     elif dry_run_mode:
         print(f"[DRY-RUN] Scraping {total_tracks} tracks.")
 
-    # Capture des tokens API (une seule fois pour tout le run)
-    token_mgr = TokenManager()
-    if not token_mgr.capture():
-        print("TokenManager: échec — impossible d'obtenir les tokens Spotify. Vérifiez la connexion.")
-        sys.exit(1)
+    # Si tous les tracks sont déjà done, ou si on backfille une date déjà dépassée,
+    # on saute Playwright/API entièrement
+    last_history_date = get_last_stats_date_in_history()
+    is_backfill = last_history_date is not None and last_history_date > stats_date
+
+    # If stats_date has no data at all but history has a more recent date,
+    # the computed date was never captured (e.g. old code mislabeled it). Advance
+    # stats_date to the most recent available date so export/post work correctly.
+    if is_backfill and done_tracks_before_run == 0:
+        print(f"Backfill detected: history has data up to {last_history_date} but {stats_date} has no data.")
+        print(f"Advancing stats_date to {last_history_date} for export/post.")
+        stats_date = last_history_date
+        stats_date_override = stats_date  # propagate to run_update() and summary
+        already_done_for_stats_date = load_history_track_ids_for_date(stats_date)
+        done_tracks_before_run = len(already_done_for_stats_date)
+        is_backfill = False  # stats_date now points to existing data
+
+    scraping_needed = (
+        (done_tracks_before_run < total_tracks and not is_backfill)
+        or dry_run_mode
+        or local_test_mode
+        or debug_daily_mode
+    )
+
+    if scraping_needed:
+        # Capture des tokens API (une seule fois pour tout le run)
+        token_mgr = TokenManager()
+        if not token_mgr.capture():
+            print("TokenManager: échec — impossible d'obtenir les tokens Spotify. Vérifiez la connexion.")
+            sys.exit(1)
+    else:
+        token_mgr = None
+        print("Tous les tracks déjà mis à jour pour cette date — Playwright/scraping ignoré.")
 
     should_run_probe = (
         done_tracks_before_run == 0
+        and not is_backfill
         and stats_date_override is None
         and not dry_run_mode
         and not local_test_mode
@@ -3763,6 +3809,7 @@ def main():
                     f"Posting spotlight {_label}: {_track['title']} "
                     f"(+{_gainer['gain']:,} streams vs {_gainer['baseline_date']})"
                 )
+                _tsmuseum_session = _SCRIPT_DIR.parent / "charts" / "worldwide" / "tools" / "json" / "twitter_session.json"
                 _spotlight_cmd = [
                     sys.executable,
                     str(_spotlight_script),
@@ -3774,6 +3821,8 @@ def main():
                     "--highlight",
                     "vs",
                     "--no-scrape",
+                    "--session",
+                    str(_tsmuseum_session),
                 ]
                 if no_post_mode:
                     _spotlight_cmd.append("--no-post")
