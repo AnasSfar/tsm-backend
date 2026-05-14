@@ -6,7 +6,7 @@
   "image_url": "https://i.scdn.co/image/ab67616d0000b273dc6e4c7774e0c77c210d3a31",
   "peak_position": 3,
   "times_at_peak": 6,
-  "weeks_on_chart": 31,
+  "weeks_on_chart": 32,
   "history": [
     {
       "date": "2025-10-08",
@@ -409,6 +409,19 @@
       "units_charts": 0,
       "units_surplus": 3732327,
       "am_ts_units": 625380,
+      "am_global_units": 0
+    },
+    {
+      "date": "2026-05-13",
+      "rank": 14,
+      "points": 37.8,
+      "change": null,
+      "rank_change": 1,
+      "percentage_change": 16.8,
+      "total_units": 3782256,
+      "units_charts": 0,
+      "units_surplus": 3887994,
+      "am_ts_units": 1060660,
       "am_global_units": 0
     }
   ]
