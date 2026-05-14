@@ -222,6 +222,7 @@ export function renderTopbar(){
         <input id="dateInput" type="date" value="${selected}"
           min="${state.dates[0]||""}" max="${latest}">
         <button id="nextDayBtn">→</button>
+        <button id="refreshDataBtn" title="Actualiser les données" aria-label="Actualiser les données">↻</button>
       </div>
       <div class="${state.updateLogClass}">${state.updateLogText||""}</div>
     </div>

@@ -20,6 +20,7 @@ function bindDateControls() {
   const input = document.getElementById("dateInput");
   const prev = document.getElementById("prevDayBtn");
   const next = document.getElementById("nextDayBtn");
+  const refresh = document.getElementById("refreshDataBtn");
 
   if (input) {
     input.onchange = async () => {
@@ -51,7 +52,83 @@ function bindDateControls() {
       renderPage();
     };
   }
+
+  if (refresh) {
+    refresh.onclick = () => forceRefreshSiteData({ button: refresh });
+  }
 }
+
+async function forceRefreshSiteData(options = {}) {
+  const button = options.button || null;
+  if (button) {
+    button.classList.add("loading");
+    button.disabled = true;
+  }
+
+  try {
+    await loadData({ force: true, keepSelectedDate: true });
+    renderPage();
+  } finally {
+    if (button) {
+      button.disabled = false;
+      button.classList.remove("loading");
+    }
+  }
+}
+
+window.forceRefreshSiteData = forceRefreshSiteData;
+
+document.addEventListener("click", event => {
+  const target = event.target?.closest?.(
+    "[data-force-refresh], [data-refresh-data], .js-force-refresh, .js-refresh-data"
+  );
+  if (!target) return;
+
+  event.preventDefault();
+  forceRefreshSiteData({ button: target.tagName === "BUTTON" ? target : null });
+});
+
+window.addEventListener("site:data-update-available", () => {
+  forceRefreshSiteData();
+});
+
+function looksLikeUpdateNowControl(element) {
+  const text = String(element?.textContent || "").trim().toLowerCase();
+  if (!text) return false;
+  return (
+    text.includes("update now") ||
+    text.includes("refresh now") ||
+    text.includes("new data") ||
+    text.includes("actualiser")
+  );
+}
+
+function bindExternalRefreshControls(root = document) {
+  root.querySelectorAll?.("button, a, [role='button']").forEach(element => {
+    if (element.dataset.forceRefreshBound === "1") return;
+    if (!looksLikeUpdateNowControl(element)) return;
+
+    element.dataset.forceRefreshBound = "1";
+    element.addEventListener("click", event => {
+      event.preventDefault();
+      forceRefreshSiteData({ button: element.tagName === "BUTTON" ? element : null });
+    });
+  });
+}
+
+const refreshObserver = new MutationObserver(mutations => {
+  for (const mutation of mutations) {
+    mutation.addedNodes.forEach(node => {
+      if (node.nodeType !== Node.ELEMENT_NODE) return;
+      bindExternalRefreshControls(node);
+    });
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  bindExternalRefreshControls();
+  refreshObserver.observe(document.body, { childList: true, subtree: true });
+});
 
 /* =========================
    SEARCH BINDING
@@ -85,7 +162,7 @@ function bindUpdateButton(){
       state.updateLogText = data.message || "Updated";
       state.updateLogClass = "update-log success";
 
-      await loadData();
+      await loadData({ force: true });
       renderPage();
     }
     catch(e){
@@ -190,7 +267,11 @@ window.addEventListener("site:render", () => renderPage());
    DATA LOADING
 ========================= */
 
-async function loadData() {
+async function loadData(options = {}) {
+  const force = Boolean(options.force);
+  const keepSelectedDate = Boolean(options.keepSelectedDate);
+  const currentSelectedDate = state.selectedDate;
+
   const [
     songsData,
     artistData,
@@ -198,11 +279,11 @@ async function loadData() {
     lastRunStateData,
     notFoundStreakData,
   ] = await Promise.all([
-    fetchJSON("/website/site/data/songs.json"),
-    fetchJSON("/website/site/data/artist.json").catch(() => null),
-    fetchJSON("/db/discography/covers.json").catch(() => ({})),
-    fetchJSON("/website/site/data/last_run_state.json").catch(() => null),
-    fetchJSON("/website/site/data/not_found_streak.json").catch(() => null),
+    fetchJSON("/website/site/data/songs.json", { force }),
+    fetchJSON("/website/site/data/artist.json", { force }).catch(() => null),
+    fetchJSON("/db/discography/covers.json", { force }).catch(() => ({})),
+    fetchJSON("/website/site/data/last_run_state.json", { force }).catch(() => null),
+    fetchJSON("/website/site/data/not_found_streak.json", { force }).catch(() => null),
   ]);
 
   state.songs = songsData.songs || [];
@@ -234,7 +315,7 @@ async function loadData() {
   let allDates = songsData.summary?.dates || songsData.dates || [];
 
   if (!allDates.length) {
-    const r = await fetchJSON("/website/site/history/index.json");
+    const r = await fetchJSON("/website/site/history/index.json", { force });
     allDates = r.dates || [];
   }
 
@@ -243,7 +324,10 @@ async function loadData() {
   const storedDate = localStorage.getItem("site-selected-date");
   const latestDate = state.dates[state.dates.length - 1] || null;
 
-  if (storedDate && storedDate === latestDate) {
+  if (keepSelectedDate && currentSelectedDate && state.dates.includes(currentSelectedDate)) {
+    state.selectedDate = currentSelectedDate;
+    persistSelectedDate();
+  } else if (storedDate && storedDate === latestDate) {
     state.selectedDate = storedDate;
   } else {
     state.selectedDate = latestDate;
@@ -253,8 +337,8 @@ async function loadData() {
   if (state.selectedDate) {
     const prevDate = getPreviousDate(state.selectedDate);
     await Promise.all([
-      loadHistory(state.selectedDate),
-      prevDate ? loadHistory(prevDate) : Promise.resolve(),
+      loadHistory(state.selectedDate, { force }),
+      prevDate ? loadHistory(prevDate, { force }) : Promise.resolve(),
     ]);
   }
 }

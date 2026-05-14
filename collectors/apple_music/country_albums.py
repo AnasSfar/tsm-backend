@@ -9,11 +9,12 @@ from __future__ import annotations
 import argparse
 from datetime import date, datetime
 
-from core.config import COUNTRIES, DB_DIR, SCRIPTS_DIR
+from core.config import CHART_LIMIT, DB_DIR, SCRIPTS_DIR
 from core.csv_utils import load_previous_ranks, rewrite_for_snapshot
 from core.export import maybe_run_export
 from core.filters import build_artwork_url, clean_text, is_taylor_swift_song, rank_key
 from core.http import build_session
+from core.storefronts import resolve_storefronts
 from core.token import build_auth_headers, fetch_musickit_token
 
 CSV_PATH = DB_DIR / "apple_music_country_albums.csv"
@@ -37,7 +38,7 @@ FIELDNAMES = [
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Collect Apple Music country album charts for Taylor Swift albums.")
-    parser.add_argument("--countries", nargs="*", default=COUNTRIES)
+    parser.add_argument("--countries", nargs="*", default=None)
     parser.add_argument("--date", dest="run_date", default=date.today().isoformat())
     parser.add_argument("--scraped-at", dest="scraped_at", default=None)
     return parser.parse_args()
@@ -45,7 +46,7 @@ def parse_args() -> argparse.Namespace:
 
 def fetch_country(session, country: str) -> list[dict]:
     """Fetch TS albums from the country top albums chart."""
-    url = f"https://amp-api-edge.music.apple.com/v1/catalog/{country}/charts?types=albums&limit=100"
+    url = f"https://amp-api-edge.music.apple.com/v1/catalog/{country}/charts?types=albums&limit={CHART_LIMIT}"
     resp = session.get(url)
     if resp.status_code == 400:
         return []
@@ -81,7 +82,6 @@ def fetch_country(session, country: str) -> list[dict]:
 
 def main() -> None:
     args = parse_args()
-    countries = [c.lower() for c in args.countries]
     today = args.run_date
     scraped_at = args.scraped_at or f"{today}T{datetime.now().strftime('%H:%M:%S')}"
 
@@ -90,6 +90,8 @@ def main() -> None:
     if not token:
         raise RuntimeError("Could not extract Apple Music developer token")
     session.headers.update(build_auth_headers(token))
+    countries = [c.lower() for c in (args.countries if args.countries is not None else resolve_storefronts(session))]
+    print(f"[Apple Music] Country album storefronts: {len(countries)}")
 
     previous_by_id = load_previous_ranks(
         CSV_PATH,

@@ -18,11 +18,12 @@ HERE = Path(__file__).resolve().parent
 REPO_ROOT = HERE.parents[1]
 
 SCRIPTS = [
-    HERE / "ts_page.py",
     HERE / "global.py",
-    HERE / "global_albums.py",
     HERE / "country_charts.py",
     HERE / "country_albums.py",
+    HERE / "genre_charts.py",
+    HERE / "genre_album_charts.py",
+    HERE / "music_video_charts.py",
 ]
 
 

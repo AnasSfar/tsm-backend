@@ -344,10 +344,11 @@ def maybe_upload_to_r2() -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Fetch Spotify artist-global-daily chart.")
     parser.add_argument("--date", default="latest", help="YYYY-MM-DD or latest (default: latest).")
-    parser.add_argument("--wait", action="store_true", help="Retry until the chart is available.")
+    parser.add_argument("--no-wait", action="store_true", help="Ne pas retenter si le chart est indisponible.")
     parser.add_argument("--retry-seconds", type=int, default=DEFAULT_WAIT_SECONDS)
     parser.add_argument("--no-csv", action="store_true", help="Do not write the CSV snapshot.")
     parser.add_argument("--no-upload", action="store_true", help="Skip the R2 upload step.")
+    parser.add_argument("--no-post", action="store_true", help="Skip image generation and Twitter posting.")
     args = parser.parse_args()
 
     route_value = args.date.strip() or "latest"
@@ -364,7 +365,7 @@ def main() -> int:
         rows, detected_date, status = _fetch_chart(route_value, token)
         if rows:
             break
-        if not args.wait:
+        if args.no_wait:
             print(f"[ERROR] Chart {route_value} unavailable ({status}, 0 rows)")
             return 1
         print(
@@ -405,6 +406,20 @@ def main() -> int:
         print("[INFO] R2 upload skipped (--no-upload)")
     else:
         maybe_upload_to_r2()
+
+    if args.no_post:
+        print("[INFO] Image generation and Twitter post skipped (--no-post)")
+    else:
+        generate_script = COLLECTOR_ROOT / "tools" / "scripts" / "generate_artist_chart_image.py"
+        if generate_script.exists():
+            print("[STEP] Generating image and posting to Twitter...")
+            cmd = [sys.executable, str(generate_script), chart_date]
+            result = subprocess.run(cmd, cwd=str(ROOT), check=False)
+            if result.returncode != 0:
+                print(f"[WARN] generate_artist_chart_image.py failed (code {result.returncode})")
+        else:
+            print(f"[WARN] Image generation script not found: {generate_script}")
+
     print(f"[OK] {len(rows)} artists collected for {chart_date}")
     return 0
 

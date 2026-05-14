@@ -38,10 +38,11 @@ function _msLabel(v) {
    DATA LOADING
 ========================= */
 
-export async function loadHistory(date) {
-  if (!date || state.history[date]) return;
+export async function loadHistory(date, options = {}) {
+  const force = Boolean(options.force);
+  if (!date || (!force && state.history[date])) return;
 
-  const data = await fetchJSON(`/website/site/history/${date}.json`);
+  const data = await fetchJSON(`/website/site/history/${date}.json`, { force });
   state.history[date] = data || {};
 }
 

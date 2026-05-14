@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import atexit
 import concurrent.futures
 import json
 import os
@@ -50,6 +51,14 @@ SPOTIFY_CHARTS_URL = "https://charts.spotify.com/charts/view/regional-global-dai
 SPOTIFY_SESSION = CHARTS_ROOT / "global" / "tools" / "json" / "spotify_session.json"
 SPOTIFY_TOKEN_TTL = 50 * 60
 AVAILABILITY_RETRY_SECONDS = 10
+AVAILABILITY_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_AVAILABILITY_MAX_ATTEMPTS", "90"))
+AVAILABILITY_MAX_SECONDS = int(os.getenv("SPOTIFY_AVAILABILITY_MAX_SECONDS", "1800"))
+WATCH_MAX_SECONDS = int(os.getenv("SPOTIFY_WATCH_MAX_SECONDS", str(6 * 60 * 60)))
+WATCH_BASE_SECONDS = int(os.getenv("SPOTIFY_WATCH_BASE_SECONDS", "60"))
+WATCH_LATE_SECONDS = int(os.getenv("SPOTIFY_WATCH_LATE_SECONDS", "180"))
+WATCH_HOT_SECONDS = int(os.getenv("SPOTIFY_WATCH_HOT_SECONDS", "20"))
+WATCH_ERROR_SECONDS = int(os.getenv("SPOTIFY_WATCH_ERROR_SECONDS", "120"))
+RATE_LIMIT_RETRY_SECONDS = int(os.getenv("SPOTIFY_RATE_LIMIT_RETRY_SECONDS", "120"))
 SPOTIFY_UA = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
     "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
@@ -63,7 +72,6 @@ COLLECT_RUNNERS: list[tuple[str, Path, list[str]]] = [
     ("us",             CHARTS_ROOT / "us"             / "daily.py",         ["--no-post"]),
     ("uk",             CHARTS_ROOT / "uk"             / "daily.py",         ["--no-post"]),
     ("worldwide",      CHARTS_ROOT / "worldwide"      / "daily.py",         ["--force"]),
-    ("artists_global", CHARTS_ROOT / "artists_global" / "artist_global_daily.py", ["--no-upload"]),
 ]
 
 CHART_AVAILABILITY: dict[str, str] = {
@@ -124,10 +132,11 @@ def _bearer_cache_path(name: str) -> Path:
     return CHARTS_ROOT / name / "tools" / "json" / "bearer_cache.json"
 
 
-def _load_cached_bearer(name: str) -> str | None:
+def _load_cached_bearer(name: str, *, allow_stale: bool = False) -> str | None:
     try:
         data = json.loads(_bearer_cache_path(name).read_text(encoding="utf-8-sig"))
-        if time.time() - float(data.get("ts", 0)) < SPOTIFY_TOKEN_TTL:
+        is_fresh = time.time() - float(data.get("ts", 0)) < SPOTIFY_TOKEN_TTL
+        if is_fresh or allow_stale:
             token = str(data.get("token") or "").strip()
             return token or None
     except Exception:
@@ -146,12 +155,55 @@ def _save_bearer_to_caches(token: str, names: list[str]) -> None:
             print(f"[WARN] cache bearer {name} non sauvegarde: {e}")
 
 
-def _acquire_bearer_token(names: list[str], *, refresh: bool = False) -> str:
+def _acquire_bearer_token_via_http(names: list[str]) -> str | None:
+    cookies: dict[str, str] = {}
+    try:
+        session_data = json.loads(SPOTIFY_SESSION.read_text(encoding="utf-8-sig"))
+        for cookie in session_data.get("cookies", []):
+            name = str(cookie.get("name") or "")
+            value = str(cookie.get("value") or "")
+            if name and value:
+                cookies[name] = value
+    except Exception:
+        return None
+
+    if not cookies:
+        return None
+
+    try:
+        resp = requests.get(
+            "https://open.spotify.com/get_access_token",
+            params={"reason": "transport", "productType": "web_player"},
+            headers={
+                "Accept": "application/json",
+                "Accept-Language": "fr-FR,fr;q=0.9,en;q=0.8",
+                "User-Agent": SPOTIFY_UA,
+            },
+            cookies=cookies,
+            timeout=15,
+        )
+        token = str(resp.json().get("accessToken") or "").strip() if resp.ok else ""
+    except Exception:
+        return None
+
+    if not token:
+        return None
+
+    print("[CHECK] token Spotify recupere via HTTP direct.")
+    _save_bearer_to_caches(token, names)
+    return token
+
+
+def _acquire_bearer_token(names: list[str], *, refresh: bool = False, allow_stale: bool = False) -> str:
     if not refresh:
         for name in names:
             token = _load_cached_bearer(name)
             if token:
                 return token
+
+    token = _acquire_bearer_token_via_http(names)
+    if token:
+        return token
 
     print("[CHECK] token Spotify absent/expire, recuperation via Playwright...")
     from playwright.sync_api import sync_playwright
@@ -186,6 +238,12 @@ def _acquire_bearer_token(names: list[str], *, refresh: bool = False) -> str:
             browser.close()
 
     if not token_holder:
+        if allow_stale:
+            for name in names:
+                token = _load_cached_bearer(name, allow_stale=True)
+                if token:
+                    print("[CHECK] Playwright indisponible, essai avec le dernier bearer cache.")
+                    return token
         raise RuntimeError(f"Bearer token introuvable avec {SPOTIFY_SESSION}")
 
     token = token_holder[0]
@@ -204,7 +262,7 @@ def _extract_target_date(forwarded: list[str]) -> date:
     return date.today() - timedelta(days=1)
 
 
-def _chart_available(chart_id: str, target: date, token: str) -> tuple[bool, str]:
+def _chart_available(chart_id: str, target: date, token: str) -> tuple[bool, str, int | None]:
     try:
         resp = requests.get(
             f"{SPOTIFY_API_BASE}/{chart_id}/{target}",
@@ -218,15 +276,39 @@ def _chart_available(chart_id: str, target: date, token: str) -> tuple[bool, str
         )
     except Exception as e:
         short = str(e).split("\n")[0][:120]
-        return False, f"réseau: {short}"
+        return False, f"reseau: {short}", None
 
     if resp.status_code == 200:
         try:
             entries = resp.json().get("entries") or []
         except Exception:
             entries = []
-        return bool(entries), f"HTTP 200 ({len(entries)} lignes)"
-    return False, f"HTTP {resp.status_code}"
+        return bool(entries), f"HTTP 200 ({len(entries)} lignes)", None
+
+    retry_after = resp.headers.get("Retry-After")
+    retry_after_seconds = int(retry_after) if retry_after and retry_after.isdigit() else None
+    return False, f"HTTP {resp.status_code}", retry_after_seconds
+
+
+def _watch_wait_seconds(
+    *,
+    detail: str,
+    elapsed: float,
+    retry_after: int | None,
+    base_seconds: int,
+    late_seconds: int,
+    hot_seconds: int,
+    error_seconds: int,
+) -> int:
+    if retry_after is not None:
+        return max(30, min(retry_after, 15 * 60))
+    if detail.startswith("HTTP 200"):
+        return hot_seconds
+    if detail.startswith("reseau:") or detail in {"token indisponible", "HTTP 401", "HTTP 403", "HTTP 429"}:
+        return error_seconds
+    if elapsed > 2 * 60 * 60:
+        return max(late_seconds, base_seconds)
+    return base_seconds
 
 
 def _wait_for_charts_available(
@@ -234,38 +316,109 @@ def _wait_for_charts_available(
     *,
     target: date,
     dry_run: bool,
-) -> None:
+    watch_release: bool = False,
+    watch_max_seconds: int = WATCH_MAX_SECONDS,
+    watch_base_seconds: int = WATCH_BASE_SECONDS,
+    watch_late_seconds: int = WATCH_LATE_SECONDS,
+    watch_hot_seconds: int = WATCH_HOT_SECONDS,
+    watch_error_seconds: int = WATCH_ERROR_SECONDS,
+    warp_on_token_fail: bool = False,
+) -> bool:
     names = [name for name, _, _ in runners if name in CHART_AVAILABILITY]
     if dry_run or not names:
-        return
+        return False
 
     probe = next((n for n in ("global", "fr", "us", "uk") if n in names), names[0])
     probe_chart = CHART_AVAILABILITY[probe]
 
     attempt = 1
     refresh_token = False
-    print(f"\n[CHECK] disponibilite Spotify pour {target} (via {probe})")
+    warp_active = False
+    started = time.monotonic()
+    mode = "watch-release" if watch_release else "check"
+    print(f"\n[CHECK] disponibilite Spotify pour {target} (via {probe}, mode {mode})")
     while not _stop_event.is_set():
+        elapsed = time.monotonic() - started
+        max_seconds = watch_max_seconds if watch_release else AVAILABILITY_MAX_SECONDS
+        attempts_exhausted = not watch_release and attempt > AVAILABILITY_MAX_ATTEMPTS
+        if attempts_exhausted or elapsed > max_seconds:
+            if warp_active:
+                _warp_disconnect()
+            raise TimeoutError(
+                "Spotify chart indisponible apres "
+                f"{attempt - 1} tentative(s) et {_fmt(elapsed)} "
+                f"(limite: {_fmt(max_seconds)}"
+                + (f", {AVAILABILITY_MAX_ATTEMPTS} tentatives" if not watch_release else "")
+                + ")."
+            )
+
         try:
-            token = _acquire_bearer_token(names, refresh=refresh_token)
+            token = _acquire_bearer_token(names, refresh=refresh_token, allow_stale=watch_release)
             refresh_token = False
         except Exception as e:
             print(f"[CHECK] tentative #{attempt}: token indisponible ({e})")
-            time.sleep(AVAILABILITY_RETRY_SECONDS)
-            attempt += 1
-            continue
+            token = None
+            if warp_on_token_fail:
+                print("[CHECK] route normale bloquee - bascule temporaire via WARP...")
+                if not warp_active:
+                    _warp_connect()
+                    warp_active = True
+                try:
+                    token = _acquire_bearer_token(names, refresh=True, allow_stale=watch_release)
+                    refresh_token = False
+                except Exception as warp_error:
+                    print(f"[CHECK] token via WARP indisponible ({warp_error})")
+                if not token and warp_active:
+                    _warp_disconnect()
+                    warp_active = False
+            if not token:
+                wait = (
+                    min(watch_error_seconds * min(attempt, 5), 10 * 60)
+                    if watch_release
+                    else AVAILABILITY_RETRY_SECONDS
+                )
+                print(f"[CHECK] token indisponible - retry dans {wait}s")
+                time.sleep(wait)
+                attempt += 1
+                continue
 
-        ok, detail = _chart_available(probe_chart, target, token)
+        ok, detail, retry_after = _chart_available(probe_chart, target, token)
         print(f"[CHECK] tentative #{attempt}: {probe}={detail}")
         if ok:
             print(f"[CHECK] charts disponibles pour {target}")
-            return
+            return warp_active
         if "HTTP 401" in detail or "HTTP 403" in detail:
             refresh_token = True
 
-        is_network_err = detail.startswith("réseau:")
-        wait = 5 if is_network_err else AVAILABILITY_RETRY_SECONDS
-        label = "tunnel WARP" if is_network_err else "chart indisponible"
+        is_network_err = detail.startswith("reseau:")
+        if is_network_err and warp_on_token_fail and not warp_active:
+            print("[CHECK] reseau instable - bascule via WARP pour le prochain probe...")
+            _warp_connect()
+            warp_active = True
+            wait = 5
+            label = "reseau"
+            print(f"[CHECK] {label} - retry dans {wait}s")
+            time.sleep(wait)
+            attempt += 1
+            continue
+        if watch_release:
+            wait = _watch_wait_seconds(
+                detail=detail,
+                elapsed=elapsed,
+                retry_after=retry_after,
+                base_seconds=watch_base_seconds,
+                late_seconds=watch_late_seconds,
+                hot_seconds=watch_hot_seconds,
+                error_seconds=watch_error_seconds,
+            )
+        else:
+            if retry_after is not None:
+                wait = max(30, min(retry_after, 15 * 60))
+            elif detail == "HTTP 429":
+                wait = RATE_LIMIT_RETRY_SECONDS
+            else:
+                wait = 5 if is_network_err else AVAILABILITY_RETRY_SECONDS
+        label = "reseau" if is_network_err else "chart indisponible"
         print(f"[CHECK] {label} - retry dans {wait}s")
         time.sleep(wait)
         attempt += 1
@@ -387,7 +540,7 @@ def _run_parallel(
     return failures
 
 
-_ALL_POST_PARTS = {"global", "fr", "cards", "artists_global"}
+_ALL_POST_PARTS = {"global", "fr", "cards"}
 
 
 def main() -> int:
@@ -401,14 +554,29 @@ def main() -> int:
         metavar="PART",
         default=None,
         help=(
-            "Parties à poster sur Twitter: cards, fr, global, worldwide. "
+            "Parties à poster sur Twitter: cards, fr, global. "
             "Défaut: toutes. Exemple: --post global fr"
         ),
     )
-    parser.add_argument("--no-post", action="store_true", help="Désactive tout le posting Twitter (équivalent à --post sans arguments).")
+    parser.add_argument("--no-post", action="store_true", help="Désactive tout le posting Twitter.")
     parser.add_argument("--force-cards", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--skip-uk", action="store_true", help="Skip UK chart.")
     parser.add_argument("--verbose", "-v", action="store_true", help="Affiche la sortie complète des scripts.")
+    parser.add_argument(
+        "--watch-release",
+        action="store_true",
+        help="Surveille la publication Spotify avec un polling adaptatif avant de lancer la collecte.",
+    )
+    parser.add_argument("--watch-max-seconds", type=int, default=WATCH_MAX_SECONDS)
+    parser.add_argument("--watch-base-seconds", type=int, default=WATCH_BASE_SECONDS)
+    parser.add_argument("--watch-late-seconds", type=int, default=WATCH_LATE_SECONDS)
+    parser.add_argument("--watch-hot-seconds", type=int, default=WATCH_HOT_SECONDS)
+    parser.add_argument("--watch-error-seconds", type=int, default=WATCH_ERROR_SECONDS)
+    parser.add_argument(
+        "--no-warp",
+        action="store_true",
+        help="Ne connecte pas Cloudflare WARP automatiquement.",
+    )
     args, passthrough = parser.parse_known_args()
 
     forwarded = list(passthrough)
@@ -419,7 +587,7 @@ def main() -> int:
     elif args.post is not None:
         post_parts = set(args.post)
     else:
-        post_parts = {"global", "fr", "cards", "artists_global"}  # défaut: tout poster
+        post_parts = {"global", "fr", "cards"}  # défaut: tout poster
 
     started = time.perf_counter()
     env = _build_env()
@@ -429,8 +597,7 @@ def main() -> int:
         if args.skip_uk and name == "uk":
             continue
         # worldwide/daily.py ne poste jamais : generate_card_images.py (PHASE3) gère ça avec images
-        # artists_global ne poste jamais : generate_artist_chart_image.py (PHASE4) gère ça
-        if name in {"worldwide", "artists_global"}:
+        if name == "worldwide":
             extra = ["--no-post"] if "--no-post" not in fixed else []
         else:
             extra = ["--no-post"] if name in {"global", "fr"} and name not in post_parts else []
@@ -446,7 +613,30 @@ def main() -> int:
     if needs_collect:
         if not args.dry_run and args.post is None and _already_done(collect_runners, target_date):
             return 0
-        _wait_for_charts_available(collect_runners, target=target_date, dry_run=args.dry_run)
+        warp_active = False
+        if not args.dry_run and not args.no_warp and not args.watch_release:
+            _warp_connect()
+            atexit.register(_warp_disconnect)
+            warp_active = True
+        try:
+            warp_active = _wait_for_charts_available(
+                collect_runners,
+                target=target_date,
+                dry_run=args.dry_run,
+                watch_release=args.watch_release,
+                watch_max_seconds=args.watch_max_seconds,
+                watch_base_seconds=args.watch_base_seconds,
+                watch_late_seconds=args.watch_late_seconds,
+                watch_hot_seconds=args.watch_hot_seconds,
+                watch_error_seconds=args.watch_error_seconds,
+                warp_on_token_fail=args.watch_release and not args.no_warp,
+            ) or warp_active
+        except TimeoutError as e:
+            print(f"[FAIL] {e}")
+            if warp_active:
+                atexit.unregister(_warp_disconnect)
+                _warp_disconnect()
+            return 1
 
         names_str = ", ".join(n for n, _, _ in collect_runners)
         print(f"\n[PHASE1] collecte en parallèle: {names_str}")
@@ -459,7 +649,13 @@ def main() -> int:
             print(f"[WARN] Echecs collecte: {', '.join(failed_names)}")
             if args.stop_on_error:
                 print(f"[FAIL] stop-on-error — {_fmt(time.perf_counter() - started)}")
+                if warp_active:
+                    atexit.unregister(_warp_disconnect)
+                    _warp_disconnect()
                 return 1
+        if warp_active:
+            atexit.unregister(_warp_disconnect)
+            _warp_disconnect()
 
     if not args.dry_run and needs_collect:
         print("\n[PHASE2] export web + upload R2...")
@@ -488,20 +684,6 @@ def main() -> int:
         if rc_cards != 0:
             failures.append(("cards", rc_cards))
 
-    if not args.dry_run and "artists_global" in post_parts:
-        print("\n[PHASE4] génération et publication de l'image artist global chart...")
-        artist_img_args = [str(target_date)]
-        rc_artist = _run(
-            "artists_global_image",
-            CHARTS_ROOT / "artists_global" / "tools" / "scripts" / "generate_artist_chart_image.py",
-            artist_img_args,
-            dry_run=False,
-            env=env,
-            verbose=args.verbose,
-        )
-        if rc_artist != 0:
-            failures.append(("artists_global_image", rc_artist))
-
     total = _fmt(time.perf_counter() - started)
     if failures:
         print(f"[FAIL] {', '.join(n for n, _ in failures)} — {total}")
@@ -511,15 +693,6 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    # WARP inutile si on ne fait que poster les cards (pas de collecte Spotify)
-    _parsed_args = sys.argv[1:]
-    _cards_only = "--post" in _parsed_args and (
-        _parsed_args[_parsed_args.index("--post") + 1] == "cards"
-        if "--post" in _parsed_args and _parsed_args.index("--post") + 1 < len(_parsed_args)
-        else False
-    )
-    if not _cards_only:
-        _warp_connect()
     try:
         raise SystemExit(main())
     except KeyboardInterrupt:
@@ -527,6 +700,3 @@ if __name__ == "__main__":
         _stop_event.set()
         _kill_all()
         sys.exit(130)
-    finally:
-        if not _cards_only:
-            _warp_disconnect()

@@ -48,29 +48,122 @@ def _twitter_post_lock(timeout: int = TWITTER_POST_LOCK_TIMEOUT):
             pass
 
 
-def _wait_post_submitted(page, timeout_ms: int = 20_000) -> bool:
-    """Return True only when X appears to have accepted the post."""
-    try:
-        page.wait_for_url("**/status/**", timeout=timeout_ms)
-        return True
-    except PlaywrightTimeout:
-        pass
+def _clean_editor_text(text: str) -> str:
+    """Normalize the text Playwright reads from X's contenteditable composer."""
+    return (
+        (text or "")
+        .replace("\u200b", "")
+        .replace("\ufeff", "")
+        .strip()
+    )
 
-    try:
-        page.locator("[data-testid='tweetTextarea_0']").first.wait_for(state="detached", timeout=5_000)
-        return True
-    except PlaywrightTimeout:
-        pass
 
+def _visible_text(locator) -> str:
+    try:
+        if locator.count() and locator.first.is_visible(timeout=500):
+            return locator.first.inner_text(timeout=1_000)
+    except Exception:
+        pass
+    return ""
+
+
+def _post_feedback_state(page) -> str | None:
+    """Return 'success', 'error', or None from transient X feedback."""
+    feedback = "\n".join(
+        text for text in [
+            _visible_text(page.locator("[data-testid='toast']")),
+            _visible_text(page.locator("[role='alert']")),
+            _visible_text(page.locator("[aria-live='assertive']")),
+            _visible_text(page.locator("[aria-live='polite']")),
+        ]
+        if text
+    ).lower()
+    if not feedback:
+        return None
+
+    error_markers = [
+        "already sent",
+        "duplicate",
+        "error",
+        "failed",
+        "something went wrong",
+        "try again",
+        "erreur",
+        "echoue",
+        "échoué",
+        "réessayez",
+    ]
+    if any(marker in feedback for marker in error_markers):
+        print(f"X feedback erreur: {feedback}")
+        return "error"
+
+    success_markers = [
+        "your post was sent",
+        "your tweet was sent",
+        "post was sent",
+        "tweet was sent",
+        "post sent",
+        "tweet sent",
+        "posté",
+        "publie",
+        "publié",
+        "envoye",
+        "envoyé",
+    ]
+    if any(marker in feedback for marker in success_markers):
+        return "success"
+
+    return None
+
+
+def _composer_text(page) -> str | None:
+    """Return composer text, '' when cleared, or None when no visible composer exists."""
     try:
         editor = page.locator("[data-testid='tweetTextarea_0']").first
-        if editor.count() and editor.is_visible(timeout=1_000):
-            print(f"X Post non confirme, l'editeur est encore ouvert. URL actuelle: {page.url}")
-            return False
+        if not editor.count() or not editor.is_visible(timeout=500):
+            return None
+        return _clean_editor_text(editor.inner_text(timeout=1_000))
     except Exception:
-        return True
+        return None
 
-    return True
+
+def _wait_post_submitted(page, expected_text: str = "", timeout_ms: int = 45_000) -> bool:
+    """Return True only when X gives a positive signal that the post was accepted."""
+    expected_text = _clean_editor_text(expected_text)
+    deadline = time.time() + timeout_ms / 1000
+    last_editor_text = None
+
+    while time.time() < deadline:
+        if "/status/" in page.url:
+            return True
+
+        feedback_state = _post_feedback_state(page)
+        if feedback_state == "success":
+            return True
+        if feedback_state == "error":
+            return False
+
+        editor_text = _composer_text(page)
+        if editor_text is None:
+            # Compose route/modal disappeared. Give X a brief chance to surface an error toast.
+            time.sleep(1)
+            feedback_state = _post_feedback_state(page)
+            return feedback_state != "error"
+
+        last_editor_text = editor_text
+        if expected_text and expected_text in editor_text:
+            time.sleep(1)
+            continue
+        if not editor_text:
+            # Home composer can stay visible after a successful post; the useful signal is that it cleared.
+            time.sleep(1)
+            feedback_state = _post_feedback_state(page)
+            return feedback_state != "error"
+
+        time.sleep(1)
+
+    print(f"X Post non confirme. URL actuelle: {page.url}. Texte editeur restant: {last_editor_text!r}")
+    return False
 
 
 def _launch(p, profile_dir: Path):
@@ -238,7 +331,7 @@ def post_thread(tweets: list[str], session_file: Path) -> bool:
                         page.locator(
                             "[data-testid='tweetButton'], [data-testid='tweetButtonInline']"
                         ).first.click(timeout=10_000)
-                        if not _wait_post_submitted(page):
+                        if not _wait_post_submitted(page, tweet):
                             success = False
                             break
                         previous_url = page.url
@@ -304,7 +397,7 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
                 page.locator(
                     "[data-testid='tweetButton'], [data-testid='tweetButtonInline']"
                 ).first.click(timeout=10_000)
-                if not _wait_post_submitted(page):
+                if not _wait_post_submitted(page, tweet):
                     return False
 
                 print("OK Tweet avec image publie")

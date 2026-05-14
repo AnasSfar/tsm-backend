@@ -9,11 +9,12 @@ from __future__ import annotations
 import argparse
 from datetime import date, datetime
 
-from core.config import DB_DIR, SCRIPTS_DIR
+from core.config import CHART_LIMIT, DB_DIR, SCRIPTS_DIR
 from core.csv_utils import load_previous_ranks, rewrite_for_snapshot
 from core.export import maybe_run_export
 from core.filters import build_artwork_url, clean_text, is_taylor_swift_song, rank_key
 from core.http import build_session
+from core.storefronts import resolve_storefronts
 from core.token import build_auth_headers, fetch_musickit_token
 
 CSV_PATH = DB_DIR / "apple_music_global_albums.csv"
@@ -40,14 +41,12 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def fetch_global_albums(session) -> list[dict]:
+def fetch_global_albums(session, storefronts: list[str]) -> list[dict]:
     """Aggregate TS albums across all storefronts, keeping best rank per album ID."""
-    from core.config import COUNTRIES
-
     best: dict[str, dict] = {}  # apple_music_id → best entry
 
-    for storefront in COUNTRIES:
-        url = f"https://amp-api-edge.music.apple.com/v1/catalog/{storefront}/charts?types=albums&limit=100"
+    for storefront in storefronts:
+        url = f"https://amp-api-edge.music.apple.com/v1/catalog/{storefront}/charts?types=albums&limit={CHART_LIMIT}"
         try:
             resp = session.get(url)
         except Exception:
@@ -100,6 +99,8 @@ def main() -> None:
     if not token:
         raise RuntimeError("Could not extract Apple Music developer token")
     session.headers.update(build_auth_headers(token))
+    storefronts = resolve_storefronts(session)
+    print(f"[Apple Music] Global album source storefronts: {len(storefronts)}")
 
     previous_by_id = load_previous_ranks(
         CSV_PATH,
@@ -113,7 +114,7 @@ def main() -> None:
         song_field="album_name",
     )
 
-    albums = fetch_global_albums(session)
+    albums = fetch_global_albums(session, storefronts)
     rows: list[dict] = []
     for album in albums:
         key_by_id = (album["country"], album["apple_music_id"])

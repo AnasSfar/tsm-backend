@@ -9,7 +9,7 @@ from __future__ import annotations
 import argparse
 from datetime import date, datetime
 
-from core.config import ARTIST_ID, DB_DIR, DEFAULT_STOREFRONT, SCRIPTS_DIR
+from core.config import ARTIST_ID, CHART_LIMIT, DB_DIR, DEFAULT_STOREFRONT, SCRIPTS_DIR
 from core.csv_utils import load_previous_ranks, rewrite_for_snapshot
 from core.export import maybe_run_export
 from core.filters import build_artwork_url, clean_text, rank_key
@@ -47,7 +47,7 @@ def parse_args() -> argparse.Namespace:
 def fetch_top_videos(session, storefront: str) -> list[dict]:
     url = (
         f"https://amp-api-edge.music.apple.com/v1/catalog/{storefront}/artists/{ARTIST_ID}"
-        f"/view/top-music-videos?limit=100"
+        f"/view/top-music-videos?limit={CHART_LIMIT}"
     )
     resp = session.get(url)
     if resp.status_code == 401:

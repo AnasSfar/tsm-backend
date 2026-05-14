@@ -49,11 +49,17 @@ def _short_album(name: str, *, limit: int = 42) -> str:
     return name[: limit - 1].rstrip() + "..."
 
 
-def _album_daily_series(album: str, track_map: dict) -> dict[str, int]:
+def _era_daily_series(era: str, track_map: dict) -> dict[str, int]:
+    # Tous les albums qui appartiennent à cette ère (OG + TV le cas échéant).
+    era_albums = {
+        album
+        for album in {info.get("album") for info in track_map.values()}
+        if generate_albums_image.ERA_MAP.get(album, album) == era
+    }
     album_tracks = [
         (track_id, info)
         for track_id, info in track_map.items()
-        if info.get("album") == album
+        if info.get("album") in era_albums
     ]
     if not album_tracks:
         return {}
@@ -88,14 +94,16 @@ def _album_daily_series(album: str, track_map: dict) -> dict[str, int]:
 
     series: dict[str, int] = {}
     for d, day_rows in rows_by_date.items():
-        best_by_group: dict[tuple[str, str], str] = {}
+        # Dédup intra-album uniquement : clé = (album, song_family, display_section)
+        best_by_group: dict[tuple[str, str, str], str] = {}
         for track_id, info in album_tracks:
             entry = day_rows.get(track_id)
             if entry is None:
                 continue
+            alb = (info.get("album") or "").strip()
             fam = (info.get("song_family") or "").strip() or track_id
             sec = (info.get("display_section") or "").strip().lower()
-            key = (fam, sec)
+            key = (alb, fam, sec)
             prev_id = best_by_group.get(key)
             if prev_id is None or best_key(entry) > best_key(day_rows.get(prev_id)):
                 best_by_group[key] = track_id
@@ -107,12 +115,12 @@ def _album_daily_series(album: str, track_map: dict) -> dict[str, int]:
     return series
 
 
-def _album_best_day_label(album: str, target_date: str, current_daily: int, track_map: dict, *, min_days: int = 14) -> str:
+def _era_best_day_label(era: str, target_date: str, current_daily: int, track_map: dict, *, min_days: int = 14) -> str:
     if current_daily <= 0:
         return ""
 
     target = date.fromisoformat(target_date)
-    series = _album_daily_series(album, track_map)
+    series = _era_daily_series(era, track_map)
     previous_dates = [d for d in sorted(series) if d < target_date]
     if not previous_dates:
         return ""
@@ -151,7 +159,7 @@ def build_tweet(rows: list[dict], target_date: str) -> str:
     year = d.year
 
     return (
-        f"📊 | Taylor Swift's albums on Spotify yesterday, "
+        f"📊 | Taylor Swift's eras on Spotify yesterday, "
         f"{weekday}, {month} {day_ord}, {year}.\n\n"
         "See the combined version here :\n"
         "🔗 : https://thetsmuseum.app/albums/date/latest"
@@ -174,7 +182,7 @@ def build_tweet_with_best_day(rows: list[dict], target_date: str) -> str:
 
     _, row = biggest_gain
     track_map = generate_albums_image.load_album_track_map()
-    label = _album_best_day_label(
+    label = _era_best_day_label(
         row["album"],
         target_date,
         int(row.get("daily_streams") or 0),

@@ -571,7 +571,7 @@ def _build_tweet(song: dict, entries: list[dict], chart_date: str) -> str:
     except Exception:
         date_fmt = chart_date
     country_str = "one country" if count == 1 else f"{count} countries"
-    return f'{emoji} | "{title}" charted in {country_str} yesterday ({date_fmt}).\n\n{_OVERALL_URL}'
+    return f'{emoji} | "{title}" charted in {country_str} on Spotify yesterday ({date_fmt}).\n\n{_OVERALL_URL}'
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
@@ -700,15 +700,15 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
             if _post_with_image(tweet_text, img_path, TWITTER_SESSION):
                 ok += 1
                 newly_posted.append(slug)
+                # Persist after each success so a crash mid-run doesn't lose progress
+                all_posted = sorted(already_posted | set(newly_posted))
+                posted_path.write_text(
+                    json.dumps({"date": chart_date, "posted": all_posted}, ensure_ascii=False, indent=2),
+                    encoding="utf-8",
+                )
             else:
                 err += 1
                 print(f"[WARN] Echec post: {img_path.name}")
-        # Persist posted slugs
-        all_posted = sorted(already_posted | set(newly_posted))
-        posted_path.write_text(
-            json.dumps({"date": chart_date, "posted": all_posted}, ensure_ascii=False, indent=2),
-            encoding="utf-8",
-        )
         print(f"[STEP] Twitter: {ok} postés, {err} échecs")
 
     return 0

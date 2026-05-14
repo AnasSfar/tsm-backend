@@ -100,16 +100,25 @@ function buildFetchCandidates(url) {
   return candidates;
 }
 
-export async function fetchJSON(url) {
+export async function fetchJSON(url, options = {}) {
   const tried = [];
-  const ts = Date.now();
+  const force = Boolean(options.force);
+  const ts = force
+    ? `${Date.now()}-${Math.random().toString(36).slice(2)}`
+    : Date.now();
 
   for (const candidate of buildFetchCandidates(url)) {
-    const withTs = `${candidate}${candidate.includes("?") ? "&" : "?"}ts=${ts}`;
+    const param = force ? "refresh" : "ts";
+    const withTs = `${candidate}${candidate.includes("?") ? "&" : "?"}${param}=${ts}`;
     tried.push(candidate);
 
     try {
-      const r = await fetch(withTs);
+      const r = await fetch(withTs, {
+        cache: force ? "no-store" : "no-cache",
+        headers: force
+          ? { "Cache-Control": "no-cache", "Pragma": "no-cache" }
+          : { "Cache-Control": "no-cache" },
+      });
       if (!r.ok) continue;
       return await r.json();
     } catch {

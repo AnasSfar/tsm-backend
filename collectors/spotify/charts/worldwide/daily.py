@@ -868,7 +868,7 @@ def main() -> int:
                     country_str = f"{count} countries ({diff_str})"
                 else:
                     country_str = f"{count} countries"
-                regular_items.append((track_id, f'{emoji} | "{song_name}" charted in {country_str} yesterday ({date_fmt}).\n\n{url}'))
+                regular_items.append((track_id, f'{emoji} | "{song_name}" charted in {country_str} on Spotify yesterday ({date_fmt}).\n\n{url}'))
 
         all_items = reentry_items + regular_items
         pending = [(tid, tw) for tid, tw in all_items if not (locks_dir / f"posted_{tid}.lock").exists()]

@@ -464,25 +464,12 @@ def generate_image(html_content: str, out_path: Path) -> None:
 # ── Tweet text ─────────────────────────────────────────────────────────────────
 
 def build_tweet(ts_artist: dict, mode: str, stats_date: str) -> str:
-    rank = ts_artist["rank"]
-    chg_label, _ = rank_change_label(rank, ts_artist.get("previous_rank"))
-    streak = ts_artist.get("streak")
-    streak_str = f"{int(streak):,}".replace(",", " ") if streak else "—"
     date_fmt = datetime.strptime(stats_date, "%Y-%m-%d").strftime("%B %d, %Y")
 
     if mode == "top10":
-        lines = [
-            f"Taylor Swift is #{rank} on the Spotify Global Artist Chart 🎵",
-            f"Change: {chg_label} · {streak_str} consecutive days on chart",
-            f"\n📅 {date_fmt}",
-        ]
+        return f"The top 10 most streamed artists on Spotify Charts yesterday ({date_fmt}) :"
     else:
-        lines = [
-            f"Taylor Swift is #{rank} globally on the Spotify Artist Chart",
-            f"Change: {chg_label} · {streak_str} consecutive days on chart",
-            f"\n📅 {date_fmt}",
-        ]
-    return "\n".join(lines)
+        return f"Taylor Swift on Spotify Top Artists charts yesterday ({date_fmt}) :"
 
 
 # ── Main ───────────────────────────────────────────────────────────────────────

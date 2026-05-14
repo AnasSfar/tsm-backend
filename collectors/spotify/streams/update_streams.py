@@ -3809,20 +3809,19 @@ def main():
                     f"Posting spotlight {_label}: {_track['title']} "
                     f"(+{_gainer['gain']:,} streams vs {_gainer['baseline_date']})"
                 )
-                _tsmuseum_session = _SCRIPT_DIR.parent / "charts" / "worldwide" / "tools" / "json" / "twitter_session.json"
                 _spotlight_cmd = [
                     sys.executable,
                     str(_spotlight_script),
                     "--url",
                     _track["spotify_url"],
                     summary["stats_date"],
+                    "--account",
+                    "tsm",
                     "--compare",
                     _compare,
                     "--highlight",
                     "vs",
                     "--no-scrape",
-                    "--session",
-                    str(_tsmuseum_session),
                 ]
                 if no_post_mode:
                     _spotlight_cmd.append("--no-post")

@@ -49,6 +49,8 @@ RETRY_TOTAL = _int_from_env("APPLE_MUSIC_RETRY_TOTAL", 3)
 RETRY_BACKOFF = _float_from_env("APPLE_MUSIC_RETRY_BACKOFF", 1.0)
 RETRY_STATUS_FORCELIST = (429, 500, 502, 503, 504)
 TOKEN_CACHE_PATH = TOOLS_JSON_DIR / "apple_music_token.json"
+CHART_LIMIT = _int_from_env("APPLE_MUSIC_CHART_LIMIT", 200)
+WORKERS = max(1, _int_from_env("APPLE_MUSIC_WORKERS", 12))
 
 HEADERS = {
     "User-Agent": (

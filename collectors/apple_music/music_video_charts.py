@@ -9,11 +9,12 @@ from __future__ import annotations
 import argparse
 from datetime import date, datetime
 
-from core.config import ARTIST_ID, COUNTRIES, DB_DIR, SCRIPTS_DIR
+from core.config import CHART_LIMIT, DB_DIR, SCRIPTS_DIR
 from core.csv_utils import load_previous_ranks, rewrite_for_snapshot
 from core.export import maybe_run_export
 from core.filters import build_artwork_url, clean_text, rank_key
 from core.http import build_session
+from core.storefronts import resolve_storefronts
 from core.token import build_auth_headers, fetch_musickit_token
 
 CSV_PATH = DB_DIR / "apple_music_music_video_charts.csv"
@@ -39,72 +40,28 @@ FIELDNAMES = [
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Collect Apple Music music video charts for Taylor Swift.")
-    parser.add_argument("--countries", nargs="*", default=COUNTRIES)
+    parser.add_argument("--countries", nargs="*", default=None)
     parser.add_argument("--date", dest="run_date", default=date.today().isoformat())
     parser.add_argument("--scraped-at", dest="scraped_at", default=None)
     return parser.parse_args()
 
 
 def fetch_country(session, country: str) -> list[dict]:
-    """Fetch TS music videos per country using the artist top-music-videos endpoint.
-
-    Falls back to the general music-video chart filtered to TS if the artist
-    endpoint returns nothing (some storefronts restrict it).
-    """
-    # Primary: artist page top-music-videos (returns all TS videos ranked ~100)
-    url = (
-        f"https://amp-api-edge.music.apple.com/v1/catalog/{country}/artists/{ARTIST_ID}"
-        f"/view/top-music-videos?limit=100"
-    )
-    try:
-        resp = session.get(url)
-        if resp.status_code == 401:
-            raise RuntimeError("Unauthorized while calling Apple Music API")
-        if resp.status_code == 200:
-            items = resp.json().get("data", [])
-            if items:
-                videos = []
-                for idx, item in enumerate(items, start=1):
-                    attrs = item.get("attributes", {}) or {}
-                    video_name = clean_text(attrs.get("name", ""))
-                    if not video_name:
-                        continue
-                    genre_names = " | ".join(attrs.get("genreNames") or [])
-                    videos.append(
-                        {
-                            "video_name": video_name,
-                            "apple_music_id": str(item.get("id", "")),
-                            "rank": idx,
-                            "image_url": build_artwork_url(attrs.get("artwork")),
-                            "url": attrs.get("url", ""),
-                            "artist_name": clean_text(attrs.get("artistName", "")),
-                            "album_name": clean_text(attrs.get("albumName", "")),
-                            "duration_ms": attrs.get("durationInMillis", ""),
-                            "release_date": attrs.get("releaseDate", ""),
-                            "genre_names": genre_names,
-                        }
-                    )
-                if videos:
-                    return videos
-    except RuntimeError:
-        raise
-    except Exception:
-        pass
-
-    # Fallback: general music-video chart filtered to TS
-    url = f"https://amp-api-edge.music.apple.com/v1/catalog/{country}/charts?types=music-videos&limit=100"
+    """Fetch TS music videos from the country chart."""
+    url = f"https://amp-api-edge.music.apple.com/v1/catalog/{country}/charts?types=music-videos&limit={CHART_LIMIT}"
     resp = session.get(url)
     if resp.status_code == 400:
-        return []
-    if resp.status_code == 401:
-        raise RuntimeError("Unauthorized while calling Apple Music charts API")
-    resp.raise_for_status()
+        videos_block = []
+    else:
+        if resp.status_code == 401:
+            raise RuntimeError("Unauthorized while calling Apple Music charts API")
+        resp.raise_for_status()
+        videos_block = ((resp.json().get("results") or {}).get("music-videos") or [])
 
-    videos_block = ((resp.json().get("results") or {}).get("music-videos") or [])
     if not videos_block:
         return []
-    items = (videos_block[0] or {}).get("data", [])
 
+    items = (videos_block[0] or {}).get("data", [])
     videos = []
     for idx, item in enumerate(items, start=1):
         attrs = item.get("attributes", {}) or {}
@@ -132,7 +89,6 @@ def fetch_country(session, country: str) -> list[dict]:
 
 def main() -> None:
     args = parse_args()
-    countries = [c.lower() for c in args.countries]
     today = args.run_date
     scraped_at = args.scraped_at or f"{today}T{datetime.now().strftime('%H:%M:%S')}"
 
@@ -141,6 +97,8 @@ def main() -> None:
     if not token:
         raise RuntimeError("Could not extract Apple Music developer token")
     session.headers.update(build_auth_headers(token))
+    countries = [c.lower() for c in (args.countries if args.countries is not None else resolve_storefronts(session))]
+    print(f"[Apple Music] Music video storefronts: {len(countries)}")
 
     previous_by_id = load_previous_ranks(
         CSV_PATH,

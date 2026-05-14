@@ -6,12 +6,16 @@ Usage:
   python spotlight.py "Cruel Summer"
   python spotlight.py "Cruel Summer" 2026-03-21
   python spotlight.py "Cruel Summer" 2026-03-21 --no-post
+  python spotlight.py "Cruel Summer" --account flame
+  python spotlight.py "Cruel Summer" --combined
   python spotlight.py --url https://open.spotify.com/track/1BxfuPKGuaTgP7aM0Bbdwr
 
 Options:
   --no-post   : Generate image but skip Twitter posting (default: will post)
   --no-scrape : Use history CSV total only, skip live scraping or API retry
   --url URL   : Provide Spotify track URL instead of title
+  --account   : Twitter account to post with: flame (@theflameofanas) or tsm (@tsmuseum13)
+  --combined  : Sum all versions sharing the selected track's song_family
 
 Behavior:
   1. If stream data exists in history for the given date: use it (fast path)
@@ -53,11 +57,20 @@ SONGS_JSON      = DB_DIR / "discography" / "songs.json"
 ALBUMS_DIR      = DB_DIR / "discography" / "albums"
 COVERS_PATH     = DB_DIR / "discography" / "covers.json"
 OUT_DIR         = SCRIPT_DIR / "history" / "spotlight"
-TWITTER_SESSION = SCRIPT_DIR.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json"
 
 sys.path.insert(0, str(SCRIPT_DIR.parent))  # collectors/spotify/ for core.*
 
-HANDLE          = "@tsmuseum13"
+DEFAULT_ACCOUNT = "tsm"
+ACCOUNT_CONFIG = {
+    "flame": {
+        "handle": "@theflameofanas",
+        "session": SCRIPT_DIR.parent / "charts" / "fr" / "tools" / "json" / "twitter_session.json",
+    },
+    "tsm": {
+        "handle": "@tsmuseum13",
+        "session": SCRIPT_DIR.parent / "charts" / "worldwide" / "tools" / "json" / "twitter_session.json",
+    },
+}
 PAGE_TIMEOUT_MS = 20_000
 
 # ── API GraphQL Spotify ───────────────────────────────────────────────────────
@@ -486,6 +499,15 @@ def find_track(query: str, tracks: list[dict]) -> dict | None:
     return None
 
 
+def find_combined_tracks(track: dict, tracks: list[dict]) -> list[dict]:
+    """Return all versions sharing the selected track's song_family."""
+    family = (track.get("song_family") or "").strip()
+    if not family:
+        return [track]
+    related = [t for t in tracks if (t.get("song_family") or "").strip() == family]
+    return related or [track]
+
+
 def _get_song_family_single_image_map() -> dict:
     """Returns {song_family → single_image} mapping for version inheritance."""
     family_map = {}
@@ -584,30 +606,36 @@ def load_history_for_track(track_id: str, stats_date: str) -> tuple[int | None, 
     """Returns (total_today, total_yesterday, daily_today, daily_yesterday, daily_last_week).
     daily_* sont lus directement depuis la colonne daily_streams du CSV.
     """
+    return load_history_for_tracks([track_id], stats_date)
+
+
+def load_history_for_tracks(track_ids: list[str], stats_date: str) -> tuple[int | None, int | None, int | None, int | None, int | None]:
+    """Returns summed (total_today, total_yesterday, daily_today, daily_yesterday, daily_last_week)."""
     d0 = date_cls.fromisoformat(stats_date)
     dates = {str(d0): "today", str(d0 - timedelta(1)): "y1", str(d0 - timedelta(7)): "w1"}
     totals:  dict[str, int] = {}
     dailies: dict[str, int] = {}
+    wanted = set(track_ids)
 
     if not HISTORY_PATH.exists():
         return None, None, None, None, None
 
     with HISTORY_PATH.open(newline="", encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
-            if row.get("track_id") != track_id:
+            if row.get("track_id") not in wanted:
                 continue
             d = (row.get("date") or "").strip()
             if d not in dates:
                 continue
             key = dates[d]
             try:
-                totals[key] = int(row["streams"] or 0)
+                totals[key] = totals.get(key, 0) + int(row["streams"] or 0)
             except ValueError:
                 pass
             try:
                 v = (row.get("daily_streams") or "").strip()
                 if v:
-                    dailies[key] = int(v)
+                    dailies[key] = dailies.get(key, 0) + int(v)
             except ValueError:
                 pass
 
@@ -787,6 +815,13 @@ body{
 }
 .song-artist{font-size:12px;color:#667085;margin-top:2px;}
 .song-date{font-size:13px;font-weight:600;color:#344054;margin-top:1px;}
+.combined-badge{
+  display:inline-flex;align-items:center;align-self:flex-start;
+  margin-top:7px;padding:4px 8px;border-radius:999px;
+  font-size:9px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;
+  color:#fff;background:var(--accent, #1db954);
+  box-shadow:0 5px 14px rgba(16,24,40,.14);
+}
 .daily-block{
   border-radius:12px;
   padding:14px 18px 10px;
@@ -935,6 +970,8 @@ def _build_html(
     gradient: str,
     accent_hex: str,
     date_fmt: str,
+    handle: str,
+    combined: bool = False,
     milestone: int | None = None,
     highlight: str = "total",
 ) -> str:
@@ -970,11 +1007,12 @@ def _build_html(
     highlight_vs_style = f'style="border-color:{accent_hex};--accent:{accent_hex}"' if highlight == "vs" else ""
     highlight_total = "highlight" if highlight == "total" else ""
     highlight_total_style = f'style="border-color:{accent_hex};--accent:{accent_hex}"' if highlight == "total" else ""
+    combined_badge = '<div class="combined-badge">Combined Versions</div>' if combined else ""
 
     return f"""<!DOCTYPE html>
 <html><head><meta charset="utf-8"><style>{_CSS}</style></head>
 <body style="--page-bg: {gradient};">
-<div class="container">
+<div class="container" style="--accent:{accent_hex}">
   <div class="main-row">
     <div class="cover-col">
       {cover_html}
@@ -984,6 +1022,7 @@ def _build_html(
         <div class="song-name">{title}</div>
         <div class="song-artist">{artist}</div>
         <div class="song-date">{date_fmt}</div>
+        {combined_badge}
       </div>
             <div class="daily-block" style="background:{block_bg}; border:1px solid {block_border}">
                 <div class="daily-num" style="color:{block_text}">{daily_prefix}{daily_fmt}</div>
@@ -1003,7 +1042,7 @@ def _build_html(
     </div>
   </div>
   <div class="ftr">
-    <span class="ftr-handle" style="color:{accent_hex}">{HANDLE}</span>
+    <span class="ftr-handle" style="color:{accent_hex}">{handle}</span>
     <span class="ftr-date">{date_fmt}</span>
   </div>
 </div>
@@ -1018,6 +1057,8 @@ def generate_spotlight_image(
     comparison_label: str,
     cover_url: str,
     stats_date: str,
+    handle: str,
+    combined: bool = False,
     highlight: str = "total",
 ) -> Path:
     from datetime import datetime
@@ -1046,6 +1087,8 @@ def generate_spotlight_image(
         gradient        = gradient,
         accent_hex      = accent_hex,
         date_fmt        = date_fmt,
+        handle          = handle,
+        combined        = combined,
         milestone       = milestone,
         highlight       = highlight,
     )
@@ -1053,7 +1096,8 @@ def generate_spotlight_image(
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     tid           = track["track_id"]
     title_clean   = _clean_title_for_filename(track["title"])
-    out_path      = OUT_DIR / f"{title_clean}__{stats_date}.png"
+    combined_suffix = "__combined" if combined else ""
+    out_path      = OUT_DIR / f"{title_clean}__{stats_date}{combined_suffix}.png"
     tmp_html      = OUT_DIR / f"_spotlight_{tid}.html"
     tmp_html.write_text(html, encoding="utf-8")
 
@@ -1081,6 +1125,9 @@ def main() -> None:
     parser.add_argument("--no-post",   action="store_true", help="Generate image but skip Twitter posting (default: will post)")
     parser.add_argument("--no-scrape", action="store_true", help="Use history CSV total only, skip API and scraping")
     parser.add_argument("--post",      action="store_true", help="[Deprecated] Explicitly post to Twitter (now default)")
+    parser.add_argument("--combined", dest="combined", action="store_true", help="Sum all versions sharing the selected track's song_family")
+    parser.add_argument("--no-combined", dest="combined", action="store_false", help="Use only the selected Spotify track")
+    parser.set_defaults(combined=False)
     parser.add_argument(
         "--compare",
         choices=["yesterday", "last-week"],
@@ -1094,10 +1141,19 @@ def main() -> None:
         help="Which stat card to emphasize: 'vs' (vs yesterday) or 'total' (total streams).",
     )
     parser.add_argument(
+        "--account",
+        choices=sorted(ACCOUNT_CONFIG),
+        default=DEFAULT_ACCOUNT,
+        help="Twitter account to post with: flame (@theflameofanas) or tsm (@tsmuseum13).",
+    )
+    parser.add_argument(
         "--session",
-        help="Path to a Twitter session JSON file (overrides the default session).",
+        help="Path to a Twitter session JSON file (overrides the selected account session).",
     )
     args = parser.parse_args()
+    account = ACCOUNT_CONFIG[args.account]
+    handle = account["handle"]
+    twitter_session = Path(args.session) if args.session else account["session"]
 
     if args.url and args.date is None and args.title and _validate_date(args.title):
         args.date = args.title
@@ -1121,8 +1177,12 @@ def main() -> None:
 
     print(f"Track      : {track['title']} [{track['track_id']}]")
     print(f"Stats date : {stats_date}")
+    print(f"Account    : {args.account} ({handle})")
+    related_tracks = find_combined_tracks(track, tracks) if args.combined else [track]
+    related_track_ids = [t["track_id"] for t in related_tracks]
+    print(f"Combined   : {'yes' if args.combined else 'no'} ({len(related_tracks)} track{'s' if len(related_tracks) != 1 else ''})")
 
-    total_today_hist, total_yesterday, daily_today_hist, daily_yesterday, daily_last_week = load_history_for_track(track["track_id"], stats_date)
+    total_today_hist, total_yesterday, daily_today_hist, daily_yesterday, daily_last_week = load_history_for_tracks(related_track_ids, stats_date)
     print(f"History    : today={total_today_hist}, yesterday={total_yesterday}, daily_today={daily_today_hist}, daily_yesterday={daily_yesterday}, daily_last_week={daily_last_week}")
 
     # Validate history data: if daily==0 and we have yesterday data, it's not fully updated yet
@@ -1135,6 +1195,9 @@ def main() -> None:
     if total_today_hist is not None and history_is_valid:
         total_scraped = total_today_hist
         print(f"Data found in history, using it : {total_scraped:,}")
+    elif args.combined:
+        print("No valid combined history data available. Aborting to avoid posting partial single-track data.")
+        sys.exit(1)
     elif args.no_scrape:
         print("No valid history data available and --no-scrape specified. Aborting.")
         sys.exit(1)
@@ -1167,6 +1230,8 @@ def main() -> None:
         comparison_label = comparison_label,
         cover_url       = cover_url,
         stats_date      = stats_date,
+        handle          = handle,
+        combined        = args.combined,
         highlight       = args.highlight,
     )
 
@@ -1206,7 +1271,8 @@ def main() -> None:
 
     # Compose tweet in requested format
     tweet_lines = []
-    tweet_lines.append(f'📈 "{track["title"]}" by Taylor Swift received {daily_tweet} streams yesterday, {date_fmt_long}.')
+    combined_suffix = " across all versions" if args.combined else ""
+    tweet_lines.append(f'📈 "{track["title"]}" by Taylor Swift received {daily_tweet} streams yesterday{combined_suffix}, {date_fmt_long}.')
     if args.compare == "last-week":
         comparison = movement_line(daily, daily_last_week, "last week")
     else:
@@ -1216,17 +1282,19 @@ def main() -> None:
     else:
         tweet_lines.append(f'Total streams: {total_tweet}.')
     try:
-        from best_day_since import best_day_since_for_track, row_label
-        best_day = best_day_since_for_track(track["track_id"], stats_date, min_days=14)
-        if best_day:
-            tweet_lines.append(f"The song earned its {row_label(best_day)}.")
+        if args.combined:
+            print("Best-day-since note skipped: combined mode.")
+        else:
+            from best_day_since import best_day_since_for_track, row_label
+            best_day = best_day_since_for_track(track["track_id"], stats_date, min_days=14)
+            if best_day:
+                tweet_lines.append(f"The song earned its {row_label(best_day)}.")
     except Exception as e:
         print(f"Best-day-since note skipped: {e}")
     tweet = "\n\n".join(tweet_lines)
     print(f"\nTweet : {tweet}")
     
     # Post to Twitter if requested
-    twitter_session = Path(args.session) if args.session else TWITTER_SESSION
     if post_requested:
         if not twitter_session.exists():
             print(f"Twitter session not found: {twitter_session}")

@@ -73335,6 +73335,18 @@
       "streams": 172949,
       "previous_rank": 310,
       "peak_rank": 1
+    },
+    "2026-05-12": {
+      "rank": 39,
+      "streams": 159594,
+      "previous_rank": 360,
+      "peak_rank": 1
+    },
+    "2026-05-13": {
+      "rank": 38,
+      "streams": 169331,
+      "previous_rank": 390,
+      "peak_rank": 1
     }
   },
   "Elizabeth Taylor": {
@@ -75044,6 +75056,18 @@
       "rank": 103,
       "streams": 103070,
       "previous_rank": 940,
+      "peak_rank": 2
+    },
+    "2026-05-12": {
+      "rank": 107,
+      "streams": 96646,
+      "previous_rank": 1030,
+      "peak_rank": 2
+    },
+    "2026-05-13": {
+      "rank": 105,
+      "streams": 103973,
+      "previous_rank": 1070,
       "peak_rank": 2
     }
   },

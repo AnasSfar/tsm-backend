@@ -50,6 +50,22 @@ HANDLE       = "@swiftiescharts"
 EXCLUDED_EDITIONS = {"extras", "extra"}
 EXCLUDED_DISPLAY_SECTIONS = {"extras", "extra"}
 
+# Regroupe OG + Taylor's Version sous la même ère.
+ERA_MAP: dict[str, str] = {
+    "Fearless (Taylor's Version)": "Fearless",
+    "Speak Now (Taylor's Version)": "Speak Now",
+    "Red (Taylor's Version)":      "Red",
+    "1989 (Taylor's Version)":     "1989",
+}
+
+# Pour la cover, on préfère la TV quand elle existe.
+ERA_COVER_PRIORITY: dict[str, list[str]] = {
+    "Fearless":  ["Fearless (Taylor's Version)", "Fearless"],
+    "Speak Now": ["Speak Now (Taylor's Version)", "Speak Now"],
+    "Red":       ["Red (Taylor's Version)", "Red"],
+    "1989":      ["1989 (Taylor's Version)", "1989"],
+}
+
 # ---------------------------------------------------------------------------
 # Helpers (copiés depuis generate_streams_image.py)
 # ---------------------------------------------------------------------------
@@ -396,14 +412,40 @@ def build_album_rows(today: dict, yest: dict, week: dict, track_map: dict, cover
                 continue
             albums[album]["week_daily"] += (w.get("daily_streams") or 0)
 
+    # Passe 2 : merge des albums en ères (OG + TV → une seule ligne).
+    eras: dict[str, dict] = {}
+    for album_name, album_data in albums.items():
+        era_name = ERA_MAP.get(album_name, album_name)
+        if era_name not in eras:
+            priority = ERA_COVER_PRIORITY.get(era_name, [era_name])
+            cover_url = ""
+            for prio_album in priority:
+                cover_url = covers.get(_norm(prio_album), "")
+                if cover_url:
+                    break
+            if not cover_url:
+                cover_url = album_data["cover_url"]
+            eras[era_name] = {
+                "album":         era_name,
+                "streams":       0,
+                "daily_streams": 0,
+                "yest_daily":    0,
+                "week_daily":    0,
+                "cover_url":     cover_url,
+            }
+        eras[era_name]["streams"]       += album_data["streams"]
+        eras[era_name]["daily_streams"] += album_data["daily_streams"]
+        eras[era_name]["yest_daily"]    += album_data["yest_daily"]
+        eras[era_name]["week_daily"]    += album_data["week_daily"]
+
     yest_ranked = sorted(
-        [r for r in albums.values() if r.get("yest_daily")],
+        [r for r in eras.values() if r.get("yest_daily")],
         key=lambda r: r["yest_daily"],
         reverse=True,
     )
     yest_rank_by_album = {r["album"]: i + 1 for i, r in enumerate(yest_ranked)}
 
-    rows = sorted(albums.values(), key=lambda r: r["daily_streams"], reverse=True)
+    rows = sorted(eras.values(), key=lambda r: r["daily_streams"], reverse=True)
     for row in rows:
         row["prev_rank"] = yest_rank_by_album.get(row["album"])
     return rows
@@ -611,7 +653,7 @@ def build_html(rows: list[dict], target_date: str, image_cache: dict[str, str]) 
   <div class="hdr" {hdr_style}>
     {SPOTIFY_SVG}
     <div>
-      <div class="hdr-title">Taylor Swift · Albums on Spotify</div>
+      <div class="hdr-title">Taylor Swift · Eras on Spotify</div>
       <div class="hdr-sub">Daily Streams · {date_fmt}</div>
     </div>
   </div>

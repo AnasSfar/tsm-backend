@@ -546,6 +546,22 @@ body[data-theme="dark"]{
   box-shadow:0 0 0 4px rgba(29,185,84,.12);
 }
 
+#refreshDataBtn{
+  width:42px;
+  min-width:42px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+#refreshDataBtn.loading{
+  pointer-events:none;
+}
+
+#refreshDataBtn.loading{
+  animation:spin .7s linear infinite;
+}
+
 #updateBtn,
 .update-btn{
   width:100%;
