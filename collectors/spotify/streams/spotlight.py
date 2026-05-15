@@ -1272,7 +1272,11 @@ def main() -> None:
     # Compose tweet in requested format
     tweet_lines = []
     combined_suffix = " across all versions" if args.combined else ""
-    tweet_lines.append(f'📈 "{track["title"]}" by Taylor Swift received {daily_tweet} streams yesterday{combined_suffix}, {date_fmt_long}.')
+    gainer_period = "weekly" if args.compare == "last-week" else "daily"
+    tweet_lines.append(
+        f'📈 "{track["title"]}" by Taylor Swift was one of the biggest {gainer_period} gainers '
+        f'yesterday{combined_suffix}, {date_fmt_long}. It received {daily_tweet} streams.'
+    )
     if args.compare == "last-week":
         comparison = movement_line(daily, daily_last_week, "last week")
     else:

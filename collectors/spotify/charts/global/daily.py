@@ -88,6 +88,10 @@ def lock_path(d: date) -> Path:
     return ROOT / "history" / str(d.year) / f"{d.month:02d}" / str(d) / "posted.lock"
 
 
+def updated_lock_path(d: date) -> Path:
+    return ROOT / "history" / str(d.year) / f"{d.month:02d}" / str(d) / "updated.lock"
+
+
 def tweet_path(d: date) -> Path:
     return ROOT / "history" / str(d.year) / f"{d.month:02d}" / str(d) / "tweet.txt"
 
@@ -111,6 +115,13 @@ def mark_posted(d: date) -> None:
     p.parent.mkdir(parents=True, exist_ok=True)
     p.touch()
     log("INFO", f"posted.lock créé: {p}")
+
+
+def mark_updated(d: date) -> None:
+    p = updated_lock_path(d)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.touch()
+    log("INFO", f"updated.lock créé: {p}")
 
 
 def cleanup_tweet_files(dates: list[date]) -> None:
@@ -355,6 +366,10 @@ def wait_for_page(target_date: date) -> bool:
         log("WAIT", f"Page {target_date} pas encore exploitable, retry #{attempt} dans {RETRY_SECONDS // 60} min")
         attempt += 1
         time.sleep(RETRY_SECONDS)
+
+
+def skip_availability_wait() -> bool:
+    return os.getenv("SPOTIFY_CHARTS_ALREADY_AVAILABLE", "").strip().lower() in {"1", "true", "yes"}
 
 
 def data_ready(d: date) -> bool:
@@ -605,7 +620,13 @@ def main() -> None:
     if already_ready:
         log("INFO", f"Données déjà collectées, skip filter : {[str(d) for d in already_ready]}")
 
-    for d in needs_scraping:
+    if needs_scraping and skip_availability_wait():
+        log("INFO", "Disponibilite Spotify deja validee par run_all_charts, attente locale ignoree")
+        needs_scraping_to_wait = []
+    else:
+        needs_scraping_to_wait = needs_scraping
+
+    for d in needs_scraping_to_wait:
         if not wait_for_page(d):
             log("WARN", f"Page {d} jamais devenue disponible, date ignorée")
             continue
@@ -635,6 +656,8 @@ def main() -> None:
         sys.exit(1)
 
     processed = sorted(results.keys())
+    for d in processed:
+        mark_updated(d)
 
     tweet_content = build_tweet_content(processed)
     (ROOT / "twitter_post.txt").write_text(tweet_content, encoding="utf-8")

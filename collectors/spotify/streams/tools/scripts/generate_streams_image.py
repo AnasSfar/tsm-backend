@@ -176,16 +176,20 @@ def load_song_db() -> dict:
     return result
 
 
-def load_history(target_date: str) -> tuple[list[dict], list[dict]]:
+def load_history(target_date: str) -> tuple[list[dict], list[dict], list[dict]]:
     """
-    Returns (today_rows, yesterday_rows) from streams_history.csv.
+    Returns (today_rows, yesterday_rows, last_week_rows) from streams_history.csv.
     Each row: {track_id, streams, daily_streams}
     """
     yesterday = str(date_cls.fromisoformat(target_date) - timedelta(days=1))
     day_before = str(date_cls.fromisoformat(target_date) - timedelta(days=2))
+    last_week = str(date_cls.fromisoformat(target_date) - timedelta(days=7))
+    week_before = str(date_cls.fromisoformat(target_date) - timedelta(days=8))
     today_rows: dict[str, dict] = {}
     yesterday_rows: dict[str, dict] = {}
     before_rows: dict[str, dict] = {}
+    last_week_rows: dict[str, dict] = {}
+    week_before_rows: dict[str, dict] = {}
 
     def _parse_optional_int(raw: str | None) -> int | None:
         s = (raw or "").strip()
@@ -199,7 +203,7 @@ def load_history(target_date: str) -> tuple[list[dict], list[dict]]:
     with open(HISTORY_PATH, newline="", encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
             d = row["date"]
-            if d not in (target_date, yesterday, day_before):
+            if d not in (target_date, yesterday, day_before, last_week, week_before):
                 continue
             entry = {
                 "track_id": row["track_id"],
@@ -211,8 +215,12 @@ def load_history(target_date: str) -> tuple[list[dict], list[dict]]:
                 today_rows[row["track_id"]] = entry
             elif d == yesterday:
                 yesterday_rows[row["track_id"]] = entry
-            else:
+            elif d == day_before:
                 before_rows[row["track_id"]] = entry
+            elif d == last_week:
+                last_week_rows[row["track_id"]] = entry
+            else:
+                week_before_rows[row["track_id"]] = entry
 
     def _fill_missing_daily(cur: dict[str, dict], prev: dict[str, dict]) -> None:
         for tid, e in cur.items():
@@ -228,8 +236,9 @@ def load_history(target_date: str) -> tuple[list[dict], list[dict]]:
     # If daily_streams is blank in CSV, recompute from totals using adjacent dates.
     _fill_missing_daily(today_rows, yesterday_rows)
     _fill_missing_daily(yesterday_rows, before_rows)
+    _fill_missing_daily(last_week_rows, week_before_rows)
 
-    return list(today_rows.values()), list(yesterday_rows.values())
+    return list(today_rows.values()), list(yesterday_rows.values()), list(last_week_rows.values())
 
 
 def _get_song_family_single_image_map() -> dict:
@@ -340,7 +349,8 @@ def _dedup_by_title(rows: list[dict], song_db: dict) -> list[dict]:
     return list(best.values())
 
 
-def build_top_n(today_rows: list[dict], yesterday_rows: list[dict], song_db: dict, top_n: int) -> list[dict]:
+def build_top_n(today_rows: list[dict], yesterday_rows: list[dict], last_week_rows: list[dict],
+                song_db: dict, top_n: int) -> list[dict]:
     """
     Déduplique par titre, trie par daily_streams décroissant, retourne top N.
     Attache prev_rank et daily_streams_yesterday à chaque entrée.
@@ -350,6 +360,8 @@ def build_top_n(today_rows: list[dict], yesterday_rows: list[dict], song_db: dic
     yest_sorted  = sorted(yest_deduped, key=lambda r: (r.get("daily_streams") or 0), reverse=True)
     yest_rank_by_key  = {_norm(r["title"]): i + 1 for i, r in enumerate(yest_sorted)}
     yest_daily_by_key = {_norm(r["title"]): r.get("daily_streams") for r in yest_deduped}
+    last_week_deduped = _dedup_by_title(last_week_rows, song_db)
+    last_week_daily_by_key = {_norm(r["title"]): r.get("daily_streams") for r in last_week_deduped}
 
     today_deduped = _dedup_by_title(today_rows, song_db)
     ranked = sorted(today_deduped, key=lambda r: (r.get("daily_streams") or 0), reverse=True)
@@ -358,6 +370,7 @@ def build_top_n(today_rows: list[dict], yesterday_rows: list[dict], song_db: dic
     for entry in top:
         key = _norm(entry["title"])
         entry["daily_streams_yesterday"] = yest_daily_by_key.get(key)
+        entry["daily_streams_last_week"] = last_week_daily_by_key.get(key)
         entry["prev_rank"]               = yest_rank_by_key.get(key)
 
     return top
@@ -428,7 +441,7 @@ body{
 .hdr-sub{color:rgba(255,255,255,.85);font-size:15px;margin-top:5px}
 .col-heads{
   display:grid;
-  grid-template-columns:52px 50px minmax(160px,1fr) 130px 130px 110px;
+  grid-template-columns:46px 42px minmax(130px,1fr) 104px 94px 94px 92px;
   column-gap:8px;
   padding:9px 18px;
   background:rgba(241,245,246,.95);
@@ -442,7 +455,7 @@ body{
 .col-heads .right{justify-content:flex-end}
 .song-card{
   display:grid;
-  grid-template-columns:52px 50px minmax(160px,1fr) 130px 130px 110px;
+  grid-template-columns:46px 42px minmax(130px,1fr) 104px 94px 94px 92px;
   column-gap:8px;
   align-items:center;
   padding:7px 18px;
@@ -550,6 +563,7 @@ def build_rows_html(top_rows: list[dict], cover_map: dict, track_album_map: dict
         daily   = entry["daily_streams"]
         total   = entry["streams"]
         yest    = entry.get("daily_streams_yesterday")
+        last_week = entry.get("daily_streams_last_week")
         img_url = entry.get("image_url", "")
 
         # Cover lookup using new priority logic
@@ -566,6 +580,7 @@ def build_rows_html(top_rows: list[dict], cover_map: dict, track_album_map: dict
         )
 
         delta_num, delta_pct, delta_cls = fmt_delta(daily, yest)
+        week_delta_num, week_delta_pct, week_delta_cls = fmt_delta(daily, last_week)
         chg_text, chg_css = rank_change(rank, entry.get("prev_rank"))
 
         card_cls = "song-card"
@@ -589,6 +604,12 @@ def build_rows_html(top_rows: list[dict], cover_map: dict, track_album_map: dict
     <div class="delta-wrap">
       <span class="delta-num">{delta_num}</span>
       {f'<span class="delta-pct">{delta_pct}</span>' if delta_pct else ''}
+    </div>
+  </div>
+  <div class="col-num {week_delta_cls}">
+    <div class="delta-wrap">
+      <span class="delta-num">{week_delta_num}</span>
+      {f'<span class="delta-pct">{week_delta_pct}</span>' if week_delta_pct else ''}
     </div>
   </div>
   <div class="col-num">{fmt_num(total)}</div>
@@ -633,7 +654,8 @@ def build_html(top_rows: list[dict], target_date: str, cover_map: dict, track_al
     <span>+/-</span>
     <span>Track</span>
     <span class="right">Daily</span>
-    <span class="right">vs Yesterday</span>
+    <span class="right">Daily Chg</span>
+    <span class="right">Weekly Chg</span>
     <span class="right">Total</span>
   </div>
   {rows_html}
@@ -662,11 +684,11 @@ def generate(target_date: str | None = None, *, top_n: int | None = None) -> Pat
     cover_map       = load_covers()
     track_album_map = load_track_album_map()
 
-    today_rows, yesterday_rows = load_history(target_date)
+    today_rows, yesterday_rows, last_week_rows = load_history(target_date)
     if not today_rows:
         raise ValueError(f"Aucune donnée pour {target_date} dans {HISTORY_PATH}")
 
-    top_rows = build_top_n(today_rows, yesterday_rows, song_db, top_n_final)
+    top_rows = build_top_n(today_rows, yesterday_rows, last_week_rows, song_db, top_n_final)
     print(f"Top {top_n_final} construit ({len(top_rows)} chansons)")
     for i, e in enumerate(top_rows, 1):
         daily_fmt = f"{e['daily_streams']:,}"

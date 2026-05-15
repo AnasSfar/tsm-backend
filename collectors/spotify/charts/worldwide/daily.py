@@ -294,6 +294,12 @@ def _worldwide_history_path(chart_date: str) -> Path:
         / f"ts_worldwide_{chart_date}.json"
     )
 
+
+def _updated_lock_path(chart_date: str) -> Path:
+    d = datetime.strptime(chart_date, "%Y-%m-%d").date()
+    return HISTORY_ROOT / str(d.year) / f"{d.month:02d}" / chart_date / "updated.lock"
+
+
 def _load_cached_bearer() -> str | None:
     try:
         data = json.loads(_BEARER_CACHE_FILE.read_text(encoding="utf-8-sig"))
@@ -827,6 +833,9 @@ def main() -> int:
         encoding="utf-8",
     )
     print(f"[DONE] Written latest → {OUTPUT_PATH}")
+    updated_lock = _updated_lock_path(chart_date)
+    updated_lock.touch()
+    print(f"[DONE] Written -> {updated_lock}")
     maybe_upload_to_r2()
 
     if not args.no_post and TWITTER_SESSION.exists():

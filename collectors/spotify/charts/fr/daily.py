@@ -69,6 +69,10 @@ def lock_path(d: date) -> Path:
     return DATA_DIR / str(d.year) / f"{d.month:02d}" / str(d) / "posted.lock"
 
 
+def updated_lock_path(d: date) -> Path:
+    return DATA_DIR / str(d.year) / f"{d.month:02d}" / str(d) / "updated.lock"
+
+
 def already_posted(d: date) -> bool:
     exists = lock_path(d).exists()
     log("DEBUG", f"posted.lock pour {d}: {'oui' if exists else 'non'}")
@@ -80,6 +84,13 @@ def mark_posted(d: date):
     p.parent.mkdir(parents=True, exist_ok=True)
     p.touch()
     log("INFO", f"posted.lock créé: {p}")
+
+
+def mark_updated(d: date):
+    p = updated_lock_path(d)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.touch()
+    log("INFO", f"updated.lock créé: {p}")
 
 
 def tweet_path(d: date) -> Path:
@@ -167,6 +178,10 @@ def page_available(d: date) -> bool | None:
     except Exception as e:
         log("CHECK", f"Erreur check API: {e}")
         return None
+
+
+def skip_availability_wait() -> bool:
+    return os.getenv("SPOTIFY_CHARTS_ALREADY_AVAILABLE", "").strip().lower() in {"1", "true", "yes"}
 
 
 def run_filter(d: date, *, replace_date: bool) -> tuple[str | None, bool]:
@@ -273,7 +288,7 @@ def main():
 
     # Attendre que la page cible soit disponible (cutoff à CUTOFF_HOUR:CUTOFF_MINUTE)
     attempt = 1
-    while True:
+    while not skip_availability_wait():
         if past_cutoff():
             log("WARN", f"{CUTOFF_HOUR}h{CUTOFF_MINUTE:02d} atteint — page {target} toujours indisponible, abandon")
             return
@@ -293,6 +308,9 @@ def main():
         time.sleep(RETRY_SECONDS)
 
     # Traiter chaque date non-postée
+    if skip_availability_wait():
+        log("INFO", "Disponibilite Spotify deja validee par run_all_charts, attente locale ignoree")
+
     results: dict[date, str] = {}
     unavailable_dates: list[date] = []
     for d in unposted:
@@ -313,6 +331,8 @@ def main():
         sys.exit(1)
 
     processed = sorted(results.keys())
+    for d in processed:
+        mark_updated(d)
 
     # Contenu du tweet
     _last_date = processed[-1]

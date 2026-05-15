@@ -46,6 +46,8 @@ WORLDWIDE_TOTAL_DAYS_PATH = (
 )
 
 DATE_RE = re.compile(r"(\d{4}-\d{2}-\d{2})")
+NO_CACHE_CONTROL = "no-cache, no-store, must-revalidate"
+SHORT_CACHE_CONTROL = "max-age=60, stale-while-revalidate=30"
 R2_REQUIRED_ENV_VARS = (
     "R2_ACCOUNT_ID",
     "R2_ACCESS_KEY_ID",
@@ -112,6 +114,7 @@ def upload_bytes_if_changed(
     data: bytes,
     content_type: str,
     dry_run: bool,
+    cache_control: str | None = None,
     retries: int = 3,
 ) -> bool:
     body_hash = hashlib.sha256(data).hexdigest()
@@ -130,7 +133,7 @@ def upload_bytes_if_changed(
                 key,
                 ExtraArgs={
                     "ContentType": content_type,
-                    "CacheControl": "max-age=60, stale-while-revalidate=30",
+                    "CacheControl": cache_control or SHORT_CACHE_CONTROL,
                     "Metadata": {"sha256": body_hash},
                 },
             )
@@ -155,10 +158,15 @@ def upload_json_if_changed(*, client, bucket: str, key: str, payload: dict[str, 
         data=data,
         content_type="application/json; charset=utf-8",
         dry_run=dry_run,
+        cache_control=NO_CACHE_CONTROL,
     )
 
 
 def upload_raw_if_changed(*, client, bucket: str, key: str, data: bytes, content_type: str, dry_run: bool) -> bool:
+    cache_control = NO_CACHE_CONTROL if (
+        content_type.startswith("application/json") or
+        content_type.startswith("text/csv")
+    ) else SHORT_CACHE_CONTROL
     return upload_bytes_if_changed(
         client=client,
         bucket=bucket,
@@ -166,6 +174,7 @@ def upload_raw_if_changed(*, client, bucket: str, key: str, data: bytes, content
         data=data,
         content_type=content_type,
         dry_run=dry_run,
+        cache_control=cache_control,
     )
 
 

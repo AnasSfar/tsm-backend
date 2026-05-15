@@ -32,6 +32,7 @@ GLOBAL_CSV = DB_DIR / "apple_music_global.csv"
 TS_TOP_CSV = DB_DIR / "apple_music_ts_top_songs.csv"
 
 R2_PREFIX = "apple-music/history-by-song"
+NO_CACHE_CONTROL = "no-cache, no-store, must-revalidate"
 
 
 def get_env(name: str) -> str:
@@ -134,6 +135,7 @@ def upload_json_if_changed(
                 Key=key,
                 Body=body,
                 ContentType="application/json; charset=utf-8",
+                CacheControl=NO_CACHE_CONTROL,
                 Metadata={"sha256": local_hash},
             )
             break
