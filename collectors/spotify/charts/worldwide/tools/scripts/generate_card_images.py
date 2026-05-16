@@ -41,13 +41,16 @@ if hasattr(sys.stdout, "reconfigure"):
 ROOT           = Path(__file__).resolve().parents[6]
 WORLDWIDE_JSON = ROOT / "website" / "site" / "data" / "charts_worldwide.json"
 SONGS_JSON     = ROOT / "website" / "site" / "data" / "songs.json"
-HISTORY_ROOT   = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "history"
 LOGO_PATH        = Path(__file__).parents[7] / "tsm-frontend" / "frontend" / "public" / "icons" / "logo.gif"
 TWITTER_SESSION  = Path(__file__).resolve().parents[1] / "json" / "twitter_session.json"
 
-_CORE = ROOT / "collectors" / "spotify" / "core"
+_SPOTIFY_ROOT = ROOT / "collectors" / "spotify"
+if str(_SPOTIFY_ROOT) not in sys.path:
+    sys.path.insert(0, str(_SPOTIFY_ROOT))
+_CORE = _SPOTIFY_ROOT / "core"
 if str(_CORE) not in sys.path:
     sys.path.insert(0, str(_CORE))
+from core.data_paths import spotify_chart_dir  # noqa: E402
 from twitter import post_with_image as _post_with_image  # noqa: E402
 
 # Shared lock with core/twitter.py — prevents running Playwright while Twitter
@@ -601,7 +604,7 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
     song_meta: dict[str, dict] = {s["track_id"]: s for s in songs_list if "track_id" in s}
 
     d       = datetime.strptime(chart_date, "%Y-%m-%d").date()
-    out_dir = HISTORY_ROOT / str(d.year) / f"{d.month:02d}" / chart_date / "cards"
+    out_dir = spotify_chart_dir("worldwide", chart_date) / "cards"
 
     index_path = out_dir / "cards_index.json"
     if index_path.exists() and not force:

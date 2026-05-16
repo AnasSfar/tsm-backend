@@ -35,6 +35,8 @@ except ImportError:
 ROOT = Path(__file__).resolve().parents[4]
 CHARTS_ROOT = ROOT / "collectors" / "spotify" / "charts"
 COLLECTOR_ROOT = CHARTS_ROOT / "artists_global"
+sys.path.insert(0, str(ROOT / "collectors" / "spotify"))
+from core.data_paths import spotify_chart_dir
 
 CHART_ID = "artist-global-daily"
 API_BASE = "https://charts-spotify-com-service.spotify.com/auth/v0/charts"
@@ -44,7 +46,6 @@ _TOKEN_ACQUIRE_URL = "https://charts.spotify.com/charts/view/regional-global-dai
 SESSION_FILE = CHARTS_ROOT / "global" / "tools" / "json" / "spotify_session.json"
 BEARER_CACHE = CHARTS_ROOT / "global" / "tools" / "json" / "bearer_cache.json"
 OUTPUT_PATH = ROOT / "website" / "site" / "data" / "charts_artists_global.json"
-HISTORY_ROOT = COLLECTOR_ROOT / "history"
 
 TOKEN_TTL = 50 * 60
 DEFAULT_WAIT_SECONDS = 10
@@ -59,21 +60,26 @@ _WARP_CLI = Path(r"C:\Program Files\Cloudflare\Cloudflare WARP\warp-cli.exe")
 def _warp_connect() -> None:
     cli = str(_WARP_CLI) if _WARP_CLI.exists() else "warp-cli"
     try:
+        status = subprocess.run([cli, "status"], timeout=5, check=False, capture_output=True, text=True)
+        if "Connected" in (status.stdout or ""):
+            print("[WARP] deja connecte")
+            return
         print("[WARP] connexion en cours...")
         subprocess.run([cli, "connect"], timeout=15, check=False, capture_output=True)
-        time.sleep(15)
+        for _ in range(15):
+            status = subprocess.run([cli, "status"], timeout=5, check=False, capture_output=True, text=True)
+            if "Connected" in (status.stdout or ""):
+                break
+            time.sleep(1)
+        else:
+            time.sleep(3)
         print("[WARP] connecté")
     except Exception as e:
         print(f"[WARP] impossible de connecter ({e})")
 
 
 def _warp_disconnect() -> None:
-    cli = str(_WARP_CLI) if _WARP_CLI.exists() else "warp-cli"
-    try:
-        subprocess.run([cli, "disconnect"], timeout=10, check=False, capture_output=True)
-        print("[WARP] déconnecté")
-    except Exception:
-        pass
+    print("[WARP] garde connecte")
 
 
 def _load_cached_token() -> str | None:
@@ -299,11 +305,11 @@ def _fetch_chart(route_value: str, token: str) -> tuple[list[dict[str, Any]], st
 
 
 def _history_json_path(chart_date: str) -> Path:
-    return HISTORY_ROOT / chart_date[:4] / chart_date[5:7] / chart_date / "artist_global_daily.json"
+    return spotify_chart_dir("artists_global", chart_date) / "artist_global_daily.json"
 
 
 def _history_csv_path(chart_date: str) -> Path:
-    return HISTORY_ROOT / chart_date[:4] / chart_date[5:7] / chart_date / "artist_global_daily.csv"
+    return spotify_chart_dir("artists_global", chart_date) / "artist_global_daily.csv"
 
 
 def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
@@ -349,6 +355,7 @@ def main() -> int:
     parser.add_argument("--no-csv", action="store_true", help="Do not write the CSV snapshot.")
     parser.add_argument("--no-upload", action="store_true", help="Skip the R2 upload step.")
     parser.add_argument("--no-post", action="store_true", help="Skip image generation and Twitter posting.")
+    parser.add_argument("--no-warp", action="store_true", help="Skip Cloudflare WARP connect/disconnect.")
     args = parser.parse_args()
 
     route_value = args.date.strip() or "latest"
@@ -425,8 +432,11 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    _warp_connect()
+    no_warp = "--no-warp" in sys.argv[1:]
+    if not no_warp:
+        _warp_connect()
     try:
         raise SystemExit(main())
     finally:
-        _warp_disconnect()
+        if not no_warp:
+            _warp_disconnect()

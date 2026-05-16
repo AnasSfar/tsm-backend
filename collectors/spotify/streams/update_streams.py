@@ -32,6 +32,7 @@ sys.path.insert(0, str(_SCRIPT_DIR.parents[0]))  # collectors/spotify/ for core.
 import export_for_web
 from git_ops import git_commit_and_push
 from config import NTFY_TOPIC
+from core.data_paths import update_streams_dir
 from core.notify import send as notify
 
 ROOT = _REPO_ROOT / "website"
@@ -92,6 +93,18 @@ APP_VERSION   = "1.2.87.30.gc764ebf1"
 _SESSION_FILE = _SCRIPT_DIR.parents[0] / "charts/global/tools/json/spotify_session.json"
 
 START_TIME = None
+
+
+def configure_daily_data_paths(stats_date: str) -> None:
+    global DATA_DIR, FAILED_PATH, PENDING_LOG_PATH
+    global LAST_SUCCESSFUL_UPDATE_JSON, LAST_UNFINISHED_UPDATE_JSON, NOT_FOUND_STREAK_PATH
+
+    DATA_DIR = update_streams_dir(stats_date)
+    FAILED_PATH = DATA_DIR / "not_found_today.csv"
+    PENDING_LOG_PATH = DATA_DIR / "pending_debug_today.csv"
+    LAST_SUCCESSFUL_UPDATE_JSON = DATA_DIR / "last_successful_updates.json"
+    LAST_UNFINISHED_UPDATE_JSON = DATA_DIR / "last_unfinished_updates.json"
+    NOT_FOUND_STREAK_PATH = DATA_DIR / "not_found_streak.json"
 
 # ── Live update signal ────────────────────────────────────────────────────────
 _UPDATE_SIGNAL_SENT = threading.Event()
@@ -676,6 +689,10 @@ def _test_tokens(tokens: dict) -> bool:
 def _warp_connect() -> None:
     cli = str(_WARP_CLI) if _WARP_CLI.exists() else "warp-cli"
     try:
+        res = subprocess.run([cli, "status"], timeout=5, capture_output=True, text=True, check=False)
+        if "Connected" in (res.stdout or ""):
+            print("TokenManager: WARP deja connecte")
+            return
         subprocess.run([cli, "connect"], timeout=15, check=False, capture_output=True)
         # Poll warp-cli status until "Connected" — up to 15s
         for _ in range(15):
@@ -691,12 +708,7 @@ def _warp_connect() -> None:
 
 
 def _warp_disconnect() -> None:
-    cli = str(_WARP_CLI) if _WARP_CLI.exists() else "warp-cli"
-    try:
-        subprocess.run([cli, "disconnect"], timeout=10, check=False, capture_output=True)
-        print("TokenManager: WARP déconnecté")
-    except Exception:
-        pass
+    print("TokenManager: WARP garde connecte")
 
 
 class TokenManager:
@@ -2944,6 +2956,7 @@ def run_update(
     history_index = HistoryIndex.load()
 
     stats_date = stats_date_override or get_stats_date_str()
+    configure_daily_data_paths(stats_date)
     skip_track_ids = skip_track_ids or set()
 
     active_track_ids = load_active_track_ids_from_discography()
@@ -3269,6 +3282,8 @@ def run_debug_total_replace(stats_date: str) -> None:
 def main():
     global START_TIME
     START_TIME = time.perf_counter()
+
+    _warp_connect()
 
     ensure_history_file()
 

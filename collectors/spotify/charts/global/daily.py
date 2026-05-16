@@ -47,6 +47,7 @@ from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+from core.data_paths import first_existing, legacy_spotify_chart_dir, spotify_chart_dir
 from core.notify import send as notify
 from core.twitter import post_thread, post_with_image, split_tweets
 
@@ -85,23 +86,32 @@ def log(level: str, message: str) -> None:
 
 
 def lock_path(d: date) -> Path:
-    return ROOT / "history" / str(d.year) / f"{d.month:02d}" / str(d) / "posted.lock"
+    return spotify_chart_dir("global", d) / "posted.lock"
 
 
 def updated_lock_path(d: date) -> Path:
-    return ROOT / "history" / str(d.year) / f"{d.month:02d}" / str(d) / "updated.lock"
+    return spotify_chart_dir("global", d) / "updated.lock"
 
 
 def tweet_path(d: date) -> Path:
-    return ROOT / "history" / str(d.year) / f"{d.month:02d}" / str(d) / "tweet.txt"
+    return first_existing(
+        spotify_chart_dir("global", d) / "tweet.txt",
+        legacy_spotify_chart_dir("global", d) / "tweet.txt",
+    )
 
 
 def chart_csv_path(d: date) -> Path:
-    return ROOT / "history" / str(d.year) / f"{d.month:02d}" / str(d) / "ts_all_songs.csv"
+    return first_existing(
+        spotify_chart_dir("global", d) / "ts_all_songs.csv",
+        legacy_spotify_chart_dir("global", d) / "ts_all_songs.csv",
+    )
 
 
 def no_ts_lock_path(d: date) -> Path:
-    return ROOT / "history" / str(d.year) / f"{d.month:02d}" / str(d) / "no_ts.lock"
+    return first_existing(
+        spotify_chart_dir("global", d) / "no_ts.lock",
+        legacy_spotify_chart_dir("global", d) / "no_ts.lock",
+    )
 
 
 def already_posted(d: date) -> bool:
@@ -466,7 +476,7 @@ def ensure_us_image_for_date(target_date: date) -> Path | None:
         return None
 
     date_str = str(target_date)
-    out_path = ROOT / "history" / str(target_date.year) / f"{target_date.month:02d}" / date_str / "us_chart_capture.png"
+    out_path = spotify_chart_dir("global", target_date) / "us_chart_capture.png"
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
     log("STEP", f"Preparing US chart image for {date_str}")
@@ -550,7 +560,7 @@ def build_global_us_combined_image(global_image: Path, us_image: Path, target_da
     merged.paste(top, (0, 0))
     merged.paste(bottom, (0, top.height + pad))
 
-    out_path = ROOT / "history" / str(target_date.year) / f"{target_date.month:02d}" / str(target_date) / "chart_image_global_us.png"
+    out_path = spotify_chart_dir("global", target_date) / "chart_image_global_us.png"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     merged.save(out_path, format="PNG")
     log("INFO", f"Combined Global+US image saved: {out_path}")

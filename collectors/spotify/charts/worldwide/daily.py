@@ -51,6 +51,7 @@ from playwright.sync_api import sync_playwright
 _CORE_DIR = Path(__file__).resolve().parents[4] / "collectors" / "spotify"
 if str(_CORE_DIR) not in sys.path:
     sys.path.insert(0, str(_CORE_DIR))
+from core.data_paths import legacy_spotify_chart_dir, spotify_chart_dir
 from core.twitter import post_thread, split_tweets
 
 def _build_http_session() -> _requests.Session:
@@ -285,19 +286,11 @@ def _clean_int(value: object) -> Optional[int]:
 
 
 def _worldwide_history_path(chart_date: str) -> Path:
-    d = datetime.strptime(chart_date, "%Y-%m-%d").date()
-    return (
-        HISTORY_ROOT
-        / str(d.year)
-        / f"{d.month:02d}"
-        / chart_date
-        / f"ts_worldwide_{chart_date}.json"
-    )
+    return spotify_chart_dir("worldwide", chart_date) / f"ts_worldwide_{chart_date}.json"
 
 
 def _updated_lock_path(chart_date: str) -> Path:
-    d = datetime.strptime(chart_date, "%Y-%m-%d").date()
-    return HISTORY_ROOT / str(d.year) / f"{d.month:02d}" / chart_date / "updated.lock"
+    return spotify_chart_dir("worldwide", chart_date) / "updated.lock"
 
 
 def _load_cached_bearer() -> str | None:
@@ -761,6 +754,8 @@ def main() -> int:
     # Enrich with stream_change / stream_change_pct from previous day's snapshot
     prev_date = (datetime.strptime(chart_date, "%Y-%m-%d").date() - timedelta(days=1)).strftime("%Y-%m-%d")
     prev_path = _worldwide_history_path(prev_date)
+    if not prev_path.exists():
+        prev_path = legacy_spotify_chart_dir("worldwide", prev_date) / f"ts_worldwide_{prev_date}.json"
     prev_by_track: dict[str, list[dict]] = {}
     if prev_path.exists():
         try:

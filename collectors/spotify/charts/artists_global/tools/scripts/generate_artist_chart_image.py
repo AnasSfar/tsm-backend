@@ -40,12 +40,12 @@ if hasattr(sys.stdout, "reconfigure"):
 # ── Paths ──────────────────────────────────────────────────────────────────────
 SCRIPT_DIR      = Path(__file__).resolve()
 ARTISTS_GLOBAL  = SCRIPT_DIR.parents[2]                    # artists_global/
-HISTORY_ROOT    = ARTISTS_GLOBAL / "history"
 REPO_ROOT       = SCRIPT_DIR.parents[6]                    # tsm-backend/
 HEADERS_DIR     = REPO_ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "headers"
 TWITTER_SESSION = REPO_ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "json" / "twitter_session.json"
 
 sys.path.insert(0, str(REPO_ROOT / "collectors" / "spotify"))
+from core.data_paths import legacy_spotify_chart_dir, spotify_chart_dir
 
 HANDLE  = "@tsmusem13"
 TS_NAME = "Taylor Swift"
@@ -143,19 +143,24 @@ def get_dominant_color(img_path: Path) -> str:
 
 def find_latest_date() -> str:
     latest = None
-    for year_dir in sorted(HISTORY_ROOT.iterdir()):
-        for month_dir in sorted(year_dir.iterdir()):
-            for day_dir in sorted(month_dir.iterdir()):
-                if (day_dir / "artist_global_daily.json").exists():
-                    latest = day_dir.name
+    for root in (
+        REPO_ROOT / "data",
+        ARTISTS_GLOBAL / "history",
+    ):
+        if not root.exists():
+            continue
+        for day_dir in sorted(root.rglob("*")):
+            if day_dir.is_dir() and (day_dir / "artist_global_daily.json").exists():
+                latest = day_dir.name
     if not latest:
-        raise FileNotFoundError("No artist_global_daily.json found in history/")
+        raise FileNotFoundError("No artist_global_daily.json found in data/")
     return latest
 
 
 def load_chart(stats_date: str) -> dict:
-    y, m = stats_date[:4], stats_date[5:7]
-    path = HISTORY_ROOT / y / m / stats_date / "artist_global_daily.json"
+    path = spotify_chart_dir("artists_global", stats_date) / "artist_global_daily.json"
+    if not path.exists():
+        path = legacy_spotify_chart_dir("artists_global", stats_date) / "artist_global_daily.json"
     if not path.exists():
         raise FileNotFoundError(f"Chart not found: {path}")
     return json.loads(path.read_text(encoding="utf-8-sig"))
@@ -506,8 +511,7 @@ def main() -> None:
         html = build_solo_html(ts_artist, stats_date, header_img)
         print(f"Mode: Solo card (Taylor Swift is #{ts_rank})")
 
-    y, m = stats_date[:4], stats_date[5:7]
-    out_path = HISTORY_ROOT / y / m / stats_date / "artist_chart_image.png"
+    out_path = spotify_chart_dir("artists_global", stats_date) / "artist_chart_image.png"
     generate_image(html, out_path)
 
     if not args.no_post:

@@ -45,6 +45,7 @@ sys.path.insert(0, str(Path(__file__).parents[4]))
 from core.fmt import fmt_delta, fmt_streams, fmt_streams_delta
 from core.history import load, parse_date, save, update, calculate_total_days, calculate_streak
 from core.logger import Logger
+from core.data_paths import legacy_spotify_chart_dir, spotify_chart_dir
 
 from config import LASTFM_API_KEY
 
@@ -94,12 +95,18 @@ def norm(s):
 
 
 def get_out_dir(chart_date: str) -> Path:
-    return DATA_DIR / chart_date[:4] / chart_date[5:7] / chart_date
+    return spotify_chart_dir("fr", chart_date)
+
+
+def get_existing_out_dir(chart_date: str) -> Path:
+    new_dir = get_out_dir(chart_date)
+    old_dir = legacy_spotify_chart_dir("fr", chart_date)
+    return new_dir if new_dir.exists() else old_dir
 
 
 def get_songs_present_yesterday(chart_date, ts_history):
     yesterday = str(parse_date(chart_date) - timedelta(days=1))
-    csv_path = DATA_DIR / yesterday[:4] / yesterday[5:7] / yesterday / "ts_all_songs.csv"
+    csv_path = get_existing_out_dir(yesterday) / "ts_all_songs.csv"
     if csv_path.exists():
         try:
             df = pd.read_csv(csv_path)

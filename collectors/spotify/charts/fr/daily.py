@@ -31,6 +31,7 @@ except ImportError:
     pass
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+from core.data_paths import first_existing, legacy_spotify_chart_dir, spotify_chart_dir
 from core.twitter import post_thread, post_with_image, split_tweets
 from core.notify import send as notify
 from playwright.sync_api import sync_playwright
@@ -66,11 +67,11 @@ def log(level: str, message: str):
 
 
 def lock_path(d: date) -> Path:
-    return DATA_DIR / str(d.year) / f"{d.month:02d}" / str(d) / "posted.lock"
+    return spotify_chart_dir("fr", d) / "posted.lock"
 
 
 def updated_lock_path(d: date) -> Path:
-    return DATA_DIR / str(d.year) / f"{d.month:02d}" / str(d) / "updated.lock"
+    return spotify_chart_dir("fr", d) / "updated.lock"
 
 
 def already_posted(d: date) -> bool:
@@ -94,7 +95,10 @@ def mark_updated(d: date):
 
 
 def tweet_path(d: date) -> Path:
-    return DATA_DIR / str(d.year) / f"{d.month:02d}" / str(d) / "tweet.txt"
+    return first_existing(
+        spotify_chart_dir("fr", d) / "tweet.txt",
+        legacy_spotify_chart_dir("fr", d) / "tweet.txt",
+    )
 
 
 def cleanup_tweet_files(dates: list[date]) -> None:
@@ -347,7 +351,10 @@ def main():
     log("STEP", "Génération de l'image du chart")
     if len(processed) == 1:
         d = processed[0]
-        image_path = DATA_DIR / str(d.year) / f"{d.month:02d}" / str(d) / "chart_image.png"
+        image_path = first_existing(
+            spotify_chart_dir("fr", d) / "chart_image.png",
+            legacy_spotify_chart_dir("fr", d) / "chart_image.png",
+        )
         img_args = [sys.executable, str(GENERATE_IMAGE_SCRIPT), str(d)]
     else:
         image_path = GENERATE_IMAGE_SCRIPT.parent / "chart_image_multi.png"

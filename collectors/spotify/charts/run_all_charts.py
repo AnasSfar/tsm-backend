@@ -18,6 +18,8 @@ from dotenv import load_dotenv
 
 CHARTS_ROOT = Path(__file__).resolve().parent
 REPO_ROOT = CHARTS_ROOT.parents[2]
+sys.path.insert(0, str(REPO_ROOT / "collectors" / "spotify"))
+from core.data_paths import legacy_spotify_chart_dir, spotify_chart_dir
 
 _WARP_CLI = Path(r"C:\Program Files\Cloudflare\Cloudflare WARP\warp-cli.exe")
 
@@ -25,22 +27,27 @@ _WARP_CLI = Path(r"C:\Program Files\Cloudflare\Cloudflare WARP\warp-cli.exe")
 def _warp_connect() -> None:
     cli = str(_WARP_CLI) if _WARP_CLI.exists() else "warp-cli"
     try:
+        status = subprocess.run([cli, "status"], timeout=5, check=False, capture_output=True, text=True)
+        if "Connected" in (status.stdout or ""):
+            print("[WARP] deja connecte")
+            return
         t0 = time.perf_counter()
         print("[WARP] connexion en cours...")
         subprocess.run([cli, "connect"], timeout=15, check=False, capture_output=True)
-        time.sleep(15)
+        for _ in range(15):
+            status = subprocess.run([cli, "status"], timeout=5, check=False, capture_output=True, text=True)
+            if "Connected" in (status.stdout or ""):
+                break
+            time.sleep(1)
+        else:
+            time.sleep(3)
         print(f"[WARP] connecté ({_fmt(time.perf_counter() - t0)})")
     except Exception as e:
         print(f"[WARP] impossible de connecter ({e})")
 
 
 def _warp_disconnect() -> None:
-    cli = str(_WARP_CLI) if _WARP_CLI.exists() else "warp-cli"
-    try:
-        subprocess.run([cli, "disconnect"], timeout=10, check=False, capture_output=True)
-        print("[WARP] déconnecté")
-    except Exception:
-        pass
+    print("[WARP] garde connecte")
 
 
 REPO_ENV_FILE = REPO_ROOT / ".env"
@@ -67,29 +74,45 @@ SPOTIFY_UA = (
     "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
 )
 
-# global et fr postent dès leur collecte terminée (pas d'attente de worldwide)
+# artists_global, global et fr postent dès leur collecte terminée (pas d'attente de worldwide)
 # us/uk sont geres par worldwide.
 COLLECT_RUNNERS: list[tuple[str, Path, list[str]]] = [
+    ("artists_global", CHARTS_ROOT / "artists_global" / "artist_global_daily.py", ["--no-upload"]),
     ("global",         CHARTS_ROOT / "global"         / "daily.py",         ["--force"]),
     ("fr",             CHARTS_ROOT / "fr"             / "daily.py",         ["--force"]),
     ("worldwide",      CHARTS_ROOT / "worldwide"      / "daily.py",         ["--force"]),
 ]
 
 CHART_AVAILABILITY: dict[str, str] = {
+    "artists_global": "artist-global-daily",
     "global": "regional-global-daily",
     "fr": "regional-fr-daily",
 }
 
-# Lock paths mirror each daily.py: {region}/history/YYYY/MM/date/*.lock
 def _region_lock(name: str, target: date, lock_name: str) -> Path:
-    return CHARTS_ROOT / name / "history" / str(target.year) / f"{target.month:02d}" / str(target) / lock_name
+    return spotify_chart_dir(name, target) / lock_name
+
+
+def _legacy_region_lock(name: str, target: date, lock_name: str) -> Path:
+    return legacy_spotify_chart_dir(name, target) / lock_name
+
+
+def _region_lock_exists(name: str, target: date, lock_name: str) -> bool:
+    return _region_lock(name, target, lock_name).exists() or _legacy_region_lock(name, target, lock_name).exists()
 
 
 def _region_data_exists(name: str, target: date) -> bool:
-    day_dir = CHARTS_ROOT / name / "history" / str(target.year) / f"{target.month:02d}" / str(target)
-    if name == "worldwide":
-        return (day_dir / f"ts_worldwide_{target}.json").exists()
-    return (day_dir / "ts_all_songs.csv").exists() or (day_dir / f"ts_chart_{target}.json").exists()
+    day_dirs = [spotify_chart_dir(name, target), legacy_spotify_chart_dir(name, target)]
+    for day_dir in day_dirs:
+        if name == "artists_global":
+            if (day_dir / "artist_global_daily.json").exists() or (day_dir / "artist_global_daily.csv").exists():
+                return True
+        elif name == "worldwide":
+            if (day_dir / f"ts_worldwide_{target}.json").exists():
+                return True
+        elif (day_dir / "ts_all_songs.csv").exists() or (day_dir / f"ts_chart_{target}.json").exists():
+            return True
+    return False
 
 
 def _worldwide_json_path() -> Path:
@@ -120,10 +143,12 @@ def _already_done(
 
 
 def _runner_done(name: str, target: date, post_parts: set[str]) -> bool:
-    updated = _region_lock(name, target, "updated.lock").exists()
+    updated = _region_lock_exists(name, target, "updated.lock")
     data_exists = _region_data_exists(name, target)
+    if name == "artists_global":
+        return data_exists
     if name in {"global", "fr"} and name in post_parts:
-        posted = _region_lock(name, target, "posted.lock").exists()
+        posted = _region_lock_exists(name, target, "posted.lock")
         return posted and (updated or data_exists)
     return updated or data_exists
 
@@ -152,9 +177,9 @@ def _print_already_done(
     post_parts: set[str],
 ) -> None:
     names = [n for n, _, _ in runners]
-    updated = [n for n in names if _region_lock(n, target, "updated.lock").exists()]
+    updated = [n for n in names if _region_lock_exists(n, target, "updated.lock")]
     posted_names = sorted(post_parts & {"global", "fr"})
-    posted = [n for n in posted_names if _region_lock(n, target, "posted.lock").exists()]
+    posted = [n for n in posted_names if _region_lock_exists(n, target, "posted.lock")]
     message = f"[SKIP] donnees deja a jour ({', '.join(updated)})"
     if posted:
         message += f", posts deja faits ({', '.join(posted)})"
@@ -737,18 +762,29 @@ def _run_parallel(
     runners: list[tuple[str, Path, list[str]]],
     *,
     forwarded: list[str],
+    target_date: date,
+    explicit_target_date: bool,
     dry_run: bool,
     env: dict[str, str],
     verbose: bool = False,
 ) -> list[tuple[str, int]]:
     failures: list[tuple[str, int]] = []
+
+    def _runner_args(name: str, fixed: list[str]) -> list[str]:
+        if name != "artists_global":
+            return list(dict.fromkeys([*fixed, *forwarded]))
+        artist_args = list(fixed)
+        if explicit_target_date:
+            artist_args.extend(["--date", str(target_date)])
+        return list(dict.fromkeys(artist_args))
+
     with concurrent.futures.ThreadPoolExecutor(max_workers=len(runners)) as ex:
         futures = {
             ex.submit(
                 _run,
                 name,
                 script,
-                list(dict.fromkeys([*fixed, *forwarded])),
+                _runner_args(name, fixed),
                 dry_run=dry_run,
                 env=env,
                 verbose=verbose,
@@ -772,7 +808,7 @@ def _run_parallel(
     return failures
 
 
-_ALL_POST_PARTS = {"global", "fr", "cards"}
+_ALL_POST_PARTS = {"artists", "global", "fr", "cards"}
 
 
 def main() -> int:
@@ -786,7 +822,7 @@ def main() -> int:
         metavar="PART",
         default=None,
         help=(
-            "Parties à poster sur Twitter: cards, fr, global. "
+            "Parties à poster sur Twitter: artists, cards, fr, global. "
             "Défaut: toutes. Exemple: --post global fr"
         ),
     )
@@ -819,7 +855,7 @@ def main() -> int:
     elif args.post is not None:
         post_parts = set(args.post)
     else:
-        post_parts = {"global", "fr", "cards"}  # défaut: tout poster
+        post_parts = {"artists", "global", "fr", "cards"}  # défaut: tout poster
 
     started = time.perf_counter()
     env = _build_env()
@@ -829,6 +865,8 @@ def main() -> int:
         # worldwide/daily.py ne poste jamais : generate_card_images.py (PHASE3) gère ça avec images
         if name == "worldwide":
             extra = ["--no-post"] if "--no-post" not in fixed else []
+        elif name == "artists_global":
+            extra = ["--no-post"] if "artists" not in post_parts else []
         else:
             extra = ["--no-post"] if name in {"global", "fr"} and name not in post_parts else []
         collect_runners.append((name, script, fixed + extra))
@@ -881,7 +919,15 @@ def main() -> int:
             names_str = ", ".join(n for n, _, _ in collect_runners)
             print(f"\n[PHASE1] collecte en parallèle: {names_str}")
             t_phase1 = time.perf_counter()
-            failures = _run_parallel(collect_runners, forwarded=forwarded, dry_run=args.dry_run, env=env, verbose=args.verbose)
+            failures = _run_parallel(
+                collect_runners,
+                forwarded=forwarded,
+                target_date=target_date,
+                explicit_target_date=_explicit_target_date,
+                dry_run=args.dry_run,
+                env=env,
+                verbose=args.verbose,
+            )
             ran_collect = True
             print(f"[PHASE1] collecte terminée ({_fmt(time.perf_counter() - t_phase1)})")
 
