@@ -32,15 +32,24 @@ sys.path.insert(0, str(_SCRIPT_DIR.parents[0]))  # collectors/spotify/ for core.
 import export_for_web
 from git_ops import git_commit_and_push
 from config import NTFY_TOPIC
-from core.data_paths import update_streams_dir
+from core.data_paths import archived_db_file, update_streams_dir
 from core.notify import send as notify
 
 ROOT = _REPO_ROOT / "website"
 DATA_DIR = ROOT / "data"
 _DB_ROOT = _REPO_ROOT / "db"
+_ARCHIVE_DB_ROOT = _REPO_ROOT / "data" / "_archive" / "original" / "db"
 
-HISTORY_PATH = _DB_ROOT / "streams_history.csv"
-ARTIST_MONTHLY_HISTORY_PATH = _DB_ROOT / "artist_monthly_listeners_history.csv"
+HISTORY_PATH = (
+    _DB_ROOT / "streams_history.csv"
+    if (_DB_ROOT / "streams_history.csv").exists()
+    else archived_db_file("streams_history.csv")
+)
+ARTIST_MONTHLY_HISTORY_PATH = (
+    _DB_ROOT / "artist_monthly_listeners_history.csv"
+    if (_DB_ROOT / "artist_monthly_listeners_history.csv").exists()
+    else archived_db_file("artist_monthly_listeners_history.csv")
+)
 FAILED_PATH = DATA_DIR / "not_found_today.csv"
 PENDING_LOG_PATH = DATA_DIR / "pending_debug_today.csv"
 LAST_SUCCESSFUL_UPDATE_JSON = DATA_DIR / "last_successful_updates.json"
@@ -1391,9 +1400,20 @@ def dedupe_history_rows_by_date_track() -> int:
 
 
 def append_history_row(row: list) -> None:
+    HISTORY_PATH.parent.mkdir(parents=True, exist_ok=True)
     with HISTORY_PATH.open("a", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow(row)
+    if row:
+        day = str(row[0])
+        daily_path = update_streams_dir(day) / "streams_history.csv"
+        daily_path.parent.mkdir(parents=True, exist_ok=True)
+        is_new = not daily_path.exists() or daily_path.stat().st_size == 0
+        with daily_path.open("a", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            if is_new:
+                writer.writerow(["date", "track_id", "streams", "daily_streams"])
+            writer.writerow(row)
 
 
 def load_history_rows() -> list[dict]:

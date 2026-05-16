@@ -5,14 +5,22 @@ from pathlib import Path
 from typing import Iterable
 
 from .filters import rank_key
+from .config import ARCHIVE_DB_DIR, DATA_ROOT
 
 
 
 def read_csv_rows(csv_path: Path) -> list[dict[str, str]]:
-    if not csv_path.exists() or csv_path.stat().st_size == 0:
-        return []
-    with csv_path.open(newline="", encoding="utf-8-sig") as handle:
-        return list(csv.DictReader(handle))
+    paths = [csv_path]
+    archive_path = ARCHIVE_DB_DIR / csv_path.name
+    if archive_path != csv_path:
+        paths.append(archive_path)
+    rows: list[dict[str, str]] = []
+    for path in paths:
+        if not path.exists() or path.stat().st_size == 0:
+            continue
+        with path.open(newline="", encoding="utf-8-sig") as handle:
+            rows.extend(csv.DictReader(handle))
+    return rows
 
 
 
@@ -31,7 +39,11 @@ def rewrite_for_date(
     today: str,
     new_rows: list[dict],
 ) -> None:
-    existing = [row for row in read_csv_rows(csv_path) if row.get("date") != today]
+    csv_path = DATA_ROOT / today[:4] / today[5:7] / today / "apple_music" / csv_path.name
+    existing = []
+    if csv_path.exists() and csv_path.stat().st_size > 0:
+        with csv_path.open(newline="", encoding="utf-8-sig") as handle:
+            existing = [row for row in csv.DictReader(handle) if row.get("date") != today]
     write_csv_rows(csv_path, fieldnames, [*existing, *new_rows])
 
 
@@ -67,7 +79,12 @@ def rewrite_for_snapshot(
                 print(f"[skip] snapshot identical to previous ({prev_keys[0]}), not writing")
                 return
 
-    filtered = [r for r in existing if r.get("scraped_at") != scraped_at]
+    current_day = scraped_at[:10]
+    csv_path = DATA_ROOT / current_day[:4] / current_day[5:7] / current_day / "apple_music" / csv_path.name
+    filtered = [
+        r for r in existing
+        if (r.get("scraped_at") != scraped_at and (r.get("date") or r.get("scraped_at", "")[:10]) == current_day)
+    ]
     write_csv_rows(csv_path, fieldnames, [*filtered, *new_rows])
 
 

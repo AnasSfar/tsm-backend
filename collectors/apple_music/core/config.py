@@ -1,11 +1,15 @@
 from __future__ import annotations
 
 import os
+from datetime import date
 from pathlib import Path
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[1]
 REPO_ROOT = PACKAGE_ROOT.parents[1]
-DB_DIR = REPO_ROOT / "db"
+DATA_ROOT = REPO_ROOT / "data"
+ARCHIVE_DB_DIR = DATA_ROOT / "_archive" / "original" / "db"
+RUN_DATE = os.getenv("TSM_DATA_DATE", date.today().isoformat())
+DB_DIR = DATA_ROOT / RUN_DATE[:4] / RUN_DATE[5:7] / RUN_DATE / "apple_music"
 SCRIPTS_DIR = REPO_ROOT / "scripts"
 TOOLS_JSON_DIR = PACKAGE_ROOT / "tools" / "json"
 TOOLS_JSON_DIR.mkdir(parents=True, exist_ok=True)

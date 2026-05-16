@@ -31,12 +31,22 @@ except ImportError:
 
 ROOT             = Path(__file__).parent
 _TOOLS           = Path(__file__).parent.parent          # = global/tools/
-_DATA            = _TOOLS.parent / "history"             # = global/history/
+sys.path.insert(0, str(Path(__file__).parents[4]))
+from core.data_paths import first_existing, legacy_spotify_chart_dir, spotify_chart_dir
+
+_DATA            = _TOOLS.parent / "history"             # legacy global/history
 TS_HISTORY_PATH  = _TOOLS / "json" / "ts_history.json"
 DISCOGRAPHY_ROOT = Path(__file__).parents[6] / "db" / "discography"
 COVERS_PATH      = DISCOGRAPHY_ROOT / "covers.json"
 HEADERS_DIR      = _TOOLS / "headers"
 HANDLE           = "@swiftiescharts"
+
+
+def date_dir_for(chart_date: str) -> Path:
+    return first_existing(
+        spotify_chart_dir("global", chart_date),
+        legacy_spotify_chart_dir("global", chart_date),
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -442,7 +452,7 @@ def get_out_songs(chart_date: str, current_rows: list[dict]) -> list[dict]:
     """Returns TS songs from yesterday's CSV that are not in today's chart."""
     date_obj  = datetime.strptime(chart_date, "%Y-%m-%d").date()
     yesterday = str(date_obj - timedelta(days=1))
-    csv_path  = _DATA / yesterday[:4] / yesterday[5:7] / yesterday / "ts_all_songs.csv"
+    csv_path  = date_dir_for(yesterday) / "ts_all_songs.csv"
     if not csv_path.exists():
         return []
     try:
@@ -647,7 +657,7 @@ def build_html(
 # ---------------------------------------------------------------------------
 
 def generate(chart_date: str, header_img: Path | None = None) -> Path:
-    date_dir  = _DATA / chart_date[:4] / chart_date[5:7] / chart_date
+    date_dir  = date_dir_for(chart_date)
     json_path = date_dir / f"ts_chart_{chart_date}.json"
     out_path  = date_dir / "chart_image.png"
 
@@ -704,7 +714,7 @@ def generate_all_headers(chart_date: str) -> list[Path]:
         print("Aucune photo dans headers/")
         return []
 
-    date_dir  = _DATA / chart_date[:4] / chart_date[5:7] / chart_date
+    date_dir  = date_dir_for(chart_date)
     json_path = date_dir / f"ts_chart_{chart_date}.json"
     if not json_path.exists():
         raise FileNotFoundError(f"ts_chart_{chart_date}.json introuvable: {json_path}")
@@ -758,7 +768,7 @@ def generate_multi(chart_dates: list[str], header_img: Path | None = None) -> Pa
     combined_rows_html = ""
     valid_dates = []
     for chart_date in chart_dates:
-        date_dir  = _DATA / chart_date[:4] / chart_date[5:7] / chart_date
+        date_dir  = date_dir_for(chart_date)
         json_path = date_dir / f"ts_chart_{chart_date}.json"
         if not json_path.exists():
             print(f"  JSON introuvable pour {chart_date}, ignoré")

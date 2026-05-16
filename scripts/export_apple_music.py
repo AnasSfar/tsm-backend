@@ -10,6 +10,8 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 
 DB_DIR = ROOT / "db"
+DATA_ROOT = ROOT / "data"
+ARCHIVE_DB_DIR = DATA_ROOT / "_archive" / "original" / "db"
 OUT_DIR = ROOT / "website" / "site" / "data"
 
 GLOBAL_CSV = DB_DIR / "apple_music_global.csv"
@@ -97,15 +99,28 @@ def normalize_album_entry(row: dict[str, Any]) -> dict[str, Any]:
 
 
 def read_csv_rows(path: Path) -> list[dict[str, Any]]:
-    if not path.exists():
-        log(f"absent: {path}")
+    candidates = []
+    if path.exists():
+        candidates.append(path)
+    archived = ARCHIVE_DB_DIR / path.name
+    if archived.exists() and archived not in candidates:
+        candidates.append(archived)
+    candidates.extend(sorted(DATA_ROOT.glob(f"????/??/????-??-??/apple_music/{path.name}")))
+    if not candidates:
+        log(f"absent: {path.name}")
         return []
 
-    with path.open("r", encoding="utf-8-sig", newline="") as f:
-        reader = csv.DictReader(f)
-        rows = [dict(row) for row in reader]
+    rows: list[dict[str, Any]] = []
+    seen_paths: set[Path] = set()
+    for candidate in candidates:
+        if candidate in seen_paths:
+            continue
+        seen_paths.add(candidate)
+        with candidate.open("r", encoding="utf-8-sig", newline="") as f:
+            reader = csv.DictReader(f)
+            rows.extend(dict(row) for row in reader)
 
-    log(f"lu {len(rows)} lignes depuis {path.name}")
+    log(f"lu {len(rows)} lignes depuis {path.name} ({len(seen_paths)} fichier(s))")
     return rows
 
 

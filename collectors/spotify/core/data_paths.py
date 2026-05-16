@@ -5,6 +5,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 DATA_ROOT = REPO_ROOT / "data"
+ARCHIVE_ROOT = DATA_ROOT / "_archive" / "original"
 
 
 def date_key(value: date | datetime | str) -> str:
@@ -30,6 +31,14 @@ def spotify_chart_dir(chart_name: str, value: date | datetime | str) -> Path:
 
 def update_streams_dir(value: date | datetime | str) -> Path:
     return day_root(value) / "update_streams"
+
+
+def collector_data_dir(collector: str, value: date | datetime | str) -> Path:
+    return day_root(value) / collector
+
+
+def archived_db_file(filename: str) -> Path:
+    return ARCHIVE_ROOT / "db" / filename
 
 
 def legacy_spotify_chart_dir(chart_name: str, value: date | datetime | str) -> Path:

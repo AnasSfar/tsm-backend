@@ -12,8 +12,14 @@ _SCRIPT_DIR = Path(__file__).resolve().parent
 _REPO_ROOT  = _SCRIPT_DIR.parents[3]
 ROOT        = _REPO_ROOT / "website"
 _DB_ROOT    = _REPO_ROOT / "db"
+_DATA_ROOT  = _REPO_ROOT / "data"
+_ARCHIVE_DB_ROOT = _DATA_ROOT / "_archive" / "original" / "db"
 
-HISTORY_CSV_PATH = _DB_ROOT / "streams_history.csv"
+HISTORY_CSV_PATH = (
+    _DB_ROOT / "streams_history.csv"
+    if (_DB_ROOT / "streams_history.csv").exists()
+    else _ARCHIVE_DB_ROOT / "streams_history.csv"
+)
 
 DISCOGRAPHY_DIR  = _DB_ROOT / "discography"
 ALBUMS_DIR_SRC   = DISCOGRAPHY_DIR / "albums"
@@ -28,10 +34,18 @@ ALBUMS_JSON_PATH = SITE_DATA_DIR / "albums.json"
 
 LAST_RUN_STATE_SRC   = ROOT / "data" / "last_run_state.json"
 NOT_FOUND_STREAK_SRC = ROOT / "data" / "not_found_streak.json"
-BILLBOARD_CSV_PATH   = _DB_ROOT / "billboard_history.csv"
+BILLBOARD_CSV_PATH   = (
+    _DB_ROOT / "billboard_history.csv"
+    if (_DB_ROOT / "billboard_history.csv").exists()
+    else _ARCHIVE_DB_ROOT / "billboard_history.csv"
+)
 BILLBOARD_JSON_PATH  = SITE_DATA_DIR / "billboard.json"
 
-SWIFT_TOP_100_CSV_PATH  = _DB_ROOT / "swift_top_100_history.csv"
+SWIFT_TOP_100_CSV_PATH  = (
+    _DB_ROOT / "swift_top_100_history.csv"
+    if (_DB_ROOT / "swift_top_100_history.csv").exists()
+    else _ARCHIVE_DB_ROOT / "swift_top_100_history.csv"
+)
 SWIFT_TOP_100_JSON_PATH = SITE_DATA_DIR / "swift_top_100.json"
 
 TRACK_ID_RE = re.compile(r"track/([A-Za-z0-9]+)")
@@ -851,11 +865,13 @@ def build_summary(
 
 def _load_billboard_from_csv() -> dict | None:
     """Read the latest date from billboard_history.csv and return a billboard.json structure."""
-    if not BILLBOARD_CSV_PATH.exists():
-        return None
-
-    with open(BILLBOARD_CSV_PATH, newline="", encoding="utf-8-sig") as f:
-        rows = list(csv.DictReader(f))
+    rows: list[dict] = []
+    if BILLBOARD_CSV_PATH.exists():
+        with open(BILLBOARD_CSV_PATH, newline="", encoding="utf-8-sig") as f:
+            rows.extend(csv.DictReader(f))
+    for daily_csv in sorted(_DATA_ROOT.glob("20??/??/????-??-??/billboard/billboard_history.csv")):
+        with open(daily_csv, newline="", encoding="utf-8-sig") as f:
+            rows.extend(csv.DictReader(f))
 
     if not rows:
         return None
@@ -1164,18 +1180,17 @@ def export_swift_top_100_from_csv(*, songs_by_id: dict[str, dict] | None = None)
 
 def export_for_web() -> None:
     # ── Export charts France corrigés ─────────────────────────────
-    fr_charts_src = _REPO_ROOT / "collectors" / "spotify" / "charts" / "fr" / "history"
     fr_charts_dst = ROOT / "site" / "data" / "charts_fr"
     fr_charts_dst.mkdir(parents=True, exist_ok=True)
     count = 0
-    for year_dir in sorted(fr_charts_src.glob("20*")):
-        for month_dir in sorted(year_dir.glob("*")):
-            for day_dir in sorted(month_dir.glob("*")):
-                src_file = day_dir / f"ts_chart_{day_dir.name}.json"
-                if src_file.exists():
-                    dst_file = fr_charts_dst / f"{day_dir.name}.json"
-                    shutil.copy2(src_file, dst_file)
-                    count += 1
+    fr_chart_files = sorted(_DATA_ROOT.glob("20??/??/????-??-??/run_all_charts/spotify/fr/ts_chart_*.json"))
+    legacy_fr_charts_src = _REPO_ROOT / "collectors" / "spotify" / "charts" / "fr" / "history"
+    fr_chart_files.extend(sorted(legacy_fr_charts_src.glob("20*/*/*/ts_chart_*.json")))
+    for src_file in fr_chart_files:
+        day = src_file.parents[3].name if src_file.parents[3].name.startswith("20") else src_file.parent.name
+        dst_file = fr_charts_dst / f"{day}.json"
+        shutil.copy2(src_file, dst_file)
+        count += 1
     print(f"[EXPORT] {count} charts France exportés vers {fr_charts_dst}")
     SITE_DATA_DIR.mkdir(parents=True, exist_ok=True)
     print(f"ROOT     = {ROOT}")
@@ -1350,6 +1365,9 @@ def export_for_web() -> None:
         (SITE_HISTORY_DIR / f"{date_str}.json").write_text(
             json.dumps(compact, ensure_ascii=False), encoding="utf-8"
         )
+        daily_history = _DATA_ROOT / date_str[:4] / date_str[5:7] / date_str / "update_streams" / "site_history.json"
+        daily_history.parent.mkdir(parents=True, exist_ok=True)
+        daily_history.write_text(json.dumps(compact, ensure_ascii=False), encoding="utf-8")
     existing_dates = sorted(p.stem for p in SITE_HISTORY_DIR.glob("*.json") if p.stem != "index")
     (SITE_HISTORY_DIR / "index.json").write_text(
         json.dumps({"dates": existing_dates}, ensure_ascii=False), encoding="utf-8"

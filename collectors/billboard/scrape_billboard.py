@@ -20,7 +20,9 @@ from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeo
 _SCRIPT_DIR = Path(__file__).resolve().parent
 _REPO_ROOT   = _SCRIPT_DIR.parents[1]
 
-BILLBOARD_CSV_PATH = _REPO_ROOT / "db" / "billboard_history.csv"
+DATA_ROOT = _REPO_ROOT / "data"
+ARCHIVE_BILLBOARD_CSV_PATH = DATA_ROOT / "_archive" / "original" / "db" / "billboard_history.csv"
+BILLBOARD_CSV_PATH = ARCHIVE_BILLBOARD_CSV_PATH
 LIENS_PATH = _REPO_ROOT / "config" / "links" / "billboard.json"
 liens = json.loads(LIENS_PATH.read_text(encoding="utf-8-sig"))
 
@@ -212,13 +214,14 @@ def _save_to_csv(result: dict) -> None:
     """Append today's scrape to billboard_history.csv, replacing any existing rows for today."""
     date = result["scraped_at"][:10]
     scraped_at = result["scraped_at"]
+    daily_csv_path = DATA_ROOT / date[:4] / date[5:7] / date / "billboard" / "billboard_history.csv"
 
     fieldnames = ["date", "scraped_at", "chart_type", "rank", "title",
                   "artist", "weeks_on_chart", "peak_rank", "chart_label"]
 
     existing_rows: list[dict] = []
-    if BILLBOARD_CSV_PATH.exists():
-        with open(BILLBOARD_CSV_PATH, newline="", encoding="utf-8-sig") as f:
+    if daily_csv_path.exists():
+        with open(daily_csv_path, newline="", encoding="utf-8-sig") as f:
             existing_rows = [r for r in csv.DictReader(f) if r.get("date") != date]
 
     new_rows: list[dict] = []
@@ -247,13 +250,13 @@ def _save_to_csv(result: dict) -> None:
             "artist": "Taylor Swift", "weeks_on_chart": "", "peak_rank": "", "chart_label": "",
         })
 
-    BILLBOARD_CSV_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with open(BILLBOARD_CSV_PATH, "w", newline="", encoding="utf-8") as f:
+    daily_csv_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(daily_csv_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(existing_rows + new_rows)
 
-    print(f"\nSaved {len(new_rows)} rows to {BILLBOARD_CSV_PATH}", flush=True)
+    print(f"\nSaved {len(new_rows)} rows to {daily_csv_path}", flush=True)
 
 
 def _maybe_upload_to_r2() -> None:

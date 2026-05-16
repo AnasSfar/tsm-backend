@@ -208,7 +208,6 @@ def main() -> int:
     for apple_csv in sorted((REPO_ROOT / "db").glob("apple_music*.csv")):
         total += split_csv_by_date(apple_csv, "apple_music", apply=args.apply, move=args.move)
 
-    total += split_csv_by_date(REPO_ROOT / "db" / "youtube_views_history.csv", "youtube", apply=args.apply, move=args.move)
     total += split_csv_by_date(REPO_ROOT / "db" / "billboard_history.csv", "billboard", apply=args.apply, move=args.move)
 
     mode = "moved" if args.apply and args.move else "applied" if args.apply else "dry-run"
