@@ -26,6 +26,23 @@ env/
 *.txt
 *.html
 *.json
+!db/
+!db/**/*.json
+!/package.json
+!/package-lock.json
+!/tsconfig.json
+!/.claude/
+!/.claude/*.json
+
+# JSON state files required by GitHub Actions
+!collectors/spotify/charts/global/tools/json/spotify_session.json
+!collectors/spotify/charts/global/tools/json/ts_history.json
+!collectors/spotify/charts/global/tools/json/total_days.json
+!collectors/spotify/charts/fr/tools/json/spotify_session.json
+!collectors/spotify/charts/fr/tools/json/songs_db.json
+!collectors/spotify/charts/fr/tools/json/ts_history.json
+!collectors/spotify/charts/fr/tools/json/total_days.json
+!collectors/spotify/charts/worldwide/tools/json/total_days.json
 
 # Common runtime artifacts
 *.lock
@@ -37,6 +54,23 @@ twitter_post.txt
 # CSV data files
 *.csv
 *.json
+!db/
+!db/**/*.json
+!/package.json
+!/package-lock.json
+!/tsconfig.json
+!/.claude/
+!/.claude/*.json
+
+# JSON state files required by GitHub Actions
+!collectors/spotify/charts/global/tools/json/spotify_session.json
+!collectors/spotify/charts/global/tools/json/ts_history.json
+!collectors/spotify/charts/global/tools/json/total_days.json
+!collectors/spotify/charts/fr/tools/json/spotify_session.json
+!collectors/spotify/charts/fr/tools/json/songs_db.json
+!collectors/spotify/charts/fr/tools/json/ts_history.json
+!collectors/spotify/charts/fr/tools/json/total_days.json
+!collectors/spotify/charts/worldwide/tools/json/total_days.json
 # Chart history data (generated)
 collectors/spotify/charts/*/history/
 collectors/spotify/charts/worldwide/history/
