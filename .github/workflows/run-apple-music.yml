@@ -3,7 +3,11 @@ name: Run Apple Music
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 17 * * *"  # 17h UTC = 19h Paris (CEST, UTC+2)
+    - cron: "0 */2 * * *"  # Every 2 hours, UTC
+
+concurrency:
+  group: run-apple-music
+  cancel-in-progress: false
 
 jobs:
   run-apple-music:

@@ -51,6 +51,7 @@ def _warp_disconnect() -> None:
 
 
 REPO_ENV_FILE = REPO_ROOT / ".env"
+load_dotenv(REPO_ENV_FILE, override=False)
 R2_ENV_VARS = ("R2_ACCOUNT_ID", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY")
 SPOTIFY_API_BASE = "https://charts-spotify-com-service.spotify.com/auth/v0/charts"
 SPOTIFY_CHARTS_URL = "https://charts.spotify.com/charts/view/regional-global-daily/latest"
@@ -77,7 +78,6 @@ SPOTIFY_UA = (
 # artists_global, global et fr postent dès leur collecte terminée (pas d'attente de worldwide)
 # us/uk sont geres par worldwide.
 COLLECT_RUNNERS: list[tuple[str, Path, list[str]]] = [
-    ("artists_global", CHARTS_ROOT / "artists_global" / "artist_global_daily.py", ["--no-upload"]),
     ("global",         CHARTS_ROOT / "global"         / "daily.py",         ["--force"]),
     ("fr",             CHARTS_ROOT / "fr"             / "daily.py",         ["--force"]),
     ("worldwide",      CHARTS_ROOT / "worldwide"      / "daily.py",         ["--force"]),

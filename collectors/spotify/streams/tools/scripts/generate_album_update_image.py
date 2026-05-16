@@ -42,20 +42,27 @@ _TOOLS          = SCRIPT_DIR.parent                        # streams/tools/
 ROOT            = SCRIPT_DIR.parents[1]                    # streams/
 REPO_ROOT       = SCRIPT_DIR.parents[4]                    # repo root
 DB_DIR          = REPO_ROOT / "db"
-HISTORY_PATH    = DB_DIR / "streams_history.csv"
+
+sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT.parent))   # collectors/spotify/ for core.*
+
+from core.data_paths import archived_db_file
+
+HISTORY_PATH    = (
+    DB_DIR / "streams_history.csv"
+    if (DB_DIR / "streams_history.csv").exists()
+    else archived_db_file("streams_history.csv")
+)
 ALBUMS_DIR      = DB_DIR / "discography" / "albums"
 COVERS_PATH     = DB_DIR / "discography" / "covers.json"
 HEADERS_DIR     = DB_DIR / "discography" / "headers"
 CHARTS_GLOBAL_HISTORY_DIR = ROOT.parent / "charts" / "global" / "history"
 TWITTER_SESSION = ROOT.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json"
 
-sys.path.insert(0, str(ROOT))
 HANDLE          = "@swiftiescharts"
 
 # Nouveau : logo à gauche du handle
 HANDLE_ICON_PATH = Path(r"C:\Users\sfara\Documents\GitHub\tsm-frontend\icons\logo.gif")
-
-sys.path.insert(0, str(ROOT.parent))   # collectors/spotify/ for core.*
 
 INCLUDED_EDITIONS = {"standard", "deluxe", "acoustic", "anthology", "original"}
 ENABLE_FILTERED_CHARTS = False

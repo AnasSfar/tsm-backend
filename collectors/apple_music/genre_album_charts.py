@@ -12,6 +12,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, datetime
 from threading import local
 
+from requests import RequestException
+
 from core.config import CHART_LIMIT, DB_DIR, GENRES, SCRIPTS_DIR, WORKERS
 from core.csv_utils import load_previous_ranks, rewrite_for_snapshot
 from core.export import maybe_run_export
@@ -53,7 +55,7 @@ def parse_args() -> argparse.Namespace:
 def fetch_genre_album_chart(session, country: str, genre_id: str) -> list[dict] | None:
     url = f"https://amp-api-edge.music.apple.com/v1/catalog/{country}/charts?types=albums&genre={genre_id}&limit={CHART_LIMIT}"
     resp = session.get(url)
-    if resp.status_code == 400:
+    if resp.status_code in (400, 404):
         return None
     if resp.status_code == 401:
         raise RuntimeError("Unauthorized while calling Apple Music charts API")
@@ -97,6 +99,13 @@ def fetch_task(token: str, country: str, genre_id: str, genre_name: str) -> tupl
     session = worker_session(token)
     albums = fetch_genre_album_chart(session, country, genre_id)
     return country, genre_id, genre_name, albums
+
+
+def log_fetch_warning(country: str, genre_id: str, genre_name: str, exc: BaseException) -> None:
+    print(
+        "[Apple Music] Warning: skipping genre album chart "
+        f"{country}/{genre_id} ({genre_name}): {exc}"
+    )
 
 
 def build_row(
@@ -186,20 +195,29 @@ def main() -> None:
     if WORKERS == 1:
         for genre_id, genre_name in GENRES:
             for country in countries:
-                albums = fetch_genre_album_chart(base_session, country, genre_id)
+                try:
+                    albums = fetch_genre_album_chart(base_session, country, genre_id)
+                except RequestException as exc:
+                    log_fetch_warning(country, genre_id, genre_name, exc)
+                    albums = None
                 results_by_country[country][genre_id] = (genre_name, albums)
                 if len(results_by_country[country]) == len(GENRES):
                     log_country_summary(country, results_by_country[country])
     else:
         remaining_by_country = {country: len(GENRES) for country in countries}
         with ThreadPoolExecutor(max_workers=WORKERS) as executor:
-            futures = [
-                executor.submit(fetch_task, token, country, genre_id, genre_name)
+            futures = {
+                executor.submit(fetch_task, token, country, genre_id, genre_name): (country, genre_id, genre_name)
                 for country in countries
                 for genre_id, genre_name in GENRES
-            ]
+            }
             for future in as_completed(futures):
-                country, genre_id, genre_name, albums = future.result()
+                country, genre_id, genre_name = futures[future]
+                try:
+                    _country, _genre_id, _genre_name, albums = future.result()
+                except RequestException as exc:
+                    log_fetch_warning(country, genre_id, genre_name, exc)
+                    albums = None
                 results_by_country[country][genre_id] = (genre_name, albums)
                 remaining_by_country[country] -= 1
                 if remaining_by_country[country] == 0:

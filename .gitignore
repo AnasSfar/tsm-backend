@@ -36,7 +36,7 @@ twitter_post.txt
 
 # CSV data files
 *.csv
-
+*.json
 # Chart history data (generated)
 collectors/spotify/charts/*/history/
 collectors/spotify/charts/worldwide/history/
@@ -51,12 +51,15 @@ collectors/spotify/charts/worldwide/tools/json/chrome_profile/
 **/bearer_cache.json
 collectors/apple_music/tools/json/apple_music_token.json
 collectors/spotify/streams/tools/.token_cache.json
+debug*
 
 # Website generated data
 website/site/data/charts_*/
 website/site/data/charts_*.json
 website/site/data/applemusic*.json
 website/site/data/billboard.json
+website/site/data/spotify*.json
+website/site/data/*_history.json
 
 # mystreamcount backfill state
 collectors/spotify/streams/mystreamcount/state.json

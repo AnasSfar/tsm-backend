@@ -52,13 +52,20 @@ except ImportError:
 SCRIPT_DIR      = Path(__file__).resolve().parent          # streams/
 REPO_ROOT       = SCRIPT_DIR.parents[2]                    # repo root
 DB_DIR          = REPO_ROOT / "db"
-HISTORY_PATH    = DB_DIR / "streams_history.csv"
 SONGS_JSON      = DB_DIR / "discography" / "songs.json"
 ALBUMS_DIR      = DB_DIR / "discography" / "albums"
 COVERS_PATH     = DB_DIR / "discography" / "covers.json"
 OUT_DIR         = SCRIPT_DIR / "history" / "spotlight"
 
 sys.path.insert(0, str(SCRIPT_DIR.parent))  # collectors/spotify/ for core.*
+
+from core.data_paths import archived_db_file  # noqa: E402
+
+HISTORY_PATH    = (
+    DB_DIR / "streams_history.csv"
+    if (DB_DIR / "streams_history.csv").exists()
+    else archived_db_file("streams_history.csv")
+)
 
 DEFAULT_ACCOUNT = "tsm"
 ACCOUNT_CONFIG = {

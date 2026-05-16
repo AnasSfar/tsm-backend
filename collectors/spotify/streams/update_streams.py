@@ -3682,9 +3682,16 @@ def main():
         )
         print("Streams history CSV done.")
 
-    print("Re-exporting web data...")
-    export_web_data(allow_r2=not local_test_mode)
-    print("Web export done.")
+    _export_lock = update_streams_dir(stats_date) / "exported.lock"
+    if _export_lock.exists():
+        print(f"Web export already done for {stats_date} (exported.lock exists), skipping.")
+    else:
+        print("Re-exporting web data...")
+        export_web_data(allow_r2=not local_test_mode)
+        if not local_test_mode:
+            _export_lock.parent.mkdir(parents=True, exist_ok=True)
+            _export_lock.touch()
+        print("Web export done.")
 
     def _run_streams_post(cmd: list[str], *, label: str, should_post: bool, state: dict[str, float]) -> None:
         if should_post and state["posted_count"] > 0:

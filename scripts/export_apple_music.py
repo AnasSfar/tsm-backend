@@ -398,6 +398,7 @@ def main() -> None:
 
     applemusic_data = {
         "scraped_at": latest_any,
+        "dates": all_dates,
         "global_chart": global_current,
         "ts_top_songs": top_current,
         "ts_top_videos": top_video_current,
