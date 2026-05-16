@@ -9,13 +9,31 @@ from .config import ARCHIVE_DB_DIR, DATA_ROOT
 
 
 
-def read_csv_rows(csv_path: Path) -> list[dict[str, str]]:
+def _daily_csv_paths(csv_path: Path) -> list[Path]:
+    name = csv_path.name
+    paths = sorted(DATA_ROOT.glob(f"[0-9][0-9][0-9][0-9]/[0-9][0-9]/*/apple_music/{name}"))
+    return [p for p in paths if p.is_file()]
+
+
+def read_csv_rows(csv_path: Path, *, include_daily_history: bool = False) -> list[dict[str, str]]:
     paths = [csv_path]
     archive_path = ARCHIVE_DB_DIR / csv_path.name
     if archive_path != csv_path:
         paths.append(archive_path)
-    rows: list[dict[str, str]] = []
+    if include_daily_history:
+        paths.extend(_daily_csv_paths(csv_path))
+
+    seen_paths: set[Path] = set()
+    unique_paths: list[Path] = []
     for path in paths:
+        resolved = path.resolve()
+        if resolved in seen_paths:
+            continue
+        seen_paths.add(resolved)
+        unique_paths.append(path)
+
+    rows: list[dict[str, str]] = []
+    for path in unique_paths:
         if not path.exists() or path.stat().st_size == 0:
             continue
         with path.open(newline="", encoding="utf-8-sig") as handle:
@@ -99,12 +117,12 @@ def load_previous_ranks(
     song_field: str = "song_name",
     rank_field: str = "rank",
 ) -> dict[tuple[str, ...], int]:
-    rows = read_csv_rows(csv_path)
+    rows = read_csv_rows(csv_path, include_daily_history=True)
     if not rows:
         return {}
 
     all_keys = sorted(
-        {_snapshot_key(r) for r in rows if _snapshot_key(r) and _snapshot_key(r) != today},
+        {_snapshot_key(r) for r in rows if _snapshot_key(r) and _snapshot_key(r) < today},
         reverse=True,
     )
     if not all_keys:
