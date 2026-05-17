@@ -21,6 +21,8 @@ from dotenv import load_dotenv
 
 ROOT = Path(__file__).resolve().parents[1]
 DB_DIR = ROOT / "db"
+DATA_ROOT = ROOT / "data"
+ARCHIVE_DB_DIR = DATA_ROOT / "_archive" / "original" / "db"
 SITE_DATA_DIR = ROOT / "website" / "site" / "data"
 
 APPLEMUSIC_JSON = SITE_DATA_DIR / "applemusic.json"
@@ -84,11 +86,36 @@ def song_key(song_name: str) -> str:
     return slugify(song_name)
 
 
+def csv_candidates(path: Path) -> list[Path]:
+    candidates = []
+    if path.exists():
+        candidates.append(path)
+
+    archived = ARCHIVE_DB_DIR / path.name
+    if archived.exists():
+        candidates.append(archived)
+
+    candidates.extend(sorted(DATA_ROOT.glob(f"????/??/????-??-??/apple_music/{path.name}")))
+
+    seen: set[Path] = set()
+    unique: list[Path] = []
+    for candidate in candidates:
+        resolved = candidate.resolve()
+        if resolved in seen:
+            continue
+        seen.add(resolved)
+        unique.append(candidate)
+    return unique
+
+
 def read_csv(path: Path) -> list[dict[str, str]]:
-    if not path.exists():
-        return []
-    with path.open("r", newline="", encoding="utf-8-sig") as f:
-        return list(csv.DictReader(f))
+    rows: list[dict[str, str]] = []
+    for candidate in csv_candidates(path):
+        if not candidate.exists() or candidate.stat().st_size == 0:
+            continue
+        with candidate.open("r", newline="", encoding="utf-8-sig") as f:
+            rows.extend(csv.DictReader(f))
+    return rows
 
 
 def head_object_safe(client: BaseClient, bucket: str, key: str) -> dict[str, Any] | None:
