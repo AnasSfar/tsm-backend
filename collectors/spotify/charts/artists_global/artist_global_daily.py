@@ -366,27 +366,39 @@ def main() -> int:
             print(f"[ERROR] Invalid --date value: {route_value!r}")
             return 1
 
+    expected_date = str(date.today() - timedelta(days=1)) if route_value == "latest" else None
+
     token = _get_bearer_token()
     attempt = 1
     while True:
         rows, detected_date, status = _fetch_chart(route_value, token)
-        if rows:
+        if rows and (expected_date is None or detected_date == expected_date):
             break
         if args.no_wait:
-            print(f"[ERROR] Chart {route_value} unavailable ({status}, 0 rows)")
+            if not rows:
+                print(f"[ERROR] Chart {route_value} unavailable ({status}, 0 rows)")
+            else:
+                print(f"[ERROR] Chart date mismatch: got {detected_date}, expected {expected_date}")
             return 1
-        print(
-            f"[WAIT] Chart {route_value} unavailable "
-            f"({status}, attempt #{attempt}) - retry in {args.retry_seconds}s"
-        )
+        if rows:
+            print(
+                f"[WAIT] Chart not yet updated (got {detected_date}, expected {expected_date}, "
+                f"attempt #{attempt}) - retry in {args.retry_seconds}s"
+            )
+        else:
+            print(
+                f"[WAIT] Chart {route_value} unavailable "
+                f"({status}, attempt #{attempt}) - retry in {args.retry_seconds}s"
+            )
         time.sleep(args.retry_seconds)
         attempt += 1
 
-    chart_date = detected_date
-    if not chart_date and route_value != "latest":
+    if detected_date:
+        chart_date = detected_date
+    elif route_value != "latest":
         chart_date = route_value
-    if not chart_date:
-        chart_date = str(date.today() - timedelta(days=1))
+    else:
+        chart_date = expected_date
 
     output = {
         "date": chart_date,

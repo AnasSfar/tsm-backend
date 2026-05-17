@@ -26,6 +26,7 @@ HISTORY_DIR = ROOT / "website" / "site" / "history"
 SITE_DATA_DIR = ROOT / "website" / "site" / "data"
 APPLE_MUSIC_IMAGES_DIR = SITE_DATA_DIR / "apple-music-images"
 DB_DIR = ROOT / "db"
+ARCHIVE_STREAMS_HISTORY = ROOT / "data" / "_archive" / "original" / "db" / "streams_history.csv"
 WORLDWIDE_CHARTS_HISTORY_DIR = (
     ROOT
     / "collectors"
@@ -215,6 +216,22 @@ def upload_db_files(
             else:
                 unchanged += 1
 
+    # Always persist the archive streams_history.csv under a fixed R2 key so
+    # the GitHub Actions runner can download it before each run.
+    if ARCHIVE_STREAMS_HISTORY.exists():
+        key = f"{db_prefix}/streams_history.csv"
+        if upload_raw_if_changed(
+            client=client,
+            bucket=bucket,
+            key=key,
+            data=ARCHIVE_STREAMS_HISTORY.read_bytes(),
+            content_type="text/csv",
+            dry_run=dry_run,
+        ):
+            uploaded += 1
+        else:
+            unchanged += 1
+
     print(f"  db         : {uploaded} uploaded, {unchanged} unchanged")
     return uploaded, unchanged
 
@@ -281,6 +298,7 @@ def upload_static_data(
     data_prefix: str,
     history_prefix: str,
     dry_run: bool,
+    new_date: str | None = None,
 ) -> tuple[int, int]:
     """Upload generated JSON/CSV/static history files used by the frontend."""
     tasks: list[tuple[str, bytes, str]] = []  # (key, data, content_type)
@@ -379,18 +397,26 @@ def upload_static_data(
         data = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
         tasks.append((full_key, data, "application/json; charset=utf-8"))
 
-    daily_files = sorted(
-        p for p in HISTORY_DIR.glob("*.json")
-        if p.name != "index.json"
-    )
-    for path in daily_files:
-        m = DATE_RE.search(path.stem)
-        if not m:
-            continue
-        full_key = f"{history_prefix}/{m.group(1)}.json"
-        obj = load_json(path)
-        data = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
-        tasks.append((full_key, data, "application/json; charset=utf-8"))
+    if new_date:
+        # Only upload the one new date file — skip re-checking all 500+ existing files.
+        single_path = HISTORY_DIR / f"{new_date}.json"
+        if single_path.exists():
+            obj = load_json(single_path)
+            data = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+            tasks.append((f"{history_prefix}/{new_date}.json", data, "application/json; charset=utf-8"))
+    else:
+        daily_files = sorted(
+            p for p in HISTORY_DIR.glob("*.json")
+            if p.name != "index.json"
+        )
+        for path in daily_files:
+            m = DATE_RE.search(path.stem)
+            if not m:
+                continue
+            full_key = f"{history_prefix}/{m.group(1)}.json"
+            obj = load_json(path)
+            data = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+            tasks.append((full_key, data, "application/json; charset=utf-8"))
 
     # Worldwide charts per-date snapshots
     # Produced by collectors/spotify/charts/worldwide/daily.py
@@ -436,6 +462,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--data-prefix", default=os.getenv("R2_STATIC_DATA_PREFIX", "data"))
     parser.add_argument("--history-prefix", default=os.getenv("R2_STATIC_HISTORY_PREFIX", "history"))
     parser.add_argument("--db-prefix", default=os.getenv("R2_DB_PREFIX", "db"))
+    parser.add_argument("--new-date", default=None, help="Only upload this date's history file (YYYY-MM-DD) instead of all history files.")
     parser.add_argument("--skip-history-upload", action="store_true")
     parser.add_argument("--skip-static-upload", action="store_true")
     parser.add_argument("--skip-db-upload", action="store_true")
@@ -546,6 +573,7 @@ def main() -> int:
                 data_prefix=args.data_prefix,
                 history_prefix=args.history_prefix,
                 dry_run=args.dry_run,
+                new_date=args.new_date,
             )
         if not args.skip_db_upload:
             section_futures["db"] = executor.submit(

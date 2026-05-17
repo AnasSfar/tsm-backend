@@ -1178,7 +1178,7 @@ def export_swift_top_100_from_csv(*, songs_by_id: dict[str, dict] | None = None)
     print(f"  Swift Top 100 JSON written ({len(entries)} entries) -> {SWIFT_TOP_100_JSON_PATH}")
 
 
-def export_for_web() -> None:
+def export_for_web(stats_date: str | None = None) -> None:
     # ── Export charts France corrigés ─────────────────────────────
     fr_charts_dst = ROOT / "site" / "data" / "charts_fr"
     fr_charts_dst.mkdir(parents=True, exist_ok=True)
@@ -1412,13 +1412,21 @@ def export_for_web() -> None:
             print("Uploading per-track history to R2...")
             _r2_script = Path(__file__).resolve().parents[4] / "scripts" / "r2.py"
             try:
-                _subprocess.run([_sys.executable, str(_r2_script)], check=True)
+                _cmd = [_sys.executable, str(_r2_script), "--skip-history-upload", "--skip-db-upload"]
+                _new_date = stats_date or latest_date
+                if _new_date:
+                    _cmd += ["--new-date", _new_date]
+                _subprocess.run(_cmd, check=True)
             except _subprocess.CalledProcessError as exc:
                 print(f"[R2] Upload failed (non-blocking): {exc}")
 
 
 def main() -> None:
-    export_for_web()
+    import argparse as _argparse
+    parser = _argparse.ArgumentParser(add_help=False)
+    parser.add_argument("--new-date", default=None)
+    known, _ = parser.parse_known_args()
+    export_for_web(stats_date=known.new_date)
 
 
 if __name__ == "__main__":

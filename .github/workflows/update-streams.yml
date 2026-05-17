@@ -45,5 +45,31 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit == 'true'
         run: playwright install-deps chromium
 
+      - name: Configure git identity
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+
+      - name: Download streams history from R2
+        run: |
+          python - <<'EOF'
+          import boto3, os
+          from pathlib import Path
+          client = boto3.client(
+              "s3",
+              endpoint_url=f"https://{os.environ['R2_ACCOUNT_ID']}.r2.cloudflarestorage.com",
+              aws_access_key_id=os.environ["R2_ACCESS_KEY_ID"],
+              aws_secret_access_key=os.environ["R2_SECRET_ACCESS_KEY"],
+              region_name="auto",
+          )
+          dest = Path("data/_archive/original/db/streams_history.csv")
+          dest.parent.mkdir(parents=True, exist_ok=True)
+          client.download_file(os.environ["R2_BUCKET"], "db/streams_history.csv", str(dest))
+          import csv
+          with open(dest, newline="", encoding="utf-8-sig") as f:
+              dates = {row["date"] for row in csv.DictReader(f) if row.get("date")}
+          print(f"Downloaded streams_history.csv — {len(dates)} date(s), last: {max(dates) if dates else 'N/A'}")
+          EOF
+
       - name: Run update_streams (no post)
         run: python collectors/spotify/streams/update_streams.py --no-post

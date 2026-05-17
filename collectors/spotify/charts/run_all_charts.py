@@ -947,7 +947,7 @@ def main() -> int:
         rc_export = _run(
             "export",
             REPO_ROOT / "scripts" / "export_for_web.py",
-            [],
+            ["--new-date", str(target_date)],
             dry_run=False,
             env={**env, "UPLOAD_TO_R2": "1"},
             verbose=args.verbose,

@@ -3,6 +3,7 @@
 generate_artist_chart_image.py — génère une image du Global Artist Chart Spotify.
 
 Logique :
+  - Si Taylor Swift est dans le top 5 → affiche le top 5 (avec TS surlignée)
   - Si Taylor Swift est dans le top 10 → affiche le top 10 (avec TS surlignée)
   - Si Taylor Swift n'est pas dans le top 10 → affiche uniquement la carte Taylor Swift
 
@@ -357,6 +358,35 @@ def _hdr_style(header_img: Path | None) -> tuple[str, str]:
     return style, handle_color
 
 
+def build_top5_html(artists: list[dict], stats_date: str, header_img: Path | None) -> str:
+    date_fmt = datetime.strptime(stats_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    hdr_style, handle_color = _hdr_style(header_img)
+    top5 = [a for a in artists if a["rank"] <= 5]
+    rows_html = "\n".join(_artist_row_html(a, i) for i, a in enumerate(top5))
+    return f"""<!DOCTYPE html>
+<html><head><meta charset="utf-8"><style>{CSS}</style></head>
+<body><div class="container">
+  <div class="hdr" {hdr_style}>
+    {SPOTIFY_SVG}
+    <div>
+      <div class="hdr-title">Taylor Swift · Global Artist Chart</div>
+      <div class="hdr-sub">Top 5 · {date_fmt}</div>
+    </div>
+  </div>
+  <div class="col-heads">
+    <span>Pos</span>
+    <span>Chg</span>
+    <span>Artist</span>
+    <span class="right">Peak</span>
+    <span class="right">Streak</span>
+  </div>
+  {rows_html}
+  <div class="ftr">
+    <span class="ftr-handle" style="color:{handle_color}">{HANDLE}</span>
+    <span class="ftr-date">{date_fmt}</span>
+  </div>
+</div></body></html>"""
+
 def build_top10_html(artists: list[dict], stats_date: str, header_img: Path | None) -> str:
     date_fmt = datetime.strptime(stats_date, "%Y-%m-%d").strftime("%B %d, %Y")
     hdr_style, handle_color = _hdr_style(header_img)
@@ -473,6 +503,10 @@ def build_tweet(ts_artist: dict, mode: str, stats_date: str) -> str:
 
     if mode == "top10":
         return f"The top 10 most streamed artists on Spotify Charts yesterday ({date_fmt}) :"
+    
+    elif mode == "top5":
+        return f"The top 5 most streamed artists on Spotify Charts yesterday ({date_fmt}) :"
+    
     else:
         return f"Taylor Swift on Spotify Top Artists charts yesterday ({date_fmt}) :"
 
@@ -501,8 +535,11 @@ def main() -> None:
     print(f"Taylor Swift: rank #{ts_rank}")
 
     header_img = pick_header_image()
-
-    if ts_rank <= 10:
+    if ts_rank <= 5:
+        mode = "top5"
+        html = build_top5_html(artists, stats_date, header_img)
+        print("Mode: Top 5")
+    elif ts_rank <= 10:
         mode = "top10"
         html = build_top10_html(artists, stats_date, header_img)
         print("Mode: Top 10")

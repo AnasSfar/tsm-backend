@@ -437,11 +437,8 @@ def generate_image(processed: list[date]) -> Path | None:
     log("STEP", "Génération de l'image du chart")
 
     if len(processed) == 1:
-        d = processed[0]
-        image_path = ROOT / "history" / str(d.year) / f"{d.month:02d}" / str(d) / "chart_image.png"
-        img_args = [sys.executable, str(GENERATE_IMAGE_SCRIPT), str(d)]
+        img_args = [sys.executable, str(GENERATE_IMAGE_SCRIPT), str(processed[0])]
     else:
-        image_path = GENERATE_IMAGE_SCRIPT.parent / "chart_image_multi.png"
         img_args = [sys.executable, str(GENERATE_IMAGE_SCRIPT)] + [str(d) for d in processed]
 
     img_result = subprocess.run(
@@ -461,6 +458,14 @@ def generate_image(processed: list[date]) -> Path | None:
     if img_result.returncode != 0:
         log("WARN", "Génération d'image échouée — publication sans image")
         return None
+
+    if len(processed) == 1:
+        d = processed[0]
+        new_path = spotify_chart_dir("global", d) / "chart_image.png"
+        legacy_path = legacy_spotify_chart_dir("global", d) / "chart_image.png"
+        image_path = new_path if new_path.exists() else legacy_path
+    else:
+        image_path = GENERATE_IMAGE_SCRIPT.parent / "chart_image_multi.png"
 
     if not image_path.exists():
         log("WARN", f"Image attendue introuvable: {image_path}")

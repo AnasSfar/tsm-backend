@@ -17,6 +17,7 @@ import argparse
 import csv
 import json
 import re
+import sys
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -25,7 +26,14 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parents[2]
 DB_ROOT = REPO_ROOT / "db"
-HISTORY_PATH = DB_ROOT / "streams_history.csv"
+sys.path.insert(0, str(SCRIPT_DIR.parent))  # collectors/spotify/ for core.*
+from core.data_paths import archived_db_file  # noqa: E402
+
+HISTORY_PATH = (
+    DB_ROOT / "streams_history.csv"
+    if (DB_ROOT / "streams_history.csv").exists()
+    else archived_db_file("streams_history.csv")
+)
 DISCOGRAPHY_DIR = DB_ROOT / "discography"
 ALBUMS_DIR = DISCOGRAPHY_DIR / "albums"
 SONGS_JSON = DISCOGRAPHY_DIR / "songs.json"
