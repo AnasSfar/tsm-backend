@@ -88,6 +88,7 @@ _UA        = (
 )
 TS_NAME         = "Taylor Swift"
 SEMAPHORE       = 10
+FETCH_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_WORLDWIDE_FETCH_MAX_ATTEMPTS", "0"))
 _OVERVIEW_URL   = "https://charts-spotify-com-service.spotify.com/auth/v1/overview/GLOBAL"
 
 _ALBUM_EMOJI: list[tuple[str, str]] = [
@@ -561,6 +562,27 @@ def _parse_ts_entries(data: dict) -> list[dict]:
     return rows
 
 
+def _find_first_date(value) -> str | None:
+    if isinstance(value, str):
+        match = re.search(r"\b\d{4}-\d{2}-\d{2}\b", value)
+        return match.group(0) if match else None
+    if isinstance(value, dict):
+        for key in ("date", "chartDate", "displayDate", "latestDate"):
+            found = _find_first_date(value.get(key))
+            if found:
+                return found
+        for item in value.values():
+            found = _find_first_date(item)
+            if found:
+                return found
+    if isinstance(value, list):
+        for item in value:
+            found = _find_first_date(item)
+            if found:
+                return found
+    return None
+
+
 async def _fetch_region(
     session: aiohttp.ClientSession,
     sem: asyncio.Semaphore,
@@ -570,6 +592,7 @@ async def _fetch_region(
 ) -> tuple[str, list[dict]]:
     chart_id = "regional-global-daily" if region == "global" else f"regional-{region}-daily"
     url = f"{_API_BASE}/{chart_id}/{chart_date}"
+    latest_url = f"{_API_BASE}/{chart_id}/latest"
     attempt = 0
     while True:
         attempt += 1
@@ -587,20 +610,42 @@ async def _fetch_region(
                         return region, rows
                     if resp.status == 404:
                         # Chart absent pour cette région à cette date — donnée valide vide
-                        return region, []
+                        async with session.get(
+                            latest_url,
+                            headers=headers,
+                            timeout=aiohttp.ClientTimeout(total=30),
+                        ) as latest_resp:
+                            if latest_resp.status == 200:
+                                latest_data = await latest_resp.json(content_type=None)
+                                latest_date = _find_first_date(latest_data)
+                                if latest_date == chart_date:
+                                    rows = _parse_ts_entries(latest_data)
+                                    print(f"  [{region:>6}] {len(rows)} TS entries ({chart_date}, via latest)")
+                                    return region, rows
+                                raise RuntimeError(
+                                    f"{region}: dated chart 404 and latest points to {latest_date!r}, expected {chart_date}"
+                                )
+                            if latest_resp.status == 404:
+                                print(f"  [{region:>6}] 404 date+latest - no chart")
+                                return region, []
+                            raise RuntimeError(
+                                f"{region}: dated chart 404 and latest HTTP {latest_resp.status}"
+                            )
                     if resp.status == 429:
                         wait = int(resp.headers.get("Retry-After", 30))
                         print(f"  [{region:>6}] 429 — retry dans {wait}s (tentative {attempt})")
                         await asyncio.sleep(wait)
                         continue
                     if 400 <= resp.status < 500:
-                        # Autre 4xx non récupérable
-                        print(f"  [{region:>6}] HTTP {resp.status} — abandon")
-                        return region, []
+                        raise RuntimeError(f"{region}: HTTP {resp.status}")
                     print(f"  [{region:>6}] HTTP {resp.status} — retry dans 10s (tentative {attempt})")
             except asyncio.TimeoutError:
+                if FETCH_MAX_ATTEMPTS > 0 and attempt >= FETCH_MAX_ATTEMPTS:
+                    raise RuntimeError(f"{region}: timeout after {attempt} attempts")
                 print(f"  [{region:>6}] timeout — retry dans 10s (tentative {attempt})")
             except Exception as exc:
+                if FETCH_MAX_ATTEMPTS > 0 and attempt >= FETCH_MAX_ATTEMPTS:
+                    raise
                 print(f"  [{region:>6}] erreur ({exc}) — retry dans 10s (tentative {attempt})")
         await asyncio.sleep(min(10 * attempt, 60))
 

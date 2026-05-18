@@ -66,6 +66,10 @@ WATCH_LATE_SECONDS = int(os.getenv("SPOTIFY_WATCH_LATE_SECONDS", "180"))
 WATCH_HOT_SECONDS = int(os.getenv("SPOTIFY_WATCH_HOT_SECONDS", "20"))
 WATCH_ERROR_SECONDS = int(os.getenv("SPOTIFY_WATCH_ERROR_SECONDS", "120"))
 RATE_LIMIT_RETRY_SECONDS = int(os.getenv("SPOTIFY_RATE_LIMIT_RETRY_SECONDS", "120"))
+WORLDWIDE_VALIDATE_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_WORLDWIDE_VALIDATE_MAX_ATTEMPTS", "0"))
+WORLDWIDE_VALIDATE_WAIT_SECONDS = int(os.getenv("SPOTIFY_WORLDWIDE_VALIDATE_WAIT_SECONDS", "180"))
+WORLDWIDE_VALIDATE_TOTAL_RATIO = float(os.getenv("SPOTIFY_WORLDWIDE_VALIDATE_TOTAL_RATIO", "0.80"))
+WORLDWIDE_VALIDATE_TRACK_RATIO = float(os.getenv("SPOTIFY_WORLDWIDE_VALIDATE_TRACK_RATIO", "0.70"))
 PLAYWRIGHT_LAUNCH_TIMEOUT_MS = int(os.getenv("SPOTIFY_PLAYWRIGHT_LAUNCH_TIMEOUT_MS", "15000"))
 PLAYWRIGHT_GOTO_TIMEOUT_MS = int(os.getenv("SPOTIFY_PLAYWRIGHT_GOTO_TIMEOUT_MS", "15000"))
 PLAYWRIGHT_TOKEN_WAIT_SECONDS = int(os.getenv("SPOTIFY_PLAYWRIGHT_TOKEN_WAIT_SECONDS", "10"))
@@ -129,9 +133,83 @@ def _worldwide_json_date() -> str | None:
 def _worldwide_data_ready(target: date) -> bool:
     actual = _worldwide_json_date()
     if actual == str(target):
-        return True
+        ok, detail = _validate_worldwide_snapshot(target)
+        if not ok:
+            print(f"[FAIL] snapshot worldwide invalide pour cards: {detail}")
+        return ok
     print(f"[FAIL] charts_worldwide.json contient {actual!r}, attendu {str(target)!r}")
     return False
+
+
+def _worldwide_snapshot_path(target: date) -> Path:
+    return spotify_chart_dir("worldwide", target) / f"ts_worldwide_{target}.json"
+
+
+def _load_worldwide_snapshot(target: date) -> dict | None:
+    for path in (
+        _worldwide_snapshot_path(target),
+        legacy_spotify_chart_dir("worldwide", target) / f"ts_worldwide_{target}.json",
+    ):
+        try:
+            if path.exists():
+                return json.loads(path.read_text(encoding="utf-8-sig"))
+        except Exception as exc:
+            print(f"[WARN] snapshot worldwide illisible {path}: {exc}")
+    return None
+
+
+def _worldwide_metrics(snapshot: dict | None) -> tuple[dict[str, int], int, int]:
+    by_track = snapshot.get("by_track", {}) if isinstance(snapshot, dict) else {}
+    counts = {
+        str(track_id): len(entries)
+        for track_id, entries in by_track.items()
+        if isinstance(entries, list)
+    }
+    total = sum(counts.values())
+    max_regions = max(counts.values(), default=0)
+    return counts, total, max_regions
+
+
+def _validate_worldwide_snapshot(target: date) -> tuple[bool, str]:
+    current = _load_worldwide_snapshot(target)
+    if not current:
+        return False, f"snapshot mondial absent pour {target}"
+    prev_target = target - timedelta(days=1)
+    previous = _load_worldwide_snapshot(prev_target)
+    if not previous:
+        return True, f"pas de snapshot veille ({prev_target}), validation partielle ignoree"
+
+    curr_counts, curr_total, curr_max = _worldwide_metrics(current)
+    prev_counts, prev_total, prev_max = _worldwide_metrics(previous)
+    if not curr_counts:
+        return False, "snapshot mondial vide"
+
+    min_total = int(prev_total * WORLDWIDE_VALIDATE_TOTAL_RATIO)
+    if prev_total >= 10 and curr_total < min_total:
+        return False, f"total regions trop bas: {curr_total}/{prev_total} (min {min_total})"
+
+    min_max = int(prev_max * WORLDWIDE_VALIDATE_TRACK_RATIO)
+    if prev_max >= 10 and curr_max < min_max:
+        return False, f"top song trop partielle: {curr_max}/{prev_max} regions (min {min_max})"
+
+    large_drops: list[str] = []
+    for track_id, prev_count in prev_counts.items():
+        curr_count = curr_counts.get(track_id, 0)
+        if prev_count >= 10 and curr_count < int(prev_count * WORLDWIDE_VALIDATE_TRACK_RATIO):
+            large_drops.append(f"{track_id}:{curr_count}/{prev_count}")
+    if large_drops:
+        return False, "tracks trop partiels: " + ", ".join(large_drops[:5])
+
+    return True, f"{len(curr_counts)} songs, {curr_total} regions (veille: {len(prev_counts)} songs, {prev_total} regions)"
+
+
+def _runner_args_for_run_all(name: str, fixed: list[str], forwarded: list[str], target_date: date, explicit_target_date: bool) -> list[str]:
+    if name != "artists_global":
+        return list(dict.fromkeys([*fixed, *forwarded]))
+    artist_args = list(fixed)
+    if explicit_target_date:
+        artist_args.extend(["--date", str(target_date)])
+    return list(dict.fromkeys(artist_args))
 
 
 def _already_done(
@@ -150,6 +228,11 @@ def _runner_done(name: str, target: date, post_parts: set[str]) -> bool:
     if name in {"global", "fr"} and name in post_parts:
         posted = _region_lock_exists(name, target, "posted.lock")
         return posted and (updated or data_exists)
+    if name == "worldwide" and (updated or data_exists):
+        ok, detail = _validate_worldwide_snapshot(target)
+        if not ok:
+            print(f"[WARN] worldwide incomplet pour {target}: {detail}")
+        return ok
     return updated or data_exists
 
 
@@ -770,21 +853,13 @@ def _run_parallel(
 ) -> list[tuple[str, int]]:
     failures: list[tuple[str, int]] = []
 
-    def _runner_args(name: str, fixed: list[str]) -> list[str]:
-        if name != "artists_global":
-            return list(dict.fromkeys([*fixed, *forwarded]))
-        artist_args = list(fixed)
-        if explicit_target_date:
-            artist_args.extend(["--date", str(target_date)])
-        return list(dict.fromkeys(artist_args))
-
     with concurrent.futures.ThreadPoolExecutor(max_workers=len(runners)) as ex:
         futures = {
             ex.submit(
                 _run,
                 name,
                 script,
-                _runner_args(name, fixed),
+                _runner_args_for_run_all(name, fixed, forwarded, target_date, explicit_target_date),
                 dry_run=dry_run,
                 env=env,
                 verbose=verbose,
@@ -808,6 +883,51 @@ def _run_parallel(
     return failures
 
 
+def _ensure_worldwide_valid(
+    runners: list[tuple[str, Path, list[str]]],
+    *,
+    forwarded: list[str],
+    target_date: date,
+    explicit_target_date: bool,
+    env: dict[str, str],
+    verbose: bool,
+) -> tuple[bool, int]:
+    runner = next((r for r in runners if r[0] == "worldwide"), None)
+    if runner is None:
+        return True, 0
+
+    ok, detail = _validate_worldwide_snapshot(target_date)
+    print(f"[CHECK] validation worldwide {target_date}: {detail}")
+    if ok:
+        return True, 0
+
+    name, script, fixed = runner
+    reruns = 0
+    attempt = 2
+    while WORLDWIDE_VALIDATE_MAX_ATTEMPTS <= 0 or attempt <= WORLDWIDE_VALIDATE_MAX_ATTEMPTS:
+        wait = WORLDWIDE_VALIDATE_WAIT_SECONDS
+        print(f"[WARN] worldwide partiel - retry #{attempt} dans {wait}s")
+        time.sleep(wait)
+        rc = _run(
+            name,
+            script,
+            _runner_args_for_run_all(name, fixed, forwarded, target_date, explicit_target_date),
+            dry_run=False,
+            env=env,
+            verbose=verbose,
+        )
+        reruns += 1
+        if rc != 0:
+            return False, reruns
+        ok, detail = _validate_worldwide_snapshot(target_date)
+        print(f"[CHECK] validation worldwide {target_date}: {detail}")
+        if ok:
+            return True, reruns
+        attempt += 1
+
+    return False, reruns
+
+
 _ALL_POST_PARTS = {"artists", "global", "fr", "cards"}
 
 
@@ -827,6 +947,7 @@ def main() -> int:
         ),
     )
     parser.add_argument("--no-post", action="store_true", help="Désactive tout le posting Twitter.")
+    parser.add_argument("--force", action="store_true", help="Relance la collecte meme si les donnees existent deja.")
     parser.add_argument("--force-cards", action="store_true", help="Force la regeneration des cards worldwide.")
     parser.add_argument("--skip-uk", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--verbose", "-v", action="store_true", help="Affiche la sortie complète des scripts.")
@@ -881,7 +1002,9 @@ def main() -> int:
 
     if needs_collect:
         original_collect_runners = collect_runners
-        if not args.dry_run:
+        if args.force and not args.dry_run:
+            print(f"[FORCE] pre-skip ignore pour {target_date}: collecte relancee")
+        elif not args.dry_run:
             collect_runners = _filter_pending_runners(collect_runners, target_date, post_parts)
         if not collect_runners:
             _print_already_done(original_collect_runners, target_date, post_parts)
@@ -939,6 +1062,19 @@ def main() -> int:
                     if warp_active:
                         _warp_disconnect()
                     return 1
+            if not args.dry_run and "worldwide" in {n for n, _, _ in collect_runners} and "worldwide" not in {n for n, _ in failures}:
+                worldwide_ok, worldwide_reruns = _ensure_worldwide_valid(
+                    collect_runners,
+                    forwarded=forwarded,
+                    target_date=target_date,
+                    explicit_target_date=_explicit_target_date,
+                    env=env,
+                    verbose=args.verbose,
+                )
+                if worldwide_reruns:
+                    ran_collect = True
+                if not worldwide_ok:
+                    failures.append(("worldwide-validation", 1))
             if warp_active:
                 _warp_disconnect()
 
@@ -957,13 +1093,21 @@ def main() -> int:
     elif not args.dry_run and needs_collect:
         print("\n[SKIP] export web + upload R2 (aucune collecte relancée)")
 
-    if not args.dry_run and "cards" in post_parts and not _worldwide_data_ready(target_date):
+    should_generate_cards = "cards" in post_parts or args.force_cards or (args.no_post and args.force)
+    should_post_cards = "cards" in post_parts
+
+    if not args.dry_run and should_generate_cards and not _worldwide_data_ready(target_date):
         failures.append(("cards-data", 1))
 
-    if not args.dry_run and "cards" in post_parts and not failures:
-        print("\n[PHASE3] génération et publication des card images worldwide...")
-        cards_args = [str(target_date), "--post", "--min-countries", "1"]
-        if args.force_cards:
+    if not args.dry_run and should_generate_cards and not failures:
+        if should_post_cards:
+            print("\n[PHASE3] generation et publication des card images worldwide...")
+        else:
+            print("\n[PHASE3] generation des card images worldwide (no-post)...")
+        cards_args = [str(target_date), "--min-countries", "1"]
+        if should_post_cards:
+            cards_args.append("--post")
+        if args.force_cards or args.force:
             cards_args.append("--force")
         rc_cards = _run(
             "cards",

@@ -50,7 +50,7 @@ if str(_SPOTIFY_ROOT) not in sys.path:
 _CORE = _SPOTIFY_ROOT / "core"
 if str(_CORE) not in sys.path:
     sys.path.insert(0, str(_CORE))
-from core.data_paths import spotify_chart_dir  # noqa: E402
+from core.data_paths import legacy_spotify_chart_dir, spotify_chart_dir  # noqa: E402
 from twitter import post_with_image as _post_with_image  # noqa: E402
 
 # Shared lock with core/twitter.py — prevents running Playwright while Twitter
@@ -564,7 +564,39 @@ def _album_emoji(album: str) -> str:
     return "🎵"
 
 
-def _build_tweet(song: dict, entries: list[dict], chart_date: str) -> str:
+def _worldwide_snapshot_path(chart_date: str) -> Path:
+    return spotify_chart_dir("worldwide", chart_date) / f"ts_worldwide_{chart_date}.json"
+
+
+def _load_prev_country_counts(chart_date: str) -> dict[str, int]:
+    try:
+        prev_date = (datetime.strptime(chart_date, "%Y-%m-%d").date() - timedelta(days=1)).strftime("%Y-%m-%d")
+    except Exception:
+        return {}
+
+    prev_path = _worldwide_snapshot_path(prev_date)
+    if not prev_path.exists():
+        prev_path = legacy_spotify_chart_dir("worldwide", prev_date) / f"ts_worldwide_{prev_date}.json"
+    if not prev_path.exists():
+        return {}
+
+    try:
+        prev_data = json.loads(prev_path.read_text(encoding="utf-8-sig"))
+    except Exception:
+        return {}
+    by_track = prev_data.get("by_track", {})
+    return {track_id: len(entries) for track_id, entries in by_track.items() if isinstance(entries, list)}
+
+
+def _country_count_text(count: int, prev_count: int | None) -> str:
+    if prev_count is None:
+        return "one country" if count == 1 else f"{count} countries"
+    diff = count - prev_count
+    diff_str = f"+{diff}" if diff >= 0 else str(diff)
+    return f"{count} ({diff_str}) countries"
+
+
+def _build_tweet(song: dict, entries: list[dict], chart_date: str, prev_count: int | None = None) -> str:
     title    = song.get("title", "Unknown")
     album    = song.get("primary_album", "")
     emoji    = _album_emoji(album)
@@ -573,11 +605,59 @@ def _build_tweet(song: dict, entries: list[dict], chart_date: str) -> str:
         date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
     except Exception:
         date_fmt = chart_date
-    country_str = "one country" if count == 1 else f"{count} countries"
+    country_str = _country_count_text(count, prev_count)
     return f'{emoji} | "{title}" charted in {country_str} on Spotify yesterday ({date_fmt}).\n\n{_OVERALL_URL}'
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
+
+_GLOBAL_REGION_CODES = {"global", "glob"}
+
+
+def _global_entry(entries: list[dict]) -> dict | None:
+    for entry in entries:
+        if str(entry.get("country") or "").lower() in _GLOBAL_REGION_CODES:
+            return entry
+    return None
+
+
+def _is_re_entry(entry: dict | None) -> bool:
+    if not entry or entry.get("previous_rank") is not None:
+        return False
+    rank = entry.get("rank")
+    peak = entry.get("peak_rank")
+    return peak is not None and peak != rank
+
+
+def _card_priority(track_id: str, entries: list[dict], song: dict) -> tuple:
+    global_entry = _global_entry(entries)
+    global_rank = global_entry.get("rank") if global_entry else None
+    best_rank = min((e.get("rank") or 9999 for e in entries), default=9999)
+    total_streams = sum(e.get("streams") or 0 for e in entries)
+    title = str(song.get("title") or track_id).lower()
+    return (
+        0 if global_entry else 1,
+        0 if _is_re_entry(global_entry) else 1,
+        global_rank or 9999,
+        -len(entries),
+        best_rank,
+        -total_streams,
+        title,
+    )
+
+
+def _priority_payload(entries: list[dict]) -> dict:
+    global_entry = _global_entry(entries)
+    if not global_entry:
+        return {"level": 1, "reason": "regional_only"}
+    status = "re_entry" if _is_re_entry(global_entry) else "active"
+    return {
+        "level": 0,
+        "reason": f"global_chart_{status}",
+        "global_rank": global_entry.get("rank"),
+        "global_previous_rank": global_entry.get("previous_rank"),
+    }
+
 
 def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3, force: bool = False, post: bool = False) -> int:
     palette = THEMES.get(theme)
@@ -602,13 +682,19 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
     songs_raw  = _load_json(SONGS_JSON)
     songs_list = songs_raw.get("songs", songs_raw) if isinstance(songs_raw, dict) else songs_raw
     song_meta: dict[str, dict] = {s["track_id"]: s for s in songs_list if "track_id" in s}
+    prev_country_counts = _load_prev_country_counts(chart_date)
 
     d       = datetime.strptime(chart_date, "%Y-%m-%d").date()
     out_dir = spotify_chart_dir("worldwide", chart_date) / "cards"
 
     index_path = out_dir / "cards_index.json"
+    posted_path = out_dir / "posted_cards.json"
     if index_path.exists() and not force:
         try:
+            if post:
+                # Existing images may still have missing posted_cards entries.
+                # Continue so pending cards can be posted instead of returning early.
+                raise RuntimeError("post requested")
             existing = json.loads(index_path.read_text(encoding="utf-8"))
             n = len(existing.get("cards", []))
             print(f"[SKIP] Cards déjà générées pour {chart_date} ({n} images) — utilise --force pour refaire")
@@ -619,9 +705,11 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
     out_dir.mkdir(parents=True, exist_ok=True)
 
     tracks = [(tid, entries) for tid, entries in by_track.items() if len(entries) >= min_countries]
+    tracks.sort(key=lambda item: _card_priority(item[0], item[1], song_meta.get(item[0], {})))
     print(f"[INFO] {len(tracks)} tracks, thème={theme!r}, min_countries={min_countries}")
 
     generated: list[str] = []
+    priority_index: dict[str, dict] = {}
     to_post: list[tuple[Path, str]] = []  # (image_path, tweet_text)
 
     # Load already-posted slugs to avoid re-posting on --force reruns
@@ -671,9 +759,11 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
                     card.wait_for(state="visible", timeout=5000)
                     card.screenshot(path=str(out_path))
                     generated.append(out_path.name)
+                    priority_index[out_path.name] = _priority_payload(entries)
                     print(f"  → {out_path.name}")
                     if post and slug not in already_posted:
-                        to_post.append((out_path, _build_tweet(meta, entries, chart_date)))
+                        prev_count = prev_country_counts.get(track_id)
+                        to_post.append((out_path, _build_tweet(meta, entries, chart_date, prev_count)))
                     elif post:
                         print(f"    [SKIP] déjà posté")
                 except Exception as e:
@@ -685,7 +775,11 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
 
     index_path = out_dir / "cards_index.json"
     index_path.write_text(
-        json.dumps({"date": chart_date, "theme": theme, "cards": generated}, ensure_ascii=False, indent=2),
+        json.dumps(
+            {"date": chart_date, "theme": theme, "cards": generated, "priority": priority_index},
+            ensure_ascii=False,
+            indent=2,
+        ),
         encoding="utf-8",
     )
     print(f"[DONE] {len(generated)} images → {out_dir}")
@@ -698,7 +792,7 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
         for img_path, tweet_text in to_post:
             slug = img_path.stem
             if not first:
-                time.sleep(30)
+                time.sleep(120)
             first = False
             if _post_with_image(tweet_text, img_path, TWITTER_SESSION):
                 ok += 1
