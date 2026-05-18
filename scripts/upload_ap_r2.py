@@ -278,11 +278,107 @@ def object_key(payload: dict[str, Any], prefix: str) -> str:
     return f"{prefix}/{slug}--{suffix}.json"
 
 
+CSV_R2_PREFIX = "apple-music/csv"
+CSV_KEEP_DAYS = 3
+
+
+def upload_daily_csvs(client: BaseClient, bucket: str, dry_run: bool) -> int:
+    """Upload the last CSV_KEEP_DAYS days of Apple Music daily CSVs to R2."""
+    pattern = "????/??/????-??-??/apple_music/*.csv"
+    all_csv_paths = sorted(DATA_ROOT.glob(pattern))
+    if not all_csv_paths:
+        print("[skip] no daily Apple Music CSVs found")
+        return 0
+
+    # Group by day (YYYY-MM-DD) and keep only the most recent CSV_KEEP_DAYS days
+    days_seen: set[str] = set()
+    for p in reversed(all_csv_paths):
+        day = p.parent.parent.name  # data/YYYY/MM/YYYY-MM-DD/apple_music/file.csv
+        days_seen.add(day)
+    recent_days = sorted(days_seen)[-CSV_KEEP_DAYS:]
+    recent_days_set = set(recent_days)
+
+    to_upload = [p for p in all_csv_paths if p.parent.parent.name in recent_days_set]
+
+    uploaded = 0
+    for local_path in to_upload:
+        # R2 key: apple-music/csv/YYYY/MM/YYYY-MM-DD/filename.csv
+        rel = local_path.relative_to(DATA_ROOT)
+        r2_key = f"{CSV_R2_PREFIX}/{rel.as_posix()}"
+
+        body = local_path.read_bytes()
+        local_hash = hashlib.sha256(body).hexdigest()
+
+        if object_has_same_body_hash(client, bucket, r2_key, body):
+            print(f"[unchanged] {r2_key}")
+            continue
+
+        if dry_run:
+            print(f"[dry-run][upload] {r2_key}")
+            uploaded += 1
+            continue
+
+        client.put_object(
+            Bucket=bucket,
+            Key=r2_key,
+            Body=body,
+            ContentType="text/csv; charset=utf-8",
+            Metadata={"sha256": local_hash},
+        )
+        print(f"[uploaded] {r2_key}")
+        uploaded += 1
+
+    return uploaded
+
+
+def download_daily_csvs(client: BaseClient, bucket: str) -> int:
+    """Download recent Apple Music daily CSVs from R2 into data/."""
+    paginator = client.get_paginator("list_objects_v2")
+    pages = paginator.paginate(Bucket=bucket, Prefix=f"{CSV_R2_PREFIX}/")
+
+    keys: list[str] = []
+    for page in pages:
+        for obj in page.get("Contents") or []:
+            keys.append(obj["Key"])
+
+    if not keys:
+        print("[skip] no Apple Music CSVs found in R2")
+        return 0
+
+    # Keep only the most recent CSV_KEEP_DAYS days
+    days_seen: set[str] = set()
+    for key in keys:
+        # key: apple-music/csv/YYYY/MM/YYYY-MM-DD/apple_music/file.csv
+        parts = key.split("/")
+        if len(parts) >= 4:
+            days_seen.add(parts[3])  # YYYY-MM-DD segment
+    recent_days = sorted(days_seen)[-CSV_KEEP_DAYS:]
+    recent_days_set = set(recent_days)
+
+    to_download = [k for k in keys if any(f"/{d}/" in k for d in recent_days_set)]
+
+    downloaded = 0
+    for r2_key in to_download:
+        # Strip prefix to get relative path: YYYY/MM/YYYY-MM-DD/apple_music/file.csv
+        rel = r2_key[len(CSV_R2_PREFIX) + 1:]
+        local_path = DATA_ROOT / rel
+        local_path.parent.mkdir(parents=True, exist_ok=True)
+        if local_path.exists():
+            print(f"[exists] {local_path}")
+            continue
+        client.download_file(bucket, r2_key, str(local_path))
+        print(f"[downloaded] {local_path}")
+        downloaded += 1
+
+    return downloaded
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Upload Apple Music history-by-song data to R2.")
     parser.add_argument("--bucket", default=get_bucket_name())
     parser.add_argument("--prefix", default=R2_PREFIX)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--download-csvs", action="store_true", help="Download recent CSVs from R2 instead of uploading")
     return parser.parse_args()
 
 
@@ -321,8 +417,18 @@ def main() -> None:
     client = get_r2_client()
     bucket = args.bucket
 
+    if args.download_csvs:
+        print("=== Downloading Apple Music daily CSVs from R2 ===")
+        n = download_daily_csvs(client, bucket)
+        print(f"[done] {n} file(s) downloaded")
+        return
+
+    # Upload daily CSVs so next CI run can compute previous_rank
+    print("=== Uploading Apple Music daily CSVs ===")
+    upload_daily_csvs(client, bucket, args.dry_run)
+
     # Upload main JSON files first (what the API reads)
-    print("=== Uploading main Apple Music JSON files ===")
+    print("\n=== Uploading main Apple Music JSON files ===")
     upload_main_json_files(client, bucket, args.dry_run)
 
     # Upload per-song history objects

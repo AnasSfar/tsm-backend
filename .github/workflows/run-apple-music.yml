@@ -49,5 +49,11 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit == 'true'
         run: playwright install-deps chromium
 
-      - name: Run Apple Music (no post)
-        run: python collectors/apple_music/run_apple_music.py --no-post
+      - name: Download Apple Music daily CSVs from R2
+        run: python scripts/upload_ap_r2.py --download-csvs
+
+      - name: Run Apple Music
+        run: python collectors/apple_music/run_apple_music.py
+
+      - name: Upload Apple Music data to R2
+        run: python scripts/upload_ap_r2.py
