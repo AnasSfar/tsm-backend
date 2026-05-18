@@ -159,7 +159,7 @@ def _build_rank_lookup(entries: list[dict[str, Any]]) -> tuple[dict[str, int], d
 
 def _backfill_entries(entries: list[dict[str, Any]], by_id: dict[str, int], by_name: dict[str, int]) -> None:
     for entry in entries:
-        if entry.get("previous_rank") is not None:
+        if entry.get("previous_rank") not in (None, ""):
             continue
         am_id = clean_str(entry.get("apple_music_id"))
         name = _song_key(entry.get("song_name") or entry.get("album_name") or "")
