@@ -124,6 +124,84 @@ def read_csv_rows(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
+def _load_prev_snapshot(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+
+def _get_entries(v: Any) -> list[dict[str, Any]]:
+    if isinstance(v, list):
+        return v
+    if isinstance(v, dict):
+        return v.get("entries") or []
+    return []
+
+
+def _build_rank_lookup(entries: list[dict[str, Any]]) -> tuple[dict[str, int], dict[str, int]]:
+    by_id: dict[str, int] = {}
+    by_name: dict[str, int] = {}
+    for entry in entries or []:
+        rank = entry.get("rank")
+        if rank is None:
+            continue
+        am_id = clean_str(entry.get("apple_music_id"))
+        name = _song_key(entry.get("song_name") or entry.get("album_name") or "")
+        if am_id and am_id not in by_id:
+            by_id[am_id] = rank
+        if name and name not in by_name:
+            by_name[name] = rank
+    return by_id, by_name
+
+
+def _backfill_entries(entries: list[dict[str, Any]], by_id: dict[str, int], by_name: dict[str, int]) -> None:
+    for entry in entries:
+        if entry.get("previous_rank") is not None:
+            continue
+        am_id = clean_str(entry.get("apple_music_id"))
+        name = _song_key(entry.get("song_name") or entry.get("album_name") or "")
+        rank = (by_id.get(am_id) if am_id else None) or by_name.get(name)
+        if rank is not None:
+            entry["previous_rank"] = rank
+
+
+def _backfill_flat(current: dict[str, Any] | None, prev_section: Any) -> None:
+    if not current or not prev_section:
+        return
+    by_id, by_name = _build_rank_lookup(_get_entries(prev_section))
+    _backfill_entries(current.get("entries") or [], by_id, by_name)
+
+
+def _backfill_by_country(current: dict[str, Any] | None, prev_section: Any) -> None:
+    if not current or not prev_section:
+        return
+    prev_cc = prev_section if isinstance(prev_section, dict) else {}
+    if "countries" in prev_cc:
+        prev_cc = prev_cc["countries"]
+    current_cc = current.get("countries") or {}
+    for country, entries in current_cc.items():
+        by_id, by_name = _build_rank_lookup(_get_entries(prev_cc.get(country)))
+        _backfill_entries(entries if isinstance(entries, list) else _get_entries(entries), by_id, by_name)
+
+
+def _backfill_by_genre(current: dict[str, Any] | None, prev_section: Any) -> None:
+    if not current or not prev_section:
+        return
+    prev_top = prev_section if isinstance(prev_section, dict) else {}
+    prev_by_country = prev_top.get("by_country") or prev_top.get("countries") or prev_top
+    current_by_country = current.get("by_country") or {}
+    for country, genres in current_by_country.items():
+        if not isinstance(genres, dict):
+            continue
+        prev_genres = prev_by_country.get(country) or {}
+        for genre, entries in genres.items():
+            by_id, by_name = _build_rank_lookup(_get_entries(prev_genres.get(genre)))
+            _backfill_entries(entries if isinstance(entries, list) else _get_entries(entries), by_id, by_name)
+
+
 def sort_entries(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return sorted(
         entries,
@@ -372,6 +450,12 @@ def build_country_albums(rows: list[dict[str, Any]]) -> tuple[dict[str, Any] | N
 def main() -> None:
     ensure_out_dir()
 
+    # Load previous snapshot before overwriting — used to backfill previous_rank
+    # when collectors run without local CSV history (e.g. fresh CI checkout).
+    prev_data = _load_prev_snapshot(OUT_DATA)
+    if prev_data:
+        log("snapshot précédent chargé pour backfill previous_rank")
+
     global_rows = read_csv_rows(GLOBAL_CSV)
     top_rows = read_csv_rows(TOP_SONGS_CSV)
     top_video_rows = read_csv_rows(TOP_VIDEOS_CSV)
@@ -420,6 +504,17 @@ def main() -> None:
         "music_video_charts": music_video_chart_history,
         "genre": genre_history,
     }
+
+    # Backfill previous_rank from previous snapshot (covers CI where only current run's CSVs exist)
+    if prev_data:
+        _backfill_flat(global_current, prev_data.get("global_chart"))
+        _backfill_flat(top_current, prev_data.get("ts_top_songs"))
+        _backfill_flat(top_video_current, prev_data.get("ts_top_videos"))
+        _backfill_by_country(country_current, prev_data.get("country_charts"))
+        _backfill_by_country(country_album_current, prev_data.get("country_album_charts"))
+        _backfill_by_genre(genre_current, prev_data.get("genre_charts"))
+        _backfill_by_genre(genre_album_current, prev_data.get("genre_album_charts"))
+        _backfill_by_country(music_video_chart_current, prev_data.get("music_video_charts"))
 
     OUT_DATA.write_text(json.dumps(applemusic_data, ensure_ascii=False, indent=2), encoding="utf-8")
     OUT_HISTORY.write_text(json.dumps(applemusic_history, ensure_ascii=False, indent=2), encoding="utf-8")

@@ -13,6 +13,8 @@ jobs:
   run-apple-music:
     runs-on: ubuntu-latest
     environment: .env
+    permissions:
+      contents: write
     env:
       R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
       R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
@@ -49,11 +51,19 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit == 'true'
         run: playwright install-deps chromium
 
-      - name: Download Apple Music daily CSVs from R2
-        run: python scripts/upload_ap_r2.py --download-csvs
+      - name: Configure git identity
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
 
       - name: Run Apple Music
         run: python collectors/apple_music/run_apple_music.py
 
       - name: Upload Apple Music data to R2
         run: python scripts/upload_ap_r2.py
+
+      - name: Commit and push Apple Music data
+        run: |
+          git add website/site/data/applemusic.json website/site/data/applemusic_history.json
+          git diff --staged --quiet || git commit -m "chore: update Apple Music data [skip ci]"
+          git push
