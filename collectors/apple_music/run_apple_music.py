@@ -84,6 +84,8 @@ def main() -> None:
     scraped_at = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
     print(f"[Apple Music] Starting full run — scraped_at={scraped_at}")
 
+    os.environ["APPLE_MUSIC_SKIP_EXPORT"] = "1"
+
     failures: list[tuple[str, int]] = []
 
     for script in SCRIPTS:
