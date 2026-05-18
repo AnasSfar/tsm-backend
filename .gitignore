@@ -90,10 +90,10 @@ debug*
 # Website generated data
 website/site/data/charts_*/
 website/site/data/charts_*.json
-website/site/data/applemusic*.json
 website/site/data/billboard.json
 website/site/data/spotify*.json
 website/site/data/*_history.json
+!website/site/data/applemusic.json
 
 # mystreamcount backfill state
 collectors/spotify/streams/mystreamcount/state.json

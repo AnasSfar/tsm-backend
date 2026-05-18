@@ -64,6 +64,6 @@ jobs:
 
       - name: Commit and push Apple Music data
         run: |
-          git add website/site/data/applemusic.json website/site/data/applemusic_history.json
+          git add website/site/data/applemusic.json
           git diff --staged --quiet || git commit -m "chore: update Apple Music data [skip ci]"
           git push
