@@ -346,12 +346,13 @@ def download_daily_csvs(client: BaseClient, bucket: str) -> int:
         return 0
 
     # Keep only the most recent CSV_KEEP_DAYS days
+    # key format: apple-music/csv/YYYY/MM/YYYY-MM-DD/apple_music/file.csv
+    #             parts[0]        [1] [2] [3] [4]    [5]          [6]
     days_seen: set[str] = set()
     for key in keys:
-        # key: apple-music/csv/YYYY/MM/YYYY-MM-DD/apple_music/file.csv
         parts = key.split("/")
-        if len(parts) >= 4:
-            days_seen.add(parts[3])  # YYYY-MM-DD segment
+        if len(parts) >= 5:
+            days_seen.add(parts[4])  # YYYY-MM-DD segment
     recent_days = sorted(days_seen)[-CSV_KEEP_DAYS:]
     recent_days_set = set(recent_days)
 
