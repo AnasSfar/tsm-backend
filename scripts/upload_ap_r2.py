@@ -34,7 +34,18 @@ GLOBAL_CSV = DB_DIR / "apple_music_global.csv"
 TS_TOP_CSV = DB_DIR / "apple_music_ts_top_songs.csv"
 
 R2_PREFIX = "apple-music/history-by-song"
+CSV_R2_PREFIX = "apple-music/db"
 NO_CACHE_CONTROL = "no-cache, no-store, must-revalidate"
+
+APPLE_MUSIC_CSV_NAMES = [
+    "apple_music_global.csv",
+    "apple_music_country_charts.csv",
+    "apple_music_genre_charts.csv",
+    "apple_music_ts_top_songs.csv",
+    "apple_music_country_albums.csv",
+    "apple_music_genre_album_charts.csv",
+    "apple_music_music_video_charts.csv",
+]
 
 
 def get_env(name: str) -> str:
@@ -314,6 +325,48 @@ def upload_main_json_files(client: BaseClient, bucket: str, dry_run: bool) -> in
     return uploaded
 
 
+def upload_daily_csvs(client: BaseClient, bucket: str, dry_run: bool) -> int:
+    """Upload the most recent daily CSV for each Apple Music chart to R2."""
+    uploaded = 0
+    for name in APPLE_MUSIC_CSV_NAMES:
+        candidates = sorted(
+            DATA_ROOT.glob(f"[0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/apple_music/{name}"),
+            reverse=True,
+        )
+        if not candidates:
+            print(f"[skip] {name} not found locally")
+            continue
+        path = candidates[0]
+        key = f"{CSV_R2_PREFIX}/{name}"
+        body = path.read_bytes()
+        local_hash = hashlib.sha256(body).hexdigest()
+        if object_has_same_body_hash(client, bucket, key, body):
+            print(f"[unchanged] {key}")
+            continue
+        if dry_run:
+            print(f"[dry-run][upload] {key}")
+            uploaded += 1
+            continue
+        for attempt in range(1, 4):
+            try:
+                client.put_object(
+                    Bucket=bucket,
+                    Key=key,
+                    Body=body,
+                    ContentType="text/csv; charset=utf-8",
+                    CacheControl=NO_CACHE_CONTROL,
+                    Metadata={"sha256": local_hash},
+                )
+                break
+            except Exception:
+                if attempt == 3:
+                    raise
+                time.sleep(min(2 ** attempt, 5))
+        print(f"[uploaded] {key}")
+        uploaded += 1
+    return uploaded
+
+
 def main() -> None:
     load_dotenv()
     args = parse_args()
@@ -324,6 +377,10 @@ def main() -> None:
     # Upload main JSON files first (what the API reads)
     print("\n=== Uploading main Apple Music JSON files ===")
     upload_main_json_files(client, bucket, args.dry_run)
+
+    # Upload daily CSVs so the next CI run can compute previous_rank
+    print("\n=== Uploading Apple Music CSV history ===")
+    upload_daily_csvs(client, bucket, args.dry_run)
 
     # Upload per-song history objects
     print("\n=== Uploading per-song history objects ===")
