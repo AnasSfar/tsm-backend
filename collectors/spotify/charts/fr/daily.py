@@ -147,7 +147,6 @@ _FILTER_BEARER_CACHE = ROOT / "tools" / "json" / "bearer_cache.json"
 _API_CHARTS_BASE = "https://charts-spotify-com-service.spotify.com/auth/v0/charts"
 _TOKEN_TTL = 50 * 60
 _UNAVAILABLE_MARKERS = (
-    "Aucune ligne",
     "HTTP 404",
     "pas encore publi",
     "déjà traité",

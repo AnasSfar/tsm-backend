@@ -55,9 +55,6 @@ SONGS_JSON   = DB_DIR / "discography" / "songs.json"
 HEADERS_DIR  = _TOOLS / "headers"
 HANDLE       = "@swiftiescharts"
 
-EXCLUDED_EDITIONS = {"extras", "extra"}
-EXCLUDED_DISPLAY_SECTIONS = {"extras", "extra"}
-
 # Regroupe OG + Taylor's Version sous la même ère.
 ERA_MAP: dict[str, str] = {
     "Fearless (Taylor's Version)": "Fearless",
@@ -186,33 +183,13 @@ def load_album_track_map() -> dict[str, dict]:
     """
     result = {}
 
-    def _to_int(raw, fallback: int) -> int:
-        try:
-            return int(raw)
-        except Exception:
-            try:
-                return int(float(raw))
-            except Exception:
-                return fallback
-
     def _consume_sections(
         sections: list[dict],
         album_name_fallback: str = "",
-        *,
-        allow_all_non_extras: bool = True,
     ) -> None:
         for section in sections:
             album_name = section.get("album") or album_name_fallback
             for track in section.get("tracks", []):
-                edition = (track.get("edition") or "").strip().lower()
-                display_section = (track.get("display_section") or "").strip().lower()
-
-                if allow_all_non_extras:
-                    if edition in EXCLUDED_EDITIONS:
-                        continue
-                    if display_section in EXCLUDED_DISPLAY_SECTIONS:
-                        continue
-
                 url = (track.get("url") or track.get("spotify_url") or "").strip()
                 m = re.search(r"track/([A-Za-z0-9]+)", url)
                 if not m:
@@ -221,10 +198,7 @@ def load_album_track_map() -> dict[str, dict]:
                 if track_id not in result:
                     result[track_id] = {
                         "album":     album_name,
-                        "edition":   edition,
                         "image_url": (track.get("image_url") or "").strip(),
-                        "song_family": (track.get("song_family") or "").strip(),
-                        "display_section": (track.get("display_section") or "").strip(),
                     }
 
     if ALBUMS_DIR.exists():
@@ -236,14 +210,13 @@ def load_album_track_map() -> dict[str, dict]:
                 _consume_sections(
                     payload.get("sections", []),
                     payload.get("album", ""),
-                    allow_all_non_extras=True,
                 )
             except Exception as e:
                 print(f"Erreur {album_file.name}: {e}")
 
     if SONGS_JSON.exists():
         try:
-            _consume_sections(json.loads(SONGS_JSON.read_text(encoding="utf-8-sig")), allow_all_non_extras=True)
+            _consume_sections(json.loads(SONGS_JSON.read_text(encoding="utf-8-sig")))
         except Exception as e:
             print(f"Erreur {SONGS_JSON.name}: {e}")
     return result
@@ -335,16 +308,7 @@ def build_album_rows(today: dict, yest: dict, week: dict, track_map: dict, cover
             continue
         tracks_by_album.setdefault(album, []).append((track_id, info))
 
-    def _best_key(day_entry: dict | None) -> tuple[int, int]:
-        if not day_entry:
-            return (-1, -1)
-        return (int(day_entry.get("daily_streams") or 0), int(day_entry.get("streams") or 0))
-
     for album, album_tracks in tracks_by_album.items():
-        # Dédoublonnage uniquement *dans une même section d'affichage*.
-        # Ex: folklore contient des pistes Standard Edition en double avec deux IDs.
-        dedupe = True
-
         cover_url = covers.get(_norm(album), "")
         if not cover_url:
             for _, info in album_tracks:
@@ -361,63 +325,15 @@ def build_album_rows(today: dict, yest: dict, week: dict, track_map: dict, cover
             "cover_url":     cover_url,
         }
 
-        if not dedupe:
-            for track_id, _info in album_tracks:
-                t = today.get(track_id)
-                if t is None:
-                    continue
-                y = yest.get(track_id, {})
-                w = week.get(track_id, {})
-                albums[album]["streams"]       += t["streams"]
-                albums[album]["daily_streams"] += (t.get("daily_streams") or 0)
-                albums[album]["yest_daily"]    += (y.get("daily_streams") or 0)
-                albums[album]["week_daily"]    += (w.get("daily_streams") or 0)
-            continue
-
-        best_today: dict[tuple[str, str], str] = {}
-        best_yest: dict[tuple[str, str], str] = {}
-        best_week: dict[tuple[str, str], str] = {}
-
-        for track_id, info in album_tracks:
-            fam = (info.get("song_family") or "").strip() or track_id
-            sec = (info.get("display_section") or "").strip().lower()
-            key = (fam, sec)
-
-            t = today.get(track_id)
-            if t is not None:
-                prev_id = best_today.get(key)
-                if prev_id is None or _best_key(t) > _best_key(today.get(prev_id)):
-                    best_today[key] = track_id
-
-            y = yest.get(track_id)
-            if y is not None:
-                prev_id = best_yest.get(key)
-                if prev_id is None or _best_key(y) > _best_key(yest.get(prev_id)):
-                    best_yest[key] = track_id
-
-            w = week.get(track_id)
-            if w is not None:
-                prev_id = best_week.get(key)
-                if prev_id is None or _best_key(w) > _best_key(week.get(prev_id)):
-                    best_week[key] = track_id
-
-        for track_id in best_today.values():
+        for track_id, _info in album_tracks:
             t = today.get(track_id)
             if t is None:
                 continue
+            y = yest.get(track_id, {})
+            w = week.get(track_id, {})
             albums[album]["streams"]       += t["streams"]
             albums[album]["daily_streams"] += (t.get("daily_streams") or 0)
-
-        for track_id in best_yest.values():
-            y = yest.get(track_id)
-            if y is None:
-                continue
             albums[album]["yest_daily"] += (y.get("daily_streams") or 0)
-
-        for track_id in best_week.values():
-            w = week.get(track_id)
-            if w is None:
-                continue
             albums[album]["week_daily"] += (w.get("daily_streams") or 0)
 
     # Passe 2 : merge des albums en ères (OG + TV → une seule ligne).

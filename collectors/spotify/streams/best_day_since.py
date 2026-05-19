@@ -108,6 +108,24 @@ def load_song_sections() -> list[dict]:
     return payload if isinstance(payload, list) else []
 
 
+def is_extra_track(section: dict, item: dict) -> bool:
+    edition = str(item.get("edition") or "").strip().lower()
+    track_type = str(item.get("type") or "").strip().lower()
+    section_name = str(section.get("name") or section.get("section") or item.get("section") or "").strip().lower()
+    display_section = str(item.get("display_section") or "").strip().lower()
+    album = str(section.get("album") or item.get("album") or "").strip().lower()
+
+    if edition in {"extras", "extra", "acoustic", "extended", "karaoke", "live", "other editions"}:
+        return True
+    if track_type in {"remix"}:
+        return True
+    return (
+        re.search(r"extras|kworb|remix|karaoke|live|soundtrack|voice_memos|track_by_track|music_video|acoustic|bonus_versions|misc_standalone|long_pond", section_name)
+        or re.search(r"extras|kworb extras|track by track|karaoke|live|soundtrack|long pond|acoustic", display_section)
+        or re.search(r"extras|kworb extras|track by track|karaoke|live|soundtrack|long pond|acoustic", album)
+    ) is not None
+
+
 def load_tracks(*, include_extras: bool = False) -> dict[str, Track]:
     sections = load_album_sections()
     if include_extras:
@@ -118,6 +136,8 @@ def load_tracks(*, include_extras: bool = False) -> dict[str, Track]:
         album = (section.get("album") or section.get("section") or "").strip()
         for item in section.get("tracks", []):
             if not isinstance(item, dict):
+                continue
+            if not include_extras and is_extra_track(section, item):
                 continue
             url = (item.get("url") or item.get("spotify_url") or "").strip()
             track_id = extract_track_id(url)

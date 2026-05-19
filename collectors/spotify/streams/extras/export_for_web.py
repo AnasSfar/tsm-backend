@@ -1094,8 +1094,13 @@ def export_swift_top_100_from_csv(*, songs_by_id: dict[str, dict] | None = None)
         # AM sub-units (raw score × 1000)
         am_ts_score     = _float(r.get("am_ts_score")) or 0.0
         am_global_score = _float(r.get("am_global_score")) or 0.0
+        am_country_score = _float(r.get("am_country_score")) or 0.0
+        am_overall_score = _float(r.get("am_overall_score"))
+        if am_overall_score is None:
+            am_overall_score = am_global_score + am_country_score
         am_ts_units     = round(am_ts_score * 1000)
-        am_global_units = round(am_global_score * 1000)
+        am_global_units = round(am_overall_score * 1000)
+        am_country_units = round(am_country_score * 1000)
 
         points = _float(r.get("points")) or 0.0
 
@@ -1134,6 +1139,10 @@ def export_swift_top_100_from_csv(*, songs_by_id: dict[str, dict] | None = None)
             "am_ts_units_display": _format_value(am_ts_units) if am_ts_units > 0 else None,
             "am_global_units": am_global_units,
             "am_global_units_display": _format_value(am_global_units) if am_global_units > 0 else None,
+            "am_country_units": am_country_units,
+            "am_country_units_display": _format_value(am_country_units) if am_country_units > 0 else None,
+            "am_overall_units": am_global_units,
+            "am_overall_units_display": _format_value(am_global_units) if am_global_units > 0 else None,
             # Spotify sub-colonnes (charts = streams on-chart, surplus = off-chart)
             "units_charts_display": _format_value(units_charts) if units_charts > 0 else None,
             "units_surplus_display": _format_value(units_surplus) if units_surplus > 0 else None,
@@ -1153,6 +1162,8 @@ def export_swift_top_100_from_csv(*, songs_by_id: dict[str, dict] | None = None)
             "global_best_rank": _int(r.get("global_best_rank")),
             "am_ts_score": _float(r.get("am_ts_score")),
             "am_global_score": _float(r.get("am_global_score")),
+            "am_country_score": _float(r.get("am_country_score")),
+            "am_overall_score": _float(r.get("am_overall_score")),
             # Historique
             "prev_rank": prev_rank,
             "rank_change": rank_change,

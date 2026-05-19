@@ -7,9 +7,11 @@ Uses the MusicKit API to fetch music video charts per country.
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, datetime
+from threading import local
 
-from core.config import CHART_LIMIT, DB_DIR, SCRIPTS_DIR
+from core.config import CHART_LIMIT, DB_DIR, SCRIPTS_DIR, WORKERS
 from core.csv_utils import load_previous_ranks, rewrite_for_snapshot
 from core.export import maybe_run_export
 from core.filters import build_artwork_url, clean_text, rank_key
@@ -19,6 +21,7 @@ from core.token import build_auth_headers, fetch_musickit_token
 
 CSV_PATH = DB_DIR / "apple_music_music_video_charts.csv"
 EXPORT_SCRIPT = SCRIPTS_DIR / "export_apple_music.py"
+_THREAD_LOCAL = local()
 FIELDNAMES = [
     "date",
     "scraped_at",
@@ -87,6 +90,53 @@ def fetch_country(session, country: str) -> list[dict]:
     return videos
 
 
+def worker_session(token: str):
+    session = getattr(_THREAD_LOCAL, "session", None)
+    if session is None:
+        session = build_session()
+        session.headers.update(build_auth_headers(token))
+        _THREAD_LOCAL.session = session
+    return session
+
+
+def fetch_country_task(token: str, country: str) -> tuple[str, list[dict]]:
+    session = worker_session(token)
+    return country, fetch_country(session, country)
+
+
+def build_row(
+    *,
+    today: str,
+    scraped_at: str,
+    country: str,
+    video: dict,
+    previous_by_id: dict[tuple[str, ...], int],
+    previous_by_name: dict[tuple[str, ...], int],
+) -> dict:
+    key_by_id = (country, video["apple_music_id"])
+    key_by_name = (country, rank_key(video["video_name"]))
+    prev_rank = previous_by_id.get(key_by_id)
+    if prev_rank is None:
+        prev_rank = previous_by_name.get(key_by_name)
+    return {
+        "date": today,
+        "scraped_at": scraped_at,
+        "country": country,
+        "chart_type": "music_videos",
+        "video_name": video["video_name"],
+        "apple_music_id": video["apple_music_id"],
+        "rank": video["rank"],
+        "previous_rank": prev_rank if prev_rank is not None else "",
+        "image_url": video["image_url"],
+        "url": video["url"],
+        "artist_name": video["artist_name"],
+        "album_name": video["album_name"],
+        "duration_ms": video["duration_ms"],
+        "release_date": video["release_date"],
+        "genre_names": video["genre_names"],
+    }
+
+
 def main() -> None:
     args = parse_args()
     today = args.run_date
@@ -99,6 +149,7 @@ def main() -> None:
     session.headers.update(build_auth_headers(token))
     countries = [c.lower() for c in (args.countries if args.countries is not None else resolve_storefronts(session))]
     print(f"[Apple Music] Music video storefronts: {len(countries)}")
+    print(f"[Apple Music] Music video workers: {WORKERS}")
 
     previous_by_id = load_previous_ranks(
         CSV_PATH,
@@ -112,41 +163,40 @@ def main() -> None:
         song_field="video_name",
     )
 
+    results_by_country: dict[str, list[dict]] = {}
+    if WORKERS == 1:
+        for country in countries:
+            try:
+                videos = fetch_country(session, country)
+            except RuntimeError:
+                token = fetch_musickit_token(session, refresh=True)
+                if not token:
+                    raise
+                session.headers.update(build_auth_headers(token))
+                videos = fetch_country(session, country)
+            results_by_country[country] = videos
+            print(f"{country}: {len(videos)} Taylor Swift video(s)")
+    else:
+        with ThreadPoolExecutor(max_workers=WORKERS) as executor:
+            futures = {executor.submit(fetch_country_task, token, country): country for country in countries}
+            for future in as_completed(futures):
+                _country, videos = future.result()
+                results_by_country[_country] = videos
+                print(f"{_country}: {len(videos)} Taylor Swift video(s)")
+
     rows: list[dict] = []
     for country in countries:
-        try:
-            videos = fetch_country(session, country)
-        except RuntimeError:
-            token = fetch_musickit_token(session, refresh=True)
-            if not token:
-                raise
-            session.headers.update(build_auth_headers(token))
-            videos = fetch_country(session, country)
-        print(f"{country}: {len(videos)} Taylor Swift video(s)")
+        videos = results_by_country.get(country, [])
         for video in videos:
-            key_by_id = (country, video["apple_music_id"])
-            key_by_name = (country, rank_key(video["video_name"]))
-            prev_rank = previous_by_id.get(key_by_id)
-            if prev_rank is None:
-                prev_rank = previous_by_name.get(key_by_name)
             rows.append(
-                {
-                    "date": today,
-                    "scraped_at": scraped_at,
-                    "country": country,
-                    "chart_type": "music_videos",
-                    "video_name": video["video_name"],
-                    "apple_music_id": video["apple_music_id"],
-                    "rank": video["rank"],
-                    "previous_rank": prev_rank if prev_rank is not None else "",
-                    "image_url": video["image_url"],
-                    "url": video["url"],
-                    "artist_name": video["artist_name"],
-                    "album_name": video["album_name"],
-                    "duration_ms": video["duration_ms"],
-                    "release_date": video["release_date"],
-                    "genre_names": video["genre_names"],
-                }
+                build_row(
+                    today=today,
+                    scraped_at=scraped_at,
+                    country=country,
+                    video=video,
+                    previous_by_id=previous_by_id,
+                    previous_by_name=previous_by_name,
+                )
             )
 
     rewrite_for_snapshot(CSV_PATH, FIELDNAMES, scraped_at, rows)

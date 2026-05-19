@@ -1062,6 +1062,11 @@ def main() -> int:
                     if warp_active:
                         _warp_disconnect()
                     return 1
+            if not args.dry_run:
+                for name, _, _ in collect_runners:
+                    if name in {"global", "fr"} and name in post_parts and not _region_lock_exists(name, target_date, "posted.lock"):
+                        print(f"[FAIL] {name}: posted.lock absent apres collecte pour {target_date}")
+                        failures.append((f"{name}-post", 1))
             if not args.dry_run and "worldwide" in {n for n, _, _ in collect_runners} and "worldwide" not in {n for n, _ in failures}:
                 worldwide_ok, worldwide_reruns = _ensure_worldwide_valid(
                     collect_runners,

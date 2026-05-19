@@ -7,9 +7,11 @@ Uses the MusicKit API (same as genre_charts.py) for real-time data.
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, datetime
+from threading import local
 
-from core.config import ARTIST_ID, CHART_LIMIT, DB_DIR, SCRIPTS_DIR
+from core.config import ARTIST_ID, CHART_LIMIT, DB_DIR, SCRIPTS_DIR, WORKERS
 from core.csv_utils import load_previous_ranks, rewrite_for_snapshot
 from core.export import maybe_run_export
 from core.filters import build_artwork_url, clean_text, is_taylor_swift_song, rank_key
@@ -19,6 +21,7 @@ from core.token import build_auth_headers, fetch_musickit_token
 
 CSV_PATH = DB_DIR / "apple_music_country_charts.csv"
 EXPORT_SCRIPT = SCRIPTS_DIR / "export_apple_music.py"
+_THREAD_LOCAL = local()
 FIELDNAMES = [
     "date",
     "scraped_at",
@@ -76,6 +79,49 @@ def fetch_country(session, country: str) -> list[dict]:
     return songs
 
 
+def worker_session(token: str):
+    session = getattr(_THREAD_LOCAL, "session", None)
+    if session is None:
+        session = build_session()
+        session.headers.update(build_auth_headers(token))
+        _THREAD_LOCAL.session = session
+    return session
+
+
+def fetch_country_task(token: str, country: str) -> tuple[str, list[dict]]:
+    session = worker_session(token)
+    return country, fetch_country(session, country)
+
+
+def build_row(
+    *,
+    today: str,
+    scraped_at: str,
+    country: str,
+    song: dict,
+    previous_by_id: dict[tuple[str, ...], int],
+    previous_by_name: dict[tuple[str, ...], int],
+) -> dict:
+    key_by_id = (country, song["apple_music_id"])
+    key_by_name = (country, rank_key(song["song_name"]))
+    prev_rank = previous_by_id.get(key_by_id)
+    if prev_rank is None:
+        prev_rank = previous_by_name.get(key_by_name)
+    return {
+        "date": today,
+        "scraped_at": scraped_at,
+        "country": country,
+        "chart_type": "country",
+        "song_name": song["song_name"],
+        "apple_music_id": song["apple_music_id"],
+        "rank": song["rank"],
+        "previous_rank": prev_rank if prev_rank is not None else "",
+        "image_url": song["image_url"],
+        "url": song["url"],
+        "artist_name": song["artist_name"],
+    }
+
+
 
 def main() -> None:
     args = parse_args()
@@ -90,6 +136,7 @@ def main() -> None:
     session = base_session
     countries = [c.lower() for c in (args.countries if args.countries is not None else resolve_storefronts(session))]
     print(f"[Apple Music] Country song storefronts: {len(countries)}")
+    print(f"[Apple Music] Country song workers: {WORKERS}")
 
     previous_by_id = load_previous_ranks(
         CSV_PATH,
@@ -102,37 +149,41 @@ def main() -> None:
         today=scraped_at,
     )
 
+    results_by_country: dict[str, list[dict]] = {}
+    if WORKERS == 1:
+        for country in countries:
+            try:
+                songs = fetch_country(session, country)
+            except RuntimeError:
+                token = fetch_musickit_token(session, refresh=True)
+                if not token:
+                    raise
+                session.headers.update(build_auth_headers(token))
+                songs = fetch_country(session, country)
+            results_by_country[country] = songs
+            print(f"{country}: {len(songs)} Taylor Swift song(s)")
+    else:
+        with ThreadPoolExecutor(max_workers=WORKERS) as executor:
+            futures = {executor.submit(fetch_country_task, token, country): country for country in countries}
+            for future in as_completed(futures):
+                country = futures[future]
+                _country, songs = future.result()
+                results_by_country[_country] = songs
+                print(f"{_country}: {len(songs)} Taylor Swift song(s)")
+
     rows: list[dict] = []
     for country in countries:
-        try:
-            songs = fetch_country(session, country)
-        except RuntimeError:
-            token = fetch_musickit_token(session, refresh=True)
-            if not token:
-                raise
-            session.headers.update(build_auth_headers(token))
-            songs = fetch_country(session, country)
-        print(f"{country}: {len(songs)} Taylor Swift song(s)")
+        songs = results_by_country.get(country, [])
         for song in songs:
-            key_by_id = (country, song["apple_music_id"])
-            key_by_name = (country, rank_key(song["song_name"]))
-            prev_rank = previous_by_id.get(key_by_id)
-            if prev_rank is None:
-                prev_rank = previous_by_name.get(key_by_name)
             rows.append(
-                {
-                    "date": today,
-                    "scraped_at": scraped_at,
-                    "country": country,
-                    "chart_type": "country",
-                    "song_name": song["song_name"],
-                    "apple_music_id": song["apple_music_id"],
-                    "rank": song["rank"],
-                    "previous_rank": prev_rank if prev_rank is not None else "",
-                    "image_url": song["image_url"],
-                    "url": song["url"],
-                    "artist_name": song["artist_name"],
-                }
+                build_row(
+                    today=today,
+                    scraped_at=scraped_at,
+                    country=country,
+                    song=song,
+                    previous_by_id=previous_by_id,
+                    previous_by_name=previous_by_name,
+                )
             )
 
     rewrite_for_snapshot(CSV_PATH, FIELDNAMES, scraped_at, rows)

@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import sys
+import time
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -77,6 +78,7 @@ def main() -> None:
     parser.add_argument("--no-post", action="store_true", help="Generate images but skip Twitter posts.")
     parser.add_argument("--limit", type=int, default=3, help="Number of songs to post (default: 3).")
     parser.add_argument("--min-days", type=int, default=14, help="Minimum days for best-day-since (default: 14).")
+    parser.add_argument("--post-spacing-seconds", type=int, default=60, help="Seconds to wait between Twitter posts (default: 60).")
     args = parser.parse_args()
 
     target_date = args.date or str(date.today() - timedelta(days=1))
@@ -146,6 +148,9 @@ def main() -> None:
             print(f"[best_day_since_post] Failed to post {row['title']}.")
             sys.exit(1)
         posted_count += 1
+        if index < len(rows) and args.post_spacing_seconds > 0:
+            print(f"[best_day_since_post] Waiting {args.post_spacing_seconds}s before next post...")
+            time.sleep(args.post_spacing_seconds)
 
     if args.no_post:
         print("[best_day_since_post] Twitter posts skipped (--no-post).")

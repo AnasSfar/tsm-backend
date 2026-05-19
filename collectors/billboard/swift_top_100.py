@@ -43,6 +43,7 @@ STREAMS_HISTORY_CSV = _DB_DIR / "streams_history.csv"
 STREAMS_HISTORY_FULL_CSV = _DB_DIR / "streams_history_full.csv"
 CHARTS_GLOBAL_CSV = _DB_DIR / "charts_history_global.csv"
 APPLE_MUSIC_GLOBAL_CSV = _DB_DIR / "apple_music_global.csv"
+APPLE_MUSIC_COUNTRY_CSV = _DB_DIR / "apple_music_country_charts.csv"
 APPLE_MUSIC_TS_TOP_SONGS_CSV = _DB_DIR / "apple_music_ts_top_songs.csv"
 SWIFT_TOP_100_HISTORY_CSV = _DB_DIR / "swift_top_100_history.csv"
 SWIFT_TOP_100_BONUSES_JSON = _DB_DIR / "swift_top_100_bonuses.json"
@@ -55,6 +56,7 @@ OUTPUT_JSON = _SITE_DATA_DIR / "swift_top_100.json"
 OUTPUT_PNG = _SITE_DATA_DIR / "swift_top_100.png"
 
 _TRACK_ID_RE = re.compile(r"track/([A-Za-z0-9]+)")
+AM_COUNTRY_WEIGHT = float(os.getenv("TAYBOARD_AM_COUNTRY_WEIGHT", "0.08"))
 
 
 def _parse_iso_date(value: str) -> date | None:
@@ -419,6 +421,54 @@ def _weekly_apple_music_global_points(*, week_dates: set[str], logger: Logger) -
     return scores
 
 
+def _weekly_apple_music_country_points(*, week_dates: set[str], logger: Logger) -> dict[str, float]:
+    """Return normalized_title -> weighted sum of daily AM country-chart scores.
+
+    Formula: (500 / rank^0.75) * AM_COUNTRY_WEIGHT for each country/day placement.
+    Best rank per (title, country, day) is kept.
+    """
+    scores: dict[str, float] = {}
+    if not APPLE_MUSIC_COUNTRY_CSV.exists():
+        logger.log("  apple_country  : missing - country score disabled")
+        return scores
+
+    def _to_int(v: str | None) -> int | None:
+        try:
+            return int((v or "").strip())
+        except Exception:
+            return None
+
+    best_per_country_day: dict[tuple[str, str, str], int] = {}
+    matched_rows = 0
+    with APPLE_MUSIC_COUNTRY_CSV.open("r", newline="", encoding="utf-8-sig") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            day = (row.get("date") or "").strip()
+            if day not in week_dates:
+                continue
+            chart_type = (row.get("chart_type") or "").strip().lower()
+            if chart_type and chart_type != "country":
+                continue
+            country = (row.get("country") or "").strip().lower()
+            title = (row.get("song_name") or "").strip()
+            rank = _to_int(row.get("rank"))
+            if not country or not title or not rank or rank < 1 or rank > 200:
+                continue
+            key = _normalize_title(title)
+            if not key:
+                continue
+            cell = (key, country, day)
+            if cell not in best_per_country_day or rank < best_per_country_day[cell]:
+                best_per_country_day[cell] = rank
+            matched_rows += 1
+
+    for (key, _, _), rank in best_per_country_day.items():
+        scores[key] = scores.get(key, 0.0) + (_rank_to_am_units_score(rank) * AM_COUNTRY_WEIGHT)
+
+    logger.log(f"  apple_country  : {matched_rows} rows (weight={AM_COUNTRY_WEIGHT:g})")
+    return scores
+
+
 def _weekly_apple_music_ts_points(*, week_dates: set[str], logger: Logger) -> dict[str, float]:
     """Return normalized_title -> sum of daily AM TS Top Songs raw scores over the week.
 
@@ -526,6 +576,8 @@ def _write_history_csv(rows: list[dict], logger: Logger) -> None:
         "global_best_rank",
         "am_ts_score",
         "am_global_score",
+        "am_country_score",
+        "am_overall_score",
         "prev_rank",
         "prev_points",
         "change",
@@ -586,6 +638,10 @@ def _generate_song_files(logger: Logger) -> None:
 
             am_ts_score = entry.get("am_ts_score") or 0.0
             am_global_score = entry.get("am_global_score") or 0.0
+            am_country_score = entry.get("am_country_score") or 0.0
+            am_overall_score = entry.get("am_overall_score")
+            if am_overall_score is None:
+                am_overall_score = am_global_score + am_country_score
             by_track[tid]["history"].append({
                 "date": chart_date,
                 "rank": entry.get("rank"),
@@ -598,6 +654,8 @@ def _generate_song_files(logger: Logger) -> None:
                 "units_surplus": entry.get("units_surplus"),
                 "am_ts_units": round(am_ts_score * 1000),
                 "am_global_units": round(am_global_score * 1000),
+                "am_country_units": round(am_country_score * 1000),
+                "am_overall_units": round(am_overall_score * 1000),
             })
 
     written = 0
@@ -825,7 +883,8 @@ def run(
 
     curr_points, curr_ranks = _build_week_chart(week_end=chart_date, tracks=tracks, logger=logger)
 
-    am_best_rank = _weekly_apple_music_global_points(week_dates=week_set, logger=logger)
+    am_global_score_by_title = _weekly_apple_music_global_points(week_dates=week_set, logger=logger)
+    am_country_score_by_title = _weekly_apple_music_country_points(week_dates=week_set, logger=logger)
     am_ts_best_rank = _weekly_apple_music_ts_points(week_dates=week_set, logger=logger)
     charts_streams_by_title = _weekly_charts_streams_by_title(week_dates=week_set, logger=logger)
 
@@ -932,8 +991,10 @@ def run(
 
         # Apple Music units (loi de puissance × 1000)
         am_ts_raw = am_ts_best_rank.get(key, 0.0)
-        am_global_raw = am_best_rank.get(key, 0.0)
-        units_am = round((am_ts_raw + am_global_raw) * 1000)
+        am_global_raw = am_global_score_by_title.get(key, 0.0)
+        am_country_raw = am_country_score_by_title.get(key, 0.0)
+        am_overall_raw = am_global_raw + am_country_raw
+        units_am = round((am_ts_raw + am_overall_raw) * 1000)
 
         # Spotify units (on-chart + surplus × 0.7)
         units_charts = charts_streams_by_title.get(key, 0)
@@ -976,6 +1037,8 @@ def run(
                 "global_best_rank": row.get("global_best_rank"),
                 "am_ts_score": round(am_ts_raw, 2),
                 "am_global_score": round(am_global_raw, 2),
+                "am_country_score": round(am_country_raw, 2),
+                "am_overall_score": round(am_overall_raw, 2),
                 "prev_rank": pr,
                 "prev_points": prev_points_value,
                 "change": change,
@@ -1003,7 +1066,9 @@ def run(
                 "total_units": total_units,
                 "units": _format_number(total_units),
                 "am_ts_units_display": _format_number(round(am_ts_raw * 1000)),
-                "am_global_units_display": _format_number(round(am_global_raw * 1000)),
+                "am_global_units_display": _format_number(round(am_overall_raw * 1000)),
+                "am_country_units_display": _format_number(round(am_country_raw * 1000)),
+                "am_overall_units_display": _format_number(round(am_overall_raw * 1000)),
                 "units_charts_display": _format_number(units_charts),
                 "units_surplus_display": _format_number(units_surplus),
                 "streams_pct": streams_pct,
@@ -1014,6 +1079,8 @@ def run(
                 "global_best_rank": row.get("global_best_rank"),
                 "am_ts_score": round(am_ts_raw, 2),
                 "am_global_score": round(am_global_raw, 2),
+                "am_country_score": round(am_country_raw, 2),
+                "am_overall_score": round(am_overall_raw, 2),
                 "prev_rank": pr,
                 "change": change,
                 "rank_change": rank_change,

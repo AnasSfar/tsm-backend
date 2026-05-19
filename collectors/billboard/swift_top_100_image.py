@@ -242,7 +242,7 @@ def build_html(
             "</tr>"
             "<tr>"
             "<th class='c-am'>TS</th>"
-            "<th class='c-gl'>Global</th>"
+            "<th class='c-gl'>Overall</th>"
             "<th class='c-charts'>Charts</th>"
             "<th class='c-streams'>Streams</th>"
             "</tr>"

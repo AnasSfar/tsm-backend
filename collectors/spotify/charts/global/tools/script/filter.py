@@ -76,6 +76,13 @@ def _load_cached_token() -> str | None:
     return None
 
 
+def _clear_cached_token() -> None:
+    try:
+        _BEARER_CACHE.unlink(missing_ok=True)
+    except Exception:
+        pass
+
+
 def _save_cached_token(token: str) -> None:
     try:
         _BEARER_CACHE.parent.mkdir(parents=True, exist_ok=True)
@@ -86,12 +93,14 @@ def _save_cached_token(token: str) -> None:
         pass
 
 
-def _get_bearer_token() -> str:
+def _get_bearer_token(*, refresh: bool = False) -> str:
     """Retourne le Bearer token (depuis le cache si valide, sinon via Playwright)."""
-    cached = _load_cached_token()
+    cached = None if refresh else _load_cached_token()
     if cached:
         print("  Token Bearer depuis le cache.")
         return cached
+    if refresh:
+        _clear_cached_token()
 
     token_holder: list[str] = []
 
@@ -182,6 +191,11 @@ def _fetch_via_api(chart_date: str) -> tuple[list[dict], str] | None:
         }
         url  = f"{_API_BASE}/{CHART_ID}/{chart_date}"
         resp = _requests.get(url, headers=headers, timeout=30)
+        if resp.status_code in {401, 403}:
+            print(f"  API : token refuse (HTTP {resp.status_code}), refresh bearer...")
+            token = _get_bearer_token(refresh=True)
+            headers["Authorization"] = f"Bearer {token}"
+            resp = _requests.get(url, headers=headers, timeout=30)
         if resp.status_code == 200:
             data = resp.json()
             rows = _parse_api_entries(data)
