@@ -80,7 +80,12 @@ def main() -> None:
     parser.add_argument("--no-post", action="store_true", help="Generate images but skip Twitter posts.")
     parser.add_argument("--limit", type=int, default=3, help="Number of songs to post (default: 3).")
     parser.add_argument("--min-days", type=int, default=14, help="Minimum days for best-day-since (default: 14).")
-    parser.add_argument("--post-spacing-seconds", type=int, default=60, help="Seconds to wait between Twitter posts (default: 60).")
+    parser.add_argument(
+        "--post-spacing-seconds",
+        type=int,
+        default=0,
+        help="Extra seconds to wait between Twitter posts; core.twitter enforces account spacing.",
+    )
     args = parser.parse_args()
 
     target_date = args.date or str(date.today() - timedelta(days=1))

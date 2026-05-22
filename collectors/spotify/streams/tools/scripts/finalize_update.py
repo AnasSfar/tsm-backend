@@ -363,6 +363,17 @@ def _post_best_day_since(ctx: FinalizeContext, state: dict[str, float]) -> None:
     )
 
 
+def _start_spotlight_gainers(ctx: FinalizeContext) -> threading.Thread:
+    thread = threading.Thread(
+        target=_post_spotlight_gainers,
+        args=(ctx, {"posted_count": 0, "last_post_at": 0.0}),
+        name="spotlight-gainers-posts",
+        daemon=False,
+    )
+    thread.start()
+    return thread
+
+
 def _run_swift_top_100_if_needed(ctx: FinalizeContext) -> None:
     try:
         stats_date = date_cls.fromisoformat(ctx.summary["stats_date"])
@@ -390,6 +401,10 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
     _export_web_data_once(ctx, force=artist_metadata_updated)
 
     post_state = dict(ctx.initial_post_state or {"posted_count": 0, "last_post_at": 0.0})
+    spotlight_thread = None
+    if not ctx.debug_daily_mode and not ctx.local_test_mode:
+        spotlight_thread = _start_spotlight_gainers(ctx)
+
     _post_streams_image(ctx, post_state)
 
     if ctx.debug_daily_mode or ctx.local_test_mode:
@@ -398,7 +413,8 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
     _post_album_updates(ctx, post_state)
     _post_albums_daily(ctx, post_state)
     _run_forecast_and_image_refresh(ctx)
-    _post_spotlight_gainers(ctx, post_state)
+    if spotlight_thread is not None:
+        spotlight_thread.join()
     _post_best_day_since(ctx, post_state)
 
     print("Git commit and push...")

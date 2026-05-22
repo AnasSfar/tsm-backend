@@ -140,7 +140,7 @@ HILL_INITIAL       = 9      # point de départ (was 6 — start near max immedia
 PROBE_CANDIDATES = 10  # top N tracks (by streams) used as probe candidates
 
 PENDING_RETRY_SLEEP_SECONDS = 0
-POST_BETWEEN_STREAMS_POSTS_SECONDS = 30
+POST_BETWEEN_STREAMS_POSTS_SECONDS = 0
 INCREMENTAL_PUBLISH_ON_UPDATE = False
 
 NOT_FOUND_STREAK_PATH = DATA_DIR / "not_found_streak.json"

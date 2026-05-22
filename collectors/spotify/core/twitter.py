@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Post Twitter via Playwright (profil Chrome persistant) - partage Fr + Global."""
 import json
+import hashlib
 import os
 import tempfile
 import time
@@ -8,8 +9,11 @@ from contextlib import contextmanager
 from pathlib import Path
 from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeout
 
-TWITTER_POST_LOCK = Path(tempfile.gettempdir()) / "tsm_twitter_post.lock"
-TWITTER_POST_LOCK_TIMEOUT = 15 * 60
+TWITTER_COORD_DIR = Path(tempfile.gettempdir()) / "tsm_twitter_posts"
+TWITTER_COORD_LOCK = TWITTER_COORD_DIR / "coordinator.lock"
+TWITTER_POST_LOCK_TIMEOUT = 30 * 60
+TWITTER_ACCOUNT_SPACING_SECONDS = int(os.getenv("TWITTER_ACCOUNT_SPACING_SECONDS", "180"))
+TWITTER_MAX_ACTIVE_ACCOUNTS = int(os.getenv("TWITTER_MAX_ACTIVE_ACCOUNTS", "2"))
 
 
 def _profile_dir(session_file: Path) -> Path:
@@ -17,33 +21,111 @@ def _profile_dir(session_file: Path) -> Path:
     return Path(session_file).parent / "chrome_profile"
 
 
-@contextmanager
-def _twitter_post_lock(timeout: int = TWITTER_POST_LOCK_TIMEOUT):
-    """Serialize browser posts so parallel chart jobs do not race in X."""
+def _account_key(session_file: Path) -> str:
+    session_key = str(Path(session_file).resolve()).casefold()
+    return hashlib.sha1(session_key.encode("utf-8")).hexdigest()[:16]
+
+
+def _exclusive_file(path: Path, *, timeout: int, stale_after: int | None = None):
     start = time.time()
     fd = None
     while fd is None:
         try:
-            fd = os.open(str(TWITTER_POST_LOCK), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            fd = os.open(str(path), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
             os.write(fd, str(os.getpid()).encode("ascii", errors="ignore"))
         except FileExistsError:
             if time.time() - start > timeout:
                 try:
-                    if time.time() - TWITTER_POST_LOCK.stat().st_mtime > timeout:
-                        TWITTER_POST_LOCK.unlink()
+                    max_age = stale_after or timeout
+                    if time.time() - path.stat().st_mtime > max_age:
+                        path.unlink()
                         continue
                 except FileNotFoundError:
                     continue
-                raise TimeoutError(f"Twitter post lock timeout: {TWITTER_POST_LOCK}")
+                raise TimeoutError(f"Twitter post lock timeout: {path}")
             time.sleep(2)
+    return fd
 
+
+@contextmanager
+def _coordinator_lock(timeout: int = TWITTER_POST_LOCK_TIMEOUT):
+    fd = _exclusive_file(TWITTER_COORD_LOCK, timeout=timeout, stale_after=60)
     try:
         yield
     finally:
-        if fd is not None:
-            os.close(fd)
+        os.close(fd)
         try:
-            TWITTER_POST_LOCK.unlink()
+            TWITTER_COORD_LOCK.unlink()
+        except FileNotFoundError:
+            pass
+
+
+def _active_account_markers() -> list[Path]:
+    return [path for path in TWITTER_COORD_DIR.glob("active_*.lock") if path.is_file()]
+
+
+def _acquire_active_account(account_key: str, *, timeout: int) -> Path:
+    marker = TWITTER_COORD_DIR / f"active_{account_key}.lock"
+    start = time.time()
+    while True:
+        with _coordinator_lock(timeout=timeout):
+            active = _active_account_markers()
+            for active_marker in active:
+                try:
+                    if time.time() - active_marker.stat().st_mtime > timeout:
+                        active_marker.unlink()
+                except FileNotFoundError:
+                    pass
+            active = _active_account_markers()
+            if marker.exists() or len(active) < TWITTER_MAX_ACTIVE_ACCOUNTS:
+                marker.write_text(str(os.getpid()), encoding="ascii")
+                return marker
+        if time.time() - start > timeout:
+            raise TimeoutError("Twitter active-account slot timeout")
+        time.sleep(2)
+
+
+def _last_post_path(account_key: str) -> Path:
+    return TWITTER_COORD_DIR / f"last_post_{account_key}.txt"
+
+
+def _wait_account_spacing(account_key: str) -> None:
+    last_post_path = _last_post_path(account_key)
+    try:
+        last_post_at = float(last_post_path.read_text(encoding="ascii").strip())
+    except Exception:
+        return
+    wait_s = TWITTER_ACCOUNT_SPACING_SECONDS - (time.time() - last_post_at)
+    if wait_s > 0:
+        print(f"Waiting {int(wait_s)}s before next X post for this account...")
+        time.sleep(wait_s)
+
+
+def _mark_account_posted(account_key: str) -> None:
+    TWITTER_COORD_DIR.mkdir(parents=True, exist_ok=True)
+    _last_post_path(account_key).write_text(str(time.time()), encoding="ascii")
+
+
+@contextmanager
+def _twitter_account_slot(session_file: Path, timeout: int = TWITTER_POST_LOCK_TIMEOUT):
+    """Serialize one X account, allow up to two accounts to post at once."""
+    account_key = _account_key(session_file)
+    account_lock = TWITTER_COORD_DIR / f"account_{account_key}.lock"
+    account_fd = _exclusive_file(account_lock, timeout=timeout)
+    active_marker = None
+    try:
+        active_marker = _acquire_active_account(account_key, timeout=timeout)
+        yield account_key
+    finally:
+        if active_marker is not None:
+            try:
+                active_marker.unlink()
+            except FileNotFoundError:
+                pass
+        os.close(account_fd)
+        try:
+            account_lock.unlink()
         except FileNotFoundError:
             pass
 
@@ -313,9 +395,10 @@ def post_thread(tweets: list[str], session_file: Path) -> bool:
                 time.sleep(2)
 
             success = True
-            with _twitter_post_lock():
+            with _twitter_account_slot(session_file) as account_key:
                 for i, tweet in enumerate(tweets, 1):
                     try:
+                        _wait_account_spacing(account_key)
                         if previous_url and "/status/" in previous_url:
                             page.goto(previous_url, wait_until="domcontentloaded")
                             time.sleep(2)
@@ -334,6 +417,7 @@ def post_thread(tweets: list[str], session_file: Path) -> bool:
                         if not _wait_post_submitted(page, tweet):
                             success = False
                             break
+                        _mark_account_posted(account_key)
                         previous_url = page.url
                         print(f"OK Tweet {i}/{len(tweets)} publie")
 
@@ -378,7 +462,8 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
                 page.goto("https://x.com/home", wait_until="domcontentloaded")
                 time.sleep(2)
 
-            with _twitter_post_lock():
+            with _twitter_account_slot(session_file) as account_key:
+                _wait_account_spacing(account_key)
                 page.goto("https://x.com/compose/post", wait_until="domcontentloaded")
                 time.sleep(2)
 
@@ -400,6 +485,7 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
                 if not _wait_post_submitted(page, tweet):
                     return False
 
+                _mark_account_posted(account_key)
                 print("OK Tweet avec image publie")
                 return True
 
