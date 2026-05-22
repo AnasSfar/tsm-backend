@@ -10,6 +10,7 @@ Logique :
 Usage :
     python generate_artist_chart_image.py
     python generate_artist_chart_image.py 2026-05-06
+    python generate_artist_chart_image.py 2026-05-06 --period weekly
     python generate_artist_chart_image.py 2026-05-06 --no-post
 """
 from __future__ import annotations
@@ -50,6 +51,10 @@ from core.data_paths import legacy_spotify_chart_dir, spotify_chart_dir
 
 HANDLE  = "@tsmusem13"
 TS_NAME = "Taylor Swift"
+PERIOD_FILES = {
+    "daily": "artist_global_daily.json",
+    "weekly": "artist_global_weekly.json",
+}
 
 _TWITTER_POST_LOCK = Path(tempfile.gettempdir()) / "tsm_twitter_post.lock"
 _LOCK_TIMEOUT = 15 * 60
@@ -142,7 +147,8 @@ def get_dominant_color(img_path: Path) -> str:
 
 # ── Data helpers ───────────────────────────────────────────────────────────────
 
-def find_latest_date() -> str:
+def find_latest_date(period: str) -> str:
+    filename = PERIOD_FILES[period]
     latest = None
     for root in (
         REPO_ROOT / "data",
@@ -151,17 +157,18 @@ def find_latest_date() -> str:
         if not root.exists():
             continue
         for day_dir in sorted(root.rglob("*")):
-            if day_dir.is_dir() and (day_dir / "artist_global_daily.json").exists():
+            if day_dir.is_dir() and (day_dir / filename).exists():
                 latest = day_dir.name
     if not latest:
-        raise FileNotFoundError("No artist_global_daily.json found in data/")
+        raise FileNotFoundError(f"No {filename} found in data/")
     return latest
 
 
-def load_chart(stats_date: str) -> dict:
-    path = spotify_chart_dir("artists_global", stats_date) / "artist_global_daily.json"
+def load_chart(stats_date: str, period: str) -> dict:
+    filename = PERIOD_FILES[period]
+    path = spotify_chart_dir("artists_global", stats_date) / filename
     if not path.exists():
-        path = legacy_spotify_chart_dir("artists_global", stats_date) / "artist_global_daily.json"
+        path = legacy_spotify_chart_dir("artists_global", stats_date) / filename
     if not path.exists():
         raise FileNotFoundError(f"Chart not found: {path}")
     return json.loads(path.read_text(encoding="utf-8-sig"))
@@ -358,11 +365,16 @@ def _hdr_style(header_img: Path | None) -> tuple[str, str]:
     return style, handle_color
 
 
-def build_top5_html(artists: list[dict], stats_date: str, header_img: Path | None) -> str:
+def _period_label(period: str) -> str:
+    return "Weekly" if period == "weekly" else "Daily"
+
+
+def build_top5_html(artists: list[dict], stats_date: str, header_img: Path | None, period: str) -> str:
     date_fmt = datetime.strptime(stats_date, "%Y-%m-%d").strftime("%B %d, %Y")
     hdr_style, handle_color = _hdr_style(header_img)
     top5 = [a for a in artists if a["rank"] <= 5]
     rows_html = "\n".join(_artist_row_html(a, i) for i, a in enumerate(top5))
+    period_label = _period_label(period)
     return f"""<!DOCTYPE html>
 <html><head><meta charset="utf-8"><style>{CSS}</style></head>
 <body><div class="container">
@@ -370,7 +382,7 @@ def build_top5_html(artists: list[dict], stats_date: str, header_img: Path | Non
     {SPOTIFY_SVG}
     <div>
       <div class="hdr-title">Taylor Swift · Global Artist Chart</div>
-      <div class="hdr-sub">Top 5 · {date_fmt}</div>
+      <div class="hdr-sub">{period_label} Top 5 · {date_fmt}</div>
     </div>
   </div>
   <div class="col-heads">
@@ -387,11 +399,12 @@ def build_top5_html(artists: list[dict], stats_date: str, header_img: Path | Non
   </div>
 </div></body></html>"""
 
-def build_top10_html(artists: list[dict], stats_date: str, header_img: Path | None) -> str:
+def build_top10_html(artists: list[dict], stats_date: str, header_img: Path | None, period: str) -> str:
     date_fmt = datetime.strptime(stats_date, "%Y-%m-%d").strftime("%B %d, %Y")
     hdr_style, handle_color = _hdr_style(header_img)
     top10 = [a for a in artists if a["rank"] <= 10]
     rows_html = "\n".join(_artist_row_html(a, i) for i, a in enumerate(top10))
+    period_label = _period_label(period)
     return f"""<!DOCTYPE html>
 <html><head><meta charset="utf-8"><style>{CSS}</style></head>
 <body><div class="container">
@@ -399,7 +412,7 @@ def build_top10_html(artists: list[dict], stats_date: str, header_img: Path | No
     {SPOTIFY_SVG}
     <div>
       <div class="hdr-title">Taylor Swift · Global Artist Chart</div>
-      <div class="hdr-sub">Top 10 · {date_fmt}</div>
+      <div class="hdr-sub">{period_label} Top 10 · {date_fmt}</div>
     </div>
   </div>
   <div class="col-heads">
@@ -417,9 +430,10 @@ def build_top10_html(artists: list[dict], stats_date: str, header_img: Path | No
 </div></body></html>"""
 
 
-def build_solo_html(ts_artist: dict, stats_date: str, header_img: Path | None) -> str:
+def build_solo_html(ts_artist: dict, stats_date: str, header_img: Path | None, period: str) -> str:
     date_fmt = datetime.strptime(stats_date, "%Y-%m-%d").strftime("%B %d, %Y")
     hdr_style, handle_color = _hdr_style(header_img)
+    period_label = _period_label(period)
     rank = ts_artist["rank"]
     chg_label, chg_cls = rank_change_label(rank, ts_artist.get("previous_rank"))
     streak = fmt_streak(ts_artist.get("streak"))
@@ -437,7 +451,7 @@ def build_solo_html(ts_artist: dict, stats_date: str, header_img: Path | None) -
     {SPOTIFY_SVG}
     <div>
       <div class="hdr-title">Taylor Swift · Global Artist Chart</div>
-      <div class="hdr-sub">{date_fmt}</div>
+      <div class="hdr-sub">{period_label} Chart · {date_fmt}</div>
     </div>
   </div>
   <div class="solo-wrap">
@@ -498,17 +512,19 @@ def generate_image(html_content: str, out_path: Path) -> None:
 
 # ── Tweet text ─────────────────────────────────────────────────────────────────
 
-def build_tweet(ts_artist: dict, mode: str, stats_date: str) -> str:
+def build_tweet(ts_artist: dict, mode: str, stats_date: str, period: str) -> str:
     date_fmt = datetime.strptime(stats_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    time_label = "this week" if period == "weekly" else "yesterday"
+    chart_label = "Weekly" if period == "weekly" else "Top Artists"
 
     if mode == "top10":
-        return f"The top 10 most streamed artists on Spotify Charts yesterday ({date_fmt}) :"
+        return f"The top 10 most streamed artists on Spotify Charts {time_label} ({date_fmt}) :"
     
     elif mode == "top5":
-        return f"The top 5 most streamed artists on Spotify Charts yesterday ({date_fmt}) :"
+        return f"The top 5 most streamed artists on Spotify Charts {time_label} ({date_fmt}) :"
     
     else:
-        return f"Taylor Swift on Spotify Top Artists charts yesterday ({date_fmt}) :"
+        return f"Taylor Swift on Spotify {chart_label} charts {time_label} ({date_fmt}) :"
 
 
 # ── Main ───────────────────────────────────────────────────────────────────────
@@ -516,14 +532,15 @@ def build_tweet(ts_artist: dict, mode: str, stats_date: str) -> str:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate Spotify Global Artist Chart image.")
     parser.add_argument("date", nargs="?", help="Stats date YYYY-MM-DD (default: latest available)")
+    parser.add_argument("--period", choices=sorted(PERIOD_FILES), default="daily")
     parser.add_argument("--no-post", action="store_true", help="Generate image but skip Twitter posting")
     parser.add_argument("--session", help="Path to a Twitter session JSON file (overrides default)")
     args = parser.parse_args()
 
-    stats_date = args.date or find_latest_date()
+    stats_date = args.date or find_latest_date(args.period)
     print(f"Date: {stats_date}")
 
-    data = load_chart(stats_date)
+    data = load_chart(stats_date, args.period)
     artists = data["artists"]
 
     ts_artist = next((a for a in artists if a["artist_name"].lower() == TS_NAME.lower()), None)
@@ -537,18 +554,19 @@ def main() -> None:
     header_img = pick_header_image()
     if ts_rank <= 5:
         mode = "top5"
-        html = build_top5_html(artists, stats_date, header_img)
+        html = build_top5_html(artists, stats_date, header_img, args.period)
         print("Mode: Top 5")
     elif ts_rank <= 10:
         mode = "top10"
-        html = build_top10_html(artists, stats_date, header_img)
+        html = build_top10_html(artists, stats_date, header_img, args.period)
         print("Mode: Top 10")
     else:
         mode = "solo"
-        html = build_solo_html(ts_artist, stats_date, header_img)
+        html = build_solo_html(ts_artist, stats_date, header_img, args.period)
         print(f"Mode: Solo card (Taylor Swift is #{ts_rank})")
 
-    out_path = spotify_chart_dir("artists_global", stats_date) / "artist_chart_image.png"
+    out_name = "artist_chart_weekly_image.png" if args.period == "weekly" else "artist_chart_image.png"
+    out_path = spotify_chart_dir("artists_global", stats_date) / out_name
     generate_image(html, out_path)
 
     if not args.no_post:
@@ -556,7 +574,7 @@ def main() -> None:
         if not twitter_session.exists():
             print(f"Twitter session not found: {twitter_session} — skipping post.")
             return
-        tweet = build_tweet(ts_artist, mode, stats_date)
+        tweet = build_tweet(ts_artist, mode, stats_date, args.period)
         print(f"\nTweet:\n{tweet}\n")
         try:
             from core.twitter import post_with_image

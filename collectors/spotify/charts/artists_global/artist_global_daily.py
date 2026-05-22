@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Fetch Spotify Charts' global daily artist chart.
+Fetch Spotify Charts' global artist chart.
 
 Default:
     python artist_global_daily.py
@@ -8,6 +8,7 @@ Default:
 Useful options:
     python artist_global_daily.py --date latest
     python artist_global_daily.py --date 2026-05-06
+    python artist_global_daily.py --period weekly
     python artist_global_daily.py --wait
 """
 from __future__ import annotations
@@ -38,14 +39,29 @@ COLLECTOR_ROOT = CHARTS_ROOT / "artists_global"
 sys.path.insert(0, str(ROOT / "collectors" / "spotify"))
 from core.data_paths import spotify_chart_dir
 
-CHART_ID = "artist-global-daily"
+PERIOD_CONFIG = {
+    "daily": {
+        "chart_id": "artist-global-daily",
+        "json_name": "artist_global_daily.json",
+        "csv_name": "artist_global_daily.csv",
+        "latest_output": "charts_artists_global.json",
+    },
+    "weekly": {
+        "chart_id": "artist-global-weekly",
+        "json_name": "artist_global_weekly.json",
+        "csv_name": "artist_global_weekly.csv",
+        "latest_output": "charts_artists_global_weekly.json",
+    },
+}
+
+CHART_ID = PERIOD_CONFIG["daily"]["chart_id"]
 API_BASE = "https://charts-spotify-com-service.spotify.com/auth/v0/charts"
 CHART_URL = f"https://charts.spotify.com/charts/view/{CHART_ID}/latest"
 # Use the songs chart page to acquire the bearer token (more reliable than artist chart page)
 _TOKEN_ACQUIRE_URL = "https://charts.spotify.com/charts/view/regional-global-daily/latest"
 SESSION_FILE = CHARTS_ROOT / "global" / "tools" / "json" / "spotify_session.json"
 BEARER_CACHE = CHARTS_ROOT / "global" / "tools" / "json" / "bearer_cache.json"
-OUTPUT_PATH = ROOT / "website" / "site" / "data" / "charts_artists_global.json"
+OUTPUT_PATH = ROOT / "website" / "site" / "data" / PERIOD_CONFIG["daily"]["latest_output"]
 
 TOKEN_TTL = 50 * 60
 DEFAULT_WAIT_SECONDS = 10
@@ -268,9 +284,9 @@ def _parse_artist_entries(data: dict[str, Any]) -> list[dict[str, Any]]:
     return rows
 
 
-def _request_chart(route_value: str, token: str) -> requests.Response:
+def _request_chart(chart_id: str, route_value: str, token: str) -> requests.Response:
     return requests.get(
-        f"{API_BASE}/{CHART_ID}/{route_value}",
+        f"{API_BASE}/{chart_id}/{route_value}",
         headers={
             "Authorization": f"Bearer {token}",
             "Accept": "application/json",
@@ -281,16 +297,16 @@ def _request_chart(route_value: str, token: str) -> requests.Response:
     )
 
 
-def _fetch_chart(route_value: str, token: str) -> tuple[list[dict[str, Any]], str | None, str]:
+def _fetch_chart(chart_id: str, route_value: str, token: str) -> tuple[list[dict[str, Any]], str | None, str]:
     try:
-        resp = _request_chart(route_value, token)
+        resp = _request_chart(chart_id, route_value, token)
     except requests.RequestException as exc:
         return [], None, f"request error: {exc}"
 
     if resp.status_code in (401, 403):
         token = _get_bearer_token(refresh=True)
         try:
-            resp = _request_chart(route_value, token)
+            resp = _request_chart(chart_id, route_value, token)
         except requests.RequestException as exc:
             return [], None, f"request error: {exc}"
 
@@ -304,12 +320,12 @@ def _fetch_chart(route_value: str, token: str) -> tuple[list[dict[str, Any]], st
     return _parse_artist_entries(data), _find_first_date(data), "HTTP 200"
 
 
-def _history_json_path(chart_date: str) -> Path:
-    return spotify_chart_dir("artists_global", chart_date) / "artist_global_daily.json"
+def _history_json_path(chart_date: str, period: str) -> Path:
+    return spotify_chart_dir("artists_global", chart_date) / PERIOD_CONFIG[period]["json_name"]
 
 
-def _history_csv_path(chart_date: str) -> Path:
-    return spotify_chart_dir("artists_global", chart_date) / "artist_global_daily.csv"
+def _history_csv_path(chart_date: str, period: str) -> Path:
+    return spotify_chart_dir("artists_global", chart_date) / PERIOD_CONFIG[period]["csv_name"]
 
 
 def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
@@ -348,16 +364,26 @@ def maybe_upload_to_r2() -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Fetch Spotify artist-global-daily chart.")
+    parser = argparse.ArgumentParser(description="Fetch Spotify global artist chart.")
+    parser.add_argument(
+        "--period",
+        choices=sorted(PERIOD_CONFIG),
+        default="daily",
+        help="Chart period to fetch: daily or weekly (default: daily).",
+    )
     parser.add_argument("--date", default="latest", help="YYYY-MM-DD or latest (default: latest).")
     parser.add_argument("--no-wait", action="store_true", help="Ne pas retenter si le chart est indisponible.")
     parser.add_argument("--retry-seconds", type=int, default=DEFAULT_WAIT_SECONDS)
     parser.add_argument("--no-csv", action="store_true", help="Do not write the CSV snapshot.")
     parser.add_argument("--no-upload", action="store_true", help="Skip the R2 upload step.")
     parser.add_argument("--no-post", action="store_true", help="Skip image generation and Twitter posting.")
+    parser.add_argument("--force-post", action="store_true", help="Post even if this weekly snapshot already exists.")
     parser.add_argument("--no-warp", action="store_true", help="Skip Cloudflare WARP connect/disconnect.")
     args = parser.parse_args()
 
+    period = args.period
+    config = PERIOD_CONFIG[period]
+    chart_id = config["chart_id"]
     route_value = args.date.strip() or "latest"
     if route_value != "latest":
         try:
@@ -366,12 +392,12 @@ def main() -> int:
             print(f"[ERROR] Invalid --date value: {route_value!r}")
             return 1
 
-    expected_date = str(date.today() - timedelta(days=1)) if route_value == "latest" else None
+    expected_date = str(date.today() - timedelta(days=1)) if period == "daily" and route_value == "latest" else None
 
     token = _get_bearer_token()
     attempt = 1
     while True:
-        rows, detected_date, status = _fetch_chart(route_value, token)
+        rows, detected_date, status = _fetch_chart(chart_id, route_value, token)
         if rows and (expected_date is None or detected_date == expected_date):
             break
         if args.no_wait:
@@ -402,49 +428,54 @@ def main() -> int:
 
     output = {
         "date": chart_date,
-        "chart_id": CHART_ID,
-        "source_url": f"https://charts.spotify.com/charts/view/{CHART_ID}/{route_value}",
+        "period": period,
+        "chart_id": chart_id,
+        "source_url": f"https://charts.spotify.com/charts/view/{chart_id}/{route_value}",
         "artists": rows,
     }
 
-    history_json = _history_json_path(chart_date)
+    history_json = _history_json_path(chart_date, period)
+    already_collected = history_json.exists()
     history_json.parent.mkdir(parents=True, exist_ok=True)
     history_json.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"[DONE] Written -> {history_json}")
 
     if not args.no_csv:
-        history_csv = _history_csv_path(chart_date)
+        history_csv = _history_csv_path(chart_date, period)
         _write_csv(history_csv, rows)
         print(f"[DONE] Written -> {history_csv}")
 
-    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT_PATH.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"[DONE] Written latest -> {OUTPUT_PATH}")
+    output_path = ROOT / "website" / "site" / "data" / config["latest_output"]
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"[DONE] Written latest -> {output_path}")
 
     if args.no_upload:
         print("[INFO] R2 upload skipped (--no-upload)")
     else:
         maybe_upload_to_r2()
 
-    if args.no_post:
+    if period == "weekly" and already_collected and not args.force_post:
+        print(f"[INFO] Weekly chart {chart_date} already collected; post skipped.")
+    elif args.no_post:
         print("[INFO] Image generation and Twitter post skipped (--no-post)")
     else:
         generate_script = COLLECTOR_ROOT / "tools" / "scripts" / "generate_artist_chart_image.py"
         if generate_script.exists():
             print("[STEP] Generating image and posting to Twitter...")
-            cmd = [sys.executable, str(generate_script), chart_date]
+            cmd = [sys.executable, str(generate_script), chart_date, "--period", period]
             result = subprocess.run(cmd, cwd=str(ROOT), check=False)
             if result.returncode != 0:
                 print(f"[WARN] generate_artist_chart_image.py failed (code {result.returncode})")
         else:
             print(f"[WARN] Image generation script not found: {generate_script}")
 
-    print(f"[OK] {len(rows)} artists collected for {chart_date}")
+    print(f"[OK] {len(rows)} artists collected for {period} {chart_date}")
     return 0
 
 
 if __name__ == "__main__":
-    no_warp = "--no-warp" in sys.argv[1:]
+    no_warp = "--no-warp" in sys.argv[1:] or "-h" in sys.argv[1:] or "--help" in sys.argv[1:]
     if not no_warp:
         _warp_connect()
     try:

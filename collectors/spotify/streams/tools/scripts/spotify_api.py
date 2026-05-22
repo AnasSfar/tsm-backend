@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import random
+import re
 import subprocess
 import threading
 import time
@@ -410,15 +411,22 @@ def fetch_playcount_api(
         }
         backoff = 1.0
         for attempt in range(5):
+            if metrics is not None:
+                metrics["requests"] = int(metrics.get("requests") or 0) + 1
             try:
                 resp = session.post(GRAPHQL_URL, json=body, headers=headers, timeout=(5, 15))
             except Exception:
+                if metrics is not None:
+                    metrics["network_errors"] = int(metrics.get("network_errors") or 0) + 1
                 # Network hiccup — retry
                 time.sleep(min(3.0, backoff) + random.random() * 0.1)
                 backoff *= 1.5
                 continue
 
             code = resp.status_code
+            if metrics is not None:
+                status_counts = metrics.setdefault("status_counts", {})
+                status_counts[str(code)] = int(status_counts.get(str(code)) or 0) + 1
 
             if code == 200:
                 try:
@@ -436,6 +444,8 @@ def fetch_playcount_api(
                 return int(m.group(1)) if m else None
 
             if code == 401 and token_attempt == 0:
+                if metrics is not None:
+                    metrics["token_refreshes"] = int(metrics.get("token_refreshes") or 0) + 1
                 if LOG_MODE != "quiet":
                     print("  [API] 401 — re-capture des tokens…")
                 token_mgr.mark_expired()
@@ -447,6 +457,7 @@ def fetch_playcount_api(
             if code == 429:
                 if metrics is not None:
                     metrics["had_429"] = True
+                    metrics["rate_limited"] = int(metrics.get("rate_limited") or 0) + 1
                 ra = (resp.headers.get("Retry-After") or "").strip()
                 try:
                     wait_s = float(ra)
@@ -458,6 +469,8 @@ def fetch_playcount_api(
                 continue
 
             if code in {408, 500, 502, 503, 504}:
+                if metrics is not None:
+                    metrics["server_retries"] = int(metrics.get("server_retries") or 0) + 1
                 time.sleep(min(5.0, backoff) + random.random() * 0.1)
                 backoff *= 1.5
                 continue

@@ -13,15 +13,44 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
+from urllib.parse import urlsplit
 
+import boto3
 from dotenv import load_dotenv
 
 load_dotenv()
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
-from collectors.apple_music.core.r2 import get_r2_client, get_bucket_name
+
+def get_env(name: str) -> str:
+    value = os.getenv(name, "").strip()
+    if not value:
+        raise RuntimeError(f"Missing environment variable: {name}")
+    return value
+
+
+def get_app_r2_client():
+    account_id = os.getenv("R2_APP_ACCOUNT_ID", "").strip() or get_env("R2_ACCOUNT_ID")
+    return boto3.client(
+        "s3",
+        endpoint_url=f"https://{account_id}.r2.cloudflarestorage.com",
+        aws_access_key_id=get_env("R2_APP_ACCESS_KEY_ID"),
+        aws_secret_access_key=get_env("R2_APP_SECRET_ACCESS_KEY"),
+        region_name="auto",
+    )
+
+
+def get_app_bucket_name() -> str:
+    return get_env("R2_APP_BUCKET")
+
+
+def image_key_from_url(image_url: str, bucket: str) -> str:
+    path = urlsplit(image_url).path.lstrip("/")
+    if path.startswith(f"{bucket}/"):
+        return path[len(bucket) + 1 :]
+    return path.rsplit("/", 1)[-1]
 
 
 def main() -> None:
@@ -43,8 +72,8 @@ def main() -> None:
         print("Error: --delete requires --save to ensure files are saved before deletion.")
         sys.exit(1)
 
-    client = get_r2_client()
-    bucket = get_bucket_name()
+    client = get_app_r2_client()
+    bucket = get_app_bucket_name()
 
     paginator = client.get_paginator("list_objects_v2")
     pages = paginator.paginate(Bucket=bucket, Prefix="report-")
@@ -92,7 +121,7 @@ def main() -> None:
 
             if data.get("imageUrl"):
                 image_url: str = data["imageUrl"]
-                img_key = image_url.split(f"/{bucket}/", 1)[-1]
+                img_key = image_key_from_url(image_url, bucket)
                 if args.images:
                     try:
                         img_resp = client.get_object(Bucket=bucket, Key=img_key)

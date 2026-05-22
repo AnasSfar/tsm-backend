@@ -26,7 +26,13 @@ sys.path.insert(0, str(_SCRIPT_DIR / "extras"))
 sys.path.insert(0, str(_SCRIPT_DIR.parents[0]))  # collectors/spotify/ for core.*
 
 import export_for_web
-from finalize_update import FinalizeContext, run_final_update_tasks
+from catalog_gap_report import write_catalog_gap_report
+from finalize_update import (
+    ALBUM_UPDATE_TARGETS,
+    FinalizeContext,
+    ReadyAlbumUpdatePoster,
+    run_final_update_tasks,
+)
 from reporting import ProgressLogger, print_remaining_details, print_summary_block, update_json_logs_from_summary
 import spotify_api as _spotify_api
 from stream_utils import block_unneeded, format_int, get_previous_stats_date_str, get_stats_date_str, launch_browser
@@ -144,6 +150,27 @@ MAX_DAILY_INCREASE = 50_000_000
 
 # ── API GraphQL Spotify ───────────────────────────────────────────────────────
 START_TIME = None
+
+
+class ApiRunMetrics:
+    def __init__(self) -> None:
+        self.lock = threading.Lock()
+        self.counters: dict[str, int] = {}
+        self.status_counts: dict[str, int] = {}
+
+    def add(self, metrics: dict) -> None:
+        with self.lock:
+            for key in ("requests", "network_errors", "token_refreshes", "rate_limited", "server_retries"):
+                self.counters[key] = self.counters.get(key, 0) + int(metrics.get(key) or 0)
+            for status, count in (metrics.get("status_counts") or {}).items():
+                self.status_counts[status] = self.status_counts.get(status, 0) + int(count or 0)
+
+    def snapshot(self) -> dict:
+        with self.lock:
+            return {
+                **self.counters,
+                "status_counts": dict(sorted(self.status_counts.items())),
+            }
 
 
 def configure_daily_data_paths(stats_date: str) -> None:
@@ -444,6 +471,48 @@ def build_probe_tracks(tracks: list[dict]) -> list[dict]:
     return [t for t, _ in scored[:PROBE_CANDIDATES]]
 
 
+def build_album_post_priority_track_ids() -> set[str]:
+    """Return track IDs needed before album-update posts can be generated."""
+    priority_ids: set[str] = set()
+    target_albums = set(ALBUM_UPDATE_TARGETS)
+
+    for section in load_album_sections_flat():
+        if section.get("album") not in target_albums:
+            continue
+        for track in section.get("tracks", []):
+            track_id = extract_track_id(track.get("url") or track.get("spotify_url") or "")
+            if track_id:
+                priority_ids.add(track_id)
+
+    return priority_ids
+
+
+def print_api_metrics(summary: dict) -> None:
+    metrics = summary.get("api_metrics") or {}
+    statuses = metrics.get("status_counts") or {}
+    status_text = ", ".join(f"{code}={count}" for code, count in statuses.items()) or "none"
+    print(
+        "API metrics | "
+        f"requests={metrics.get('requests', 0)} | "
+        f"429={metrics.get('rate_limited', 0)} | "
+        f"5xx/408 retries={metrics.get('server_retries', 0)} | "
+        f"network errors={metrics.get('network_errors', 0)} | "
+        f"token refreshes={metrics.get('token_refreshes', 0)} | "
+        f"statuses: {status_text}"
+    )
+
+
+def run_catalog_gap_scan(token_mgr: TokenManager | None, stats_date: str) -> None:
+    if token_mgr is None:
+        return
+    tokens = token_mgr.get()
+    if not tokens.get("bearer") or not tokens.get("client_token"):
+        return
+
+    print("Running Spotify catalog gap scan after streams posting...")
+    write_catalog_gap_report(tokens=tokens, stats_date=stats_date)
+
+
 def run_probe(tracks: list[dict]) -> dict:
     probe_tracks = build_probe_tracks(tracks)
 
@@ -484,6 +553,7 @@ def _worker(
     pre_scraped: dict | None = None,
     token_mgr: "TokenManager | None" = None,
     history_index: HistoryIndex | None = None,
+    api_run_metrics: ApiRunMetrics | None = None,
     write_history: bool = True,
     compare_before_stats_date: bool = False,
 ):
@@ -530,17 +600,13 @@ def _worker(
                 if LOG_MODE == "verbose":
                     print(f"  [pre-scraped] {track['title']} -> {total:,}")
             elif token_mgr is not None and token_mgr.available:
-                # Primary: API GraphQL Spotify (3 attempts)
-                api_result = None
-                for _api_attempt in range(3):
-                    api_result = fetch_playcount_api(
-                        track["track_id"],
-                        token_mgr,
-                        _api_session,
-                        metrics=api_metrics,
-                    )
-                    if api_result is not None:
-                        break
+                # fetch_playcount_api already handles transient retries; failures get a run-level retry pass.
+                api_result = fetch_playcount_api(
+                    track["track_id"],
+                    token_mgr,
+                    _api_session,
+                    metrics=api_metrics,
+                )
                 if api_result is not None:
                     total, raw, scrape_status = api_result, str(api_result), "ok"
                 else:
@@ -552,6 +618,8 @@ def _worker(
 
             if adaptive is not None:
                 adaptive.record(got_429=bool(api_metrics.get("had_429")))
+            if api_run_metrics is not None:
+                api_run_metrics.add(api_metrics)
 
             if scrape_status == "timeout":
                 result = {
@@ -668,8 +736,13 @@ def run_update(
     previous_day_priorities = load_track_priorities_from_specific_date(
         get_previous_stats_date_str(stats_date)
     )
+    album_post_priority_ids = build_album_post_priority_track_ids()
     tracks.sort(
-        key=lambda t: (-previous_day_priorities.get(t["track_id"], 0), t["title"].casefold())
+        key=lambda t: (
+            t["track_id"] not in album_post_priority_ids,
+            -previous_day_priorities.get(t["track_id"], 0),
+            t["title"].casefold(),
+        )
     )
 
     if only_track_ids is not None:
@@ -683,6 +756,7 @@ def run_update(
         print(f"Warning: only {len(priority_top_50_ids)} priority track(s) found from previous day.")
 
     pre_scraped: dict[str, int] = {}
+    api_run_metrics = ApiRunMetrics()
 
     already_done_for_stats_date = history_index.done_ids_for_date(stats_date)
 
@@ -737,6 +811,7 @@ def run_update(
                     pre_scraped,
                     token_mgr,
                     history_index,
+                    api_run_metrics,
                     write_history,
                     force_reprocess,
                 ),
@@ -782,7 +857,7 @@ def run_update(
                     args=(retry_queue, retry_results, retry_failed, lock, publish_lock,
                           None, retry_total, dry_run_mode, idx, retry_adaptive,
                           frozenset(), None, token_mgr, history_index,
-                          write_history, force_reprocess),
+                          api_run_metrics, write_history, force_reprocess),
                     daemon=True,
                 )
                 for idx in range(min(6, retry_total))
@@ -830,6 +905,7 @@ def run_update(
         "failed_results": failed_results,
         "updated_track_ids": updated_track_ids,
         "history_index": history_index,
+        "api_metrics": api_run_metrics.snapshot(),
     }
 
 
@@ -1179,6 +1255,23 @@ def main():
         artist_thread = threading.Thread(target=_scrape_artist_bg, daemon=True)
         artist_thread.start()
 
+    album_update_poster = ReadyAlbumUpdatePoster(
+        script_dir=_SCRIPT_DIR,
+        stats_date=stats_date,
+        export_web_data=export_web_data,
+        album_tracks_done_for=album_tracks_done_for,
+        spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
+        log_mode=LOG_MODE,
+        enabled=(
+            not dry_run_mode
+            and not debug_daily_mode
+            and not local_test_mode
+            and not no_post_mode
+            and scraping_needed
+        ),
+    )
+    album_update_poster.start()
+
     progress = ProgressLogger(LOG_MODE)
     summary = run_update(
         on_progress=progress,
@@ -1191,6 +1284,7 @@ def main():
     )
     all_updated_track_ids = set(summary.get("updated_track_ids") or set())
     print_summary_block(summary)
+    print_api_metrics(summary)
 
     not_found_ids: set[str] = {
         r["track_id"] for r in summary["failed_results"] if r["status"] == "not_found"
@@ -1249,6 +1343,7 @@ def main():
             r["track_id"] for r in summary["failed_results"] if r["status"] == "not_found"
         )
         print_summary_block(summary)
+        print_api_metrics(summary)
         if not local_test_mode:
             print("Committing partial progress after retry...")
             git_commit_and_push(_REPO_ROOT, f"partial export {summary['stats_date']} (after retry {retry_round})")
@@ -1293,12 +1388,10 @@ def main():
     if local_test_mode:
         print("[LOCAL-TEST] Skip streams history CSV migration.")
     else:
-        print("Updating streams history CSV...")
-        subprocess.run(
-            [sys.executable, str(_SCRIPT_DIR / "tools" / "scripts" / "migrate_streams_to_csv.py")],
-            check=False,
-        )
-        print("Streams history CSV done.")
+        print("Skipping legacy site-history CSV migration: this collector writes db/streams_history.csv directly.")
+
+    posted_album_updates = album_update_poster.stop()
+    initial_post_state = album_update_poster.post_state()
 
     run_final_update_tasks(FinalizeContext(
         script_dir=_SCRIPT_DIR,
@@ -1320,7 +1413,12 @@ def main():
         extract_track_id=extract_track_id,
         load_history_track_ids_for_date=load_history_track_ids_for_date,
         find_biggest_album_gainer_for_spotlight=find_biggest_album_gainer_for_spotlight,
+        posted_album_updates=posted_album_updates,
+        initial_post_state=initial_post_state,
     ))
+
+    if not dry_run_mode and not debug_daily_mode and not local_test_mode:
+        run_catalog_gap_scan(token_mgr, stats_date)
 
     elapsed = time.perf_counter() - START_TIME
     print()

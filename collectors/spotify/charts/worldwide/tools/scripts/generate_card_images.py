@@ -2,7 +2,7 @@
 """
 generate_card_images.py — génère des PNG des cards "Overall" pour chaque chanson Taylor Swift.
 
-Reproduit le composant SongBlock.jsx du frontend (dark theme).
+Reproduit le composant SongBlock.jsx du frontend (light album themes).
 Quand une song a beaucoup de pays, le tableau est affiché sur deux colonnes côte à côte.
 
 Lit  : website/site/data/charts_worldwide.json  (by_track + date)
@@ -97,119 +97,251 @@ def _logo_data_uri() -> str:
 THEMES: dict[str, dict[str, str]] = {
     # Default site theme (The Life of a Showgirl) — dark mode orange accent
     "showgirl": {
-        "bg":         "#0d1117",
-        "card_bg":    "#161b22",
-        "border":     "#30363d",
-        "text":       "#e6edf3",
-        "muted":      "#8b949e",
-        "even_row":   "#1c2128",
-        "region":     "#ff8f5a",
+        "bg":         "#fff4ec",
+        "card_bg":    "#fffaf6",
+        "border":     "#ffd5bd",
+        "text":       "#2d211c",
+        "muted":      "#8a6658",
+        "even_row":   "#fff0e6",
+        "region":     "#c64f1d",
         "play_btn":   "#ff6b35",
         "rank_up":    "#2a9d5c",
-        "rank_down":  "#e05c3a",
+        "rank_down":  "#cf3f24",
         "stream_pos": "#2a9d5c",
-        "stream_neg": "#e05c3a",
+        "stream_neg": "#cf3f24",
     },
     # Plain dark (Spotify green)
     "dark": {
-        "bg":         "#0f1117",
-        "card_bg":    "#161b22",
-        "border":     "#30363d",
-        "text":       "#e6edf3",
-        "muted":      "#8b949e",
-        "even_row":   "#1c2128",
-        "region":     "#c0602a",
+        "bg":         "#f1fbf5",
+        "card_bg":    "#ffffff",
+        "border":     "#c8ead7",
+        "text":       "#102018",
+        "muted":      "#64746b",
+        "even_row":   "#eaf7ef",
+        "region":     "#137c3f",
         "play_btn":   "#1db954",
         "rank_up":    "#2a9d5c",
-        "rank_down":  "#e05c3a",
+        "rank_down":  "#cf3f24",
         "stream_pos": "#2a9d5c",
-        "stream_neg": "#e05c3a",
+        "stream_neg": "#cf3f24",
     },
     "midnights": {
-        "bg":         "#040710",
-        "card_bg":    "#080d18",
-        "border":     "#1e2540",
-        "text":       "#d4dcf0",
-        "muted":      "#7080a8",
-        "even_row":   "#0d1420",
-        "region":     "#818cf8",
-        "play_btn":   "#6366f1",
+        "bg":         "#eef2ff",
+        "card_bg":    "#f8faff",
+        "border":     "#cfd8ff",
+        "text":       "#1b2440",
+        "muted":      "#687394",
+        "even_row":   "#edf2ff",
+        "region":     "#4657c7",
+        "play_btn":   "#5b6ee1",
         "rank_up":    "#2a9d5c",
-        "rank_down":  "#e05c3a",
+        "rank_down":  "#cf3f24",
         "stream_pos": "#2a9d5c",
-        "stream_neg": "#e05c3a",
+        "stream_neg": "#cf3f24",
     },
     "ttpd": {
-        "bg":         "#0d1117",
-        "card_bg":    "#161b22",
-        "border":     "#30363d",
-        "text":       "#e6edf3",
-        "muted":      "#8b949e",
-        "even_row":   "#1c2128",
-        "region":     "#d4cfc9",
-        "play_btn":   "#d4cfc9",
+        "bg":         "#f4f1ec",
+        "card_bg":    "#fffdf8",
+        "border":     "#d8d0c4",
+        "text":       "#2c2822",
+        "muted":      "#746d63",
+        "even_row":   "#f5efe6",
+        "region":     "#6f665a",
+        "play_btn":   "#9b9387",
         "rank_up":    "#2a9d5c",
-        "rank_down":  "#e05c3a",
+        "rank_down":  "#cf3f24",
         "stream_pos": "#2a9d5c",
-        "stream_neg": "#e05c3a",
+        "stream_neg": "#cf3f24",
     },
     "lover": {
-        "bg":         "#1a0812",
-        "card_bg":    "#25101c",
-        "border":     "#4a1830",
-        "text":       "#f5c0d8",
-        "muted":      "#c07090",
-        "even_row":   "#2e1424",
-        "region":     "#ffb1d8",
+        "bg":         "#fff0f7",
+        "card_bg":    "#fffafd",
+        "border":     "#ffcfe4",
+        "text":       "#331927",
+        "muted":      "#8a6174",
+        "even_row":   "#ffe8f2",
+        "region":     "#d83c85",
         "play_btn":   "#e8709a",
         "rank_up":    "#4caf7d",
-        "rank_down":  "#e05c3a",
+        "rank_down":  "#cf3f24",
         "stream_pos": "#4caf7d",
-        "stream_neg": "#e05c3a",
+        "stream_neg": "#cf3f24",
     },
     "fearless": {
-        "bg":         "#18110a",
-        "card_bg":    "#221908",
-        "border":     "#3d2e10",
-        "text":       "#ffedb0",
-        "muted":      "#c4943a",
-        "even_row":   "#2a200a",
-        "region":     "#f5c444",
+        "bg":         "#fff8dc",
+        "card_bg":    "#fffdf2",
+        "border":     "#f3d982",
+        "text":       "#332711",
+        "muted":      "#8b7334",
+        "even_row":   "#fff3c4",
+        "region":     "#a87909",
         "play_btn":   "#d4a017",
         "rank_up":    "#4caf7d",
-        "rank_down":  "#e05c3a",
+        "rank_down":  "#cf3f24",
         "stream_pos": "#4caf7d",
-        "stream_neg": "#e05c3a",
+        "stream_neg": "#cf3f24",
     },
     "reputation": {
-        "bg":         "#000000",
-        "card_bg":    "#0a0a0a",
-        "border":     "#222222",
-        "text":       "#f5f5f5",
-        "muted":      "#999999",
-        "even_row":   "#141414",
-        "region":     "#aaaaaa",
-        "play_btn":   "#ffffff",
+        "bg":         "#f2f2f2",
+        "card_bg":    "#ffffff",
+        "border":     "#cfcfcf",
+        "text":       "#171717",
+        "muted":      "#6b6b6b",
+        "even_row":   "#ededed",
+        "region":     "#343434",
+        "play_btn":   "#111111",
         "rank_up":    "#4caf7d",
-        "rank_down":  "#e05c3a",
+        "rank_down":  "#cf3f24",
         "stream_pos": "#4caf7d",
-        "stream_neg": "#e05c3a",
+        "stream_neg": "#cf3f24",
     },
     "evermore": {
-        "bg":         "#120a05",
-        "card_bg":    "#1e1009",
-        "border":     "#3a1e0a",
-        "text":       "#e8c5a0",
-        "muted":      "#b08050",
-        "even_row":   "#261408",
-        "region":     "#c47840",
+        "bg":         "#f9efe5",
+        "card_bg":    "#fffaf4",
+        "border":     "#e7c7aa",
+        "text":       "#332418",
+        "muted":      "#856650",
+        "even_row":   "#f7e5d4",
+        "region":     "#a45c2a",
         "play_btn":   "#9b6b3d",
         "rank_up":    "#80a040",
-        "rank_down":  "#e05c3a",
+        "rank_down":  "#cf3f24",
         "stream_pos": "#80a040",
-        "stream_neg": "#e05c3a",
+        "stream_neg": "#cf3f24",
+    },
+    "folklore": {
+        "bg":         "#f2f4f3",
+        "card_bg":    "#ffffff",
+        "border":     "#d4d9d7",
+        "text":       "#202524",
+        "muted":      "#697370",
+        "even_row":   "#e9eeec",
+        "region":     "#5e6a66",
+        "play_btn":   "#8f989d",
+        "rank_up":    "#6fb07f",
+        "rank_down":  "#cf3f24",
+        "stream_pos": "#6fb07f",
+        "stream_neg": "#cf3f24",
+    },
+    "1989": {
+        "bg":         "#eaf8ff",
+        "card_bg":    "#f8fdff",
+        "border":     "#bfe8fb",
+        "text":       "#152a34",
+        "muted":      "#5c7e8d",
+        "even_row":   "#dcf3ff",
+        "region":     "#1678a7",
+        "play_btn":   "#2aa8dc",
+        "rank_up":    "#4caf7d",
+        "rank_down":  "#cf3f24",
+        "stream_pos": "#4caf7d",
+        "stream_neg": "#cf3f24",
+    },
+    "red": {
+        "bg":         "#fff1ef",
+        "card_bg":    "#fffafa",
+        "border":     "#ffc9c2",
+        "text":       "#321817",
+        "muted":      "#8b5f5a",
+        "even_row":   "#ffe5e1",
+        "region":     "#b92722",
+        "play_btn":   "#b91f2f",
+        "rank_up":    "#4caf7d",
+        "rank_down":  "#cf3f24",
+        "stream_pos": "#4caf7d",
+        "stream_neg": "#cf3f24",
+    },
+    "speak_now": {
+        "bg":         "#f8efff",
+        "card_bg":    "#fffaff",
+        "border":     "#e3c5f5",
+        "text":       "#2c1937",
+        "muted":      "#7b5b8b",
+        "even_row":   "#f3e3fc",
+        "region":     "#7a36a2",
+        "play_btn":   "#8b4bb3",
+        "rank_up":    "#4caf7d",
+        "rank_down":  "#cf3f24",
+        "stream_pos": "#4caf7d",
+        "stream_neg": "#cf3f24",
+    },
+    "taylor_swift": {
+        "bg":         "#edf9f1",
+        "card_bg":    "#fbfffc",
+        "border":     "#bde7ca",
+        "text":       "#16291d",
+        "muted":      "#5d8068",
+        "even_row":   "#ddf3e5",
+        "region":     "#237c47",
+        "play_btn":   "#2e8f5f",
+        "rank_up":    "#4caf7d",
+        "rank_down":  "#cf3f24",
+        "stream_pos": "#4caf7d",
+        "stream_neg": "#cf3f24",
     },
 }
+
+
+def _album_name(song: dict) -> str:
+    return str(song.get("primary_album") or song.get("album") or "").strip()
+
+
+def _theme_key_for_album(album: str) -> str | None:
+    al = album.lower().strip()
+    if not al:
+        return None
+    if "life of a showgirl" in al:
+        return "showgirl"
+    if "tortured poets" in al:
+        return "ttpd"
+    if "midnights" in al:
+        return "midnights"
+    if "evermore" in al:
+        return "evermore"
+    if "folklore" in al:
+        return "folklore"
+    if "lover" in al:
+        return "lover"
+    if "reputation" in al:
+        return "reputation"
+    if "1989" in al:
+        return "1989"
+    if "red" in al:
+        return "red"
+    if "speak now" in al:
+        return "speak_now"
+    if "fearless" in al:
+        return "fearless"
+    if "taylor swift" in al or "debut" in al:
+        return "taylor_swift"
+    return None
+
+
+def _palette_for_song(song: dict, fallback: dict[str, str]) -> tuple[dict[str, str], str]:
+    theme_key = _theme_key_for_album(_album_name(song))
+    if theme_key and theme_key in THEMES:
+        return THEMES[theme_key], theme_key
+    return fallback, "fallback"
+
+
+def _dominant_album_theme(
+    tracks: list[tuple[str, list[dict]]],
+    song_meta: dict[str, dict],
+    fallback: dict[str, str],
+) -> tuple[dict[str, str], str]:
+    scores: dict[str, tuple[int, int]] = {}
+    for track_id, entries in tracks:
+        theme_key = _theme_key_for_album(_album_name(song_meta.get(track_id, {})))
+        if not theme_key or theme_key not in THEMES:
+            continue
+        song_count, appearance_count = scores.get(theme_key, (0, 0))
+        scores[theme_key] = (song_count + 1, appearance_count + len(entries))
+
+    if not scores:
+        return fallback, "fallback"
+
+    theme_key = max(sorted(scores), key=lambda key: scores[key])
+    return THEMES[theme_key], theme_key
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -301,6 +433,8 @@ def _country_label(code: str, name: str) -> str:
 # ── HTML builder ──────────────────────────────────────────────────────────────
 
 _TABLE_SPLIT_THRESHOLD = 8   # split into 2 columns when entries exceed this
+_LOW_COUNTRY_MAX = 2
+_LOW_COUNTRY_GROUP_SLUG = "low_country_tracks"
 
 
 def _rows_html(entries: list[dict]) -> str:
@@ -536,6 +670,249 @@ def _build_card_html(song: dict, entries: list[dict], palette: dict[str, str], c
 </html>"""
 
 
+def _date_label(chart_date: str) -> str:
+    try:
+        d = datetime.strptime(chart_date, "%Y-%m-%d")
+        return f"{str(d.day)} {d.strftime('%b')} {d.year}"
+    except Exception:
+        return chart_date
+
+
+def _sorted_entries(entries: list[dict]) -> list[dict]:
+    def _key(e: dict):
+        is_global = e.get("country", "").lower() in ("global", "glob")
+        return (0 if is_global else 1, -(e.get("streams") or 0))
+
+    return sorted(entries, key=_key)
+
+
+def _low_country_regions_html(entries: list[dict]) -> str:
+    chips = ""
+    for entry in _sorted_entries(entries):
+        label = _country_label(entry.get("country", ""), entry.get("country_name", ""))
+        rank = entry.get("rank", "?")
+        streams = _fmt_streams(entry.get("streams"))
+        chips += (
+            '<div class="mini-region">'
+            f'<span class="mini-region-name">{html.escape(label)}</span>'
+            f'<span class="mini-region-rank">#{rank}{_rank_delta_html(entry)}</span>'
+            f'<span class="mini-region-streams">{streams}{_stream_pct_html(entry)}</span>'
+            "</div>"
+        )
+    return chips
+
+
+def _build_low_country_group_html(
+    tracks: list[tuple[str, list[dict]]],
+    song_meta: dict[str, dict],
+    palette: dict[str, str],
+    chart_date: str,
+) -> str:
+    global _LOGO_URI
+    if not _LOGO_URI:
+        _LOGO_URI = _logo_data_uri()
+
+    p = palette
+    rows = ""
+    for track_id, entries in tracks:
+        song = song_meta.get(track_id, {})
+        title = html.escape(song.get("title", track_id))
+        artist = html.escape(song.get("primary_artist", "Taylor Swift"))
+        img_uri = _url_to_data_uri(song.get("image_url", ""))
+        cover_html = (
+            f'<img class="mini-cover" src="{img_uri}" alt="cover" />'
+            if img_uri else
+            '<div class="mini-cover cover-placeholder"></div>'
+        )
+        rows += f"""
+  <div class="mini-song-row">
+    {cover_html}
+    <div class="mini-song-main">
+      <div class="mini-song-title">{title}</div>
+      <div class="mini-song-artist">{artist}</div>
+    </div>
+    <div class="mini-region-list">
+      {_low_country_regions_html(entries)}
+    </div>
+  </div>"""
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>
+  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  body {{
+    background: {p['bg']};
+    display: flex;
+    padding: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }}
+  .mini-card {{
+    width: 760px;
+    background: {p['card_bg']};
+    border: 1px solid {p['border']};
+    border-radius: 1.1rem;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.35);
+    padding: 1.05rem 1.15rem 0.85rem 1.15rem;
+    color: {p['text']};
+  }}
+  .mini-header {{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.65rem;
+    border-bottom: 1px solid {p['border']};
+  }}
+  .mini-heading {{
+    min-width: 0;
+  }}
+  .mini-title {{
+    font-size: 1.08rem;
+    font-weight: 750;
+    line-height: 1.2;
+  }}
+  .mini-subtitle {{
+    margin-top: 0.15rem;
+    font-size: 0.86rem;
+    color: {p['muted']};
+  }}
+  .date-badge {{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 0 0.75rem;
+    height: 32px;
+    border-radius: 999px;
+    background: {p['play_btn']};
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }}
+  .mini-song-row {{
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr) minmax(310px, 0.95fr);
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.62rem 0;
+    border-bottom: 1px solid {p['border']};
+  }}
+  .mini-song-row:last-of-type {{ border-bottom: 0; }}
+  .mini-cover {{
+    width: 48px;
+    height: 48px;
+    border-radius: 0.55rem;
+    object-fit: cover;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.4);
+  }}
+  .cover-placeholder {{
+    background: linear-gradient(135deg, {p['border']}, {p['card_bg']});
+  }}
+  .mini-song-main {{ min-width: 0; }}
+  .mini-song-title {{
+    font-size: 0.98rem;
+    font-weight: 720;
+    line-height: 1.22;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }}
+  .mini-song-artist {{
+    margin-top: 0.12rem;
+    font-size: 0.82rem;
+    color: {p['muted']};
+  }}
+  .mini-region-list {{
+    display: flex;
+    flex-direction: column;
+    gap: 0.32rem;
+  }}
+  .mini-region {{
+    display: grid;
+    grid-template-columns: minmax(92px, 1fr) 76px 126px;
+    gap: 0.45rem;
+    align-items: baseline;
+    padding: 0.32rem 0.45rem;
+    border-radius: 0.45rem;
+    background: {p['even_row']};
+    font-size: 0.78rem;
+  }}
+  .mini-region-name {{
+    color: {p['region']};
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }}
+  .mini-region-rank {{
+    text-align: right;
+    font-weight: 720;
+    white-space: nowrap;
+  }}
+  .mini-region-streams {{
+    text-align: right;
+    font-weight: 720;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }}
+  .oct-rank-delta {{ font-size: 0.82em; font-weight: 400; }}
+  .oct-rank-delta.rank-up   {{ color: {p['rank_up']}; }}
+  .oct-rank-delta.rank-down {{ color: {p['rank_down']}; }}
+  .oct-rank-delta.rank-neutral {{ color: {p['muted']}; }}
+  .oct-rank-delta.rank-tag  {{ color: {p['muted']}; }}
+  .oct-stream-delta {{ font-size: 0.82em; font-weight: 400; font-variant-numeric: tabular-nums; }}
+  .oct-stream-delta.positive {{ color: {p['stream_pos']}; }}
+  .oct-stream-delta.negative {{ color: {p['stream_neg']}; }}
+  .card-footer {{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.55rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid {p['border']};
+    font-size: 0.72rem;
+    color: {p['muted']};
+    letter-spacing: 0.01em;
+    opacity: 0.7;
+  }}
+  .card-footer-brand {{
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }}
+  .card-footer-logo {{
+    height: 18px;
+    width: auto;
+    display: block;
+  }}
+</style>
+</head>
+<body>
+<div class="mini-card" id="card">
+  <div class="mini-header">
+    <div class="mini-heading">
+      <div class="mini-title">Taylor Swift on Spotify Charts</div>
+      <div class="mini-subtitle">Songs charting in one or two countries</div>
+    </div>
+    <div class="date-badge">{_date_label(chart_date)}</div>
+  </div>
+  {rows}
+  <div class="card-footer">
+    <div class="card-footer-brand">
+      <img class="card-footer-logo" src="{_LOGO_URI}" alt="TSM" />
+      <span>@tsmuseum13</span>
+    </div>
+    <span>thetsmuseum.app</span>
+  </div>
+</div>
+</body>
+</html>"""
+
+
 # ── Tweet builder ─────────────────────────────────────────────────────────────
 
 _ALBUM_EMOJI: list[tuple[str, str]] = [
@@ -592,7 +969,7 @@ def _country_count_text(count: int, prev_count: int | None) -> str:
     if prev_count is None:
         return "one country" if count == 1 else f"{count} countries"
     diff = count - prev_count
-    diff_str = f"+{diff}" if diff >= 0 else str(diff)
+    diff_str = "=" if diff == 0 else f"+{diff}" if diff > 0 else str(diff)
     return f"{count} ({diff_str}) countries"
 
 
@@ -607,6 +984,28 @@ def _build_tweet(song: dict, entries: list[dict], chart_date: str, prev_count: i
         date_fmt = chart_date
     country_str = _country_count_text(count, prev_count)
     return f'{emoji} | "{title}" charted in {country_str} on Spotify yesterday ({date_fmt}).\n\n{_OVERALL_URL}'
+
+
+def _build_low_country_group_tweet(
+    tracks: list[tuple[str, list[dict]]],
+    song_meta: dict[str, dict],
+    chart_date: str,
+) -> str:
+    try:
+        date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    except Exception:
+        date_fmt = chart_date
+
+    titles = [str(song_meta.get(track_id, {}).get("title") or track_id) for track_id, _ in tracks]
+    if len(titles) <= 3:
+        title_text = ", ".join(f'"{title}"' for title in titles)
+    else:
+        title_text = ", ".join(f'"{title}"' for title in titles[:3]) + f", and {len(titles) - 3} more"
+
+    return (
+        f"🎵 | {len(tracks)} Taylor Swift songs charted in one or two countries "
+        f"on Spotify yesterday ({date_fmt}): {title_text}.\n\n{_OVERALL_URL}"
+    )
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
@@ -706,7 +1105,16 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
 
     tracks = [(tid, entries) for tid, entries in by_track.items() if len(entries) >= min_countries]
     tracks.sort(key=lambda item: _card_priority(item[0], item[1], song_meta.get(item[0], {})))
-    print(f"[INFO] {len(tracks)} tracks, thème={theme!r}, min_countries={min_countries}")
+    low_country_tracks = [
+        (tid, entries)
+        for tid, entries in by_track.items()
+        if 1 <= len(entries) < min_countries and len(entries) <= _LOW_COUNTRY_MAX
+    ]
+    low_country_tracks.sort(key=lambda item: _card_priority(item[0], item[1], song_meta.get(item[0], {})))
+    print(
+        f"[INFO] {len(tracks)} tracks, {len(low_country_tracks)} low-country tracks, "
+        f"thème={theme!r}, min_countries={min_countries}"
+    )
 
     generated: list[str] = []
     priority_index: dict[str, dict] = {}
@@ -730,7 +1138,7 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
             # Cards were generated before posted_cards.json existed — assume all were posted
             try:
                 slugs = [Path(f).stem for f in json.loads(index_path.read_text(encoding="utf-8")).get("cards", [])]
-                already_posted = set(slugs)
+                already_posted = {slug for slug in slugs if slug != _LOW_COUNTRY_GROUP_SLUG}
                 posted_path.write_text(
                     json.dumps({"date": chart_date, "posted": sorted(already_posted)}, ensure_ascii=False, indent=2),
                     encoding="utf-8",
@@ -750,16 +1158,19 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
                 title_raw = meta.get("title", track_id)
                 slug      = _slugify(title_raw)
                 out_path  = out_dir / f"{slug}.png"
+                card_palette, card_theme = _palette_for_song(meta, palette)
 
                 print(f"  [{i:3d}/{len(tracks)}] {title_raw[:50]}", end="", flush=True)
-                html_content = _build_card_html(meta, entries, palette, chart_date)
+                html_content = _build_card_html(meta, entries, card_palette, chart_date)
                 try:
                     page.set_content(html_content, wait_until="domcontentloaded")
                     card = page.locator("#card")
                     card.wait_for(state="visible", timeout=5000)
                     card.screenshot(path=str(out_path))
                     generated.append(out_path.name)
-                    priority_index[out_path.name] = _priority_payload(entries)
+                    priority = _priority_payload(entries)
+                    priority["theme"] = card_theme
+                    priority_index[out_path.name] = priority
                     print(f"  → {out_path.name}")
                     if post and slug not in already_posted:
                         prev_count = prev_country_counts.get(track_id)
@@ -768,6 +1179,42 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
                         print(f"    [SKIP] déjà posté")
                 except Exception as e:
                     print(f"  [WARN] échec: {e}")
+
+            if len(low_country_tracks) > 1:
+                out_path = out_dir / f"{_LOW_COUNTRY_GROUP_SLUG}.png"
+                group_palette, group_theme = _dominant_album_theme(low_country_tracks, song_meta, palette)
+                print(f"  [group] {len(low_country_tracks)} low-country tracks", end="", flush=True)
+                html_content = _build_low_country_group_html(
+                    low_country_tracks,
+                    song_meta,
+                    group_palette,
+                    chart_date,
+                )
+                try:
+                    page.set_content(html_content, wait_until="domcontentloaded")
+                    card = page.locator("#card")
+                    card.wait_for(state="visible", timeout=5000)
+                    card.screenshot(path=str(out_path))
+                    generated.append(out_path.name)
+                    priority_index[out_path.name] = {
+                        "level": 2,
+                        "reason": "low_country_group",
+                        "track_count": len(low_country_tracks),
+                        "max_countries": _LOW_COUNTRY_MAX,
+                        "theme": group_theme,
+                    }
+                    print(f"  â†’ {out_path.name}")
+                    if post and _LOW_COUNTRY_GROUP_SLUG not in already_posted:
+                        to_post.append(
+                            (
+                                out_path,
+                                _build_low_country_group_tweet(low_country_tracks, song_meta, chart_date),
+                            )
+                        )
+                    elif post:
+                        print("    [SKIP] dÃ©jÃ  postÃ©")
+                except Exception as e:
+                    print(f"  [WARN] Ã©chec group: {e}")
 
             browser.close()
     finally:

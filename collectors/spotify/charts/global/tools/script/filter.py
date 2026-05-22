@@ -172,14 +172,47 @@ def _parse_api_entries(data: dict) -> list[dict]:
     return rows
 
 
+def _find_first_date(value) -> str | None:
+    if isinstance(value, str):
+        match = re.search(r"\b\d{4}-\d{2}-\d{2}\b", value)
+        if match:
+            return match.group(0)
+        match = re.search(r"\b[A-Z][a-z]+ \d{1,2}, \d{4}\b", value)
+        if match:
+            try:
+                return datetime.strptime(match.group(0), "%B %d, %Y").strftime("%Y-%m-%d")
+            except ValueError:
+                return None
+        return None
+    if isinstance(value, dict):
+        for key in ("date", "chartDate", "displayDate", "latestDate", "startDate", "endDate"):
+            found = _find_first_date(value.get(key))
+            if found:
+                return found
+        for item in value.values():
+            found = _find_first_date(item)
+            if found:
+                return found
+    if isinstance(value, list):
+        for item in value:
+            found = _find_first_date(item)
+            if found:
+                return found
+    return None
+
+
+def _api_request(chart_route: str, headers: dict[str, str]):
+    url = f"{_API_BASE}/{CHART_ID}/{chart_route}"
+    return _requests.get(url, headers=headers, timeout=30)
+
+
 def _fetch_via_api(chart_date: str) -> tuple[list[dict], str] | None:
     """
     Tente de récupérer le chart via l'API interne Spotify pour la date exacte demandée.
     Retourne (rows, chart_date) ou None si l'API échoue.
 
-    Note : le fallback "latest" a été retiré intentionnellement — "latest" peut pointer
-    vers un autre jour que chart_date, ce qui stockerait des données du mauvais jour
-    sous la mauvaise date. Le fallback Playwright (appelant) valide lui-même la date.
+    Le fallback "latest" est accepté uniquement si le JSON annonce exactement
+    chart_date, pour éviter d'écrire des données du mauvais jour sous la mauvaise date.
     """
     try:
         token = _get_bearer_token()
@@ -189,20 +222,36 @@ def _fetch_via_api(chart_date: str) -> tuple[list[dict], str] | None:
             "Referer": "https://charts.spotify.com/",
             "User-Agent": _UA,
         }
-        url  = f"{_API_BASE}/{CHART_ID}/{chart_date}"
-        resp = _requests.get(url, headers=headers, timeout=30)
+        resp = _api_request(chart_date, headers)
         if resp.status_code in {401, 403}:
             print(f"  API : token refuse (HTTP {resp.status_code}), refresh bearer...")
             token = _get_bearer_token(refresh=True)
             headers["Authorization"] = f"Bearer {token}"
-            resp = _requests.get(url, headers=headers, timeout=30)
+            resp = _api_request(chart_date, headers)
         if resp.status_code == 200:
             data = resp.json()
             rows = _parse_api_entries(data)
             if rows:
                 print(f"  API OK — {len(rows)} lignes pour {chart_date}")
                 return rows, chart_date
-        print(f"  API : date {chart_date} indisponible (status {resp.status_code}), fallback Playwright…")
+
+        print(f"  API : date {chart_date} indisponible (status {resp.status_code}), essai latest...")
+        latest_resp = _api_request("latest", headers)
+        if latest_resp.status_code == 200:
+            latest_data = latest_resp.json()
+            latest_date = _find_first_date(latest_data)
+            latest_rows = _parse_api_entries(latest_data)
+            if latest_rows and latest_date == chart_date:
+                print(f"  API latest OK — {len(latest_rows)} lignes pour {latest_date}")
+                return latest_rows, latest_date
+            print(
+                "  API latest ignoree "
+                f"(date={latest_date or 'N/A'}, lignes={len(latest_rows)}, attendu={chart_date})"
+            )
+        else:
+            print(f"  API latest indisponible (status {latest_resp.status_code})")
+
+        print(f"  API : fallback Playwright…")
         return None
     except Exception as e:
         print(f"  API échec ({e}), fallback Playwright…")

@@ -60,6 +60,7 @@ OUT_DIR         = SCRIPT_DIR / "history" / "spotlight"
 sys.path.insert(0, str(SCRIPT_DIR.parent))  # collectors/spotify/ for core.*
 
 from core.data_paths import archived_db_file  # noqa: E402
+from core.album_emoji import album_emoji  # noqa: E402
 
 HISTORY_PATH    = (
     DB_DIR / "streams_history.csv"
@@ -1280,8 +1281,9 @@ def main() -> None:
     tweet_lines = []
     combined_suffix = " across all versions" if args.combined else ""
     gainer_period = "weekly" if args.compare == "last-week" else "daily"
+    emoji = album_emoji(track.get("album"))
     tweet_lines.append(
-        f'📈 "{track["title"]}" by Taylor Swift was one of the biggest {gainer_period} gainers '
+        f'{emoji} "{track["title"]}" was one of the biggest {gainer_period} gainers '
         f'yesterday{combined_suffix}, {date_fmt_long}. It received {daily_tweet} streams.'
     )
     if args.compare == "last-week":

@@ -19,10 +19,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-R2_ACCOUNT_ID = os.environ["R2_ACCOUNT_ID"]
-R2_ACCESS_KEY_ID = os.environ["R2_ACCESS_KEY_ID"]
-R2_SECRET_ACCESS_KEY = os.environ["R2_SECRET_ACCESS_KEY"]
-R2_BUCKET = os.environ.get("R2_BUCKET", "taylor-data")
+R2_ACCOUNT_ID = os.environ.get("R2_APP_ACCOUNT_ID") or os.environ["R2_ACCOUNT_ID"]
+R2_ACCESS_KEY_ID = os.environ["R2_APP_ACCESS_KEY_ID"]
+R2_SECRET_ACCESS_KEY = os.environ["R2_APP_SECRET_ACCESS_KEY"]
+R2_BUCKET = os.environ["R2_APP_BUCKET"]
 
 HIRING_PREFIX = "hiring/"
 

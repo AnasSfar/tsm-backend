@@ -14,10 +14,15 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
-import boto3
-import botocore.config
-import botocore.exceptions
 from dotenv import load_dotenv
+
+try:
+    import boto3
+    import botocore.config
+    import botocore.exceptions
+except ImportError:
+    boto3 = None
+    botocore = None
 
 load_dotenv(str(Path(__file__).resolve().parents[1] / ".env"), override=True)
 
@@ -527,6 +532,17 @@ def _run_history_upload(client, bucket, track_prefix, daily_files, dry_run) -> t
 
 def main() -> int:
     args = parse_args()
+
+    if boto3 is None or botocore is None:
+        upload_to_r2 = os.getenv("UPLOAD_TO_R2", "").strip().lower()
+        if upload_to_r2 in ("1", "true", "yes", "on"):
+            raise RuntimeError(
+                "boto3/botocore are required for R2 upload. "
+                "Install dependencies with: python -m pip install -r requirements.txt"
+            )
+        print("[WARN] boto3/botocore not installed; skipping R2 upload.")
+        print("[INFO] Install dependencies with: python -m pip install -r requirements.txt")
+        return 0
 
     missing_vars = get_missing_env_vars(R2_REQUIRED_ENV_VARS)
     if missing_vars:

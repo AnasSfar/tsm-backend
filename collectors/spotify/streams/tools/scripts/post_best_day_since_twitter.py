@@ -24,6 +24,7 @@ sys.path.insert(0, str(ROOT))                         # collectors/spotify/strea
 sys.path.insert(0, str(ROOT.parent))                  # collectors/spotify/
 
 from core.twitter import post_with_image  # noqa: E402
+from core.album_emoji import album_emoji  # noqa: E402
 import best_day_since  # noqa: E402
 import spotlight  # noqa: E402
 
@@ -60,11 +61,12 @@ def _pick_rows(target_date: str, *, limit: int, min_days: int) -> list[dict]:
 
 
 def _build_tweet(row: dict, daily_yesterday: int | None) -> str:
+    emoji = album_emoji(row.get("album"))
     title = row["title"]
     label = best_day_since.row_label(row)
     daily = int(row["daily_streams"])
     pct = _fmt_pct(daily, daily_yesterday)
-    return f'"{title}" earned its {label} with {_fmt_int(daily)} streams [{pct}].'
+    return f'{emoji} "{title}" earned its {label} with {_fmt_int(daily)} streams [{pct}].'
 
 
 def _day_dir(target_date: str) -> Path:

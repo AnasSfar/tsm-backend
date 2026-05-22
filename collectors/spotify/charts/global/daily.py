@@ -10,7 +10,7 @@ Logique :
 - cherche toutes les dates non postées des 7 derniers jours
 - commence par la plus ancienne
 - lance filter.py pour chaque date manquante
-- si plusieurs dates : génère une image combinée
+- génère toujours une image pour une seule date
 - si image failed alors ne poste pas le thread
 - poste sur Twitter
 
@@ -167,7 +167,7 @@ def get_unposted_dates() -> list[date]:
         if not already_posted(today - timedelta(days=i))
     ]
     unposted.sort()
-    return unposted
+    return unposted[:1]
 
 
 def past_cutoff() -> bool:
@@ -424,21 +424,16 @@ def run_filter(d: date, *, force: bool = False) -> tuple[str | None, bool]:
 
 
 def build_tweet_content(processed: list[date]) -> str:
+    processed = processed[:1]
     if len(processed) == 1:
         d = processed[0]
         return f"📈 | Taylor Swift on Spotify Global Charts yesterday ({d.strftime('%B %d, %Y')}) :"
 
-    parts = [d.strftime("%B %d") for d in processed]
-    year = processed[-1].year
-    return f"📈 | Taylor Swift on Spotify Global Charts ({' / '.join(parts)}, {year}) :"
-
 def generate_image(processed: list[date]) -> Path | None:
     log("STEP", "Génération de l'image du chart")
 
-    if len(processed) == 1:
-        img_args = [sys.executable, str(GENERATE_IMAGE_SCRIPT), str(processed[0])]
-    else:
-        img_args = [sys.executable, str(GENERATE_IMAGE_SCRIPT)] + [str(d) for d in processed]
+    d = processed[0]
+    img_args = [sys.executable, str(GENERATE_IMAGE_SCRIPT), str(d)]
 
     img_result = subprocess.run(
         img_args,
@@ -458,13 +453,9 @@ def generate_image(processed: list[date]) -> Path | None:
         log("WARN", "Génération d'image échouée — publication sans image")
         return None
 
-    if len(processed) == 1:
-        d = processed[0]
-        new_path = spotify_chart_dir("global", d) / "chart_image.png"
-        legacy_path = legacy_spotify_chart_dir("global", d) / "chart_image.png"
-        image_path = new_path if new_path.exists() else legacy_path
-    else:
-        image_path = GENERATE_IMAGE_SCRIPT.parent / "chart_image_multi.png"
+    new_path = spotify_chart_dir("global", d) / "chart_image.png"
+    legacy_path = legacy_spotify_chart_dir("global", d) / "chart_image.png"
+    image_path = new_path if new_path.exists() else legacy_path
 
     if not image_path.exists():
         log("WARN", f"Image attendue introuvable: {image_path}")
@@ -687,9 +678,6 @@ def main() -> None:
             combined = build_global_us_combined_image(image_path, us_image, target_date)
             if combined:
                 image_path = combined
-    elif len(processed) > 1:
-        log("INFO", "Global+US combined image skipped (multi-date run)")
-
     log("STEP", "Publication Twitter")
     if no_post:
         log("INFO", "Publication Twitter ignorée (--no-post)")

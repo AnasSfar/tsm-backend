@@ -8,7 +8,7 @@ Logique :
 - cherche toutes les dates non-postÃ©es des 7 derniers jours
 - attend que la page la plus rÃ©cente soit disponible (cutoff Ã  15h)
 - lance filter.py pour chaque date manquante
-- si plusieurs dates : gÃ©nÃ¨re une image combinÃ©e et un tweet condensÃ©
+- gÃ©nÃ¨re toujours une image pour une seule date
 - poste sur Twitter
 
 Options :
@@ -114,7 +114,7 @@ def get_unposted_dates() -> list[date]:
         if not already_posted(today - timedelta(days=i))
     ]
     unposted.sort()
-    return unposted
+    return unposted[:1]
 
 
 def past_cutoff() -> bool:
@@ -200,12 +200,6 @@ def run_filter(d: date) -> tuple[str | None, bool]:
     content = tp.read_text(encoding="utf-8-sig")
     log("INFO", f"tweet.txt chargÃ© ({len(content)} caractÃ¨res)")
     return content, False
-
-
-def build_multi_tweet(dates: list[date]) -> str:
-    parts = [datetime.strptime(str(d), "%Y-%m-%d").strftime("%B %d") for d in dates]
-    year  = dates[-1].year
-    return f"Taylor Swift on {' & '.join(parts)}, {year}"
 
 
 def maybe_upload_to_r2() -> None:
@@ -319,13 +313,9 @@ def main():
 
     # GÃ©nÃ©rer l'image (simple ou combinÃ©e)
     log("STEP", "GÃ©nÃ©ration de l'image du chart")
-    if len(processed) == 1:
-        d = processed[0]
-        image_path = DATA_DIR / str(d.year) / f"{d.month:02d}" / str(d) / "chart_image.png"
-        img_args = [sys.executable, str(GENERATE_IMAGE_SCRIPT), str(d)]
-    else:
-        image_path = GENERATE_IMAGE_SCRIPT.parent / "chart_image_multi.png"
-        img_args = [sys.executable, str(GENERATE_IMAGE_SCRIPT)] + [str(d) for d in processed]
+    d = processed[0]
+    image_path = DATA_DIR / str(d.year) / f"{d.month:02d}" / str(d) / "chart_image.png"
+    img_args = [sys.executable, str(GENERATE_IMAGE_SCRIPT), str(d)]
 
     img_result = subprocess.run(
         img_args,

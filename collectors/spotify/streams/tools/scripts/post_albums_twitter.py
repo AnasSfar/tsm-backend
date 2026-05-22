@@ -18,6 +18,7 @@ TWITTER_SESSION = SCRIPT_DIR.parents[2] / "charts" / "global" / "tools" / "json"
 
 sys.path.insert(0, str(SCRIPT_DIR.parents[2]))        # collectors/spotify/
 sys.path.insert(0, str(ROOT))                         # collectors/spotify/streams/
+from core.album_emoji import album_emoji
 from core.twitter import post_with_image
 
 import generate_albums_image
@@ -191,7 +192,8 @@ def build_tweet_with_best_day(rows: list[dict], target_date: str) -> str:
     if not label:
         return tweet
 
-    return f'{tweet}\n\n"{_short_album(row["album"])}" was the biggest gainer and earned its {label}.'
+    album = row["album"]
+    return f'{tweet}\n\n{album_emoji(album)} "{_short_album(album)}" was the biggest gainer and earned its {label}.'
 
 
 def main():

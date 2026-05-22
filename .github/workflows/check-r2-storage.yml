@@ -1,0 +1,35 @@
+name: Check R2 Storage
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "20 12 * * *"  # Daily before the collector workflows.
+
+jobs:
+  check-r2-storage:
+    runs-on: ubuntu-latest
+    environment: .env
+    env:
+      R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+      R2_BUCKET: ${{ secrets.R2_BUCKET }}
+      R2_APP_BUCKET: ${{ secrets.R2_APP_BUCKET }}
+      CLOUDFLARE_ANALYTICS_API_TOKEN: ${{ secrets.CLOUDFLARE_ANALYTICS_API_TOKEN }}
+      NTFY_TOPIC_R2_STORAGE: ${{ vars.NTFY_TOPIC_R2_STORAGE }}
+      R2_STORAGE_BUCKET_LIMITS: ${{ vars.R2_STORAGE_BUCKET_LIMITS }}
+      R2_STORAGE_DEFAULT_BUCKET_LIMIT: ${{ vars.R2_STORAGE_DEFAULT_BUCKET_LIMIT }}
+      R2_STORAGE_WARNING_PERCENT: ${{ vars.R2_STORAGE_WARNING_PERCENT }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Check R2 storage soft limits
+        run: python scripts/check_r2_storage.py

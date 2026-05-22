@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import subprocess
 import sys
+import threading
 import time
 from dataclasses import dataclass
 from datetime import date as date_cls
@@ -10,6 +11,12 @@ from typing import Any, Callable
 
 from core.data_paths import update_streams_dir
 from git_ops import git_commit_and_push
+
+
+ALBUM_UPDATE_TARGETS = (
+    "The Life of a Showgirl",
+    "THE TORTURED POETS DEPARTMENT",
+)
 
 
 @dataclass
@@ -33,6 +40,91 @@ class FinalizeContext:
     extract_track_id: Callable[[str | None], str | None]
     load_history_track_ids_for_date: Callable[[str], set[str]]
     find_biggest_album_gainer_for_spotlight: Callable[..., dict | None]
+    posted_album_updates: set[str]
+    initial_post_state: dict[str, float]
+
+
+class ReadyAlbumUpdatePoster:
+    """Post ready album updates early after exporting the partial site state."""
+
+    def __init__(
+        self,
+        *,
+        script_dir: Path,
+        stats_date: str,
+        export_web_data: Callable[..., None],
+        album_tracks_done_for: Callable[[str, str], bool],
+        spacing_seconds: int,
+        log_mode: str,
+        enabled: bool,
+    ) -> None:
+        self.script_dir = script_dir
+        self.stats_date = stats_date
+        self.export_web_data = export_web_data
+        self.album_tracks_done_for = album_tracks_done_for
+        self.spacing_seconds = spacing_seconds
+        self.log_mode = log_mode
+        self.enabled = enabled
+        self._posted: set[str] = set()
+        self._stop = threading.Event()
+        self._lock = threading.Lock()
+        self._thread: threading.Thread | None = None
+        self._post_state = {"posted_count": 0, "last_post_at": 0.0}
+
+    def start(self) -> None:
+        if not self.enabled or self._thread is not None:
+            return
+        self._thread = threading.Thread(target=self._run, name="ready-album-posts", daemon=True)
+        self._thread.start()
+
+    def stop(self) -> set[str]:
+        self._stop.set()
+        if self._thread is not None:
+            self._thread.join()
+        with self._lock:
+            return set(self._posted)
+
+    def post_state(self) -> dict[str, float]:
+        with self._lock:
+            return dict(self._post_state)
+
+    def _run(self) -> None:
+        while not self._stop.is_set():
+            if self._post_newly_ready_albums():
+                continue
+            if self._all_targets_posted():
+                return
+            self._stop.wait(1.0)
+
+    def _all_targets_posted(self) -> bool:
+        with self._lock:
+            return set(ALBUM_UPDATE_TARGETS).issubset(self._posted)
+
+    def _post_newly_ready_albums(self) -> bool:
+        for album in ALBUM_UPDATE_TARGETS:
+            with self._lock:
+                if album in self._posted:
+                    continue
+            if not self.album_tracks_done_for(album, self.stats_date):
+                continue
+
+            print(f"Album update ready during streams run: {album}")
+            print("Exporting current web data before early album post...")
+            self.export_web_data(stats_date=self.stats_date)
+
+            album_img_script = self.script_dir / "tools" / "scripts" / "generate_album_update_image.py"
+            _run_streams_post(
+                [sys.executable, str(album_img_script), album, self.stats_date, "--post"],
+                label=f"early album update ({album})",
+                should_post=True,
+                state=self._post_state,
+                spacing_seconds=self.spacing_seconds,
+                log_mode=self.log_mode,
+            )
+            with self._lock:
+                self._posted.add(album)
+            return True
+        return False
 
 
 def _run_streams_post(
@@ -155,13 +247,12 @@ def _run_forecast_and_image_refresh(ctx: FinalizeContext) -> None:
 
 
 def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
-    album_update_targets = [
-        "The Life of a Showgirl",
-        "THE TORTURED POETS DEPARTMENT",
-    ]
     album_img_script = ctx.script_dir / "tools" / "scripts" / "generate_album_update_image.py"
 
-    for album in album_update_targets:
+    for album in ALBUM_UPDATE_TARGETS:
+        if album in ctx.posted_album_updates:
+            print(f"Album update already posted during streams run: {album}")
+            continue
         if ctx.album_tracks_done_for(album, ctx.summary["stats_date"]):
             print(f"Generating album update image: {album} ...")
             album_cmd = [sys.executable, str(album_img_script), album, ctx.summary["stats_date"]]
@@ -298,15 +389,15 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
     artist_metadata_updated = _update_artist_metadata(ctx)
     _export_web_data_once(ctx, force=artist_metadata_updated)
 
-    post_state = {"posted_count": 0, "last_post_at": 0.0}
+    post_state = dict(ctx.initial_post_state or {"posted_count": 0, "last_post_at": 0.0})
     _post_streams_image(ctx, post_state)
 
     if ctx.debug_daily_mode or ctx.local_test_mode:
         return
 
-    _run_forecast_and_image_refresh(ctx)
     _post_album_updates(ctx, post_state)
     _post_albums_daily(ctx, post_state)
+    _run_forecast_and_image_refresh(ctx)
     _post_spotlight_gainers(ctx, post_state)
     _post_best_day_since(ctx, post_state)
 

@@ -8,7 +8,7 @@ Logique :
 - cherche toutes les dates non-postées des 7 derniers jours
 - attend que la page la plus récente soit disponible (cutoff à 15h30)
 - lance filter.py pour chaque date manquante
-- si plusieurs dates : génère une image combinée et un tweet condensé
+- génère toujours une image pour une seule date
 - poste sur Twitter
 
 Options :
@@ -129,7 +129,7 @@ def get_unposted_dates() -> list[date]:
         if not already_posted(today - timedelta(days=i))
     ]
     unposted.sort()
-    return unposted
+    return unposted[:1]
 
 
 def past_cutoff() -> bool:
@@ -222,12 +222,6 @@ def run_filter(d: date, *, replace_date: bool) -> tuple[str | None, bool]:
     content = tp.read_text(encoding="utf-8-sig")
     log("INFO", f"tweet.txt chargé ({len(content)} caractères)")
     return content, False
-
-
-def build_multi_tweet(dates: list[date]) -> str:
-    parts = [datetime.strptime(str(d), "%Y-%m-%d").strftime("%B %d") for d in dates]
-    year  = dates[-1].year
-    return f"Taylor Swift on {' & '.join(parts)}, {year}"
 
 
 def maybe_upload_to_r2() -> None:
@@ -348,16 +342,12 @@ def main():
 
     # Générer l'image (simple ou combinée)
     log("STEP", "Génération de l'image du chart")
-    if len(processed) == 1:
-        d = processed[0]
-        image_path = first_existing(
-            spotify_chart_dir("fr", d) / "chart_image.png",
-            legacy_spotify_chart_dir("fr", d) / "chart_image.png",
-        )
-        img_args = [sys.executable, str(GENERATE_IMAGE_SCRIPT), str(d)]
-    else:
-        image_path = GENERATE_IMAGE_SCRIPT.parent / "chart_image_multi.png"
-        img_args = [sys.executable, str(GENERATE_IMAGE_SCRIPT)] + [str(d) for d in processed]
+    d = processed[0]
+    image_path = first_existing(
+        spotify_chart_dir("fr", d) / "chart_image.png",
+        legacy_spotify_chart_dir("fr", d) / "chart_image.png",
+    )
+    img_args = [sys.executable, str(GENERATE_IMAGE_SCRIPT), str(d)]
 
     img_result = subprocess.run(
         img_args,
