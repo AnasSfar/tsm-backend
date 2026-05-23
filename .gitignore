@@ -15,6 +15,7 @@ env/
 .env
 .env.*
 .env.local
+.gcloud-config/
 
 # OS / editor
 .DS_Store
@@ -46,6 +47,8 @@ env/
 
 # Common runtime artifacts
 *.lock
+!posted.lock
+!**/posted.lock
 twitter_post.txt
 
 # Log files
@@ -75,6 +78,15 @@ twitter_post.txt
 collectors/spotify/charts/*/history/
 collectors/spotify/charts/worldwide/history/
 collectors/spotify/charts/artists_global/history/
+!collectors/spotify/charts/*/history/
+!collectors/spotify/charts/*/history/**/
+!collectors/spotify/charts/*/history/**/posted.lock
+!collectors/spotify/charts/worldwide/history/
+!collectors/spotify/charts/worldwide/history/**/
+!collectors/spotify/charts/worldwide/history/**/posted.lock
+!collectors/spotify/charts/artists_global/history/
+!collectors/spotify/charts/artists_global/history/**/
+!collectors/spotify/charts/artists_global/history/**/posted.lock
 collectors/spotify/charts/worldwide/json/
 
 # Twitter session & Chrome profile data

@@ -38,9 +38,11 @@ sys.path.insert(0, str((_REPO_ROOT / "collectors" / "spotify").resolve()))
 from core.logger import Logger  # noqa: E402
 _DB_DIR = _REPO_ROOT / "db"
 _SITE_DATA_DIR = _REPO_ROOT / "website" / "site" / "data"
+_ARCHIVE_DB_DIR = _REPO_ROOT / "data" / "_archive" / "original" / "db"
 
 STREAMS_HISTORY_CSV = _DB_DIR / "streams_history.csv"
 STREAMS_HISTORY_FULL_CSV = _DB_DIR / "streams_history_full.csv"
+STREAMS_HISTORY_ARCHIVE_CSV = _ARCHIVE_DB_DIR / "streams_history.csv"
 CHARTS_GLOBAL_CSV = _DB_DIR / "charts_history_global.csv"
 APPLE_MUSIC_GLOBAL_CSV = _DB_DIR / "apple_music_global.csv"
 APPLE_MUSIC_COUNTRY_CSV = _DB_DIR / "apple_music_country_charts.csv"
@@ -198,23 +200,44 @@ def _active_streams_csvs() -> list[Path]:
         paths.append(STREAMS_HISTORY_FULL_CSV)
     if STREAMS_HISTORY_CSV.exists():
         paths.append(STREAMS_HISTORY_CSV)
+    elif STREAMS_HISTORY_ARCHIVE_CSV.exists():
+        paths.append(STREAMS_HISTORY_ARCHIVE_CSV)
     return paths or [STREAMS_HISTORY_CSV]
 
 
-def _latest_streams_date() -> date | None:
-    latest: date | None = None
+def _all_stream_dates() -> list[date]:
+    """Return sorted stream dates from the active streams CSV source(s)."""
+    dates: set[date] = set()
     for csv_path in _active_streams_csvs():
         if not csv_path.exists():
             continue
         with csv_path.open("r", newline="", encoding="utf-8-sig") as f:
-            reader = csv.DictReader(f)
-            for row in reader:
+            for row in csv.DictReader(f):
                 d = _parse_iso_date(row.get("date") or "")
-                if d is None:
-                    continue
-                if latest is None or d > latest:
-                    latest = d
-    return latest
+                if d:
+                    dates.add(d)
+    return sorted(dates)
+
+
+def _latest_complete_week_end() -> date | None:
+    """Return the most recent complete Wednesday-ended week in streams data."""
+    stream_dates = _all_stream_dates()
+    if not stream_dates:
+        return None
+
+    date_set = set(stream_dates)
+    candidate = stream_dates[-1]
+    while candidate.weekday() != 2:  # Wednesday
+        candidate -= timedelta(days=1)
+
+    min_date = stream_dates[0]
+    while candidate >= min_date:
+        week_start, week_days = _week_dates(candidate)
+        if week_start >= min_date and all(_parse_iso_date(day) in date_set for day in week_days):
+            return candidate
+        candidate -= timedelta(days=7)
+
+    return None
 
 
 def _week_dates(week_end: date) -> tuple[date, list[str]]:
@@ -860,10 +883,12 @@ def run(
     logger = Logger()
 
     if chart_date is None:
-        chart_date = _latest_streams_date()
+        chart_date = _latest_complete_week_end()
+        if chart_date is not None:
+            logger.log(f"  auto_date      : latest complete Wednesday is {_format_date(chart_date)}")
 
     if chart_date is None:
-        logger.log(f"⚠ no dates found in {STREAMS_HISTORY_CSV.name}")
+        logger.log("⚠ no complete Wednesday week found in streams data")
         return 2
 
     # Chart weeks end on Wednesday (Thu→Wed). Snap back if date is not a Wednesday.
@@ -1150,6 +1175,17 @@ def run(
         snap["peak_position"] = out["peak_position"]
         snap["times_at_peak"] = out["times_at_peak"]
 
+    if not snapshot_entries:
+        logger.log("⚠ abort          : no TayBoard entries generated; refusing to write/upload empty snapshot")
+        logs_dir = _SCRIPT_DIR / "logs"
+        logs_dir.mkdir(parents=True, exist_ok=True)
+        log_path = logs_dir / f"swift_top_100_{chart_date_str}.log"
+        try:
+            logger.save(str(log_path))
+        except OSError as exc:
+            print(f"[swift_top_100] Warning: could not save log {log_path.name}: {exc}")
+        return 3
+
     if dry_run:
         logger.log("⚠ DRY-RUN — no files written")
     else:
@@ -1206,22 +1242,12 @@ def run(
     logs_dir = _SCRIPT_DIR / "logs"
     logs_dir.mkdir(parents=True, exist_ok=True)
     log_path = logs_dir / f"swift_top_100_{chart_date_str}.log"
-    logger.save(str(log_path))
+    try:
+        logger.save(str(log_path))
+    except OSError as exc:
+        print(f"[swift_top_100] Warning: could not save log {log_path.name}: {exc}")
 
     return 0
-
-
-def _all_stream_dates() -> list[date]:
-    """Return sorted list of all dates present in streams_history.csv."""
-    dates: set[date] = set()
-    if not STREAMS_HISTORY_CSV.exists():
-        return []
-    with STREAMS_HISTORY_CSV.open("r", newline="", encoding="utf-8-sig") as f:
-        for row in csv.DictReader(f):
-            d = _parse_iso_date(row.get("date") or "")
-            if d:
-                dates.add(d)
-    return sorted(dates)
 
 
 def _backfill_week_ends(stream_dates: list[date]) -> list[date]:
