@@ -185,6 +185,17 @@ def rank_change_label(rank: int, previous_rank) -> tuple[str, str]:
     return "=", "chg-eq"
 
 
+def gained_rank_spot(artist: dict) -> bool:
+    previous_rank = artist.get("previous_rank")
+    rank = artist.get("rank")
+    if previous_rank is None or rank is None:
+        return False
+    try:
+        return int(previous_rank) - int(rank) > 0
+    except (TypeError, ValueError):
+        return False
+
+
 def fmt_streak(days) -> str:
     if days is None:
         return "—"
@@ -569,7 +580,9 @@ def main() -> None:
     out_path = spotify_chart_dir("artists_global", stats_date) / out_name
     generate_image(html, out_path)
 
-    if not args.no_post:
+    if not args.no_post and not gained_rank_spot(ts_artist):
+        print("Twitter post skipped: Taylor Swift did not gain a rank spot.")
+    elif not args.no_post:
         twitter_session = Path(args.session) if args.session else TWITTER_SESSION
         if not twitter_session.exists():
             print(f"Twitter session not found: {twitter_session} — skipping post.")
