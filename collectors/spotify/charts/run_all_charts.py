@@ -20,6 +20,7 @@ CHARTS_ROOT = Path(__file__).resolve().parent
 REPO_ROOT = CHARTS_ROOT.parents[2]
 sys.path.insert(0, str(REPO_ROOT / "collectors" / "spotify"))
 from core.data_paths import legacy_spotify_chart_dir, spotify_chart_dir
+from core.git_ops import git_commit_and_push
 
 _WARP_CLI = Path(r"C:\Program Files\Cloudflare\Cloudflare WARP\warp-cli.exe")
 
@@ -1131,6 +1132,7 @@ def main() -> int:
         print(f"[FAIL] {', '.join(n for n, _ in failures)} — {total}")
         return 1
     print(f"[ OK ] tout terminé — {total}")
+    git_commit_and_push(REPO_ROOT, f"charts run all {target_date.isoformat()}")
     return 0
 
 

@@ -52,6 +52,7 @@ _CORE_DIR = Path(__file__).resolve().parents[4] / "collectors" / "spotify"
 if str(_CORE_DIR) not in sys.path:
     sys.path.insert(0, str(_CORE_DIR))
 from core.data_paths import legacy_spotify_chart_dir, spotify_chart_dir
+from core.git_ops import git_commit_and_push
 from core.twitter import post_thread, split_tweets
 
 def _build_http_session() -> _requests.Session:
@@ -935,6 +936,7 @@ def main() -> int:
             else:
                 print(f"[WARN] Failed: {track_id}")
 
+    git_commit_and_push(ROOT, f"charts worldwide {target.isoformat()}")
     return 0
 
 

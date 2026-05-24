@@ -20,7 +20,7 @@ DEFAULT_SESSION = (
     / "collectors"
     / "spotify"
     / "charts"
-    / "global"
+    / "fr"
     / "tools"
     / "json"
     / "twitter_session.json"

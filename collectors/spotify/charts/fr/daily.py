@@ -396,6 +396,8 @@ def main():
                 )
             except Exception as e:
                 log("WARN", f"ntfy notification failed (non-blocking): {e}")
+
+        git_commit_and_push(_REPO_ROOT)
     else:
         log("ERROR", "Publication Twitter échouée, posted.lock non créé")
         if NTFY_TOPIC:

@@ -360,6 +360,8 @@ def main():
             title="Taylor Swift UK - PostÃ©",
             tags="white_check_mark,musical_note",
         )
+
+        git_commit_and_push(_REPO_ROOT)
     else:
         log("ERROR", "Publication Twitter Ã©chouÃ©e, posted.lock non crÃ©Ã©")
         notify(
@@ -377,4 +379,3 @@ if __name__ == "__main__":
     _t0 = time.perf_counter()
     _atexit.register(lambda: log("INFO", f"TerminÃ© en {int((time.perf_counter() - _t0) // 60)}m {int((time.perf_counter() - _t0) % 60):02d}s"))
     main()
-

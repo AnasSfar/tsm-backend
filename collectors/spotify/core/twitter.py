@@ -252,17 +252,20 @@ def _launch(p, profile_dir: Path):
     """Lance un contexte Chrome persistant avec anti-detection."""
     profile_dir.mkdir(parents=True, exist_ok=True)
     args = ["--disable-blink-features=AutomationControlled"]
+    headless = os.getenv("TWITTER_HEADLESS", "").strip().lower() in {"1", "true", "yes", "on"}
+    if os.name != "nt" and not os.getenv("DISPLAY"):
+        headless = True
     try:
         return p.chromium.launch_persistent_context(
             str(profile_dir),
-            headless=False,
+            headless=headless,
             channel="chrome",
             args=args,
         )
     except Exception:
         return p.chromium.launch_persistent_context(
             str(profile_dir),
-            headless=False,
+            headless=headless,
             args=args,
         )
 
@@ -282,6 +285,30 @@ def _load_credentials(session_file: Path) -> dict | None:
     return None
 
 
+def _load_storage_state(session_file: Path) -> dict | None:
+    """Lit les cookies/localStorage Playwright si le fichier de session les contient."""
+    try:
+        data = json.loads(Path(session_file).read_text(encoding="utf-8-sig"))
+        if data.get("cookies") or data.get("origins"):
+            return {
+                "cookies": data.get("cookies", []),
+                "origins": data.get("origins", []),
+            }
+    except Exception:
+        pass
+    return None
+
+
+def _restore_storage_state(context, session_file: Path) -> bool:
+    state = _load_storage_state(session_file)
+    if not state:
+        return False
+    cookies = state.get("cookies") or []
+    if cookies:
+        context.add_cookies(cookies)
+    return True
+
+
 def _auto_login(page, username: str, password: str, email: str = ""):
     """Remplit le formulaire de connexion X automatiquement."""
     print("  Auto-login en cours...")
@@ -291,7 +318,11 @@ def _auto_login(page, username: str, password: str, email: str = ""):
     # Champ username
     print("  -> Saisie du username...")
     username_input = page.locator("input[autocomplete='username']")
-    username_input.wait_for(state="visible", timeout=10_000)
+    try:
+        username_input.wait_for(state="visible", timeout=6_000)
+    except PlaywrightTimeout:
+        username_input = page.locator("input").first
+        username_input.wait_for(state="visible", timeout=10_000)
     username_input.fill(username)
     time.sleep(0.5)
 
@@ -317,7 +348,7 @@ def _auto_login(page, username: str, password: str, email: str = ""):
 
     # Champ password
     print("  -> Saisie du mot de passe...")
-    pwd_input = page.locator("input[type='password']")
+    pwd_input = page.locator("input[type='password']").first
     pwd_input.wait_for(state="visible", timeout=10_000)
     pwd_input.fill(password)
     time.sleep(0.5)
@@ -332,10 +363,24 @@ def _auto_login(page, username: str, password: str, email: str = ""):
     time.sleep(4)
 
     # Verification que la connexion a reussi
-    if "login" in page.url or "accounts" in page.url:
+    if "login" in page.url or "accounts" in page.url or "onboarding" in page.url:
         print(f"  ERREUR : Login echoue, URL actuelle : {page.url}")
     else:
         print(f"  Auto-login termine. URL : {page.url}")
+
+
+def _looks_logged_out(page) -> bool:
+    url = page.url
+    if "login" in url or "onboarding" in url or "accounts" in url:
+        return True
+    try:
+        if page.locator("input[autocomplete='username']").count():
+            return True
+        if page.get_by_text("Email or username", exact=True).count():
+            return True
+    except Exception:
+        pass
+    return False
 
 
 def setup_session(session_file: Path):
@@ -347,6 +392,7 @@ def setup_session(session_file: Path):
 
     with sync_playwright() as p:
         context = _launch(p, profile_dir)
+        _restore_storage_state(context, session_file)
         page = context.new_page()
         if credentials:
             _auto_login(page, credentials["username"], credentials["password"], credentials.get("email", ""))
@@ -367,12 +413,13 @@ def post_thread(tweets: list[str], session_file: Path) -> bool:
     profile_dir  = _profile_dir(session_file)
 
     # Premiere utilisation : creer la session (le dossier Default indique que Chrome a bien tourne)
-    if not (profile_dir / "Default").exists():
+    if not (profile_dir / "Default").exists() and not _load_storage_state(session_file):
         print("Aucun profil Twitter trouve. Connexion initiale requise...")
         setup_session(session_file)
 
     with sync_playwright() as p:
         context = _launch(p, profile_dir)
+        _restore_storage_state(context, session_file)
         page    = context.new_page()
         print(f"\nPublication de {len(tweets)} tweet(s)...")
         previous_url = None
@@ -381,7 +428,7 @@ def post_thread(tweets: list[str], session_file: Path) -> bool:
             page.goto("https://x.com/home", wait_until="domcontentloaded")
             time.sleep(2)
 
-            if "login" in page.url:
+            if _looks_logged_out(page):
                 print("Session expiree. Reconnexion automatique...")
                 credentials = _load_credentials(session_file)
                 if credentials:
@@ -407,6 +454,13 @@ def post_thread(tweets: list[str], session_file: Path) -> bool:
                             page.goto("https://x.com/compose/post", wait_until="domcontentloaded")
 
                         time.sleep(2)
+                        if _looks_logged_out(page):
+                            print("Session expiree. Reconnexion automatique...")
+                            credentials = _load_credentials(session_file)
+                            if credentials:
+                                _auto_login(page, credentials["username"], credentials["password"], credentials.get("email", ""))
+                                page.goto("https://x.com/compose/post", wait_until="domcontentloaded")
+                                time.sleep(2)
                         editor = page.locator("[data-testid='tweetTextarea_0']").first
                         editor.click(timeout=10_000)
                         editor.fill(tweet)
