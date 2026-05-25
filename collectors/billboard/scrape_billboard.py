@@ -23,8 +23,30 @@ _REPO_ROOT   = _SCRIPT_DIR.parents[1]
 DATA_ROOT = _REPO_ROOT / "data"
 ARCHIVE_BILLBOARD_CSV_PATH = DATA_ROOT / "_archive" / "original" / "db" / "billboard_history.csv"
 BILLBOARD_CSV_PATH = ARCHIVE_BILLBOARD_CSV_PATH
-LIENS_PATH = _REPO_ROOT / "config" / "links" / "billboard.json"
-liens = json.loads(LIENS_PATH.read_text(encoding="utf-8-sig"))
+LIENS_PATHS = (
+    _REPO_ROOT / "config" / "links" / "billboard.json",
+    _SCRIPT_DIR / "config" / "links" / "billboard.json",
+)
+DEFAULT_LINKS = {
+    "billboard hot 100": "https://www.billboard.com/charts/hot-100/",
+    "billboard 200": "https://www.billboard.com/charts/billboard-200/",
+    "billboard taylor swift": "https://www.billboard.com/artist/taylor-swift/chart-history/hsi/",
+    "billboard greatest of all time artists": "https://www.billboard.com/charts/greatest-of-all-time-artists/",
+}
+
+
+def _load_links() -> dict[str, str]:
+    for path in LIENS_PATHS:
+        if path.exists():
+            return json.loads(path.read_text(encoding="utf-8-sig"))
+    print(
+        "  [warn] No Billboard links config found; using built-in defaults.",
+        flush=True,
+    )
+    return DEFAULT_LINKS.copy()
+
+
+liens = _load_links()
 
 URL_HOT_100    = liens.get("billboard hot 100", "")
 URL_BB200      = liens.get("billboard 200", "")

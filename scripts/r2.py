@@ -296,6 +296,42 @@ def _upload_static_item(client, bucket: str, key: str, data: bytes, content_type
     )
 
 
+def _collect_slug_tasks(slug: str, data_prefix: str) -> list[tuple[str, bytes, str]]:
+    """Return upload tasks for a single chart slug (latest + snapshots + index + png)."""
+    tasks: list[tuple[str, bytes, str]] = []
+
+    # Latest
+    latest = SITE_DATA_DIR / f"{slug}.json"
+    if latest.exists():
+        try:
+            obj = load_json(latest)
+            data = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+            tasks.append((f"{data_prefix}/{slug}.json", data, "application/json; charset=utf-8"))
+        except Exception:
+            print(f"[SKIP] invalid: {latest}")
+
+    # Index
+    index = SITE_DATA_DIR / f"{slug}_index.json"
+    if index.exists():
+        tasks.append((f"{data_prefix}/{slug}_index.json", index.read_bytes(), "application/json; charset=utf-8"))
+
+    # Dated snapshots
+    for snapshot in sorted(SITE_DATA_DIR.glob(f"{slug}_????-??-??.json")):
+        try:
+            obj = load_json(snapshot)
+            data = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+            tasks.append((f"{data_prefix}/{snapshot.name}", data, "application/json; charset=utf-8"))
+        except Exception:
+            print(f"[SKIP] invalid snapshot: {snapshot}")
+
+    # PNG image
+    png = SITE_DATA_DIR / f"{slug}.png"
+    if png.exists():
+        tasks.append((f"{data_prefix}/{slug}.png", png.read_bytes(), "image/png"))
+
+    return tasks
+
+
 def upload_static_data(
     *,
     client,
@@ -304,9 +340,35 @@ def upload_static_data(
     history_prefix: str,
     dry_run: bool,
     new_date: str | None = None,
+    slugs: list[str] | None = None,
 ) -> tuple[int, int]:
-    """Upload generated JSON/CSV/static history files used by the frontend."""
+    """Upload generated JSON/CSV/static history files used by the frontend.
+
+    If *slugs* is provided, only the files belonging to those chart slugs are
+    uploaded (latest JSON, dated snapshots, index, PNG).  All other sections
+    (history, CSVs, songs.json …) are skipped — use this for targeted uploads
+    after a single chart is regenerated.
+    """
     tasks: list[tuple[str, bytes, str]] = []  # (key, data, content_type)
+
+    if slugs is not None:
+        for slug in slugs:
+            tasks.extend(_collect_slug_tasks(slug, data_prefix))
+
+        uploaded = 0
+        unchanged = 0
+        with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+            futures = [
+                executor.submit(_upload_static_item, client, bucket, key, data, content_type, dry_run)
+                for key, data, content_type in tasks
+            ]
+            for future in concurrent.futures.as_completed(futures):
+                if future.result():
+                    uploaded += 1
+                else:
+                    unchanged += 1
+        print(f"  static     : {uploaded} uploaded, {unchanged} unchanged (slugs: {', '.join(slugs)})")
+        return uploaded, unchanged
 
     json_mappings = [
         ("songs.json",               "data/songs.json"),
@@ -339,10 +401,9 @@ def upload_static_data(
     else:
         print(f"[SKIP] absent: {WORLDWIDE_TOTAL_DAYS_PATH}")
 
-    # TayBoard snapshot index
-    index_path = SITE_DATA_DIR / "swift_top_100_index.json"
-    if index_path.exists():
-        tasks.append((f"{data_prefix}/swift_top_100_index.json", index_path.read_bytes(), "application/json; charset=utf-8"))
+    # TayBoard top-100: index, per-song files, snapshots, PNG
+    tasks.extend(_collect_slug_tasks("swift_top_100", data_prefix))
+    tasks.extend(_collect_slug_tasks("swift_top_100_not_combined", data_prefix))
 
     # Per-song TayBoard history files: swift_top_100_songs/{track_id}.json
     songs_dir = SITE_DATA_DIR / "swift_top_100_songs"
@@ -353,27 +414,6 @@ def upload_static_data(
                 tasks.append((r2_key, song_path.read_bytes(), "application/json; charset=utf-8"))
             except Exception:
                 print(f"[SKIP] invalid song file: {song_path}")
-
-    # Historical TayBoard snapshots: swift_top_100_YYYY-MM-DD.json
-    for snapshot_path in sorted(SITE_DATA_DIR.glob("swift_top_100_????-??-??.json")):
-        r2_key = f"{data_prefix}/{snapshot_path.name}"
-        try:
-            obj = load_json(snapshot_path)
-            data = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
-            tasks.append((r2_key, data, "application/json; charset=utf-8"))
-        except Exception:
-            print(f"[SKIP] invalid snapshot: {snapshot_path}")
-
-    binary_mappings = [
-        ("swift_top_100.png", "data/swift_top_100.png", "image/png"),
-    ]
-    for filename, r2_key, content_type in binary_mappings:
-        src = SITE_DATA_DIR / filename
-        if not src.exists():
-            print(f"[SKIP] absent: {src}")
-            continue
-        full_key = f"{data_prefix}/{r2_key.split('/', 1)[1]}"
-        tasks.append((full_key, src.read_bytes(), content_type))
 
     # Charts CSVs: store in db/ as charts_history_<region>.csv.
     # Frontend API loader may try both `charts_history_<region>.csv` and `charts_<region>.csv`.
@@ -468,6 +508,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--history-prefix", default=os.getenv("R2_STATIC_HISTORY_PREFIX", "history"))
     parser.add_argument("--db-prefix", default=os.getenv("R2_DB_PREFIX", "db"))
     parser.add_argument("--new-date", default=None, help="Only upload this date's history file (YYYY-MM-DD) instead of all history files.")
+    parser.add_argument("--slugs", default=None, help="Comma-separated chart slugs to upload (e.g. swift_top_albums,swift_top_eras). Skips all other sections.")
     parser.add_argument("--skip-history-upload", action="store_true")
     parser.add_argument("--skip-static-upload", action="store_true")
     parser.add_argument("--skip-db-upload", action="store_true")
@@ -581,6 +622,12 @@ def main() -> int:
             section_futures["history"] = executor.submit(
                 _run_history_upload, client, bucket, args.track_prefix, daily_files, args.dry_run
             )
+        slugs = [s.strip() for s in args.slugs.split(",") if s.strip()] if args.slugs else None
+        # --slugs implies skipping everything except static (chart files only)
+        if slugs:
+            args.skip_history_upload = True
+            args.skip_db_upload = True
+            args.skip_images_upload = True
         if not args.skip_static_upload:
             section_futures["static"] = executor.submit(
                 upload_static_data,
@@ -590,6 +637,7 @@ def main() -> int:
                 history_prefix=args.history_prefix,
                 dry_run=args.dry_run,
                 new_date=args.new_date,
+                slugs=slugs,
             )
         if not args.skip_db_upload:
             section_futures["db"] = executor.submit(
@@ -619,6 +667,118 @@ def main() -> int:
     print(f"\n[done]{suffix}  {total_uploaded} uploaded, {total_unchanged} unchanged  (bucket: {bucket})")
 
     return 0
+
+
+# ---------------------------------------------------------------------------
+# Public API — importable by other scripts
+# ---------------------------------------------------------------------------
+
+def _r2_ready() -> tuple[bool, str]:
+    """Return (ok, skip_reason). Loads .env before checking."""
+    try:
+        load_dotenv(str(Path(__file__).resolve().parents[1] / ".env"), override=True)
+    except Exception:
+        pass
+    if boto3 is None or botocore is None:
+        return False, "boto3/botocore not installed"
+    if os.getenv("UPLOAD_TO_R2", "").strip().lower() in ("0", "false", "no"):
+        return False, "UPLOAD_TO_R2=0"
+    missing = get_missing_env_vars(R2_REQUIRED_ENV_VARS)
+    if missing:
+        return False, "missing env: " + ", ".join(missing)
+    return True, ""
+
+
+def upload_slugs(
+    slugs: list[str],
+    *,
+    dry_run: bool = False,
+    bucket: str | None = None,
+    data_prefix: str | None = None,
+) -> bool:
+    """Upload only the files for the given chart slugs (latest, snapshots, index, PNG).
+
+    Returns True on success, False when skipped due to missing credentials / config.
+    """
+    ok, reason = _r2_ready()
+    if not ok:
+        print(f"[r2] skipped — {reason}")
+        return False
+
+    _bucket = bucket or os.getenv("R2_BUCKET", "taylor-data")
+    _data_prefix = data_prefix or os.getenv("R2_STATIC_DATA_PREFIX", "data")
+    client = get_s3_client()
+    upload_static_data(
+        client=client,
+        bucket=_bucket,
+        data_prefix=_data_prefix,
+        history_prefix="",  # unused when slugs is set
+        dry_run=dry_run,
+        slugs=slugs,
+    )
+    return True
+
+
+def upload_all(
+    *,
+    new_date: str | None = None,
+    dry_run: bool = False,
+    skip_history: bool = False,
+    skip_db: bool = False,
+    skip_images: bool = False,
+    bucket: str | None = None,
+    data_prefix: str | None = None,
+    history_prefix: str | None = None,
+    db_prefix: str | None = None,
+) -> bool:
+    """Full R2 upload — equivalent to running r2.py with no arguments.
+
+    Returns True on success, False when skipped due to missing credentials / config.
+    """
+    ok, reason = _r2_ready()
+    if not ok:
+        print(f"[r2] skipped — {reason}")
+        return False
+
+    _bucket = bucket or os.getenv("R2_BUCKET", "taylor-data")
+    _data_prefix = data_prefix or os.getenv("R2_STATIC_DATA_PREFIX", "data")
+    _history_prefix = history_prefix or os.getenv("R2_STATIC_HISTORY_PREFIX", "history")
+    _db_prefix = db_prefix or os.getenv("R2_DB_PREFIX", "db")
+    _track_prefix = os.getenv("SPOTIFY_R2_TRACK_PREFIX", "history-by-track")
+    _images_prefix = os.getenv("R2_IMAGES_PREFIX", "images/apple-music")
+    client = get_s3_client()
+
+    section_futures: dict[str, concurrent.futures.Future] = {}
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+        if not skip_history and HISTORY_DIR.exists():
+            daily_files = sorted(p for p in HISTORY_DIR.glob("*.json") if p.name != "index.json")
+            if daily_files:
+                section_futures["history"] = executor.submit(
+                    _run_history_upload, client, _bucket, _track_prefix, daily_files, dry_run
+                )
+        section_futures["static"] = executor.submit(
+            upload_static_data,
+            client=client, bucket=_bucket, data_prefix=_data_prefix,
+            history_prefix=_history_prefix, dry_run=dry_run, new_date=new_date,
+        )
+        if not skip_db:
+            section_futures["db"] = executor.submit(
+                upload_db_files, client=client, bucket=_bucket, db_prefix=_db_prefix, dry_run=dry_run,
+            )
+        if not skip_images:
+            section_futures["images"] = executor.submit(
+                upload_apple_music_images, client=client, bucket=_bucket,
+                images_prefix=_images_prefix, dry_run=dry_run,
+            )
+
+    ok = True
+    for name, future in section_futures.items():
+        try:
+            future.result()
+        except Exception as exc:
+            print(f"[r2] {name} failed — {exc}")
+            ok = False
+    return ok
 
 
 if __name__ == "__main__":

@@ -182,6 +182,34 @@ def _post_streams_image(ctx: FinalizeContext, state: dict[str, float]) -> None:
         print("[DEBUG-DAILY] Skip: Twitter, forecast, images, git, notify.")
         return
 
+    if _is_weekend_stats_date(ctx.summary["stats_date"]):
+        post_script = ctx.script_dir / "tools" / "scripts" / "post_weekend_streams_twitter.py"
+        if ctx.no_post_mode:
+            print("Weekend detected: generating combined streams image only (--no-post).")
+            _run(
+                ctx,
+                [sys.executable, str(post_script), ctx.summary["stats_date"], "--no-post"],
+                label="weekend streams image (no-post)",
+                should_post=False,
+                state=state,
+            )
+            return
+
+        if not ctx.summary.get("all_done"):
+            print("Skipping weekend streams post: not all tracks are done yet.")
+            return
+
+        print("Weekend detected: posting one combined streams image to Twitter...")
+        _run(
+            ctx,
+            [sys.executable, str(post_script), ctx.summary["stats_date"]],
+            label="weekend streams image",
+            should_post=True,
+            state=state,
+        )
+        print("Weekend streams post done.")
+        return
+
     post_script = ctx.script_dir / "tools" / "scripts" / "post_streams_twitter.py"
     if ctx.no_post_mode:
         print("Skipping Twitter post (--no-post).")
@@ -247,6 +275,10 @@ def _run_forecast_and_image_refresh(ctx: FinalizeContext) -> None:
 
 
 def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
+    if _is_weekend_stats_date(ctx.summary["stats_date"]):
+        print("Weekend detected: skipping separate album update posts.")
+        return
+
     album_img_script = ctx.script_dir / "tools" / "scripts" / "generate_album_update_image.py"
 
     for album in ALBUM_UPDATE_TARGETS:
@@ -281,6 +313,10 @@ def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
 
 
 def _post_albums_daily(ctx: FinalizeContext, state: dict[str, float]) -> None:
+    if _is_weekend_stats_date(ctx.summary["stats_date"]):
+        print("Weekend detected: skipping separate albums daily post (included in combined streams image).")
+        return
+
     albums_post_script = ctx.script_dir / "tools" / "scripts" / "post_albums_twitter.py"
     albums_cmd = [sys.executable, str(albums_post_script), ctx.summary["stats_date"]]
     if ctx.no_post_mode:
@@ -345,6 +381,10 @@ def _post_spotlight_gainers(ctx: FinalizeContext, state: dict[str, float]) -> No
 
 
 def _post_best_day_since(ctx: FinalizeContext, state: dict[str, float]) -> None:
+    if _is_weekend_stats_date(ctx.summary["stats_date"]):
+        print("Weekend detected: skipping separate best-day-since posts.")
+        return
+
     if not ctx.all_album_tracks_done(ctx.summary["stats_date"]):
         print("Best-day-since posts skipped: not all album tracks are done yet.")
         return
@@ -374,7 +414,11 @@ def _start_spotlight_gainers(ctx: FinalizeContext) -> threading.Thread:
     return thread
 
 
-def _run_swift_top_100_if_needed(ctx: FinalizeContext) -> None:
+def _is_weekend_stats_date(stats_date: str) -> bool:
+    return date_cls.fromisoformat(stats_date).weekday() in (5, 6)
+
+
+def _run_swift_top_charts_if_needed(ctx: FinalizeContext) -> None:
     try:
         stats_date = date_cls.fromisoformat(ctx.summary["stats_date"])
         if stats_date.weekday() != 2:
@@ -382,18 +426,30 @@ def _run_swift_top_100_if_needed(ctx: FinalizeContext) -> None:
 
         print(f"\nWednesday detected - generating Swift Top 100 for {ctx.summary['stats_date']} ...")
         swift_top_100_script = ctx.repo_root / "collectors" / "billboard" / "swift_top_100.py"
-        result = subprocess.run(
-            [sys.executable, str(swift_top_100_script), "--date", ctx.summary["stats_date"]],
+        top_100_result = subprocess.run(
+            [sys.executable, str(swift_top_100_script), "--date", ctx.summary["stats_date"], "--variant", "all"],
             cwd=str(ctx.repo_root),
             check=False,
         )
-        if result.returncode == 0:
-            print("Swift Top 100 generated successfully.")
-            git_commit_and_push(ctx.repo_root, f"charts swift top 100 {ctx.summary['stats_date']}")
+        if top_100_result.returncode != 0:
+            print(f"Swift Top 100 exited with code {top_100_result.returncode}.")
+            return
+
+        print("Swift Top 100 generated successfully.")
+        print(f"Generating Swift Top Albums for {ctx.summary['stats_date']} ...")
+        swift_top_albums_script = ctx.repo_root / "collectors" / "billboard" / "swift_top_albums.py"
+        albums_result = subprocess.run(
+            [sys.executable, str(swift_top_albums_script), "--date", ctx.summary["stats_date"], "--variant", "all", "--upload"],
+            cwd=str(ctx.repo_root),
+            check=False,
+        )
+        if albums_result.returncode == 0:
+            print("Swift Top Albums generated successfully.")
+            git_commit_and_push(ctx.repo_root, f"charts swift top 100 and albums {ctx.summary['stats_date']}")
         else:
-            print(f"Swift Top 100 exited with code {result.returncode}.")
+            print(f"Swift Top Albums exited with code {albums_result.returncode}.")
     except Exception as exc:
-        print(f"Swift Top 100 trigger failed - {exc}")
+        print(f"Swift Top charts trigger failed - {exc}")
 
 
 def run_final_update_tasks(ctx: FinalizeContext) -> None:
@@ -402,7 +458,11 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
 
     post_state = dict(ctx.initial_post_state or {"posted_count": 0, "last_post_at": 0.0})
     spotlight_thread = None
-    if not ctx.debug_daily_mode and not ctx.local_test_mode:
+    if (
+        not ctx.debug_daily_mode
+        and not ctx.local_test_mode
+        and not _is_weekend_stats_date(ctx.summary["stats_date"])
+    ):
         spotlight_thread = _start_spotlight_gainers(ctx)
 
     _post_streams_image(ctx, post_state)
@@ -419,4 +479,4 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
 
     print("Git commit and push...")
     git_commit_and_push(ctx.repo_root, f"daily final export {ctx.summary['stats_date']}")
-    _run_swift_top_100_if_needed(ctx)
+    _run_swift_top_charts_if_needed(ctx)

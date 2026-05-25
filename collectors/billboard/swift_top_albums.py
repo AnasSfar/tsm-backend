@@ -1,7 +1,8 @@
 """TayBoard Albums — weekly album chart.
 
-Source des données : db/swift_top_100_history.csv (weekly_streams déjà agrégés
-par chanson). Les streams sont groupés par album via la discographie.
+Source des données : db/swift_top_songs_history.csv (Spotify + Apple Music units
+calculés pour toutes les chansons par swift_top_100.py). Les units sont groupées
+par album via la discographie, extras inclus.
 
 Outputs:
 - db/swift_top_albums_history.csv
@@ -14,6 +15,7 @@ Run:
   python collectors/billboard/swift_top_albums.py --date 2026-04-22
   python collectors/billboard/swift_top_albums.py --dry-run
   python collectors/billboard/swift_top_albums.py --backfill --force
+  python collectors/billboard/swift_top_albums.py --upload
 """
 
 from __future__ import annotations
@@ -24,7 +26,6 @@ import json
 import os
 import re
 import shutil
-import subprocess
 import sys
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
@@ -39,8 +40,11 @@ from core.logger import Logger  # noqa: E402
 _DB_DIR = _REPO_ROOT / "db"
 _SITE_DATA_DIR = _REPO_ROOT / "website" / "site" / "data"
 
-SWIFT_TOP_100_HISTORY_CSV = _DB_DIR / "swift_top_100_history.csv"
+SWIFT_TOP_SONGS_HISTORY_CSV = _DB_DIR / "swift_top_songs_history.csv"
 SWIFT_TOP_ALBUMS_HISTORY_CSV = _DB_DIR / "swift_top_albums_history.csv"
+CHART_SLUG = "swift_top_albums"
+CHART_TITLE = "TayBoard Albums"
+CHART_KIND = "albums"
 
 DISCOGRAPHY_DIR = _DB_DIR / "discography"
 ALBUMS_DIR = DISCOGRAPHY_DIR / "albums"
@@ -50,6 +54,7 @@ OUTPUT_JSON = _SITE_DATA_DIR / "swift_top_albums.json"
 
 _TRACK_ID_RE = re.compile(r"track/([A-Za-z0-9]+)")
 _NORMALIZE_RE = re.compile(r"[^a-z0-9]+")
+_TS_FEATURE_RE = re.compile(r"\bfeat(?:\.|uring)?\s+taylor\s+swift\b", re.IGNORECASE)
 
 
 # ---------------------------------------------------------------------------
@@ -68,6 +73,22 @@ def _parse_iso_date(value: str) -> date | None:
 
 def _format_date(value: date) -> str:
     return value.isoformat()
+
+
+def _configure_variant(variant: str) -> None:
+    global SWIFT_TOP_ALBUMS_HISTORY_CSV, OUTPUT_JSON, CHART_SLUG, CHART_TITLE, CHART_KIND
+    if variant == "albums":
+        CHART_SLUG = "swift_top_albums"
+        CHART_TITLE = "TayBoard Albums"
+        CHART_KIND = "albums"
+    elif variant == "eras":
+        CHART_SLUG = "swift_top_eras"
+        CHART_TITLE = "TayBoard Eras"
+        CHART_KIND = "eras"
+    else:
+        raise ValueError(f"Unknown TayBoard albums variant: {variant}")
+    SWIFT_TOP_ALBUMS_HISTORY_CSV = _DB_DIR / f"{CHART_SLUG}_history.csv"
+    OUTPUT_JSON = _SITE_DATA_DIR / f"{CHART_SLUG}.json"
 
 
 def _normalize_album_id(name: str) -> str:
@@ -93,6 +114,33 @@ def _format_number(value: int | float | None, decimals: int = 2) -> str:
         return f"{value / 1_000_000:.{decimals}f}".rstrip("0").rstrip(".") + "M"
     else:
         return f"{value / 1_000_000_000:.{decimals}f}".rstrip("0").rstrip(".") + "B"
+
+
+def _is_taylor_feature(row: dict) -> bool:
+    """Return True for songs where Taylor Swift is credited as the feature."""
+    title = row.get("title") or ""
+    return bool(_TS_FEATURE_RE.search(title))
+
+
+def _track_has_taylor_as_primary(track: dict) -> bool:
+    primary = (track.get("primary_artist") or "").strip().casefold()
+    if primary:
+        return primary == "taylor swift"
+    artists = track.get("artists") or []
+    if isinstance(artists, list) and artists:
+        return str(artists[0]).strip().casefold() == "taylor swift"
+    return not _is_taylor_feature(track)
+
+
+def _era_title(album_title: str) -> str:
+    title = (album_title or "").strip()
+    tv_map = {
+        "Fearless (Taylor's Version)": "Fearless",
+        "Speak Now (Taylor's Version)": "Speak Now",
+        "Red (Taylor's Version)": "Red",
+        "1989 (Taylor's Version)": "1989",
+    }
+    return tv_map.get(title, title)
 
 
 # ---------------------------------------------------------------------------
@@ -153,11 +201,16 @@ def _iter_discography_albums() -> list[AlbumMeta]:
             for track in section.get("tracks", []) or []:
                 if not isinstance(track, dict):
                     continue
+                if not _track_has_taylor_as_primary(track):
+                    continue
                 tid = _extract_track_id(
                     (track.get("url") or track.get("spotify_url") or "").strip()
                 )
                 if tid:
                     albums[album_id]["track_ids"].add(tid)
+                for hist_id in track.get("historical_track_ids") or []:
+                    if isinstance(hist_id, str) and hist_id.strip():
+                        albums[album_id]["track_ids"].add(hist_id.strip())
 
     return [
         AlbumMeta(
@@ -171,18 +224,57 @@ def _iter_discography_albums() -> list[AlbumMeta]:
     ]
 
 
+def _albums_for_chart_variant(albums: list[AlbumMeta]) -> list[AlbumMeta]:
+    if CHART_KIND != "eras":
+        return albums
+
+    grouped: dict[str, dict] = {}
+    for album in albums:
+        title = _era_title(album.title)
+        aid = _normalize_album_id(title)
+        if aid not in grouped:
+            grouped[aid] = {
+                "title": title,
+                "cover_url": album.cover_url,
+                "spotify_url": album.spotify_url,
+                "track_ids": set(),
+            }
+        grouped[aid]["track_ids"].update(album.track_ids)
+        # Prefer Taylor's Version artwork for re-recorded eras when available.
+        if "Taylor's Version" in album.title:
+            grouped[aid]["cover_url"] = album.cover_url
+            grouped[aid]["spotify_url"] = album.spotify_url
+
+    return [
+        AlbumMeta(
+            album_id=aid,
+            title=info["title"],
+            cover_url=info["cover_url"],
+            spotify_url=info["spotify_url"],
+            track_ids=frozenset(info["track_ids"]),
+        )
+        for aid, info in grouped.items()
+    ]
+
+
 # ---------------------------------------------------------------------------
 # Song history source
 # ---------------------------------------------------------------------------
 
 def _load_song_history() -> list[dict]:
-    if not SWIFT_TOP_100_HISTORY_CSV.exists():
+    if not SWIFT_TOP_SONGS_HISTORY_CSV.exists():
         return []
-    with SWIFT_TOP_100_HISTORY_CSV.open("r", newline="", encoding="utf-8-sig") as f:
+    with SWIFT_TOP_SONGS_HISTORY_CSV.open("r", newline="", encoding="utf-8-sig") as f:
         return list(csv.DictReader(f))
 
 
-def _all_chart_dates(song_rows: list[dict]) -> list[date]:
+def _week_dates(week_end: date) -> tuple[date, list[str]]:
+    week_start = week_end - timedelta(days=6)
+    days = [_format_date(week_start + timedelta(days=i)) for i in range(7)]
+    return week_start, days
+
+
+def _all_stream_dates(song_rows: list[dict]) -> list[date]:
     dates: set[date] = set()
     for row in song_rows:
         d = _parse_iso_date(row.get("date") or "")
@@ -191,8 +283,17 @@ def _all_chart_dates(song_rows: list[dict]) -> list[date]:
     return sorted(dates)
 
 
+def _all_chart_dates(song_rows: list[dict]) -> list[date]:
+    return _all_stream_dates(song_rows)
+
+
 def _latest_chart_date(song_rows: list[dict]) -> date | None:
     dates = _all_chart_dates(song_rows)
+    return dates[-1] if dates else None
+
+
+def _previous_chart_date(song_rows: list[dict], chart_date: date) -> date | None:
+    dates = [d for d in _all_chart_dates(song_rows) if d < chart_date]
     return dates[-1] if dates else None
 
 
@@ -208,10 +309,15 @@ def _build_album_week(
     Returns (scored_by_album_id, rank_by_album_id).
     """
     week_rows = [r for r in song_rows if (r.get("date") or "").strip() == chart_date]
-    logger.log(f"  source         : {len(week_rows)} songs for {chart_date}")
+    logger.log(f"  source         : {len(week_rows)} scored songs for {chart_date}")
 
-    album_streams: dict[str, int] = {}
-    album_track_count: dict[str, int] = {}
+    album_weekly_streams: dict[str, int] = {}
+    album_units_am: dict[str, int] = {}
+    album_units_spotify: dict[str, int] = {}
+    album_units_charts: dict[str, int] = {}
+    album_units_surplus: dict[str, int] = {}
+    album_total_units: dict[str, int] = {}
+    album_track_ids: dict[str, set[str]] = {}
 
     def _to_int(v: str | None) -> int:
         try:
@@ -219,26 +325,39 @@ def _build_album_week(
         except Exception:
             return 0
 
-    unmatched = 0
+    unmatched_track_ids: set[str] = set()
     for row in week_rows:
         tid = (row.get("track_id") or "").strip()
-        streams = _to_int(row.get("weekly_streams"))
-        if not tid or streams <= 0:
+        if not tid:
             continue
         album = track_to_album.get(tid)
         if not album:
-            unmatched += 1
+            unmatched_track_ids.add(tid)
             continue
-        album_streams[album.album_id] = album_streams.get(album.album_id, 0) + streams
-        album_track_count[album.album_id] = album_track_count.get(album.album_id, 0) + 1
+        album_weekly_streams[album.album_id] = album_weekly_streams.get(album.album_id, 0) + _to_int(row.get("weekly_streams"))
+        album_units_am[album.album_id] = album_units_am.get(album.album_id, 0) + _to_int(row.get("units_am"))
+        album_units_spotify[album.album_id] = album_units_spotify.get(album.album_id, 0) + _to_int(row.get("units_spotify"))
+        album_units_charts[album.album_id] = album_units_charts.get(album.album_id, 0) + _to_int(row.get("units_charts"))
+        album_units_surplus[album.album_id] = album_units_surplus.get(album.album_id, 0) + _to_int(row.get("units_surplus"))
+        album_total_units[album.album_id] = album_total_units.get(album.album_id, 0) + _to_int(row.get("total_units"))
+        album_track_ids.setdefault(album.album_id, set()).add(tid)
 
-    if unmatched:
-        logger.log(f"  unmatched      : {unmatched} tracks not linked to any album")
+    if unmatched_track_ids:
+        logger.log(f"  unmatched      : {len(unmatched_track_ids)} tracks not linked to any album")
 
-    scored = sorted(album_streams.items(), key=lambda kv: kv[1], reverse=True)
+    scored = sorted(album_total_units.items(), key=lambda kv: kv[1], reverse=True)
     points_by_album = {
-        aid: {"album_id": aid, "weekly_streams": streams, "track_count": album_track_count.get(aid, 0)}
-        for aid, streams in scored
+        aid: {
+            "album_id": aid,
+            "weekly_streams": album_weekly_streams.get(aid, 0),
+            "units_am": album_units_am.get(aid, 0),
+            "units_spotify": album_units_spotify.get(aid, 0),
+            "units_charts": album_units_charts.get(aid, 0),
+            "units_surplus": album_units_surplus.get(aid, 0),
+            "total_units": total_units,
+            "track_count": len(album_track_ids.get(aid, set())),
+        }
+        for aid, total_units in scored
     }
     rank_by_album = {aid: i for i, (aid, _) in enumerate(scored, 1)}
 
@@ -250,7 +369,7 @@ def _build_album_week(
 # Album history CSV
 # ---------------------------------------------------------------------------
 
-def _load_existing_history_before_date(chart_date: str, logger: Logger) -> list[dict]:
+def _load_existing_history(logger: Logger) -> list[dict]:
     if not SWIFT_TOP_ALBUMS_HISTORY_CSV.exists():
         return []
     try:
@@ -259,7 +378,15 @@ def _load_existing_history_before_date(chart_date: str, logger: Logger) -> list[
     except Exception as exc:
         logger.log(f"⚠ history        : failed to read CSV — {exc}")
         return []
+    return rows
+
+
+def _history_rows_before_date(rows: list[dict], chart_date: str) -> list[dict]:
     return [r for r in rows if (r.get("date") or "").strip() < chart_date]
+
+
+def _history_rows_without_date(rows: list[dict], chart_date: str) -> list[dict]:
+    return [r for r in rows if (r.get("date") or "").strip() != chart_date]
 
 
 def _history_stats(rows: list[dict]) -> tuple[dict[str, int], dict[str, int], dict[str, int]]:
@@ -297,6 +424,11 @@ def _write_history_csv(rows: list[dict], logger: Logger) -> None:
         "album_id",
         "title",
         "weekly_streams",
+        "units_am",
+        "units_spotify",
+        "units_charts",
+        "units_surplus",
+        "total_units",
         "track_count",
         "prev_rank",
         "change",
@@ -318,9 +450,9 @@ def _write_history_csv(rows: list[dict], logger: Logger) -> None:
 # ---------------------------------------------------------------------------
 
 def _rebuild_snapshot_index(logger: Logger) -> None:
-    dates = [p.stem[len("swift_top_albums_"):] for p in _SITE_DATA_DIR.glob("swift_top_albums_????-??-??.json")]
+    dates = [p.stem[len(CHART_SLUG) + 1:] for p in _SITE_DATA_DIR.glob(f"{CHART_SLUG}_????-??-??.json")]
     dates.sort(reverse=True)
-    index_path = _SITE_DATA_DIR / "swift_top_albums_index.json"
+    index_path = _SITE_DATA_DIR / f"{CHART_SLUG}_index.json"
     index_path.write_text(json.dumps(dates, ensure_ascii=False), encoding="utf-8")
     logger.log(f"✔ IDX  → {index_path.name} ({len(dates)} dates)")
 
@@ -330,7 +462,7 @@ def _write_snapshot_json(payload: dict, logger: Logger) -> None:
     content = json.dumps(payload, ensure_ascii=False, indent=2)
     chart_date = payload.get("chart_date")
     if chart_date:
-        dated = _SITE_DATA_DIR / f"swift_top_albums_{chart_date}.json"
+        dated = _SITE_DATA_DIR / f"{CHART_SLUG}_{chart_date}.json"
         dated.write_text(content, encoding="utf-8")
         logger.log(f"✔ JSON → {dated.name}")
     OUTPUT_JSON.write_text(content, encoding="utf-8")
@@ -342,35 +474,21 @@ def _write_snapshot_json(payload: dict, logger: Logger) -> None:
 # R2 upload
 # ---------------------------------------------------------------------------
 
-def _maybe_upload_to_r2(*, logger: Logger) -> None:
-    try:
-        from dotenv import load_dotenv  # type: ignore
-        load_dotenv(_REPO_ROOT / ".env", override=True)
-    except Exception:
-        pass
-
-    if os.getenv("UPLOAD_TO_R2", "").strip().lower() in ("0", "false", "no"):
-        logger.log("  r2             : skipped (UPLOAD_TO_R2=0)")
+def _maybe_upload_to_r2(*, logger: Logger, skip_r2: bool = False) -> None:
+    if skip_r2:
+        logger.log("  r2             : skipped (--skip-r2)")
         return
-
-    required_env = ["R2_ACCOUNT_ID", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY"]
-    missing = [n for n in required_env if not os.getenv(n, "").strip()]
-    if missing:
-        logger.log("  r2             : skipped — missing env: " + ", ".join(missing))
-        return
-
-    r2_script = _REPO_ROOT / "scripts" / "r2.py"
-    if not r2_script.exists():
-        logger.log("⚠ r2             : script not found")
-        return
-
     logger.log("  r2             : uploading...")
     try:
-        completed = subprocess.run([sys.executable, str(r2_script)], cwd=str(_REPO_ROOT), check=False)
-        if completed.returncode == 0:
+        _scripts_dir = str(_REPO_ROOT / "scripts")
+        if _scripts_dir not in sys.path:
+            sys.path.insert(0, _scripts_dir)
+        import r2 as _r2
+        ok = _r2.upload_slugs(["swift_top_albums", "swift_top_eras"])
+        if ok:
             logger.log("✔ r2             : upload complete")
         else:
-            logger.log(f"⚠ r2             : upload failed (exit code {completed.returncode})")
+            logger.log("  r2             : skipped (credentials / config)")
     except Exception as exc:
         logger.log(f"⚠ r2             : upload failed — {exc}")
 
@@ -379,30 +497,41 @@ def _maybe_upload_to_r2(*, logger: Logger) -> None:
 # Main run
 # ---------------------------------------------------------------------------
 
-def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool) -> int:
+def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool, skip_r2: bool = False) -> int:
     logger = Logger()
 
     if chart_date is None:
         chart_date = _latest_chart_date(song_rows)
 
     if chart_date is None:
-        logger.log(f"⚠ no dates found in {SWIFT_TOP_100_HISTORY_CSV.name}")
+        logger.log(f"⚠ no dates found in {SWIFT_TOP_SONGS_HISTORY_CSV.name}")
+        return 2
+
+    if chart_date.weekday() != 2:
+        logger.log(
+            f"⚠ invalid date    : {_format_date(chart_date)} is not a Wednesday "
+            "(tracking week must end on Wednesday)"
+        )
         return 2
 
     chart_date_str = _format_date(chart_date)
-    prev_date_str = _format_date(chart_date - timedelta(days=7))
+    available_dates = {_format_date(d) for d in _all_chart_dates(song_rows)}
+    if chart_date_str not in available_dates:
+        logger.log(
+            f"⚠ missing source  : no full song history for {chart_date_str} "
+            f"in {SWIFT_TOP_SONGS_HISTORY_CSV.name}"
+        )
+        return 2
 
-    # week_start from song history (first row for this date)
-    week_start_str = next(
-        (r.get("week_start") or "" for r in song_rows if (r.get("date") or "").strip() == chart_date_str),
-        "",
-    )
-    if not week_start_str:
-        week_start_str = _format_date(chart_date - timedelta(days=6))
+    prev_chart_date = _previous_chart_date(song_rows, chart_date)
+    prev_date_str = _format_date(prev_chart_date) if prev_chart_date else ""
 
-    logger.log(f"▶ TayBoard Albums · {chart_date_str}  week={week_start_str}→{chart_date_str}  prev={prev_date_str}")
+    week_start, _ = _week_dates(chart_date)
+    week_start_str = _format_date(week_start)
 
-    albums = _iter_discography_albums()
+    logger.log(f"▶ {CHART_TITLE} · {chart_date_str}  week={week_start_str}→{chart_date_str}  prev={prev_date_str or 'none'}")
+
+    albums = _albums_for_chart_variant(_iter_discography_albums())
     albums_by_id = {a.album_id: a for a in albums}
     logger.log(f"  discography    : {len(albums)} albums, {sum(len(a.track_ids) for a in albums)} tracks indexed")
 
@@ -420,23 +549,28 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool) -> int
         logger=logger,
     )
 
-    existing_rows = _load_existing_history_before_date(chart_date_str, logger)
-    weeks_on_chart_by_album, peak_by_album, times_at_peak_by_album = _history_stats(existing_rows)
+    existing_rows = _load_existing_history(logger)
+    prior_rows = _history_rows_before_date(existing_rows, chart_date_str)
+    weeks_on_chart_by_album, peak_by_album, times_at_peak_by_album = _history_stats(prior_rows)
 
-    is_first_run = len(existing_rows) == 0
+    is_first_run = len(prior_rows) == 0
     if is_first_run:
         logger.log("  history        : first run — all entries NEW")
         prev_scored: dict = {}
         prev_ranks: dict = {}
     else:
-        prior_weeks = len({(r.get("date") or "").strip() for r in existing_rows if r.get("date")})
+        prior_weeks = len({(r.get("date") or "").strip() for r in prior_rows if r.get("date")})
         logger.log(f"  history        : {prior_weeks} prior week{'s' if prior_weeks != 1 else ''} loaded")
-        prev_scored, prev_ranks = _build_album_week(
-            chart_date=prev_date_str,
-            song_rows=song_rows,
-            track_to_album=track_to_album,
-            logger=logger,
-        )
+        if prev_date_str:
+            prev_scored, prev_ranks = _build_album_week(
+                chart_date=prev_date_str,
+                song_rows=song_rows,
+                track_to_album=track_to_album,
+                logger=logger,
+            )
+        else:
+            prev_scored = {}
+            prev_ranks = {}
 
     out_entries: list[dict] = []
     snapshot_entries: list[dict] = []
@@ -446,7 +580,7 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool) -> int
         meta = albums_by_id.get(aid)
 
         pr = prev_ranks.get(aid)
-        prev_streams_val = (prev_scored.get(aid) or {}).get("weekly_streams")
+        prev_units_val = (prev_scored.get(aid) or {}).get("total_units")
 
         if pr is None:
             change = "RE" if weeks_on_chart_by_album.get(aid, 0) > 0 else "NEW"
@@ -454,11 +588,16 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool) -> int
             change = None
 
         weekly_streams = row["weekly_streams"]
+        units_am = row["units_am"]
+        units_spotify = row["units_spotify"]
+        units_charts = row["units_charts"]
+        units_surplus = row["units_surplus"]
+        total_units = row["total_units"]
         track_count = row["track_count"]
 
         pct_change = None
-        if pr is not None and prev_streams_val and prev_streams_val > 0:
-            pct_change = round(((weekly_streams - prev_streams_val) / prev_streams_val) * 100, 1)
+        if pr is not None and prev_units_val and prev_units_val > 0:
+            pct_change = round(((total_units - prev_units_val) / prev_units_val) * 100, 1)
 
         weeks_on_chart = weeks_on_chart_by_album.get(aid, 0) + 1
         hist_peak = peak_by_album.get(aid, 9999)
@@ -478,6 +617,11 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool) -> int
             "album_id": aid,
             "title": meta.title if meta else aid,
             "weekly_streams": weekly_streams,
+            "units_am": units_am,
+            "units_spotify": units_spotify,
+            "units_charts": units_charts,
+            "units_surplus": units_surplus,
+            "total_units": total_units,
             "track_count": track_count,
             "prev_rank": pr,
             "change": change,
@@ -488,7 +632,7 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool) -> int
             "times_at_peak": times_at_peak,
         })
 
-        points = round(weekly_streams / 30_000, 2)
+        points = round(total_units / 100_000, 1)
         snapshot_entries.append({
             "rank": rank,
             "album_id": aid,
@@ -497,15 +641,20 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool) -> int
             "image_url": meta.cover_url if meta else None,
             "spotify_url": meta.spotify_url if meta else None,
             "weekly_streams": weekly_streams,
+            "units_am": units_am,
+            "units_spotify": units_spotify,
+            "units_charts": units_charts,
+            "units_surplus": units_surplus,
+            "total_units": total_units,
             "track_count": track_count,
             # Champs attendus par swift_top_100_image.py
             "points": points,
             "points_display": _format_number(points),
-            "units": _format_number(weekly_streams),
-            "units_surplus_display": _format_number(weekly_streams),  # colonne STREAMS
-            "am_ts_units_display": "—",
-            "am_global_units_display": "—",
-            "units_charts_display": "—",
+            "units": _format_number(total_units),
+            "units_surplus_display": _format_number(units_surplus),
+            "am_ts_units_display": _format_number(units_am),
+            "am_global_units_display": _format_number(units_am),
+            "units_charts_display": _format_number(units_charts),
             "prev_rank": pr,
             "change": change,
             "rank_change": pr - rank if pr is not None else None,
@@ -516,7 +665,7 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool) -> int
         })
 
     # Final sort + reassign ranks
-    snapshot_entries.sort(key=lambda e: e.get("weekly_streams") or 0, reverse=True)
+    snapshot_entries.sort(key=lambda e: e.get("total_units") or 0, reverse=True)
     for i, e in enumerate(snapshot_entries, 1):
         e["rank"] = i
 
@@ -557,7 +706,7 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool) -> int
     if dry_run:
         logger.log("⚠ DRY-RUN — no files written")
     else:
-        combined_rows = existing_rows + out_entries
+        combined_rows = _history_rows_without_date(existing_rows, chart_date_str) + out_entries
         combined_rows.sort(key=lambda r: (
             (r.get("date") or ""),
             int(r.get("rank") or 9999),
@@ -566,7 +715,7 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool) -> int
         _write_history_csv(combined_rows, logger)
 
         payload = {
-            "title": "TayBoard Albums",
+            "title": CHART_TITLE,
             "chart_date": chart_date_str,
             "week_start": week_start_str,
             "week_end": chart_date_str,
@@ -577,7 +726,7 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool) -> int
 
         try:
             from swift_top_100_image import render_png
-            out_path = _SITE_DATA_DIR / "swift_top_albums.png"
+            out_path = _SITE_DATA_DIR / f"{CHART_SLUG}.png"
             render_png(
                 payload=payload,
                 output_path=out_path,
@@ -590,15 +739,15 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool) -> int
             logger.log(f"✔ PNG  → {out_path.name}")
             history_dir = _SCRIPT_DIR / "history" / chart_date_str
             history_dir.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(out_path, history_dir / "swift_top_albums.png")
+            shutil.copy2(out_path, history_dir / f"{CHART_SLUG}.png")
         except Exception as exc:
             logger.log(f"⚠ image          : generation failed — {exc}")
 
-        _maybe_upload_to_r2(logger=logger)
+        _maybe_upload_to_r2(logger=logger, skip_r2=skip_r2)
 
-    logs_dir = _SCRIPT_DIR / "logs"
-    logs_dir.mkdir(parents=True, exist_ok=True)
-    logger.save(str(logs_dir / f"swift_top_albums_{chart_date_str}.log"))
+        logs_dir = _SCRIPT_DIR / "logs"
+        logs_dir.mkdir(parents=True, exist_ok=True)
+        logger.save(str(logs_dir / f"{CHART_SLUG}_{chart_date_str}.log"))
 
     return 0
 
@@ -611,18 +760,40 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Generate TayBoard Albums weekly chart")
     p.add_argument("--date", dest="date", default=None, help="Week ending date (YYYY-MM-DD)")
     p.add_argument("--backfill", dest="backfill", action="store_true",
-                   help="Generate all weeks available in swift_top_100_history.csv")
+                   help="Generate all weeks available in swift_top_songs_history.csv")
     p.add_argument("--force", dest="force", action="store_true",
                    help="With --backfill: regenerate weeks that already have a snapshot")
     p.add_argument("--dry-run", dest="dry_run", action="store_true",
                    help="Compute without writing any files")
     p.add_argument("--rebuild-index", dest="rebuild_index", action="store_true",
                    help="Rebuild swift_top_albums_index.json from existing snapshot files")
+    p.add_argument("--skip-r2", dest="skip_r2", action="store_true",
+                   help="Do not upload generated files to R2")
+    p.add_argument("--variant", dest="variant", choices=["albums", "eras", "all"], default="albums",
+                   help="Generate album chart, eras chart, or both")
     return p.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
+
+    if args.variant == "all":
+        for variant in ("albums", "eras"):
+            _configure_variant(variant)
+            next_args = argparse.Namespace(**vars(args))
+            next_args.variant = variant
+            try:
+                main_from_args(next_args)
+            except SystemExit as exc:
+                if exc.code not in (0, None):
+                    raise
+        raise SystemExit(0)
+
+    _configure_variant(args.variant)
+    main_from_args(args)
+
+
+def main_from_args(args: argparse.Namespace) -> None:
 
     if args.rebuild_index:
         logger = Logger()
@@ -631,7 +802,7 @@ def main(argv: list[str] | None = None) -> None:
 
     song_rows = _load_song_history()
     if not song_rows:
-        print(f"[swift_top_albums] No data found in {SWIFT_TOP_100_HISTORY_CSV}")
+        print(f"[swift_top_albums] No data found in {SWIFT_TOP_SONGS_HISTORY_CSV}")
         raise SystemExit(1)
 
     if args.backfill:
@@ -640,19 +811,21 @@ def main(argv: list[str] | None = None) -> None:
             print("[swift_top_albums] No dates found in song history.")
             raise SystemExit(1)
         print(f"[swift_top_albums] Backfill: {len(all_dates)} weeks found "
-              f"({_format_date(all_dates[0])} → {_format_date(all_dates[-1])})")
+              f"({_format_date(all_dates[0])} -> {_format_date(all_dates[-1])})")
         for chart_date in all_dates:
-            snapshot_path = _SITE_DATA_DIR / f"swift_top_albums_{_format_date(chart_date)}.json"
+            snapshot_path = _SITE_DATA_DIR / f"{CHART_SLUG}_{_format_date(chart_date)}.json"
             if snapshot_path.exists() and not args.force:
                 print(f"[swift_top_albums] Skip {_format_date(chart_date)} (already exists, use --force)")
                 continue
             print(f"[swift_top_albums] Generating {_format_date(chart_date)} ...")
-            run(chart_date=chart_date, song_rows=song_rows, dry_run=bool(args.dry_run))
+            run(chart_date=chart_date, song_rows=song_rows, dry_run=bool(args.dry_run), skip_r2=True)
         print("[swift_top_albums] Backfill complete.")
+        if not args.dry_run:
+            _maybe_upload_to_r2(logger=Logger(), skip_r2=bool(args.skip_r2))
         raise SystemExit(0)
 
     chart_date = _parse_iso_date(args.date) if args.date else None
-    code = run(chart_date=chart_date, song_rows=song_rows, dry_run=bool(args.dry_run))
+    code = run(chart_date=chart_date, song_rows=song_rows, dry_run=bool(args.dry_run), skip_r2=bool(args.skip_r2))
     raise SystemExit(code)
 
 

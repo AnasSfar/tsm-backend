@@ -1268,6 +1268,7 @@ def main():
             and not local_test_mode
             and not no_post_mode
             and scraping_needed
+            and date.fromisoformat(stats_date).weekday() not in (5, 6)
         ),
     )
     album_update_poster.start()

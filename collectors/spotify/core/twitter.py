@@ -14,6 +14,7 @@ TWITTER_COORD_LOCK = TWITTER_COORD_DIR / "coordinator.lock"
 TWITTER_POST_LOCK_TIMEOUT = 30 * 60
 TWITTER_ACCOUNT_SPACING_SECONDS = int(os.getenv("TWITTER_ACCOUNT_SPACING_SECONDS", "180"))
 TWITTER_MAX_ACTIVE_ACCOUNTS = int(os.getenv("TWITTER_MAX_ACTIVE_ACCOUNTS", "2"))
+TWITTER_FILE_UPLOAD_TIMEOUT_MS = int(os.getenv("TWITTER_FILE_UPLOAD_TIMEOUT_MS", "120000"))
 
 
 def _profile_dir(session_file: Path) -> Path:
@@ -492,12 +493,17 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
     image_path   = Path(image_path)
     profile_dir  = _profile_dir(session_file)
 
+    if not image_path.exists():
+        print(f"X image introuvable: {image_path}")
+        return False
+
     if not (profile_dir / "Default").exists():
         print("Aucun profil Twitter trouve. Connexion initiale requise...")
         setup_session(session_file)
 
     with sync_playwright() as p:
         context = _launch(p, profile_dir)
+        _restore_storage_state(context, session_file)
         page    = context.new_page()
         try:
             page.goto("https://x.com/home", wait_until="domcontentloaded")
@@ -523,7 +529,14 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
 
                 # Attach image via hidden file input
                 file_input = page.locator("input[type='file'][accept*='image']").first
-                file_input.set_input_files(str(image_path))
+                try:
+                    file_input.set_input_files(str(image_path), timeout=TWITTER_FILE_UPLOAD_TIMEOUT_MS)
+                except Exception:
+                    page.set_input_files(
+                        "input[type='file'][accept*='image']",
+                        str(image_path),
+                        timeout=TWITTER_FILE_UPLOAD_TIMEOUT_MS,
+                    )
                 time.sleep(3)
 
                 # Add tweet text
