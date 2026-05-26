@@ -350,10 +350,9 @@ def try_apply_track_update(
         if history_index is not None
         else get_history_total_for_date(track_id, previous_stats_date)
     )
-    # daily_streams ideally uses yesterday's total. If yesterday is missing (partial run,
-    # newly added track, not-found yesterday), fall back to last known total so daily isn't blank.
-    daily_base = previous_day_total if previous_day_total is not None else last_total
-    daily = compute_daily(daily_base, total)
+    # daily_streams must be a one-day delta. If the exact previous day is missing,
+    # leave it blank instead of silently producing a multi-day daily.
+    daily = compute_daily(previous_day_total, total)
 
     if last_total is None:
         reason = "first_seen"
