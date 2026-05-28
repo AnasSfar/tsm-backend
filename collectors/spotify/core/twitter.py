@@ -113,7 +113,7 @@ def _twitter_account_slot(session_file: Path, timeout: int = TWITTER_POST_LOCK_T
     """Serialize one X account, allow up to two accounts to post at once."""
     account_key = _account_key(session_file)
     account_lock = TWITTER_COORD_DIR / f"account_{account_key}.lock"
-    account_fd = _exclusive_file(account_lock, timeout=timeout)
+    account_fd = _exclusive_file(account_lock, timeout=timeout, stale_after=60)
     active_marker = None
     try:
         active_marker = _acquire_active_account(account_key, timeout=timeout)
@@ -299,21 +299,111 @@ def _post_compose_text_thread(page, tweets: list[str]) -> bool:
     return _wait_post_submitted(page, "\n".join(tweets), timeout_ms=60_000)
 
 
-def _attach_image_to_composer(page, image_path: Path, index: int = 0) -> None:
-    file_inputs = page.locator("input[type='file'][accept*='image']")
-    count = file_inputs.count()
-    if count:
-        file_inputs.nth(min(index, count - 1)).set_input_files(
-            str(image_path),
-            timeout=TWITTER_FILE_UPLOAD_TIMEOUT_MS,
-        )
-    else:
-        page.set_input_files(
-            "input[type='file'][accept*='image']",
-            str(image_path),
-            timeout=TWITTER_FILE_UPLOAD_TIMEOUT_MS,
-        )
-    time.sleep(3)
+def _composer_scope(editor):
+    for depth in range(1, 16):
+        scope = editor.locator(f"xpath=ancestor::div[{depth}]")
+        try:
+            if (
+                scope.locator("input[type='file'][accept*='image']").count()
+                or scope.locator("[aria-label='Add photos or video'], [aria-label='Ajouter des photos ou une vidéo'], [aria-label='Ajouter des photos ou une video']").count()
+            ):
+                return scope
+        except Exception:
+            pass
+    return None
+
+
+def _media_button_candidates(root):
+    selectors = [
+        "[aria-label='Add photos or video']",
+        "[aria-label='Ajouter des photos ou une vidéo']",
+        "[aria-label='Ajouter des photos ou une video']",
+        "[data-testid='fileInput']",
+    ]
+    for selector in selectors:
+        locator = root.locator(selector)
+        try:
+            count = locator.count()
+        except Exception:
+            continue
+        for i in range(count):
+            yield locator.nth(i)
+
+
+def _attach_with_file_chooser(page, root, image_path: Path) -> bool:
+    for button in _media_button_candidates(root):
+        try:
+            if not button.is_visible(timeout=500):
+                continue
+            with page.expect_file_chooser(timeout=5_000) as chooser_info:
+                button.click(timeout=5_000)
+            chooser_info.value.set_files(str(image_path))
+            return True
+        except Exception:
+            pass
+    return False
+
+
+def _attach_image_to_composer(page, editor, image_path: Path, index: int = 0) -> None:
+    scope = _composer_scope(editor)
+    root = scope or page
+    before = _attached_image_count(root)
+    if not _attach_with_file_chooser(page, root, image_path):
+        print("X file chooser introuvable, fallback input[type=file]")
+        file_inputs = root.locator("input[type='file'][accept*='image']")
+        count = file_inputs.count()
+        if count:
+            file_inputs.last.set_input_files(
+                str(image_path),
+                timeout=TWITTER_FILE_UPLOAD_TIMEOUT_MS,
+            )
+        else:
+            page.locator("input[type='file'][accept*='image']").nth(index).set_input_files(
+                str(image_path),
+                timeout=TWITTER_FILE_UPLOAD_TIMEOUT_MS,
+            )
+    _wait_for_attached_image(root, before + 1)
+
+
+def _attached_image_count(root) -> int:
+    selectors = [
+        "[data-testid='attachments'] img",
+        "[data-testid='tweetPhoto'] img",
+        "div[aria-label='Image'] img",
+        "img[src^='blob:']",
+    ]
+    seen: set[str] = set()
+    total = 0
+    for selector in selectors:
+        locator = root.locator(selector)
+        try:
+            count = locator.count()
+        except Exception:
+            continue
+        for i in range(count):
+            try:
+                el = locator.nth(i)
+                src = el.get_attribute("src", timeout=500) or f"{selector}:{i}"
+                key = src
+                if key not in seen and el.is_visible(timeout=500):
+                    seen.add(key)
+                    total += 1
+            except Exception:
+                pass
+    return total
+
+
+def _wait_for_attached_image(root, expected_count: int) -> None:
+    deadline = time.time() + TWITTER_FILE_UPLOAD_TIMEOUT_MS / 1000
+    last_count = 0
+    while time.time() < deadline:
+        last_count = _attached_image_count(root)
+        if last_count >= expected_count:
+            # Let X finish enabling the post button after the preview appears.
+            time.sleep(1)
+            return
+        time.sleep(1)
+    raise TimeoutError(f"X image upload non confirmee: {last_count}/{expected_count} preview(s)")
 
 
 def _post_compose_image_thread(page, posts: list[tuple[str, Path]]) -> bool:
@@ -331,7 +421,15 @@ def _post_compose_image_thread(page, posts: list[tuple[str, Path]]) -> bool:
         editor.click(timeout=10_000)
         if text:
             editor.fill(text)
-        _attach_image_to_composer(page, image_path, i)
+        _attach_image_to_composer(page, editor, image_path, i)
+
+    for i, _ in enumerate(posts):
+        editor = _wait_visible_editor(page, i, timeout_ms=5_000)
+        scope = _composer_scope(editor)
+        attached = _attached_image_count(scope or page)
+        if attached < 1:
+            print(f"X image absente dans le post #{i + 1}")
+            return False
 
     page.locator(
         "[data-testid='tweetButton'], [data-testid='tweetButtonInline']"
