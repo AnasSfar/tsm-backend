@@ -249,6 +249,97 @@ def _wait_post_submitted(page, expected_text: str = "", timeout_ms: int = 45_000
     return False
 
 
+def _wait_visible_editor(page, index: int = 0, timeout_ms: int = 15_000):
+    editor = page.locator(f"[data-testid='tweetTextarea_{index}']").first
+    editor.wait_for(state="visible", timeout=timeout_ms)
+    return editor
+
+
+def _click_thread_add_button(page) -> bool:
+    candidates = [
+        "[data-testid='addButton']",
+        "[aria-label='Add another post']",
+        "[aria-label='Add another Tweet']",
+        "[aria-label='Ajouter un autre post']",
+        "[aria-label='Ajouter un autre Tweet']",
+        "[aria-label='Add']",
+        "[aria-label='Ajouter']",
+    ]
+    for selector in candidates:
+        button = page.locator(selector).first
+        try:
+            if button.count() and button.is_visible(timeout=1_000):
+                button.click(timeout=5_000)
+                return True
+        except Exception:
+            pass
+    return False
+
+
+def _post_compose_text_thread(page, tweets: list[str]) -> bool:
+    page.goto("https://x.com/compose/post", wait_until="domcontentloaded")
+    time.sleep(2)
+
+    _wait_visible_editor(page, 0).click(timeout=10_000)
+    _wait_visible_editor(page, 0).fill(tweets[0])
+    time.sleep(1)
+
+    for i, tweet in enumerate(tweets[1:], 1):
+        if not _click_thread_add_button(page):
+            print("X bouton d'ajout au thread introuvable.")
+            return False
+        editor = _wait_visible_editor(page, i)
+        editor.click(timeout=10_000)
+        editor.fill(tweet)
+        time.sleep(0.5)
+
+    page.locator(
+        "[data-testid='tweetButton'], [data-testid='tweetButtonInline']"
+    ).first.click(timeout=10_000)
+    return _wait_post_submitted(page, "\n".join(tweets), timeout_ms=60_000)
+
+
+def _attach_image_to_composer(page, image_path: Path, index: int = 0) -> None:
+    file_inputs = page.locator("input[type='file'][accept*='image']")
+    count = file_inputs.count()
+    if count:
+        file_inputs.nth(min(index, count - 1)).set_input_files(
+            str(image_path),
+            timeout=TWITTER_FILE_UPLOAD_TIMEOUT_MS,
+        )
+    else:
+        page.set_input_files(
+            "input[type='file'][accept*='image']",
+            str(image_path),
+            timeout=TWITTER_FILE_UPLOAD_TIMEOUT_MS,
+        )
+    time.sleep(3)
+
+
+def _post_compose_image_thread(page, posts: list[tuple[str, Path]]) -> bool:
+    page.goto("https://x.com/compose/post", wait_until="domcontentloaded")
+    time.sleep(2)
+
+    for i, (text, image_path) in enumerate(posts):
+        if i > 0:
+            if not _click_thread_add_button(page):
+                print("X bouton d'ajout au thread introuvable.")
+                return False
+            time.sleep(1)
+
+        editor = _wait_visible_editor(page, i)
+        editor.click(timeout=10_000)
+        if text:
+            editor.fill(text)
+        _attach_image_to_composer(page, image_path, i)
+
+    page.locator(
+        "[data-testid='tweetButton'], [data-testid='tweetButtonInline']"
+    ).first.click(timeout=10_000)
+    expected = "\n".join(text for text, _ in posts if text)
+    return _wait_post_submitted(page, expected, timeout_ms=90_000)
+
+
 def _launch(p, profile_dir: Path):
     """Lance un contexte Chrome persistant avec anti-detection."""
     profile_dir.mkdir(parents=True, exist_ok=True)
@@ -423,7 +514,6 @@ def post_thread(tweets: list[str], session_file: Path) -> bool:
         _restore_storage_state(context, session_file)
         page    = context.new_page()
         print(f"\nPublication de {len(tweets)} tweet(s)...")
-        previous_url = None
 
         try:
             page.goto("https://x.com/home", wait_until="domcontentloaded")
@@ -444,42 +534,40 @@ def post_thread(tweets: list[str], session_file: Path) -> bool:
 
             success = True
             with _twitter_account_slot(session_file) as account_key:
-                for i, tweet in enumerate(tweets, 1):
-                    try:
-                        _wait_account_spacing(account_key)
-                        if previous_url and "/status/" in previous_url:
-                            page.goto(previous_url, wait_until="domcontentloaded")
-                            time.sleep(2)
-                            page.locator("[data-testid='reply']").first.click(timeout=10_000)
-                        else:
+                try:
+                    _wait_account_spacing(account_key)
+                    if len(tweets) > 1:
+                        success = _post_compose_text_thread(page, tweets)
+                        if success:
+                            _mark_account_posted(account_key)
+                            print(f"OK Thread de {len(tweets)} posts publie")
+                    else:
+                        for i, tweet in enumerate(tweets, 1):
                             page.goto("https://x.com/compose/post", wait_until="domcontentloaded")
+                            time.sleep(2)
+                            if _looks_logged_out(page):
+                                print("Session expiree. Reconnexion automatique...")
+                                credentials = _load_credentials(session_file)
+                                if credentials:
+                                    _auto_login(page, credentials["username"], credentials["password"], credentials.get("email", ""))
+                                    page.goto("https://x.com/compose/post", wait_until="domcontentloaded")
+                                    time.sleep(2)
+                            editor = page.locator("[data-testid='tweetTextarea_0']").first
+                            editor.click(timeout=10_000)
+                            editor.fill(tweet)
+                            time.sleep(1)
+                            page.locator(
+                                "[data-testid='tweetButton'], [data-testid='tweetButtonInline']"
+                            ).first.click(timeout=10_000)
+                            if not _wait_post_submitted(page, tweet):
+                                success = False
+                                break
+                            _mark_account_posted(account_key)
+                            print(f"OK Tweet {i}/{len(tweets)} publie")
 
-                        time.sleep(2)
-                        if _looks_logged_out(page):
-                            print("Session expiree. Reconnexion automatique...")
-                            credentials = _load_credentials(session_file)
-                            if credentials:
-                                _auto_login(page, credentials["username"], credentials["password"], credentials.get("email", ""))
-                                page.goto("https://x.com/compose/post", wait_until="domcontentloaded")
-                                time.sleep(2)
-                        editor = page.locator("[data-testid='tweetTextarea_0']").first
-                        editor.click(timeout=10_000)
-                        editor.fill(tweet)
-                        time.sleep(1)
-                        page.locator(
-                            "[data-testid='tweetButton'], [data-testid='tweetButtonInline']"
-                        ).first.click(timeout=10_000)
-                        if not _wait_post_submitted(page, tweet):
-                            success = False
-                            break
-                        _mark_account_posted(account_key)
-                        previous_url = page.url
-                        print(f"OK Tweet {i}/{len(tweets)} publie")
-
-                    except Exception as e:
-                        print(f"X Erreur tweet {i}: {e}")
-                        success = False
-                        break
+                except Exception as e:
+                    print(f"X Erreur publication: {e}")
+                    success = False
 
         finally:
             context.close()
@@ -558,6 +646,64 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
 
         except Exception as e:
             print(f"X Erreur post_with_image: {e}")
+            return False
+
+        finally:
+            context.close()
+
+
+def post_image_thread(posts: list[tuple[str, Path]], session_file: Path) -> bool:
+    """Post a native X thread where each post has one image attached."""
+    posts = [(str(text or "").strip(), Path(image_path)) for text, image_path in posts]
+    posts = [(text, image_path) for text, image_path in posts if image_path]
+    if not posts:
+        print("Aucun post image a publier.")
+        return False
+    missing = [image_path for _, image_path in posts if not image_path.exists()]
+    if missing:
+        print(f"X image introuvable: {missing[0]}")
+        return False
+
+    session_file = Path(session_file)
+    profile_dir = _profile_dir(session_file)
+
+    if not (profile_dir / "Default").exists() and not _load_storage_state(session_file):
+        print("Aucun profil Twitter trouve. Connexion initiale requise...")
+        setup_session(session_file)
+
+    with sync_playwright() as p:
+        context = _launch(p, profile_dir)
+        _restore_storage_state(context, session_file)
+        page = context.new_page()
+        print(f"\nPublication d'un thread de {len(posts)} post(s) avec image...")
+
+        try:
+            page.goto("https://x.com/home", wait_until="domcontentloaded")
+            time.sleep(2)
+
+            if _looks_logged_out(page):
+                print("Session expiree. Reconnexion automatique...")
+                credentials = _load_credentials(session_file)
+                if credentials:
+                    _auto_login(page, credentials["username"], credentials["password"], credentials.get("email", ""))
+                else:
+                    context.close()
+                    setup_session(session_file)
+                    context = _launch(p, profile_dir)
+                    page = context.new_page()
+                page.goto("https://x.com/home", wait_until="domcontentloaded")
+                time.sleep(2)
+
+            with _twitter_account_slot(session_file) as account_key:
+                _wait_account_spacing(account_key)
+                ok = _post_compose_image_thread(page, posts)
+                if ok:
+                    _mark_account_posted(account_key)
+                    print(f"OK Thread image de {len(posts)} posts publie")
+                return ok
+
+        except Exception as e:
+            print(f"X Erreur post_image_thread: {e}")
             return False
 
         finally:

@@ -936,7 +936,7 @@ def main() -> int:
             else:
                 print(f"[WARN] Failed: {track_id}")
 
-    git_commit_and_push(ROOT, f"charts worldwide {target.isoformat()}")
+    git_commit_and_push(ROOT, f"charts worldwide {chart_date}")
     return 0
 
 

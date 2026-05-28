@@ -51,7 +51,8 @@ _CORE = _SPOTIFY_ROOT / "core"
 if str(_CORE) not in sys.path:
     sys.path.insert(0, str(_CORE))
 from core.data_paths import legacy_spotify_chart_dir, spotify_chart_dir  # noqa: E402
-from twitter import post_with_image as _post_with_image  # noqa: E402
+from twitter import post_image_thread as _post_image_thread  # noqa: E402
+from twitter import post_thread as _post_thread  # noqa: E402
 
 # Shared lock with core/twitter.py — prevents running Playwright while Twitter
 # posting scripts are also using a browser (same lock file, same semantics).
@@ -386,6 +387,11 @@ def _fmt_streams(n: int | None) -> str:
 
 
 def _rank_delta_html(entry: dict) -> str:
+    if entry.get("out"):
+        prev = entry.get("previous_rank")
+        suffix = f" (#{prev} yesterday)" if prev else ""
+        return f'<span class="oct-rank-delta rank-tag">{html.escape(suffix)}</span>'
+
     rank_change = entry.get("rank_change")
     prev  = entry.get("previous_rank")
     rank  = entry.get("rank")
@@ -441,11 +447,11 @@ def _rows_html(entries: list[dict]) -> str:
     rows = ""
     for e in entries:
         label = _country_label(e.get("country", ""), e.get("country_name", ""))
-        rank  = e.get("rank", "?")
+        rank = "OUT" if e.get("out") else f"#{e.get('rank', '?')}"
         rows += (
             f"<tr>"
             f'<td class="oct-country">{html.escape(label)}</td>'
-            f'<td class="oct-rank">#{rank}{_rank_delta_html(e)}</td>'
+            f'<td class="oct-rank">{rank}{_rank_delta_html(e)}</td>'
             f'<td class="oct-streams">{_fmt_streams(e.get("streams"))}{_stream_pct_html(e)}</td>'
             f"</tr>"
         )
@@ -497,7 +503,8 @@ def _build_card_html(song: dict, entries: list[dict], palette: dict[str, str], c
     # Sort: Global first, then by streams desc
     def _key(e: dict):
         is_global = e.get("country", "").lower() in ("global", "glob")
-        return (0 if is_global else 1, -(e.get("streams") or 0))
+        is_out = bool(e.get("out"))
+        return (0 if is_global else 1, 1 if is_out else 0, -(e.get("streams") or 0), e.get("previous_rank") or 9999)
 
     sorted_entries = sorted(entries, key=_key)
     two_col = len(sorted_entries) > _TABLE_SPLIT_THRESHOLD
@@ -945,16 +952,23 @@ def _worldwide_snapshot_path(chart_date: str) -> Path:
     return spotify_chart_dir("worldwide", chart_date) / f"ts_worldwide_{chart_date}.json"
 
 
-def _load_prev_country_counts(chart_date: str) -> dict[str, int]:
+def _previous_snapshot_path(chart_date: str) -> Path | None:
     try:
         prev_date = (datetime.strptime(chart_date, "%Y-%m-%d").date() - timedelta(days=1)).strftime("%Y-%m-%d")
     except Exception:
-        return {}
+        return None
 
     prev_path = _worldwide_snapshot_path(prev_date)
     if not prev_path.exists():
         prev_path = legacy_spotify_chart_dir("worldwide", prev_date) / f"ts_worldwide_{prev_date}.json"
     if not prev_path.exists():
+        return None
+    return prev_path
+
+
+def _load_prev_country_counts(chart_date: str) -> dict[str, int]:
+    prev_path = _previous_snapshot_path(chart_date)
+    if not prev_path:
         return {}
 
     try:
@@ -963,6 +977,37 @@ def _load_prev_country_counts(chart_date: str) -> dict[str, int]:
         return {}
     by_track = prev_data.get("by_track", {})
     return {track_id: len(entries) for track_id, entries in by_track.items() if isinstance(entries, list)}
+
+
+def _load_prev_by_track(chart_date: str) -> dict[str, list[dict]]:
+    prev_path = _previous_snapshot_path(chart_date)
+    if not prev_path:
+        return {}
+    try:
+        prev_data = json.loads(prev_path.read_text(encoding="utf-8-sig"))
+    except Exception:
+        return {}
+    by_track = prev_data.get("by_track", {})
+    return {track_id: entries for track_id, entries in by_track.items() if isinstance(entries, list)}
+
+
+def _with_out_regions(entries: list[dict], prev_entries: list[dict]) -> list[dict]:
+    current_countries = {str(entry.get("country") or "").lower() for entry in entries}
+    enriched = list(entries)
+    for prev in prev_entries:
+        country = str(prev.get("country") or "").lower()
+        if not country or country in current_countries:
+            continue
+        out_entry = dict(prev)
+        out_entry["out"] = True
+        out_entry["rank"] = None
+        out_entry["previous_rank"] = prev.get("rank")
+        out_entry["rank_change"] = None
+        out_entry["streams"] = None
+        out_entry["stream_change"] = None
+        out_entry["stream_change_pct"] = None
+        enriched.append(out_entry)
+    return enriched
 
 
 def _country_count_text(count: int, prev_count: int | None) -> str:
@@ -982,8 +1027,41 @@ def _build_tweet(song: dict, entries: list[dict], chart_date: str, prev_count: i
         date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
     except Exception:
         date_fmt = chart_date
+    if count == 1:
+        entry = entries[0]
+        country = _country_label(str(entry.get("country") or ""), str(entry.get("country_name") or ""))
+        rank = entry.get("rank", "?")
+        streams = _fmt_streams(entry.get("streams"))
+        return (
+            f'{emoji} | "{title}" charted on Spotify in {country} at #{rank} '
+            f"with {streams} streams yesterday ({date_fmt}).\n\n{_OVERALL_URL}"
+        )
     country_str = _country_count_text(count, prev_count)
     return f'{emoji} | "{title}" charted in {country_str} on Spotify yesterday ({date_fmt}).\n\n{_OVERALL_URL}'
+
+
+def _build_reentry_tweet(song: dict, entries: list[dict], chart_date: str) -> str:
+    title = song.get("title", "Unknown")
+    count = len(entries)
+    country_word = "country" if count == 1 else "countries"
+    try:
+        date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    except Exception:
+        date_fmt = chart_date
+    if count == 1:
+        entry = entries[0]
+        country = _country_label(str(entry.get("country") or ""), str(entry.get("country_name") or ""))
+        rank = entry.get("rank", "?")
+        streams = _fmt_streams(entry.get("streams"))
+        return (
+            f'"{title}" re-entered the Spotify Charts.\n\n'
+            f"Charted on Spotify in {country} at #{rank} with {streams} streams "
+            f"yesterday ({date_fmt}).\n\n{_OVERALL_URL}"
+        )
+    return (
+        f'"{title}" re-entered the Spotify Charts in {count} {country_word} '
+        f"yesterday ({date_fmt}).\n\n{_OVERALL_URL}"
+    )
 
 
 def _build_low_country_group_tweet(
@@ -1011,6 +1089,227 @@ def _build_low_country_group_tweet(
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 _GLOBAL_REGION_CODES = {"global", "glob"}
+
+
+def _best_entry(entries: list[dict], key: str, *, reverse: bool = True) -> dict | None:
+    valid = [e for e in entries if e.get(key) is not None]
+    regional = [e for e in valid if str(e.get("country") or "").lower() not in _GLOBAL_REGION_CODES]
+    pool = regional or valid
+    if not pool:
+        return None
+    return sorted(pool, key=lambda e: e.get(key) or 0, reverse=reverse)[0]
+
+
+def _summary_rows(
+    tracks: list[tuple[str, list[dict]]],
+    song_meta: dict[str, dict],
+) -> list[dict]:
+    rows: list[dict] = []
+    for track_id, entries in tracks:
+        title = str(song_meta.get(track_id, {}).get("title") or track_id)
+        peak_streams = _best_entry(entries, "streams", reverse=True)
+        peak_rank = _best_entry(entries, "rank", reverse=False)
+        rows.append(
+            {
+                "song": title,
+                "countries": len(entries),
+                "peak_streams": peak_streams,
+                "peak_rank": peak_rank,
+                "top10": sum(1 for e in entries if (e.get("rank") or 9999) <= 10),
+                "top50": sum(1 for e in entries if (e.get("rank") or 9999) <= 50),
+                "top100": sum(1 for e in entries if (e.get("rank") or 9999) <= 100),
+            }
+        )
+    return rows
+
+
+def _summary_cell_entry(entry: dict | None, *, streams: bool = False) -> str:
+    if not entry:
+        return "-"
+    country = _country_label(str(entry.get("country") or ""), str(entry.get("country_name") or ""))
+    if streams:
+        return f"{country} - {_fmt_streams(entry.get('streams'))}"
+    return f"{country} - #{entry.get('rank', '?')}"
+
+
+def _build_summary_html(
+    tracks: list[tuple[str, list[dict]]],
+    song_meta: dict[str, dict],
+    palette: dict[str, str],
+    chart_date: str,
+) -> str:
+    global _LOGO_URI
+    if not _LOGO_URI:
+        _LOGO_URI = _logo_data_uri()
+
+    try:
+        date_label = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    except Exception:
+        date_label = chart_date
+
+    rows_html = ""
+    for row in _summary_rows(tracks, song_meta):
+        rows_html += (
+            "<tr>"
+            f"<td class='song'>{html.escape(row['song'])}</td>"
+            f"<td>{row['countries']}</td>"
+            f"<td class='wide'>{html.escape(_summary_cell_entry(row['peak_streams'], streams=True))}</td>"
+            f"<td class='wide'>{html.escape(_summary_cell_entry(row['peak_rank']))}</td>"
+            f"<td>{row['top10']}</td>"
+            f"<td>{row['top50']}</td>"
+            f"<td>{row['top100']}</td>"
+            "</tr>"
+        )
+
+    p = palette
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>
+  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  body {{
+    background: {p['bg']};
+    padding: 22px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: {p['text']};
+  }}
+  .summary {{
+    width: 1320px;
+    background: {p['card_bg']};
+    border: 1px solid {p['border']};
+    border-radius: 18px;
+    box-shadow: 0 2px 18px rgba(0,0,0,0.22);
+    padding: 22px 24px 16px;
+  }}
+  .header {{
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 18px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid {p['border']};
+  }}
+  .title {{
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.08;
+  }}
+  .subtitle {{
+    margin-top: 6px;
+    color: {p['muted']};
+    font-size: 18px;
+    font-weight: 650;
+  }}
+  .date {{
+    flex-shrink: 0;
+    border-radius: 999px;
+    background: {p['play_btn']};
+    color: #fff;
+    padding: 9px 16px;
+    font-size: 18px;
+    font-weight: 800;
+  }}
+  table {{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    table-layout: fixed;
+  }}
+  th, td {{
+    border-bottom: 1px solid {p['border']};
+    padding: 9px 10px;
+    font-size: 16px;
+    line-height: 1.18;
+    text-align: center;
+    vertical-align: middle;
+  }}
+  th {{
+    color: {p['muted']};
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+  }}
+  tr:nth-child(even) td {{ background: {p['even_row']}; }}
+  .song {{
+    width: 280px;
+    text-align: left;
+    color: {p['region']};
+    font-weight: 800;
+  }}
+  .wide {{
+    width: 245px;
+    text-align: left;
+    font-weight: 720;
+  }}
+  .footer {{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid {p['border']};
+    color: {p['muted']};
+    font-size: 15px;
+    opacity: 0.78;
+  }}
+  .brand {{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }}
+  .logo {{ height: 24px; width: auto; }}
+</style>
+</head>
+<body>
+<div class="summary" id="card">
+  <div class="header">
+    <div>
+      <div class="title">Taylor Swift on Spotify Charts</div>
+      <div class="subtitle">Worldwide recap by song</div>
+    </div>
+    <div class="date">{html.escape(date_label)}</div>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th class="song">Song</th>
+        <th>Countries</th>
+        <th class="wide">Peak streams</th>
+        <th class="wide">Peak rank</th>
+        <th>Top 10</th>
+        <th>Top 50</th>
+        <th>Top 100</th>
+      </tr>
+    </thead>
+    <tbody>{rows_html}</tbody>
+  </table>
+  <div class="footer">
+    <div class="brand">
+      <img class="logo" src="{_LOGO_URI}" alt="TSM" />
+      <span>@tsmuseum13</span>
+    </div>
+    <span>thetsmuseum.app</span>
+  </div>
+</div>
+</body>
+</html>"""
+
+
+def _summary_tweet(chart_date: str, track_count: int, prev_track_count: int | None = None) -> str:
+    try:
+        date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    except Exception:
+        date_fmt = chart_date
+    if prev_track_count is None:
+        delta_text = ""
+    else:
+        delta = track_count - prev_track_count
+        delta_text = " (=)" if delta == 0 else f" ({delta:+d})"
+    return (
+        f"🧵 Taylor Swift charted {track_count} songs{delta_text} "
+        f"on the Spotify Charts yesterday ({date_fmt}).\n\n{_OVERALL_URL}"
+    )
 
 
 def _global_entry(entries: list[dict]) -> dict | None:
@@ -1081,6 +1380,8 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
     songs_raw  = _load_json(SONGS_JSON)
     songs_list = songs_raw.get("songs", songs_raw) if isinstance(songs_raw, dict) else songs_raw
     song_meta: dict[str, dict] = {s["track_id"]: s for s in songs_list if "track_id" in s}
+    has_prev_snapshot = _previous_snapshot_path(chart_date) is not None
+    prev_by_track = _load_prev_by_track(chart_date)
     prev_country_counts = _load_prev_country_counts(chart_date)
 
     d       = datetime.strptime(chart_date, "%Y-%m-%d").date()
@@ -1088,6 +1389,7 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
 
     index_path = out_dir / "cards_index.json"
     posted_path = out_dir / "posted_cards.json"
+    posted_reentries_path = out_dir / "posted_reentries.json"
     if index_path.exists() and not force:
         try:
             if post:
@@ -1108,7 +1410,7 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
     low_country_tracks = [
         (tid, entries)
         for tid, entries in by_track.items()
-        if 1 <= len(entries) < min_countries and len(entries) <= _LOW_COUNTRY_MAX
+        if min_countries > 1 and 1 <= len(entries) < min_countries and len(entries) <= _LOW_COUNTRY_MAX
     ]
     low_country_tracks.sort(key=lambda item: _card_priority(item[0], item[1], song_meta.get(item[0], {})))
     print(
@@ -1119,10 +1421,12 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
     generated: list[str] = []
     priority_index: dict[str, dict] = {}
     to_post: list[tuple[Path, str]] = []  # (image_path, tweet_text)
+    reentries_to_post: list[tuple[str, str]] = []  # (slug, tweet_text)
 
     # Load already-posted slugs to avoid re-posting on --force reruns
     posted_path = out_dir / "posted_cards.json"
     already_posted: set[str] = set()
+    already_posted_reentries: set[str] = set()
     if post:
         if posted_path.exists():
             try:
@@ -1135,15 +1439,11 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
             except Exception:
                 pass
         elif index_path.exists():
-            # Cards were generated before posted_cards.json existed — assume all were posted
+            print("[INFO] cards_index.json existe mais posted_cards.json est absent; publication des cards non verrouillées")
+        if posted_reentries_path.exists():
             try:
-                slugs = [Path(f).stem for f in json.loads(index_path.read_text(encoding="utf-8")).get("cards", [])]
-                already_posted = {slug for slug in slugs if slug != _LOW_COUNTRY_GROUP_SLUG}
-                posted_path.write_text(
-                    json.dumps({"date": chart_date, "posted": sorted(already_posted)}, ensure_ascii=False, indent=2),
-                    encoding="utf-8",
-                )
-                print(f"[INFO] posted_cards.json créé depuis cards_index.json ({len(already_posted)} slugs)")
+                data = json.loads(posted_reentries_path.read_text(encoding="utf-8"))
+                already_posted_reentries = set(data.get("posted", []))
             except Exception:
                 pass
 
@@ -1151,7 +1451,34 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True, args=["--no-sandbox", "--force-color-profile=srgb"])
-            page = browser.new_page(viewport={"width": 860, "height": 900}, device_scale_factor=4)
+            page = browser.new_page(viewport={"width": 1400, "height": 2200}, device_scale_factor=3)
+
+            summary_slug = "worldwide_summary"
+            summary_path = out_dir / f"{summary_slug}.png"
+            print(f"  [summary] {len(tracks)} tracks", end="", flush=True)
+            try:
+                page.set_content(
+                    _build_summary_html(tracks, song_meta, palette, chart_date),
+                    wait_until="domcontentloaded",
+                )
+                card = page.locator("#card")
+                card.wait_for(state="visible", timeout=5000)
+                card.screenshot(path=str(summary_path))
+                generated.append(summary_path.name)
+                priority_index[summary_path.name] = {
+                    "level": -1,
+                    "reason": "thread_summary",
+                    "track_count": len(tracks),
+                }
+                print(f"  -> {summary_path.name}")
+                if post and summary_slug not in already_posted:
+                    to_post.append((summary_path, _summary_tweet(chart_date, len(tracks), len(prev_by_track) if has_prev_snapshot else None)))
+                elif post:
+                    print("    [SKIP] deja poste")
+            except Exception as e:
+                print(f"  [WARN] echec summary: {e}")
+
+            page.set_viewport_size({"width": 860, "height": 900})
 
             for i, (track_id, entries) in enumerate(tracks, 1):
                 meta      = song_meta.get(track_id, {})
@@ -1161,7 +1488,8 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
                 card_palette, card_theme = _palette_for_song(meta, palette)
 
                 print(f"  [{i:3d}/{len(tracks)}] {title_raw[:50]}", end="", flush=True)
-                html_content = _build_card_html(meta, entries, card_palette, chart_date)
+                card_entries = _with_out_regions(entries, prev_by_track.get(track_id, []))
+                html_content = _build_card_html(meta, card_entries, card_palette, chart_date)
                 try:
                     page.set_content(html_content, wait_until="domcontentloaded")
                     card = page.locator("#card")
@@ -1172,8 +1500,10 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
                     priority["theme"] = card_theme
                     priority_index[out_path.name] = priority
                     print(f"  → {out_path.name}")
+                    prev_count = prev_country_counts.get(track_id)
+                    if post and has_prev_snapshot and (prev_count or 0) == 0 and slug not in already_posted_reentries:
+                        reentries_to_post.append((slug, _build_reentry_tweet(meta, entries, chart_date)))
                     if post and slug not in already_posted:
-                        prev_count = prev_country_counts.get(track_id)
                         to_post.append((out_path, _build_tweet(meta, entries, chart_date, prev_count)))
                     elif post:
                         print(f"    [SKIP] déjà posté")
@@ -1231,29 +1561,35 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
     )
     print(f"[DONE] {len(generated)} images → {out_dir}")
 
-    if post and to_post:
-        print(f"[STEP] Publication de {len(to_post)} card(s) sur Twitter...")
-        ok = err = 0
-        newly_posted: list[str] = []
-        first = True
-        for img_path, tweet_text in to_post:
-            slug = img_path.stem
-            if not first:
-                time.sleep(120)
-            first = False
-            if _post_with_image(tweet_text, img_path, TWITTER_SESSION):
-                ok += 1
-                newly_posted.append(slug)
-                # Persist after each success so a crash mid-run doesn't lose progress
-                all_posted = sorted(already_posted | set(newly_posted))
-                posted_path.write_text(
-                    json.dumps({"date": chart_date, "posted": all_posted}, ensure_ascii=False, indent=2),
+    if post and reentries_to_post:
+        print(f"[STEP] Publication de {len(reentries_to_post)} re-entry post(s) prioritaires...")
+        newly_posted_reentries: list[str] = []
+        for slug, tweet_text in reentries_to_post:
+            if _post_thread([tweet_text], TWITTER_SESSION):
+                newly_posted_reentries.append(slug)
+                all_reentries = sorted(already_posted_reentries | set(newly_posted_reentries))
+                posted_reentries_path.write_text(
+                    json.dumps({"date": chart_date, "posted": all_reentries}, ensure_ascii=False, indent=2),
                     encoding="utf-8",
                 )
             else:
-                err += 1
-                print(f"[WARN] Echec post: {img_path.name}")
-        print(f"[STEP] Twitter: {ok} postés, {err} échecs")
+                print(f"[WARN] Echec post re-entry: {slug}")
+                return 1
+
+    if post and to_post:
+        print(f"[STEP] Publication d'un thread de {len(to_post)} card(s) sur Twitter...")
+        thread_posts = [(tweet_text, img_path) for img_path, tweet_text in to_post]
+        if _post_image_thread(thread_posts, TWITTER_SESSION):
+            all_posted = sorted(already_posted | {img_path.stem for img_path, _ in to_post})
+            posted_path.write_text(
+                json.dumps({"date": chart_date, "posted": all_posted}, ensure_ascii=False, indent=2),
+                encoding="utf-8",
+            )
+            print(f"[STEP] Twitter: thread publie ({len(to_post)} posts)")
+        else:
+            print("[WARN] Echec publication thread cards")
+            return 1
+        return 0
 
     return 0
 

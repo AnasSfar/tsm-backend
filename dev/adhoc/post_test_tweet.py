@@ -4,6 +4,7 @@
 Usage:
     python dev/adhoc/post_test_tweet.py --yes
     python dev/adhoc/post_test_tweet.py --text "test" --yes
+    python dev/adhoc/post_test_tweet.py --text "test 1" --text "test 2" --text "test 3" --yes
 """
 
 from __future__ import annotations
@@ -34,18 +35,23 @@ from twitter import post_thread  # noqa: E402
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Post a test tweet to the configured X/Twitter account.")
-    parser.add_argument("--text", default="test", help="Text to post. Default: test")
+    parser.add_argument(
+        "--text",
+        action="append",
+        help="Text to post. Pass multiple times to post a thread. Default: test",
+    )
     parser.add_argument("--session", type=Path, default=DEFAULT_SESSION, help="Path to twitter_session.json")
     parser.add_argument("--yes", action="store_true", help="Actually post the tweet.")
     args = parser.parse_args()
 
-    text = str(args.text or "").strip()
-    if not text:
-        print("Refusing to post an empty tweet.")
+    tweets = [str(text or "").strip() for text in (args.text or ["test"])]
+    tweets = [text for text in tweets if text]
+    if not tweets:
+        print("Refusing to post an empty tweet/thread.")
         return 2
 
     session = args.session.resolve()
-    print(f"Tweet text: {text!r}")
+    print(f"Tweet(s): {tweets!r}")
     print(f"Session: {session}")
 
     if not session.exists():
@@ -56,7 +62,7 @@ def main() -> int:
         print("Dry run only. Re-run with --yes to post.")
         return 0
 
-    return 0 if post_thread([text], session) else 1
+    return 0 if post_thread(tweets, session) else 1
 
 
 if __name__ == "__main__":
