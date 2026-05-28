@@ -98,13 +98,13 @@ def _logo_data_uri() -> str:
 THEMES: dict[str, dict[str, str]] = {
     # Default site theme (The Life of a Showgirl) — dark mode orange accent
     "showgirl": {
-        "bg":         "#fff4ec",
-        "card_bg":    "#fffaf6",
-        "border":     "#ffd5bd",
-        "text":       "#2d211c",
-        "muted":      "#8a6658",
-        "even_row":   "#fff0e6",
-        "region":     "#c64f1d",
+        "bg":         "#eefbf8",
+        "card_bg":    "#fbfffd",
+        "border":     "#bfe9df",
+        "text":       "#16322f",
+        "muted":      "#597b75",
+        "even_row":   "#e9f8f4",
+        "region":     "#0f7f7d",
         "play_btn":   "#ff6b35",
         "rank_up":    "#2a9d5c",
         "rank_down":  "#cf3f24",
@@ -1091,10 +1091,19 @@ def _build_low_country_group_tweet(
 _GLOBAL_REGION_CODES = {"global", "glob"}
 
 
-def _best_entry(entries: list[dict], key: str, *, reverse: bool = True) -> dict | None:
+def _best_entry(
+    entries: list[dict],
+    key: str,
+    *,
+    reverse: bool = True,
+    include_global: bool = False,
+) -> dict | None:
     valid = [e for e in entries if e.get(key) is not None]
-    regional = [e for e in valid if str(e.get("country") or "").lower() not in _GLOBAL_REGION_CODES]
-    pool = regional or valid
+    if include_global:
+        pool = valid
+    else:
+        regional = [e for e in valid if str(e.get("country") or "").lower() not in _GLOBAL_REGION_CODES]
+        pool = regional or valid
     if not pool:
         return None
     return sorted(pool, key=lambda e: e.get(key) or 0, reverse=reverse)[0]
@@ -1107,7 +1116,7 @@ def _summary_rows(
     rows: list[dict] = []
     for track_id, entries in tracks:
         title = str(song_meta.get(track_id, {}).get("title") or track_id)
-        peak_streams = _best_entry(entries, "streams", reverse=True)
+        peak_streams = _best_entry(entries, "streams", reverse=True, include_global=True)
         peak_rank = _best_entry(entries, "rank", reverse=False)
         rows.append(
             {
@@ -1123,13 +1132,44 @@ def _summary_rows(
     return rows
 
 
-def _summary_cell_entry(entry: dict | None, *, streams: bool = False) -> str:
+def _summary_cell_entry_html(entry: dict | None, *, streams: bool = False) -> str:
     if not entry:
         return "-"
     country = _country_label(str(entry.get("country") or ""), str(entry.get("country_name") or ""))
     if streams:
-        return f"{country} - {_fmt_streams(entry.get('streams'))}"
-    return f"{country} - #{entry.get('rank', '?')}"
+        pct = entry.get("stream_change_pct")
+        if pct is None:
+            change = ""
+            css = ""
+        else:
+            sign = "+" if pct > 0 else ""
+            change = f" ({sign}{pct:.1f}%)"
+            css = "positive" if pct > 0 else "negative" if pct < 0 else "neutral"
+        return f"{html.escape(country)} - {_fmt_streams(entry.get('streams'))}<span class='chg {css}'>{html.escape(change)}</span>"
+
+    rank = entry.get("rank", "?")
+    rank_change = entry.get("rank_change")
+    prev = entry.get("previous_rank")
+    if rank_change is not None and rank_change != 0:
+        delta = int(rank_change)
+    elif prev and rank:
+        delta = int(prev) - int(rank)
+    else:
+        delta = None
+    if delta is None:
+        peak = entry.get("peak_rank")
+        change = " (NEW)" if peak is None or peak == rank else " (RE)"
+        css = "neutral"
+    elif delta > 0:
+        change = f" (▲{delta})"
+        css = "positive"
+    elif delta < 0:
+        change = f" (▼{abs(delta)})"
+        css = "negative"
+    else:
+        change = " (=)"
+        css = "neutral"
+    return f"{html.escape(country)} - #{rank}<span class='chg {css}'>{html.escape(change)}</span>"
 
 
 def _build_summary_html(
@@ -1153,8 +1193,8 @@ def _build_summary_html(
             "<tr>"
             f"<td class='song'>{html.escape(row['song'])}</td>"
             f"<td>{row['countries']}</td>"
-            f"<td class='wide'>{html.escape(_summary_cell_entry(row['peak_streams'], streams=True))}</td>"
-            f"<td class='wide'>{html.escape(_summary_cell_entry(row['peak_rank']))}</td>"
+            f"<td class='wide'>{_summary_cell_entry_html(row['peak_streams'], streams=True)}</td>"
+            f"<td class='wide'>{_summary_cell_entry_html(row['peak_rank'])}</td>"
             f"<td>{row['top10']}</td>"
             f"<td>{row['top50']}</td>"
             f"<td>{row['top100']}</td>"
@@ -1242,6 +1282,12 @@ def _build_summary_html(
     text-align: left;
     font-weight: 720;
   }}
+  .chg {{
+    font-weight: 650;
+  }}
+  .chg.positive {{ color: {p['stream_pos']}; }}
+  .chg.negative {{ color: {p['stream_neg']}; }}
+  .chg.neutral {{ color: {p['muted']}; }}
   .footer {{
     display: flex;
     align-items: center;
@@ -1457,8 +1503,9 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
             summary_path = out_dir / f"{summary_slug}.png"
             print(f"  [summary] {len(tracks)} tracks", end="", flush=True)
             try:
+                summary_palette, summary_theme = _dominant_album_theme(tracks, song_meta, palette)
                 page.set_content(
-                    _build_summary_html(tracks, song_meta, palette, chart_date),
+                    _build_summary_html(tracks, song_meta, summary_palette, chart_date),
                     wait_until="domcontentloaded",
                 )
                 card = page.locator("#card")
@@ -1469,6 +1516,7 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
                     "level": -1,
                     "reason": "thread_summary",
                     "track_count": len(tracks),
+                    "theme": summary_theme,
                 }
                 print(f"  -> {summary_path.name}")
                 if post and summary_slug not in already_posted:

@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any, Callable
 
 from core.data_paths import update_streams_dir
+from core.retention import cleanup_generated_artifacts
 from git_ops import git_commit_and_push
 
 
@@ -477,6 +478,7 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
         spotlight_thread.join()
     _post_best_day_since(ctx, post_state)
 
+    cleanup_generated_artifacts()
     print("Git commit and push...")
     git_commit_and_push(ctx.repo_root, f"daily final export {ctx.summary['stats_date']}")
     _run_swift_top_charts_if_needed(ctx)

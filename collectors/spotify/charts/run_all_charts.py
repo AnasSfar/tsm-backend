@@ -21,6 +21,7 @@ REPO_ROOT = CHARTS_ROOT.parents[2]
 sys.path.insert(0, str(REPO_ROOT / "collectors" / "spotify"))
 from core.data_paths import legacy_spotify_chart_dir, spotify_chart_dir
 from core.git_ops import git_commit_and_push
+from core.retention import cleanup_generated_artifacts
 
 _WARP_CLI = Path(r"C:\Program Files\Cloudflare\Cloudflare WARP\warp-cli.exe")
 
@@ -1133,6 +1134,7 @@ def main() -> int:
         return 1
     print(f"[ OK ] tout terminé — {total}")
     if not args.dry_run:
+        cleanup_generated_artifacts()
         git_commit_and_push(REPO_ROOT, f"charts run all {target_date.isoformat()}")
     return 0
 

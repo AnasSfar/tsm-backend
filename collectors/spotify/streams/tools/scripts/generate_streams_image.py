@@ -3,7 +3,7 @@
 generate_streams_image.py — génère le PNG des chansons les plus streamées daily (top configurable, défaut=10).
 
 Lit  : db/streams_history.csv  +  db/discography/songs.json  +  db/discography/covers.json
-Ecrit: collectors/spotify/streams/history/YYYY/MM/YYYY-MM-DD/streams_image.png
+Ecrit: data/YYYY/MM/YYYY-MM-DD/update_streams/streams_image*.png
 
 Usage:
   python generate_streams_image.py               # dernière date dans le CSV
@@ -39,7 +39,7 @@ REPO_ROOT    = SCRIPT_DIR.parents[4]                    # repo root
 DB_DIR       = REPO_ROOT / "db"
 
 sys.path.insert(0, str(ROOT.parent))   # collectors/spotify/ for core.*
-from core.data_paths import archived_db_file  # noqa: E402
+from core.data_paths import archived_db_file, update_streams_dir  # noqa: E402
 
 HISTORY_PATH = (
     DB_DIR / "streams_history.csv"
@@ -358,7 +358,7 @@ def _dedup_by_title(rows: list[dict], song_db: dict) -> list[dict]:
 
 
 def build_top_n(today_rows: list[dict], yesterday_rows: list[dict], last_week_rows: list[dict],
-                song_db: dict, top_n: int) -> list[dict]:
+                song_db: dict, top_n: int, start_rank: int = 1) -> list[dict]:
     """
     Déduplique par titre, trie par daily_streams décroissant, retourne top N.
     Attache prev_rank et daily_streams_yesterday à chaque entrée.
@@ -373,10 +373,12 @@ def build_top_n(today_rows: list[dict], yesterday_rows: list[dict], last_week_ro
 
     today_deduped = _dedup_by_title(today_rows, song_db)
     ranked = sorted(today_deduped, key=lambda r: (r.get("daily_streams") or 0), reverse=True)
-    top = ranked[:top_n]
+    start_index = max(0, start_rank - 1)
+    top = ranked[start_index:start_index + top_n]
 
-    for entry in top:
+    for offset, entry in enumerate(top):
         key = _norm(entry["title"])
+        entry["rank"] = start_rank + offset
         entry["daily_streams_yesterday"] = yest_daily_by_key.get(key)
         entry["daily_streams_last_week"] = last_week_daily_by_key.get(key)
         entry["prev_rank"]               = yest_rank_by_key.get(key)
@@ -565,7 +567,7 @@ def build_rows_html(top_rows: list[dict], cover_map: dict, track_album_map: dict
                     image_cache: dict[str, str] | None = None) -> str:
     html = ""
     for i, entry in enumerate(top_rows):
-        rank    = i + 1
+        rank    = int(entry.get("rank") or i + 1)
         title   = entry["title"]
         artist  = entry["artist"]
         daily   = entry["daily_streams"]
@@ -632,6 +634,8 @@ def build_html(top_rows: list[dict], target_date: str, cover_map: dict, track_al
     from datetime import datetime
     date_fmt   = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
     rows_html  = build_rows_html(top_rows, cover_map, track_album_map, image_cache)
+    first_rank = top_rows[0].get("rank", 1) if top_rows else 1
+    last_rank = top_rows[-1].get("rank", top_n) if top_rows else top_n
 
     header_img   = _pick_header_image()
     handle_color = "#1db954"
@@ -654,7 +658,7 @@ def build_html(top_rows: list[dict], target_date: str, cover_map: dict, track_al
     {SPOTIFY_SVG}
     <div>
       <div class="hdr-title">Taylor Swift · Daily Streams</div>
-            <div class="hdr-sub">Taylor Swift's top {top_n} most streamed songs · {date_fmt}</div>
+            <div class="hdr-sub">Taylor Swift's #{first_rank}-{last_rank} most streamed songs · {date_fmt}</div>
     </div>
   </div>
   <div class="col-heads">
@@ -679,7 +683,7 @@ def build_html(top_rows: list[dict], target_date: str, cover_map: dict, track_al
 # Main
 # ---------------------------------------------------------------------------
 
-def generate(target_date: str | None = None, *, top_n: int | None = None) -> Path:
+def generate(target_date: str | None = None, *, top_n: int | None = None, start_rank: int = 1) -> Path:
     if target_date is None:
         target_date = get_latest_date()
     print(f"Date: {target_date}")
@@ -687,6 +691,9 @@ def generate(target_date: str | None = None, *, top_n: int | None = None) -> Pat
     top_n_final = TOP_N if top_n is None else int(top_n)
     if top_n_final <= 0:
         raise ValueError("top_n must be > 0")
+    start_rank = int(start_rank)
+    if start_rank <= 0:
+        raise ValueError("start_rank must be > 0")
 
     song_db         = load_song_db()
     cover_map       = load_covers()
@@ -696,11 +703,12 @@ def generate(target_date: str | None = None, *, top_n: int | None = None) -> Pat
     if not today_rows:
         raise ValueError(f"Aucune donnée pour {target_date} dans {HISTORY_PATH}")
 
-    top_rows = build_top_n(today_rows, yesterday_rows, last_week_rows, song_db, top_n_final)
-    print(f"Top {top_n_final} construit ({len(top_rows)} chansons)")
-    for i, e in enumerate(top_rows, 1):
+    top_rows = build_top_n(today_rows, yesterday_rows, last_week_rows, song_db, top_n_final, start_rank=start_rank)
+    end_rank = start_rank + len(top_rows) - 1
+    print(f"Top {start_rank}-{end_rank} construit ({len(top_rows)} chansons)")
+    for e in top_rows:
         daily_fmt = f"{e['daily_streams']:,}"
-        print(f"  #{i:2d} {e['title']:<40} {daily_fmt} streams/day")
+        print(f"  #{int(e.get('rank') or 0):2d} {e['title']:<40} {daily_fmt} streams/day")
 
     print("Téléchargement des images...")
     image_cache = prefetch_images(top_rows, cover_map, track_album_map)
@@ -708,10 +716,14 @@ def generate(target_date: str | None = None, *, top_n: int | None = None) -> Pat
 
     html = build_html(top_rows, target_date, cover_map, track_album_map, top_n_final, image_cache)
 
-    # Output to history/YYYY/MM/YYYY-MM-DD/
-    out_dir  = ROOT / "history" / target_date[:4] / target_date[5:7] / target_date
+    # Output to data/YYYY/MM/YYYY-MM-DD/update_streams/
+    out_dir = update_streams_dir(target_date)
     out_dir.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir / "streams_image.png"
+    if start_rank == 1 and top_n_final == TOP_N:
+        filename = "streams_image.png"
+    else:
+        filename = f"streams_image_{start_rank}_{start_rank + top_n_final - 1}.png"
+    out_path = out_dir / filename
     tmp_html = out_dir / "_streams_tmp.html"
     tmp_html.write_text(html, encoding="utf-8")
 
