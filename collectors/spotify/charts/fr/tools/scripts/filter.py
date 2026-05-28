@@ -380,7 +380,41 @@ def _parse_api_entries(data: dict) -> list[dict]:
     return rows
 
 
-def _fetch_via_api(chart_date: str, retries: int = 3, retry_delay: float = 5.0) -> list[dict] | None:
+def _find_first_date(value) -> str | None:
+    if isinstance(value, str):
+        match = re.search(r"\b\d{4}-\d{2}-\d{2}\b", value)
+        if match:
+            return match.group(0)
+        match = re.search(r"\b[A-Z][a-z]+ \d{1,2}, \d{4}\b", value)
+        if match:
+            try:
+                return datetime.strptime(match.group(0), "%B %d, %Y").strftime("%Y-%m-%d")
+            except ValueError:
+                return None
+        return None
+    if isinstance(value, dict):
+        for key in ("date", "chartDate", "displayDate", "latestDate", "startDate", "endDate"):
+            found = _find_first_date(value.get(key))
+            if found:
+                return found
+        for item in value.values():
+            found = _find_first_date(item)
+            if found:
+                return found
+    if isinstance(value, list):
+        for item in value:
+            found = _find_first_date(item)
+            if found:
+                return found
+    return None
+
+
+def _api_request(chart_route: str, headers: dict[str, str]):
+    url = f"{_API_BASE}/{CHART_ID}/{chart_route}"
+    return _http.get(url, headers=headers, timeout=30)
+
+
+def _fetch_via_api(chart_date: str, retries: int = 8, retry_delay: float = 20.0) -> list[dict] | None:
     """
     Tente de récupérer le chart via l'API interne Spotify.
     Retourne rows ou None si l'API échoue après tous les essais.
@@ -393,21 +427,42 @@ def _fetch_via_api(chart_date: str, retries: int = 3, retry_delay: float = 5.0) 
             "Referer": "https://charts.spotify.com/",
             "User-Agent": _UA,
         }
-        url = f"{_API_BASE}/{CHART_ID}/{chart_date}"
         for attempt in range(1, retries + 1):
             try:
-                resp = _http.get(url, headers=headers, timeout=30)
+                resp = _api_request(chart_date, headers)
                 if resp.status_code in {401, 403}:
                     print(f"  API tentative {attempt}/{retries} - token refuse (HTTP {resp.status_code}), refresh bearer")
                     token = _get_bearer_token(refresh=True)
                     headers["Authorization"] = f"Bearer {token}"
-                    resp = _http.get(url, headers=headers, timeout=30)
+                    resp = _api_request(chart_date, headers)
                 if resp.status_code == 200:
-                    rows = _parse_api_entries(resp.json())
+                    data = resp.json()
+                    rows = _parse_api_entries(data)
                     if rows:
                         print(f"  API OK — {len(rows)} lignes pour {chart_date}")
                         return rows
+                if resp.status_code == 404:
+                    latest_resp = _api_request("latest", headers)
+                    if latest_resp.status_code == 200:
+                        latest_data = latest_resp.json()
+                        latest_date = _find_first_date(latest_data)
+                        latest_rows = _parse_api_entries(latest_data)
+                        if latest_rows and latest_date == chart_date:
+                            print(f"  API latest OK - {len(latest_rows)} lignes pour {latest_date}")
+                            return latest_rows
+                        print(
+                            "  API latest ignoree "
+                            f"(date={latest_date or 'N/A'}, lignes={len(latest_rows)}, attendu={chart_date})"
+                        )
+                        return None
                 print(f"  API tentative {attempt}/{retries} — HTTP {resp.status_code}")
+                if resp.status_code == 429:
+                    retry_after = resp.headers.get("Retry-After")
+                    wait = int(retry_after) if retry_after and retry_after.isdigit() else retry_delay
+                    if attempt < retries:
+                        print(f"  API 429 - retry dans {wait}s")
+                        time.sleep(wait)
+                    continue
             except Exception as e:
                 print(f"  API tentative {attempt}/{retries} — erreur: {e}")
             if attempt < retries:

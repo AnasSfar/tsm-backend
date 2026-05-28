@@ -207,7 +207,10 @@ def _validate_worldwide_snapshot(target: date) -> tuple[bool, str]:
 
 def _runner_args_for_run_all(name: str, fixed: list[str], forwarded: list[str], target_date: date, explicit_target_date: bool) -> list[str]:
     if name != "artists_global":
-        return list(dict.fromkeys([*fixed, *forwarded]))
+        args = [*fixed, *forwarded]
+        if not explicit_target_date:
+            args.append(str(target_date))
+        return list(dict.fromkeys(args))
     artist_args = list(fixed)
     if explicit_target_date:
         artist_args.extend(["--date", str(target_date)])
