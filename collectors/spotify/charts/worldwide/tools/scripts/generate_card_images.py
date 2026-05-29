@@ -1115,12 +1115,14 @@ def _summary_rows(
 ) -> list[dict]:
     rows: list[dict] = []
     for track_id, entries in tracks:
-        title = str(song_meta.get(track_id, {}).get("title") or track_id)
+        meta = song_meta.get(track_id, {})
+        title = str(meta.get("title") or track_id)
         peak_streams = _best_entry(entries, "streams", reverse=True, include_global=True)
         peak_rank = _best_entry(entries, "rank", reverse=False)
         rows.append(
             {
                 "song": title,
+                "image_url": meta.get("image_url") or "",
                 "countries": len(entries),
                 "peak_streams": peak_streams,
                 "peak_rank": peak_rank,
@@ -1189,9 +1191,15 @@ def _build_summary_html(
 
     rows_html = ""
     for row in _summary_rows(tracks, song_meta):
+        img_uri = _url_to_data_uri(row.get("image_url", ""))
+        cover_html = (
+            f'<img class="summary-cover" src="{img_uri}" alt="cover" />'
+            if img_uri else
+            '<div class="summary-cover cover-placeholder"></div>'
+        )
         rows_html += (
             "<tr>"
-            f"<td class='song'>{html.escape(row['song'])}</td>"
+            f"<td class='song'><div class='song-cell'>{cover_html}<span>{html.escape(row['song'])}</span></div></td>"
             f"<td>{row['countries']}</td>"
             f"<td class='wide'>{_summary_cell_entry_html(row['peak_streams'], streams=True)}</td>"
             f"<td class='wide'>{_summary_cell_entry_html(row['peak_rank'])}</td>"
@@ -1272,10 +1280,31 @@ def _build_summary_html(
   }}
   tr:nth-child(even) td {{ background: {p['even_row']}; }}
   .song {{
-    width: 280px;
+    width: 330px;
     text-align: left;
     color: {p['region']};
     font-weight: 800;
+  }}
+  .song-cell {{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }}
+  .song-cell span {{
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }}
+  .summary-cover {{
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+    border-radius: 7px;
+    object-fit: cover;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.16);
+  }}
+  .cover-placeholder {{
+    background: {p['border']};
   }}
   .wide {{
     width: 245px;

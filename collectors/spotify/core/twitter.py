@@ -713,25 +713,11 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
                 page.goto("https://x.com/compose/post", wait_until="domcontentloaded")
                 time.sleep(2)
 
-                # Attach image via hidden file input
-                file_input = page.locator("input[type='file'][accept*='image']").first
-                try:
-                    file_input.set_input_files(str(image_path), timeout=TWITTER_FILE_UPLOAD_TIMEOUT_MS)
-                except Exception:
-                    page.set_input_files(
-                        "input[type='file'][accept*='image']",
-                        str(image_path),
-                        timeout=TWITTER_FILE_UPLOAD_TIMEOUT_MS,
-                    )
-                time.sleep(3)
-
-                # Add tweet text
                 editor = page.locator("[data-testid='tweetTextarea_0']").first
                 editor.click(timeout=10_000)
                 editor.fill(tweet)
-                time.sleep(1)
+                _attach_image_to_composer(page, editor, image_path, 0)
 
-                # Post
                 page.locator(
                     "[data-testid='tweetButton'], [data-testid='tweetButtonInline']"
                 ).first.click(timeout=10_000)

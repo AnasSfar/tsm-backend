@@ -332,56 +332,34 @@ def _post_albums_daily(ctx: FinalizeContext, state: dict[str, float]) -> None:
 
 
 def _post_spotlight_gainers(ctx: FinalizeContext, state: dict[str, float]) -> None:
-    spotlight_script = ctx.script_dir / "spotlight.py"
     if not ctx.all_album_tracks_done(ctx.summary["stats_date"]):
-        print("Spotlight gainers skipped: not all album tracks are done yet.")
+        print("Stream highlights skipped: not all album tracks are done yet.")
         return
 
-    spotlight_targets = [
-        ("biggest daily gainer", "yesterday", 1),
-        ("biggest weekly gainer", "last-week", 7),
+    highlights_script = ctx.script_dir / "tools" / "scripts" / "post_stream_highlights_thread.py"
+    print("Posting unique stream highlights (daily %, weekly %, best-day-since)...")
+    cmd = [
+        sys.executable,
+        str(highlights_script),
+        ctx.summary["stats_date"],
+        "--limit",
+        "5",
     ]
-    for label, compare, days in spotlight_targets:
-        gainer = ctx.find_biggest_album_gainer_for_spotlight(
-            ctx.summary["stats_date"],
-            ctx.summary["history_index"],
-            compare_days=days,
-        )
-        if not gainer:
-            print(f"Spotlight skipped ({label}): no positive album-track gain found.")
-            continue
-
-        track = gainer["track"]
-        print(
-            f"Posting spotlight {label}: {track['title']} "
-            f"(+{gainer['gain']:,} streams vs {gainer['baseline_date']})"
-        )
-        spotlight_cmd = [
-            sys.executable,
-            str(spotlight_script),
-            "--url",
-            track["spotify_url"],
-            ctx.summary["stats_date"],
-            "--account",
-            "tsm",
-            "--compare",
-            compare,
-            "--highlight",
-            "vs",
-            "--no-scrape",
-        ]
-        if ctx.no_post_mode:
-            spotlight_cmd.append("--no-post")
-        _run(
-            ctx,
-            spotlight_cmd,
-            label=f"spotlight {label}",
-            should_post=not ctx.no_post_mode,
-            state=state,
-        )
+    if ctx.no_post_mode:
+        cmd.append("--no-post")
+    _run(
+        ctx,
+        cmd,
+        label="stream highlights thread",
+        should_post=not ctx.no_post_mode,
+        state=state,
+    )
 
 
 def _post_best_day_since(ctx: FinalizeContext, state: dict[str, float]) -> None:
+    print("Best-day-since posts included in stream highlights thread; skipping separate posts.")
+    return
+
     if _is_weekend_stats_date(ctx.summary["stats_date"]):
         print("Weekend detected: skipping separate best-day-since posts.")
         return

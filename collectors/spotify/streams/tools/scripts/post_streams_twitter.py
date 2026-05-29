@@ -85,6 +85,16 @@ def main():
         (f"Taylor Swift's most streamed songs yesterday ({date_fmt}) — #{top_n * 2 + 1}-{top_n * 3} :", image_paths[2]),
     ]
 
+    tweet = (
+        f"🧵 Taylor Swift's most streamed {top_n} songs yesterday ({date_fmt}) :\n\n"
+        "See full update here : https://thetsmuseum.app/streams/latest ❤️‍🔥"
+    )
+    thread_posts = [
+        (tweet, image_paths[0]),
+        (f"Taylor Swift's most streamed {top_n + 1}-{top_n * 2} songs yesterday ({date_fmt}) :", image_paths[1]),
+        (f"Taylor Swift's most streamed {top_n * 2 + 1}-{top_n * 3} songs yesterday ({date_fmt}) :", image_paths[2]),
+    ]
+
     print(f"Tweet: {tweet}")
     for image_path in image_paths:
         print(f"Image: {image_path}")

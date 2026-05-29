@@ -313,6 +313,8 @@ def _build_album_week(
 
     album_weekly_streams: dict[str, int] = {}
     album_units_am: dict[str, int] = {}
+    album_units_am_ts: dict[str, int] = {}
+    album_units_am_overall: dict[str, int] = {}
     album_units_spotify: dict[str, int] = {}
     album_units_charts: dict[str, int] = {}
     album_units_surplus: dict[str, int] = {}
@@ -322,6 +324,12 @@ def _build_album_week(
     def _to_int(v: str | None) -> int:
         try:
             return int((v or "").strip())
+        except Exception:
+            return 0
+
+    def _score_to_units(v: str | None) -> int:
+        try:
+            return round(float((v or "").strip()) * 1000)
         except Exception:
             return 0
 
@@ -336,6 +344,11 @@ def _build_album_week(
             continue
         album_weekly_streams[album.album_id] = album_weekly_streams.get(album.album_id, 0) + _to_int(row.get("weekly_streams"))
         album_units_am[album.album_id] = album_units_am.get(album.album_id, 0) + _to_int(row.get("units_am"))
+        album_units_am_ts[album.album_id] = album_units_am_ts.get(album.album_id, 0) + _score_to_units(row.get("am_ts_score"))
+        album_units_am_overall[album.album_id] = (
+            album_units_am_overall.get(album.album_id, 0)
+            + _score_to_units(row.get("am_overall_score"))
+        )
         album_units_spotify[album.album_id] = album_units_spotify.get(album.album_id, 0) + _to_int(row.get("units_spotify"))
         album_units_charts[album.album_id] = album_units_charts.get(album.album_id, 0) + _to_int(row.get("units_charts"))
         album_units_surplus[album.album_id] = album_units_surplus.get(album.album_id, 0) + _to_int(row.get("units_surplus"))
@@ -351,6 +364,8 @@ def _build_album_week(
             "album_id": aid,
             "weekly_streams": album_weekly_streams.get(aid, 0),
             "units_am": album_units_am.get(aid, 0),
+            "units_am_ts": album_units_am_ts.get(aid, 0),
+            "units_am_overall": album_units_am_overall.get(aid, 0),
             "units_spotify": album_units_spotify.get(aid, 0),
             "units_charts": album_units_charts.get(aid, 0),
             "units_surplus": album_units_surplus.get(aid, 0),
@@ -425,6 +440,8 @@ def _write_history_csv(rows: list[dict], logger: Logger) -> None:
         "title",
         "weekly_streams",
         "units_am",
+        "units_am_ts",
+        "units_am_overall",
         "units_spotify",
         "units_charts",
         "units_surplus",
@@ -476,7 +493,7 @@ def _write_snapshot_json(payload: dict, logger: Logger) -> None:
 
 def _maybe_upload_to_r2(*, logger: Logger, skip_r2: bool = False) -> None:
     if skip_r2:
-        logger.log("  r2             : skipped (--skip-r2)")
+        logger.log("  r2             : skipped for this chart run (--skip-r2)")
         return
     logger.log("  r2             : uploading...")
     try:
@@ -589,6 +606,8 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool, skip_r
 
         weekly_streams = row["weekly_streams"]
         units_am = row["units_am"]
+        units_am_ts = row.get("units_am_ts", 0)
+        units_am_overall = row.get("units_am_overall", 0)
         units_spotify = row["units_spotify"]
         units_charts = row["units_charts"]
         units_surplus = row["units_surplus"]
@@ -618,6 +637,8 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool, skip_r
             "title": meta.title if meta else aid,
             "weekly_streams": weekly_streams,
             "units_am": units_am,
+            "units_am_ts": units_am_ts,
+            "units_am_overall": units_am_overall,
             "units_spotify": units_spotify,
             "units_charts": units_charts,
             "units_surplus": units_surplus,
@@ -642,6 +663,8 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool, skip_r
             "spotify_url": meta.spotify_url if meta else None,
             "weekly_streams": weekly_streams,
             "units_am": units_am,
+            "units_am_ts": units_am_ts,
+            "units_am_overall": units_am_overall,
             "units_spotify": units_spotify,
             "units_charts": units_charts,
             "units_surplus": units_surplus,
@@ -652,8 +675,8 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool, skip_r
             "points_display": _format_number(points),
             "units": _format_number(total_units),
             "units_surplus_display": _format_number(units_surplus),
-            "am_ts_units_display": _format_number(units_am),
-            "am_global_units_display": _format_number(units_am),
+            "am_ts_units_display": _format_number(units_am_ts),
+            "am_global_units_display": _format_number(units_am_overall),
             "units_charts_display": _format_number(units_charts),
             "prev_rank": pr,
             "change": change,

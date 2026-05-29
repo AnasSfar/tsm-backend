@@ -36,6 +36,7 @@ _REPO_ROOT = _SCRIPT_DIR.parents[1]
 sys.path.insert(0, str((_REPO_ROOT / "collectors" / "spotify").resolve()))
 from core.logger import Logger  # noqa: E402
 _DB_DIR = _REPO_ROOT / "db"
+_DATA_ROOT = _REPO_ROOT / "data"
 _SITE_DATA_DIR = _REPO_ROOT / "website" / "site" / "data"
 _ARCHIVE_DB_DIR = _REPO_ROOT / "data" / "_archive" / "original" / "db"
 
@@ -115,9 +116,26 @@ _PAREN_RE = re.compile(r"\([^)]*\)|\[[^\]]*\]")
 _DASH_SPLIT_RE = re.compile(r"\s+-\s+")
 
 
+def _clean_title_text(value: str) -> str:
+    s = (value or "").strip().casefold()
+    if not s:
+        return ""
+    return s.replace("â€™", "'").replace("â€˜", "'").replace("â€œ", '"').replace("â€", '"')
+
+
+def _normalize_full_title(value: str) -> str:
+    """Normalize a title without collapsing dash-suffixed versions/remixes."""
+    s = _clean_title_text(value)
+    if not s:
+        return ""
+    s = _PAREN_RE.sub(" ", s)
+    s = _NORMALIZE_RE.sub(" ", s)
+    return " ".join(s.split())
+
+
 def _normalize_title(value: str) -> str:
     """Best-effort normalization for matching chart CSV titles."""
-    s = (value or "").strip().casefold()
+    s = _clean_title_text(value)
     if not s:
         return ""
     s = s.replace("’", "'").replace("‘", "'").replace("“", '"').replace("”", '"')
@@ -131,6 +149,13 @@ def _normalize_title(value: str) -> str:
     s = _NORMALIZE_RE.sub(" ", s)
     s = " ".join(s.split())
     return s
+
+
+def _chart_lookup_key(title: str, *, combined: bool = False, base_title: str | None = None) -> str:
+    """Return the key used to attach external chart units to a song row."""
+    if combined and base_title:
+        return _normalize_title(base_title)
+    return _normalize_title(title) if combined else _normalize_full_title(title)
 
 
 def _is_taylor_feature_track(title: str) -> bool:
@@ -164,6 +189,7 @@ class TrackMeta:
     spotify_url: str
     image_url: str | None
     primary_album: str | None
+    base_title: str | None = None
     historical_track_ids: tuple[str, ...] = ()
 
 
@@ -178,6 +204,7 @@ def _iter_discography_tracks() -> list[TrackMeta]:
         title = (track.get("title") or "").strip()
         if not title:
             return
+        base_title = (track.get("base_title") or "").strip() or None
         if _is_taylor_feature_track(title):
             return
         spotify_url = f"https://open.spotify.com/track/{track_id}"
@@ -191,6 +218,7 @@ def _iter_discography_tracks() -> list[TrackMeta]:
             spotify_url=spotify_url,
             image_url=image_url,
             primary_album=album_name,
+            base_title=base_title,
             historical_track_ids=historical_track_ids,
         )
 
@@ -243,6 +271,29 @@ def _active_streams_csvs() -> list[Path]:
     elif STREAMS_HISTORY_ARCHIVE_CSV.exists():
         paths.append(STREAMS_HISTORY_ARCHIVE_CSV)
     return paths or [STREAMS_HISTORY_CSV]
+
+
+def _active_apple_music_csvs(csv_path: Path) -> list[Path]:
+    """Return Apple Music CSV paths, including archived daily snapshots."""
+    paths: list[Path] = []
+    if csv_path.exists():
+        paths.append(csv_path)
+
+    archived = _ARCHIVE_DB_DIR / csv_path.name
+    if archived.exists():
+        paths.append(archived)
+
+    paths.extend(sorted(_DATA_ROOT.glob(f"????/??/????-??-??/apple_music/{csv_path.name}")))
+
+    result: list[Path] = []
+    seen: set[Path] = set()
+    for path in paths:
+        resolved = path.resolve()
+        if resolved in seen:
+            continue
+        seen.add(resolved)
+        result.append(path)
+    return result
 
 
 def _all_stream_dates() -> list[date]:
@@ -444,7 +495,8 @@ def _weekly_apple_music_global_points(*, week_dates: set[str], logger: Logger) -
     Multiply by 1000 externally when computing units_am.
     """
     scores: dict[str, float] = {}
-    if not APPLE_MUSIC_GLOBAL_CSV.exists():
+    active_paths = _active_apple_music_csvs(APPLE_MUSIC_GLOBAL_CSV)
+    if not active_paths:
         logger.log("  apple_global   : missing — AM disabled")
         return scores
 
@@ -456,31 +508,32 @@ def _weekly_apple_music_global_points(*, week_dates: set[str], logger: Logger) -
 
     best_per_day: dict[tuple[str, str], int] = {}
     matched_rows = 0
-    with APPLE_MUSIC_GLOBAL_CSV.open("r", newline="", encoding="utf-8-sig") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            day = (row.get("date") or "").strip()
-            if day not in week_dates:
-                continue
-            chart_type = (row.get("chart_type") or "").strip().lower()
-            if chart_type and chart_type != "global":
-                continue
-            title = (row.get("song_name") or "").strip()
-            rank = _to_int(row.get("rank"))
-            if not title or not rank or rank < 1 or rank > 100:
-                continue
-            key = _normalize_title(title)
-            if not key:
-                continue
-            cell = (key, day)
-            if cell not in best_per_day or rank < best_per_day[cell]:
-                best_per_day[cell] = rank
-            matched_rows += 1
+    for csv_path in active_paths:
+        with csv_path.open("r", newline="", encoding="utf-8-sig") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                day = (row.get("date") or "").strip()
+                if day not in week_dates:
+                    continue
+                chart_type = (row.get("chart_type") or "").strip().lower()
+                if chart_type and chart_type != "global":
+                    continue
+                title = (row.get("song_name") or "").strip()
+                rank = _to_int(row.get("rank"))
+                if not title or not rank or rank < 1 or rank > 100:
+                    continue
+                key = _normalize_title(title)
+                if not key:
+                    continue
+                cell = (key, day)
+                if cell not in best_per_day or rank < best_per_day[cell]:
+                    best_per_day[cell] = rank
+                matched_rows += 1
 
-    for (key, _), rank in best_per_day.items():
+    for (key, _day), rank in best_per_day.items():
         scores[key] = scores.get(key, 0.0) + _rank_to_am_units_score(rank)
 
-    logger.log(f"  apple_global   : {matched_rows} rows")
+    logger.log(f"  apple_global   : {matched_rows} rows ({len(active_paths)} file(s))")
     return scores
 
 
@@ -491,7 +544,8 @@ def _weekly_apple_music_country_points(*, week_dates: set[str], logger: Logger) 
     Best rank per (title, country, day) is kept.
     """
     scores: dict[str, float] = {}
-    if not APPLE_MUSIC_COUNTRY_CSV.exists():
+    active_paths = _active_apple_music_csvs(APPLE_MUSIC_COUNTRY_CSV)
+    if not active_paths:
         logger.log("  apple_country  : missing - country score disabled")
         return scores
 
@@ -503,32 +557,33 @@ def _weekly_apple_music_country_points(*, week_dates: set[str], logger: Logger) 
 
     best_per_country_day: dict[tuple[str, str, str], int] = {}
     matched_rows = 0
-    with APPLE_MUSIC_COUNTRY_CSV.open("r", newline="", encoding="utf-8-sig") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            day = (row.get("date") or "").strip()
-            if day not in week_dates:
-                continue
-            chart_type = (row.get("chart_type") or "").strip().lower()
-            if chart_type and chart_type != "country":
-                continue
-            country = (row.get("country") or "").strip().lower()
-            title = (row.get("song_name") or "").strip()
-            rank = _to_int(row.get("rank"))
-            if not country or not title or not rank or rank < 1 or rank > 200:
-                continue
-            key = _normalize_title(title)
-            if not key:
-                continue
-            cell = (key, country, day)
-            if cell not in best_per_country_day or rank < best_per_country_day[cell]:
-                best_per_country_day[cell] = rank
-            matched_rows += 1
+    for csv_path in active_paths:
+        with csv_path.open("r", newline="", encoding="utf-8-sig") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                day = (row.get("date") or "").strip()
+                if day not in week_dates:
+                    continue
+                chart_type = (row.get("chart_type") or "").strip().lower()
+                if chart_type and chart_type != "country":
+                    continue
+                country = (row.get("country") or "").strip().lower()
+                title = (row.get("song_name") or "").strip()
+                rank = _to_int(row.get("rank"))
+                if not country or not title or not rank or rank < 1 or rank > 200:
+                    continue
+                key = _normalize_title(title)
+                if not key:
+                    continue
+                cell = (key, country, day)
+                if cell not in best_per_country_day or rank < best_per_country_day[cell]:
+                    best_per_country_day[cell] = rank
+                matched_rows += 1
 
-    for (key, _, _), rank in best_per_country_day.items():
+    for (key, _country, _day), rank in best_per_country_day.items():
         scores[key] = scores.get(key, 0.0) + (_rank_to_am_units_score(rank) * AM_COUNTRY_WEIGHT)
 
-    logger.log(f"  apple_country  : {matched_rows} rows (weight={AM_COUNTRY_WEIGHT:g})")
+    logger.log(f"  apple_country  : {matched_rows} rows ({len(active_paths)} file(s), weight={AM_COUNTRY_WEIGHT:g})")
     return scores
 
 
@@ -539,7 +594,8 @@ def _weekly_apple_music_ts_points(*, week_dates: set[str], logger: Logger) -> di
     Multiply by 1000 externally when computing units_am.
     """
     scores: dict[str, float] = {}
-    if not APPLE_MUSIC_TS_TOP_SONGS_CSV.exists():
+    active_paths = _active_apple_music_csvs(APPLE_MUSIC_TS_TOP_SONGS_CSV)
+    if not active_paths:
         logger.log("  apple_ts       : missing — AM TS disabled")
         return scores
 
@@ -551,28 +607,29 @@ def _weekly_apple_music_ts_points(*, week_dates: set[str], logger: Logger) -> di
 
     best_per_day: dict[tuple[str, str], int] = {}
     matched_rows = 0
-    with APPLE_MUSIC_TS_TOP_SONGS_CSV.open("r", newline="", encoding="utf-8-sig") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            day = (row.get("date") or "").strip()
-            if day not in week_dates:
-                continue
-            title = (row.get("song_name") or "").strip()
-            rank = _to_int(row.get("rank"))
-            if not title or not rank or rank < 1 or rank > 100:
-                continue
-            key = _normalize_title(title)
-            if not key:
-                continue
-            cell = (key, day)
-            if cell not in best_per_day or rank < best_per_day[cell]:
-                best_per_day[cell] = rank
-            matched_rows += 1
+    for csv_path in active_paths:
+        with csv_path.open("r", newline="", encoding="utf-8-sig") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                day = (row.get("date") or "").strip()
+                if day not in week_dates:
+                    continue
+                title = (row.get("song_name") or "").strip()
+                rank = _to_int(row.get("rank"))
+                if not title or not rank or rank < 1 or rank > 100:
+                    continue
+                key = _normalize_title(title)
+                if not key:
+                    continue
+                cell = (key, day)
+                if cell not in best_per_day or rank < best_per_day[cell]:
+                    best_per_day[cell] = rank
+                matched_rows += 1
 
-    for (key, _), rank in best_per_day.items():
+    for (key, _day), rank in best_per_day.items():
         scores[key] = scores.get(key, 0.0) + _rank_to_am_units_score(rank)
 
-    logger.log(f"  apple_ts       : {matched_rows} rows")
+    logger.log(f"  apple_ts       : {matched_rows} rows ({len(active_paths)} file(s))")
     return scores
 
 
@@ -864,7 +921,8 @@ def _build_week_chart(
             continue
         meta = tracks.get(tid)
         title = meta.title if meta else tid
-        norm_title = _normalize_title(title)
+        base_title = meta.base_title if meta else None
+        norm_title = _chart_lookup_key(title, combined=COMBINE_VERSIONS, base_title=base_title)
         br = best_rank.get(norm_title)
         # Points calculated later after top-100 selection (need sum of top 100 streams)
         points = wk_streams
@@ -872,6 +930,7 @@ def _build_week_chart(
             {
                 "track_id": tid,
                 "title": title,
+                "base_title": base_title,
                 "weekly_streams": wk_streams,
                 "bonus_points": 0,
                 "points": points,
@@ -892,13 +951,19 @@ def _build_week_chart(
     )
 
     if COMBINE_VERSIONS:
-        # Merge all versions with the same normalized title (original + Taylor's Version, remixes, etc.)
-        # scored is sorted desc by streams, so the first entry per title is the primary (most streamed).
+        # Merge versions/remixes using the curated base_title when available.
+        # scored is sorted desc by streams, so the first entry per group is the primary (most streamed).
         merged_by_title: dict[str, dict] = {}
         for r in scored:
-            key = _normalize_title(r.get("title") or "")
+            key = _chart_lookup_key(
+                r.get("title") or "",
+                combined=True,
+                base_title=r.get("base_title") or None,
+            )
             if key not in merged_by_title:
                 merged_by_title[key] = dict(r)
+                if r.get("base_title"):
+                    merged_by_title[key]["title"] = r["base_title"]
             else:
                 existing = merged_by_title[key]
                 existing["weekly_streams"] += r["weekly_streams"]
@@ -1089,7 +1154,11 @@ def run(
         else:
             times_at_peak = hist_times
 
-        key = _normalize_title(row["title"])
+        key = _chart_lookup_key(
+            row["title"],
+            combined=COMBINE_VERSIONS,
+            base_title=row.get("base_title") or (meta.base_title if meta else None),
+        )
         weekly_streams = row["weekly_streams"]
 
         # Apple Music units (loi de puissance × 1000)
@@ -1344,7 +1413,7 @@ def run(
                     chart_date=chart_date,
                     song_rows=_song_rows,
                     dry_run=False,
-                    upload=False,
+                    skip_r2=True,
                 )
                 if _rc == 0:
                     logger.log(f"✔ albums         : {_alb_variant} chart generated")
@@ -1354,6 +1423,7 @@ def run(
             logger.log(f"⚠ albums         : failed — {exc}")
 
         if not skip_r2:
+            logger.log("  r2             : final upload (top100 + albums/eras)")
             _maybe_upload_to_r2(logger=logger)
 
     if not dry_run:

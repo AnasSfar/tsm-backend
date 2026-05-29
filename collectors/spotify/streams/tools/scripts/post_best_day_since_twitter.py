@@ -63,10 +63,15 @@ def _pick_rows(target_date: str, *, limit: int, min_days: int) -> list[dict]:
 def _build_tweet(row: dict, daily_yesterday: int | None) -> str:
     emoji = album_emoji(row.get("album"))
     title = row["title"]
+    track_id = row["track_id"]
     label = best_day_since.row_label(row)
     daily = int(row["daily_streams"])
     pct = _fmt_pct(daily, daily_yesterday)
-    return f'{emoji} "{title}" earned its {label} with {_fmt_int(daily)} streams [{pct}].'
+    song_url = f"https://thetsmuseum.app/songs/{track_id}"
+    return (
+        f'{emoji} "{title}" earned its {label} with {_fmt_int(daily)} streams [{pct}].\n\n'
+        f"See full track's history here : {song_url}"
+    )
 
 
 def _day_dir(target_date: str) -> Path:
