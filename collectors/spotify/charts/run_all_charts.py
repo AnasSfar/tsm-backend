@@ -964,10 +964,11 @@ def _run_backfill(args, env: dict[str, str]) -> int:
         print(f"[FAIL] --backfill-from ({backfill_from}) > --backfill-to ({backfill_to})")
         return 1
 
-    # Runners en no-post forcé pour le backfill
+    # Backfill : seulement worldwide (global/fr ne sont plus nécessaires sans posting)
     collect_runners = [
         (name, script, fixed + ["--no-post"])
         for name, script, fixed in COLLECT_RUNNERS
+        if name == "worldwide"
     ]
 
     # Détecte toutes les dates manquantes (post_parts vide = on ne vérifie pas posted.lock)
