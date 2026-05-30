@@ -87,15 +87,12 @@ SPOTIFY_UA = (
 # artists_global, global et fr postent dès leur collecte terminée (pas d'attente de worldwide)
 # us/uk sont geres par worldwide.
 COLLECT_RUNNERS: list[tuple[str, Path, list[str]]] = [
-    ("global",         CHARTS_ROOT / "global"         / "daily.py",         ["--force"]),
-    ("fr",             CHARTS_ROOT / "fr"             / "daily.py",         ["--force"]),
     ("worldwide",      CHARTS_ROOT / "worldwide"      / "daily.py",         ["--force"]),
 ]
 
 CHART_AVAILABILITY: dict[str, str] = {
     "artists_global": "artist-global-daily",
-    "global": "regional-global-daily",
-    "fr": "regional-fr-daily",
+    "worldwide": "regional-global-daily",  # probe via le chart global
 }
 
 def _region_lock(name: str, target: date, lock_name: str) -> Path:
