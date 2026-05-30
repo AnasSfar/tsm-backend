@@ -1036,7 +1036,8 @@ def main() -> int:
     parser.add_argument("--force", action="store_true", help="Relance la collecte meme si les donnees existent deja.")
     parser.add_argument("--force-cards", action="store_true", help="Force la regeneration des cards worldwide.")
     parser.add_argument("--skip-uk", action="store_true", help=argparse.SUPPRESS)
-    parser.add_argument("--verbose", "-v", action="store_true", help="Affiche la sortie complète des scripts.")
+    parser.add_argument("--no-verbose", dest="verbose", action="store_false", help="Masque la sortie complète des scripts.")
+    parser.set_defaults(verbose=True)
     parser.add_argument(
         "--watch-release",
         action="store_true",
