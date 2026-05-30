@@ -2,6 +2,7 @@
 """Small best-effort Git helpers for scheduled collectors."""
 from __future__ import annotations
 
+import os
 import subprocess
 from datetime import date
 from pathlib import Path
@@ -9,6 +10,8 @@ from pathlib import Path
 
 def git_commit_and_push(repo_root: Path, message: str | None = None) -> None:
     """Commit and push all repo changes without failing the collector."""
+    if os.getenv("CHARTS_RUN_ALL") == "1":
+        return
     repo_root = Path(repo_root)
     message = message or f"scheduled update {date.today().isoformat()}"
     print(f"[{_now()}] [STEP] Git commit et push")

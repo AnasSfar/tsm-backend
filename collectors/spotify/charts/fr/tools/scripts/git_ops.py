@@ -2,6 +2,7 @@
 """
 git_ops.py — Git commit/push operations for FR charts daily.
 """
+import os
 import subprocess
 from datetime import date
 from pathlib import Path
@@ -9,6 +10,8 @@ from pathlib import Path
 
 def git_commit_and_push(repo_root: Path) -> None:
     """Stage fr/history/ + db/charts_history_fr.csv, commit and push."""
+    if os.getenv("CHARTS_RUN_ALL") == "1":
+        return
     from datetime import date as _date
 
     try:

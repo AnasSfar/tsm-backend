@@ -2,6 +2,7 @@
 """
 git_ops.py — Git commit/push + CSV migrate operations for Global charts daily.
 """
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -27,6 +28,8 @@ def migrate_archive_csv(migrate_script: Path) -> None:
 
 def git_commit_and_push(repo_root: Path) -> None:
     """Stage global/history/ + db/charts_history_global.csv, commit and push."""
+    if os.getenv("CHARTS_RUN_ALL") == "1":
+        return
     print(f"[{_now()}] [STEP] Git commit et push")
     try:
         subprocess.run(

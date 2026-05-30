@@ -21,7 +21,10 @@ REPO_ROOT = CHARTS_ROOT.parents[2]
 sys.path.insert(0, str(REPO_ROOT / "collectors" / "spotify"))
 from core.data_paths import legacy_spotify_chart_dir, spotify_chart_dir
 from core.git_ops import git_commit_and_push
+from core.notify import send as _notify
 from core.retention import cleanup_generated_artifacts
+
+NTFY_TOPIC_CHARTS = os.getenv("NTFY_TOPIC_CHARTS", "taylormuseum-charts")
 
 _WARP_CLI = Path(r"C:\Program Files\Cloudflare\Cloudflare WARP\warp-cli.exe")
 
@@ -298,6 +301,7 @@ def _build_env() -> dict[str, str]:
     env = os.environ.copy()
     env["PYTHONUTF8"] = "1"
     env["UPLOAD_TO_R2"] = "0"  # individual scripts must not upload; only export_for_web.py does
+    env["CHARTS_RUN_ALL"] = "1"  # individual scripts must not git commit; run_all does it
     missing = [k for k in R2_ENV_VARS if not env.get(k, "").strip()]
     if missing:
         print(f"[WARN] R2 vars manquantes: {', '.join(missing)}")
@@ -979,18 +983,32 @@ def _run_backfill(args, env: dict[str, str]) -> int:
         print(f"[ OK ] aucune date manquante entre {backfill_from} et {backfill_to}")
         return 0
 
-    print(f"[BACKFILL] {len(missing)} date(s) manquante(s) : {missing[0]} → {missing[-1]}")
+    total_missing = len(missing)
+    print(f"[BACKFILL] {total_missing} date(s) manquante(s) : {missing[0]} → {missing[-1]}")
+    print(f"[BACKFILL] runners : {', '.join(n for n, _, _ in collect_runners)}")
 
     overall_failures: list[tuple[str, int]] = []
+    done_dates: list[date] = []
     started = time.perf_counter()
+    durations: list[float] = []
 
-    for target in missing:
+    for idx, target in enumerate(missing, 1):
         pending = _filter_pending_runners(collect_runners, target, set())
         if not pending:
+            done_dates.append(target)
             continue
 
         names_str = ", ".join(n for n, _, _ in pending)
-        print(f"\n[BACKFILL] {target} — collecte: {names_str}")
+
+        eta_str = ""
+        if durations:
+            avg = sum(durations) / len(durations)
+            eta_secs = avg * (total_missing - idx + 1)
+            eta_str = f" | ETA ~{_fmt(eta_secs)}"
+
+        print(f"\n[{idx:>{len(str(total_missing))}}/{total_missing}] {target} — {names_str}{eta_str}")
+        t_date = time.perf_counter()
+
         failures = _run_parallel(
             pending,
             forwarded=[str(target)],
@@ -998,18 +1016,35 @@ def _run_backfill(args, env: dict[str, str]) -> int:
             explicit_target_date=True,
             dry_run=args.dry_run,
             env=env,
-            verbose=args.verbose,
+            verbose=False,
         )
+
+        elapsed_date = time.perf_counter() - t_date
+        durations.append(elapsed_date)
+        avg = sum(durations) / len(durations)
+        remaining_after = total_missing - idx
+
         if failures:
-            print(f"[WARN] {target}: échecs — {', '.join(n for n, _ in failures)}")
+            failed_names = ", ".join(n for n, _ in failures)
+            print(f"[FAIL] [{idx}/{total_missing}] {target} — {_fmt(elapsed_date)} | {failed_names}")
             overall_failures.extend((f"{target}/{n}", rc) for n, rc in failures)
         else:
-            print(f"[ OK ] {target} collecté")
+            done_dates.append(target)
+            eta_after = f" | ETA ~{_fmt(avg * remaining_after)}" if remaining_after else ""
+            print(f"[ OK ] [{idx}/{total_missing}] {target} — {_fmt(elapsed_date)} | moy {_fmt(avg)}{eta_after}")
 
     total = _fmt(time.perf_counter() - started)
     if overall_failures:
         failed_str = ", ".join(n for n, _ in overall_failures)
         print(f"[FAIL] {len(overall_failures)} erreur(s) ({failed_str}) — {total}")
+        if NTFY_TOPIC_CHARTS:
+            _notify(
+                NTFY_TOPIC_CHARTS,
+                f"{len(overall_failures)} erreur(s) backfill: {failed_str}",
+                title=f"Backfill {backfill_from} → {backfill_to} — ECHEC",
+                tags="x,charts",
+                priority="high",
+            )
         return 1
     print(f"[ OK ] backfill terminé — {total}")
     if not args.dry_run:
