@@ -6,6 +6,7 @@
     {
       "section": "christmas_tree_farm_single",
       "track_count": 3,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Christmas Tree Farm",
@@ -72,6 +73,7 @@
     {
       "section": "standard_edition",
       "track_count": 9,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Christmas Must Be Something More",

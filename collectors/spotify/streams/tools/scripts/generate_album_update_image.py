@@ -395,12 +395,31 @@ def load_album_sections(album_name: str) -> list[dict]:
     if target_payload is None:
         return [], album_name
 
+    def _as_bool(value) -> bool | None:
+        if value is None:
+            return None
+        text = str(value).strip().lower()
+        if text in {"1", "true", "yes", "y", "on"}:
+            return True
+        if text in {"0", "false", "no", "n", "off"}:
+            return False
+        return None
+
+    def _is_chart_extra(section: dict, track: dict) -> bool:
+        track_flag = _as_bool(track.get("chart_extra"))
+        if track_flag is not None:
+            return track_flag
+        section_flag = _as_bool(section.get("chart_extra"))
+        return bool(section_flag) if section_flag is not None else False
+
     canonical_name = target_payload.get("album") or album_name
     sections = []
     for sec in target_payload.get("sections", []):
         tracks = []
         seen_in_section = set()
         for t in sec.get("tracks", []):
+            if _is_chart_extra(sec, t):
+                continue
             edition = (t.get("edition") or "").strip().lower()
             if edition not in INCLUDED_EDITIONS:
                 continue

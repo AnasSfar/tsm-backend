@@ -14,6 +14,7 @@ import json
 import re
 import unicodedata
 from collections import defaultdict
+from datetime import date, timedelta
 from pathlib import Path
 
 
@@ -25,13 +26,17 @@ EXTRA_MARKERS = {
     "demo",
     "instrumental",
     "karaoke",
-    "live",
     "long pond",
-    "piano",
     "remix",
     "stripped",
     "voice memo",
 }
+
+LIVE_VERSION_PATTERNS = (
+    r"\blive\s*/?\s*\d{4}\b",
+    r"\blive\s+(from|at|version|performance|session)\b",
+    r"\bfrom .* live\b",
+)
 
 ARCHIVE_EXPANSIONS = (
     (r"\btlpss\b", "the long pond studio sessions"),
@@ -89,9 +94,45 @@ def track_variants(title: str) -> list[str]:
     ])
 
 
+def matching_variants(value: str) -> list[str]:
+    variants = []
+    for raw in unique_ordered([
+        value,
+        expand(value, TRACK_EXPANSIONS),
+        expand(value, ARCHIVE_EXPANSIONS),
+    ]):
+        norm = normalize(raw)
+        if not norm:
+            continue
+        variants.append(norm)
+        variants.append(re.sub(r"\bfeat\b.*$", "", norm).strip())
+        variants.append(re.sub(r"\bbonus track\b", "", norm).strip())
+        variants.append(norm.replace("people s", "peoples"))
+        variants.append(norm.replace("aimee", "almee"))
+        variants.append(norm.replace("almee", "aimee"))
+    return unique_ordered(variants)
+
+
+def track_archive_variants(track: dict) -> list[str]:
+    variants = []
+    for key in ("title", "title_clean", "base_title", "song_family"):
+        value = (track.get(key) or "").strip()
+        if value:
+            variants.extend(matching_variants(value))
+    return unique_ordered(variants)
+
+
 def parse_space_number(value: str) -> int:
-    value = value.replace("\xa0", "").replace("Â\xa0", "").strip()
-    return int(value.replace(" ", "").replace(",", "")) if value else 0
+    value = (
+        value
+        .replace("\ufeff", "")
+        .replace("\u00c2", "")
+        .replace("\xa0", "")
+        .replace("Ã‚", "")
+        .strip()
+    )
+    digits = re.sub(r"[^0-9]", "", value)
+    return int(digits) if digits else 0
 
 
 def extract_tracks(data):
@@ -110,16 +151,18 @@ def extract_tracks(data):
 def is_normal_track(track: dict) -> bool:
     searchable = " ".join(
         str(track.get(key, "") or "")
-        for key in ("title", "type", "version_tag", "section", "display_section", "edition")
+        for key in ("title", "type", "section", "display_section", "edition")
     )
     normalized = normalize(searchable)
-    return not any(marker in normalized for marker in EXTRA_MARKERS)
+    if any(marker in normalized for marker in EXTRA_MARKERS):
+        return False
+    return not any(re.search(pattern, normalized) for pattern in LIVE_VERSION_PATTERNS)
 
 
 def build_track_map() -> dict[str, dict]:
     by_id = {}
     for path in [BASE / "discography/songs.json", *sorted((BASE / "discography/albums").glob("*.json"))]:
-        with path.open(encoding="utf-8") as handle:
+        with path.open(encoding="utf-8-sig") as handle:
             data = json.load(handle)
         for track in extract_tracks(data):
             if not is_normal_track(track):
@@ -127,9 +170,10 @@ def build_track_map() -> dict[str, dict]:
             url = track.get("url", "")
             match = re.search(r"/track/([A-Za-z0-9]+)", url)
             if match:
-                by_id[match.group(1)] = track
+                canonical_id = match.group(1)
+                by_id[canonical_id] = {**track, "track_id": canonical_id}
             for historical_id in track.get("historical_track_ids", []) or []:
-                by_id[historical_id] = track
+                by_id[historical_id] = {**track, "track_id": historical_id}
 
     with (BASE / "swift_top_100_history.csv").open(encoding="utf-8") as handle:
         for row in csv.DictReader(handle):
@@ -199,74 +243,105 @@ def int_field(row: dict[str, str], field: str) -> int:
     return int(row.get(field) or 0)
 
 
+def next_day(day: str) -> str:
+    return str(date.fromisoformat(day) + timedelta(days=1))
+
+
 def main() -> None:
     tracks_by_id = build_track_map()
     archive, archive_names = load_archive()
     original_rows = load_stream_rows()
-    trusted_rows = [row for row in original_rows if row["date"] >= BACKEND_START_DATE]
 
     existing = defaultdict(dict)
-    for row in trusted_rows:
+    for row in original_rows:
         existing[row["track_id"]][row["date"]] = row
 
     id_to_archive_key = {}
     unmatched = []
-    for track_id in existing:
+    candidate_track_ids = sorted(set(existing) | set(tracks_by_id))
+    for track_id in candidate_track_ids:
         track = tracks_by_id.get(track_id)
         if not track:
-            unmatched.append((track_id, "missing metadata"))
+            if track_id in existing:
+                unmatched.append((track_id, "missing metadata"))
             continue
-        for variant in track_variants(track["title"]):
+        for variant in track_archive_variants(track):
             if variant in archive:
                 id_to_archive_key[track_id] = variant
                 break
         else:
             unmatched.append((track_id, track["title"]))
 
+    rows_by_key = {
+        (row["date"], row["track_id"]): dict(row)
+        for row in original_rows
+    }
     new_rows = []
     fill_log = []
+    updated_blank_daily = 0
 
     for track_id, archive_key in id_to_archive_key.items():
-        archive_dates = {
-            date: daily
-            for date, daily in archive[archive_key].items()
-            if date < BACKEND_START_DATE
-        }
+        archive_dates = dict(archive[archive_key])
         if not archive_dates:
             continue
 
         known_dates = sorted(existing[track_id])
         if not known_dates:
             continue
-        anchor_date = known_dates[0]
-        anchor_row = existing[track_id][anchor_date]
 
         daily_lookup = dict(archive_dates)
-        daily_lookup[anchor_date] = int_field(anchor_row, "daily_streams")
+        cumulative: dict[str, int] = {}
+        for known_date in known_dates:
+            row = existing[track_id][known_date]
+            cumulative[known_date] = int_field(row, "streams")
+            daily = (row.get("daily_streams") or "").strip()
+            if daily:
+                daily_lookup[known_date] = int(daily)
 
-        ordered_dates = sorted(set(daily_lookup) | {anchor_date})
-        anchor_index = ordered_dates.index(anchor_date)
-        cumulative = {anchor_date: int_field(anchor_row, "streams")}
+        ordered_dates = sorted(set(archive_dates) | set(known_dates))
 
-        for index in range(anchor_index - 1, -1, -1):
-            date = ordered_dates[index]
-            next_date = ordered_dates[index + 1]
-            cumulative[date] = max(0, cumulative[next_date] - daily_lookup.get(next_date, 0))
+        for index in range(len(ordered_dates) - 2, -1, -1):
+            current = ordered_dates[index]
+            nxt = ordered_dates[index + 1]
+            if next_day(current) != nxt:
+                continue
+            if nxt in cumulative and nxt in daily_lookup:
+                cumulative.setdefault(current, max(0, cumulative[nxt] - daily_lookup[nxt]))
+
+        for index in range(1, len(ordered_dates)):
+            previous = ordered_dates[index - 1]
+            current = ordered_dates[index]
+            if next_day(previous) != current:
+                continue
+            if previous in cumulative and current in daily_lookup:
+                cumulative.setdefault(current, cumulative[previous] + daily_lookup[current])
 
         filled = 0
-        for date in sorted(archive_dates):
-            new_rows.append({
-                "date": date,
+        for archive_date in sorted(archive_dates):
+            key = (archive_date, track_id)
+            if key in rows_by_key:
+                row = rows_by_key[key]
+                if not (row.get("daily_streams") or "").strip():
+                    row["daily_streams"] = str(archive_dates[archive_date])
+                    updated_blank_daily += 1
+                continue
+            if archive_date not in cumulative:
+                continue
+
+            row = {
+                "date": archive_date,
                 "track_id": track_id,
-                "streams": str(cumulative.get(date, 0)),
-                "daily_streams": str(archive_dates[date]),
-            })
+                "streams": str(cumulative[archive_date]),
+                "daily_streams": str(archive_dates[archive_date]),
+            }
+            rows_by_key[key] = row
+            new_rows.append(row)
             filled += 1
 
         if filled:
             fill_log.append((filled, tracks_by_id[track_id]["title"], archive_names[archive_key]))
 
-    all_rows = trusted_rows + new_rows
+    all_rows = list(rows_by_key.values())
     all_rows.sort(key=lambda row: (row["date"], row["track_id"]))
 
     output_path = BASE / "streams_history.csv"
@@ -277,10 +352,11 @@ def main() -> None:
 
     print(f"[tracks] metadata kept: {len(tracks_by_id)} normal tracks")
     print(f"[archive] keys kept before album sections: {len(archive)}")
-    print(f"[match] matched: {len(id_to_archive_key)} / {len(existing)} backend track IDs")
+    print(f"[match] matched: {len(id_to_archive_key)} / {len(candidate_track_ids)} track IDs")
     print(f"[match] unmatched: {len(unmatched)}")
-    print(f"[write] kept trusted rows >= {BACKEND_START_DATE}: {len(trusted_rows)}")
-    print(f"[write] regenerated archive rows: {len(new_rows)}")
+    print(f"[write] preserved original rows: {len(original_rows)}")
+    print(f"[write] added archive rows: {len(new_rows)}")
+    print(f"[write] filled blank daily_streams cells: {updated_blank_daily}")
     print(f"[write] total rows: {len(all_rows)}")
     print("[top fills]")
     for filled, title, archive_title in sorted(fill_log, reverse=True)[:20]:

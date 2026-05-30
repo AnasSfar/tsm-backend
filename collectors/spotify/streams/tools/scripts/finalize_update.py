@@ -43,6 +43,11 @@ class FinalizeContext:
     find_biggest_album_gainer_for_spotlight: Callable[..., dict | None]
     posted_album_updates: set[str]
     initial_post_state: dict[str, float]
+    throwback_mode: bool = False
+    throwback_action: str | None = None
+    throwback_event: str | None = None
+    throwback_label: str | None = None
+    throwback_force: bool = False
 
 
 class ReadyAlbumUpdatePoster:
@@ -382,6 +387,38 @@ def _post_best_day_since(ctx: FinalizeContext, state: dict[str, float]) -> None:
     )
 
 
+def _post_throwback_thread(ctx: FinalizeContext, state: dict[str, float]) -> None:
+    if not ctx.throwback_action or not ctx.throwback_event:
+        print("Throwback skipped: missing --throwback-action/--throwback-event.")
+        return
+
+    throwback_script = ctx.script_dir / "tools" / "scripts" / "post_throwback_thread.py"
+    cmd = [
+        sys.executable,
+        str(throwback_script),
+        ctx.summary["stats_date"],
+        "--action",
+        ctx.throwback_action,
+        "--event",
+        ctx.throwback_event,
+    ]
+    if ctx.throwback_label:
+        cmd.extend(["--label", ctx.throwback_label])
+    if ctx.throwback_force:
+        cmd.append("--force")
+    if ctx.no_post_mode:
+        cmd.append("--no-post")
+
+    print("Posting throwback stream thread...")
+    _run(
+        ctx,
+        cmd,
+        label="throwback stream thread",
+        should_post=not ctx.no_post_mode,
+        state=state,
+    )
+
+
 def _start_spotlight_gainers(ctx: FinalizeContext) -> threading.Thread:
     thread = threading.Thread(
         target=_post_spotlight_gainers,
@@ -432,10 +469,14 @@ def _run_swift_top_charts_if_needed(ctx: FinalizeContext) -> None:
 
 
 def run_final_update_tasks(ctx: FinalizeContext) -> None:
+    post_state = dict(ctx.initial_post_state or {"posted_count": 0, "last_post_at": 0.0})
+    if ctx.throwback_mode:
+        _post_throwback_thread(ctx, post_state)
+        return
+
     artist_metadata_updated = _update_artist_metadata(ctx)
     _export_web_data_once(ctx, force=artist_metadata_updated)
 
-    post_state = dict(ctx.initial_post_state or {"posted_count": 0, "last_post_at": 0.0})
     spotlight_thread = None
     if (
         not ctx.debug_daily_mode

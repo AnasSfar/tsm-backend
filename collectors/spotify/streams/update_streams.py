@@ -261,6 +261,10 @@ Usage:
   python update_streams.py --no-post
       Run full pipeline but skip all Twitter posting steps.
 
+  python update_streams.py YYYY-MM-DD --throwback --throwback-action released --throwback-event "..."
+      Generate/post a throwback thread for that stats date instead of normal daily posts.
+      Existing throwback images are reused unless --force or --throwback-force is passed.
+
   python update_streams.py --reset-last-date
       Delete all rows for the latest date found in streams_history.csv before running.
 
@@ -281,6 +285,8 @@ Notes:
     - --no-post keeps processing/export/commit but skips Twitter posts.
   - --debug-daily writes missing updates into history, but stays local/no posting.
   - --debug-total rewrites an existing date's totals in history.
+  - --throwback uses the target stats date and requires --throwback-action announced|released
+    plus --throwback-event "what happened".
         """.strip()
     )
 
@@ -996,8 +1002,6 @@ def main():
         print_help()
         return
 
-    _warp_connect()
-
     ensure_history_file()
 
     global LOG_MODE
@@ -1015,6 +1019,8 @@ def main():
     dry_run_mode = "--dry-run" in sys.argv
     local_test_mode = "--local-test" in sys.argv
     no_post_mode = "--no-post" in sys.argv
+    throwback_mode = "--throwback" in sys.argv
+    throwback_force = "--force" in sys.argv or "--throwback-force" in sys.argv
     reset_last_date_mode = "--reset-last-date" in sys.argv
     write_history = not local_test_mode
     force_reprocess = local_test_mode
@@ -1037,6 +1043,9 @@ def main():
             "--dry-run",
             "--local-test",
             "--no-post",
+            "--throwback",
+            "--throwback-force",
+            "--force",
             "--reset-last-date",
             "--quiet",
             "--verbose",
@@ -1047,6 +1056,9 @@ def main():
 
     stats_date_override = None
     reset_date_override = None
+    throwback_action = None
+    throwback_event = None
+    throwback_label = None
 
     i = 0
     while i < len(remaining_args):
@@ -1057,6 +1069,30 @@ def main():
                 print("Missing value after --reset-date (expected YYYY-MM-DD)")
                 sys.exit(1)
             reset_date_override = remaining_args[i + 1]
+            i += 2
+            continue
+
+        if arg == "--throwback-action":
+            if i + 1 >= len(remaining_args):
+                print("Missing value after --throwback-action (expected announced or released)")
+                sys.exit(1)
+            throwback_action = remaining_args[i + 1]
+            i += 2
+            continue
+
+        if arg == "--throwback-event":
+            if i + 1 >= len(remaining_args):
+                print("Missing value after --throwback-event")
+                sys.exit(1)
+            throwback_event = remaining_args[i + 1]
+            i += 2
+            continue
+
+        if arg == "--throwback-label":
+            if i + 1 >= len(remaining_args):
+                print("Missing value after --throwback-label")
+                sys.exit(1)
+            throwback_label = remaining_args[i + 1]
             i += 2
             continue
 
@@ -1072,6 +1108,14 @@ def main():
     if reset_last_date_mode and reset_date_override:
         print("Use either --reset-last-date or --reset-date YYYY-MM-DD, not both.")
         sys.exit(1)
+
+    if throwback_mode:
+        if throwback_action not in {"announced", "released"}:
+            print("--throwback requires --throwback-action announced|released")
+            sys.exit(1)
+        if not throwback_event:
+            print('--throwback requires --throwback-event "what Taylor Swift announced/released"')
+            sys.exit(1)
 
     if reset_last_date_mode:
         last_date = get_last_stats_date_in_history()
@@ -1099,10 +1143,12 @@ def main():
         print("[DEBUG-DAILY] Retry unfinished tracks, writes history, no Twitter/git/forecast/images/notify.")
     elif debug_total_mode:
         print("[DEBUG-TOTAL] Replace totals for an existing date in streams_history.csv.")
+    elif throwback_mode:
+        print("[THROWBACK] Generate/post throwback thread instead of normal daily posts.")
     else:
         print("[NORMAL] Official run mode.")
 
-    if dry_run_mode or debug_daily_mode or local_test_mode:
+    if dry_run_mode or debug_daily_mode or local_test_mode or throwback_mode:
         os.environ["UPLOAD_TO_R2"] = "0"
         print("R2 upload disabled for this run mode.")
     else:
@@ -1116,6 +1162,46 @@ def main():
     print("=" * 70)
     print(f"Target stats date: {stats_date}")
     print()
+
+    if throwback_mode:
+        print("[THROWBACK] Using existing streams_history.csv data only; skipping Spotify collection.")
+        run_final_update_tasks(FinalizeContext(
+            script_dir=_SCRIPT_DIR,
+            repo_root=_REPO_ROOT,
+            stats_date=stats_date,
+            summary={
+                "stats_date": stats_date,
+                "all_done": True,
+                "updated_this_run": 0,
+                "pending_this_run": 0,
+                "not_found_this_run": 0,
+            },
+            no_post_mode=no_post_mode,
+            debug_daily_mode=False,
+            local_test_mode=False,
+            post_spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
+            log_mode=LOG_MODE,
+            artist_thread=None,
+            artist_result=[None],
+            export_web_data=export_web_data,
+            update_artist_metadata=update_artist_metadata,
+            album_tracks_done_for=album_tracks_done_for,
+            all_album_tracks_done=all_album_tracks_done,
+            load_album_sections_flat=load_album_sections_flat,
+            extract_track_id=extract_track_id,
+            load_history_track_ids_for_date=load_history_track_ids_for_date,
+            find_biggest_album_gainer_for_spotlight=find_biggest_album_gainer_for_spotlight,
+            posted_album_updates=set(),
+            initial_post_state={"posted_count": 0, "last_post_at": 0.0},
+            throwback_mode=True,
+            throwback_action=throwback_action,
+            throwback_event=throwback_event,
+            throwback_label=throwback_label,
+            throwback_force=throwback_force,
+        ))
+        return
+
+    _warp_connect()
 
     if debug_total_mode:
         if stats_date_override is None:
@@ -1266,6 +1352,7 @@ def main():
             and not debug_daily_mode
             and not local_test_mode
             and not no_post_mode
+            and not throwback_mode
             and scraping_needed
             and date.fromisoformat(stats_date).weekday() not in (5, 6)
         ),
@@ -1415,9 +1502,14 @@ def main():
         find_biggest_album_gainer_for_spotlight=find_biggest_album_gainer_for_spotlight,
         posted_album_updates=posted_album_updates,
         initial_post_state=initial_post_state,
+        throwback_mode=throwback_mode,
+        throwback_action=throwback_action,
+        throwback_event=throwback_event,
+        throwback_label=throwback_label,
+        throwback_force=throwback_force,
     ))
 
-    if not dry_run_mode and not debug_daily_mode and not local_test_mode:
+    if not dry_run_mode and not debug_daily_mode and not local_test_mode and not throwback_mode:
         run_catalog_gap_scan(token_mgr, stats_date)
 
     elapsed = time.perf_counter() - START_TIME
@@ -1435,7 +1527,7 @@ def main():
     if local_test_mode:
         print("[LOCAL-TEST] Finished without history writes, R2, Twitter, git, or notify.")
 
-    if not debug_daily_mode and not local_test_mode:
+    if not debug_daily_mode and not local_test_mode and not throwback_mode:
         notify(
             NTFY_TOPIC,
             f"✓ {summary['updated_this_run']} track(s) updated ({summary['stats_date']})\n"

@@ -936,6 +936,87 @@ def _ensure_worldwide_valid(
 _ALL_POST_PARTS = {"artists", "global", "fr", "cards"}
 
 
+def _run_backfill(args, env: dict[str, str]) -> int:
+    yesterday = date.today() - timedelta(days=1)
+
+    if not args.backfill_from:
+        print("[FAIL] --backfill requiert --backfill-from DATE (ex: --backfill-from 2026-01-01)")
+        return 1
+    try:
+        backfill_from = datetime.strptime(args.backfill_from, "%Y-%m-%d").date()
+    except ValueError:
+        print(f"[FAIL] date invalide pour --backfill-from: {args.backfill_from}")
+        return 1
+
+    backfill_to = yesterday
+    if args.backfill_to:
+        try:
+            backfill_to = datetime.strptime(args.backfill_to, "%Y-%m-%d").date()
+        except ValueError:
+            print(f"[FAIL] date invalide pour --backfill-to: {args.backfill_to}")
+            return 1
+
+    if backfill_from > backfill_to:
+        print(f"[FAIL] --backfill-from ({backfill_from}) > --backfill-to ({backfill_to})")
+        return 1
+
+    # Runners en no-post forcé pour le backfill
+    collect_runners = [
+        (name, script, fixed + ["--no-post"])
+        for name, script, fixed in COLLECT_RUNNERS
+    ]
+
+    # Détecte toutes les dates manquantes (post_parts vide = on ne vérifie pas posted.lock)
+    missing: list[date] = []
+    cur = backfill_from
+    while cur <= backfill_to:
+        pending = _filter_pending_runners(collect_runners, cur, set())
+        if pending:
+            missing.append(cur)
+        cur += timedelta(days=1)
+
+    if not missing:
+        print(f"[ OK ] aucune date manquante entre {backfill_from} et {backfill_to}")
+        return 0
+
+    print(f"[BACKFILL] {len(missing)} date(s) manquante(s) : {missing[0]} → {missing[-1]}")
+
+    overall_failures: list[tuple[str, int]] = []
+    started = time.perf_counter()
+
+    for target in missing:
+        pending = _filter_pending_runners(collect_runners, target, set())
+        if not pending:
+            continue
+
+        names_str = ", ".join(n for n, _, _ in pending)
+        print(f"\n[BACKFILL] {target} — collecte: {names_str}")
+        failures = _run_parallel(
+            pending,
+            forwarded=[str(target)],
+            target_date=target,
+            explicit_target_date=True,
+            dry_run=args.dry_run,
+            env=env,
+            verbose=args.verbose,
+        )
+        if failures:
+            print(f"[WARN] {target}: échecs — {', '.join(n for n, _ in failures)}")
+            overall_failures.extend((f"{target}/{n}", rc) for n, rc in failures)
+        else:
+            print(f"[ OK ] {target} collecté")
+
+    total = _fmt(time.perf_counter() - started)
+    if overall_failures:
+        failed_str = ", ".join(n for n, _ in overall_failures)
+        print(f"[FAIL] {len(overall_failures)} erreur(s) ({failed_str}) — {total}")
+        return 1
+    print(f"[ OK ] backfill terminé — {total}")
+    if not args.dry_run:
+        git_commit_and_push(REPO_ROOT, f"charts backfill {backfill_from} → {backfill_to}")
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run all Spotify chart daily scripts.")
     parser.add_argument("--stop-on-error", action="store_true")
@@ -971,9 +1052,19 @@ def main() -> int:
         action="store_true",
         help="Desactive le fallback Cloudflare WARP.",
     )
+    parser.add_argument(
+        "--backfill",
+        action="store_true",
+        help="Mode rattrapage: collecte les dates manquantes sans poster.",
+    )
+    parser.add_argument("--backfill-from", metavar="DATE", help="Date de début du rattrapage (YYYY-MM-DD).")
+    parser.add_argument("--backfill-to", metavar="DATE", help="Date de fin du rattrapage (YYYY-MM-DD, défaut: hier).")
     args, passthrough = parser.parse_known_args()
 
     forwarded = list(passthrough)
+
+    if args.backfill:
+        return _run_backfill(args, _build_env())
 
     # Détermine quelles parties postent sur Twitter
     if args.no_post:

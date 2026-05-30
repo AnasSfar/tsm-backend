@@ -107,7 +107,16 @@ def _build_tweet(item: dict, target_date: str) -> str:
     title = track.get("title") or item["track_id"]
     emoji = album_emoji(track.get("album"))
     date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
-    lines = [f'{emoji} "{title}" was a Taylor Swift stream highlight yesterday ({date_fmt}).']
+    gainer_periods = [period for period in ("daily", "weekly") if period in item]
+    if gainer_periods:
+        period_label = " and ".join(gainer_periods)
+        intro = (
+            f'{emoji} "{title}" was one of Taylor Swift\'s biggest {period_label} '
+            f"gainers yesterday ({date_fmt})."
+        )
+    else:
+        intro = f'{emoji} "{title}" had a notable Taylor Swift stream day yesterday ({date_fmt}).'
+    lines = [intro]
 
     if "daily" in item:
         row = item["daily"]

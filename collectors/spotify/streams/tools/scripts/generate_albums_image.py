@@ -294,7 +294,15 @@ def get_latest_date() -> str:
     return latest
 
 
-def build_album_rows(today: dict, yest: dict, week: dict, track_map: dict, covers: dict) -> list[dict]:
+def build_album_rows(
+    today: dict,
+    yest: dict,
+    week: dict,
+    track_map: dict,
+    covers: dict,
+    *,
+    merge_eras: bool = True,
+) -> list[dict]:
     """
     Agrège les streams par album (éditions incluses seulement).
     Retourne une liste triée par daily_streams desc.
@@ -337,6 +345,19 @@ def build_album_rows(today: dict, yest: dict, week: dict, track_map: dict, cover
             albums[album]["week_daily"] += (w.get("daily_streams") or 0)
 
     # Passe 2 : merge des albums en ères (OG + TV → une seule ligne).
+    if not merge_eras:
+        yest_ranked = sorted(
+            [r for r in albums.values() if r.get("yest_daily")],
+            key=lambda r: r["yest_daily"],
+            reverse=True,
+        )
+        yest_rank_by_album = {r["album"]: i + 1 for i, r in enumerate(yest_ranked)}
+
+        rows = sorted(albums.values(), key=lambda r: r["daily_streams"], reverse=True)
+        for row in rows:
+            row["prev_rank"] = yest_rank_by_album.get(row["album"])
+        return rows
+
     eras: dict[str, dict] = {}
     for album_name, album_data in albums.items():
         era_name = ERA_MAP.get(album_name, album_name)
