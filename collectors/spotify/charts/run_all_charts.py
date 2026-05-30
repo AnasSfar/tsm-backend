@@ -650,7 +650,7 @@ def _wait_for_charts_available(
     if dry_run or not names:
         return False, target
 
-    probe = next((n for n in ("global", "fr") if n in names), names[0])
+    probe = next((n for n in ("global", "fr", "worldwide") if n in names), names[0])
     probe_chart = CHART_AVAILABILITY[probe]
 
     attempt = 1
@@ -1113,13 +1113,14 @@ def main() -> int:
 
     collect_runners = []
     for name, script, fixed in COLLECT_RUNNERS:
-        # worldwide/daily.py ne poste jamais : generate_card_images.py (PHASE3) gère ça avec images
-        if name == "worldwide":
-            extra = ["--no-post"] if "--no-post" not in fixed else []
-        elif name == "artists_global":
+        if name == "artists_global":
             extra = ["--no-post"] if "artists" not in post_parts else []
+        elif name == "worldwide":
+            # worldwide gère lui-même le posting global/fr via --post-only
+            # on lui passe --no-post seulement si on ne veut rien poster du tout
+            extra = ["--no-post"] if args.no_post else []
         else:
-            extra = ["--no-post"] if name in {"global", "fr"} and name not in post_parts else []
+            extra = []
         collect_runners.append((name, script, fixed + extra))
 
     target_date, _explicit_target_date = _extract_target_date(forwarded)
@@ -1192,11 +1193,6 @@ def main() -> int:
                     if warp_active:
                         _warp_disconnect()
                     return 1
-            if not args.dry_run:
-                for name, _, _ in collect_runners:
-                    if name in {"global", "fr"} and name in post_parts and not _region_lock_exists(name, target_date, "posted.lock"):
-                        print(f"[FAIL] {name}: posted.lock absent apres collecte pour {target_date}")
-                        failures.append((f"{name}-post", 1))
             if not args.dry_run and "worldwide" in {n for n, _, _ in collect_runners} and "worldwide" not in {n for n, _ in failures}:
                 worldwide_ok, worldwide_reruns = _ensure_worldwide_valid(
                     collect_runners,
