@@ -25,6 +25,7 @@ import os
 import re
 import subprocess
 import sys
+import threading
 import time
 import unicodedata
 from datetime import date, datetime, timedelta
@@ -68,6 +69,8 @@ _http = _build_http_session()
 # ── Paths ─────────────────────────────────────────────────────────────────────
 # collectors/spotify/charts/worldwide/daily.py → parents[4] = tsm-backend/
 ROOT            = Path(__file__).resolve().parents[4]
+GLOBAL_DAILY    = ROOT / "collectors" / "spotify" / "charts" / "global" / "daily.py"
+FR_DAILY        = ROOT / "collectors" / "spotify" / "charts" / "fr" / "daily.py"
 SESSION_FILE        = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "spotify_session.json"
 _BEARER_CACHE_FILE  = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "bearer_cache.json"
 _BEARER_TOKEN_TTL   = 50 * 60
@@ -723,12 +726,7 @@ def main() -> int:
         except Exception as e:
             print(f"[WARN] Could not parse existing output: {e}")
 
-    regions_to_fetch = {k: v for k, v in regions.items() if k not in already_done}
-    print(f"[INFO] Fetching {len(regions_to_fetch)} regions (semaphore={SEMAPHORE})…")
-    t0 = time.perf_counter()
-    by_region = asyncio.run(_run_async(chart_date, token, regions_to_fetch))
-    print(f"[INFO] Done in {time.perf_counter() - t0:.1f}s")
-
+    # Résolution des tracks en avance pour écrire les fichiers régionaux dès la phase 1 terminée
     print("[INFO] Resolving track IDs…")
     track_lookup  = build_track_lookup()
     manual_lookup = build_manual_mapping()
@@ -753,6 +751,50 @@ def main() -> int:
             _album = (_item.get("album") or "").strip()
             if _album:
                 id_to_album.setdefault(_tid, _album)
+
+    regions_to_fetch = {k: v for k, v in regions.items() if k not in already_done}
+
+    # Phase 1 : fetch global et fr en priorité pour poster pendant la phase 2
+    _PRIORITY = {"global", "fr"}
+    priority_to_fetch = {k: v for k, v in regions_to_fetch.items() if k in _PRIORITY}
+    other_to_fetch    = {k: v for k, v in regions_to_fetch.items() if k not in _PRIORITY}
+
+    t0 = time.perf_counter()
+    if priority_to_fetch:
+        print(f"[INFO] Phase 1 : fetch prioritaire ({', '.join(sorted(priority_to_fetch))})…")
+        priority_results = asyncio.run(_run_async(chart_date, token, priority_to_fetch))
+        print(f"[INFO] Phase 1 terminée en {time.perf_counter() - t0:.1f}s")
+        for region in ("global", "fr"):
+            if region in priority_results and priority_results[region]:
+                _write_regional_ts_chart(chart_date, region, priority_results[region], manual_lookup, track_lookup)
+    else:
+        priority_results = {}
+
+    # Lancer le posting global/fr en background pendant le fetch des autres régions
+    _posting_thread: threading.Thread | None = None
+    if not args.no_post and priority_to_fetch:
+        def _post_regional() -> None:
+            for script in (GLOBAL_DAILY, FR_DAILY):
+                if not script.exists():
+                    continue
+                result = subprocess.run(
+                    [sys.executable, str(script), "--post-only", chart_date],
+                    cwd=str(ROOT),
+                )
+                if result.returncode != 0:
+                    print(f"[WARN] {script.name} --post-only a échoué (code {result.returncode})", flush=True)
+        _posting_thread = threading.Thread(target=_post_regional, daemon=True, name="regional-posting")
+        _posting_thread.start()
+
+    # Phase 2 : fetch toutes les autres régions
+    if other_to_fetch:
+        print(f"[INFO] Phase 2 : fetch {len(other_to_fetch)} autres régions (semaphore={SEMAPHORE})…")
+        other_results = asyncio.run(_run_async(chart_date, token, other_to_fetch))
+        print(f"[INFO] Phase 2 terminée en {time.perf_counter() - t0:.1f}s total")
+    else:
+        other_results = {}
+
+    by_region = {**priority_results, **other_results}
 
     by_track: dict[str, list[dict]] = {}
     track_names: dict[str, str] = {}
@@ -936,8 +978,44 @@ def main() -> int:
             else:
                 print(f"[WARN] Failed: {track_id}")
 
+    if _posting_thread is not None and _posting_thread.is_alive():
+        print("[INFO] Attente fin posting global/fr…", flush=True)
+        _posting_thread.join(timeout=600)
+        if _posting_thread.is_alive():
+            print("[WARN] Posting global/fr toujours en cours après 10 minutes", flush=True)
+
     git_commit_and_push(ROOT, f"charts worldwide {chart_date}")
     return 0
+
+
+def _write_regional_ts_chart(
+    chart_date: str,
+    region: str,
+    rows: list[dict],
+    manual_lookup: dict[str, str],
+    track_lookup: dict[str, str],
+) -> None:
+    """Écrit ts_chart_{date}.json pour global/fr au format attendu par generate_chart_image.py."""
+    chart_entries = [
+        {
+            "rank":          row.get("rank"),
+            "track_name":    row.get("track_name", ""),
+            "artist_names":  row.get("artist_names", TS_NAME),
+            "streams":       row.get("streams"),
+            "previous_rank": row.get("previous_rank"),
+            "peak_rank":     row.get("peak_rank"),
+            "total_days":    row.get("total_days"),
+            "streak":        row.get("total_days"),
+            "image_url":     None,
+        }
+        for row in sorted(rows, key=lambda r: r.get("rank") or 9999)
+    ]
+    out_dir = spotify_chart_dir(region, chart_date)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    chart_path = out_dir / f"ts_chart_{chart_date}.json"
+    chart_path.write_text(json.dumps(chart_entries, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"[INFO] Written regional chart → {chart_path}", flush=True)
+    (out_dir / "updated.lock").touch()
 
 
 def maybe_upload_to_r2() -> None:

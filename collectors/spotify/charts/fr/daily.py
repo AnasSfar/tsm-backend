@@ -243,6 +243,7 @@ def maybe_upload_to_r2() -> None:
 def main():
     force = "--force" in sys.argv
     no_post = "--no-post" in sys.argv
+    post_only = "--post-only" in sys.argv
     replace_date = "--replace-date" in sys.argv or force
     date_args = [a for a in sys.argv[1:] if not a.startswith("--")]
 
@@ -282,6 +283,51 @@ def main():
 
     log("INFO", f"Dates à poster: {[str(d) for d in unposted]}")
     target = unposted[0]  # la plus récente débloquera les autres
+
+    # Mode post-only : worldwide a déjà collecté les données, on saute filter.py
+    if post_only:
+        chart_json = spotify_chart_dir("fr", target) / f"ts_chart_{target}.json"
+        if not chart_json.exists():
+            log("ERROR", f"--post-only: ts_chart_{target}.json absent pour {target}")
+            sys.exit(1)
+        log("INFO", "Mode --post-only : données fournies par worldwide, skip filter.py")
+        processed = [target]
+        mark_updated(target)
+        _date_fmt = target.strftime("%B %d, %Y")
+        tweet_content = f"🇫🇷 | Taylor Swift on Spotify France Charts yesterday ({_date_fmt}) :"
+        (ROOT / "twitter_post.txt").write_text(tweet_content, encoding="utf-8")
+        log("INFO", "twitter_post.txt mis à jour")
+        print(f"\nPost :\n{tweet_content}\n", flush=True)
+        log("STEP", "Génération de l'image du chart")
+        img_result = subprocess.run(
+            [sys.executable, str(GENERATE_IMAGE_SCRIPT), str(target)],
+            capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=str(ROOT),
+        )
+        if img_result.stdout:
+            print(img_result.stdout, flush=True)
+        if img_result.stderr:
+            print(img_result.stderr, flush=True)
+        image_path = first_existing(
+            spotify_chart_dir("fr", target) / "chart_image.png",
+            legacy_spotify_chart_dir("fr", target) / "chart_image.png",
+        ) if img_result.returncode == 0 else None
+        log("STEP", "Publication Twitter")
+        if no_post:
+            log("INFO", "Publication Twitter ignorée (--no-post)")
+            posted = True
+        else:
+            if image_path and image_path.exists():
+                posted = post_with_image(tweet_content, image_path, TWITTER_SESSION)
+            else:
+                posted = post_thread(split_tweets(tweet_content), TWITTER_SESSION)
+        if posted:
+            for d in processed:
+                mark_posted(d)
+            log("INFO", "Terminé avec succès (--post-only)")
+        else:
+            log("ERROR", "Publication Twitter échouée (--post-only)")
+            sys.exit(1)
+        return
 
     # Attendre que la page cible soit disponible (cutoff à CUTOFF_HOUR:CUTOFF_MINUTE)
     attempt = 1

@@ -582,6 +582,7 @@ def main() -> None:
     date_args = [a for a in sys.argv[1:] if not a.startswith("--")]
     force = "--force" in sys.argv
     no_post = "--no-post" in sys.argv
+    post_only = "--post-only" in sys.argv
 
     if date_args:
         try:
@@ -617,6 +618,39 @@ def main() -> None:
         return
 
     log("INFO", f"Dates à poster: {[str(d) for d in unposted]}")
+
+    # Mode post-only : worldwide a déjà collecté les données, on saute filter.py
+    if post_only:
+        target = unposted[0]
+        chart_json = spotify_chart_dir("global", target) / f"ts_chart_{target}.json"
+        if not chart_json.exists():
+            log("ERROR", f"--post-only: ts_chart_{target}.json absent pour {target}")
+            sys.exit(1)
+        log("INFO", "Mode --post-only : données fournies par worldwide, skip filter.py")
+        processed = [target]
+        mark_updated(target)
+        tweet_content = build_tweet_content(processed)
+        (ROOT / "twitter_post.txt").write_text(tweet_content, encoding="utf-8")
+        log("INFO", "twitter_post.txt mis à jour")
+        print(f"\nPost :\n{tweet_content}\n", flush=True)
+        image_path = generate_image(processed)
+        log("STEP", "Publication Twitter")
+        if no_post:
+            log("INFO", "Publication Twitter ignorée (--no-post)")
+            posted = True
+        else:
+            if image_path:
+                posted = post_with_image(tweet_content, image_path, TWITTER_SESSION)
+            else:
+                posted = post_thread(split_tweets(tweet_content), TWITTER_SESSION)
+        if posted:
+            for d in processed:
+                mark_posted(d)
+            log("INFO", "Terminé avec succès (--post-only)")
+        else:
+            log("ERROR", "Publication Twitter échouée (--post-only)")
+            sys.exit(1)
+        return
 
     # Dates qui nécessitent encore le scraping
     needs_scraping = [d for d in unposted if not data_ready(d) or force]
