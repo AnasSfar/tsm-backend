@@ -6,6 +6,7 @@
     {
       "section": "deluxe_edition",
       "track_count": 1,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "Bad Blood (feat. Kendrick Lamar) (Taylor's Version)",
@@ -34,6 +35,7 @@
     },
     {
       "section": "standard_edition_tv",
+      "chart_extra": false,
       "track_count": 22,
       "tracks": [
         {

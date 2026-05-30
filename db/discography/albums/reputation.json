@@ -6,6 +6,7 @@
     {
       "section": "extras",
       "track_count": 1,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "September - Recorded at The Tracking Room Nashville",
@@ -32,6 +33,7 @@
     {
       "section": "karaoke",
       "track_count": 15,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "...Ready For It? - Karaoke Version",
@@ -338,6 +340,7 @@
     {
       "section": "remixes",
       "track_count": 4,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "...Ready For It? - BloodPopÂ® Remix",
@@ -424,6 +427,7 @@
     {
       "section": "standalone",
       "track_count": 1,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "I Don't Wanna Live Forever (Fifty Shades Darker)",
@@ -453,6 +457,7 @@
     {
       "section": "standard_edition",
       "track_count": 15,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "...Ready For It?",
@@ -759,6 +764,7 @@
     {
       "album": "reputation",
       "section": "kworb_extras",
+      "chart_extra": true,
       "track_count": 1,
       "tracks": [
         {

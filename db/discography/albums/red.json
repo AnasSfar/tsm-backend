@@ -6,6 +6,7 @@
     {
       "section": "demos_and_acoustic",
       "track_count": 3,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Red - Original Demo Recording",
@@ -70,34 +71,9 @@
       ]
     },
     {
-      "section": "remixes_and_extras",
-      "track_count": 1,
-      "tracks": [
-        {
-          "title": "Message In A Bottle (Fat Max G Remix) (Taylor's Version)",
-          "url": "https://open.spotify.com/intl-fr/track/3tGq7hWDCtrnL83y5OGual",
-          "type": "remix",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 1,
-          "base_title": "Message In A Bottle (Fat Max G Remix)",
-          "album": "Red",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Message In A Bottle (Fat Max G Remix)",
-          "song_family": "message_in_a_bottle_fat_max_g_remix",
-          "version_tag": "remix__taylors_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273e53252ce47982a3d555a6b3b",
-          "historical_track_ids": []
-        }
-      ]
-    },
-    {
       "section": "standard_edition",
       "track_count": 18,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "State Of Grace",
@@ -465,6 +441,7 @@
       "album": "Red",
       "section": "misc_standalone",
       "track_count": 1,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "Ronan",
@@ -493,6 +470,7 @@
       "album": "Red",
       "section": "taylor_versions_standalone",
       "track_count": 2,
+      "chart_extra":true,
       "tracks": [
         {
           "title": "All Too Well (10 Minute Version) (The Short Film)",
@@ -541,6 +519,7 @@
     {
       "album": "Red",
       "section": "soundtracks",
+      "chart_extra": true,
       "track_count": 1,
       "tracks": [
         {
@@ -570,6 +549,7 @@
       "album": "Red",
       "section": "collabs_and_features",
       "track_count": 1,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "Babe (feat. Taylor Swift)",
@@ -601,6 +581,7 @@
       "album": "Red",
       "section": "kworb_extras",
       "track_count": 2,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "The Last Time - Karaoke Version",

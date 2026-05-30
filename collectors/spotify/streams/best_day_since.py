@@ -109,6 +109,16 @@ def load_song_sections() -> list[dict]:
 
 
 def is_extra_track(section: dict, item: dict) -> bool:
+    for value in (item.get("chart_extra"), section.get("chart_extra")):
+        if isinstance(value, bool):
+            return value
+        if value is not None:
+            text = str(value).strip().lower()
+            if text in {"1", "true", "yes", "y", "on"}:
+                return True
+            if text in {"0", "false", "no", "n", "off"}:
+                return False
+
     edition = str(item.get("edition") or "").strip().lower()
     track_type = str(item.get("type") or "").strip().lower()
     section_name = str(section.get("name") or section.get("section") or item.get("section") or "").strip().lower()

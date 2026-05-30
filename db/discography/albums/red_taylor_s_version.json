@@ -6,6 +6,7 @@
     {
       "section": "from_the_vault_tv",
       "track_count": 10,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "All Too Well (10 Minute Version) (Taylor's Version) (From The Vault)",
@@ -221,6 +222,7 @@
     {
       "section": "standard_edition_tv",
       "track_count": 20,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "State Of Grace (Taylor's Version)",
@@ -634,6 +636,7 @@
       "album": "Red (Taylor's Version)",
       "section": "soundtracks",
       "track_count": 2,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "Eyes Open (Taylor's Version)",
@@ -685,12 +688,6 @@
           ]
         }
       ]
-    },
-    {
-      "album": "Red (Taylor's Version)",
-      "section": "kworb_extras",
-      "track_count": 1,
-      "tracks": []
     }
   ]
 }

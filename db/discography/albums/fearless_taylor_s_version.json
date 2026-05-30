@@ -6,6 +6,7 @@
     {
       "section": "from_the_vault_tv",
       "track_count": 7,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "Bye Bye Baby (Taylor's Version) (From The Vault)",
@@ -158,6 +159,7 @@
     {
       "section": "remixes",
       "track_count": 1,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Love Story (Taylor's Version) - Elvira Remix",
@@ -184,6 +186,7 @@
     {
       "section": "standard_edition_tv",
       "track_count": 19,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "Fearless (Taylor's Version)",
@@ -574,6 +577,7 @@
       "album": "Fearless (Taylor's Version)",
       "section": "taylor_versions_standalone",
       "track_count": 2,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "If This Was A Movie (Taylor's Version)",
@@ -626,6 +630,7 @@
       "album": "Fearless (Taylor's Version)",
       "section": "kworb_extras",
       "track_count": 1,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "If This Was A Movie (Taylor's Version)",

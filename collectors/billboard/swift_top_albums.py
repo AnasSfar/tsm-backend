@@ -2,7 +2,7 @@
 
 Source des données : db/swift_top_songs_history.csv (Spotify + Apple Music units
 calculés pour toutes les chansons par swift_top_100.py). Les units sont groupées
-par album via la discographie, extras inclus.
+par album via la discographie, hors extras/live/remixes/track-by-track.
 
 Outputs:
 - db/swift_top_albums_history.csv
@@ -132,6 +132,49 @@ def _track_has_taylor_as_primary(track: dict) -> bool:
     return not _is_taylor_feature(track)
 
 
+def _as_bool(value: object) -> bool | None:
+    if isinstance(value, bool):
+        return value
+    if value is None:
+        return None
+    text = str(value).strip().casefold()
+    if text in ("1", "true", "yes", "y", "on"):
+        return True
+    if text in ("0", "false", "no", "n", "off"):
+        return False
+    return None
+
+
+def _track_counts_for_album_chart(track: dict, section: dict) -> bool:
+    track_flag = _as_bool(track.get("chart_extra"))
+    if track_flag is not None:
+        return not track_flag
+
+    section_flag = _as_bool(section.get("chart_extra"))
+    if section_flag is not None:
+        return not section_flag
+
+    edition = (track.get("edition") or "").strip().casefold()
+    display_section = (
+        track.get("display_section") or section.get("title") or section.get("name") or ""
+    ).strip().casefold()
+    title = (track.get("title") or "").strip().casefold()
+
+    blocked_tokens = (
+        "extra",
+        "live",
+        "karaoke",
+        "acoustic",
+        "remix",
+        "track by track",
+        "music video",
+        "video extended",
+        "extended version part",
+    )
+    haystack = " ".join(part for part in (edition, display_section, title) if part)
+    return not any(token in haystack for token in blocked_tokens)
+
+
 def _era_title(album_title: str) -> str:
     title = (album_title or "").strip()
     tv_map = {
@@ -202,6 +245,8 @@ def _iter_discography_albums() -> list[AlbumMeta]:
                 if not isinstance(track, dict):
                     continue
                 if not _track_has_taylor_as_primary(track):
+                    continue
+                if not _track_counts_for_album_chart(track, section):
                     continue
                 tid = _extract_track_id(
                     (track.get("url") or track.get("spotify_url") or "").strip()

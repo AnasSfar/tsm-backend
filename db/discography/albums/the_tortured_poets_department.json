@@ -6,6 +6,7 @@
     {
       "section": "standard_edition",
       "display_section": "standard edition",
+      "chart_extra": false,
       "track_count": 18,
       "tracks": [
         {
@@ -341,6 +342,7 @@
     {
       "section": "anthology_edition",
       "display_section": "anthology edition",
+      "chart_extra": false,
       "track_count": 15,
       "tracks": [
         {
@@ -648,6 +650,7 @@
     {
       "section": "extras",
       "display_section": "extras",
+      "chart_extra": true,
       "track_count": 5,
       "tracks": [
         {

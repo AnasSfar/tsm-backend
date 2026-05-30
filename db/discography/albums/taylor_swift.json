@@ -6,6 +6,7 @@
     {
       "section": "extras",
       "track_count": 1,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Crazier",
@@ -32,6 +33,7 @@
     {
       "section": "standard_edition",
       "track_count": 15,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "A Perfectly Good Heart",
@@ -339,6 +341,7 @@
       "album": "Taylor Swift",
       "section": "kworb_extras",
       "track_count": 6,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Beautiful Eyes - Live From Clear Channel Stripped 2008",

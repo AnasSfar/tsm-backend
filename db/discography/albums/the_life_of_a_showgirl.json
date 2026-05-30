@@ -6,6 +6,7 @@
     {
       "section": "standard_edition",
       "track_count": 12,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "The Fate of Ophelia",
@@ -258,6 +259,7 @@
     {
       "section": "acoustic_edition",
       "track_count": 7,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "The Fate of Ophelia - Alone In My Tower Acoustic Version",
@@ -405,7 +407,8 @@
       ]
     },
     {
-      "section": "music_videos_extended",
+      "section": "remixes",
+      "chart_extra": true,
       "track_count": 2,
       "tracks": [
         {
@@ -453,6 +456,7 @@
     {
       "section": "remixes",
       "track_count": 6,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Opalite - BUNT. Remix",
@@ -579,6 +583,7 @@
     {
       "section": "track_by_track",
       "track_count": 12,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Elizabeth Taylor - Track by Track",

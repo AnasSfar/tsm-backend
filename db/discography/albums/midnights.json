@@ -6,6 +6,7 @@
     {
       "section": "3am_edition",
       "track_count": 7,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "The Great War",
@@ -152,6 +153,7 @@
     {
       "section": "from_the_vault",
       "track_count": 1,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "You're Losing Me (From The Vault)",
@@ -178,6 +180,7 @@
     {
       "section": "standard_edition",
       "track_count": 13,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "Lavender Haze",
@@ -447,6 +450,7 @@
     {
       "section": "til_dawn_edition",
       "track_count": 3,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "Hits Different",
@@ -519,6 +523,7 @@
     {
       "section": "remixes",
       "track_count": 10,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Anti-Hero (feat. Bleachers)",
@@ -729,6 +734,7 @@
       "album": "Midnights",
       "section": "kworb_extras",
       "track_count": 1,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Lavender Haze - Acoustic Version",

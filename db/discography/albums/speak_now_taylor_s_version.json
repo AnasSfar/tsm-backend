@@ -6,6 +6,7 @@
     {
       "section": "from_the_vault_tv",
       "track_count": 6,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "Castles Crumbling (feat. Hayley Williams) (Taylor's Version) (From The Vault)",
@@ -138,6 +139,7 @@
     {
       "section": "standard_edition_tv",
       "track_count": 16,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "Mine (Taylor's Version)",

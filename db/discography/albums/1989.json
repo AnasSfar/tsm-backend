@@ -5,6 +5,7 @@
   "sections": [
     {
       "section": "deluxe_edition",
+      "chart_extra": false,
       "track_count": 1,
       "tracks": [
         {
@@ -35,6 +36,7 @@
     {
       "section": "remixes",
       "track_count": 1,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Wildest Dreams - R3hab Remix",
@@ -61,6 +63,7 @@
     {
       "section": "standard_edition",
       "track_count": 16,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "All You Had To Do Was Stay",
@@ -387,6 +390,7 @@
     {
       "section": "voice_memos",
       "track_count": 3,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Blank Space - Voice Memo",
@@ -453,6 +457,7 @@
     {
       "section": "soundtracks",
       "track_count": 1,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Sweeter Than Fiction - From \"One Chance\" Soundtrack",
@@ -481,6 +486,7 @@
       "album": "1989",
       "section": "standard",
       "track_count": 1,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Sweeter Than Fiction (From \"One Chance\")",
@@ -510,6 +516,7 @@
     {
       "section": "kworb_extras",
       "track_count": 4,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Blank Space - Karaoke Version",

@@ -322,6 +322,7 @@ def dedupe_songs_for_site(
                     app.get("group"),
                     app.get("edition"),
                     app.get("display_section"),
+                    app.get("chart_extra"),
                     app.get("type"),
                 )
                 if key not in seen:
@@ -341,6 +342,7 @@ def dedupe_songs_for_site(
         kept["display_section"] = primary.get("display_section") if primary else kept.get("display_section")
         kept["display_order"] = primary.get("display_order") if primary else kept.get("display_order")
         kept["base_title"] = primary.get("base_title") if primary else kept.get("base_title")
+        kept["chart_extra"] = primary.get("chart_extra") if primary else kept.get("chart_extra")
 
         deduped.append(kept)
 
@@ -533,6 +535,7 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                 section_name = data.get("section") or ""
                 file_name    = section_name + ".json"
                 source_path  = f"discography/albums/{album_name}/{file_name}"
+                section_chart_extra = data.get("chart_extra")
 
                 file_tracks: list[dict] = []
                 for track in data.get("tracks", []):
@@ -547,6 +550,7 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                     display_section = track.get("display_section")
                     display_order = track.get("display_order")
                     base_title    = track.get("base_title")
+                    chart_extra   = track.get("chart_extra", section_chart_extra)
 
                     file_tracks.append({
                         "track_id":       track_id,
@@ -556,6 +560,7 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                         "display_section": display_section,
                         "display_order":  display_order,
                         "base_title":     base_title,
+                        "chart_extra":    chart_extra,
                         "section":        section_name,
                         "source_file":    file_name,
                     })
@@ -572,11 +577,13 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                         "display_section": display_section,
                         "display_order":  display_order,
                         "base_title":     base_title,
+                        "chart_extra":    chart_extra,
                     })
 
                 album_sections.append({
                     "name":        section_name,
                     "file":        file_name,
+                    "chart_extra": section_chart_extra,
                     "tracks":      file_tracks,
                     "track_ids":   [t["track_id"] for t in file_tracks],
                     "track_count": len(file_tracks),
@@ -635,6 +642,7 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                     display_section = track.get("display_section")
                     display_order = track.get("display_order")
                     base_title    = track.get("base_title")
+                    chart_extra   = track.get("chart_extra", data.get("chart_extra"))
 
                     track_entry = {
                         "track_id":       track_id,
@@ -644,6 +652,7 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                         "display_section": display_section,
                         "display_order":  display_order,
                         "base_title":     base_title,
+                        "chart_extra":    chart_extra,
                         "section":        section_name,
                         "source_file":    file_name,
                     }
@@ -663,6 +672,7 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                         "display_section": display_section,
                         "display_order":  display_order,
                         "base_title":     base_title,
+                        "chart_extra":    chart_extra,
                     })
 
                     if group_name in album_map:
@@ -1224,6 +1234,7 @@ def export_for_web(stats_date: str | None = None) -> None:
         song["display_section"] = primary.get("display_section") if primary else None
         song["display_order"] = primary.get("display_order") if primary else None
         song["base_title"] = primary.get("base_title") if primary else None
+        song["chart_extra"] = primary.get("chart_extra") if primary else song.get("chart_extra")
 
     deduped_songs, old_to_kept = dedupe_songs_for_site(raw_songs, raw_history_by_date)
 

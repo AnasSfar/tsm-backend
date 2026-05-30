@@ -6,6 +6,7 @@
     {
       "section": "remixes",
       "track_count": 11,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Lover (Remix) [feat. Shawn Mendes]",
@@ -232,6 +233,7 @@
     {
       "album": "Lover",
       "section": "standalone",
+      "chart_extra": true,
       "track_count": 1,
       "tracks": [
         {
@@ -260,6 +262,7 @@
     {
       "section": "standard_edition",
       "track_count": 18,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "I Forgot That You Existed",
@@ -632,6 +635,7 @@
     {
       "section": "cruel_summer_single",
       "track_count": 3,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Cruel Summer - Live from TS",
@@ -699,6 +703,7 @@
       "album": "Lover",
       "section": "soundtracks",
       "track_count": 1,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Only The Young - Featured in Miss Americana",

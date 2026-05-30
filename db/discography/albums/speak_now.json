@@ -6,6 +6,7 @@
     {
       "section": "extras_and_live",
       "track_count": 11,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Mine - POP Mix",
@@ -232,6 +233,7 @@
     {
       "section": "standard_edition",
       "track_count": 17,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "Back To December",
@@ -579,6 +581,7 @@
       "album": "Speak Now",
       "section": "misc_standalone",
       "track_count": 1,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Back To December/Apologize/You're Not Sorry - Live/2011/Medley",
@@ -607,6 +610,7 @@
       "album": "Speak Now",
       "section": "kworb_extras",
       "track_count": 4,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Dear John - Live/2011",

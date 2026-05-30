@@ -115,12 +115,35 @@ def _upload_track_history_points_to_r2(track_id: str, points: list[dict], cfg: d
             print(f"  [r2] upload failed for {track_id}: {e}")
         return False
 
+def _as_bool(value) -> bool | None:
+    if isinstance(value, bool):
+        return value
+    if value is None:
+        return None
+    text = str(value).strip().lower()
+    if text in {"1", "true", "yes", "y", "on"}:
+        return True
+    if text in {"0", "false", "no", "n", "off"}:
+        return False
+    return None
+
+
+def _is_chart_extra(section: dict, track: dict) -> bool:
+    track_flag = _as_bool(track.get("chart_extra"))
+    if track_flag is not None:
+        return track_flag
+    section_flag = _as_bool(section.get("chart_extra"))
+    return bool(section_flag) if section_flag is not None else False
+
+
 def load_album_track_ids() -> set[str]:
-    """Returns track IDs from album files only (excludes songs.json extras)."""
+    """Returns track IDs from album files only, excluding chart_extra tracks."""
     sections = load_album_sections_flat()
     ids = set()
     for section in sections:
         for track in section.get("tracks", []):
+            if _is_chart_extra(section, track):
+                continue
             url = (track.get("url") or track.get("spotify_url") or "").strip()
             tid = extract_track_id(url)
             if tid:
@@ -631,6 +654,7 @@ def load_tracks_from_discography(active_track_ids: set[str] | None = None) -> li
                 "last_updated": None,
                 "image_url": image_url,
                 "primary_artist": primary_artist,
+                "chart_extra": _is_chart_extra(section, track),
                 "artists_json": json.dumps(artists),
             }
 

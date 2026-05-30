@@ -4,7 +4,8 @@
   "track_count": 23,
   "sections": [
     {
-      "section": "bonus_versions",
+      "section": "remixes",
+      "chart_extra": true,
       "track_count": 2,
       "tracks": [
         {
@@ -52,6 +53,7 @@
     {
       "section": "deluxe_edition",
       "track_count": 2,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "right where you left me - bonus track",
@@ -98,6 +100,7 @@
     {
       "section": "remixes",
       "track_count": 4,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "willow - 90's trend remix",
@@ -184,6 +187,7 @@
     {
       "section": "standard_edition",
       "track_count": 15,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "willow",

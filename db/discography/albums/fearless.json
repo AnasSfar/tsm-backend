@@ -6,6 +6,7 @@
     {
       "section": "original_edition",
       "track_count": 15,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "Breathe",
@@ -312,6 +313,7 @@
     {
       "section": "remixes",
       "track_count": 2,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Love Story - Digital Dog Remix",
@@ -358,6 +360,7 @@
     {
       "section": "platinum_edition",
       "track_count": 4,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "Change",
@@ -445,6 +448,7 @@
       "album": "Fearless",
       "section": "misc_standalone",
       "track_count": 1,
+      "chart_extra": false,
       "tracks": [
         {
           "title": "Today Was A Fairytale",
@@ -473,6 +477,7 @@
       "album": "Fearless",
       "section": "kworb_extras",
       "track_count": 9,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Change - Live From Clear Channel Stripped 2008",
