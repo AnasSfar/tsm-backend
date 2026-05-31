@@ -430,7 +430,7 @@ def _get_bearer_token_and_regions(*, force_refresh: bool = False) -> tuple[str, 
         try:
             resp = _http.get(_OVERVIEW_URL, headers=headers, timeout=15)
             if resp.status_code == 429:
-                wait = int(resp.headers.get("Retry-After", 30))
+                wait = int(resp.headers.get("Retry-After", 10))
                 print(f"[WARN] Overview 429 — retry dans {wait}s (tentative {_attempt})")
                 time.sleep(wait)
                 continue
@@ -712,7 +712,7 @@ async def _fetch_region(
                                 f"{region}: dated chart 404 and latest HTTP {latest_resp.status}"
                             )
                     if resp.status == 429:
-                        wait = int(resp.headers.get("Retry-After", 30))
+                        wait = int(resp.headers.get("Retry-After", 10))
                         await sem.mark_rate_limited(wait)
                         print(f"  [{region:>6}] 429 — retry dans {wait}s (tentative {attempt})")
                         await asyncio.sleep(wait)
