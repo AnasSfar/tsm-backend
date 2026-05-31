@@ -5807,7 +5807,8 @@
     "2026-02-19": {
       "rank": 6,
       "streams": 4441393,
-      "previous_rank": 6
+      "previous_rank": 60,
+      "peak_rank": 1
     },
     "2026-02-20": {
       "rank": 7,
@@ -7117,7 +7118,8 @@
     "2026-02-19": {
       "rank": 30,
       "streams": 2380688,
-      "previous_rank": 30
+      "previous_rank": 300,
+      "peak_rank": 2
     },
     "2026-02-20": {
       "rank": 29,
@@ -9291,7 +9293,8 @@
     "2026-02-19": {
       "rank": 161,
       "streams": 1256808,
-      "previous_rank": 186
+      "previous_rank": 1860,
+      "peak_rank": 12
     },
     "2026-02-23": {
       "rank": 198,
