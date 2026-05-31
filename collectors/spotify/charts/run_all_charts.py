@@ -350,42 +350,90 @@ def _save_bearer_to_caches(token: str, names: list[str]) -> None:
 
 
 def _acquire_bearer_token_via_http(names: list[str]) -> str | None:
-    cookies: dict[str, str] = {}
-    try:
-        session_data = json.loads(SPOTIFY_SESSION.read_text(encoding="utf-8-sig"))
-        for cookie in session_data.get("cookies", []):
-            name = str(cookie.get("name") or "")
-            value = str(cookie.get("value") or "")
-            if name and value:
-                cookies[name] = value
-    except Exception:
+    session_files = sorted(SPOTIFY_SESSION.parent.glob("spotify_session*.json"))
+    if not session_files:
         return None
+    for sf in session_files:
+        cookies: dict[str, str] = {}
+        try:
+            session_data = json.loads(sf.read_text(encoding="utf-8-sig"))
+            for cookie in session_data.get("cookies", []):
+                n = str(cookie.get("name") or "")
+                v = str(cookie.get("value") or "")
+                if n and v:
+                    cookies[n] = v
+        except Exception:
+            continue
+        if not cookies:
+            continue
+        try:
+            resp = requests.get(
+                "https://open.spotify.com/get_access_token",
+                params={"reason": "transport", "productType": "web_player"},
+                headers={
+                    "Accept": "application/json",
+                    "Accept-Language": "fr-FR,fr;q=0.9,en;q=0.8",
+                    "User-Agent": SPOTIFY_UA,
+                },
+                cookies=cookies,
+                timeout=15,
+            )
+            token = str(resp.json().get("accessToken") or "").strip() if resp.ok else ""
+        except Exception:
+            continue
+        if token:
+            label = f" ({sf.name})" if sf != SPOTIFY_SESSION else ""
+            print(f"[CHECK] token Spotify recupere via HTTP direct{label}.")
+            _save_bearer_to_caches(token, names)
+            return token
+    return None
 
-    if not cookies:
-        return None
 
-    try:
-        resp = requests.get(
-            "https://open.spotify.com/get_access_token",
-            params={"reason": "transport", "productType": "web_player"},
-            headers={
-                "Accept": "application/json",
-                "Accept-Language": "fr-FR,fr;q=0.9,en;q=0.8",
-                "User-Agent": SPOTIFY_UA,
-            },
-            cookies=cookies,
-            timeout=15,
-        )
-        token = str(resp.json().get("accessToken") or "").strip() if resp.ok else ""
-    except Exception:
-        return None
+def _load_extra_tokens_via_playwright(primary_token: str) -> list[str]:
+    """Load bearer tokens from extra session files (spotify_session_2.json, etc.) via Playwright."""
+    extra: list[str] = []
+    api_host = SPOTIFY_API_BASE.split("//", 1)[1].split("/", 1)[0]
+    for sf in sorted(SPOTIFY_SESSION.parent.glob("spotify_session*.json")):
+        if sf == SPOTIFY_SESSION:
+            continue
+        token_holder: list[str] = []
 
-    if not token:
-        return None
+        def _on_req(req, _th=token_holder, _host=api_host) -> None:
+            if _host in req.url and not _th:
+                auth = req.headers.get("authorization", "")
+                if auth.startswith("Bearer "):
+                    _th.append(auth[7:])
 
-    print("[CHECK] token Spotify recupere via HTTP direct.")
-    _save_bearer_to_caches(token, names)
-    return token
+        try:
+            from playwright.sync_api import sync_playwright
+            with sync_playwright() as p:
+                browser = p.chromium.launch(
+                    headless=True,
+                    args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
+                    timeout=PLAYWRIGHT_LAUNCH_TIMEOUT_MS,
+                )
+                try:
+                    ctx = browser.new_context(
+                        storage_state=str(sf),
+                        user_agent=SPOTIFY_UA,
+                        viewport={"width": 1280, "height": 800},
+                    )
+                    page = ctx.new_page()
+                    page.on("request", _on_req)
+                    page.goto(SPOTIFY_CHARTS_URL, wait_until="networkidle", timeout=45_000)
+                    deadline = time.time() + 15
+                    while not token_holder and time.time() < deadline:
+                        page.wait_for_timeout(300)
+                finally:
+                    browser.close()
+        except Exception as exc:
+            print(f"[CHECK] token extra {sf.name} indisponible ({str(exc).split(chr(10))[0][:80]})")
+            continue
+
+        if token_holder and token_holder[0] != primary_token:
+            extra.append(token_holder[0])
+            print(f"[CHECK] token extra chargé depuis {sf.name}")
+    return extra
 
 
 def _acquire_bearer_token(names: list[str], *, refresh: bool = False, allow_stale: bool = False) -> str:
@@ -678,6 +726,29 @@ def _wait_for_charts_available(
     mode = "watch-release" if watch_release else "check"
     target_label = str(target) if target is not None else "latest"
     print(f"\n[CHECK] disponibilite Spotify pour {target_label} (via {probe}, mode {mode})")
+
+    # Token pool : primary + tokens des sessions supplémentaires
+    check_tokens: list[str] = []
+    check_token_idx = 0
+    check_token_exhausted = 0
+
+    def _current_check_token() -> str:
+        return check_tokens[check_token_idx] if check_tokens else ""
+
+    def _rotate_check_token() -> bool:
+        """Rotate to next token. Returns False if all exhausted."""
+        nonlocal check_token_idx, check_token_exhausted
+        check_token_exhausted += 1
+        if check_token_exhausted >= len(check_tokens):
+            return False
+        check_token_idx = (check_token_idx + 1) % len(check_tokens)
+        print(f"[CHECK] rotation token → {check_token_idx + 1}/{len(check_tokens)}", flush=True)
+        return True
+
+    def _reset_check_token_cycle() -> None:
+        nonlocal check_token_exhausted
+        check_token_exhausted = 0
+
     while not _stop_event.is_set():
         elapsed = time.monotonic() - started
         max_seconds = watch_max_seconds if watch_release else AVAILABILITY_MAX_SECONDS
@@ -702,8 +773,16 @@ def _wait_for_charts_available(
             )
 
         try:
-            token = _acquire_bearer_token(names, refresh=refresh_token, allow_stale=watch_release)
+            primary = _acquire_bearer_token(names, refresh=refresh_token, allow_stale=watch_release)
             refresh_token = False
+            if not check_tokens:
+                check_tokens.append(primary)
+                extra = _load_extra_tokens_via_playwright(primary)
+                check_tokens.extend(extra)
+                print(f"[CHECK] pool de {len(check_tokens)} token(s) pour le check")
+            else:
+                check_tokens[0] = primary
+            token = _current_check_token()
         except Exception as e:
             print(f"[CHECK] tentative #{attempt}: token indisponible ({e})")
             token = None
@@ -736,14 +815,20 @@ def _wait_for_charts_available(
         ok, detail, retry_after, resolved_target = _chart_available(probe_chart, target, token)
         print(f"[CHECK] tentative #{attempt}: {probe}={detail}")
         if ok:
+            _reset_check_token_cycle()
             print(f"[CHECK] charts disponibles pour {resolved_target or target_label}")
             return warp_active, resolved_target or target
         is_network_err = detail.startswith("reseau:")
         is_rate_limited = "HTTP 429" in detail
         if is_rate_limited:
             consecutive_429 += 1
+            if _rotate_check_token():
+                attempt += 1
+                continue  # retry immédiatement avec le token suivant
+            _reset_check_token_cycle()
         else:
             consecutive_429 = 0
+            _reset_check_token_cycle()
         if "HTTP 401" in detail or "HTTP 403" in detail:
             refresh_token = True
 

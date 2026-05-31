@@ -414,21 +414,38 @@ def _get_bearer_token_and_regions(*, force_refresh: bool = False) -> tuple[str, 
             )
         token = token_holder[0]
 
-    # 1. API overview
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Accept":        "application/json",
-        "Referer":       "https://charts.spotify.com/",
-        "User-Agent":    _UA,
-    }
+    # 1. API overview — avec rotation de tokens sur 429
+    _overview_tokens = [token] + [
+        t for sf in sorted(SESSION_FILE.parent.glob("spotify_session*.json"))
+        if sf != SESSION_FILE
+        for t in [_get_bearer_from_cookies(sf)]
+        if t
+    ]
+    _ov_idx = 0
+    _ov_exhausted = 0
+
+    def _overview_headers() -> dict[str, str]:
+        return {
+            "Authorization": f"Bearer {_overview_tokens[_ov_idx]}",
+            "Accept":        "application/json",
+            "Referer":       "https://charts.spotify.com/",
+            "User-Agent":    _UA,
+        }
+
     _attempt = 0
     while True:
         _attempt += 1
         try:
-            resp = _http.get(_OVERVIEW_URL, headers=headers, timeout=15)
+            resp = _http.get(_OVERVIEW_URL, headers=_overview_headers(), timeout=15)
             if resp.status_code == 429:
+                _ov_exhausted += 1
+                if _ov_exhausted < len(_overview_tokens):
+                    _ov_idx = (_ov_idx + 1) % len(_overview_tokens)
+                    print(f"[WARN] Overview 429 — rotation token {_ov_idx + 1}/{len(_overview_tokens)}")
+                    continue
+                _ov_exhausted = 0
                 wait = int(resp.headers.get("Retry-After", 20))
-                print(f"[WARN] Overview 429 — retry dans {wait}s (tentative {_attempt})")
+                print(f"[WARN] Overview 429 tous tokens — retry dans {wait}s (tentative {_attempt})")
                 time.sleep(wait)
                 continue
             resp.raise_for_status()
@@ -795,7 +812,7 @@ async def _fetch_region(
                     if resp.status == 429:
                         wait = int(resp.headers.get("Retry-After", 20))
                         print(f"  [{region:>6}] 429 — pause globale {wait}s (tentative {attempt})")
-                        asyncio.create_task(pause.trigger(wait))
+                        await pause.trigger(wait)
                         continue
                     if resp.status == 401:
                         raise TokenExpired(f"{region}: HTTP 401")

@@ -36,14 +36,14 @@ def _exclusive_file(path: Path, *, timeout: int, stale_after: int | None = None)
             fd = os.open(str(path), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
             os.write(fd, str(os.getpid()).encode("ascii", errors="ignore"))
         except FileExistsError:
-            if time.time() - start > timeout:
-                try:
-                    max_age = stale_after or timeout
-                    if time.time() - path.stat().st_mtime > max_age:
-                        path.unlink()
-                        continue
-                except FileNotFoundError:
+            try:
+                max_age = stale_after or timeout
+                if time.time() - path.stat().st_mtime > max_age:
+                    path.unlink()
                     continue
+            except FileNotFoundError:
+                continue
+            if time.time() - start > timeout:
                 raise TimeoutError(f"Twitter post lock timeout: {path}")
             time.sleep(2)
     return fd
@@ -407,23 +407,28 @@ def _wait_for_attached_image(root, expected_count: int) -> None:
 
 
 def _post_compose_image_thread(page, posts: list[tuple[str, Path]]) -> bool:
-    page.goto("https://x.com/compose/post", wait_until="domcontentloaded")
+    print("X compose: ouverture du composer...", flush=True)
+    page.goto("https://x.com/compose/post", wait_until="domcontentloaded", timeout=30_000)
     time.sleep(2)
 
     for i, (text, image_path) in enumerate(posts):
         if i > 0:
+            print(f"X compose: ajout du post #{i + 1}...", flush=True)
             if not _click_thread_add_button(page):
                 print("X bouton d'ajout au thread introuvable.")
                 return False
             time.sleep(1)
 
+        print(f"X compose: remplissage post #{i + 1}/{len(posts)}...", flush=True)
         editor = _wait_visible_editor(page, i)
         editor.click(timeout=10_000)
         if text:
             editor.fill(text)
+        print(f"X compose: upload image post #{i + 1}/{len(posts)} ({image_path.name})...", flush=True)
         _attach_image_to_composer(page, editor, image_path, i)
 
     for i, _ in enumerate(posts):
+        print(f"X compose: verification image post #{i + 1}/{len(posts)}...", flush=True)
         editor = _wait_visible_editor(page, i, timeout_ms=5_000)
         scope = _composer_scope(editor)
         attached = _attached_image_count(scope or page)
@@ -431,10 +436,12 @@ def _post_compose_image_thread(page, posts: list[tuple[str, Path]]) -> bool:
             print(f"X image absente dans le post #{i + 1}")
             return False
 
+    print("X compose: clic publication du thread...", flush=True)
     page.locator(
         "[data-testid='tweetButton'], [data-testid='tweetButtonInline']"
     ).first.click(timeout=10_000)
     expected = "\n".join(text for text, _ in posts if text)
+    print("X compose: attente confirmation X...", flush=True)
     return _wait_post_submitted(page, expected, timeout_ms=90_000)
 
 
@@ -762,7 +769,9 @@ def post_image_thread(posts: list[tuple[str, Path]], session_file: Path) -> bool
         print(f"\nPublication d'un thread de {len(posts)} post(s) avec image...")
 
         try:
-            page.goto("https://x.com/home", wait_until="domcontentloaded")
+            print("X thread: ouverture home...", flush=True)
+            page.goto("https://x.com/home", wait_until="domcontentloaded", timeout=30_000)
+            print(f"X thread: home chargee ({page.url})", flush=True)
             time.sleep(2)
 
             if _looks_logged_out(page):
@@ -775,10 +784,12 @@ def post_image_thread(posts: list[tuple[str, Path]], session_file: Path) -> bool
                     setup_session(session_file)
                     context = _launch(p, profile_dir)
                     page = context.new_page()
-                page.goto("https://x.com/home", wait_until="domcontentloaded")
+                page.goto("https://x.com/home", wait_until="domcontentloaded", timeout=30_000)
                 time.sleep(2)
 
+            print("X thread: acquisition du slot compte...", flush=True)
             with _twitter_account_slot(session_file) as account_key:
+                print("X thread: slot compte acquis", flush=True)
                 _wait_account_spacing(account_key)
                 ok = _post_compose_image_thread(page, posts)
                 if ok:
