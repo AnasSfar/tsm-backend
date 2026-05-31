@@ -12713,9 +12713,6 @@ date,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,movement
 2026-02-03,Opalite,43,2096364,45,,124,124,+2
 2026-02-03,Style,192,1247869,157,,306,9,-35
 2026-02-03,Cruel Summer,199,1230392,,,1003,1,RE
-2026-02-04,The Fate of Ophelia,4,5274496,4,,125,125,0
-2026-02-04,Opalite,51,2131431,43,,125,125,-8
-2026-02-04,Style,191,1274116,192,,307,10,+1
 2026-02-05,The Fate of Ophelia,4,5162379,4,,126,126,0
 2026-02-05,Opalite,39,2211405,51,,126,126,+12
 2026-02-05,Style,199,1252808,191,,308,11,-8
@@ -13139,3 +13136,6 @@ date,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,movement
 2026-01-30,The Fate of Ophelia,2,5526118,2.0,1,120,120,
 2026-01-30,Opalite,39,2229649,36.0,2,120,120,
 2026-01-30,Style,165,1366112,168.0,12,298,5,
+2026-02-04,The Fate of Ophelia,4,5274496,4.0,1,125,125,
+2026-02-04,Opalite,51,2131431,43.0,2,125,125,
+2026-02-04,Style,191,1274116,192.0,12,303,10,
