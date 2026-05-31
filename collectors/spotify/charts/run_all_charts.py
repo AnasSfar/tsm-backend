@@ -1368,7 +1368,7 @@ def main() -> int:
             if warp_active:
                 _warp_disconnect()
 
-    if not args.dry_run and needs_collect and ran_collect:
+    if not args.dry_run and needs_collect:
         print("\n[PHASE2] export web + upload R2...")
         rc_export = _run(
             "export",
@@ -1380,8 +1380,6 @@ def main() -> int:
         )
         if rc_export != 0:
             failures.append(("export", rc_export))
-    elif not args.dry_run and needs_collect:
-        print("\n[SKIP] export web + upload R2 (aucune collecte relancée)")
 
     should_generate_cards = "cards" in post_parts or args.force_cards or (args.no_post and args.force)
     should_post_cards = "cards" in post_parts
