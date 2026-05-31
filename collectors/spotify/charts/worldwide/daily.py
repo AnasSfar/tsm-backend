@@ -874,6 +874,7 @@ def main() -> int:
     parser.add_argument("date_pos", nargs="?", metavar="YYYY-MM-DD")
     parser.add_argument("--date", metavar="YYYY-MM-DD")
     parser.add_argument("--dates", nargs="+", metavar="YYYY-MM-DD")
+    parser.add_argument("--dates-file", metavar="PATH")
     parser.add_argument("--backfill-from", metavar="YYYY-MM-DD")
     parser.add_argument("--backfill-to", metavar="YYYY-MM-DD")
     parser.add_argument(
@@ -888,9 +889,24 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    if args.dates or args.backfill_from or args.backfill_to:
+    if args.dates or args.dates_file or args.backfill_from or args.backfill_to:
         try:
-            if args.dates:
+            if args.dates_file:
+                dates_path = Path(args.dates_file)
+                try:
+                    raw_dates = dates_path.read_text(encoding="utf-8").splitlines()
+                except OSError as exc:
+                    print(f"[ERROR] Could not read dates file {dates_path}: {exc}")
+                    return 1
+                chart_dates = [
+                    datetime.strptime(raw.strip(), "%Y-%m-%d").strftime("%Y-%m-%d")
+                    for raw in raw_dates
+                    if raw.strip()
+                ]
+                if not chart_dates:
+                    print(f"[ERROR] Empty dates file: {dates_path}")
+                    return 1
+            elif args.dates:
                 chart_dates = [
                     datetime.strptime(raw, "%Y-%m-%d").strftime("%Y-%m-%d")
                     for raw in args.dates

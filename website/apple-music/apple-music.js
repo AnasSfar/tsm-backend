@@ -5,6 +5,15 @@ let data         = null;
 let historyData  = null;
 let selectedDate = null; // null = show latest from applemusic.json
 
+function sortDates(dates) {
+  return [...new Set((dates || []).filter(Boolean))].sort();
+}
+
+function getLatestDate(dates) {
+  const sorted = sortDates(dates);
+  return sorted.length ? sorted[sorted.length - 1] : null;
+}
+
 /* ── helpers ── */
 function fmtChg(current, prev) {
   if (prev == null) return '<span class="chg-new">NEW</span>';
@@ -98,6 +107,8 @@ function renderGlobal() {
   if (!entries || !entries.length) {
     return `<div class="global-note"><strong>Blank Space on this date — the charts are in their Fortnight feature era. 🎬</strong></div>`;
 
+  }
+
   return `
     <div class="global-note">
       Taylor Swift songs in the <strong>Apple Music Global Top 100</strong> · ${cDate}${uAt ? ` · Updated ${uAt}` : ''}
@@ -127,6 +138,8 @@ function renderTopSongs() {
 
   if (!entries || !entries.length) {
     return `<div class="empty-msg">No songs for this date — it's the quiet part between albums. 🤫</div>`;
+
+  }
 
   return `
     <div class="chart-card">
@@ -290,8 +303,8 @@ function setupDatePicker() {
     return;
   }
 
-  const dates  = historyData.dates;
-  const latest = dates[dates.length - 1];
+  const dates  = sortDates(historyData.dates);
+  const latest = getLatestDate(dates);
   picker.min   = dates[0];
   picker.max   = latest;
   picker.value = latest;
@@ -330,3 +343,4 @@ Promise.all([
 }).catch(() => {
   document.getElementById('app').innerHTML =
     '<div class="empty-msg">Apple Music hit a dead end — vault\'s sealed. 🚪<br>Run the collectors first, then we\'ll all too well reload this!</div>';
+});

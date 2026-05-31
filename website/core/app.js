@@ -1,7 +1,7 @@
 import { state } from "./state.js";
 import {
   fetchJSON, normalize, persistSelectedDate,
-  getPreviousDate, getNextDate
+  getPreviousDate, getNextDate, sortDates, getLatestDate
 } from "./utils.js";
 import { loadHistory, getCombineKey } from "./data.js";
 import { applyTheme, bindThemeSwitcher } from "./theme.js";
@@ -319,10 +319,10 @@ async function loadData(options = {}) {
     allDates = r.dates || [];
   }
 
-  state.dates = allDates;
+  state.dates = sortDates(allDates);
 
   const storedDate = localStorage.getItem("site-selected-date");
-  const latestDate = state.dates[state.dates.length - 1] || null;
+  const latestDate = getLatestDate();
 
   if (keepSelectedDate && currentSelectedDate && state.dates.includes(currentSelectedDate)) {
     state.selectedDate = currentSelectedDate;

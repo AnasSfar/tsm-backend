@@ -153,6 +153,10 @@ def write_json(path: Path, payload) -> None:
     )
 
 
+def sorted_unique_dates(dates: list[str]) -> list[str]:
+    return sorted(set(d for d in dates if d))
+
+
 def load_album_sections_flat() -> list[dict]:
     """Load db/discography/albums/*.json and flatten to section entries."""
     if not ALBUMS_DIR_SRC.exists():
@@ -257,7 +261,7 @@ def load_raw_history() -> tuple[list[str], dict[str, dict[str, dict]]]:
     by_date: dict[str, dict[str, dict]] = defaultdict(dict)
     if HISTORY_CSV_PATH.exists():
         _read_history_csv(HISTORY_CSV_PATH, by_date)
-    return sorted(by_date.keys()), dict(by_date)
+    return sorted_unique_dates(list(by_date.keys())), dict(by_date)
 
 
 def history_count_by_track(raw_history_by_date: dict[str, dict[str, dict]]) -> dict[str, int]:
@@ -856,6 +860,7 @@ def build_summary(
     dates: list[str],
     history_by_date: dict[str, dict[str, dict]],
 ) -> dict:
+    dates = sorted_unique_dates(dates)
     latest_date = dates[-1] if dates else None
     latest_day = history_by_date.get(latest_date, {}) if latest_date else {}
 
@@ -1218,6 +1223,7 @@ def export_for_web(stats_date: str | None = None) -> None:
     print(f"HISTORY  = {HISTORY_CSV_PATH}")
     raw_songs = load_tracks_from_discography()
     dates, raw_history_by_date = load_raw_history()
+    dates = sorted_unique_dates(dates)
     print(f"Last 10 dates found: {dates[-10:]}")
     track_appearances_by_id, albums_payload_raw = build_discography_index()
 
@@ -1390,7 +1396,7 @@ def export_for_web(stats_date: str | None = None) -> None:
         daily_history = _DATA_ROOT / date_str[:4] / date_str[5:7] / date_str / "update_streams" / "site_history.json"
         daily_history.parent.mkdir(parents=True, exist_ok=True)
         daily_history.write_text(json.dumps(compact, ensure_ascii=False), encoding="utf-8")
-    existing_dates = sorted(p.stem for p in SITE_HISTORY_DIR.glob("*.json") if p.stem != "index")
+    existing_dates = sorted_unique_dates([p.stem for p in SITE_HISTORY_DIR.glob("*.json") if p.stem != "index"])
     (SITE_HISTORY_DIR / "index.json").write_text(
         json.dumps({"dates": existing_dates}, ensure_ascii=False), encoding="utf-8"
     )
@@ -1435,7 +1441,7 @@ def export_for_web(stats_date: str | None = None) -> None:
             _r2_script = Path(__file__).resolve().parents[4] / "scripts" / "r2.py"
             try:
                 _cmd = [_sys.executable, str(_r2_script), "--skip-history-upload", "--skip-db-upload"]
-                _new_date = stats_date or latest_date
+                _new_date = latest_date
                 if _new_date:
                     _cmd += ["--new-date", _new_date]
                 _subprocess.run(_cmd, check=True)

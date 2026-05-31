@@ -8,6 +8,7 @@ import os
 import re
 import subprocess
 import sys
+import tempfile
 import threading
 import time
 from datetime import date, datetime, timedelta
@@ -1101,14 +1102,33 @@ def _run_backfill(args, env: dict[str, str]) -> int:
 
     name, script, fixed = collect_runners[0]
     print(f"\n[BACKFILL] collecte worldwide en un seul process: {total_missing} date(s)")
-    rc = _run(
-        name,
-        script,
-        [*fixed, "--dates", *[str(day) for day in missing]],
-        dry_run=args.dry_run,
-        env=env,
-        verbose=True,
-    )
+    dates_file = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            "w",
+            encoding="utf-8",
+            suffix=".txt",
+            prefix="spotify_worldwide_backfill_",
+            delete=False,
+        ) as fh:
+            dates_file = Path(fh.name)
+            fh.write("\n".join(str(day) for day in missing))
+            fh.write("\n")
+
+        rc = _run(
+            name,
+            script,
+            [*fixed, "--dates-file", str(dates_file)],
+            dry_run=args.dry_run,
+            env=env,
+            verbose=True,
+        )
+    finally:
+        if dates_file is not None:
+            try:
+                dates_file.unlink(missing_ok=True)
+            except OSError as exc:
+                print(f"[WARN] impossible de supprimer {dates_file}: {exc}")
     if rc != 0:
         overall_failures.append((name, rc))
     else:

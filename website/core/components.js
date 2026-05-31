@@ -1,7 +1,8 @@
 import { state } from "./state.js";
 import {
   formatFull, formatSigned, withCacheBuster,
-  getDayData, getPreviousDate, formatArtists, formatArtistAlbum
+  getDayData, getPreviousDate, formatArtists, formatArtistAlbum,
+  getLatestDate
 } from "./utils.js";
 import { getCombineKey } from "./data.js";
 import { renderThemeSwitcher } from "./theme.js";
@@ -169,7 +170,7 @@ export function bindCursorGlow(){
 
 export function renderTopbar(){
 
-  const latest = state.dates[state.dates.length-1]||"";
+  const latest = getLatestDate() || "";
   const selected = state.selectedDate || latest;
 
   const artist = state.artist?.name || "Taylor Swift";

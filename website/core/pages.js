@@ -3,7 +3,7 @@ import {
   formatFull, formatSigned, withCacheBuster, getDayData, getPreviousDate,
   formatArtists, formatArtistAlbum, normalizeAlbumName, getAlbumSectionPriority,
   getAlbumCover, filterSongsByQuery, normalize, persistSelectedDate,
-  getQueryParam, sortDisplayBlocks, renderFocusModal
+  getQueryParam, sortDisplayBlocks, renderFocusModal, getLatestDate
 } from "./utils.js";
 import {
   loadHistory, getCombineKey, enrichSongsForDate, sortSongs,
@@ -1462,7 +1462,7 @@ export function renderAdmin(container) {
       .sort((a, b) => b.days - a.days)
     : [];
 
-  const latestDate = state.dates[state.dates.length - 1] || "N/A";
+  const latestDate = getLatestDate() || "N/A";
 
   container.innerHTML = `
     ${renderTopbar()}

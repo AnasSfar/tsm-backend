@@ -176,6 +176,15 @@ export function getQueryParam(name) {
    DATE HELPERS
 ========================= */
 
+export function sortDates(dates) {
+  return [...new Set((dates || []).filter(Boolean))].sort();
+}
+
+export function getLatestDate(dates = state.dates) {
+  const sorted = sortDates(dates);
+  return sorted.length ? sorted[sorted.length - 1] : null;
+}
+
 export function getPreviousDate(date) {
   const i = state.dates.indexOf(date);
   return i > 0 ? state.dates[i - 1] : null;
