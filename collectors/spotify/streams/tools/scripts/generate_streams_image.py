@@ -345,7 +345,9 @@ def _dedup_by_title(rows: list[dict], song_db: dict) -> list[dict]:
     best: dict[str, dict] = {}
     for row in rows:
         tid  = row["track_id"]
-        info = song_db.get(tid, {})
+        info = song_db.get(tid)
+        if not info:
+            continue
         title = info.get("title") or tid
         key   = _norm(title)
         existing = best.get(key)

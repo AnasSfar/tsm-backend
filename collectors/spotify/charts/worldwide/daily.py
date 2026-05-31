@@ -91,8 +91,12 @@ _UA        = (
     "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
 )
 TS_NAME         = "Taylor Swift"
-SEMAPHORE       = 10
+SEMAPHORE       = int(os.getenv("SPOTIFY_WORLDWIDE_SEMAPHORE", "10"))
+ADAPTIVE_MIN    = int(os.getenv("SPOTIFY_WORLDWIDE_ADAPTIVE_MIN", "5"))
+ADAPTIVE_MAX    = int(os.getenv("SPOTIFY_WORLDWIDE_ADAPTIVE_MAX", str(max(SEMAPHORE, 20))))
+ADAPTIVE_STEP_SUCCESSES = int(os.getenv("SPOTIFY_WORLDWIDE_ADAPTIVE_STEP_SUCCESSES", "25"))
 FETCH_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_WORLDWIDE_FETCH_MAX_ATTEMPTS", "0"))
+SKIP_LATEST_FALLBACK_ON_404 = os.getenv("SPOTIFY_SKIP_LATEST_FALLBACK_ON_404", "").strip().lower() in {"1", "true", "yes", "on"}
 _OVERVIEW_URL   = "https://charts-spotify-com-service.spotify.com/auth/v1/overview/GLOBAL"
 
 _ALBUM_EMOJI: list[tuple[str, str]] = [
@@ -219,6 +223,9 @@ def _iter_disco_tracks() -> Iterable[Dict[str, Any]]:
 
 
 def build_track_lookup() -> Dict[str, str]:
+    cached = getattr(build_track_lookup, "_cache", None)
+    if cached is not None:
+        return cached
     lookup: Dict[str, str] = {}
     for item in _iter_website_songs():
         tid = _get_track_id_from_item(item)
@@ -234,10 +241,14 @@ def build_track_lookup() -> Dict[str, str]:
         for field in _title_fields(item):
             for key in _possible_keys(field):
                 lookup.setdefault(key, tid)
+    build_track_lookup._cache = lookup
     return lookup
 
 
 def build_manual_mapping() -> Dict[str, str]:
+    cached = getattr(build_manual_mapping, "_cache", None)
+    if cached is not None:
+        return cached
     if not MANUAL_MAP_PATH.exists():
         return {}
     data = _load_json(MANUAL_MAP_PATH)
@@ -247,6 +258,7 @@ def build_manual_mapping() -> Dict[str, str]:
     for k, v in data.items():
         for key in _possible_keys(k):
             out[key] = str(v)
+    build_manual_mapping._cache = out
     return out
 
 
@@ -309,14 +321,27 @@ def _load_cached_bearer() -> str | None:
     return None
 
 
-def _get_bearer_token_and_regions() -> tuple[str, dict[str, str]]:
+class TokenExpired(RuntimeError):
+    pass
+
+
+def _get_bearer_token_and_regions(*, force_refresh: bool = False) -> tuple[str, dict[str, str]]:
     """
     Récupère le Bearer token via le cache global si disponible, sinon via Playwright.
     Extrait la liste des régions via l'API overview (+ HTML si Playwright a tourné).
     """
     from bs4 import BeautifulSoup
 
-    cached_token = _load_cached_bearer()
+    cached = getattr(_get_bearer_token_and_regions, "_cache", None)
+    cached_ts = float(getattr(_get_bearer_token_and_regions, "_cache_ts", 0))
+    if not force_refresh and cached is not None and time.time() - cached_ts < (_BEARER_TOKEN_TTL - 300):
+        print("[INFO] Bearer token et regions recuperes depuis le cache process.", flush=True)
+        return cached
+
+    if cached is not None and not force_refresh:
+        print("[INFO] Cache bearer process expire, refresh token.", flush=True)
+
+    cached_token = None if force_refresh else _load_cached_bearer()
     if cached_token:
         print("[INFO] Bearer token récupéré depuis le cache global.", flush=True)
         token = cached_token
@@ -526,7 +551,10 @@ def _get_bearer_token_and_regions() -> tuple[str, dict[str, str]]:
         print(f"[INFO] Force-added {len(added)} required regions: {', '.join(added)}")
 
     print(f"[INFO] Discovered {len(all_regions)} regions total (API + HTML + required)")
-    return token, all_regions
+    result = (token, all_regions)
+    _get_bearer_token_and_regions._cache = result
+    _get_bearer_token_and_regions._cache_ts = time.time()
+    return result
 
 
 def _parse_ts_entries(data: dict) -> list[dict]:
@@ -587,9 +615,50 @@ def _find_first_date(value) -> str | None:
     return None
 
 
+class AdaptiveLimiter:
+    def __init__(self, start: int, minimum: int, maximum: int, step_successes: int) -> None:
+        self.limit = max(1, start)
+        self.minimum = max(1, min(minimum, self.limit))
+        self.maximum = max(self.limit, maximum)
+        self.step_successes = max(1, step_successes)
+        self.active = 0
+        self.successes_since_change = 0
+        self.cond = asyncio.Condition()
+
+    async def __aenter__(self) -> "AdaptiveLimiter":
+        async with self.cond:
+            while self.active >= self.limit:
+                await self.cond.wait()
+            self.active += 1
+        return self
+
+    async def __aexit__(self, exc_type, exc, tb) -> None:
+        async with self.cond:
+            self.active -= 1
+            self.cond.notify_all()
+
+    async def mark_success(self) -> None:
+        async with self.cond:
+            self.successes_since_change += 1
+            if self.limit < self.maximum and self.successes_since_change >= self.step_successes:
+                self.limit += 1
+                self.successes_since_change = 0
+                print(f"  [limit ] montee concurrence -> {self.limit}", flush=True)
+                self.cond.notify_all()
+
+    async def mark_rate_limited(self, retry_after: int) -> None:
+        async with self.cond:
+            new_limit = max(self.minimum, max(1, self.limit // 2))
+            self.successes_since_change = 0
+            if new_limit < self.limit:
+                self.limit = new_limit
+                print(f"  [limit ] 429 recu, concurrence -> {self.limit} (retry {retry_after}s)", flush=True)
+            self.cond.notify_all()
+
+
 async def _fetch_region(
     session: aiohttp.ClientSession,
-    sem: asyncio.Semaphore,
+    sem: AdaptiveLimiter,
     region: str,
     chart_date: str,
     headers: dict[str, str],
@@ -610,10 +679,15 @@ async def _fetch_region(
                     if resp.status == 200:
                         data = await resp.json(content_type=None)
                         rows = _parse_ts_entries(data)
+                        await sem.mark_success()
                         print(f"  [{region:>6}] {len(rows)} TS entries ({chart_date})")
                         return region, rows
                     if resp.status == 404:
                         # Chart absent pour cette région à cette date — donnée valide vide
+                        if SKIP_LATEST_FALLBACK_ON_404:
+                            await sem.mark_success()
+                            print(f"  [{region:>6}] 404 date - no chart")
+                            return region, []
                         async with session.get(
                             latest_url,
                             headers=headers,
@@ -624,12 +698,14 @@ async def _fetch_region(
                                 latest_date = _find_first_date(latest_data)
                                 if latest_date == chart_date:
                                     rows = _parse_ts_entries(latest_data)
+                                    await sem.mark_success()
                                     print(f"  [{region:>6}] {len(rows)} TS entries ({chart_date}, via latest)")
                                     return region, rows
                                 raise RuntimeError(
                                     f"{region}: dated chart 404 and latest points to {latest_date!r}, expected {chart_date}"
                                 )
                             if latest_resp.status == 404:
+                                await sem.mark_success()
                                 print(f"  [{region:>6}] 404 date+latest - no chart")
                                 return region, []
                             raise RuntimeError(
@@ -637,9 +713,12 @@ async def _fetch_region(
                             )
                     if resp.status == 429:
                         wait = int(resp.headers.get("Retry-After", 30))
+                        await sem.mark_rate_limited(wait)
                         print(f"  [{region:>6}] 429 — retry dans {wait}s (tentative {attempt})")
                         await asyncio.sleep(wait)
                         continue
+                    if resp.status == 401:
+                        raise TokenExpired(f"{region}: HTTP 401")
                     if 400 <= resp.status < 500:
                         raise RuntimeError(f"{region}: HTTP {resp.status}")
                     print(f"  [{region:>6}] HTTP {resp.status} — retry dans 10s (tentative {attempt})")
@@ -648,6 +727,8 @@ async def _fetch_region(
                     raise RuntimeError(f"{region}: timeout after {attempt} attempts")
                 print(f"  [{region:>6}] timeout — retry dans 10s (tentative {attempt})")
             except Exception as exc:
+                if isinstance(exc, TokenExpired):
+                    raise
                 if FETCH_MAX_ATTEMPTS > 0 and attempt >= FETCH_MAX_ATTEMPTS:
                     raise
                 print(f"  [{region:>6}] erreur ({exc}) — retry dans 10s (tentative {attempt})")
@@ -661,7 +742,12 @@ async def _run_async(chart_date: str, token: str, regions: dict[str, str]) -> di
         "Referer":       "https://charts.spotify.com/",
         "User-Agent":    _UA,
     }
-    sem = asyncio.Semaphore(SEMAPHORE)
+    sem = AdaptiveLimiter(SEMAPHORE, ADAPTIVE_MIN, ADAPTIVE_MAX, ADAPTIVE_STEP_SUCCESSES)
+    print(
+        f"[INFO] Adaptive concurrency: start={sem.limit}, min={sem.minimum}, "
+        f"max={sem.maximum}, +1/{sem.step_successes} succes",
+        flush=True,
+    )
     async with aiohttp.ClientSession() as session:
         tasks = [
             _fetch_region(session, sem, region, chart_date, headers)
@@ -669,6 +755,19 @@ async def _run_async(chart_date: str, token: str, regions: dict[str, str]) -> di
         ]
         results = await asyncio.gather(*tasks)
     return dict(results)
+
+
+def _run_async_with_token_refresh(
+    chart_date: str,
+    token: str,
+    regions: dict[str, str],
+) -> tuple[str, dict[str, str], dict[str, list[dict]]]:
+    try:
+        return token, regions, asyncio.run(_run_async(chart_date, token, regions))
+    except TokenExpired as exc:
+        print(f"[WARN] Bearer token refuse par Spotify ({exc}); refresh et retry date {chart_date}.", flush=True)
+        token, _all_regions = _get_bearer_token_and_regions(force_refresh=True)
+        return token, regions, asyncio.run(_run_async(chart_date, token, regions))
 
 
 # ── Entry point ────────────────────────────────────────────────────────────────
@@ -679,6 +778,9 @@ def main() -> int:
     )
     parser.add_argument("date_pos", nargs="?", metavar="YYYY-MM-DD")
     parser.add_argument("--date", metavar="YYYY-MM-DD")
+    parser.add_argument("--dates", nargs="+", metavar="YYYY-MM-DD")
+    parser.add_argument("--backfill-from", metavar="YYYY-MM-DD")
+    parser.add_argument("--backfill-to", metavar="YYYY-MM-DD")
     parser.add_argument(
         "--no-post",
         action="store_true",
@@ -690,6 +792,56 @@ def main() -> int:
         help="Re-fetch all regions even if already present for this date.",
     )
     args = parser.parse_args()
+
+    if args.dates or args.backfill_from or args.backfill_to:
+        try:
+            if args.dates:
+                chart_dates = [
+                    datetime.strptime(raw, "%Y-%m-%d").strftime("%Y-%m-%d")
+                    for raw in args.dates
+                ]
+            else:
+                if not args.backfill_from or not args.backfill_to:
+                    print("[ERROR] --backfill-from and --backfill-to must be used together")
+                    return 1
+                start_day = datetime.strptime(args.backfill_from, "%Y-%m-%d").date()
+                end_day = datetime.strptime(args.backfill_to, "%Y-%m-%d").date()
+                if start_day > end_day:
+                    print(f"[ERROR] --backfill-from ({start_day}) > --backfill-to ({end_day})")
+                    return 1
+                chart_dates = []
+                cur = start_day
+                while cur <= end_day:
+                    chart_dates.append(cur.isoformat())
+                    cur += timedelta(days=1)
+        except ValueError as exc:
+            print(f"[ERROR] Invalid backfill date: {exc}")
+            return 1
+
+        original_argv = sys.argv[:]
+        original_run_all = os.environ.get("CHARTS_RUN_ALL")
+        started = time.perf_counter()
+        try:
+            os.environ["CHARTS_RUN_ALL"] = "1"
+            for idx, chart_date in enumerate(chart_dates, 1):
+                print(f"\n[BACKFILL] worldwide {idx}/{len(chart_dates)}: {chart_date}", flush=True)
+                sys.argv = [original_argv[0], chart_date]
+                if args.no_post:
+                    sys.argv.append("--no-post")
+                if args.force:
+                    sys.argv.append("--force")
+                rc = main()
+                if rc != 0:
+                    return rc
+        finally:
+            sys.argv = original_argv
+            if original_run_all is None:
+                os.environ.pop("CHARTS_RUN_ALL", None)
+            else:
+                os.environ["CHARTS_RUN_ALL"] = original_run_all
+        print(f"[ OK ] worldwide backfill {len(chart_dates)} date(s) en {time.perf_counter() - started:.1f}s")
+        git_commit_and_push(ROOT, f"charts worldwide backfill {chart_dates[0]} -> {chart_dates[-1]}")
+        return 0
 
     raw_date = args.date or args.date_pos or str(date.today() - timedelta(days=1))
     try:
@@ -703,7 +855,10 @@ def main() -> int:
         return 1
 
     print(f"[INFO] chart_date = {chart_date}")
-    print("[INFO] Acquiring bearer token and discovering regions via Playwright…")
+    if getattr(_get_bearer_token_and_regions, "_cache", None) is None:
+        print("[INFO] Acquiring bearer token and discovering regions via Playwright/cache...")
+    else:
+        print("[INFO] Using cached bearer token and regions.")
     token, regions = _get_bearer_token_and_regions()
     print(f"[INFO] Token acquired. {len(regions)} regions to fetch.")
 
@@ -755,14 +910,14 @@ def main() -> int:
     regions_to_fetch = {k: v for k, v in regions.items() if k not in already_done}
 
     # Phase 1 : fetch global et fr en priorité pour poster pendant la phase 2
-    _PRIORITY = {"global", "fr"}
+    _PRIORITY = set() if args.no_post else {"global", "fr"}
     priority_to_fetch = {k: v for k, v in regions_to_fetch.items() if k in _PRIORITY}
     other_to_fetch    = {k: v for k, v in regions_to_fetch.items() if k not in _PRIORITY}
 
     t0 = time.perf_counter()
     if priority_to_fetch:
         print(f"[INFO] Phase 1 : fetch prioritaire ({', '.join(sorted(priority_to_fetch))})…")
-        priority_results = asyncio.run(_run_async(chart_date, token, priority_to_fetch))
+        token, _, priority_results = _run_async_with_token_refresh(chart_date, token, priority_to_fetch)
         print(f"[INFO] Phase 1 terminée en {time.perf_counter() - t0:.1f}s")
         for region in ("global", "fr"):
             if region in priority_results and priority_results[region]:
@@ -788,8 +943,8 @@ def main() -> int:
 
     # Phase 2 : fetch toutes les autres régions
     if other_to_fetch:
-        print(f"[INFO] Phase 2 : fetch {len(other_to_fetch)} autres régions (semaphore={SEMAPHORE})…")
-        other_results = asyncio.run(_run_async(chart_date, token, other_to_fetch))
+        print(f"[INFO] Phase 2 : fetch {len(other_to_fetch)} regions (semaphore={SEMAPHORE})...")
+        token, _, other_results = _run_async_with_token_refresh(chart_date, token, other_to_fetch)
         print(f"[INFO] Phase 2 terminée en {time.perf_counter() - t0:.1f}s total")
     else:
         other_results = {}

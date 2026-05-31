@@ -560,6 +560,18 @@ def load_history_for_album(
     return result
 
 
+def sort_album_sections_by_daily_streams(sections: list[dict], hist: dict[str, dict]) -> None:
+    """Sort tracks inside each album section by daily streams descending."""
+    for sec in sections:
+        sec["tracks"].sort(
+            key=lambda t: (
+                -(hist.get(t["track_id"], {}).get("daily") or 0),
+                -(hist.get(t["track_id"], {}).get("streams") or 0),
+                t.get("title_clean", "").casefold(),
+            )
+        )
+
+
 def load_global_chart_filtered_for_album(sections: list[dict], target_date: str) -> tuple[dict[str, dict], bool]:
     """
     Returns ({track_id: {filtered_streams, filter_rate}}, chart_available).
@@ -1345,7 +1357,7 @@ def build_html(
 
 # ── Main generate function ─────────────────────────────────────────────────────
 
-def generate(album_name: str, target_date: str | None = None) -> Path:
+def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_daily: bool = False) -> Path:
     if target_date is None:
         target_date = get_latest_date()
     print(f"[album_update] Album: {album_name}  Date: {target_date}")
@@ -1356,6 +1368,9 @@ def generate(album_name: str, target_date: str | None = None) -> Path:
     print(f"[album_update] {sum(len(s['tracks']) for s in sections)} tracks dans {len(sections)} section(s)")
 
     hist = load_history_for_album(sections, target_date)
+    if sort_tracks_by_daily:
+        sort_album_sections_by_daily_streams(sections, hist)
+
     show_filter_cols = False
     if ENABLE_FILTERED_CHARTS:
         chart_filtered, has_same_day_chart = load_global_chart_filtered_for_album(sections, target_date)

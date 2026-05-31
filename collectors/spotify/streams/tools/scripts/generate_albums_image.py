@@ -183,6 +183,23 @@ def load_album_track_map() -> dict[str, dict]:
     """
     result = {}
 
+    def _as_bool(value) -> bool | None:
+        if value is None:
+            return None
+        text = str(value).strip().lower()
+        if text in {"1", "true", "yes", "y", "on"}:
+            return True
+        if text in {"0", "false", "no", "n", "off"}:
+            return False
+        return None
+
+    def _is_chart_extra(section: dict, track: dict) -> bool:
+        track_flag = _as_bool(track.get("chart_extra"))
+        if track_flag is not None:
+            return track_flag
+        section_flag = _as_bool(section.get("chart_extra"))
+        return bool(section_flag) if section_flag is not None else False
+
     def _consume_sections(
         sections: list[dict],
         album_name_fallback: str = "",
@@ -197,8 +214,9 @@ def load_album_track_map() -> dict[str, dict]:
                 track_id = m.group(1)
                 if track_id not in result:
                     result[track_id] = {
-                        "album":     album_name,
-                        "image_url": (track.get("image_url") or "").strip(),
+                        "album":       album_name,
+                        "image_url":   (track.get("image_url") or "").strip(),
+                        "chart_extra": _is_chart_extra(section, track),
                     }
 
     if ALBUMS_DIR.exists():
@@ -333,7 +351,9 @@ def build_album_rows(
             "cover_url":     cover_url,
         }
 
-        for track_id, _info in album_tracks:
+        for track_id, info in album_tracks:
+            if not merge_eras and info.get("chart_extra"):
+                continue
             t = today.get(track_id)
             if t is None:
                 continue

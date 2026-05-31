@@ -16,6 +16,12 @@ from pathlib import Path
 import requests
 from dotenv import load_dotenv
 
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 CHARTS_ROOT = Path(__file__).resolve().parent
 REPO_ROOT = CHARTS_ROOT.parents[2]
 sys.path.insert(0, str(REPO_ROOT / "collectors" / "spotify"))
@@ -297,12 +303,23 @@ def _build_env() -> dict[str, str]:
     load_dotenv(REPO_ENV_FILE, override=True)
     env = os.environ.copy()
     env["PYTHONUTF8"] = "1"
+    env["PYTHONUNBUFFERED"] = "1"
     env["UPLOAD_TO_R2"] = "0"  # individual scripts must not upload; only export_for_web.py does
     env["CHARTS_RUN_ALL"] = "1"  # individual scripts must not git commit; run_all does it
     missing = [k for k in R2_ENV_VARS if not env.get(k, "").strip()]
     if missing:
         print(f"[WARN] R2 vars manquantes: {', '.join(missing)}")
     return env
+
+
+def _build_backfill_env(env: dict[str, str]) -> dict[str, str]:
+    backfill_env = env.copy()
+    backfill_env.setdefault("SPOTIFY_WORLDWIDE_SEMAPHORE", "12")
+    backfill_env.setdefault("SPOTIFY_WORLDWIDE_ADAPTIVE_MIN", "5")
+    backfill_env.setdefault("SPOTIFY_WORLDWIDE_ADAPTIVE_MAX", "25")
+    backfill_env.setdefault("SPOTIFY_WORLDWIDE_ADAPTIVE_STEP_SUCCESSES", "20")
+    backfill_env.setdefault("SPOTIFY_SKIP_LATEST_FALLBACK_ON_404", "1")
+    return backfill_env
 
 
 def _bearer_cache_path(name: str) -> Path:
@@ -938,6 +955,7 @@ _ALL_POST_PARTS = {"artists", "global", "fr", "cards"}
 
 
 def _run_backfill(args, env: dict[str, str]) -> int:
+    env = _build_backfill_env(env)
     yesterday = date.today() - timedelta(days=1)
 
     if not args.backfill_from:
@@ -968,12 +986,17 @@ def _run_backfill(args, env: dict[str, str]) -> int:
         if name == "worldwide"
     ]
 
-    # Détecte toutes les dates manquantes (post_parts vide = on ne vérifie pas posted.lock)
+    def _backfill_snapshot_exists(target: date) -> bool:
+        return _worldwide_snapshot_path(target).exists() or (
+            legacy_spotify_chart_dir("worldwide", target) / f"ts_worldwide_{target}.json"
+        ).exists()
+
+    # Backfill data-only during the loop: no posts, no card/images generation.
+    # Only absent snapshots are collected, so multi-day runs stay fast.
     missing: list[date] = []
     cur = backfill_from
     while cur <= backfill_to:
-        pending = _filter_pending_runners(collect_runners, cur, set())
-        if pending:
+        if not _backfill_snapshot_exists(cur):
             missing.append(cur)
         cur += timedelta(days=1)
 
@@ -984,18 +1007,35 @@ def _run_backfill(args, env: dict[str, str]) -> int:
     total_missing = len(missing)
     print(f"[BACKFILL] {total_missing} date(s) manquante(s) : {missing[0]} → {missing[-1]}")
     print(f"[BACKFILL] runners : {', '.join(n for n, _, _ in collect_runners)}")
+    print("[BACKFILL] mode rapide: no-post, pas de cards/images, export web+R2 une seule fois a la fin")
 
     overall_failures: list[tuple[str, int]] = []
     done_dates: list[date] = []
     started = time.perf_counter()
     durations: list[float] = []
 
+    name, script, fixed = collect_runners[0]
+    print(f"\n[BACKFILL] collecte worldwide en un seul process: {total_missing} date(s)")
+    rc = _run(
+        name,
+        script,
+        [*fixed, "--dates", *[str(day) for day in missing]],
+        dry_run=args.dry_run,
+        env=env,
+        verbose=True,
+    )
+    if rc != 0:
+        overall_failures.append((name, rc))
+    else:
+        done_dates = list(missing)
+    missing = []
+
     for idx, target in enumerate(missing, 1):
-        pending = _filter_pending_runners(collect_runners, target, set())
-        if not pending:
+        if _backfill_snapshot_exists(target):
             done_dates.append(target)
             continue
 
+        pending = collect_runners
         names_str = ", ".join(n for n, _, _ in pending)
 
         eta_str = ""
@@ -1044,6 +1084,20 @@ def _run_backfill(args, env: dict[str, str]) -> int:
                 priority="high",
             )
         return 1
+    if not args.dry_run and done_dates:
+        latest_done = max(done_dates)
+        print(f"\n[BACKFILL] export web + upload R2 ({latest_done})...")
+        rc_export = _run(
+            "export",
+            REPO_ROOT / "scripts" / "export_for_web.py",
+            ["--new-date", str(latest_done)],
+            dry_run=False,
+            env={**env, "UPLOAD_TO_R2": "1"},
+            verbose=False,
+        )
+        if rc_export != 0:
+            return rc_export
+
     print(f"[ OK ] backfill terminé — {total}")
     if not args.dry_run:
         git_commit_and_push(REPO_ROOT, f"charts backfill {backfill_from} → {backfill_to}")

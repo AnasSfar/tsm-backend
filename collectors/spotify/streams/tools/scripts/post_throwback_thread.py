@@ -13,7 +13,8 @@ from playwright.sync_api import sync_playwright
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 ROOT = SCRIPT_DIR.parents[1]
-TWITTER_SESSION = ROOT.parent / "charts" / "worldwide" / "tools" / "json" / "twitter_session.json"
+TSM_TWITTER_SESSION = ROOT.parent / "charts" / "worldwide" / "tools" / "json" / "twitter_session.json"
+SWIFTIES_TWITTER_SESSION = ROOT.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json"
 HANDLE = "@tsmuseum13"
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -152,7 +153,7 @@ def _album_update_image(album_name: str, target_date: str, *, force: bool) -> Pa
     if image_path.exists() and not force:
         print(f"[throwback] Reusing existing album update: {image_path}")
         return image_path
-    return generate_album_update_image.generate(album_name, target_date)
+    return generate_album_update_image.generate(album_name, target_date, sort_tracks_by_daily=True)
 
 
 def _section_image(
@@ -301,7 +302,7 @@ def _build_images(target_date: str, *, songs_top_n: int, force: bool) -> dict[st
     }
 
 
-def build_thread(
+def build_threads(
     *,
     target_date: str,
     action: str,
@@ -309,7 +310,7 @@ def build_thread(
     label: str,
     images: dict[str, object],
     songs_top_n: int,
-) -> list[tuple[str, Path]]:
+) -> tuple[list[tuple[str, Path]], list[tuple[str, Path]]]:
     date_text = _date_fmt(target_date)
     start_label = _sentence_start_label(label)
     event_context = f"following the {_event_noun(action)} of {event}"
@@ -317,7 +318,7 @@ def build_thread(
         f"{BACK} Taylor Swift's top albums {label} ago, {event_context}.\n\n"
         f"Spotify streams on {date_text}."
     )
-    posts: list[tuple[str, Path]] = [
+    tsm_posts: list[tuple[str, Path]] = [
         (opener, images["albums"]),
         (
             f"{BACK} Taylor Swift's top {songs_top_n} songs {label} ago, {event_context}.\n\n"
@@ -330,14 +331,15 @@ def build_thread(
             images["eras"],
         ),
     ]
+    swifties_posts: list[tuple[str, Path]] = []
     for item in images.get("album_updates", []):
-        posts.append((
+        swifties_posts.append((
             f"{BACK} {start_label}, {item['album']} received {_fmt_streams(item.get('daily_streams'))} "
             f"streams on Spotify.\n\n"
             f"Full album update from {date_text}.",
             item["image"],
         ))
-    return posts
+    return tsm_posts, swifties_posts
 
 
 def main() -> int:
@@ -358,18 +360,16 @@ def main() -> int:
 
     day_dir = update_streams_dir(target_date)
     day_dir.mkdir(parents=True, exist_ok=True)
-    lock = day_dir / "throwback_posted.lock"
-    if lock.exists() and not args.no_post:
+    legacy_lock = day_dir / "throwback_posted.lock"
+    tsm_lock = day_dir / "throwback_tsmuseum13_posted.lock"
+    swifties_lock = day_dir / "throwback_swiftiescharts_albums_posted.lock"
+    if legacy_lock.exists() and not args.no_post:
         print(f"[throwback] Already posted for {target_date}, skipping.")
         return 0
 
-    if not args.no_post and not TWITTER_SESSION.exists():
-        print(f"ERROR: Twitter session not found at {TWITTER_SESSION}")
-        return 1
-
     print(f"[throwback] Generating thread images for {target_date}...")
     images = _build_images(target_date, songs_top_n=songs_top_n, force=args.force)
-    posts = build_thread(
+    tsm_posts, swifties_posts = build_threads(
         target_date=target_date,
         action=args.action,
         event=args.event.strip(),
@@ -378,21 +378,43 @@ def main() -> int:
         songs_top_n=songs_top_n,
     )
 
-    print(f"[throwback] Thread: {len(posts)} post(s)")
-    for idx, (tweet, image_path) in enumerate(posts, 1):
-        print(f"[throwback] Post {idx}/{len(posts)} ({len(tweet)} chars):\n{tweet}")
+    print(f"[throwback] @tsmuseum13 thread: {len(tsm_posts)} post(s)")
+    for idx, (tweet, image_path) in enumerate(tsm_posts, 1):
+        print(f"[throwback] @tsmuseum13 post {idx}/{len(tsm_posts)} ({len(tweet)} chars):\n{tweet}")
+        print(f"[throwback] Image: {image_path}")
+    print(f"[throwback] @swiftiescharts album updates: {len(swifties_posts)} post(s)")
+    for idx, (tweet, image_path) in enumerate(swifties_posts, 1):
+        print(f"[throwback] @swiftiescharts post {idx}/{len(swifties_posts)} ({len(tweet)} chars):\n{tweet}")
         print(f"[throwback] Image: {image_path}")
 
     if args.no_post:
         print("[throwback] Twitter post skipped (--no-post).")
         return 0
 
-    if not post_image_thread(posts, TWITTER_SESSION):
-        print("[throwback] Failed to post thread.")
+    if tsm_posts and not TSM_TWITTER_SESSION.exists():
+        print(f"ERROR: @tsmuseum13 Twitter session not found at {TSM_TWITTER_SESSION}")
+        return 1
+    if swifties_posts and not SWIFTIES_TWITTER_SESSION.exists():
+        print(f"ERROR: @swiftiescharts Twitter session not found at {SWIFTIES_TWITTER_SESSION}")
         return 1
 
-    lock.touch()
-    print(f"[throwback] Posted throwback thread for {target_date}.")
+    if tsm_lock.exists():
+        print(f"[throwback] @tsmuseum13 already posted for {target_date}, skipping.")
+    else:
+        if tsm_posts and not post_image_thread(tsm_posts, TSM_TWITTER_SESSION):
+            print("[throwback] Failed to post @tsmuseum13 thread.")
+            return 1
+        tsm_lock.touch()
+
+    if swifties_lock.exists():
+        print(f"[throwback] @swiftiescharts album updates already posted for {target_date}, skipping.")
+    else:
+        if swifties_posts and not post_image_thread(swifties_posts, SWIFTIES_TWITTER_SESSION):
+            print("[throwback] Failed to post @swiftiescharts album updates.")
+            return 1
+        swifties_lock.touch()
+
+    print(f"[throwback] Posted throwback parts for {target_date}.")
     return 0
 
 
