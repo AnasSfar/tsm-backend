@@ -92,9 +92,6 @@ _UA        = (
 )
 TS_NAME         = "Taylor Swift"
 SEMAPHORE       = int(os.getenv("SPOTIFY_WORLDWIDE_SEMAPHORE", "10"))
-ADAPTIVE_MIN    = int(os.getenv("SPOTIFY_WORLDWIDE_ADAPTIVE_MIN", "5"))
-ADAPTIVE_MAX    = int(os.getenv("SPOTIFY_WORLDWIDE_ADAPTIVE_MAX", str(max(SEMAPHORE, 20))))
-ADAPTIVE_STEP_SUCCESSES = int(os.getenv("SPOTIFY_WORLDWIDE_ADAPTIVE_STEP_SUCCESSES", "25"))
 FETCH_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_WORLDWIDE_FETCH_MAX_ATTEMPTS", "0"))
 SKIP_LATEST_FALLBACK_ON_404 = os.getenv("SPOTIFY_SKIP_LATEST_FALLBACK_ON_404", "").strip().lower() in {"1", "true", "yes", "on"}
 _OVERVIEW_URL   = "https://charts-spotify-com-service.spotify.com/auth/v1/overview/GLOBAL"
@@ -430,7 +427,7 @@ def _get_bearer_token_and_regions(*, force_refresh: bool = False) -> tuple[str, 
         try:
             resp = _http.get(_OVERVIEW_URL, headers=headers, timeout=15)
             if resp.status_code == 429:
-                wait = int(resp.headers.get("Retry-After", 10))
+                wait = int(resp.headers.get("Retry-After", 20))
                 print(f"[WARN] Overview 429 — retry dans {wait}s (tentative {_attempt})")
                 time.sleep(wait)
                 continue
@@ -615,50 +612,67 @@ def _find_first_date(value) -> str | None:
     return None
 
 
-class AdaptiveLimiter:
-    def __init__(self, start: int, minimum: int, maximum: int, step_successes: int) -> None:
-        self.limit = max(1, start)
-        self.minimum = max(1, min(minimum, self.limit))
-        self.maximum = max(self.limit, maximum)
-        self.step_successes = max(1, step_successes)
-        self.active = 0
-        self.successes_since_change = 0
-        self.cond = asyncio.Condition()
+class GlobalPause:
+    """
+    States: open → paused → probing → taken → open | paused
+    - paused : all workers blocked.
+    - probing: exactly one worker is let through as a probe.
+    - taken  : probe is in-flight; others keep waiting.
+    Successive 429s multiply the wait (x1, x2, x3…); resets on success.
+    """
 
-    async def __aenter__(self) -> "AdaptiveLimiter":
-        async with self.cond:
-            while self.active >= self.limit:
-                await self.cond.wait()
-            self.active += 1
-        return self
+    def __init__(self) -> None:
+        self._cond = asyncio.Condition()
+        self._state = "open"
+        self._resume_at: float = 0.0
+        self._consecutive = 0
 
-    async def __aexit__(self, exc_type, exc, tb) -> None:
-        async with self.cond:
-            self.active -= 1
-            self.cond.notify_all()
+    async def wait(self) -> None:
+        async with self._cond:
+            while True:
+                if self._state == "open":
+                    return
+                if self._state == "probing":
+                    self._state = "taken"
+                    return
+                await self._cond.wait()
+
+    async def trigger(self, seconds: int) -> None:
+        async with self._cond:
+            if self._state in ("open", "taken"):
+                self._consecutive += 1
+            effective = seconds * self._consecutive
+            loop = asyncio.get_running_loop()
+            resume_at = loop.time() + effective
+            if resume_at <= self._resume_at:
+                return
+            self._resume_at = resume_at
+            self._state = "paused"
+            print(f"  [pause ] 429 x{self._consecutive} — pause globale {effective}s", flush=True)
+            self._cond.notify_all()
+        asyncio.create_task(self._resume(effective))
+
+    async def _resume(self, seconds: int) -> None:
+        await asyncio.sleep(seconds)
+        async with self._cond:
+            if asyncio.get_running_loop().time() >= self._resume_at - 0.1:
+                self._state = "probing"
+                print("  [pause ] reprise — sonde en cours", flush=True)
+                self._cond.notify(1)
 
     async def mark_success(self) -> None:
-        async with self.cond:
-            self.successes_since_change += 1
-            if self.limit < self.maximum and self.successes_since_change >= self.step_successes:
-                self.limit += 1
-                self.successes_since_change = 0
-                print(f"  [limit ] montee concurrence -> {self.limit}", flush=True)
-                self.cond.notify_all()
-
-    async def mark_rate_limited(self, retry_after: int) -> None:
-        async with self.cond:
-            new_limit = max(self.minimum, max(1, self.limit // 2))
-            self.successes_since_change = 0
-            if new_limit < self.limit:
-                self.limit = new_limit
-                print(f"  [limit ] 429 recu, concurrence -> {self.limit} (retry {retry_after}s)", flush=True)
-            self.cond.notify_all()
+        async with self._cond:
+            if self._state != "open":
+                self._consecutive = 0
+                self._state = "open"
+                print("  [pause ] sonde OK — tous les workers reprennent", flush=True)
+                self._cond.notify_all()
 
 
 async def _fetch_region(
     session: aiohttp.ClientSession,
-    sem: AdaptiveLimiter,
+    sem: asyncio.Semaphore,
+    pause: GlobalPause,
     region: str,
     chart_date: str,
     headers: dict[str, str],
@@ -669,6 +683,7 @@ async def _fetch_region(
     attempt = 0
     while True:
         attempt += 1
+        await pause.wait()
         async with sem:
             try:
                 async with session.get(
@@ -679,13 +694,11 @@ async def _fetch_region(
                     if resp.status == 200:
                         data = await resp.json(content_type=None)
                         rows = _parse_ts_entries(data)
-                        await sem.mark_success()
+                        await pause.mark_success()
                         print(f"  [{region:>6}] {len(rows)} TS entries ({chart_date})")
                         return region, rows
                     if resp.status == 404:
-                        # Chart absent pour cette région à cette date — donnée valide vide
                         if SKIP_LATEST_FALLBACK_ON_404:
-                            await sem.mark_success()
                             print(f"  [{region:>6}] 404 date - no chart")
                             return region, []
                         async with session.get(
@@ -698,24 +711,21 @@ async def _fetch_region(
                                 latest_date = _find_first_date(latest_data)
                                 if latest_date == chart_date:
                                     rows = _parse_ts_entries(latest_data)
-                                    await sem.mark_success()
                                     print(f"  [{region:>6}] {len(rows)} TS entries ({chart_date}, via latest)")
                                     return region, rows
                                 raise RuntimeError(
                                     f"{region}: dated chart 404 and latest points to {latest_date!r}, expected {chart_date}"
                                 )
                             if latest_resp.status == 404:
-                                await sem.mark_success()
                                 print(f"  [{region:>6}] 404 date+latest - no chart")
                                 return region, []
                             raise RuntimeError(
                                 f"{region}: dated chart 404 and latest HTTP {latest_resp.status}"
                             )
                     if resp.status == 429:
-                        wait = int(resp.headers.get("Retry-After", 10))
-                        await sem.mark_rate_limited(wait)
-                        print(f"  [{region:>6}] 429 — retry dans {wait}s (tentative {attempt})")
-                        await asyncio.sleep(wait)
+                        wait = int(resp.headers.get("Retry-After", 20))
+                        print(f"  [{region:>6}] 429 — pause globale {wait}s (tentative {attempt})")
+                        asyncio.create_task(pause.trigger(wait))
                         continue
                     if resp.status == 401:
                         raise TokenExpired(f"{region}: HTTP 401")
@@ -742,15 +752,12 @@ async def _run_async(chart_date: str, token: str, regions: dict[str, str]) -> di
         "Referer":       "https://charts.spotify.com/",
         "User-Agent":    _UA,
     }
-    sem = AdaptiveLimiter(SEMAPHORE, ADAPTIVE_MIN, ADAPTIVE_MAX, ADAPTIVE_STEP_SUCCESSES)
-    print(
-        f"[INFO] Adaptive concurrency: start={sem.limit}, min={sem.minimum}, "
-        f"max={sem.maximum}, +1/{sem.step_successes} succes",
-        flush=True,
-    )
+    sem = asyncio.Semaphore(SEMAPHORE)
+    pause = GlobalPause()
+    print(f"[INFO] Concurrence fixe: {SEMAPHORE} workers", flush=True)
     async with aiohttp.ClientSession() as session:
         tasks = [
-            _fetch_region(session, sem, region, chart_date, headers)
+            _fetch_region(session, sem, pause, region, chart_date, headers)
             for region in regions
         ]
         results = await asyncio.gather(*tasks)
