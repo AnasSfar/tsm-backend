@@ -198,11 +198,6 @@
       "streams": 197769,
       "previous_rank": 23
     },
-    "2026-02-12": {
-      "rank": 23,
-      "streams": 175517,
-      "previous_rank": 23
-    },
     "2026-02-06": {
       "rank": 18,
       "streams": 209814,
@@ -1303,6 +1298,12 @@
       "streams": 187158,
       "previous_rank": 240,
       "peak_rank": 2
+    },
+    "2026-02-12": {
+      "rank": 23,
+      "streams": 175517,
+      "previous_rank": 230,
+      "peak_rank": 2
     }
   },
   "Opalite": {
@@ -1482,11 +1483,6 @@
     "2026-02-13": {
       "rank": 141,
       "streams": 80546,
-      "previous_rank": 136
-    },
-    "2026-02-12": {
-      "rank": 136,
-      "streams": 72152,
       "previous_rank": 136
     },
     "2026-02-06": {
@@ -1779,6 +1775,12 @@
       "rank": 136,
       "streams": 74373,
       "previous_rank": 1240,
+      "peak_rank": 8
+    },
+    "2026-02-12": {
+      "rank": 136,
+      "streams": 72152,
+      "previous_rank": 1360,
       "peak_rank": 8
     }
   },
