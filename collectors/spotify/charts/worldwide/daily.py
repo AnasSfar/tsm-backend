@@ -554,6 +554,66 @@ def _get_bearer_token_and_regions(*, force_refresh: bool = False) -> tuple[str, 
     return result
 
 
+def _get_bearer_from_cookies(session_file: Path) -> str | None:
+    """Get a bearer token from a session file via Playwright (WAF requires real browser TLS)."""
+    api_host = _API_BASE.split("//")[1].split("/")[0]
+    token_holder: list[str] = []
+
+    def _on_request(req: Any, _th: list = token_holder) -> None:
+        if api_host in req.url and not _th:
+            auth = req.headers.get("authorization", "")
+            if auth.startswith("Bearer "):
+                _th.append(auth[7:])
+
+    try:
+        p = sync_playwright().start()
+        browser = p.chromium.launch(
+            headless=True,
+            args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
+        )
+        ctx = browser.new_context(
+            storage_state=str(session_file),
+            user_agent=_UA,
+            viewport={"width": 1280, "height": 800},
+        )
+        page = ctx.new_page()
+        page.on("request", _on_request)
+        page.goto("https://charts.spotify.com/", wait_until="networkidle", timeout=45_000)
+        deadline = time.time() + 15
+        while not token_holder and time.time() < deadline:
+            page.wait_for_timeout(300)
+        browser.close()
+        p.stop()
+        return token_holder[0] if token_holder else None
+    except Exception as exc:
+        print(f"[WARN] Token depuis {session_file.name}: {exc}")
+        return None
+
+
+class TokenPool:
+    """Round-robin token pool. rotate() returns False when all tokens are exhausted."""
+
+    def __init__(self, tokens: list[str]) -> None:
+        self._tokens = tokens
+        self._idx = 0
+        self._exhausted = 0
+
+    @property
+    def current(self) -> str:
+        return self._tokens[self._idx]
+
+    def rotate(self) -> bool:
+        self._exhausted += 1
+        if self._exhausted >= len(self._tokens):
+            return False
+        self._idx = (self._idx + 1) % len(self._tokens)
+        print(f"  [token ] rotation → token {self._idx + 1}/{len(self._tokens)}", flush=True)
+        return True
+
+    def reset(self) -> None:
+        self._exhausted = 0
+
+
 def _parse_ts_entries(data: dict) -> list[dict]:
     """Parse API response; keep only Taylor Swift entries; extract trackUri when present."""
     rows: list[dict] = []
@@ -615,13 +675,13 @@ def _find_first_date(value) -> str | None:
 class GlobalPause:
     """
     States: open → paused → probing → taken → open | paused
-    - paused : all workers blocked.
-    - probing: exactly one worker is let through as a probe.
-    - taken  : probe is in-flight; others keep waiting.
-    Successive 429s multiply the wait (x1, x2, x3…); resets on success.
+    - On 429: try rotating the token pool first (immediate resume).
+    - If all tokens exhausted: pause with multiplicative backoff (x1, x2, x3…).
+    - After pause: one probe worker goes through; on success all resume.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, pool: TokenPool) -> None:
+        self._pool = pool
         self._cond = asyncio.Condition()
         self._state = "open"
         self._resume_at: float = 0.0
@@ -639,8 +699,14 @@ class GlobalPause:
 
     async def trigger(self, seconds: int) -> None:
         async with self._cond:
-            if self._state in ("open", "taken"):
-                self._consecutive += 1
+            if self._state not in ("open", "taken"):
+                return  # already handling
+            if self._pool.rotate():
+                self._state = "open"
+                self._cond.notify_all()
+                return
+            # All tokens exhausted — real pause
+            self._consecutive += 1
             effective = seconds * self._consecutive
             loop = asyncio.get_running_loop()
             resume_at = loop.time() + effective
@@ -648,7 +714,7 @@ class GlobalPause:
                 return
             self._resume_at = resume_at
             self._state = "paused"
-            print(f"  [pause ] 429 x{self._consecutive} — pause globale {effective}s", flush=True)
+            print(f"  [pause ] tous tokens épuisés — pause {effective}s (x{self._consecutive})", flush=True)
             self._cond.notify_all()
         asyncio.create_task(self._resume(effective))
 
@@ -656,6 +722,7 @@ class GlobalPause:
         await asyncio.sleep(seconds)
         async with self._cond:
             if asyncio.get_running_loop().time() >= self._resume_at - 0.1:
+                self._pool.reset()
                 self._state = "probing"
                 print("  [pause ] reprise — sonde en cours", flush=True)
                 self._cond.notify(1)
@@ -664,6 +731,7 @@ class GlobalPause:
         async with self._cond:
             if self._state != "open":
                 self._consecutive = 0
+                self._pool.reset()
                 self._state = "open"
                 print("  [pause ] sonde OK — tous les workers reprennent", flush=True)
                 self._cond.notify_all()
@@ -673,9 +741,10 @@ async def _fetch_region(
     session: aiohttp.ClientSession,
     sem: asyncio.Semaphore,
     pause: GlobalPause,
+    pool: TokenPool,
     region: str,
     chart_date: str,
-    headers: dict[str, str],
+    base_headers: dict[str, str],
 ) -> tuple[str, list[dict]]:
     chart_id = "regional-global-daily" if region == "global" else f"regional-{region}-daily"
     url = f"{_API_BASE}/{chart_id}/{chart_date}"
@@ -684,6 +753,7 @@ async def _fetch_region(
     while True:
         attempt += 1
         await pause.wait()
+        headers = {**base_headers, "Authorization": f"Bearer {pool.current}"}
         async with sem:
             try:
                 async with session.get(
@@ -745,19 +815,19 @@ async def _fetch_region(
         await asyncio.sleep(min(10 * attempt, 60))
 
 
-async def _run_async(chart_date: str, token: str, regions: dict[str, str]) -> dict[str, list[dict]]:
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Accept":        "application/json",
-        "Referer":       "https://charts.spotify.com/",
-        "User-Agent":    _UA,
+async def _run_async(chart_date: str, tokens: list[str], regions: dict[str, str]) -> dict[str, list[dict]]:
+    base_headers = {
+        "Accept":     "application/json",
+        "Referer":    "https://charts.spotify.com/",
+        "User-Agent": _UA,
     }
+    pool = TokenPool(tokens)
     sem = asyncio.Semaphore(SEMAPHORE)
-    pause = GlobalPause()
-    print(f"[INFO] Concurrence fixe: {SEMAPHORE} workers", flush=True)
+    pause = GlobalPause(pool)
+    print(f"[INFO] Concurrence fixe: {SEMAPHORE} workers, {len(tokens)} token(s)", flush=True)
     async with aiohttp.ClientSession() as session:
         tasks = [
-            _fetch_region(session, sem, pause, region, chart_date, headers)
+            _fetch_region(session, sem, pause, pool, region, chart_date, base_headers)
             for region in regions
         ]
         results = await asyncio.gather(*tasks)
@@ -766,15 +836,16 @@ async def _run_async(chart_date: str, token: str, regions: dict[str, str]) -> di
 
 def _run_async_with_token_refresh(
     chart_date: str,
-    token: str,
+    tokens: list[str],
     regions: dict[str, str],
-) -> tuple[str, dict[str, str], dict[str, list[dict]]]:
+) -> tuple[list[str], dict[str, str], dict[str, list[dict]]]:
     try:
-        return token, regions, asyncio.run(_run_async(chart_date, token, regions))
+        return tokens, regions, asyncio.run(_run_async(chart_date, tokens, regions))
     except TokenExpired as exc:
         print(f"[WARN] Bearer token refuse par Spotify ({exc}); refresh et retry date {chart_date}.", flush=True)
-        token, _all_regions = _get_bearer_token_and_regions(force_refresh=True)
-        return token, regions, asyncio.run(_run_async(chart_date, token, regions))
+        new_token, _all_regions = _get_bearer_token_and_regions(force_refresh=True)
+        tokens = [new_token] + tokens[1:]
+        return tokens, regions, asyncio.run(_run_async(chart_date, tokens, regions))
 
 
 # ── Entry point ────────────────────────────────────────────────────────────────
@@ -867,7 +938,15 @@ def main() -> int:
     else:
         print("[INFO] Using cached bearer token and regions.")
     token, regions = _get_bearer_token_and_regions()
-    print(f"[INFO] Token acquired. {len(regions)} regions to fetch.")
+    tokens: list[str] = [token]
+    for sf in sorted(SESSION_FILE.parent.glob("spotify_session*.json")):
+        if sf == SESSION_FILE:
+            continue
+        t = _get_bearer_from_cookies(sf)
+        if t:
+            tokens.append(t)
+            print(f"[INFO] Token supplémentaire chargé depuis {sf.name}")
+    print(f"[INFO] {len(tokens)} token(s) disponible(s). {len(regions)} regions to fetch.")
 
 
     # Pré-skip des pays déjà présents pour cette date (sauf si --force)
@@ -924,7 +1003,7 @@ def main() -> int:
     t0 = time.perf_counter()
     if priority_to_fetch:
         print(f"[INFO] Phase 1 : fetch prioritaire ({', '.join(sorted(priority_to_fetch))})…")
-        token, _, priority_results = _run_async_with_token_refresh(chart_date, token, priority_to_fetch)
+        tokens, _, priority_results = _run_async_with_token_refresh(chart_date, tokens, priority_to_fetch)
         print(f"[INFO] Phase 1 terminée en {time.perf_counter() - t0:.1f}s")
         for region in ("global", "fr"):
             if region in priority_results and priority_results[region]:
@@ -951,7 +1030,7 @@ def main() -> int:
     # Phase 2 : fetch toutes les autres régions
     if other_to_fetch:
         print(f"[INFO] Phase 2 : fetch {len(other_to_fetch)} regions (semaphore={SEMAPHORE})...")
-        token, _, other_results = _run_async_with_token_refresh(chart_date, token, other_to_fetch)
+        tokens, _, other_results = _run_async_with_token_refresh(chart_date, tokens, other_to_fetch)
         print(f"[INFO] Phase 2 terminée en {time.perf_counter() - t0:.1f}s total")
     else:
         other_results = {}

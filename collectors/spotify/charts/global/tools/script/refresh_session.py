@@ -10,7 +10,7 @@ import sys
 import time
 from pathlib import Path
 
-SESSION_PATH = Path(__file__).resolve().parents[2] / "json" / "spotify_session.json"
+_DEFAULT_SESSION = Path(__file__).resolve().parents[2] / "json" / "spotify_session.json"
 CHARTS_URL = "https://charts.spotify.com"
 UA = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -43,6 +43,13 @@ def _verify_token(session_path: Path) -> bool:
 
 
 def main() -> int:
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", "-o", type=Path, default=_DEFAULT_SESSION,
+                        help="Chemin du fichier de session (defaut: spotify_session.json)")
+    args = parser.parse_args()
+    SESSION_PATH = args.output
+
     try:
         from playwright.sync_api import sync_playwright
     except ImportError:
@@ -50,8 +57,8 @@ def main() -> int:
         return 1
 
     print(f"[INFO] Session sera sauvegardee dans: {SESSION_PATH}")
-    print("[INFO] Une fenetre de navigateur va s'ouvrir.")
-    print("[INFO] Connecte-toi a Spotify, puis reviens ici et appuie sur Entree.\n")
+    print("[INFO] Une fenetre de navigateur va s'ouvrir sur la page de login Spotify.")
+    print("[INFO] Connecte-toi, puis reviens ici et appuie sur Entree.\n")
 
     with sync_playwright() as p:
         # Essaie d'abord le vrai Chrome installé (moins détectable), sinon Chromium
@@ -74,19 +81,23 @@ def main() -> int:
         context = browser.new_context(
             user_agent=UA,
             viewport={"width": 1280, "height": 800},
-            # Masque navigator.webdriver
             java_script_enabled=True,
         )
-        # Injecte du JS pour cacher les traces Playwright avant chaque page
         context.add_init_script("""
             Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
             window.chrome = { runtime: {} };
         """)
         page = context.new_page()
-        page.goto(CHARTS_URL, wait_until="domcontentloaded", timeout=30_000)
+        # Login direct sur accounts.spotify.com — évite le popup OAuth bloqué
+        page.goto("https://accounts.spotify.com/login", wait_until="domcontentloaded", timeout=30_000)
 
         print("[WAIT] Connecte-toi dans le navigateur...")
         input("       Appuie sur Entree une fois connecte > ")
+
+        # Aller sur charts.spotify.com pour récupérer les cookies de session charts
+        print("[INFO] Navigation vers charts.spotify.com pour finaliser la session...")
+        page.goto(CHARTS_URL, wait_until="domcontentloaded", timeout=30_000)
+        page.wait_for_timeout(2000)
 
         # Sauvegarde la session au format Playwright (inclut cookies + localStorage)
         storage = context.storage_state()
