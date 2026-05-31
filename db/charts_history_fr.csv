@@ -90,7 +90,6 @@ date,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,movement
 2026-02-02,The Fate of Ophelia,16,188157,17,,123,123,+1
 2026-02-01,The Fate of Ophelia,17,179556,16,,122,122,-1
 2026-01-31,The Fate of Ophelia,16,230023,15,,121,121,-1
-2026-01-30,The Fate of Ophelia,15,217023,15,,120,120,0
 2026-01-26,The Fate of Ophelia,15,196609,15,,116,116,0
 2026-01-09,The Fate of Ophelia,25,262444,10,,99,99,-15
 2026-01-05,The Fate of Ophelia,9,224778,9,,95,95,0
@@ -1508,3 +1507,4 @@ date,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,movement
 2026-01-27,Opalite,196,56863,,8,24,1,RE
 2026-01-28,The Fate of Ophelia,15,213795,150,2,116,86,+135
 2026-01-29,The Fate of Ophelia,15,203064,150,2,117,87,+135
+2026-01-30,The Fate of Ophelia,15,217023,150,2,118,88,+135
