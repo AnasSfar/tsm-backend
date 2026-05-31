@@ -721,7 +721,7 @@ class GlobalPause:
     async def _resume(self, seconds: int) -> None:
         await asyncio.sleep(seconds)
         async with self._cond:
-            if asyncio.get_running_loop().time() >= self._resume_at - 0.1:
+            if self._state == "paused" and asyncio.get_running_loop().time() >= self._resume_at - 0.1:
                 self._pool.reset()
                 self._state = "probing"
                 print("  [pause ] reprise — sonde en cours", flush=True)

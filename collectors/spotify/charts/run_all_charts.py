@@ -781,7 +781,7 @@ def _wait_for_charts_available(
                 wait = RATE_LIMIT_RETRY_SECONDS
             else:
                 wait = 5 if is_network_err else AVAILABILITY_RETRY_SECONDS
-        label = "reseau" if is_network_err else "chart indisponible"
+        label = "reseau" if is_network_err else ("rate limited (429)" if is_rate_limited else "chart indisponible")
         print(f"[CHECK] {label} - retry dans {wait}s")
         time.sleep(wait)
         attempt += 1
