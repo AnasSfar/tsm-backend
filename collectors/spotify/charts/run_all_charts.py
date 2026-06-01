@@ -26,7 +26,7 @@ for _stream in (sys.stdout, sys.stderr):
 CHARTS_ROOT = Path(__file__).resolve().parent
 REPO_ROOT = CHARTS_ROOT.parents[2]
 sys.path.insert(0, str(REPO_ROOT / "collectors" / "spotify"))
-from core.data_paths import legacy_spotify_chart_dir, spotify_chart_dir
+from core.data_paths import legacy_spotify_chart_dir, run_all_charts_root, spotify_chart_dir
 from core.git_ops import git_commit_and_push
 from core.notify import send as _notify
 from core.retention import cleanup_generated_artifacts
@@ -112,6 +112,20 @@ def _legacy_region_lock(name: str, target: date, lock_name: str) -> Path:
 
 def _region_lock_exists(name: str, target: date, lock_name: str) -> bool:
     return _region_lock(name, target, lock_name).exists() or _legacy_region_lock(name, target, lock_name).exists()
+
+
+def _r2_export_lock(target: date) -> Path:
+    return run_all_charts_root(target) / "r2_exported.lock"
+
+
+def _r2_export_done(target: date) -> bool:
+    return _r2_export_lock(target).exists()
+
+
+def _mark_r2_exported(target: date) -> None:
+    lock = _r2_export_lock(target)
+    lock.parent.mkdir(parents=True, exist_ok=True)
+    lock.touch()
 
 
 def _region_data_exists(name: str, target: date) -> bool:
@@ -1191,17 +1205,21 @@ def _run_backfill(args, env: dict[str, str]) -> int:
         return 1
     if not args.dry_run and done_dates:
         latest_done = max(done_dates)
-        print(f"\n[BACKFILL] export web + upload R2 ({latest_done})...")
-        rc_export = _run(
-            "export",
-            REPO_ROOT / "scripts" / "export_for_web.py",
-            ["--new-date", str(latest_done)],
-            dry_run=False,
-            env={**env, "UPLOAD_TO_R2": "1"},
-            verbose=False,
-        )
-        if rc_export != 0:
-            return rc_export
+        if _r2_export_done(latest_done) and not args.force:
+            print(f"\n[BACKFILL] export web + upload R2 deja fait pour {latest_done} (r2_exported.lock), skip")
+        else:
+            print(f"\n[BACKFILL] export web + upload R2 ({latest_done})...")
+            rc_export = _run(
+                "export",
+                REPO_ROOT / "scripts" / "export_for_web.py",
+                ["--new-date", str(latest_done)],
+                dry_run=False,
+                env={**env, "UPLOAD_TO_R2": "1"},
+                verbose=False,
+            )
+            if rc_export != 0:
+                return rc_export
+            _mark_r2_exported(latest_done)
 
     print(f"[ OK ] backfill terminé — {total}")
     if not args.dry_run:
@@ -1369,17 +1387,22 @@ def main() -> int:
                 _warp_disconnect()
 
     if not args.dry_run and needs_collect:
-        print("\n[PHASE2] export web + upload R2...")
-        rc_export = _run(
-            "export",
-            REPO_ROOT / "scripts" / "export_for_web.py",
-            ["--new-date", str(target_date)],
-            dry_run=False,
-            env={**env, "UPLOAD_TO_R2": "1"},
-            verbose=args.verbose,
-        )
-        if rc_export != 0:
-            failures.append(("export", rc_export))
+        if _r2_export_done(target_date) and not args.force:
+            print(f"\n[PHASE2] export web + upload R2 deja fait pour {target_date} (r2_exported.lock), skip")
+        else:
+            print("\n[PHASE2] export web + upload R2...")
+            rc_export = _run(
+                "export",
+                REPO_ROOT / "scripts" / "export_for_web.py",
+                ["--new-date", str(target_date)],
+                dry_run=False,
+                env={**env, "UPLOAD_TO_R2": "1"},
+                verbose=args.verbose,
+            )
+            if rc_export != 0:
+                failures.append(("export", rc_export))
+            else:
+                _mark_r2_exported(target_date)
 
     should_generate_cards = "cards" in post_parts or args.force_cards or (args.no_post and args.force)
     should_post_cards = "cards" in post_parts
