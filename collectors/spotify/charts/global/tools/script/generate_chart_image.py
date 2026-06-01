@@ -272,6 +272,28 @@ def get_pct(today, ref):
     return (today - ref) / ref * 100
 
 
+def ref_streams_from_chart(track: str, ref_date: str):
+    """Read streams from an adjacent daily chart when ts_history is stale."""
+    json_path = date_dir_for(ref_date) / f"ts_chart_{ref_date}.json"
+    if not json_path.exists():
+        return None
+    try:
+        for row in load_json(json_path):
+            if str(row.get("track_name") or "") == track:
+                streams = nan_to_none(row.get("streams"))
+                return int(streams) if streams else None
+    except Exception:
+        return None
+    return None
+
+
+def ref_streams(track_hist: dict, track: str, ref_date: str):
+    streams = (track_hist.get(ref_date) or {}).get("streams")
+    if streams:
+        return streams
+    return ref_streams_from_chart(track, ref_date)
+
+
 def rank_change(rank, previous_rank, total_days=None):
     if previous_rank is None:
         if total_days and int(total_days) > 1:
@@ -548,8 +570,8 @@ def build_rows_html(
 
         # Daily / weekly % from ts_history
         track_hist   = history.get(track, {})
-        prev_streams = (track_hist.get(yesterday) or {}).get("streams")
-        week_streams = (track_hist.get(week_ago)  or {}).get("streams")
+        prev_streams = ref_streams(track_hist, track, yesterday)
+        week_streams = ref_streams(track_hist, track, week_ago)
         streams_int  = int(streams) if streams else None
 
         daily_pct  = get_pct(streams_int, prev_streams)

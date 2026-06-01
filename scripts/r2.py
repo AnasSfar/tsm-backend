@@ -30,6 +30,7 @@ ROOT = Path(__file__).resolve().parents[1]
 HISTORY_DIR = ROOT / "website" / "site" / "history"
 SITE_DATA_DIR = ROOT / "website" / "site" / "data"
 APPLE_MUSIC_IMAGES_DIR = SITE_DATA_DIR / "apple-music-images"
+DATA_ROOT = ROOT / "data"
 DB_DIR = ROOT / "db"
 ARCHIVE_STREAMS_HISTORY = ROOT / "data" / "_archive" / "original" / "db" / "streams_history.csv"
 WORLDWIDE_CHARTS_HISTORY_DIR = (
@@ -95,6 +96,45 @@ def get_s3_client():
 def load_json(path: Path) -> Any:
     with path.open("r", encoding="utf-8-sig") as f:
         return json.load(f)
+
+
+def iter_worldwide_chart_snapshots(new_date: str | None = None) -> list[Path]:
+    snapshots: dict[str, Path] = {}
+
+    def add(path: Path) -> None:
+        match = DATE_RE.search(path.name)
+        if match:
+            snapshots[match.group(1)] = path
+
+    if new_date:
+        data_path = (
+            DATA_ROOT
+            / new_date[:4]
+            / new_date[5:7]
+            / new_date
+            / "run_all_charts"
+            / "spotify"
+            / "worldwide"
+            / f"ts_worldwide_{new_date}.json"
+        )
+        legacy_path = (
+            WORLDWIDE_CHARTS_HISTORY_DIR
+            / new_date[:4]
+            / new_date[5:7]
+            / new_date
+            / f"ts_worldwide_{new_date}.json"
+        )
+        for path in (legacy_path, data_path):
+            if path.exists():
+                add(path)
+    else:
+        if WORLDWIDE_CHARTS_HISTORY_DIR.exists():
+            for path in sorted(WORLDWIDE_CHARTS_HISTORY_DIR.rglob("ts_worldwide_*.json")):
+                add(path)
+        for path in sorted(DATA_ROOT.glob("20??/??/????-??-??/run_all_charts/spotify/worldwide/ts_worldwide_*.json")):
+            add(path)
+
+    return [snapshots[d] for d in sorted(snapshots)]
 
 
 def head_object_safe(client, bucket: str, key: str) -> dict[str, Any] | None:
@@ -466,8 +506,8 @@ def upload_static_data(
     # Worldwide charts per-date snapshots
     # Produced by collectors/spotify/charts/worldwide/daily.py
     # Upload to history/charts_worldwide/YYYY-MM-DD.json so the API can serve historical worldwide data.
-    if WORLDWIDE_CHARTS_HISTORY_DIR.exists():
-        worldwide_files = sorted(WORLDWIDE_CHARTS_HISTORY_DIR.rglob("ts_worldwide_*.json"))
+    worldwide_files = iter_worldwide_chart_snapshots(new_date)
+    if worldwide_files:
         for path in worldwide_files:
             m = DATE_RE.search(path.name)
             if not m:
@@ -482,6 +522,8 @@ def upload_static_data(
                 continue
             data = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
             tasks.append((full_key, data, "application/json; charset=utf-8"))
+    else:
+        print("[SKIP] absent: worldwide chart snapshots")
 
     uploaded = 0
     unchanged = 0

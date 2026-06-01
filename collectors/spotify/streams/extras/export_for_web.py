@@ -49,6 +49,7 @@ SWIFT_TOP_100_CSV_PATH  = (
 SWIFT_TOP_100_JSON_PATH = SITE_DATA_DIR / "swift_top_100.json"
 
 TRACK_ID_RE = re.compile(r"track/([A-Za-z0-9]+)")
+DATE_RE = re.compile(r"(\d{4}-\d{2}-\d{2})")
 
 MILESTONES = [
     100_000_000,
@@ -151,6 +152,67 @@ def write_json(path: Path, payload) -> None:
         json.dumps(payload, ensure_ascii=False),
         encoding="utf-8",
     )
+
+
+def _worldwide_snapshot_candidates(chart_date: str | None = None) -> list[Path]:
+    candidates: dict[str, Path] = {}
+
+    def add(path: Path) -> None:
+        match = DATE_RE.search(path.name)
+        if match:
+            candidates[match.group(1)] = path
+
+    if chart_date:
+        data_path = (
+            _DATA_ROOT
+            / chart_date[:4]
+            / chart_date[5:7]
+            / chart_date
+            / "run_all_charts"
+            / "spotify"
+            / "worldwide"
+            / f"ts_worldwide_{chart_date}.json"
+        )
+        legacy_path = (
+            _REPO_ROOT
+            / "collectors"
+            / "spotify"
+            / "charts"
+            / "worldwide"
+            / "history"
+            / chart_date[:4]
+            / chart_date[5:7]
+            / chart_date
+            / f"ts_worldwide_{chart_date}.json"
+        )
+        for path in (legacy_path, data_path):
+            if path.exists():
+                add(path)
+    else:
+        legacy_root = _REPO_ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "history"
+        if legacy_root.exists():
+            for path in sorted(legacy_root.rglob("ts_worldwide_*.json")):
+                add(path)
+        for path in sorted(_DATA_ROOT.glob("20??/??/????-??-??/run_all_charts/spotify/worldwide/ts_worldwide_*.json")):
+            add(path)
+
+    return [candidates[d] for d in sorted(candidates)]
+
+
+def export_worldwide_chart_snapshot(chart_date: str | None = None) -> str | None:
+    snapshots = _worldwide_snapshot_candidates(chart_date)
+    if not snapshots:
+        suffix = f" for {chart_date}" if chart_date else ""
+        print(f"[WARN] No worldwide chart snapshot found{suffix}")
+        return None
+
+    src = snapshots[-1]
+    match = DATE_RE.search(src.name)
+    exported_date = match.group(1) if match else None
+    dst = SITE_DATA_DIR / "charts_worldwide.json"
+    shutil.copy2(src, dst)
+    print(f"[EXPORT] worldwide chart {exported_date} -> {dst}")
+    return exported_date
 
 
 def sorted_unique_dates(dates: list[str]) -> list[str]:
@@ -1219,6 +1281,7 @@ def export_for_web(stats_date: str | None = None) -> None:
         count += 1
     print(f"[EXPORT] {count} charts France exportés vers {fr_charts_dst}")
     SITE_DATA_DIR.mkdir(parents=True, exist_ok=True)
+    exported_worldwide_date = export_worldwide_chart_snapshot(stats_date)
     print(f"ROOT     = {ROOT}")
     print(f"HISTORY  = {HISTORY_CSV_PATH}")
     raw_songs = load_tracks_from_discography()
@@ -1425,7 +1488,7 @@ def export_for_web(stats_date: str | None = None) -> None:
     import os as _os, subprocess as _subprocess, sys as _sys
     try:
         from dotenv import load_dotenv as _load_dotenv
-        _load_dotenv(str(Path(__file__).resolve().parents[4] / ".env"), override=True)
+        _load_dotenv(str(Path(__file__).resolve().parents[4] / ".env"), override=False)
     except Exception:
         pass
     if _os.getenv("UPLOAD_TO_R2", "").strip().lower() not in ("0", "false", "no"):
@@ -1441,7 +1504,7 @@ def export_for_web(stats_date: str | None = None) -> None:
             _r2_script = Path(__file__).resolve().parents[4] / "scripts" / "r2.py"
             try:
                 _cmd = [_sys.executable, str(_r2_script), "--skip-history-upload", "--skip-db-upload"]
-                _new_date = latest_date
+                _new_date = stats_date or exported_worldwide_date or latest_date
                 if _new_date:
                     _cmd += ["--new-date", _new_date]
                 _subprocess.run(_cmd, check=True)
