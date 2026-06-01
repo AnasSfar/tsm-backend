@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import concurrent.futures
+import csv
 import json
 import os
 import re
@@ -65,6 +66,8 @@ def _warp_disconnect() -> None:
 REPO_ENV_FILE = REPO_ROOT / ".env"
 load_dotenv(REPO_ENV_FILE, override=False)
 R2_ENV_VARS = ("R2_ACCOUNT_ID", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY")
+STREAMS_HISTORY_CSV = REPO_ROOT / "db" / "streams_history.csv"
+ARCHIVED_STREAMS_HISTORY_CSV = REPO_ROOT / "data" / "_archive" / "original" / "db" / "streams_history.csv"
 SPOTIFY_API_BASE = "https://charts-spotify-com-service.spotify.com/auth/v0/charts"
 SPOTIFY_CHARTS_URL = "https://charts.spotify.com/charts/view/regional-global-daily/latest"
 SPOTIFY_SESSION = CHARTS_ROOT / "global" / "tools" / "json" / "spotify_session.json"
@@ -1101,7 +1104,58 @@ def _ensure_worldwide_valid(
     return False, reruns
 
 
-_ALL_POST_PARTS = {"artists", "global", "fr", "cards"}
+_ALL_POST_PARTS = {"artists", "best-day-since", "global", "fr", "cards"}
+
+
+def _streams_history_path() -> Path:
+    return STREAMS_HISTORY_CSV if STREAMS_HISTORY_CSV.exists() else ARCHIVED_STREAMS_HISTORY_CSV
+
+
+def _streams_history_has_date(target: date) -> bool:
+    path = _streams_history_path()
+    if not path.exists():
+        return False
+    target_key = target.isoformat()
+    try:
+        with path.open(newline="", encoding="utf-8-sig") as fh:
+            for row in csv.DictReader(fh):
+                if (row.get("date") or "").strip() == target_key:
+                    return True
+    except Exception as exc:
+        print(f"[WARN] streams_history illisible pour best-day-since: {exc}")
+    return False
+
+
+def _run_best_day_since_post(
+    target_date: date,
+    post_parts: set[str],
+    *,
+    force: bool,
+    env: dict[str, str],
+    verbose: bool,
+) -> tuple[str, int] | None:
+    if "best-day-since" not in post_parts:
+        return None
+    if not _streams_history_has_date(target_date):
+        print(f"\n[SKIP] best-day-since: streams_history ne contient pas {target_date}")
+        return None
+
+    print("\n[PHASE4] best-day-since...")
+    script = REPO_ROOT / "collectors" / "spotify" / "streams" / "tools" / "scripts" / "post_best_day_since_twitter.py"
+    args = [str(target_date), "--limit", "3"]
+    if force:
+        args.append("--force")
+    rc = _run(
+        "best-day",
+        script,
+        args,
+        dry_run=False,
+        env=env,
+        verbose=verbose,
+    )
+    if rc != 0:
+        return ("best-day-since", rc)
+    return None
 
 
 def _run_backfill(args, env: dict[str, str]) -> int:
@@ -1288,7 +1342,7 @@ def main() -> int:
         metavar="PART",
         default=None,
         help=(
-            "Parties à poster sur Twitter: artists, cards, fr, global. "
+            "Parties à poster sur Twitter: artists, best-day-since, cards, fr, global. "
             "Défaut: toutes. Exemple: --post global fr"
         ),
     )
@@ -1333,7 +1387,7 @@ def main() -> int:
     elif args.post is not None:
         post_parts = set(args.post)
     else:
-        post_parts = {"artists", "global", "fr", "cards"}  # défaut: tout poster
+        post_parts = set(_ALL_POST_PARTS)  # défaut: tout poster
 
     started = time.perf_counter()
     env = _build_env()
@@ -1352,8 +1406,9 @@ def main() -> int:
 
     target_date, _explicit_target_date = _extract_target_date(forwarded)
 
-    # Si on ne poste que les cards, pas besoin de collecter — les données sont déjà là
-    needs_collect = post_parts != {"cards"}
+    # Si on ne poste que les cards / best-day-since, pas besoin de collecter.
+    # Les cards lisent le snapshot worldwide existant; best-day-since lit streams_history.csv.
+    needs_collect = bool(post_parts - {"cards", "best-day-since"})
 
     failures: list[tuple[str, int]] = []
     ran_collect = False
@@ -1495,6 +1550,17 @@ def main() -> int:
         )
         if rc_cards != 0:
             failures.append(("cards", rc_cards))
+
+    if not args.dry_run and not args.no_post and not failures:
+        best_day_failure = _run_best_day_since_post(
+            target_date,
+            post_parts,
+            force=args.force,
+            env=env,
+            verbose=args.verbose,
+        )
+        if best_day_failure:
+            failures.append(best_day_failure)
 
     total = _fmt(time.perf_counter() - started)
     if failures:

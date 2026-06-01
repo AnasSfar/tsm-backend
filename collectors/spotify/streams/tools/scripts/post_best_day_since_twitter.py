@@ -83,6 +83,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Post top best-day-since songs to @tsmuseum13.")
     parser.add_argument("date", nargs="?", help="Stats date YYYY-MM-DD. Defaults to yesterday.")
     parser.add_argument("--no-post", action="store_true", help="Generate images but skip Twitter posts.")
+    parser.add_argument("--force", action="store_true", help="Post again even if best_day_since_posted.lock exists.")
     parser.add_argument("--limit", type=int, default=3, help="Number of songs to post (default: 3).")
     parser.add_argument("--min-days", type=int, default=14, help="Minimum days for best-day-since (default: 14).")
     parser.add_argument(
@@ -103,7 +104,7 @@ def main() -> None:
     day_dir.mkdir(parents=True, exist_ok=True)
     lock = day_dir / "best_day_since_posted.lock"
 
-    if lock.exists() and not args.no_post:
+    if lock.exists() and not args.no_post and not args.force:
         print(f"[best_day_since_post] Already posted for {target_date}, skipping.")
         return
     if lock.exists() and args.no_post:

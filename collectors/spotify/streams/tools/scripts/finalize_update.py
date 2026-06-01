@@ -183,6 +183,24 @@ def _export_web_data_once(ctx: FinalizeContext, *, force: bool = False) -> None:
     print("Web export done.")
 
 
+def _refresh_release_dates(ctx: FinalizeContext) -> bool:
+    if ctx.local_test_mode:
+        print("[LOCAL-TEST] Skip Spotify release-date refresh.")
+        return False
+
+    release_dates_script = ctx.script_dir / "tools" / "scripts" / "update_release_dates.py"
+    print("Refreshing Spotify API release dates...")
+    result = subprocess.run(
+        [sys.executable, str(release_dates_script)],
+        cwd=str(ctx.repo_root),
+        check=False,
+    )
+    if result.returncode != 0:
+        print(f"Release-date refresh exited with code {result.returncode}; continuing.")
+        return False
+    return True
+
+
 def _post_streams_image(ctx: FinalizeContext, state: dict[str, float]) -> None:
     if ctx.debug_daily_mode:
         print("[DEBUG-DAILY] Skip: Twitter, forecast, images, git, notify.")
@@ -336,6 +354,20 @@ def _post_albums_daily(ctx: FinalizeContext, state: dict[str, float]) -> None:
     )
 
 
+def _post_debut_releases(ctx: FinalizeContext, state: dict[str, float]) -> None:
+    debut_script = ctx.script_dir / "tools" / "scripts" / "post_debut_releases.py"
+    cmd = [sys.executable, str(debut_script), ctx.summary["stats_date"]]
+    if ctx.no_post_mode:
+        cmd.append("--no-post")
+    _run(
+        ctx,
+        cmd,
+        label="debut release posts",
+        should_post=not ctx.no_post_mode,
+        state=state,
+    )
+
+
 def _post_spotlight_gainers(ctx: FinalizeContext, state: dict[str, float]) -> None:
     if not ctx.all_album_tracks_done(ctx.summary["stats_date"]):
         print("Stream highlights skipped: not all album tracks are done yet.")
@@ -475,7 +507,8 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
         return
 
     artist_metadata_updated = _update_artist_metadata(ctx)
-    _export_web_data_once(ctx, force=artist_metadata_updated)
+    release_dates_refreshed = _refresh_release_dates(ctx)
+    _export_web_data_once(ctx, force=artist_metadata_updated or release_dates_refreshed)
 
     spotlight_thread = None
     if (
@@ -490,6 +523,7 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
     if ctx.debug_daily_mode or ctx.local_test_mode:
         return
 
+    _post_debut_releases(ctx, post_state)
     _post_album_updates(ctx, post_state)
     _post_albums_daily(ctx, post_state)
     _run_forecast_and_image_refresh(ctx)

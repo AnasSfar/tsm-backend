@@ -24,15 +24,17 @@ _REPO_ROOT = _SCRIPT_DIR.parents[2]
 sys.path.insert(0, str(_SCRIPT_DIR / "tools" / "scripts"))
 sys.path.insert(0, str(_SCRIPT_DIR / "extras"))
 sys.path.insert(0, str(_SCRIPT_DIR.parents[0]))  # collectors/spotify/ for core.*
+sys.path.insert(0, str(_REPO_ROOT / "scripts"))
 
 import export_for_web
-from catalog_gap_report import write_catalog_gap_report
+from backfill_discography_from_spotify import run_backfill as run_discography_backfill
 from finalize_update import (
     ALBUM_UPDATE_TARGETS,
     FinalizeContext,
     ReadyAlbumUpdatePoster,
     run_final_update_tasks,
 )
+from post_debut_releases import post_debut_releases
 from reporting import ProgressLogger, print_remaining_details, print_summary_block, update_json_logs_from_summary
 import spotify_api as _spotify_api
 from stream_utils import block_unneeded, format_int, get_previous_stats_date_str, get_stats_date_str, launch_browser
@@ -507,15 +509,93 @@ def print_api_metrics(summary: dict) -> None:
     )
 
 
-def run_catalog_gap_scan(token_mgr: TokenManager | None, stats_date: str) -> None:
+def run_discography_backfill_after_streams(token_mgr: TokenManager | None, stats_date: str) -> None:
     if token_mgr is None:
         return
     tokens = token_mgr.get()
     if not tokens.get("bearer") or not tokens.get("client_token"):
         return
 
-    print("Running Spotify catalog gap scan after streams posting...")
-    write_catalog_gap_report(tokens=tokens, stats_date=stats_date)
+    print("Running Spotify discography backfill after streams posting...")
+    try:
+        result = run_discography_backfill(
+            apply=True,
+            no_backup=False,
+            include_non_songs=False,
+            skip_api=False,
+            tokens=tokens,
+            recent_release_limit=12,
+            verbose=False,
+        )
+    except Exception as exc:
+        print(f"[discography] Backfill failed (non-blocking): {exc}")
+        return
+
+    print(
+        "[discography] "
+        f"db_duplicates_removed={result.get('db_duplicates_removed', 0)} | "
+        f"release_date_updates={result.get('updates', 0)} | "
+        f"additions={result.get('additions', 0)} | "
+        f"matched_existing={result.get('matched_existing_by_title_streams', 0)} | "
+        f"written_files={result.get('written_files', 0)}"
+    )
+
+
+def run_new_release_preflight(token_mgr: TokenManager | None, stats_date: str) -> set[str]:
+    if token_mgr is None:
+        return set()
+    tokens = token_mgr.get()
+    if not tokens.get("bearer") or not tokens.get("client_token"):
+        return set()
+
+    print("Checking recent Spotify releases before stream collection...")
+    try:
+        result = run_discography_backfill(
+            apply=True,
+            no_backup=False,
+            include_non_songs=False,
+            skip_api=False,
+            tokens=tokens,
+            recent_release_limit=12,
+            verbose=False,
+        )
+    except Exception as exc:
+        print(f"[discography] Recent release preflight failed (non-blocking): {exc}")
+        return set()
+
+    added_ids = {str(track_id) for track_id in (result.get("added_track_ids") or []) if str(track_id)}
+    print(
+        "[discography] recent preflight | "
+        f"db_duplicates_removed={result.get('db_duplicates_removed', 0)} | "
+        f"release_date_updates={result.get('updates', 0)} | "
+        f"additions={result.get('additions', 0)} | "
+        f"new_track_ids={len(added_ids)}"
+    )
+    return added_ids
+
+
+def filter_tracks_released_on(track_ids: set[str], target_date: str) -> set[str]:
+    if not track_ids:
+        return set()
+
+    paths = sorted(DB_ALBUMS_DIR.glob("*.json"))
+    for extra_path in (DB_SONGS_JSON, DISCOGRAPHY_DIR / "features.json", DISCOGRAPHY_DIR / "misc.json"):
+        if extra_path.exists():
+            paths.append(extra_path)
+
+    released: set[str] = set()
+    for path in paths:
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8-sig"))
+        except Exception:
+            continue
+        sections = payload.get("sections") if isinstance(payload, dict) else payload
+        for section in sections if isinstance(sections, list) else []:
+            for track in section.get("tracks") or []:
+                track_id = extract_track_id(track.get("url") or track.get("spotify_url") or "")
+                if track_id in track_ids and track.get("release_date") == target_date:
+                    released.add(track_id)
+    return released
 
 
 def run_probe(tracks: list[dict]) -> dict:
@@ -1210,6 +1290,7 @@ def main():
         run_debug_total_replace(stats_date)
         return
 
+    token_mgr = None
     active_track_ids = load_active_track_ids_from_discography()
     tracks = load_tracks_from_discography(active_track_ids)
 
@@ -1234,6 +1315,29 @@ def main():
         print(f"[LOCAL-TEST] Re-scraping {total_tracks} tracks; existing {stats_date} rows will not be skipped.")
     elif dry_run_mode:
         print(f"[DRY-RUN] Scraping {total_tracks} tracks.")
+
+    should_check_recent_releases = (
+        not dry_run_mode
+        and not local_test_mode
+        and not debug_daily_mode
+        and stats_date_override is None
+    )
+
+    new_release_track_ids: set[str] = set()
+    if should_check_recent_releases:
+        if token_mgr is None:
+            token_mgr = TokenManager()
+        if not token_mgr.capture():
+            print("TokenManager: échec — impossible d'obtenir les tokens Spotify. Vérifiez la connexion.")
+            sys.exit(1)
+        new_release_track_ids = run_new_release_preflight(token_mgr, stats_date)
+        if new_release_track_ids:
+            active_track_ids = load_active_track_ids_from_discography()
+            tracks = load_tracks_from_discography(active_track_ids)
+            already_done_for_stats_date = load_history_track_ids_for_date(stats_date)
+            done_tracks_before_run = len(already_done_for_stats_date)
+            total_tracks = len(tracks)
+            print(f"[discography] Reloaded {total_tracks} track(s) after new release preflight.")
 
     # Si tous les tracks sont déjà done, ou si on backfille une date déjà dépassée,
     # on saute Playwright/API entièrement
@@ -1261,12 +1365,15 @@ def main():
 
     if scraping_needed:
         # Capture des tokens API (une seule fois pour tout le run)
-        token_mgr = TokenManager()
-        if not token_mgr.capture():
+        if token_mgr is None:
+            token_mgr = TokenManager()
+            captured_tokens = token_mgr.capture()
+        else:
+            captured_tokens = True
+        if not captured_tokens:
             print("TokenManager: échec — impossible d'obtenir les tokens Spotify. Vérifiez la connexion.")
             sys.exit(1)
     else:
-        token_mgr = None
         print("Tous les tracks déjà mis à jour pour cette date — Playwright/scraping ignoré.")
 
     should_run_probe = (
@@ -1329,6 +1436,39 @@ def main():
     print("=" * 70)
     print("Run")
     print("=" * 70)
+
+    if (
+        new_release_track_ids
+        and scraping_needed
+        and not dry_run_mode
+        and not local_test_mode
+        and not debug_daily_mode
+    ):
+        priority_new_ids = filter_tracks_released_on(new_release_track_ids, stats_date)
+        priority_new_ids -= load_history_track_ids_for_date(stats_date)
+        if priority_new_ids:
+            print()
+            print("=" * 70)
+            print(f"New Release Priority Run ({len(priority_new_ids)} track(s))")
+            print("=" * 70)
+            priority_progress = ProgressLogger(LOG_MODE)
+            priority_summary = run_update(
+                on_progress=priority_progress,
+                stats_date_override=stats_date_override,
+                dry_run_mode=False,
+                only_track_ids=priority_new_ids,
+                token_mgr=token_mgr,
+                force_reprocess=force_reprocess,
+                write_history=write_history,
+            )
+            print_summary_block(priority_summary)
+            print_api_metrics(priority_summary)
+
+            if not no_post_mode:
+                export_for_web.main()
+                post_debut_releases(stats_date, no_post=False)
+            else:
+                post_debut_releases(stats_date, no_post=True)
 
     _artist_result: list[dict | None] = [None]
 
@@ -1510,7 +1650,7 @@ def main():
     ))
 
     if not dry_run_mode and not debug_daily_mode and not local_test_mode and not throwback_mode:
-        run_catalog_gap_scan(token_mgr, stats_date)
+        run_discography_backfill_after_streams(token_mgr, stats_date)
 
     elapsed = time.perf_counter() - START_TIME
     print()

@@ -289,6 +289,7 @@ def load_tracks_from_discography() -> list[dict]:
                 "artists": artists,
                 "appearances": [],
                 "historical_track_ids": historical_ids,
+                "release_date": track.get("release_date") or None,
             }
 
     return list(seen.values())
@@ -409,6 +410,10 @@ def dedupe_songs_for_site(
         kept["display_order"] = primary.get("display_order") if primary else kept.get("display_order")
         kept["base_title"] = primary.get("base_title") if primary else kept.get("base_title")
         kept["chart_extra"] = primary.get("chart_extra") if primary else kept.get("chart_extra")
+        kept["release_date"] = kept.get("release_date") or next(
+            (song.get("release_date") for song in group if song.get("release_date")),
+            None,
+        )
 
         deduped.append(kept)
 
@@ -891,6 +896,7 @@ def enrich_albums_payload(albums_payload: list[dict], songs_by_id: dict[str, dic
 
         total_streams_sum = sum((t.get("streams") or 0) for t in tracks)
         daily_streams_sum = sum((t.get("daily_streams") or 0) for t in tracks)
+        release_dates = [t.get("release_date") for t in tracks if t.get("release_date")]
 
         top_song_total = max(tracks, key=lambda t: t.get("streams") or 0)["track_id"] if tracks else None
         top_song_daily = max(tracks, key=lambda t: t.get("daily_streams") or 0)["track_id"] if tracks else None
@@ -901,6 +907,7 @@ def enrich_albums_payload(albums_payload: list[dict], songs_by_id: dict[str, dic
         enriched["daily_streams_sum"] = daily_streams_sum
         enriched["top_song_total"] = top_song_total
         enriched["top_song_daily"] = top_song_daily
+        enriched["release_date"] = min(release_dates) if release_dates else None
 
         if album.get("album") == "Misc":
             for group in enriched.get("groups", []):
