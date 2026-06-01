@@ -1,8 +1,8 @@
-﻿[
+[
   {
     "album": "Standalone & Extras",
     "section": "collabs_and_features",
-    "track_count": 9,
+    "track_count": 10,
     "tracks": [
       {
         "title": "Renegade",
@@ -42,7 +42,8 @@
         "song_family": "renegade",
         "version_tag": "standalone",
         "image_url": "https://i.scdn.co/image/ab67616d0000b273f0b56f34301a37d015cbb678",
-        "display_era": "Misc"
+        "display_era": "Misc",
+        "release_date": "2021-08-17T00:00:00Z"
       },
       {
         "title": "The Joker And The Queen (feat. Taylor Swift)",
@@ -201,8 +202,356 @@
         "version_tag": "featured__feature",
         "image_url": "https://i.scdn.co/image/ab67616d0000b2736e2101520787791370f4a96b",
         "display_era": "Features"
+      },
+      {
+        "title": "Better Man",
+        "url": "https://open.spotify.com/intl-fr/track/3EXetjrGgwIjDRNn6YA8sa",
+        "type": "feature",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 11,
+        "base_title": "Better Man",
+        "album": "Standalone & Extras",
+        "primary_artist": "Little Big Town",
+        "featured_artists": [],
+        "artists": [
+          "Little Big Town"
+        ],
+        "title_clean": "Better Man",
+        "song_family": "better_man",
+        "version_tag": "feature",
+        "release_date": "2017-11-09T00:00:00Z",
+        "historical_track_ids": []
       }
     ]
+  },
+  {
+    "album": "Standalone & Extras",
+    "section": "acoustic",
+    "track_count": 1,
+    "tracks": [
+      {
+        "title": "Fortnight (feat. Post Malone) [Acoustic Version]",
+        "url": "",
+        "type": "acoustic",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 999,
+        "base_title": "Fortnight [Acoustic Version]",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [
+          "Post Malone"
+        ],
+        "artists": [
+          "Taylor Swift",
+          "Post Malone"
+        ],
+        "title_clean": "Fortnight [Acoustic Version]",
+        "song_family": "fortnight_acoustic_version",
+        "version_tag": "featured__extras__acoustic",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/b8/8e/f3/b88ef31b-9b08-2b93-c7cd-1f42b6824c75/24UMGIM52327.rgb.jpg/64x64bb.jpg"
+      }
+    ],
+    "display_section": "Extras",
+    "edition": "extras"
+  },
+  {
+    "album": "Standalone & Extras",
+    "section": "collabs_and_features",
+    "track_count": 7,
+    "tracks": [
+      {
+        "title": "Babe (feat. Taylor Swift) [Commentary]",
+        "url": "",
+        "type": "alternate_version",
+        "edition": "extras",
+        "display_section": "collabs and features",
+        "display_order": 999,
+        "base_title": "Babe [Commentary]",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [
+          "Taylor Swift"
+        ],
+        "artists": [
+          "Taylor Swift",
+          "Taylor Swift"
+        ],
+        "title_clean": "Babe [Commentary]",
+        "song_family": "babe_commentary",
+        "version_tag": "featured__extras__alternate_version",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/b8/54/ea/b854ea75-4cf5-eaf9-7124-88aba6d95b1c/00602577280603.rgb.jpg/64x64bb.jpg"
+      },
+      {
+        "title": "Breathe (feat. Colbie Caillat) [Karaoke Version]",
+        "url": "",
+        "type": "alternate_version",
+        "edition": "extras",
+        "display_section": "collabs and features",
+        "display_order": 999,
+        "base_title": "Breathe [Karaoke Version]",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [
+          "Colbie Caillat"
+        ],
+        "artists": [
+          "Taylor Swift",
+          "Colbie Caillat"
+        ],
+        "title_clean": "Breathe [Karaoke Version]",
+        "song_family": "breathe_karaoke_version",
+        "version_tag": "featured__extras__alternate_version",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/5c/93/90/5c939086-709e-4215-e448-010ac98bfe0a/00602527718941.rgb.jpg/64x64bb.jpg"
+      },
+      {
+        "title": "End Game (feat. Ed Sheeran & Future) [Karaoke Version]",
+        "url": "",
+        "type": "alternate_version",
+        "edition": "extras",
+        "display_section": "collabs and features",
+        "display_order": 999,
+        "base_title": "End Game [Karaoke Version]",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [
+          "Ed Sheeran",
+          "Future"
+        ],
+        "artists": [
+          "Taylor Swift",
+          "Ed Sheeran",
+          "Future"
+        ],
+        "title_clean": "End Game [Karaoke Version]",
+        "song_family": "end_game_karaoke_version",
+        "version_tag": "featured__extras__alternate_version",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/77/64/85/77648585-afe7-7036-c506-88dcd8f344b8/00843930034963.rgb.jpg/64x64bb.jpg"
+      },
+      {
+        "title": "Everything Has Changed (feat. Ed Sheeran) [Karaoke Version]",
+        "url": "",
+        "type": "alternate_version",
+        "edition": "extras",
+        "display_section": "collabs and features",
+        "display_order": 999,
+        "base_title": "Everything Has Changed [Karaoke Version]",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [
+          "Ed Sheeran"
+        ],
+        "artists": [
+          "Taylor Swift",
+          "Ed Sheeran"
+        ],
+        "title_clean": "Everything Has Changed [Karaoke Version]",
+        "song_family": "everything_has_changed_karaoke_version",
+        "version_tag": "featured__extras__alternate_version",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/24/9d/c5/249dc52e-452b-549b-4e9e-90a5b12cba66/00602537315482.rgb.jpg/64x64bb.jpg"
+      },
+      {
+        "title": "exile (feat. Bon Iver) [the long pond studio sessions]",
+        "url": "",
+        "type": "alternate_version",
+        "edition": "extras",
+        "display_section": "collabs and features",
+        "display_order": 999,
+        "base_title": "exile [the long pond studio sessions]",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [
+          "Bon Iver"
+        ],
+        "artists": [
+          "Taylor Swift",
+          "Bon Iver"
+        ],
+        "title_clean": "exile [the long pond studio sessions]",
+        "song_family": "exile_the_long_pond_studio_sessions",
+        "version_tag": "featured__extras__alternate_version",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/dd/6a/2f/dd6a2fec-2476-b44a-f2cc-8a2736143d8c/20UM1IM08851.rgb.jpg/64x64bb.jpg"
+      },
+      {
+        "title": "The Last Time (Taylor's Version) [feat. Gary Lightbody]",
+        "url": "",
+        "type": "alternate_version",
+        "edition": "extras",
+        "display_section": "collabs and features",
+        "display_order": 999,
+        "base_title": "The Last Time [feat. Gary Lightbody]",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "The Last Time [feat. Gary Lightbody]",
+        "song_family": "the_last_time_feat_gary_lightbody",
+        "version_tag": "extras__taylors_version__alternate_version",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/38/9b/15389bf4-8074-06c3-11ee-655b5453af68/21UM1IM25046.rgb.jpg/64x64bb.jpg"
+      },
+      {
+        "title": "The Life of a Showgirl (feat. Sabrina Carpenter) [Dressing Room Rehearsal Version]",
+        "url": "",
+        "type": "alternate_version",
+        "edition": "extras",
+        "display_section": "collabs and features",
+        "display_order": 999,
+        "base_title": "The Life of a Showgirl [Dressing Room Rehearsal Version]",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [
+          "Sabrina Carpenter"
+        ],
+        "artists": [
+          "Taylor Swift",
+          "Sabrina Carpenter"
+        ],
+        "title_clean": "The Life of a Showgirl [Dressing Room Rehearsal Version]",
+        "song_family": "the_life_of_a_showgirl_dressing_room_rehearsal_version",
+        "version_tag": "featured__extras__alternate_version",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/0e/e5/c7/0ee5c717-114f-f4e8-9f7c-e92dd6eb9152/25UM1IM74420.rgb.jpg/64x64bb.jpg"
+      }
+    ],
+    "display_section": "collabs and features",
+    "edition": "extras"
+  },
+  {
+    "album": "Standalone & Extras",
+    "section": "live",
+    "track_count": 1,
+    "tracks": [
+      {
+        "title": "Hold On (feat. Taylor Swift) [Live]",
+        "url": "",
+        "type": "live",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 999,
+        "base_title": "Hold On [Live]",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [
+          "Taylor Swift"
+        ],
+        "artists": [
+          "Taylor Swift",
+          "Taylor Swift"
+        ],
+        "title_clean": "Hold On [Live]",
+        "song_family": "hold_on_live",
+        "version_tag": "featured__extras__live",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/59/d2/ed/59d2ed15-70aa-35da-daa3-07c7da7fc267/00843930037070.rgb.jpg/64x64bb.jpg"
+      }
+    ],
+    "display_section": "Extras",
+    "edition": "extras"
+  },
+  {
+    "album": "Standalone & Extras",
+    "section": "vault_tracks",
+    "track_count": 5,
+    "tracks": [
+      {
+        "title": "Castles Crumbling (Taylor's Version) (From The Vault) [feat. Hayley Williams]",
+        "url": "",
+        "type": "alternate_version",
+        "edition": "vault",
+        "display_section": "vault tracks",
+        "display_order": 999,
+        "base_title": "Castles Crumbling [feat. Hayley Williams]",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Castles Crumbling [feat. Hayley Williams]",
+        "song_family": "castles_crumbling_feat_hayley_williams",
+        "version_tag": "vault__taylors_version__vault_track__alternate_version",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/9f/3c/0a/9f3c0a60-f9e0-a34e-60e5-0be1f182896b/23UMGIM63932.rgb.jpg/64x64bb.jpg"
+      },
+      {
+        "title": "Electric Touch (Taylor's Version) (From The Vault) [feat. Fall Out Boy]",
+        "url": "",
+        "type": "alternate_version",
+        "edition": "vault",
+        "display_section": "vault tracks",
+        "display_order": 999,
+        "base_title": "Electric Touch [feat. Fall Out Boy]",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Electric Touch [feat. Fall Out Boy]",
+        "song_family": "electric_touch_feat_fall_out_boy",
+        "version_tag": "vault__taylors_version__vault_track__alternate_version",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/9f/3c/0a/9f3c0a60-f9e0-a34e-60e5-0be1f182896b/23UMGIM63932.rgb.jpg/64x64bb.jpg"
+      },
+      {
+        "title": "I Bet You Think About Me (Taylor's Version) [From The Vault] [feat. Chris Stapleton]",
+        "url": "",
+        "type": "alternate_version",
+        "edition": "vault",
+        "display_section": "vault tracks",
+        "display_order": 999,
+        "base_title": "I Bet You Think About Me [From The Vault] [feat. Chris Stapleton]",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "I Bet You Think About Me [From The Vault] [feat. Chris Stapleton]",
+        "song_family": "i_bet_you_think_about_me_from_the_vault_feat_chris_stapleton",
+        "version_tag": "vault__taylors_version__vault_track__alternate_version",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/38/9b/15389bf4-8074-06c3-11ee-655b5453af68/21UM1IM25046.rgb.jpg/64x64bb.jpg"
+      },
+      {
+        "title": "Nothing New (Taylor's Version) [From The Vault] [feat. Phoebe Bridgers]",
+        "url": "",
+        "type": "alternate_version",
+        "edition": "vault",
+        "display_section": "vault tracks",
+        "display_order": 999,
+        "base_title": "Nothing New [From The Vault] [feat. Phoebe Bridgers]",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Nothing New [From The Vault] [feat. Phoebe Bridgers]",
+        "song_family": "nothing_new_from_the_vault_feat_phoebe_bridgers",
+        "version_tag": "vault__taylors_version__vault_track__alternate_version",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/38/9b/15389bf4-8074-06c3-11ee-655b5453af68/21UM1IM25046.rgb.jpg/64x64bb.jpg"
+      },
+      {
+        "title": "You All Over Me (Taylor's Version) [From The Vault] [feat. Maren Morris]",
+        "url": "",
+        "type": "alternate_version",
+        "edition": "vault",
+        "display_section": "vault tracks",
+        "display_order": 999,
+        "base_title": "You All Over Me [From The Vault] [feat. Maren Morris]",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "You All Over Me [From The Vault] [feat. Maren Morris]",
+        "song_family": "you_all_over_me_from_the_vault_feat_maren_morris",
+        "version_tag": "vault__taylors_version__vault_track__alternate_version",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/64x64bb.jpg"
+      }
+    ],
+    "display_section": "vault tracks",
+    "edition": "vault"
   },
   {
     "album": "Standalone & Extras",

@@ -135,7 +135,7 @@
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2022-01-21T00:00:00Z"
         },
         {
           "title": "Nothing New (feat. Phoebe Bridgers) (Taylor's Version) (From The Vault)",
@@ -687,9 +687,7 @@
           "version_tag": "taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d5cc403148a5161b4561cf61",
           "display_era": "Red",
-          "historical_track_ids": [
-            "0gPmM1WtVRg3uENW3o8bfx"
-          ],
+          "historical_track_ids": [],
           "release_date": "2021-11-12T00:00:00Z"
         },
         {

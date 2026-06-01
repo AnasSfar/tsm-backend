@@ -27,7 +27,7 @@
           "version_tag": "deluxe__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c288028c2592f400dd0b9233",
           "historical_track_ids": [],
-          "release_date": "2020-08-18T00:00:00Z"
+          "release_date": "2020-08-17T00:00:00Z"
         }
       ]
     },
@@ -54,8 +54,7 @@
           "song_family": "the_lakes",
           "version_tag": "deluxe__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737d60bda8f85d66599c3fe851",
-          "historical_track_ids": [],
-          "release_date": "2021-07-24T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     },
@@ -82,9 +81,7 @@
           "song_family": "betty",
           "version_tag": "live__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2736761ef4b8f9e8b2007f4d8c3",
-          "historical_track_ids": [
-            "1hm4V38egkiHOgxTUpu0zg"
-          ],
+          "historical_track_ids": [],
           "release_date": "2020-09-18T00:00:00Z"
         },
         {
@@ -105,8 +102,7 @@
           "song_family": "cardigan",
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27326ade10c17424417bd06f1d6",
-          "historical_track_ids": [],
-          "release_date": "2020-07-30T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     },
@@ -135,8 +131,7 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732c683c1b9fa1b711499408f7",
           "display_era": "folklore",
-          "historical_track_ids": [],
-          "release_date": "2022-06-24T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Carolina - From The Motion Picture “Where The Crawdads Sing”",
@@ -157,8 +152,7 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732c683c1b9fa1b711499408f7",
           "display_era": "folklore",
-          "historical_track_ids": [],
-          "release_date": "2022-06-24T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     },
@@ -369,7 +363,7 @@
           "historical_track_ids": [
             "0ZNU020wNYvgW84iljPkPP"
           ],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-07-24T00:00:00Z"
         },
         {
           "title": "mad woman",
@@ -497,7 +491,7 @@
           "historical_track_ids": [
             "0Jlcvv8IykzHaSmj49uNW8"
           ],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-07-24T00:00:00Z"
         },
         {
           "title": "the last great american dynasty",
@@ -520,7 +514,7 @@
           "historical_track_ids": [
             "2Eeur20xVqfUoM3Q7EFPFt"
           ],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-07-24T00:00:00Z"
         }
       ]
     },
@@ -851,8 +845,7 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
           "display_era": "folklore",
-          "historical_track_ids": [],
-          "release_date": "2020-11-25T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "the 1 - the long pond studio sessions",
@@ -873,8 +866,7 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
           "display_era": "folklore",
-          "historical_track_ids": [],
-          "release_date": "2020-11-25T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "the last great american dynasty - the long pond studio sessions",

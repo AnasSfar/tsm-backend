@@ -27,7 +27,7 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2022-10-21T00:00:00Z"
         },
         {
           "title": "Bigger Than The Whole Sky",
@@ -48,7 +48,7 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2022-10-21T00:00:00Z"
         },
         {
           "title": "Paris",
@@ -69,7 +69,7 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2022-10-21T00:00:00Z"
         },
         {
           "title": "High Infidelity",
@@ -90,7 +90,7 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2022-10-21T00:00:00Z"
         },
         {
           "title": "Glitch",
@@ -111,7 +111,7 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2022-10-21T00:00:00Z"
         },
         {
           "title": "Would've, Could've, Should've",
@@ -132,7 +132,7 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2022-10-21T00:00:00Z"
         },
         {
           "title": "Dear Reader",
@@ -153,7 +153,7 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2022-10-21T00:00:00Z"
         }
       ]
     },
@@ -209,7 +209,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2022-10-21T00:00:00Z"
+          "release_date": "2023-03-03T00:00:00Z"
         },
         {
           "title": "Maroon",
@@ -251,7 +251,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2022-10-21T00:00:00Z"
+          "release_date": "2022-11-08T00:00:00Z"
         },
         {
           "title": "Snow On The Beach (feat. Lana Del Rey)",
@@ -401,7 +401,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2022-10-21T00:00:00Z"
         },
         {
           "title": "Karma",
@@ -422,7 +422,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2022-10-21T00:00:00Z"
         },
         {
           "title": "Sweet Nothing",
@@ -443,7 +443,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2022-10-21T00:00:00Z"
         },
         {
           "title": "Mastermind",
@@ -464,7 +464,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2022-10-21T00:00:00Z"
         }
       ]
     },
@@ -571,7 +571,7 @@
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2739954fa9f0ba8534c3897b59d",
           "historical_track_ids": [],
-          "release_date": "2022-11-11T00:00:00Z"
+          "release_date": "2022-11-08T00:00:00Z"
         },
         {
           "title": "Anti-Hero - ILLENIUM Remix",
@@ -591,8 +591,7 @@
           "song_family": "anti_hero",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273eb7289d463cd524a93b722c9",
-          "historical_track_ids": [],
-          "release_date": "2022-11-18T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Anti-Hero - Jayda G Remix",
@@ -675,8 +674,7 @@
           "song_family": "anti_hero",
           "version_tag": "acoustic__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730fc559ebbed8b0b100ad206c",
-          "historical_track_ids": [],
-          "release_date": "2022-11-25T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Lavender Haze - Felix Jaehn Remix",
@@ -696,9 +694,7 @@
           "song_family": "lavender_haze",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27390212229c9230e320fe0ecd3",
-          "historical_track_ids": [
-            "5KxZfCXXmVvKhPo8hQz2pS"
-          ],
+          "historical_track_ids": [],
           "release_date": "2023-02-10T00:00:00Z"
         },
         {
@@ -719,8 +715,7 @@
           "song_family": "lavender_haze",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f7c84273e5c8ecb7594b4357",
-          "historical_track_ids": [],
-          "release_date": "2023-03-03T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Lavender Haze - Snakehips Remix",
@@ -791,8 +786,7 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f233c37dddd971caf61515cf",
           "display_era": "Midnights",
-          "historical_track_ids": [],
-          "release_date": "2023-03-31T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     }

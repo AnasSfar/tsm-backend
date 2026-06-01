@@ -1,7 +1,7 @@
 {
   "album": "evermore",
   "section_count": 4,
-  "track_count": 21,
+  "track_count": 23,
   "sections": [
     {
       "section": "remixes",
@@ -26,9 +26,7 @@
           "song_family": "willow",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
-          "historical_track_ids": [
-            "77d7q9TNbsIDmRTDPkPv3L"
-          ],
+          "historical_track_ids": [],
           "release_date": "2020-12-15T00:00:00Z"
         },
         {
@@ -49,10 +47,7 @@
           "song_family": "willow",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273ec07f0fc562d46804df394b4",
-          "historical_track_ids": [
-            "5F7hpFKLmWgMHGxQuwssuv"
-          ],
-          "release_date": "2020-12-16T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     },
@@ -107,7 +102,7 @@
     },
     {
       "section": "remixes",
-      "track_count": 2,
+      "track_count": 4,
       "chart_extra": true,
       "tracks": [
         {
@@ -128,8 +123,7 @@
           "song_family": "willow",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27348ea2c0fbc6682c6d10d91aa",
-          "historical_track_ids": [],
-          "release_date": "2021-06-14T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "willow - dancing witch version (Elvira remix)",
@@ -149,10 +143,48 @@
           "song_family": "willow",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e141efa4999ddb4b52512a7c",
-          "historical_track_ids": [
-            "2Ta5c5Z6DvM8GX0U1polSo"
-          ],
+          "historical_track_ids": [],
           "release_date": "2020-12-13T00:00:00Z"
+        },
+        {
+          "title": "willow - lonely witch version",
+          "url": "https://open.spotify.com/intl-fr/track/77d7q9TNbsIDmRTDPkPv3L",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 3,
+          "base_title": "willow",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "willow - lonely witch version",
+          "song_family": "willow",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738312c50a6b9046d7dea5de12",
+          "historical_track_ids": []
+        },
+        {
+          "title": "willow - moonlit witch version",
+          "url": "https://open.spotify.com/intl-fr/track/5F7hpFKLmWgMHGxQuwssuv",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 4,
+          "base_title": "willow",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "willow - moonlit witch version",
+          "song_family": "willow",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": []
         }
       ]
     },
@@ -180,7 +212,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-16T00:00:00Z"
         },
         {
           "title": "champagne problems",
@@ -201,7 +233,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-10T00:00:00Z"
         },
         {
           "title": "gold rush",
@@ -222,7 +254,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-10T00:00:00Z"
         },
         {
           "title": "tolerate it",
@@ -243,7 +275,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-10T00:00:00Z"
         },
         {
           "title": "no body, no crime (feat. HAIM)",
@@ -267,7 +299,7 @@
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-10T00:00:00Z"
         },
         {
           "title": "happiness",
@@ -288,7 +320,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-10T00:00:00Z"
         },
         {
           "title": "dorothea",
@@ -309,7 +341,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-10T00:00:00Z"
         },
         {
           "title": "coney island (feat. The National)",
@@ -333,7 +365,7 @@
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-10T00:00:00Z"
         },
         {
           "title": "ivy",
@@ -354,7 +386,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-10T00:00:00Z"
         },
         {
           "title": "cowboy like me",
@@ -375,7 +407,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-10T00:00:00Z"
         },
         {
           "title": "long story short",
@@ -396,7 +428,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-10T00:00:00Z"
         },
         {
           "title": "marjorie",
@@ -417,7 +449,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-10T00:00:00Z"
         },
         {
           "title": "closure",
@@ -438,7 +470,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-10T00:00:00Z"
         },
         {
           "title": "evermore (feat. Bon Iver)",
@@ -462,7 +494,7 @@
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-10T00:00:00Z"
         },
         {
           "title": "'tis the damn season",
@@ -483,7 +515,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27390fd9741e1838115cd90b3b6",
           "historical_track_ids": [],
-          "release_date": "2021-01-07T00:00:00Z"
+          "release_date": "2020-12-10T00:00:00Z"
         }
       ]
     }

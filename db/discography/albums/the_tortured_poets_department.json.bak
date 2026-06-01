@@ -31,7 +31,7 @@
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33",
           "historical_track_ids": [],
-          "release_date": "2024-04-18T00:00:00Z"
+          "release_date": "2024-05-22T00:00:00Z"
         },
         {
           "title": "The Tortured Poets Department",
@@ -225,7 +225,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c246cd7fb142b383672627c8",
           "historical_track_ids": [],
-          "release_date": "2024-10-03T00:00:00Z"
+          "release_date": "2024-04-18T00:00:00Z"
         },
         {
           "title": "I Can Fix Him (No Really I Can)",
@@ -246,7 +246,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
           "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z"
+          "release_date": "2024-04-18T00:00:00Z"
         },
         {
           "title": "loml",
@@ -267,7 +267,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
           "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z"
+          "release_date": "2024-04-18T00:00:00Z"
         },
         {
           "title": "I Can Do It With a Broken Heart",
@@ -288,7 +288,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c246cd7fb142b383672627c8",
           "historical_track_ids": [],
-          "release_date": "2024-10-03T00:00:00Z"
+          "release_date": "2024-07-16T00:00:00Z"
         },
         {
           "title": "The Smallest Man Who Ever Lived",
@@ -309,7 +309,7 @@
           "version_tag": "live__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c246cd7fb142b383672627c8",
           "historical_track_ids": [],
-          "release_date": "2024-10-03T00:00:00Z"
+          "release_date": "2024-04-18T00:00:00Z"
         },
         {
           "title": "The Alchemy",
@@ -330,7 +330,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
           "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z"
+          "release_date": "2024-04-18T00:00:00Z"
         },
         {
           "title": "Clara Bow",
@@ -351,7 +351,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
           "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z"
+          "release_date": "2024-04-18T00:00:00Z"
         }
       ]
     },
@@ -485,7 +485,7 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c246cd7fb142b383672627c8",
           "historical_track_ids": [],
-          "release_date": "2024-10-03T00:00:00Z"
+          "release_date": "2024-04-19T00:00:00Z"
         },
         {
           "title": "I Hate It Here",
@@ -705,8 +705,7 @@
           "song_family": "fortnight",
           "version_tag": "featured__remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e6b77b3eef9269d06e13fe17",
-          "historical_track_ids": [],
-          "release_date": "2024-05-22T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "I Can Do It With a Broken Heart - Dombresky Remix",
@@ -726,8 +725,7 @@
           "song_family": "i_can_do_it_with_a_broken_heart",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f7dd2c5a8045a39fcecbfe8e",
-          "historical_track_ids": [],
-          "release_date": "2024-09-13T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "I Can Do It With a Broken Heart - Instrumental",
@@ -747,8 +745,7 @@
           "song_family": "i_can_do_it_with_a_broken_heart",
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f7dd2c5a8045a39fcecbfe8e",
-          "historical_track_ids": [],
-          "release_date": "2024-09-13T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Fortnight (feat. Post Malone) - Acoustic Version",
@@ -771,8 +768,7 @@
           "song_family": "fortnight",
           "version_tag": "featured__acoustic__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273aecb5c6308cf8ce94199aea8",
-          "historical_track_ids": [],
-          "release_date": "2024-07-09T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Fortnight (feat. Post Malone) - Cults Remix",
@@ -795,8 +791,7 @@
           "song_family": "fortnight",
           "version_tag": "featured__remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273aecb5c6308cf8ce94199aea8",
-          "historical_track_ids": [],
-          "release_date": "2024-07-09T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     }

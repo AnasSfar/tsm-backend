@@ -1,7 +1,7 @@
 {
   "album": "The Taylor Swift Holiday Collection",
   "section_count": 2,
-  "track_count": 9,
+  "track_count": 12,
   "sections": [
     {
       "section": "christmas_tree_farm_single",
@@ -27,7 +27,7 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8",
           "historical_track_ids": [],
-          "release_date": "2021-11-22T00:00:00Z"
+          "release_date": "2019-12-06T00:00:00Z"
         },
         {
           "title": "Christmas Tree Farm - Old Timey Version",
@@ -47,8 +47,7 @@
           "song_family": "christmas_tree_farm",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8",
-          "historical_track_ids": [],
-          "release_date": "2021-11-22T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Christmas Tree Farm - Recorded Live at the 2019 iHeartRadio Jingle Ball",
@@ -69,13 +68,13 @@
           "version_tag": "live__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8",
           "historical_track_ids": [],
-          "release_date": "2021-11-22T00:00:00Z"
+          "release_date": "2020-12-19T00:00:00Z"
         }
       ]
     },
     {
       "section": "standard_edition",
-      "track_count": 6,
+      "track_count": 9,
       "chart_extra": true,
       "tracks": [
         {
@@ -100,6 +99,48 @@
           "release_date": "2008-12-02T00:00:00Z"
         },
         {
+          "title": "Christmas Tree Farm",
+          "url": "https://open.spotify.com/intl-fr/track/4mKye6Z1kXuKolzMkJoKFA",
+          "type": "standalone",
+          "edition": "standard edition",
+          "display_section": "Standard Edition",
+          "display_order": 1,
+          "base_title": "Christmas Tree Farm",
+          "album": "The Taylor Swift Holiday Collection",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Christmas Tree Farm",
+          "song_family": "christmas_tree_farm",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8",
+          "historical_track_ids": [],
+          "release_date": "2019-12-06T00:00:00Z"
+        },
+        {
+          "title": "Christmas Tree Farm - Old Timey Version",
+          "url": "https://open.spotify.com/intl-fr/track/50ho0AOvkm8E5l8zf7OfJI",
+          "type": "standalone",
+          "edition": "standard edition",
+          "display_section": "Standard Edition",
+          "display_order": 2,
+          "base_title": "Christmas Tree Farm",
+          "album": "The Taylor Swift Holiday Collection",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Christmas Tree Farm - Old Timey Version",
+          "song_family": "christmas_tree_farm",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8",
+          "historical_track_ids": [],
+          "release_date": "2021-11-22T00:00:00Z"
+        },
+        {
           "title": "Christmases When You Were Mine",
           "url": "https://open.spotify.com/intl-fr/track/1g09DZjQ7yBommCT6POY2n",
           "type": "track",
@@ -119,6 +160,27 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732a0face7d69df61c20a6db2b",
           "historical_track_ids": [],
           "release_date": "2008-12-02T00:00:00Z"
+        },
+        {
+          "title": "Christmas Tree Farm - Recorded Live at the 2019 iHeartRadio Jingle Ball",
+          "url": "https://open.spotify.com/intl-fr/track/1alAo6dYalSx8yZUn17JxF",
+          "type": "standalone",
+          "edition": "standard edition",
+          "display_section": "Standard Edition",
+          "display_order": 3,
+          "base_title": "Christmas Tree Farm",
+          "album": "The Taylor Swift Holiday Collection",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Christmas Tree Farm - Recorded Live at the 2019 iHeartRadio Jingle Ball",
+          "song_family": "christmas_tree_farm",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8",
+          "historical_track_ids": [],
+          "release_date": "2020-12-19T00:00:00Z"
         },
         {
           "title": "Last Christmas",

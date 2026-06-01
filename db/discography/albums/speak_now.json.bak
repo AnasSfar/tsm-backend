@@ -26,10 +26,8 @@
           "song_family": "mine_pop_mix",
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
-          "historical_track_ids": [
-            "0fAbfDiuQiUwV7FUcFfRGY"
-          ],
-          "release_date": "2010-10-25T00:00:00Z"
+          "historical_track_ids": [],
+          "release_date": "2010-01-01T00:00:00Z"
         },
         {
           "title": "Back To December - Acoustic",
@@ -91,8 +89,7 @@
           "song_family": "better_than_revenge",
           "version_tag": "live__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
-          "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Last Kiss - Live/2011",
@@ -112,8 +109,7 @@
           "song_family": "last_kiss",
           "version_tag": "live__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
-          "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Mean - Live/2011",
@@ -133,8 +129,7 @@
           "song_family": "mean",
           "version_tag": "live__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
-          "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Mine - Live/2011",
@@ -154,8 +149,7 @@
           "song_family": "mine",
           "version_tag": "live__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
-          "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Ours - Live/2011",
@@ -175,8 +169,7 @@
           "song_family": "ours",
           "version_tag": "live__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
-          "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Sparks Fly - Live/2011",
@@ -196,8 +189,7 @@
           "song_family": "sparks_fly",
           "version_tag": "live__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
-          "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Speak Now - Live/2011",
@@ -217,8 +209,7 @@
           "song_family": "speak_now",
           "version_tag": "live__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
-          "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "The Story Of Us - Live",
@@ -238,8 +229,7 @@
           "song_family": "the_story_of_us",
           "version_tag": "live__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
-          "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     },
@@ -267,7 +257,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-01-01T00:00:00Z"
         },
         {
           "title": "Better Than Revenge",
@@ -309,7 +299,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-01-01T00:00:00Z"
         },
         {
           "title": "Enchanted",
@@ -330,7 +320,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-01-01T00:00:00Z"
         },
         {
           "title": "Haunted",
@@ -435,7 +425,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-01-01T00:00:00Z"
         },
         {
           "title": "Mine",
@@ -477,7 +467,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-01-01T00:00:00Z"
         },
         {
           "title": "Ours",
@@ -519,7 +509,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-01-01T00:00:00Z"
         },
         {
           "title": "Speak Now",
@@ -540,7 +530,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-01-01T00:00:00Z"
         },
         {
           "title": "Superman",
@@ -582,7 +572,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-01-01T00:00:00Z"
         },
         {
           "title": "Long Live",
@@ -632,8 +622,7 @@
           "version_tag": "live__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "display_era": "Speak Now",
-          "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     },
@@ -662,8 +651,7 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "display_era": "Speak Now",
-          "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Enchanted - Live/2011",
@@ -684,8 +672,7 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "display_era": "Speak Now",
-          "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Haunted - Live/2011",
@@ -706,8 +693,7 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "display_era": "Speak Now",
-          "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Long Live - Live/2011",
@@ -728,8 +714,7 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "display_era": "Speak Now",
-          "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     }

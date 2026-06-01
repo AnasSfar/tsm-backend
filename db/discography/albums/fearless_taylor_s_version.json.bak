@@ -1,11 +1,11 @@
 {
   "album": "Fearless (Taylor's Version)",
   "section_count": 5,
-  "track_count": 28,
+  "track_count": 30,
   "sections": [
     {
       "section": "from_the_vault_tv",
-      "track_count": 6,
+      "track_count": 7,
       "chart_extra": false,
       "tracks": [
         {
@@ -69,7 +69,7 @@
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-07T00:00:00Z"
         },
         {
           "title": "That's When (feat. Keith Urban) (Taylor's Version) (From The Vault)",
@@ -117,6 +117,29 @@
           "release_date": "2021-04-09T00:00:00Z"
         },
         {
+          "title": "You All Over Me (feat. Maren Morris) (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/4CHpVfAhuxNJ3ibExe6kxO",
+          "type": "feature",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 6,
+          "base_title": "You All Over Me (feat. Maren Morris) (Taylor's Version) (From The Vault)",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Maren Morris"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Maren Morris"
+          ],
+          "title_clean": "You All Over Me",
+          "song_family": "you_all_over_me",
+          "version_tag": "featured__vault__taylors_version__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": []
+        },
+        {
           "title": "Forever & Always (Piano Version) (Taylor's Version)",
           "url": "https://open.spotify.com/intl-fr/track/01QdEx6kFr78ZejhQtWR5m",
           "type": "standalone",
@@ -162,8 +185,7 @@
           "song_family": "love_story",
           "version_tag": "remix__taylors_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f2d3584898505ffee9cacfde",
-          "historical_track_ids": [],
-          "release_date": "2021-03-23T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     },
@@ -233,7 +255,7 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-02-12T00:00:00Z"
         },
         {
           "title": "Hey Stephen (Taylor's Version)",
@@ -601,9 +623,7 @@
           "version_tag": "taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273afe932e498abc159219bd2f3",
           "display_era": "Fearless",
-          "historical_track_ids": [
-            "0q6vsjvnCIWrtwRckCV7y0"
-          ],
+          "historical_track_ids": [],
           "release_date": "2021-04-09T00:00:00Z"
         },
         {
@@ -628,9 +648,7 @@
           "version_tag": "featured__vault__taylors_version__feature",
           "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b7afb31fe699dae7c34eea1b",
           "display_era": "Fearless",
-          "historical_track_ids": [
-            "4CHpVfAhuxNJ3ibExe6kxO"
-          ],
+          "historical_track_ids": [],
           "release_date": "2021-03-26T00:00:00Z"
         }
       ]
@@ -638,9 +656,31 @@
     {
       "album": "Fearless (Taylor's Version)",
       "section": "kworb_extras",
-      "track_count": 0,
+      "track_count": 1,
       "chart_extra": false,
-      "tracks": []
+      "tracks": [
+        {
+          "title": "If This Was A Movie (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/0q6vsjvnCIWrtwRckCV7y0",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9999,
+          "base_title": "If This Was A Movie (Taylor's Version)",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "If This Was A Movie (Taylor's Version)",
+          "song_family": "if_this_was_a_movie_taylors_version",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2734beb2774135270cedfa28338",
+          "display_era": "Fearless",
+          "historical_track_ids": []
+        }
+      ]
     }
   ]
 }

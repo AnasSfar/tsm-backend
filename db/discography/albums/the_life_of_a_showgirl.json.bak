@@ -27,7 +27,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [],
-          "release_date": "2025-10-03T00:00:00Z"
+          "release_date": "2025-10-31T00:00:00Z"
         },
         {
           "title": "Elizabeth Taylor",
@@ -72,7 +72,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [],
-          "release_date": "2025-10-03T00:00:00Z"
+          "release_date": "2026-02-06T00:00:00Z"
         },
         {
           "title": "Father Figure",
@@ -93,7 +93,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [],
-          "release_date": "2025-10-03T00:00:00Z"
+          "release_date": "2025-10-02T00:00:00Z"
         },
         {
           "title": "Eldest Daughter",
@@ -114,7 +114,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [],
-          "release_date": "2025-10-03T00:00:00Z"
+          "release_date": "2025-10-02T00:00:00Z"
         },
         {
           "title": "Ruin The Friendship",
@@ -135,7 +135,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [],
-          "release_date": "2025-10-03T00:00:00Z"
+          "release_date": "2025-10-02T00:00:00Z"
         },
         {
           "title": "Actually Romantic",
@@ -156,7 +156,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [],
-          "release_date": "2025-10-03T00:00:00Z"
+          "release_date": "2025-10-02T00:00:00Z"
         },
         {
           "title": "Wi$h Li$t",
@@ -177,7 +177,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [],
-          "release_date": "2025-10-03T00:00:00Z"
+          "release_date": "2025-10-02T00:00:00Z"
         },
         {
           "title": "Wood",
@@ -198,7 +198,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [],
-          "release_date": "2025-10-03T00:00:00Z"
+          "release_date": "2025-10-02T00:00:00Z"
         },
         {
           "title": "CANCELLED!",
@@ -219,7 +219,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [],
-          "release_date": "2025-10-03T00:00:00Z"
+          "release_date": "2025-10-02T00:00:00Z"
         },
         {
           "title": "Honey",
@@ -240,7 +240,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [],
-          "release_date": "2025-10-03T00:00:00Z"
+          "release_date": "2025-10-02T00:00:00Z"
         },
         {
           "title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
@@ -264,7 +264,7 @@
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [],
-          "release_date": "2025-10-03T00:00:00Z"
+          "release_date": "2025-10-02T00:00:00Z"
         }
       ]
     },
@@ -313,7 +313,7 @@
           "version_tag": "acoustic__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738b312c2d2873e7da95e316d2",
           "historical_track_ids": [],
-          "release_date": "2026-02-13T00:00:00Z"
+          "release_date": "2026-02-06T00:00:00Z"
         },
         {
           "title": "Wi$h Li$t - Settled Down Acoustic Version",
@@ -397,7 +397,7 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94",
           "historical_track_ids": [],
-          "release_date": "2025-11-07T00:00:00Z"
+          "release_date": "2026-03-31T00:00:00Z"
         },
         {
           "title": "The Life of a Showgirl (feat. Sabrina Carpenter) - Dressing Room Rehearsal Version",
@@ -448,8 +448,7 @@
           "song_family": "opalite",
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738b312c2d2873e7da95e316d2",
-          "historical_track_ids": [],
-          "release_date": "2026-02-13T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Opalite - Official Music Video Extended Version Part 2",
@@ -469,8 +468,7 @@
           "song_family": "opalite",
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738b312c2d2873e7da95e316d2",
-          "historical_track_ids": [],
-          "release_date": "2026-02-13T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     },
@@ -497,8 +495,7 @@
           "song_family": "opalite",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737796280b4d7e9692b354f902",
-          "historical_track_ids": [],
-          "release_date": "2026-02-19T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Opalite - Chris Lake Remix",
@@ -518,8 +515,7 @@
           "song_family": "opalite",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273156ba090375f53d5c8fac5c3",
-          "historical_track_ids": [],
-          "release_date": "2026-02-20T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Opalite - Ely Oaks Remix",
@@ -539,8 +535,7 @@
           "song_family": "opalite",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738100654494e42240857384d9",
-          "historical_track_ids": [],
-          "release_date": "2026-02-19T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Opalite - Skream Remix",
@@ -560,8 +555,7 @@
           "song_family": "opalite",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bcde9224bc1fb45f15c7bc56",
-          "historical_track_ids": [],
-          "release_date": "2026-02-19T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "The Fate of Ophelia - Loud Luxury Remix",
@@ -581,8 +575,7 @@
           "song_family": "the_fate_of_ophelia",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27339b6ce4f493d53cfba83170a",
-          "historical_track_ids": [],
-          "release_date": "2025-11-06T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "The Fate of Ophelia - The Chainsmokers Remix",
@@ -602,8 +595,7 @@
           "song_family": "the_fate_of_ophelia",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735a9197396cb52631e73364b9",
-          "historical_track_ids": [],
-          "release_date": "2025-11-28T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     },
@@ -630,8 +622,7 @@
           "song_family": "elizabeth_taylor",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Father Figure - Track by Track",
@@ -651,8 +642,7 @@
           "song_family": "father_figure",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Opalite - Track by Track",
@@ -672,8 +662,7 @@
           "song_family": "opalite",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "The Fate of Ophelia - Track by Track",
@@ -693,8 +682,7 @@
           "song_family": "the_fate_of_ophelia",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "The Life of a Showgirl - Track by Track",
@@ -714,8 +702,7 @@
           "song_family": "the_life_of_a_showgirl",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Actually Romantic - Track by Track",
@@ -736,8 +723,7 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
           "display_era": "The Life of a Showgirl",
-          "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "CANCELLED! - Track by Track",
@@ -758,8 +744,7 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
           "display_era": "The Life of a Showgirl",
-          "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Eldest Daughter - Track by Track",
@@ -780,8 +765,7 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
           "display_era": "The Life of a Showgirl",
-          "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Honey - Track by Track",
@@ -802,8 +786,7 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
           "display_era": "The Life of a Showgirl",
-          "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Ruin The Friendship - Track by Track",
@@ -824,8 +807,7 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
           "display_era": "The Life of a Showgirl",
-          "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Wi$h Li$t - Track by Track",
@@ -846,8 +828,7 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
           "display_era": "The Life of a Showgirl",
-          "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Wood - Track by Track",
@@ -868,8 +849,7 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
           "display_era": "The Life of a Showgirl",
-          "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     }

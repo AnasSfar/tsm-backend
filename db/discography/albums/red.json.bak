@@ -483,8 +483,7 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dbe6e4dd1b2a61e375a12c63",
           "display_era": "Red",
-          "historical_track_ids": [],
-          "release_date": "2012-09-08T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     },
@@ -513,8 +512,7 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738e16c6e20dbed531a9006d58",
           "display_era": "Red",
-          "historical_track_ids": [],
-          "release_date": "2022-06-11T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "All Too Well (Sad Girl Autumn Version) - Recorded at Long Pond Studios",
@@ -535,8 +533,7 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27370f88b5ee2da16d3f3929fea",
           "display_era": "Red",
-          "historical_track_ids": [],
-          "release_date": "2021-11-18T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     },
@@ -597,8 +594,7 @@
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27363d77f99117b28af9f656918",
           "display_era": "Red",
-          "historical_track_ids": [],
-          "release_date": "2017-11-09T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     },
@@ -627,8 +623,7 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273220563fb6c59f7e470ba3272",
           "display_era": "Red",
-          "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "The Moment I Knew",

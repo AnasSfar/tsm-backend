@@ -348,8 +348,7 @@
           "song_family": "love_story",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c4d3acdcb5d53a2a3856786e",
-          "historical_track_ids": [],
-          "release_date": "2020-02-07T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "You're Not Sorry - CSI Remix",
@@ -369,8 +368,7 @@
           "song_family": "you_re_not_sorry",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e8ae61ef7ff5c29b9f84828f",
-          "historical_track_ids": [],
-          "release_date": "2020-02-07T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     },
@@ -520,8 +518,7 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
           "display_era": "Fearless",
-          "historical_track_ids": [],
-          "release_date": "2008-06-28T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Fearless - Live From Clear Channel Stripped 2008",
@@ -542,8 +539,7 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
           "display_era": "Fearless",
-          "historical_track_ids": [],
-          "release_date": "2008-06-28T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Hey Stephen - Commentary",
@@ -564,8 +560,7 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b27360cb9332e8c8c7d8e50854b3",
           "display_era": "Fearless",
-          "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Love Story - Instrumental with BGV",
@@ -586,8 +581,7 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b2733aaff042743bac0fdec793fc",
           "display_era": "Fearless",
-          "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Love Story - J Stax Radio Mix",
@@ -629,8 +623,7 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
           "display_era": "Fearless",
-          "historical_track_ids": [],
-          "release_date": "2008-06-28T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Love Story - Pop Mix",
@@ -651,8 +644,7 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d676631cbb331a320db57b64",
           "display_era": "Fearless",
-          "historical_track_ids": [],
-          "release_date": "2020-02-07T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Today Was A Fairytale - US Version",
@@ -694,8 +686,7 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
           "display_era": "Fearless",
-          "historical_track_ids": [],
-          "release_date": "2008-06-28T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     }

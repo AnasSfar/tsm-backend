@@ -26,8 +26,7 @@
           "song_family": "september_recorded_at_the_tracking_room_nashville",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bae8f095c58e137855f6d230",
-          "historical_track_ids": [],
-          "release_date": "2018-04-13T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     },
@@ -54,8 +53,7 @@
           "song_family": "ready_for_it",
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
-          "historical_track_ids": [],
-          "release_date": "2018-03-09T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Call It What You Want - Karaoke Version",
@@ -117,8 +115,7 @@
           "song_family": "delicate",
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
-          "historical_track_ids": [],
-          "release_date": "2018-03-09T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Don't Blame Me - Karaoke Version",
@@ -138,8 +135,7 @@
           "song_family": "don_t_blame_me",
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
-          "historical_track_ids": [],
-          "release_date": "2018-03-09T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Dress - Karaoke Version",
@@ -285,8 +281,7 @@
           "song_family": "look_what_you_made_me_do",
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
-          "historical_track_ids": [],
-          "release_date": "2018-03-09T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "New Year's Day - Karaoke Version",
@@ -376,8 +371,7 @@
           "song_family": "ready_for_it",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d41ccf8f43721c045a969300",
-          "historical_track_ids": [],
-          "release_date": "2017-12-01T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Delicate - Seeb Remix",
@@ -397,8 +391,7 @@
           "song_family": "delicate",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737809d9723e21370fe5926a7c",
-          "historical_track_ids": [],
-          "release_date": "2018-06-08T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Delicate - Recorded at The Tracking Room Nashville",
@@ -418,8 +411,7 @@
           "song_family": "delicate_recorded_at_the_tracking_room_nashville",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bae8f095c58e137855f6d230",
-          "historical_track_ids": [],
-          "release_date": "2018-04-13T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Delicate - Sawyr And Ryan Tedder Mix",
@@ -439,8 +431,7 @@
           "song_family": "delicate_sawyr_and_ryan_tedder_mix",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d8032a149cd86c879c9df63a",
-          "historical_track_ids": [],
-          "release_date": "2018-05-25T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     },
@@ -625,7 +616,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [],
-          "release_date": "2017-11-10T00:00:00Z"
+          "release_date": "2017-11-09T00:00:00Z"
         },
         {
           "title": "Gorgeous",
@@ -822,8 +813,7 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d41ccf8f43721c045a969300",
           "display_era": "reputation",
-          "historical_track_ids": [],
-          "release_date": "2017-12-01T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     }

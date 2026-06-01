@@ -26,8 +26,7 @@
           "song_family": "lover_feat_shawn_mendes",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27359457bdb1edb5c6417f3baa2",
-          "historical_track_ids": [],
-          "release_date": "2019-11-13T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Lover - First Dance Remix",
@@ -47,8 +46,7 @@
           "song_family": "lover",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273affd87a5167957a7adbf8e37",
-          "historical_track_ids": [],
-          "release_date": "2019-11-26T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Lover - Live From Paris",
@@ -68,8 +66,7 @@
           "song_family": "lover",
           "version_tag": "live__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d29b148f84d0cd04ebdbe919",
-          "historical_track_ids": [],
-          "release_date": "2020-05-17T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "You Need To Calm Down - Clean Bandit Remix",
@@ -89,8 +86,7 @@
           "song_family": "you_need_to_calm_down",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2739911942b4845c29ad3ad1224",
-          "historical_track_ids": [],
-          "release_date": "2019-08-20T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "You Need To Calm Down - Live From Paris",
@@ -110,8 +106,7 @@
           "song_family": "you_need_to_calm_down",
           "version_tag": "live__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738546aa90c89127a13f02c73d",
-          "historical_track_ids": [],
-          "release_date": "2020-05-17T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Cornelia Street - Live From Paris",
@@ -131,8 +126,7 @@
           "song_family": "cornelia_street",
           "version_tag": "live__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273eec5bf14fcf7c92ec8166027",
-          "historical_track_ids": [],
-          "release_date": "2020-05-18T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Daylight - Live From Paris",
@@ -152,8 +146,7 @@
           "song_family": "daylight",
           "version_tag": "live__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2739638abe9135aed2817baf686",
-          "historical_track_ids": [],
-          "release_date": "2020-05-17T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "Death By A Thousand Cuts - Live From Paris",
@@ -173,8 +166,7 @@
           "song_family": "death_by_a_thousand_cuts",
           "version_tag": "live__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737864c044d3fa4ac3814ca667",
-          "historical_track_ids": [],
-          "release_date": "2020-05-17T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "The Archer - Live From Paris",
@@ -194,8 +186,7 @@
           "song_family": "the_archer",
           "version_tag": "live__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273cde19bd5377f06eb0bca3256",
-          "historical_track_ids": [],
-          "release_date": "2020-05-17T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "The Man - Live From Paris",
@@ -215,8 +206,7 @@
           "song_family": "the_man",
           "version_tag": "live__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2739a6d517fc78fb707bed067c2",
-          "historical_track_ids": [],
-          "release_date": "2020-02-18T00:00:00Z"
+          "historical_track_ids": []
         },
         {
           "title": "ME! - Live From Paris",
@@ -236,8 +226,7 @@
           "song_family": "me",
           "version_tag": "live__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d8f29c3584e77996dd2f9950",
-          "historical_track_ids": [],
-          "release_date": "2020-05-17T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     },
@@ -266,9 +255,7 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738481d8f15859aa5bae75ee17",
           "display_era": "Lover",
-          "historical_track_ids": [
-            "17yraMKqmZIKAv3iaGcoLX"
-          ],
+          "historical_track_ids": [],
           "release_date": "2019-08-23T00:00:00Z"
         }
       ]
@@ -318,7 +305,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
           "historical_track_ids": [],
-          "release_date": "2019-08-23T00:00:00Z"
+          "release_date": "2023-10-19T00:00:00Z"
         },
         {
           "title": "Lover",
@@ -728,8 +715,7 @@
           "song_family": "cruel_summer",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273905c0872bdf4e1787a6bb5da",
-          "historical_track_ids": [],
-          "release_date": "2023-10-19T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     },
@@ -758,8 +744,7 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2734aa13f6de271d8403a82e4a8",
           "display_era": "Lover",
-          "historical_track_ids": [],
-          "release_date": "2020-01-31T00:00:00Z"
+          "historical_track_ids": []
         }
       ]
     }
