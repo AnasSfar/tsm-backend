@@ -142,6 +142,13 @@ def _region_data_exists(name: str, target: date) -> bool:
     return False
 
 
+def _regional_chart_json_exists(name: str, target: date) -> bool:
+    return any(
+        (day_dir / f"ts_chart_{target}.json").exists()
+        for day_dir in (spotify_chart_dir(name, target), legacy_spotify_chart_dir(name, target))
+    )
+
+
 def _worldwide_json_path() -> Path:
     return REPO_ROOT / "website" / "site" / "data" / "charts_worldwide.json"
 
@@ -1006,6 +1013,49 @@ def _run_parallel(
     return failures
 
 
+def _verify_regional_posts(
+    target_date: date,
+    post_parts: set[str],
+    *,
+    force: bool,
+    env: dict[str, str],
+    verbose: bool,
+) -> list[tuple[str, int]]:
+    failures: list[tuple[str, int]] = []
+    scripts = {
+        "global": CHARTS_ROOT / "global" / "daily.py",
+        "fr": CHARTS_ROOT / "fr" / "daily.py",
+    }
+    requested = [name for name in ("global", "fr") if name in post_parts]
+    if not requested:
+        return failures
+
+    print("\n[CHECK] verification posts Global/FR...")
+    for name in requested:
+        if _region_lock_exists(name, target_date, "posted.lock") and not force:
+            print(f"[SKIP] post {name} deja fait pour {target_date}")
+            continue
+        if not _regional_chart_json_exists(name, target_date):
+            print(f"[FAIL] post {name}: ts_chart_{target_date}.json absent")
+            failures.append((f"{name}-post-data", 1))
+            continue
+        script = scripts[name]
+        args = ["--post-only", str(target_date)]
+        if force:
+            args.append("--force")
+        rc = _run(
+            f"{name}-post",
+            script,
+            args,
+            dry_run=False,
+            env=env,
+            verbose=verbose,
+        )
+        if rc != 0:
+            failures.append((f"{name}-post", rc))
+    return failures
+
+
 def _ensure_worldwide_valid(
     runners: list[tuple[str, Path, list[str]]],
     *,
@@ -1385,6 +1435,20 @@ def main() -> int:
                     failures.append(("worldwide-validation", 1))
             if warp_active:
                 _warp_disconnect()
+
+    if not args.dry_run and not args.no_post:
+        post_failures = _verify_regional_posts(
+            target_date,
+            post_parts,
+            force=args.force,
+            env=env,
+            verbose=args.verbose,
+        )
+        if post_failures:
+            failures.extend(post_failures)
+            if args.stop_on_error:
+                print(f"[FAIL] stop-on-error — {_fmt(time.perf_counter() - started)}")
+                return 1
 
     if not args.dry_run and needs_collect:
         if _r2_export_done(target_date) and not args.force:
