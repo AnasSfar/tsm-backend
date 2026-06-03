@@ -1,4 +1,4 @@
-{
+﻿{
   "album": "reputation",
   "section_count": 6,
   "track_count": 37,
@@ -452,7 +452,7 @@
         {
           "title": "I Don't Wanna Live Forever (Fifty Shades Darker)",
           "url": "https://open.spotify.com/intl-fr/track/2y5aJvzXhHPA94U5GFAcXe",
-          "type": "standalone",
+          "type": "soundtrack",
           "edition": "extras",
           "display_section": "Soundtrack Feature",
           "display_order": 1,
@@ -466,7 +466,7 @@
           ],
           "title_clean": "I Don't Wanna Live Forever (Fifty Shades Darker)",
           "song_family": "i_don_t_wanna_live_forever_fifty_shades_darker",
-          "version_tag": "live__standalone",
+          "version_tag": "soundtrack",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735997605214d568d73fd365c2",
           "historical_track_ids": [
             "55n9yjI6qqXh5F2mYvUc2y"
