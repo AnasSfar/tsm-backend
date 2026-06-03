@@ -4,6 +4,7 @@ import subprocess
 import sys
 import threading
 import time
+from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import date as date_cls
 from pathlib import Path
@@ -13,6 +14,8 @@ from core.data_paths import update_streams_dir
 from core.retention import cleanup_generated_artifacts
 from git_ops import git_commit_and_push
 import generate_albums_image
+from post_debut_releases import post_debut_releases as run_debut_release_posts
+from release_targets import recent_release_album_names
 
 
 ALBUM_UPDATE_TARGETS = (
@@ -20,6 +23,39 @@ ALBUM_UPDATE_TARGETS = (
     "THE TORTURED POETS DEPARTMENT",
 )
 ALBUM_UPDATE_GAIN_THRESHOLD_PCT = 15.0
+
+
+class StepTimer:
+    def __init__(self, label: str) -> None:
+        self.label = label
+        self.started_at = time.perf_counter()
+        self.rows: list[tuple[str, float]] = []
+        self._lock = threading.Lock()
+
+    @contextmanager
+    def step(self, name: str):
+        start = time.perf_counter()
+        try:
+            yield
+        finally:
+            elapsed = time.perf_counter() - start
+            with self._lock:
+                self.rows.append((name, elapsed))
+            print(f"[timer] {name}: {elapsed:.1f}s")
+
+    def add(self, name: str, elapsed: float) -> None:
+        with self._lock:
+            self.rows.append((name, elapsed))
+        print(f"[timer] {name}: {elapsed:.1f}s")
+
+    def summary(self) -> None:
+        total = time.perf_counter() - self.started_at
+        with self._lock:
+            rows = sorted(self.rows, key=lambda row: row[1], reverse=True)
+        print()
+        print(f"[timer] {self.label} summary ({total:.1f}s total)")
+        for name, elapsed in rows:
+            print(f"[timer]   {name:<28} {elapsed:>6.1f}s")
 
 
 @dataclass
@@ -50,6 +86,7 @@ class FinalizeContext:
     throwback_event: str | None = None
     throwback_label: str | None = None
     throwback_force: bool = False
+    test_mode: bool = False
 
 
 class ReadyAlbumUpdatePoster:
@@ -65,6 +102,7 @@ class ReadyAlbumUpdatePoster:
         spacing_seconds: int,
         log_mode: str,
         enabled: bool,
+        target_albums: list[str] | tuple[str, ...] | None = None,
     ) -> None:
         self.script_dir = script_dir
         self.stats_date = stats_date
@@ -73,6 +111,7 @@ class ReadyAlbumUpdatePoster:
         self.spacing_seconds = spacing_seconds
         self.log_mode = log_mode
         self.enabled = enabled
+        self.target_albums = tuple(dict.fromkeys(target_albums or ALBUM_UPDATE_TARGETS))
         self._posted: set[str] = set()
         self._stop = threading.Event()
         self._lock = threading.Lock()
@@ -106,10 +145,10 @@ class ReadyAlbumUpdatePoster:
 
     def _all_targets_posted(self) -> bool:
         with self._lock:
-            return set(ALBUM_UPDATE_TARGETS).issubset(self._posted)
+            return set(self.target_albums).issubset(self._posted)
 
     def _post_newly_ready_albums(self) -> bool:
-        for album in ALBUM_UPDATE_TARGETS:
+        for album in self.target_albums:
             with self._lock:
                 if album in self._posted:
                     continue
@@ -144,6 +183,29 @@ def _run_streams_post(
     spacing_seconds: int,
     log_mode: str,
 ) -> None:
+    _wait_before_post(
+        label=label,
+        should_post=should_post,
+        state=state,
+        spacing_seconds=spacing_seconds,
+        log_mode=log_mode,
+    )
+
+    result = subprocess.run(cmd, check=False)
+    if result.returncode != 0:
+        raise SystemExit(f"{label} failed (exit {result.returncode}).")
+
+    _mark_post_done(should_post=should_post, state=state)
+
+
+def _wait_before_post(
+    *,
+    label: str,
+    should_post: bool,
+    state: dict[str, float],
+    spacing_seconds: int,
+    log_mode: str,
+) -> None:
     if should_post and state["posted_count"] > 0:
         elapsed_since_post = time.perf_counter() - state.get("last_post_at", 0.0)
         wait_s = max(0.0, spacing_seconds - elapsed_since_post)
@@ -153,10 +215,8 @@ def _run_streams_post(
         elif log_mode == "verbose":
             print(f"Twitter spacing already satisfied before {label}.")
 
-    result = subprocess.run(cmd, check=False)
-    if result.returncode != 0:
-        raise SystemExit(f"{label} failed (exit {result.returncode}).")
 
+def _mark_post_done(*, should_post: bool, state: dict[str, float]) -> None:
     if should_post:
         state["posted_count"] += 1
         state["last_post_at"] = time.perf_counter()
@@ -177,16 +237,16 @@ def _export_web_data_once(ctx: FinalizeContext, *, force: bool = False) -> None:
     run_dir = update_streams_dir(ctx.stats_date)
     export_lock = run_dir / "exported.lock"
     r2_export_lock = run_dir / "r2_exported.lock"
-    if export_lock.exists() and not force:
+    if export_lock.exists() and not force and not ctx.test_mode:
         print(f"Web export already done for {ctx.stats_date} (exported.lock exists), skipping.")
         return
 
     print("Re-exporting web data...")
-    allow_r2 = not ctx.local_test_mode and not r2_export_lock.exists()
+    allow_r2 = not ctx.local_test_mode and not ctx.test_mode and not r2_export_lock.exists()
     if r2_export_lock.exists():
         print(f"R2 export already done for {ctx.stats_date} (r2_exported.lock exists), skipping R2 upload.")
     ctx.export_web_data(allow_r2=allow_r2, stats_date=ctx.stats_date)
-    if not ctx.local_test_mode:
+    if not ctx.local_test_mode and not ctx.test_mode:
         run_dir.mkdir(parents=True, exist_ok=True)
         export_lock.touch()
     print("Web export done.")
@@ -344,6 +404,20 @@ def _album_gain_update_targets(stats_date: str, *, threshold_pct: float = ALBUM_
     return targets
 
 
+def _album_update_targets(ctx: FinalizeContext) -> list[str]:
+    albums: list[str] = list(ALBUM_UPDATE_TARGETS)
+    recent_albums = recent_release_album_names(
+        ctx.load_album_sections_flat(),
+        ctx.summary["stats_date"],
+    )
+    if recent_albums:
+        print("Recent release album targets: " + ", ".join(recent_albums))
+    for album in recent_albums:
+        if album not in albums:
+            albums.append(album)
+    return albums
+
+
 def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
     if _is_weekend_stats_date(ctx.summary["stats_date"]):
         print("Weekend detected: skipping separate album update posts.")
@@ -360,7 +434,7 @@ def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
             )
         )
 
-    albums_to_post: list[str] = list(ALBUM_UPDATE_TARGETS)
+    albums_to_post: list[str] = _album_update_targets(ctx)
     for target in gain_targets:
         album = target["album"]
         if album not in albums_to_post:
@@ -416,17 +490,18 @@ def _post_albums_daily(ctx: FinalizeContext, state: dict[str, float]) -> None:
 
 
 def _post_debut_releases(ctx: FinalizeContext, state: dict[str, float]) -> None:
-    debut_script = ctx.script_dir / "tools" / "scripts" / "post_debut_releases.py"
-    cmd = [sys.executable, str(debut_script), ctx.summary["stats_date"]]
-    if ctx.no_post_mode:
-        cmd.append("--no-post")
-    _run(
-        ctx,
-        cmd,
+    label = "debut release posts"
+    _wait_before_post(
         label="debut release posts",
         should_post=not ctx.no_post_mode,
         state=state,
+        spacing_seconds=ctx.post_spacing_seconds,
+        log_mode=ctx.log_mode,
     )
+    result = run_debut_release_posts(ctx.summary["stats_date"], no_post=ctx.no_post_mode)
+    if result != 0:
+        raise SystemExit(f"{label} failed (exit {result}).")
+    _mark_post_done(should_post=not ctx.no_post_mode, state=state)
 
 
 def _post_spotlight_gainers(ctx: FinalizeContext, state: dict[str, float]) -> None:
@@ -552,10 +627,17 @@ def _start_background_task(label: str, target: Callable[[], None]) -> threading.
     return thread
 
 
-def _join_background_task(thread: threading.Thread | None, label: str) -> None:
+def _join_background_task(
+    thread: threading.Thread | None,
+    label: str,
+    timer: StepTimer | None = None,
+) -> None:
     if thread is None:
         return
+    start = time.perf_counter()
     thread.join()
+    if timer is not None:
+        timer.add(f"wait {label}", time.perf_counter() - start)
     errors = getattr(thread, "task_errors", [])
     if errors:
         raise SystemExit(f"{label} failed: {errors[0]}")
@@ -600,48 +682,69 @@ def _run_swift_top_charts_if_needed(ctx: FinalizeContext) -> None:
 
 
 def run_final_update_tasks(ctx: FinalizeContext) -> None:
+    timer = StepTimer("finalize")
     post_state = dict(ctx.initial_post_state or {"posted_count": 0, "last_post_at": 0.0})
     if ctx.throwback_mode:
-        _post_throwback_thread(ctx, post_state)
+        with timer.step("throwback thread"):
+            _post_throwback_thread(ctx, post_state)
+        timer.summary()
         return
 
-    artist_metadata_updated = _update_artist_metadata(ctx)
-    print("Skipping Spotify API release-date refresh during finalization.")
-    _export_web_data_once(ctx, force=artist_metadata_updated)
+    try:
+        with timer.step("artist metadata"):
+            artist_metadata_updated = _update_artist_metadata(ctx)
+        print("Skipping Spotify API release-date refresh during finalization.")
+        with timer.step("web export"):
+            _export_web_data_once(ctx, force=artist_metadata_updated)
 
-    forecast_thread = None
-    if not ctx.debug_daily_mode and not ctx.local_test_mode:
-        print("Starting forecast/image refresh in background...")
-        forecast_thread = _start_background_task(
-            "forecast/image refresh",
-            lambda: _run_forecast_and_image_refresh(ctx),
-        )
+        forecast_thread = None
+        if not ctx.debug_daily_mode and not ctx.local_test_mode:
+            print("Starting forecast/image refresh in background...")
+            forecast_thread = _start_background_task(
+                "forecast/image refresh",
+                lambda: _run_forecast_and_image_refresh(ctx),
+            )
 
-    spotlight_thread = None
-    if (
-        not ctx.debug_daily_mode
-        and not ctx.local_test_mode
-        and not _is_weekend_stats_date(ctx.summary["stats_date"])
-    ):
-        spotlight_thread = _start_spotlight_gainers(ctx)
+        spotlight_thread = None
+        if (
+            not ctx.debug_daily_mode
+            and not ctx.local_test_mode
+            and not _is_weekend_stats_date(ctx.summary["stats_date"])
+        ):
+            spotlight_thread = _start_spotlight_gainers(ctx)
 
-    _post_streams_image(ctx, post_state)
+        with timer.step("streams post"):
+            _post_streams_image(ctx, post_state)
 
-    if ctx.debug_daily_mode or ctx.local_test_mode:
-        return
+        if ctx.debug_daily_mode or ctx.local_test_mode:
+            return
 
-    _post_debut_releases(ctx, post_state)
-    _post_album_updates(ctx, post_state)
-    _post_albums_daily(ctx, post_state)
-    if spotlight_thread is not None:
-        spotlight_thread.join()
-        spotlight_errors = getattr(spotlight_thread, "post_errors", [])
-        if spotlight_errors:
-            raise SystemExit(f"stream highlights thread failed: {spotlight_errors[0]}")
-    _post_best_day_since(ctx, post_state)
-    _join_background_task(forecast_thread, "forecast/image refresh")
+        with timer.step("debut posts"):
+            _post_debut_releases(ctx, post_state)
+        with timer.step("album update posts"):
+            _post_album_updates(ctx, post_state)
+        with timer.step("albums daily post"):
+            _post_albums_daily(ctx, post_state)
+        if spotlight_thread is not None:
+            start = time.perf_counter()
+            spotlight_thread.join()
+            timer.add("wait stream highlights", time.perf_counter() - start)
+            spotlight_errors = getattr(spotlight_thread, "post_errors", [])
+            if spotlight_errors:
+                raise SystemExit(f"stream highlights thread failed: {spotlight_errors[0]}")
+        with timer.step("best-day-since posts"):
+            _post_best_day_since(ctx, post_state)
+        _join_background_task(forecast_thread, "forecast/image refresh", timer)
 
-    cleanup_generated_artifacts()
-    print("Git commit and push...")
-    git_commit_and_push(ctx.repo_root, f"daily final export {ctx.summary['stats_date']}")
-    _run_swift_top_charts_if_needed(ctx)
+        if ctx.test_mode:
+            print("[TEST] Skipping cleanup, git commit/push, and Swift Top chart triggers.")
+        else:
+            with timer.step("cleanup artifacts"):
+                cleanup_generated_artifacts()
+            print("Git commit and push...")
+            with timer.step("git commit/push"):
+                git_commit_and_push(ctx.repo_root, f"daily final export {ctx.summary['stats_date']}")
+            with timer.step("swift top charts"):
+                _run_swift_top_charts_if_needed(ctx)
+    finally:
+        timer.summary()

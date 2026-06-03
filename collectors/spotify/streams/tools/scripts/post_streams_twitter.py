@@ -27,6 +27,7 @@ from core.twitter import post_image_thread
 from core.data_paths import update_streams_dir
 
 import generate_streams_image
+from post_locks import mark_posted, should_skip_post
 
 
 def main():
@@ -54,11 +55,13 @@ def main():
     day_dir.mkdir(parents=True, exist_ok=True)
     posted_lock = day_dir / "posted.lock"
 
-    if posted_lock.exists() and not no_post:
-        print(f"Already posted for {target_date}, skipping.")
+    if should_skip_post(
+        posted_lock,
+        target_date=target_date,
+        label="Streams image",
+        no_post=no_post,
+    ):
         return
-    if posted_lock.exists() and no_post:
-        print(f"Already posted for {target_date}, regenerating images only (--no-post).")
 
     if not no_post and not TWITTER_SESSION.exists():
         print(f"ERROR: Twitter session not found at {TWITTER_SESSION}")
@@ -66,11 +69,11 @@ def main():
 
     # Generate images
     print(f"Generating streams thread images for {target_date}...")
-    image_paths = [
-        generate_streams_image.generate(target_date, top_n=top_n, start_rank=1),
-        generate_streams_image.generate(target_date, top_n=top_n, start_rank=top_n + 1),
-        generate_streams_image.generate(target_date, top_n=top_n, start_rank=top_n * 2 + 1),
-    ]
+    image_paths = generate_streams_image.generate_thread_images(
+        target_date,
+        top_n=top_n,
+        pages=3,
+    )
 
     # Build tweet text
     date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
@@ -109,7 +112,7 @@ def main():
         print(f"Failed to post for {target_date}.")
         sys.exit(1)
 
-    posted_lock.touch()
+    mark_posted(posted_lock)
     print(f"Posted successfully for {target_date}.")
 
 

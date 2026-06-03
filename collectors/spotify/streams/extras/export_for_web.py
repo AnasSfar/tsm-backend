@@ -1281,6 +1281,11 @@ def export_for_web(stats_date: str | None = None) -> None:
     fr_chart_files = sorted(_DATA_ROOT.glob("20??/??/????-??-??/run_all_charts/spotify/fr/ts_chart_*.json"))
     legacy_fr_charts_src = _REPO_ROOT / "collectors" / "spotify" / "charts" / "fr" / "history"
     fr_chart_files.extend(sorted(legacy_fr_charts_src.glob("20*/*/*/ts_chart_*.json")))
+    if stats_date:
+        fr_chart_files = [
+            src_file for src_file in fr_chart_files
+            if stats_date in src_file.name or stats_date in str(src_file)
+        ]
     for src_file in fr_chart_files:
         day = src_file.parents[3].name if src_file.parents[3].name.startswith("20") else src_file.parent.name
         dst_file = fr_charts_dst / f"{day}.json"
@@ -1455,7 +1460,13 @@ def export_for_web(stats_date: str | None = None) -> None:
             shutil.copy2(src, dst)
 
     SITE_HISTORY_DIR.mkdir(parents=True, exist_ok=True)
-    for date_str, day_data in merged_history.items():
+    if stats_date and stats_date in merged_history:
+        history_dates_to_write = [stats_date]
+    else:
+        history_dates_to_write = list(merged_history.keys())
+
+    for date_str in history_dates_to_write:
+        day_data = merged_history[date_str]
         compact = {
             tid: {"s": v["streams"], "d": v["daily_streams"]}
             for tid, v in day_data.items()

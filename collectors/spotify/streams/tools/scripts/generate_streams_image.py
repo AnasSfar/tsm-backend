@@ -51,6 +51,7 @@ SONGS_JSON   = DB_DIR / "discography" / "songs.json"
 ALBUMS_DIR   = DB_DIR / "discography" / "albums"
 HEADERS_DIR  = _TOOLS / "headers"
 HANDLE       = "@swiftiescharts"
+IMAGE_DATA_URI_CACHE_PATH = _TOOLS / ".image_data_uri_cache.json"
 
 TOP_N = 15
 
@@ -288,7 +289,7 @@ def get_cover_url(entry: dict, cover_map: dict, track_album_map: dict) -> str:
     Priority:
       - If type == "standalone" or "alternate_version":
         * single_image (from same song_family) > image_url (NEVER album cover)
-      - Otherwise: covers.json (album) > image_url
+      - Otherwise: image_url (Spotify track/API image) > covers.json (album fallback)
     """
     track_type = entry.get("type", "album")
     track_img = entry.get("image_url", "")
@@ -296,7 +297,7 @@ def get_cover_url(entry: dict, cover_map: dict, track_album_map: dict) -> str:
     song_family = entry.get("song_family", "")
     title = entry.get("title", "")
     
-    # Singles et versions alternatives : JAMAIS d'album cover
+    # Standalone singles and alternate versions: never use the album cover.
     if track_type in ("standalone", "alternate_version"):
         # Check if this track's song_family has a single_image
         family_map = _get_song_family_single_image_map()
@@ -315,16 +316,15 @@ def get_cover_url(entry: dict, cover_map: dict, track_album_map: dict) -> str:
         
         return ""
     
-    # Tracks normaux : priorité album cover → image_url
+    # Normal tracks: prefer track/API artwork; use album artwork as fallback.
+    if track_img and str(track_img).startswith("http"):
+        return track_img
+
     album_name = track_album_map.get(_norm(title), "")
     if album_name:
         cover = cover_map.get(_norm(album_name), "")
         if cover and str(cover).startswith("http"):
             return cover
-    
-    # Track image fallback
-    if track_img and str(track_img).startswith("http"):
-        return track_img
     
     return ""
 
@@ -547,6 +547,24 @@ def _url_to_data_uri(url: str) -> str:
         return ""
 
 
+def _load_image_data_uri_cache() -> dict[str, str]:
+    try:
+        data = json.loads(IMAGE_DATA_URI_CACHE_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def _save_image_data_uri_cache(cache: dict[str, str]) -> None:
+    try:
+        IMAGE_DATA_URI_CACHE_PATH.write_text(
+            json.dumps(cache, ensure_ascii=False),
+            encoding="utf-8",
+        )
+    except Exception:
+        pass
+
+
 def prefetch_images(top_rows: list[dict], cover_map: dict, track_album_map: dict) -> dict[str, str]:
     """Resolve cover URLs for all top entries and return {url: data_uri}."""
     urls = set()
@@ -555,13 +573,22 @@ def prefetch_images(top_rows: list[dict], cover_map: dict, track_album_map: dict
         if cover_url:
             urls.add(cover_url)
 
-    result: dict[str, str] = {}
+    cache = _load_image_data_uri_cache()
+    result: dict[str, str] = {
+        url: cache[url]
+        for url in urls
+        if isinstance(cache.get(url), str) and cache[url].startswith("data:")
+    }
+    missing_urls = sorted(urls - set(result))
     with concurrent.futures.ThreadPoolExecutor(max_workers=15) as ex:
-        futures = {ex.submit(_url_to_data_uri, u): u for u in urls}
+        futures = {ex.submit(_url_to_data_uri, u): u for u in missing_urls}
         for fut, url in futures.items():
             data_uri = fut.result()
             if data_uri:
                 result[url] = data_uri
+                cache[url] = data_uri
+    if missing_urls:
+        _save_image_data_uri_cache(cache)
     return result
 
 
@@ -684,6 +711,82 @@ def build_html(top_rows: list[dict], target_date: str, cover_map: dict, track_al
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+
+def _streams_image_filename(*, top_n: int, start_rank: int) -> str:
+    if start_rank == 1 and top_n == TOP_N:
+        return "streams_image.png"
+    return f"streams_image_{start_rank}_{start_rank + top_n - 1}.png"
+
+
+def _render_html(browser, html: str, out_path: Path) -> None:
+    page = browser.new_page(viewport={"width": 800, "height": 200}, device_scale_factor=2)
+    try:
+        page.set_content(html, wait_until="load")
+        page.wait_for_timeout(300)
+        page.locator("body").screenshot(path=str(out_path))
+    finally:
+        page.close()
+
+
+def generate_thread_images(
+    target_date: str | None = None,
+    *,
+    top_n: int | None = None,
+    pages: int = 3,
+) -> list[Path]:
+    if target_date is None:
+        target_date = get_latest_date()
+    print(f"Date: {target_date}")
+
+    top_n_final = TOP_N if top_n is None else int(top_n)
+    if top_n_final <= 0:
+        raise ValueError("top_n must be > 0")
+    if pages <= 0:
+        raise ValueError("pages must be > 0")
+
+    song_db         = load_song_db()
+    cover_map       = load_covers()
+    track_album_map = load_track_album_map()
+
+    today_rows, yesterday_rows, last_week_rows = load_history(target_date)
+    if not today_rows:
+        raise ValueError(f"Aucune donnée pour {target_date} dans {HISTORY_PATH}")
+
+    batches: list[tuple[int, list[dict]]] = []
+    all_rows: list[dict] = []
+    for page_index in range(pages):
+        start_rank = page_index * top_n_final + 1
+        top_rows = build_top_n(today_rows, yesterday_rows, last_week_rows, song_db, top_n_final, start_rank=start_rank)
+        end_rank = start_rank + len(top_rows) - 1
+        print(f"Top {start_rank}-{end_rank} construit ({len(top_rows)} chansons)")
+        for e in top_rows:
+            daily_fmt = f"{e['daily_streams']:,}"
+            print(f"  #{int(e.get('rank') or 0):2d} {e['title']:<40} {daily_fmt} streams/day")
+        batches.append((start_rank, top_rows))
+        all_rows.extend(top_rows)
+
+    print("Téléchargement des images...")
+    image_cache = prefetch_images(all_rows, cover_map, track_album_map)
+    print(f"  {len(image_cache)} images téléchargées")
+
+    out_dir = update_streams_dir(target_date)
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    out_paths: list[Path] = []
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        try:
+            for start_rank, top_rows in batches:
+                html = build_html(top_rows, target_date, cover_map, track_album_map, top_n_final, image_cache)
+                out_path = out_dir / _streams_image_filename(top_n=top_n_final, start_rank=start_rank)
+                _render_html(browser, html, out_path)
+                out_paths.append(out_path)
+                print(f"\nImage générée : {out_path}")
+        finally:
+            browser.close()
+
+    return out_paths
+
 
 def generate(target_date: str | None = None, *, top_n: int | None = None, start_rank: int = 1) -> Path:
     if target_date is None:

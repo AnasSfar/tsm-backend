@@ -23,6 +23,7 @@ sys.path.insert(0, str(SCRIPT_DIR.parents[2]))
 from core.twitter import post_with_image  # noqa: E402
 
 import generate_weekend_streams_image
+from post_locks import mark_posted, should_skip_post
 
 
 def _ordinal(n: int) -> str:
@@ -60,11 +61,13 @@ def main() -> None:
     day_dir.mkdir(parents=True, exist_ok=True)
     lock = day_dir / "weekend_streams_posted.lock"
 
-    if lock.exists() and not ns.no_post:
-        print(f"Weekend streams image already posted for {target_date}, skipping.")
+    if should_skip_post(
+        lock,
+        target_date=target_date,
+        label="Weekend streams image",
+        no_post=ns.no_post,
+    ):
         return
-    if lock.exists() and ns.no_post:
-        print(f"Weekend streams image already posted for {target_date}, regenerating only (--no-post).")
 
     if not ns.no_post and not TWITTER_SESSION.exists():
         print(f"ERROR: Twitter session not found at {TWITTER_SESSION}")
@@ -86,7 +89,7 @@ def main() -> None:
         print(f"[weekend_streams_post] Failed to post for {target_date}.")
         sys.exit(1)
 
-    lock.touch()
+    mark_posted(lock)
     print(f"[weekend_streams_post] Posted successfully for {target_date}.")
 
 

@@ -559,7 +559,7 @@ def get_cover_url(track: dict, covers: dict) -> str:
     Priority:
       - If type == "standalone" or "alternate_version":
         * single_image (from same song_family) > image_url (NEVER album cover)
-      - Otherwise: covers.json (album) > image_url
+      - Otherwise: image_url (Spotify track/API image) > covers.json (album fallback)
     """
     track_type = track.get("type", "album")
     track_img = track.get("image_url", "")
@@ -567,7 +567,7 @@ def get_cover_url(track: dict, covers: dict) -> str:
     song_family = track.get("song_family", "")
     album = track.get("album", "")
     
-    # Singles et versions alternatives : JAMAIS d'album cover
+    # Standalone singles and alternate versions: never use the album cover.
     if track_type in ("standalone", "alternate_version"):
         # Check if this track's song_family has a single_image
         family_map = _get_song_family_single_image_map()
@@ -586,15 +586,14 @@ def get_cover_url(track: dict, covers: dict) -> str:
         
         return ""
     
-    # Tracks normaux : priorité album cover → image_url
+    # Normal tracks: prefer track/API artwork; use album artwork as fallback.
+    if track_img and str(track_img).startswith("http"):
+        return track_img
+
     if album:
         cover = covers.get(_norm(album), "")
         if cover and str(cover).startswith("http"):
             return cover
-    
-    # Track image fallback
-    if track_img and str(track_img).startswith("http"):
-        return track_img
     
     return ""
 

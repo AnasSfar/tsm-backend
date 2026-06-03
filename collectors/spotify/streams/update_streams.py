@@ -35,6 +35,7 @@ from finalize_update import (
     run_final_update_tasks,
 )
 from post_debut_releases import post_debut_releases
+from release_targets import is_recent_release_date, recent_release_album_names
 from reporting import ProgressLogger, print_remaining_details, print_summary_block, update_json_logs_from_summary
 import spotify_api as _spotify_api
 from stream_utils import (
@@ -269,6 +270,11 @@ Usage:
       Force re-scrape even if the date already exists, but skip history writes,
       R2, Twitter, git, forecast, and image metadata refresh.
 
+  python update_streams.py --test [YYYY-MM-DD]
+      Run finalization scripts against existing history data for the latest
+      available date (or the provided date), with no R2, no web export writes,
+      no Twitter posts, no git, and no scraping.
+
   python update_streams.py --no-post
       Run full pipeline but skip all Twitter posting steps.
 
@@ -491,12 +497,15 @@ def build_probe_tracks(tracks: list[dict]) -> list[dict]:
     return [t for t, _ in scored[:PROBE_CANDIDATES]]
 
 
-def build_album_post_priority_track_ids() -> set[str]:
+def build_album_post_priority_track_ids(stats_date: str | None = None) -> set[str]:
     """Return track IDs needed before album-update posts can be generated."""
     priority_ids: set[str] = set()
     target_albums = set(ALBUM_UPDATE_TARGETS)
+    sections = load_album_sections_flat()
+    if stats_date:
+        target_albums.update(recent_release_album_names(sections, stats_date))
 
-    for section in load_album_sections_flat():
+    for section in sections:
         if section.get("album") not in target_albums:
             continue
         for track in section.get("tracks", []):
@@ -605,19 +614,6 @@ def run_new_release_preflight(token_mgr: TokenManager | None, stats_date: str) -
         f"new_track_ids={len(added_ids)}"
     )
     return added_ids
-
-
-def is_recent_release_date(release_date: str | None, target_date: str, *, window_days: int = 3) -> bool:
-    if not release_date:
-        return False
-    try:
-        release_dt = date.fromisoformat(str(release_date)[:10])
-        target_dt = date.fromisoformat(target_date)
-    except ValueError:
-        return False
-    delta_days = (target_dt - release_dt).days
-    return 0 <= delta_days <= window_days
-
 
 def filter_tracks_released_on(track_ids: set[str], target_date: str) -> set[str]:
     if not track_ids:
@@ -900,7 +896,7 @@ def run_update(
     previous_day_priorities = load_track_priorities_from_specific_date(
         get_previous_stats_date_str(stats_date)
     )
-    album_post_priority_ids = build_album_post_priority_track_ids()
+    album_post_priority_ids = build_album_post_priority_track_ids(stats_date)
     tracks.sort(
         key=lambda t: (
             t["track_id"] not in album_post_priority_ids,
@@ -1177,6 +1173,7 @@ def main():
     debug_total_mode = "--debug-total" in sys.argv
     dry_run_mode = "--dry-run" in sys.argv
     local_test_mode = "--local-test" in sys.argv
+    test_mode = "--test" in sys.argv
     no_post_mode = "--no-post" in sys.argv
     throwback_mode = "--throwback" in sys.argv
     throwback_force = "--force" in sys.argv or "--throwback-force" in sys.argv
@@ -1184,6 +1181,8 @@ def main():
     write_history = not local_test_mode
     force_reprocess = local_test_mode
 
+    if test_mode:
+        no_post_mode = True
     if local_test_mode:
         no_post_mode = True
 
@@ -1193,6 +1192,9 @@ def main():
     if local_test_mode and (debug_daily_mode or debug_total_mode or dry_run_mode):
         print("Use --local-test by itself (optionally with a date, --quiet, or --verbose).")
         sys.exit(1)
+    if test_mode and (debug_daily_mode or debug_total_mode or dry_run_mode or local_test_mode or throwback_mode):
+        print("Use --test by itself (optionally with a date, --quiet, or --verbose).")
+        sys.exit(1)
 
     remaining_args = [
         a for a in sys.argv[1:]
@@ -1201,6 +1203,7 @@ def main():
             "--debug-total",
             "--dry-run",
             "--local-test",
+            "--test",
             "--no-post",
             "--throwback",
             "--throwback-force",
@@ -1294,7 +1297,9 @@ def main():
         removed = delete_history_rows_for_date(reset_date_override)
         print(f"[RESET] Removed {removed} row(s) for stats date: {reset_date_override}")
 
-    if local_test_mode:
+    if test_mode:
+        print("[TEST] Run finalization scripts from existing history; no R2, web export writes, posts, git, or scraping.")
+    elif local_test_mode:
         print("[LOCAL-TEST] Force re-scrape, no history writes, no R2, no Twitter, no git.")
     elif dry_run_mode:
         print("[DRY-RUN] Scraping uniquement — aucune modification.")
@@ -1307,12 +1312,19 @@ def main():
     else:
         print("[NORMAL] Official run mode.")
 
-    if dry_run_mode or debug_daily_mode or local_test_mode or throwback_mode:
+    if dry_run_mode or debug_daily_mode or local_test_mode or throwback_mode or test_mode:
         os.environ["UPLOAD_TO_R2"] = "0"
         print("R2 upload disabled for this run mode.")
     else:
         os.environ["UPLOAD_TO_R2"] = "1"
         print("R2 upload enabled for this run (UPLOAD_TO_R2=1).")
+
+    if test_mode and stats_date_override is None:
+        stats_date_override = get_last_stats_date_in_history()
+        if not stats_date_override:
+            print("[TEST] No date found in streams_history.csv.")
+            sys.exit(1)
+        print(f"[TEST] Using latest history date: {stats_date_override}")
 
     snapshot_date = stats_date_override or get_stats_date_str()
     snapshot_collected_date = get_scrape_date_str()
@@ -1360,6 +1372,44 @@ def main():
             throwback_event=throwback_event,
             throwback_label=throwback_label,
             throwback_force=throwback_force,
+        ))
+        return
+
+    if test_mode:
+        print("[TEST] Using existing streams_history.csv data only; skipping Spotify collection.")
+
+        def _test_export_web_data(**kwargs) -> None:
+            print("[TEST] Web export skipped (no website writes, no R2).")
+
+        run_final_update_tasks(FinalizeContext(
+            script_dir=_SCRIPT_DIR,
+            repo_root=_REPO_ROOT,
+            stats_date=stats_date,
+            summary={
+                "stats_date": stats_date,
+                "all_done": True,
+                "updated_this_run": 0,
+                "pending_this_run": 0,
+                "not_found_this_run": 0,
+            },
+            no_post_mode=True,
+            debug_daily_mode=False,
+            local_test_mode=False,
+            post_spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
+            log_mode=LOG_MODE,
+            artist_thread=None,
+            artist_result=[None],
+            export_web_data=_test_export_web_data,
+            update_artist_metadata=update_artist_metadata,
+            album_tracks_done_for=album_tracks_done_for,
+            all_album_tracks_done=all_album_tracks_done,
+            load_album_sections_flat=load_album_sections_flat,
+            extract_track_id=extract_track_id,
+            load_history_track_ids_for_date=load_history_track_ids_for_date,
+            find_biggest_album_gainer_for_spotlight=find_biggest_album_gainer_for_spotlight,
+            posted_album_updates=set(),
+            initial_post_state={"posted_count": 0, "last_post_at": 0.0},
+            test_mode=True,
         ))
         return
 
@@ -1612,6 +1662,10 @@ def main():
         album_tracks_done_for=album_tracks_done_for,
         spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
         log_mode=LOG_MODE,
+        target_albums=[
+            *ALBUM_UPDATE_TARGETS,
+            *recent_release_album_names(load_album_sections_flat(), stats_date),
+        ],
         enabled=(
             not dry_run_mode
             and not debug_daily_mode

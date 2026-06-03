@@ -22,6 +22,7 @@ from core.album_emoji import album_emoji
 from core.twitter import post_with_image
 
 import generate_albums_image
+from post_locks import mark_posted, should_skip_post
 
 TWITTER_MAX = 280
 
@@ -206,8 +207,13 @@ def main():
     day_dir.mkdir(parents=True, exist_ok=True)
     lock = day_dir / "albums_posted.lock"
 
-    if lock.exists() and not no_post:
-        print(f"Albums image already posted for {target_date}, skipping.")
+    if should_skip_post(
+        lock,
+        target_date=target_date,
+        label="Albums image",
+        no_post=no_post,
+        regenerate_when_no_post=False,
+    ):
         return
 
     if not no_post and not TWITTER_SESSION.exists():
@@ -235,7 +241,7 @@ def main():
         print(f"[albums_post] Failed to post for {target_date}.")
         sys.exit(1)
 
-    lock.touch()
+    mark_posted(lock)
     print(f"[albums_post] Posted successfully for {target_date}.")
 
 

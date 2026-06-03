@@ -36,12 +36,14 @@ SITE_SETTINGS_KEY = "site_settings.json"
 DEFAULT_THEME_MODE = "theme-showgirl"
 FRONTEND_THEMES_CSS = REPO_ROOT.parent / "tsm-frontend" / "frontend" / "src" / "styles" / "themes.css"
 
+sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT.parent))
 from core.data_paths import update_streams_dir  # noqa: E402
-from core.twitter import post_with_image  # noqa: E402
+from core.twitter import post_image_thread, post_with_image  # noqa: E402
 
 import generate_streams_image  # noqa: E402
 import generate_weekend_streams_image  # noqa: E402
+import spotlight  # noqa: E402
 
 
 THEME_FALLBACKS = {
@@ -463,69 +465,118 @@ def _force_song_track_ids(meta: dict[str, dict], selectors: set[str] | None) -> 
 
 DEBUT_CSS = """
 body{color:var(--debut-text)}
-.hdr .total-panel{
-  min-width:360px;
-  max-width:390px;
-  overflow:hidden;
+.hdr{
+  min-height:96px;
+  padding:20px 30px;
+  gap:18px;
 }
-.hdr .total-value{
-  font-size:34px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:clip;
-  font-variant-numeric:tabular-nums;
+.brand{
+  flex:1 1 auto;
 }
-.debut-wrap{padding:18px 20px 0}
+.hdr .hdr-logo{
+  width:48px;
+  height:48px;
+}
+.hdr-title{
+  font-size:23px;
+}
+.hdr-date{
+  color:rgba(255,255,255,.86);
+  font-size:13px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+.debut-wrap{
+  padding:22px 26px 0;
+}
 .debut-card{
-  background:rgba(255,255,255,.78);
-  border-top:1px solid rgba(16,24,40,.06);
+  overflow:hidden;
+  border-radius:20px;
+  background:rgba(255,255,255,.88);
+  border:1px solid rgba(16,24,40,.08);
+  box-shadow:0 18px 48px rgba(16,24,40,.12);
+}
+.debut-card .section-title{
+  padding:20px 24px;
+  background:linear-gradient(90deg,var(--debut-accent-chip),rgba(248,250,251,.96));
+}
+.debut-card .section-title h2{
+  font-size:21px;
+}
+.debut-card .section-title span{
+  padding:7px 11px;
+  border-radius:999px;
+  background:rgba(255,255,255,.72);
 }
 .debut-main{
   display:grid;
-  grid-template-columns:152px minmax(0,1fr) 330px;
-  gap:18px;
+  grid-template-columns:220px minmax(0,1fr) 380px;
+  gap:32px;
   align-items:center;
-  min-height:188px;
-  padding:18px 20px;
+  min-height:244px;
+  padding:30px 30px 32px;
   overflow:hidden;
 }
+.debut-art{
+  width:220px;
+  height:220px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:18px;
+  background:var(--debut-accent-chip);
+  box-shadow:0 16px 34px rgba(16,24,40,.13);
+}
+.debut-cover,.debut-cover-ph{
+  width:198px;
+  height:198px;
+  border-radius:16px;
+}
 .debut-cover{
-  width:152px;
-  height:152px;
-  border-radius:9px;
   object-fit:cover;
-  box-shadow:0 4px 14px rgba(0,0,0,.16);
+  box-shadow:0 10px 24px rgba(0,0,0,.22);
 }
 .debut-cover-ph{
-  width:152px;
-  height:152px;
-  border-radius:9px;
   background:#dde3ea;
 }
 .debut-kicker{
+  display:inline-flex;
+  padding:7px 10px;
+  border-radius:999px;
+  background:var(--debut-accent-chip);
   font-size:11px;
   font-weight:900;
   text-transform:uppercase;
   letter-spacing:.08em;
-  color:#667085;
+  color:var(--debut-muted);
 }
 .debut-title{
-  margin-top:8px;
-  font-size:35px;
-  line-height:1.04;
+  margin-top:14px;
+  font-size:38px;
+  line-height:1.02;
   font-weight:950;
   color:var(--debut-text);
   letter-spacing:0;
 }
 .debut-sub{
-  margin-top:10px;
-  font-size:14px;
+  margin-top:12px;
+  font-size:15px;
   color:var(--debut-muted);
-  font-weight:750;
+  font-weight:800;
+}
+.debut-metric{
+  text-align:right;
 }
 .debut-num{
+  display:inline-block;
+  padding:18px 22px;
+  border-radius:20px;
+  background:linear-gradient(180deg,rgba(255,255,255,.98),var(--debut-accent-chip));
+  border:1px solid var(--debut-accent-line);
+  box-shadow:0 14px 34px rgba(16,24,40,.10);
   text-align:right;
-  font-size:30px;
+  font-size:42px;
   line-height:1.02;
   font-weight:950;
   color:var(--debut-text);
@@ -534,31 +585,26 @@ body{color:var(--debut-text)}
   font-variant-numeric:tabular-nums;
 }
 .debut-label{
-  margin-top:7px;
+  margin-top:9px;
   text-align:right;
-  font-size:12px;
-  color:var(--debut-muted);
-  font-weight:800;
+  font-size:13px;
+  color:var(--debut-accent);
+  font-weight:900;
   text-transform:uppercase;
   letter-spacing:.07em;
 }
 .debut-versions{
-  margin-top:7px;
+  margin-top:10px;
   text-align:right;
   font-size:13px;
-  color:var(--debut-accent);
+  color:var(--debut-muted);
   font-weight:850;
 }
-.debut-note{
-  padding:12px 16px;
-  background:rgba(248,250,251,.9);
-  border-top:1px solid rgba(16,24,40,.06);
-  color:#344054;
-  font-size:13px;
-  font-weight:700;
-}
 .version-block{
-  border-top:1px solid rgba(16,24,40,.06);
+  margin:0 28px 24px;
+  overflow:hidden;
+  border-radius:16px;
+  border:1px solid rgba(16,24,40,.07);
 }
 .version-head,.version-row{
   display:grid;
@@ -567,8 +613,8 @@ body{color:var(--debut-text)}
   align-items:center;
 }
 .version-head{
-  padding:9px 16px;
-  background:rgba(248,250,251,.9);
+  padding:11px 16px;
+  background:rgba(248,250,251,.95);
 }
 .version-head span{
   font-size:10px;
@@ -578,25 +624,27 @@ body{color:var(--debut-text)}
   color:#667085;
 }
 .version-row{
-  min-height:46px;
-  padding:8px 16px;
+  min-height:50px;
+  padding:9px 16px;
   border-top:1px solid rgba(16,24,40,.05);
-  background:rgba(255,255,255,.78);
+  background:rgba(255,255,255,.86);
 }
-.version-row:nth-child(odd){background:rgba(248,250,251,.82)}
+.version-row:nth-child(odd){background:linear-gradient(90deg,rgba(248,250,251,.92),var(--debut-accent-row))}
 .version-name{
   min-width:0;
   font-size:12.5px;
-  font-weight:700;
+  font-weight:750;
   color:var(--debut-muted);
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
 }
-.version-rank{
-  font-size:13px;
+.version-rank,.version-title,.version-streams{
   font-weight:900;
   color:var(--debut-text);
+}
+.version-rank{
+  font-size:13px;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
@@ -604,8 +652,6 @@ body{color:var(--debut-text)}
 .version-title{
   min-width:0;
   font-size:13.5px;
-  font-weight:900;
-  color:var(--debut-text);
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
@@ -613,9 +659,10 @@ body{color:var(--debut-text)}
 .version-streams{
   text-align:right;
   font-size:13.5px;
-  font-weight:900;
-  color:#101828;
   font-variant-numeric:tabular-nums;
+}
+.ftr{
+  margin-top:22px;
 }
 """
 
@@ -624,6 +671,29 @@ def _cover_data_uri(image_url: str | None) -> str:
     if not image_url:
         return ""
     return generate_streams_image._url_to_data_uri(image_url) or image_url
+
+
+def _cover_artwork_assets(image_url: str | None, fallback_accent: str) -> tuple[str, str, str]:
+    """Return (data_uri, gradient_css, accent_hex) based on the debut cover."""
+    if not image_url:
+        return "", "", fallback_accent
+
+    cover_uri, cover_bytes = spotlight._fetch_image(image_url)
+    if not cover_uri:
+        cover_uri = _cover_data_uri(image_url)
+    if not cover_bytes:
+        return cover_uri, "", fallback_accent
+
+    gradient, accent = spotlight._cover_palette(cover_bytes)
+    return cover_uri, gradient, accent or fallback_accent
+
+
+def _rgba(hex_color: str, alpha: float) -> str:
+    rgb = spotlight._hex_to_rgb(hex_color)
+    if rgb is None:
+        rgb = spotlight._hex_to_rgb("#1db954") or (29, 185, 84)
+    r, g, b = rgb
+    return f"rgba({r},{g},{b},{alpha:.3f})"
 
 
 def _render_html_image(html_text: str, out_path: Path, tmp_name: str) -> Path:
@@ -650,6 +720,7 @@ def _build_debut_html(
     image_url: str | None,
     versions: list[dict] | None = None,
     version_count: int = 1,
+    show_version_details: bool = True,
 ) -> str:
     date_text = _date_label(target_date)
     theme = _active_theme()
@@ -657,7 +728,9 @@ def _build_debut_html(
     accent_2 = theme["accent_2"]
     text_color = theme["text"]
     muted_color = theme["muted"]
-    cover_uri = _cover_data_uri(image_url)
+    cover_uri, cover_gradient, cover_accent = _cover_artwork_assets(image_url, accent)
+    if cover_accent:
+        accent = cover_accent
     cover_html = (
         f'<img class="debut-cover" src="{html.escape(cover_uri, quote=True)}" />'
         if cover_uri
@@ -669,7 +742,7 @@ def _build_debut_html(
         else ""
     )
     version_rows_html = ""
-    if versions and len(versions) > 1:
+    if show_version_details and versions and len(versions) > 1:
         rows = []
         for idx, version in enumerate(versions, 1):
             row_label = str(version.get("label") or "").strip() or "Version"
@@ -694,11 +767,18 @@ def _build_debut_html(
 </div>"""
     theme_vars = generate_weekend_streams_image._theme_vars_from_color(accent)
     header_style = (
-        f'style="background:linear-gradient(135deg,{accent} 0%,{accent_2} 100%);"'
+        f'style="background:{cover_gradient};"'
+        if cover_gradient
+        else f'style="background:linear-gradient(135deg,{accent} 0%,{accent_2} 100%);"'
     )
     extra_vars = (
         f"--debut-accent:{accent};"
         f"--debut-accent-2:{accent_2};"
+        f"--debut-accent-wash:{_rgba(accent, 0.18)};"
+        f"--debut-accent-chip:{_rgba(accent, 0.12)};"
+        f"--debut-accent-row:{_rgba(accent, 0.08)};"
+        f"--debut-accent-line:{_rgba(accent, 0.42)};"
+        f"--debut-accent-sheen:{_rgba(accent, 0.24)};"
         f"--debut-text:{text_color};"
         f"--debut-muted:{muted_color};"
     )
@@ -712,35 +792,30 @@ def _build_debut_html(
       {generate_weekend_streams_image.SPOTIFY_SVG}
       <div>
         <div class="hdr-title">Taylor Swift · Spotify Debut</div>
-        <div class="hdr-sub">{html.escape(date_text)} · First positive counter snapshot</div>
       </div>
     </div>
-    <div class="total-panel">
-      <div class="total-label">Debut streams</div>
-      <div class="total-value">{_fmt(streams)}</div>
-    </div>
+    <div class="hdr-date">{html.escape(date_text)}</div>
   </div>
   <div class="debut-wrap">
     <div class="section debut-card">
       <div class="section-title">
-        <h2>New Release</h2>
+        <h2>New Release Snapshot</h2>
         <span>Song</span>
       </div>
       <div class="debut-main">
-        {cover_html}
+        <div class="debut-art">{cover_html}</div>
         <div>
           <div class="debut-kicker">Spotify Counter</div>
           <div class="debut-title">{html.escape(title)}</div>
           <div class="debut-sub">Taylor Swift</div>
         </div>
-        <div>
+        <div class="debut-metric">
           <div class="debut-num">{_fmt(streams)}</div>
-          <div class="debut-label">Streams</div>
+          <div class="debut-label">Daily streams</div>
           {version_html}
         </div>
       </div>
       {version_rows_html}
-      <div class="debut-note">See full update here : thetsmuseum.app/streams/latest</div>
     </div>
   </div>
   <div class="ftr">
@@ -761,6 +836,7 @@ def _generate_debut_image(
     image_url: str | None,
     versions: list[dict] | None = None,
     version_count: int = 1,
+    show_version_details: bool = True,
 ) -> Path | None:
     out_dir = update_streams_dir(target_date)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -778,16 +854,17 @@ def _generate_debut_image(
         image_url=image_url,
         versions=versions,
         version_count=version_count,
+        show_version_details=show_version_details,
     )
     return _render_html_image(html_text, out_path, f"_{safe_slug}_debut_tmp.html")
 
 
-def _build_posts(
+def _build_post_threads(
     target_date: str,
     *,
     force_track_ids: set[str] | None = None,
     force_song_selectors: set[str] | None = None,
-) -> list[tuple[str, str, Path | None]]:
+) -> list[list[tuple[str, str, Path | None]]]:
     album_tracks, meta = _load_album_tracks()
     _load_misc_tracks(meta)
     day_rows = _load_rows_for_date(target_date)
@@ -819,7 +896,7 @@ def _build_posts(
     if not debut_ids:
         return []
 
-    posts: list[tuple[str, str, Path | None]] = []
+    post_threads: list[list[tuple[str, str, Path | None]]] = []
     date_text = _date_label(target_date)
 
     groups: dict[str, list[str]] = defaultdict(list)
@@ -852,27 +929,65 @@ def _build_posts(
                 ),
             )
         ]
-        image_path = _generate_debut_image(
+        total_image_path = _generate_debut_image(
             target_date,
-            slug=f"song_{group_key}",
+            slug=f"song_{group_key}_total",
             title=title,
             kind="song",
             streams=streams,
             image_url=image_url,
             versions=versions,
             version_count=version_count,
+            show_version_details=False,
         )
         version_note = f" across {version_count} versions" if version_count > 1 else ""
-        posts.append((
-            f"song:{group_key}",
+        thread_posts: list[tuple[str, str, Path | None]] = [(
+            f"song:{group_key}:total",
             (
                 f'"{title}" debuted with {_fmt(streams)} streams on the Spotify Counter{version_note} ({date_text}).\n\n'
                 "See full update here : https://thetsmuseum.app/streams/latest"
             ),
-            image_path,
-        ))
+            total_image_path,
+        )]
 
-    return posts
+        if version_count > 1:
+            details_image_path = _generate_debut_image(
+                target_date,
+                slug=f"song_{group_key}_details",
+                title=title,
+                kind="song",
+                streams=streams,
+                image_url=image_url,
+                versions=versions,
+                version_count=version_count,
+                show_version_details=True,
+            )
+            thread_posts.append((
+                f"song:{group_key}:details",
+                f'"{title}" version breakdown on the Spotify Counter ({date_text}).',
+                details_image_path,
+            ))
+
+        post_threads.append(thread_posts)
+
+    return post_threads
+
+
+def _build_posts(
+    target_date: str,
+    *,
+    force_track_ids: set[str] | None = None,
+    force_song_selectors: set[str] | None = None,
+) -> list[tuple[str, str, Path | None]]:
+    return [
+        post
+        for thread in _build_post_threads(
+            target_date,
+            force_track_ids=force_track_ids,
+            force_song_selectors=force_song_selectors,
+        )
+        for post in thread
+    ]
 
 
 def post_debut_releases(
@@ -894,15 +1009,21 @@ def post_debut_releases(
         except Exception:
             already_posted = set()
 
-    posts = [
-        (slug, text, image_path)
-        for slug, text, image_path in _build_posts(
+    post_threads = []
+    for thread in _build_post_threads(
             target_date,
             force_track_ids=force_track_ids,
             force_song_selectors=force_song_selectors,
-        )
-        if slug not in already_posted
-    ]
+    ):
+        pending_thread = [
+            (slug, text, image_path)
+            for slug, text, image_path in thread
+            if slug not in already_posted
+        ]
+        if pending_thread:
+            post_threads.append(pending_thread)
+
+    posts = [post for thread in post_threads for post in thread]
     if not posts:
         print(f"[debut_releases] No new debut release posts for {target_date}.")
         return 0
@@ -925,14 +1046,23 @@ def post_debut_releases(
         return 1
 
     posted = set(already_posted)
-    for slug, text, image_path in posts:
-        if image_path is None:
-            print(f"[debut_releases] Missing debut image for {slug}; aborting post.")
+    for thread in post_threads:
+        missing_image = next((slug for slug, _text, image_path in thread if image_path is None), None)
+        if missing_image is not None:
+            print(f"[debut_releases] Missing debut image for {missing_image}; aborting post.")
             return 1
-        if not post_with_image(text, image_path, TWITTER_SESSION):
-            print(f"[debut_releases] Failed to post {slug}.")
+
+        if len(thread) > 1:
+            ok = post_image_thread([(text, image_path) for _slug, text, image_path in thread if image_path], TWITTER_SESSION)
+        else:
+            slug, text, image_path = thread[0]
+            ok = bool(image_path and post_with_image(text, image_path, TWITTER_SESSION))
+
+        if not ok:
+            print(f"[debut_releases] Failed to post debut thread: {', '.join(slug for slug, _text, _image_path in thread)}.")
             return 1
-        posted.add(slug)
+
+        posted.update(slug for slug, _text, _image_path in thread)
         lock_path.write_text(
             json.dumps(
                 {
