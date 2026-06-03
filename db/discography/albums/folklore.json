@@ -106,7 +106,26 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27326ade10c17424417bd06f1d6",
           "historical_track_ids": [],
-          "release_date": "2020-07-30T00:00:00Z"
+          "release_date": "2020-07-30T00:00:00Z",
+          "genres": [
+            "folk"
+          ],
+          "genre_status": "manual",
+          "genre_scores": {
+            "folk": 999.0
+          },
+          "genre_sources": {
+            "manual": [
+              "folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "manual": [
+              "folk"
+            ]
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cardigan"
         }
       ]
     },
@@ -188,7 +207,26 @@
           "historical_track_ids": [
             "7zcnlq38eqNWyUF6eNaB5Z"
           ],
-          "release_date": "2020-07-24T00:00:00Z"
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "folk"
+          ],
+          "genre_status": "manual",
+          "genre_scores": {
+            "folk": 999.0
+          },
+          "genre_sources": {
+            "manual": [
+              "folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "manual": [
+              "folk"
+            ]
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cardigan"
         },
         {
           "title": "exile (feat. Bon Iver)",
@@ -283,7 +321,26 @@
           "historical_track_ids": [
             "1UHoF9p75IVsvUt6WdTYhn"
           ],
-          "release_date": "2020-07-24T00:00:00Z"
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "folk"
+          ],
+          "genre_status": "manual",
+          "genre_scores": {
+            "folk": 999.0
+          },
+          "genre_sources": {
+            "manual": [
+              "folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "manual": [
+              "folk"
+            ]
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:august"
         },
         {
           "title": "this is me trying",
@@ -548,7 +605,26 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
           "historical_track_ids": [],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "folk"
+          ],
+          "genre_status": "manual",
+          "genre_scores": {
+            "folk": 999.0
+          },
+          "genre_sources": {
+            "manual": [
+              "folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "manual": [
+              "folk"
+            ]
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:august"
         },
         {
           "title": "betty - the long pond studio sessions",
@@ -830,7 +906,26 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
           "display_era": "folklore",
           "historical_track_ids": [],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "folk"
+          ],
+          "genre_status": "manual",
+          "genre_scores": {
+            "folk": 999.0
+          },
+          "genre_sources": {
+            "manual": [
+              "folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "manual": [
+              "folk"
+            ]
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cardigan"
         },
         {
           "title": "exile (feat. Bon Iver) - the long pond studio sessions",

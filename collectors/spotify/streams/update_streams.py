@@ -21,10 +21,10 @@ from playwright.sync_api import sync_playwright
 _SCRIPT_DIR = Path(__file__).resolve().parent
 _REPO_ROOT = _SCRIPT_DIR.parents[2]
 
+sys.path.insert(0, str(_REPO_ROOT / "scripts"))
+sys.path.insert(0, str(_SCRIPT_DIR.parents[0]))  # collectors/spotify/ for core.*
 sys.path.insert(0, str(_SCRIPT_DIR / "tools" / "scripts"))
 sys.path.insert(0, str(_SCRIPT_DIR / "extras"))
-sys.path.insert(0, str(_SCRIPT_DIR.parents[0]))  # collectors/spotify/ for core.*
-sys.path.insert(0, str(_REPO_ROOT / "scripts"))
 
 import export_for_web
 from backfill_discography_from_spotify import run_backfill as run_discography_backfill
@@ -37,7 +37,14 @@ from finalize_update import (
 from post_debut_releases import post_debut_releases
 from reporting import ProgressLogger, print_remaining_details, print_summary_block, update_json_logs_from_summary
 import spotify_api as _spotify_api
-from stream_utils import block_unneeded, format_int, get_previous_stats_date_str, get_stats_date_str, launch_browser
+from stream_utils import (
+    block_unneeded,
+    format_int,
+    get_previous_stats_date_str,
+    get_scrape_date_str,
+    get_stats_date_str,
+    launch_browser,
+)
 from spotify_api import (
     AdaptiveWorkerState,
     TokenManager,
@@ -149,6 +156,8 @@ NOT_FOUND_STREAK_PATH = DATA_DIR / "not_found_streak.json"
 MAX_NOT_FOUND_DAYS = 7
 
 MAX_DAILY_INCREASE = 50_000_000
+NEW_RELEASE_RETRY_ATTEMPTS = int(os.getenv("NEW_RELEASE_RETRY_ATTEMPTS", "12"))
+NEW_RELEASE_RETRY_SLEEP_SECONDS = int(os.getenv("NEW_RELEASE_RETRY_SLEEP_SECONDS", "10"))
 
 # ── API GraphQL Spotify ───────────────────────────────────────────────────────
 START_TIME = None
@@ -317,19 +326,23 @@ def incremental_publish_update(
 
 
 def export_web_data(*, allow_r2: bool = True, stats_date: str | None = None) -> None:
-    if allow_r2:
-        export_for_web.export_for_web(stats_date=stats_date)
-        return
-
-    previous = os.environ.get("UPLOAD_TO_R2")
-    os.environ["UPLOAD_TO_R2"] = "0"
+    previous_upload = os.environ.get("UPLOAD_TO_R2")
+    previous_lock = os.environ.get("R2_EXPORT_LOCK_PATH")
+    if allow_r2 and stats_date:
+        os.environ["R2_EXPORT_LOCK_PATH"] = str(update_streams_dir(stats_date) / "r2_exported.lock")
+    elif not allow_r2:
+        os.environ["UPLOAD_TO_R2"] = "0"
     try:
         export_for_web.export_for_web(stats_date=stats_date)
     finally:
-        if previous is None:
+        if previous_upload is None:
             os.environ.pop("UPLOAD_TO_R2", None)
         else:
-            os.environ["UPLOAD_TO_R2"] = previous
+            os.environ["UPLOAD_TO_R2"] = previous_upload
+        if previous_lock is None:
+            os.environ.pop("R2_EXPORT_LOCK_PATH", None)
+        else:
+            os.environ["R2_EXPORT_LOCK_PATH"] = previous_lock
 
 
 def try_apply_track_update(
@@ -525,6 +538,8 @@ def run_discography_backfill_after_streams(token_mgr: TokenManager | None, stats
             skip_api=False,
             tokens=tokens,
             recent_release_limit=12,
+            target_release_date=stats_date,
+            expand_target_date=True,
             verbose=False,
         )
     except Exception as exc:
@@ -549,29 +564,59 @@ def run_new_release_preflight(token_mgr: TokenManager | None, stats_date: str) -
         return set()
 
     print("Checking recent Spotify releases before stream collection...")
-    try:
-        result = run_discography_backfill(
-            apply=True,
-            no_backup=False,
-            include_non_songs=False,
-            skip_api=False,
-            tokens=tokens,
-            recent_release_limit=12,
-            verbose=False,
-        )
-    except Exception as exc:
-        print(f"[discography] Recent release preflight failed (non-blocking): {exc}")
-        return set()
+    scan_dates = [stats_date]
+    previous_stats_date = get_previous_stats_date_str(stats_date)
+    if previous_stats_date not in scan_dates:
+        scan_dates.append(previous_stats_date)
 
-    added_ids = {str(track_id) for track_id in (result.get("added_track_ids") or []) if str(track_id)}
+    added_ids: set[str] = set()
+    totals = {
+        "db_duplicates_removed": 0,
+        "updates": 0,
+        "additions": 0,
+    }
+    for scan_date in scan_dates:
+        try:
+            result = run_discography_backfill(
+                apply=True,
+                no_backup=False,
+                include_non_songs=False,
+                skip_api=False,
+                tokens=tokens,
+                recent_release_limit=12,
+                target_release_date=scan_date,
+                expand_target_date=True,
+                verbose=False,
+            )
+        except Exception as exc:
+            print(f"[discography] Recent release preflight failed for {scan_date} (non-blocking): {exc}")
+            continue
+
+        added_ids.update(str(track_id) for track_id in (result.get("added_track_ids") or []) if str(track_id))
+        for key in totals:
+            totals[key] += int(result.get(key, 0) or 0)
+
     print(
         "[discography] recent preflight | "
-        f"db_duplicates_removed={result.get('db_duplicates_removed', 0)} | "
-        f"release_date_updates={result.get('updates', 0)} | "
-        f"additions={result.get('additions', 0)} | "
+        f"scan_dates={','.join(scan_dates)} | "
+        f"db_duplicates_removed={totals['db_duplicates_removed']} | "
+        f"release_date_updates={totals['updates']} | "
+        f"additions={totals['additions']} | "
         f"new_track_ids={len(added_ids)}"
     )
     return added_ids
+
+
+def is_recent_release_date(release_date: str | None, target_date: str, *, window_days: int = 3) -> bool:
+    if not release_date:
+        return False
+    try:
+        release_dt = date.fromisoformat(str(release_date)[:10])
+        target_dt = date.fromisoformat(target_date)
+    except ValueError:
+        return False
+    delta_days = (target_dt - release_dt).days
+    return 0 <= delta_days <= window_days
 
 
 def filter_tracks_released_on(track_ids: set[str], target_date: str) -> set[str]:
@@ -593,9 +638,43 @@ def filter_tracks_released_on(track_ids: set[str], target_date: str) -> set[str]
         for section in sections if isinstance(sections, list) else []:
             for track in section.get("tracks") or []:
                 track_id = extract_track_id(track.get("url") or track.get("spotify_url") or "")
-                if track_id in track_ids and track.get("release_date") == target_date:
+                if track_id in track_ids and is_recent_release_date(track.get("release_date"), target_date):
                     released.add(track_id)
     return released
+
+
+def filter_tracks_without_history_before(track_ids: set[str], target_date: str) -> set[str]:
+    if not track_ids:
+        return set()
+
+    seen_before: set[str] = set()
+    for row in load_history_rows():
+        track_id = str(row.get("track_id") or "").strip()
+        row_date = str(row.get("date") or "").strip()
+        try:
+            streams = int(str(row.get("streams") or "0").strip() or "0")
+        except ValueError:
+            streams = 0
+        if track_id in track_ids and row_date and row_date < target_date and streams > 0:
+            seen_before.add(track_id)
+
+    return set(track_ids) - seen_before
+
+
+def load_positive_history_track_ids_for_date(target_date: str) -> set[str]:
+    positive_ids: set[str] = set()
+    for row in load_history_rows():
+        track_id = str(row.get("track_id") or "").strip()
+        row_date = str(row.get("date") or "").strip()
+        if not track_id or row_date != target_date:
+            continue
+        try:
+            streams = int(str(row.get("streams") or "0").strip() or "0")
+        except ValueError:
+            streams = 0
+        if streams > 0:
+            positive_ids.add(track_id)
+    return positive_ids
 
 
 def run_probe(tracks: list[dict]) -> dict:
@@ -1235,12 +1314,15 @@ def main():
         os.environ["UPLOAD_TO_R2"] = "1"
         print("R2 upload enabled for this run (UPLOAD_TO_R2=1).")
 
-    stats_date = stats_date_override or get_stats_date_str()
+    snapshot_date = stats_date_override or get_stats_date_str()
+    snapshot_collected_date = get_scrape_date_str()
+    stats_date = snapshot_date
     
     print("=" * 70)
     print("Taylor Swift - Spotify Streams Collector")
     print("=" * 70)
-    print(f"Target stats date: {stats_date}")
+    print(f"Snapshot date: {snapshot_date}")
+    print(f"Snapshot collected date: {snapshot_collected_date}")
     print()
 
     if throwback_mode:
@@ -1331,8 +1413,10 @@ def main():
             print("TokenManager: échec — impossible d'obtenir les tokens Spotify. Vérifiez la connexion.")
             sys.exit(1)
         new_release_track_ids = run_new_release_preflight(token_mgr, stats_date)
+        active_track_ids = load_active_track_ids_from_discography()
+        recent_release_ids = filter_tracks_released_on(active_track_ids, stats_date)
+        new_release_track_ids.update(filter_tracks_without_history_before(recent_release_ids, stats_date))
         if new_release_track_ids:
-            active_track_ids = load_active_track_ids_from_discography()
             tracks = load_tracks_from_discography(active_track_ids)
             already_done_for_stats_date = load_history_track_ids_for_date(stats_date)
             done_tracks_before_run = len(already_done_for_stats_date)
@@ -1375,6 +1459,80 @@ def main():
             sys.exit(1)
     else:
         print("Tous les tracks déjà mis à jour pour cette date — Playwright/scraping ignoré.")
+
+    if (
+        new_release_track_ids
+        and scraping_needed
+        and not dry_run_mode
+        and not local_test_mode
+        and not debug_daily_mode
+    ):
+        priority_new_ids = filter_tracks_released_on(new_release_track_ids, stats_date)
+        priority_new_ids = filter_tracks_without_history_before(priority_new_ids, stats_date)
+        priority_new_ids -= load_positive_history_track_ids_for_date(stats_date)
+        if priority_new_ids:
+            print()
+            print("=" * 70)
+            print(f"New Release Priority Run ({len(priority_new_ids)} track(s))")
+            print("=" * 70)
+            priority_target_ids = set(priority_new_ids)
+            for attempt in range(1, NEW_RELEASE_RETRY_ATTEMPTS + 1):
+                done_now = load_positive_history_track_ids_for_date(stats_date)
+                missing_ids = priority_target_ids - done_now
+                if not missing_ids:
+                    break
+
+                print(
+                    f"[debut] Attempt {attempt}/{NEW_RELEASE_RETRY_ATTEMPTS}: "
+                    f"scraping {len(missing_ids)} new release track(s)."
+                )
+                priority_progress = ProgressLogger(LOG_MODE)
+                priority_summary = run_update(
+                    on_progress=priority_progress,
+                    stats_date_override=stats_date_override,
+                    dry_run_mode=False,
+                    only_track_ids=missing_ids,
+                    token_mgr=token_mgr,
+                    force_reprocess=True,
+                    write_history=write_history,
+                )
+                print_summary_block(priority_summary)
+                print_api_metrics(priority_summary)
+
+                done_now = load_positive_history_track_ids_for_date(stats_date)
+                missing_ids = priority_target_ids - done_now
+                if not missing_ids:
+                    break
+                if attempt < NEW_RELEASE_RETRY_ATTEMPTS:
+                    print(
+                        f"[debut] {len(missing_ids)} new release track(s) still missing; "
+                        f"retrying in {NEW_RELEASE_RETRY_SLEEP_SECONDS}s..."
+                    )
+                    time.sleep(NEW_RELEASE_RETRY_SLEEP_SECONDS)
+
+            missing_after_priority = priority_target_ids - load_positive_history_track_ids_for_date(stats_date)
+            if not missing_after_priority:
+                if not no_post_mode:
+                    export_for_web.main()
+                    post_debut_releases(
+                        stats_date,
+                        no_post=False,
+                        snapshot_collected_date=snapshot_collected_date,
+                    )
+                else:
+                    post_debut_releases(
+                        stats_date,
+                        no_post=True,
+                        snapshot_collected_date=snapshot_collected_date,
+                    )
+            else:
+                print(
+                    f"[debut] {len(missing_after_priority)} new release track(s) still missing after "
+                    f"{NEW_RELEASE_RETRY_ATTEMPTS} attempt(s); continuing normal run."
+                )
+
+            already_done_for_stats_date = load_history_track_ids_for_date(stats_date)
+            done_tracks_before_run = len(already_done_for_stats_date)
 
     should_run_probe = (
         done_tracks_before_run == 0
@@ -1437,39 +1595,6 @@ def main():
     print("Run")
     print("=" * 70)
 
-    if (
-        new_release_track_ids
-        and scraping_needed
-        and not dry_run_mode
-        and not local_test_mode
-        and not debug_daily_mode
-    ):
-        priority_new_ids = filter_tracks_released_on(new_release_track_ids, stats_date)
-        priority_new_ids -= load_history_track_ids_for_date(stats_date)
-        if priority_new_ids:
-            print()
-            print("=" * 70)
-            print(f"New Release Priority Run ({len(priority_new_ids)} track(s))")
-            print("=" * 70)
-            priority_progress = ProgressLogger(LOG_MODE)
-            priority_summary = run_update(
-                on_progress=priority_progress,
-                stats_date_override=stats_date_override,
-                dry_run_mode=False,
-                only_track_ids=priority_new_ids,
-                token_mgr=token_mgr,
-                force_reprocess=force_reprocess,
-                write_history=write_history,
-            )
-            print_summary_block(priority_summary)
-            print_api_metrics(priority_summary)
-
-            if not no_post_mode:
-                export_for_web.main()
-                post_debut_releases(stats_date, no_post=False)
-            else:
-                post_debut_releases(stats_date, no_post=True)
-
     _artist_result: list[dict | None] = [None]
 
     def _scrape_artist_bg():
@@ -1512,6 +1637,31 @@ def main():
     all_updated_track_ids = set(summary.get("updated_track_ids") or set())
     print_summary_block(summary)
     print_api_metrics(summary)
+
+    if (
+        new_release_track_ids
+        and not dry_run_mode
+        and not local_test_mode
+        and not debug_daily_mode
+    ):
+        debut_ids = filter_tracks_released_on(new_release_track_ids, stats_date)
+        missing_debut_ids = debut_ids - load_history_track_ids_for_date(stats_date)
+        if not missing_debut_ids:
+            if not no_post_mode:
+                export_for_web.main()
+                post_debut_releases(
+                    stats_date,
+                    no_post=False,
+                    snapshot_collected_date=snapshot_collected_date,
+                )
+            else:
+                post_debut_releases(
+                    stats_date,
+                    no_post=True,
+                    snapshot_collected_date=snapshot_collected_date,
+                )
+        else:
+            print(f"[debut] Post skipped: {len(missing_debut_ids)} debut track(s) still missing streams.")
 
     not_found_ids: set[str] = {
         r["track_id"] for r in summary["failed_results"] if r["status"] == "not_found"

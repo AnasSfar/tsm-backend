@@ -52,7 +52,6 @@ if str(_CORE) not in sys.path:
     sys.path.insert(0, str(_CORE))
 from core.data_paths import legacy_spotify_chart_dir, spotify_chart_dir  # noqa: E402
 from twitter import post_image_thread as _post_image_thread  # noqa: E402
-from twitter import post_thread as _post_thread  # noqa: E402
 
 # Shared lock with core/twitter.py — prevents running Playwright while Twitter
 # posting scripts are also using a browser (same lock file, same semantics).
@@ -1464,7 +1463,6 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
 
     index_path = out_dir / "cards_index.json"
     posted_path = out_dir / "posted_cards.json"
-    posted_reentries_path = out_dir / "posted_reentries.json"
     if index_path.exists() and not force:
         try:
             if post:
@@ -1496,12 +1494,10 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
     generated: list[str] = []
     priority_index: dict[str, dict] = {}
     to_post: list[tuple[Path, str]] = []  # (image_path, tweet_text)
-    reentries_to_post: list[tuple[str, str]] = []  # (slug, tweet_text)
 
     # Load already-posted slugs to avoid re-posting on --force reruns
     posted_path = out_dir / "posted_cards.json"
     already_posted: set[str] = set()
-    already_posted_reentries: set[str] = set()
     if post:
         if posted_path.exists():
             try:
@@ -1515,12 +1511,6 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
                 pass
         elif index_path.exists():
             print("[INFO] cards_index.json existe mais posted_cards.json est absent; publication des cards non verrouillées")
-        if posted_reentries_path.exists():
-            try:
-                data = json.loads(posted_reentries_path.read_text(encoding="utf-8"))
-                already_posted_reentries = set(data.get("posted", []))
-            except Exception:
-                pass
 
     _wait_for_twitter_lock()
     try:
@@ -1578,8 +1568,6 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
                     priority_index[out_path.name] = priority
                     print(f"  → {out_path.name}")
                     prev_count = prev_country_counts.get(track_id)
-                    if post and has_prev_snapshot and (prev_count or 0) == 0 and slug not in already_posted_reentries:
-                        reentries_to_post.append((slug, _build_reentry_tweet(meta, entries, chart_date)))
                     if post and slug not in already_posted:
                         to_post.append((out_path, _build_tweet(meta, entries, chart_date, prev_count)))
                     elif post:
@@ -1637,21 +1625,6 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
         encoding="utf-8",
     )
     print(f"[DONE] {len(generated)} images → {out_dir}")
-
-    if post and reentries_to_post:
-        print(f"[STEP] Publication de {len(reentries_to_post)} re-entry post(s) prioritaires...")
-        newly_posted_reentries: list[str] = []
-        for slug, tweet_text in reentries_to_post:
-            if _post_thread([tweet_text], TWITTER_SESSION):
-                newly_posted_reentries.append(slug)
-                all_reentries = sorted(already_posted_reentries | set(newly_posted_reentries))
-                posted_reentries_path.write_text(
-                    json.dumps({"date": chart_date, "posted": all_reentries}, ensure_ascii=False, indent=2),
-                    encoding="utf-8",
-                )
-            else:
-                print(f"[WARN] Echec post re-entry: {slug}")
-                return 1
 
     if post and to_post:
         print(f"[STEP] Publication d'un thread de {len(to_post)} card(s) sur Twitter...")

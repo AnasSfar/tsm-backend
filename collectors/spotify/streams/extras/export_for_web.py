@@ -1499,6 +1499,10 @@ def export_for_web(stats_date: str | None = None) -> None:
     except Exception:
         pass
     if _os.getenv("UPLOAD_TO_R2", "").strip().lower() not in ("0", "false", "no"):
+        r2_export_lock = _os.getenv("R2_EXPORT_LOCK_PATH", "").strip()
+        if r2_export_lock and Path(r2_export_lock).exists():
+            print(f"[R2] Upload skipped: exported lock exists ({r2_export_lock}).")
+            return
         required_env = ["R2_ACCOUNT_ID", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY"]
         missing = [name for name in required_env if not _os.getenv(name, "").strip()]
         if missing:
@@ -1510,11 +1514,23 @@ def export_for_web(stats_date: str | None = None) -> None:
             print("Uploading per-track history to R2...")
             _r2_script = Path(__file__).resolve().parents[4] / "scripts" / "r2.py"
             try:
-                _cmd = [_sys.executable, str(_r2_script), "--skip-history-upload", "--skip-db-upload"]
+                _cmd = [
+                    _sys.executable,
+                    str(_r2_script),
+                    "--skip-history-upload",
+                    "--skip-db-upload",
+                    "--skip-images-upload",
+                    "--streams-daily",
+                ]
                 _new_date = stats_date or exported_worldwide_date or latest_date
                 if _new_date:
                     _cmd += ["--new-date", _new_date]
                 _subprocess.run(_cmd, check=True)
+                if r2_export_lock:
+                    lock_path = Path(r2_export_lock)
+                    lock_path.parent.mkdir(parents=True, exist_ok=True)
+                    lock_path.touch()
+                    print(f"[R2] Export lock written: {lock_path}")
             except _subprocess.CalledProcessError as exc:
                 print(f"[R2] Upload failed (non-blocking): {exc}")
 

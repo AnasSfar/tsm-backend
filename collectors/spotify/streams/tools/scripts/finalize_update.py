@@ -12,12 +12,14 @@ from typing import Any, Callable
 from core.data_paths import update_streams_dir
 from core.retention import cleanup_generated_artifacts
 from git_ops import git_commit_and_push
+import generate_albums_image
 
 
 ALBUM_UPDATE_TARGETS = (
     "The Life of a Showgirl",
     "THE TORTURED POETS DEPARTMENT",
 )
+ALBUM_UPDATE_GAIN_THRESHOLD_PCT = 15.0
 
 
 @dataclass
@@ -151,7 +153,9 @@ def _run_streams_post(
         elif log_mode == "verbose":
             print(f"Twitter spacing already satisfied before {label}.")
 
-    subprocess.run(cmd, check=False)
+    result = subprocess.run(cmd, check=False)
+    if result.returncode != 0:
+        raise SystemExit(f"{label} failed (exit {result.returncode}).")
 
     if should_post:
         state["posted_count"] += 1
@@ -170,15 +174,20 @@ def _run(ctx: FinalizeContext, cmd: list[str], *, label: str, should_post: bool,
 
 
 def _export_web_data_once(ctx: FinalizeContext, *, force: bool = False) -> None:
-    export_lock = update_streams_dir(ctx.stats_date) / "exported.lock"
+    run_dir = update_streams_dir(ctx.stats_date)
+    export_lock = run_dir / "exported.lock"
+    r2_export_lock = run_dir / "r2_exported.lock"
     if export_lock.exists() and not force:
         print(f"Web export already done for {ctx.stats_date} (exported.lock exists), skipping.")
         return
 
     print("Re-exporting web data...")
-    ctx.export_web_data(allow_r2=not ctx.local_test_mode, stats_date=ctx.stats_date)
+    allow_r2 = not ctx.local_test_mode and not r2_export_lock.exists()
+    if r2_export_lock.exists():
+        print(f"R2 export already done for {ctx.stats_date} (r2_exported.lock exists), skipping R2 upload.")
+    ctx.export_web_data(allow_r2=allow_r2, stats_date=ctx.stats_date)
     if not ctx.local_test_mode:
-        export_lock.parent.mkdir(parents=True, exist_ok=True)
+        run_dir.mkdir(parents=True, exist_ok=True)
         export_lock.touch()
     print("Web export done.")
 
@@ -298,14 +307,66 @@ def _run_forecast_and_image_refresh(ctx: FinalizeContext) -> None:
     print("Image URLs and track_covers.json done.")
 
 
+def _album_gain_update_targets(stats_date: str, *, threshold_pct: float = ALBUM_UPDATE_GAIN_THRESHOLD_PCT) -> list[dict]:
+    try:
+        covers = generate_albums_image.load_covers()
+        track_map = generate_albums_image.load_album_track_map()
+        today, yest, week = generate_albums_image.load_history(stats_date)
+        rows = generate_albums_image.build_album_rows(
+            today,
+            yest,
+            week,
+            track_map,
+            covers,
+            merge_eras=False,
+        )
+    except Exception as exc:
+        print(f"Album gain scan skipped: {exc}")
+        return []
+
+    targets: list[dict] = []
+    for row in rows:
+        daily = int(row.get("daily_streams") or 0)
+        yest_daily = int(row.get("yest_daily") or 0)
+        if daily <= 0 or yest_daily <= 0:
+            continue
+        pct = (daily - yest_daily) / yest_daily * 100
+        if pct >= threshold_pct:
+            targets.append({
+                "album": row.get("album") or "",
+                "daily_streams": daily,
+                "yest_daily": yest_daily,
+                "gain_pct": pct,
+            })
+
+    targets = [target for target in targets if target["album"]]
+    targets.sort(key=lambda target: (target["gain_pct"], target["daily_streams"]), reverse=True)
+    return targets
+
+
 def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
     if _is_weekend_stats_date(ctx.summary["stats_date"]):
         print("Weekend detected: skipping separate album update posts.")
         return
 
     album_img_script = ctx.script_dir / "tools" / "scripts" / "generate_album_update_image.py"
+    gain_targets = _album_gain_update_targets(ctx.summary["stats_date"])
+    if gain_targets:
+        print(
+            "Album update gain scan: "
+            + ", ".join(
+                f"{target['album']} +{target['gain_pct']:.1f}%"
+                for target in gain_targets
+            )
+        )
 
-    for album in ALBUM_UPDATE_TARGETS:
+    albums_to_post: list[str] = list(ALBUM_UPDATE_TARGETS)
+    for target in gain_targets:
+        album = target["album"]
+        if album not in albums_to_post:
+            albums_to_post.append(album)
+
+    for album in albums_to_post:
         if album in ctx.posted_album_updates:
             print(f"Album update already posted during streams run: {album}")
             continue
@@ -374,7 +435,7 @@ def _post_spotlight_gainers(ctx: FinalizeContext, state: dict[str, float]) -> No
         return
 
     highlights_script = ctx.script_dir / "tools" / "scripts" / "post_stream_highlights_thread.py"
-    print("Posting unique stream highlights (daily %, weekly %, best-day-since)...")
+    print("Posting separate stream highlight threads (daily %, weekly %, best-day-since)...")
     cmd = [
         sys.executable,
         str(highlights_script),
@@ -452,14 +513,52 @@ def _post_throwback_thread(ctx: FinalizeContext, state: dict[str, float]) -> Non
 
 
 def _start_spotlight_gainers(ctx: FinalizeContext) -> threading.Thread:
+    errors: list[BaseException] = []
+
+    def _target() -> None:
+        try:
+            _post_spotlight_gainers(ctx, {"posted_count": 0, "last_post_at": 0.0})
+        except BaseException as exc:
+            errors.append(exc)
+            print(f"Stream highlights thread failed: {exc}")
+
     thread = threading.Thread(
-        target=_post_spotlight_gainers,
-        args=(ctx, {"posted_count": 0, "last_post_at": 0.0}),
+        target=_target,
         name="spotlight-gainers-posts",
         daemon=False,
     )
+    thread.post_errors = errors  # type: ignore[attr-defined]
     thread.start()
     return thread
+
+
+def _start_background_task(label: str, target: Callable[[], None]) -> threading.Thread:
+    errors: list[BaseException] = []
+
+    def _target() -> None:
+        try:
+            target()
+        except BaseException as exc:
+            errors.append(exc)
+            print(f"{label} failed: {exc}")
+
+    thread = threading.Thread(
+        target=_target,
+        name=label.lower().replace(" ", "-"),
+        daemon=False,
+    )
+    thread.task_errors = errors  # type: ignore[attr-defined]
+    thread.start()
+    return thread
+
+
+def _join_background_task(thread: threading.Thread | None, label: str) -> None:
+    if thread is None:
+        return
+    thread.join()
+    errors = getattr(thread, "task_errors", [])
+    if errors:
+        raise SystemExit(f"{label} failed: {errors[0]}")
 
 
 def _is_weekend_stats_date(stats_date: str) -> bool:
@@ -507,8 +606,16 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
         return
 
     artist_metadata_updated = _update_artist_metadata(ctx)
-    release_dates_refreshed = _refresh_release_dates(ctx)
-    _export_web_data_once(ctx, force=artist_metadata_updated or release_dates_refreshed)
+    print("Skipping Spotify API release-date refresh during finalization.")
+    _export_web_data_once(ctx, force=artist_metadata_updated)
+
+    forecast_thread = None
+    if not ctx.debug_daily_mode and not ctx.local_test_mode:
+        print("Starting forecast/image refresh in background...")
+        forecast_thread = _start_background_task(
+            "forecast/image refresh",
+            lambda: _run_forecast_and_image_refresh(ctx),
+        )
 
     spotlight_thread = None
     if (
@@ -526,10 +633,13 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
     _post_debut_releases(ctx, post_state)
     _post_album_updates(ctx, post_state)
     _post_albums_daily(ctx, post_state)
-    _run_forecast_and_image_refresh(ctx)
     if spotlight_thread is not None:
         spotlight_thread.join()
+        spotlight_errors = getattr(spotlight_thread, "post_errors", [])
+        if spotlight_errors:
+            raise SystemExit(f"stream highlights thread failed: {spotlight_errors[0]}")
     _post_best_day_since(ctx, post_state)
+    _join_background_task(forecast_thread, "forecast/image refresh")
 
     cleanup_generated_artifacts()
     print("Git commit and push...")

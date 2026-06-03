@@ -11,7 +11,7 @@
         {
           "title": "Bad Blood (feat. Kendrick Lamar) (Taylor's Version)",
           "url": "https://open.spotify.com/track/6qAcApH8obo8eqatCKUHd9",
-          "type": "alternate_version",
+          "type": "deluxe_track",
           "edition": "deluxe",
           "display_section": "deluxe edition",
           "display_order": 1,
@@ -42,7 +42,7 @@
         {
           "title": "\"Slut!\" (Taylor's Version) (From The Vault)",
           "url": "https://open.spotify.com/intl-fr/track/0CD7DzeCsuPJygddqlUVYa",
-          "type": "standalone",
+          "type": "from_the_vault",
           "edition": "standard",
           "display_section": "from the vault",
           "display_order": 1,

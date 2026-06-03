@@ -3,9 +3,12 @@
 from __future__ import annotations
 
 import argparse
+import html
 import sys
 from datetime import date, datetime, timedelta
 from pathlib import Path
+
+from playwright.sync_api import sync_playwright
 
 SCRIPT_DIR = Path(__file__).resolve().parent          # streams/tools/scripts/
 ROOT = SCRIPT_DIR.parents[1]                          # streams/
@@ -16,7 +19,7 @@ sys.path.insert(0, str(ROOT.parent))                  # collectors/spotify/
 sys.path.insert(0, str(SCRIPT_DIR))                   # streams/tools/scripts/
 
 from core.album_emoji import album_emoji  # noqa: E402
-from core.twitter import post_image_thread  # noqa: E402
+from core.twitter import post_image_thread, post_with_image  # noqa: E402
 import best_day_since  # noqa: E402
 import post_gainer_thread  # noqa: E402
 import spotlight  # noqa: E402
@@ -30,6 +33,217 @@ def _fmt_int(value: int | None) -> str:
 
 def _fmt_pct(value: float) -> str:
     return f"+{value:.1f}%"
+
+
+def _short_date_label(label: str) -> str:
+    return (
+        label.replace("January", "Jan")
+        .replace("February", "Feb")
+        .replace("March", "Mar")
+        .replace("April", "Apr")
+        .replace("June", "Jun")
+        .replace("July", "Jul")
+        .replace("August", "Aug")
+        .replace("September", "Sep")
+        .replace("October", "Oct")
+        .replace("November", "Nov")
+        .replace("December", "Dec")
+    )
+
+
+def _compact_best_label(label: str) -> str:
+    label = _short_date_label(label)
+    if "," in label:
+        return label.rsplit(",", 1)[0]
+    return label
+
+
+def _shorten_title(title: str, *, limit: int) -> str:
+    title = str(title or "").strip()
+    if len(title) <= limit:
+        return title
+    return title[: max(0, limit - 3)].rstrip() + "..."
+
+
+def _compact_title(title: str) -> str:
+    return (
+        str(title or "")
+        .replace(" (From The Vault)", "")
+        .replace(" (From the Vault)", "")
+        .strip()
+    )
+
+
+def _build_table_tweet(*, period: str, target_date: str) -> str:
+    date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    return f"Taylor Swift's biggest {period} gainers by % yesterday ({date_fmt})."
+
+
+def _table_title(*, period: str) -> str:
+    return f"Taylor Swift biggest {period} gainers"
+
+
+def _build_gainer_table_html(rows: list[dict], *, period: str, target_date: str) -> str:
+    date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    compare_label = "yesterday" if period == "daily" else "last week"
+    row_html = []
+    for rank, row in enumerate(rows, 1):
+        track = row["track"]
+        title = html.escape(str(track.get("title") or row["track_id"]))
+        album = html.escape(str(track.get("album") or ""))
+        emoji = html.escape(album_emoji(track.get("album")))
+        row_html.append(
+            f"""
+            <div class="row">
+              <div class="rank">#{rank}</div>
+              <div class="song">
+                <div class="song-title"><span>{emoji}</span>{title}</div>
+                <div class="album">{album}</div>
+              </div>
+              <div class="metric pct">{_fmt_pct(row['pct'])}</div>
+              <div class="metric">{_fmt_int(row['daily_today'])}</div>
+              <div class="metric gain">+{_fmt_int(row['gain'])}</div>
+            </div>
+            """
+        )
+
+    return f"""<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+* {{ box-sizing: border-box; }}
+body {{
+  margin: 0;
+  width: 1200px;
+  min-height: 1350px;
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(29,185,84,.20), transparent 34%),
+    linear-gradient(135deg, #111827 0%, #171717 48%, #083c2c 100%);
+  color: #f8fafc;
+}}
+.wrap {{ padding: 58px 62px 44px; }}
+.header {{ display: flex; justify-content: space-between; align-items: flex-end; gap: 34px; }}
+.title {{ font-size: 54px; line-height: 1.02; font-weight: 900; letter-spacing: 0; max-width: 770px; }}
+.sub {{ margin-top: 14px; color: #d1d5db; font-size: 26px; font-weight: 650; }}
+.badge {{
+  border: 2px solid rgba(255,255,255,.24);
+  background: rgba(255,255,255,.10);
+  border-radius: 999px;
+  padding: 13px 22px;
+  font-size: 24px;
+  font-weight: 850;
+  white-space: nowrap;
+}}
+.table {{ margin-top: 40px; display: grid; gap: 12px; }}
+.head, .row {{
+  display: grid;
+  grid-template-columns: 86px minmax(0, 1fr) 136px 168px 132px;
+  align-items: center;
+  gap: 16px;
+}}
+.head {{
+  color: #a7f3d0;
+  font-size: 20px;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  padding: 0 22px;
+}}
+.row {{
+  min-height: 92px;
+  padding: 16px 22px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.09);
+  border-radius: 18px;
+  box-shadow: 0 16px 35px rgba(0,0,0,.18);
+}}
+.rank {{ color: #86efac; font-size: 28px; font-weight: 950; }}
+.song-title {{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1.08;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}}
+.album {{
+  margin-top: 7px;
+  color: #cbd5e1;
+  font-size: 18px;
+  font-weight: 650;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}}
+.metric {{
+  text-align: right;
+  font-size: 25px;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}}
+.pct {{ color: #86efac; font-size: 31px; }}
+.gain {{ color: #bbf7d0; }}
+.footer {{
+  margin-top: 34px;
+  display: flex;
+  justify-content: space-between;
+  color: #d1fae5;
+  font-size: 22px;
+  font-weight: 800;
+}}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <div>
+        <div class="title">{html.escape(_table_title(period=period))}</div>
+        <div class="sub">{html.escape(date_fmt)} · compared to {html.escape(compare_label)}</div>
+      </div>
+      <div class="badge">Top {len(rows)}</div>
+    </div>
+    <div class="table">
+      <div class="head">
+        <div>Rank</div><div>Song</div><div>%</div><div>Streams</div><div>Gain</div>
+      </div>
+      {''.join(row_html)}
+    </div>
+    <div class="footer">
+      <span>@tsmuseum13</span>
+      <span>thetsmuseum.app/streams/latest</span>
+    </div>
+  </div>
+</body>
+</html>"""
+
+
+def _render_table_image(rows: list[dict], *, period: str, target_date: str, out_dir: Path) -> Path:
+    out_path = out_dir / f"stream_highlights_{period}_gainers_top{len(rows)}.png"
+    tmp_html = out_dir / f"_stream_highlights_{period}_gainers.html"
+    tmp_html.write_text(
+        _build_gainer_table_html(rows, period=period, target_date=target_date),
+        encoding="utf-8",
+    )
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page(viewport={"width": 1200, "height": 1350}, device_scale_factor=2)
+            page.goto(f"file:///{tmp_html.as_posix()}", wait_until="load")
+            page.wait_for_timeout(300)
+            page.locator("body").screenshot(path=str(out_path))
+            browser.close()
+    finally:
+        try:
+            tmp_html.unlink()
+        except FileNotFoundError:
+            pass
+    return out_path
 
 
 def _best_day_rows(target_date: str, *, limit: int, min_days: int) -> list[dict]:
@@ -53,14 +267,14 @@ def _best_day_rows(target_date: str, *, limit: int, min_days: int) -> list[dict]
     return rows[:limit]
 
 
-def _collect_highlights(
+def _collect_highlight_groups(
     target_date: str,
     *,
     limit: int,
     best_limit: int,
     min_baseline: int,
     min_days: int,
-) -> list[dict]:
+) -> dict[str, list[dict]]:
     daily = post_gainer_thread._pick_gainers(
         target_date,
         compare_days=1,
@@ -75,31 +289,24 @@ def _collect_highlights(
     )
     best_rows = _best_day_rows(target_date, limit=best_limit, min_days=min_days)
 
-    by_id: dict[str, dict] = {}
-    order: list[str] = []
-
-    def ensure(track_id: str, track: dict, source_order: int) -> dict:
-        if track_id not in by_id:
-            by_id[track_id] = {"track_id": track_id, "track": track, "source_order": source_order}
-            order.append(track_id)
-        return by_id[track_id]
-
-    for idx, row in enumerate(daily):
-        item = ensure(row["track_id"], row["track"], idx)
-        item["daily"] = row
-
-    for idx, row in enumerate(weekly):
-        item = ensure(row["track_id"], row["track"], limit + idx)
-        item["weekly"] = row
-
     tracks_by_id = {track["track_id"]: track for track in spotlight.load_all_tracks()}
-    for idx, row in enumerate(best_rows):
+    best_items: list[dict] = []
+    for row in best_rows:
         track_id = row["track_id"]
         track = tracks_by_id.get(track_id) or {"track_id": track_id, "title": row.get("title") or track_id}
-        item = ensure(track_id, track, limit * 2 + idx)
-        item["best_day"] = row
+        best_items.append({"track_id": track_id, "track": track, "best_day": row})
 
-    return [by_id[track_id] for track_id in order]
+    return {
+        "daily": [
+            {"track_id": row["track_id"], "track": row["track"], "daily": row}
+            for row in daily
+        ],
+        "weekly": [
+            {"track_id": row["track_id"], "track": row["track"], "weekly": row}
+            for row in weekly
+        ],
+        "best_day": best_items,
+    }
 
 
 def _build_tweet(item: dict, target_date: str) -> str:
@@ -108,35 +315,76 @@ def _build_tweet(item: dict, target_date: str) -> str:
     emoji = album_emoji(track.get("album"))
     date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
     gainer_periods = [period for period in ("daily", "weekly") if period in item]
-    if gainer_periods:
-        period_label = " and ".join(gainer_periods)
-        intro = (
-            f'{emoji} "{title}" was one of Taylor Swift\'s biggest {period_label} '
-            f"gainers yesterday ({date_fmt})."
-        )
-    else:
-        intro = f'{emoji} "{title}" had a notable Taylor Swift stream day yesterday ({date_fmt}).'
-    lines = [intro]
 
-    if "daily" in item:
-        row = item["daily"]
-        lines.append(
-            f"Daily gainer: {_fmt_pct(row['pct'])} vs yesterday, "
-            f"with {_fmt_int(row['daily_today'])} streams (+{_fmt_int(row['gain'])})."
-        )
+    def compose(display_title: str, *, compact: bool = False) -> str:
+        if gainer_periods:
+            period_label = " & ".join(gainer_periods)
+            intro = (
+                f'{emoji} "{display_title}" was one of Taylor Swift\'s biggest '
+                f"{period_label} gainers by % yesterday ({date_fmt})."
+            )
+        else:
+            intro = f'{emoji} "{display_title}" earned its {best_day_since.row_label(item["best_day"])}.'
+        lines = [intro]
 
-    if "weekly" in item:
-        row = item["weekly"]
-        lines.append(
-            f"Weekly gainer: {_fmt_pct(row['pct'])} vs last week, "
-            f"with {_fmt_int(row['daily_today'])} streams (+{_fmt_int(row['gain'])})."
-        )
+        best_label = ""
+        if "best_day" in item:
+            best_label = (
+                _compact_best_label(best_day_since.row_label(item["best_day"]))
+                if compact
+                else _short_date_label(best_day_since.row_label(item["best_day"]))
+            )
 
-    if "best_day" in item:
-        lines.append(f"The song earned its {best_day_since.row_label(item['best_day'])}.")
+        if "daily" in item and "weekly" in item:
+            daily = item["daily"]
+            weekly = item["weekly"]
+            lines.append(
+                f"It rose {_fmt_pct(daily['pct'])} vs yesterday and {_fmt_pct(weekly['pct'])} vs last week, "
+                f"with {_fmt_int(daily['daily_today'])} streams."
+            )
+        elif "daily" in item:
+            row = item["daily"]
+            line = (
+                f"It rose {_fmt_pct(row['pct'])} vs yesterday, with {_fmt_int(row['daily_today'])} streams "
+                f"(+{_fmt_int(row['gain'])})"
+            )
+            if best_label:
+                line = (
+                    f"It rose {_fmt_pct(row['pct'])} vs yesterday, {_fmt_int(row['daily_today'])} streams, "
+                    f"earning its {best_label}"
+                )
+            lines.append(f"{line}.")
+        elif "weekly" in item:
+            row = item["weekly"]
+            line = (
+                f"It rose {_fmt_pct(row['pct'])} vs last week, with {_fmt_int(row['daily_today'])} streams "
+                f"(+{_fmt_int(row['gain'])})"
+            )
+            if best_label:
+                line = (
+                    f"It rose {_fmt_pct(row['pct'])} vs last week, {_fmt_int(row['daily_today'])} streams, "
+                    f"earning its {best_label}"
+                )
+            lines.append(f"{line}.")
 
-    lines.append(f"See full track's history here : https://thetsmuseum.app/songs/{item['track_id']}")
-    return "\n\n".join(lines)
+        if best_label and not gainer_periods:
+            lines[0] = f'{emoji} "{display_title}" earned its {best_label}.'
+
+        lines.append(f"See full track's history here : https://thetsmuseum.app/songs/{item['track_id']}")
+        return "\n\n".join(lines)
+
+    tweet = compose(title)
+    if len(tweet) <= 280:
+        return tweet
+
+    compact_title = _compact_title(title)
+    tweet = compose(compact_title, compact=True)
+    if len(tweet) <= 280:
+        return tweet
+
+    overflow = len(tweet) - 280
+    shortened_title = _shorten_title(compact_title, limit=max(18, len(compact_title) - overflow - 3))
+    return compose(shortened_title, compact=True)
 
 
 def _image_for_item(item: dict, target_date: str, covers: dict) -> Path:
@@ -170,9 +418,9 @@ def _image_for_item(item: dict, target_date: str, covers: dict) -> Path:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Post combined stream highlights without duplicate songs.")
+    parser = argparse.ArgumentParser(description="Post daily/weekly gainer table images and best-day highlights.")
     parser.add_argument("date", nargs="?", help="Stats date YYYY-MM-DD. Defaults to yesterday.")
-    parser.add_argument("--limit", type=int, default=5, help="Top N daily and weekly gainers.")
+    parser.add_argument("--limit", type=int, default=10, help="Top N daily and weekly gainers.")
     parser.add_argument("--best-limit", type=int, default=3, help="Top N best-day-since notes.")
     parser.add_argument("--min-baseline", type=int, default=1000)
     parser.add_argument("--min-days", type=int, default=14)
@@ -182,46 +430,86 @@ def main() -> int:
     target_date = args.date or str(date.today() - timedelta(days=1))
     day_dir = post_gainer_thread.history_store.update_streams_dir(target_date)
     day_dir.mkdir(parents=True, exist_ok=True)
-    lock = day_dir / "stream_highlights_posted.lock"
-    if lock.exists() and not args.no_post:
-        print(f"[stream_highlights] Already posted for {target_date}, skipping.")
-        return 0
 
     if not args.no_post and not TWITTER_SESSION.exists():
         print(f"ERROR: Twitter session not found at {TWITTER_SESSION}")
         return 1
 
-    items = _collect_highlights(
+    groups = _collect_highlight_groups(
         target_date,
         limit=max(0, int(args.limit)),
         best_limit=max(0, int(args.best_limit)),
         min_baseline=max(0, int(args.min_baseline)),
         min_days=max(0, int(args.min_days)),
     )
-    if not items:
+    if not any(groups.values()):
         print(f"[stream_highlights] No highlights found for {target_date}.")
         return 0
 
     covers = spotlight.load_covers()
-    posts: list[tuple[str, Path]] = []
-    for idx, item in enumerate(items, 1):
-        tweet = _build_tweet(item, target_date)
-        image_path = _image_for_item(item, target_date, covers)
-        tags = ", ".join(k for k in ("daily", "weekly", "best_day") if k in item)
-        print(f"[stream_highlights] {idx}/{len(items)} {item['track'].get('title')} [{tags}]")
-        print(f"[stream_highlights] Tweet ({len(tweet)} chars):\n{tweet}")
+    posted_any = False
+    for group_name, label in [
+        ("daily", "daily gainers"),
+        ("weekly", "weekly gainers"),
+    ]:
+        items = groups[group_name]
+        lock = day_dir / f"stream_highlights_{group_name}_posted.lock"
+        if lock.exists() and not args.no_post:
+            print(f"[stream_highlights] {label} table already posted for {target_date}, skipping.")
+            continue
+        if not items:
+            print(f"[stream_highlights] No {label} found for {target_date}.")
+            continue
+
+        rows = [item[group_name] for item in items]
+        tweet = _build_table_tweet(period=group_name, target_date=target_date)
+        image_path = _render_table_image(rows, period=group_name, target_date=target_date, out_dir=day_dir)
+        print(f"[stream_highlights] {label} table ({len(tweet)} chars):\n{tweet}")
         print(f"[stream_highlights] Image: {image_path}")
-        posts.append((tweet, image_path))
+        for rank, row in enumerate(rows, 1):
+            print(f"[stream_highlights] {label} #{rank}: {row['track'].get('title')} {_fmt_pct(row['pct'])}")
 
-    if args.no_post:
-        print("[stream_highlights] Twitter post skipped (--no-post).")
-        return 0
+        if args.no_post:
+            print(f"[stream_highlights] {label} table post skipped (--no-post).")
+            continue
 
-    if not post_image_thread(posts, TWITTER_SESSION):
-        print("[stream_highlights] Failed to post highlight thread.")
-        return 1
-    lock.touch()
-    print(f"[stream_highlights] Posted {len(posts)} unique highlight song(s) for {target_date}.")
+        if not post_with_image(tweet, image_path, TWITTER_SESSION):
+            print(f"[stream_highlights] Failed to post {label} table.")
+            return 1
+        lock.touch()
+        posted_any = True
+        print(f"[stream_highlights] Posted {label} table for {target_date}.")
+
+    group_name = "best_day"
+    label = "best-day-since"
+    items = groups[group_name]
+    lock = day_dir / f"stream_highlights_{group_name}_posted.lock"
+    if lock.exists() and not args.no_post:
+        print(f"[stream_highlights] {label} already posted for {target_date}, skipping.")
+    elif not items:
+        print(f"[stream_highlights] No {label} found for {target_date}.")
+    else:
+        posts: list[tuple[str, Path]] = []
+        for idx, item in enumerate(items, 1):
+            tweet = _build_tweet(item, target_date)
+            image_path = _image_for_item(item, target_date, covers)
+            print(f"[stream_highlights] {label} {idx}/{len(items)} {item['track'].get('title')}")
+            print(f"[stream_highlights] Tweet ({len(tweet)} chars):\n{tweet}")
+            print(f"[stream_highlights] Image: {image_path}")
+            posts.append((tweet, image_path))
+
+        if args.no_post:
+            print(f"[stream_highlights] {label} Twitter thread skipped (--no-post).")
+        else:
+            if not post_image_thread(posts, TWITTER_SESSION):
+                print(f"[stream_highlights] Failed to post {label} thread.")
+                return 1
+            lock.touch()
+            posted_any = True
+            print(f"[stream_highlights] Posted {len(posts)} {label} highlight song(s) for {target_date}.")
+
+    if not posted_any and not args.no_post:
+        print(f"[stream_highlights] No new highlight threads posted for {target_date}.")
     return 0
 
 

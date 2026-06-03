@@ -1623,6 +1623,8 @@ def main() -> None:
         ok = post(album_name, image_path, resolved_date)
         if ok:
             lock_path.write_text(f"posted {resolved_date}\n", encoding="utf-8")
+        else:
+            sys.exit(1)
 
 
 if __name__ == "__main__":

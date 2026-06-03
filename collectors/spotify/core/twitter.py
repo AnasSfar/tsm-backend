@@ -15,6 +15,7 @@ TWITTER_POST_LOCK_TIMEOUT = 30 * 60
 TWITTER_ACCOUNT_SPACING_SECONDS = int(os.getenv("TWITTER_ACCOUNT_SPACING_SECONDS", "180"))
 TWITTER_MAX_ACTIVE_ACCOUNTS = int(os.getenv("TWITTER_MAX_ACTIVE_ACCOUNTS", "2"))
 TWITTER_FILE_UPLOAD_TIMEOUT_MS = int(os.getenv("TWITTER_FILE_UPLOAD_TIMEOUT_MS", "120000"))
+TWITTER_TEXT_LIMIT = 280
 
 
 def _profile_dir(session_file: Path) -> Path:
@@ -74,7 +75,7 @@ def _acquire_active_account(account_key: str, *, timeout: int) -> Path:
             active = _active_account_markers()
             for active_marker in active:
                 try:
-                    if time.time() - active_marker.stat().st_mtime > timeout:
+                    if time.time() - active_marker.stat().st_mtime > 60:
                         active_marker.unlink()
                 except FileNotFoundError:
                     pass
@@ -139,6 +140,19 @@ def _clean_editor_text(text: str) -> str:
         .replace("\ufeff", "")
         .strip()
     )
+
+
+def _validate_tweet_lengths(tweets: list[str], *, label: str) -> bool:
+    for index, tweet in enumerate(tweets, 1):
+        length = len(str(tweet or ""))
+        if length > TWITTER_TEXT_LIMIT:
+            print(
+                f"X {label} trop long: post {index}/{len(tweets)} "
+                f"fait {length} caracteres (limite {TWITTER_TEXT_LIMIT})."
+            )
+            print(str(tweet or ""))
+            return False
+    return True
 
 
 def _visible_text(locator) -> str:
@@ -313,6 +327,19 @@ def _composer_scope(editor):
     return None
 
 
+def _strict_composer_scope(editor):
+    """Nearest composer block for one post, used to avoid counting another post's image."""
+    candidate = None
+    for depth in range(1, 16):
+        scope = editor.locator(f"xpath=ancestor::div[{depth}]")
+        try:
+            if scope.locator("[data-testid^='tweetTextarea_']").count() == 1:
+                candidate = scope
+        except Exception:
+            pass
+    return candidate
+
+
 def _media_button_candidates(root):
     selectors = [
         "[aria-label='Add photos or video']",
@@ -344,7 +371,7 @@ def _attach_with_file_chooser(page, root, image_path: Path) -> bool:
     return False
 
 
-def _attach_image_to_composer(page, editor, image_path: Path, index: int = 0) -> None:
+def _attach_image_to_composer(page, editor, image_path: Path, index: int = 0):
     scope = _composer_scope(editor)
     root = scope or page
     before = _attached_image_count(root)
@@ -363,6 +390,7 @@ def _attach_image_to_composer(page, editor, image_path: Path, index: int = 0) ->
                 timeout=TWITTER_FILE_UPLOAD_TIMEOUT_MS,
             )
     _wait_for_attached_image(root, before + 1)
+    return root
 
 
 def _attached_image_count(root) -> int:
@@ -411,6 +439,7 @@ def _post_compose_image_thread(page, posts: list[tuple[str, Path]]) -> bool:
     page.goto("https://x.com/compose/post", wait_until="domcontentloaded", timeout=30_000)
     time.sleep(2)
 
+    upload_scopes = []
     for i, (text, image_path) in enumerate(posts):
         if i > 0:
             print(f"X compose: ajout du post #{i + 1}...", flush=True)
@@ -425,13 +454,18 @@ def _post_compose_image_thread(page, posts: list[tuple[str, Path]]) -> bool:
         if text:
             editor.fill(text)
         print(f"X compose: upload image post #{i + 1}/{len(posts)} ({image_path.name})...", flush=True)
-        _attach_image_to_composer(page, editor, image_path, i)
+        upload_scopes.append(_attach_image_to_composer(page, editor, image_path, i))
 
     for i, _ in enumerate(posts):
         print(f"X compose: verification image post #{i + 1}/{len(posts)}...", flush=True)
         editor = _wait_visible_editor(page, i, timeout_ms=5_000)
-        scope = _composer_scope(editor)
-        attached = _attached_image_count(scope or page)
+        scope = upload_scopes[i] if i < len(upload_scopes) else None
+        if scope is None:
+            scope = _strict_composer_scope(editor) or _composer_scope(editor)
+        if scope is None:
+            print(f"X composer post #{i + 1} introuvable pour verification image")
+            return False
+        attached = _attached_image_count(scope)
         if attached < 1:
             print(f"X image absente dans le post #{i + 1}")
             return False
@@ -605,6 +639,8 @@ def post_thread(tweets: list[str], session_file: Path) -> bool:
     if not tweets:
         print("Aucun tweet a poster.")
         return False
+    if not _validate_tweet_lengths(tweets, label="thread texte"):
+        return False
 
     session_file = Path(session_file)
     profile_dir  = _profile_dir(session_file)
@@ -686,6 +722,9 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
     image_path   = Path(image_path)
     profile_dir  = _profile_dir(session_file)
 
+    if not _validate_tweet_lengths([tweet], label="post avec image"):
+        return False
+
     if not image_path.exists():
         print(f"X image introuvable: {image_path}")
         return False
@@ -750,6 +789,8 @@ def post_image_thread(posts: list[tuple[str, Path]], session_file: Path) -> bool
     if not posts:
         print("Aucun post image a publier.")
         return False
+    if not _validate_tweet_lengths([text for text, _ in posts], label="thread image"):
+        return False
     missing = [image_path for _, image_path in posts if not image_path.exists()]
     if missing:
         print(f"X image introuvable: {missing[0]}")
@@ -762,34 +803,35 @@ def post_image_thread(posts: list[tuple[str, Path]], session_file: Path) -> bool
         print("Aucun profil Twitter trouve. Connexion initiale requise...")
         setup_session(session_file)
 
-    with sync_playwright() as p:
-        context = _launch(p, profile_dir)
-        _restore_storage_state(context, session_file)
-        page = context.new_page()
-        print(f"\nPublication d'un thread de {len(posts)} post(s) avec image...")
+    print("X thread: acquisition du slot compte...", flush=True)
+    with _twitter_account_slot(session_file) as account_key:
+        print("X thread: slot compte acquis", flush=True)
+        with sync_playwright() as p:
+            context = None
+            try:
+                context = _launch(p, profile_dir)
+                _restore_storage_state(context, session_file)
+                page = context.new_page()
+                print(f"\nPublication d'un thread de {len(posts)} post(s) avec image...")
 
-        try:
-            print("X thread: ouverture home...", flush=True)
-            page.goto("https://x.com/home", wait_until="domcontentloaded", timeout=30_000)
-            print(f"X thread: home chargee ({page.url})", flush=True)
-            time.sleep(2)
-
-            if _looks_logged_out(page):
-                print("Session expiree. Reconnexion automatique...")
-                credentials = _load_credentials(session_file)
-                if credentials:
-                    _auto_login(page, credentials["username"], credentials["password"], credentials.get("email", ""))
-                else:
-                    context.close()
-                    setup_session(session_file)
-                    context = _launch(p, profile_dir)
-                    page = context.new_page()
+                print("X thread: ouverture home...", flush=True)
                 page.goto("https://x.com/home", wait_until="domcontentloaded", timeout=30_000)
+                print(f"X thread: home chargee ({page.url})", flush=True)
                 time.sleep(2)
 
-            print("X thread: acquisition du slot compte...", flush=True)
-            with _twitter_account_slot(session_file) as account_key:
-                print("X thread: slot compte acquis", flush=True)
+                if _looks_logged_out(page):
+                    print("Session expiree. Reconnexion automatique...")
+                    credentials = _load_credentials(session_file)
+                    if credentials:
+                        _auto_login(page, credentials["username"], credentials["password"], credentials.get("email", ""))
+                    else:
+                        context.close()
+                        setup_session(session_file)
+                        context = _launch(p, profile_dir)
+                        page = context.new_page()
+                    page.goto("https://x.com/home", wait_until="domcontentloaded", timeout=30_000)
+                    time.sleep(2)
+
                 _wait_account_spacing(account_key)
                 ok = _post_compose_image_thread(page, posts)
                 if ok:
@@ -797,12 +839,13 @@ def post_image_thread(posts: list[tuple[str, Path]], session_file: Path) -> bool
                     print(f"OK Thread image de {len(posts)} posts publie")
                 return ok
 
-        except Exception as e:
-            print(f"X Erreur post_image_thread: {e}")
-            return False
+            except Exception as e:
+                print(f"X Erreur post_image_thread: {e}")
+                return False
 
-        finally:
-            context.close()
+            finally:
+                if context is not None:
+                    context.close()
 
 
 def split_tweets(content: str, max_len: int = 280) -> list[str]:

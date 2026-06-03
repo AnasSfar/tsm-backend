@@ -103,9 +103,52 @@ def song_family(value: str) -> str:
     return slug or "unknown"
 
 
+VERSION_SUFFIX_PATTERNS = (
+    r"\s+-\s+track by track.*$",
+    r"\s+-\s+voice memo.*$",
+    r"\s+-\s+songwriting voice memo.*$",
+    r"\s+-\s+demo.*$",
+    r"\s+-\s+commentary.*$",
+    r"\s+-\s+karaoke.*$",
+    r"\s+-\s+instrumental.*$",
+    r"\s+-\s+instrumental\s+(?:with|w/).*$",
+    r"\s+-\s+.*\binstrumental\b.*$",
+    r"\s+-\s+.*\bacoustic\b.*$",
+    r"\s+-\s+.*\blive\b.*$",
+    r"\s+-\s+.*\bremix\b.*$",
+    r"\s+-\s+.*\bversion\b.*$",
+    r"\s+-\s+.*\bedit\b.*$",
+    r"\s+-\s+.*\bmix\b.*$",
+    r"\s+-\s+from .*$",
+)
+
+VERSION_PAREN_PATTERNS = (
+    r"\s+\((?:[^)]*\btrack by track\b[^)]*)\)",
+    r"\s+\((?:[^)]*\bvoice memo\b[^)]*)\)",
+    r"\s+\((?:[^)]*\bdemo\b[^)]*)\)",
+    r"\s+\((?:[^)]*\bcommentary\b[^)]*)\)",
+    r"\s+\((?:[^)]*\bkaraoke\b[^)]*)\)",
+    r"\s+\((?:[^)]*\binstrumental\b[^)]*)\)",
+    r"\s+\((?:[^)]*\bacoustic\b[^)]*)\)",
+    r"\s+\((?:[^)]*\blive\b[^)]*)\)",
+    r"\s+\((?:[^)]*\bremix\b[^)]*)\)",
+    r"\s+\((?:[^)]*\bversion\b[^)]*)\)",
+    r"\s+\((?:[^)]*\bedit\b[^)]*)\)",
+    r"\s+\((?:[^)]*\bmix\b[^)]*)\)",
+    r"\s+\((?:from [^)]*)\)",
+)
+
+
 def clean_base_title(title: str) -> str:
-    value = re.sub(r"\s+-\s+(acoustic|live|remix|instrumental|karaoke).*$", "", title, flags=re.I)
-    return value.strip() or title.strip()
+    original = (title or "").strip()
+    value = original
+    value = re.sub(r"\s+", " ", value).strip()
+    for pattern in VERSION_PAREN_PATTERNS:
+        value = re.sub(pattern, "", value, flags=re.I)
+    for pattern in VERSION_SUFFIX_PATTERNS:
+        value = re.sub(pattern, "", value, flags=re.I)
+    value = re.sub(r"\s+", " ", value).strip(" -")
+    return value or original
 
 
 def release_type(release: dict[str, Any]) -> str:
@@ -487,29 +530,71 @@ def _extract_spotify_id(uri: str, kind: str) -> str:
     return uri[len(prefix):] if uri.startswith(prefix) else ""
 
 
-def _recent_artist_releases(session: Any, *, tokens: dict[str, str], limit: int) -> list[dict[str, Any]]:
-    payload = _request_partner_json(
-        session,
-        tokens=tokens,
-        operation_name="queryArtistDiscographyAll",
-        variables={"uri": ARTIST_URI, "offset": 0, "limit": min(PAGE_LIMIT, max(1, limit)), "order": "DATE_DESC"},
-        query_hash=ARTIST_DISCOGRAPHY_HASH,
-    )
-    groups = (
-        (((payload.get("data") or {}).get("artistUnion") or {}).get("discography") or {})
-        .get("all", {})
-        .get("items", [])
-    )
+def _release_iso_date(release: dict[str, Any]) -> str:
+    return str(((release.get("date") or {}).get("isoString") or "")).strip()
+
+
+def _recent_artist_releases(
+    session: Any,
+    *,
+    tokens: dict[str, str],
+    limit: int,
+    target_release_date: str | None = None,
+    expand_target_date: bool = False,
+) -> list[dict[str, Any]]:
     releases_by_id: dict[str, dict[str, Any]] = {}
-    for group in groups:
-        for release in ((group.get("releases") or {}).get("items") or []):
-            if not isinstance(release, dict):
-                continue
+    offset = 0
+    found_target_release = False
+    limit = max(1, limit)
+
+    while True:
+        payload = _request_partner_json(
+            session,
+            tokens=tokens,
+            operation_name="queryArtistDiscographyAll",
+            variables={"uri": ARTIST_URI, "offset": offset, "limit": min(PAGE_LIMIT, limit), "order": "DATE_DESC"},
+            query_hash=ARTIST_DISCOGRAPHY_HASH,
+        )
+        groups = (
+            (((payload.get("data") or {}).get("artistUnion") or {}).get("discography") or {})
+            .get("all", {})
+            .get("items", [])
+        )
+        page_releases: list[dict[str, Any]] = []
+        for group in groups:
+            page_releases.extend(
+                release for release in ((group.get("releases") or {}).get("items") or [])
+                if isinstance(release, dict)
+            )
+
+        if not page_releases:
+            break
+
+        for release in page_releases:
             release_id = str(release.get("id") or "").strip()
+            release_day = _release_iso_date(release)
+
+            if target_release_date and release_day == target_release_date:
+                found_target_release = True
+
+            if (
+                expand_target_date
+                and target_release_date
+                and found_target_release
+                and len(releases_by_id) >= limit
+                and release_day != target_release_date
+            ):
+                return list(releases_by_id.values())
+
             if release_id:
                 releases_by_id[release_id] = release
-            if len(releases_by_id) >= limit:
-                return list(releases_by_id.values())
+
+        if len(releases_by_id) >= limit and not (expand_target_date and target_release_date and found_target_release):
+            break
+        if len(groups) < min(PAGE_LIMIT, limit):
+            break
+        offset += min(PAGE_LIMIT, limit)
+
     return list(releases_by_id.values())
 
 
@@ -555,13 +640,25 @@ def _release_tracks_for_releases(session: Any, *, tokens: dict[str, str], releas
     return sorted(tracks_by_id.values(), key=lambda item: (item["title"].casefold(), item["track_id"]))
 
 
-def build_api_catalog(tokens: dict[str, str] | None = None, *, recent_release_limit: int | None = None) -> list[dict[str, Any]]:
+def build_api_catalog(
+    tokens: dict[str, str] | None = None,
+    *,
+    recent_release_limit: int | None = None,
+    target_release_date: str | None = None,
+    expand_target_date: bool = False,
+) -> list[dict[str, Any]]:
     tokens = tokens or capture_tokens()
     import requests
 
     with requests.Session() as session:
         if recent_release_limit is not None:
-            releases = _recent_artist_releases(session, tokens=tokens, limit=recent_release_limit)
+            releases = _recent_artist_releases(
+                session,
+                tokens=tokens,
+                limit=recent_release_limit,
+                target_release_date=target_release_date,
+                expand_target_date=expand_target_date,
+            )
             print(f"[spotify] Recent release scan: {len(releases)} release(s)")
             return _release_tracks_for_releases(session, tokens=tokens, releases=releases)
         return _artist_release_tracks(session, tokens=tokens)
@@ -596,6 +693,8 @@ def run_backfill(
     skip_api: bool = False,
     tokens: dict[str, str] | None = None,
     recent_release_limit: int | None = None,
+    target_release_date: str | None = None,
+    expand_target_date: bool = False,
     verbose: bool = True,
 ) -> dict[str, int | bool | list[str]]:
     data_by_path, locations = load_discography()
@@ -644,7 +743,12 @@ def run_backfill(
         }
 
     print("[spotify] Fetching artist catalog...")
-    catalog_tracks = build_api_catalog(tokens, recent_release_limit=recent_release_limit)
+    catalog_tracks = build_api_catalog(
+        tokens,
+        recent_release_limit=recent_release_limit,
+        target_release_date=target_release_date,
+        expand_target_date=expand_target_date,
+    )
     canonical_tracks, duplicate_groups = canonicalize_api_tracks(catalog_tracks)
 
     updates = 0
@@ -783,6 +887,7 @@ def main() -> None:
         default=None,
         help="Only scan the N most recent Spotify releases instead of the full catalog.",
     )
+    parser.add_argument("--target-release-date", default=None, help="Expand recent scan around this release date.")
     args = parser.parse_args()
 
     run_backfill(
@@ -791,6 +896,8 @@ def main() -> None:
         include_non_songs=args.include_non_songs,
         skip_api=args.skip_api,
         recent_release_limit=args.recent_releases,
+        target_release_date=args.target_release_date,
+        expand_target_date=bool(args.target_release_date),
         verbose=not args.quiet,
     )
 
