@@ -34,12 +34,15 @@ _SSL_CTX.verify_mode = ssl.CERT_NONE
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 ROOT        = Path(__file__).parent.parent
+sys.path.insert(0, str(ROOT / "collectors" / "spotify"))
+from core.data_paths import LEGACY_WEBSITE_DATA_DIR, WEB_EXPORT_DATA_DIR, first_existing  # noqa: E402
+
 DISCO_DIR   = ROOT / "db" / "discography"
 ALBUMS_DIR  = DISCO_DIR / "albums"
-SONGS_JSON  = ROOT / "website" / "site" / "data" / "songs.json"
+SONGS_JSON  = first_existing(WEB_EXPORT_DATA_DIR / "songs.json", LEGACY_WEBSITE_DATA_DIR / "songs.json")
 COVERS_JSON = DISCO_DIR / "covers.json"
 HIST_JSON  = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "ts_history.json"
-OUT_COVERS = ROOT / "website" / "spotify-charts" / "track_covers.json"
+OUT_COVERS = WEB_EXPORT_DATA_DIR / "spotify-charts" / "track_covers.json"
 
 FORCE  = "--force"  in sys.argv
 OEMBED = True  # always fetch via oEmbed for tracks missing image_url

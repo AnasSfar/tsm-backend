@@ -9,6 +9,7 @@ import json
 import mimetypes
 import os
 import re
+import sys
 import time
 from collections import defaultdict
 from pathlib import Path
@@ -27,8 +28,19 @@ except ImportError:
 load_dotenv(str(Path(__file__).resolve().parents[1] / ".env"), override=True)
 
 ROOT = Path(__file__).resolve().parents[1]
-HISTORY_DIR = ROOT / "website" / "site" / "history"
-SITE_DATA_DIR = ROOT / "website" / "site" / "data"
+sys.path.insert(0, str(ROOT / "collectors" / "spotify"))
+from core.data_paths import (  # noqa: E402
+    LEGACY_WEBSITE_DATA_DIR,
+    LEGACY_WEBSITE_HISTORY_DIR,
+    WEB_EXPORT_DATA_DIR,
+    WEB_EXPORT_HISTORY_DIR,
+    legacy_run_all_charts_dir,
+    legacy_spotify_chart_dir,
+    spotify_chart_dir,
+)
+
+HISTORY_DIR = WEB_EXPORT_HISTORY_DIR if WEB_EXPORT_HISTORY_DIR.exists() else LEGACY_WEBSITE_HISTORY_DIR
+SITE_DATA_DIR = WEB_EXPORT_DATA_DIR if WEB_EXPORT_DATA_DIR.exists() else LEGACY_WEBSITE_DATA_DIR
 APPLE_MUSIC_IMAGES_DIR = SITE_DATA_DIR / "apple-music-images"
 DATA_ROOT = ROOT / "data"
 DB_DIR = ROOT / "db"
@@ -107,27 +119,17 @@ def iter_worldwide_chart_snapshots(new_date: str | None = None) -> list[Path]:
             snapshots[match.group(1)] = path
 
     if new_date:
-        data_path = (
-            DATA_ROOT
-            / new_date[:4]
-            / new_date[5:7]
-            / new_date
-            / "run_all_charts"
-            / "spotify"
-            / "worldwide"
-            / f"ts_worldwide_{new_date}.json"
-        )
-        legacy_path = (
-            WORLDWIDE_CHARTS_HISTORY_DIR
-            / new_date[:4]
-            / new_date[5:7]
-            / new_date
-            / f"ts_worldwide_{new_date}.json"
-        )
-        for path in (legacy_path, data_path):
+        snapshot_path = spotify_chart_dir("worldwide", new_date) / f"ts_worldwide_{new_date}.json"
+        data_path = legacy_run_all_charts_dir("worldwide", new_date) / f"ts_worldwide_{new_date}.json"
+        legacy_path = legacy_spotify_chart_dir("worldwide", new_date) / f"ts_worldwide_{new_date}.json"
+        for path in (snapshot_path, legacy_path, data_path):
             if path.exists():
                 add(path)
     else:
+        snapshots_root = ROOT / "snapshots" / "spotify_charts"
+        if snapshots_root.exists():
+            for path in sorted(snapshots_root.rglob("worldwide/ts_worldwide_*.json")):
+                add(path)
         if WORLDWIDE_CHARTS_HISTORY_DIR.exists():
             for path in sorted(WORLDWIDE_CHARTS_HISTORY_DIR.rglob("ts_worldwide_*.json")):
                 add(path)

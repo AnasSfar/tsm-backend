@@ -72,4 +72,4 @@ jobs:
           EOF
 
       - name: Run update_streams (no post)
-        run: python collectors/spotify/streams/update_streams.py --no-post
+        run: python -m tsm collect streams --no-post

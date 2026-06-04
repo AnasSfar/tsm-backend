@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from datetime import date
 from pathlib import Path
 
@@ -10,11 +11,12 @@ from playwright.sync_api import sync_playwright
 
 
 _SCRIPT_DIR = Path(__file__).resolve().parent
-_REPO_ROOT  = _SCRIPT_DIR.parents[2]
-ROOT        = _REPO_ROOT / "website"
-DATA_DIR = ROOT / "data"
-SITE_DATA_DIR = ROOT / "site" / "data"
-ARTIST_PATH = DATA_DIR / "artist.json"
+_REPO_ROOT  = _SCRIPT_DIR.parents[4]
+sys.path.insert(0, str(_REPO_ROOT / "collectors" / "spotify"))
+from core.data_paths import WEB_EXPORT_DATA_DIR  # noqa: E402
+
+ARTIST_PATH = _REPO_ROOT / "db" / "discography" / "artist.json"
+SITE_DATA_DIR = WEB_EXPORT_DATA_DIR
 SITE_ARTIST_PATH = SITE_DATA_DIR / "artist.json"
 ARTIST_URL = "https://open.spotify.com/artist/06HL4z0CvFAxyc27GXpf02"
 

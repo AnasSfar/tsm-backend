@@ -1,5 +1,29 @@
 # tsm-backend
 
+## Main commands
+
+The safe entrypoint for day-to-day work is:
+
+```bash
+python -m tsm daily --no-post
+python -m tsm collect streams --no-post
+python -m tsm collect charts --no-post
+python -m tsm collect apple-music
+python -m tsm export web --date YYYY-MM-DD
+python -m tsm audit data --write
+python -m tsm migrate layout --dry-run
+```
+
+Current layout rules:
+
+- Collector code lives under `collectors/`.
+- Source-of-truth business data lives under `db/`.
+- Dated collector outputs live under `snapshots/`.
+- Generated web/R2 exports live under `runtime/exports/web/`.
+- `website/` is legacy and should not receive new export writes.
+
+See `docs/runbook.md` for migration and safety notes.
+
 ## Apple Music collector quality checks
 
 Run Apple Music unit tests locally:

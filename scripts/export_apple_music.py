@@ -3,16 +3,19 @@ from __future__ import annotations
 
 import csv
 import json
+import sys
 from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "collectors" / "spotify"))
+from core.data_paths import LEGACY_WEBSITE_DATA_DIR, WEB_EXPORT_DATA_DIR, first_existing  # noqa: E402
 
 DB_DIR = ROOT / "db"
 DATA_ROOT = ROOT / "data"
 ARCHIVE_DB_DIR = DATA_ROOT / "_archive" / "original" / "db"
-OUT_DIR = ROOT / "website" / "site" / "data"
+OUT_DIR = WEB_EXPORT_DATA_DIR
 
 GLOBAL_CSV = DB_DIR / "apple_music_global.csv"
 TOP_SONGS_CSV = DB_DIR / "apple_music_ts_top_songs.csv"
@@ -452,7 +455,7 @@ def main() -> None:
 
     # Load previous snapshot before overwriting — used to backfill previous_rank
     # when collectors run without local CSV history (e.g. fresh CI checkout).
-    prev_data = _load_prev_snapshot(OUT_DATA)
+    prev_data = _load_prev_snapshot(first_existing(OUT_DATA, LEGACY_WEBSITE_DATA_DIR / "applemusic.json"))
     if prev_data:
         log("snapshot précédent chargé pour backfill previous_rank")
 

@@ -93,13 +93,7 @@ jobs:
           git config user.name "github-actions[bot]"
 
       - name: Run Apple Music
-        run: python collectors/apple_music/run_apple_music.py
+        run: python -m tsm collect apple-music
 
       - name: Upload Apple Music data to R2
         run: python scripts/upload_ap_r2.py
-
-      - name: Commit and push Apple Music data
-        run: |
-          git add website/site/data/applemusic.json
-          git diff --staged --quiet || git commit -m "chore: update Apple Music data [skip ci]"
-          git push

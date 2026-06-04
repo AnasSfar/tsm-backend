@@ -47,4 +47,4 @@ jobs:
         run: playwright install-deps chromium
 
       - name: Run all charts (no post)
-        run: python collectors/spotify/charts/run_all_charts.py --no-post
+        run: python -m tsm collect charts --no-post

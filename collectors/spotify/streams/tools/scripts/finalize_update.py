@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 import threading
@@ -15,6 +16,7 @@ from core.retention import cleanup_generated_artifacts
 from git_ops import git_commit_and_push
 import generate_albums_image
 import generate_album_update_image
+import post_gainer_thread
 from post_debut_releases import post_debut_releases as run_debut_release_posts
 from release_targets import recent_release_album_names
 
@@ -24,6 +26,23 @@ ALBUM_UPDATE_TARGETS = (
     "THE TORTURED POETS DEPARTMENT",
 )
 ALBUM_UPDATE_GAIN_THRESHOLD_PCT = 15.0
+GAINER_ALBUM_UPDATE_MIN_TRACKS = 2
+GAINER_ALBUM_UPDATE_LIMIT = 5
+GAINER_ALBUM_UPDATE_MIN_BASELINE = 1000
+
+
+def _subprocess_env(extra: dict[str, str] | None = None) -> dict[str, str]:
+    env = os.environ.copy()
+    env["PYTHONUTF8"] = "1"
+    env["PYTHONIOENCODING"] = "utf-8"
+    if extra:
+        env.update(extra)
+    return env
+
+
+def _run_subprocess(cmd: list[str], **kwargs):
+    env = kwargs.pop("env", None)
+    return subprocess.run(cmd, env=_subprocess_env(env), **kwargs)
 
 
 class StepTimer:
@@ -192,7 +211,7 @@ def _run_streams_post(
         log_mode=log_mode,
     )
 
-    result = subprocess.run(cmd, check=False)
+    result = _run_subprocess(cmd, check=False)
     if result.returncode != 0:
         raise SystemExit(f"{label} failed (exit {result.returncode}).")
 
@@ -260,7 +279,7 @@ def _refresh_release_dates(ctx: FinalizeContext) -> bool:
 
     release_dates_script = ctx.script_dir / "tools" / "scripts" / "update_release_dates.py"
     print("Refreshing Spotify API release dates...")
-    result = subprocess.run(
+    result = _run_subprocess(
         [sys.executable, str(release_dates_script)],
         cwd=str(ctx.repo_root),
         check=False,
@@ -347,21 +366,21 @@ def _update_artist_metadata(ctx: FinalizeContext) -> bool:
 
 def _run_forecast_and_image_refresh(ctx: FinalizeContext) -> None:
     print("Rebuilding expected milestones forecast...")
-    subprocess.run(
+    _run_subprocess(
         [sys.executable, str(ctx.script_dir / "tools" / "scripts" / "forecast_milestones.py")],
         check=True,
     )
     print("Expected milestones forecast done.")
 
     print("Updating track image URLs from Spotify (cache-aware)...")
-    subprocess.run(
+    _run_subprocess(
         [sys.executable, str(ctx.script_dir / "extras" / "update_all_track_images.py")],
         check=False,
     )
     print("Track image scrape done.")
 
     print("Refreshing image URLs + track_covers.json...")
-    subprocess.run(
+    _run_subprocess(
         [sys.executable, str(ctx.repo_root / "scripts" / "fill_images.py")],
         check=True,
     )
@@ -405,6 +424,84 @@ def _album_gain_update_targets(stats_date: str, *, threshold_pct: float = ALBUM_
     return targets
 
 
+def _album_by_track_id(ctx: FinalizeContext) -> dict[str, str]:
+    result: dict[str, str] = {}
+    for section in ctx.load_album_sections_flat():
+        album = section.get("album") or ""
+        if not album:
+            continue
+        for track in section.get("tracks", []):
+            track_id = ctx.extract_track_id(track.get("url") or track.get("spotify_url") or "")
+            if track_id and track_id not in result:
+                result[track_id] = album
+    return result
+
+
+def _album_gainer_update_targets(
+    ctx: FinalizeContext,
+    stats_date: str,
+    *,
+    limit: int = GAINER_ALBUM_UPDATE_LIMIT,
+    min_baseline: int = GAINER_ALBUM_UPDATE_MIN_BASELINE,
+    min_tracks: int = GAINER_ALBUM_UPDATE_MIN_TRACKS,
+) -> list[dict]:
+    try:
+        daily = post_gainer_thread._pick_gainers(
+            stats_date,
+            compare_days=1,
+            limit=limit,
+            min_baseline=min_baseline,
+        )
+        weekly = post_gainer_thread._pick_gainers(
+            stats_date,
+            compare_days=7,
+            limit=limit,
+            min_baseline=min_baseline,
+        )
+    except Exception as exc:
+        print(f"Album gainer scan skipped: {exc}")
+        return []
+
+    album_by_track_id = _album_by_track_id(ctx)
+    targets_by_album: dict[str, dict] = {}
+    for period, rows in (("daily", daily), ("weekly", weekly)):
+        counts: dict[str, int] = {}
+        best_pct: dict[str, float] = {}
+        for row in rows:
+            album = album_by_track_id.get(row.get("track_id") or "") or (row.get("track") or {}).get("album") or ""
+            if not album:
+                continue
+            counts[album] = counts.get(album, 0) + 1
+            best_pct[album] = max(best_pct.get(album, 0.0), float(row.get("pct") or 0.0))
+
+        for album, count in counts.items():
+            if count < min_tracks:
+                continue
+            target = targets_by_album.setdefault(
+                album,
+                {
+                    "album": album,
+                    "daily_count": 0,
+                    "weekly_count": 0,
+                    "best_pct": 0.0,
+                    "periods": [],
+                },
+            )
+            target[f"{period}_count"] = count
+            target["best_pct"] = max(float(target["best_pct"]), best_pct.get(album, 0.0))
+            target["periods"].append(period)
+
+    targets = list(targets_by_album.values())
+    targets.sort(
+        key=lambda target: (
+            max(int(target["daily_count"]), int(target["weekly_count"])),
+            float(target["best_pct"]),
+        ),
+        reverse=True,
+    )
+    return targets
+
+
 def _album_update_targets(ctx: FinalizeContext) -> list[str]:
     albums: list[str] = list(ALBUM_UPDATE_TARGETS)
     recent_albums = recent_release_album_names(
@@ -434,9 +531,23 @@ def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
                 for target in gain_targets
             )
         )
+    gainer_targets = _album_gainer_update_targets(ctx, ctx.summary["stats_date"])
+    if gainer_targets:
+        print(
+            "Album update gainer scan: "
+            + ", ".join(
+                f"{target['album']} "
+                f"daily={target['daily_count']} weekly={target['weekly_count']}"
+                for target in gainer_targets
+            )
+        )
 
     albums_to_post: list[str] = _album_update_targets(ctx)
     for target in gain_targets:
+        album = target["album"]
+        if album not in albums_to_post:
+            albums_to_post.append(album)
+    for target in gainer_targets:
         album = target["album"]
         if album not in albums_to_post:
             albums_to_post.append(album)
@@ -666,7 +777,7 @@ def _run_swift_top_charts_if_needed(ctx: FinalizeContext) -> None:
 
         print(f"\nWednesday detected - generating Swift Top 100 for {ctx.summary['stats_date']} ...")
         swift_top_100_script = ctx.repo_root / "collectors" / "billboard" / "swift_top_100.py"
-        top_100_result = subprocess.run(
+        top_100_result = _run_subprocess(
             [sys.executable, str(swift_top_100_script), "--date", ctx.summary["stats_date"], "--variant", "all"],
             cwd=str(ctx.repo_root),
             check=False,
@@ -678,7 +789,7 @@ def _run_swift_top_charts_if_needed(ctx: FinalizeContext) -> None:
         print("Swift Top 100 generated successfully.")
         print(f"Generating Swift Top Albums for {ctx.summary['stats_date']} ...")
         swift_top_albums_script = ctx.repo_root / "collectors" / "billboard" / "swift_top_albums.py"
-        albums_result = subprocess.run(
+        albums_result = _run_subprocess(
             [sys.executable, str(swift_top_albums_script), "--date", ctx.summary["stats_date"], "--variant", "all", "--upload"],
             cwd=str(ctx.repo_root),
             check=False,

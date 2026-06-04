@@ -20,10 +20,13 @@ from dotenv import load_dotenv
 
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "collectors" / "spotify"))
+from core.data_paths import LEGACY_WEBSITE_DATA_DIR, WEB_EXPORT_DATA_DIR  # noqa: E402
+
 DB_DIR = ROOT / "db"
 DATA_ROOT = ROOT / "data"
 ARCHIVE_DB_DIR = DATA_ROOT / "_archive" / "original" / "db"
-SITE_DATA_DIR = ROOT / "website" / "site" / "data"
+SITE_DATA_DIR = WEB_EXPORT_DATA_DIR if WEB_EXPORT_DATA_DIR.exists() else LEGACY_WEBSITE_DATA_DIR
 
 APPLEMUSIC_JSON = SITE_DATA_DIR / "applemusic.json"
 APPLEMUSIC_HISTORY_JSON = SITE_DATA_DIR / "applemusic_history.json"

@@ -99,11 +99,11 @@ from history_store import (
 from artist_metadata import scrape_artist_metadata, scrape_artist_top_tracks, update_artist_metadata
 from git_ops import git_commit_and_push
 from config import NTFY_TOPIC
-from core.data_paths import archived_db_file, update_streams_dir
+from core.data_paths import RUNTIME_ROOT, archived_db_file, update_streams_dir
 from core.notify import send as notify
 
-ROOT = _REPO_ROOT / "website"
-DATA_DIR = ROOT / "data"
+ROOT = RUNTIME_ROOT
+DATA_DIR = ROOT / "spotify_streams"
 _DB_ROOT = _REPO_ROOT / "db"
 _ARCHIVE_DB_ROOT = _REPO_ROOT / "data" / "_archive" / "original" / "db"
 

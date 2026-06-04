@@ -1,18 +1,27 @@
 from __future__ import annotations
 
 import json
+import sys
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
 
 _SCRIPT_DIR = Path(__file__).resolve().parent
 _REPO_ROOT  = _SCRIPT_DIR.parents[4]
-ROOT        = _REPO_ROOT / "website"
-SITE_DATA_DIR = ROOT / "site" / "data"
-HISTORY_DIR = ROOT / "site" / "history"
+sys.path.insert(0, str(_REPO_ROOT / "collectors" / "spotify"))
+from core.data_paths import (  # noqa: E402
+    LEGACY_WEBSITE_DATA_DIR,
+    LEGACY_WEBSITE_HISTORY_DIR,
+    WEB_EXPORT_DATA_DIR,
+    WEB_EXPORT_HISTORY_DIR,
+    first_existing,
+)
+
+SITE_DATA_DIR = WEB_EXPORT_DATA_DIR
+HISTORY_DIR = WEB_EXPORT_HISTORY_DIR if WEB_EXPORT_HISTORY_DIR.exists() else LEGACY_WEBSITE_HISTORY_DIR
 HISTORY_INDEX_PATH = HISTORY_DIR / "index.json"
 
-SONGS_PATH = SITE_DATA_DIR / "songs.json"
+SONGS_PATH = first_existing(SITE_DATA_DIR / "songs.json", LEGACY_WEBSITE_DATA_DIR / "songs.json")
 OUTPUT_PATH = SITE_DATA_DIR / "expected_milestones.json"
 
 DEFAULT_MILESTONES = [
@@ -427,6 +436,7 @@ def build_forecasts() -> dict:
 
 def main() -> None:
     output = build_forecasts()
+    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(
         json.dumps(output, ensure_ascii=False),
         encoding="utf-8",

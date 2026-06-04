@@ -1,0 +1,411 @@
+{
+  "generated_for": "C:\\Users\\sfara\\Documents\\GitHub\\tsm-backend",
+  "canonical_layout": {
+    "code": "collectors/",
+    "business_data": "db/",
+    "daily_snapshots": "snapshots/",
+    "runtime_outputs": "runtime/",
+    "web_exports": "runtime/exports/web",
+    "legacy_website_archive": "data/_archive/legacy-website"
+  },
+  "counts": {
+    "db": {
+      "files": 82,
+      "tracked": 70
+    },
+    "data": {
+      "files": 15209,
+      "tracked": 388
+    },
+    "snapshots": {
+      "files": 16,
+      "tracked": 4
+    },
+    "runtime": {
+      "files": 0,
+      "tracked": 0
+    },
+    "legacy_website": {
+      "files": 1579,
+      "tracked": 40
+    },
+    "collectors": {
+      "files": 53518,
+      "tracked": 350
+    },
+    "scripts": {
+      "files": 2789,
+      "tracked": 2759
+    }
+  },
+  "tracked_runtime_noise": [
+    "collectors/spotify/charts/fr/run_daily.log",
+    "collectors/spotify/charts/fr/tools/__pycache__/config.cpython-313.pyc",
+    "collectors/spotify/charts/fr/tools/__pycache__/filter.cpython-313.pyc",
+    "collectors/spotify/charts/fr/tools/__pycache__/twitter_config.cpython-313.pyc",
+    "collectors/spotify/charts/fr/tools/scripts/__pycache__/config.cpython-313.pyc",
+    "collectors/spotify/charts/fr/tools/scripts/__pycache__/git_ops.cpython-313.pyc",
+    "collectors/spotify/charts/global/run_daily.log",
+    "collectors/spotify/charts/global/tools/__pycache__/config.cpython-313.pyc",
+    "collectors/spotify/charts/global/tools/__pycache__/filter.cpython-313.pyc",
+    "collectors/spotify/charts/global/tools/__pycache__/global_filter_chart.cpython-313.pyc",
+    "collectors/spotify/charts/global/tools/run_daily.log",
+    "collectors/spotify/charts/global/tools/script/__pycache__/config.cpython-313.pyc",
+    "collectors/spotify/charts/global/tools/script/__pycache__/git_ops.cpython-313.pyc",
+    "collectors/spotify/core/__pycache__/__init__.cpython-313.pyc",
+    "collectors/spotify/core/__pycache__/download.cpython-313.pyc",
+    "collectors/spotify/core/__pycache__/fmt.cpython-313.pyc",
+    "collectors/spotify/core/__pycache__/history.cpython-313.pyc",
+    "collectors/spotify/core/__pycache__/logger.cpython-313.pyc",
+    "collectors/spotify/core/__pycache__/notify.cpython-313.pyc",
+    "collectors/spotify/core/__pycache__/twitter.cpython-313.pyc",
+    "collectors/spotify/streams/__pycache__/export_for_web.cpython-312.pyc",
+    "collectors/spotify/streams/__pycache__/export_for_web.cpython-313.pyc",
+    "collectors/spotify/streams/__pycache__/fix_streams.cpython-313.pyc",
+    "collectors/spotify/streams/__pycache__/generate_streams_image.cpython-313.pyc",
+    "collectors/spotify/streams/__pycache__/update_streams.cpython-313.pyc",
+    "collectors/spotify/streams/extras/__pycache__/export_for_web.cpython-313.pyc",
+    "collectors/spotify/streams/history/2026/03/2026-03-21/posted.lock",
+    "collectors/spotify/streams/history/2026/03/2026-03-22/posted.lock",
+    "collectors/spotify/streams/history/2026/03/2026-03-23/posted.lock",
+    "collectors/spotify/streams/history/2026/03/2026-03-24/posted.lock",
+    "collectors/spotify/streams/history/2026/03/2026-03-24/the_life_of_a_showgirl_update.lock",
+    "collectors/spotify/streams/history/2026/03/2026-03-25/posted.lock",
+    "collectors/spotify/streams/history/2026/03/2026-03-25/the_life_of_a_showgirl_update.lock",
+    "collectors/spotify/streams/history/2026/03/2026-03-25/the_tortured_poets_department_update.lock",
+    "collectors/spotify/streams/history/2026/03/2026-03-27/posted.lock",
+    "collectors/spotify/streams/history/2026/03/2026-03-28/posted.lock",
+    "collectors/spotify/streams/history/2026/03/2026-03-29/posted.lock",
+    "collectors/spotify/streams/history/2026/03/2026-03-30/posted.lock",
+    "collectors/spotify/streams/history/2026/03/2026-03-31/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-01/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-02/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-03/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-04/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-06/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-07/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-09/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-10/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-11/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-12/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-13/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-14/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-15/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-16/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-17/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-18/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-19/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-20/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-21/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-22/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-23/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-24/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-25/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-26/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-27/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-28/posted.lock",
+    "collectors/spotify/streams/history/2026/04/2026-04-30/posted.lock",
+    "collectors/spotify/streams/history/2026/05/2026-05-01/posted.lock",
+    "collectors/spotify/streams/history/2026/05/2026-05-02/posted.lock",
+    "collectors/spotify/streams/history/2026/05/2026-05-03/posted.lock",
+    "collectors/spotify/streams/history/2026/05/2026-05-04/posted.lock",
+    "collectors/spotify/streams/history/2026/05/2026-05-06/posted.lock",
+    "collectors/spotify/streams/history/2026/05/2026-05-07/posted.lock",
+    "collectors/spotify/streams/history/2026/05/2026-05-08/posted.lock",
+    "collectors/spotify/streams/history/2026/05/2026-05-09/posted.lock",
+    "collectors/spotify/streams/history/2026/05/2026-05-14/posted.lock",
+    "collectors/spotify/streams/history/2026/05/2026-05-15/posted.lock",
+    "collectors/spotify/streams/history/2026/05/2026-05-16/posted.lock",
+    "collectors/spotify/streams/history/2026/05/2026-05-17/posted.lock",
+    "collectors/spotify/streams/history/2026/05/2026-05-18/posted.lock",
+    "collectors/spotify/streams/history/2026/05/2026-05-19/posted.lock",
+    "collectors/spotify/streams/history/2026/05/2026-05-20/posted.lock",
+    "collectors/spotify/streams/history/2026/05/2026-05-21/posted.lock",
+    "collectors/spotify/streams/history/2026/05/2026-05-22/posted.lock",
+    "collectors/spotify/streams/history/2026/05/2026-05-23/posted.lock",
+    "collectors/spotify/streams/history/2026/05/2026-05-25/posted.lock",
+    "collectors/spotify/streams/history/2026/05/2026-05-26/posted.lock",
+    "collectors/spotify/streams/run_update_streams.log",
+    "collectors/spotify/streams/tools/scripts/__pycache__/config.cpython-313.pyc",
+    "collectors/spotify/streams/tools/scripts/__pycache__/generate_albums_image.cpython-313.pyc",
+    "collectors/spotify/streams/tools/scripts/__pycache__/generate_streams_image.cpython-313.pyc",
+    "collectors/spotify/streams/tools/scripts/__pycache__/git_ops.cpython-313.pyc",
+    "collectors/spotify/streams/tools/scripts/run_update_streams.log",
+    "data/2024/04/2024-04-19/run_all_charts/spotify/fr/posted.lock",
+    "data/2024/04/2024-04-19/run_all_charts/spotify/global/posted.lock",
+    "data/2024/04/2024-04-19/run_all_charts/spotify/uk/posted.lock",
+    "data/2024/04/2024-04-19/run_all_charts/spotify/us/posted.lock",
+    "data/2025/10/2025-10-03/run_all_charts/spotify/fr/posted.lock",
+    "data/2025/10/2025-10-03/run_all_charts/spotify/global/posted.lock",
+    "data/2025/10/2025-10-03/run_all_charts/spotify/uk/posted.lock",
+    "data/2025/10/2025-10-03/run_all_charts/spotify/us/posted.lock",
+    "data/2026/01/2026-01-01/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-01/run_all_charts/spotify/global/posted.lock",
+    "data/2026/01/2026-01-02/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-02/run_all_charts/spotify/global/posted.lock",
+    "data/2026/01/2026-01-03/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-03/run_all_charts/spotify/global/posted.lock",
+    "data/2026/01/2026-01-04/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-04/run_all_charts/spotify/global/posted.lock",
+    "data/2026/01/2026-01-06/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-06/run_all_charts/spotify/global/posted.lock",
+    "data/2026/01/2026-01-07/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-07/run_all_charts/spotify/global/posted.lock",
+    "data/2026/01/2026-01-08/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-10/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-10/run_all_charts/spotify/global/posted.lock",
+    "data/2026/01/2026-01-11/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-12/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-12/run_all_charts/spotify/global/posted.lock",
+    "data/2026/01/2026-01-13/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-14/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-14/run_all_charts/spotify/global/posted.lock",
+    "data/2026/01/2026-01-15/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-15/run_all_charts/spotify/global/posted.lock",
+    "data/2026/01/2026-01-16/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-16/run_all_charts/spotify/global/posted.lock",
+    "data/2026/01/2026-01-17/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-17/run_all_charts/spotify/global/posted.lock",
+    "data/2026/01/2026-01-18/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-18/run_all_charts/spotify/global/posted.lock",
+    "data/2026/01/2026-01-19/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-19/run_all_charts/spotify/global/posted.lock",
+    "data/2026/01/2026-01-20/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-20/run_all_charts/spotify/global/posted.lock",
+    "data/2026/01/2026-01-21/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-21/run_all_charts/spotify/global/posted.lock",
+    "data/2026/01/2026-01-22/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-22/run_all_charts/spotify/global/posted.lock",
+    "data/2026/01/2026-01-23/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-23/run_all_charts/spotify/global/posted.lock",
+    "data/2026/01/2026-01-24/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-24/run_all_charts/spotify/global/posted.lock",
+    "data/2026/01/2026-01-25/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-25/run_all_charts/spotify/global/posted.lock",
+    "data/2026/01/2026-01-27/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-27/run_all_charts/spotify/global/posted.lock",
+    "data/2026/01/2026-01-28/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-29/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-29/run_all_charts/spotify/global/posted.lock",
+    "data/2026/01/2026-01-30/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/01/2026-01-30/run_all_charts/spotify/global/posted.lock",
+    "data/2026/01/2026-01-31/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-01/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-02/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-04/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-04/run_all_charts/spotify/global/posted.lock",
+    "data/2026/02/2026-02-05/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-07/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-07/run_all_charts/spotify/global/posted.lock",
+    "data/2026/02/2026-02-08/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-08/run_all_charts/spotify/global/posted.lock",
+    "data/2026/02/2026-02-09/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-09/run_all_charts/spotify/global/posted.lock",
+    "data/2026/02/2026-02-10/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-10/run_all_charts/spotify/global/posted.lock",
+    "data/2026/02/2026-02-11/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-11/run_all_charts/spotify/global/posted.lock",
+    "data/2026/02/2026-02-12/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-12/run_all_charts/spotify/global/posted.lock",
+    "data/2026/02/2026-02-13/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-13/run_all_charts/spotify/global/posted.lock",
+    "data/2026/02/2026-02-15/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-15/run_all_charts/spotify/global/posted.lock",
+    "data/2026/02/2026-02-17/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-17/run_all_charts/spotify/global/posted.lock",
+    "data/2026/02/2026-02-18/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-18/run_all_charts/spotify/global/posted.lock",
+    "data/2026/02/2026-02-19/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-19/run_all_charts/spotify/global/posted.lock",
+    "data/2026/02/2026-02-20/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-20/run_all_charts/spotify/global/posted.lock",
+    "data/2026/02/2026-02-21/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-21/run_all_charts/spotify/global/posted.lock",
+    "data/2026/02/2026-02-22/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-22/run_all_charts/spotify/global/posted.lock",
+    "data/2026/02/2026-02-23/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-23/run_all_charts/spotify/global/posted.lock",
+    "data/2026/02/2026-02-24/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-24/run_all_charts/spotify/global/posted.lock",
+    "data/2026/02/2026-02-25/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-25/run_all_charts/spotify/global/posted.lock",
+    "data/2026/02/2026-02-26/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-26/run_all_charts/spotify/global/posted.lock",
+    "data/2026/02/2026-02-27/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-27/run_all_charts/spotify/global/posted.lock",
+    "data/2026/02/2026-02-28/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/02/2026-02-28/run_all_charts/spotify/global/posted.lock",
+    "data/2026/03/2026-03-01/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/03/2026-03-01/run_all_charts/spotify/global/posted.lock",
+    "data/2026/03/2026-03-02/run_all_charts/spotify/fr/posted.lock",
+    "data/2026/03/2026-03-02/run_all_charts/spotify/global/posted.lock"
+  ],
+  "tracked_runtime_noise_total": 3206,
+  "tracked_backups": [
+    "db/charts_history_uk.csv.bak.20260407-054202",
+    "db/charts_history_us.csv.bak.20260404-234722",
+    "db/charts_history_us.csv.bak.20260405-040119",
+    "db/discography/albums/1989.json.bak",
+    "db/discography/albums/1989_taylor_s_version.json.bak",
+    "db/discography/albums/evermore.json.bak",
+    "db/discography/albums/fearless.json.bak",
+    "db/discography/albums/fearless_taylor_s_version.json.bak",
+    "db/discography/albums/folklore.json.bak",
+    "db/discography/albums/lover.json.bak",
+    "db/discography/albums/midnights.json.bak",
+    "db/discography/albums/red.json.bak",
+    "db/discography/albums/red_taylor_s_version.json.bak",
+    "db/discography/albums/reputation.json.bak",
+    "db/discography/albums/speak_now.json.bak",
+    "db/discography/albums/speak_now_taylor_s_version.json.bak",
+    "db/discography/albums/taylor_swift.json.bak",
+    "db/discography/albums/the_life_of_a_showgirl.json.bak",
+    "db/discography/albums/the_taylor_swift_holiday_collection.json.bak",
+    "db/discography/albums/the_tortured_poets_department.json.bak",
+    "db/discography/features.json.bak",
+    "db/discography/misc.json.bak",
+    "db/discography/songs.json.bak",
+    "website/site/history/2026-04-09.json.bak"
+  ],
+  "tracked_backups_total": 24,
+  "tracked_legacy_website_exports": [
+    "website/site/data/applemusic.json",
+    "website/site/data/covers/latest.jpg",
+    "website/site/data/headers/1989 (taylor's version).png",
+    "website/site/data/headers/1989.png",
+    "website/site/data/headers/evermore.png",
+    "website/site/data/headers/fearless (taylor's version).png",
+    "website/site/data/headers/fearless.png",
+    "website/site/data/headers/folklore.png",
+    "website/site/data/headers/lover.png",
+    "website/site/data/headers/midnights.png",
+    "website/site/data/headers/red (taylor's version).png",
+    "website/site/data/headers/red.png",
+    "website/site/data/headers/reputation.png",
+    "website/site/data/headers/speak now (taylor's version).png",
+    "website/site/data/headers/speak now.png",
+    "website/site/data/headers/taylor swift.png",
+    "website/site/data/headers/the life of a showgirl.jpg",
+    "website/site/data/headers/the tortured poets department.png",
+    "website/site/history/2026-04-09.json.bak"
+  ],
+  "tracked_legacy_website_exports_total": 19,
+  "duplicate_sha256_groups": [
+    [
+      "db/discography/artist.json",
+      "website/site/data/artist.json"
+    ],
+    [
+      "db/discography/headers/1989 (taylor's version).png",
+      "website/site/data/headers/1989 (taylor's version).png"
+    ],
+    [
+      "db/discography/headers/1989.png",
+      "website/site/data/headers/1989.png"
+    ],
+    [
+      "db/discography/headers/evermore.png",
+      "website/site/data/headers/evermore.png"
+    ],
+    [
+      "db/discography/headers/fearless (taylor's version).png",
+      "website/site/data/headers/fearless (taylor's version).png"
+    ],
+    [
+      "db/discography/headers/fearless.png",
+      "website/site/data/headers/fearless.png"
+    ],
+    [
+      "db/discography/headers/folklore.png",
+      "website/site/data/headers/folklore.png"
+    ],
+    [
+      "db/discography/headers/lover.png",
+      "website/site/data/headers/lover.png"
+    ],
+    [
+      "db/discography/headers/midnights.png",
+      "website/site/data/headers/midnights.png"
+    ],
+    [
+      "db/discography/headers/red (taylor's version).png",
+      "website/site/data/headers/red (taylor's version).png"
+    ],
+    [
+      "db/discography/headers/red.png",
+      "website/site/data/headers/red.png"
+    ],
+    [
+      "db/discography/headers/reputation.png",
+      "website/site/data/headers/reputation.png"
+    ],
+    [
+      "db/discography/headers/speak now (taylor's version).png",
+      "website/site/data/headers/speak now (taylor's version).png"
+    ],
+    [
+      "db/discography/headers/speak now.png",
+      "website/site/data/headers/speak now.png"
+    ],
+    [
+      "db/discography/headers/taylor swift.png",
+      "website/site/data/headers/taylor swift.png"
+    ],
+    [
+      "db/discography/headers/the tortured poets department.png",
+      "website/site/data/headers/the tortured poets department.png"
+    ],
+    [
+      "website/site/data/swift_top_100_index.json",
+      "website/site/data/swift_top_100_not_combined_index.json",
+      "website/site/data/swift_top_albums_index.json",
+      "website/site/data/swift_top_eras_index.json"
+    ],
+    [
+      "website/site/data/swift_top_100_not_combined.json",
+      "website/site/data/swift_top_100_not_combined_2026-05-27.json"
+    ],
+    [
+      "website/site/data/swift_top_albums.json",
+      "website/site/data/swift_top_albums_2026-05-27.json"
+    ],
+    [
+      "website/site/data/swift_top_eras.json",
+      "website/site/data/swift_top_eras_2026-05-27.json"
+    ],
+    [
+      "snapshots/apple_music_charts/.gitkeep",
+      "snapshots/spotify_charts/.gitkeep",
+      "snapshots/spotify_streams/.gitkeep",
+      "snapshots/tayboard/.gitkeep"
+    ]
+  ],
+  "duplicate_sha256_groups_total": 21,
+  "recommended_actions": [
+    {
+      "family": "db/*.bak",
+      "action": "archive",
+      "target": "data/_archive/manual-backups/YYYY-MM-DD/"
+    },
+    {
+      "family": "website/",
+      "action": "archive",
+      "target": "data/_archive/legacy-website/"
+    },
+    {
+      "family": "website/site/data and history",
+      "action": "replace writes",
+      "target": "runtime/exports/web/"
+    },
+    {
+      "family": "browser caches and logs",
+      "action": "ignore",
+      "target": "runtime/cache and runtime/logs"
+    },
+    {
+      "family": "snapshots",
+      "action": "keep",
+      "target": "snapshots/"
+    }
+  ]
+}

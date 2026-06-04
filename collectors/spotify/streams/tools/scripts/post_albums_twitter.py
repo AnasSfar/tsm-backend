@@ -19,6 +19,7 @@ TWITTER_SESSION = SCRIPT_DIR.parents[2] / "charts" / "global" / "tools" / "json"
 sys.path.insert(0, str(SCRIPT_DIR.parents[2]))        # collectors/spotify/
 sys.path.insert(0, str(ROOT))                         # collectors/spotify/streams/
 from core.album_emoji import album_emoji
+from core.data_paths import update_streams_dir
 from core.twitter import post_with_image
 
 import generate_albums_image
@@ -203,7 +204,7 @@ def main():
     target_date = args[0] if args else str(date.today() - timedelta(days=1))
 
     d = date.fromisoformat(target_date)
-    day_dir = ROOT / "history" / str(d.year) / f"{d.month:02d}" / target_date
+    day_dir = update_streams_dir(target_date)
     day_dir.mkdir(parents=True, exist_ok=True)
     lock = day_dir / "albums_posted.lock"
 

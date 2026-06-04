@@ -46,6 +46,7 @@ setup(
     
     entry_points={
         "console_scripts": [
+            "tsm=tsm.cli:main",
             "tsm-apple-music=collectors.apple_music.run_apple_music:main",
             "tsm-export=scripts.export_apple_music:main",
         ],

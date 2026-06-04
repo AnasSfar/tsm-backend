@@ -4,16 +4,32 @@ import csv
 import json
 import re
 import shutil
+import sys
 from collections import defaultdict
 from pathlib import Path
 
 
 _SCRIPT_DIR = Path(__file__).resolve().parent
 _REPO_ROOT  = _SCRIPT_DIR.parents[3]
-ROOT        = _REPO_ROOT / "website"
 _DB_ROOT    = _REPO_ROOT / "db"
 _DATA_ROOT  = _REPO_ROOT / "data"
 _ARCHIVE_DB_ROOT = _DATA_ROOT / "_archive" / "original" / "db"
+sys.path.insert(0, str(_REPO_ROOT / "collectors" / "spotify"))
+from core.data_paths import (  # noqa: E402
+    LEGACY_WEBSITE_DATA_DIR,
+    LEGACY_WEBSITE_HISTORY_DIR,
+    LEGACY_WEBSITE_RUNTIME_DIR,
+    WEB_EXPORT_DATA_DIR,
+    WEB_EXPORT_HISTORY_DIR,
+    WEB_EXPORT_ROOT,
+    first_existing,
+    legacy_run_all_charts_dir,
+    legacy_spotify_chart_dir,
+    spotify_chart_dir,
+    update_streams_dir,
+)
+
+ROOT = WEB_EXPORT_ROOT
 
 HISTORY_CSV_PATH = (
     _DB_ROOT / "streams_history.csv"
@@ -27,13 +43,13 @@ MISC_JSON_SRC    = DISCOGRAPHY_DIR / "songs.json"
 MISC_EXTRA_JSON_SRC = DISCOGRAPHY_DIR / "misc.json"
 COVERS_JSON_PATH = DISCOGRAPHY_DIR / "covers.json"
 
-SITE_DATA_DIR    = ROOT / "site" / "data"
-SITE_HISTORY_DIR = ROOT / "site" / "history"
+SITE_DATA_DIR    = WEB_EXPORT_DATA_DIR
+SITE_HISTORY_DIR = WEB_EXPORT_HISTORY_DIR
 SONGS_JSON_PATH  = SITE_DATA_DIR / "songs.json"
 ALBUMS_JSON_PATH = SITE_DATA_DIR / "albums.json"
 
-LAST_RUN_STATE_SRC   = ROOT / "data" / "last_run_state.json"
-NOT_FOUND_STREAK_SRC = ROOT / "data" / "not_found_streak.json"
+LAST_RUN_STATE_SRC   = first_existing(ROOT / "data" / "last_run_state.json", LEGACY_WEBSITE_RUNTIME_DIR / "last_run_state.json")
+NOT_FOUND_STREAK_SRC = first_existing(ROOT / "data" / "not_found_streak.json", LEGACY_WEBSITE_RUNTIME_DIR / "not_found_streak.json")
 BILLBOARD_CSV_PATH   = (
     _DB_ROOT / "billboard_history.csv"
     if (_DB_ROOT / "billboard_history.csv").exists()
@@ -163,32 +179,17 @@ def _worldwide_snapshot_candidates(chart_date: str | None = None) -> list[Path]:
             candidates[match.group(1)] = path
 
     if chart_date:
-        data_path = (
-            _DATA_ROOT
-            / chart_date[:4]
-            / chart_date[5:7]
-            / chart_date
-            / "run_all_charts"
-            / "spotify"
-            / "worldwide"
-            / f"ts_worldwide_{chart_date}.json"
-        )
-        legacy_path = (
-            _REPO_ROOT
-            / "collectors"
-            / "spotify"
-            / "charts"
-            / "worldwide"
-            / "history"
-            / chart_date[:4]
-            / chart_date[5:7]
-            / chart_date
-            / f"ts_worldwide_{chart_date}.json"
-        )
-        for path in (legacy_path, data_path):
+        snapshot_path = spotify_chart_dir("worldwide", chart_date) / f"ts_worldwide_{chart_date}.json"
+        data_path = legacy_run_all_charts_dir("worldwide", chart_date) / f"ts_worldwide_{chart_date}.json"
+        legacy_path = legacy_spotify_chart_dir("worldwide", chart_date) / f"ts_worldwide_{chart_date}.json"
+        for path in (snapshot_path, legacy_path, data_path):
             if path.exists():
                 add(path)
     else:
+        snapshot_root = _REPO_ROOT / "snapshots" / "spotify_charts"
+        if snapshot_root.exists():
+            for path in sorted(snapshot_root.rglob("worldwide/ts_worldwide_*.json")):
+                add(path)
         legacy_root = _REPO_ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "history"
         if legacy_root.exists():
             for path in sorted(legacy_root.rglob("ts_worldwide_*.json")):
@@ -1273,12 +1274,21 @@ def export_swift_top_100_from_csv(*, songs_by_id: dict[str, dict] | None = None)
     print(f"  Swift Top 100 JSON written ({len(entries)} entries) -> {SWIFT_TOP_100_JSON_PATH}")
 
 
-def export_for_web(stats_date: str | None = None) -> None:
+def export_for_web(stats_date: str | None = None, *, dry_run: bool = False) -> None:
+    if dry_run:
+        print("[DRY-RUN] export_for_web would generate web exports")
+        print(f"  output data   : {SITE_DATA_DIR}")
+        print(f"  output history: {SITE_HISTORY_DIR}")
+        print(f"  history csv   : {HISTORY_CSV_PATH}")
+        print(f"  stats_date    : {stats_date or 'all'}")
+        return
+
     # ── Export charts France corrigés ─────────────────────────────
-    fr_charts_dst = ROOT / "site" / "data" / "charts_fr"
+    fr_charts_dst = SITE_DATA_DIR / "charts_fr"
     fr_charts_dst.mkdir(parents=True, exist_ok=True)
     count = 0
-    fr_chart_files = sorted(_DATA_ROOT.glob("20??/??/????-??-??/run_all_charts/spotify/fr/ts_chart_*.json"))
+    fr_chart_files = sorted((_REPO_ROOT / "snapshots" / "spotify_charts").glob("20??/??/????-??-??/fr/ts_chart_*.json"))
+    fr_chart_files.extend(sorted(_DATA_ROOT.glob("20??/??/????-??-??/run_all_charts/spotify/fr/ts_chart_*.json")))
     legacy_fr_charts_src = _REPO_ROOT / "collectors" / "spotify" / "charts" / "fr" / "history"
     fr_chart_files.extend(sorted(legacy_fr_charts_src.glob("20*/*/*/ts_chart_*.json")))
     if stats_date:
@@ -1474,7 +1484,7 @@ def export_for_web(stats_date: str | None = None) -> None:
         (SITE_HISTORY_DIR / f"{date_str}.json").write_text(
             json.dumps(compact, ensure_ascii=False), encoding="utf-8"
         )
-        daily_history = _DATA_ROOT / date_str[:4] / date_str[5:7] / date_str / "update_streams" / "site_history.json"
+        daily_history = update_streams_dir(date_str) / "site_history.json"
         daily_history.parent.mkdir(parents=True, exist_ok=True)
         daily_history.write_text(json.dumps(compact, ensure_ascii=False), encoding="utf-8")
     existing_dates = sorted_unique_dates([p.stem for p in SITE_HISTORY_DIR.glob("*.json") if p.stem != "index"])
@@ -1550,8 +1560,9 @@ def main() -> None:
     import argparse as _argparse
     parser = _argparse.ArgumentParser(add_help=False)
     parser.add_argument("--new-date", default=None)
+    parser.add_argument("--dry-run", action="store_true")
     known, _ = parser.parse_known_args()
-    export_for_web(stats_date=known.new_date)
+    export_for_web(stats_date=known.new_date, dry_run=known.dry_run)
 
 
 if __name__ == "__main__":

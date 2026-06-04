@@ -7,6 +7,20 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 DATA_ROOT = REPO_ROOT / "data"
 ARCHIVE_ROOT = DATA_ROOT / "_archive" / "original"
 SNAPSHOTS_ROOT = REPO_ROOT / "snapshots"
+RUNTIME_ROOT = REPO_ROOT / "runtime"
+EXPORTS_ROOT = RUNTIME_ROOT / "exports"
+WEB_EXPORT_ROOT = EXPORTS_ROOT / "web"
+WEB_EXPORT_DATA_DIR = WEB_EXPORT_ROOT / "site" / "data"
+WEB_EXPORT_HISTORY_DIR = WEB_EXPORT_ROOT / "site" / "history"
+RUNTIME_SOCIAL_ROOT = RUNTIME_ROOT / "social"
+RUNTIME_LOGS_ROOT = RUNTIME_ROOT / "logs"
+RUNTIME_CACHE_ROOT = RUNTIME_ROOT / "cache"
+LEGACY_WEBSITE_ROOT = REPO_ROOT / "website"
+LEGACY_WEBSITE_DATA_DIR = LEGACY_WEBSITE_ROOT / "site" / "data"
+LEGACY_WEBSITE_HISTORY_DIR = LEGACY_WEBSITE_ROOT / "site" / "history"
+LEGACY_WEBSITE_RUNTIME_DIR = LEGACY_WEBSITE_ROOT / "data"
+MANUAL_BACKUPS_ROOT = DATA_ROOT / "_archive" / "manual-backups"
+LEGACY_WEBSITE_ARCHIVE_ROOT = DATA_ROOT / "_archive" / "legacy-website"
 SPOTIFY_STREAMS_SNAPSHOT_ROOT = SNAPSHOTS_ROOT / "spotify_streams"
 SPOTIFY_CHARTS_SNAPSHOT_ROOT = SNAPSHOTS_ROOT / "spotify_charts"
 APPLE_MUSIC_CHARTS_SNAPSHOT_ROOT = SNAPSHOTS_ROOT / "apple_music_charts"
@@ -43,6 +57,10 @@ def update_streams_dir(value: date | datetime | str) -> Path:
     return snapshot_day_root("spotify_streams", value)
 
 
+def update_streams_social_dir(value: date | datetime | str) -> Path:
+    return RUNTIME_SOCIAL_ROOT / "spotify_streams" / date_key(value)
+
+
 def collector_data_dir(collector: str, value: date | datetime | str) -> Path:
     return snapshot_day_root(collector, value)
 
@@ -72,6 +90,16 @@ def legacy_spotify_chart_dir(chart_name: str, value: date | datetime | str) -> P
         / key[5:7]
         / key
     )
+
+
+def legacy_run_all_charts_dir(chart_name: str, value: date | datetime | str) -> Path:
+    key = date_key(value)
+    return DATA_ROOT / key[:4] / key[5:7] / key / "run_all_charts" / "spotify" / chart_name
+
+
+def legacy_update_streams_dir(value: date | datetime | str) -> Path:
+    key = date_key(value)
+    return DATA_ROOT / key[:4] / key[5:7] / key / "update_streams"
 
 
 def first_existing(*paths: Path) -> Path:

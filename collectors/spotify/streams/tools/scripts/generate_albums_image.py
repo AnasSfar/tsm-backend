@@ -6,7 +6,7 @@ Pour chaque album, compte toutes les éditions sauf "extras" / "extra".
 
 Lit  : db/streams_history.csv + db/discography/albums/*.json
        db/discography/songs.json + db/discography/covers.json
-Ecrit: collectors/spotify/streams/history/YYYY/MM/YYYY-MM-DD/albums_image.png
+Ecrit: snapshots/spotify_streams/YYYY/MM/YYYY-MM-DD/albums_image.png
 
 Usage:
   python generate_albums_image.py               # dernière date dans le CSV
@@ -42,7 +42,7 @@ REPO_ROOT    = SCRIPT_DIR.parents[4]                    # repo root
 DB_DIR       = REPO_ROOT / "db"
 
 sys.path.insert(0, str(ROOT.parent))   # collectors/spotify/ for core.*
-from core.data_paths import archived_db_file
+from core.data_paths import archived_db_file, update_streams_dir
 
 HISTORY_PATH = (
     DB_DIR / "streams_history.csv"
@@ -667,7 +667,7 @@ def generate(target_date: str | None = None) -> Path:
 
     html = build_html(rows, target_date, image_cache)
 
-    out_dir  = ROOT / "history" / target_date[:4] / target_date[5:7] / target_date
+    out_dir  = update_streams_dir(target_date)
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / "albums_image.png"
     tmp_html = out_dir / "_albums_tmp.html"

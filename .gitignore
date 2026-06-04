@@ -127,3 +127,13 @@ log
 *.old
 LOCK
 f_*
+
+# Canonical runtime layout
+runtime/cache/
+runtime/logs/
+runtime/social/
+runtime/exports/
+
+# Audit manifests are intentionally versionable
+!docs/
+!docs/**/*.json

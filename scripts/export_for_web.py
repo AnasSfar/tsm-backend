@@ -3,14 +3,14 @@
 export_for_web.py  (scripts wrapper)
 -------------------------------------
 Relit db/discography/ + db/songs.db et régénère tous les fichiers
-du site : website/site/data/songs.json, albums.json, artist.json,
-expected_milestones.json, history/*.json, billboard.json.
+du site/API dans runtime/exports/web/site/data et site/history.
 
 À lancer manuellement après avoir modifié db/discography/songs.json
 ou des fichiers dans db/discography/albums/ sans attendre le daily update_streams.
 
 Usage:
   python scripts/export_for_web.py
+  python scripts/export_for_web.py --dry-run
 """
 import subprocess
 import sys

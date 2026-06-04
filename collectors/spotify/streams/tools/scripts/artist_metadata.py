@@ -13,7 +13,6 @@ from playwright.sync_api import sync_playwright
 SCRIPT_DIR = Path(__file__).resolve().parents[2]
 REPO_ROOT = SCRIPT_DIR.parents[2]
 DB_ROOT = REPO_ROOT / "db"
-DATA_DIR = REPO_ROOT / "website" / "data"
 DISCOGRAPHY_DIR = DB_ROOT / "discography"
 ARTIST_PATH = DISCOGRAPHY_DIR / "artist.json"
 ARTIST_MONTHLY_HISTORY_PATH = (
@@ -333,7 +332,7 @@ def load_existing_artist_metadata() -> dict:
         return {}
 
 def save_artist_metadata(data: dict) -> None:
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    ARTIST_PATH.parent.mkdir(parents=True, exist_ok=True)
     ARTIST_PATH.write_text(
         json.dumps(data, ensure_ascii=False, indent=2),
         encoding="utf-8",
