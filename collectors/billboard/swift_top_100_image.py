@@ -19,14 +19,18 @@ import argparse
 import base64
 import html
 import json
+import sys
 from pathlib import Path
 from typing import Any
 from urllib.request import Request, urlopen
 
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
-_DEFAULT_INPUT = _REPO_ROOT / "website" / "site" / "data" / "swift_top_100.json"
-_DEFAULT_OUTPUT = _REPO_ROOT / "website" / "site" / "data" / "swift_top_100.png"
+sys.path.insert(0, str(_REPO_ROOT / "collectors" / "spotify"))
+from core.data_paths import WEB_EXPORT_DATA_DIR  # noqa: E402
+
+_DEFAULT_INPUT = WEB_EXPORT_DATA_DIR / "swift_top_100.json"
+_DEFAULT_OUTPUT = WEB_EXPORT_DATA_DIR / "swift_top_100.png"
 
 _IMG_CACHE: dict[str, str] = {}
 _DATA_URI_CACHE: dict[str, str] = {}

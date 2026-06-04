@@ -5,8 +5,8 @@ generate_card_images.py — génère des PNG des cards "Overall" pour chaque cha
 Reproduit le composant SongBlock.jsx du frontend (light album themes).
 Quand une song a beaucoup de pays, le tableau est affiché sur deux colonnes côte à côte.
 
-Lit  : website/site/data/charts_worldwide.json  (by_track + date)
-       website/site/data/songs.json              (métadonnées: title, image_url, artist)
+Lit  : runtime/exports/web/site/data/charts_worldwide.json  (by_track + date)
+       runtime/exports/web/site/data/songs.json              (métadonnées: title, image_url, artist)
 Ecrit: collectors/spotify/charts/worldwide/history/YYYY/MM/YYYY-MM-DD/cards/{slug}.png
        collectors/spotify/charts/worldwide/history/YYYY/MM/YYYY-MM-DD/cards/cards_index.json
 
@@ -39,8 +39,8 @@ if hasattr(sys.stdout, "reconfigure"):
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
 ROOT           = Path(__file__).resolve().parents[6]
-WORLDWIDE_JSON = ROOT / "website" / "site" / "data" / "charts_worldwide.json"
-SONGS_JSON     = ROOT / "website" / "site" / "data" / "songs.json"
+WORLDWIDE_JSON = None
+SONGS_JSON     = None
 LOGO_PATH        = Path(__file__).parents[7] / "tsm-frontend" / "frontend" / "public" / "icons" / "logo.gif"
 TWITTER_SESSION  = Path(__file__).resolve().parents[1] / "json" / "twitter_session.json"
 
@@ -50,7 +50,15 @@ if str(_SPOTIFY_ROOT) not in sys.path:
 _CORE = _SPOTIFY_ROOT / "core"
 if str(_CORE) not in sys.path:
     sys.path.insert(0, str(_CORE))
-from core.data_paths import legacy_spotify_chart_dir, spotify_chart_dir  # noqa: E402
+from core.data_paths import (  # noqa: E402
+    LEGACY_WEBSITE_DATA_DIR,
+    WEB_EXPORT_DATA_DIR,
+    first_existing,
+    legacy_spotify_chart_dir,
+    spotify_chart_dir,
+)
+WORLDWIDE_JSON = first_existing(WEB_EXPORT_DATA_DIR / "charts_worldwide.json", LEGACY_WEBSITE_DATA_DIR / "charts_worldwide.json")
+SONGS_JSON = first_existing(WEB_EXPORT_DATA_DIR / "songs.json", LEGACY_WEBSITE_DATA_DIR / "songs.json")
 from twitter import post_image_thread as _post_image_thread  # noqa: E402
 
 # Shared lock with core/twitter.py — prevents running Playwright while Twitter
@@ -957,12 +965,13 @@ def _previous_snapshot_path(chart_date: str) -> Path | None:
     except Exception:
         return None
 
-    prev_path = _worldwide_snapshot_path(prev_date)
-    if not prev_path.exists():
-        prev_path = legacy_spotify_chart_dir("worldwide", prev_date) / f"ts_worldwide_{prev_date}.json"
-    if not prev_path.exists():
-        return None
-    return prev_path
+    for prev_path in (
+        _worldwide_snapshot_path(prev_date),
+        legacy_spotify_chart_dir("worldwide", prev_date) / f"ts_worldwide_{prev_date}.json",
+    ):
+        if prev_path.exists():
+            return prev_path
+    return None
 
 
 def _load_prev_country_counts(chart_date: str) -> dict[str, int]:

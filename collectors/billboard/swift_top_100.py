@@ -35,14 +35,15 @@ _REPO_ROOT = _SCRIPT_DIR.parents[1]
 # Match existing collector scripts: import shared core utilities from collectors/spotify/core/
 sys.path.insert(0, str((_REPO_ROOT / "collectors" / "spotify").resolve()))
 from core.logger import Logger  # noqa: E402
+from core.data_paths import ARCHIVE_DB_ROOT, WEB_EXPORT_DATA_DIR, billboard_snapshot_dir, first_existing_db_history  # noqa: E402
 _DB_DIR = _REPO_ROOT / "db"
 _DATA_ROOT = _REPO_ROOT / "data"
-_SITE_DATA_DIR = _REPO_ROOT / "website" / "site" / "data"
-_ARCHIVE_DB_DIR = _REPO_ROOT / "data" / "_archive" / "original" / "db"
+_SITE_DATA_DIR = WEB_EXPORT_DATA_DIR
+_ARCHIVE_DB_DIR = ARCHIVE_DB_ROOT
 
-STREAMS_HISTORY_CSV = _DB_DIR / "streams_history.csv"
+STREAMS_HISTORY_CSV = first_existing_db_history("streams_history.csv")
 STREAMS_HISTORY_FULL_CSV = _DB_DIR / "streams_history_full.csv"
-STREAMS_HISTORY_ARCHIVE_CSV = _ARCHIVE_DB_DIR / "streams_history.csv"
+STREAMS_HISTORY_ARCHIVE_CSV = first_existing_db_history("streams_history.csv")
 CHARTS_GLOBAL_CSV = _DB_DIR / "charts_history_global.csv"
 APPLE_MUSIC_GLOBAL_CSV = _DB_DIR / "apple_music_global.csv"
 APPLE_MUSIC_COUNTRY_CSV = _DB_DIR / "apple_music_country_charts.csv"
@@ -1391,7 +1392,7 @@ def run(
                     logger.log(f"✔ PNG  → {out_path.name}")
                     image_paths.append(out_path)
                 # Copie dans collectors/billboard/history/<date>/
-                history_dir = _SCRIPT_DIR / "history" / chart_date_str
+                history_dir = billboard_snapshot_dir(chart_date_str)
                 history_dir.mkdir(parents=True, exist_ok=True)
                 for i, src in enumerate(image_paths, 1):
                     dst = history_dir / f"{CHART_SLUG}_{i}.png"

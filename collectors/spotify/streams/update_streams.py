@@ -99,7 +99,7 @@ from history_store import (
 from artist_metadata import scrape_artist_metadata, scrape_artist_top_tracks, update_artist_metadata
 from git_ops import git_commit_and_push
 from config import NTFY_TOPIC
-from core.data_paths import RUNTIME_ROOT, archived_db_file, update_streams_dir
+from core.data_paths import RUNTIME_ROOT, first_existing_db_history, update_streams_dir
 from core.notify import send as notify
 
 ROOT = RUNTIME_ROOT
@@ -108,14 +108,10 @@ _DB_ROOT = _REPO_ROOT / "db"
 _ARCHIVE_DB_ROOT = _REPO_ROOT / "data" / "_archive" / "original" / "db"
 
 HISTORY_PATH = (
-    _DB_ROOT / "streams_history.csv"
-    if (_DB_ROOT / "streams_history.csv").exists()
-    else archived_db_file("streams_history.csv")
+    first_existing_db_history("streams_history.csv")
 )
 ARTIST_MONTHLY_HISTORY_PATH = (
-    _DB_ROOT / "artist_monthly_listeners_history.csv"
-    if (_DB_ROOT / "artist_monthly_listeners_history.csv").exists()
-    else archived_db_file("artist_monthly_listeners_history.csv")
+    first_existing_db_history("artist_monthly_listeners_history.csv")
 )
 FAILED_PATH = DATA_DIR / "not_found_today.csv"
 PENDING_LOG_PATH = DATA_DIR / "pending_debug_today.csv"

@@ -1,15 +1,13 @@
 from __future__ import annotations
 
 import os
-import sys
 from datetime import date
 from pathlib import Path
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[1]
 REPO_ROOT = PACKAGE_ROOT.parents[1]
-sys.path.insert(0, str(REPO_ROOT / "collectors" / "spotify"))
-from core.data_paths import ARCHIVE_DB_ROOT as ARCHIVE_DB_DIR  # noqa: E402
-from core.data_paths import DATA_ROOT, apple_music_charts_dir  # noqa: E402
+from collectors.spotify.core.data_paths import ARCHIVE_DB_ROOT as ARCHIVE_DB_DIR
+from collectors.spotify.core.data_paths import DATA_ROOT, apple_music_charts_dir
 
 RUN_DATE = os.getenv("TSM_DATA_DATE", date.today().isoformat())
 DB_DIR = apple_music_charts_dir(RUN_DATE)

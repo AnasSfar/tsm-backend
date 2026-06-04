@@ -2,7 +2,7 @@
 """
 Fetch Spotify daily charts for all available countries in parallel, keep only
 Taylor Swift songs, resolve track IDs, and write
-website/site/data/charts_worldwide.json.
+runtime/exports/web/site/data/charts_worldwide.json.
 
 Also writes a per-date snapshot to:
 collectors/spotify/charts/worldwide/history/YYYY/MM/YYYY-MM-DD/ts_worldwide_YYYY-MM-DD.json

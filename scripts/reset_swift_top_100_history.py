@@ -5,6 +5,7 @@ import argparse
 import concurrent.futures
 import os
 import shutil
+import sys
 from pathlib import Path
 
 import boto3
@@ -12,9 +13,12 @@ from dotenv import load_dotenv
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT / "collectors" / "spotify"))
+from core.data_paths import WEB_EXPORT_DATA_DIR  # noqa: E402
+
 DB_HISTORY = REPO_ROOT / "db" / "swift_top_100_history.csv"
-SITE_SNAPSHOT = REPO_ROOT / "website" / "site" / "data" / "swift_top_100.json"
-SITE_SONGS_DIR = REPO_ROOT / "website" / "site" / "data" / "swift_top_100_songs"
+SITE_SNAPSHOT = WEB_EXPORT_DATA_DIR / "swift_top_100.json"
+SITE_SONGS_DIR = WEB_EXPORT_DATA_DIR / "swift_top_100_songs"
 R2_REQUIRED_ENV_VARS = ("R2_ACCOUNT_ID", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY", "R2_BUCKET")
 
 load_dotenv(str(REPO_ROOT / ".env"), override=True)

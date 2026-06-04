@@ -30,12 +30,15 @@ load_dotenv()
 
 _SCRIPT_DIR = Path(__file__).resolve().parent
 _REPO_ROOT = _SCRIPT_DIR.parent
+sys.path.insert(0, str(_REPO_ROOT / "collectors" / "spotify"))
+from core.data_paths import LEGACY_WEBSITE_DATA_DIR, WEB_EXPORT_DATA_DIR, first_existing  # noqa: E402
+
 DB_DIR = _REPO_ROOT / "db"
-SITE_DATA_DIR = _REPO_ROOT / "website" / "site" / "data"
+SITE_DATA_DIR = WEB_EXPORT_DATA_DIR
 LOCAL_IMAGES_DIR = SITE_DATA_DIR / "apple-music-images"  # Store locally for r2.py to upload
 
 APPLE_MUSIC_CSV = DB_DIR / "apple_music_country_charts.csv"
-SONGS_JSON_PATH = SITE_DATA_DIR / "songs.json"
+SONGS_JSON_PATH = first_existing(SITE_DATA_DIR / "songs.json", LEGACY_WEBSITE_DATA_DIR / "songs.json")
 
 # Configuration
 DOWNLOAD_TIMEOUT = 10

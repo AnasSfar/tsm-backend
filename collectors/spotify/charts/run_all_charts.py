@@ -28,6 +28,7 @@ CHARTS_ROOT = Path(__file__).resolve().parent
 REPO_ROOT = CHARTS_ROOT.parents[2]
 sys.path.insert(0, str(REPO_ROOT / "collectors" / "spotify"))
 from core.data_paths import legacy_spotify_chart_dir, run_all_charts_root, spotify_chart_dir
+from core.data_paths import LEGACY_WEBSITE_DATA_DIR, WEB_EXPORT_DATA_DIR, first_existing
 from core.git_ops import git_commit_and_push
 from core.notify import send as _notify
 from core.retention import cleanup_generated_artifacts
@@ -153,7 +154,7 @@ def _regional_chart_json_exists(name: str, target: date) -> bool:
 
 
 def _worldwide_json_path() -> Path:
-    return REPO_ROOT / "website" / "site" / "data" / "charts_worldwide.json"
+    return first_existing(WEB_EXPORT_DATA_DIR / "charts_worldwide.json", LEGACY_WEBSITE_DATA_DIR / "charts_worldwide.json")
 
 
 def _worldwide_json_date() -> str | None:

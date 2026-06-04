@@ -23,6 +23,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import sys
 import threading
 import time
 from datetime import date, datetime, timedelta
@@ -34,6 +35,8 @@ from playwright.sync_api import sync_playwright
 
 # ── Repo paths ──────────────────────────────────────────────────────────────
 REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT / "collectors" / "spotify"))
+from core.data_paths import spotify_chart_snapshot_candidates  # noqa: E402
 
 CHARTS: dict[str, dict] = {
     "global": {
@@ -239,13 +242,14 @@ def _dates_in_archive(csv_path: Path) -> set[str]:
         return {row["date"] for row in csv.DictReader(f)}
 
 
-def _is_processed(history_root: Path, d: str) -> bool:
+def _is_processed(history_root: Path, d: str, chart_name: str | None = None) -> bool:
     out = history_root / d[:4] / d[5:7] / d
-    return (
-        (out / "ts_all_songs.csv").exists()
-        or (out / "no_ts.lock").exists()
-        or (out / "page_not_found.lock").exists()
-    )
+    candidates = [out / "ts_all_songs.csv", out / "no_ts.lock", out / "page_not_found.lock"]
+    if chart_name:
+        candidates.extend(spotify_chart_snapshot_candidates(chart_name, d, "ts_all_songs.csv"))
+        candidates.extend(spotify_chart_snapshot_candidates(chart_name, d, "no_ts.lock"))
+        candidates.extend(spotify_chart_snapshot_candidates(chart_name, d, "page_not_found.lock"))
+    return any(path.exists() for path in candidates)
 
 
 def _write_date_to_csv(
@@ -675,7 +679,7 @@ def main():
         archived = _dates_in_archive(cfg["archive_csv"])
         to_process = [
             d for d in all_dates
-            if d not in archived and not _is_processed(cfg["history_root"], d)
+            if d not in archived and not _is_processed(cfg["history_root"], d, name)
         ]
         print(f"[{cfg['label']}] {len(archived)} dates dans CSV, {len(to_process)}/{len(all_dates)} à traiter")
         work[key] = to_process

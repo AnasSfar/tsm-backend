@@ -19,9 +19,11 @@ from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeo
 
 _SCRIPT_DIR = Path(__file__).resolve().parent
 _REPO_ROOT   = _SCRIPT_DIR.parents[1]
+sys.path.insert(0, str(_REPO_ROOT / "collectors" / "spotify"))
+from core.data_paths import ARCHIVE_DB_ROOT, billboard_snapshot_dir  # noqa: E402
 
 DATA_ROOT = _REPO_ROOT / "data"
-ARCHIVE_BILLBOARD_CSV_PATH = DATA_ROOT / "_archive" / "original" / "db" / "billboard_history.csv"
+ARCHIVE_BILLBOARD_CSV_PATH = ARCHIVE_DB_ROOT / "billboard_history.csv"
 BILLBOARD_CSV_PATH = ARCHIVE_BILLBOARD_CSV_PATH
 LIENS_PATHS = (
     _REPO_ROOT / "config" / "links" / "billboard.json",
@@ -236,7 +238,7 @@ def _save_to_csv(result: dict) -> None:
     """Append today's scrape to billboard_history.csv, replacing any existing rows for today."""
     date = result["scraped_at"][:10]
     scraped_at = result["scraped_at"]
-    daily_csv_path = DATA_ROOT / date[:4] / date[5:7] / date / "billboard" / "billboard_history.csv"
+    daily_csv_path = billboard_snapshot_dir(date) / "billboard_history.csv"
 
     fieldnames = ["date", "scraped_at", "chart_type", "rank", "title",
                   "artist", "weeks_on_chart", "peak_rank", "chart_label"]

@@ -20,6 +20,7 @@ ROOT = SCRIPT_DIR.parents[1]
 TWITTER_SESSION = SCRIPT_DIR.parents[2] / "charts" / "global" / "tools" / "json" / "twitter_session.json"
 
 sys.path.insert(0, str(SCRIPT_DIR.parents[2]))
+from core.data_paths import update_streams_dir  # noqa: E402
 from core.twitter import post_with_image  # noqa: E402
 
 import generate_weekend_streams_image
@@ -57,7 +58,7 @@ def main() -> None:
         print(f"{target_date} is not Saturday or Sunday; skipping weekend streams post.")
         return
 
-    day_dir = ROOT / "history" / str(d.year) / f"{d.month:02d}" / target_date
+    day_dir = update_streams_dir(target_date)
     day_dir.mkdir(parents=True, exist_ok=True)
     lock = day_dir / "weekend_streams_posted.lock"
 

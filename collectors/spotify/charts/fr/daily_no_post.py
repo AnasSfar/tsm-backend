@@ -15,11 +15,11 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+from core.data_paths import first_existing, legacy_spotify_chart_dir, spotify_chart_dir  # noqa: E402
 from playwright.sync_api import sync_playwright
 
 ROOT                  = Path(__file__).parent
 _REPO_ROOT            = ROOT.parents[3]
-DATA_DIR              = ROOT / "history"
 CHART_ID              = "regional-fr-daily"
 SPOTIFY_SESSION       = ROOT / "tools/json/spotify_session.json"
 FILTER_SCRIPT         = ROOT / "tools/scripts/filter.py"
@@ -38,8 +38,13 @@ def log(level: str, message: str):
 
 
 def has_data(d: date) -> bool:
-    base = DATA_DIR / str(d.year) / f"{d.month:02d}" / str(d)
-    return (base / "ts_all_songs.csv").exists() or (base / "no_ts.lock").exists()
+    new_base = spotify_chart_dir("fr", d)
+    legacy_base = legacy_spotify_chart_dir("fr", d)
+    return any(
+        (base / name).exists()
+        for base in (new_base, legacy_base)
+        for name in ("ts_all_songs.csv", "no_ts.lock")
+    )
 
 
 def get_dates_to_process() -> list[date]:
@@ -180,7 +185,10 @@ def run_filter(d: date) -> str | None:
         log("ERROR", f"filter.py a échoué (code {result.returncode})")
         return None
 
-    tweet_path = DATA_DIR / str(d.year) / f"{d.month:02d}" / str(d) / "tweet.txt"
+    tweet_path = first_existing(
+        spotify_chart_dir("fr", d) / "tweet.txt",
+        legacy_spotify_chart_dir("fr", d) / "tweet.txt",
+    )
     if not tweet_path.exists():
         log("ERROR", "tweet.txt introuvable après filter.py")
         return None
@@ -276,7 +284,10 @@ def main():
     log("STEP", "Génération de l'image du chart")
     if len(processed) == 1:
         d = processed[0]
-        image_path = DATA_DIR / str(d.year) / f"{d.month:02d}" / str(d) / "chart_image.png"
+        image_path = first_existing(
+            spotify_chart_dir("fr", d) / "chart_image.png",
+            legacy_spotify_chart_dir("fr", d) / "chart_image.png",
+        )
         img_args = [sys.executable, str(GENERATE_IMAGE_SCRIPT), str(d)]
     else:
         image_path = GENERATE_IMAGE_SCRIPT.parent / "chart_image_multi.png"

@@ -9,15 +9,13 @@ import threading
 from datetime import date, timedelta
 from pathlib import Path
 
-from core.data_paths import archived_db_file, update_streams_dir
+from core.data_paths import first_existing_db_history, update_streams_dir
 
 STREAMS_DIR = Path(__file__).resolve().parents[2]
 REPO_ROOT = STREAMS_DIR.parents[2]
 DB_ROOT = REPO_ROOT / "db"
 HISTORY_PATH = (
-    DB_ROOT / "streams_history.csv"
-    if (DB_ROOT / "streams_history.csv").exists()
-    else archived_db_file("streams_history.csv")
+    first_existing_db_history("streams_history.csv")
 )
 DISCOGRAPHY_DIR = DB_ROOT / "discography"
 DB_ALBUMS_DIR = DISCOGRAPHY_DIR / "albums"

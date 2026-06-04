@@ -17,13 +17,20 @@ from __future__ import annotations
 import csv
 import json
 import re
+import sys
 from pathlib import Path
 from urllib.parse import urlparse
 
 ROOT         = Path(__file__).resolve().parents[4]
-HISTORY_ROOT = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "history"
 DB_DIR       = ROOT / "db"
 OUTPUT_PATH  = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "json" / "total_days.json"
+sys.path.insert(0, str(ROOT / "collectors" / "spotify"))
+from core.data_paths import (  # noqa: E402
+    LEGACY_WEBSITE_DATA_DIR,
+    WEB_EXPORT_DATA_DIR,
+    first_existing,
+    spotify_chart_snapshot_files,
+)
 
 _TRACK_ID_RE = re.compile(r"[A-Za-z0-9]{22}")
 
@@ -35,7 +42,7 @@ REGIONAL_CSVS = {
 }
 
 DISCO_SONGS_PATH = ROOT / "db" / "discography" / "songs.json"
-WEBSITE_SONGS_PATH = ROOT / "website" / "site" / "data" / "songs.json"
+WEBSITE_SONGS_PATH = first_existing(WEB_EXPORT_DATA_DIR / "songs.json", LEGACY_WEBSITE_DATA_DIR / "songs.json")
 
 
 def _track_id_from_url(value: str) -> str | None:
@@ -108,7 +115,7 @@ def main() -> None:
         print(f"[CSV] {region}: {len(best)} entries seeded")
 
     # ── 2. Fill gaps from worldwide history (other countries) ─────────────────
-    snapshot_files = sorted(HISTORY_ROOT.rglob("ts_worldwide_*.json"))
+    snapshot_files = spotify_chart_snapshot_files("worldwide", "ts_worldwide_*.json")
     print(f"[INFO] Scanning {len(snapshot_files)} worldwide snapshots for non-CSV countries…")
 
     history_counts: dict[str, int] = {}

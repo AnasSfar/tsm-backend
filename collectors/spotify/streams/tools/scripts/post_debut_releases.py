@@ -27,7 +27,6 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 ROOT = SCRIPT_DIR.parents[1]
 REPO_ROOT = SCRIPT_DIR.parents[4]
 DB_DIR = REPO_ROOT / "db"
-HISTORY_PATH = DB_DIR / "streams_history.csv"
 ALBUMS_DIR = DB_DIR / "discography" / "albums"
 SONGS_PATH = DB_DIR / "discography" / "songs.json"
 TWITTER_SESSION = ROOT.parent / "charts" / "worldwide" / "tools" / "json" / "twitter_session.json"
@@ -38,12 +37,14 @@ FRONTEND_THEMES_CSS = REPO_ROOT.parent / "tsm-frontend" / "frontend" / "src" / "
 
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT.parent))
-from core.data_paths import update_streams_dir  # noqa: E402
+from core.data_paths import first_existing_db_history, update_streams_dir  # noqa: E402
 from core.twitter import post_image_thread, post_with_image  # noqa: E402
 
 import generate_streams_image  # noqa: E402
 import generate_weekend_streams_image  # noqa: E402
 import spotlight  # noqa: E402
+
+HISTORY_PATH = first_existing_db_history("streams_history.csv")
 
 
 THEME_FALLBACKS = {

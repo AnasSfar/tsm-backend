@@ -15,10 +15,12 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 _SCRIPT_DIR   = Path(__file__).resolve().parent
 _REPO_ROOT    = _SCRIPT_DIR.parents[2]
-ROOT          = _REPO_ROOT / "website"
+sys.path.insert(0, str(_REPO_ROOT / "collectors" / "spotify"))
+from core.data_paths import LEGACY_WEBSITE_DATA_DIR, WEB_EXPORT_DATA_DIR, first_existing  # noqa: E402
+
 DISCO_DIR     = _REPO_ROOT / "db" / "discography"
 ALBUMS_DIR    = DISCO_DIR / "albums"
-SITE_SONGS    = ROOT / "site" / "data" / "songs.json"
+SITE_SONGS    = first_existing(WEB_EXPORT_DATA_DIR / "songs.json", LEGACY_WEBSITE_DATA_DIR / "songs.json")
 _DISCO_FILES  = ["songs.json"]
 
 HEADLESS = True

@@ -37,7 +37,7 @@ ROOT = Path(__file__).resolve().parents[4]
 CHARTS_ROOT = ROOT / "collectors" / "spotify" / "charts"
 COLLECTOR_ROOT = CHARTS_ROOT / "artists_global"
 sys.path.insert(0, str(ROOT / "collectors" / "spotify"))
-from core.data_paths import spotify_chart_dir
+from core.data_paths import WEB_EXPORT_DATA_DIR, spotify_chart_dir
 
 PERIOD_CONFIG = {
     "daily": {
@@ -61,7 +61,7 @@ CHART_URL = f"https://charts.spotify.com/charts/view/{CHART_ID}/latest"
 _TOKEN_ACQUIRE_URL = "https://charts.spotify.com/charts/view/regional-global-daily/latest"
 SESSION_FILE = CHARTS_ROOT / "global" / "tools" / "json" / "spotify_session.json"
 BEARER_CACHE = CHARTS_ROOT / "global" / "tools" / "json" / "bearer_cache.json"
-OUTPUT_PATH = ROOT / "website" / "site" / "data" / PERIOD_CONFIG["daily"]["latest_output"]
+OUTPUT_PATH = WEB_EXPORT_DATA_DIR / PERIOD_CONFIG["daily"]["latest_output"]
 
 TOKEN_TTL = 50 * 60
 DEFAULT_WAIT_SECONDS = 10
@@ -445,7 +445,7 @@ def main() -> int:
         _write_csv(history_csv, rows)
         print(f"[DONE] Written -> {history_csv}")
 
-    output_path = ROOT / "website" / "site" / "data" / config["latest_output"]
+    output_path = WEB_EXPORT_DATA_DIR / config["latest_output"]
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"[DONE] Written latest -> {output_path}")

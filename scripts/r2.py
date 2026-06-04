@@ -34,6 +34,7 @@ from core.data_paths import (  # noqa: E402
     LEGACY_WEBSITE_HISTORY_DIR,
     WEB_EXPORT_DATA_DIR,
     WEB_EXPORT_HISTORY_DIR,
+    first_existing_db_history,
     legacy_run_all_charts_dir,
     legacy_spotify_chart_dir,
     spotify_chart_dir,
@@ -44,7 +45,7 @@ SITE_DATA_DIR = WEB_EXPORT_DATA_DIR if WEB_EXPORT_DATA_DIR.exists() else LEGACY_
 APPLE_MUSIC_IMAGES_DIR = SITE_DATA_DIR / "apple-music-images"
 DATA_ROOT = ROOT / "data"
 DB_DIR = ROOT / "db"
-ARCHIVE_STREAMS_HISTORY = ROOT / "data" / "_archive" / "original" / "db" / "streams_history.csv"
+ARCHIVE_STREAMS_HISTORY = first_existing_db_history("streams_history.csv")
 WORLDWIDE_CHARTS_HISTORY_DIR = (
     ROOT
     / "collectors"

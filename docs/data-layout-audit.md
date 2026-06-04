@@ -14,19 +14,19 @@ Generated for `C:\Users\sfara\Documents\GitHub\tsm-backend`.
 ## File Counts
 
 - `db`: 82 file(s), 70 tracked
-- `data`: 15209 file(s), 388 tracked
-- `snapshots`: 16 file(s), 4 tracked
-- `runtime`: 0 file(s), 0 tracked
+- `data`: 15193 file(s), 388 tracked
+- `snapshots`: 569 file(s), 7 tracked
+- `runtime`: 546 file(s), 0 tracked
 - `legacy_website`: 1579 file(s), 40 tracked
-- `collectors`: 53518 file(s), 350 tracked
+- `collectors`: 53913 file(s), 350 tracked
 - `scripts`: 2789 file(s), 2759 tracked
 
 ## Risky Tracked Files
 
-- Runtime/cache/log-like tracked files: 3206
+- Runtime/cache/log-like tracked files: 3209
 - Backup files tracked: 24
 - Legacy website export files tracked: 19
-- Duplicate checksum groups: 21
+- Duplicate checksum groups: 542
 
 ## Recommended Actions
 

@@ -46,13 +46,9 @@ DB_DIR          = REPO_ROOT / "db"
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT.parent))   # collectors/spotify/ for core.*
 
-from core.data_paths import archived_db_file, update_streams_dir
+from core.data_paths import first_existing_db_history, update_streams_dir
 
-HISTORY_PATH    = (
-    DB_DIR / "streams_history.csv"
-    if (DB_DIR / "streams_history.csv").exists()
-    else archived_db_file("streams_history.csv")
-)
+HISTORY_PATH    = first_existing_db_history("streams_history.csv")
 ALBUMS_DIR      = DB_DIR / "discography" / "albums"
 COVERS_PATH     = DB_DIR / "discography" / "covers.json"
 HEADERS_DIR     = DB_DIR / "discography" / "headers"

@@ -36,9 +36,10 @@ _REPO_ROOT = _SCRIPT_DIR.parents[1]
 
 sys.path.insert(0, str((_REPO_ROOT / "collectors" / "spotify").resolve()))
 from core.logger import Logger  # noqa: E402
+from core.data_paths import WEB_EXPORT_DATA_DIR, billboard_snapshot_dir  # noqa: E402
 
 _DB_DIR = _REPO_ROOT / "db"
-_SITE_DATA_DIR = _REPO_ROOT / "website" / "site" / "data"
+_SITE_DATA_DIR = WEB_EXPORT_DATA_DIR
 
 SWIFT_TOP_SONGS_HISTORY_CSV = _DB_DIR / "swift_top_songs_history.csv"
 SWIFT_TOP_ALBUMS_HISTORY_CSV = _DB_DIR / "swift_top_albums_history.csv"
@@ -805,7 +806,7 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool, skip_r
                 scale=2,
             )
             logger.log(f"✔ PNG  → {out_path.name}")
-            history_dir = _SCRIPT_DIR / "history" / chart_date_str
+            history_dir = billboard_snapshot_dir(chart_date_str)
             history_dir.mkdir(parents=True, exist_ok=True)
             shutil.copy2(out_path, history_dir / f"{CHART_SLUG}.png")
         except Exception as exc:

@@ -32,10 +32,11 @@ except ImportError:
 ROOT             = Path(__file__).parent
 _TOOLS           = Path(__file__).parent.parent          # = global/tools/
 sys.path.insert(0, str(Path(__file__).parents[4]))
-from core.data_paths import first_existing, legacy_spotify_chart_dir, spotify_chart_dir
+from core.data_paths import first_existing, first_existing_db_history, legacy_spotify_chart_dir, spotify_chart_dir
 
 _DATA            = _TOOLS.parent / "history"             # legacy global/history
 TS_HISTORY_PATH  = _TOOLS / "json" / "ts_history.json"
+ARCHIVE_CSV      = first_existing_db_history("charts_history_global.csv")
 DISCOGRAPHY_ROOT = Path(__file__).parents[6] / "db" / "discography"
 COVERS_PATH      = DISCOGRAPHY_ROOT / "covers.json"
 HEADERS_DIR      = _TOOLS / "headers"
@@ -287,11 +288,47 @@ def ref_streams_from_chart(track: str, ref_date: str):
     return None
 
 
+_archive_rows_cache: dict[str, list[dict]] | None = None
+
+
+def _archive_rows_by_date() -> dict[str, list[dict]]:
+    global _archive_rows_cache
+    if _archive_rows_cache is not None:
+        return _archive_rows_cache
+
+    rows_by_date: dict[str, list[dict]] = {}
+    if ARCHIVE_CSV.exists():
+        try:
+            with ARCHIVE_CSV.open(newline="", encoding="utf-8-sig") as f:
+                for row in csv.DictReader(f):
+                    chart_date = (row.get("date") or "").strip()
+                    if chart_date:
+                        rows_by_date.setdefault(chart_date, []).append(row)
+        except Exception:
+            rows_by_date = {}
+    _archive_rows_cache = rows_by_date
+    return rows_by_date
+
+
+def ref_streams_from_archive(track: str, ref_date: str):
+    """Read streams from db/charts_history_global.csv when snapshots are missing."""
+    for row in _archive_rows_by_date().get(ref_date, []):
+        name = str(row.get("song_name") or row.get("track_name") or "")
+        if name != track:
+            continue
+        streams = nan_to_none(row.get("streams"))
+        try:
+            return int(float(streams)) if streams not in (None, "") else None
+        except (TypeError, ValueError):
+            return None
+    return None
+
+
 def ref_streams(track_hist: dict, track: str, ref_date: str):
     streams = (track_hist.get(ref_date) or {}).get("streams")
     if streams:
         return streams
-    return ref_streams_from_chart(track, ref_date)
+    return ref_streams_from_chart(track, ref_date) or ref_streams_from_archive(track, ref_date)
 
 
 def rank_change(rank, previous_rank, total_days=None):
@@ -475,25 +512,30 @@ def get_out_songs(chart_date: str, current_rows: list[dict]) -> list[dict]:
     date_obj  = datetime.strptime(chart_date, "%Y-%m-%d").date()
     yesterday = str(date_obj - timedelta(days=1))
     csv_path  = date_dir_for(yesterday) / "ts_all_songs.csv"
-    if not csv_path.exists():
+    if not csv_path.exists() and yesterday not in _archive_rows_by_date():
         return []
     try:
         current_names = {str(r.get("song_name", "") or r.get("track_name", "")).lower() for r in current_rows}
         out_rows = []
-        with open(csv_path, newline="", encoding="utf-8-sig") as f:
-            for row in csv.DictReader(f):
-                name = str(row.get("song_name", "") or row.get("track_name", ""))
-                row["track_name"] = name
-                if name.lower() not in current_names:
-                    try:
-                        row["rank"] = int(float(row["rank"])) if row.get("rank") else None
-                    except (ValueError, TypeError):
-                        row["rank"] = None
-                    try:
-                        row["streams"] = int(float(row["streams"])) if row.get("streams") else None
-                    except (ValueError, TypeError):
-                        row["streams"] = None
-                    out_rows.append(row)
+        source_rows: list[dict]
+        if csv_path.exists():
+            with open(csv_path, newline="", encoding="utf-8-sig") as f:
+                source_rows = list(csv.DictReader(f))
+        else:
+            source_rows = list(_archive_rows_by_date().get(yesterday, []))
+        for row in source_rows:
+            name = str(row.get("song_name", "") or row.get("track_name", ""))
+            row["track_name"] = name
+            if name.lower() not in current_names:
+                try:
+                    row["rank"] = int(float(row["rank"])) if row.get("rank") else None
+                except (ValueError, TypeError):
+                    row["rank"] = None
+                try:
+                    row["streams"] = int(float(row["streams"])) if row.get("streams") else None
+                except (ValueError, TypeError):
+                    row["streams"] = None
+                out_rows.append(row)
         return out_rows
     except Exception:
         return []

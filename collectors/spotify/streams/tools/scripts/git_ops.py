@@ -12,10 +12,9 @@ def git_commit_and_push(repo_root: Path, message: str | None = None) -> None:
         subprocess.run(
             [
                 "git", "add",
-                "collectors/spotify/streams/history/",
+                "snapshots/spotify_streams/",
+                "runtime/exports/web/",
                 "db/",
-                "website/site/data/",
-                "website/site/history/",
             ],
             cwd=str(repo_root),
             check=True,

@@ -14,15 +14,15 @@
       "tracked": 70
     },
     "data": {
-      "files": 15209,
+      "files": 15193,
       "tracked": 388
     },
     "snapshots": {
-      "files": 16,
-      "tracked": 4
+      "files": 569,
+      "tracked": 7
     },
     "runtime": {
-      "files": 0,
+      "files": 546,
       "tracked": 0
     },
     "legacy_website": {
@@ -30,7 +30,7 @@
       "tracked": 40
     },
     "collectors": {
-      "files": 53518,
+      "files": 53913,
       "tracked": 350
     },
     "scripts": {
@@ -240,7 +240,7 @@
     "data/2026/03/2026-03-02/run_all_charts/spotify/fr/posted.lock",
     "data/2026/03/2026-03-02/run_all_charts/spotify/global/posted.lock"
   ],
-  "tracked_runtime_noise_total": 3206,
+  "tracked_runtime_noise_total": 3209,
   "tracked_backups": [
     "db/charts_history_uk.csv.bak.20260407-054202",
     "db/charts_history_us.csv.bak.20260404-234722",
@@ -356,6 +356,14 @@
       "website/site/data/headers/the tortured poets department.png"
     ],
     [
+      "website/site/data/charts_artists_global.json",
+      "snapshots/spotify_charts/2026/06/2026-06-03/artists_global/artist_global_daily.json"
+    ],
+    [
+      "website/site/data/charts_worldwide.json",
+      "snapshots/spotify_charts/2026/06/2026-06-03/worldwide/ts_worldwide_2026-06-03.json"
+    ],
+    [
       "website/site/data/swift_top_100_index.json",
       "website/site/data/swift_top_100_not_combined_index.json",
       "website/site/data/swift_top_albums_index.json",
@@ -374,13 +382,319 @@
       "website/site/data/swift_top_eras_2026-05-27.json"
     ],
     [
-      "snapshots/apple_music_charts/.gitkeep",
-      "snapshots/spotify_charts/.gitkeep",
-      "snapshots/spotify_streams/.gitkeep",
-      "snapshots/tayboard/.gitkeep"
+      "website/site/history/2025-01-01.json",
+      "snapshots/spotify_streams/2025/01/2025-01-01/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-02.json",
+      "snapshots/spotify_streams/2025/01/2025-01-02/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-03.json",
+      "snapshots/spotify_streams/2025/01/2025-01-03/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-04.json",
+      "snapshots/spotify_streams/2025/01/2025-01-04/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-05.json",
+      "snapshots/spotify_streams/2025/01/2025-01-05/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-06.json",
+      "snapshots/spotify_streams/2025/01/2025-01-06/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-07.json",
+      "snapshots/spotify_streams/2025/01/2025-01-07/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-08.json",
+      "snapshots/spotify_streams/2025/01/2025-01-08/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-09.json",
+      "snapshots/spotify_streams/2025/01/2025-01-09/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-10.json",
+      "snapshots/spotify_streams/2025/01/2025-01-10/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-11.json",
+      "snapshots/spotify_streams/2025/01/2025-01-11/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-12.json",
+      "snapshots/spotify_streams/2025/01/2025-01-12/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-13.json",
+      "snapshots/spotify_streams/2025/01/2025-01-13/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-14.json",
+      "snapshots/spotify_streams/2025/01/2025-01-14/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-15.json",
+      "snapshots/spotify_streams/2025/01/2025-01-15/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-16.json",
+      "snapshots/spotify_streams/2025/01/2025-01-16/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-17.json",
+      "snapshots/spotify_streams/2025/01/2025-01-17/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-18.json",
+      "snapshots/spotify_streams/2025/01/2025-01-18/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-19.json",
+      "snapshots/spotify_streams/2025/01/2025-01-19/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-20.json",
+      "snapshots/spotify_streams/2025/01/2025-01-20/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-21.json",
+      "snapshots/spotify_streams/2025/01/2025-01-21/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-22.json",
+      "snapshots/spotify_streams/2025/01/2025-01-22/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-23.json",
+      "snapshots/spotify_streams/2025/01/2025-01-23/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-24.json",
+      "snapshots/spotify_streams/2025/01/2025-01-24/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-25.json",
+      "snapshots/spotify_streams/2025/01/2025-01-25/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-26.json",
+      "snapshots/spotify_streams/2025/01/2025-01-26/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-27.json",
+      "snapshots/spotify_streams/2025/01/2025-01-27/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-28.json",
+      "snapshots/spotify_streams/2025/01/2025-01-28/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-29.json",
+      "snapshots/spotify_streams/2025/01/2025-01-29/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-30.json",
+      "snapshots/spotify_streams/2025/01/2025-01-30/site_history.json"
+    ],
+    [
+      "website/site/history/2025-01-31.json",
+      "snapshots/spotify_streams/2025/01/2025-01-31/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-01.json",
+      "snapshots/spotify_streams/2025/02/2025-02-01/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-02.json",
+      "snapshots/spotify_streams/2025/02/2025-02-02/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-03.json",
+      "snapshots/spotify_streams/2025/02/2025-02-03/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-04.json",
+      "snapshots/spotify_streams/2025/02/2025-02-04/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-05.json",
+      "snapshots/spotify_streams/2025/02/2025-02-05/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-06.json",
+      "snapshots/spotify_streams/2025/02/2025-02-06/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-07.json",
+      "snapshots/spotify_streams/2025/02/2025-02-07/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-08.json",
+      "snapshots/spotify_streams/2025/02/2025-02-08/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-09.json",
+      "snapshots/spotify_streams/2025/02/2025-02-09/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-10.json",
+      "snapshots/spotify_streams/2025/02/2025-02-10/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-11.json",
+      "snapshots/spotify_streams/2025/02/2025-02-11/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-12.json",
+      "snapshots/spotify_streams/2025/02/2025-02-12/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-13.json",
+      "snapshots/spotify_streams/2025/02/2025-02-13/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-14.json",
+      "snapshots/spotify_streams/2025/02/2025-02-14/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-15.json",
+      "snapshots/spotify_streams/2025/02/2025-02-15/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-16.json",
+      "snapshots/spotify_streams/2025/02/2025-02-16/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-17.json",
+      "snapshots/spotify_streams/2025/02/2025-02-17/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-18.json",
+      "snapshots/spotify_streams/2025/02/2025-02-18/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-19.json",
+      "snapshots/spotify_streams/2025/02/2025-02-19/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-20.json",
+      "snapshots/spotify_streams/2025/02/2025-02-20/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-21.json",
+      "snapshots/spotify_streams/2025/02/2025-02-21/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-22.json",
+      "snapshots/spotify_streams/2025/02/2025-02-22/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-23.json",
+      "snapshots/spotify_streams/2025/02/2025-02-23/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-24.json",
+      "snapshots/spotify_streams/2025/02/2025-02-24/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-25.json",
+      "snapshots/spotify_streams/2025/02/2025-02-25/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-26.json",
+      "snapshots/spotify_streams/2025/02/2025-02-26/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-27.json",
+      "snapshots/spotify_streams/2025/02/2025-02-27/site_history.json"
+    ],
+    [
+      "website/site/history/2025-02-28.json",
+      "snapshots/spotify_streams/2025/02/2025-02-28/site_history.json"
+    ],
+    [
+      "website/site/history/2025-03-01.json",
+      "snapshots/spotify_streams/2025/03/2025-03-01/site_history.json"
+    ],
+    [
+      "website/site/history/2025-03-02.json",
+      "snapshots/spotify_streams/2025/03/2025-03-02/site_history.json"
+    ],
+    [
+      "website/site/history/2025-03-03.json",
+      "snapshots/spotify_streams/2025/03/2025-03-03/site_history.json"
+    ],
+    [
+      "website/site/history/2025-03-04.json",
+      "snapshots/spotify_streams/2025/03/2025-03-04/site_history.json"
+    ],
+    [
+      "website/site/history/2025-03-05.json",
+      "snapshots/spotify_streams/2025/03/2025-03-05/site_history.json"
+    ],
+    [
+      "website/site/history/2025-03-06.json",
+      "snapshots/spotify_streams/2025/03/2025-03-06/site_history.json"
+    ],
+    [
+      "website/site/history/2025-03-07.json",
+      "snapshots/spotify_streams/2025/03/2025-03-07/site_history.json"
+    ],
+    [
+      "website/site/history/2025-03-08.json",
+      "snapshots/spotify_streams/2025/03/2025-03-08/site_history.json"
+    ],
+    [
+      "website/site/history/2025-03-09.json",
+      "snapshots/spotify_streams/2025/03/2025-03-09/site_history.json"
+    ],
+    [
+      "website/site/history/2025-03-10.json",
+      "snapshots/spotify_streams/2025/03/2025-03-10/site_history.json"
+    ],
+    [
+      "website/site/history/2025-03-11.json",
+      "snapshots/spotify_streams/2025/03/2025-03-11/site_history.json"
+    ],
+    [
+      "website/site/history/2025-03-12.json",
+      "snapshots/spotify_streams/2025/03/2025-03-12/site_history.json"
+    ],
+    [
+      "website/site/history/2025-03-13.json",
+      "snapshots/spotify_streams/2025/03/2025-03-13/site_history.json"
+    ],
+    [
+      "website/site/history/2025-03-14.json",
+      "snapshots/spotify_streams/2025/03/2025-03-14/site_history.json"
+    ],
+    [
+      "website/site/history/2025-03-15.json",
+      "snapshots/spotify_streams/2025/03/2025-03-15/site_history.json"
+    ],
+    [
+      "website/site/history/2025-03-16.json",
+      "snapshots/spotify_streams/2025/03/2025-03-16/site_history.json"
+    ],
+    [
+      "website/site/history/2025-03-17.json",
+      "snapshots/spotify_streams/2025/03/2025-03-17/site_history.json"
+    ],
+    [
+      "website/site/history/2025-03-18.json",
+      "snapshots/spotify_streams/2025/03/2025-03-18/site_history.json"
+    ],
+    [
+      "website/site/history/2025-03-19.json",
+      "snapshots/spotify_streams/2025/03/2025-03-19/site_history.json"
     ]
   ],
-  "duplicate_sha256_groups_total": 21,
+  "duplicate_sha256_groups_total": 542,
   "recommended_actions": [
     {
       "family": "db/*.bak",

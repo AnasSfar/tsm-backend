@@ -23,6 +23,7 @@ from core.data_paths import (  # noqa: E402
     WEB_EXPORT_HISTORY_DIR,
     WEB_EXPORT_ROOT,
     first_existing,
+    first_existing_db_history,
     legacy_run_all_charts_dir,
     legacy_spotify_chart_dir,
     spotify_chart_dir,
@@ -32,9 +33,7 @@ from core.data_paths import (  # noqa: E402
 ROOT = WEB_EXPORT_ROOT
 
 HISTORY_CSV_PATH = (
-    _DB_ROOT / "streams_history.csv"
-    if (_DB_ROOT / "streams_history.csv").exists()
-    else _ARCHIVE_DB_ROOT / "streams_history.csv"
+    first_existing_db_history("streams_history.csv")
 )
 
 DISCOGRAPHY_DIR  = _DB_ROOT / "discography"
@@ -51,16 +50,12 @@ ALBUMS_JSON_PATH = SITE_DATA_DIR / "albums.json"
 LAST_RUN_STATE_SRC   = first_existing(ROOT / "data" / "last_run_state.json", LEGACY_WEBSITE_RUNTIME_DIR / "last_run_state.json")
 NOT_FOUND_STREAK_SRC = first_existing(ROOT / "data" / "not_found_streak.json", LEGACY_WEBSITE_RUNTIME_DIR / "not_found_streak.json")
 BILLBOARD_CSV_PATH   = (
-    _DB_ROOT / "billboard_history.csv"
-    if (_DB_ROOT / "billboard_history.csv").exists()
-    else _ARCHIVE_DB_ROOT / "billboard_history.csv"
+    first_existing_db_history("billboard_history.csv")
 )
 BILLBOARD_JSON_PATH  = SITE_DATA_DIR / "billboard.json"
 
 SWIFT_TOP_100_CSV_PATH  = (
-    _DB_ROOT / "swift_top_100_history.csv"
-    if (_DB_ROOT / "swift_top_100_history.csv").exists()
-    else _ARCHIVE_DB_ROOT / "swift_top_100_history.csv"
+    first_existing_db_history("swift_top_100_history.csv")
 )
 SWIFT_TOP_100_JSON_PATH = SITE_DATA_DIR / "swift_top_100.json"
 
@@ -1013,7 +1008,7 @@ def export_billboard_from_csv() -> None:
 
 
 def export_swift_top_100_from_csv(*, songs_by_id: dict[str, dict] | None = None) -> None:
-    """Read latest week from swift_top_100_history.csv and write website/site/data/swift_top_100.json.
+    """Read latest week from swift_top_100_history.csv and write the web export swift_top_100.json.
 
     The collector script can also write this JSON directly; this exporter exists so
     running scripts/export_for_web.py always refreshes the site data.

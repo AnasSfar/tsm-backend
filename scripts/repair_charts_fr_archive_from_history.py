@@ -12,6 +12,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 # Allow importing collectors/spotify/core utilities
 sys.path.insert(0, str(REPO_ROOT / "collectors" / "spotify"))
 
+from core.data_paths import spotify_chart_snapshot_candidates  # noqa: E402
 from core.fmt import fmt_delta  # noqa: E402
 
 ARCHIVE_COLUMNS = [
@@ -45,8 +46,14 @@ def _history_dir_for_date(history_root: Path, chart_date: str) -> Path:
 
 def _load_fr_history_rows(history_root: Path, chart_date: str) -> list[dict]:
     day_dir = _history_dir_for_date(history_root, chart_date)
-    json_path = day_dir / f"ts_chart_{chart_date}.json"
-    csv_path = day_dir / "ts_all_songs.csv"
+    json_path = next(
+        (p for p in spotify_chart_snapshot_candidates("fr", chart_date, f"ts_chart_{chart_date}.json") if p.exists()),
+        day_dir / f"ts_chart_{chart_date}.json",
+    )
+    csv_path = next(
+        (p for p in spotify_chart_snapshot_candidates("fr", chart_date, "ts_all_songs.csv") if p.exists()),
+        day_dir / "ts_all_songs.csv",
+    )
 
     if json_path.exists():
         payload = json.loads(json_path.read_text(encoding="utf-8-sig"))
@@ -57,7 +64,14 @@ def _load_fr_history_rows(history_root: Path, chart_date: str) -> list[dict]:
         with csv_path.open("r", encoding="utf-8", newline="") as f:
             rows = list(csv.DictReader(f))
     else:
-        raise FileNotFoundError(f"No FR history file found for {chart_date} in {day_dir}")
+        searched = [
+            *spotify_chart_snapshot_candidates("fr", chart_date, f"ts_chart_{chart_date}.json"),
+            *spotify_chart_snapshot_candidates("fr", chart_date, "ts_all_songs.csv"),
+        ]
+        raise FileNotFoundError(
+            f"No FR history file found for {chart_date}. Searched: "
+            + ", ".join(str(p) for p in searched)
+        )
 
     cleaned: list[dict] = []
     for row in rows:

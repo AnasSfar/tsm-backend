@@ -7,6 +7,7 @@ import io
 import json
 import os
 import re
+import sys
 import unicodedata
 from collections import defaultdict
 from pathlib import Path
@@ -18,13 +19,15 @@ from dotenv import load_dotenv
 load_dotenv()
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "collectors" / "spotify"))
+from core.data_paths import LEGACY_WEBSITE_DATA_DIR, WEB_EXPORT_DATA_DIR, first_existing  # noqa: E402
 
 # ===== CONFIG =====
 CSV_PATH = ROOT / "db" / "charts_history_global.csv"
 
 R2_PREFIX = "chart-history-global-by-track"
 
-WEBSITE_SONGS_PATH = ROOT / "website" / "site" / "data" / "songs.json"
+WEBSITE_SONGS_PATH = first_existing(WEB_EXPORT_DATA_DIR / "songs.json", LEGACY_WEBSITE_DATA_DIR / "songs.json")
 DISCO_SONGS_PATH = ROOT / "db" / "discography" / "songs.json"
 DISCO_ALBUMS_DIR = ROOT / "db" / "discography" / "albums"
 MANUAL_MAP_PATH = ROOT / "scripts" / "chart_title_to_track_id.json"

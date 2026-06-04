@@ -6,12 +6,12 @@ import re
 from datetime import date
 from pathlib import Path
 
-from core.data_paths import update_streams_dir
+from core.data_paths import RUNTIME_ROOT, update_streams_dir
 
 STREAMS_DIR = Path(__file__).resolve().parents[2]
 REPO_ROOT = STREAMS_DIR.parents[2]
-ROOT = REPO_ROOT / "website"
-DATA_DIR = ROOT / "data"
+ROOT = RUNTIME_ROOT
+DATA_DIR = ROOT / "spotify_streams"
 DB_ROOT = REPO_ROOT / "db"
 DISCOGRAPHY_DIR = DB_ROOT / "discography"
 DB_ALBUMS_DIR = DISCOGRAPHY_DIR / "albums"

@@ -10,8 +10,7 @@ from playwright.sync_api import sync_playwright
 
 _SCRIPT_DIR = Path(__file__).resolve().parent
 _REPO_ROOT  = _SCRIPT_DIR.parents[2]
-ROOT        = _REPO_ROOT / "website"
-COVERS_PATH = ROOT / "discography" / "albums" / "covers.json"
+COVERS_PATH = _REPO_ROOT / "db" / "discography" / "covers.json"
 
 HEADLESS = True
 

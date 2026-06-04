@@ -20,8 +20,8 @@ What gets recomputed automatically:
         - daily_streams value for (track, day)
         - streams for (track, day)             derived as prev_day_total + new_daily
         - daily_streams for (track, day+1)     recomputed as next_day_total - new_total (if day+1 exists)
-    2. website/site/history/{day}.json and all other date JSONs (full export)
-    3. website/site/data/songs.json, albums.json, etc. (full export output)
+    2. runtime/exports/web/site/history/{day}.json and all other date JSONs (full export)
+    3. runtime/exports/web/site/data/songs.json, albums.json, etc. (full export output)
     4. R2: history-by-track/{track_id}.json — targeted single-track upload
             (enabled by default; set UPLOAD_TO_R2=0 to disable, requires boto3/credentials)
 
@@ -54,14 +54,16 @@ _REPO_ROOT  = _SCRIPT_DIR.parents[2]
 
 sys.path.insert(0, str(_SCRIPT_DIR / "tools" / "scripts"))
 sys.path.insert(0, str(_SCRIPT_DIR / "extras"))
+sys.path.insert(0, str(_SCRIPT_DIR.parent))
 
 import export_for_web                            # noqa: E402  (collectors/spotify/streams/extras/)
 from git_ops import git_commit_and_push          # noqa: E402  (collectors/spotify/streams/tools/scripts/)
+from core.data_paths import WEB_EXPORT_HISTORY_DIR, first_existing, first_existing_db_history  # noqa: E402
 
-HISTORY_PATH  = _REPO_ROOT / "db" / "streams_history.csv"
+HISTORY_PATH  = first_existing_db_history("streams_history.csv")
 ALBUMS_DIR    = _REPO_ROOT / "db" / "discography" / "albums"
 SONGS_JSON    = _REPO_ROOT / "db" / "discography" / "songs.json"
-HISTORY_DIR   = _REPO_ROOT / "website" / "site" / "history"
+LEGACY_HISTORY_DIR = _REPO_ROOT / "website" / "site" / "history"
 
 # ---------------------------------------------------------------------------
 # Track discovery
@@ -239,7 +241,7 @@ def _r2_client_and_bucket():
 
 
 def _r2_upload_history_dates(dates: list[str]) -> None:
-    """Upload website/site/history/{date}.json to R2 history/{date}.json."""
+    """Upload generated history/{date}.json files to R2."""
     s3, bucket = _r2_client_and_bucket()
     if not s3 or not bucket:
         return
@@ -248,7 +250,10 @@ def _r2_upload_history_dates(dates: list[str]) -> None:
     for d in dates:
         if not d:
             continue
-        local_path = HISTORY_DIR / f"{d}.json"
+        local_path = first_existing(
+            WEB_EXPORT_HISTORY_DIR / f"{d}.json",
+            LEGACY_HISTORY_DIR / f"{d}.json",
+        )
         if not local_path.exists():
             continue
         raw = local_path.read_bytes()
@@ -277,7 +282,8 @@ def _r2_upload_track(track_id: str) -> None:
     date_re = re.compile(r"(\d{4}-\d{2}-\d{2})")
     points: list[dict] = []
 
-    for path in sorted(HISTORY_DIR.glob("*.json")):
+    history_dir = WEB_EXPORT_HISTORY_DIR if WEB_EXPORT_HISTORY_DIR.exists() else LEGACY_HISTORY_DIR
+    for path in sorted(history_dir.glob("*.json")):
         if path.name == "index.json":
             continue
         m = date_re.search(path.stem)
