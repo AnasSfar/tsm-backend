@@ -27,7 +27,19 @@
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:all_too_well"
         },
         {
           "title": "Babe (Taylor's Version) (From The Vault)",
@@ -48,7 +60,19 @@
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:babe"
         },
         {
           "title": "Better Man (Taylor's Version) (From The Vault)",
@@ -69,7 +93,44 @@
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "female vocalists",
+              "country",
+              "pop",
+              "singer-songwriter",
+              "country pop",
+              "From the Vault",
+              "Ballad",
+              "rock",
+              "folk pop",
+              "soft rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Better Man (Taylor's Version) (From The Vault)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:better_man"
         },
         {
           "title": "Forever Winter (Taylor's Version) (From The Vault)",
@@ -90,7 +151,19 @@
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:forever_winter"
         },
         {
           "title": "I Bet You Think About Me (feat. Chris Stapleton) (Taylor's Version) (From The Vault)",
@@ -114,7 +187,19 @@
           "version_tag": "featured__vault__taylors_version__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_bet_you_think_about_me"
         },
         {
           "title": "Message In A Bottle (Taylor's Version) (From The Vault)",
@@ -135,7 +220,44 @@
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "dance-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "dance-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance-pop",
+              "bubblegum pop",
+              "singer-songwriter",
+              "dance",
+              "electronic",
+              "pop perfection",
+              "From the Vault",
+              "synthpop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Message In A Bottle (Taylor's Version) (From The Vault)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:message_in_a_bottle"
         },
         {
           "title": "Nothing New (feat. Phoebe Bridgers) (Taylor's Version) (From The Vault)",
@@ -159,7 +281,19 @@
           "version_tag": "featured__vault__taylors_version__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:nothing_new"
         },
         {
           "title": "Run (feat. Ed Sheeran) (Taylor's Version) (From The Vault)",
@@ -183,7 +317,19 @@
           "version_tag": "featured__vault__taylors_version__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:run"
         },
         {
           "title": "The Very First Night (Taylor's Version) (From The Vault)",
@@ -204,7 +350,44 @@
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [
+            "pop",
+            "singer-songwriter",
+            "folk pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "singer-songwriter": 2.0,
+            "folk pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "folk pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "folk pop",
+              "pop rock",
+              "country pop",
+              "From the Vault",
+              "rock",
+              "Sentimental",
+              "dance-pop",
+              "guitar"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Very First Night (Taylor's Version) (From The Vault)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_very_first_night"
         },
         {
           "title": "State Of Grace (Acoustic Version) (Taylor's Version)",
@@ -225,7 +408,19 @@
           "version_tag": "acoustic__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:state_of_grace_acoustic_version"
         }
       ]
     },
@@ -253,7 +448,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:state_of_grace"
         },
         {
           "title": "Red (Taylor's Version)",
@@ -274,7 +481,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:red"
         },
         {
           "title": "Treacherous (Taylor's Version)",
@@ -295,7 +514,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:treacherous"
         },
         {
           "title": "I Knew You Were Trouble (Taylor's Version)",
@@ -316,7 +547,44 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [
+            "pop",
+            "dance-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "dance-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dance-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "dance-pop",
+              "electropop",
+              "pop rock",
+              "dubstep",
+              "teen pop",
+              "melodic dubstep",
+              "rock",
+              "heartland rock",
+              "contemporary folk"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "I Knew You Were Trouble (Taylor's Version)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_knew_you_were_trouble"
         },
         {
           "title": "All Too Well (Taylor's Version)",
@@ -337,7 +605,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:all_too_well"
         },
         {
           "title": "22 (Taylor's Version)",
@@ -358,7 +638,44 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [
+            "pop",
+            "country",
+            "dance-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "country": 2.0,
+            "dance-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "dance-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "taylor swift",
+              "love at first listen",
+              "female vocalists",
+              "dance-pop",
+              "catchy",
+              "shameless fun",
+              "bubblegum pop",
+              "country pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "22"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:22"
         },
         {
           "title": "I Almost Do (Taylor's Version)",
@@ -379,7 +696,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_almost_do"
         },
         {
           "title": "We Are Never Ever Getting Back Together (Taylor's Version)",
@@ -400,7 +729,44 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [
+            "pop",
+            "country",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "country": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "country pop",
+              "taylor swift",
+              "female vocalists",
+              "red",
+              "2012",
+              "best of 2012",
+              "Love",
+              "catchy"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "We Are Never Ever Getting Back Together"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:we_are_never_ever_getting_back_together"
         },
         {
           "title": "Stay Stay Stay (Taylor's Version)",
@@ -421,7 +787,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:stay_stay_stay"
         },
         {
           "title": "The Last Time (feat. Gary Lightbody of Snow Patrol) (Taylor's Version)",
@@ -445,7 +823,19 @@
           "version_tag": "featured__taylors_version__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_last_time"
         },
         {
           "title": "Holy Ground (Taylor's Version)",
@@ -466,7 +856,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:holy_ground"
         },
         {
           "title": "Sad Beautiful Tragic (Taylor's Version)",
@@ -487,7 +889,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:sad_beautiful_tragic"
         },
         {
           "title": "The Lucky One (Taylor's Version)",
@@ -508,7 +922,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_lucky_one"
         },
         {
           "title": "Everything Has Changed (feat. Ed Sheeran) (Taylor's Version)",
@@ -532,7 +958,19 @@
           "version_tag": "featured__taylors_version__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:everything_has_changed"
         },
         {
           "title": "Starlight (Taylor's Version)",
@@ -553,7 +991,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:starlight"
         },
         {
           "title": "Begin Again (Taylor's Version)",
@@ -574,7 +1024,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:begin_again"
         },
         {
           "title": "Girl At Home (Taylor's Version)",
@@ -595,7 +1057,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:girl_at_home"
         },
         {
           "title": "Ronan (Taylor's Version)",
@@ -616,7 +1090,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:ronan"
         },
         {
           "title": "Come Back...Be Here (Taylor's Version)",
@@ -637,7 +1123,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:come_back_be_here"
         },
         {
           "title": "The Moment I Knew (Taylor's Version)",
@@ -658,7 +1156,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_moment_i_knew"
         }
       ]
     },
@@ -690,7 +1200,19 @@
           "historical_track_ids": [
             "0gPmM1WtVRg3uENW3o8bfx"
           ],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:eyes_open"
         },
         {
           "title": "Safe & Sound (feat. Joy Williams and John Paul White) (Taylor's Version)",
@@ -719,7 +1241,19 @@
           "historical_track_ids": [
             "6Q237Ts37YGYRIi5Vy5lVX"
           ],
-          "release_date": "2021-11-12T00:00:00Z"
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:safe_sound"
         }
       ]
     }

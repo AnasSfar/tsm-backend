@@ -46,7 +46,7 @@ DB_DIR          = REPO_ROOT / "db"
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT.parent))   # collectors/spotify/ for core.*
 
-from core.data_paths import archived_db_file
+from core.data_paths import archived_db_file, update_streams_dir
 
 HISTORY_PATH    = (
     DB_DIR / "streams_history.csv"
@@ -1357,6 +1357,43 @@ def build_html(
 
 # ── Main generate function ─────────────────────────────────────────────────────
 
+def album_update_slug(album_name: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "_", album_name.lower()).strip("_")
+
+
+def album_update_out_dir(target_date: str) -> Path:
+    return update_streams_dir(target_date)
+
+
+def album_update_lock_path(album_name: str, target_date: str) -> Path:
+    return album_update_out_dir(target_date) / f"{album_update_slug(album_name)}_update.lock"
+
+
+def legacy_album_update_lock_path(album_name: str, target_date: str) -> Path:
+    return (
+        ROOT
+        / "history"
+        / target_date[:4]
+        / target_date[5:7]
+        / target_date
+        / f"{album_update_slug(album_name)}_update.lock"
+    )
+
+
+def existing_album_update_lock_path(album_name: str, target_date: str) -> Path | None:
+    for path in (
+        album_update_lock_path(album_name, target_date),
+        legacy_album_update_lock_path(album_name, target_date),
+    ):
+        if path.exists():
+            return path
+    return None
+
+
+def album_update_already_posted(album_name: str, target_date: str) -> bool:
+    return existing_album_update_lock_path(album_name, target_date) is not None
+
+
 def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_daily: bool = False) -> Path:
     if target_date is None:
         target_date = get_latest_date()
@@ -1424,8 +1461,8 @@ def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_
         handle_icon_uri=handle_icon_uri,
     )
 
-    album_slug = re.sub(r"[^a-z0-9]+", "_", album_name.lower()).strip("_")
-    out_dir    = ROOT / "history" / target_date[:4] / target_date[5:7] / target_date
+    album_slug = album_update_slug(album_name)
+    out_dir    = album_update_out_dir(target_date)
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path   = out_dir / f"{album_slug}_update.png"
     raw_out_path = out_dir / f"_{album_slug}_update_hires.png"
@@ -1609,17 +1646,19 @@ def main() -> None:
         print("Usage: generate_album_update_image.py <album_name> [date] [--post]")
         sys.exit(1)
 
-    image_path = generate(album_name, target_date)
     resolved_date = target_date or get_latest_date()
 
     if do_post:
-        album_slug = re.sub(r"[^a-z0-9]+", "_", album_name.lower()).strip("_")
-        lock_path  = image_path.parent / f"{album_slug}_update.lock"
-
-        if lock_path.exists():
+        existing_lock_path = existing_album_update_lock_path(album_name, resolved_date)
+        if existing_lock_path is not None:
+            lock_path = existing_lock_path
             print(f"[album_update] Déjà posté ({lock_path.name}). Rien à faire.")
             return
 
+    image_path = generate(album_name, resolved_date)
+
+    if do_post:
+        lock_path = album_update_lock_path(album_name, resolved_date)
         ok = post(album_name, image_path, resolved_date)
         if ok:
             lock_path.write_text(f"posted {resolved_date}\n", encoding="utf-8")

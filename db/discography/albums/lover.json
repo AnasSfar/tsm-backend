@@ -27,7 +27,19 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27359457bdb1edb5c6417f3baa2",
           "historical_track_ids": [],
-          "release_date": "2019-11-13T00:00:00Z"
+          "release_date": "2019-11-13T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:lover_feat_shawn_mendes"
         },
         {
           "title": "Lover - First Dance Remix",
@@ -48,7 +60,44 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273affd87a5167957a7adbf8e37",
           "historical_track_ids": [],
-          "release_date": "2019-11-26T00:00:00Z"
+          "release_date": "2019-11-26T00:00:00Z",
+          "genres": [
+            "pop",
+            "country",
+            "indie folk"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "country": 2.0,
+            "indie folk": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "indie folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "indie folk",
+              "Love",
+              "country pop",
+              "2010s",
+              "singer-songwriter",
+              "folk pop",
+              "2019",
+              "Ballad"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Lover"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:lover"
         },
         {
           "title": "Lover - Live From Paris",
@@ -69,7 +118,44 @@
           "version_tag": "live__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d29b148f84d0cd04ebdbe919",
           "historical_track_ids": [],
-          "release_date": "2020-05-17T00:00:00Z"
+          "release_date": "2020-05-17T00:00:00Z",
+          "genres": [
+            "pop",
+            "country",
+            "indie folk"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "country": 2.0,
+            "indie folk": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "indie folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "indie folk",
+              "Love",
+              "country pop",
+              "2010s",
+              "singer-songwriter",
+              "folk pop",
+              "2019",
+              "Ballad"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Lover"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:lover"
         },
         {
           "title": "You Need To Calm Down - Clean Bandit Remix",
@@ -90,7 +176,44 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2739911942b4845c29ad3ad1224",
           "historical_track_ids": [],
-          "release_date": "2019-08-20T00:00:00Z"
+          "release_date": "2019-08-20T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "taylor swift",
+              "lgbtq",
+              "2010s",
+              "electropop",
+              "2019",
+              "lgbt",
+              "soty",
+              "You Need to Calm Down"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "You Need To Calm Down"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_need_to_calm_down"
         },
         {
           "title": "You Need To Calm Down - Live From Paris",
@@ -111,7 +234,44 @@
           "version_tag": "live__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738546aa90c89127a13f02c73d",
           "historical_track_ids": [],
-          "release_date": "2020-05-17T00:00:00Z"
+          "release_date": "2020-05-17T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "taylor swift",
+              "lgbtq",
+              "2010s",
+              "electropop",
+              "2019",
+              "lgbt",
+              "soty",
+              "You Need to Calm Down"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "You Need To Calm Down"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_need_to_calm_down"
         },
         {
           "title": "Cornelia Street - Live From Paris",
@@ -132,7 +292,44 @@
           "version_tag": "live__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273eec5bf14fcf7c92ec8166027",
           "historical_track_ids": [],
-          "release_date": "2020-05-18T00:00:00Z"
+          "release_date": "2020-05-18T00:00:00Z",
+          "genres": [
+            "synth-pop",
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "synth-pop": 3.0,
+            "pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "synth-pop",
+              "pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "synthpop",
+              "pop",
+              "electropop",
+              "alt-pop",
+              "singer-songwriter",
+              "taylor swift",
+              "dance-pop",
+              "2010s",
+              "rosa",
+              "electronic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Cornelia Street"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cornelia_street"
         },
         {
           "title": "Daylight - Live From Paris",
@@ -153,7 +350,44 @@
           "version_tag": "live__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2739638abe9135aed2817baf686",
           "historical_track_ids": [],
-          "release_date": "2020-05-17T00:00:00Z"
+          "release_date": "2020-05-17T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "alternative": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "Love",
+              "Ballad",
+              "alt-pop",
+              "golden",
+              "love at first listen",
+              "best of 2019",
+              "synth-pop",
+              "taylor swift"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Daylight"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:daylight"
         },
         {
           "title": "Death By A Thousand Cuts - Live From Paris",
@@ -174,7 +408,44 @@
           "version_tag": "live__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737864c044d3fa4ac3814ca667",
           "historical_track_ids": [],
-          "release_date": "2020-05-17T00:00:00Z"
+          "release_date": "2020-05-17T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "electropop",
+              "dream pop",
+              "alt-pop",
+              "singer-songwriter",
+              "indie pop",
+              "taylor swift",
+              "folk pop",
+              "lover"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Death By A Thousand Cuts"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:death_by_a_thousand_cuts"
         },
         {
           "title": "The Archer - Live From Paris",
@@ -195,7 +466,44 @@
           "version_tag": "live__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273cde19bd5377f06eb0bca3256",
           "historical_track_ids": [],
-          "release_date": "2020-05-17T00:00:00Z"
+          "release_date": "2020-05-17T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "ambient pop",
+              "synthwave",
+              "taylor swift",
+              "ambient",
+              "lover",
+              "electropop",
+              "2019"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Archer"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_archer"
         },
         {
           "title": "The Man - Live From Paris",
@@ -216,7 +524,44 @@
           "version_tag": "live__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2739a6d517fc78fb707bed067c2",
           "historical_track_ids": [],
-          "release_date": "2020-02-18T00:00:00Z"
+          "release_date": "2020-02-18T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "feminism",
+              "2019",
+              "overrated",
+              "synth-pop",
+              "synthpop",
+              "taylor swift",
+              "dance-pop",
+              "2010s"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Man"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_man"
         },
         {
           "title": "ME! - Live From Paris",
@@ -237,7 +582,41 @@
           "version_tag": "live__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d8f29c3584e77996dd2f9950",
           "historical_track_ids": [],
-          "release_date": "2020-05-17T00:00:00Z"
+          "release_date": "2020-05-17T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "bubblegum pop",
+              "taylor swift",
+              "2019",
+              "synthpop",
+              "brendon urie",
+              "teen pop",
+              "lover",
+              "duet",
+              "A literal masterpiece STREAM"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "ME! (feat. Brendon Urie of Panic! At The Disco)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:me"
         }
       ]
     },
@@ -269,7 +648,44 @@
           "historical_track_ids": [
             "17yraMKqmZIKAv3iaGcoLX"
           ],
-          "release_date": "2019-08-23T00:00:00Z"
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "dream pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "dream pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dream pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "lover",
+              "pop",
+              "dream pop",
+              "synthpop",
+              "rnb",
+              "female vocalists",
+              "alt-pop",
+              "doo-wop",
+              "brill building",
+              "pop soul"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "All Of The Girls You Loved Before"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:all_of_the_girls_you_loved_before"
         }
       ]
     },
@@ -297,7 +713,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
           "historical_track_ids": [],
-          "release_date": "2019-08-23T00:00:00Z"
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "2010s",
+              "taylor swift",
+              "female vocalists",
+              "electropop",
+              "singer-songwriter",
+              "female vocalist",
+              "dance pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "I Forgot That You Existed"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_forgot_that_you_existed"
         },
         {
           "title": "Cruel Summer",
@@ -318,7 +771,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
           "historical_track_ids": [],
-          "release_date": "2019-08-23T00:00:00Z"
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "electropop",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "synthpop",
+              "industrial pop",
+              "pop perfection",
+              "synthwave",
+              "2019",
+              "the best of 2019",
+              "love at first listen",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Cruel Summer"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cruel_summer"
         },
         {
           "title": "Lover",
@@ -339,7 +829,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
           "historical_track_ids": [],
-          "release_date": "2019-08-23T00:00:00Z"
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "country",
+            "indie folk"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "country": 2.0,
+            "indie folk": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "indie folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "indie folk",
+              "Love",
+              "country pop",
+              "2010s",
+              "singer-songwriter",
+              "folk pop",
+              "2019",
+              "Ballad"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Lover"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:lover"
         },
         {
           "title": "The Man",
@@ -360,7 +887,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
           "historical_track_ids": [],
-          "release_date": "2019-08-23T00:00:00Z"
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "feminism",
+              "2019",
+              "overrated",
+              "synth-pop",
+              "synthpop",
+              "taylor swift",
+              "dance-pop",
+              "2010s"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Man"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_man"
         },
         {
           "title": "The Archer",
@@ -381,7 +945,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
           "historical_track_ids": [],
-          "release_date": "2019-08-23T00:00:00Z"
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "ambient pop",
+              "synthwave",
+              "taylor swift",
+              "ambient",
+              "lover",
+              "electropop",
+              "2019"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Archer"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_archer"
         },
         {
           "title": "I Think He Knows",
@@ -402,7 +1003,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
           "historical_track_ids": [],
-          "release_date": "2019-08-23T00:00:00Z"
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synthpop",
+              "dance-pop",
+              "taylor swift",
+              "rnb",
+              "singer-songwriter",
+              "bubblegum pop",
+              "contemporary rnb",
+              "upbeat"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "I Think He Knows"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_think_he_knows"
         },
         {
           "title": "Miss Americana & The Heartbreak Prince",
@@ -423,7 +1061,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
           "historical_track_ids": [],
-          "release_date": "2019-08-23T00:00:00Z"
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dream pop",
+              "synthpop",
+              "alt-pop",
+              "alternative rnb",
+              "synth-pop",
+              "taylor swift",
+              "2010s",
+              "rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Miss Americana & The Heartbreak Prince"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:miss_americana_the_heartbreak_prince"
         },
         {
           "title": "Paper Rings",
@@ -444,7 +1119,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
           "historical_track_ids": [],
-          "release_date": "2019-08-23T00:00:00Z"
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "pop rock",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "pop rock": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "pop rock",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "pop rock",
+              "electropop",
+              "new wave",
+              "2010s",
+              "rockabilly",
+              "synthpop",
+              "taylor swift",
+              "indie pop",
+              "singer songwriter"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Paper Rings"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:paper_rings"
         },
         {
           "title": "Cornelia Street",
@@ -465,7 +1177,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
           "historical_track_ids": [],
-          "release_date": "2019-08-23T00:00:00Z"
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "synth-pop",
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "synth-pop": 3.0,
+            "pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "synth-pop",
+              "pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "synthpop",
+              "pop",
+              "electropop",
+              "alt-pop",
+              "singer-songwriter",
+              "taylor swift",
+              "dance-pop",
+              "2010s",
+              "rosa",
+              "electronic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Cornelia Street"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cornelia_street"
         },
         {
           "title": "Death By A Thousand Cuts",
@@ -486,7 +1235,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
           "historical_track_ids": [],
-          "release_date": "2019-08-23T00:00:00Z"
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "electropop",
+              "dream pop",
+              "alt-pop",
+              "singer-songwriter",
+              "indie pop",
+              "taylor swift",
+              "folk pop",
+              "lover"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Death By A Thousand Cuts"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:death_by_a_thousand_cuts"
         },
         {
           "title": "London Boy",
@@ -507,7 +1293,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
           "historical_track_ids": [],
-          "release_date": "2019-08-23T00:00:00Z"
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "britpop",
+              "bubblegum pop",
+              "synthpop",
+              "singer-songwriter",
+              "electropop",
+              "electronic",
+              "taylor swift",
+              "2010s",
+              "alt-pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "London Boy"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:london_boy"
         },
         {
           "title": "Soon You'll Get Better (feat. The Chicks)",
@@ -531,7 +1354,19 @@
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
           "historical_track_ids": [],
-          "release_date": "2019-08-23T00:00:00Z"
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:soon_you_ll_get_better"
         },
         {
           "title": "False God",
@@ -552,7 +1387,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
           "historical_track_ids": [],
-          "release_date": "2019-08-23T00:00:00Z"
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "alternative": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "Sophisti-Pop",
+              "rnb",
+              "alt-pop",
+              "saxophone",
+              "sexy",
+              "taylor swift",
+              "dream pop",
+              "alternative rnb"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "False God"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:false_god"
         },
         {
           "title": "You Need To Calm Down",
@@ -573,7 +1445,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
           "historical_track_ids": [],
-          "release_date": "2019-08-23T00:00:00Z"
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "taylor swift",
+              "lgbtq",
+              "2010s",
+              "electropop",
+              "2019",
+              "lgbt",
+              "soty",
+              "You Need to Calm Down"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "You Need To Calm Down"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_need_to_calm_down"
         },
         {
           "title": "Afterglow",
@@ -594,7 +1503,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
           "historical_track_ids": [],
-          "release_date": "2019-08-23T00:00:00Z"
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "alt-pop",
+              "love at first listen",
+              "electropop",
+              "pop rock",
+              "taylor swift",
+              "bubblegum pop",
+              "lover"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Afterglow"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:afterglow"
         },
         {
           "title": "ME! (feat. Brendon Urie of Panic! At The Disco)",
@@ -618,7 +1564,41 @@
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
           "historical_track_ids": [],
-          "release_date": "2019-08-23T00:00:00Z"
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "bubblegum pop",
+              "taylor swift",
+              "2019",
+              "synthpop",
+              "brendon urie",
+              "teen pop",
+              "lover",
+              "duet",
+              "A literal masterpiece STREAM"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "ME! (feat. Brendon Urie of Panic! At The Disco)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:me"
         },
         {
           "title": "It's Nice To Have A Friend",
@@ -639,7 +1619,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
           "historical_track_ids": [],
-          "release_date": "2019-08-23T00:00:00Z"
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:it_s_nice_to_have_a_friend"
         },
         {
           "title": "Daylight",
@@ -660,7 +1652,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
           "historical_track_ids": [],
-          "release_date": "2019-08-23T00:00:00Z"
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "alternative": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "Love",
+              "Ballad",
+              "alt-pop",
+              "golden",
+              "love at first listen",
+              "best of 2019",
+              "synth-pop",
+              "taylor swift"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Daylight"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:daylight"
         }
       ]
     },
@@ -687,7 +1716,44 @@
           "song_family": "cruel_summer",
           "version_tag": "live__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
-          "historical_track_ids": []
+          "historical_track_ids": [],
+          "genres": [
+            "electropop",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "synthpop",
+              "industrial pop",
+              "pop perfection",
+              "synthwave",
+              "2019",
+              "the best of 2019",
+              "love at first listen",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Cruel Summer"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cruel_summer"
         },
         {
           "title": "Cruel Summer - LP Giobbi Remix",
@@ -708,7 +1774,44 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273905c0872bdf4e1787a6bb5da",
           "historical_track_ids": [],
-          "release_date": "2023-10-19T00:00:00Z"
+          "release_date": "2023-10-19T00:00:00Z",
+          "genres": [
+            "electropop",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "synthpop",
+              "industrial pop",
+              "pop perfection",
+              "synthwave",
+              "2019",
+              "the best of 2019",
+              "love at first listen",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Cruel Summer"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cruel_summer"
         },
         {
           "title": "Cruel Summer - LP Giobbi Remix - Extended Version",
@@ -729,7 +1832,44 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273905c0872bdf4e1787a6bb5da",
           "historical_track_ids": [],
-          "release_date": "2023-10-19T00:00:00Z"
+          "release_date": "2023-10-19T00:00:00Z",
+          "genres": [
+            "electropop",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "synthpop",
+              "industrial pop",
+              "pop perfection",
+              "synthwave",
+              "2019",
+              "the best of 2019",
+              "love at first listen",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Cruel Summer"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cruel_summer"
         }
       ]
     },
@@ -759,7 +1899,19 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2734aa13f6de271d8403a82e4a8",
           "display_era": "Lover",
           "historical_track_ids": [],
-          "release_date": "2020-01-31T00:00:00Z"
+          "release_date": "2020-01-31T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:only_the_young_featured_in_miss_americana"
         }
       ]
     }

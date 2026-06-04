@@ -108,24 +108,42 @@
           "historical_track_ids": [],
           "release_date": "2020-07-30T00:00:00Z",
           "genres": [
-            "folk"
+            "folk pop",
+            "folk",
+            "pop"
           ],
-          "genre_status": "manual",
+          "genre_status": "auto",
           "genre_scores": {
-            "folk": 999.0
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
           },
           "genre_sources": {
-            "manual": [
-              "folk"
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "pop"
             ]
           },
           "genre_raw_sources": {
-            "manual": [
-              "folk"
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "chamber pop",
+              "singer-songwriter",
+              "indie",
+              "pop",
+              "soft rock",
+              "indie rock",
+              "alternative",
+              "indie folk"
             ]
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:cardigan"
+          "genre_canonical_key": "family:cardigan",
+          "genre_query_titles": {
+            "lastfm": "cardigan"
+          }
         }
       ]
     },
@@ -138,7 +156,7 @@
         {
           "title": "Carolina - \"Where The Crawdads Sing\" - Video Edition",
           "url": "https://open.spotify.com/intl-fr/track/12xIjI9A9UlB6zEc7kyZ06",
-          "type": "standalone",
+          "type": "soundtrack",
           "edition": "extras",
           "display_section": "Extras",
           "display_order": 1,
@@ -151,7 +169,7 @@
           ],
           "title_clean": "Carolina - \"Where The Crawdads Sing\" - Video Edition",
           "song_family": "carolina_where_the_crawdads_sing_video_edition",
-          "version_tag": "standalone",
+          "version_tag": "soundtrack",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732c683c1b9fa1b711499408f7",
           "display_era": "folklore",
           "historical_track_ids": [],
@@ -160,7 +178,7 @@
         {
           "title": "Carolina - From The Motion Picture “Where The Crawdads Sing”",
           "url": "https://open.spotify.com/intl-fr/track/4axSuOg3BqsowKjRpj59RU",
-          "type": "standalone",
+          "type": "soundtrack",
           "edition": "extras",
           "display_section": "Extras",
           "display_order": 2,
@@ -173,7 +191,7 @@
           ],
           "title_clean": "Carolina - From The Motion Picture “Where The Crawdads Sing”",
           "song_family": "carolina_from_the_motion_picture_where_the_crawdads_sing",
-          "version_tag": "standalone",
+          "version_tag": "soundtrack",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732c683c1b9fa1b711499408f7",
           "display_era": "folklore",
           "historical_track_ids": [],
@@ -209,24 +227,42 @@
           ],
           "release_date": "2020-07-24T00:00:00Z",
           "genres": [
-            "folk"
+            "folk pop",
+            "folk",
+            "pop"
           ],
-          "genre_status": "manual",
+          "genre_status": "auto",
           "genre_scores": {
-            "folk": 999.0
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
           },
           "genre_sources": {
-            "manual": [
-              "folk"
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "pop"
             ]
           },
           "genre_raw_sources": {
-            "manual": [
-              "folk"
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "chamber pop",
+              "singer-songwriter",
+              "indie",
+              "pop",
+              "soft rock",
+              "indie rock",
+              "alternative",
+              "indie folk"
             ]
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:cardigan"
+          "genre_canonical_key": "family:cardigan",
+          "genre_query_titles": {
+            "lastfm": "cardigan"
+          }
         },
         {
           "title": "exile (feat. Bon Iver)",
@@ -321,7 +357,26 @@
           "historical_track_ids": [
             "1UHoF9p75IVsvUt6WdTYhn"
           ],
-          "release_date": "2020-07-24T00:00:00Z"
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "folk"
+          ],
+          "genre_status": "manual",
+          "genre_scores": {
+            "folk": 999.0
+          },
+          "genre_sources": {
+            "manual": [
+              "folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "manual": [
+              "folk"
+            ]
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:august"
         },
         {
           "title": "this is me trying",
@@ -586,7 +641,26 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
           "historical_track_ids": [],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "folk"
+          ],
+          "genre_status": "manual",
+          "genre_scores": {
+            "folk": 999.0
+          },
+          "genre_sources": {
+            "manual": [
+              "folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "manual": [
+              "folk"
+            ]
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:august"
         },
         {
           "title": "betty - the long pond studio sessions",
@@ -870,24 +944,42 @@
           "historical_track_ids": [],
           "release_date": "2020-11-25T00:00:00Z",
           "genres": [
-            "folk"
+            "folk pop",
+            "folk",
+            "pop"
           ],
-          "genre_status": "manual",
+          "genre_status": "auto",
           "genre_scores": {
-            "folk": 999.0
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
           },
           "genre_sources": {
-            "manual": [
-              "folk"
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "pop"
             ]
           },
           "genre_raw_sources": {
-            "manual": [
-              "folk"
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "chamber pop",
+              "singer-songwriter",
+              "indie",
+              "pop",
+              "soft rock",
+              "indie rock",
+              "alternative",
+              "indie folk"
             ]
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:cardigan"
+          "genre_canonical_key": "family:cardigan",
+          "genre_query_titles": {
+            "lastfm": "cardigan"
+          }
         },
         {
           "title": "exile (feat. Bon Iver) - the long pond studio sessions",

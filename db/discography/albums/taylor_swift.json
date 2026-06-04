@@ -26,7 +26,19 @@
           "song_family": "crazier",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730e8ba185f3e9f15630a7b5fb",
-          "historical_track_ids": []
+          "historical_track_ids": [],
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:crazier"
         }
       ]
     },
@@ -54,7 +66,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-10-24T00:00:00Z"
+          "release_date": "2006-10-24T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:a_perfectly_good_heart"
         },
         {
           "title": "A Place in this World",
@@ -75,7 +99,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-01-01T00:00:00Z"
+          "release_date": "2006-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:a_place_in_this_world"
         },
         {
           "title": "Cold As You",
@@ -96,7 +132,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-01-01T00:00:00Z"
+          "release_date": "2006-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:cold_as_you"
         },
         {
           "title": "I'm Only Me When I'm With You",
@@ -117,7 +165,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-10-24T00:00:00Z"
+          "release_date": "2006-10-24T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_m_only_me_when_i_m_with_you"
         },
         {
           "title": "Invisible",
@@ -138,7 +198,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-10-24T00:00:00Z"
+          "release_date": "2006-10-24T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:invisible"
         },
         {
           "title": "Mary's Song (Oh My My My)",
@@ -159,7 +231,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-01-01T00:00:00Z"
+          "release_date": "2006-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:mary_s_song_oh_my_my_my"
         },
         {
           "title": "Our Song",
@@ -180,7 +264,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-01-01T00:00:00Z"
+          "release_date": "2006-01-01T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "female vocalists",
+              "taylor swift",
+              "pop",
+              "Love",
+              "fun",
+              "country pop",
+              "summer",
+              "singer-songwriter",
+              "sweet"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Our Song"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:our_song"
         },
         {
           "title": "Picture To Burn",
@@ -201,7 +322,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-01-01T00:00:00Z"
+          "release_date": "2006-01-01T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "taylor swift",
+              "pop",
+              "catchy",
+              "female vocalists",
+              "feel good",
+              "Picture To Burn",
+              "country pop",
+              "rock",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Picture To Burn"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:picture_to_burn"
         },
         {
           "title": "Should've Said No",
@@ -222,7 +380,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-01-01T00:00:00Z"
+          "release_date": "2006-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:should_ve_said_no"
         },
         {
           "title": "Stay Beautiful",
@@ -243,7 +413,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-01-01T00:00:00Z"
+          "release_date": "2006-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:stay_beautiful"
         },
         {
           "title": "Teardrops on My Guitar - Pop Version",
@@ -264,7 +446,19 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-10-24T00:00:00Z"
+          "release_date": "2006-10-24T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:teardrops_on_my_guitar"
         },
         {
           "title": "Teardrops On My Guitar - Radio Single Remix",
@@ -285,7 +479,19 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-01-01T00:00:00Z"
+          "release_date": "2006-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:teardrops_on_my_guitar"
         },
         {
           "title": "The Outside",
@@ -306,7 +512,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-01-01T00:00:00Z"
+          "release_date": "2006-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_outside"
         },
         {
           "title": "Tied Together with a Smile",
@@ -327,7 +545,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-01-01T00:00:00Z"
+          "release_date": "2006-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:tied_together_with_a_smile"
         },
         {
           "title": "Tim McGraw",
@@ -348,7 +578,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-01-01T00:00:00Z"
+          "release_date": "2006-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:tim_mcgraw"
         }
       ]
     },
@@ -378,7 +620,19 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
           "display_era": "Taylor Swift",
           "historical_track_ids": [],
-          "release_date": "2008-06-28T00:00:00Z"
+          "release_date": "2008-06-28T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:beautiful_eyes_live_from_clear_channel_stripped_2008"
         },
         {
           "title": "Picture To Burn - Live From Clear Channel Stripped 2008",
@@ -400,7 +654,44 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
           "display_era": "Taylor Swift",
           "historical_track_ids": [],
-          "release_date": "2008-06-28T00:00:00Z"
+          "release_date": "2008-06-28T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "taylor swift",
+              "pop",
+              "catchy",
+              "female vocalists",
+              "feel good",
+              "Picture To Burn",
+              "country pop",
+              "rock",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Picture To Burn"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:picture_to_burn_live_from_clear_channel_stripped_2008"
         },
         {
           "title": "Should've Said No - Live From Clear Channel Stripped 2008",
@@ -422,7 +713,19 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
           "display_era": "Taylor Swift",
           "historical_track_ids": [],
-          "release_date": "2008-06-28T00:00:00Z"
+          "release_date": "2008-06-28T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:shouldve_said_no_live_from_clear_channel_stripped_2008"
         },
         {
           "title": "Should've Said No - The 3D Concert Experience",
@@ -443,7 +746,19 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735e0f4b509e71ef57a82ccc3e",
           "display_era": "Taylor Swift",
-          "historical_track_ids": []
+          "historical_track_ids": [],
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:shouldve_said_no_the_3d_concert_experience"
         },
         {
           "title": "Teardrops On My Guitar",
@@ -464,7 +779,19 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b27334614bd156c2177e3c0dd051",
           "display_era": "Taylor Swift",
-          "historical_track_ids": []
+          "historical_track_ids": [],
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:teardrops_on_my_guitar"
         },
         {
           "title": "Teardrops On My Guitar - Live From Clear Channel Stripped 2008",
@@ -486,7 +813,19 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
           "display_era": "Taylor Swift",
           "historical_track_ids": [],
-          "release_date": "2008-06-28T00:00:00Z"
+          "release_date": "2008-06-28T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:teardrops_on_my_guitar_live_from_clear_channel_stripped_2008"
         }
       ]
     }

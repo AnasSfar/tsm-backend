@@ -29,7 +29,44 @@
           "historical_track_ids": [
             "77d7q9TNbsIDmRTDPkPv3L"
           ],
-          "release_date": "2020-12-15T00:00:00Z"
+          "release_date": "2020-12-15T00:00:00Z",
+          "genres": [
+            "folk pop",
+            "folk",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk pop",
+              "chamber folk",
+              "singer-songwriter",
+              "folk",
+              "indie folk",
+              "pop",
+              "overrated",
+              "indie",
+              "indie pop",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "willow"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:willow"
         },
         {
           "title": "willow - moonlit witch version",
@@ -52,7 +89,44 @@
           "historical_track_ids": [
             "5F7hpFKLmWgMHGxQuwssuv"
           ],
-          "release_date": "2020-12-16T00:00:00Z"
+          "release_date": "2020-12-16T00:00:00Z",
+          "genres": [
+            "folk pop",
+            "folk",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk pop",
+              "chamber folk",
+              "singer-songwriter",
+              "folk",
+              "indie folk",
+              "pop",
+              "overrated",
+              "indie",
+              "indie pop",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "willow"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:willow"
         }
       ]
     },
@@ -80,7 +154,44 @@
           "version_tag": "deluxe__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27390fd9741e1838115cd90b3b6",
           "historical_track_ids": [],
-          "release_date": "2021-01-07T00:00:00Z"
+          "release_date": "2021-01-07T00:00:00Z",
+          "genres": [
+            "folk pop",
+            "country",
+            "folk"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk pop": 3.0,
+            "country": 2.0,
+            "folk": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk pop",
+              "country",
+              "folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk pop",
+              "country",
+              "folk-pop",
+              "folk",
+              "country pop",
+              "evermore",
+              "female vocalist",
+              "pop",
+              "singer-songwriter",
+              "alt pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "right where you left me - bonus track"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:right_where_you_left_me_bonus_track"
         },
         {
           "title": "it's time to go - bonus track",
@@ -101,7 +212,19 @@
           "version_tag": "deluxe__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27390fd9741e1838115cd90b3b6",
           "historical_track_ids": [],
-          "release_date": "2021-01-07T00:00:00Z"
+          "release_date": "2021-01-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:it_s_time_to_go_bonus_track"
         }
       ]
     },
@@ -129,7 +252,44 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27348ea2c0fbc6682c6d10d91aa",
           "historical_track_ids": [],
-          "release_date": "2021-06-14T00:00:00Z"
+          "release_date": "2021-06-14T00:00:00Z",
+          "genres": [
+            "folk pop",
+            "folk",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk pop",
+              "chamber folk",
+              "singer-songwriter",
+              "folk",
+              "indie folk",
+              "pop",
+              "overrated",
+              "indie",
+              "indie pop",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "willow"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:willow"
         },
         {
           "title": "willow - dancing witch version (Elvira remix)",
@@ -152,7 +312,44 @@
           "historical_track_ids": [
             "2Ta5c5Z6DvM8GX0U1polSo"
           ],
-          "release_date": "2020-12-13T00:00:00Z"
+          "release_date": "2020-12-13T00:00:00Z",
+          "genres": [
+            "folk pop",
+            "folk",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk pop",
+              "chamber folk",
+              "singer-songwriter",
+              "folk",
+              "indie folk",
+              "pop",
+              "overrated",
+              "indie",
+              "indie pop",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "willow"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:willow"
         }
       ]
     },
@@ -180,7 +377,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-11T00:00:00Z",
+          "genres": [
+            "folk pop",
+            "folk",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk pop",
+              "chamber folk",
+              "singer-songwriter",
+              "folk",
+              "indie folk",
+              "pop",
+              "overrated",
+              "indie",
+              "indie pop",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "willow"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:willow"
         },
         {
           "title": "champagne problems",
@@ -201,7 +435,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-11T00:00:00Z",
+          "genres": [
+            "folk",
+            "rock",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "rock": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "rock",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "Ballad",
+              "folk",
+              "chamber rock",
+              "singer-songwriter",
+              "alternative rock",
+              "Lo-Fi",
+              "female vocalists",
+              "indie folk",
+              "chamber pop",
+              "overrated"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "champagne problems"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:champagne_problems"
         },
         {
           "title": "gold rush",
@@ -222,7 +493,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-11T00:00:00Z",
+          "genres": [
+            "folk",
+            "singer-songwriter",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "singer-songwriter": 2.0,
+            "rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "singer-songwriter",
+              "rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "singer-songwriter",
+              "chamber rock",
+              "pop",
+              "chamber pop",
+              "indie pop",
+              "female vocalist",
+              "current",
+              "alt pop",
+              "contemporary folk"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "gold rush"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:gold_rush"
         },
         {
           "title": "tolerate it",
@@ -243,7 +551,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-11T00:00:00Z",
+          "genres": [
+            "singer-songwriter",
+            "indie pop",
+            "folk"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "singer-songwriter": 3.0,
+            "indie pop": 2.0,
+            "folk": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "indie pop",
+              "folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "indie pop",
+              "Ballad",
+              "folk",
+              "pop",
+              "chamber rock",
+              "alternative rock",
+              "alt pop",
+              "female vocalist",
+              "singer songwriter"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "tolerate it"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:tolerate_it"
         },
         {
           "title": "no body, no crime (feat. HAIM)",
@@ -267,7 +612,44 @@
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-11T00:00:00Z",
+          "genres": [
+            "country",
+            "pop rock",
+            "americana"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop rock": 2.0,
+            "americana": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop rock",
+              "americana"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country rock",
+              "country",
+              "pop rock",
+              "americana",
+              "country pop",
+              "2020s",
+              "soft rock",
+              "pop",
+              "singer-songwriter",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "no body, no crime (feat. HAIM)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:no_body_no_crime"
         },
         {
           "title": "happiness",
@@ -288,7 +670,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-11T00:00:00Z",
+          "genres": [
+            "folk",
+            "pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "ambient pop",
+              "singer-songwriter",
+              "alternative",
+              "chamber pop",
+              "alternative rock",
+              "rock",
+              "pop",
+              "indie",
+              "Ballad"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "happiness"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:happiness"
         },
         {
           "title": "dorothea",
@@ -309,7 +728,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-11T00:00:00Z",
+          "genres": [
+            "pop",
+            "folk",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "folk": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "folk",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "folk",
+              "singer-songwriter",
+              "americana",
+              "chamber pop",
+              "folk pop",
+              "country",
+              "alternative rock",
+              "timeless",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "dorothea"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:dorothea"
         },
         {
           "title": "coney island (feat. The National)",
@@ -333,7 +789,44 @@
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-11T00:00:00Z",
+          "genres": [
+            "alternative rock",
+            "rock",
+            "folk"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "alternative rock": 3.0,
+            "rock": 2.0,
+            "folk": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "alternative rock",
+              "rock",
+              "folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "alternative rock",
+              "rock",
+              "folk",
+              "chamber pop",
+              "folk pop",
+              "pop",
+              "indie",
+              "indie folk",
+              "singer-songwriter",
+              "indie pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "coney island (feat. The National)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:coney_island"
         },
         {
           "title": "ivy",
@@ -354,7 +847,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-11T00:00:00Z",
+          "genres": [
+            "folk pop",
+            "folk",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "singer-songwriter",
+              "alternative rock",
+              "chamber rock",
+              "folk-pop",
+              "pop",
+              "indie folk",
+              "current",
+              "indie"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "ivy"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:ivy"
         },
         {
           "title": "cowboy like me",
@@ -375,7 +905,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-11T00:00:00Z",
+          "genres": [
+            "country",
+            "folk",
+            "alternative rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "folk": 2.0,
+            "alternative rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "folk",
+              "alternative rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "folk",
+              "alternative rock",
+              "pop",
+              "singer-songwriter",
+              "folk rock",
+              "blues rock",
+              "chamber rock",
+              "indie",
+              "2020"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "cowboy like me"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cowboy_like_me"
         },
         {
           "title": "long story short",
@@ -396,7 +963,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-11T00:00:00Z",
+          "genres": [
+            "rock",
+            "folk",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "rock": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "rock",
+              "folk",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "indie rock",
+              "folk",
+              "pop",
+              "electropop",
+              "indie pop",
+              "rock",
+              "alternative",
+              "folk-pop",
+              "synth-pop",
+              "synthpop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "long story short"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:long_story_short"
         },
         {
           "title": "marjorie",
@@ -417,7 +1021,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-11T00:00:00Z",
+          "genres": [
+            "rock",
+            "pop",
+            "folk"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "rock": 3.0,
+            "pop": 2.0,
+            "folk": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "rock",
+              "pop",
+              "folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "Ballad",
+              "rock",
+              "pop",
+              "folk",
+              "singer-songwriter",
+              "chamber pop",
+              "alternative rock",
+              "indie folk",
+              "chamber rock",
+              "owned by taylor swift"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "marjorie"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:marjorie"
         },
         {
           "title": "closure",
@@ -438,7 +1079,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-11T00:00:00Z",
+          "genres": [
+            "pop",
+            "folk",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "folk": 2.0,
+            "rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "folk",
+              "rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "folk",
+              "indietronica",
+              "experimental",
+              "idm",
+              "best of 2020",
+              "hyperpop",
+              "rock",
+              "alternative rock",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "closure"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:closure"
         },
         {
           "title": "evermore (feat. Bon Iver)",
@@ -462,7 +1140,44 @@
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
           "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z"
+          "release_date": "2020-12-11T00:00:00Z",
+          "genres": [
+            "folk",
+            "rock",
+            "alternative rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "rock": 2.0,
+            "alternative rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "rock",
+              "alternative rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "rock",
+              "alternative rock",
+              "Ballad",
+              "chamber rock",
+              "pop",
+              "female vocalist",
+              "singer-songwriter",
+              "chamber pop",
+              "piano"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "evermore (feat. Bon Iver)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:evermore"
         },
         {
           "title": "'tis the damn season",
@@ -483,7 +1198,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27390fd9741e1838115cd90b3b6",
           "historical_track_ids": [],
-          "release_date": "2021-01-07T00:00:00Z"
+          "release_date": "2021-01-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:tis_the_damn_season"
         }
       ]
     }

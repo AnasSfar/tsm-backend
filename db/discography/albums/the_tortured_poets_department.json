@@ -31,7 +31,44 @@
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33",
           "historical_track_ids": [],
-          "release_date": "2024-04-18T00:00:00Z"
+          "release_date": "2024-04-18T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "best of 2024",
+              "soty",
+              "synthpop",
+              "singer-songwriter",
+              "post malone",
+              "new wave",
+              "taylor swift",
+              "female vocalist",
+              "fortnite"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Fortnight (feat. Post Malone)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:fortnight"
         },
         {
           "title": "The Tortured Poets Department",
@@ -52,7 +89,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33",
           "historical_track_ids": [],
-          "release_date": "2024-04-18T00:00:00Z"
+          "release_date": "2024-04-18T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "best of 2024",
+              "singer-songwriter",
+              "Colleen Hoover",
+              "2024",
+              "female vocalist",
+              "soty",
+              "female vocalists",
+              "AOTY"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Tortured Poets Department"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_tortured_poets_department"
         },
         {
           "title": "My Boy Only Breaks His Favorite Toys",
@@ -73,7 +147,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33",
           "historical_track_ids": [],
-          "release_date": "2024-04-18T00:00:00Z"
+          "release_date": "2024-04-18T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "best of 2024",
+              "synthpop",
+              "female vocalists",
+              "taylor swift",
+              "Colleen Hoover",
+              "singer-songwriter",
+              "AOTY",
+              "chatgpt",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "My Boy Only Breaks His Favorite Toys"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:my_boy_only_breaks_his_favorite_toys"
         },
         {
           "title": "Down Bad",
@@ -94,7 +205,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33",
           "historical_track_ids": [],
-          "release_date": "2024-04-18T00:00:00Z"
+          "release_date": "2024-04-18T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "alternative": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "best of 2024",
+              "love at first listen",
+              "Colleen Hoover",
+              "pop perfect",
+              "rnb",
+              "taylor swift",
+              "female vocalists",
+              "alt-pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Down Bad"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:down_bad"
         },
         {
           "title": "So Long, London",
@@ -115,7 +263,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33",
           "historical_track_ids": [],
-          "release_date": "2024-04-18T00:00:00Z"
+          "release_date": "2024-04-18T00:00:00Z",
+          "genres": [
+            "pop",
+            "singer-songwriter",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "singer-songwriter": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "best of 2024",
+              "singer-songwriter",
+              "synthpop",
+              "Hyperfixate on My Mind",
+              "WSUM 91.7 FM Madison",
+              "Colleen Hoover",
+              "female vocalists",
+              "sad",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "So Long, London"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:so_long_london"
         },
         {
           "title": "But Daddy I Love Him",
@@ -138,7 +323,44 @@
           "historical_track_ids": [
             "74sZKiwaGtSEEyjhDmi99y"
           ],
-          "release_date": "2024-04-18T00:00:00Z"
+          "release_date": "2024-04-18T00:00:00Z",
+          "genres": [
+            "pop",
+            "pop rock",
+            "country"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "pop rock": 2.0,
+            "country": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "pop rock",
+              "country"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "best of 2024",
+              "pop rock",
+              "Colleen Hoover",
+              "soty",
+              "country",
+              "female vocalist",
+              "singer-songwriter",
+              "female vocalists",
+              "electronica"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "But Daddy I Love Him"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:but_daddy_i_love_him"
         },
         {
           "title": "Fresh Out The Slammer",
@@ -159,7 +381,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33",
           "historical_track_ids": [],
-          "release_date": "2024-04-18T00:00:00Z"
+          "release_date": "2024-04-18T00:00:00Z",
+          "genres": [
+            "pop",
+            "singer-songwriter",
+            "country"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "singer-songwriter": 2.0,
+            "country": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "country"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "Colleen Hoover",
+              "love at first listen",
+              "best of 2024",
+              "country",
+              "soty",
+              "chatgpt",
+              "country pop",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Fresh Out The Slammer"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:fresh_out_the_slammer"
         },
         {
           "title": "Florida!!! (feat. Florence + The Machine)",
@@ -183,7 +442,44 @@
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33",
           "historical_track_ids": [],
-          "release_date": "2024-04-18T00:00:00Z"
+          "release_date": "2024-04-18T00:00:00Z",
+          "genres": [
+            "pop",
+            "rock",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "rock": 2.0,
+            "alternative": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "rock",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "rock",
+              "alternative",
+              "country",
+              "pop rock",
+              "singer-songwriter",
+              "love at first listen",
+              "best of 2024",
+              "florence + the machine",
+              "2024"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Florida!!! (feat. Florence + The Machine)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:florida"
         },
         {
           "title": "Guilty as Sin?",
@@ -204,7 +500,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33",
           "historical_track_ids": [],
-          "release_date": "2024-04-18T00:00:00Z"
+          "release_date": "2024-04-18T00:00:00Z",
+          "genres": [
+            "pop",
+            "singer-songwriter",
+            "pop rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "singer-songwriter": 2.0,
+            "pop rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "pop rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "best of 2024",
+              "singer-songwriter",
+              "pop rock",
+              "soty",
+              "Colleen Hoover",
+              "female vocalist",
+              "female vocalists",
+              "soft rock",
+              "love at first listen"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Guilty as Sin?"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:guilty_as_sin"
         },
         {
           "title": "Who's Afraid of Little Old Me?",
@@ -225,7 +558,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c246cd7fb142b383672627c8",
           "historical_track_ids": [],
-          "release_date": "2024-10-03T00:00:00Z"
+          "release_date": "2024-10-03T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:who_s_afraid_of_little_old_me"
         },
         {
           "title": "I Can Fix Him (No Really I Can)",
@@ -246,7 +591,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
           "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z"
+          "release_date": "2024-04-19T00:00:00Z",
+          "genres": [
+            "singer-songwriter",
+            "pop",
+            "country"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "singer-songwriter": 3.0,
+            "pop": 2.0,
+            "country": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "pop",
+              "country"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "pop",
+              "love at first listen",
+              "sexy",
+              "soty",
+              "Colleen Hoover",
+              "country",
+              "best of 2024",
+              "chatgpt",
+              "female vocalists"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "I Can Fix Him (No Really I Can)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_can_fix_him_no_really_i_can"
         },
         {
           "title": "loml",
@@ -267,7 +649,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
           "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z"
+          "release_date": "2024-04-19T00:00:00Z",
+          "genres": [
+            "pop",
+            "singer-songwriter",
+            "folk"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "singer-songwriter": 2.0,
+            "folk": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "sad",
+              "piano",
+              "best of 2024",
+              "Ballad",
+              "Colleen Hoover",
+              "female vocalists",
+              "folk",
+              "acoustic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "loml"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:loml"
         },
         {
           "title": "I Can Do It With a Broken Heart",
@@ -288,7 +707,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c246cd7fb142b383672627c8",
           "historical_track_ids": [],
-          "release_date": "2024-10-03T00:00:00Z"
+          "release_date": "2024-10-03T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dance-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dance-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dance-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "best of 2024",
+              "dance-pop",
+              "soty",
+              "electropop",
+              "dance pop",
+              "Colleen Hoover",
+              "2024",
+              "love at first listen"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "I Can Do It With a Broken Heart"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_can_do_it_with_a_broken_heart"
         },
         {
           "title": "The Smallest Man Who Ever Lived",
@@ -309,7 +765,44 @@
           "version_tag": "live__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c246cd7fb142b383672627c8",
           "historical_track_ids": [],
-          "release_date": "2024-10-03T00:00:00Z"
+          "release_date": "2024-10-03T00:00:00Z",
+          "genres": [
+            "pop",
+            "singer-songwriter",
+            "pop rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "singer-songwriter": 2.0,
+            "pop rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "pop rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "best of 2024",
+              "Colleen Hoover",
+              "chatgpt",
+              "love at first listen",
+              "pop rock",
+              "soty",
+              "indie",
+              "not poetic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Smallest Man Who Ever Lived"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_smallest_man_who_ever_lived"
         },
         {
           "title": "The Alchemy",
@@ -330,7 +823,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
           "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z"
+          "release_date": "2024-04-19T00:00:00Z",
+          "genres": [
+            "pop",
+            "singer-songwriter",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "singer-songwriter": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "chatgpt",
+              "pop",
+              "best of 2024",
+              "singer-songwriter",
+              "Colleen Hoover",
+              "AI",
+              "synthpop",
+              "not poetry",
+              "love at first listen",
+              "not poetic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Alchemy"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_alchemy"
         },
         {
           "title": "Clara Bow",
@@ -351,7 +881,41 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
           "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z"
+          "release_date": "2024-04-19T00:00:00Z",
+          "genres": [
+            "pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "singer-songwriter": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "chatgpt",
+              "Colleen Hoover",
+              "taylor swift",
+              "best of 2024",
+              "Ballad",
+              "AI",
+              "not poetry",
+              "not poetic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Clara Bow"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:clara_bow"
         }
       ]
     },
@@ -380,7 +944,41 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
           "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z"
+          "release_date": "2024-04-19T00:00:00Z",
+          "genres": [
+            "pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "singer-songwriter": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "soty",
+              "best of 2024",
+              "singer-songwriter",
+              "love at first listen",
+              "the music industry",
+              "AOTY",
+              "The Black Dog",
+              "taylor swift",
+              "Colleen Hoover"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Black Dog"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_black_dog"
         },
         {
           "title": "imgonnagetyouback",
@@ -401,7 +999,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
           "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z"
+          "release_date": "2024-04-19T00:00:00Z",
+          "genres": [
+            "pop",
+            "singer-songwriter",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "singer-songwriter": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "female vocalists",
+              "synthpop",
+              "AI",
+              "Colleen Hoover",
+              "love at first listen",
+              "not poetry",
+              "not poetic",
+              "reputation"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "imgonnagetyouback"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:imgonnagetyouback"
         },
         {
           "title": "The Albatross",
@@ -422,7 +1057,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
           "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z"
+          "release_date": "2024-04-19T00:00:00Z",
+          "genres": [
+            "singer-songwriter",
+            "folk",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "singer-songwriter": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "folk",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "folk",
+              "pop",
+              "best of 2024",
+              "AI",
+              "folk pop",
+              "Colleen Hoover",
+              "not poetry",
+              "not poetic",
+              "chatgpt"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Albatross"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_albatross"
         },
         {
           "title": "Chloe or Sam or Sophia or Marcus",
@@ -443,7 +1115,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
           "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z"
+          "release_date": "2024-04-19T00:00:00Z",
+          "genres": [
+            "pop",
+            "singer-songwriter",
+            "folk pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "singer-songwriter": 2.0,
+            "folk pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "folk pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "folk pop",
+              "folk",
+              "AI",
+              "female vocalists",
+              "Ballad",
+              "not poetry",
+              "Colleen Hoover",
+              "not poetic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Chloe or Sam or Sophia or Marcus"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:chloe_or_sam_or_sophia_or_marcus"
         },
         {
           "title": "How Did It End?",
@@ -464,7 +1173,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
           "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z"
+          "release_date": "2024-04-19T00:00:00Z",
+          "genres": [
+            "folk",
+            "singer-songwriter",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "singer-songwriter": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "singer-songwriter",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "Ballad",
+              "singer-songwriter",
+              "piano",
+              "pop",
+              "AI",
+              "sad",
+              "not poetry",
+              "Colleen Hoover",
+              "not poetic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "How Did It End?"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:how_did_it_end"
         },
         {
           "title": "So High School",
@@ -485,7 +1231,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c246cd7fb142b383672627c8",
           "historical_track_ids": [],
-          "release_date": "2024-10-03T00:00:00Z"
+          "release_date": "2024-10-03T00:00:00Z",
+          "genres": [
+            "pop",
+            "rock",
+            "pop rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "rock": 2.0,
+            "pop rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "rock",
+              "pop rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "rock",
+              "pop rock",
+              "singer-songwriter",
+              "indie rock",
+              "Colleen Hoover",
+              "Love",
+              "SOCIOPATH",
+              "not poetry",
+              "not poetic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "So High School"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:so_high_school"
         },
         {
           "title": "I Hate It Here",
@@ -506,7 +1289,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
           "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z"
+          "release_date": "2024-04-19T00:00:00Z",
+          "genres": [
+            "folk",
+            "pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "pop",
+              "singer-songwriter",
+              "poetic",
+              "AI",
+              "poetry",
+              "Colleen Hoover",
+              "not poetry",
+              "not poetic",
+              "folk pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "I Hate It Here"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_hate_it_here"
         },
         {
           "title": "thanK you aIMee",
@@ -527,7 +1347,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
           "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z"
+          "release_date": "2024-04-19T00:00:00Z",
+          "genres": [
+            "folk",
+            "pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "female vocalist",
+              "pop",
+              "singer-songwriter",
+              "folk pop",
+              "embarrassing",
+              "country",
+              "AI",
+              "not poetry",
+              "not poetic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "thanK you aIMee"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:thank_you_aimee"
         },
         {
           "title": "I Look in People's Windows",
@@ -548,7 +1405,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
           "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z"
+          "release_date": "2024-04-19T00:00:00Z",
+          "genres": [
+            "pop",
+            "folk",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "folk": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "folk",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "folk",
+              "singer-songwriter",
+              "AI",
+              "not poetry",
+              "not poetic",
+              "female vocalists",
+              "Colleen Hoover",
+              "singer songwriter",
+              "Ballad"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "I Look in People's Windows"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_look_in_people_s_windows"
         },
         {
           "title": "The Prophecy",
@@ -569,7 +1463,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
           "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z"
+          "release_date": "2024-04-19T00:00:00Z",
+          "genres": [
+            "singer-songwriter",
+            "folk",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "singer-songwriter": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "folk",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "folk",
+              "pop",
+              "AI",
+              "not poetry",
+              "love at first listen",
+              "not poetic",
+              "folk pop",
+              "female vocalists",
+              "singer songwriter"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Prophecy"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_prophecy"
         },
         {
           "title": "Cassandra",
@@ -590,7 +1521,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
           "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z"
+          "release_date": "2024-04-19T00:00:00Z",
+          "genres": [
+            "pop",
+            "folk",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "folk": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "folk",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "folk",
+              "singer-songwriter",
+              "female vocalists",
+              "AI",
+              "not poetry",
+              "Colleen Hoover",
+              "not poetic",
+              "taylor swift",
+              "acoustic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Cassandra"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cassandra"
         },
         {
           "title": "Peter",
@@ -611,7 +1579,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
           "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z"
+          "release_date": "2024-04-19T00:00:00Z",
+          "genres": [
+            "folk",
+            "pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "Ballad",
+              "folk",
+              "pop",
+              "traitor",
+              "peter pan",
+              "love at first listen",
+              "singer-songwriter",
+              "peter",
+              "AI",
+              "not poetry"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Peter"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:peter"
         },
         {
           "title": "The Bolter",
@@ -632,7 +1637,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
           "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z"
+          "release_date": "2024-04-19T00:00:00Z",
+          "genres": [
+            "pop",
+            "folk",
+            "country"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "folk": 2.0,
+            "country": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "folk",
+              "country"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "best of 2024",
+              "folk",
+              "country",
+              "singer-songwriter",
+              "folk pop",
+              "female vocalists",
+              "soty",
+              "not poetry",
+              "love at first listen"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Bolter"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_bolter"
         },
         {
           "title": "Robin",
@@ -653,7 +1695,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
           "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z"
+          "release_date": "2024-04-19T00:00:00Z",
+          "genres": [
+            "singer-songwriter",
+            "pop",
+            "folk"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "singer-songwriter": 3.0,
+            "pop": 2.0,
+            "folk": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "pop",
+              "folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "pop",
+              "folk",
+              "indie",
+              "AI",
+              "not poetry",
+              "way to go tiger",
+              "not poetic",
+              "chatgpt",
+              "Colleen Hoover"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Robin"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:robin"
         },
         {
           "title": "The Manuscript",
@@ -674,7 +1753,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
           "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z"
+          "release_date": "2024-04-19T00:00:00Z",
+          "genres": [
+            "pop",
+            "singer-songwriter",
+            "folk"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "singer-songwriter": 2.0,
+            "folk": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "chatgpt",
+              "pop",
+              "singer-songwriter",
+              "Ballad",
+              "best of 2024",
+              "folk",
+              "piano",
+              "AI",
+              "not poetry",
+              "not poetic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Manuscript"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_manuscript"
         }
       ]
     },
@@ -706,7 +1822,44 @@
           "version_tag": "featured__remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e6b77b3eef9269d06e13fe17",
           "historical_track_ids": [],
-          "release_date": "2024-05-22T00:00:00Z"
+          "release_date": "2024-05-22T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "best of 2024",
+              "soty",
+              "synthpop",
+              "singer-songwriter",
+              "post malone",
+              "new wave",
+              "taylor swift",
+              "female vocalist",
+              "fortnite"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Fortnight (feat. Post Malone)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:fortnight"
         },
         {
           "title": "I Can Do It With a Broken Heart - Dombresky Remix",
@@ -727,7 +1880,44 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f7dd2c5a8045a39fcecbfe8e",
           "historical_track_ids": [],
-          "release_date": "2024-09-13T00:00:00Z"
+          "release_date": "2024-09-13T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dance-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dance-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dance-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "best of 2024",
+              "dance-pop",
+              "soty",
+              "electropop",
+              "dance pop",
+              "Colleen Hoover",
+              "2024",
+              "love at first listen"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "I Can Do It With a Broken Heart"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_can_do_it_with_a_broken_heart"
         },
         {
           "title": "I Can Do It With a Broken Heart - Instrumental",
@@ -748,7 +1938,44 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f7dd2c5a8045a39fcecbfe8e",
           "historical_track_ids": [],
-          "release_date": "2024-09-13T00:00:00Z"
+          "release_date": "2024-09-13T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dance-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dance-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dance-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "best of 2024",
+              "dance-pop",
+              "soty",
+              "electropop",
+              "dance pop",
+              "Colleen Hoover",
+              "2024",
+              "love at first listen"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "I Can Do It With a Broken Heart"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_can_do_it_with_a_broken_heart"
         },
         {
           "title": "Fortnight (feat. Post Malone) - Acoustic Version",
@@ -772,7 +1999,44 @@
           "version_tag": "featured__acoustic__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273aecb5c6308cf8ce94199aea8",
           "historical_track_ids": [],
-          "release_date": "2024-07-09T00:00:00Z"
+          "release_date": "2024-07-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "best of 2024",
+              "soty",
+              "synthpop",
+              "singer-songwriter",
+              "post malone",
+              "new wave",
+              "taylor swift",
+              "female vocalist",
+              "fortnite"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Fortnight (feat. Post Malone)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:fortnight"
         },
         {
           "title": "Fortnight (feat. Post Malone) - Cults Remix",
@@ -796,7 +2060,44 @@
           "version_tag": "featured__remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273aecb5c6308cf8ce94199aea8",
           "historical_track_ids": [],
-          "release_date": "2024-07-09T00:00:00Z"
+          "release_date": "2024-07-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "best of 2024",
+              "soty",
+              "synthpop",
+              "singer-songwriter",
+              "post malone",
+              "new wave",
+              "taylor swift",
+              "female vocalist",
+              "fortnite"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Fortnight (feat. Post Malone)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:fortnight"
         }
       ]
     }

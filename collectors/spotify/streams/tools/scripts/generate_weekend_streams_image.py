@@ -8,7 +8,7 @@ The card combines:
   - top 5 songs by daily streams
 
 Output:
-  collectors/spotify/streams/history/YYYY/MM/YYYY-MM-DD/weekend_streams_image.png
+  snapshots/spotify_streams/YYYY/MM/YYYY-MM-DD/weekend_streams_image.png
 """
 from __future__ import annotations
 
@@ -427,7 +427,7 @@ def generate(target_date: str | None = None, *, top_n: int = TOP_N) -> Path:
         song_track_album_map=song_track_album_map,
     )
 
-    out_dir = ROOT / "history" / target_date[:4] / target_date[5:7] / target_date
+    out_dir = generate_streams_image.update_streams_dir(target_date)
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / "weekend_streams_image.png"
     tmp_html = out_dir / "_weekend_streams_tmp.html"

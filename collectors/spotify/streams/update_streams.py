@@ -121,6 +121,8 @@ FAILED_PATH = DATA_DIR / "not_found_today.csv"
 PENDING_LOG_PATH = DATA_DIR / "pending_debug_today.csv"
 LAST_SUCCESSFUL_UPDATE_JSON = DATA_DIR / "last_successful_updates.json"
 LAST_UNFINISHED_UPDATE_JSON = DATA_DIR / "last_unfinished_updates.json"
+STREAMS_SCRAPED_LOCK_NAME = "streams_scraped.lock"
+STREAMS_UPDATE_COMPLETE_LOCK_NAME = "streams_update_complete.lock"
 
 DISCOGRAPHY_DIR = _DB_ROOT / "discography"
 DB_ALBUMS_DIR = DISCOGRAPHY_DIR / "albums"
@@ -150,6 +152,7 @@ HILL_INITIAL       = 9      # point de départ (was 6 — start near max immedia
 PROBE_CANDIDATES = 10  # top N tracks (by streams) used as probe candidates
 
 PENDING_RETRY_SLEEP_SECONDS = 0
+MAX_PENDING_RETRY_ROUNDS = int(os.getenv("MAX_PENDING_RETRY_ROUNDS", "3"))
 POST_BETWEEN_STREAMS_POSTS_SECONDS = 0
 INCREMENTAL_PUBLISH_ON_UPDATE = False
 
@@ -162,6 +165,50 @@ NEW_RELEASE_RETRY_SLEEP_SECONDS = int(os.getenv("NEW_RELEASE_RETRY_SLEEP_SECONDS
 
 # ── API GraphQL Spotify ───────────────────────────────────────────────────────
 START_TIME = None
+
+
+def _daily_lock_path(stats_date: str, lock_name: str) -> Path:
+    return update_streams_dir(stats_date) / lock_name
+
+
+def _write_daily_lock(stats_date: str, lock_name: str, payload: dict) -> None:
+    path = _daily_lock_path(stats_date, lock_name)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    data = {
+        "stats_date": stats_date,
+        "generated_at": get_scrape_date_str(),
+        **payload,
+    }
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def _daily_lock_exists(stats_date: str, lock_name: str) -> bool:
+    return _daily_lock_path(stats_date, lock_name).exists()
+
+
+def _build_existing_history_summary(stats_date: str, total_tracks: int, total_all_tracks: int) -> dict:
+    history_index = HistoryIndex.load()
+    done_ids = history_index.done_ids_for_date(stats_date)
+    all_done = len(done_ids) >= total_tracks
+    return {
+        "stats_date": stats_date,
+        "total_tracks": total_tracks,
+        "total_all_tracks": total_all_tracks,
+        "done_tracks": len(done_ids),
+        "remaining_tracks": max(total_tracks - len(done_ids), 0),
+        "all_done": all_done,
+        "updated_this_run": 0,
+        "pending_this_run": 0 if all_done else max(total_tracks - len(done_ids), 0),
+        "skipped_this_run": len(done_ids),
+        "timeout_this_run": 0,
+        "error_this_run": 0,
+        "not_found_this_run": 0,
+        "results": [],
+        "failed_results": [],
+        "updated_track_ids": set(),
+        "history_index": history_index,
+        "api_metrics": {},
+    }
 
 
 class ApiRunMetrics:
@@ -1413,13 +1460,28 @@ def main():
         ))
         return
 
-    _warp_connect()
-
     if debug_total_mode:
         if stats_date_override is None:
             print("--debug-total requires a date: python update_streams.py --debug-total YYYY-MM-DD")
             sys.exit(1)
         run_debug_total_replace(stats_date)
+        return
+
+    normal_lock_mode = not any((
+        dry_run_mode,
+        debug_daily_mode,
+        debug_total_mode,
+        local_test_mode,
+        test_mode,
+        throwback_mode,
+        force_reprocess,
+        reset_last_date_mode,
+        reset_date_override,
+    ))
+
+    if normal_lock_mode and _daily_lock_exists(stats_date, STREAMS_UPDATE_COMPLETE_LOCK_NAME):
+        lock_path = _daily_lock_path(stats_date, STREAMS_UPDATE_COMPLETE_LOCK_NAME)
+        print(f"Streams update already complete for {stats_date} ({lock_path.name}); skipping.")
         return
 
     token_mgr = None
@@ -1432,6 +1494,49 @@ def main():
 
     print(f"Loaded {total_tracks} track(s) from discography")
     print()
+
+    if normal_lock_mode and _daily_lock_exists(stats_date, STREAMS_SCRAPED_LOCK_NAME):
+        lock_path = _daily_lock_path(stats_date, STREAMS_SCRAPED_LOCK_NAME)
+        summary = _build_existing_history_summary(stats_date, total_tracks, total_tracks)
+        if not summary["all_done"]:
+            print(
+                f"Streams scraping lock exists for {stats_date}, but history is no longer complete "
+                f"({summary['done_tracks']}/{total_tracks}); ignoring lock."
+            )
+        else:
+            print(f"Streams scraping already done for {stats_date} ({lock_path.name}); skipping WARP/token/scraping.")
+            print_summary_block(summary)
+            print_api_metrics(summary)
+            run_final_update_tasks(FinalizeContext(
+                script_dir=_SCRIPT_DIR,
+                repo_root=_REPO_ROOT,
+                stats_date=stats_date,
+                summary=summary,
+                no_post_mode=no_post_mode,
+                debug_daily_mode=False,
+                local_test_mode=False,
+                post_spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
+                log_mode=LOG_MODE,
+                artist_thread=None,
+                artist_result=[None],
+                export_web_data=export_web_data,
+                update_artist_metadata=update_artist_metadata,
+                album_tracks_done_for=album_tracks_done_for,
+                all_album_tracks_done=all_album_tracks_done,
+                load_album_sections_flat=load_album_sections_flat,
+                extract_track_id=extract_track_id,
+                load_history_track_ids_for_date=load_history_track_ids_for_date,
+                find_biggest_album_gainer_for_spotlight=find_biggest_album_gainer_for_spotlight,
+                posted_album_updates=set(),
+                initial_post_state={"posted_count": 0, "last_post_at": 0.0},
+            ))
+            _write_daily_lock(stats_date, STREAMS_UPDATE_COMPLETE_LOCK_NAME, {
+                "reason": "resumed_from_scraped_lock",
+                "total_tracks": total_tracks,
+            })
+            return
+
+    _warp_connect()
 
     if debug_daily_mode:
         unfinished_ids = load_last_unfinished_update_track_ids(stats_date)
@@ -1727,6 +1832,11 @@ def main():
     has_zero_real_updates = summary["updated_this_run"] == 0
 
     retry_round = 0
+    previous_pending_signature = {
+        (r.get("track_id"), r.get("streams"), r.get("reason"))
+        for r in summary.get("results", [])
+        if r and r.get("status") == "pending"
+    }
     while (
         not dry_run_mode
         and not local_test_mode
@@ -1745,6 +1855,14 @@ def main():
             print("Spotify may not have updated yet. Skipping retries for now.")
             break
 
+        if retry_round >= MAX_PENDING_RETRY_ROUNDS:
+            print()
+            print(
+                f"Stopping pending retries after {MAX_PENDING_RETRY_ROUNDS} round(s); "
+                f"{summary['pending_this_run']} track(s) are still unchanged."
+            )
+            break
+
         retry_round += 1
 
         print()
@@ -1760,8 +1878,9 @@ def main():
         print(f"Retry round {retry_round}")
         print("=" * 70)
 
+        retry_progress = ProgressLogger(LOG_MODE)
         summary = run_update(
-            on_progress=progress,
+            on_progress=retry_progress,
             skip_track_ids=not_found_ids,
             stats_date_override=stats_date_override,
             dry_run_mode=False,
@@ -1778,6 +1897,20 @@ def main():
         if not local_test_mode:
             print("Committing partial progress after retry...")
             git_commit_and_push(_REPO_ROOT, f"partial export {summary['stats_date']} (after retry {retry_round})")
+
+        current_pending_signature = {
+            (r.get("track_id"), r.get("streams"), r.get("reason"))
+            for r in summary.get("results", [])
+            if r and r.get("status") == "pending"
+        }
+        if summary["updated_this_run"] == 0 and current_pending_signature == previous_pending_signature:
+            print()
+            print(
+                f"Stopping pending retries: the same {summary['pending_this_run']} "
+                "track(s) remained unchanged after a retry."
+            )
+            break
+        previous_pending_signature = current_pending_signature
 
     print_remaining_details(summary)
     if local_test_mode:
@@ -1812,6 +1945,13 @@ def main():
 
     if summary["all_done"]:
         print("All target tracks updated.")
+        if normal_lock_mode:
+            _write_daily_lock(stats_date, STREAMS_SCRAPED_LOCK_NAME, {
+                "total_tracks": summary.get("total_tracks"),
+                "updated_this_run": summary.get("updated_this_run"),
+                "pending_this_run": summary.get("pending_this_run"),
+                "not_found_this_run": summary.get("not_found_this_run"),
+            })
     else:
         print("Run finished, but not all target tracks are done.")
         print("Publishing current data anyway." if not debug_daily_mode else "Keeping local progress only.")
@@ -1855,6 +1995,14 @@ def main():
 
     if not dry_run_mode and not debug_daily_mode and not local_test_mode and not throwback_mode:
         run_discography_backfill_after_streams(token_mgr, stats_date)
+
+    if normal_lock_mode and summary["all_done"]:
+        _write_daily_lock(stats_date, STREAMS_UPDATE_COMPLETE_LOCK_NAME, {
+            "total_tracks": summary.get("total_tracks"),
+            "updated_this_run": summary.get("updated_this_run"),
+            "pending_this_run": summary.get("pending_this_run"),
+            "not_found_this_run": summary.get("not_found_this_run"),
+        })
 
     elapsed = time.perf_counter() - START_TIME
     print()

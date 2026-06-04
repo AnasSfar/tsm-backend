@@ -21,6 +21,7 @@ sys.path.insert(0, str(SCRIPT_DIR))                   # streams/tools/scripts/
 from core.album_emoji import album_emoji  # noqa: E402
 from core.twitter import post_image_thread, post_with_image  # noqa: E402
 import best_day_since  # noqa: E402
+import generate_streams_image  # noqa: E402
 import post_gainer_thread  # noqa: E402
 import spotlight  # noqa: E402
 
@@ -83,140 +84,295 @@ def _table_title(*, period: str) -> str:
     return f"Taylor Swift biggest {period} gainers"
 
 
-def _build_gainer_table_html(rows: list[dict], *, period: str, target_date: str) -> str:
+def _track_entry(row: dict) -> dict:
+    track = row["track"]
+    return {
+        **track,
+        "track_id": row["track_id"],
+        "title": track.get("title") or row["track_id"],
+        "artist": track.get("primary_artist") or track.get("artist") or "Taylor Swift",
+        "daily_streams": row.get("daily_today"),
+        "streams": row.get("total_today"),
+        "image_url": track.get("image_url") or "",
+    }
+
+
+def _fmt_streams(value: int | None) -> str:
+    if value is None:
+        return "-"
+    return f"{int(value):,}".replace(",", "\u202f")
+
+
+def _fmt_signed_streams(value: int | None) -> str:
+    if value is None:
+        return "-"
+    if value > 0:
+        return f"+{_fmt_streams(value)}"
+    if value < 0:
+        return f"-{_fmt_streams(abs(value))}"
+    return "="
+
+
+def _delta_parts(current: int | None, previous: int | None) -> tuple[str, str, str]:
+    if current is None or previous is None or previous <= 0:
+        return "-", "", "neutral"
+    delta = current - previous
+    pct = delta / previous * 100
+    pct_text = f"{pct:+.1f}%"
+    if pct_text == "-0.0%":
+        pct_text = "+0.0%"
+    if delta > 0:
+        return _fmt_signed_streams(delta), pct_text, "pos"
+    if delta < 0:
+        return _fmt_signed_streams(delta), pct_text, "neg"
+    return "=", pct_text, "neutral"
+
+
+def _enrich_gainer_rows(rows: list[dict], *, target_date: str) -> list[dict]:
+    history = post_gainer_thread.history_store.HistoryIndex.load()
+    for row in rows:
+        track_id = row["track_id"]
+        row["total_today"] = history.get_total_for_date(track_id, target_date)
+        row["daily_yesterday"] = post_gainer_thread.history_store._daily_for_spotlight(
+            history,
+            track_id,
+            str(date.fromisoformat(target_date) - timedelta(days=1)),
+        )
+        row["daily_last_week"] = post_gainer_thread.history_store._daily_for_spotlight(
+            history,
+            track_id,
+            str(date.fromisoformat(target_date) - timedelta(days=7)),
+        )
+    return rows
+
+
+def _build_gainer_rows_html(
+    rows: list[dict],
+    *,
+    period: str,
+    image_cache: dict[str, str],
+    cover_map: dict,
+    track_album_map: dict,
+) -> str:
+    row_html = []
+    for index, row in enumerate(rows):
+        entry = _track_entry(row)
+        title = html.escape(str(entry.get("title") or row["track_id"]))
+        artist = html.escape(str(entry.get("artist") or "Taylor Swift"))
+        cover_url = generate_streams_image.get_cover_url(entry, cover_map, track_album_map)
+        cover = image_cache.get(cover_url, cover_url) if cover_url else ""
+        art_html = (
+            f'<img class="art" src="{html.escape(cover, quote=True)}" />'
+            if cover
+            else '<div class="art-ph"></div>'
+        )
+        daily = row.get("daily_today")
+        daily_delta, daily_pct, daily_cls = _delta_parts(daily, row.get("daily_yesterday"))
+        week_delta, week_pct, week_cls = _delta_parts(daily, row.get("daily_last_week"))
+        compare_delta = "daily-delta" if period == "daily" else "week-delta"
+        card_cls = "song-card row-gold" if index == 0 else "song-card row-odd" if index % 2 else "song-card"
+        row_html.append(
+            f"""<div class="{card_cls}">
+  <div class="col-song">
+    {art_html}
+    <div class="song-info">
+      <div class="song-title">{title}</div>
+      <div class="song-artist">{artist}</div>
+    </div>
+  </div>
+  <div class="col-num"><strong>{_fmt_streams(daily)}</strong></div>
+  <div class="col-num {daily_cls} {compare_delta if period == 'daily' else ''}">
+    <div class="delta-wrap">
+      <span class="delta-num">{daily_delta}</span>
+      {f'<span class="delta-pct">{daily_pct}</span>' if daily_pct else ''}
+    </div>
+  </div>
+  <div class="col-num {week_cls} {compare_delta if period == 'weekly' else ''}">
+    <div class="delta-wrap">
+      <span class="delta-num">{week_delta}</span>
+      {f'<span class="delta-pct">{week_pct}</span>' if week_pct else ''}
+    </div>
+  </div>
+  <div class="col-num">{_fmt_streams(row.get('total_today'))}</div>
+</div>"""
+        )
+    return "\n".join(row_html)
+
+
+def _build_gainer_table_html(
+    rows: list[dict],
+    *,
+    period: str,
+    target_date: str,
+    image_cache: dict[str, str],
+    cover_map: dict,
+    track_album_map: dict,
+) -> str:
     date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
     compare_label = "yesterday" if period == "daily" else "last week"
-    row_html = []
-    for rank, row in enumerate(rows, 1):
-        track = row["track"]
-        title = html.escape(str(track.get("title") or row["track_id"]))
-        album = html.escape(str(track.get("album") or ""))
-        emoji = html.escape(album_emoji(track.get("album")))
-        row_html.append(
-            f"""
-            <div class="row">
-              <div class="rank">#{rank}</div>
-              <div class="song">
-                <div class="song-title"><span>{emoji}</span>{title}</div>
-                <div class="album">{album}</div>
-              </div>
-              <div class="metric pct">{_fmt_pct(row['pct'])}</div>
-              <div class="metric">{_fmt_int(row['daily_today'])}</div>
-              <div class="metric gain">+{_fmt_int(row['gain'])}</div>
-            </div>
-            """
+    header_img = generate_streams_image._pick_header_image()
+    handle_color = "#1db954"
+    if header_img:
+        handle_color = generate_streams_image._dominant_color(header_img)
+        img_url = header_img.as_posix()
+        hdr_style = (
+            f"style=\"background-image: linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)),"
+            f"url('file:///{img_url}'); background-size:cover; background-position:center;\""
         )
+    else:
+        hdr_style = 'style="background:linear-gradient(135deg,#1db954 0%,#17a34a 100%);"'
+    rows_html = _build_gainer_rows_html(
+        rows,
+        period=period,
+        image_cache=image_cache,
+        cover_map=cover_map,
+        track_album_map=track_album_map,
+    )
 
     return f"""<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <style>
-* {{ box-sizing: border-box; }}
+* {{ margin:0; padding:0; box-sizing:border-box; }}
 body {{
-  margin: 0;
-  width: 1200px;
-  min-height: 1350px;
-  font-family: Inter, Arial, Helvetica, sans-serif;
+  font-family:Inter,-apple-system,'Helvetica Neue',Arial,sans-serif;
   background:
-    radial-gradient(circle at 10% 0%, rgba(29,185,84,.20), transparent 34%),
-    linear-gradient(135deg, #111827 0%, #171717 48%, #083c2c 100%);
-  color: #f8fafc;
+    radial-gradient(circle at 12% 18%, rgba(29,185,84,.13), transparent 30%),
+    radial-gradient(circle at 84% 16%, rgba(126,87,255,.10), transparent 32%),
+    linear-gradient(180deg,#f4f7f8 0%,#edf3f4 100%);
+  width:800px;
+  padding:0;
+  color:#101828;
 }}
-.wrap {{ padding: 58px 62px 44px; }}
-.header {{ display: flex; justify-content: space-between; align-items: flex-end; gap: 34px; }}
-.title {{ font-size: 54px; line-height: 1.02; font-weight: 900; letter-spacing: 0; max-width: 770px; }}
-.sub {{ margin-top: 14px; color: #d1d5db; font-size: 26px; font-weight: 650; }}
+.container {{ overflow:hidden; }}
+.hdr {{
+  padding:22px 26px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+}}
+.hdr-brand {{ display:flex; align-items:center; gap:18px; min-width:0; }}
+.hdr-logo {{ width:64px; height:64px; flex-shrink:0; }}
+.hdr-title {{ color:#fff; font-size:26px; font-weight:800; letter-spacing:0; }}
+.hdr-sub {{ color:rgba(255,255,255,.85); font-size:15px; margin-top:5px; }}
 .badge {{
-  border: 2px solid rgba(255,255,255,.24);
-  background: rgba(255,255,255,.10);
-  border-radius: 999px;
-  padding: 13px 22px;
-  font-size: 24px;
-  font-weight: 850;
-  white-space: nowrap;
+  color:#fff;
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(8,14,24,.35);
+  padding:7px 12px;
+  font-size:12px;
+  font-weight:800;
+  white-space:nowrap;
 }}
-.table {{ margin-top: 40px; display: grid; gap: 12px; }}
-.head, .row {{
+.col-heads {{
   display: grid;
-  grid-template-columns: 86px minmax(0, 1fr) 136px 168px 132px;
-  align-items: center;
-  gap: 16px;
+  grid-template-columns:minmax(220px,1fr) 104px 94px 94px 92px;
+  column-gap:8px;
+  padding:9px 18px;
+  background:rgba(241,245,246,.95);
+  border-bottom:1px solid rgba(16,24,40,.07);
 }}
-.head {{
-  color: #a7f3d0;
-  font-size: 20px;
-  font-weight: 850;
-  text-transform: uppercase;
-  letter-spacing: 0;
-  padding: 0 22px;
+.col-heads span {{
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  color:#667085;
+  display:flex;
+  align-items:center;
 }}
-.row {{
-  min-height: 92px;
-  padding: 16px 22px;
-  border: 1px solid rgba(255,255,255,.14);
-  background: rgba(255,255,255,.09);
-  border-radius: 18px;
-  box-shadow: 0 16px 35px rgba(0,0,0,.18);
+.col-heads .right {{ justify-content:flex-end; }}
+.song-card {{
+  display:grid;
+  grid-template-columns:minmax(220px,1fr) 104px 94px 94px 92px;
+  column-gap:8px;
+  align-items:center;
+  padding:7px 18px;
+  background:rgba(255,255,255,.82);
+  border-bottom:1px solid rgba(16,24,40,.05);
 }}
-.rank {{ color: #86efac; font-size: 28px; font-weight: 950; }}
+.song-card.row-odd {{ background:rgba(248,250,251,.88); }}
+.song-card.row-gold {{
+  background:linear-gradient(90deg,#fff7d6 0%,#fffdf5 40%,rgba(255,255,255,.92) 100%);
+  border-left:3px solid #ebc44c;
+}}
+.col-song {{ display:flex; align-items:center; gap:12px; min-width:0; }}
+.art {{
+  width:54px;
+  height:54px;
+  border-radius:7px;
+  flex-shrink:0;
+  object-fit:cover;
+  box-shadow:0 2px 8px rgba(0,0,0,.12);
+}}
+.art-ph {{ width:54px; height:54px; border-radius:7px; background:#dde3ea; flex-shrink:0; }}
+.song-info {{ min-width:0; }}
 .song-title {{
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-  font-size: 26px;
-  font-weight: 900;
-  line-height: 1.08;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  font-size:15px;
+  font-weight:700;
+  color:#101828;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }}
-.album {{
-  margin-top: 7px;
-  color: #cbd5e1;
-  font-size: 18px;
-  font-weight: 650;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+.song-artist {{ font-size:13px; color:#667085; margin-top:3px; }}
+.col-num {{
+  font-size:14px;
+  color:#344054;
+  font-weight:500;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  font-variant-numeric:tabular-nums;
 }}
-.metric {{
-  text-align: right;
-  font-size: 25px;
-  font-weight: 900;
-  font-variant-numeric: tabular-nums;
+.pos {{ color:#067647; font-weight:600; }}
+.neg {{ color:#b42318; font-weight:600; }}
+.neutral {{ color:#667085; }}
+.daily-delta,.week-delta {{
+  background:rgba(22,163,74,.08);
+  border-radius:6px;
+  padding:5px 6px;
 }}
-.pct {{ color: #86efac; font-size: 31px; }}
-.gain {{ color: #bbf7d0; }}
-.footer {{
-  margin-top: 34px;
-  display: flex;
-  justify-content: space-between;
-  color: #d1fae5;
-  font-size: 22px;
-  font-weight: 800;
+.delta-wrap {{ display:flex; flex-direction:column; align-items:flex-end; gap:2px; }}
+.delta-num {{ font-size:13px; font-weight:600; }}
+.delta-pct {{ font-size:11px; font-weight:500; opacity:.85; }}
+.ftr {{
+  background:rgba(241,245,246,.96);
+  padding:11px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-top:1px solid rgba(16,24,40,.07);
 }}
+.ftr-handle {{ font-size:13px; color:#1db954; font-weight:700; }}
+.ftr-date {{ font-size:13px; color:#667085; font-weight:500; }}
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="header">
-      <div>
-        <div class="title">{html.escape(_table_title(period=period))}</div>
-        <div class="sub">{html.escape(date_fmt)} · compared to {html.escape(compare_label)}</div>
+  <div class="container">
+    <div class="hdr" {hdr_style}>
+      <div class="hdr-brand">
+        {generate_streams_image.SPOTIFY_SVG}
+        <div>
+          <div class="hdr-title">{html.escape(_table_title(period=period))}</div>
+          <div class="hdr-sub">{html.escape(date_fmt)} &middot; compared to {html.escape(compare_label)}</div>
+        </div>
       </div>
       <div class="badge">Top {len(rows)}</div>
     </div>
-    <div class="table">
-      <div class="head">
-        <div>Rank</div><div>Song</div><div>%</div><div>Streams</div><div>Gain</div>
-      </div>
-      {''.join(row_html)}
+    <div class="col-heads">
+      <span>Track</span>
+      <span class="right">Daily</span>
+      <span class="right">Daily Chg</span>
+      <span class="right">Weekly Chg</span>
+      <span class="right">Total</span>
     </div>
-    <div class="footer">
-      <span>@tsmuseum13</span>
-      <span>thetsmuseum.app/streams/latest</span>
+    {rows_html}
+    <div class="ftr">
+      <span class="ftr-handle" style="color:{handle_color}">@tsmuseum13</span>
+      <span class="ftr-date">{html.escape(date_fmt)}</span>
     </div>
   </div>
 </body>
@@ -224,16 +380,31 @@ body {{
 
 
 def _render_table_image(rows: list[dict], *, period: str, target_date: str, out_dir: Path) -> Path:
+    rows = _enrich_gainer_rows(rows, target_date=target_date)
+    cover_map = generate_streams_image.load_covers()
+    track_album_map = generate_streams_image.load_track_album_map()
+    image_cache = generate_streams_image.prefetch_images(
+        [_track_entry(row) for row in rows],
+        cover_map,
+        track_album_map,
+    )
     out_path = out_dir / f"stream_highlights_{period}_gainers_top{len(rows)}.png"
     tmp_html = out_dir / f"_stream_highlights_{period}_gainers.html"
     tmp_html.write_text(
-        _build_gainer_table_html(rows, period=period, target_date=target_date),
+        _build_gainer_table_html(
+            rows,
+            period=period,
+            target_date=target_date,
+            image_cache=image_cache,
+            cover_map=cover_map,
+            track_album_map=track_album_map,
+        ),
         encoding="utf-8",
     )
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
-            page = browser.new_page(viewport={"width": 1200, "height": 1350}, device_scale_factor=2)
+            page = browser.new_page(viewport={"width": 880, "height": 760}, device_scale_factor=2)
             page.goto(f"file:///{tmp_html.as_posix()}", wait_until="load")
             page.wait_for_timeout(300)
             page.locator("body").screenshot(path=str(out_path))

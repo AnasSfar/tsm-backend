@@ -27,7 +27,44 @@
           "version_tag": "deluxe__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c288028c2592f400dd0b9233",
           "historical_track_ids": [],
-          "release_date": "2020-08-18T00:00:00Z"
+          "release_date": "2020-08-18T00:00:00Z",
+          "genres": [
+            "folk",
+            "indie pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "indie pop": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "indie",
+              "orchestral",
+              "baroque pop",
+              "indie folk",
+              "poetry",
+              "female vocalist",
+              "folklore",
+              "contemporary folk",
+              "heaven"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "the lakes - bonus track"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_lakes_bonus_track"
         }
       ]
     },
@@ -55,7 +92,19 @@
           "version_tag": "deluxe__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737d60bda8f85d66599c3fe851",
           "historical_track_ids": [],
-          "release_date": "2021-07-24T00:00:00Z"
+          "release_date": "2021-07-24T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_lakes"
         }
       ]
     },
@@ -85,7 +134,44 @@
           "historical_track_ids": [
             "1hm4V38egkiHOgxTUpu0zg"
           ],
-          "release_date": "2020-09-18T00:00:00Z"
+          "release_date": "2020-09-18T00:00:00Z",
+          "genres": [
+            "folk",
+            "country",
+            "folk pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "country": 2.0,
+            "folk pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "country",
+              "folk pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "country",
+              "folk rock",
+              "folk pop",
+              "2020",
+              "singer-songwriter",
+              "americana",
+              "2020s",
+              "guitar pop",
+              "pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "betty"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:betty"
         },
         {
           "title": "cardigan - cabin in candlelight version",
@@ -108,24 +194,23 @@
           "historical_track_ids": [],
           "release_date": "2020-07-30T00:00:00Z",
           "genres": [
-            "folk"
+            "folk pop",
+            "folk",
+            "pop"
           ],
-          "genre_status": "manual",
+          "genre_status": "auto",
           "genre_scores": {
-            "folk": 999.0
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
           },
-          "genre_sources": {
-            "manual": [
-              "folk"
-            ]
-          },
-          "genre_raw_sources": {
-            "manual": [
-              "folk"
-            ]
-          },
+          "genre_sources": {},
+          "genre_raw_sources": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:cardigan"
+          "genre_canonical_key": "family:cardigan",
+          "genre_query_titles": {
+            "lastfm": "cardigan"
+          }
         }
       ]
     },
@@ -155,7 +240,19 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732c683c1b9fa1b711499408f7",
           "display_era": "folklore",
           "historical_track_ids": [],
-          "release_date": "2022-06-24T00:00:00Z"
+          "release_date": "2022-06-24T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:carolina_where_the_crawdads_sing_video_edition"
         },
         {
           "title": "Carolina - From The Motion Picture “Where The Crawdads Sing”",
@@ -177,7 +274,19 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732c683c1b9fa1b711499408f7",
           "display_era": "folklore",
           "historical_track_ids": [],
-          "release_date": "2022-06-24T00:00:00Z"
+          "release_date": "2022-06-24T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:carolina_from_the_motion_picture_where_the_crawdads_sing"
         }
       ]
     },
@@ -209,24 +318,23 @@
           ],
           "release_date": "2020-07-24T00:00:00Z",
           "genres": [
-            "folk"
+            "folk pop",
+            "folk",
+            "pop"
           ],
-          "genre_status": "manual",
+          "genre_status": "auto",
           "genre_scores": {
-            "folk": 999.0
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
           },
-          "genre_sources": {
-            "manual": [
-              "folk"
-            ]
-          },
-          "genre_raw_sources": {
-            "manual": [
-              "folk"
-            ]
-          },
+          "genre_sources": {},
+          "genre_raw_sources": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:cardigan"
+          "genre_canonical_key": "family:cardigan",
+          "genre_query_titles": {
+            "lastfm": "cardigan"
+          }
         },
         {
           "title": "exile (feat. Bon Iver)",
@@ -252,7 +360,44 @@
           "historical_track_ids": [
             "6kz2hkq1xQvDqPcUyBkw8f"
           ],
-          "release_date": "2020-07-24T00:00:00Z"
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "folk",
+            "indie folk",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "indie folk": 2.0,
+            "alternative": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "indie folk",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "indie folk",
+              "alternative",
+              "pop",
+              "2020",
+              "chamber pop",
+              "Ballad",
+              "peter",
+              "singer-songwriter",
+              "folk pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "exile (feat. Bon Iver)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:exile"
         },
         {
           "title": "my tears ricochet",
@@ -275,7 +420,44 @@
           "historical_track_ids": [
             "0Oju1YcbPCJuUQQWoZNdJK"
           ],
-          "release_date": "2020-07-24T00:00:00Z"
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "folk",
+            "indie pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "indie pop": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "pop",
+              "sad",
+              "chamber pop",
+              "gospel",
+              "Ballad",
+              "arena-goth",
+              "indie",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "my tears ricochet"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:my_tears_ricochet"
         },
         {
           "title": "seven",
@@ -298,7 +480,44 @@
           "historical_track_ids": [
             "2vJ7QvyCiR4DaHxwO58izA"
           ],
-          "release_date": "2020-07-24T00:00:00Z"
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "folk",
+            "indie pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "indie pop": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "pop",
+              "chamber pop",
+              "indie folk",
+              "heartstopper",
+              "indie",
+              "singer-songwriter",
+              "dream pop",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "seven"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:seven"
         },
         {
           "title": "august",
@@ -329,16 +548,8 @@
           "genre_scores": {
             "folk": 999.0
           },
-          "genre_sources": {
-            "manual": [
-              "folk"
-            ]
-          },
-          "genre_raw_sources": {
-            "manual": [
-              "folk"
-            ]
-          },
+          "genre_sources": {},
+          "genre_raw_sources": {},
           "genre_errors": {},
           "genre_canonical_key": "family:august"
         },
@@ -361,7 +572,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
           "historical_track_ids": [],
-          "release_date": "2020-07-24T00:00:00Z"
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "dream pop",
+            "folk",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "dream pop": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "dream pop",
+              "folk",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "dream pop",
+              "folk",
+              "chamber pop",
+              "pop",
+              "indie folk",
+              "overrated",
+              "orchestral pop",
+              "oto",
+              "indie",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "this is me trying"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:this_is_me_trying"
         },
         {
           "title": "illicit affairs",
@@ -382,7 +630,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
           "historical_track_ids": [],
-          "release_date": "2020-07-24T00:00:00Z"
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "indie folk",
+            "folk",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "indie folk": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "indie folk",
+              "folk",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "indie folk",
+              "folk",
+              "pop",
+              "indie",
+              "singer-songwriter",
+              "folk pop",
+              "female vocalists",
+              "overrated",
+              "contemporary folk",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "illicit affairs"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:illicit_affairs"
         },
         {
           "title": "invisible string",
@@ -403,7 +688,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
           "historical_track_ids": [],
-          "release_date": "2020-07-24T00:00:00Z"
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "folk",
+            "indie pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "indie pop": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "Nashville",
+              "indie",
+              "Love",
+              "pop",
+              "singer-songwriter",
+              "chamber pop",
+              "indie folk",
+              "folk pop",
+              "overrated"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "invisible string"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:invisible_string"
         },
         {
           "title": "mirrorball",
@@ -426,7 +748,44 @@
           "historical_track_ids": [
             "0ZNU020wNYvgW84iljPkPP"
           ],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "dream pop",
+            "folk",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "dream pop": 3.0,
+            "folk": 2.0,
+            "alternative": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "dream pop",
+              "folk",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "dream pop",
+              "folk",
+              "alternative",
+              "pop",
+              "indie folk",
+              "overrated",
+              "jangle pop",
+              "indie",
+              "chamber pop",
+              "folk pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "mirrorball"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:mirrorball"
         },
         {
           "title": "mad woman",
@@ -447,7 +806,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
           "historical_track_ids": [],
-          "release_date": "2020-07-24T00:00:00Z"
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "folk",
+            "indie pop",
+            "indie folk"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "indie pop": 2.0,
+            "indie folk": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "indie folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "indie",
+              "indie folk",
+              "singer-songwriter",
+              "pop",
+              "indie pop",
+              "alternative",
+              "folk pop",
+              "indietronica",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "mad woman"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:mad_woman"
         },
         {
           "title": "epiphany",
@@ -468,7 +864,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
           "historical_track_ids": [],
-          "release_date": "2020-07-24T00:00:00Z"
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "pop",
+            "folk",
+            "indie pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "folk": 2.0,
+            "indie pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "folk",
+              "indie pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "chamber pop",
+              "ambient",
+              "folk",
+              "indie",
+              "pop",
+              "Soundtrack Of My Life",
+              "indie pop",
+              "singer-songwriter",
+              "americana",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "epiphany"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:epiphany"
         },
         {
           "title": "betty",
@@ -489,7 +922,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
           "historical_track_ids": [],
-          "release_date": "2020-07-24T00:00:00Z"
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "folk",
+            "country",
+            "folk pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "country": 2.0,
+            "folk pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "country",
+              "folk pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "country",
+              "folk rock",
+              "folk pop",
+              "2020",
+              "singer-songwriter",
+              "americana",
+              "2020s",
+              "guitar pop",
+              "pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "betty"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:betty"
         },
         {
           "title": "peace",
@@ -510,7 +980,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
           "historical_track_ids": [],
-          "release_date": "2020-07-24T00:00:00Z"
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "folk",
+            "pop",
+            "indie pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "pop": 2.0,
+            "indie pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "pop",
+              "indie pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "Lo-Fi",
+              "pop",
+              "indie",
+              "rnb",
+              "indie pop",
+              "ambient",
+              "indie folk",
+              "indie-pop",
+              "chill out"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "peace"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:peace"
         },
         {
           "title": "hoax",
@@ -531,7 +1038,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
           "historical_track_ids": [],
-          "release_date": "2020-07-24T00:00:00Z"
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "indie pop",
+            "folk",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "indie pop": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "indie pop",
+              "folk",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "indie pop",
+              "folk",
+              "pop",
+              "indie",
+              "IndieFolk",
+              "alternative",
+              "Ballad",
+              "indietronica",
+              "indie folk",
+              "poetry"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "hoax"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:hoax"
         },
         {
           "title": "the 1",
@@ -554,7 +1098,44 @@
           "historical_track_ids": [
             "0Jlcvv8IykzHaSmj49uNW8"
           ],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "folk",
+            "soft rock",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "soft rock": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "soft rock",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "soft rock",
+              "pop",
+              "indie pop",
+              "chamber pop",
+              "singer-songwriter",
+              "indie",
+              "folk pop",
+              "indie folk",
+              "overrated"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "the 1"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_1"
         },
         {
           "title": "the last great american dynasty",
@@ -577,7 +1158,44 @@
           "historical_track_ids": [
             "2Eeur20xVqfUoM3Q7EFPFt"
           ],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "indie pop",
+            "pop",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "indie pop": 3.0,
+            "pop": 2.0,
+            "alternative": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "indie pop",
+              "pop",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "indie pop",
+              "pop",
+              "alternative",
+              "folk",
+              "singer-songwriter",
+              "indie",
+              "folk pop",
+              "chamber pop",
+              "overrated",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "the last great american dynasty"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_last_great_american_dynasty"
         }
       ]
     },
@@ -613,16 +1231,8 @@
           "genre_scores": {
             "folk": 999.0
           },
-          "genre_sources": {
-            "manual": [
-              "folk"
-            ]
-          },
-          "genre_raw_sources": {
-            "manual": [
-              "folk"
-            ]
-          },
+          "genre_sources": {},
+          "genre_raw_sources": {},
           "genre_errors": {},
           "genre_canonical_key": "family:august"
         },
@@ -645,7 +1255,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
           "historical_track_ids": [],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "folk",
+            "country",
+            "folk pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "country": 2.0,
+            "folk pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "country",
+              "folk pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "country",
+              "folk rock",
+              "folk pop",
+              "2020",
+              "singer-songwriter",
+              "americana",
+              "2020s",
+              "guitar pop",
+              "pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "betty"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:betty"
         },
         {
           "title": "epiphany - the long pond studio sessions",
@@ -666,7 +1313,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
           "historical_track_ids": [],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "pop",
+            "folk",
+            "indie pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "folk": 2.0,
+            "indie pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "folk",
+              "indie pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "chamber pop",
+              "ambient",
+              "folk",
+              "indie",
+              "pop",
+              "Soundtrack Of My Life",
+              "indie pop",
+              "singer-songwriter",
+              "americana",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "epiphany"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:epiphany"
         },
         {
           "title": "hoax - the long pond studio sessions",
@@ -687,7 +1371,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
           "historical_track_ids": [],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "indie pop",
+            "folk",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "indie pop": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "indie pop",
+              "folk",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "indie pop",
+              "folk",
+              "pop",
+              "indie",
+              "IndieFolk",
+              "alternative",
+              "Ballad",
+              "indietronica",
+              "indie folk",
+              "poetry"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "hoax"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:hoax"
         },
         {
           "title": "illicit affairs - the long pond studio sessions",
@@ -708,7 +1429,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
           "historical_track_ids": [],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "indie folk",
+            "folk",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "indie folk": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "indie folk",
+              "folk",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "indie folk",
+              "folk",
+              "pop",
+              "indie",
+              "singer-songwriter",
+              "folk pop",
+              "female vocalists",
+              "overrated",
+              "contemporary folk",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "illicit affairs"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:illicit_affairs"
         },
         {
           "title": "invisible string - the long pond studio sessions",
@@ -729,7 +1487,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
           "historical_track_ids": [],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "folk",
+            "indie pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "indie pop": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "Nashville",
+              "indie",
+              "Love",
+              "pop",
+              "singer-songwriter",
+              "chamber pop",
+              "indie folk",
+              "folk pop",
+              "overrated"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "invisible string"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:invisible_string"
         },
         {
           "title": "mad woman - the long pond studio sessions",
@@ -750,7 +1545,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
           "historical_track_ids": [],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "folk",
+            "indie pop",
+            "indie folk"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "indie pop": 2.0,
+            "indie folk": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "indie folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "indie",
+              "indie folk",
+              "singer-songwriter",
+              "pop",
+              "indie pop",
+              "alternative",
+              "folk pop",
+              "indietronica",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "mad woman"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:mad_woman"
         },
         {
           "title": "mirrorball - the long pond studio sessions",
@@ -771,7 +1603,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
           "historical_track_ids": [],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "dream pop",
+            "folk",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "dream pop": 3.0,
+            "folk": 2.0,
+            "alternative": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "dream pop",
+              "folk",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "dream pop",
+              "folk",
+              "alternative",
+              "pop",
+              "indie folk",
+              "overrated",
+              "jangle pop",
+              "indie",
+              "chamber pop",
+              "folk pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "mirrorball"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:mirrorball"
         },
         {
           "title": "my tears ricochet - the long pond studio sessions",
@@ -792,7 +1661,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
           "historical_track_ids": [],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "folk",
+            "indie pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "indie pop": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "pop",
+              "sad",
+              "chamber pop",
+              "gospel",
+              "Ballad",
+              "arena-goth",
+              "indie",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "my tears ricochet"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:my_tears_ricochet"
         },
         {
           "title": "peace - the long pond studio sessions",
@@ -813,7 +1719,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
           "historical_track_ids": [],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "folk",
+            "pop",
+            "indie pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "pop": 2.0,
+            "indie pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "pop",
+              "indie pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "Lo-Fi",
+              "pop",
+              "indie",
+              "rnb",
+              "indie pop",
+              "ambient",
+              "indie folk",
+              "indie-pop",
+              "chill out"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "peace"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:peace"
         },
         {
           "title": "seven - the long pond studio sessions",
@@ -834,7 +1777,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
           "historical_track_ids": [],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "folk",
+            "indie pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "indie pop": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "pop",
+              "chamber pop",
+              "indie folk",
+              "heartstopper",
+              "indie",
+              "singer-songwriter",
+              "dream pop",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "seven"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:seven"
         },
         {
           "title": "the lakes - the long pond studio sessions",
@@ -855,7 +1835,19 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
           "historical_track_ids": [],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_lakes"
         },
         {
           "title": "this is me trying - the long pond studio sessions",
@@ -876,7 +1868,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
           "historical_track_ids": [],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "dream pop",
+            "folk",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "dream pop": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "dream pop",
+              "folk",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "dream pop",
+              "folk",
+              "chamber pop",
+              "pop",
+              "indie folk",
+              "overrated",
+              "orchestral pop",
+              "oto",
+              "indie",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "this is me trying"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:this_is_me_trying"
         }
       ]
     },
@@ -908,24 +1937,23 @@
           "historical_track_ids": [],
           "release_date": "2020-11-25T00:00:00Z",
           "genres": [
-            "folk"
+            "folk pop",
+            "folk",
+            "pop"
           ],
-          "genre_status": "manual",
+          "genre_status": "auto",
           "genre_scores": {
-            "folk": 999.0
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
           },
-          "genre_sources": {
-            "manual": [
-              "folk"
-            ]
-          },
-          "genre_raw_sources": {
-            "manual": [
-              "folk"
-            ]
-          },
+          "genre_sources": {},
+          "genre_raw_sources": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:cardigan"
+          "genre_canonical_key": "family:cardigan",
+          "genre_query_titles": {
+            "lastfm": "cardigan"
+          }
         },
         {
           "title": "exile (feat. Bon Iver) - the long pond studio sessions",
@@ -947,7 +1975,19 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
           "display_era": "folklore",
           "historical_track_ids": [],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:exile_feat_bon_iver"
         },
         {
           "title": "the 1 - the long pond studio sessions",
@@ -969,7 +2009,44 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
           "display_era": "folklore",
           "historical_track_ids": [],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "folk",
+            "soft rock",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "soft rock": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "soft rock",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "soft rock",
+              "pop",
+              "indie pop",
+              "chamber pop",
+              "singer-songwriter",
+              "indie",
+              "folk pop",
+              "indie folk",
+              "overrated"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "the 1"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_1"
         },
         {
           "title": "the last great american dynasty - the long pond studio sessions",
@@ -991,7 +2068,44 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
           "display_era": "folklore",
           "historical_track_ids": [],
-          "release_date": "2020-11-25T00:00:00Z"
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "indie pop",
+            "pop",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "indie pop": 3.0,
+            "pop": 2.0,
+            "alternative": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "indie pop",
+              "pop",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "indie pop",
+              "pop",
+              "alternative",
+              "folk",
+              "singer-songwriter",
+              "indie",
+              "folk pop",
+              "chamber pop",
+              "overrated",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "the last great american dynasty"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_last_great_american_dynasty"
         }
       ]
     }

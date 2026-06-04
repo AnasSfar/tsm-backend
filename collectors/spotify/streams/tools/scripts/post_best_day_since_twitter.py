@@ -25,6 +25,7 @@ sys.path.insert(0, str(ROOT.parent))                  # collectors/spotify/
 
 from core.twitter import post_with_image  # noqa: E402
 from core.album_emoji import album_emoji  # noqa: E402
+from core.data_paths import update_streams_dir  # noqa: E402
 import best_day_since  # noqa: E402
 import spotlight  # noqa: E402
 
@@ -75,8 +76,7 @@ def _build_tweet(row: dict, daily_yesterday: int | None) -> str:
 
 
 def _day_dir(target_date: str) -> Path:
-    d = date.fromisoformat(target_date)
-    return ROOT / "history" / str(d.year) / f"{d.month:02d}" / target_date
+    return update_streams_dir(target_date)
 
 
 def main() -> None:

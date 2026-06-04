@@ -29,7 +29,19 @@
           "historical_track_ids": [
             "0fAbfDiuQiUwV7FUcFfRGY"
           ],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:mine_pop_mix"
         },
         {
           "title": "Back To December - Acoustic",
@@ -50,7 +62,44 @@
           "version_tag": "acoustic__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
           "historical_track_ids": [],
-          "release_date": "2010-01-01T00:00:00Z"
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop",
+              "female vocalists",
+              "taylor swift",
+              "Love",
+              "love at first listen",
+              "<3",
+              "2010",
+              "sweet"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Back To December"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:back_to_december"
         },
         {
           "title": "Haunted - Acoustic Version",
@@ -71,7 +120,19 @@
           "version_tag": "acoustic__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
           "historical_track_ids": [],
-          "release_date": "2010-01-01T00:00:00Z"
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:haunted"
         },
         {
           "title": "Better Than Revenge - Live/2011",
@@ -92,7 +153,44 @@
           "version_tag": "live__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "taylor swift",
+              "rock",
+              "female vocalists",
+              "pop rock",
+              "pop punk",
+              "country pop",
+              "2010",
+              "catchy"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Better Than Revenge"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:better_than_revenge"
         },
         {
           "title": "Last Kiss - Live/2011",
@@ -113,7 +211,19 @@
           "version_tag": "live__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:last_kiss"
         },
         {
           "title": "Mean - Live/2011",
@@ -134,7 +244,19 @@
           "version_tag": "live__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:mean"
         },
         {
           "title": "Mine - Live/2011",
@@ -155,7 +277,19 @@
           "version_tag": "live__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:mine"
         },
         {
           "title": "Ours - Live/2011",
@@ -176,7 +310,19 @@
           "version_tag": "live__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:ours"
         },
         {
           "title": "Sparks Fly - Live/2011",
@@ -197,7 +343,19 @@
           "version_tag": "live__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:sparks_fly"
         },
         {
           "title": "Speak Now - Live/2011",
@@ -218,7 +376,19 @@
           "version_tag": "live__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:speak_now"
         },
         {
           "title": "The Story Of Us - Live",
@@ -239,7 +409,19 @@
           "version_tag": "live__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_story_of_us"
         }
       ]
     },
@@ -267,7 +449,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop",
+              "female vocalists",
+              "taylor swift",
+              "Love",
+              "love at first listen",
+              "<3",
+              "2010",
+              "sweet"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Back To December"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:back_to_december"
         },
         {
           "title": "Better Than Revenge",
@@ -288,7 +507,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
           "historical_track_ids": [],
-          "release_date": "2010-01-01T00:00:00Z"
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "taylor swift",
+              "rock",
+              "female vocalists",
+              "pop rock",
+              "pop punk",
+              "country pop",
+              "2010",
+              "catchy"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Better Than Revenge"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:better_than_revenge"
         },
         {
           "title": "Dear John",
@@ -309,7 +565,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:dear_john"
         },
         {
           "title": "Enchanted",
@@ -330,7 +598,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "taylor swift",
+              "Love",
+              "country pop",
+              "female vocalists",
+              "flawless",
+              "singer-songwriter",
+              "beautiful",
+              "sweet"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Enchanted"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:enchanted"
         },
         {
           "title": "Haunted",
@@ -351,7 +656,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
           "historical_track_ids": [],
-          "release_date": "2010-01-01T00:00:00Z"
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:haunted"
         },
         {
           "title": "If This Was A Movie",
@@ -372,7 +689,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
           "historical_track_ids": [],
-          "release_date": "2010-01-01T00:00:00Z"
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:if_this_was_a_movie"
         },
         {
           "title": "Innocent",
@@ -393,7 +722,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
           "historical_track_ids": [],
-          "release_date": "2010-01-01T00:00:00Z"
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:innocent"
         },
         {
           "title": "Last Kiss",
@@ -414,7 +755,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
           "historical_track_ids": [],
-          "release_date": "2010-01-01T00:00:00Z"
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:last_kiss"
         },
         {
           "title": "Mean",
@@ -435,7 +788,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:mean"
         },
         {
           "title": "Mine",
@@ -456,7 +821,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
           "historical_track_ids": [],
-          "release_date": "2010-01-01T00:00:00Z"
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:mine"
         },
         {
           "title": "Never Grow Up",
@@ -477,7 +854,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:never_grow_up"
         },
         {
           "title": "Ours",
@@ -498,7 +887,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
           "historical_track_ids": [],
-          "release_date": "2010-01-01T00:00:00Z"
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:ours"
         },
         {
           "title": "Sparks Fly",
@@ -519,7 +920,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:sparks_fly"
         },
         {
           "title": "Speak Now",
@@ -540,7 +953,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:speak_now"
         },
         {
           "title": "Superman",
@@ -561,7 +986,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
           "historical_track_ids": [],
-          "release_date": "2010-01-01T00:00:00Z"
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:superman"
         },
         {
           "title": "The Story Of Us",
@@ -582,7 +1019,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_story_of_us"
         },
         {
           "title": "Long Live",
@@ -603,7 +1052,19 @@
           "version_tag": "live__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e11a75a2f2ff39cec788a015",
           "historical_track_ids": [],
-          "release_date": "2010-01-01T00:00:00Z"
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:long_live"
         }
       ]
     },
@@ -633,7 +1094,19 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "display_era": "Speak Now",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:back_to_december_apologize_you_re_not_sorry"
         }
       ]
     },
@@ -663,7 +1136,19 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "display_era": "Speak Now",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:dear_john_live2011"
         },
         {
           "title": "Enchanted - Live/2011",
@@ -685,7 +1170,44 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "display_era": "Speak Now",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "taylor swift",
+              "Love",
+              "country pop",
+              "female vocalists",
+              "flawless",
+              "singer-songwriter",
+              "beautiful",
+              "sweet"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Enchanted"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:enchanted_live2011"
         },
         {
           "title": "Haunted - Live/2011",
@@ -707,7 +1229,19 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "display_era": "Speak Now",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:haunted_live2011"
         },
         {
           "title": "Long Live - Live/2011",
@@ -729,7 +1263,19 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "display_era": "Speak Now",
           "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z"
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:long_live_live2011"
         }
       ]
     }

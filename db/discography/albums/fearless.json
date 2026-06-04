@@ -27,7 +27,19 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
           "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z"
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:breathe"
         },
         {
           "title": "Come In With The Rain",
@@ -48,7 +60,19 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
           "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z"
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:come_in_with_the_rain"
         },
         {
           "title": "Fearless",
@@ -69,7 +93,19 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
           "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z"
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:fearless"
         },
         {
           "title": "Fifteen",
@@ -90,7 +126,19 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da",
           "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z"
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:fifteen"
         },
         {
           "title": "Forever & Always - Piano Version",
@@ -111,7 +159,19 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
           "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z"
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:forever_always"
         },
         {
           "title": "Hey Stephen",
@@ -132,7 +192,19 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
           "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z"
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:hey_stephen"
         },
         {
           "title": "Jump Then Fall",
@@ -153,7 +225,19 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
           "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z"
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:jump_then_fall"
         },
         {
           "title": "Love Story",
@@ -174,7 +258,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da",
           "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z"
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "taylor swift",
+              "pop",
+              "Love",
+              "romantic",
+              "female vocalists",
+              "country pop",
+              "love story",
+              "love song",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Love Story"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:love_story"
         },
         {
           "title": "SuperStar",
@@ -195,7 +316,19 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
           "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z"
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:superstar"
         },
         {
           "title": "Tell Me Why",
@@ -216,7 +349,19 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da",
           "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z"
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:tell_me_why"
         },
         {
           "title": "The Other Side Of The Door",
@@ -237,7 +382,19 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
           "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z"
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_other_side_of_the_door"
         },
         {
           "title": "Untouchable",
@@ -258,7 +415,19 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
           "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z"
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:untouchable"
         },
         {
           "title": "White Horse",
@@ -279,7 +448,19 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
           "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z"
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:white_horse"
         },
         {
           "title": "You Belong With Me",
@@ -300,7 +481,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da",
           "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z"
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "taylor swift",
+              "pop",
+              "country pop",
+              "Love",
+              "female vocalists",
+              "female vocalist",
+              "love at first listen",
+              "2009",
+              "singer-songwriter"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "You Belong With Me"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_belong_with_me"
         },
         {
           "title": "You're Not Sorry",
@@ -321,7 +539,19 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
           "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z"
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_re_not_sorry"
         }
       ]
     },
@@ -349,7 +579,44 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c4d3acdcb5d53a2a3856786e",
           "historical_track_ids": [],
-          "release_date": "2020-02-07T00:00:00Z"
+          "release_date": "2020-02-07T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "taylor swift",
+              "pop",
+              "Love",
+              "romantic",
+              "female vocalists",
+              "country pop",
+              "love story",
+              "love song",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Love Story"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:love_story"
         },
         {
           "title": "You're Not Sorry - CSI Remix",
@@ -370,7 +637,19 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e8ae61ef7ff5c29b9f84828f",
           "historical_track_ids": [],
-          "release_date": "2020-02-07T00:00:00Z"
+          "release_date": "2020-02-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_re_not_sorry"
         }
       ]
     },
@@ -398,7 +677,19 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e",
           "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z"
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:change"
         },
         {
           "title": "Forever & Always",
@@ -419,7 +710,19 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e",
           "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z"
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:forever_always"
         },
         {
           "title": "The Best Day",
@@ -440,7 +743,19 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e",
           "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z"
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_best_day"
         },
         {
           "title": "The Way I Loved You",
@@ -461,7 +776,19 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e",
           "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z"
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_way_i_loved_you"
         }
       ]
     },
@@ -491,7 +818,19 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738d3b185c6a110a479e01e3c4",
           "display_era": "Fearless",
           "historical_track_ids": [],
-          "release_date": "2011-02-15T00:00:00Z"
+          "release_date": "2011-02-15T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:today_was_a_fairytale"
         }
       ]
     },
@@ -521,7 +860,19 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
           "display_era": "Fearless",
           "historical_track_ids": [],
-          "release_date": "2008-06-28T00:00:00Z"
+          "release_date": "2008-06-28T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:change_live_from_clear_channel_stripped_2008"
         },
         {
           "title": "Fearless - Live From Clear Channel Stripped 2008",
@@ -543,7 +894,19 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
           "display_era": "Fearless",
           "historical_track_ids": [],
-          "release_date": "2008-06-28T00:00:00Z"
+          "release_date": "2008-06-28T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:fearless_live_from_clear_channel_stripped_2008"
         },
         {
           "title": "Hey Stephen - Commentary",
@@ -565,7 +928,19 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b27360cb9332e8c8c7d8e50854b3",
           "display_era": "Fearless",
           "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z"
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:hey_stephen_commentary"
         },
         {
           "title": "Love Story - Instrumental with BGV",
@@ -587,7 +962,19 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2733aaff042743bac0fdec793fc",
           "display_era": "Fearless",
           "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z"
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:love_story_instrumental_with_bgv"
         },
         {
           "title": "Love Story - J Stax Radio Mix",
@@ -608,7 +995,19 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b2736ff72554305455511e786687",
           "display_era": "Fearless",
-          "historical_track_ids": []
+          "historical_track_ids": [],
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:love_story_j_stax_radio_mix"
         },
         {
           "title": "Love Story - Live From Clear Channel Stripped 2008",
@@ -630,7 +1029,44 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
           "display_era": "Fearless",
           "historical_track_ids": [],
-          "release_date": "2008-06-28T00:00:00Z"
+          "release_date": "2008-06-28T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "taylor swift",
+              "pop",
+              "Love",
+              "romantic",
+              "female vocalists",
+              "country pop",
+              "love story",
+              "love song",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Love Story"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:love_story_live_from_clear_channel_stripped_2008"
         },
         {
           "title": "Love Story - Pop Mix",
@@ -652,7 +1088,19 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d676631cbb331a320db57b64",
           "display_era": "Fearless",
           "historical_track_ids": [],
-          "release_date": "2020-02-07T00:00:00Z"
+          "release_date": "2020-02-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:love_story_pop_mix"
         },
         {
           "title": "Today Was A Fairytale - US Version",
@@ -673,7 +1121,19 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b27393b047c75268dd2847187910",
           "display_era": "Fearless",
-          "historical_track_ids": []
+          "historical_track_ids": [],
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:today_was_a_fairytale_us_version"
         },
         {
           "title": "Untouchable - Live From Clear Channel Stripped 2008",
@@ -695,7 +1155,19 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
           "display_era": "Fearless",
           "historical_track_ids": [],
-          "release_date": "2008-06-28T00:00:00Z"
+          "release_date": "2008-06-28T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:untouchable_live_from_clear_channel_stripped_2008"
         }
       ]
     }

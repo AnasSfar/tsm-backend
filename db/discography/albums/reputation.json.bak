@@ -1,4 +1,4 @@
-{
+﻿{
   "album": "reputation",
   "section_count": 6,
   "track_count": 37,
@@ -26,7 +26,8 @@
           "song_family": "september_recorded_at_the_tracking_room_nashville",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bae8f095c58e137855f6d230",
-          "historical_track_ids": []
+          "historical_track_ids": [],
+          "release_date": "2018-04-13T00:00:00Z"
         }
       ]
     },
@@ -53,7 +54,8 @@
           "song_family": "ready_for_it",
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
-          "historical_track_ids": []
+          "historical_track_ids": [],
+          "release_date": "2018-03-09T00:00:00Z"
         },
         {
           "title": "Call It What You Want - Karaoke Version",
@@ -115,7 +117,8 @@
           "song_family": "delicate",
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
-          "historical_track_ids": []
+          "historical_track_ids": [],
+          "release_date": "2018-03-09T00:00:00Z"
         },
         {
           "title": "Don't Blame Me - Karaoke Version",
@@ -135,7 +138,8 @@
           "song_family": "don_t_blame_me",
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
-          "historical_track_ids": []
+          "historical_track_ids": [],
+          "release_date": "2018-03-09T00:00:00Z"
         },
         {
           "title": "Dress - Karaoke Version",
@@ -281,7 +285,8 @@
           "song_family": "look_what_you_made_me_do",
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
-          "historical_track_ids": []
+          "historical_track_ids": [],
+          "release_date": "2018-03-09T00:00:00Z"
         },
         {
           "title": "New Year's Day - Karaoke Version",
@@ -371,7 +376,8 @@
           "song_family": "ready_for_it",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d41ccf8f43721c045a969300",
-          "historical_track_ids": []
+          "historical_track_ids": [],
+          "release_date": "2017-12-01T00:00:00Z"
         },
         {
           "title": "Delicate - Seeb Remix",
@@ -391,7 +397,8 @@
           "song_family": "delicate",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737809d9723e21370fe5926a7c",
-          "historical_track_ids": []
+          "historical_track_ids": [],
+          "release_date": "2018-06-08T00:00:00Z"
         },
         {
           "title": "Delicate - Recorded at The Tracking Room Nashville",
@@ -411,7 +418,8 @@
           "song_family": "delicate_recorded_at_the_tracking_room_nashville",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bae8f095c58e137855f6d230",
-          "historical_track_ids": []
+          "historical_track_ids": [],
+          "release_date": "2018-04-13T00:00:00Z"
         },
         {
           "title": "Delicate - Sawyr And Ryan Tedder Mix",
@@ -431,7 +439,8 @@
           "song_family": "delicate_sawyr_and_ryan_tedder_mix",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d8032a149cd86c879c9df63a",
-          "historical_track_ids": []
+          "historical_track_ids": [],
+          "release_date": "2018-05-25T00:00:00Z"
         }
       ]
     },
@@ -443,7 +452,7 @@
         {
           "title": "I Don't Wanna Live Forever (Fifty Shades Darker)",
           "url": "https://open.spotify.com/intl-fr/track/2y5aJvzXhHPA94U5GFAcXe",
-          "type": "standalone",
+          "type": "soundtrack",
           "edition": "extras",
           "display_section": "Soundtrack Feature",
           "display_order": 1,
@@ -457,7 +466,7 @@
           ],
           "title_clean": "I Don't Wanna Live Forever (Fifty Shades Darker)",
           "song_family": "i_don_t_wanna_live_forever_fifty_shades_darker",
-          "version_tag": "live__standalone",
+          "version_tag": "soundtrack",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735997605214d568d73fd365c2",
           "historical_track_ids": [
             "55n9yjI6qqXh5F2mYvUc2y"
@@ -616,7 +625,7 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [],
-          "release_date": "2017-11-09T00:00:00Z"
+          "release_date": "2017-11-10T00:00:00Z"
         },
         {
           "title": "Gorgeous",
@@ -813,7 +822,8 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d41ccf8f43721c045a969300",
           "display_era": "reputation",
-          "historical_track_ids": []
+          "historical_track_ids": [],
+          "release_date": "2017-12-01T00:00:00Z"
         }
       ]
     }

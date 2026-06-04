@@ -27,7 +27,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "singer-songwriter",
+              "dream pop",
+              "midnights",
+              "The Eras Tour",
+              "Maria Jose Cardoso",
+              "folk pop",
+              "Masterpiece",
+              "electronic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Great War"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_great_war"
         },
         {
           "title": "Bigger Than The Whole Sky",
@@ -48,7 +85,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "Ballad",
+              "singer-songwriter",
+              "dream pop",
+              "sad",
+              "midnights",
+              "best of 2022",
+              "melancholic",
+              "ambient"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Bigger Than The Whole Sky"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:bigger_than_the_whole_sky"
         },
         {
           "title": "Paris",
@@ -69,7 +143,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "pop",
+            "singer-songwriter",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "singer-songwriter": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "synthpop",
+              "electropop",
+              "Colleen Hoover",
+              "female vocalist",
+              "electronic",
+              "death metal",
+              "bubblegum pop",
+              "american"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Paris"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:paris"
         },
         {
           "title": "High Infidelity",
@@ -90,7 +201,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "synth-pop",
+            "pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "synth-pop": 3.0,
+            "pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "synth-pop",
+              "pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "synthpop",
+              "pop",
+              "singer-songwriter",
+              "electronic",
+              "Colleen Hoover",
+              "best of 2022",
+              "electropop",
+              "racist",
+              "awful",
+              "artpop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "High Infidelity"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:high_infidelity"
         },
         {
           "title": "Glitch",
@@ -111,7 +259,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "singer-songwriter",
+            "synth-pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "singer-songwriter": 3.0,
+            "synth-pop": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "synth-pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "synthpop",
+              "pop",
+              "electronic",
+              "Colleen Hoover",
+              "female vocalists",
+              "electronica",
+              "slayAM edition",
+              "female vocalist",
+              "synth pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Glitch"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:glitch"
         },
         {
           "title": "Would've, Could've, Should've",
@@ -132,7 +317,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "pop",
+            "soft rock",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "soft rock": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "soft rock",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "soft rock",
+              "singer-songwriter",
+              "pop rock",
+              "dream pop",
+              "Post-punk revival",
+              "best of 2022",
+              "Midnights (The Til Dawn Edition)",
+              "ðŸ˜­",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Would've, Could've, Should've"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:would_ve_could_ve_should_ve"
         },
         {
           "title": "Dear Reader",
@@ -153,7 +375,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "singer-songwriter",
+            "synth-pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "singer-songwriter": 3.0,
+            "synth-pop": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "synth-pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "synthpop",
+              "pop",
+              "female vocalists",
+              "why on earth is this just a bonus track",
+              "dream pop",
+              "electropop",
+              "chill",
+              "synth pop",
+              "amazing"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Dear Reader"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:dear_reader"
         }
       ]
     },
@@ -181,7 +440,19 @@
           "version_tag": "vault__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2734fe1868aa6838eb595f3673a",
           "historical_track_ids": [],
-          "release_date": "2023-11-29T00:00:00Z"
+          "release_date": "2023-11-29T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_re_losing_me"
         }
       ]
     },
@@ -209,7 +480,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2022-10-21T00:00:00Z"
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "overrated",
+              "alt-pop",
+              "rnb",
+              "electropop",
+              "best of 2022",
+              "electronic",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Lavender Haze"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:lavender_haze"
         },
         {
           "title": "Maroon",
@@ -230,7 +538,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
           "historical_track_ids": [],
-          "release_date": "2022-10-21T00:00:00Z"
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "synth-pop",
+            "pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "synth-pop": 3.0,
+            "pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "synth-pop",
+              "pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "synthpop",
+              "pop",
+              "singer-songwriter",
+              "shoegaze",
+              "chillwave",
+              "alt-pop",
+              "AOTY",
+              "soty",
+              "midnights",
+              "amazing"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Maroon"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:maroon"
         },
         {
           "title": "Anti-Hero",
@@ -251,7 +596,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2022-10-21T00:00:00Z"
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "rock",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "rock": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "rock",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "rock",
+              "Grunge",
+              "90s",
+              "test-tag",
+              "batch-test",
+              "automated",
+              "integration-test",
+              "pop",
+              "synthpop",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Anti-Hero"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:anti_hero"
         },
         {
           "title": "Snow On The Beach (feat. Lana Del Rey)",
@@ -275,7 +657,44 @@
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
           "historical_track_ids": [],
-          "release_date": "2022-10-21T00:00:00Z"
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "dream pop",
+            "pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "dream pop": 3.0,
+            "pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "dream pop",
+              "pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "dream pop",
+              "pop",
+              "chill",
+              "Ballad",
+              "singer-songwriter",
+              "Mellow",
+              "synthpop",
+              "relaxing",
+              "beautiful",
+              "amazing"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Snow On The Beach (feat. Lana Del Rey)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:snow_on_the_beach"
         },
         {
           "title": "You're On Your Own, Kid",
@@ -296,7 +715,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
           "historical_track_ids": [],
-          "release_date": "2022-10-21T00:00:00Z"
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "sad",
+              "overrated",
+              "synth pop",
+              "singer songwriter",
+              "AOTY",
+              "alternative rock",
+              "kid"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "You're On Your Own, Kid"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_re_on_your_own_kid"
         },
         {
           "title": "Midnight Rain",
@@ -317,7 +773,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
           "historical_track_ids": [],
-          "release_date": "2022-10-21T00:00:00Z"
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "electropop",
+              "chillout",
+              "overrated",
+              "AOTY",
+              "singer-songwriter",
+              "dream pop",
+              "travis kelce has skidmarks",
+              "electronic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Midnight Rain"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:midnight_rain"
         },
         {
           "title": "Question...?",
@@ -338,7 +831,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
           "historical_track_ids": [],
-          "release_date": "2022-10-21T00:00:00Z"
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "pop",
+            "singer-songwriter",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "singer-songwriter": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "synthpop",
+              "electronic",
+              "dream pop",
+              "overrated",
+              "awful",
+              "Colleen Hoover",
+              "travis kelce has skidmarks",
+              "death metal"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Question...?"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:question"
         },
         {
           "title": "Vigilante Shit",
@@ -359,7 +889,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
           "historical_track_ids": [],
-          "release_date": "2022-10-21T00:00:00Z"
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "dark pop",
+              "synthpop",
+              "overrated",
+              "Colleen Hoover",
+              "singer-songwriter",
+              "electropop",
+              "revenge",
+              "synth pop",
+              "electronic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Vigilante Shit"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:vigilante_shit"
         },
         {
           "title": "Bejeweled",
@@ -380,7 +947,41 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
           "historical_track_ids": [],
-          "release_date": "2022-10-21T00:00:00Z"
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "bubblegum pop",
+              "2022",
+              "synthpop",
+              "female vocalists",
+              "Colleen Hoover",
+              "overrated",
+              "2020s",
+              "best of 2022",
+              "shimmer"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Bejeweled"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:bejeweled"
         },
         {
           "title": "Labyrinth",
@@ -401,7 +1002,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "pop",
+            "dream pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "dream pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dream pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "dream pop",
+              "beautiful",
+              "synthpop",
+              "female vocalists",
+              "singer-songwriter",
+              "ambient pop",
+              "Colleen Hoover",
+              "chillwave",
+              "alt-pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Labyrinth"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:labyrinth"
         },
         {
           "title": "Karma",
@@ -422,7 +1060,41 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "screamo",
+              "Brutal Death Metal",
+              "metal",
+              "overrated",
+              "death metal",
+              "synthpop",
+              "deathcore",
+              "nsbm",
+              "Donald Trump"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Karma"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:karma"
         },
         {
           "title": "Sweet Nothing",
@@ -443,7 +1115,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "pop",
+            "singer-songwriter",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "singer-songwriter": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "female vocalists",
+              "beautiful",
+              "Ballad",
+              "overrated",
+              "synthpop",
+              "Colleen Hoover",
+              "travis kelce has skidmarks",
+              "best of 2022"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Sweet Nothing"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:sweet_nothing"
         },
         {
           "title": "Mastermind",
@@ -464,7 +1173,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "female vocalists",
+              "electropop",
+              "singer-songwriter",
+              "overrated",
+              "electronic",
+              "Colleen Hoover",
+              "travis kelce has skidmarks",
+              "singer songwriter"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Mastermind"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:mastermind"
         }
       ]
     },
@@ -492,7 +1238,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "pop",
+            "pop rock",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "pop rock": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "pop rock",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "love at first listen",
+              "bonus track",
+              "pop rock",
+              "best of 2023",
+              "beautiful",
+              "female vocalist",
+              "female vocalists",
+              "synth pop",
+              "Disco"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Hits Different"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:hits_different"
         },
         {
           "title": "Snow On The Beach (feat. More Lana Del Rey)",
@@ -516,7 +1299,44 @@
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "dream pop",
+            "pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "dream pop": 3.0,
+            "pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "dream pop",
+              "pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "dream pop",
+              "pop",
+              "chill",
+              "Ballad",
+              "singer-songwriter",
+              "Mellow",
+              "synthpop",
+              "relaxing",
+              "beautiful",
+              "amazing"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Snow On The Beach (feat. Lana Del Rey)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:snow_on_the_beach"
         },
         {
           "title": "Karma (feat. Ice Spice)",
@@ -540,7 +1360,41 @@
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
           "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z"
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "screamo",
+              "Brutal Death Metal",
+              "metal",
+              "overrated",
+              "death metal",
+              "synthpop",
+              "deathcore",
+              "nsbm",
+              "Donald Trump"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Karma"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:karma"
         }
       ]
     },
@@ -571,7 +1425,44 @@
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2739954fa9f0ba8534c3897b59d",
           "historical_track_ids": [],
-          "release_date": "2022-11-11T00:00:00Z"
+          "release_date": "2022-11-11T00:00:00Z",
+          "genres": [
+            "rock",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "rock": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "rock",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "rock",
+              "Grunge",
+              "90s",
+              "test-tag",
+              "batch-test",
+              "automated",
+              "integration-test",
+              "pop",
+              "synthpop",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Anti-Hero"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:anti_hero"
         },
         {
           "title": "Anti-Hero - ILLENIUM Remix",
@@ -592,7 +1483,44 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273eb7289d463cd524a93b722c9",
           "historical_track_ids": [],
-          "release_date": "2022-11-18T00:00:00Z"
+          "release_date": "2022-11-18T00:00:00Z",
+          "genres": [
+            "rock",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "rock": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "rock",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "rock",
+              "Grunge",
+              "90s",
+              "test-tag",
+              "batch-test",
+              "automated",
+              "integration-test",
+              "pop",
+              "synthpop",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Anti-Hero"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:anti_hero"
         },
         {
           "title": "Anti-Hero - Jayda G Remix",
@@ -613,7 +1541,44 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2739954fa9f0ba8534c3897b59d",
           "historical_track_ids": [],
-          "release_date": "2022-11-11T00:00:00Z"
+          "release_date": "2022-11-11T00:00:00Z",
+          "genres": [
+            "rock",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "rock": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "rock",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "rock",
+              "Grunge",
+              "90s",
+              "test-tag",
+              "batch-test",
+              "automated",
+              "integration-test",
+              "pop",
+              "synthpop",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Anti-Hero"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:anti_hero"
         },
         {
           "title": "Anti-Hero - Kungs Remix",
@@ -634,7 +1599,44 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2739954fa9f0ba8534c3897b59d",
           "historical_track_ids": [],
-          "release_date": "2022-11-11T00:00:00Z"
+          "release_date": "2022-11-11T00:00:00Z",
+          "genres": [
+            "rock",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "rock": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "rock",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "rock",
+              "Grunge",
+              "90s",
+              "test-tag",
+              "batch-test",
+              "automated",
+              "integration-test",
+              "pop",
+              "synthpop",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Anti-Hero"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:anti_hero"
         },
         {
           "title": "Anti-Hero - Roosevelt Remix",
@@ -655,7 +1657,44 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2739954fa9f0ba8534c3897b59d",
           "historical_track_ids": [],
-          "release_date": "2022-11-11T00:00:00Z"
+          "release_date": "2022-11-11T00:00:00Z",
+          "genres": [
+            "rock",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "rock": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "rock",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "rock",
+              "Grunge",
+              "90s",
+              "test-tag",
+              "batch-test",
+              "automated",
+              "integration-test",
+              "pop",
+              "synthpop",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Anti-Hero"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:anti_hero"
         },
         {
           "title": "Anti-Hero - Acoustic Version",
@@ -676,7 +1715,44 @@
           "version_tag": "acoustic__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730fc559ebbed8b0b100ad206c",
           "historical_track_ids": [],
-          "release_date": "2022-11-25T00:00:00Z"
+          "release_date": "2022-11-25T00:00:00Z",
+          "genres": [
+            "rock",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "rock": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "rock",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "rock",
+              "Grunge",
+              "90s",
+              "test-tag",
+              "batch-test",
+              "automated",
+              "integration-test",
+              "pop",
+              "synthpop",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Anti-Hero"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:anti_hero"
         },
         {
           "title": "Lavender Haze - Felix Jaehn Remix",
@@ -699,7 +1775,44 @@
           "historical_track_ids": [
             "5KxZfCXXmVvKhPo8hQz2pS"
           ],
-          "release_date": "2023-02-10T00:00:00Z"
+          "release_date": "2023-02-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "overrated",
+              "alt-pop",
+              "rnb",
+              "electropop",
+              "best of 2022",
+              "electronic",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Lavender Haze"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:lavender_haze"
         },
         {
           "title": "Lavender Haze - Jungle Remix",
@@ -720,7 +1833,44 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f7c84273e5c8ecb7594b4357",
           "historical_track_ids": [],
-          "release_date": "2023-03-03T00:00:00Z"
+          "release_date": "2023-03-03T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "overrated",
+              "alt-pop",
+              "rnb",
+              "electropop",
+              "best of 2022",
+              "electronic",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Lavender Haze"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:lavender_haze"
         },
         {
           "title": "Lavender Haze - Snakehips Remix",
@@ -741,7 +1891,44 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f7c84273e5c8ecb7594b4357",
           "historical_track_ids": [],
-          "release_date": "2023-03-03T00:00:00Z"
+          "release_date": "2023-03-03T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "overrated",
+              "alt-pop",
+              "rnb",
+              "electropop",
+              "best of 2022",
+              "electronic",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Lavender Haze"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:lavender_haze"
         },
         {
           "title": "Lavender Haze - Tensnake Remix",
@@ -762,7 +1949,44 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f7c84273e5c8ecb7594b4357",
           "historical_track_ids": [],
-          "release_date": "2023-03-03T00:00:00Z"
+          "release_date": "2023-03-03T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "overrated",
+              "alt-pop",
+              "rnb",
+              "electropop",
+              "best of 2022",
+              "electronic",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Lavender Haze"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:lavender_haze"
         }
       ]
     },
@@ -792,7 +2016,44 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f233c37dddd971caf61515cf",
           "display_era": "Midnights",
           "historical_track_ids": [],
-          "release_date": "2023-03-31T00:00:00Z"
+          "release_date": "2023-03-31T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "overrated",
+              "alt-pop",
+              "rnb",
+              "electropop",
+              "best of 2022",
+              "electronic",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Lavender Haze"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:lavender_haze_acoustic_version"
         }
       ]
     }

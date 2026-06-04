@@ -55,11 +55,10 @@ DB_DIR          = REPO_ROOT / "db"
 SONGS_JSON      = DB_DIR / "discography" / "songs.json"
 ALBUMS_DIR      = DB_DIR / "discography" / "albums"
 COVERS_PATH     = DB_DIR / "discography" / "covers.json"
-OUT_DIR         = SCRIPT_DIR / "history" / "spotlight"
 
 sys.path.insert(0, str(SCRIPT_DIR.parent))  # collectors/spotify/ for core.*
 
-from core.data_paths import archived_db_file  # noqa: E402
+from core.data_paths import archived_db_file, update_streams_dir  # noqa: E402
 from core.album_emoji import album_emoji  # noqa: E402
 
 HISTORY_PATH    = (
@@ -1100,12 +1099,13 @@ def generate_spotlight_image(
         highlight       = highlight,
     )
 
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    out_dir = update_streams_dir(stats_date) / "spotlight"
+    out_dir.mkdir(parents=True, exist_ok=True)
     tid           = track["track_id"]
     title_clean   = _clean_title_for_filename(track["title"])
     combined_suffix = "__combined" if combined else ""
-    out_path      = OUT_DIR / f"{title_clean}__{stats_date}{combined_suffix}.png"
-    tmp_html      = OUT_DIR / f"_spotlight_{tid}.html"
+    out_path      = out_dir / f"{title_clean}__{stats_date}{combined_suffix}.png"
+    tmp_html      = out_dir / f"_spotlight_{tid}.html"
     tmp_html.write_text(html, encoding="utf-8")
 
     try:

@@ -23,7 +23,19 @@
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27363d77f99117b28af9f656918",
         "historical_track_ids": [],
-        "release_date": "2017-11-09T00:00:00Z"
+        "release_date": "2017-11-09T00:00:00Z",
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:babe"
       },
       {
         "title": "Beautiful Ghosts - From The Motion Picture Soundtrack \"Cats\"",
@@ -43,7 +55,19 @@
         "song_family": "beautiful_ghosts_from_the_motion_picture_soundtrack_cats",
         "version_tag": null,
         "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27370d80ce758278c0ac3a63d9e",
-        "historical_track_ids": []
+        "historical_track_ids": [],
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:beautiful_ghosts_from_the_motion_picture_soundtrack_cats"
       },
       {
         "title": "Bette Davis Eyes - Live/2011",
@@ -64,7 +88,19 @@
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
         "historical_track_ids": [],
-        "release_date": "2010-10-25T00:00:00Z"
+        "release_date": "2010-10-25T00:00:00Z",
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:bette_davis_eyes_live2011"
       },
       {
         "title": "Big Star (with Taylor Swift) - Live",
@@ -84,7 +120,19 @@
         "song_family": "big_star_with_taylor_swift_live",
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2736bbd0e8ab9014bb01421b731",
-        "historical_track_ids": []
+        "historical_track_ids": [],
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:big_star_with_taylor_swift_live"
       },
       {
         "title": "Birch",
@@ -104,7 +152,19 @@
         "song_family": "birch",
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273fbab613f887083f7ee11a1de",
-        "historical_track_ids": []
+        "historical_track_ids": [],
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:birch"
       },
       {
         "title": "Both of Us (feat. Taylor Swift)",
@@ -124,7 +184,19 @@
         "song_family": "both_of_us_feat_taylor_swift",
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273cbc3bf3407cc078f63aa498a",
-        "historical_track_ids": []
+        "historical_track_ids": [],
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:both_of_us_feat_taylor_swift"
       },
       {
         "title": "Drops Of Jupiter - Live/2011",
@@ -145,7 +217,19 @@
         "version_tag": null,
         "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
         "historical_track_ids": [],
-        "release_date": "2010-10-25T00:00:00Z"
+        "release_date": "2010-10-25T00:00:00Z",
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:drops_of_jupiter_live2011"
       },
       {
         "title": "Gasoline (feat. Taylor Swift)",
@@ -165,7 +249,19 @@
         "song_family": "gasoline_feat_taylor_swift",
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273667f8cfd1be0d0cc2b825e25",
-        "historical_track_ids": []
+        "historical_track_ids": [],
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:gasoline_feat_taylor_swift"
       },
       {
         "title": "Highway Don't Care",
@@ -185,7 +281,19 @@
         "song_family": "highway_dont_care",
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273af1e96b5514b5744bf5210fd",
-        "historical_track_ids": []
+        "historical_track_ids": [],
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:highway_dont_care"
       },
       {
         "title": "I Want You Back - Live/2011",
@@ -206,7 +314,19 @@
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
         "historical_track_ids": [],
-        "release_date": "2010-10-25T00:00:00Z"
+        "release_date": "2010-10-25T00:00:00Z",
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:i_want_you_back_live2011"
       },
       {
         "title": "Macavity - From The Motion Picture Soundtrack \"Cats\"",
@@ -226,7 +346,19 @@
         "song_family": "macavity_from_the_motion_picture_soundtrack_cats",
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27370d80ce758278c0ac3a63d9e",
-        "historical_track_ids": []
+        "historical_track_ids": [],
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:macavity_from_the_motion_picture_soundtrack_cats"
       },
       {
         "title": "Message In A Bottle (Fat Max G Remix) (Taylor's Version)",
@@ -247,7 +379,19 @@
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273e53252ce47982a3d555a6b3b",
         "historical_track_ids": [],
-        "release_date": "2022-01-21T00:00:00Z"
+        "release_date": "2022-01-21T00:00:00Z",
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:message_in_a_bottle_fat_max_g_remix_taylors_version"
       },
       {
         "title": "Renegade",
@@ -267,7 +411,19 @@
         "song_family": "renegade",
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273fbab613f887083f7ee11a1de",
-        "historical_track_ids": []
+        "historical_track_ids": [],
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:renegade"
       },
       {
         "title": "Renegade - Pop Version",
@@ -288,7 +444,19 @@
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273f0b56f34301a37d015cbb678",
         "historical_track_ids": [],
-        "release_date": "2021-08-17T00:00:00Z"
+        "release_date": "2021-08-17T00:00:00Z",
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:renegade_pop_version"
       },
       {
         "title": "The Alcott (feat. Taylor Swift)",
@@ -308,7 +476,19 @@
         "song_family": "the_alcott_feat_taylor_swift",
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273364c819937072957a9220847",
-        "historical_track_ids": []
+        "historical_track_ids": [],
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:the_alcott_feat_taylor_swift"
       },
       {
         "title": "The Joker And The Queen (feat. Taylor Swift)",
@@ -329,7 +509,19 @@
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27310109c08f2d5e4333dfddefe",
         "historical_track_ids": [],
-        "release_date": "2022-02-11T00:00:00Z"
+        "release_date": "2022-02-11T00:00:00Z",
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:the_joker_and_the_queen_feat_taylor_swift"
       },
       {
         "title": "Two Is Better Than One (feat. Taylor Swift)",
@@ -349,7 +541,19 @@
         "song_family": "two_is_better_than_one_feat_taylor_swift",
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2734b580b2641d4f6486b299247",
-        "historical_track_ids": []
+        "historical_track_ids": [],
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:two_is_better_than_one_feat_taylor_swift"
       },
       {
         "title": "us. (feat. Taylor Swift)",
@@ -369,7 +573,19 @@
         "song_family": "us_feat_taylor_swift",
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2736e2101520787791370f4a96b",
-        "historical_track_ids": []
+        "historical_track_ids": [],
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:us_feat_taylor_swift"
       },
       {
         "title": "Cruel Summer - Live from TS | The Eras Tour",
@@ -390,7 +606,44 @@
         "version_tag": "live",
         "release_date": "2023-10-19T00:00:00Z",
         "historical_track_ids": [],
-        "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273f669b4e7f0327c92909bc762"
+        "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273f669b4e7f0327c92909bc762",
+        "genres": [
+          "electropop",
+          "pop",
+          "synth-pop"
+        ],
+        "genre_status": "auto",
+        "genre_scores": {
+          "electropop": 3.0,
+          "pop": 2.0,
+          "synth-pop": 1.0
+        },
+        "genre_sources": {
+          "lastfm": [
+            "electropop",
+            "pop",
+            "synth-pop"
+          ]
+        },
+        "genre_raw_sources": {
+          "lastfm": [
+            "electropop",
+            "pop",
+            "synthpop",
+            "industrial pop",
+            "pop perfection",
+            "synthwave",
+            "2019",
+            "the best of 2019",
+            "love at first listen",
+            "soty"
+          ]
+        },
+        "genre_query_titles": {
+          "lastfm": "Cruel Summer"
+        },
+        "genre_errors": {},
+        "genre_canonical_key": "family:cruel_summer"
       },
       {
         "title": "Everything Has Changed - Remix",
@@ -414,7 +667,19 @@
         "version_tag": "remix",
         "release_date": "2013-01-01T00:00:00Z",
         "historical_track_ids": [],
-        "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2731c248e90c3e569f90aef9dec"
+        "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2731c248e90c3e569f90aef9dec",
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:everything_has_changed"
       },
       {
         "title": "Our Song - International Mix",
@@ -435,7 +700,19 @@
         "version_tag": null,
         "release_date": "2008-11-11T00:00:00Z",
         "historical_track_ids": [],
-        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273516c279fe91ae3f6a79b23da"
+        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273516c279fe91ae3f6a79b23da",
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:our_song_international_mix"
       },
       {
         "title": "Should've Said No - International Mix",
@@ -456,7 +733,19 @@
         "version_tag": null,
         "release_date": "2008-11-11T00:00:00Z",
         "historical_track_ids": [],
-        "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27374e5b00878adddd24c9ab44d"
+        "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27374e5b00878adddd24c9ab44d",
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:should_ve_said_no_international_mix"
       },
       {
         "title": "Teardrops On My Guitar - International Mix",
@@ -477,7 +766,19 @@
         "version_tag": null,
         "release_date": "2008-11-11T00:00:00Z",
         "historical_track_ids": [],
-        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273516c279fe91ae3f6a79b23da"
+        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273516c279fe91ae3f6a79b23da",
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:teardrops_on_my_guitar_international_mix"
       },
       {
         "title": "The Life of a Showgirl Intro",
@@ -498,7 +799,19 @@
         "version_tag": null,
         "release_date": "2025-10-02T00:00:00Z",
         "historical_track_ids": [],
-        "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2737e0698e1398b6473de43f901"
+        "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2737e0698e1398b6473de43f901",
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:the_life_of_a_showgirl_intro"
       },
       {
         "title": "The Life of a Showgirl Outro",
@@ -519,7 +832,19 @@
         "version_tag": null,
         "release_date": "2025-10-02T00:00:00Z",
         "historical_track_ids": [],
-        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2737e0698e1398b6473de43f901"
+        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2737e0698e1398b6473de43f901",
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:the_life_of_a_showgirl_outro"
       },
       {
         "title": "The Story Of Us",
@@ -540,7 +865,19 @@
         "version_tag": null,
         "release_date": "2010-01-01T00:00:00Z",
         "historical_track_ids": [],
-        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273e11a75a2f2ff39cec788a015"
+        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273e11a75a2f2ff39cec788a015",
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:the_story_of_us"
       }
     ]
   }

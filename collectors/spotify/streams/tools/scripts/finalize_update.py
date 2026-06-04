@@ -14,6 +14,7 @@ from core.data_paths import update_streams_dir
 from core.retention import cleanup_generated_artifacts
 from git_ops import git_commit_and_push
 import generate_albums_image
+import generate_album_update_image
 from post_debut_releases import post_debut_releases as run_debut_release_posts
 from release_targets import recent_release_album_names
 
@@ -445,6 +446,16 @@ def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
             print(f"Album update already posted during streams run: {album}")
             continue
         if ctx.album_tracks_done_for(album, ctx.summary["stats_date"]):
+            if (
+                not ctx.no_post_mode
+                and generate_album_update_image.album_update_already_posted(album, ctx.summary["stats_date"])
+            ):
+                lock_name = generate_album_update_image.album_update_lock_path(
+                    album,
+                    ctx.summary["stats_date"],
+                ).name
+                print(f"Album update already posted ({lock_name}): {album}")
+                continue
             print(f"Generating album update image: {album} ...")
             album_cmd = [sys.executable, str(album_img_script), album, ctx.summary["stats_date"]]
             if not ctx.no_post_mode:

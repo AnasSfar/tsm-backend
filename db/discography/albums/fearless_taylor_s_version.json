@@ -27,7 +27,19 @@
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:bye_bye_baby"
         },
         {
           "title": "Don't You (Taylor's Version) (From The Vault)",
@@ -48,7 +60,19 @@
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:don_t_you"
         },
         {
           "title": "Mr. Perfectly Fine (Taylor's Version) (From The Vault)",
@@ -69,7 +93,19 @@
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:mr_perfectly_fine"
         },
         {
           "title": "That's When (feat. Keith Urban) (Taylor's Version) (From The Vault)",
@@ -93,7 +129,19 @@
           "version_tag": "featured__vault__taylors_version__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:that_s_when"
         },
         {
           "title": "We Were Happy (Taylor's Version) (From The Vault)",
@@ -114,7 +162,19 @@
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:we_were_happy"
         },
         {
           "title": "Forever & Always (Piano Version) (Taylor's Version)",
@@ -135,7 +195,19 @@
           "version_tag": "taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:forever_always_piano_version"
         }
       ]
     },
@@ -163,7 +235,44 @@
           "version_tag": "remix__taylors_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f2d3584898505ffee9cacfde",
           "historical_track_ids": [],
-          "release_date": "2021-03-23T00:00:00Z"
+          "release_date": "2021-03-23T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "taylor swift",
+              "pop",
+              "Love",
+              "romantic",
+              "female vocalists",
+              "country pop",
+              "love story",
+              "love song",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Love Story"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:love_story"
         }
       ]
     },
@@ -191,7 +300,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:fearless"
         },
         {
           "title": "Fifteen (Taylor's Version)",
@@ -212,7 +333,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:fifteen"
         },
         {
           "title": "Love Story (Taylor's Version)",
@@ -233,7 +366,44 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "taylor swift",
+              "pop",
+              "Love",
+              "romantic",
+              "female vocalists",
+              "country pop",
+              "love story",
+              "love song",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Love Story"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:love_story"
         },
         {
           "title": "Hey Stephen (Taylor's Version)",
@@ -254,7 +424,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:hey_stephen"
         },
         {
           "title": "White Horse (Taylor's Version)",
@@ -275,7 +457,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:white_horse"
         },
         {
           "title": "You Belong With Me (Taylor's Version)",
@@ -296,7 +490,44 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "taylor swift",
+              "pop",
+              "country pop",
+              "Love",
+              "female vocalists",
+              "female vocalist",
+              "love at first listen",
+              "2009",
+              "singer-songwriter"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "You Belong With Me"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_belong_with_me"
         },
         {
           "title": "Breathe (feat. Colbie Caillat) (Taylor's Version)",
@@ -320,7 +551,19 @@
           "version_tag": "featured__taylors_version__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:breathe"
         },
         {
           "title": "Tell Me Why (Taylor's Version)",
@@ -341,7 +584,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:tell_me_why"
         },
         {
           "title": "You're Not Sorry (Taylor's Version)",
@@ -362,7 +617,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_re_not_sorry"
         },
         {
           "title": "The Way I Loved You (Taylor's Version)",
@@ -383,7 +650,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_way_i_loved_you"
         },
         {
           "title": "Forever & Always (Taylor's Version)",
@@ -404,7 +683,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:forever_always"
         },
         {
           "title": "The Best Day (Taylor's Version)",
@@ -425,7 +716,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_best_day"
         },
         {
           "title": "Change (Taylor's Version)",
@@ -446,7 +749,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:change"
         },
         {
           "title": "Jump Then Fall (Taylor's Version)",
@@ -467,7 +782,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:jump_then_fall"
         },
         {
           "title": "Untouchable (Taylor's Version)",
@@ -488,7 +815,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:untouchable"
         },
         {
           "title": "Come In With The Rain (Taylor's Version)",
@@ -509,7 +848,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:come_in_with_the_rain"
         },
         {
           "title": "Superstar (Taylor's Version)",
@@ -530,7 +881,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:superstar"
         },
         {
           "title": "The Other Side Of The Door (Taylor's Version)",
@@ -551,7 +914,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_other_side_of_the_door"
         },
         {
           "title": "Today Was A Fairytale (Taylor's Version)",
@@ -572,7 +947,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:today_was_a_fairytale"
         }
       ]
     },
@@ -604,7 +991,19 @@
           "historical_track_ids": [
             "0q6vsjvnCIWrtwRckCV7y0"
           ],
-          "release_date": "2021-04-09T00:00:00Z"
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:if_this_was_a_movie"
         },
         {
           "title": "You All Over Me (feat. Maren Morris) (Taylor's Version) (From The Vault)",
@@ -631,7 +1030,19 @@
           "historical_track_ids": [
             "4CHpVfAhuxNJ3ibExe6kxO"
           ],
-          "release_date": "2021-03-26T00:00:00Z"
+          "release_date": "2021-03-26T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_all_over_me"
         }
       ]
     },

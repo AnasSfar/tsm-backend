@@ -1,4 +1,4 @@
-﻿{
+{
   "album": "reputation",
   "section_count": 6,
   "track_count": 37,
@@ -27,7 +27,19 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bae8f095c58e137855f6d230",
           "historical_track_ids": [],
-          "release_date": "2018-04-13T00:00:00Z"
+          "release_date": "2018-04-13T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:september_recorded_at_the_tracking_room_nashville"
         }
       ]
     },
@@ -55,7 +67,41 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
           "historical_track_ids": [],
-          "release_date": "2018-03-09T00:00:00Z"
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "2017",
+              "industrial",
+              "pop rap",
+              "EDM",
+              "industrial pop",
+              "reputation",
+              "electronic",
+              "Hip-Hop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "...Ready For It?"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:ready_for_it"
         },
         {
           "title": "Call It What You Want - Karaoke Version",
@@ -76,7 +122,44 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
           "historical_track_ids": [],
-          "release_date": "2018-03-09T00:00:00Z"
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "reputation",
+              "rnb",
+              "taylor swift",
+              "synth-pop",
+              "synthpop",
+              "dream pop",
+              "female vocalist",
+              "reputacao"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Call It What You Want"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:call_it_what_you_want"
         },
         {
           "title": "Dancing With Our Hands Tied - Karaoke Version",
@@ -97,7 +180,41 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
           "historical_track_ids": [],
-          "release_date": "2018-03-09T00:00:00Z"
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "electropop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 3.0,
+            "pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "electropop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "future bass",
+              "dance",
+              "Drum and bass",
+              "taylor swift",
+              "electronic",
+              "female vocalist",
+              "contemporary rnb",
+              "love at first listen"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Dancing With Our Hands Tied"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:dancing_with_our_hands_tied"
         },
         {
           "title": "Delicate - Karaoke Version",
@@ -118,7 +235,44 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
           "historical_track_ids": [],
-          "release_date": "2018-03-09T00:00:00Z"
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "taylor swift",
+              "tropical house",
+              "reputation",
+              "synthpop",
+              "synth-pop",
+              "delicate",
+              "female vocalists",
+              "slow"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Delicate"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:delicate"
         },
         {
           "title": "Don't Blame Me - Karaoke Version",
@@ -139,7 +293,19 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
           "historical_track_ids": [],
-          "release_date": "2018-03-09T00:00:00Z"
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:don_t_blame_me"
         },
         {
           "title": "Dress - Karaoke Version",
@@ -160,7 +326,44 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
           "historical_track_ids": [],
-          "release_date": "2018-03-09T00:00:00Z"
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "alternative": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "rnb",
+              "sexy",
+              "female vocalist",
+              "female vocalists",
+              "synth-pop",
+              "alt-pop",
+              "taylor swift",
+              "electro-rnb",
+              "contemporary rnb"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Dress"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:dress"
         },
         {
           "title": "End Game - Karaoke Version",
@@ -181,7 +384,41 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
           "historical_track_ids": [],
-          "release_date": "2018-03-09T00:00:00Z"
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "rnb",
+              "pop rap",
+              "future",
+              "Ed Sheeran",
+              "rap",
+              "power pop",
+              "Hip-Hop",
+              "female vocalist",
+              "electropop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "End Game"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:end_game"
         },
         {
           "title": "Getaway Car - Karaoke Version",
@@ -202,7 +439,44 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
           "historical_track_ids": [],
-          "release_date": "2018-03-09T00:00:00Z"
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "electropop",
+              "female vocalist",
+              "taylor swift",
+              "synth-pop",
+              "love at first listen",
+              "female vocalists",
+              "dance pop",
+              "2017"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Getaway Car"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:getaway_car"
         },
         {
           "title": "Gorgeous - Karaoke Version",
@@ -223,7 +497,44 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
           "historical_track_ids": [],
-          "release_date": "2018-03-09T00:00:00Z"
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "taylor swift",
+              "electropop",
+              "reputation",
+              "best of 2017",
+              "female vocalists",
+              "singer-songwriter",
+              "Joshua Bassett",
+              "synthpop",
+              "electronic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Gorgeous"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:gorgeous"
         },
         {
           "title": "I Did Something Bad - Karaoke Version",
@@ -244,7 +555,44 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
           "historical_track_ids": [],
-          "release_date": "2018-03-09T00:00:00Z"
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "dance-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "dance-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "dubstep",
+              "EDM",
+              "electropop",
+              "taylor swift",
+              "Grunge",
+              "electro-trap",
+              "dance-pop",
+              "love at first listen",
+              "electronic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "I Did Something Bad"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_did_something_bad"
         },
         {
           "title": "King Of My Heart - Karaoke Version",
@@ -265,7 +613,44 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
           "historical_track_ids": [],
-          "release_date": "2018-03-09T00:00:00Z"
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance",
+              "Love",
+              "female vocalist",
+              "synthpop",
+              "electronic",
+              "trap",
+              "female vocalists",
+              "puta"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "King Of My Heart"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:king_of_my_heart"
         },
         {
           "title": "Look What You Made Me Do - Karaoke Version",
@@ -286,7 +671,44 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
           "historical_track_ids": [],
-          "release_date": "2018-03-09T00:00:00Z"
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "dance-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "dance-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance",
+              "Electroclash",
+              "reputation",
+              "2017",
+              "taylor swift",
+              "best of 2017",
+              "dance-pop",
+              "shade"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Look What You Made Me Do"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:look_what_you_made_me_do"
         },
         {
           "title": "New Year's Day - Karaoke Version",
@@ -307,7 +729,19 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
           "historical_track_ids": [],
-          "release_date": "2018-03-09T00:00:00Z"
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:new_year_s_day"
         },
         {
           "title": "So It Goes... - Karaoke Version",
@@ -328,7 +762,41 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
           "historical_track_ids": [],
-          "release_date": "2018-03-09T00:00:00Z"
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "trap",
+              "sexy",
+              "rnb",
+              "female vocalist",
+              "electronic",
+              "taylor swift",
+              "female vocalists",
+              "max martin"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "So It Goes..."
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:so_it_goes"
         },
         {
           "title": "This Is Why We Can't Have Nice Things - Karaoke Version",
@@ -349,7 +817,44 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
           "historical_track_ids": [],
-          "release_date": "2018-03-09T00:00:00Z"
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "dance-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "dance-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance",
+              "electronic",
+              "bubblegum pop",
+              "Kanye West",
+              "dance pop",
+              "shade",
+              "trap",
+              "contemporary rnb"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "This Is Why We Can't Have Nice Things"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:this_is_why_we_can_t_have_nice_things"
         }
       ]
     },
@@ -377,7 +882,41 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d41ccf8f43721c045a969300",
           "historical_track_ids": [],
-          "release_date": "2017-12-01T00:00:00Z"
+          "release_date": "2017-12-01T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "2017",
+              "industrial",
+              "pop rap",
+              "EDM",
+              "industrial pop",
+              "reputation",
+              "electronic",
+              "Hip-Hop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "...Ready For It?"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:ready_for_it"
         },
         {
           "title": "Delicate - Seeb Remix",
@@ -398,7 +937,44 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737809d9723e21370fe5926a7c",
           "historical_track_ids": [],
-          "release_date": "2018-06-08T00:00:00Z"
+          "release_date": "2018-06-08T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "taylor swift",
+              "tropical house",
+              "reputation",
+              "synthpop",
+              "synth-pop",
+              "delicate",
+              "female vocalists",
+              "slow"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Delicate"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:delicate"
         },
         {
           "title": "Delicate - Recorded at The Tracking Room Nashville",
@@ -419,7 +995,19 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bae8f095c58e137855f6d230",
           "historical_track_ids": [],
-          "release_date": "2018-04-13T00:00:00Z"
+          "release_date": "2018-04-13T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:delicate_recorded_at_the_tracking_room_nashville"
         },
         {
           "title": "Delicate - Sawyr And Ryan Tedder Mix",
@@ -440,7 +1028,19 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d8032a149cd86c879c9df63a",
           "historical_track_ids": [],
-          "release_date": "2018-05-25T00:00:00Z"
+          "release_date": "2018-05-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:delicate_sawyr_and_ryan_tedder_mix"
         }
       ]
     },
@@ -471,7 +1071,19 @@
           "historical_track_ids": [
             "55n9yjI6qqXh5F2mYvUc2y"
           ],
-          "release_date": "2017-11-09T00:00:00Z"
+          "release_date": "2017-11-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_don_t_wanna_live_forever_fifty_shades_darker"
         }
       ]
     },
@@ -499,7 +1111,41 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [],
-          "release_date": "2017-11-10T00:00:00Z"
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "2017",
+              "industrial",
+              "pop rap",
+              "EDM",
+              "industrial pop",
+              "reputation",
+              "electronic",
+              "Hip-Hop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "...Ready For It?"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:ready_for_it"
         },
         {
           "title": "End Game",
@@ -520,7 +1166,41 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [],
-          "release_date": "2017-11-10T00:00:00Z"
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "rnb",
+              "pop rap",
+              "future",
+              "Ed Sheeran",
+              "rap",
+              "power pop",
+              "Hip-Hop",
+              "female vocalist",
+              "electropop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "End Game"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:end_game"
         },
         {
           "title": "I Did Something Bad",
@@ -541,7 +1221,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [],
-          "release_date": "2017-11-10T00:00:00Z"
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "dance-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "dance-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "dubstep",
+              "EDM",
+              "electropop",
+              "taylor swift",
+              "Grunge",
+              "electro-trap",
+              "dance-pop",
+              "love at first listen",
+              "electronic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "I Did Something Bad"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_did_something_bad"
         },
         {
           "title": "Don't Blame Me",
@@ -562,7 +1279,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [],
-          "release_date": "2017-11-10T00:00:00Z"
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:don_t_blame_me"
         },
         {
           "title": "Delicate",
@@ -583,7 +1312,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [],
-          "release_date": "2017-11-10T00:00:00Z"
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "taylor swift",
+              "tropical house",
+              "reputation",
+              "synthpop",
+              "synth-pop",
+              "delicate",
+              "female vocalists",
+              "slow"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Delicate"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:delicate"
         },
         {
           "title": "Look What You Made Me Do",
@@ -604,7 +1370,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [],
-          "release_date": "2017-11-10T00:00:00Z"
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "dance-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "dance-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance",
+              "Electroclash",
+              "reputation",
+              "2017",
+              "taylor swift",
+              "best of 2017",
+              "dance-pop",
+              "shade"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Look What You Made Me Do"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:look_what_you_made_me_do"
         },
         {
           "title": "So It Goes...",
@@ -625,7 +1428,41 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [],
-          "release_date": "2017-11-10T00:00:00Z"
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "trap",
+              "sexy",
+              "rnb",
+              "female vocalist",
+              "electronic",
+              "taylor swift",
+              "female vocalists",
+              "max martin"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "So It Goes..."
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:so_it_goes"
         },
         {
           "title": "Gorgeous",
@@ -646,7 +1483,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [],
-          "release_date": "2017-11-10T00:00:00Z"
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "taylor swift",
+              "electropop",
+              "reputation",
+              "best of 2017",
+              "female vocalists",
+              "singer-songwriter",
+              "Joshua Bassett",
+              "synthpop",
+              "electronic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Gorgeous"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:gorgeous"
         },
         {
           "title": "Getaway Car",
@@ -667,7 +1541,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [],
-          "release_date": "2017-11-10T00:00:00Z"
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "electropop",
+              "female vocalist",
+              "taylor swift",
+              "synth-pop",
+              "love at first listen",
+              "female vocalists",
+              "dance pop",
+              "2017"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Getaway Car"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:getaway_car"
         },
         {
           "title": "King Of My Heart",
@@ -688,7 +1599,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [],
-          "release_date": "2017-11-10T00:00:00Z"
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance",
+              "Love",
+              "female vocalist",
+              "synthpop",
+              "electronic",
+              "trap",
+              "female vocalists",
+              "puta"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "King Of My Heart"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:king_of_my_heart"
         },
         {
           "title": "Dancing With Our Hands Tied",
@@ -709,7 +1657,41 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [],
-          "release_date": "2017-11-10T00:00:00Z"
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "electropop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 3.0,
+            "pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "electropop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "future bass",
+              "dance",
+              "Drum and bass",
+              "taylor swift",
+              "electronic",
+              "female vocalist",
+              "contemporary rnb",
+              "love at first listen"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Dancing With Our Hands Tied"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:dancing_with_our_hands_tied"
         },
         {
           "title": "Dress",
@@ -730,7 +1712,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [],
-          "release_date": "2017-11-10T00:00:00Z"
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "alternative": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "rnb",
+              "sexy",
+              "female vocalist",
+              "female vocalists",
+              "synth-pop",
+              "alt-pop",
+              "taylor swift",
+              "electro-rnb",
+              "contemporary rnb"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Dress"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:dress"
         },
         {
           "title": "This Is Why We Can't Have Nice Things",
@@ -751,7 +1770,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [],
-          "release_date": "2017-11-10T00:00:00Z"
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "dance-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "dance-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance",
+              "electronic",
+              "bubblegum pop",
+              "Kanye West",
+              "dance pop",
+              "shade",
+              "trap",
+              "contemporary rnb"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "This Is Why We Can't Have Nice Things"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:this_is_why_we_can_t_have_nice_things"
         },
         {
           "title": "Call It What You Want",
@@ -772,7 +1828,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [],
-          "release_date": "2017-11-10T00:00:00Z"
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "reputation",
+              "rnb",
+              "taylor swift",
+              "synth-pop",
+              "synthpop",
+              "dream pop",
+              "female vocalist",
+              "reputacao"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Call It What You Want"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:call_it_what_you_want"
         },
         {
           "title": "New Year's Day",
@@ -793,7 +1886,19 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [],
-          "release_date": "2017-11-10T00:00:00Z"
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:new_year_s_day"
         }
       ]
     },
@@ -823,7 +1928,41 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d41ccf8f43721c045a969300",
           "display_era": "reputation",
           "historical_track_ids": [],
-          "release_date": "2017-12-01T00:00:00Z"
+          "release_date": "2017-12-01T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "2017",
+              "industrial",
+              "pop rap",
+              "EDM",
+              "industrial pop",
+              "reputation",
+              "electronic",
+              "Hip-Hop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "...Ready For It?"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:ready_for_it_bloodpopa_remix"
         }
       ]
     }

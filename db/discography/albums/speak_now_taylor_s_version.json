@@ -30,7 +30,19 @@
           "version_tag": "featured__vault__taylors_version__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
-          "release_date": "2023-07-07T00:00:00Z"
+          "release_date": "2023-07-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:castles_crumbling"
         },
         {
           "title": "Electric Touch (feat. Fall Out Boy) (Taylor's Version) (From The Vault)",
@@ -54,7 +66,19 @@
           "version_tag": "featured__vault__taylors_version__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
-          "release_date": "2023-07-07T00:00:00Z"
+          "release_date": "2023-07-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:electric_touch"
         },
         {
           "title": "Foolish One (Taylor's Version) (From The Vault)",
@@ -75,7 +99,19 @@
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
-          "release_date": "2023-07-07T00:00:00Z"
+          "release_date": "2023-07-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:foolish_one"
         },
         {
           "title": "I Can See You (Taylor's Version) (From The Vault)",
@@ -96,7 +132,19 @@
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
-          "release_date": "2023-07-07T00:00:00Z"
+          "release_date": "2023-07-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_can_see_you"
         },
         {
           "title": "Timeless (Taylor's Version) (From The Vault)",
@@ -117,7 +165,19 @@
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
-          "release_date": "2023-07-07T00:00:00Z"
+          "release_date": "2023-07-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:timeless"
         },
         {
           "title": "When Emma Falls in Love (Taylor's Version) (From The Vault)",
@@ -138,7 +198,19 @@
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
-          "release_date": "2023-07-07T00:00:00Z"
+          "release_date": "2023-07-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:when_emma_falls_in_love"
         }
       ]
     },
@@ -166,7 +238,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
-          "release_date": "2023-07-07T00:00:00Z"
+          "release_date": "2023-07-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:mine"
         },
         {
           "title": "Sparks Fly (Taylor's Version)",
@@ -187,7 +271,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
-          "release_date": "2023-07-07T00:00:00Z"
+          "release_date": "2023-07-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:sparks_fly"
         },
         {
           "title": "Back To December (Taylor's Version)",
@@ -208,7 +304,44 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
-          "release_date": "2023-07-07T00:00:00Z"
+          "release_date": "2023-07-07T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop",
+              "female vocalists",
+              "taylor swift",
+              "Love",
+              "love at first listen",
+              "<3",
+              "2010",
+              "sweet"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Back To December"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:back_to_december"
         },
         {
           "title": "Speak Now (Taylor's Version)",
@@ -229,7 +362,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
-          "release_date": "2023-07-07T00:00:00Z"
+          "release_date": "2023-07-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:speak_now"
         },
         {
           "title": "Dear John (Taylor's Version)",
@@ -250,7 +395,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
-          "release_date": "2023-07-07T00:00:00Z"
+          "release_date": "2023-07-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:dear_john"
         },
         {
           "title": "Mean (Taylor's Version)",
@@ -271,7 +428,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
-          "release_date": "2023-07-07T00:00:00Z"
+          "release_date": "2023-07-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:mean"
         },
         {
           "title": "The Story Of Us (Taylor's Version)",
@@ -292,7 +461,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
-          "release_date": "2023-07-07T00:00:00Z"
+          "release_date": "2023-07-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_story_of_us"
         },
         {
           "title": "Never Grow Up (Taylor's Version)",
@@ -313,7 +494,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
-          "release_date": "2023-07-07T00:00:00Z"
+          "release_date": "2023-07-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:never_grow_up"
         },
         {
           "title": "Enchanted (Taylor's Version)",
@@ -334,7 +527,44 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
-          "release_date": "2023-07-07T00:00:00Z"
+          "release_date": "2023-07-07T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "taylor swift",
+              "Love",
+              "country pop",
+              "female vocalists",
+              "flawless",
+              "singer-songwriter",
+              "beautiful",
+              "sweet"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Enchanted"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:enchanted"
         },
         {
           "title": "Better Than Revenge (Taylor's Version)",
@@ -355,7 +585,44 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
-          "release_date": "2023-07-07T00:00:00Z"
+          "release_date": "2023-07-07T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "taylor swift",
+              "rock",
+              "female vocalists",
+              "pop rock",
+              "pop punk",
+              "country pop",
+              "2010",
+              "catchy"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Better Than Revenge"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:better_than_revenge"
         },
         {
           "title": "Innocent (Taylor's Version)",
@@ -376,7 +643,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
-          "release_date": "2023-07-07T00:00:00Z"
+          "release_date": "2023-07-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:innocent"
         },
         {
           "title": "Haunted (Taylor's Version)",
@@ -397,7 +676,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
-          "release_date": "2023-07-07T00:00:00Z"
+          "release_date": "2023-07-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:haunted"
         },
         {
           "title": "Last Kiss (Taylor's Version)",
@@ -418,7 +709,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
-          "release_date": "2023-07-07T00:00:00Z"
+          "release_date": "2023-07-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:last_kiss"
         },
         {
           "title": "Long Live (Taylor's Version)",
@@ -439,7 +742,19 @@
           "version_tag": "live__taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
-          "release_date": "2023-07-07T00:00:00Z"
+          "release_date": "2023-07-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:long_live"
         },
         {
           "title": "Ours (Taylor's Version)",
@@ -460,7 +775,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
-          "release_date": "2023-07-07T00:00:00Z"
+          "release_date": "2023-07-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:ours"
         },
         {
           "title": "Superman (Taylor's Version)",
@@ -481,7 +808,19 @@
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
-          "release_date": "2023-07-07T00:00:00Z"
+          "release_date": "2023-07-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:superman"
         }
       ]
     }
