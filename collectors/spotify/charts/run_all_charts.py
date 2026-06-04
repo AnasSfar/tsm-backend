@@ -1489,6 +1489,17 @@ def main() -> int:
                     ran_collect = True
                 if not worldwide_ok:
                     failures.append(("worldwide-validation", 1))
+                else:
+                    rc_sync = _run(
+                        "sync-country-charts",
+                        REPO_ROOT / "scripts" / "sync_spotify_country_charts_from_worldwide.py",
+                        [],
+                        dry_run=False,
+                        env=env,
+                        verbose=args.verbose,
+                    )
+                    if rc_sync != 0:
+                        failures.append(("sync-country-charts", rc_sync))
             if warp_active:
                 _warp_disconnect()
 

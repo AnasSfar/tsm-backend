@@ -1,11 +1,11 @@
 {
   "album": "The Life of a Showgirl",
   "section_count": 5,
-  "track_count": 43,
+  "track_count": 39,
   "sections": [
     {
       "section": "standard_edition",
-      "track_count": 16,
+      "track_count": 12,
       "chart_extra": false,
       "tracks": [
         {
@@ -26,7 +26,9 @@
           "song_family": "the_fate_of_ophelia",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "5cKBWgDjB5IXZ5jnryewOH"
+          ],
           "release_date": "2025-10-31T00:00:00Z",
           "genres": [
             "pop",
@@ -139,7 +141,9 @@
           "song_family": "opalite",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "4s1Sql0NqvLh0ioDzSTaET"
+          ],
           "release_date": "2026-02-06T00:00:00Z",
           "genres": [
             "pop",
@@ -252,7 +256,9 @@
           "song_family": "eldest_daughter",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "5XhaIFhtZeqcExorrYSVDM"
+          ],
           "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop",
@@ -478,7 +484,9 @@
           "song_family": "wood",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0fWfEPHNFueq2UafmJlY6d"
+          ],
           "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop"
@@ -588,7 +596,9 @@
           "song_family": "honey",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "2TUxAAf8NbwbZjr2Ii3Hg9"
+          ],
           "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop",
@@ -646,7 +656,9 @@
           "song_family": "the_life_of_a_showgirl",
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "5CHOrwxKLXkY1XVZauxvnw"
+          ],
           "release_date": "2025-10-03T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -660,89 +672,6 @@
           "genre_query_titles": {},
           "genre_errors": {},
           "genre_canonical_key": "family:the_life_of_a_showgirl"
-        },
-        {
-          "title": "Eldest Daughter",
-          "url": "https://open.spotify.com/intl-fr/track/5XhaIFhtZeqcExorrYSVDM",
-          "type": "album_track",
-          "display_section": "Standard Edition",
-          "display_order": 13,
-          "base_title": "Eldest Daughter",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Eldest Daughter",
-          "song_family": "eldest_daughter",
-          "version_tag": null,
-          "image_url": "https://i.scdn.co/image/ab67616d00001e02b034f9cdf12ae14c603daa99",
-          "release_date": "2025-10-03T00:00:00Z",
-          "historical_track_ids": []
-        },
-        {
-          "title": "Honey",
-          "url": "https://open.spotify.com/intl-fr/track/2TUxAAf8NbwbZjr2Ii3Hg9",
-          "type": "album_track",
-          "display_section": "Standard Edition",
-          "display_order": 14,
-          "base_title": "Honey",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Honey",
-          "song_family": "honey",
-          "version_tag": null,
-          "image_url": "https://i.scdn.co/image/ab67616d00001e02b034f9cdf12ae14c603daa99",
-          "release_date": "2025-10-03T00:00:00Z",
-          "historical_track_ids": []
-        },
-        {
-          "title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
-          "url": "https://open.spotify.com/intl-fr/track/5CHOrwxKLXkY1XVZauxvnw",
-          "type": "album_track",
-          "display_section": "Standard Edition",
-          "display_order": 15,
-          "base_title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [
-            "Sabrina Carpenter"
-          ],
-          "artists": [
-            "Taylor Swift",
-            "Sabrina Carpenter"
-          ],
-          "title_clean": "The Life of a Showgirl (feat. Sabrina Carpenter)",
-          "song_family": "the_life_of_a_showgirl_feat_sabrina_carpenter",
-          "version_tag": "featured",
-          "image_url": "https://i.scdn.co/image/ab67616d00001e02b034f9cdf12ae14c603daa99",
-          "release_date": "2025-10-03T00:00:00Z",
-          "historical_track_ids": []
-        },
-        {
-          "title": "Wood",
-          "url": "https://open.spotify.com/intl-fr/track/0fWfEPHNFueq2UafmJlY6d",
-          "type": "album_track",
-          "display_section": "Standard Edition",
-          "display_order": 16,
-          "base_title": "Wood",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Wood",
-          "song_family": "wood",
-          "version_tag": null,
-          "image_url": "https://i.scdn.co/image/ab67616d00001e02b034f9cdf12ae14c603daa99",
-          "release_date": "2025-10-03T00:00:00Z",
-          "historical_track_ids": []
         }
       ]
     },
@@ -827,7 +756,9 @@
           "song_family": "opalite",
           "version_tag": "acoustic__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738b312c2d2873e7da95e316d2",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "2ZbU5CJSi02RLNsldux0QQ"
+          ],
           "release_date": "2026-02-06T00:00:00Z",
           "genres": [
             "pop",
@@ -1053,7 +984,9 @@
           "song_family": "elizabeth_taylor",
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "01ZJZOftkQ2kSeyG34C7g6"
+          ],
           "release_date": "2026-03-31T00:00:00Z",
           "genres": [
             "pop"
