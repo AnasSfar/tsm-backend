@@ -1,11 +1,11 @@
 {
   "album": "The Life of a Showgirl",
   "section_count": 5,
-  "track_count": 39,
+  "track_count": 43,
   "sections": [
     {
       "section": "standard_edition",
-      "track_count": 12,
+      "track_count": 16,
       "chart_extra": false,
       "tracks": [
         {
@@ -660,6 +660,89 @@
           "genre_query_titles": {},
           "genre_errors": {},
           "genre_canonical_key": "family:the_life_of_a_showgirl"
+        },
+        {
+          "title": "Eldest Daughter",
+          "url": "https://open.spotify.com/intl-fr/track/5XhaIFhtZeqcExorrYSVDM",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 13,
+          "base_title": "Eldest Daughter",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Eldest Daughter",
+          "song_family": "eldest_daughter",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d00001e02b034f9cdf12ae14c603daa99",
+          "release_date": "2025-10-03T00:00:00Z",
+          "historical_track_ids": []
+        },
+        {
+          "title": "Honey",
+          "url": "https://open.spotify.com/intl-fr/track/2TUxAAf8NbwbZjr2Ii3Hg9",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 14,
+          "base_title": "Honey",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Honey",
+          "song_family": "honey",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d00001e02b034f9cdf12ae14c603daa99",
+          "release_date": "2025-10-03T00:00:00Z",
+          "historical_track_ids": []
+        },
+        {
+          "title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
+          "url": "https://open.spotify.com/intl-fr/track/5CHOrwxKLXkY1XVZauxvnw",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 15,
+          "base_title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Sabrina Carpenter"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Sabrina Carpenter"
+          ],
+          "title_clean": "The Life of a Showgirl (feat. Sabrina Carpenter)",
+          "song_family": "the_life_of_a_showgirl_feat_sabrina_carpenter",
+          "version_tag": "featured",
+          "image_url": "https://i.scdn.co/image/ab67616d00001e02b034f9cdf12ae14c603daa99",
+          "release_date": "2025-10-03T00:00:00Z",
+          "historical_track_ids": []
+        },
+        {
+          "title": "Wood",
+          "url": "https://open.spotify.com/intl-fr/track/0fWfEPHNFueq2UafmJlY6d",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 16,
+          "base_title": "Wood",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Wood",
+          "song_family": "wood",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d00001e02b034f9cdf12ae14c603daa99",
+          "release_date": "2025-10-03T00:00:00Z",
+          "historical_track_ids": []
         }
       ]
     },

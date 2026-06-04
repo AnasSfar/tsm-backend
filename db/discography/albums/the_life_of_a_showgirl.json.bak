@@ -27,7 +27,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [],
-          "release_date": "2025-10-31T00:00:00Z"
+          "release_date": "2025-10-31T00:00:00Z",
+          "genres": [
+            "pop",
+            "dance-pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "dance-pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dance-pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "best of 2025",
+              "dance-pop",
+              "synthpop",
+              "2025",
+              "baroque pop",
+              "love at first listen",
+              "soty",
+              "2020s",
+              "AOTY"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Fate of Ophelia"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_fate_of_ophelia"
         },
         {
           "title": "Elizabeth Taylor",
@@ -51,7 +88,38 @@
           "historical_track_ids": [
             "1jgTiNob5cVyXeJ3WgX5bL"
           ],
-          "release_date": "2026-03-31T00:00:00Z"
+          "release_date": "2026-03-31T00:00:00Z",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "baroque pop",
+              "Who put Katy Perry?",
+              "soty",
+              "Sabrina Carpenter",
+              "halsey",
+              "Olivia Rodrigo",
+              "Ed Sheeran",
+              "katseye",
+              "Jorge Rivera-Herrans"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Elizabeth Taylor"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:elizabeth_taylor"
         },
         {
           "title": "Opalite",
@@ -72,7 +140,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [],
-          "release_date": "2026-02-06T00:00:00Z"
+          "release_date": "2026-02-06T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "soft rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "rnb",
+              "soft rock",
+              "soty",
+              "christmas",
+              "holiday",
+              "synth pop",
+              "american",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Opalite"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:opalite"
         },
         {
           "title": "Father Figure",
@@ -93,7 +198,41 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [],
-          "release_date": "2025-10-03T00:00:00Z"
+          "release_date": "2025-10-03T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "soty",
+              "best of 2025",
+              "pop",
+              "synthpop",
+              "gaypop",
+              "female vocalist",
+              "jazz",
+              "docinho",
+              "taylor swift",
+              "larissa"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Father Figure"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:father_figure"
         },
         {
           "title": "Eldest Daughter",
@@ -114,7 +253,41 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [],
-          "release_date": "2025-10-03T00:00:00Z"
+          "release_date": "2025-10-03T00:00:00Z",
+          "genres": [
+            "pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "rock": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "2020s",
+              "sad",
+              "experimental",
+              "show tunes",
+              "Acid Rock",
+              "Ballad",
+              "soty",
+              "gay pop",
+              "Iconic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Eldest Daughter"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:eldest_daughter"
         },
         {
           "title": "Ruin The Friendship",
@@ -135,7 +308,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [],
-          "release_date": "2025-10-03T00:00:00Z"
+          "release_date": "2025-10-03T00:00:00Z",
+          "genres": [
+            "pop",
+            "country pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "country pop": 2.0,
+            "soft rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country pop",
+              "peter",
+              "soft rock",
+              "folk",
+              "female vocalist",
+              "country",
+              "singer-songwriter",
+              "sad",
+              "synthpop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Ruin The Friendship"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:ruin_the_friendship"
         },
         {
           "title": "Actually Romantic",
@@ -156,7 +366,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [],
-          "release_date": "2025-10-03T00:00:00Z"
+          "release_date": "2025-10-03T00:00:00Z",
+          "genres": [
+            "pop rock",
+            "pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop rock": 3.0,
+            "pop": 2.0,
+            "rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop rock",
+              "pop",
+              "rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop rock",
+              "power pop",
+              "ended flopli xcx",
+              "best of 2025",
+              "rnb",
+              "rock",
+              "Disco",
+              "soty",
+              "Acid Rock",
+              "charli xcx"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Actually Romantic"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:actually_romantic"
         },
         {
           "title": "Wi$h Li$t",
@@ -177,7 +424,41 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [],
-          "release_date": "2025-10-03T00:00:00Z"
+          "release_date": "2025-10-03T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "2025",
+              "female vocalist",
+              "synthpop",
+              "solo",
+              "synth pop",
+              "female",
+              "Dream",
+              "dreampop",
+              "fav"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Wi$h Li$t"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:wi_h_li_t"
         },
         {
           "title": "Wood",
@@ -198,7 +479,38 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [],
-          "release_date": "2025-10-03T00:00:00Z"
+          "release_date": "2025-10-03T00:00:00Z",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "funk",
+              "Disco",
+              "sexy",
+              "soul",
+              "70s",
+              "power pop",
+              "60s",
+              "eurodisco",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Wood"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:wood"
         },
         {
           "title": "CANCELLED!",
@@ -219,7 +531,44 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [],
-          "release_date": "2025-10-03T00:00:00Z"
+          "release_date": "2025-10-03T00:00:00Z",
+          "genres": [
+            "pop",
+            "rock",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "rock": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "rock",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "soty",
+              "rock",
+              "female vocalist",
+              "singer-songwriter",
+              "electropop",
+              "rap",
+              "rnb",
+              "dance pop",
+              "synthpop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "CANCELLED!"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cancelled"
         },
         {
           "title": "Honey",
@@ -240,7 +589,41 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [],
-          "release_date": "2025-10-03T00:00:00Z"
+          "release_date": "2025-10-03T00:00:00Z",
+          "genres": [
+            "pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "soft rock": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "rnb",
+              "soft rock",
+              "metal",
+              "soul",
+              "Love",
+              "power pop",
+              "female vocalist",
+              "female",
+              "Contemporary pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Honey"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:honey"
         },
         {
           "title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
@@ -264,7 +647,19 @@
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [],
-          "release_date": "2025-10-03T00:00:00Z"
+          "release_date": "2025-10-03T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_life_of_a_showgirl"
         }
       ]
     },
@@ -292,7 +687,44 @@
           "version_tag": "acoustic__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bc755429117cac056edd2bf7",
           "historical_track_ids": [],
-          "release_date": "2025-10-31T00:00:00Z"
+          "release_date": "2025-10-31T00:00:00Z",
+          "genres": [
+            "pop",
+            "dance-pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "dance-pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dance-pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "best of 2025",
+              "dance-pop",
+              "synthpop",
+              "2025",
+              "baroque pop",
+              "love at first listen",
+              "soty",
+              "2020s",
+              "AOTY"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Fate of Ophelia"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_fate_of_ophelia"
         },
         {
           "title": "Opalite - Life Is A Song Acoustic Version",
@@ -313,7 +745,44 @@
           "version_tag": "acoustic__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738b312c2d2873e7da95e316d2",
           "historical_track_ids": [],
-          "release_date": "2026-02-06T00:00:00Z"
+          "release_date": "2026-02-06T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "soft rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "rnb",
+              "soft rock",
+              "soty",
+              "christmas",
+              "holiday",
+              "synth pop",
+              "american",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Opalite"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:opalite"
         },
         {
           "title": "Wi$h Li$t - Settled Down Acoustic Version",
@@ -334,7 +803,41 @@
           "version_tag": "acoustic__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94",
           "historical_track_ids": [],
-          "release_date": "2025-11-07T00:00:00Z"
+          "release_date": "2025-11-07T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "2025",
+              "female vocalist",
+              "synthpop",
+              "solo",
+              "synth pop",
+              "female",
+              "Dream",
+              "dreampop",
+              "fav"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Wi$h Li$t"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:wi_h_li_t"
         },
         {
           "title": "Ruin The Friendship - My Advice Version",
@@ -355,7 +858,44 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94",
           "historical_track_ids": [],
-          "release_date": "2025-11-07T00:00:00Z"
+          "release_date": "2025-11-07T00:00:00Z",
+          "genres": [
+            "pop",
+            "country pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "country pop": 2.0,
+            "soft rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country pop",
+              "peter",
+              "soft rock",
+              "folk",
+              "female vocalist",
+              "country",
+              "singer-songwriter",
+              "sad",
+              "synthpop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Ruin The Friendship"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:ruin_the_friendship"
         },
         {
           "title": "Eldest Daughter - Now You're Home Acoustic Version",
@@ -376,7 +916,41 @@
           "version_tag": "acoustic__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94",
           "historical_track_ids": [],
-          "release_date": "2025-11-07T00:00:00Z"
+          "release_date": "2025-11-07T00:00:00Z",
+          "genres": [
+            "pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "rock": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "2020s",
+              "sad",
+              "experimental",
+              "show tunes",
+              "Acid Rock",
+              "Ballad",
+              "soty",
+              "gay pop",
+              "Iconic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Eldest Daughter"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:eldest_daughter"
         },
         {
           "title": "Elizabeth Taylor - So Glamorous Cabaret Version",
@@ -397,7 +971,38 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94",
           "historical_track_ids": [],
-          "release_date": "2026-03-31T00:00:00Z"
+          "release_date": "2026-03-31T00:00:00Z",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "baroque pop",
+              "Who put Katy Perry?",
+              "soty",
+              "Sabrina Carpenter",
+              "halsey",
+              "Olivia Rodrigo",
+              "Ed Sheeran",
+              "katseye",
+              "Jorge Rivera-Herrans"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Elizabeth Taylor"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:elizabeth_taylor"
         },
         {
           "title": "The Life of a Showgirl (feat. Sabrina Carpenter) - Dressing Room Rehearsal Version",
@@ -421,7 +1026,19 @@
           "version_tag": "featured__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94",
           "historical_track_ids": [],
-          "release_date": "2025-11-07T00:00:00Z"
+          "release_date": "2025-11-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_life_of_a_showgirl"
         }
       ]
     },
@@ -449,7 +1066,44 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738b312c2d2873e7da95e316d2",
           "historical_track_ids": [],
-          "release_date": "2026-02-13T00:00:00Z"
+          "release_date": "2026-02-13T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "soft rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "rnb",
+              "soft rock",
+              "soty",
+              "christmas",
+              "holiday",
+              "synth pop",
+              "american",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Opalite"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:opalite"
         },
         {
           "title": "Opalite - Official Music Video Extended Version Part 2",
@@ -470,7 +1124,44 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738b312c2d2873e7da95e316d2",
           "historical_track_ids": [],
-          "release_date": "2026-02-13T00:00:00Z"
+          "release_date": "2026-02-13T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "soft rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "rnb",
+              "soft rock",
+              "soty",
+              "christmas",
+              "holiday",
+              "synth pop",
+              "american",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Opalite"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:opalite"
         }
       ]
     },
@@ -498,7 +1189,44 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737796280b4d7e9692b354f902",
           "historical_track_ids": [],
-          "release_date": "2026-02-19T00:00:00Z"
+          "release_date": "2026-02-19T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "soft rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "rnb",
+              "soft rock",
+              "soty",
+              "christmas",
+              "holiday",
+              "synth pop",
+              "american",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Opalite"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:opalite"
         },
         {
           "title": "Opalite - Chris Lake Remix",
@@ -519,7 +1247,44 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273156ba090375f53d5c8fac5c3",
           "historical_track_ids": [],
-          "release_date": "2026-02-20T00:00:00Z"
+          "release_date": "2026-02-20T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "soft rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "rnb",
+              "soft rock",
+              "soty",
+              "christmas",
+              "holiday",
+              "synth pop",
+              "american",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Opalite"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:opalite"
         },
         {
           "title": "Opalite - Ely Oaks Remix",
@@ -540,7 +1305,44 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738100654494e42240857384d9",
           "historical_track_ids": [],
-          "release_date": "2026-02-19T00:00:00Z"
+          "release_date": "2026-02-19T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "soft rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "rnb",
+              "soft rock",
+              "soty",
+              "christmas",
+              "holiday",
+              "synth pop",
+              "american",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Opalite"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:opalite"
         },
         {
           "title": "Opalite - Skream Remix",
@@ -561,7 +1363,44 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bcde9224bc1fb45f15c7bc56",
           "historical_track_ids": [],
-          "release_date": "2026-02-19T00:00:00Z"
+          "release_date": "2026-02-19T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "soft rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "rnb",
+              "soft rock",
+              "soty",
+              "christmas",
+              "holiday",
+              "synth pop",
+              "american",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Opalite"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:opalite"
         },
         {
           "title": "The Fate of Ophelia - Loud Luxury Remix",
@@ -582,7 +1421,44 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27339b6ce4f493d53cfba83170a",
           "historical_track_ids": [],
-          "release_date": "2025-11-06T00:00:00Z"
+          "release_date": "2025-11-06T00:00:00Z",
+          "genres": [
+            "pop",
+            "dance-pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "dance-pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dance-pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "best of 2025",
+              "dance-pop",
+              "synthpop",
+              "2025",
+              "baroque pop",
+              "love at first listen",
+              "soty",
+              "2020s",
+              "AOTY"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Fate of Ophelia"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_fate_of_ophelia"
         },
         {
           "title": "The Fate of Ophelia - The Chainsmokers Remix",
@@ -603,7 +1479,44 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735a9197396cb52631e73364b9",
           "historical_track_ids": [],
-          "release_date": "2025-11-28T00:00:00Z"
+          "release_date": "2025-11-28T00:00:00Z",
+          "genres": [
+            "pop",
+            "dance-pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "dance-pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dance-pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "best of 2025",
+              "dance-pop",
+              "synthpop",
+              "2025",
+              "baroque pop",
+              "love at first listen",
+              "soty",
+              "2020s",
+              "AOTY"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Fate of Ophelia"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_fate_of_ophelia"
         }
       ]
     },
@@ -631,7 +1544,38 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
           "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "release_date": "2025-10-02T00:00:00Z",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "baroque pop",
+              "Who put Katy Perry?",
+              "soty",
+              "Sabrina Carpenter",
+              "halsey",
+              "Olivia Rodrigo",
+              "Ed Sheeran",
+              "katseye",
+              "Jorge Rivera-Herrans"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Elizabeth Taylor"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:elizabeth_taylor"
         },
         {
           "title": "Father Figure - Track by Track",
@@ -652,7 +1596,41 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
           "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "release_date": "2025-10-02T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "soty",
+              "best of 2025",
+              "pop",
+              "synthpop",
+              "gaypop",
+              "female vocalist",
+              "jazz",
+              "docinho",
+              "taylor swift",
+              "larissa"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Father Figure"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:father_figure"
         },
         {
           "title": "Opalite - Track by Track",
@@ -673,7 +1651,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
           "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "release_date": "2025-10-02T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "soft rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "rnb",
+              "soft rock",
+              "soty",
+              "christmas",
+              "holiday",
+              "synth pop",
+              "american",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Opalite"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:opalite"
         },
         {
           "title": "The Fate of Ophelia - Track by Track",
@@ -694,7 +1709,44 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
           "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "release_date": "2025-10-02T00:00:00Z",
+          "genres": [
+            "pop",
+            "dance-pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "dance-pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dance-pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "best of 2025",
+              "dance-pop",
+              "synthpop",
+              "2025",
+              "baroque pop",
+              "love at first listen",
+              "soty",
+              "2020s",
+              "AOTY"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Fate of Ophelia"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_fate_of_ophelia"
         },
         {
           "title": "The Life of a Showgirl - Track by Track",
@@ -715,7 +1767,19 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
           "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "release_date": "2025-10-02T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_life_of_a_showgirl"
         },
         {
           "title": "Actually Romantic - Track by Track",
@@ -737,7 +1801,44 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
           "display_era": "The Life of a Showgirl",
           "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "release_date": "2025-10-02T00:00:00Z",
+          "genres": [
+            "pop rock",
+            "pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop rock": 3.0,
+            "pop": 2.0,
+            "rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop rock",
+              "pop",
+              "rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop rock",
+              "power pop",
+              "ended flopli xcx",
+              "best of 2025",
+              "rnb",
+              "rock",
+              "Disco",
+              "soty",
+              "Acid Rock",
+              "charli xcx"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Actually Romantic"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:actually_romantic"
         },
         {
           "title": "CANCELLED! - Track by Track",
@@ -759,7 +1860,44 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
           "display_era": "The Life of a Showgirl",
           "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "release_date": "2025-10-02T00:00:00Z",
+          "genres": [
+            "pop",
+            "rock",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "rock": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "rock",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "soty",
+              "rock",
+              "female vocalist",
+              "singer-songwriter",
+              "electropop",
+              "rap",
+              "rnb",
+              "dance pop",
+              "synthpop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "CANCELLED!"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cancelled"
         },
         {
           "title": "Eldest Daughter - Track by Track",
@@ -781,7 +1919,41 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
           "display_era": "The Life of a Showgirl",
           "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "release_date": "2025-10-02T00:00:00Z",
+          "genres": [
+            "pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "rock": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "2020s",
+              "sad",
+              "experimental",
+              "show tunes",
+              "Acid Rock",
+              "Ballad",
+              "soty",
+              "gay pop",
+              "Iconic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Eldest Daughter"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:eldest_daughter"
         },
         {
           "title": "Honey - Track by Track",
@@ -803,7 +1975,41 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
           "display_era": "The Life of a Showgirl",
           "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "release_date": "2025-10-02T00:00:00Z",
+          "genres": [
+            "pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "soft rock": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "rnb",
+              "soft rock",
+              "metal",
+              "soul",
+              "Love",
+              "power pop",
+              "female vocalist",
+              "female",
+              "Contemporary pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Honey"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:honey"
         },
         {
           "title": "Ruin The Friendship - Track by Track",
@@ -825,7 +2031,44 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
           "display_era": "The Life of a Showgirl",
           "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "release_date": "2025-10-02T00:00:00Z",
+          "genres": [
+            "pop",
+            "country pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "country pop": 2.0,
+            "soft rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country pop",
+              "peter",
+              "soft rock",
+              "folk",
+              "female vocalist",
+              "country",
+              "singer-songwriter",
+              "sad",
+              "synthpop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Ruin The Friendship"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:ruin_the_friendship"
         },
         {
           "title": "Wi$h Li$t - Track by Track",
@@ -847,7 +2090,41 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
           "display_era": "The Life of a Showgirl",
           "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "release_date": "2025-10-02T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "2025",
+              "female vocalist",
+              "synthpop",
+              "solo",
+              "synth pop",
+              "female",
+              "Dream",
+              "dreampop",
+              "fav"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Wi$h Li$t"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:wiSh_liSt"
         },
         {
           "title": "Wood - Track by Track",
@@ -869,7 +2146,38 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
           "display_era": "The Life of a Showgirl",
           "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z"
+          "release_date": "2025-10-02T00:00:00Z",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "funk",
+              "Disco",
+              "sexy",
+              "soul",
+              "70s",
+              "power pop",
+              "60s",
+              "eurodisco",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Wood"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:wood"
         }
       ]
     }
