@@ -10,7 +10,12 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "collectors" / "spotify"))
-from core.data_paths import LEGACY_WEBSITE_DATA_DIR, WEB_EXPORT_DATA_DIR, first_existing  # noqa: E402
+from core.data_paths import (  # noqa: E402
+    LEGACY_WEBSITE_DATA_DIR,
+    WEB_EXPORT_DATA_DIR,
+    apple_music_daily_csv_paths,
+    first_existing,
+)
 
 DB_DIR = ROOT / "db"
 DATA_ROOT = ROOT / "data"
@@ -108,7 +113,7 @@ def read_csv_rows(path: Path) -> list[dict[str, Any]]:
     archived = ARCHIVE_DB_DIR / path.name
     if archived.exists() and archived not in candidates:
         candidates.append(archived)
-    candidates.extend(sorted(DATA_ROOT.glob(f"????/??/????-??-??/apple_music/{path.name}")))
+    candidates.extend(apple_music_daily_csv_paths(path.name))
     if not candidates:
         log(f"absent: {path.name}")
         return []

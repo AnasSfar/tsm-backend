@@ -5,14 +5,13 @@ from pathlib import Path
 from typing import Iterable
 
 from .filters import rank_key
-from .config import ARCHIVE_DB_DIR, DATA_ROOT
+from .config import ARCHIVE_DB_DIR
+from collectors.spotify.core.data_paths import apple_music_daily_csv, apple_music_daily_csv_paths
 
 
 
 def _daily_csv_paths(csv_path: Path) -> list[Path]:
-    name = csv_path.name
-    paths = sorted(DATA_ROOT.glob(f"[0-9][0-9][0-9][0-9]/[0-9][0-9]/*/apple_music/{name}"))
-    return [p for p in paths if p.is_file()]
+    return apple_music_daily_csv_paths(csv_path.name)
 
 
 def read_csv_rows(csv_path: Path, *, include_daily_history: bool = False) -> list[dict[str, str]]:
@@ -57,7 +56,7 @@ def rewrite_for_date(
     today: str,
     new_rows: list[dict],
 ) -> None:
-    csv_path = DATA_ROOT / today[:4] / today[5:7] / today / "apple_music" / csv_path.name
+    csv_path = apple_music_daily_csv(today, csv_path.name)
     existing = []
     if csv_path.exists() and csv_path.stat().st_size > 0:
         with csv_path.open(newline="", encoding="utf-8-sig") as handle:
@@ -98,7 +97,7 @@ def rewrite_for_snapshot(
                 return
 
     current_day = scraped_at[:10]
-    csv_path = DATA_ROOT / current_day[:4] / current_day[5:7] / current_day / "apple_music" / csv_path.name
+    csv_path = apple_music_daily_csv(current_day, csv_path.name)
     filtered = [
         r for r in existing
         if (r.get("scraped_at") != scraped_at and (r.get("date") or r.get("scraped_at", "")[:10]) == current_day)

@@ -5,7 +5,9 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 DATA_ROOT = REPO_ROOT / "data"
+DB_ROOT = REPO_ROOT / "db"
 ARCHIVE_ROOT = DATA_ROOT / "_archive" / "original"
+ARCHIVE_DB_ROOT = ARCHIVE_ROOT / "db"
 SNAPSHOTS_ROOT = REPO_ROOT / "snapshots"
 RUNTIME_ROOT = REPO_ROOT / "runtime"
 EXPORTS_ROOT = RUNTIME_ROOT / "exports"
@@ -74,7 +76,69 @@ def tayboard_dir(value: date | datetime | str) -> Path:
 
 
 def archived_db_file(filename: str) -> Path:
-    return ARCHIVE_ROOT / "db" / filename
+    return ARCHIVE_DB_ROOT / filename
+
+
+def db_file(filename: str) -> Path:
+    return DB_ROOT / filename
+
+
+def db_history_candidates(filename: str) -> list[Path]:
+    return [DB_ROOT / filename, ARCHIVE_DB_ROOT / filename]
+
+
+def first_existing_db_history(filename: str) -> Path:
+    return first_existing(*db_history_candidates(filename))
+
+
+def apple_music_daily_csv(value: date | datetime | str, filename: str) -> Path:
+    return apple_music_charts_dir(value) / filename
+
+
+def legacy_apple_music_daily_csv(value: date | datetime | str, filename: str) -> Path:
+    key = date_key(value)
+    return DATA_ROOT / key[:4] / key[5:7] / key / "apple_music" / filename
+
+
+def apple_music_daily_csv_paths(filename: str) -> list[Path]:
+    paths = [
+        p for p in sorted(APPLE_MUSIC_CHARTS_SNAPSHOT_ROOT.glob(f"20??/??/????-??-??/{filename}"))
+        if p.is_file()
+    ]
+    paths.extend(
+        p for p in sorted(DATA_ROOT.glob(f"20??/??/????-??-??/apple_music/{filename}"))
+        if p.is_file()
+    )
+    return paths
+
+
+def spotify_chart_snapshot_candidates(chart_name: str, value: date | datetime | str, filename: str) -> list[Path]:
+    return [
+        spotify_chart_dir(chart_name, value) / filename,
+        legacy_spotify_chart_dir(chart_name, value) / filename,
+        legacy_run_all_charts_dir(chart_name, value) / filename,
+    ]
+
+
+def spotify_chart_snapshot_files(chart_name: str, pattern: str) -> list[Path]:
+    paths: list[Path] = []
+    snapshot_root = SPOTIFY_CHARTS_SNAPSHOT_ROOT
+    if snapshot_root.exists():
+        paths.extend(sorted(snapshot_root.glob(f"20??/??/????-??-??/{chart_name}/{pattern}")))
+    legacy_history_root = REPO_ROOT / "collectors" / "spotify" / "charts" / chart_name / "history"
+    if legacy_history_root.exists():
+        paths.extend(sorted(legacy_history_root.glob(f"20??/??/????-??-??/{pattern}")))
+    paths.extend(sorted(DATA_ROOT.glob(f"20??/??/????-??-??/run_all_charts/spotify/{chart_name}/{pattern}")))
+    return [p for p in paths if p.is_file()]
+
+
+def billboard_snapshot_dir(value: date | datetime | str) -> Path:
+    return snapshot_day_root("billboard", value)
+
+
+def legacy_billboard_snapshot_dir(value: date | datetime | str) -> Path:
+    key = date_key(value)
+    return DATA_ROOT / key[:4] / key[5:7] / key / "billboard"
 
 
 def legacy_spotify_chart_dir(chart_name: str, value: date | datetime | str) -> Path:
