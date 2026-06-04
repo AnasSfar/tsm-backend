@@ -52,7 +52,13 @@ from playwright.sync_api import sync_playwright
 _CORE_DIR = Path(__file__).resolve().parents[4] / "collectors" / "spotify"
 if str(_CORE_DIR) not in sys.path:
     sys.path.insert(0, str(_CORE_DIR))
-from core.data_paths import legacy_spotify_chart_dir, spotify_chart_dir
+from core.data_paths import (
+    LEGACY_WEBSITE_DATA_DIR,
+    WEB_EXPORT_DATA_DIR,
+    first_existing,
+    legacy_spotify_chart_dir,
+    spotify_chart_dir,
+)
 from core.git_ops import git_commit_and_push
 from core.twitter import post_thread, split_tweets
 
@@ -74,12 +80,12 @@ FR_DAILY        = ROOT / "collectors" / "spotify" / "charts" / "fr" / "daily.py"
 SESSION_FILE        = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "spotify_session.json"
 _BEARER_CACHE_FILE  = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "bearer_cache.json"
 _BEARER_TOKEN_TTL   = 50 * 60
-OUTPUT_PATH     = ROOT / "website" / "site" / "data" / "charts_worldwide.json"
-HISTORY_ROOT    = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "history"
+OUTPUT_PATH     = WEB_EXPORT_DATA_DIR / "charts_worldwide.json"
+HISTORY_ROOT    = ROOT / "snapshots" / "spotify_charts"
 TOTAL_DAYS_PATH = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "json" / "total_days.json"
 TWITTER_SESSION = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "json" / "twitter_session.json"
 
-WEBSITE_SONGS_PATH = ROOT / "website" / "site" / "data" / "songs.json"
+WEBSITE_SONGS_PATH = first_existing(WEB_EXPORT_DATA_DIR / "songs.json", LEGACY_WEBSITE_DATA_DIR / "songs.json")
 DISCO_SONGS_PATH   = ROOT / "db" / "discography" / "songs.json"
 DISCO_ALBUMS_DIR   = ROOT / "db" / "discography" / "albums"
 MANUAL_MAP_PATH    = ROOT / "scripts" / "chart_title_to_track_id.json"

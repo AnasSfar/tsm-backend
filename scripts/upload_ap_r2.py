@@ -21,7 +21,7 @@ from dotenv import load_dotenv
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "collectors" / "spotify"))
-from core.data_paths import LEGACY_WEBSITE_DATA_DIR, WEB_EXPORT_DATA_DIR  # noqa: E402
+from core.data_paths import LEGACY_WEBSITE_DATA_DIR, WEB_EXPORT_DATA_DIR, apple_music_daily_csv_paths  # noqa: E402
 
 DB_DIR = ROOT / "db"
 DATA_ROOT = ROOT / "data"
@@ -109,7 +109,7 @@ def csv_candidates(path: Path) -> list[Path]:
     if archived.exists():
         candidates.append(archived)
 
-    candidates.extend(sorted(DATA_ROOT.glob(f"????/??/????-??-??/apple_music/{path.name}")))
+    candidates.extend(apple_music_daily_csv_paths(path.name))
 
     seen: set[Path] = set()
     unique: list[Path] = []
@@ -332,10 +332,7 @@ def upload_daily_csvs(client: BaseClient, bucket: str, dry_run: bool) -> int:
     """Upload the most recent daily CSV for each Apple Music chart to R2."""
     uploaded = 0
     for name in APPLE_MUSIC_CSV_NAMES:
-        candidates = sorted(
-            DATA_ROOT.glob(f"[0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/apple_music/{name}"),
-            reverse=True,
-        )
+        candidates = sorted(apple_music_daily_csv_paths(name), reverse=True)
         if not candidates:
             print(f"[skip] {name} not found locally")
             continue
