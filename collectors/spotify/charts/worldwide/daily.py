@@ -84,6 +84,7 @@ OUTPUT_PATH     = WEB_EXPORT_DATA_DIR / "charts_worldwide.json"
 HISTORY_ROOT    = ROOT / "snapshots" / "spotify_charts"
 TOTAL_DAYS_PATH = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "json" / "total_days.json"
 TWITTER_SESSION = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "json" / "twitter_session.json"
+GLOBAL_NEW_RELEASES_SCRIPT = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "scripts" / "post_global_new_releases.py"
 
 WEBSITE_SONGS_PATH = first_existing(WEB_EXPORT_DATA_DIR / "songs.json", LEGACY_WEBSITE_DATA_DIR / "songs.json")
 DISCO_SONGS_PATH   = ROOT / "db" / "discography" / "songs.json"
@@ -653,6 +654,8 @@ def _parse_ts_entries(data: dict) -> list[dict]:
         track_name = (meta.get("trackName") or "").strip()
         if not track_name or rank is None:
             continue
+        previous_rank = _clean_int(ced.get("previousRank"))
+        total_days = _clean_int(ced.get("consecutiveAppearancesOnChart"))
 
         # trackUri: "spotify:track:4cluDES4hQEUhmXj6TXkSo"
         track_uri = meta.get("trackUri") or ""
@@ -666,9 +669,10 @@ def _parse_ts_entries(data: dict) -> list[dict]:
             "track_name":    track_name,
             "artist_names":  artist_str,
             "streams":       _clean_int((ced.get("rankingMetric") or {}).get("value")),
-            "previous_rank": _clean_int(ced.get("previousRank")),
+            "previous_rank": previous_rank,
             "peak_rank":     _clean_int(ced.get("peakRank")),
-            "total_days":    _clean_int(ced.get("consecutiveAppearancesOnChart")),
+            "total_days":    total_days,
+            "is_new":        previous_rank is None and (total_days is None or total_days <= 1),
             "_track_id_uri": track_id_from_uri,
         })
     return rows
@@ -889,6 +893,11 @@ def main() -> int:
         help="Skip Twitter post.",
     )
     parser.add_argument(
+        "--post-song-updates",
+        action="store_true",
+        help="Post the legacy text-only per-song worldwide updates.",
+    )
+    parser.add_argument(
         "--force",
         action="store_true",
         help="Re-fetch all regions even if already present for this date.",
@@ -1040,6 +1049,7 @@ def main() -> int:
     other_to_fetch    = {k: v for k, v in regions_to_fetch.items() if k not in _PRIORITY}
 
     t0 = time.perf_counter()
+    _priority_card_thread: threading.Thread | None = None
     if priority_to_fetch:
         print(f"[INFO] Phase 1 : fetch prioritaire ({', '.join(sorted(priority_to_fetch))})…")
         tokens, _, priority_results = _run_async_with_token_refresh(chart_date, tokens, priority_to_fetch)
@@ -1047,6 +1057,21 @@ def main() -> int:
         for region in ("global", "fr"):
             if region in priority_results and priority_results[region]:
                 _write_regional_ts_chart(chart_date, region, priority_results[region], manual_lookup, track_lookup)
+        if not args.no_post and priority_results.get("global") and GLOBAL_NEW_RELEASES_SCRIPT.exists():
+            def _post_priority_global_new_card() -> None:
+                print("[INFO] Priority Global NEW card check...", flush=True)
+                result = subprocess.run(
+                    [sys.executable, str(GLOBAL_NEW_RELEASES_SCRIPT), chart_date, "--post"],
+                    cwd=str(ROOT),
+                )
+                if result.returncode != 0:
+                    print(f"[WARN] Priority Global NEW card failed (code {result.returncode})", flush=True)
+            _priority_card_thread = threading.Thread(
+                target=_post_priority_global_new_card,
+                daemon=True,
+                name="priority-global-new-card",
+            )
+            _priority_card_thread.start()
     else:
         priority_results = {}
 
@@ -1054,6 +1079,11 @@ def main() -> int:
     _posting_thread: threading.Thread | None = None
     if not args.no_post and priority_to_fetch:
         def _post_regional() -> None:
+            if _priority_card_thread is not None and _priority_card_thread.is_alive():
+                print("[INFO] Waiting for priority Global NEW card before regional posts...", flush=True)
+                _priority_card_thread.join(timeout=600)
+                if _priority_card_thread.is_alive():
+                    print("[WARN] Priority Global NEW card still running after 10 minutes; regional posts continue.", flush=True)
             for script in (GLOBAL_DAILY, FR_DAILY):
                 if not script.exists():
                     continue
@@ -1075,6 +1105,9 @@ def main() -> int:
         other_results = {}
 
     by_region = {**priority_results, **other_results}
+    for region in ("global", "fr"):
+        if region in by_region and by_region[region]:
+            _write_regional_ts_chart(chart_date, region, by_region[region], manual_lookup, track_lookup)
 
     by_track: dict[str, list[dict]] = {}
     track_names: dict[str, str] = {}
@@ -1201,7 +1234,7 @@ def main() -> int:
     print(f"[DONE] Written -> {updated_lock}")
     maybe_upload_to_r2()
 
-    if not args.no_post and TWITTER_SESSION.exists():
+    if args.post_song_updates and not args.no_post and TWITTER_SESSION.exists():
         has_prev = prev_path.exists()
         locks_dir = per_date_path.parent
         date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
@@ -1281,11 +1314,13 @@ def _write_regional_ts_chart(
             "rank":          row.get("rank"),
             "track_name":    row.get("track_name", ""),
             "artist_names":  row.get("artist_names", TS_NAME),
+            "track_id":      row.get("_track_id_uri") or resolve_track_id(row.get("track_name", ""), manual_lookup, track_lookup),
             "streams":       row.get("streams"),
             "previous_rank": row.get("previous_rank"),
             "peak_rank":     row.get("peak_rank"),
             "total_days":    row.get("total_days"),
             "streak":        row.get("total_days"),
+            "is_new":        bool(row.get("is_new")),
             "image_url":     None,
         }
         for row in sorted(rows, key=lambda r: r.get("rank") or 9999)

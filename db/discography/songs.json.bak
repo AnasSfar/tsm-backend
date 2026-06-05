@@ -2,7 +2,7 @@
   {
     "album": "Standalone & Extras",
     "section": "kworb_extras",
-    "track_count": 30,
+    "track_count": 26,
     "tracks": [
       {
         "title": "Babe",
@@ -878,90 +878,6 @@
         "genre_query_titles": {},
         "genre_errors": {},
         "genre_canonical_key": "family:the_story_of_us"
-      },
-      {
-        "title": "Elizabeth Taylor - So Glamorous Cabaret Version",
-        "url": "https://open.spotify.com/intl-fr/track/01ZJZOftkQ2kSeyG34C7g6",
-        "type": "standalone",
-        "edition": "extras",
-        "display_section": "Extras",
-        "display_order": 10008,
-        "base_title": "Elizabeth Taylor",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "Elizabeth Taylor - So Glamorous Cabaret Version",
-        "song_family": "elizabeth_taylor",
-        "version_tag": "standalone",
-        "image_url": "https://i.scdn.co/image/ab67616d00001e02dc6e4c7774e0c77c210d3a31",
-        "release_date": "2026-03-31T00:00:00Z",
-        "historical_track_ids": []
-      },
-      {
-        "title": "Opalite",
-        "url": "https://open.spotify.com/intl-fr/track/4s1Sql0NqvLh0ioDzSTaET",
-        "type": "standalone",
-        "edition": "extras",
-        "display_section": "Extras",
-        "display_order": 10009,
-        "base_title": "Opalite",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "Opalite",
-        "song_family": "opalite",
-        "version_tag": "standalone",
-        "image_url": "https://i.scdn.co/image/ab67616d00001e02c2458a6f0b5b67c1955d3bc3",
-        "release_date": "2026-02-06T00:00:00Z",
-        "historical_track_ids": []
-      },
-      {
-        "title": "Opalite - Life Is A Song Acoustic Version",
-        "url": "https://open.spotify.com/intl-fr/track/2ZbU5CJSi02RLNsldux0QQ",
-        "type": "standalone",
-        "edition": "extras",
-        "display_section": "Extras",
-        "display_order": 10010,
-        "base_title": "Opalite",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "Opalite - Life Is A Song Acoustic Version",
-        "song_family": "opalite",
-        "version_tag": "acoustic",
-        "image_url": "https://i.scdn.co/image/ab67616d00001e02c2458a6f0b5b67c1955d3bc3",
-        "release_date": "2026-02-06T00:00:00Z",
-        "historical_track_ids": []
-      },
-      {
-        "title": "The Fate of Ophelia",
-        "url": "https://open.spotify.com/intl-fr/track/5cKBWgDjB5IXZ5jnryewOH",
-        "type": "standalone",
-        "edition": "extras",
-        "display_section": "Extras",
-        "display_order": 10011,
-        "base_title": "The Fate of Ophelia",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "The Fate of Ophelia",
-        "song_family": "the_fate_of_ophelia",
-        "version_tag": "standalone",
-        "image_url": "https://i.scdn.co/image/ab67616d00001e02bc755429117cac056edd2bf7",
-        "release_date": "2025-10-31T00:00:00Z",
-        "historical_track_ids": []
       }
     ]
   }

@@ -28,6 +28,16 @@ SCRIPTS = [
 ]
 
 
+def child_env() -> dict[str, str]:
+    env = os.environ.copy()
+    pythonpath_parts = [str(REPO_ROOT), str(HERE)]
+    existing = env.get("PYTHONPATH")
+    if existing:
+        pythonpath_parts.append(existing)
+    env["PYTHONPATH"] = os.pathsep.join(pythonpath_parts)
+    return env
+
+
 def export_apple_music() -> int:
     """Generate JSON files from CSV data."""
     export_script = REPO_ROOT / "scripts" / "export_apple_music.py"
@@ -36,7 +46,7 @@ def export_apple_music() -> int:
         return 1
 
     print("[Apple Music] Exporting CSV to JSON...")
-    result = subprocess.run([sys.executable, str(export_script)], cwd=REPO_ROOT, check=False)
+    result = subprocess.run([sys.executable, str(export_script)], cwd=REPO_ROOT, env=child_env(), check=False)
     return result.returncode
 
 
@@ -51,7 +61,7 @@ def maybe_upload_to_r2() -> None:
         return
 
     print("[Apple Music] Uploading history-by-song to R2...")
-    subprocess.run([sys.executable, str(upload_script)], cwd=REPO_ROOT, check=False)
+    subprocess.run([sys.executable, str(upload_script)], cwd=REPO_ROOT, env=child_env(), check=False)
 
 def run_script(script_path: Path, scraped_at: str) -> int:
     if not script_path.exists():
@@ -65,6 +75,7 @@ def run_script(script_path: Path, scraped_at: str) -> int:
     result = subprocess.run(
         [sys.executable, str(script_path), "--scraped-at", scraped_at],
         cwd=REPO_ROOT,
+        env=child_env(),
         check=False,
     )
 

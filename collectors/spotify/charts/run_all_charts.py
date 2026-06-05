@@ -1398,9 +1398,9 @@ def main() -> int:
         if name == "artists_global":
             extra = ["--no-post"] if "artists" not in post_parts else []
         elif name == "worldwide":
-            # worldwide gère lui-même le posting global/fr via --post-only
-            # on lui passe --no-post seulement si on ne veut rien poster du tout
-            extra = ["--no-post"] if args.no_post else []
+            # run_all orchestre les posts apres la collecte pour garder l'ordre:
+            # regional images, cards worldwide, puis extras. worldwide reste data-only.
+            extra = ["--no-post"]
         else:
             extra = []
         collect_runners.append((name, script, fixed + extra))

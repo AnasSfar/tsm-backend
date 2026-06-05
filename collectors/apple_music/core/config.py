@@ -1,11 +1,15 @@
 from __future__ import annotations
 
 import os
+import sys
 from datetime import date
 from pathlib import Path
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[1]
 REPO_ROOT = PACKAGE_ROOT.parents[1]
+repo_root_str = str(REPO_ROOT)
+if repo_root_str not in sys.path:
+    sys.path.insert(0, repo_root_str)
 from collectors.spotify.core.data_paths import ARCHIVE_DB_ROOT as ARCHIVE_DB_DIR
 from collectors.spotify.core.data_paths import DATA_ROOT, apple_music_charts_dir
 
