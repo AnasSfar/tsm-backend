@@ -1543,6 +1543,23 @@ def main() -> int:
 
     if not args.dry_run and should_generate_cards and not failures:
         if should_post_cards:
+            print("\n[PHASE3] publication des worldwide cards priority Global NEW...")
+            priority_args = [str(target_date), "--post-worldwide"]
+            if args.force_cards or args.force:
+                priority_args.append("--force")
+            rc_priority = _run(
+                "priority-global-new-worldwide",
+                CHARTS_ROOT / "worldwide" / "tools" / "scripts" / "post_global_new_releases.py",
+                priority_args,
+                dry_run=False,
+                env=env,
+                verbose=args.verbose,
+            )
+            if rc_priority != 0:
+                failures.append(("priority-global-new-worldwide", rc_priority))
+
+    if not args.dry_run and should_generate_cards and not failures:
+        if should_post_cards:
             print("\n[PHASE3] generation et publication des card images worldwide...")
         else:
             print("\n[PHASE3] generation des card images worldwide (no-post)...")

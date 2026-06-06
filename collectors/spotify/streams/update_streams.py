@@ -1222,7 +1222,7 @@ def main():
     throwback_force = "--force" in sys.argv or "--throwback-force" in sys.argv
     reset_last_date_mode = "--reset-last-date" in sys.argv
     write_history = not local_test_mode
-    force_reprocess = local_test_mode
+    force_reprocess = local_test_mode or ("--force" in sys.argv and not throwback_mode)
 
     if test_mode:
         no_post_mode = True
@@ -1554,6 +1554,7 @@ def main():
         and not local_test_mode
         and not debug_daily_mode
         and stats_date_override is None
+        and (done_tracks_before_run < total_tracks or force_reprocess)
     )
 
     new_release_track_ids: set[str] = set()
@@ -1596,6 +1597,7 @@ def main():
         or dry_run_mode
         or local_test_mode
         or debug_daily_mode
+        or force_reprocess
     )
 
     if scraping_needed:
@@ -1610,6 +1612,40 @@ def main():
             sys.exit(1)
     else:
         print("Tous les tracks déjà mis à jour pour cette date — Playwright/scraping ignoré.")
+
+    if not scraping_needed:
+        summary = _build_existing_history_summary(stats_date, total_tracks, len(active_track_ids))
+        print_summary_block(summary)
+        print_api_metrics(summary)
+        run_final_update_tasks(FinalizeContext(
+            script_dir=_SCRIPT_DIR,
+            repo_root=_REPO_ROOT,
+            stats_date=stats_date,
+            summary=summary,
+            no_post_mode=no_post_mode,
+            debug_daily_mode=False,
+            local_test_mode=False,
+            post_spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
+            log_mode=LOG_MODE,
+            artist_thread=None,
+            artist_result=[None],
+            export_web_data=export_web_data,
+            update_artist_metadata=update_artist_metadata,
+            album_tracks_done_for=album_tracks_done_for,
+            all_album_tracks_done=all_album_tracks_done,
+            load_album_sections_flat=load_album_sections_flat,
+            extract_track_id=extract_track_id,
+            load_history_track_ids_for_date=load_history_track_ids_for_date,
+            find_biggest_album_gainer_for_spotlight=find_biggest_album_gainer_for_spotlight,
+            posted_album_updates=set(),
+            initial_post_state={"posted_count": 0, "last_post_at": 0.0},
+        ))
+        if normal_lock_mode and summary["all_done"]:
+            _write_daily_lock(stats_date, STREAMS_UPDATE_COMPLETE_LOCK_NAME, {
+                "reason": "already_complete_fast_path",
+                "total_tracks": summary.get("total_tracks"),
+            })
+        return
 
     if (
         new_release_track_ids

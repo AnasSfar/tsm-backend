@@ -421,7 +421,7 @@ def _is_recent_release_for_debut(release_date: str | None, target_date: str, *, 
     if not release_date:
         return False
     try:
-        release_day = date.fromisoformat(release_date)
+        release_day = date.fromisoformat(str(release_date)[:10])
         target_day = date.fromisoformat(target_date)
     except Exception:
         return False

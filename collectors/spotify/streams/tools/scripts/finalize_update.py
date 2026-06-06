@@ -180,14 +180,20 @@ class ReadyAlbumUpdatePoster:
             self.export_web_data(stats_date=self.stats_date)
 
             album_img_script = self.script_dir / "tools" / "scripts" / "generate_album_update_image.py"
-            _run_streams_post(
-                [sys.executable, str(album_img_script), album, self.stats_date, "--post"],
-                label=f"early album update ({album})",
-                should_post=True,
-                state=self._post_state,
-                spacing_seconds=self.spacing_seconds,
-                log_mode=self.log_mode,
-            )
+            try:
+                _run_streams_post(
+                    [sys.executable, str(album_img_script), album, self.stats_date, "--post"],
+                    label=f"early album update ({album})",
+                    should_post=True,
+                    state=self._post_state,
+                    spacing_seconds=self.spacing_seconds,
+                    log_mode=self.log_mode,
+                )
+            except SystemExit as exc:
+                print(f"Early album update skipped after failure ({album}): {exc}")
+                with self._lock:
+                    self._posted.add(album)
+                return True
             with self._lock:
                 self._posted.add(album)
             return True
@@ -308,8 +314,8 @@ def _post_streams_image(ctx: FinalizeContext, state: dict[str, float]) -> None:
             )
             return
 
-        if not ctx.summary.get("all_done"):
-            print("Skipping weekend streams post: not all tracks are done yet.")
+        if not _streams_post_ready(ctx):
+            print("Skipping weekend streams post: blocking tracks are still pending.")
             return
 
         print("Weekend detected: posting one combined streams image to Twitter...")
@@ -335,8 +341,8 @@ def _post_streams_image(ctx: FinalizeContext, state: dict[str, float]) -> None:
         )
         return
 
-    if not ctx.summary.get("all_done"):
-        print("Skipping Twitter post: not all tracks are done yet.")
+    if not _streams_post_ready(ctx):
+        print("Skipping Twitter post: blocking tracks are still pending.")
         return
 
     print("Posting streams image to Twitter...")
@@ -348,6 +354,33 @@ def _post_streams_image(ctx: FinalizeContext, state: dict[str, float]) -> None:
         state=state,
     )
     print("Twitter post done.")
+
+
+def _streams_post_ready(ctx: FinalizeContext) -> bool:
+    """Allow top-track posts when only unchanged tracks are still pending."""
+    if ctx.summary.get("all_done"):
+        return True
+
+    pending = [
+        row for row in ctx.summary.get("results", [])
+        if row and row.get("status") == "pending"
+    ]
+    if not pending:
+        return False
+
+    blocking = [
+        row for row in pending
+        if row.get("reason") != "same_total"
+    ]
+    if blocking:
+        print(
+            "Streams post blocked by pending tracks: "
+            + ", ".join(str(row.get("title") or row.get("track_id")) for row in blocking[:5])
+        )
+        return False
+
+    print(f"Streams post allowed with {len(pending)} unchanged pending track(s).")
+    return True
 
 
 def _update_artist_metadata(ctx: FinalizeContext) -> bool:
@@ -571,13 +604,16 @@ def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
             album_cmd = [sys.executable, str(album_img_script), album, ctx.summary["stats_date"]]
             if not ctx.no_post_mode:
                 album_cmd.append("--post")
-            _run(
-                ctx,
-                album_cmd,
-                label=f"album update ({album})",
-                should_post=not ctx.no_post_mode,
-                state=state,
-            )
+            try:
+                _run(
+                    ctx,
+                    album_cmd,
+                    label=f"album update ({album})",
+                    should_post=not ctx.no_post_mode,
+                    state=state,
+                )
+            except SystemExit as exc:
+                print(f"Album update skipped after failure ({album}): {exc}")
             continue
 
         try:
@@ -596,6 +632,10 @@ def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
 def _post_albums_daily(ctx: FinalizeContext, state: dict[str, float]) -> None:
     if _is_weekend_stats_date(ctx.summary["stats_date"]):
         print("Weekend detected: skipping separate albums daily post (included in combined streams image).")
+        return
+
+    if not ctx.no_post_mode and not ctx.summary.get("all_done"):
+        print("Skipping albums daily post: not all tracks are done yet.")
         return
 
     albums_post_script = ctx.script_dir / "tools" / "scripts" / "post_albums_twitter.py"
@@ -771,6 +811,10 @@ def _is_weekend_stats_date(stats_date: str) -> bool:
 
 def _run_swift_top_charts_if_needed(ctx: FinalizeContext) -> None:
     try:
+        if not ctx.summary.get("all_done"):
+            print("Skipping Swift Top charts: not all tracks are done yet.")
+            return
+
         stats_date = date_cls.fromisoformat(ctx.summary["stats_date"])
         if stats_date.weekday() != 2:
             return

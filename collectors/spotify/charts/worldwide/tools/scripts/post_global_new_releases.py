@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import csv
 import html
 import json
 import re
@@ -28,9 +29,11 @@ if str(SPOTIFY_ROOT) not in sys.path:
 
 from core.data_paths import LEGACY_WEBSITE_DATA_DIR, WEB_EXPORT_DATA_DIR, first_existing, spotify_chart_dir  # noqa: E402
 from core.twitter import post_with_image  # noqa: E402
+import generate_card_images  # noqa: E402
 
 TWITTER_SESSION = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "json" / "twitter_session.json"
 DISCOGRAPHY_DIR = ROOT / "db" / "discography"
+CHARTS_HISTORY_GLOBAL = ROOT / "db" / "charts_history_global.csv"
 SONGS_JSON = first_existing(WEB_EXPORT_DATA_DIR / "songs.json", LEGACY_WEBSITE_DATA_DIR / "songs.json")
 HANDLE = "@tsmuseum13"
 PRIORITY_WINDOW_DAYS = 7
@@ -52,6 +55,21 @@ def _fmt(value) -> str:
         return f"{int(float(value)):,}"
     except (TypeError, ValueError):
         return "-"
+
+
+def _to_int(value) -> int:
+    try:
+        return int(float(str(value).replace(",", "").strip()))
+    except (TypeError, ValueError):
+        return 0
+
+
+def _ordinal(value: int) -> str:
+    if 10 <= value % 100 <= 20:
+        suffix = "th"
+    else:
+        suffix = {1: "st", 2: "nd", 3: "rd"}.get(value % 10, "th")
+    return f"{value}{suffix}"
 
 
 def _fmt_change(value, *, invert: bool = False) -> tuple[str, str]:
@@ -219,6 +237,54 @@ def _is_api_new_row(row: dict) -> bool:
     return previous_rank in (None, "", 0) and total_days_int <= 1
 
 
+def _is_first_global_day(row: dict) -> bool:
+    previous_rank = row.get("previous_rank")
+    total_days = row.get("total_days") or row.get("streak")
+    try:
+        total_days_int = int(total_days) if total_days not in (None, "") else None
+    except (TypeError, ValueError):
+        total_days_int = None
+    return previous_rank in (None, "", 0) and (total_days_int is None or total_days_int <= 1)
+
+
+def _global_debut_rank(row: dict) -> int | None:
+    streams = _to_int(row.get("streams"))
+    title = str(row.get("title") or row.get("track_name") or row.get("song_name") or "").strip()
+    if streams <= 0 or not title:
+        return None
+
+    debuts: dict[str, dict] = {
+        _norm(title): {
+            "title": title,
+            "streams": streams,
+        }
+    }
+    if CHARTS_HISTORY_GLOBAL.exists():
+        with CHARTS_HISTORY_GLOBAL.open(newline="", encoding="utf-8-sig") as f:
+            for csv_row in csv.DictReader(f):
+                song_name = str(csv_row.get("song_name") or "").strip()
+                key = _norm(song_name)
+                if not key:
+                    continue
+                if key in debuts:
+                    continue
+                previous_rank = csv_row.get("previous_rank")
+                total_days = str(csv_row.get("total_days") or "")
+                if total_days not in {"1", "1.0"} and previous_rank not in {"", "-1"}:
+                    continue
+                debuts[key] = {
+                    "title": song_name,
+                    "streams": _to_int(csv_row.get("streams")),
+                }
+
+    ranked = sorted(debuts.values(), key=lambda item: int(item.get("streams") or 0), reverse=True)
+    target_key = _norm(title)
+    for index, debut in enumerate(ranked, 1):
+        if _norm(str(debut.get("title") or "")) == target_key:
+            return index
+    return None
+
+
 def _load_chart_rows(chart_date: str) -> list[dict]:
     path = _chart_path(chart_date)
     rows = _read_json(path)
@@ -273,7 +339,7 @@ def _load_priority_rows(chart_date: str, *, force_songs: set[str] | None = None)
         release_day = _parse_date(row.get("release_date"))
         if chart_day and release_day:
             age_days = (chart_day - release_day).days
-            if 0 <= age_days < PRIORITY_WINDOW_DAYS:
+            if 0 <= age_days <= PRIORITY_WINDOW_DAYS:
                 item = dict(row)
                 item["release_age_days"] = age_days
                 item["priority_reason"] = "release_window"
@@ -576,15 +642,20 @@ def post_card(
     date_text = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
     if len(rows) == 1:
         row = rows[0]
-        verb = "debuts" if row.get("priority_reason") in {"api_new", "forced"} else "charts"
+        debut_rank_text = ""
+        if _is_first_global_day(row):
+            debut_rank = _global_debut_rank(row)
+            if debut_rank:
+                debut_rank_text = f"\n\nIt marks her {_ordinal(debut_rank)} biggest debut on the chart."
         tweet = (
-            f'"{row["title"]}" {verb} at #{row.get("rank")} on Global Spotify Charts '
-            f"with {_fmt(row.get('streams'))} streams ({date_text}).\n\n"
+            f'"{row["title"]}" charted at #{row.get("rank")} on Global Spotify Charts '
+            f"with {_fmt(row.get('streams'))} streams ({date_text})."
+            f"{debut_rank_text}\n\n"
             "See full update here : https://thetsmuseum.app/charts?region=global&view=today"
         )
     else:
         tweet = (
-            f"{len(rows)} new Taylor Swift songs debuted on Global Spotify Charts ({date_text}).\n\n"
+            f"{len(rows)} new Taylor Swift songs charted on Global Spotify Charts ({date_text}).\n\n"
             "See full update here : https://thetsmuseum.app/charts?region=global&view=today"
         )
     print(f"[global-new] Tweet: {tweet}")
@@ -605,10 +676,113 @@ def post_card(
     return 0
 
 
+def _worldwide_lock_path(chart_date: str) -> Path:
+    return spotify_chart_dir("worldwide", chart_date) / "cards" / "priority_global_new_posted.json"
+
+
+def _load_worldwide_song_meta() -> dict[str, dict]:
+    songs_raw = generate_card_images._load_json(generate_card_images.SONGS_JSON)
+    songs_list = songs_raw.get("songs", songs_raw) if isinstance(songs_raw, dict) else songs_raw
+    return {str(s["track_id"]): s for s in songs_list if isinstance(s, dict) and s.get("track_id")}
+
+
+def post_worldwide_cards(
+    chart_date: str,
+    *,
+    force: bool = False,
+    no_post: bool = False,
+    force_songs: set[str] | None = None,
+) -> int:
+    rows = _load_priority_rows(chart_date, force_songs=force_songs)
+    if not rows:
+        print(f"[global-new-worldwide] No priority worldwide card needed for {chart_date}.")
+        return 0
+
+    data = generate_card_images._load_json(generate_card_images.WORLDWIDE_JSON)
+    if not isinstance(data, dict) or data.get("date") != chart_date:
+        print(f"[global-new-worldwide] Worldwide snapshot not ready for {chart_date}.")
+        return 0
+
+    by_track = data.get("by_track", {})
+    if not isinstance(by_track, dict) or not by_track:
+        print(f"[global-new-worldwide] Worldwide snapshot empty for {chart_date}.")
+        return 0
+
+    song_meta = _load_worldwide_song_meta()
+    prev_counts = generate_card_images._load_prev_country_counts(chart_date)
+    out_dir = spotify_chart_dir("worldwide", chart_date) / "cards"
+    lock_path = _worldwide_lock_path(chart_date)
+
+    already_posted: set[str] = set()
+    if lock_path.exists() and not force:
+        try:
+            already_posted = set(json.loads(lock_path.read_text(encoding="utf-8")).get("posted", []))
+        except Exception:
+            already_posted = set()
+
+    posts: list[tuple[str, str, Path]] = []
+    for row in rows:
+        track_id = str(row.get("track_id") or "").strip()
+        if track_id not in by_track:
+            print(f"[global-new-worldwide] Skip {row.get('title')}: not in worldwide snapshot.")
+            continue
+        meta = song_meta.get(track_id, {"track_id": track_id, "title": row.get("title") or track_id})
+        slug = generate_card_images._slugify(str(meta.get("title") or row.get("title") or track_id))
+        if slug in already_posted:
+            print(f"[global-new-worldwide] Skip {meta.get('title')}: already posted.")
+            continue
+        image_path = out_dir / f"{slug}.png"
+        if not image_path.exists() or force:
+            rc = generate_card_images.generate(chart_date, min_countries=1, force=force, post=False)
+            if rc != 0:
+                return rc
+        if not image_path.exists():
+            print(f"[global-new-worldwide] Missing card image: {image_path}")
+            return 1
+        tweet = generate_card_images._build_tweet(
+            meta,
+            by_track.get(track_id) or [],
+            chart_date,
+            prev_counts.get(track_id),
+        )
+        posts.append((slug, tweet, image_path))
+
+    if not posts:
+        print(f"[global-new-worldwide] No pending worldwide priority posts for {chart_date}.")
+        return 0
+
+    for slug, tweet, image_path in posts:
+        print(f"[global-new-worldwide] {slug}: {tweet}")
+        print(f"[global-new-worldwide] Image: {image_path}")
+
+    if no_post:
+        print("[global-new-worldwide] Twitter post skipped (--no-post).")
+        return 0
+    if not TWITTER_SESSION.exists():
+        print(f"[global-new-worldwide] Twitter session missing: {TWITTER_SESSION}")
+        return 1
+
+    posted = set(already_posted)
+    for slug, tweet, image_path in posts:
+        if not post_with_image(tweet, image_path, TWITTER_SESSION):
+            print(f"[global-new-worldwide] Twitter post failed for {slug}.")
+            return 1
+        posted.add(slug)
+        lock_path.parent.mkdir(parents=True, exist_ok=True)
+        lock_path.write_text(
+            json.dumps({"date": chart_date, "posted": sorted(posted)}, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+
+    print(f"[global-new-worldwide] Posted {len(posts)} worldwide priority card(s).")
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("date", help="Chart date YYYY-MM-DD")
     parser.add_argument("--post", action="store_true", help="Post to @tsmuseum13")
+    parser.add_argument("--post-worldwide", action="store_true", help="Post matching worldwide cards individually.")
     parser.add_argument("--no-post", action="store_true", help="Generate only")
     parser.add_argument("--force", action="store_true", help="Ignore posted lock")
     parser.add_argument(
@@ -619,6 +793,8 @@ def main() -> int:
     )
     args = parser.parse_args()
     force_songs = set(args.force_song or [])
+    if args.post_worldwide:
+        return post_worldwide_cards(args.date, force=args.force, no_post=args.no_post, force_songs=force_songs)
     if args.post and not args.no_post:
         return post_card(args.date, force=args.force, no_post=False, force_songs=force_songs)
     image_path = generate_card(args.date, force_songs=force_songs)

@@ -56,6 +56,7 @@ CHARTS_GLOBAL_HISTORY_DIR = ROOT.parent / "charts" / "global" / "history"
 TWITTER_SESSION = ROOT.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json"
 
 HANDLE          = "@swiftiescharts"
+TWEET_CHAR_LIMIT = 280
 
 # Nouveau : logo à gauche du handle
 HANDLE_ICON_PATH = Path(r"C:\Users\sfara\Documents\GitHub\tsm-frontend\icons\logo.gif")
@@ -1609,6 +1610,9 @@ def post(album_name: str, image_path: Path, target_date: str) -> bool:
 
     try:
         tweet = _build_album_post_text(album_name, target_date)
+        if len(tweet) > TWEET_CHAR_LIMIT and "See full update here" in tweet:
+            tweet = tweet.split("See full update here", 1)[0].strip()
+            print("[album_update] Tweet shortened: removed full-update link to fit X limit.")
     except Exception as e:
         print(f"[album_update] Fallback tweet (erreur génération texte): {e}")
         from datetime import datetime

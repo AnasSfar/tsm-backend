@@ -38,6 +38,7 @@ TS_TOP_CSV = DB_DIR / "apple_music_ts_top_songs.csv"
 
 R2_PREFIX = "apple-music/history-by-song"
 CSV_R2_PREFIX = "apple-music/db"
+SNAPSHOT_R2_PREFIX = "apple-music/snapshots"
 NO_CACHE_CONTROL = "no-cache, no-store, must-revalidate"
 
 APPLE_MUSIC_CSV_NAMES = [
@@ -367,6 +368,55 @@ def upload_daily_csvs(client: BaseClient, bucket: str, dry_run: bool) -> int:
     return uploaded
 
 
+def _snapshot_payload(history: dict[str, Any], snapshot_key: str) -> dict[str, Any]:
+    return {
+        "date": snapshot_key,
+        "scraped_at": snapshot_key,
+        "global_chart": (history.get("global") or {}).get(snapshot_key, []),
+        "global_album_chart": (history.get("global_albums") or {}).get(snapshot_key, []),
+        "ts_top_songs": (history.get("top_songs") or {}).get(snapshot_key, []),
+        "top_videos": (history.get("top_videos") or {}).get(snapshot_key, []),
+        "country_charts": (history.get("country") or {}).get(snapshot_key, {}),
+        "country_album_charts": (history.get("country_albums") or {}).get(snapshot_key, {}),
+        "genre_charts": (history.get("genre") or {}).get(snapshot_key, {}),
+        "genre_album_charts": (history.get("genre_albums") or {}).get(snapshot_key, {}),
+        "music_video_charts": (history.get("music_video_charts") or {}).get(snapshot_key, {}),
+    }
+
+
+def upload_snapshot_jsons(client: BaseClient, bucket: str, dry_run: bool) -> int:
+    """Upload date/hour snapshots so API consumers can avoid the huge history JSON."""
+    if not APPLEMUSIC_HISTORY_JSON.exists():
+        print(f"[skip] {SNAPSHOT_R2_PREFIX} history source not found locally")
+        return 0
+
+    history = json.loads(APPLEMUSIC_HISTORY_JSON.read_text(encoding="utf-8-sig"))
+    dates = [date for date in history.get("dates", []) if isinstance(date, str) and date]
+    if not dates:
+        print(f"[skip] {SNAPSHOT_R2_PREFIX} no dates found")
+        return 0
+
+    uploaded = 0
+    unchanged = 0
+
+    def _upload(snapshot_key: str) -> tuple[str, bool]:
+        payload = _snapshot_payload(history, snapshot_key)
+        r2_key = f"{SNAPSHOT_R2_PREFIX}/{snapshot_key}.json"
+        changed = upload_json_if_changed(client, bucket, r2_key, payload, dry_run=dry_run)
+        return r2_key, changed
+
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        for r2_key, changed in pool.map(_upload, dates):
+            if changed:
+                print(f"[uploaded] {r2_key}")
+                uploaded += 1
+            else:
+                unchanged += 1
+
+    print(f"[done] {SNAPSHOT_R2_PREFIX}: uploaded={uploaded} unchanged={unchanged}")
+    return uploaded
+
+
 def main() -> None:
     load_dotenv()
     args = parse_args()
@@ -377,6 +427,9 @@ def main() -> None:
     # Upload main JSON files first (what the API reads)
     print("\n=== Uploading main Apple Music JSON files ===")
     upload_main_json_files(client, bucket, args.dry_run)
+
+    print("\n=== Uploading Apple Music snapshot JSON files ===")
+    upload_snapshot_jsons(client, bucket, args.dry_run)
 
     # Upload daily CSVs so the next CI run can compute previous_rank
     print("\n=== Uploading Apple Music CSV history ===")

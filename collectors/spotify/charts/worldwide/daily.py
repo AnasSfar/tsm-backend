@@ -124,7 +124,7 @@ def _album_emoji(album: str) -> str:
     for key, emoji in _ALBUM_EMOJI:
         if al.startswith(key) or key in al:
             return emoji
-    return "🎵"
+    return "📊"
 
 
 # ── Text normalisation helpers (inlined from scripts/chartr2.py) ──────────────

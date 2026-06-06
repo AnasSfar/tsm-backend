@@ -63,6 +63,23 @@ def maybe_upload_to_r2() -> None:
     print("[Apple Music] Uploading history-by-song to R2...")
     subprocess.run([sys.executable, str(upload_script)], cwd=REPO_ROOT, env=child_env(), check=False)
 
+
+def generate_country_cards(scraped_at: str, force: bool = False) -> int:
+    script = HERE / "generate_country_card_images.py"
+    if not script.exists():
+        print(f"[Apple Music] Card image script missing: {script}")
+        return 1
+
+    chart_date = scraped_at.split("T", 1)[0]
+    args = [sys.executable, str(script), chart_date, "--min-countries", "1"]
+    if force:
+        args.append("--force")
+
+    print("[Apple Music] Generating country chart card images...")
+    result = subprocess.run(args, cwd=REPO_ROOT, env=child_env(), check=False)
+    return result.returncode
+
+
 def run_script(script_path: Path, scraped_at: str) -> int:
     if not script_path.exists():
         print(f"[ERROR] Missing script: {script_path}")
@@ -90,7 +107,9 @@ def run_script(script_path: Path, scraped_at: str) -> int:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--no-post", action="store_true")
-    parser.parse_known_args()
+    parser.add_argument("--no-images", action="store_true", help="Skip Apple Music country chart card images.")
+    parser.add_argument("--force-images", action="store_true", help="Regenerate Apple Music country chart card images.")
+    args, _unknown = parser.parse_known_args()
 
     scraped_at = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
     print(f"[Apple Music] Starting full run - scraped_at={scraped_at}")
@@ -118,6 +137,12 @@ def main() -> None:
         if export_code != 0:
             print("[Apple Music] Export failed, skipping R2 upload")
             sys.exit(1)
+
+        if not args.no_images:
+            cards_code = generate_country_cards(scraped_at, force=args.force_images)
+            if cards_code != 0:
+                print("[Apple Music] Card image generation failed, skipping R2 upload")
+                sys.exit(1)
         
         maybe_upload_to_r2()
         print(f"{'=' * 80}")

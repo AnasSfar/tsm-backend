@@ -50,6 +50,7 @@ CHART_KIND = "albums"
 DISCOGRAPHY_DIR = _DB_DIR / "discography"
 ALBUMS_DIR = DISCOGRAPHY_DIR / "albums"
 COVERS_JSON = DISCOGRAPHY_DIR / "covers.json"
+SONGS_JSON = DISCOGRAPHY_DIR / "songs.json"
 
 OUTPUT_JSON = _SITE_DATA_DIR / "swift_top_albums.json"
 
@@ -157,23 +158,52 @@ def _track_counts_for_album_chart(track: dict, section: dict) -> bool:
 
     edition = (track.get("edition") or "").strip().casefold()
     display_section = (
-        track.get("display_section") or section.get("title") or section.get("name") or ""
+        track.get("display_section")
+        or section.get("display_section")
+        or section.get("title")
+        or section.get("name")
+        or ""
     ).strip().casefold()
+    section_name = (section.get("section") or "").strip().casefold()
+    album = (section.get("album") or track.get("album") or "").strip().casefold()
     title = (track.get("title") or "").strip().casefold()
 
     blocked_tokens = (
+        "standalone & extras",
         "extra",
+        "kworb",
         "live",
         "karaoke",
         "acoustic",
         "remix",
         "track by track",
         "music video",
+        "voice memo",
         "video extended",
         "extended version part",
     )
-    haystack = " ".join(part for part in (edition, display_section, title) if part)
+    haystack = " ".join(part for part in (edition, display_section, section_name, album, title) if part)
     return not any(token in haystack for token in blocked_tokens)
+
+
+def _is_standalone_extras_context(track: dict, section: dict) -> bool:
+    haystack = " ".join(
+        str(part or "").strip().casefold()
+        for part in (
+            section.get("album"),
+            track.get("album"),
+            section.get("section"),
+            section.get("display_section"),
+            track.get("display_section"),
+            track.get("edition"),
+        )
+        if part
+    )
+    return "standalone & extras" in haystack or "kworb_extras" in haystack
+
+
+def _track_counts_for_era_chart(track: dict, section: dict) -> bool:
+    return not _is_standalone_extras_context(track, section)
 
 
 def _era_title(album_title: str) -> str:
@@ -247,7 +277,12 @@ def _iter_discography_albums() -> list[AlbumMeta]:
                     continue
                 if not _track_has_taylor_as_primary(track):
                     continue
-                if not _track_counts_for_album_chart(track, section):
+                counts_for_chart = (
+                    _track_counts_for_era_chart(track, section)
+                    if CHART_KIND == "eras"
+                    else _track_counts_for_album_chart(track, section)
+                )
+                if not counts_for_chart:
                     continue
                 tid = _extract_track_id(
                     (track.get("url") or track.get("spotify_url") or "").strip()
@@ -300,6 +335,118 @@ def _albums_for_chart_variant(albums: list[AlbumMeta]) -> list[AlbumMeta]:
             track_ids=frozenset(info["track_ids"]),
         )
         for aid, info in grouped.items()
+    ]
+
+
+def _song_match_keys(track: dict) -> set[str]:
+    keys: set[str] = set()
+    raw_values = [
+        track.get("song_family"),
+        track.get("title_clean"),
+        track.get("base_title"),
+        track.get("title"),
+    ]
+
+    version_suffix_re = re.compile(
+        r"\s+-\s+.*\b(remix|acoustic|live|international mix|version|edit|mix|from)\b.*$",
+        re.IGNORECASE,
+    )
+    version_paren_re = re.compile(
+        r"\s+[\(\[][^\)\]]*\b(remix|acoustic|live|version|from the vault|feat|featuring|instrumental|karaoke)\b[^\)\]]*[\)\]]",
+        re.IGNORECASE,
+    )
+
+    for raw in raw_values:
+        value = str(raw or "").strip()
+        if not value:
+            continue
+        candidates = {value}
+        stripped = version_paren_re.sub("", value)
+        stripped = version_suffix_re.sub("", stripped)
+        stripped = re.sub(r"\s+", " ", stripped).strip(" -")
+        if stripped:
+            candidates.add(stripped)
+        for candidate in candidates:
+            key = _normalize_album_id(candidate)
+            if key:
+                keys.add(key)
+
+    return keys
+
+
+def _augment_era_albums_with_matched_extras(albums: list[AlbumMeta]) -> list[AlbumMeta]:
+    if CHART_KIND != "eras" or not SONGS_JSON.exists():
+        return albums
+
+    key_to_album_id: dict[str, str] = {}
+    for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
+        try:
+            payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
+        except Exception:
+            continue
+        if not isinstance(payload, dict):
+            continue
+        album_name = (payload.get("album") or album_file.stem).strip()
+        if not album_name:
+            continue
+        era_id = _normalize_album_id(_era_title(album_name))
+        for section in payload.get("sections", []) or []:
+            if not isinstance(section, dict):
+                continue
+            for track in section.get("tracks", []) or []:
+                if not isinstance(track, dict) or not _track_has_taylor_as_primary(track):
+                    continue
+                if _is_standalone_extras_context(track, section):
+                    continue
+                for key in _song_match_keys(track):
+                    key_to_album_id.setdefault(key, era_id)
+
+    albums_by_id = {
+        album.album_id: {
+            "title": album.title,
+            "cover_url": album.cover_url,
+            "spotify_url": album.spotify_url,
+            "track_ids": set(album.track_ids),
+        }
+        for album in albums
+    }
+
+    try:
+        sections = json.loads(SONGS_JSON.read_text(encoding="utf-8-sig"))
+    except Exception:
+        return albums
+    if not isinstance(sections, list):
+        return albums
+
+    for section in sections:
+        if not isinstance(section, dict):
+            continue
+        for track in section.get("tracks", []) or []:
+            if not isinstance(track, dict) or not _track_has_taylor_as_primary(track):
+                continue
+            tid = _extract_track_id((track.get("url") or track.get("spotify_url") or "").strip())
+            if not tid:
+                continue
+            matched_album_id = next(
+                (key_to_album_id[key] for key in _song_match_keys(track) if key in key_to_album_id),
+                None,
+            )
+            if not matched_album_id or matched_album_id not in albums_by_id:
+                continue
+            albums_by_id[matched_album_id]["track_ids"].add(tid)
+            for hist_id in track.get("historical_track_ids") or []:
+                if isinstance(hist_id, str) and hist_id.strip():
+                    albums_by_id[matched_album_id]["track_ids"].add(hist_id.strip())
+
+    return [
+        AlbumMeta(
+            album_id=album_id,
+            title=info["title"],
+            cover_url=info["cover_url"],
+            spotify_url=info["spotify_url"],
+            track_ids=frozenset(info["track_ids"]),
+        )
+        for album_id, info in albums_by_id.items()
     ]
 
 
@@ -594,7 +741,7 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool, skip_r
 
     logger.log(f"▶ {CHART_TITLE} · {chart_date_str}  week={week_start_str}→{chart_date_str}  prev={prev_date_str or 'none'}")
 
-    albums = _albums_for_chart_variant(_iter_discography_albums())
+    albums = _augment_era_albums_with_matched_extras(_albums_for_chart_variant(_iter_discography_albums()))
     albums_by_id = {a.album_id: a for a in albums}
     logger.log(f"  discography    : {len(albums)} albums, {sum(len(a.track_ids) for a in albums)} tracks indexed")
 

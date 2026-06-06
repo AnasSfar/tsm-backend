@@ -5,6 +5,7 @@ import csv
 import json
 import sys
 from collections import defaultdict
+from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
@@ -208,6 +209,39 @@ def _backfill_by_genre(current: dict[str, Any] | None, prev_section: Any) -> Non
         for genre, entries in genres.items():
             by_id, by_name = _build_rank_lookup(_get_entries(prev_genres.get(genre)))
             _backfill_entries(entries if isinstance(entries, list) else _get_entries(entries), by_id, by_name)
+
+
+def _mirror_flat_current_to_latest(
+    current: dict[str, Any] | None,
+    history: dict[str, list[dict[str, Any]]],
+    latest: str | None,
+    label: str,
+) -> None:
+    if not current or not latest or current.get("date") == latest or latest in history:
+        return
+    entries = current.get("entries") or []
+    if not entries:
+        return
+    history[latest] = deepcopy(entries)
+    current["date"] = latest
+    log(f"{label}: snapshot identique propagé sur {latest}")
+
+
+def _mirror_grouped_current_to_latest(
+    current: dict[str, Any] | None,
+    history: dict[str, Any],
+    latest: str | None,
+    section_key: str,
+    label: str,
+) -> None:
+    if not current or not latest or current.get("date") == latest or latest in history:
+        return
+    payload = current.get(section_key) or {}
+    if not payload:
+        return
+    history[latest] = deepcopy(payload)
+    current["date"] = latest
+    log(f"{label}: snapshot identique propagé sur {latest}")
 
 
 def sort_entries(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -487,6 +521,18 @@ def main() -> None:
         country_dates + country_album_dates + genre_album_dates + music_video_chart_dates + genre_dates
     ))
     latest_any = all_dates[-1] if all_dates else None
+
+    # Some collectors skip writing a new same-day snapshot when the chart is unchanged.
+    # Mirror that unchanged current data onto the run timestamp so date-specific API
+    # consumers do not see a partially unavailable snapshot.
+    _mirror_flat_current_to_latest(global_current, global_history, latest_any, "global")
+    _mirror_flat_current_to_latest(top_current, top_history, latest_any, "top_songs")
+    _mirror_flat_current_to_latest(top_video_current, top_video_history, latest_any, "top_videos")
+    _mirror_grouped_current_to_latest(country_current, country_history, latest_any, "countries", "country")
+    _mirror_grouped_current_to_latest(country_album_current, country_album_history, latest_any, "countries", "country_albums")
+    _mirror_grouped_current_to_latest(genre_album_current, genre_album_history, latest_any, "by_country", "genre_albums")
+    _mirror_grouped_current_to_latest(music_video_chart_current, music_video_chart_history, latest_any, "countries", "music_video_charts")
+    _mirror_grouped_current_to_latest(genre_current, genre_history, latest_any, "by_country", "genre")
 
     applemusic_data = {
         "scraped_at": latest_any,

@@ -952,7 +952,7 @@ def _album_emoji(album: str) -> str:
     for key, emoji in _ALBUM_EMOJI:
         if al.startswith(key) or key in al:
             return emoji
-    return "🎵"
+    return "📊"
 
 
 def _worldwide_snapshot_path(chart_date: str) -> Path:
@@ -1520,6 +1520,17 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
                 pass
         elif index_path.exists():
             print("[INFO] cards_index.json existe mais posted_cards.json est absent; publication des cards non verrouillées")
+
+    if post:
+        priority_posted_path = out_dir / "priority_global_new_posted.json"
+        if priority_posted_path.exists():
+            try:
+                priority_posted = set(json.loads(priority_posted_path.read_text(encoding="utf-8")).get("posted", []))
+                if priority_posted:
+                    already_posted.update(priority_posted)
+                    print(f"[INFO] {len(priority_posted)} card(s) priority Global NEW deja postee(s), skip dans le thread")
+            except Exception:
+                pass
 
     _wait_for_twitter_lock()
     try:
