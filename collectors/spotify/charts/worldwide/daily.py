@@ -898,6 +898,16 @@ def main() -> int:
         help="Post the legacy text-only per-song worldwide updates.",
     )
     parser.add_argument(
+        "--post-priority-global-new",
+        action="store_true",
+        help="Post the priority Global NEW card as soon as the global chart is fetched.",
+    )
+    parser.add_argument(
+        "--force-priority-global-new",
+        action="store_true",
+        help="Ignore the posted lock for the priority Global NEW card.",
+    )
+    parser.add_argument(
         "--force",
         action="store_true",
         help="Re-fetch all regions even if already present for this date.",
@@ -1044,7 +1054,8 @@ def main() -> int:
     regions_to_fetch = {k: v for k, v in regions.items() if k not in already_done}
 
     # Phase 1 : fetch global et fr en priorité pour poster pendant la phase 2
-    _PRIORITY = set() if args.no_post else {"global", "fr"}
+    post_priority_global_new = args.post_priority_global_new and not args.dates and not args.dates_file
+    _PRIORITY = {"global"} if post_priority_global_new else (set() if args.no_post else {"global", "fr"})
     priority_to_fetch = {k: v for k, v in regions_to_fetch.items() if k in _PRIORITY}
     other_to_fetch    = {k: v for k, v in regions_to_fetch.items() if k not in _PRIORITY}
 
@@ -1057,11 +1068,14 @@ def main() -> int:
         for region in ("global", "fr"):
             if region in priority_results and priority_results[region]:
                 _write_regional_ts_chart(chart_date, region, priority_results[region], manual_lookup, track_lookup)
-        if not args.no_post and priority_results.get("global") and GLOBAL_NEW_RELEASES_SCRIPT.exists():
+        if (not args.no_post or post_priority_global_new) and priority_results.get("global") and GLOBAL_NEW_RELEASES_SCRIPT.exists():
             def _post_priority_global_new_card() -> None:
                 print("[INFO] Priority Global NEW card check...", flush=True)
+                cmd = [sys.executable, str(GLOBAL_NEW_RELEASES_SCRIPT), chart_date, "--post"]
+                if args.force_priority_global_new:
+                    cmd.append("--force")
                 result = subprocess.run(
-                    [sys.executable, str(GLOBAL_NEW_RELEASES_SCRIPT), chart_date, "--post"],
+                    cmd,
                     cwd=str(ROOT),
                 )
                 if result.returncode != 0:
@@ -1296,6 +1310,12 @@ def main() -> int:
         _posting_thread.join(timeout=600)
         if _posting_thread.is_alive():
             print("[WARN] Posting global/fr toujours en cours après 10 minutes", flush=True)
+
+    if _priority_card_thread is not None and _priority_card_thread.is_alive():
+        print("[INFO] Attente fin Priority Global NEW card...", flush=True)
+        _priority_card_thread.join(timeout=600)
+        if _priority_card_thread.is_alive():
+            print("[WARN] Priority Global NEW card toujours en cours apres 10 minutes", flush=True)
 
     git_commit_and_push(ROOT, f"charts worldwide {chart_date}")
     return 0

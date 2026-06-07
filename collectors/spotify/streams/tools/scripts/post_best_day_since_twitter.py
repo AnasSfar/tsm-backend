@@ -18,11 +18,15 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent          # streams/tools/scripts/
 ROOT = SCRIPT_DIR.parents[1]                          # streams/
 REPO_ROOT = SCRIPT_DIR.parents[4]                     # repo root
+COLLECTORS_ROOT = REPO_ROOT / "collectors"
 TWITTER_SESSION = ROOT.parent / "charts" / "worldwide" / "tools" / "json" / "twitter_session.json"
+INDEPENDENT_BEST_DAY_MIN_DAYS = 61
 
+sys.path.insert(0, str(COLLECTORS_ROOT))              # collectors/
 sys.path.insert(0, str(ROOT))                         # collectors/spotify/streams/
 sys.path.insert(0, str(ROOT.parent))                  # collectors/spotify/
 
+from comp.feature_card import render_feature_card, slugify, write_feature_card_png  # noqa: E402
 from core.twitter import post_with_image  # noqa: E402
 from core.album_emoji import album_emoji  # noqa: E402
 from core.data_paths import update_streams_dir  # noqa: E402
@@ -79,13 +83,62 @@ def _day_dir(target_date: str) -> Path:
     return update_streams_dir(target_date)
 
 
+def _badge_class(text: str) -> str:
+    if text in {"+0.0%", "0.0%"}:
+        return "flat"
+    if text.startswith("+"):
+        return "up"
+    if text.startswith("-"):
+        return "down"
+    return "flat"
+
+
+def _generate_best_day_since_image(
+    *,
+    row: dict,
+    track: dict,
+    total_today: int,
+    daily_yesterday: int | None,
+    cover_url: str,
+    target_date: str,
+) -> Path:
+    from datetime import datetime
+
+    date_text = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    daily = int(row["daily_streams"])
+    pct = _fmt_pct(daily, daily_yesterday)
+    label = best_day_since.row_label(row)
+    html = render_feature_card(
+        title=track.get("title") or row["title"],
+        eyebrow="Spotify Streams",
+        subtitle=f"{label} - {date_text}",
+        stats=[
+            {"label": "Daily Streams", "value": _fmt_int(daily), "badge": pct, "badge_class": _badge_class(pct)},
+            {"label": "Total Streams", "value": _fmt_int(total_today), "badge": "Since release", "badge_class": "flat"},
+        ],
+        cover_url=cover_url,
+        footer_left="@tsmuseum13",
+        footer_right=date_text,
+        extra=label,
+    )
+    out_dir = _day_dir(target_date) / "best_day_since"
+    out_path = out_dir / f"best_day_since_{slugify(track.get('title') or row['title'])}_{target_date}.png"
+    tmp_path = out_dir / f"_best_day_since_{row['track_id']}.html"
+    return write_feature_card_png(html, out_path, tmp_path)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Post top best-day-since songs to @tsmuseum13.")
     parser.add_argument("date", nargs="?", help="Stats date YYYY-MM-DD. Defaults to yesterday.")
     parser.add_argument("--no-post", action="store_true", help="Generate images but skip Twitter posts.")
     parser.add_argument("--force", action="store_true", help="Post again even if best_day_since_posted.lock exists.")
     parser.add_argument("--limit", type=int, default=3, help="Number of songs to post (default: 3).")
-    parser.add_argument("--min-days", type=int, default=14, help="Minimum days for best-day-since (default: 14).")
+    parser.add_argument(
+        "--min-days",
+        type=int,
+        default=INDEPENDENT_BEST_DAY_MIN_DAYS,
+        help=f"Minimum days for best-day-since (default: {INDEPENDENT_BEST_DAY_MIN_DAYS}).",
+    )
     parser.add_argument(
         "--post-spacing-seconds",
         type=int,
@@ -137,17 +190,13 @@ def main() -> None:
             continue
 
         cover_url = spotlight.get_cover_url(track, covers)
-        image_path = spotlight.generate_spotlight_image(
+        image_path = _generate_best_day_since_image(
+            row=row,
             track=track,
-            total_scraped=total_today,
-            total_yesterday=total_yesterday,
-            comparison_daily=daily_yesterday,
-            comparison_label="Yesterday",
+            total_today=total_today,
+            daily_yesterday=daily_yesterday,
             cover_url=cover_url,
-            stats_date=target_date,
-            handle="@tsmuseum13",
-            combined=False,
-            highlight="vs",
+            target_date=target_date,
         )
 
         tweet = _build_tweet(row, daily_yesterday)

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Post independent X updates for Spotify debut releases.
+"""Post independent X updates for recent Spotify releases.
 
-Detects tracks whose Spotify API release_date is recent and whose first
-positive stream snapshot is the target stats date. Different songs get
-standalone posts; multiple versions of the same song share one post.
+Detects tracks whose Spotify API release_date is within the release update
+window. Different songs get standalone posts; multiple versions of the same
+song share one post.
 
 Usage:
   python post_debut_releases.py 2026-06-01
@@ -175,6 +175,22 @@ def _version_label(title: str, base_title: str) -> str:
 
 def _fmt(n: int | None) -> str:
     return f"{int(n or 0):,}"
+
+
+def _fmt_signed(n: int | None) -> str:
+    value = int(n or 0)
+    if value > 0:
+        return f"+{_fmt(value)}"
+    if value < 0:
+        return f"-{_fmt(abs(value))}"
+    return "0"
+
+
+def _fmt_pct(pct: float | None) -> str:
+    if pct is None:
+        return "-"
+    text = f"{pct:+.1f}%"
+    return "+0.0%" if text == "-0.0%" else text
 
 
 def _date_label(iso_day: str) -> str:
@@ -367,8 +383,34 @@ def _load_rows_for_date(target_date: str) -> dict[str, dict]:
                 streams = int((row.get("streams") or "0").strip() or "0")
             except ValueError:
                 streams = 0
-            rows[tid] = {"date": day, "streams": streams}
+            try:
+                daily_streams = int((row.get("daily_streams") or "0").strip() or "0")
+            except ValueError:
+                daily_streams = 0
+            rows[tid] = {"date": day, "streams": streams, "daily_streams": daily_streams}
     return rows
+
+
+def _release_day(release_date: str | None) -> date | None:
+    if not release_date:
+        return None
+    try:
+        return date.fromisoformat(str(release_date)[:10])
+    except Exception:
+        return None
+
+
+def _daily_streams_for_row(row: dict | None, previous_row: dict | None = None) -> int:
+    if not row:
+        return 0
+    daily = int(row.get("daily_streams") or 0)
+    if daily > 0:
+        return daily
+    streams = int(row.get("streams") or 0)
+    previous_streams = int((previous_row or {}).get("streams") or 0)
+    if streams > 0 and previous_streams > 0 and streams >= previous_streams:
+        return streams - previous_streams
+    return streams
 
 
 def _load_first_history_dates() -> dict[str, str]:
@@ -417,11 +459,11 @@ def _load_latest_positive_rows(track_ids: set[str]) -> dict[str, dict]:
     return latest
 
 
-def _is_recent_release_for_debut(release_date: str | None, target_date: str, *, window_days: int = 3) -> bool:
-    if not release_date:
+def _is_recent_release_for_debut(release_date: str | None, target_date: str, *, window_days: int = 7) -> bool:
+    release_day = _release_day(release_date)
+    if release_day is None:
         return False
     try:
-        release_day = date.fromisoformat(str(release_date)[:10])
         target_day = date.fromisoformat(target_date)
     except Exception:
         return False
@@ -512,16 +554,16 @@ body{color:var(--debut-text)}
 }
 .debut-main{
   display:grid;
-  grid-template-columns:220px minmax(0,1fr) 380px;
-  gap:32px;
+  grid-template-columns:200px minmax(0,1fr) 390px;
+  gap:26px;
   align-items:center;
-  min-height:244px;
-  padding:30px 30px 32px;
+  min-height:228px;
+  padding:28px 28px 30px;
   overflow:hidden;
 }
 .debut-art{
-  width:220px;
-  height:220px;
+  width:200px;
+  height:200px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -530,8 +572,8 @@ body{color:var(--debut-text)}
   box-shadow:0 16px 34px rgba(16,24,40,.13);
 }
 .debut-cover,.debut-cover-ph{
-  width:198px;
-  height:198px;
+  width:180px;
+  height:180px;
   border-radius:16px;
 }
 .debut-cover{
@@ -554,7 +596,7 @@ body{color:var(--debut-text)}
 }
 .debut-title{
   margin-top:14px;
-  font-size:38px;
+  font-size:34px;
   line-height:1.02;
   font-weight:950;
   color:var(--debut-text);
@@ -567,35 +609,78 @@ body{color:var(--debut-text)}
   font-weight:800;
 }
 .debut-metric{
-  text-align:right;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
 }
-.debut-num{
-  display:inline-block;
-  padding:18px 22px;
-  border-radius:20px;
+.debut-stat{
+  min-height:106px;
+  padding:15px 16px;
+  border-radius:16px;
   background:linear-gradient(180deg,rgba(255,255,255,.98),var(--debut-accent-chip));
   border:1px solid var(--debut-accent-line);
   box-shadow:0 14px 34px rgba(16,24,40,.10);
   text-align:right;
-  font-size:42px;
-  line-height:1.02;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.debut-num{
+  font-size:25px;
+  line-height:1.08;
   font-weight:950;
   color:var(--debut-text);
   max-width:100%;
   overflow:hidden;
   font-variant-numeric:tabular-nums;
 }
-.debut-label{
-  margin-top:9px;
+.debut-num.primary{
+  font-size:29px;
+}
+.debut-num.pos{color:#067647}
+.debut-num.neg{color:#b42318}
+.debut-num.neutral{color:var(--debut-text)}
+.debut-stat.wide{
+  grid-column:auto;
+}
+.debut-inline-stats{
+  display:flex;
+  justify-content:flex-end;
+  gap:18px;
+  margin-top:10px;
+}
+.debut-inline-stat{
   text-align:right;
-  font-size:13px;
+}
+.debut-inline-num{
+  font-size:17px;
+  line-height:1.1;
+  font-weight:950;
+  font-variant-numeric:tabular-nums;
+}
+.debut-inline-num.pos{color:#067647}
+.debut-inline-num.neg{color:#b42318}
+.debut-inline-num.neutral{color:var(--debut-text)}
+.debut-inline-label{
+  margin-top:4px;
+  font-size:9px;
+  color:var(--debut-accent);
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+}
+.debut-label{
+  margin-top:7px;
+  text-align:right;
+  font-size:10px;
   color:var(--debut-accent);
   font-weight:900;
   text-transform:uppercase;
   letter-spacing:.07em;
 }
 .debut-versions{
-  margin-top:10px;
+  grid-column:1 / -1;
+  margin-top:0;
   text-align:right;
   font-size:13px;
   color:var(--debut-muted);
@@ -717,7 +802,10 @@ def _build_debut_html(
     target_date: str,
     *,
     title: str,
-    streams: int,
+    daily_streams: int,
+    change_streams: int | None,
+    change_pct: float | None,
+    total_streams: int,
     image_url: str | None,
     versions: list[dict] | None = None,
     version_count: int = 1,
@@ -742,6 +830,8 @@ def _build_debut_html(
         if version_count > 1
         else ""
     )
+    change_class = "pos" if (change_streams or 0) > 0 else "neg" if (change_streams or 0) < 0 else "neutral"
+    pct_class = "pos" if (change_pct or 0) > 0 else "neg" if (change_pct or 0) < 0 else "neutral"
     version_rows_html = ""
     if show_version_details and versions and len(versions) > 1:
         rows = []
@@ -792,7 +882,7 @@ def _build_debut_html(
     <div class="brand">
       {generate_weekend_streams_image.SPOTIFY_SVG}
       <div>
-        <div class="hdr-title">Taylor Swift · Spotify Debut</div>
+        <div class="hdr-title">Taylor Swift · Spotify Counter</div>
       </div>
     </div>
     <div class="hdr-date">{html.escape(date_text)}</div>
@@ -800,7 +890,7 @@ def _build_debut_html(
   <div class="debut-wrap">
     <div class="section debut-card">
       <div class="section-title">
-        <h2>New Release Snapshot</h2>
+        <h2>Song Update</h2>
         <span>Song</span>
       </div>
       <div class="debut-main">
@@ -811,8 +901,24 @@ def _build_debut_html(
           <div class="debut-sub">Taylor Swift</div>
         </div>
         <div class="debut-metric">
-          <div class="debut-num">{_fmt(streams)}</div>
-          <div class="debut-label">Daily streams</div>
+          <div class="debut-stat wide">
+            <div class="debut-num primary">{_fmt(daily_streams)}</div>
+            <div class="debut-label">Daily streams</div>
+            <div class="debut-inline-stats">
+              <div class="debut-inline-stat">
+                <div class="debut-inline-num {change_class}">{_fmt_signed(change_streams)}</div>
+                <div class="debut-inline-label">Change</div>
+              </div>
+              <div class="debut-inline-stat">
+                <div class="debut-inline-num {pct_class}">{_fmt_pct(change_pct)}</div>
+                <div class="debut-inline-label">Vs yesterday</div>
+              </div>
+            </div>
+          </div>
+          <div class="debut-stat wide">
+            <div class="debut-num">{_fmt(total_streams)}</div>
+            <div class="debut-label">Total streams</div>
+          </div>
           {version_html}
         </div>
       </div>
@@ -833,7 +939,10 @@ def _generate_debut_image(
     slug: str,
     title: str,
     kind: str,
-    streams: int,
+    daily_streams: int,
+    change_streams: int | None,
+    change_pct: float | None,
+    total_streams: int,
     image_url: str | None,
     versions: list[dict] | None = None,
     version_count: int = 1,
@@ -851,7 +960,10 @@ def _generate_debut_image(
     html_text = _build_debut_html(
         target_date,
         title=title,
-        streams=streams,
+        daily_streams=daily_streams,
+        change_streams=change_streams,
+        change_pct=change_pct,
+        total_streams=total_streams,
         image_url=image_url,
         versions=versions,
         version_count=version_count,
@@ -869,7 +981,8 @@ def _build_post_threads(
     album_tracks, meta = _load_album_tracks()
     _load_misc_tracks(meta)
     day_rows = _load_rows_for_date(target_date)
-    first_history_dates = _load_first_history_dates()
+    previous_date = str(date.fromisoformat(target_date) - timedelta(days=1))
+    previous_rows = _load_rows_for_date(previous_date)
 
     forced_selectors = set(force_song_selectors or set())
     forced_selectors.update(force_track_ids or set())
@@ -887,11 +1000,9 @@ def _build_post_threads(
                 }
             if tid in meta:
                 meta[tid]["release_date"] = target_date
-                first_history_dates[tid] = target_date
     debut_ids = {
         tid for tid, item in meta.items()
         if tid in day_rows
-        and first_history_dates.get(tid) == target_date
         and _is_recent_release_for_debut(item.get("release_date"), target_date)
     }
     if not debut_ids:
@@ -910,9 +1021,13 @@ def _build_post_threads(
         ids = sorted(ids, key=lambda tid: meta.get(tid, {}).get("title", tid).casefold())
         primary = meta.get(ids[0], {})
         title = _clean_base_title(primary.get("base_title") or primary.get("title") or ids[0])
-        streams = sum(day_rows[tid]["streams"] for tid in ids)
-        if streams <= 0:
-            print(f"[debut_releases] Skip {title}: total debut streams is 0.")
+        daily_streams = sum(_daily_streams_for_row(day_rows.get(tid), previous_rows.get(tid)) for tid in ids)
+        previous_daily_streams = sum(_daily_streams_for_row(previous_rows.get(tid)) for tid in ids)
+        total_streams = sum(int(day_rows[tid]["streams"] or 0) for tid in ids)
+        change_streams = daily_streams - previous_daily_streams if previous_daily_streams > 0 else None
+        change_pct = (change_streams / previous_daily_streams * 100) if change_streams is not None else None
+        if daily_streams <= 0:
+            print(f"[debut_releases] Skip {title}: daily streams is 0.")
             continue
         image_url = next((meta.get(tid, {}).get("image_url") for tid in ids if meta.get(tid, {}).get("image_url")), None)
         version_count = len(ids)
@@ -920,12 +1035,12 @@ def _build_post_threads(
             {
                 "label": _version_label(meta.get(tid, {}).get("title") or tid, title),
                 "title": meta.get(tid, {}).get("title") or tid,
-                "streams": day_rows[tid]["streams"],
+                "streams": _daily_streams_for_row(day_rows.get(tid), previous_rows.get(tid)),
             }
             for tid in sorted(
                 ids,
                 key=lambda tid: (
-                    -int(day_rows[tid]["streams"] or 0),
+                    -_daily_streams_for_row(day_rows.get(tid), previous_rows.get(tid)),
                     str(meta.get(tid, {}).get("title") or tid).casefold(),
                 ),
             )
@@ -935,17 +1050,28 @@ def _build_post_threads(
             slug=f"song_{group_key}_total",
             title=title,
             kind="song",
-            streams=streams,
+            daily_streams=daily_streams,
+            change_streams=change_streams,
+            change_pct=change_pct,
+            total_streams=total_streams,
             image_url=image_url,
             versions=versions,
             version_count=version_count,
             show_version_details=False,
         )
         version_note = f" across {version_count} versions" if version_count > 1 else ""
+        movement = ""
+        if change_pct is not None:
+            direction = "up" if change_streams and change_streams > 0 else "down" if change_streams and change_streams < 0 else "stable at"
+            pct_text = _fmt_pct(abs(change_pct) if direction in {"up", "down"} else change_pct)
+            if direction == "stable at":
+                movement = f", {direction} {pct_text}"
+            else:
+                movement = f", {direction} {pct_text} vs yesterday"
         thread_posts: list[tuple[str, str, Path | None]] = [(
             f"song:{group_key}:total",
             (
-                f'"{title}" debuted with {_fmt(streams)} streams on the Spotify Counter{version_note} ({date_text}).\n\n'
+                f'"{title}" received {_fmt(daily_streams)} streams on the Spotify Counter{version_note}{movement} ({date_text}).\n\n'
                 "See full update here : https://thetsmuseum.app/streams/latest"
             ),
             total_image_path,
@@ -957,7 +1083,10 @@ def _build_post_threads(
                 slug=f"song_{group_key}_details",
                 title=title,
                 kind="song",
-                streams=streams,
+                daily_streams=daily_streams,
+                change_streams=change_streams,
+                change_pct=change_pct,
+                total_streams=total_streams,
                 image_url=image_url,
                 versions=versions,
                 version_count=version_count,

@@ -32,7 +32,7 @@ except ImportError:
 ROOT             = Path(__file__).parent
 _TOOLS           = Path(__file__).parent.parent          # = global/tools/
 sys.path.insert(0, str(Path(__file__).parents[4]))
-from core.data_paths import first_existing, first_existing_db_history, legacy_spotify_chart_dir, spotify_chart_dir
+from core.data_paths import first_existing, first_existing_db_history, legacy_spotify_chart_dir, spotify_chart_dir, WEB_EXPORT_DATA_DIR, LEGACY_WEBSITE_DATA_DIR
 
 _DATA            = _TOOLS.parent / "history"             # legacy global/history
 TS_HISTORY_PATH  = _TOOLS / "json" / "ts_history.json"
@@ -205,6 +205,22 @@ def _get_track_image_map() -> dict:
                 for track in songs:
                     title = track.get("title", "")
                     img = (track.get("image_url") or "").strip()
+                    if title and img:
+                        _track_image_map.setdefault(_norm(title), img)
+            except Exception:
+                pass
+        # Web export songs.json — contains image_url from Spotify for all known tracks
+        web_songs_path = first_existing(
+            WEB_EXPORT_DATA_DIR / "songs.json",
+            LEGACY_WEBSITE_DATA_DIR / "songs.json",
+        )
+        if web_songs_path and web_songs_path.exists():
+            try:
+                payload = json.loads(web_songs_path.read_text(encoding="utf-8-sig"))
+                songs_list = payload.get("songs", payload) if isinstance(payload, dict) else payload
+                for song in (songs_list or []):
+                    title = (song.get("title") or song.get("name") or "").strip()
+                    img = (song.get("image_url") or song.get("apple_music_image_url") or "").strip()
                     if title and img:
                         _track_image_map.setdefault(_norm(title), img)
             except Exception:

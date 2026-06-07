@@ -36,10 +36,9 @@ def _ordinal(n: int) -> str:
 def build_tweet(target_date: str) -> str:
     d = date.fromisoformat(target_date)
     return (
-        "Taylor Swift's Spotify streams update for "
-        f"{d.strftime('%A')}, {d.strftime('%B')} {_ordinal(d.day)}, {d.year}.\n\n"
-        "Top 5 albums + top 5 songs in one card.\n"
-        "See full update here : https://thetsmuseum.app/streams/latest"
+        "Taylor Swift's albums and songs on the Spotify counter yesterday, "
+        f"{d.strftime('%A')}, {d.strftime('%B')} {_ordinal(d.day)}, {d.year}.\n"
+        "Full update here : https://thetsmuseum.app/streams/latest"
     )
 
 

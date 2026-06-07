@@ -77,13 +77,13 @@ AVAILABILITY_RETRY_SECONDS = 10
 AVAILABILITY_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_AVAILABILITY_MAX_ATTEMPTS", "0"))
 AVAILABILITY_MAX_SECONDS = int(os.getenv("SPOTIFY_AVAILABILITY_MAX_SECONDS", "0"))
 WATCH_MAX_SECONDS = int(os.getenv("SPOTIFY_WATCH_MAX_SECONDS", "0"))
-WATCH_BASE_SECONDS = int(os.getenv("SPOTIFY_WATCH_BASE_SECONDS", "60"))
-WATCH_LATE_SECONDS = int(os.getenv("SPOTIFY_WATCH_LATE_SECONDS", "180"))
+WATCH_BASE_SECONDS = int(os.getenv("SPOTIFY_WATCH_BASE_SECONDS", "10"))
+WATCH_LATE_SECONDS = int(os.getenv("SPOTIFY_WATCH_LATE_SECONDS", "10"))
 WATCH_HOT_SECONDS = int(os.getenv("SPOTIFY_WATCH_HOT_SECONDS", "20"))
 WATCH_ERROR_SECONDS = int(os.getenv("SPOTIFY_WATCH_ERROR_SECONDS", "120"))
 RATE_LIMIT_RETRY_SECONDS = int(os.getenv("SPOTIFY_RATE_LIMIT_RETRY_SECONDS", "120"))
 WORLDWIDE_VALIDATE_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_WORLDWIDE_VALIDATE_MAX_ATTEMPTS", "0"))
-WORLDWIDE_VALIDATE_WAIT_SECONDS = int(os.getenv("SPOTIFY_WORLDWIDE_VALIDATE_WAIT_SECONDS", "180"))
+WORLDWIDE_VALIDATE_WAIT_SECONDS = int(os.getenv("SPOTIFY_WORLDWIDE_VALIDATE_WAIT_SECONDS", "10"))
 WORLDWIDE_VALIDATE_TOTAL_RATIO = float(os.getenv("SPOTIFY_WORLDWIDE_VALIDATE_TOTAL_RATIO", "0.80"))
 WORLDWIDE_VALIDATE_TRACK_RATIO = float(os.getenv("SPOTIFY_WORLDWIDE_VALIDATE_TRACK_RATIO", "0.70"))
 PLAYWRIGHT_LAUNCH_TIMEOUT_MS = int(os.getenv("SPOTIFY_PLAYWRIGHT_LAUNCH_TIMEOUT_MS", "15000"))
@@ -1105,7 +1105,8 @@ def _ensure_worldwide_valid(
     return False, reruns
 
 
-_ALL_POST_PARTS = {"artists", "best-day-since", "global", "fr", "cards"}
+_ALL_POST_PARTS = {"artists", "global", "fr", "cards"}
+_EXTRA_POST_PARTS = {"best-day-since"}  # non inclus dans le défaut, à passer explicitement via --post
 
 
 def _streams_history_path() -> Path:
@@ -1339,7 +1340,7 @@ def main() -> int:
     parser.add_argument(
         "--post",
         nargs="+",
-        choices=sorted(_ALL_POST_PARTS),
+        choices=sorted(_ALL_POST_PARTS | _EXTRA_POST_PARTS),
         metavar="PART",
         default=None,
         help=(
@@ -1401,6 +1402,10 @@ def main() -> int:
             # run_all orchestre les posts apres la collecte pour garder l'ordre:
             # regional images, cards worldwide, puis extras. worldwide reste data-only.
             extra = ["--no-post"]
+            if "cards" in post_parts:
+                extra.append("--post-priority-global-new")
+                if args.force_cards or args.force:
+                    extra.append("--force-priority-global-new")
         else:
             extra = []
         collect_runners.append((name, script, fixed + extra))
@@ -1557,6 +1562,21 @@ def main() -> int:
             )
             if rc_priority != 0:
                 failures.append(("priority-global-new-worldwide", rc_priority))
+
+            if not failures and not ran_collect:
+                global_new_args = [str(target_date), "--post"]
+                if args.force_cards or args.force:
+                    global_new_args.append("--force")
+                rc_global_new = _run(
+                    "priority-global-new-catchup",
+                    CHARTS_ROOT / "worldwide" / "tools" / "scripts" / "post_global_new_releases.py",
+                    global_new_args,
+                    dry_run=False,
+                    env=env,
+                    verbose=args.verbose,
+                )
+                if rc_global_new != 0:
+                    failures.append(("priority-global-new-catchup", rc_global_new))
 
     if not args.dry_run and should_generate_cards and not failures:
         if should_post_cards:

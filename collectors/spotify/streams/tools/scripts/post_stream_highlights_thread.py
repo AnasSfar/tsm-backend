@@ -13,6 +13,8 @@ from playwright.sync_api import sync_playwright
 SCRIPT_DIR = Path(__file__).resolve().parent          # streams/tools/scripts/
 ROOT = SCRIPT_DIR.parents[1]                          # streams/
 TWITTER_SESSION = ROOT.parent / "charts" / "worldwide" / "tools" / "json" / "twitter_session.json"
+BEST_DAY_THREAD_MIN_DAYS = 30
+BEST_DAY_THREAD_MAX_DAYS = 60
 
 sys.path.insert(0, str(ROOT))                         # collectors/spotify/streams/
 sys.path.insert(0, str(ROOT.parent))                  # collectors/spotify/
@@ -431,7 +433,13 @@ def _best_day_rows(target_date: str, *, limit: int, min_days: int) -> list[dict]
         if not points:
             continue
         row = best_day_since.compute_best_day_since(track, points, target)
-        if row and row.get("kind") == "since" and best_day_since.passes_filters(row, min_days=min_days):
+        days_since = row.get("days_since") if row else None
+        if (
+            row
+            and row.get("kind") == "since"
+            and best_day_since.passes_filters(row, min_days=min_days)
+            and (days_since or 0) <= BEST_DAY_THREAD_MAX_DAYS
+        ):
             rows.append(row)
 
     rows.sort(key=best_day_since.sort_key, reverse=True)
@@ -594,7 +602,7 @@ def main() -> int:
     parser.add_argument("--limit", type=int, default=10, help="Top N daily and weekly gainers.")
     parser.add_argument("--best-limit", type=int, default=3, help="Top N best-day-since notes.")
     parser.add_argument("--min-baseline", type=int, default=1000)
-    parser.add_argument("--min-days", type=int, default=14)
+    parser.add_argument("--min-days", type=int, default=BEST_DAY_THREAD_MIN_DAYS)
     parser.add_argument("--no-post", action="store_true")
     args = parser.parse_args()
 

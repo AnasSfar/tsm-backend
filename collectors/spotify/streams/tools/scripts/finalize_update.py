@@ -550,21 +550,26 @@ def _album_update_targets(ctx: FinalizeContext) -> list[str]:
 
 
 def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
-    if _is_weekend_stats_date(ctx.summary["stats_date"]):
-        print("Weekend detected: skipping separate album update posts.")
-        return
-
     album_img_script = ctx.script_dir / "tools" / "scripts" / "generate_album_update_image.py"
-    gain_targets = _album_gain_update_targets(ctx.summary["stats_date"])
+    is_weekend = _is_weekend_stats_date(ctx.summary["stats_date"])
+    gain_targets = _album_gain_update_targets(
+        ctx.summary["stats_date"],
+        threshold_pct=0.0 if is_weekend else ALBUM_UPDATE_GAIN_THRESHOLD_PCT,
+    )
+    if is_weekend:
+        gain_targets = [target for target in gain_targets if float(target["gain_pct"]) > 0.0]
     if gain_targets:
         print(
-            "Album update gain scan: "
+            ("Weekend positive album update scan: " if is_weekend else "Album update gain scan: ")
             + ", ".join(
                 f"{target['album']} +{target['gain_pct']:.1f}%"
                 for target in gain_targets
             )
         )
-    gainer_targets = _album_gainer_update_targets(ctx, ctx.summary["stats_date"])
+    elif is_weekend:
+        print("Weekend detected: no positive album updates found.")
+
+    gainer_targets = [] if is_weekend else _album_gainer_update_targets(ctx, ctx.summary["stats_date"])
     if gainer_targets:
         print(
             "Album update gainer scan: "
@@ -575,7 +580,7 @@ def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
             )
         )
 
-    albums_to_post: list[str] = _album_update_targets(ctx)
+    albums_to_post: list[str] = [] if is_weekend else _album_update_targets(ctx)
     for target in gain_targets:
         album = target["album"]
         if album not in albums_to_post:
@@ -692,18 +697,11 @@ def _post_spotlight_gainers(ctx: FinalizeContext, state: dict[str, float]) -> No
 
 
 def _post_best_day_since(ctx: FinalizeContext, state: dict[str, float]) -> None:
-    print("Best-day-since posts included in stream highlights thread; skipping separate posts.")
-    return
-
-    if _is_weekend_stats_date(ctx.summary["stats_date"]):
-        print("Weekend detected: skipping separate best-day-since posts.")
-        return
-
     if not ctx.all_album_tracks_done(ctx.summary["stats_date"]):
         print("Best-day-since posts skipped: not all album tracks are done yet.")
         return
 
-    print("Posting top best-day-since songs to @tsmuseum13...")
+    print("Posting top long-range best-day-since songs to @tsmuseum13...")
     post_script = ctx.script_dir / "tools" / "scripts" / "post_best_day_since_twitter.py"
     cmd = [sys.executable, str(post_script), ctx.summary["stats_date"], "--limit", "3"]
     if ctx.no_post_mode:
@@ -875,7 +873,6 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
         if (
             not ctx.debug_daily_mode
             and not ctx.local_test_mode
-            and not _is_weekend_stats_date(ctx.summary["stats_date"])
         ):
             spotlight_thread = _start_spotlight_gainers(ctx)
 

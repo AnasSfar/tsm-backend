@@ -1521,17 +1521,6 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
         elif index_path.exists():
             print("[INFO] cards_index.json existe mais posted_cards.json est absent; publication des cards non verrouillées")
 
-    if post:
-        priority_posted_path = out_dir / "priority_global_new_posted.json"
-        if priority_posted_path.exists():
-            try:
-                priority_posted = set(json.loads(priority_posted_path.read_text(encoding="utf-8")).get("posted", []))
-                if priority_posted:
-                    already_posted.update(priority_posted)
-                    print(f"[INFO] {len(priority_posted)} card(s) priority Global NEW deja postee(s), skip dans le thread")
-            except Exception:
-                pass
-
     _wait_for_twitter_lock()
     try:
         with sync_playwright() as p:
