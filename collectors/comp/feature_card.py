@@ -50,6 +50,17 @@ def _boost_color(rgb: tuple[int, int, int], *, min_sat: float = 0.48, min_val: f
     return color, f"rgba({int(rb * 255)},{int(gb * 255)},{int(bb * 255)},.42)"
 
 
+def _deep_color(rgb: tuple[int, int, int]) -> str:
+    import colorsys
+
+    r, g, b = rgb
+    h, s, v = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
+    s = min(1.0, max(0.42, s * 1.12))
+    v = min(0.30, max(0.12, v * 0.46))
+    rb, gb, bb = colorsys.hsv_to_rgb(h, s, v)
+    return f"#{int(rb * 255):02x}{int(gb * 255):02x}{int(bb * 255):02x}"
+
+
 def cover_palette(img_bytes: bytes) -> tuple[str, str]:
     if not _PIL or not img_bytes:
         return ("linear-gradient(135deg,#1db954 0%,#0f7f3d 100%)", "#1db954")
@@ -72,15 +83,46 @@ def cover_palette(img_bytes: bytes) -> tuple[str, str]:
         if not candidates:
             candidates = [{"rgb": (29, 185, 84), "hue": 141, "sat": 0.84, "val": 0.73, "score": 1}]
 
+        total = sum(count for count, _color in colors) or 1
+        neutral_weight = 0
+        weighted_sat = 0.0
+        weighted_val = 0.0
+        for count, color in colors:
+            r, g, b = color
+            _h, s, v = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
+            weighted_sat += s * count
+            weighted_val += v * count
+            if s < 0.18:
+                neutral_weight += count
+        neutral_ratio = neutral_weight / total
+        avg_sat = weighted_sat / total
+        avg_val = weighted_val / total
+        if neutral_ratio >= 0.70 or avg_sat < 0.16:
+            base = max(16, min(42, int(avg_val * 58)))
+            mid = max(24, min(58, base + 18))
+            primary = f"#{mid:02x}{mid:02x}{mid:02x}"
+            secondary = f"#{base:02x}{base:02x}{base + 4:02x}"
+            accent_candidates = [c for c in candidates if c["sat"] >= 0.28 and 0.18 <= c["val"] <= 0.78]
+            if accent_candidates:
+                _accent, glow = _boost_color(max(accent_candidates, key=lambda c: c["score"])["rgb"], min_sat=0.36, min_val=0.22)
+            else:
+                glow = "rgba(255,255,255,.10)"
+            gradient = (
+                f"radial-gradient(circle at 76% 18%,{glow} 0%,rgba(16,18,24,0) 24%),"
+                f"linear-gradient(135deg,{primary} 0%,{secondary} 100%)"
+            )
+            return (gradient, primary)
+
         cool = [c for c in candidates if 150 <= c["hue"] <= 220 and c["sat"] >= 0.24]
         warm = [c for c in candidates if (0 <= c["hue"] <= 32 or 330 <= c["hue"] <= 360) and c["sat"] >= 0.32]
         primary_choice = max(cool or candidates, key=lambda c: c["score"] + (0.8 if 165 <= c["hue"] <= 200 else 0))
         secondary_choice = max(warm or candidates, key=lambda c: c["score"] + (0.5 if c in warm else 0))
         primary, _ = _boost_color(primary_choice["rgb"], min_sat=0.58, min_val=0.40)
-        _secondary, glow = _boost_color(secondary_choice["rgb"], min_sat=0.52, min_val=0.30)
+        secondary = _deep_color(secondary_choice["rgb"])
+        _glow_color, glow = _boost_color(secondary_choice["rgb"], min_sat=0.52, min_val=0.30)
         gradient = (
-            f"radial-gradient(circle at 76% 18%,{glow} 0%,rgba(16,24,40,0) 26%),"
-            f"linear-gradient(135deg,{primary} 0%,#101828 100%)"
+            f"radial-gradient(circle at 76% 18%,{glow} 0%,rgba(16,24,40,0) 28%),"
+            f"linear-gradient(135deg,{primary} 0%,{secondary} 100%)"
         )
         return (gradient, primary)
     except Exception:
@@ -119,17 +161,17 @@ def render_feature_card(
 *{{margin:0;padding:0;box-sizing:border-box}}
 body{{
   font-family:Inter,-apple-system,'Helvetica Neue',Arial,sans-serif;
-  width:800px;height:280px;
+  width:800px;height:299px;
   background:{gradient};
   position:relative;overflow:hidden;
 }}
-.layout{{display:flex;height:280px}}
-.cover-col{{width:280px;flex-shrink:0}}
-.cover{{width:280px;height:280px;object-fit:cover;display:block}}
-.cover-ph{{width:280px;height:280px;background:#1a2a26}}
+.layout{{display:flex;height:299px}}
+.cover-col{{width:334px;flex-shrink:0;overflow:hidden;border-radius:10px}}
+.cover{{width:334px;height:299px;object-fit:cover;display:block}}
+.cover-ph{{width:334px;height:299px;background:#1a2a26}}
 .info-col{{
   flex:1;display:flex;flex-direction:column;
-  justify-content:center;padding:24px 28px 20px 20px;gap:9px;
+  justify-content:center;padding:24px 28px 20px 20px;gap:14px;
 }}
 .hdr-row{{display:flex;align-items:center;gap:8px}}
 .logo{{width:26px;height:26px;flex-shrink:0}}
@@ -138,14 +180,14 @@ body{{
   letter-spacing:.12em;text-transform:uppercase;
 }}
 .title{{
-  color:#fff;font-size:34px;font-weight:900;
+  color:#fff;font-size:52px;font-weight:900;
   line-height:1.1;letter-spacing:0;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }}
 .subtitle{{color:rgba(255,255,255,.6);font-size:12px;font-weight:500}}
 .stats{{display:flex;gap:10px;margin-top:4px}}
 .stat{{
-  background:rgba(255,255,255,.93);border-radius:10px;
+  background:rgba(255,255,255,.93);border-radius:18px;
   padding:10px 18px 8px;min-width:90px;
 }}
 .stat-lbl{{
@@ -196,7 +238,7 @@ def write_feature_card_png(html_text: str, output_path: Path, tmp_path: Path) ->
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
-            page = browser.new_page(viewport={"width": 800, "height": 280}, device_scale_factor=2)
+            page = browser.new_page(viewport={"width": 800, "height": 299}, device_scale_factor=2)
             page.goto(f"file:///{tmp_path.as_posix()}", wait_until="load")
             page.locator("body").screenshot(path=str(output_path))
             browser.close()

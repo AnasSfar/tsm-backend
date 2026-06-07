@@ -82,10 +82,6 @@ WATCH_LATE_SECONDS = int(os.getenv("SPOTIFY_WATCH_LATE_SECONDS", "10"))
 WATCH_HOT_SECONDS = int(os.getenv("SPOTIFY_WATCH_HOT_SECONDS", "20"))
 WATCH_ERROR_SECONDS = int(os.getenv("SPOTIFY_WATCH_ERROR_SECONDS", "120"))
 RATE_LIMIT_RETRY_SECONDS = int(os.getenv("SPOTIFY_RATE_LIMIT_RETRY_SECONDS", "120"))
-WORLDWIDE_VALIDATE_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_WORLDWIDE_VALIDATE_MAX_ATTEMPTS", "0"))
-WORLDWIDE_VALIDATE_WAIT_SECONDS = int(os.getenv("SPOTIFY_WORLDWIDE_VALIDATE_WAIT_SECONDS", "10"))
-WORLDWIDE_VALIDATE_TOTAL_RATIO = float(os.getenv("SPOTIFY_WORLDWIDE_VALIDATE_TOTAL_RATIO", "0.80"))
-WORLDWIDE_VALIDATE_TRACK_RATIO = float(os.getenv("SPOTIFY_WORLDWIDE_VALIDATE_TRACK_RATIO", "0.70"))
 PLAYWRIGHT_LAUNCH_TIMEOUT_MS = int(os.getenv("SPOTIFY_PLAYWRIGHT_LAUNCH_TIMEOUT_MS", "15000"))
 PLAYWRIGHT_GOTO_TIMEOUT_MS = int(os.getenv("SPOTIFY_PLAYWRIGHT_GOTO_TIMEOUT_MS", "15000"))
 PLAYWRIGHT_TOKEN_WAIT_SECONDS = int(os.getenv("SPOTIFY_PLAYWRIGHT_TOKEN_WAIT_SECONDS", "10"))
@@ -165,6 +161,9 @@ def _worldwide_json_date() -> str | None:
 
 
 def _worldwide_data_ready(target: date) -> bool:
+    if not _region_lock_exists("worldwide", target, "updated.lock"):
+        print(f"[FAIL] worldwide updated.lock absent pour {target}: fetch incomplet, cards non postées")
+        return False
     actual = _worldwide_json_date()
     if actual == str(target):
         ok, detail = _validate_worldwide_snapshot(target)
@@ -208,33 +207,10 @@ def _validate_worldwide_snapshot(target: date) -> tuple[bool, str]:
     current = _load_worldwide_snapshot(target)
     if not current:
         return False, f"snapshot mondial absent pour {target}"
-    prev_target = target - timedelta(days=1)
-    previous = _load_worldwide_snapshot(prev_target)
-    if not previous:
-        return True, f"pas de snapshot veille ({prev_target}), validation partielle ignoree"
-
-    curr_counts, curr_total, curr_max = _worldwide_metrics(current)
-    prev_counts, prev_total, prev_max = _worldwide_metrics(previous)
-    if not curr_counts:
+    counts, total, _ = _worldwide_metrics(current)
+    if not counts:
         return False, "snapshot mondial vide"
-
-    min_total = int(prev_total * WORLDWIDE_VALIDATE_TOTAL_RATIO)
-    if prev_total >= 10 and curr_total < min_total:
-        return False, f"total regions trop bas: {curr_total}/{prev_total} (min {min_total})"
-
-    min_max = int(prev_max * WORLDWIDE_VALIDATE_TRACK_RATIO)
-    if prev_max >= 10 and curr_max < min_max:
-        return False, f"top song trop partielle: {curr_max}/{prev_max} regions (min {min_max})"
-
-    large_drops: list[str] = []
-    for track_id, prev_count in prev_counts.items():
-        curr_count = curr_counts.get(track_id, 0)
-        if prev_count >= 10 and curr_count < int(prev_count * WORLDWIDE_VALIDATE_TRACK_RATIO):
-            large_drops.append(f"{track_id}:{curr_count}/{prev_count}")
-    if large_drops:
-        return False, "tracks trop partiels: " + ", ".join(large_drops[:5])
-
-    return True, f"{len(curr_counts)} songs, {curr_total} regions (veille: {len(prev_counts)} songs, {prev_total} regions)"
+    return True, f"{len(counts)} songs, {total} appearances"
 
 
 def _runner_args_for_run_all(name: str, fixed: list[str], forwarded: list[str], target_date: date, explicit_target_date: bool) -> list[str]:
@@ -1072,37 +1048,9 @@ def _ensure_worldwide_valid(
     runner = next((r for r in runners if r[0] == "worldwide"), None)
     if runner is None:
         return True, 0
-
     ok, detail = _validate_worldwide_snapshot(target_date)
     print(f"[CHECK] validation worldwide {target_date}: {detail}")
-    if ok:
-        return True, 0
-
-    name, script, fixed = runner
-    reruns = 0
-    attempt = 2
-    while WORLDWIDE_VALIDATE_MAX_ATTEMPTS <= 0 or attempt <= WORLDWIDE_VALIDATE_MAX_ATTEMPTS:
-        wait = WORLDWIDE_VALIDATE_WAIT_SECONDS
-        print(f"[WARN] worldwide partiel - retry #{attempt} dans {wait}s")
-        time.sleep(wait)
-        rc = _run(
-            name,
-            script,
-            _runner_args_for_run_all(name, fixed, forwarded, target_date, explicit_target_date),
-            dry_run=False,
-            env=env,
-            verbose=verbose,
-        )
-        reruns += 1
-        if rc != 0:
-            return False, reruns
-        ok, detail = _validate_worldwide_snapshot(target_date)
-        print(f"[CHECK] validation worldwide {target_date}: {detail}")
-        if ok:
-            return True, reruns
-        attempt += 1
-
-    return False, reruns
+    return ok, 0
 
 
 _ALL_POST_PARTS = {"artists", "global", "fr", "cards"}

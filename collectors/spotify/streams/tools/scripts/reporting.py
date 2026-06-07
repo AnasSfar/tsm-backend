@@ -110,9 +110,10 @@ def print_remaining_details(summary: dict) -> None:
 
     for r in summary["failed_results"]:
         if r["status"] in {"not_found", "timeout", "error"}:
+            reason = f" | reason={r.get('reason')}" if r.get("reason") else ""
             remaining_details.append(
                 f"{r['status'].upper()} | {r['title']} | "
-                f"{r.get('track_id', '')} | {r.get('spotify_url', '')}"
+                f"{r.get('track_id', '')} | {r.get('spotify_url', '')}{reason}"
             )
 
     if remaining_details:

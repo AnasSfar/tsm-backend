@@ -34,7 +34,6 @@ from finalize_update import (
     ReadyAlbumUpdatePoster,
     run_final_update_tasks,
 )
-from post_debut_releases import post_debut_releases
 from release_targets import is_recent_release_date, recent_release_album_names
 from reporting import ProgressLogger, print_remaining_details, print_summary_block, update_json_logs_from_summary
 import spotify_api as _spotify_api
@@ -147,15 +146,16 @@ HILL_INITIAL       = 9      # point de départ (was 6 — start near max immedia
 
 PROBE_CANDIDATES = 10  # top N tracks (by streams) used as probe candidates
 
-PENDING_RETRY_SLEEP_SECONDS = 0
-MAX_PENDING_RETRY_ROUNDS = int(os.getenv("MAX_PENDING_RETRY_ROUNDS", "3"))
+PENDING_RETRY_SLEEP_SECONDS = int(os.getenv("PENDING_RETRY_SLEEP_SECONDS", "60"))
+_MAX_PENDING_RETRY_ROUNDS_ENV = os.getenv("MAX_PENDING_RETRY_ROUNDS", "3").strip()
+MAX_PENDING_RETRY_ROUNDS = int(_MAX_PENDING_RETRY_ROUNDS_ENV) if _MAX_PENDING_RETRY_ROUNDS_ENV else None
 POST_BETWEEN_STREAMS_POSTS_SECONDS = 0
 INCREMENTAL_PUBLISH_ON_UPDATE = False
 
 NOT_FOUND_STREAK_PATH = DATA_DIR / "not_found_streak.json"
 MAX_NOT_FOUND_DAYS = 7
 
-MAX_DAILY_INCREASE = 50_000_000
+MAX_DAILY_INCREASE = 500_000_000
 NEW_RELEASE_RETRY_ATTEMPTS = int(os.getenv("NEW_RELEASE_RETRY_ATTEMPTS", "12"))
 NEW_RELEASE_RETRY_SLEEP_SECONDS = int(os.getenv("NEW_RELEASE_RETRY_SLEEP_SECONDS", "10"))
 
@@ -814,7 +814,8 @@ def _worker(
                     total, raw, scrape_status = api_result, str(api_result), "ok"
                 else:
                     scrape_status = "error"
-                    total, raw = None, ""
+                    total = None
+                    raw = "rate_limited" if int(api_metrics.get("rate_limited") or 0) > 0 else ""
             else:
                 scrape_status = "error"
                 total, raw = None, ""
@@ -840,6 +841,7 @@ def _worker(
                     "title": track["title"],
                     "spotify_url": track["spotify_url"],
                     "status": "error",
+                    "reason": raw or "api_error",
                 }
                 with lock:
                     failed_results.append(dict(result))
@@ -1699,19 +1701,7 @@ def main():
 
             missing_after_priority = priority_target_ids - load_positive_history_track_ids_for_date(stats_date)
             if not missing_after_priority:
-                if not no_post_mode:
-                    export_for_web.main()
-                    post_debut_releases(
-                        stats_date,
-                        no_post=False,
-                        snapshot_collected_date=snapshot_collected_date,
-                    )
-                else:
-                    post_debut_releases(
-                        stats_date,
-                        no_post=True,
-                        snapshot_collected_date=snapshot_collected_date,
-                    )
+                print("[debut] Priority tracks collected; debut posts deferred until full collection is complete.")
             else:
                 print(
                     f"[debut] {len(missing_after_priority)} new release track(s) still missing after "
@@ -1803,15 +1793,7 @@ def main():
             *ALBUM_UPDATE_TARGETS,
             *recent_release_album_names(load_album_sections_flat(), stats_date),
         ],
-        enabled=(
-            not dry_run_mode
-            and not debug_daily_mode
-            and not local_test_mode
-            and not no_post_mode
-            and not throwback_mode
-            and scraping_needed
-            and date.fromisoformat(stats_date).weekday() not in (5, 6)
-        ),
+        enabled=False,
     )
     album_update_poster.start()
 
@@ -1838,19 +1820,7 @@ def main():
         debut_ids = filter_tracks_released_on(new_release_track_ids, stats_date)
         missing_debut_ids = debut_ids - load_history_track_ids_for_date(stats_date)
         if not missing_debut_ids:
-            if not no_post_mode:
-                export_for_web.main()
-                post_debut_releases(
-                    stats_date,
-                    no_post=False,
-                    snapshot_collected_date=snapshot_collected_date,
-                )
-            else:
-                post_debut_releases(
-                    stats_date,
-                    no_post=True,
-                    snapshot_collected_date=snapshot_collected_date,
-                )
+            print("[debut] Tracks collected; debut posts deferred until finalization.")
         else:
             print(f"[debut] Post skipped: {len(missing_debut_ids)} debut track(s) still missing streams.")
 
@@ -1887,7 +1857,7 @@ def main():
             print("Spotify may not have updated yet. Skipping retries for now.")
             break
 
-        if retry_round >= MAX_PENDING_RETRY_ROUNDS:
+        if MAX_PENDING_RETRY_ROUNDS is not None and retry_round >= MAX_PENDING_RETRY_ROUNDS:
             print()
             print(
                 f"Stopping pending retries after {MAX_PENDING_RETRY_ROUNDS} round(s); "
@@ -1895,11 +1865,19 @@ def main():
             )
             break
 
+        if retry_round > 0 and PENDING_RETRY_SLEEP_SECONDS > 0:
+            print()
+            print(
+                f"Waiting {PENDING_RETRY_SLEEP_SECONDS}s before retrying "
+                f"{summary['pending_this_run']} pending unchanged-total track(s)..."
+            )
+            time.sleep(PENDING_RETRY_SLEEP_SECONDS)
+
         retry_round += 1
 
         print()
         print(
-            f"Detected {summary['pending_this_run']} unchanged track(s) "
+            f"Detected {summary['pending_this_run']} pending unchanged-total track(s) "
             f"for {summary['stats_date']}."
         )
         if not_found_ids:
@@ -1910,12 +1888,22 @@ def main():
         print(f"Retry round {retry_round}")
         print("=" * 70)
 
+        pending_retry_ids = {
+            r["track_id"]
+            for r in summary.get("results", [])
+            if r and r.get("status") == "pending" and r.get("track_id")
+        }
+        if not pending_retry_ids:
+            print("No pending track IDs found for retry; stopping pending retries.")
+            break
+
         retry_progress = ProgressLogger(LOG_MODE)
         summary = run_update(
             on_progress=retry_progress,
             skip_track_ids=not_found_ids,
             stats_date_override=stats_date_override,
             dry_run_mode=False,
+            only_track_ids=pending_retry_ids,
             token_mgr=token_mgr,
             force_reprocess=force_reprocess,
             write_history=write_history,
@@ -1926,9 +1914,11 @@ def main():
         )
         print_summary_block(summary)
         print_api_metrics(summary)
-        if not local_test_mode:
+        if not local_test_mode and summary.get("updated_this_run", 0) > 0:
             print("Committing partial progress after retry...")
             git_commit_and_push(_REPO_ROOT, f"partial export {summary['stats_date']} (after retry {retry_round})")
+        elif not local_test_mode:
+            print("No updated tracks after retry; skipping partial-progress commit.")
 
         current_pending_signature = {
             (r.get("track_id"), r.get("streams"), r.get("reason"))
@@ -1938,10 +1928,9 @@ def main():
         if summary["updated_this_run"] == 0 and current_pending_signature == previous_pending_signature:
             print()
             print(
-                f"Stopping pending retries: the same {summary['pending_this_run']} "
-                "track(s) remained unchanged after a retry."
+                f"The same {summary['pending_this_run']} track(s) remained unchanged after retry "
+                f"{retry_round}; keeping the collection open."
             )
-            break
         previous_pending_signature = current_pending_signature
 
     print_remaining_details(summary)
@@ -1986,7 +1975,19 @@ def main():
             })
     else:
         print("Run finished, but not all target tracks are done.")
-        print("Publishing current data anyway." if not debug_daily_mode else "Keeping local progress only.")
+        print("Keeping local progress only; final export/post will run after all tracks are collected.")
+        album_update_poster.stop()
+        if not debug_daily_mode and not local_test_mode:
+            notify(
+                NTFY_TOPIC,
+                f"Streams collection incomplete ({summary['stats_date']})\n"
+                f"Done: {summary.get('done_tracks')}/{summary.get('total_tracks')} track(s)\n"
+                f"Pending: {summary['pending_this_run']} | Errors: {summary['error_this_run']} | "
+                f"Timeouts: {summary['timeout_this_run']} | Not found: {summary['not_found_this_run']}",
+                title="Taylor Swift - Streams incomplete",
+                tags="warning,chart_increasing",
+            )
+        return
 
     if local_test_mode:
         print("[LOCAL-TEST] Skip streams history CSV migration.")

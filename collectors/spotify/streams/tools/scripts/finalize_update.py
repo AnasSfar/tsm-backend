@@ -357,7 +357,7 @@ def _post_streams_image(ctx: FinalizeContext, state: dict[str, float]) -> None:
 
 
 def _streams_post_ready(ctx: FinalizeContext) -> bool:
-    """Allow top-track posts when only unchanged tracks are still pending."""
+    """Only allow stream posts after the full target collection is complete."""
     if ctx.summary.get("all_done"):
         return True
 
@@ -366,21 +366,14 @@ def _streams_post_ready(ctx: FinalizeContext) -> bool:
         if row and row.get("status") == "pending"
     ]
     if not pending:
+        print("Streams post blocked: collection summary is not complete.")
         return False
 
-    blocking = [
-        row for row in pending
-        if row.get("reason") != "same_total"
-    ]
-    if blocking:
-        print(
-            "Streams post blocked by pending tracks: "
-            + ", ".join(str(row.get("title") or row.get("track_id")) for row in blocking[:5])
-        )
-        return False
-
-    print(f"Streams post allowed with {len(pending)} unchanged pending track(s).")
-    return True
+    print(
+        "Streams post blocked by incomplete collection: "
+        + ", ".join(str(row.get("title") or row.get("track_id")) for row in pending[:5])
+    )
+    return False
 
 
 def _update_artist_metadata(ctx: FinalizeContext) -> bool:
@@ -851,6 +844,10 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
     if ctx.throwback_mode:
         with timer.step("throwback thread"):
             _post_throwback_thread(ctx, post_state)
+        timer.summary()
+        return
+    if not ctx.summary.get("all_done") and not ctx.debug_daily_mode and not ctx.local_test_mode:
+        print("Finalization stopped: streams collection is not complete.")
         timer.summary()
         return
 
