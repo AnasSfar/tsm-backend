@@ -147,7 +147,7 @@ HILL_INITIAL       = 9      # point de départ (was 6 — start near max immedia
 PROBE_CANDIDATES = 10  # top N tracks (by streams) used as probe candidates
 
 PENDING_RETRY_SLEEP_SECONDS = int(os.getenv("PENDING_RETRY_SLEEP_SECONDS", "60"))
-_MAX_PENDING_RETRY_ROUNDS_ENV = os.getenv("MAX_PENDING_RETRY_ROUNDS", "3").strip()
+_MAX_PENDING_RETRY_ROUNDS_ENV = os.getenv("MAX_PENDING_RETRY_ROUNDS", "").strip()
 MAX_PENDING_RETRY_ROUNDS = int(_MAX_PENDING_RETRY_ROUNDS_ENV) if _MAX_PENDING_RETRY_ROUNDS_ENV else None
 POST_BETWEEN_STREAMS_POSTS_SECONDS = 0
 INCREMENTAL_PUBLISH_ON_UPDATE = False
@@ -428,7 +428,7 @@ def try_apply_track_update(
         reason = "first_seen"
         real_update = True
     elif total == last_total:
-        reason = "same_total"
+        reason = "same_total_zero" if total == 0 else "same_total"
         real_update = False
     elif total < last_total:
         reason = "lower_than_previous"
@@ -440,7 +440,9 @@ def try_apply_track_update(
         reason = "updated"
         real_update = True
 
-    if real_update and dry_run_mode:
+    if reason == "same_total_zero":
+        status = "skipped"
+    elif real_update and dry_run_mode:
         status = "pending"
     elif real_update:
         if write_history:
@@ -1834,6 +1836,7 @@ def main():
     has_zero_real_updates = summary["updated_this_run"] == 0
 
     retry_round = 0
+    track_retry_counts: dict[str, int] = {}
     previous_pending_signature = {
         (r.get("track_id"), r.get("streams"), r.get("reason"))
         for r in summary.get("results", [])
@@ -1855,14 +1858,6 @@ def main():
                 f"but this is the first run for {stats_date} with zero updates."
             )
             print("Spotify may not have updated yet. Skipping retries for now.")
-            break
-
-        if MAX_PENDING_RETRY_ROUNDS is not None and retry_round >= MAX_PENDING_RETRY_ROUNDS:
-            print()
-            print(
-                f"Stopping pending retries after {MAX_PENDING_RETRY_ROUNDS} round(s); "
-                f"{summary['pending_this_run']} track(s) are still unchanged."
-            )
             break
 
         if retry_round > 0 and PENDING_RETRY_SLEEP_SECONDS > 0:
@@ -1888,13 +1883,29 @@ def main():
         print(f"Retry round {retry_round}")
         print("=" * 70)
 
-        pending_retry_ids = {
+        all_pending_ids = {
             r["track_id"]
             for r in summary.get("results", [])
             if r and r.get("status") == "pending" and r.get("track_id")
         }
+        for tid in all_pending_ids:
+            track_retry_counts[tid] = track_retry_counts.get(tid, 0) + 1
+
+        exhausted_ids: set[str] = set()
+        if MAX_PENDING_RETRY_ROUNDS is not None:
+            exhausted_ids = {
+                tid for tid, count in track_retry_counts.items()
+                if count >= MAX_PENDING_RETRY_ROUNDS
+            }
+            if exhausted_ids:
+                print(
+                    f"Skipping {len(exhausted_ids)} track(s) that reached "
+                    f"{MAX_PENDING_RETRY_ROUNDS} retry round(s) with no change."
+                )
+
+        pending_retry_ids = all_pending_ids - exhausted_ids
         if not pending_retry_ids:
-            print("No pending track IDs found for retry; stopping pending retries.")
+            print("No pending track IDs left to retry; stopping pending retries.")
             break
 
         retry_progress = ProgressLogger(LOG_MODE)
