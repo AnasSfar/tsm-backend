@@ -182,7 +182,7 @@ body{{
 .title{{
   color:#fff;font-size:52px;font-weight:900;
   line-height:1.1;letter-spacing:0;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;overflow:visible;
 }}
 .subtitle{{color:rgba(255,255,255,.6);font-size:12px;font-weight:500}}
 .stats{{display:flex;gap:10px;margin-top:4px}}
@@ -203,7 +203,7 @@ body{{
 .chg.flat{{color:#9ca3af}}
 .extra{{color:rgba(255,255,255,.55);font-size:11px;font-weight:500}}
 .ftr{{
-  position:absolute;bottom:10px;left:300px;right:20px;
+  position:absolute;bottom:10px;left:346px;right:20px;
   display:flex;justify-content:space-between;
 }}
 .ftr-l,.ftr-r{{font-size:10px;color:rgba(255,255,255,.4);font-weight:600}}
@@ -229,6 +229,18 @@ body{{
   <span class="ftr-l">{html.escape(footer_left)}</span>
   <span class="ftr-r">{html.escape(footer_right)}</span>
 </div>
+<script>
+(function(){{
+  var el=document.querySelector('.title');
+  var parent=el.parentElement;
+  var size=52;
+  el.style.fontSize=size+'px';
+  while(el.scrollWidth>parent.offsetWidth&&size>20){{
+    size-=1;
+    el.style.fontSize=size+'px';
+  }}
+}})();
+</script>
 </body></html>"""
 
 

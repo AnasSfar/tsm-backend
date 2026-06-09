@@ -146,16 +146,15 @@ HILL_INITIAL       = 9      # point de départ (was 6 — start near max immedia
 
 PROBE_CANDIDATES = 10  # top N tracks (by streams) used as probe candidates
 
-PENDING_RETRY_SLEEP_SECONDS = int(os.getenv("PENDING_RETRY_SLEEP_SECONDS", "10"))
-_MAX_PENDING_RETRY_ROUNDS_ENV = os.getenv("MAX_PENDING_RETRY_ROUNDS", "2").strip()
-MAX_PENDING_RETRY_ROUNDS = int(_MAX_PENDING_RETRY_ROUNDS_ENV) if _MAX_PENDING_RETRY_ROUNDS_ENV else None
+PENDING_RETRY_SLEEP_SECONDS = 20
+MAX_PENDING_RETRY_ROUNDS = 10
 POST_BETWEEN_STREAMS_POSTS_SECONDS = 0
 INCREMENTAL_PUBLISH_ON_UPDATE = False
 
 NOT_FOUND_STREAK_PATH = DATA_DIR / "not_found_streak.json"
 MAX_NOT_FOUND_DAYS = 7
 
-MAX_DAILY_INCREASE = 500_000_000
+MAX_DAILY_INCREASE = 50_000_000
 NEW_RELEASE_RETRY_ATTEMPTS = int(os.getenv("NEW_RELEASE_RETRY_ATTEMPTS", "12"))
 NEW_RELEASE_RETRY_SLEEP_SECONDS = int(os.getenv("NEW_RELEASE_RETRY_SLEEP_SECONDS", "10"))
 
@@ -1868,28 +1867,15 @@ def main():
         for tid in all_pending_ids:
             track_retry_counts[tid] = track_retry_counts.get(tid, 0) + 1
 
-        exhausted_ids: set[str] = set()
-        if MAX_PENDING_RETRY_ROUNDS is not None:
-            exhausted_ids = {
-                tid for tid, count in track_retry_counts.items()
-                if count >= MAX_PENDING_RETRY_ROUNDS
-            }
-
+        exhausted_ids = {
+            tid for tid, count in track_retry_counts.items()
+            if count >= MAX_PENDING_RETRY_ROUNDS
+        }
         pending_retry_ids = all_pending_ids - exhausted_ids
+
         if not pending_retry_ids:
-            if exhausted_ids:
-                print(
-                    f"\nSkipping {len(exhausted_ids)} track(s) that reached "
-                    f"{MAX_PENDING_RETRY_ROUNDS} retry round(s) with no change."
-                )
             print("No pending track IDs left to retry; stopping pending retries.")
             break
-
-        if exhausted_ids:
-            print(
-                f"Skipping {len(exhausted_ids)} track(s) that reached "
-                f"{MAX_PENDING_RETRY_ROUNDS} retry round(s) with no change."
-            )
 
         if retry_round > 0 and PENDING_RETRY_SLEEP_SECONDS > 0:
             print()
@@ -1950,23 +1936,28 @@ def main():
             )
         previous_pending_signature = current_pending_signature
 
-    # Tracks exhausted after all retry rounds are treated as done — they won't update.
-    if MAX_PENDING_RETRY_ROUNDS is not None and track_retry_counts:
-        exhausted_after_retries = {
+    # Notify if tracks are still pending after exhausting all retry rounds
+    if not dry_run_mode and not local_test_mode and not debug_daily_mode and track_retry_counts:
+        exhausted_after_all = {
             tid for tid, count in track_retry_counts.items()
             if count >= MAX_PENDING_RETRY_ROUNDS
         }
-        pending_in_summary = {
+        still_pending = {
             r["track_id"] for r in summary.get("results", [])
             if r and r.get("status") == "pending" and r.get("track_id")
-        }
-        if pending_in_summary and pending_in_summary <= exhausted_after_retries:
-            print(
-                f"Treating {len(pending_in_summary)} exhausted track(s) as done "
-                f"(reached {MAX_PENDING_RETRY_ROUNDS} retry round(s) with no change)."
+        } & exhausted_after_all
+        if still_pending:
+            pending_titles = [
+                r["title"] for r in summary.get("results", [])
+                if r and r.get("track_id") in still_pending
+            ]
+            tracks_list = "\n".join(f"• {t}" for t in sorted(pending_titles))
+            notify(
+                NTFY_TOPIC,
+                f"{len(still_pending)} track(s) still pending after {MAX_PENDING_RETRY_ROUNDS} retries ({stats_date}):\n{tracks_list}",
+                title="Taylor Swift - Tracks stuck pending",
+                tags="warning,hourglass_flowing_sand",
             )
-            summary["all_done"] = True
-            summary["pending_this_run"] = 0
 
     print_remaining_details(summary)
     if local_test_mode:
@@ -2023,6 +2014,30 @@ def main():
                 tags="warning,chart_increasing",
             )
         return
+
+    # Guard: every non-extra track must have a history entry for today before we post.
+    if not local_test_mode and not debug_daily_mode:
+        all_tracks_for_check = load_tracks_from_discography()
+        non_extra_ids = {t["track_id"] for t in all_tracks_for_check if not t.get("chart_extra")}
+        done_ids_for_date = load_history_track_ids_for_date(stats_date)
+        missing_non_extra = non_extra_ids - done_ids_for_date
+        if missing_non_extra:
+            missing_titles = sorted(
+                t["title"] for t in all_tracks_for_check if t["track_id"] in missing_non_extra
+            )
+            tracks_list = "\n".join(f"• {title}" for title in missing_titles)
+            print(
+                f"⛔ Completeness check failed: {len(missing_non_extra)} non-extra track(s) "
+                f"missing from history for {stats_date}:\n{tracks_list}"
+            )
+            notify(
+                NTFY_TOPIC,
+                f"⛔ Posting blocked: {len(missing_non_extra)} non-extra track(s) missing ({stats_date}):\n{tracks_list}",
+                title="Taylor Swift - Completeness check failed",
+                tags="no_entry,chart_increasing",
+            )
+            album_update_poster.stop()
+            return
 
     if local_test_mode:
         print("[LOCAL-TEST] Skip streams history CSV migration.")
