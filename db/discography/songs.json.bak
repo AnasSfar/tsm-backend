@@ -2,7 +2,7 @@
   {
     "album": "Standalone & Extras",
     "section": "kworb_extras",
-    "track_count": 32,
+    "track_count": 37,
     "tracks": [
       {
         "title": "Babe",
@@ -901,12 +901,96 @@
         "historical_track_ids": []
       },
       {
+        "title": "Actually Romantic",
+        "url": "https://open.spotify.com/intl-fr/track/6G3dUZrsaOYhe2gRyNukwA",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10009,
+        "base_title": "Actually Romantic",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Actually Romantic",
+        "song_family": "actually_romantic",
+        "version_tag": null,
+        "image_url": "https://i.scdn.co/image/ab67616d00001e02f756bdc2c11a985dc0c06d94",
+        "release_date": "2025-11-07T00:00:00Z",
+        "historical_track_ids": []
+      },
+      {
+        "title": "Eldest Daughter",
+        "url": "https://open.spotify.com/intl-fr/track/6nhsv9Jeluz5gXt592KN3m",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10010,
+        "base_title": "Eldest Daughter",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Eldest Daughter",
+        "song_family": "eldest_daughter",
+        "version_tag": null,
+        "image_url": "https://i.scdn.co/image/ab67616d00001e02f756bdc2c11a985dc0c06d94",
+        "release_date": "2025-11-07T00:00:00Z",
+        "historical_track_ids": []
+      },
+      {
+        "title": "Elizabeth Taylor - So Glamorous Cabaret Version",
+        "url": "https://open.spotify.com/intl-fr/track/01ZJZOftkQ2kSeyG34C7g6",
+        "type": "standalone",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10011,
+        "base_title": "Elizabeth Taylor",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Elizabeth Taylor - So Glamorous Cabaret Version",
+        "song_family": "elizabeth_taylor",
+        "version_tag": "standalone",
+        "image_url": "https://i.scdn.co/image/ab67616d00001e02dc6e4c7774e0c77c210d3a31",
+        "release_date": "2026-03-31T00:00:00Z",
+        "historical_track_ids": []
+      },
+      {
+        "title": "Father Figure",
+        "url": "https://open.spotify.com/intl-fr/track/6H0nEKqkTRxa30Pru1h7SD",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10012,
+        "base_title": "Father Figure",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Father Figure",
+        "song_family": "father_figure",
+        "version_tag": null,
+        "image_url": "https://i.scdn.co/image/ab67616d00001e02f756bdc2c11a985dc0c06d94",
+        "release_date": "2025-11-07T00:00:00Z",
+        "historical_track_ids": []
+      },
+      {
         "title": "Honey",
         "url": "https://open.spotify.com/intl-fr/track/7jHzBmxAGVVPvLiq4Y45pD",
         "type": "album_track",
         "edition": "extras",
         "display_section": "Extras",
-        "display_order": 10010,
+        "display_order": 10013,
         "base_title": "Honey",
         "album": "Standalone & Extras",
         "primary_artist": "Taylor Swift",
@@ -922,12 +1006,75 @@
         "historical_track_ids": []
       },
       {
+        "title": "Opalite",
+        "url": "https://open.spotify.com/intl-fr/track/4s1Sql0NqvLh0ioDzSTaET",
+        "type": "standalone",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10014,
+        "base_title": "Opalite",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Opalite",
+        "song_family": "opalite",
+        "version_tag": "standalone",
+        "image_url": "https://i.scdn.co/image/ab67616d00001e02c2458a6f0b5b67c1955d3bc3",
+        "release_date": "2026-02-06T00:00:00Z",
+        "historical_track_ids": []
+      },
+      {
+        "title": "Ruin The Friendship",
+        "url": "https://open.spotify.com/intl-fr/track/05VwM318oU6aNc1GS4MtLV",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10015,
+        "base_title": "Ruin The Friendship",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Ruin The Friendship",
+        "song_family": "ruin_the_friendship",
+        "version_tag": null,
+        "image_url": "https://i.scdn.co/image/ab67616d00001e02f756bdc2c11a985dc0c06d94",
+        "release_date": "2025-11-07T00:00:00Z",
+        "historical_track_ids": []
+      },
+      {
+        "title": "The Fate of Ophelia",
+        "url": "https://open.spotify.com/intl-fr/track/5cKBWgDjB5IXZ5jnryewOH",
+        "type": "standalone",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10016,
+        "base_title": "The Fate of Ophelia",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "The Fate of Ophelia",
+        "song_family": "the_fate_of_ophelia",
+        "version_tag": "standalone",
+        "image_url": "https://i.scdn.co/image/ab67616d00001e02bc755429117cac056edd2bf7",
+        "release_date": "2025-10-31T00:00:00Z",
+        "historical_track_ids": []
+      },
+      {
         "title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
         "url": "https://open.spotify.com/intl-fr/track/6EqHzZp61G5uQ12QEiibpT",
         "type": "album_track",
         "edition": "extras",
         "display_section": "Extras",
-        "display_order": 10013,
+        "display_order": 10017,
         "base_title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
         "album": "Standalone & Extras",
         "primary_artist": "Taylor Swift",
@@ -946,66 +1093,24 @@
         "historical_track_ids": []
       },
       {
-        "title": "Elizabeth Taylor",
-        "url": "https://open.spotify.com/intl-fr/track/6virCtlwc98cKYVyeZYXqq",
+        "title": "Wood",
+        "url": "https://open.spotify.com/intl-fr/track/4Ox858TeUXjy7WEKOcxaFI",
         "type": "album_track",
         "edition": "extras",
         "display_section": "Extras",
-        "display_order": 10017,
-        "base_title": "Elizabeth Taylor",
+        "display_order": 10018,
+        "base_title": "Wood",
         "album": "Standalone & Extras",
         "primary_artist": "Taylor Swift",
         "featured_artists": [],
         "artists": [
           "Taylor Swift"
         ],
-        "title_clean": "Elizabeth Taylor",
-        "song_family": "elizabeth_taylor",
+        "title_clean": "Wood",
+        "song_family": "wood",
         "version_tag": null,
         "image_url": "https://i.scdn.co/image/ab67616d00001e02f756bdc2c11a985dc0c06d94",
         "release_date": "2025-11-07T00:00:00Z",
-        "historical_track_ids": []
-      },
-      {
-        "title": "Opalite",
-        "url": "https://open.spotify.com/intl-fr/track/4utwUoDcx4zhAKXd4DD6P6",
-        "type": "standalone",
-        "edition": "extras",
-        "display_section": "Extras",
-        "display_order": 10026,
-        "base_title": "Opalite",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "Opalite",
-        "song_family": "opalite",
-        "version_tag": "standalone",
-        "image_url": "https://i.scdn.co/image/ab67616d00001e028b312c2d2873e7da95e316d2",
-        "release_date": "2026-02-13T00:00:00Z",
-        "historical_track_ids": []
-      },
-      {
-        "title": "The Fate of Ophelia",
-        "url": "https://open.spotify.com/intl-fr/track/3wXuJTeA7dkrWShvbdUk0A",
-        "type": "standalone",
-        "edition": "extras",
-        "display_section": "Extras",
-        "display_order": 10029,
-        "base_title": "The Fate of Ophelia",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "The Fate of Ophelia",
-        "song_family": "the_fate_of_ophelia",
-        "version_tag": "standalone",
-        "image_url": "https://i.scdn.co/image/ab67616d00001e0239b6ce4f493d53cfba83170a",
-        "release_date": "2025-11-06T00:00:00Z",
         "historical_track_ids": []
       }
     ]
