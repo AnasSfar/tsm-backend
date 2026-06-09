@@ -146,8 +146,8 @@ HILL_INITIAL       = 9      # point de départ (was 6 — start near max immedia
 
 PROBE_CANDIDATES = 10  # top N tracks (by streams) used as probe candidates
 
-PENDING_RETRY_SLEEP_SECONDS = int(os.getenv("PENDING_RETRY_SLEEP_SECONDS", "60"))
-_MAX_PENDING_RETRY_ROUNDS_ENV = os.getenv("MAX_PENDING_RETRY_ROUNDS", "").strip()
+PENDING_RETRY_SLEEP_SECONDS = int(os.getenv("PENDING_RETRY_SLEEP_SECONDS", "10"))
+_MAX_PENDING_RETRY_ROUNDS_ENV = os.getenv("MAX_PENDING_RETRY_ROUNDS", "2").strip()
 MAX_PENDING_RETRY_ROUNDS = int(_MAX_PENDING_RETRY_ROUNDS_ENV) if _MAX_PENDING_RETRY_ROUNDS_ENV else None
 POST_BETWEEN_STREAMS_POSTS_SECONDS = 0
 INCREMENTAL_PUBLISH_ON_UPDATE = False
@@ -1860,11 +1860,42 @@ def main():
             print("Spotify may not have updated yet. Skipping retries for now.")
             break
 
+        all_pending_ids = {
+            r["track_id"]
+            for r in summary.get("results", [])
+            if r and r.get("status") == "pending" and r.get("track_id")
+        }
+        for tid in all_pending_ids:
+            track_retry_counts[tid] = track_retry_counts.get(tid, 0) + 1
+
+        exhausted_ids: set[str] = set()
+        if MAX_PENDING_RETRY_ROUNDS is not None:
+            exhausted_ids = {
+                tid for tid, count in track_retry_counts.items()
+                if count >= MAX_PENDING_RETRY_ROUNDS
+            }
+
+        pending_retry_ids = all_pending_ids - exhausted_ids
+        if not pending_retry_ids:
+            if exhausted_ids:
+                print(
+                    f"\nSkipping {len(exhausted_ids)} track(s) that reached "
+                    f"{MAX_PENDING_RETRY_ROUNDS} retry round(s) with no change."
+                )
+            print("No pending track IDs left to retry; stopping pending retries.")
+            break
+
+        if exhausted_ids:
+            print(
+                f"Skipping {len(exhausted_ids)} track(s) that reached "
+                f"{MAX_PENDING_RETRY_ROUNDS} retry round(s) with no change."
+            )
+
         if retry_round > 0 and PENDING_RETRY_SLEEP_SECONDS > 0:
             print()
             print(
                 f"Waiting {PENDING_RETRY_SLEEP_SECONDS}s before retrying "
-                f"{summary['pending_this_run']} pending unchanged-total track(s)..."
+                f"{len(pending_retry_ids)} pending unchanged-total track(s)..."
             )
             time.sleep(PENDING_RETRY_SLEEP_SECONDS)
 
@@ -1882,31 +1913,6 @@ def main():
         print("=" * 70)
         print(f"Retry round {retry_round}")
         print("=" * 70)
-
-        all_pending_ids = {
-            r["track_id"]
-            for r in summary.get("results", [])
-            if r and r.get("status") == "pending" and r.get("track_id")
-        }
-        for tid in all_pending_ids:
-            track_retry_counts[tid] = track_retry_counts.get(tid, 0) + 1
-
-        exhausted_ids: set[str] = set()
-        if MAX_PENDING_RETRY_ROUNDS is not None:
-            exhausted_ids = {
-                tid for tid, count in track_retry_counts.items()
-                if count >= MAX_PENDING_RETRY_ROUNDS
-            }
-            if exhausted_ids:
-                print(
-                    f"Skipping {len(exhausted_ids)} track(s) that reached "
-                    f"{MAX_PENDING_RETRY_ROUNDS} retry round(s) with no change."
-                )
-
-        pending_retry_ids = all_pending_ids - exhausted_ids
-        if not pending_retry_ids:
-            print("No pending track IDs left to retry; stopping pending retries.")
-            break
 
         retry_progress = ProgressLogger(LOG_MODE)
         summary = run_update(
@@ -1943,6 +1949,24 @@ def main():
                 f"{retry_round}; keeping the collection open."
             )
         previous_pending_signature = current_pending_signature
+
+    # Tracks exhausted after all retry rounds are treated as done — they won't update.
+    if MAX_PENDING_RETRY_ROUNDS is not None and track_retry_counts:
+        exhausted_after_retries = {
+            tid for tid, count in track_retry_counts.items()
+            if count >= MAX_PENDING_RETRY_ROUNDS
+        }
+        pending_in_summary = {
+            r["track_id"] for r in summary.get("results", [])
+            if r and r.get("status") == "pending" and r.get("track_id")
+        }
+        if pending_in_summary and pending_in_summary <= exhausted_after_retries:
+            print(
+                f"Treating {len(pending_in_summary)} exhausted track(s) as done "
+                f"(reached {MAX_PENDING_RETRY_ROUNDS} retry round(s) with no change)."
+            )
+            summary["all_done"] = True
+            summary["pending_this_run"] = 0
 
     print_remaining_details(summary)
     if local_test_mode:
