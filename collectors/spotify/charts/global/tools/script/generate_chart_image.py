@@ -1,40 +1,40 @@
 #!/usr/bin/env python3
 """
 generate_chart_image.py — génère le PNG du chart Taylor Swift Global.
-Design adapté depuis unfiltered-charts (light glassmorphism).
 
 Lit  : {date_dir}/ts_chart_{date}.json  +  ts_history.json
-       + unfiltered-charts/discography/albums/covers.json  (couvertures albums)
+       + discography/albums/covers.json
 Ecrit: {date_dir}/chart_image.png
 
 Usage: python generate_chart_image.py YYYY-MM-DD
 """
-import base64
-import colorsys
 import csv
-import json
-import random
 import re
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
-from urllib.request import urlopen, Request
-from urllib.error import URLError
 
 from playwright.sync_api import sync_playwright
 
-try:
-    from PIL import Image
-    _PIL = True
-except ImportError:
-    _PIL = False
+ROOT    = Path(__file__).parent
+_TOOLS  = Path(__file__).parent.parent          # = global/tools/
+sys.path.insert(0, str(Path(__file__).parents[5]))  # collectors/
+sys.path.insert(0, str(Path(__file__).parents[4]))  # collectors/spotify/
 
-ROOT             = Path(__file__).parent
-_TOOLS           = Path(__file__).parent.parent          # = global/tools/
-sys.path.insert(0, str(Path(__file__).parents[4]))
-from core.data_paths import first_existing, first_existing_db_history, legacy_spotify_chart_dir, spotify_chart_dir, WEB_EXPORT_DATA_DIR, LEGACY_WEBSITE_DATA_DIR
+from core.data_paths import (
+    first_existing, first_existing_db_history,
+    legacy_spotify_chart_dir, spotify_chart_dir,
+    WEB_EXPORT_DATA_DIR, LEGACY_WEBSITE_DATA_DIR,
+)
+from comp.fmt import load_json, nan_to_none, fmt_streams, fmt_pct, pct_cls, get_pct
+from comp.discography import build_cover_map, build_track_album_map, build_track_image_map, get_album_cover
+from comp.tables_image import (
+    url_to_data_uri, pick_header_image, get_dominant_color,
+    rank_change, CSS, SPOTIFY_SVG, COL_HEADS_HTML,
+    build_rows_html, build_out_rows_html, render_html_to_png,
+)
 
-_DATA            = _TOOLS.parent / "history"             # legacy global/history
+_DATA            = _TOOLS.parent / "history"
 TS_HISTORY_PATH  = _TOOLS / "json" / "ts_history.json"
 ARCHIVE_CSV      = first_existing_db_history("charts_history_global.csv")
 DISCOGRAPHY_ROOT = Path(__file__).parents[6] / "db" / "discography"
@@ -50,247 +50,7 @@ def date_dir_for(chart_date: str) -> Path:
     )
 
 
-# ---------------------------------------------------------------------------
-# Image URL → base64 data URI (Chromium bloque les URLs externes via file://)
-# ---------------------------------------------------------------------------
-
-_img_cache: dict[str, str] = {}
-
-def url_to_data_uri(url: str) -> str:
-    """Fetches an image URL and returns a base64 data URI, or the original URL on failure."""
-    if not url or not url.startswith("http"):
-        return url
-    if url in _img_cache:
-        return _img_cache[url]
-    last_exc = None
-    for attempt in range(2):
-        try:
-            req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
-            with urlopen(req, timeout=8) as resp:
-                mime = resp.headers.get_content_type() or "image/jpeg"
-                data = base64.b64encode(resp.read()).decode()
-                result = f"data:{mime};base64,{data}"
-            _img_cache[url] = result
-            return result
-        except Exception as e:
-            last_exc = e
-    print(f"[warn] url_to_data_uri: échec pour {url} ({last_exc}), URL brute utilisée (risque d'affichage vide)")
-    _img_cache[url] = url
-    return url
-
-
-# ---------------------------------------------------------------------------
-# Header image + dominant colour
-# ---------------------------------------------------------------------------
-
-def pick_header_image() -> Path | None:
-    """Returns a random image from the headers folder (should be 860×80px)."""
-    if not HEADERS_DIR.exists():
-        return None
-    imgs = [p for p in HEADERS_DIR.iterdir()
-            if p.suffix.lower() in {".jpg", ".jpeg", ".png", ".webp"}]
-    return random.choice(imgs) if imgs else None
-
-
-def get_dominant_color(img_path: Path) -> str:
-    """Returns a vibrant hex colour extracted from the image."""
-    if not _PIL:
-        return "#1db954"
-    try:
-        img = Image.open(img_path).convert("RGB").resize((60, 60), Image.LANCZOS)
-        pixels = list(img.getdata())
-        # Ignore near-white and near-black
-        filtered = [
-            (r, g, b) for r, g, b in pixels
-            if not (r > 210 and g > 210 and b > 210)
-            and not (r < 40  and g < 40  and b < 40)
-        ]
-        if not filtered:
-            filtered = pixels
-        r = sum(p[0] for p in filtered) // len(filtered)
-        g = sum(p[1] for p in filtered) // len(filtered)
-        b = sum(p[2] for p in filtered) // len(filtered)
-        # Boost saturation so the handle pops
-        h, s, v = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
-        s = min(1.0, s * 1.8)
-        v = min(1.0, max(0.55, v))
-        r2, g2, b2 = colorsys.hsv_to_rgb(h, s, v)
-        return f"#{int(r2*255):02x}{int(g2*255):02x}{int(b2*255):02x}"
-    except Exception:
-        return "#1db954"
-
-
-# ---------------------------------------------------------------------------
-# Album cover lookup from discography
-# ---------------------------------------------------------------------------
-
-def _norm(s: str) -> str:
-    """Normalize album/track name to a simple key for matching."""
-    return re.sub(r"[^a-z0-9]+", "_", (s or "").lower()).strip("_")
-
-
-def build_cover_map() -> dict:
-    """Returns {normalized_album_title → cover_url} from covers.json."""
-    if not COVERS_PATH.exists():
-        return {}
-    covers = json.loads(COVERS_PATH.read_text(encoding="utf-8-sig"))
-    result = {}
-    for v in covers.values():
-        key = _norm(v.get("title", ""))
-        if key and "cover_url" in v:
-            result[key] = v["cover_url"]
-    return result
-
-
-def build_track_album_map() -> dict:
-    """Reads album files + songs.json → {normalized_track_title → album_title}."""
-    result = {}
-
-    albums_dir = DISCOGRAPHY_ROOT / "albums"
-    if albums_dir.exists():
-        for album_file in sorted(albums_dir.glob("*.json"), key=lambda p: p.name.casefold()):
-            try:
-                payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
-            except Exception:
-                continue
-            album_name = payload.get("album", "") if isinstance(payload, dict) else ""
-            for section in payload.get("sections", []) if isinstance(payload, dict) else []:
-                for track in section.get("tracks", []):
-                    title = track.get("title", "")
-                    if title:
-                        result[_norm(title)] = album_name
-
-    songs_file = DISCOGRAPHY_ROOT / "songs.json"
-    if songs_file.exists():
-        try:
-            sections = json.loads(songs_file.read_text(encoding="utf-8-sig"))
-        except Exception:
-            sections = []
-        for section in sections:
-            album_name = section.get("album", "")
-            if not album_name:
-                continue
-            for track in section.get("tracks", []):
-                title = track.get("title", "")
-                if title:
-                    result[_norm(title)] = album_name
-    return result
-
-
-_track_image_map: dict | None = None
-
-def _get_track_image_map() -> dict:
-    """Returns {normalized_track_title → image_url} from album files + songs.json (lazy, cached)."""
-    global _track_image_map
-    if _track_image_map is None:
-        _track_image_map = {}
-        albums_dir = DISCOGRAPHY_ROOT / "albums"
-        if albums_dir.exists():
-            for album_file in sorted(albums_dir.glob("*.json"), key=lambda p: p.name.casefold()):
-                try:
-                    payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
-                    for section in payload.get("sections", []) if isinstance(payload, dict) else []:
-                        for track in section.get("tracks", []):
-                            title = track.get("title", "")
-                            img = (track.get("image_url") or "").strip()
-                            if title and img:
-                                _track_image_map[_norm(title)] = img
-                except Exception:
-                    pass
-        # Also read songs.json for standalone/non-album tracks
-        songs_path = DISCOGRAPHY_ROOT / "songs.json"
-        if songs_path.exists():
-            try:
-                songs = json.loads(songs_path.read_text(encoding="utf-8-sig"))
-                for track in songs:
-                    title = track.get("title", "")
-                    img = (track.get("image_url") or "").strip()
-                    if title and img:
-                        _track_image_map.setdefault(_norm(title), img)
-            except Exception:
-                pass
-        # Web export songs.json — contains image_url from Spotify for all known tracks
-        web_songs_path = first_existing(
-            WEB_EXPORT_DATA_DIR / "songs.json",
-            LEGACY_WEBSITE_DATA_DIR / "songs.json",
-        )
-        if web_songs_path and web_songs_path.exists():
-            try:
-                payload = json.loads(web_songs_path.read_text(encoding="utf-8-sig"))
-                songs_list = payload.get("songs", payload) if isinstance(payload, dict) else payload
-                for song in (songs_list or []):
-                    title = (song.get("title") or song.get("name") or "").strip()
-                    img = (song.get("image_url") or song.get("apple_music_image_url") or "").strip()
-                    if title and img:
-                        _track_image_map.setdefault(_norm(title), img)
-            except Exception:
-                pass
-    return _track_image_map
-
-
-def get_album_cover(
-    track_name: str,
-    track_album_map: dict,
-    cover_map: dict,
-    fallback_url: str = "",
-) -> str:
-    # Priorité 1 : cover album depuis covers.json (fiable)
-    album_name = track_album_map.get(_norm(track_name), "")
-    if album_name:
-        cover = cover_map.get(_norm(album_name), "")
-        if cover and str(cover).startswith("http"):
-            return cover
-
-    # Priorité 2 : image_url par track depuis albums/*.json (fiable, basé sur l'identité)
-    track_img = _get_track_image_map().get(_norm(track_name), "")
-    if track_img and str(track_img).startswith("http"):
-        return track_img
-
-    # Priorité 3 : image scrapée depuis Spotify (peut être incorrecte par assignation positionnelle)
-    if fallback_url and str(fallback_url).startswith("http"):
-        return fallback_url
-
-    return ""
-
-
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
-def load_json(path: Path):
-    return json.loads(path.read_text(encoding="utf-8-sig"))
-
-
-def fmt_streams(n) -> str:
-    if n is None:
-        return "—"
-    return f"{int(n):,}".replace(",", "\u202f")   # narrow no-break space
-
-
-def fmt_pct(pct) -> str:
-    if pct is None:
-        return "--"
-    sign = "+" if pct >= 0 else ""
-    formatted = f"{sign}{pct:.1f}%"
-    if formatted == "-0.0%":
-        return "+0.0%"
-    return formatted
-
-
-def pct_cls(pct) -> str:
-    if pct is None:
-        return "neutral"
-    return "pos" if pct >= 0 else "neg"
-
-
-def get_pct(today, ref):
-    if not today or not ref or ref == 0:
-        return None
-    return (today - ref) / ref * 100
-
-
 def ref_streams_from_chart(track: str, ref_date: str):
-    """Read streams from an adjacent daily chart when ts_history is stale."""
     json_path = date_dir_for(ref_date) / f"ts_chart_{ref_date}.json"
     if not json_path.exists():
         return None
@@ -311,7 +71,6 @@ def _archive_rows_by_date() -> dict[str, list[dict]]:
     global _archive_rows_cache
     if _archive_rows_cache is not None:
         return _archive_rows_cache
-
     rows_by_date: dict[str, list[dict]] = {}
     if ARCHIVE_CSV.exists():
         try:
@@ -347,184 +106,8 @@ def ref_streams(track_hist: dict, track: str, ref_date: str):
     return ref_streams_from_chart(track, ref_date) or ref_streams_from_archive(track, ref_date)
 
 
-def rank_change(rank, previous_rank, total_days=None):
-    if previous_rank is None:
-        if total_days and int(total_days) > 1:
-            return "RE-ENTRY", "chg-re"
-        return "NEW", "chg-new"
-    delta = int(previous_rank) - int(rank)
-    if delta > 0:
-        return f"▲{delta}", "chg-up"
-    elif delta < 0:
-        return f"▼{abs(delta)}", "chg-dn"
-    return "=", "chg-eq"
-
-
-def nan_to_none(v):
-    try:
-        import math
-        if isinstance(v, float) and math.isnan(v):
-            return None
-    except Exception:
-        pass
-    return v
-
-
-
-# ---------------------------------------------------------------------------
-# HTML / CSS
-# ---------------------------------------------------------------------------
-
-CSS = """
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-  font-family:Inter,-apple-system,'Helvetica Neue',Arial,sans-serif;
-  background:
-    radial-gradient(circle at 12% 18%, rgba(29,185,84,.13), transparent 30%),
-    radial-gradient(circle at 84% 16%, rgba(126,87,255,.10), transparent 32%),
-    linear-gradient(180deg,#f4f7f8 0%,#edf3f4 100%);
-  width:800px;
-  padding:0;
-  color:#101828;
-}
-.container{
-  overflow:hidden;
-}
-/* Header */
-.hdr{
-  padding:49px 22px;
-  display:flex;align-items:center;gap:16px;
-}
-.hdr-logo{width:52px;height:52px;flex-shrink:0}
-.hdr-title{color:#fff;font-size:22px;font-weight:800;letter-spacing:-.3px}
-.hdr-sub{color:rgba(255,255,255,.85);font-size:13px;margin-top:4px}
-/* Column headers */
-.col-heads{
-  display:grid;
-  grid-template-columns:52px 60px minmax(180px,1fr) 112px 74px 74px 50px 60px;
-  column-gap:8px;
-  padding:7px 14px;
-  background:rgba(241,245,246,.95);
-  border-bottom:1px solid rgba(16,24,40,.07);
-}
-.col-heads span{
-  font-size:10px;font-weight:700;text-transform:uppercase;
-  letter-spacing:.07em;color:#667085;
-  display:flex;align-items:center;
-}
-.col-heads .right{justify-content:flex-end}
-/* Song cards */
-.song-card{
-  display:grid;
-  grid-template-columns:52px 60px minmax(180px,1fr) 112px 74px 74px 50px 60px;
-  column-gap:8px;
-  align-items:center;
-  padding:9px 14px;
-  background:rgba(255,255,255,.82);
-  border-bottom:1px solid rgba(16,24,40,.05);
-}
-.song-card.row-odd{background:rgba(248,250,251,.88)}
-.song-card.row-gold{
-  background:linear-gradient(90deg,#fff7d6 0%,#fffdf5 40%,rgba(255,255,255,.92) 100%);
-  border-left:3px solid #ebc44c;
-}
-/* Rank */
-.col-rank{
-  font-size:17px;font-weight:900;color:#0b1f44;
-  letter-spacing:-.04em;
-  display:flex;align-items:center;justify-content:center;
-}
-/* Change */
-.col-chg{
-  font-size:11px;font-weight:700;
-  display:flex;align-items:center;justify-content:center;
-}
-.chg-up{color:#067647}
-.chg-dn{color:#b42318}
-.chg-eq{color:#9ca3af}
-.chg-new{color:#5bbde4;font-size:10px;font-weight:800}
-.chg-re{color:#5bbde4;font-size:10px;font-weight:800}
-/* Song */
-.col-song{display:flex;align-items:center;gap:10px;min-width:0}
-.art{
-  width:42px;height:42px;border-radius:6px;
-  flex-shrink:0;object-fit:cover;
-  box-shadow:0 2px 8px rgba(0,0,0,.12);
-}
-.art-ph{
-  width:42px;height:42px;border-radius:6px;
-  background:#dde3ea;flex-shrink:0;
-}
-.song-info{min-width:0}
-.song-title{
-  font-size:13px;font-weight:700;color:#101828;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.song-artist{font-size:11px;color:#667085;margin-top:2px}
-/* Numeric columns */
-.col-num{
-  font-size:12px;color:#344054;font-weight:500;
-  display:flex;align-items:center;justify-content:flex-end;
-}
-.pos{color:#067647;font-weight:600}
-.neg{color:#b42318;font-weight:600}
-.neutral{color:#667085}
-/* Footer */
-.ftr{
-  background:rgba(241,245,246,.96);
-  padding:8px 16px;
-  display:flex;justify-content:space-between;align-items:center;
-  border-top:1px solid rgba(16,24,40,.07);
-}
-.ftr-handle{font-size:11px;color:#1db954;font-weight:700}
-.ftr-date{font-size:11px;color:#667085;font-weight:500}
-/* Day separator (multi-date) */
-.day-hdr{
-  padding:6px 14px;
-  font-size:10px;font-weight:700;text-transform:uppercase;
-  letter-spacing:.07em;color:#344054;
-  background:rgba(29,185,84,.06);
-  border-top:2px solid rgba(29,185,84,.20);
-  border-bottom:1px solid rgba(16,24,40,.07);
-}
-/* OUT section */
-.out-hdr{
-  padding:6px 14px;
-  font-size:10px;font-weight:700;text-transform:uppercase;
-  letter-spacing:.07em;color:#b42318;
-  background:rgba(180,35,24,.05);
-  border-top:2px solid rgba(180,35,24,.25);
-  border-bottom:1px solid rgba(180,35,24,.10);
-}
-.out-card{
-  display:grid;
-  grid-template-columns:52px 60px minmax(180px,1fr);
-  column-gap:8px;
-  align-items:center;
-  padding:9px 14px;
-  background:rgba(240,240,240,.60);
-  border-bottom:1px solid rgba(16,24,40,.05);
-  opacity:0.80;
-}
-.col-out-badge{
-  font-size:10px;font-weight:800;color:#fff;
-  display:flex;align-items:center;justify-content:center;
-  background:#b42318;border-radius:4px;padding:3px 6px;
-  width:fit-content;margin:auto;
-}
-.col-out-last{
-  font-size:12px;font-weight:600;color:#9ca3af;
-  display:flex;align-items:center;justify-content:center;
-}
-"""
-
-SPOTIFY_SVG = """<svg class="hdr-logo" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-  <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
-</svg>"""
-
-
 def get_out_songs(chart_date: str, current_rows: list[dict]) -> list[dict]:
-    """Returns TS songs from yesterday's CSV that are not in today's chart."""
+    """Returns TS songs from yesterday's CSV (or archive) that are not in today's chart."""
     date_obj  = datetime.strptime(chart_date, "%Y-%m-%d").date()
     yesterday = str(date_obj - timedelta(days=1))
     csv_path  = date_dir_for(yesterday) / "ts_all_songs.csv"
@@ -557,139 +140,22 @@ def get_out_songs(chart_date: str, current_rows: list[dict]) -> list[dict]:
         return []
 
 
-def build_out_rows_html(
-    out_songs: list[dict],
-    track_album_map: dict,
-    cover_map: dict,
-    chart_date: str,
-) -> str:
-    if not out_songs:
-        return ""
-    date_obj  = datetime.strptime(chart_date, "%Y-%m-%d").date()
-    yesterday = str(date_obj - timedelta(days=1))
-    html = ""
-    for row in out_songs:
-        track      = str(row.get("track_name") or "")
-        artist     = str(row.get("artist_names") or "")
-        rank       = row.get("rank")
-        scraped_img = row.get("image_url") or ""
-        cover_url  = url_to_data_uri(get_album_cover(track, track_album_map, cover_map, scraped_img))
-        art_html   = (
-            f'<img class="art" src="{cover_url}" />'
-            if cover_url
-            else '<div class="art-ph"></div>'
-        )
-        rank_txt = f"#{int(rank)}" if rank else "—"
-        html += f"""<div class="out-card">
-  <div class="col-out-badge">OUT</div>
-  <div class="col-out-last">{rank_txt}</div>
-  <div class="col-song">
-    {art_html}
-    <div class="song-info">
-      <div class="song-title">{track}</div>
-      <div class="song-artist">{artist} · last: {yesterday}</div>
-    </div>
-  </div>
-</div>
-"""
-    return html
-
-
-def build_rows_html(
-    rows,
-    history,
-    chart_date: str,
-    track_album_map: dict,
-    cover_map: dict,
-) -> str:
-    date_obj  = datetime.strptime(chart_date, "%Y-%m-%d").date()
-    yesterday = str(date_obj - timedelta(days=1))
-    week_ago  = str(date_obj - timedelta(days=7))
-
-    html = ""
-    for i, row in enumerate(rows):
-        track      = str(row.get("track_name") or "")
-        artist     = str(row.get("artist_names") or "")
-        rank        = nan_to_none(row.get("rank"))
-        prev_rank   = nan_to_none(row.get("previous_rank"))
-        streams     = nan_to_none(row.get("streams"))
-        streak      = nan_to_none(row.get("streak"))
-        total_days  = nan_to_none(row.get("total_days"))
-        scraped_img = row.get("image_url") or ""
-
-        if rank is None:
-            continue
-        rank = int(rank)
-
-        chg_text, chg_css = rank_change(rank, int(prev_rank) if prev_rank else None, total_days)
-
-        # Album cover: discography lookup → fallback to scraped CDN URL
-        cover_url = url_to_data_uri(get_album_cover(track, track_album_map, cover_map, scraped_img))
-
-        # Daily / weekly % from ts_history
-        track_hist   = history.get(track, {})
-        prev_streams = ref_streams(track_hist, track, yesterday)
-        week_streams = ref_streams(track_hist, track, week_ago)
-        streams_int  = int(streams) if streams else None
-
-        daily_pct  = get_pct(streams_int, prev_streams)
-        weekly_pct = get_pct(streams_int, week_streams)
-
-        streams_fmt = fmt_streams(streams_int)
-        daily_txt   = fmt_pct(daily_pct)
-        weekly_txt  = fmt_pct(weekly_pct)
-        # streak from Spotify row = consecutive days in current run
-        consec_txt     = str(int(streak)) + "d" if streak else "—"
-        # total_days scraped from Spotify expanded detail
-        total_days_txt = str(int(total_days)) + "d" if total_days else "—"
-
-        art_html = (
-            f'<img class="art" src="{cover_url}" />'
-            if cover_url
-            else '<div class="art-ph"></div>'
-        )
-
-        card_cls = "song-card"
-        if rank == 1:
-            card_cls += " row-gold"
-        elif i % 2 != 0:
-            card_cls += " row-odd"
-
-        html += f"""<div class="{card_cls}">
-  <div class="col-rank">#{rank}</div>
-  <div class="col-chg {chg_css}">{chg_text}</div>
-  <div class="col-song">
-    {art_html}
-    <div class="song-info">
-      <div class="song-title">{track}</div>
-      <div class="song-artist">{artist}</div>
-    </div>
-  </div>
-  <div class="col-num">{streams_fmt}</div>
-  <div class="col-num {pct_cls(daily_pct)}">{daily_txt}</div>
-  <div class="col-num {pct_cls(weekly_pct)}">{weekly_txt}</div>
-  <div class="col-num">{consec_txt}</div>
-  <div class="col-num">{total_days_txt}</div>
-</div>
-"""
-    return html
-
-
 def build_html(
     rows,
-    history,
+    history: dict,
     chart_date: str,
     track_album_map: dict,
     cover_map: dict,
+    track_image_map: dict,
     header_img: Path | None = None,
     out_songs: list | None = None,
 ) -> str:
     date_fmt  = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
-    rows_html = build_rows_html(rows, history, chart_date, track_album_map, cover_map)
-    rows_html += build_out_rows_html(out_songs or [], track_album_map, cover_map, chart_date)
+    rows_html  = build_rows_html(rows, history, chart_date, track_album_map, cover_map, track_image_map, ref_streams)
+    rows_html += build_out_rows_html(out_songs or [], track_album_map, cover_map, track_image_map, chart_date)
 
     if header_img is None:
-        header_img = pick_header_image()
+        header_img = pick_header_image(HEADERS_DIR)
     handle_color = "#1db954"
 
     if header_img:
@@ -713,16 +179,7 @@ def build_html(
       <div class="hdr-sub">Daily Chart · {date_fmt}</div>
     </div>
   </div>
-  <div class="col-heads">
-    <span>Pos</span>
-    <span>Chg</span>
-    <span>Track</span>
-    <span class="right">Streams</span>
-    <span class="right">Daily</span>
-    <span class="right">Weekly</span>
-    <span class="right">Streak</span>
-    <span class="right">Total</span>
-  </div>
+  {COL_HEADS_HTML}
   {rows_html}
   <div class="ftr">
     <span class="ftr-handle" style="color:{handle_color}">{HANDLE}</span>
@@ -732,9 +189,14 @@ def build_html(
 </body></html>"""
 
 
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
+def _build_track_image_map() -> dict:
+    web_songs_path = first_existing(
+        WEB_EXPORT_DATA_DIR / "songs.json",
+        LEGACY_WEBSITE_DATA_DIR / "songs.json",
+    )
+    extra = [web_songs_path] if web_songs_path else []
+    return build_track_image_map(DISCOGRAPHY_ROOT, extra_song_sources=extra)
+
 
 def generate(chart_date: str, header_img: Path | None = None) -> Path:
     date_dir  = date_dir_for(chart_date)
@@ -750,34 +212,14 @@ def generate(chart_date: str, header_img: Path | None = None) -> Path:
     if not rows:
         raise ValueError(f"Aucune chanson TS dans {json_path}")
 
-    cover_map       = build_cover_map()
-    track_album_map = build_track_album_map()
+    cover_map       = build_cover_map(COVERS_PATH)
+    track_album_map = build_track_album_map(DISCOGRAPHY_ROOT)
+    track_image_map = _build_track_image_map()
     out_songs       = get_out_songs(chart_date, rows)
 
-    html     = build_html(rows, history, chart_date, track_album_map, cover_map, header_img=header_img, out_songs=out_songs)
-    html_tmp = date_dir / "_chart_tmp.html"
-    html_tmp.write_text(html, encoding="utf-8")
-
-    try:
-        with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
-            page    = browser.new_page(viewport={"width": 800, "height": 200}, device_scale_factor=2)
-            page.goto(f"file:///{html_tmp.as_posix()}", wait_until="load")
-            page.wait_for_load_state("networkidle", timeout=3000)
-            try:
-                full_h = page.evaluate("() => document.body.scrollHeight")
-                full_h = int(full_h) if full_h else 200
-                full_h = max(200, min(full_h, 6000))
-                page.set_viewport_size({"width": 800, "height": full_h})
-                page.wait_for_load_state("networkidle", timeout=3000)
-            except Exception:
-                pass
-            page.locator("body").screenshot(path=str(out_path))
-            browser.close()
-    finally:
-        if html_tmp.exists():
-            html_tmp.unlink()
-
+    html = build_html(rows, history, chart_date, track_album_map, cover_map, track_image_map,
+                      header_img=header_img, out_songs=out_songs)
+    render_html_to_png(html, out_path, date_dir / "_chart_tmp.html")
     print(f"OK image: {out_path}")
     return out_path
 
@@ -801,15 +243,18 @@ def generate_all_headers(chart_date: str) -> list[Path]:
 
     rows    = load_json(json_path)
     history = load_json(TS_HISTORY_PATH) if TS_HISTORY_PATH.exists() else {}
-    cover_map       = build_cover_map()
-    track_album_map = build_track_album_map()
+
+    cover_map       = build_cover_map(COVERS_PATH)
+    track_album_map = build_track_album_map(DISCOGRAPHY_ROOT)
+    track_image_map = _build_track_image_map()
 
     results = []
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         for img_path in imgs:
             out_path = date_dir / f"chart_image_{img_path.stem}.png"
-            html     = build_html(rows, history, chart_date, track_album_map, cover_map, header_img=img_path)
+            html     = build_html(rows, history, chart_date, track_album_map, cover_map, track_image_map,
+                                  header_img=img_path)
             html_tmp = date_dir / "_chart_tmp.html"
             html_tmp.write_text(html, encoding="utf-8")
             try:
@@ -842,8 +287,9 @@ def generate_multi(chart_dates: list[str], header_img: Path | None = None) -> Pa
     out_path = ROOT / "chart_image_multi.png"
 
     history         = load_json(TS_HISTORY_PATH) if TS_HISTORY_PATH.exists() else {}
-    cover_map       = build_cover_map()
-    track_album_map = build_track_album_map()
+    cover_map       = build_cover_map(COVERS_PATH)
+    track_album_map = build_track_album_map(DISCOGRAPHY_ROOT)
+    track_image_map = _build_track_image_map()
 
     combined_rows_html = ""
     valid_dates = []
@@ -859,14 +305,14 @@ def generate_multi(chart_dates: list[str], header_img: Path | None = None) -> Pa
         valid_dates.append(chart_date)
         date_label = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
         combined_rows_html += f'<div class="day-hdr">{date_label}</div>\n'
-        combined_rows_html += build_rows_html(rows, history, chart_date, track_album_map, cover_map)
-        combined_rows_html += build_out_rows_html(get_out_songs(chart_date, rows), track_album_map, cover_map, chart_date)
+        combined_rows_html += build_rows_html(rows, history, chart_date, track_album_map, cover_map, track_image_map, ref_streams)
+        combined_rows_html += build_out_rows_html(get_out_songs(chart_date, rows), track_album_map, cover_map, track_image_map, chart_date)
 
     if not valid_dates:
         raise ValueError("Aucun JSON trouvé pour les dates fournies")
 
     if header_img is None:
-        header_img = pick_header_image()
+        header_img = pick_header_image(HEADERS_DIR)
     handle_color = "#1db954"
 
     first_fmt = datetime.strptime(valid_dates[0],  "%Y-%m-%d").strftime("%B %d")
@@ -894,16 +340,7 @@ def generate_multi(chart_dates: list[str], header_img: Path | None = None) -> Pa
       <div class="hdr-sub">{subtitle}</div>
     </div>
   </div>
-  <div class="col-heads">
-    <span>Pos</span>
-    <span>Chg</span>
-    <span>Track</span>
-    <span class="right">Streams</span>
-    <span class="right">Daily</span>
-    <span class="right">Weekly</span>
-    <span class="right">Streak</span>
-    <span class="right">Total</span>
-  </div>
+  {COL_HEADS_HTML}
   {combined_rows_html}
   <div class="ftr">
     <span class="ftr-handle" style="color:{handle_color}">{HANDLE}</span>
@@ -912,29 +349,7 @@ def generate_multi(chart_dates: list[str], header_img: Path | None = None) -> Pa
 </div>
 </body></html>"""
 
-    html_tmp = ROOT / "_chart_tmp.html"
-    html_tmp.write_text(html, encoding="utf-8")
-
-    try:
-        with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
-            page    = browser.new_page(viewport={"width": 800, "height": 200}, device_scale_factor=2)
-            page.goto(f"file:///{html_tmp.as_posix()}", wait_until="load")
-            page.wait_for_load_state("networkidle", timeout=3000)
-            try:
-                full_h = page.evaluate("() => document.body.scrollHeight")
-                full_h = int(full_h) if full_h else 200
-                full_h = max(200, min(full_h, 6000))
-                page.set_viewport_size({"width": 800, "height": full_h})
-                page.wait_for_load_state("networkidle", timeout=3000)
-            except Exception:
-                pass
-            page.locator("body").screenshot(path=str(out_path))
-            browser.close()
-    finally:
-        if html_tmp.exists():
-            html_tmp.unlink()
-
+    render_html_to_png(html, out_path, ROOT / "_chart_tmp.html")
     print(f"OK image multi: {out_path}")
     return out_path
 

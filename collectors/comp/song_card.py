@@ -129,7 +129,7 @@ def cover_palette(img_bytes: bytes) -> tuple[str, str]:
         return ("linear-gradient(135deg,#1db954 0%,#0f7f3d 100%)", "#1db954")
 
 
-def render_feature_card(
+def render_song_card(
     *,
     title: str,
     eyebrow: str,
@@ -182,7 +182,7 @@ body{{
 .title{{
   color:#fff;font-size:52px;font-weight:900;
   line-height:1.1;letter-spacing:0;
-  white-space:nowrap;overflow:visible;
+  white-space:nowrap;overflow:hidden;
 }}
 .subtitle{{color:rgba(255,255,255,.6);font-size:12px;font-weight:500}}
 .stats{{display:flex;gap:10px;margin-top:4px}}
@@ -232,10 +232,9 @@ body{{
 <script>
 (function(){{
   var el=document.querySelector('.title');
-  var parent=el.parentElement;
   var size=52;
   el.style.fontSize=size+'px';
-  while(el.scrollWidth>parent.offsetWidth&&size>20){{
+  while(el.scrollWidth>el.offsetWidth&&size>20){{
     size-=1;
     el.style.fontSize=size+'px';
   }}
@@ -244,7 +243,7 @@ body{{
 </body></html>"""
 
 
-def write_feature_card_png(html_text: str, output_path: Path, tmp_path: Path) -> Path:
+def write_song_card_png(html_text: str, output_path: Path, tmp_path: Path) -> Path:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     tmp_path.write_text(html_text, encoding="utf-8")
     try:

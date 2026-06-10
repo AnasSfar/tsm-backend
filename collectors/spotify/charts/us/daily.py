@@ -330,19 +330,20 @@ def main():
     if img_result.stderr:
         print(img_result.stderr, flush=True)
     if img_result.returncode != 0:
-        log("WARN", "GÃ©nÃ©ration d'image Ã©chouÃ©e â€” publication sans image")
-        image_path = None
+        if no_post:
+            log(“WARN”, “Génération d'image échouée (--no-post, on continue)”)
+            image_path = None
+        else:
+            log(“ERROR”, “Génération d'image échouée — publication annulée”)
+            sys.exit(1)
 
     # Poster
     if no_post:
-        log("INFO", "Publication Twitter ignorée (--no-post)")
+        log(“INFO”, “Publication Twitter ignorée (--no-post)”)
         posted = True
     else:
-        log("STEP", "Publication Twitter")
-        if image_path and image_path.exists():
-            posted = post_with_image(tweet_content, image_path, TWITTER_SESSION)
-        else:
-            posted = post_thread(split_tweets(tweet_content), TWITTER_SESSION)
+        log(“STEP”, “Publication Twitter”)
+        posted = post_with_image(tweet_content, image_path, TWITTER_SESSION)
 
     if posted:
         for d in processed:

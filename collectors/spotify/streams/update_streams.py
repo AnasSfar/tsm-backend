@@ -1959,6 +1959,24 @@ def main():
                 tags="warning,hourglass_flowing_sand",
             )
 
+            # Write exhausted pending tracks with daily=0 so history is complete.
+            history_index = summary.get("history_index")
+            written_pending = 0
+            for r in summary.get("results", []):
+                if not r or r.get("track_id") not in still_pending:
+                    continue
+                total = r.get("streams")
+                if total is None:
+                    continue
+                if history_index is not None:
+                    history_index.append(stats_date, r["track_id"], total, None)
+                else:
+                    append_history_row([stats_date, r["track_id"], total, ""])
+                written_pending += 1
+                all_updated_track_ids.add(r["track_id"])
+            if written_pending:
+                print(f"Wrote {written_pending} exhausted pending track(s) with daily=0.")
+
     print_remaining_details(summary)
     if local_test_mode:
         print("[LOCAL-TEST] Skip successful/unfinished JSON log updates.")
@@ -2016,28 +2034,44 @@ def main():
         return
 
     # Guard: every non-extra track must have a history entry for today before we post.
+    # Retry indefinitely until all non-extra tracks are collected.
     if not local_test_mode and not debug_daily_mode:
-        all_tracks_for_check = load_tracks_from_discography()
-        non_extra_ids = {t["track_id"] for t in all_tracks_for_check if not t.get("chart_extra")}
-        done_ids_for_date = load_history_track_ids_for_date(stats_date)
-        missing_non_extra = non_extra_ids - done_ids_for_date
-        if missing_non_extra:
+        completeness_round = 0
+        while True:
+            all_tracks_for_check = load_tracks_from_discography()
+            non_extra_ids = {t["track_id"] for t in all_tracks_for_check if not t.get("chart_extra")}
+            done_ids_for_date = load_history_track_ids_for_date(stats_date)
+            missing_non_extra = non_extra_ids - done_ids_for_date
+            if not missing_non_extra:
+                break
+
             missing_titles = sorted(
                 t["title"] for t in all_tracks_for_check if t["track_id"] in missing_non_extra
             )
             tracks_list = "\n".join(f"• {title}" for title in missing_titles)
+            completeness_round += 1
             print(
-                f"⛔ Completeness check failed: {len(missing_non_extra)} non-extra track(s) "
-                f"missing from history for {stats_date}:\n{tracks_list}"
+                f"\n⛔ Completeness check round {completeness_round}: "
+                f"{len(missing_non_extra)} non-extra track(s) still missing for {stats_date}:\n{tracks_list}"
             )
             notify(
                 NTFY_TOPIC,
-                f"⛔ Posting blocked: {len(missing_non_extra)} non-extra track(s) missing ({stats_date}):\n{tracks_list}",
+                f"⛔ Posting blocked (round {completeness_round}): {len(missing_non_extra)} non-extra track(s) missing ({stats_date}):\n{tracks_list}",
                 title="Taylor Swift - Completeness check failed",
                 tags="no_entry,chart_increasing",
             )
-            album_update_poster.stop()
-            return
+            print(f"Retrying in {PENDING_RETRY_SLEEP_SECONDS}s...")
+            time.sleep(PENDING_RETRY_SLEEP_SECONDS)
+            completeness_summary = run_update(
+                on_progress=ProgressLogger(LOG_MODE),
+                stats_date_override=stats_date_override,
+                only_track_ids=missing_non_extra,
+                token_mgr=token_mgr,
+                write_history=write_history,
+            )
+            all_updated_track_ids.update(completeness_summary.get("updated_track_ids") or set())
+            print_summary_block(completeness_summary)
+            print_api_metrics(completeness_summary)
 
     if local_test_mode:
         print("[LOCAL-TEST] Skip streams history CSV migration.")

@@ -20,7 +20,7 @@ if str(COLLECTORS_ROOT) not in sys.path:
 if str(SPOTIFY_ROOT) not in sys.path:
     sys.path.insert(0, str(SPOTIFY_ROOT))
 
-from comp.feature_card import render_feature_card, write_feature_card_png  # noqa: E402
+from comp.song_card import render_song_card, write_song_card_png  # noqa: E402
 from core.data_paths import LEGACY_WEBSITE_DATA_DIR, WEB_EXPORT_DATA_DIR, first_existing, spotify_chart_dir  # noqa: E402
 from core.twitter import post_with_image  # noqa: E402
 import generate_card_images  # noqa: E402
@@ -468,7 +468,7 @@ def _build_html(rows: list[dict], chart_date: str) -> tuple[str, str]:
         streams_badge = ""
         streams_badge_class = "flat"
 
-    html_text = render_feature_card(
+    html_text = render_song_card(
         title=display_title,
         eyebrow="Global Spotify Charts",
         subtitle=f"Global Spotify Charts update - {date_text}",
@@ -494,7 +494,7 @@ def generate_card(chart_date: str, *, force_songs: set[str] | None = None) -> Pa
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / f"new_card_{slug}.png"
     tmp_path = out_dir / "_new_card_tmp.html"
-    write_feature_card_png(html_text, out_path, tmp_path)
+    write_song_card_png(html_text, out_path, tmp_path)
     print(f"[global-new] Card generated: {out_path}")
     return out_path
 

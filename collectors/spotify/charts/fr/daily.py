@@ -311,15 +311,18 @@ def main():
             spotify_chart_dir("fr", target) / "chart_image.png",
             legacy_spotify_chart_dir("fr", target) / "chart_image.png",
         ) if img_result.returncode == 0 else None
+        if not image_path or not image_path.exists():
+            if no_post:
+                log("WARN", "Génération d'image échouée (--no-post, on continue)")
+            else:
+                log("ERROR", "Génération d'image échouée — publication annulée")
+                sys.exit(1)
         log("STEP", "Publication Twitter")
         if no_post:
             log("INFO", "Publication Twitter ignorée (--no-post)")
             posted = True
         else:
-            if image_path and image_path.exists():
-                posted = post_with_image(tweet_content, image_path, TWITTER_SESSION)
-            else:
-                posted = post_thread(split_tweets(tweet_content), TWITTER_SESSION)
+            posted = post_with_image(tweet_content, image_path, TWITTER_SESSION)
         if posted:
             for d in processed:
                 mark_posted(d)
@@ -408,8 +411,12 @@ def main():
     if img_result.stderr:
         print(img_result.stderr, flush=True)
     if img_result.returncode != 0:
-        log("WARN", "Génération d'image échouée — publication sans image")
-        image_path = None
+        if no_post:
+            log("WARN", "Génération d'image échouée (--no-post, on continue)")
+            image_path = None
+        else:
+            log("ERROR", "Génération d'image échouée — publication annulée")
+            sys.exit(1)
 
     # Poster
     if no_post:
@@ -417,10 +424,7 @@ def main():
         posted = True
     else:
         log("STEP", "Publication Twitter")
-        if image_path and image_path.exists():
-            posted = post_with_image(tweet_content, image_path, TWITTER_SESSION)
-        else:
-            posted = post_thread(split_tweets(tweet_content), TWITTER_SESSION)
+        posted = post_with_image(tweet_content, image_path, TWITTER_SESSION)
 
     if posted:
         for d in processed:

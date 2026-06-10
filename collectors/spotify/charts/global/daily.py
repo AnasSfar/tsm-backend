@@ -450,7 +450,7 @@ def generate_image(processed: list[date]) -> Path | None:
         print(img_result.stderr, flush=True)
 
     if img_result.returncode != 0:
-        log("WARN", "Génération d'image échouée — publication sans image")
+        log("ERROR", "Génération d'image échouée")
         return None
 
     new_path = spotify_chart_dir("global", d) / "chart_image.png"
@@ -458,7 +458,7 @@ def generate_image(processed: list[date]) -> Path | None:
     image_path = new_path if new_path.exists() else legacy_path
 
     if not image_path.exists():
-        log("WARN", f"Image attendue introuvable: {image_path}")
+        log("ERROR", f"Image attendue introuvable: {image_path}")
         return None
 
     return image_path
@@ -634,15 +634,18 @@ def main() -> None:
         log("INFO", "twitter_post.txt mis à jour")
         print(f"\nPost :\n{tweet_content}\n", flush=True)
         image_path = generate_image(processed)
+        if not image_path:
+            if no_post:
+                log("WARN", "Génération d'image échouée (--no-post, on continue)")
+            else:
+                log("ERROR", "Génération d'image échouée — publication annulée")
+                sys.exit(1)
         log("STEP", "Publication Twitter")
         if no_post:
             log("INFO", "Publication Twitter ignorée (--no-post)")
             posted = True
         else:
-            if image_path:
-                posted = post_with_image(tweet_content, image_path, TWITTER_SESSION)
-            else:
-                posted = post_thread(split_tweets(tweet_content), TWITTER_SESSION)
+            posted = post_with_image(tweet_content, image_path, TWITTER_SESSION)
         if posted:
             for d in processed:
                 mark_posted(d)
@@ -704,6 +707,12 @@ def main() -> None:
     print(f"\nPost :\n{tweet_content}\n", flush=True)
 
     image_path = generate_image(processed)
+    if not image_path:
+        if no_post:
+            log("WARN", "Génération d'image échouée (--no-post, on continue)")
+        else:
+            log("ERROR", "Génération d'image échouée — publication annulée")
+            sys.exit(1)
 
     if ENABLE_GLOBAL_US_COMBINED_IMAGE and image_path and len(processed) == 1:
         target_date = processed[0]
@@ -718,10 +727,7 @@ def main() -> None:
         posted = True
     else:
         log("STEP", "Publication Twitter")
-        if image_path:
-            posted = post_with_image(tweet_content, image_path, TWITTER_SESSION)
-        else:
-            posted = post_thread(split_tweets(tweet_content), TWITTER_SESSION)
+        posted = post_with_image(tweet_content, image_path, TWITTER_SESSION)
 
     if posted:
         for d in processed:

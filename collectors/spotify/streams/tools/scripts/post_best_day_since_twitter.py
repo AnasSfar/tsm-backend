@@ -26,7 +26,7 @@ sys.path.insert(0, str(COLLECTORS_ROOT))              # collectors/
 sys.path.insert(0, str(ROOT))                         # collectors/spotify/streams/
 sys.path.insert(0, str(ROOT.parent))                  # collectors/spotify/
 
-from comp.feature_card import render_feature_card, slugify, write_feature_card_png  # noqa: E402
+from comp.song_card import render_song_card, slugify, write_song_card_png  # noqa: E402
 from core.twitter import post_with_image  # noqa: E402
 from core.album_emoji import album_emoji  # noqa: E402
 from core.data_paths import update_streams_dir  # noqa: E402
@@ -108,7 +108,7 @@ def _generate_best_day_since_image(
     daily = int(row["daily_streams"])
     pct = _fmt_pct(daily, daily_yesterday)
     label = best_day_since.row_label(row)
-    html = render_feature_card(
+    html = render_song_card(
         title=track.get("title") or row["title"],
         eyebrow="Spotify Streams",
         subtitle=f"{label} - {date_text}",
@@ -124,7 +124,7 @@ def _generate_best_day_since_image(
     out_dir = _day_dir(target_date) / "best_day_since"
     out_path = out_dir / f"best_day_since_{slugify(track.get('title') or row['title'])}_{target_date}.png"
     tmp_path = out_dir / f"_best_day_since_{row['track_id']}.html"
-    return write_feature_card_png(html, out_path, tmp_path)
+    return write_song_card_png(html, out_path, tmp_path)
 
 
 def main() -> None:
