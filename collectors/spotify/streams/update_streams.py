@@ -1968,14 +1968,19 @@ def main():
                 total = r.get("streams")
                 if total is None:
                     continue
+                daily_val = r.get("daily_streams")
+                if daily_val is None:
+                    daily_val = 0
                 if history_index is not None:
-                    history_index.append(stats_date, r["track_id"], total, None)
+                    history_index.append(stats_date, r["track_id"], total, daily_val)
                 else:
-                    append_history_row([stats_date, r["track_id"], total, ""])
+                    append_history_row([stats_date, r["track_id"], total, str(daily_val)])
                 written_pending += 1
                 all_updated_track_ids.add(r["track_id"])
             if written_pending:
                 print(f"Wrote {written_pending} exhausted pending track(s) with daily=0.")
+                summary["all_done"] = True
+                summary["pending_this_run"] = 0
 
     print_remaining_details(summary)
     if local_test_mode:
