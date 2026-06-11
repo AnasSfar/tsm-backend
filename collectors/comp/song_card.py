@@ -129,6 +129,21 @@ def cover_palette(img_bytes: bytes) -> tuple[str, str]:
         return ("linear-gradient(135deg,#1db954 0%,#0f7f3d 100%)", "#1db954")
 
 
+def _title_font_size(title: str) -> int:
+    n = len(title)
+    if n <= 13:
+        return 52
+    if n <= 16:
+        return 44
+    if n <= 19:
+        return 38
+    if n <= 23:
+        return 32
+    if n <= 28:
+        return 26
+    return 22
+
+
 def render_song_card(
     *,
     title: str,
@@ -180,9 +195,9 @@ body{{
   letter-spacing:.12em;text-transform:uppercase;
 }}
 .title{{
-  color:#fff;font-size:52px;font-weight:900;
+  color:#fff;font-size:{_title_font_size(title)}px;font-weight:900;
   line-height:1.1;letter-spacing:0;
-  white-space:nowrap;overflow:hidden;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }}
 .subtitle{{color:rgba(255,255,255,.6);font-size:12px;font-weight:500}}
 .stats{{display:flex;gap:10px;margin-top:4px}}
@@ -229,17 +244,6 @@ body{{
   <span class="ftr-l">{html.escape(footer_left)}</span>
   <span class="ftr-r">{html.escape(footer_right)}</span>
 </div>
-<script>
-(function(){{
-  var el=document.querySelector('.title');
-  var size=52;
-  el.style.fontSize=size+'px';
-  while(el.scrollWidth>el.offsetWidth&&size>20){{
-    size-=1;
-    el.style.fontSize=size+'px';
-  }}
-}})();
-</script>
 </body></html>"""
 
 

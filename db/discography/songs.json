@@ -878,27 +878,6 @@
         "genre_query_titles": {},
         "genre_errors": {},
         "genre_canonical_key": "family:the_story_of_us"
-      },
-      {
-        "title": "I Knew It, I Knew You",
-        "url": "https://open.spotify.com/intl-fr/track/5uPaqMMt59KGrdKIitDRqa",
-        "type": "standalone",
-        "edition": "extras",
-        "display_section": "Extras",
-        "display_order": 10008,
-        "base_title": "I Knew It, I Knew You",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "I Knew It, I Knew You",
-        "song_family": "i_knew_it_i_knew_you",
-        "version_tag": "standalone",
-        "image_url": "https://i.scdn.co/image/ab67616d00001e02a35a1d4983e2b4fd0094f910",
-        "release_date": "2026-06-05T00:00:00Z",
-        "historical_track_ids": []
       }
     ]
   }
