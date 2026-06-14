@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any, Callable
 
 from core.data_paths import update_streams_dir
+from core.swift_top_gate import check_swift_top_gate, mark_swift_top_done
 from core.retention import cleanup_generated_artifacts
 from git_ops import git_commit_and_push
 import generate_albums_image
@@ -29,6 +30,8 @@ ALBUM_UPDATE_GAIN_THRESHOLD_PCT = 15.0
 GAINER_ALBUM_UPDATE_MIN_TRACKS = 2
 GAINER_ALBUM_UPDATE_LIMIT = 5
 GAINER_ALBUM_UPDATE_MIN_BASELINE = 1000
+FINALIZE_POST_RETRY_ATTEMPTS = max(1, int(os.getenv("FINALIZE_POST_RETRY_ATTEMPTS", "3")))
+FINALIZE_POST_RETRY_SLEEP_SECONDS = max(0, int(os.getenv("FINALIZE_POST_RETRY_SLEEP_SECONDS", "60")))
 
 
 def _subprocess_env(extra: dict[str, str] | None = None) -> dict[str, str]:
@@ -209,19 +212,31 @@ def _run_streams_post(
     spacing_seconds: int,
     log_mode: str,
 ) -> None:
-    _wait_before_post(
-        label=label,
-        should_post=should_post,
-        state=state,
-        spacing_seconds=spacing_seconds,
-        log_mode=log_mode,
-    )
+    last_returncode = 0
+    for attempt in range(1, FINALIZE_POST_RETRY_ATTEMPTS + 1):
+        _wait_before_post(
+            label=label,
+            should_post=should_post,
+            state=state,
+            spacing_seconds=spacing_seconds,
+            log_mode=log_mode,
+        )
 
-    result = _run_subprocess(cmd, check=False)
-    if result.returncode != 0:
-        raise SystemExit(f"{label} failed (exit {result.returncode}).")
+        if attempt > 1:
+            print(f"Retrying {label} ({attempt}/{FINALIZE_POST_RETRY_ATTEMPTS})...")
 
-    _mark_post_done(should_post=should_post, state=state)
+        result = _run_subprocess(cmd, check=False)
+        last_returncode = result.returncode
+        if result.returncode == 0:
+            _mark_post_done(should_post=should_post, state=state)
+            return
+
+        print(f"{label} failed (exit {result.returncode}) on attempt {attempt}/{FINALIZE_POST_RETRY_ATTEMPTS}.")
+        if attempt < FINALIZE_POST_RETRY_ATTEMPTS and FINALIZE_POST_RETRY_SLEEP_SECONDS > 0:
+            print(f"Waiting {FINALIZE_POST_RETRY_SLEEP_SECONDS}s before retrying {label}...")
+            time.sleep(FINALIZE_POST_RETRY_SLEEP_SECONDS)
+
+    raise SystemExit(f"{label} failed after {FINALIZE_POST_RETRY_ATTEMPTS} attempt(s) (last exit {last_returncode}).")
 
 
 def _wait_before_post(
@@ -810,7 +825,18 @@ def _run_swift_top_charts_if_needed(ctx: FinalizeContext) -> None:
         if stats_date.weekday() != 2:
             return
 
-        print(f"\nWednesday detected - generating Swift Top 100 for {ctx.summary['stats_date']} ...")
+        gate_status = check_swift_top_gate(stats_date, source="streams")
+        if gate_status == "done":
+            print(f"Swift Top charts already generated for {ctx.summary['stats_date']}.")
+            return
+        if gate_status == "waiting":
+            print(
+                "Swift Top charts waiting for Spotify charts "
+                f"for {ctx.summary['stats_date']}."
+            )
+            return
+
+        print(f"\nStreams and Spotify charts ready - generating Swift Top 100 for {ctx.summary['stats_date']} ...")
         swift_top_100_script = ctx.repo_root / "collectors" / "billboard" / "swift_top_100.py"
         top_100_result = _run_subprocess(
             [sys.executable, str(swift_top_100_script), "--date", ctx.summary["stats_date"], "--variant", "all"],
@@ -822,18 +848,8 @@ def _run_swift_top_charts_if_needed(ctx: FinalizeContext) -> None:
             return
 
         print("Swift Top 100 generated successfully.")
-        print(f"Generating Swift Top Albums for {ctx.summary['stats_date']} ...")
-        swift_top_albums_script = ctx.repo_root / "collectors" / "billboard" / "swift_top_albums.py"
-        albums_result = _run_subprocess(
-            [sys.executable, str(swift_top_albums_script), "--date", ctx.summary["stats_date"], "--variant", "all", "--upload"],
-            cwd=str(ctx.repo_root),
-            check=False,
-        )
-        if albums_result.returncode == 0:
-            print("Swift Top Albums generated successfully.")
-            git_commit_and_push(ctx.repo_root, f"charts swift top 100 and albums {ctx.summary['stats_date']}")
-        else:
-            print(f"Swift Top Albums exited with code {albums_result.returncode}.")
+        mark_swift_top_done(stats_date, source="streams")
+        git_commit_and_push(ctx.repo_root, f"charts swift top 100 and albums {ctx.summary['stats_date']}")
     except Exception as exc:
         print(f"Swift Top charts trigger failed - {exc}")
 

@@ -375,8 +375,32 @@ def _load_all_tracks_from_json() -> list[dict]:
                     "title":      title,
                     "spotify_url": f"https://open.spotify.com/track/{track_id}",
                     "streams":    None,
+                    "release_date": t.get("release_date") or None,
                 }
     return sorted(seen.values(), key=lambda x: x["title"].casefold())
+
+
+def _history_ref_date() -> str:
+    if not HISTORY_PATH.exists():
+        return date.today().isoformat()
+    dates: list[str] = []
+    with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
+        for row in csv.DictReader(f):
+            if row.get("date"):
+                dates.append(row["date"])
+    return max(dates) if dates else date.today().isoformat()
+
+
+def _is_released_for_ref_date(track: dict, ref_date: str) -> bool:
+    release_raw = str(track.get("release_date") or "").strip()
+    if not release_raw:
+        return True
+    try:
+        release_day = date.fromisoformat(release_raw[:10])
+        ref_day = date.fromisoformat(ref_date)
+    except ValueError:
+        return True
+    return release_day <= ref_day
 
 
 def _seeded_track_ids() -> set[str]:
@@ -391,8 +415,12 @@ def _seeded_track_ids() -> set[str]:
     return ids
 
 
-def load_target_tracks(track_ids: list[str] | None, new_only: bool) -> list[dict]:
+def load_target_tracks(track_ids: list[str] | None, new_only: bool, ref_date: str) -> list[dict]:
     all_tracks = _load_all_tracks_from_json()
+    future_count = sum(1 for t in all_tracks if not _is_released_for_ref_date(t, ref_date))
+    all_tracks = [t for t in all_tracks if _is_released_for_ref_date(t, ref_date)]
+    if future_count:
+        print(f"Skipping {future_count} unreleased track(s) for ref_date={ref_date}.")
     if track_ids:
         wanted = set(track_ids)
         return [t for t in all_tracks if t["track_id"] in wanted]
@@ -422,8 +450,7 @@ def apply_to_history(scraped: dict[str, int]) -> None:
             rows = list(reader)
 
     # Dernière date présente dans le CSV (point de référence)
-    dates = [r["date"] for r in rows if r.get("date")]
-    ref_date = max(dates) if dates else date.today().isoformat()
+    ref_date = _history_ref_date()
     print(f"Date de référence : {ref_date}")
 
     # Index des lignes existantes pour ref_date : track_id → index dans rows
@@ -521,7 +548,9 @@ def worker(
 # ── Main ───────────────────────────────────────────────────────────────────────
 
 def run(track_ids: list[str] | None, dry_run: bool, new_only: bool) -> None:
-    tracks = load_target_tracks(track_ids, new_only)
+    ref_date = _history_ref_date()
+    print(f"Date de rÃ©fÃ©rence : {ref_date}")
+    tracks = load_target_tracks(track_ids, new_only, ref_date)
 
     if not tracks:
         print("Aucune track à traiter.")

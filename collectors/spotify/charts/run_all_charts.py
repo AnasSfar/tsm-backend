@@ -29,9 +29,11 @@ REPO_ROOT = CHARTS_ROOT.parents[2]
 sys.path.insert(0, str(REPO_ROOT / "collectors" / "spotify"))
 from core.data_paths import legacy_spotify_chart_dir, run_all_charts_root, spotify_chart_dir
 from core.data_paths import LEGACY_WEBSITE_DATA_DIR, WEB_EXPORT_DATA_DIR, first_existing
+from core.data_paths import spotify_chart_snapshot_files
 from core.git_ops import git_commit_and_push
 from core.notify import send as _notify
 from core.retention import cleanup_generated_artifacts
+from core.swift_top_gate import check_swift_top_gate, mark_swift_top_done
 
 NTFY_TOPIC_CHARTS = os.getenv("NTFY_TOPIC_CHARTS", "taylormuseum-charts")
 
@@ -120,6 +122,35 @@ def _r2_export_lock(target: date) -> Path:
 
 def _r2_export_done(target: date) -> bool:
     return _r2_export_lock(target).exists()
+
+
+def _r2_export_is_fresh(target: date) -> bool:
+    lock = _r2_export_lock(target)
+    if not lock.exists():
+        return False
+    try:
+        lock_mtime = lock.stat().st_mtime
+    except OSError:
+        return False
+
+    watched_paths = [
+        _worldwide_snapshot_path(target),
+        spotify_chart_dir("global", target) / f"ts_chart_{target}.json",
+        spotify_chart_dir("fr", target) / f"ts_chart_{target}.json",
+        REPO_ROOT / "db" / "charts_history_global.csv",
+        REPO_ROOT / "db" / "charts_history_fr.csv",
+        REPO_ROOT / "db" / "charts_history_us.csv",
+        REPO_ROOT / "db" / "charts_history_uk.csv",
+        WEB_EXPORT_DATA_DIR / "charts_worldwide.json",
+    ]
+    for path in watched_paths:
+        try:
+            if path.exists() and path.stat().st_mtime > lock_mtime:
+                print(f"[INFO] R2 export stale: {path} plus recent que {lock}")
+                return False
+        except OSError:
+            continue
+    return True
 
 
 def _mark_r2_exported(target: date) -> None:
@@ -510,6 +541,29 @@ def _acquire_bearer_token(names: list[str], *, refresh: bool = False, allow_stal
     return token
 
 
+def _latest_worldwide_snapshot_date() -> date | None:
+    latest: date | None = None
+    for path in spotify_chart_snapshot_files("worldwide", "ts_worldwide_*.json"):
+        match = re.search(r"ts_worldwide_(\d{4}-\d{2}-\d{2})\.json$", path.name)
+        if not match:
+            continue
+        try:
+            chart_date = datetime.strptime(match.group(1), "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        if latest is None or chart_date > latest:
+            latest = chart_date
+    return latest
+
+
+def _default_target_date() -> date:
+    yesterday = date.today() - timedelta(days=1)
+    latest = _latest_worldwide_snapshot_date()
+    if latest is None:
+        return yesterday
+    return min(latest + timedelta(days=1), yesterday)
+
+
 def _extract_target_date(forwarded: list[str]) -> tuple[date, bool]:
     for value in forwarded:
         if value.startswith("--"):
@@ -518,7 +572,7 @@ def _extract_target_date(forwarded: list[str]) -> tuple[date, bool]:
             return datetime.strptime(value, "%Y-%m-%d").date(), True
         except ValueError:
             continue
-    return date.today() - timedelta(days=1), False
+    return _default_target_date(), False
 
 
 def _find_first_date(value) -> str | None:
@@ -951,6 +1005,36 @@ def _run(
     return rc
 
 
+def _run_swift_top_charts_if_ready(target_date: date, *, env: dict[str, str], verbose: bool) -> bool:
+    gate_status = check_swift_top_gate(target_date, source="charts")
+    if gate_status == "not_wednesday":
+        return False
+    if gate_status == "done":
+        print(f"[Swift Top] deja genere pour {target_date}")
+        return False
+    if gate_status == "waiting":
+        print(f"[Swift Top] attente des streams pour {target_date}")
+        return False
+
+    print(f"[Swift Top] streams + charts prets pour {target_date}, generation...")
+    swift_env = env.copy()
+    swift_env["UPLOAD_TO_R2"] = "1"
+    swift_top_100_script = REPO_ROOT / "collectors" / "billboard" / "swift_top_100.py"
+    rc = _run(
+        "swift-top",
+        swift_top_100_script,
+        ["--date", target_date.isoformat(), "--variant", "all"],
+        dry_run=False,
+        env=swift_env,
+        verbose=verbose,
+    )
+    if rc != 0:
+        print(f"[Swift Top] generation echouee ({rc})")
+        return False
+    mark_swift_top_done(target_date, source="charts")
+    return True
+
+
 def _run_parallel(
     runners: list[tuple[str, Path, list[str]]],
     *,
@@ -990,6 +1074,75 @@ def _run_parallel(
             _stop_event.set()
             _kill_all()
             raise
+    return failures
+
+
+def _probe_latest_available_date(
+    runners: list[tuple[str, Path, list[str]]],
+    *,
+    allow_stale: bool,
+) -> date | None:
+    names = [name for name, _, _ in runners if name in CHART_AVAILABILITY]
+    if not names:
+        return None
+    probe = next((n for n in ("global", "fr", "worldwide") if n in names), names[0])
+    try:
+        token = _acquire_bearer_token(names, allow_stale=allow_stale)
+        ok, detail, _retry_after, resolved = _chart_available(CHART_AVAILABILITY[probe], None, token)
+    except Exception as exc:
+        short = str(exc).split("\n")[0][:120]
+        print(f"[CHECK] latest Spotify indisponible ({short})")
+        return None
+    print(f"[CHECK] latest Spotify: {probe}={detail}")
+    return resolved if ok else None
+
+
+def _date_span(start: date, end: date) -> list[date]:
+    days: list[date] = []
+    cur = start
+    while cur <= end:
+        days.append(cur)
+        cur += timedelta(days=1)
+    return days
+
+
+def _collect_data_only_dates(
+    dates: list[date],
+    *,
+    force: bool,
+    dry_run: bool,
+    env: dict[str, str],
+    verbose: bool,
+) -> list[tuple[str, int]]:
+    failures: list[tuple[str, int]] = []
+    runners = [
+        (name, script, fixed + ["--no-post"])
+        for name, script, fixed in COLLECT_RUNNERS
+        if name == "worldwide"
+    ]
+    for target in dates:
+        pending = runners if force or dry_run else _filter_pending_runners(runners, target, set())
+        if not pending:
+            print(f"[CATCHUP] {target}: deja collecte")
+            continue
+        print(f"\n[CATCHUP] collecte data-only pour {target}")
+        failures_for_date = _run_parallel(
+            pending,
+            forwarded=[],
+            target_date=target,
+            explicit_target_date=False,
+            dry_run=dry_run,
+            env=env,
+            verbose=verbose,
+        )
+        failures.extend((f"{target}/{name}", rc) for name, rc in failures_for_date)
+        if failures_for_date:
+            continue
+        if not dry_run:
+            ok, detail = _validate_worldwide_snapshot(target)
+            print(f"[CHECK] validation worldwide {target}: {detail}")
+            if not ok:
+                failures.append((f"{target}/worldwide-validation", 1))
     return failures
 
 
@@ -1406,10 +1559,49 @@ def main() -> int:
                     _warp_disconnect()
                 return 1
 
+            if not _explicit_target_date and not args.dry_run:
+                latest_available = _probe_latest_available_date(
+                    collect_runners,
+                    allow_stale=args.watch_release,
+                )
+                if latest_available is not None:
+                    latest_available = min(latest_available, date.today() - timedelta(days=1))
+                if latest_available is not None and latest_available > target_date:
+                    catchup_dates = _date_span(target_date, latest_available - timedelta(days=1))
+                    print(
+                        "[CATCHUP] Spotify a deja publie "
+                        f"{latest_available}; rattrapage no-post: "
+                        f"{', '.join(str(d) for d in catchup_dates)}"
+                    )
+                    catchup_failures = _collect_data_only_dates(
+                        catchup_dates,
+                        force=args.force,
+                        dry_run=args.dry_run,
+                        env=env,
+                        verbose=args.verbose,
+                    )
+                    if catchup_failures:
+                        failures.extend(catchup_failures)
+                        if args.stop_on_error:
+                            print(f"[FAIL] stop-on-error — {_fmt(time.perf_counter() - started)}")
+                            if warp_active:
+                                _warp_disconnect()
+                            return 1
+                    target_date = latest_available
+                    collect_runners = _filter_pending_runners(original_collect_runners, target_date, post_parts)
+                    if collect_runners:
+                        print(
+                            f"[CHECK] collecte finale avec posts pour {target_date}: "
+                            f"{', '.join(n for n, _, _ in collect_runners)}"
+                        )
+                    else:
+                        _print_already_done(original_collect_runners, target_date, post_parts)
+                        collect_runners = original_collect_runners
+
             names_str = ", ".join(n for n, _, _ in collect_runners)
             print(f"\n[PHASE1] collecte en parallèle: {names_str}")
             t_phase1 = time.perf_counter()
-            failures = _run_parallel(
+            phase1_failures = _run_parallel(
                 collect_runners,
                 forwarded=forwarded,
                 target_date=target_date,
@@ -1418,11 +1610,12 @@ def main() -> int:
                 env=env,
                 verbose=args.verbose,
             )
+            failures.extend(phase1_failures)
             ran_collect = True
             print(f"[PHASE1] collecte terminée ({_fmt(time.perf_counter() - t_phase1)})")
 
-            if failures:
-                failed_names = {n for n, _ in failures}
+            if phase1_failures:
+                failed_names = {n for n, _ in phase1_failures}
                 print(f"[WARN] Echecs collecte: {', '.join(failed_names)}")
                 if args.stop_on_error:
                     print(f"[FAIL] stop-on-error — {_fmt(time.perf_counter() - started)}")
@@ -1456,29 +1649,22 @@ def main() -> int:
             if warp_active:
                 _warp_disconnect()
 
-    if not args.dry_run and not args.no_post:
-        post_failures = _verify_regional_posts(
-            target_date,
-            post_parts,
-            force=args.force,
-            env=env,
-            verbose=args.verbose,
-        )
-        if post_failures:
-            failures.extend(post_failures)
-            if args.stop_on_error:
-                print(f"[FAIL] stop-on-error — {_fmt(time.perf_counter() - started)}")
-                return 1
-
     if not args.dry_run and needs_collect:
-        if _r2_export_done(target_date) and not args.force:
+        if _r2_export_is_fresh(target_date) and not args.force:
             print(f"\n[PHASE2] export web + upload R2 deja fait pour {target_date} (r2_exported.lock), skip")
         else:
-            print("\n[PHASE2] export web + upload R2...")
+            print("\n[PHASE2] upload R2 charts-only...")
             rc_export = _run(
-                "export",
-                REPO_ROOT / "scripts" / "export_for_web.py",
-                ["--new-date", str(target_date)],
+                "r2-charts",
+                REPO_ROOT / "scripts" / "r2.py",
+                [
+                    "--skip-history-upload",
+                    "--skip-db-upload",
+                    "--skip-images-upload",
+                    "--charts-only",
+                    "--new-date",
+                    str(target_date),
+                ],
                 dry_run=False,
                 env={**env, "UPLOAD_TO_R2": "1"},
                 verbose=args.verbose,
@@ -1548,6 +1734,20 @@ def main() -> int:
         if rc_cards != 0:
             failures.append(("cards", rc_cards))
 
+    if not args.dry_run and not args.no_post:
+        post_failures = _verify_regional_posts(
+            target_date,
+            post_parts,
+            force=args.force,
+            env=env,
+            verbose=args.verbose,
+        )
+        if post_failures:
+            failures.extend(post_failures)
+            if args.stop_on_error:
+                print(f"[FAIL] stop-on-error — {_fmt(time.perf_counter() - started)}")
+                return 1
+
     if not args.dry_run and not args.no_post and not failures:
         best_day_failure = _run_best_day_since_post(
             target_date,
@@ -1567,6 +1767,8 @@ def main() -> int:
     if not args.dry_run:
         cleanup_generated_artifacts()
         git_commit_and_push(REPO_ROOT, f"charts run all {target_date.isoformat()}")
+        if _run_swift_top_charts_if_ready(target_date, env=env, verbose=args.verbose):
+            git_commit_and_push(REPO_ROOT, f"charts swift top 100 and albums {target_date.isoformat()}")
     return 0
 
 

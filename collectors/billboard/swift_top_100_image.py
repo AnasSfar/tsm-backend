@@ -676,6 +676,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p.add_argument("--week", type=str, default=None, help="Semaine à générer au format YYYY-MM-DD (remplace --input)")
     p.add_argument("--columns", type=int, default=1, help="Number of table columns (deprecated)")
     p.add_argument("--limit", type=int, default=100, help="Number of rows to render")
+    p.add_argument("--offset", type=int, default=0, help="Number of rows to skip before rendering")
     p.add_argument("--width", type=int, default=1400, help="Viewport/page width in px")
     p.add_argument("--scale", type=int, default=2, help="Device scale factor")
     return p.parse_args(argv)
@@ -706,6 +707,7 @@ def main(argv: list[str] | None = None) -> None:
         output_path=out_path,
         columns=int(args.columns),
         limit=int(args.limit),
+        offset=int(args.offset),
         width=int(args.width),
         scale=int(args.scale),
     )

@@ -959,6 +959,16 @@ def _worldwide_snapshot_path(chart_date: str) -> Path:
     return spotify_chart_dir("worldwide", chart_date) / f"ts_worldwide_{chart_date}.json"
 
 
+def _worldwide_data_path(chart_date: str) -> Path:
+    dated = _worldwide_snapshot_path(chart_date)
+    if dated.exists():
+        return dated
+    legacy = legacy_spotify_chart_dir("worldwide", chart_date) / f"ts_worldwide_{chart_date}.json"
+    if legacy.exists():
+        return legacy
+    return WORLDWIDE_JSON
+
+
 def _previous_snapshot_path(chart_date: str) -> Path | None:
     try:
         prev_date = (datetime.strptime(chart_date, "%Y-%m-%d").date() - timedelta(days=1)).strftime("%Y-%m-%d")
@@ -1446,19 +1456,20 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
         print(f"[ERROR] Thème inconnu: {theme!r}. Choix: {', '.join(THEMES)}")
         return 1
 
-    if not WORLDWIDE_JSON.exists():
-        print(f"[ERROR] Fichier introuvable: {WORLDWIDE_JSON}")
+    worldwide_json = _worldwide_data_path(chart_date)
+    if not worldwide_json.exists():
+        print(f"[ERROR] Fichier introuvable: {worldwide_json}")
         return 1
     if not SONGS_JSON.exists():
         print(f"[ERROR] Fichier introuvable: {SONGS_JSON}")
         return 1
 
-    data      = _load_json(WORLDWIDE_JSON)
+    data      = _load_json(worldwide_json)
     file_date = data.get("date", "")
     by_track  = data.get("by_track", {})
 
     if file_date != chart_date:
-        print(f"[WARN] charts_worldwide.json contient {file_date!r}, attendu {chart_date!r}")
+        print(f"[WARN] {worldwide_json.name} contient {file_date!r}, attendu {chart_date!r}")
 
     songs_raw  = _load_json(SONGS_JSON)
     songs_list = songs_raw.get("songs", songs_raw) if isinstance(songs_raw, dict) else songs_raw

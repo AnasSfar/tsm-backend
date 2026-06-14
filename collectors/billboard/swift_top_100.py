@@ -35,7 +35,14 @@ _REPO_ROOT = _SCRIPT_DIR.parents[1]
 # Match existing collector scripts: import shared core utilities from collectors/spotify/core/
 sys.path.insert(0, str((_REPO_ROOT / "collectors" / "spotify").resolve()))
 from core.logger import Logger  # noqa: E402
-from core.data_paths import ARCHIVE_DB_ROOT, WEB_EXPORT_DATA_DIR, billboard_snapshot_dir, first_existing_db_history  # noqa: E402
+from core.data_paths import (  # noqa: E402
+    ARCHIVE_DB_ROOT,
+    WEB_EXPORT_DATA_DIR,
+    apple_music_daily_csv_paths,
+    billboard_snapshot_dir,
+    first_existing_db_history,
+    spotify_chart_snapshot_candidates,
+)
 _DB_DIR = _REPO_ROOT / "db"
 _DATA_ROOT = _REPO_ROOT / "data"
 _SITE_DATA_DIR = WEB_EXPORT_DATA_DIR
@@ -45,6 +52,12 @@ STREAMS_HISTORY_CSV = first_existing_db_history("streams_history.csv")
 STREAMS_HISTORY_FULL_CSV = _DB_DIR / "streams_history_full.csv"
 STREAMS_HISTORY_ARCHIVE_CSV = first_existing_db_history("streams_history.csv")
 CHARTS_GLOBAL_CSV = _DB_DIR / "charts_history_global.csv"
+CHARTS_REGION_CSVS = [
+    _DB_DIR / "charts_history_global.csv",
+    _DB_DIR / "charts_history_us.csv",
+    _DB_DIR / "charts_history_uk.csv",
+    _DB_DIR / "charts_history_fr.csv",
+]
 APPLE_MUSIC_GLOBAL_CSV = _DB_DIR / "apple_music_global.csv"
 APPLE_MUSIC_COUNTRY_CSV = _DB_DIR / "apple_music_country_charts.csv"
 APPLE_MUSIC_TS_TOP_SONGS_CSV = _DB_DIR / "apple_music_ts_top_songs.csv"
@@ -64,6 +77,7 @@ OUTPUT_PNG = _SITE_DATA_DIR / "swift_top_100.png"
 
 _TRACK_ID_RE = re.compile(r"track/([A-Za-z0-9]+)")
 AM_COUNTRY_WEIGHT = float(os.getenv("TAYBOARD_AM_COUNTRY_WEIGHT", "0.08"))
+AM_TS_FLOOR_RANK = int(os.getenv("TAYBOARD_AM_TS_FLOOR_RANK", "100"))
 
 
 def _parse_iso_date(value: str) -> date | None:
@@ -168,6 +182,15 @@ def _is_taylor_feature_track(title: str) -> bool:
     )
 
 
+def _is_non_song_tayboard_track(title: str) -> bool:
+    normalized = " ".join((title or "").casefold().split())
+    return (
+        "official music video extended version" in normalized
+        or normalized.endswith(" - track by track")
+        or " - track by track " in normalized
+    )
+
+
 def _format_number(value: int | float | None, decimals: int = 2) -> str:
     """Format a number with K/M/B suffixes. E.g., 1234567 → '1.23M'."""
     if value is None or value == 0:
@@ -206,7 +229,7 @@ def _iter_discography_tracks() -> list[TrackMeta]:
         if not title:
             return
         base_title = (track.get("base_title") or "").strip() or None
-        if _is_taylor_feature_track(title):
+        if _is_taylor_feature_track(title) or _is_non_song_tayboard_track(title):
             return
         spotify_url = f"https://open.spotify.com/track/{track_id}"
         image_url = track.get("image_url") or None
@@ -284,7 +307,7 @@ def _active_apple_music_csvs(csv_path: Path) -> list[Path]:
     if archived.exists():
         paths.append(archived)
 
-    paths.extend(sorted(_DATA_ROOT.glob(f"????/??/????-??-??/apple_music/{csv_path.name}")))
+    paths.extend(apple_music_daily_csv_paths(csv_path.name))
 
     result: list[Path] = []
     seen: set[Path] = set()
@@ -422,41 +445,132 @@ def _best_global_rank_by_title(*, week_dates: set[str], logger: Logger) -> dict[
 
 
 
-def _weekly_charts_streams_by_title(*, week_dates: set[str], logger: Logger) -> dict[str, int]:
-    """Return normalized_title -> total filtered Spotify Global chart streams over the week."""
+def _weekly_charts_streams_by_title(
+    *,
+    week_dates: set[str],
+    tracks: dict[str, TrackMeta],
+    logger: Logger,
+) -> dict[str, int]:
+    """Return normalized_title -> total Spotify chart streams over the week.
+
+    Prefer worldwide snapshots so every country placement counts. Regional CSVs
+    are only used as a fallback for days without a worldwide snapshot.
+    """
     totals: dict[str, int] = {}
-    if not CHARTS_GLOBAL_CSV.exists():
-        return totals
+
+    track_keys: dict[str, str] = {}
+    for track in tracks.values():
+        key = _chart_lookup_key(track.title, combined=COMBINE_VERSIONS, base_title=track.base_title)
+        if key:
+            track_keys[track.track_id] = key
+            for historical_id in track.historical_track_ids:
+                track_keys[historical_id] = key
 
     def _to_int(v: str | None) -> int:
         try:
-            return int((v or "").strip())
+            return int(float(str(v or "").strip()))
         except Exception:
             return 0
 
-    # Deduplicate: (key, streams_value) seen set to detect stale re-scraped data
-    # (same exact stream count for the same song on two different days = scraper repeated previous day)
-    seen: set[tuple[str, int]] = set()
+    worldwide_days: set[str] = set()
+    worldwide_rows = 0
+    worldwide_files = 0
+    skipped_tracks = 0
 
-    with CHARTS_GLOBAL_CSV.open("r", newline="", encoding="utf-8-sig") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            day = (row.get("date") or "").strip()
-            if day not in week_dates:
-                continue
-            title = (row.get("song_name") or "").strip()
-            streams = _to_int(row.get("streams"))
-            if not title or streams <= 0:
-                continue
-            key = _normalize_title(title)
+    for day in sorted(week_dates):
+        json_name = f"ts_worldwide_{day}.json"
+        snapshot_path = next(
+            (path for path in spotify_chart_snapshot_candidates("worldwide", day, json_name) if path.exists()),
+            None,
+        )
+        if not snapshot_path:
+            continue
+        try:
+            payload = json.loads(snapshot_path.read_text(encoding="utf-8-sig"))
+        except Exception as exc:
+            logger.log(f"  spotify_units  : unreadable worldwide {day}: {exc}")
+            continue
+        by_track = payload.get("by_track") if isinstance(payload, dict) else None
+        if not isinstance(by_track, dict):
+            continue
+        worldwide_days.add(day)
+        worldwide_files += 1
+        for track_id, entries in by_track.items():
+            key = track_keys.get(str(track_id))
             if not key:
+                skipped_tracks += 1
                 continue
-            dedup_key = (key, streams)
-            if dedup_key in seen:
+            if not isinstance(entries, list):
                 continue
-            seen.add(dedup_key)
-            totals[key] = totals.get(key, 0) + streams
+            global_streams = 0
+            regional_streams = 0
+            seen_worldwide: set[tuple[str, int]] = set()
+            for entry in entries:
+                if not isinstance(entry, dict):
+                    continue
+                country = str(entry.get("country") or "").strip().lower()
+                streams = _to_int(entry.get("streams"))
+                if not country or streams <= 0:
+                    continue
+                dedup_key = (country, streams)
+                if dedup_key in seen_worldwide:
+                    continue
+                seen_worldwide.add(dedup_key)
+                worldwide_rows += 1
+                if country == "global":
+                    global_streams += streams
+                else:
+                    regional_streams += streams
+            chart_streams = global_streams if global_streams > 0 else regional_streams
+            if chart_streams > 0:
+                totals[key] = totals.get(key, 0) + chart_streams
 
+    fallback_days = week_dates - worldwide_days
+    active_paths = [path for path in CHARTS_REGION_CSVS if path.exists()]
+    csv_rows = 0
+
+    if fallback_days and active_paths:
+        # Deduplicate within each source: same exact stream count for the same song
+        # in the same regional file usually means stale re-scraped data.
+        seen_csv: set[tuple[str, str, str, int]] = set()
+        csv_by_day_key: dict[tuple[str, str], dict[str, int]] = {}
+        for csv_path in active_paths:
+            source = csv_path.stem
+            region = source.removeprefix("charts_history_")
+            with csv_path.open("r", newline="", encoding="utf-8-sig") as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    day = (row.get("date") or "").strip()
+                    if day not in fallback_days:
+                        continue
+                    title = (row.get("song_name") or "").strip()
+                    streams = _to_int(row.get("streams"))
+                    if not title or streams <= 0:
+                        continue
+                    key = _chart_lookup_key(title, combined=COMBINE_VERSIONS)
+                    if not key:
+                        continue
+                    dedup_key = (source, day, key, streams)
+                    if dedup_key in seen_csv:
+                        continue
+                    seen_csv.add(dedup_key)
+                    bucket = csv_by_day_key.setdefault((day, key), {"global": 0, "regional": 0})
+                    if region == "global":
+                        bucket["global"] += streams
+                    else:
+                        bucket["regional"] += streams
+                    csv_rows += 1
+        for (_day, key), bucket in csv_by_day_key.items():
+            chart_streams = bucket["global"] if bucket["global"] > 0 else bucket["regional"]
+            if chart_streams > 0:
+                totals[key] = totals.get(key, 0) + chart_streams
+
+    logger.log(
+        "  spotify_units  : "
+        f"{worldwide_rows} worldwide rows ({worldwide_files}/7 days)"
+        + (f", {csv_rows} csv fallback rows ({len(fallback_days)} day(s))" if fallback_days else "")
+        + (f", {skipped_tracks} unmapped worldwide track(s)" if skipped_tracks else "")
+    )
     return totals
 
 
@@ -487,6 +601,12 @@ def _rank_to_am_units_score(rank: int) -> float:
     if rank < 1:
         return 0.0
     return 500.0 / (rank ** 0.75)
+
+
+def _apple_music_ts_floor_score(week_dates: set[str]) -> float:
+    """Minimum TS score for Taylor songs when historical AM TS snapshots are absent."""
+    rank = max(1, AM_TS_FLOOR_RANK)
+    return _rank_to_am_units_score(rank) * max(1, len(week_dates))
 
 
 def _weekly_apple_music_global_points(*, week_dates: set[str], logger: Logger) -> dict[str, float]:
@@ -1055,7 +1175,9 @@ def run(
     am_global_score_by_title = _weekly_apple_music_global_points(week_dates=week_set, logger=logger)
     am_country_score_by_title = _weekly_apple_music_country_points(week_dates=week_set, logger=logger)
     am_ts_best_rank = _weekly_apple_music_ts_points(week_dates=week_set, logger=logger)
-    charts_streams_by_title = _weekly_charts_streams_by_title(week_dates=week_set, logger=logger)
+    am_ts_floor_raw = _apple_music_ts_floor_score(week_set)
+    logger.log(f"  apple_ts_floor : rank #{max(1, AM_TS_FLOOR_RANK)} ({round(am_ts_floor_raw * 1000)} units)")
+    charts_streams_by_title = _weekly_charts_streams_by_title(week_dates=week_set, tracks=tracks, logger=logger)
 
     chart_date_str = _format_date(chart_date)
 
@@ -1164,6 +1286,8 @@ def run(
 
         # Apple Music units (loi de puissance × 1000)
         am_ts_raw = am_ts_best_rank.get(key, 0.0)
+        if am_ts_raw <= 0:
+            am_ts_raw = am_ts_floor_raw
         am_global_raw = am_global_score_by_title.get(key, 0.0)
         am_country_raw = am_country_score_by_title.get(key, 0.0)
         am_overall_raw = am_global_raw + am_country_raw
@@ -1467,6 +1591,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                    help="Regenerate all per-song history JSON files from existing snapshots and upload to R2")
     p.add_argument("--dry-run", dest="dry_run", action="store_true", help="Compute only; do not write files")
     p.add_argument("--skip-r2", dest="skip_r2", action="store_true", help="Do not upload generated files to R2")
+    p.add_argument("--skip-images", dest="skip_images", action="store_true",
+                   help="Do not generate PNG chart images")
     p.add_argument("--variant", dest="variant", choices=["combined", "not-combined", "all"], default="combined",
                    help="Generate combined songs, not-combined songs, or both")
     return p.parse_args(argv)
@@ -1530,7 +1656,12 @@ def main_from_args(args: argparse.Namespace) -> None:
                 continue
             print(f"[{CHART_SLUG}] Generating week ending {week_end_str} ...")
             is_last = week_end == last_week_end
-            run(chart_date=week_end, dry_run=bool(args.dry_run), skip_r2=True, skip_images=not is_last)
+            run(
+                chart_date=week_end,
+                dry_run=bool(args.dry_run),
+                skip_r2=True,
+                skip_images=bool(args.skip_images) or not is_last,
+            )
         print("[swift_top_100] Backfill complete.")
         if not args.dry_run and not args.skip_r2:
             _maybe_upload_to_r2(logger=Logger())
@@ -1541,6 +1672,7 @@ def main_from_args(args: argparse.Namespace) -> None:
         chart_date=chart_date,
         dry_run=bool(args.dry_run),
         skip_r2=bool(args.skip_r2),
+        skip_images=bool(args.skip_images),
     )
     raise SystemExit(code)
 

@@ -134,15 +134,28 @@ def load_history(target_date: str) -> tuple[list[dict], list[dict], list[dict]]:
     Returns (today_rows, yesterday_rows, last_week_rows) from streams_history.csv.
     Each row: {track_id, streams, daily_streams}
     """
-    yesterday = str(date_cls.fromisoformat(target_date) - timedelta(days=1))
-    day_before = str(date_cls.fromisoformat(target_date) - timedelta(days=2))
-    last_week = str(date_cls.fromisoformat(target_date) - timedelta(days=7))
-    week_before = str(date_cls.fromisoformat(target_date) - timedelta(days=8))
+    target_day = date_cls.fromisoformat(target_date)
+    yesterday_day = target_day - timedelta(days=1)
+    last_week_day = target_day - timedelta(days=7)
+    yesterday = str(yesterday_day)
+    day_before = str(target_day - timedelta(days=2))
+    last_week = str(last_week_day)
+    week_before = str(target_day - timedelta(days=8))
     today_rows: dict[str, dict] = {}
     yesterday_rows: dict[str, dict] = {}
     before_rows: dict[str, dict] = {}
     last_week_rows: dict[str, dict] = {}
     week_before_rows: dict[str, dict] = {}
+    latest_before: dict[str, dict[str, tuple[date_cls, int]]] = {
+        "today": {},
+        "yesterday": {},
+        "last_week": {},
+    }
+    checkpoints = {
+        "today": target_day,
+        "yesterday": yesterday_day,
+        "last_week": last_week_day,
+    }
 
     def _parse_optional_int(raw: str | None) -> int | None:
         s = (raw or "").strip()
@@ -156,23 +169,37 @@ def load_history(target_date: str) -> tuple[list[dict], list[dict], list[dict]]:
     with open(HISTORY_PATH, newline="", encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
             d = row["date"]
+            try:
+                row_day = date_cls.fromisoformat(d)
+            except Exception:
+                continue
+            track_id = row["track_id"]
+            streams = int(row["streams"] or 0)
+
+            for checkpoint_name, checkpoint_day in checkpoints.items():
+                if row_day >= checkpoint_day:
+                    continue
+                existing = latest_before[checkpoint_name].get(track_id)
+                if existing is None or row_day > existing[0]:
+                    latest_before[checkpoint_name][track_id] = (row_day, streams)
+
             if d not in (target_date, yesterday, day_before, last_week, week_before):
                 continue
             entry = {
-                "track_id": row["track_id"],
-                "streams": int(row["streams"] or 0),
+                "track_id": track_id,
+                "streams": streams,
                 "daily_streams": _parse_optional_int(row.get("daily_streams")),
             }
             if d == target_date:
-                today_rows[row["track_id"]] = entry
+                today_rows[track_id] = entry
             elif d == yesterday:
-                yesterday_rows[row["track_id"]] = entry
+                yesterday_rows[track_id] = entry
             elif d == day_before:
-                before_rows[row["track_id"]] = entry
+                before_rows[track_id] = entry
             elif d == last_week:
-                last_week_rows[row["track_id"]] = entry
+                last_week_rows[track_id] = entry
             else:
-                week_before_rows[row["track_id"]] = entry
+                week_before_rows[track_id] = entry
 
     def _fill_missing_daily(cur: dict[str, dict], prev: dict[str, dict]) -> None:
         for tid, e in cur.items():
@@ -188,6 +215,22 @@ def load_history(target_date: str) -> tuple[list[dict], list[dict], list[dict]]:
     _fill_missing_daily(today_rows, yesterday_rows)
     _fill_missing_daily(yesterday_rows, before_rows)
     _fill_missing_daily(last_week_rows, week_before_rows)
+
+    def _fill_missing_daily_from_latest(cur: dict[str, dict], checkpoint_name: str) -> None:
+        prior_totals = latest_before[checkpoint_name]
+        for tid, e in cur.items():
+            if e.get("daily_streams") is not None:
+                continue
+            prior = prior_totals.get(tid)
+            if prior is None:
+                continue
+            diff = e.get("streams", 0) - prior[1]
+            if diff >= 0:
+                e["daily_streams"] = diff
+
+    _fill_missing_daily_from_latest(today_rows, "today")
+    _fill_missing_daily_from_latest(yesterday_rows, "yesterday")
+    _fill_missing_daily_from_latest(last_week_rows, "last_week")
 
     return list(today_rows.values()), list(yesterday_rows.values()), list(last_week_rows.values())
 

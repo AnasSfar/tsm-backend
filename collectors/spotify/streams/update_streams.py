@@ -419,9 +419,14 @@ def try_apply_track_update(
         if history_index is not None
         else get_history_total_for_date(track_id, previous_stats_date)
     )
-    # daily_streams must be a one-day delta. If the exact previous day is missing,
-    # leave it blank instead of silently producing a multi-day daily.
     daily = compute_daily(previous_day_total, total)
+    if daily is None:
+        previous_total_before_date = (
+            history_index.get_previous_total_before_date(track_id, stats_date)
+            if history_index is not None
+            else get_previous_total_before_date(track_id, stats_date)
+        )
+        daily = compute_daily(previous_total_before_date, total)
 
     if last_total is None:
         reason = "first_seen"
@@ -683,6 +688,26 @@ def filter_tracks_released_on(track_ids: set[str], target_date: str) -> set[str]
     return released
 
 
+def track_is_released_for_stats_date(track: dict, stats_date: str) -> bool:
+    release_raw = str(track.get("release_date") or "").strip()
+    if not release_raw:
+        return True
+    try:
+        release_day = date.fromisoformat(release_raw[:10])
+        target_day = date.fromisoformat(stats_date)
+    except ValueError:
+        return True
+    return release_day <= target_day
+
+
+def filter_tracks_released_for_stats_date(tracks: list[dict], stats_date: str) -> list[dict]:
+    kept = [track for track in tracks if track_is_released_for_stats_date(track, stats_date)]
+    skipped = len(tracks) - len(kept)
+    if skipped:
+        print(f"[discography] Skipping {skipped} unreleased track(s) for stats_date={stats_date}.")
+    return kept
+
+
 def filter_tracks_without_history_before(track_ids: set[str], target_date: str) -> set[str]:
     if not track_ids:
         return set()
@@ -715,6 +740,102 @@ def load_positive_history_track_ids_for_date(target_date: str) -> set[str]:
         if streams > 0:
             positive_ids.add(track_id)
     return positive_ids
+
+
+def load_positive_history_track_ids_missing_daily_for_date(target_date: str) -> set[str]:
+    missing_ids: set[str] = set()
+    for row in load_history_rows():
+        track_id = str(row.get("track_id") or "").strip()
+        row_date = str(row.get("date") or "").strip()
+        if not track_id or row_date != target_date:
+            continue
+        try:
+            streams = int(row.get("streams") or 0)
+        except Exception:
+            streams = 0
+        daily_raw = str(row.get("daily_streams") or "").strip()
+        if streams > 0 and not daily_raw:
+            missing_ids.add(track_id)
+    return missing_ids
+
+
+def recent_release_track_ids_missing_daily(stats_date: str) -> set[str]:
+    active_track_ids = load_active_track_ids_from_discography()
+    recent_release_ids = filter_tracks_released_on(active_track_ids, stats_date)
+    return recent_release_ids & load_positive_history_track_ids_missing_daily_for_date(stats_date)
+
+
+def repair_missing_daily_streams_for_date(stats_date: str, track_ids: set[str] | None = None) -> set[str]:
+    target_ids = {str(tid) for tid in (track_ids or set()) if str(tid)}
+    rows = load_history_rows()
+    if not rows:
+        return set()
+
+    prior_totals: dict[str, tuple[date, int]] = {}
+    target_day = date.fromisoformat(stats_date)
+    for row in rows:
+        track_id = str(row.get("track_id") or "").strip()
+        row_date = str(row.get("date") or "").strip()
+        if not track_id or not row_date:
+            continue
+        if target_ids and track_id not in target_ids:
+            continue
+        try:
+            row_day = date.fromisoformat(row_date)
+            streams = int(row.get("streams") or 0)
+        except Exception:
+            continue
+        if row_day >= target_day:
+            continue
+        previous = prior_totals.get(track_id)
+        if previous is None or row_day > previous[0]:
+            prior_totals[track_id] = (row_day, streams)
+
+    repaired_ids: set[str] = set()
+    for row in rows:
+        track_id = str(row.get("track_id") or "").strip()
+        if not track_id or (target_ids and track_id not in target_ids):
+            continue
+        if str(row.get("date") or "").strip() != stats_date:
+            continue
+        if str(row.get("daily_streams") or "").strip():
+            continue
+        try:
+            streams = int(row.get("streams") or 0)
+        except Exception:
+            continue
+        prior = prior_totals.get(track_id)
+        if streams <= 0 or prior is None:
+            continue
+        daily = streams - prior[1]
+        if daily < 0 or daily > MAX_DAILY_INCREASE:
+            continue
+        row["daily_streams"] = str(daily)
+        repaired_ids.add(track_id)
+
+    if not repaired_ids:
+        return set()
+
+    save_history_rows(rows)
+
+    day_rows = [
+        row for row in rows
+        if str(row.get("date") or "").strip() == stats_date
+    ]
+    daily_path = update_streams_dir(stats_date) / "streams_history.csv"
+    daily_path.parent.mkdir(parents=True, exist_ok=True)
+    with daily_path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=["date", "track_id", "streams", "daily_streams"])
+        writer.writeheader()
+        writer.writerows(day_rows)
+
+    return repaired_ids
+
+
+def recent_release_track_ids_missing_positive_history(stats_date: str) -> set[str]:
+    active_track_ids = load_active_track_ids_from_discography()
+    recent_release_ids = filter_tracks_released_on(active_track_ids, stats_date)
+    return recent_release_ids - load_positive_history_track_ids_for_date(stats_date)
 
 
 def run_probe(tracks: list[dict]) -> dict:
@@ -937,6 +1058,7 @@ def run_update(
 
     active_track_ids = load_active_track_ids_from_discography()
     tracks = load_tracks_from_discography(active_track_ids)
+    tracks = filter_tracks_released_for_stats_date(tracks, stats_date)
     total_all_tracks = len(tracks)
 
     previous_day_priorities = load_track_priorities_from_specific_date(
@@ -1478,14 +1600,10 @@ def main():
         reset_date_override,
     ))
 
-    if normal_lock_mode and _daily_lock_exists(stats_date, STREAMS_UPDATE_COMPLETE_LOCK_NAME):
-        lock_path = _daily_lock_path(stats_date, STREAMS_UPDATE_COMPLETE_LOCK_NAME)
-        print(f"Streams update already complete for {stats_date} ({lock_path.name}); skipping.")
-        return
-
     token_mgr = None
     active_track_ids = load_active_track_ids_from_discography()
     tracks = load_tracks_from_discography(active_track_ids)
+    tracks = filter_tracks_released_for_stats_date(tracks, stats_date)
 
     already_done_for_stats_date = load_history_track_ids_for_date(stats_date)
     done_tracks_before_run = len(already_done_for_stats_date)
@@ -1494,10 +1612,84 @@ def main():
     print(f"Loaded {total_tracks} track(s) from discography")
     print()
 
+    new_release_track_ids: set[str] = set()
+    recent_preflight_done = False
+    should_check_recent_releases = (
+        not dry_run_mode
+        and not local_test_mode
+        and not debug_daily_mode
+        and stats_date_override is None
+    )
+
+    if should_check_recent_releases:
+        if token_mgr is None:
+            token_mgr = TokenManager()
+        if not token_mgr.capture():
+            print("TokenManager: Ã©chec â€” impossible d'obtenir les tokens Spotify. VÃ©rifiez la connexion.")
+            sys.exit(1)
+        new_release_track_ids = run_new_release_preflight(token_mgr, stats_date)
+        active_track_ids = load_active_track_ids_from_discography()
+        recent_release_ids = filter_tracks_released_on(active_track_ids, stats_date)
+        new_release_track_ids.update(filter_tracks_without_history_before(recent_release_ids, stats_date))
+        new_release_track_ids.update(recent_release_track_ids_missing_positive_history(stats_date))
+        missing_recent_daily = recent_release_track_ids_missing_daily(stats_date)
+        repaired_daily_ids = repair_missing_daily_streams_for_date(stats_date, missing_recent_daily)
+        if repaired_daily_ids:
+            print(f"[discography] Repaired daily_streams for {len(repaired_daily_ids)} recent release track(s).")
+            missing_recent_daily -= repaired_daily_ids
+        new_release_track_ids.update(missing_recent_daily)
+        if new_release_track_ids:
+            tracks = load_tracks_from_discography(active_track_ids)
+            tracks = filter_tracks_released_for_stats_date(tracks, stats_date)
+            already_done_for_stats_date = load_history_track_ids_for_date(stats_date)
+            done_tracks_before_run = len(already_done_for_stats_date)
+            total_tracks = len(tracks)
+            print(f"[discography] Reloaded {total_tracks} track(s) after new release preflight.")
+        recent_preflight_done = True
+
+    if not dry_run_mode and not local_test_mode:
+        missing_recent_daily = recent_release_track_ids_missing_daily(stats_date)
+        repaired_daily_ids = repair_missing_daily_streams_for_date(stats_date, missing_recent_daily)
+        if repaired_daily_ids:
+            print(f"[discography] Repaired daily_streams for {len(repaired_daily_ids)} recent release track(s).")
+            new_release_track_ids.update(repaired_daily_ids)
+            already_done_for_stats_date = load_history_track_ids_for_date(stats_date)
+            done_tracks_before_run = len(already_done_for_stats_date)
+
+    if normal_lock_mode and _daily_lock_exists(stats_date, STREAMS_UPDATE_COMPLETE_LOCK_NAME):
+        lock_path = _daily_lock_path(stats_date, STREAMS_UPDATE_COMPLETE_LOCK_NAME)
+        missing_recent_positive = recent_release_track_ids_missing_positive_history(stats_date)
+        missing_recent_daily = recent_release_track_ids_missing_daily(stats_date)
+        if missing_recent_positive:
+            print(
+                f"Streams update lock exists for {stats_date}, but "
+                f"{len(missing_recent_positive)} recent release track(s) still need positive streams; ignoring lock."
+            )
+        elif missing_recent_daily:
+            print(
+                f"Streams update lock exists for {stats_date}, but "
+                f"{len(missing_recent_daily)} recent release track(s) still need daily_streams; ignoring lock."
+            )
+        else:
+            print(f"Streams update already complete for {stats_date} ({lock_path.name}); skipping.")
+            return
+
     if normal_lock_mode and _daily_lock_exists(stats_date, STREAMS_SCRAPED_LOCK_NAME):
         lock_path = _daily_lock_path(stats_date, STREAMS_SCRAPED_LOCK_NAME)
         summary = _build_existing_history_summary(stats_date, total_tracks, total_tracks)
-        if not summary["all_done"]:
+        missing_recent_positive = recent_release_track_ids_missing_positive_history(stats_date)
+        missing_recent_daily = recent_release_track_ids_missing_daily(stats_date)
+        if missing_recent_positive:
+            print(
+                f"Streams scraping lock exists for {stats_date}, but "
+                f"{len(missing_recent_positive)} recent release track(s) still need positive streams; ignoring lock."
+            )
+        elif missing_recent_daily:
+            print(
+                f"Streams scraping lock exists for {stats_date}, but "
+                f"{len(missing_recent_daily)} recent release track(s) still need daily_streams; ignoring lock."
+            )
+        elif not summary["all_done"]:
             print(
                 f"Streams scraping lock exists for {stats_date}, but history is no longer complete "
                 f"({summary['done_tracks']}/{total_tracks}); ignoring lock."
@@ -1553,14 +1745,14 @@ def main():
         print(f"[DRY-RUN] Scraping {total_tracks} tracks.")
 
     should_check_recent_releases = (
-        not dry_run_mode
+        not recent_preflight_done
+        and not dry_run_mode
         and not local_test_mode
         and not debug_daily_mode
         and stats_date_override is None
         and (done_tracks_before_run < total_tracks or force_reprocess)
     )
 
-    new_release_track_ids: set[str] = set()
     if should_check_recent_releases:
         if token_mgr is None:
             token_mgr = TokenManager()
@@ -1571,8 +1763,16 @@ def main():
         active_track_ids = load_active_track_ids_from_discography()
         recent_release_ids = filter_tracks_released_on(active_track_ids, stats_date)
         new_release_track_ids.update(filter_tracks_without_history_before(recent_release_ids, stats_date))
+        new_release_track_ids.update(recent_release_track_ids_missing_positive_history(stats_date))
+        missing_recent_daily = recent_release_track_ids_missing_daily(stats_date)
+        repaired_daily_ids = repair_missing_daily_streams_for_date(stats_date, missing_recent_daily)
+        if repaired_daily_ids:
+            print(f"[discography] Repaired daily_streams for {len(repaired_daily_ids)} recent release track(s).")
+            missing_recent_daily -= repaired_daily_ids
+        new_release_track_ids.update(missing_recent_daily)
         if new_release_track_ids:
             tracks = load_tracks_from_discography(active_track_ids)
+            tracks = filter_tracks_released_for_stats_date(tracks, stats_date)
             already_done_for_stats_date = load_history_track_ids_for_date(stats_date)
             done_tracks_before_run = len(already_done_for_stats_date)
             total_tracks = len(tracks)
@@ -1591,6 +1791,8 @@ def main():
         print(f"Advancing stats_date to {last_history_date} for export/post.")
         stats_date = last_history_date
         stats_date_override = stats_date  # propagate to run_update() and summary
+        tracks = filter_tracks_released_for_stats_date(load_tracks_from_discography(active_track_ids), stats_date)
+        total_tracks = len(tracks)
         already_done_for_stats_date = load_history_track_ids_for_date(stats_date)
         done_tracks_before_run = len(already_done_for_stats_date)
         is_backfill = False  # stats_date now points to existing data
@@ -1660,6 +1862,7 @@ def main():
         priority_new_ids = filter_tracks_released_on(new_release_track_ids, stats_date)
         priority_new_ids = filter_tracks_without_history_before(priority_new_ids, stats_date)
         priority_new_ids -= load_positive_history_track_ids_for_date(stats_date)
+        priority_new_ids.update(recent_release_track_ids_missing_daily(stats_date))
         if priority_new_ids:
             print()
             print("=" * 70)
@@ -1668,7 +1871,7 @@ def main():
             priority_target_ids = set(priority_new_ids)
             for attempt in range(1, NEW_RELEASE_RETRY_ATTEMPTS + 1):
                 done_now = load_positive_history_track_ids_for_date(stats_date)
-                missing_ids = priority_target_ids - done_now
+                missing_ids = (priority_target_ids - done_now) | recent_release_track_ids_missing_daily(stats_date)
                 if not missing_ids:
                     break
 
@@ -1690,7 +1893,7 @@ def main():
                 print_api_metrics(priority_summary)
 
                 done_now = load_positive_history_track_ids_for_date(stats_date)
-                missing_ids = priority_target_ids - done_now
+                missing_ids = (priority_target_ids - done_now) | recent_release_track_ids_missing_daily(stats_date)
                 if not missing_ids:
                     break
                 if attempt < NEW_RELEASE_RETRY_ATTEMPTS:
@@ -1700,7 +1903,9 @@ def main():
                     )
                     time.sleep(NEW_RELEASE_RETRY_SLEEP_SECONDS)
 
-            missing_after_priority = priority_target_ids - load_positive_history_track_ids_for_date(stats_date)
+            missing_after_priority = (
+                priority_target_ids - load_positive_history_track_ids_for_date(stats_date)
+            ) | recent_release_track_ids_missing_daily(stats_date)
             if not missing_after_priority:
                 print("[debut] Priority tracks collected; debut posts deferred until full collection is complete.")
             else:

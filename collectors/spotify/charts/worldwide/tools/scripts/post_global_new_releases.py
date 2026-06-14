@@ -9,7 +9,7 @@ import re
 import shutil
 import sys
 import unicodedata
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[6]
@@ -72,7 +72,7 @@ def _fmt_change(value, *, invert: bool = False) -> tuple[str, str]:
     except (TypeError, ValueError):
         return ("", "")
     if amount == 0:
-        return ("0", "flat")
+        return ("(=)", "flat")
     positive = amount > 0
     color = "up" if positive else "down"
     signed = f"+{_fmt(abs(amount))}" if positive else f"-{_fmt(abs(amount))}"
@@ -215,6 +215,16 @@ def _same_track(left: dict, right: dict) -> bool:
 
 
 def _is_api_new_row(row: dict) -> bool:
+    rank = _to_int(row.get("rank"))
+    peak_rank = _to_int(row.get("peak_rank"))
+
+    # Spotify/API snapshots can occasionally mark a returning catalog song as
+    # `is_new` when it has no previous-rank value for the current day. If the
+    # track has an older, better peak than today's rank, this is a re-entry and
+    # must not be counted as a new song card.
+    if rank and peak_rank and peak_rank != rank:
+        return False
+
     if row.get("is_new") is True:
         return True
     if "is_new" in row:
@@ -233,12 +243,48 @@ def _is_api_new_row(row: dict) -> bool:
 
 def _is_first_global_day(row: dict) -> bool:
     previous_rank = row.get("previous_rank")
+    rank = _to_int(row.get("rank"))
+    peak_rank = _to_int(row.get("peak_rank"))
+    if rank and peak_rank and peak_rank != rank:
+        return False
     total_days = row.get("total_days") or row.get("streak")
     try:
         total_days_int = int(total_days) if total_days not in (None, "") else None
     except (TypeError, ValueError):
         total_days_int = None
     return previous_rank in (None, "", 0) and (total_days_int is None or total_days_int <= 1)
+
+
+def _is_re_entry_row(row: dict) -> bool:
+    movement = str(row.get("movement") or "").strip().upper()
+    if movement == "RE" or row.get("is_re_entry") is True:
+        return True
+    rank = _to_int(row.get("rank"))
+    peak_rank = _to_int(row.get("peak_rank"))
+    return bool(rank and peak_rank and peak_rank != rank and row.get("previous_rank") in (None, "", 0))
+
+
+def _priority_kind(row: dict) -> str:
+    if _is_re_entry_row(row):
+        return "re"
+    if _is_api_new_row(row) or _is_first_global_day(row):
+        return "new"
+    return "recent"
+
+
+def _priority_slug(row: dict) -> str:
+    kind = _priority_kind(row)
+    base = _slug(row.get("track_id") or row.get("title") or "chart_highlight")
+    return f"{kind}_{base}"
+
+
+def _priority_file_prefix(row: dict) -> str:
+    kind = _priority_kind(row)
+    if kind == "re":
+        return "re_card"
+    if kind == "recent":
+        return "recent_card"
+    return "new_card"
 
 
 def _global_debut_rank(row: dict) -> int | None:
@@ -264,6 +310,11 @@ def _global_debut_rank(row: dict) -> int | None:
                     continue
                 previous_rank = csv_row.get("previous_rank")
                 total_days = str(csv_row.get("total_days") or "")
+                movement = str(csv_row.get("movement") or "").strip().upper()
+                peak_rank = _to_int(csv_row.get("peak_rank"))
+                rank = _to_int(csv_row.get("rank"))
+                if movement == "RE" or (rank and peak_rank and peak_rank != rank):
+                    continue
                 if total_days not in {"1", "1.0"} and previous_rank not in {"", "-1"}:
                     continue
                 debuts[key] = {
@@ -286,7 +337,12 @@ def _new_card_tweet(rows: list[dict], chart_date: str) -> str:
         title = str(row.get("title") or "New song")
         rank = row.get("rank")
         streams = _fmt(row.get("streams"))
-        if _is_first_global_day(row):
+        if _priority_kind(row) == "re":
+            body = (
+                f'"{title}" re-entered the Global Spotify Charts at #{rank} '
+                f"with {streams} streams ({date_text})."
+            )
+        elif _is_first_global_day(row):
             debut_rank_text = ""
             debut_rank = _global_debut_rank(row)
             if debut_rank:
@@ -301,27 +357,44 @@ def _new_card_tweet(rows: list[dict], chart_date: str) -> str:
                 f'"{title}" ranks at #{rank} on Global Spotify Charts '
                 f"with {streams} streams ({date_text})."
             )
-            streams_change = row.get("streams_change")
-            if streams_change not in (None, ""):
-                try:
-                    delta = int(streams_change)
-                    sign = "+" if delta > 0 else ""
-                    body += f"\n\nDaily change: {sign}{_fmt(delta)} streams."
-                except (TypeError, ValueError):
-                    pass
         return f"{body}\n\nSee full update here : https://thetsmuseum.app/charts?region=global&view=today"
 
     first_day_count = sum(1 for row in rows if _is_first_global_day(row))
+    re_count = sum(1 for row in rows if _priority_kind(row) == "re")
+    recent_count = len(rows) - first_day_count - re_count
+    parts = []
+    if first_day_count:
+        parts.append(f"{first_day_count} new debut{'s' if first_day_count > 1 else ''}")
+    if re_count:
+        parts.append(f"{re_count} re-entr{'ies' if re_count > 1 else 'y'}")
+    if recent_count:
+        parts.append(f"{recent_count} recent track{'s' if recent_count > 1 else ''}")
+
     if first_day_count == len(rows):
         headline = f"{len(rows)} new Taylor Swift songs charted on Global Spotify Charts ({date_text})."
-    elif first_day_count:
+    elif re_count == len(rows):
+        headline = f"{len(rows)} Taylor Swift songs re-entered the Global Spotify Charts ({date_text})."
+    elif parts:
         headline = (
-            f"{len(rows)} recent Taylor Swift songs are charting on Global Spotify Charts ({date_text}), "
-            f"including {first_day_count} new debut{'s' if first_day_count > 1 else ''}."
+            f"{len(rows)} Taylor Swift Global Spotify Charts highlights ({date_text}): "
+            f"{', '.join(parts)}."
         )
     else:
         headline = f"{len(rows)} recent Taylor Swift songs are charting on Global Spotify Charts ({date_text})."
-    return f"{headline}\n\nSee full update here : https://thetsmuseum.app/charts?region=global&view=today"
+
+    detail_lines = []
+    for row in rows[:5]:
+        title = str(row.get("title") or "Taylor Swift song")
+        rank = row.get("rank")
+        streams = _fmt(row.get("streams"))
+        if _priority_kind(row) == "re":
+            detail_lines.append(f'• "{title}" re-entered at #{rank} with {streams} streams.')
+        elif _priority_kind(row) == "new":
+            detail_lines.append(f'• "{title}" debuted at #{rank} with {streams} streams.')
+        else:
+            detail_lines.append(f'• "{title}" ranks at #{rank} with {streams} streams.')
+    detail_text = "\n".join(detail_lines)
+    return f"{headline}\n\n{detail_text}\n\nSee full update here : https://thetsmuseum.app/charts?region=global&view=today"
 
 
 def _load_chart_rows(chart_date: str) -> list[dict]:
@@ -369,6 +442,11 @@ def _global_debut_date_for_song(row: dict, chart_day) -> "date | None":
     best = None
     with CHARTS_HISTORY_GLOBAL.open(newline="", encoding="utf-8-sig") as f:
         for csv_row in csv.DictReader(f):
+            movement = str(csv_row.get("movement") or "").strip().upper()
+            peak_rank = _to_int(csv_row.get("peak_rank"))
+            rank = _to_int(csv_row.get("rank"))
+            if movement == "RE" or (rank and peak_rank and peak_rank != rank):
+                continue
             if str(csv_row.get("total_days") or "").strip() not in {"1", "1.0"}:
                 continue
             row_date = _parse_date(csv_row.get("date"))
@@ -396,6 +474,12 @@ def _load_priority_rows(chart_date: str, *, force_songs: set[str] | None = None)
         if _is_api_new_row(row):
             item = dict(row)
             item["priority_reason"] = "api_new"
+            priority_rows.append(item)
+            continue
+
+        if _is_re_entry_row(row):
+            item = dict(row)
+            item["priority_reason"] = "re_entry"
             priority_rows.append(item)
             continue
 
@@ -440,21 +524,49 @@ def _enrich_rows(rows: list[dict]) -> list[dict]:
     return out
 
 
-def _build_html(rows: list[dict], chart_date: str) -> tuple[str, str]:
+def _build_html(rows: list[dict], chart_date: str) -> tuple[str, str, str]:
     primary = rows[0]
     date_text = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
     count = len(rows)
+    kinds = [_priority_kind(row) for row in rows]
+    new_count = kinds.count("new")
+    re_count = kinds.count("re")
+    recent_count = count - new_count - re_count
 
-    display_title = str(primary.get("title") or "New Song") if count == 1 else f"{count} New Songs"
+    if count == 1:
+        display_title = str(primary.get("title") or "Chart Highlight")
+    elif new_count == count:
+        display_title = f"{count} New Songs"
+    elif re_count == count:
+        display_title = f"{count} Re-Entries"
+    else:
+        display_title = f"{count} Chart Highlights"
     rank_val = str(primary.get("rank") or "-")
     streams_val = _fmt(primary.get("streams"))
-    extra_text = f"+ {count - 1} more new song{'s' if count - 1 > 1 else ''}" if count > 1 else ""
-    slug_val = _slug(primary.get("title") or "new_song") if count == 1 else f"{count}_new_songs"
+    if count > 1:
+        extra_parts = []
+        if new_count:
+            extra_parts.append(f"{new_count} new")
+        if re_count:
+            extra_parts.append(f"{re_count} re-entered")
+        if recent_count:
+            extra_parts.append(f"{recent_count} recent")
+        extra_text = " + ".join(extra_parts)
+    else:
+        extra_text = "Re-entered the Global chart" if _priority_kind(primary) == "re" else ""
+    if count == 1:
+        slug_val = _slug(primary.get("title") or "chart_highlight")
+    elif new_count == count:
+        slug_val = f"{count}_new_songs"
+    elif re_count == count:
+        slug_val = f"{count}_re_entries"
+    else:
+        slug_val = f"{count}_chart_highlights"
 
-    if primary.get("is_new"):
+    if _priority_kind(primary) == "new":
         rank_badge = "NEW"
         rank_badge_class = "new"
-    elif primary.get("previous_rank") in (None, "", 0):
+    elif _priority_kind(primary) == "re":
         rank_badge = "RE"
         rank_badge_class = "re"
     else:
@@ -481,22 +593,30 @@ def _build_html(rows: list[dict], chart_date: str) -> tuple[str, str]:
         footer_right=date_text,
         extra=extra_text,
     )
-    return html_text, slug_val
+    return html_text, slug_val, _priority_file_prefix(primary)
 
 
-def generate_card(chart_date: str, *, force_songs: set[str] | None = None) -> Path | None:
+def generate_cards(chart_date: str, *, force_songs: set[str] | None = None) -> list[Path]:
     rows = _load_priority_rows(chart_date, force_songs=force_songs)
     if not rows:
         print(f"[global-new] No priority Global Spotify Chart entries for {chart_date}.")
-        return None
-    html_text, slug = _build_html(rows, chart_date)
+        return []
     out_dir = spotify_chart_dir("global", chart_date)
     out_dir.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir / f"new_card_{slug}.png"
-    tmp_path = out_dir / "_new_card_tmp.html"
-    write_song_card_png(html_text, out_path, tmp_path)
-    print(f"[global-new] Card generated: {out_path}")
-    return out_path
+    paths: list[Path] = []
+    for row in rows:
+        html_text, slug, prefix = _build_html([row], chart_date)
+        out_path = out_dir / f"{prefix}_{slug}.png"
+        tmp_path = out_dir / f"_{prefix}_{slug}_tmp.html"
+        write_song_card_png(html_text, out_path, tmp_path)
+        print(f"[global-new] Card generated: {out_path}")
+        paths.append(out_path)
+    return paths
+
+
+def generate_card(chart_date: str, *, force_songs: set[str] | None = None) -> Path | None:
+    paths = generate_cards(chart_date, force_songs=force_songs)
+    return paths[0] if paths else None
 
 
 def post_card(
@@ -513,7 +633,7 @@ def post_card(
 
     out_dir = spotify_chart_dir("global", chart_date)
     lock_path = out_dir / "global_new_releases_posted.json"
-    slugs = sorted(_slug(row.get("track_id") or row["title"]) for row in rows)
+    slugs = sorted(_priority_slug(row) for row in rows)
     if lock_path.exists() and not force:
         try:
             posted = set(json.loads(lock_path.read_text(encoding="utf-8")).get("posted", []))
@@ -523,21 +643,24 @@ def post_card(
             print(f"[global-new] Priority Global card already posted for {chart_date}.")
             return 0
 
-    image_path = generate_card(chart_date, force_songs=force_songs)
-    if image_path is None:
+    image_paths = generate_cards(chart_date, force_songs=force_songs)
+    if not image_paths:
         return 0
 
-    tweet = _new_card_tweet(rows, chart_date)
-    print(f"[global-new] Tweet: {tweet}")
+    tweets = [_new_card_tweet([row], chart_date) for row in rows]
+    for tweet, image_path in zip(tweets, image_paths):
+        print(f"[global-new] Tweet: {tweet}")
+        print(f"[global-new] Image: {image_path}")
     if no_post:
         print("[global-new] Twitter post skipped (--no-post).")
         return 0
     if not TWITTER_SESSION.exists():
         print(f"[global-new] Twitter session missing: {TWITTER_SESSION}")
         return 1
-    if not post_with_image(tweet, image_path, TWITTER_SESSION):
-        print("[global-new] Twitter post failed.")
-        return 1
+    for tweet, image_path in zip(tweets, image_paths):
+        if not post_with_image(tweet, image_path, TWITTER_SESSION):
+            print("[global-new] Twitter post failed.")
+            return 1
     lock_path.write_text(
         json.dumps({"date": chart_date, "posted": slugs}, ensure_ascii=False, indent=2),
         encoding="utf-8",
@@ -556,6 +679,14 @@ def _load_worldwide_song_meta() -> dict[str, dict]:
     return {str(s["track_id"]): s for s in songs_list if isinstance(s, dict) and s.get("track_id")}
 
 
+def _load_worldwide_snapshot(chart_date: str) -> dict:
+    path = generate_card_images._worldwide_data_path(chart_date)
+    data = generate_card_images._load_json(path)
+    if not isinstance(data, dict):
+        return {}
+    return data
+
+
 def post_worldwide_cards(
     chart_date: str,
     *,
@@ -568,7 +699,7 @@ def post_worldwide_cards(
         print(f"[global-new-worldwide] No priority worldwide card needed for {chart_date}.")
         return 0
 
-    data = generate_card_images._load_json(generate_card_images.WORLDWIDE_JSON)
+    data = _load_worldwide_snapshot(chart_date)
     if not isinstance(data, dict) or data.get("date") != chart_date:
         print(f"[global-new-worldwide] Worldwide snapshot not ready for {chart_date}.")
         return 0
@@ -598,11 +729,13 @@ def post_worldwide_cards(
             continue
         meta = song_meta.get(track_id, {"track_id": track_id, "title": row.get("title") or track_id})
         slug = generate_card_images._slugify(str(meta.get("title") or row.get("title") or track_id))
-        if slug in already_posted:
-            print(f"[global-new-worldwide] Skip {meta.get('title')}: already posted.")
-            continue
         base_image_path = out_dir / f"{slug}.png"
         image_path = out_dir / f"worldwide_new_card_{slug}.png"
+        if slug in already_posted and image_path.exists():
+            print(f"[global-new-worldwide] Skip {meta.get('title')}: already posted.")
+            continue
+        if slug in already_posted:
+            print(f"[global-new-worldwide] Requeue {meta.get('title')}: posted lock exists but image is missing.")
         if not base_image_path.exists() or force:
             rc = generate_card_images.generate(chart_date, min_countries=1, force=force, post=False)
             if rc != 0:

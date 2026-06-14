@@ -16,6 +16,9 @@ TWITTER_ACCOUNT_SPACING_SECONDS = int(os.getenv("TWITTER_ACCOUNT_SPACING_SECONDS
 TWITTER_MAX_ACTIVE_ACCOUNTS = int(os.getenv("TWITTER_MAX_ACTIVE_ACCOUNTS", "2"))
 TWITTER_FILE_UPLOAD_TIMEOUT_MS = int(os.getenv("TWITTER_FILE_UPLOAD_TIMEOUT_MS", "120000"))
 TWITTER_TEXT_LIMIT = 280
+TWITTER_BROWSER_LAUNCH_ATTEMPTS = int(os.getenv("TWITTER_BROWSER_LAUNCH_ATTEMPTS", "3"))
+TWITTER_BROWSER_LAUNCH_RETRY_DELAY = int(os.getenv("TWITTER_BROWSER_LAUNCH_RETRY_DELAY", "10"))
+TWITTER_LOCK_STALE_SECONDS = int(os.getenv("TWITTER_LOCK_STALE_SECONDS", str(TWITTER_POST_LOCK_TIMEOUT)))
 
 
 def _profile_dir(session_file: Path) -> Path:
@@ -40,7 +43,9 @@ def _exclusive_file(path: Path, *, timeout: int, stale_after: int | None = None)
             try:
                 max_age = stale_after or timeout
                 if time.time() - path.stat().st_mtime > max_age:
-                    path.unlink()
+                    if not _safe_unlink(path):
+                        time.sleep(2)
+                        continue
                     continue
             except FileNotFoundError:
                 continue
@@ -50,6 +55,16 @@ def _exclusive_file(path: Path, *, timeout: int, stale_after: int | None = None)
     return fd
 
 
+def _safe_unlink(path: Path) -> bool:
+    try:
+        path.unlink()
+        return True
+    except FileNotFoundError:
+        return True
+    except PermissionError:
+        return False
+
+
 @contextmanager
 def _coordinator_lock(timeout: int = TWITTER_POST_LOCK_TIMEOUT):
     fd = _exclusive_file(TWITTER_COORD_LOCK, timeout=timeout, stale_after=60)
@@ -57,17 +72,14 @@ def _coordinator_lock(timeout: int = TWITTER_POST_LOCK_TIMEOUT):
         yield
     finally:
         os.close(fd)
-        try:
-            TWITTER_COORD_LOCK.unlink()
-        except FileNotFoundError:
-            pass
+        _safe_unlink(TWITTER_COORD_LOCK)
 
 
 def _active_account_markers() -> list[Path]:
     return [path for path in TWITTER_COORD_DIR.glob("active_*.lock") if path.is_file()]
 
 
-def _acquire_active_account(account_key: str, *, timeout: int) -> Path:
+def _acquire_active_account(account_key: str, *, timeout: int, stale_after: int) -> Path:
     marker = TWITTER_COORD_DIR / f"active_{account_key}.lock"
     start = time.time()
     while True:
@@ -75,8 +87,8 @@ def _acquire_active_account(account_key: str, *, timeout: int) -> Path:
             active = _active_account_markers()
             for active_marker in active:
                 try:
-                    if time.time() - active_marker.stat().st_mtime > 60:
-                        active_marker.unlink()
+                    if time.time() - active_marker.stat().st_mtime > stale_after:
+                        _safe_unlink(active_marker)
                 except FileNotFoundError:
                     pass
             active = _active_account_markers()
@@ -114,22 +126,17 @@ def _twitter_account_slot(session_file: Path, timeout: int = TWITTER_POST_LOCK_T
     """Serialize one X account, allow up to two accounts to post at once."""
     account_key = _account_key(session_file)
     account_lock = TWITTER_COORD_DIR / f"account_{account_key}.lock"
-    account_fd = _exclusive_file(account_lock, timeout=timeout, stale_after=60)
+    stale_after = max(60, TWITTER_LOCK_STALE_SECONDS)
+    account_fd = _exclusive_file(account_lock, timeout=timeout, stale_after=stale_after)
     active_marker = None
     try:
-        active_marker = _acquire_active_account(account_key, timeout=timeout)
+        active_marker = _acquire_active_account(account_key, timeout=timeout, stale_after=stale_after)
         yield account_key
     finally:
         if active_marker is not None:
-            try:
-                active_marker.unlink()
-            except FileNotFoundError:
-                pass
+            _safe_unlink(active_marker)
         os.close(account_fd)
-        try:
-            account_lock.unlink()
-        except FileNotFoundError:
-            pass
+        _safe_unlink(account_lock)
 
 
 def _clean_editor_text(text: str) -> str:
@@ -479,13 +486,7 @@ def _post_compose_image_thread(page, posts: list[tuple[str, Path]]) -> bool:
     return _wait_post_submitted(page, expected, timeout_ms=90_000)
 
 
-def _launch(p, profile_dir: Path):
-    """Lance un contexte Chrome persistant avec anti-detection."""
-    profile_dir.mkdir(parents=True, exist_ok=True)
-    args = ["--disable-blink-features=AutomationControlled"]
-    headless = os.getenv("TWITTER_HEADLESS", "").strip().lower() in {"1", "true", "yes", "on"}
-    if os.name != "nt" and not os.getenv("DISPLAY"):
-        headless = True
+def _launch_once(p, profile_dir: Path, *, headless: bool, args: list[str]):
     try:
         return p.chromium.launch_persistent_context(
             str(profile_dir),
@@ -499,6 +500,35 @@ def _launch(p, profile_dir: Path):
             headless=headless,
             args=args,
         )
+
+
+def _launch(p, profile_dir: Path):
+    """Lance un contexte Chrome persistant avec anti-detection."""
+    profile_dir.mkdir(parents=True, exist_ok=True)
+    args = ["--disable-blink-features=AutomationControlled"]
+    headless = os.getenv("TWITTER_HEADLESS", "").strip().lower() in {"1", "true", "yes", "on"}
+    if os.name != "nt" and not os.getenv("DISPLAY"):
+        headless = True
+
+    attempts = max(1, TWITTER_BROWSER_LAUNCH_ATTEMPTS)
+    last_error = None
+    for attempt in range(1, attempts + 1):
+        try:
+            if attempt > 1:
+                print(f"X navigateur: tentative {attempt}/{attempts}...", flush=True)
+            return _launch_once(p, profile_dir, headless=headless, args=args)
+        except Exception as exc:
+            last_error = exc
+            if attempt >= attempts:
+                break
+            print(
+                f"X navigateur ferme au lancement ({exc}). "
+                f"Nouvelle tentative dans {TWITTER_BROWSER_LAUNCH_RETRY_DELAY}s...",
+                flush=True,
+            )
+            time.sleep(TWITTER_BROWSER_LAUNCH_RETRY_DELAY)
+
+    raise last_error
 
 
 def _load_credentials(session_file: Path) -> dict | None:
@@ -651,12 +681,14 @@ def post_thread(tweets: list[str], session_file: Path) -> bool:
         setup_session(session_file)
 
     with sync_playwright() as p:
-        context = _launch(p, profile_dir)
-        _restore_storage_state(context, session_file)
-        page    = context.new_page()
+        context = None
         print(f"\nPublication de {len(tweets)} tweet(s)...")
 
         try:
+            context = _launch(p, profile_dir)
+            _restore_storage_state(context, session_file)
+            page    = context.new_page()
+
             page.goto("https://x.com/home", wait_until="domcontentloaded")
             time.sleep(2)
 
@@ -711,7 +743,8 @@ def post_thread(tweets: list[str], session_file: Path) -> bool:
                     success = False
 
         finally:
-            context.close()
+            if context is not None:
+                context.close()
 
         return success
 
@@ -734,10 +767,12 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
         setup_session(session_file)
 
     with sync_playwright() as p:
-        context = _launch(p, profile_dir)
-        _restore_storage_state(context, session_file)
-        page    = context.new_page()
+        context = None
         try:
+            context = _launch(p, profile_dir)
+            _restore_storage_state(context, session_file)
+            page    = context.new_page()
+
             page.goto("https://x.com/home", wait_until="domcontentloaded")
             time.sleep(2)
 
@@ -779,7 +814,8 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
             return False
 
         finally:
-            context.close()
+            if context is not None:
+                context.close()
 
 
 def post_image_thread(posts: list[tuple[str, Path]], session_file: Path) -> bool:

@@ -103,8 +103,10 @@ def get_dominant_color(img_path: Path) -> str:
 # Chart logic
 # ---------------------------------------------------------------------------
 
-def rank_change(rank, previous_rank, total_days=None):
+def rank_change(rank, previous_rank, total_days=None, peak_rank=None):
     if previous_rank is None:
+        if peak_rank is not None and int(peak_rank) != int(rank):
+            return "RE-ENTRY", "chg-re"
         if total_days and int(total_days) > 1:
             return "RE-ENTRY", "chg-re"
         return "NEW", "chg-new"
@@ -347,6 +349,7 @@ def build_rows_html(
         artist      = str(row.get("artist_names") or "")
         rank        = nan_to_none(row.get("rank"))
         prev_rank   = nan_to_none(row.get("previous_rank"))
+        peak_rank   = nan_to_none(row.get("peak_rank"))
         streams     = nan_to_none(row.get("streams"))
         streak      = nan_to_none(row.get("streak"))
         total_days  = nan_to_none(row.get("total_days"))
@@ -356,7 +359,12 @@ def build_rows_html(
             continue
         rank = int(rank)
 
-        chg_text, chg_css = rank_change(rank, int(prev_rank) if prev_rank else None, total_days)
+        chg_text, chg_css = rank_change(
+            rank,
+            int(prev_rank) if prev_rank else None,
+            total_days,
+            int(peak_rank) if peak_rank else None,
+        )
         cover_url = url_to_data_uri(get_album_cover(track, track_album_map, cover_map, track_image_map, scraped_img))
 
         track_hist   = history.get(track, {})
@@ -516,14 +524,18 @@ def build_table_html(
     art_size: int = 54,
     col_gap: int = 8,
     extra_css: str = "",
+    header_background: str | None = None,
+    handle_color_override: str | None = None,
 ) -> str:
     """Build a complete glassmorphism table image HTML document.
 
     col_heads: list of (label, right_aligned) tuples.
     """
-    header_img = pick_header_image(headers_dir)
-    handle_color = "#1db954"
-    if header_img:
+    header_img = None if header_background else pick_header_image(headers_dir)
+    handle_color = handle_color_override or "#1db954"
+    if header_background:
+        hdr_style = f'style="background:{header_background};"'
+    elif header_img:
         handle_color = get_dominant_color(header_img)
         img_url = header_img.as_posix()
         hdr_style = (

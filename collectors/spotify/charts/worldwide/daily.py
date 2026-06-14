@@ -655,7 +655,11 @@ def _parse_ts_entries(data: dict) -> list[dict]:
         if not track_name or rank is None:
             continue
         previous_rank = _clean_int(ced.get("previousRank"))
+        peak_rank = _clean_int(ced.get("peakRank"))
         total_days = _clean_int(ced.get("consecutiveAppearancesOnChart"))
+        is_new = previous_rank is None and (peak_rank is None or peak_rank == rank)
+        is_re_entry = previous_rank is None and not is_new
+        movement = "NEW" if is_new else ("RE" if is_re_entry else None)
 
         # trackUri: "spotify:track:4cluDES4hQEUhmXj6TXkSo"
         track_uri = meta.get("trackUri") or ""
@@ -670,9 +674,11 @@ def _parse_ts_entries(data: dict) -> list[dict]:
             "artist_names":  artist_str,
             "streams":       _clean_int((ced.get("rankingMetric") or {}).get("value")),
             "previous_rank": previous_rank,
-            "peak_rank":     _clean_int(ced.get("peakRank")),
+            "peak_rank":     peak_rank,
             "total_days":    total_days,
-            "is_new":        previous_rank is None and (total_days is None or total_days <= 1),
+            "is_new":        is_new,
+            "is_re_entry":   is_re_entry,
+            "movement":      movement,
             "_track_id_uri": track_id_from_uri,
         })
     return rows
@@ -1149,6 +1155,9 @@ def main() -> int:
                 "streams":        row["streams"],
                 "peak_rank":      row["peak_rank"],
                 "total_days":     row["total_days"],
+                "is_new":         bool(row.get("is_new")),
+                "is_re_entry":    bool(row.get("is_re_entry")),
+                "movement":       row.get("movement"),
             })
 
     # Merge back already-skipped entries from the previous run of the same date.
@@ -1341,6 +1350,8 @@ def _write_regional_ts_chart(
             "total_days":    row.get("total_days"),
             "streak":        row.get("total_days"),
             "is_new":        bool(row.get("is_new")),
+            "is_re_entry":   bool(row.get("is_re_entry")),
+            "movement":      row.get("movement"),
             "image_url":     None,
         }
         for row in sorted(rows, key=lambda r: r.get("rank") or 9999)

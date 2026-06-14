@@ -29,6 +29,7 @@ import argparse
 import base64
 import colorsys
 import csv
+import html
 import json
 import re
 import sys
@@ -56,8 +57,10 @@ SONGS_JSON      = DB_DIR / "discography" / "songs.json"
 ALBUMS_DIR      = DB_DIR / "discography" / "albums"
 COVERS_PATH     = DB_DIR / "discography" / "covers.json"
 
+sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(SCRIPT_DIR.parent))  # collectors/spotify/ for core.*
 
+from collectors.comp import tables_image  # noqa: E402
 from core.data_paths import archived_db_file, update_streams_dir  # noqa: E402
 from core.album_emoji import album_emoji  # noqa: E402
 
@@ -649,6 +652,30 @@ def load_history_for_tracks(track_ids: list[str], stats_date: str) -> tuple[int 
 
 
 # ── Scraping ──────────────────────────────────────────────────────────────────
+def load_previous_total_before(track_id: str, stats_date: str) -> int | None:
+    if not HISTORY_PATH.exists():
+        return None
+    target = date_cls.fromisoformat(stats_date)
+    best_date = None
+    best_total = None
+    with HISTORY_PATH.open(newline="", encoding="utf-8-sig") as f:
+        for row in csv.DictReader(f):
+            if row.get("track_id") != track_id:
+                continue
+            day = (row.get("date") or "").strip()
+            try:
+                row_date = date_cls.fromisoformat(day)
+                total = int(row.get("streams") or 0)
+            except Exception:
+                continue
+            if row_date >= target:
+                continue
+            if best_date is None or row_date > best_date:
+                best_date = row_date
+                best_total = total
+    return best_total
+
+
 def _block_unneeded(route) -> None:
     url = route.request.url.lower()
     if route.request.resource_type in {"media", "font", "image"} or any(
@@ -1124,6 +1151,110 @@ def generate_spotlight_image(
     return out_path
 
 # ── Main ──────────────────────────────────────────────────────────────────────
+def generate_version_breakdown_image(
+    *,
+    base_track: dict,
+    versions: list[dict],
+    stats_date: str,
+    handle: str,
+    covers: dict,
+) -> Path | None:
+    """Render a table image with each version that makes up a combined spotlight."""
+    rows: list[dict] = []
+    for version in versions:
+        total_today, total_yesterday, daily_today, _daily_yesterday, _daily_last_week = load_history_for_tracks(
+            [version["track_id"]],
+            stats_date,
+        )
+        if total_today is None:
+            continue
+        previous_total = None
+        if daily_today is None and total_yesterday is not None:
+            daily_today = max(0, total_today - total_yesterday)
+            previous_total = total_yesterday
+        elif daily_today is None:
+            previous_total = load_previous_total_before(version["track_id"], stats_date)
+            if previous_total is not None:
+                daily_today = max(0, total_today - previous_total)
+        else:
+            previous_total = load_previous_total_before(version["track_id"], stats_date)
+        rows.append({
+            "track": version,
+            "label": version.get("title") or "Version",
+            "total": total_today,
+            "daily": daily_today,
+            "cover": get_cover_url(version, covers),
+            "change": "NEW" if previous_total is None or previous_total <= 0 else "=",
+            "pct": (daily_today / previous_total * 100) if previous_total and previous_total > 0 and daily_today is not None else None,
+        })
+
+    if len(rows) <= 1:
+        return None
+
+    rows.sort(key=lambda row: (-(row.get("daily") or 0), -int(row.get("total") or 0), str(row.get("label") or "")))
+
+    rows_html = ""
+    for idx, row in enumerate(rows, 1):
+        track = row["track"]
+        cover_url = tables_image.url_to_data_uri(row.get("cover") or "")
+        art_html = f'<img class="art" src="{cover_url}" />' if cover_url else '<div class="art-ph"></div>'
+        row_cls = "data-row row-gold" if idx == 1 else "data-row row-odd" if idx % 2 == 0 else "data-row"
+        daily = row.get("daily")
+        daily_text = f"+{_fmt(daily)}" if daily is not None else "—"
+        change = str(row.get("change") or "=")
+        change_cls = "chg-new" if change == "NEW" else "chg-eq"
+        pct = row.get("pct")
+        pct_text = "NEW" if change == "NEW" else f"+{pct:.1f}%" if pct is not None else "—"
+        pct_cls = "chg-new" if pct_text == "NEW" else "pos" if pct is not None and pct >= 0 else "neutral"
+        rows_html += f"""<div class="{row_cls}">
+  <div class="col-rank">#{idx}</div>
+  <div class="col-chg {change_cls}">{change}</div>
+  <div class="col-entity">
+    {art_html}
+    <div class="entity-info">
+      <div class="entity-name">{html.escape(str(row["label"]))}</div>
+      <div class="entity-sub">{html.escape(str(track.get("album") or track.get("artist") or "Taylor Swift"))}</div>
+    </div>
+  </div>
+  <div class="col-num">{daily_text}</div>
+  <div class="col-num {pct_cls}">{pct_text}</div>
+  <div class="col-num">{_fmt(row.get("total"))}</div>
+</div>
+"""
+
+    from datetime import datetime
+    date_fmt = datetime.strptime(stats_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    out_dir = update_streams_dir(stats_date) / "spotlight"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    title_clean = _clean_title_for_filename(base_track.get("title") or "song")
+    out_path = out_dir / f"{title_clean}__{stats_date}__versions.png"
+    tmp_path = out_dir / f"_spotlight_versions_{base_track['track_id']}.html"
+    base_cover_url = get_cover_url(base_track, covers)
+    _base_cover_uri, base_cover_bytes = _fetch_image(base_cover_url)
+    header_background, header_accent = (
+        _cover_palette(base_cover_bytes)
+        if base_cover_bytes else
+        ("linear-gradient(135deg,#1db954 0%,#17a34a 100%)", "#1db954")
+    )
+
+    html_text = tables_image.build_table_html(
+        title=f'{base_track.get("title") or "Song"} Versions',
+        subtitle=f"Spotify Counter · {len(rows)} versions · {date_fmt}",
+        col_heads=[("#", False), ("Chg", False), ("Version", False), ("Streams", True), ("%", True), ("Total", True)],
+        grid_cols="52px 62px minmax(420px,1fr) 128px 82px 150px",
+        rows_html=rows_html,
+        handle=handle,
+        date_str=date_fmt,
+        headers_dir=REPO_ROOT / "assets" / "headers",
+        body_width=980,
+        art_size=54,
+        col_gap=10,
+        header_background=header_background,
+        handle_color_override=header_accent,
+    )
+    return tables_image.render_html_to_png(html_text, out_path, tmp_path, width=980)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Spotlight image for one Taylor Swift track with Twitter posting.")
     parser.add_argument("title", nargs="?", help="Track title (or use --url for Spotify URL)")
@@ -1241,6 +1372,15 @@ def main() -> None:
         combined        = args.combined,
         highlight       = args.highlight,
     )
+    version_breakdown_path = None
+    if args.combined and len(related_tracks) > 1:
+        version_breakdown_path = generate_version_breakdown_image(
+            base_track=track,
+            versions=related_tracks,
+            stats_date=stats_date,
+            handle=handle,
+            covers=covers,
+        )
 
     # New default: POST to Twitter unless --no-post is specified
     post_requested = not args.no_post
@@ -1313,8 +1453,21 @@ def main() -> None:
             print("Generate image successfully, but skipping Twitter post.")
         else:
             try:
-                from core.twitter import post_with_image
-                success = post_with_image(tweet, img_path, twitter_session)
+                from core.twitter import post_image_thread, post_with_image
+                if version_breakdown_path is not None:
+                    breakdown_tweet = (
+                        f'Version breakdown for "{track["title"]}" '
+                        f'on the Spotify Counter ({date_fmt_long}).'
+                    )
+                    success = post_image_thread(
+                        [
+                            (tweet, img_path),
+                            (breakdown_tweet, version_breakdown_path),
+                        ],
+                        twitter_session,
+                    )
+                else:
+                    success = post_with_image(tweet, img_path, twitter_session)
                 if success:
                     print("✓ Posté avec succès.")
                 else:
@@ -1324,6 +1477,8 @@ def main() -> None:
                 print(f"Twitter module not available: {e}")
                 print("Image generated successfully, but could not post to Twitter.")
     else:
+        if version_breakdown_path is not None:
+            print(f"Version breakdown image : {version_breakdown_path}")
         print("\nTwitter post suppressed (--no-post).")
 
 
