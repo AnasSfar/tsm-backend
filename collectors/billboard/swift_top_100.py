@@ -335,14 +335,14 @@ def _all_stream_dates() -> list[date]:
 
 
 def _latest_complete_week_end() -> date | None:
-    """Return the most recent complete Wednesday-ended week in streams data."""
+    """Return the most recent complete Thursday-ended week in streams data."""
     stream_dates = _all_stream_dates()
     if not stream_dates:
         return None
 
     date_set = set(stream_dates)
     candidate = stream_dates[-1]
-    while candidate.weekday() != 2:  # Wednesday
+    while candidate.weekday() != 3:  # Thursday
         candidate -= timedelta(days=1)
 
     min_date = stream_dates[0]
@@ -1135,17 +1135,17 @@ def run(
     if chart_date is None:
         chart_date = _latest_complete_week_end()
         if chart_date is not None:
-            logger.log(f"  auto_date      : latest complete Wednesday is {_format_date(chart_date)}")
+            logger.log(f"  auto_date      : latest complete Thursday is {_format_date(chart_date)}")
 
     if chart_date is None:
-        logger.log("⚠ no complete Wednesday week found in streams data")
+        logger.log("⚠ no complete Thursday week found in streams data")
         return 2
 
-    # Tracking weeks are fixed Thursday -> Wednesday. Never silently snap dates.
-    if chart_date.weekday() != 2:
+    # Tracking weeks are fixed Friday -> Thursday. Never silently snap dates.
+    if chart_date.weekday() != 3:
         logger.log(
-            f"⚠ invalid date    : {_format_date(chart_date)} is not a Wednesday "
-            "(tracking week must end on Wednesday)"
+            f"⚠ invalid date    : {_format_date(chart_date)} is not a Thursday "
+            "(tracking week must end on Thursday)"
         )
         return 2
 
@@ -1564,13 +1564,13 @@ def run(
 
 
 def _backfill_week_ends(stream_dates: list[date]) -> list[date]:
-    """Return all Wednesdays (week-end Thu→Wed) that have complete 7-day data."""
+    """Return all Thursdays (week-end Fri→Thu) that have complete 7-day data."""
     date_set = set(stream_dates)
     result = []
     for d in stream_dates:
-        if d.weekday() != 2:  # 2 = Wednesday
+        if d.weekday() != 3:  # 3 = Thursday
             continue
-        week_start = d - timedelta(days=6)  # Thursday
+        week_start = d - timedelta(days=6)  # Friday
         if all((week_start + timedelta(days=i)) in date_set for i in range(7)):
             result.append(d)
     return result

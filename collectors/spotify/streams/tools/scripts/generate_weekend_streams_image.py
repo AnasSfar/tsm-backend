@@ -30,6 +30,7 @@ HANDLE = generate_streams_image.HANDLE
 SPOTIFY_SVG = generate_streams_image.SPOTIFY_SVG
 
 TOP_N = 5
+EXCLUDED_ERA_ALBUMS = {"Standalone & Extras"}
 
 
 def fmt_num(value) -> str:
@@ -80,6 +81,15 @@ def build_totals(today_rows: list[dict], yesterday_rows: list[dict], week_rows: 
         "total": sum(int(row.get("streams") or 0) for row in today_rows),
         "yesterday_daily": sum(int(row.get("daily_streams") or 0) for row in yesterday_rows),
         "week_daily": sum(int(row.get("daily_streams") or 0) for row in week_rows),
+    }
+
+
+def exclude_non_era_albums(track_map: dict[str, dict]) -> dict[str, dict]:
+    excluded = {album.casefold() for album in EXCLUDED_ERA_ALBUMS}
+    return {
+        track_id: info
+        for track_id, info in track_map.items()
+        if str(info.get("album") or "").strip().casefold() not in excluded
     }
 
 
@@ -396,6 +406,7 @@ def generate(target_date: str | None = None, *, top_n: int = TOP_N) -> Path:
 
     album_covers = generate_albums_image.load_covers()
     album_track_map = generate_albums_image.load_album_track_map()
+    album_track_map = exclude_non_era_albums(album_track_map)
     album_today, album_yest, album_week = generate_albums_image.load_history(target_date)
     album_rows = generate_albums_image.build_album_rows(
         album_today,

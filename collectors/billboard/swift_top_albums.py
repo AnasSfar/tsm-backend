@@ -717,10 +717,10 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool, skip_r
         logger.log(f"⚠ no dates found in {SWIFT_TOP_SONGS_HISTORY_CSV.name}")
         return 2
 
-    if chart_date.weekday() != 2:
+    if chart_date.weekday() != 3:
         logger.log(
-            f"⚠ invalid date    : {_format_date(chart_date)} is not a Wednesday "
-            "(tracking week must end on Wednesday)"
+            f"⚠ invalid date    : {_format_date(chart_date)} is not a Thursday "
+            "(tracking week must end on Thursday)"
         )
         return 2
 

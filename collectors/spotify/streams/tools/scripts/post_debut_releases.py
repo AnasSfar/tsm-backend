@@ -37,8 +37,10 @@ FRONTEND_THEMES_CSS = REPO_ROOT.parent / "tsm-frontend" / "frontend" / "src" / "
 
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT.parent))
+sys.path.insert(0, str(REPO_ROOT))
 from core.data_paths import first_existing_db_history, update_streams_dir  # noqa: E402
 from core.twitter import post_image_thread, post_with_image  # noqa: E402
+from collectors.comp import tables_image  # noqa: E402
 
 import generate_streams_image  # noqa: E402
 import generate_weekend_streams_image  # noqa: E402
@@ -756,7 +758,7 @@ body{color:var(--debut-text)}
 def _cover_data_uri(image_url: str | None) -> str:
     if not image_url:
         return ""
-    return generate_streams_image._url_to_data_uri(image_url) or image_url
+    return tables_image.url_to_data_uri(image_url) or image_url
 
 
 def _cover_artwork_assets(image_url: str | None, fallback_accent: str) -> tuple[str, str, str]:
@@ -1017,8 +1019,22 @@ def _build_post_threads(
         group_key = _family_key(item, tid)
         groups[str(group_key)].append(tid)
 
+    family_members: dict[str, list[str]] = defaultdict(list)
+    for tid, item in meta.items():
+        if tid not in day_rows:
+            continue
+        group_key = str(_family_key(item, tid))
+        if group_key not in groups:
+            continue
+        if _daily_streams_for_row(day_rows.get(tid), previous_rows.get(tid)) <= 0:
+            continue
+        family_members[group_key].append(tid)
+
     for group_key, ids in sorted(groups.items(), key=lambda item: item[0].casefold()):
-        ids = sorted(ids, key=lambda tid: meta.get(tid, {}).get("title", tid).casefold())
+        ids = sorted(
+            set(ids).union(family_members.get(group_key, [])),
+            key=lambda tid: meta.get(tid, {}).get("title", tid).casefold(),
+        )
         primary = meta.get(ids[0], {})
         title = _clean_base_title(primary.get("base_title") or primary.get("title") or ids[0])
         daily_streams = sum(_daily_streams_for_row(day_rows.get(tid), previous_rows.get(tid)) for tid in ids)
@@ -1045,20 +1061,6 @@ def _build_post_threads(
                 ),
             )
         ]
-        total_image_path = _generate_debut_image(
-            target_date,
-            slug=f"song_{group_key}_total",
-            title=title,
-            kind="song",
-            daily_streams=daily_streams,
-            change_streams=change_streams,
-            change_pct=change_pct,
-            total_streams=total_streams,
-            image_url=image_url,
-            versions=versions,
-            version_count=version_count,
-            show_version_details=False,
-        )
         version_note = f" across {version_count} versions" if version_count > 1 else ""
         movement = ""
         if change_pct is not None:
@@ -1068,35 +1070,29 @@ def _build_post_threads(
                 movement = f", {direction} {pct_text}"
             else:
                 movement = f", {direction} {pct_text} vs yesterday"
+        show_version_details = version_count > 1
+        image_path = _generate_debut_image(
+            target_date,
+            slug=f"song_{group_key}_details" if show_version_details else f"song_{group_key}_total",
+            title=title,
+            kind="song",
+            daily_streams=daily_streams,
+            change_streams=change_streams,
+            change_pct=change_pct,
+            total_streams=total_streams,
+            image_url=image_url,
+            versions=versions,
+            version_count=version_count,
+            show_version_details=show_version_details,
+        )
         thread_posts: list[tuple[str, str, Path | None]] = [(
-            f"song:{group_key}:total",
+            f"song:{group_key}:details" if show_version_details else f"song:{group_key}:total",
             (
                 f'"{title}" received {_fmt(daily_streams)} streams on the Spotify Counter{version_note}{movement} ({date_text}).\n\n'
                 "See full update here : https://thetsmuseum.app/streams/latest"
             ),
-            total_image_path,
+            image_path,
         )]
-
-        if version_count > 1:
-            details_image_path = _generate_debut_image(
-                target_date,
-                slug=f"song_{group_key}_details",
-                title=title,
-                kind="song",
-                daily_streams=daily_streams,
-                change_streams=change_streams,
-                change_pct=change_pct,
-                total_streams=total_streams,
-                image_url=image_url,
-                versions=versions,
-                version_count=version_count,
-                show_version_details=True,
-            )
-            thread_posts.append((
-                f"song:{group_key}:details",
-                f'"{title}" version breakdown on the Spotify Counter ({date_text}).',
-                details_image_path,
-            ))
 
         post_threads.append(thread_posts)
 

@@ -502,6 +502,11 @@ def _launch_once(p, profile_dir: Path, *, headless: bool, args: list[str]):
         )
 
 
+def _short_error(exc: Exception) -> str:
+    text = str(exc).strip().splitlines()
+    return text[0] if text else exc.__class__.__name__
+
+
 def _launch(p, profile_dir: Path):
     """Lance un contexte Chrome persistant avec anti-detection."""
     profile_dir.mkdir(parents=True, exist_ok=True)
@@ -522,7 +527,7 @@ def _launch(p, profile_dir: Path):
             if attempt >= attempts:
                 break
             print(
-                f"X navigateur ferme au lancement ({exc}). "
+                f"X navigateur ferme au lancement ({_short_error(exc)}). "
                 f"Nouvelle tentative dans {TWITTER_BROWSER_LAUNCH_RETRY_DELAY}s...",
                 flush=True,
             )
@@ -675,38 +680,38 @@ def post_thread(tweets: list[str], session_file: Path) -> bool:
     session_file = Path(session_file)
     profile_dir  = _profile_dir(session_file)
 
-    # Premiere utilisation : creer la session (le dossier Default indique que Chrome a bien tourne)
-    if not (profile_dir / "Default").exists() and not _load_storage_state(session_file):
-        print("Aucun profil Twitter trouve. Connexion initiale requise...")
-        setup_session(session_file)
+    with _twitter_account_slot(session_file) as account_key:
+        # Premiere utilisation : creer la session (le dossier Default indique que Chrome a bien tourne)
+        if not (profile_dir / "Default").exists() and not _load_storage_state(session_file):
+            print("Aucun profil Twitter trouve. Connexion initiale requise...")
+            setup_session(session_file)
 
-    with sync_playwright() as p:
-        context = None
-        print(f"\nPublication de {len(tweets)} tweet(s)...")
+        with sync_playwright() as p:
+            context = None
+            print(f"\nPublication de {len(tweets)} tweet(s)...")
 
-        try:
-            context = _launch(p, profile_dir)
-            _restore_storage_state(context, session_file)
-            page    = context.new_page()
+            try:
+                context = _launch(p, profile_dir)
+                _restore_storage_state(context, session_file)
+                page    = context.new_page()
 
-            page.goto("https://x.com/home", wait_until="domcontentloaded")
-            time.sleep(2)
-
-            if _looks_logged_out(page):
-                print("Session expiree. Reconnexion automatique...")
-                credentials = _load_credentials(session_file)
-                if credentials:
-                    _auto_login(page, credentials["username"], credentials["password"], credentials.get("email", ""))
-                else:
-                    context.close()
-                    setup_session(session_file)
-                    context = _launch(p, profile_dir)
-                    page    = context.new_page()
                 page.goto("https://x.com/home", wait_until="domcontentloaded")
                 time.sleep(2)
 
-            success = True
-            with _twitter_account_slot(session_file) as account_key:
+                if _looks_logged_out(page):
+                    print("Session expiree. Reconnexion automatique...")
+                    credentials = _load_credentials(session_file)
+                    if credentials:
+                        _auto_login(page, credentials["username"], credentials["password"], credentials.get("email", ""))
+                    else:
+                        context.close()
+                        setup_session(session_file)
+                        context = _launch(p, profile_dir)
+                        page    = context.new_page()
+                    page.goto("https://x.com/home", wait_until="domcontentloaded")
+                    time.sleep(2)
+
+                success = True
                 try:
                     _wait_account_spacing(account_key)
                     if len(tweets) > 1:
@@ -742,11 +747,11 @@ def post_thread(tweets: list[str], session_file: Path) -> bool:
                     print(f"X Erreur publication: {e}")
                     success = False
 
-        finally:
-            if context is not None:
-                context.close()
+            finally:
+                if context is not None:
+                    context.close()
 
-        return success
+            return success
 
 
 def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
@@ -762,34 +767,34 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
         print(f"X image introuvable: {image_path}")
         return False
 
-    if not (profile_dir / "Default").exists():
-        print("Aucun profil Twitter trouve. Connexion initiale requise...")
-        setup_session(session_file)
+    with _twitter_account_slot(session_file) as account_key:
+        if not (profile_dir / "Default").exists():
+            print("Aucun profil Twitter trouve. Connexion initiale requise...")
+            setup_session(session_file)
 
-    with sync_playwright() as p:
-        context = None
-        try:
-            context = _launch(p, profile_dir)
-            _restore_storage_state(context, session_file)
-            page    = context.new_page()
+        with sync_playwright() as p:
+            context = None
+            try:
+                context = _launch(p, profile_dir)
+                _restore_storage_state(context, session_file)
+                page    = context.new_page()
 
-            page.goto("https://x.com/home", wait_until="domcontentloaded")
-            time.sleep(2)
-
-            if "login" in page.url:
-                print("Session expiree. Reconnexion automatique...")
-                credentials = _load_credentials(session_file)
-                if credentials:
-                    _auto_login(page, credentials["username"], credentials["password"], credentials.get("email", ""))
-                else:
-                    context.close()
-                    setup_session(session_file)
-                    context = _launch(p, profile_dir)
-                    page    = context.new_page()
                 page.goto("https://x.com/home", wait_until="domcontentloaded")
                 time.sleep(2)
 
-            with _twitter_account_slot(session_file) as account_key:
+                if "login" in page.url:
+                    print("Session expiree. Reconnexion automatique...")
+                    credentials = _load_credentials(session_file)
+                    if credentials:
+                        _auto_login(page, credentials["username"], credentials["password"], credentials.get("email", ""))
+                    else:
+                        context.close()
+                        setup_session(session_file)
+                        context = _launch(p, profile_dir)
+                        page    = context.new_page()
+                    page.goto("https://x.com/home", wait_until="domcontentloaded")
+                    time.sleep(2)
+
                 _wait_account_spacing(account_key)
                 page.goto("https://x.com/compose/post", wait_until="domcontentloaded")
                 time.sleep(2)
@@ -809,13 +814,13 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
                 print("OK Tweet avec image publie")
                 return True
 
-        except Exception as e:
-            print(f"X Erreur post_with_image: {e}")
-            return False
+            except Exception as e:
+                print(f"X Erreur post_with_image: {e}")
+                return False
 
-        finally:
-            if context is not None:
-                context.close()
+            finally:
+                if context is not None:
+                    context.close()
 
 
 def post_image_thread(posts: list[tuple[str, Path]], session_file: Path) -> bool:

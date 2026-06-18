@@ -716,11 +716,23 @@ def _chart_available(
             if detected == str(target) and entries:
                 return True, f"HTTP 404 date, latest={detected} ({len(entries)} lignes)", None, target
             if detected:
+                try:
+                    detected_date = date.fromisoformat(detected)
+                except ValueError:
+                    detected_date = None
+                if detected_date is not None and detected_date > target and entries:
+                    return True, f"HTTP 404 date, latest={detected} ({len(entries)} lignes)", None, detected_date
                 return False, f"HTTP 404 date, latest pointe vers {detected}", None, None
             page_detected = _latest_chart_page_date()
             if page_detected == str(target) and entries:
                 return True, f"HTTP 404 date, page latest={page_detected} ({len(entries)} lignes)", None, target
             if page_detected:
+                try:
+                    page_detected_date = date.fromisoformat(page_detected)
+                except ValueError:
+                    page_detected_date = None
+                if page_detected_date is not None and page_detected_date > target and entries:
+                    return True, f"HTTP 404 date, page latest={page_detected} ({len(entries)} lignes)", None, page_detected_date
                 return False, f"HTTP 404 date, page latest pointe vers {page_detected}", None, None
             return False, f"HTTP 404 date, latest sans date ({len(entries)} lignes)", None, None
         retry_after = latest_resp.headers.get("Retry-After")
@@ -1676,6 +1688,19 @@ def main() -> int:
 
     should_generate_cards = "cards" in post_parts or args.force_cards or (args.no_post and args.force)
     should_post_cards = "cards" in post_parts
+    regional_post_failures: list[tuple[str, int]] = []
+
+    if not args.dry_run and not args.no_post:
+        regional_post_failures = _verify_regional_posts(
+            target_date,
+            post_parts,
+            force=args.force,
+            env=env,
+            verbose=args.verbose,
+        )
+        if regional_post_failures:
+            failed_names = ", ".join(n for n, _ in regional_post_failures)
+            print(f"[WARN] posts regionaux echoues, suite du run maintenue: {failed_names}")
 
     if not args.dry_run and should_generate_cards and not _worldwide_data_ready(target_date):
         failures.append(("cards-data", 1))
@@ -1734,20 +1759,6 @@ def main() -> int:
         if rc_cards != 0:
             failures.append(("cards", rc_cards))
 
-    if not args.dry_run and not args.no_post:
-        post_failures = _verify_regional_posts(
-            target_date,
-            post_parts,
-            force=args.force,
-            env=env,
-            verbose=args.verbose,
-        )
-        if post_failures:
-            failures.extend(post_failures)
-            if args.stop_on_error:
-                print(f"[FAIL] stop-on-error — {_fmt(time.perf_counter() - started)}")
-                return 1
-
     if not args.dry_run and not args.no_post and not failures:
         best_day_failure = _run_best_day_since_post(
             target_date,
@@ -1763,7 +1774,10 @@ def main() -> int:
     if failures:
         print(f"[FAIL] {', '.join(n for n, _ in failures)} — {total}")
         return 1
-    print(f"[ OK ] tout terminé — {total}")
+    if regional_post_failures:
+        print(f"[ OK ] tout termine — {total} (posts a retenter: {', '.join(n for n, _ in regional_post_failures)})")
+    else:
+        print(f"[ OK ] tout termine — {total}")
     if not args.dry_run:
         cleanup_generated_artifacts()
         git_commit_and_push(REPO_ROOT, f"charts run all {target_date.isoformat()}")
