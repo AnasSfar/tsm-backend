@@ -68,6 +68,31 @@ def _is_postable_song_title(title: str) -> bool:
     return not any(marker in normalized for marker in _EXCLUDED_TITLE_MARKERS)
 
 
+def _zero_exclusion_days(compare_days: int) -> int:
+    """Suppress rebound gainers after a likely failed scrape recorded as daily=0."""
+    if compare_days <= 1:
+        return 2
+    if compare_days == 7:
+        return 7
+    return compare_days
+
+
+def _has_recent_zero_daily(
+    history: history_store.HistoryIndex,
+    track_id: str,
+    target_date: str,
+    *,
+    days: int,
+) -> bool:
+    target = date.fromisoformat(target_date)
+    for offset in range(1, days + 1):
+        check_date = str(target - timedelta(days=offset))
+        daily = history_store._daily_for_spotlight(history, track_id, check_date)
+        if daily == 0:
+            return True
+    return False
+
+
 def _pick_gainers(target_date: str, *, compare_days: int, limit: int, min_baseline: int) -> list[dict]:
     history = history_store.HistoryIndex.load()
     album_ids = history_store.load_album_track_ids()
@@ -76,10 +101,18 @@ def _pick_gainers(target_date: str, *, compare_days: int, limit: int, min_baseli
         if track["track_id"] in album_ids
     ]
     baseline_date = str(date.fromisoformat(target_date) - timedelta(days=compare_days))
+    zero_exclusion_days = _zero_exclusion_days(compare_days)
 
     rows: list[dict] = []
     for track in tracks:
         track_id = track["track_id"]
+        if _has_recent_zero_daily(
+            history,
+            track_id,
+            target_date,
+            days=zero_exclusion_days,
+        ):
+            continue
         daily_today = history_store._daily_for_spotlight(history, track_id, target_date)
         daily_baseline = history_store._daily_for_spotlight(history, track_id, baseline_date)
         if daily_today is None or daily_baseline is None or daily_baseline <= 0:

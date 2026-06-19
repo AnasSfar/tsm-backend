@@ -61,7 +61,6 @@ TWEET_CHAR_LIMIT = 280
 # Nouveau : logo à gauche du handle
 HANDLE_ICON_PATH = Path(r"C:\Users\sfara\Documents\GitHub\tsm-frontend\icons\logo.gif")
 
-INCLUDED_EDITIONS = {"standard", "deluxe", "acoustic", "anthology", "original"}
 ENABLE_FILTERED_CHARTS = False
 
 BODY_WIDTH_CSS = 880
@@ -374,7 +373,8 @@ def load_album_sections(album_name: str) -> list[dict]:
     """
     Returns list of sections for the given album, each with:
       {name, tracks: [{track_id, title_clean, version_tag, display_order, image_url}]}
-    Only editions in INCLUDED_EDITIONS. Tracks sorted by display_order.
+    Includes every track whose section/track is not marked chart_extra.
+    Tracks sorted by display_order.
     """
     if not ALBUMS_DIR.exists():
         return []
@@ -407,7 +407,41 @@ def load_album_sections(album_name: str) -> list[dict]:
         if track_flag is not None:
             return track_flag
         section_flag = _as_bool(section.get("chart_extra"))
-        return bool(section_flag) if section_flag is not None else False
+        if section_flag is not None:
+            return bool(section_flag)
+
+        edition = (track.get("edition") or "").strip().casefold()
+        display_section = (
+            track.get("display_section")
+            or section.get("display_section")
+            or section.get("title")
+            or section.get("name")
+            or ""
+        ).strip().casefold()
+        section_name = (section.get("section") or "").strip().casefold()
+        album = (section.get("album") or track.get("album") or "").strip().casefold()
+        track_type = (track.get("type") or "").strip().casefold()
+        version_tag = (track.get("version_tag") or "").strip().casefold()
+        haystack = " ".join(
+            part
+            for part in (edition, display_section, section_name, album, track_type, version_tag)
+            if part
+        )
+        return any(
+            token in haystack
+            for token in (
+                "standalone & extras",
+                "extra",
+                "kworb",
+                "live",
+                "karaoke",
+                "acoustic",
+                "remix",
+                "track by track",
+                "music video",
+                "voice memo",
+            )
+        )
 
     canonical_name = target_payload.get("album") or album_name
     sections = []
@@ -416,9 +450,6 @@ def load_album_sections(album_name: str) -> list[dict]:
         seen_in_section = set()
         for t in sec.get("tracks", []):
             if _is_chart_extra(sec, t):
-                continue
-            edition = (t.get("edition") or "").strip().lower()
-            if edition not in INCLUDED_EDITIONS:
                 continue
             url = (t.get("url") or t.get("spotify_url") or "").strip()
             m = re.search(r"track/([A-Za-z0-9]+)", url)
