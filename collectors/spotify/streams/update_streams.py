@@ -85,8 +85,11 @@ from history_store import (
     get_last_stats_date_in_history,
     get_previous_total_before_date,
     get_priority_top_50_track_ids_from_previous_day,
+    get_priority_top_track_ids_from_previous_day,
     has_real_update,
     load_active_track_ids_from_discography,
+    load_album_track_ids,
+    load_album_track_ids_for_album,
     load_album_sections_flat,
     load_history_rows,
     load_history_track_ids_for_date,
@@ -147,7 +150,8 @@ HILL_INITIAL       = 9      # point de départ (was 6 — start near max immedia
 PROBE_CANDIDATES = 10  # top N tracks (by streams) used as probe candidates
 
 PENDING_RETRY_SLEEP_SECONDS = 20
-MAX_PENDING_RETRY_ROUNDS = 10
+MAX_PENDING_RETRY_ROUNDS = 15
+INFINITE_RETRY_PREVIOUS_DAY_TOP_N = 70
 POST_BETWEEN_STREAMS_POSTS_SECONDS = 0
 INCREMENTAL_PUBLISH_ON_UPDATE = False
 
@@ -578,6 +582,58 @@ def print_api_metrics(summary: dict) -> None:
         f"token refreshes={metrics.get('token_refreshes', 0)} | "
         f"statuses: {status_text}"
     )
+
+
+def retry_pending_tracks_until_collected(
+    track_ids: set[str],
+    *,
+    stats_date: str,
+    stats_date_override: str | None,
+    token_mgr: TokenManager | None,
+    force_reprocess: bool,
+    write_history: bool,
+    collected_ids: set[str],
+) -> None:
+    pending_ids = set(track_ids)
+    retry_round = 0
+
+    while pending_ids:
+        retry_round += 1
+        if retry_round > 1 and PENDING_RETRY_SLEEP_SECONDS > 0:
+            time.sleep(PENDING_RETRY_SLEEP_SECONDS)
+
+        print()
+        print("=" * 70)
+        print(
+            f"Infinite top-{INFINITE_RETRY_PREVIOUS_DAY_TOP_N} pending retry round "
+            f"{retry_round} ({len(pending_ids)} track(s))"
+        )
+        print("=" * 70)
+
+        retry_summary = run_update(
+            on_progress=ProgressLogger(LOG_MODE),
+            stats_date_override=stats_date_override,
+            dry_run_mode=False,
+            only_track_ids=pending_ids,
+            token_mgr=token_mgr,
+            force_reprocess=force_reprocess,
+            write_history=write_history,
+        )
+        print_summary_block(retry_summary)
+        print_api_metrics(retry_summary)
+
+        updated_ids = set(retry_summary.get("updated_track_ids") or set())
+        if updated_ids:
+            collected_ids.update(updated_ids)
+            push_updated_track_histories_to_r2(
+                updated_ids,
+                retry_summary["history_index"],
+            )
+
+        done_ids = load_history_track_ids_for_date(stats_date)
+        pending_ids -= done_ids
+
+    print(f"All infinite top-{INFINITE_RETRY_PREVIOUS_DAY_TOP_N} pending retries are collected.")
 
 
 def run_discography_backfill_after_streams(token_mgr: TokenManager | None, stats_date: str) -> None:
@@ -2003,6 +2059,15 @@ def main():
     )
     album_update_poster.start()
 
+    previous_day_top_retry_ids = get_priority_top_track_ids_from_previous_day(
+        tracks,
+        stats_date,
+        INFINITE_RETRY_PREVIOUS_DAY_TOP_N,
+    )
+    infinite_retry_thread: threading.Thread | None = None
+    infinite_retry_track_ids: set[str] = set()
+    infinite_retry_collected_ids: set[str] = set()
+
     progress = ProgressLogger(LOG_MODE)
     summary = run_update(
         on_progress=progress,
@@ -2076,7 +2141,15 @@ def main():
             tid for tid, count in track_retry_counts.items()
             if count >= MAX_PENDING_RETRY_ROUNDS
         }
-        pending_retry_ids = all_pending_ids - exhausted_ids
+        newly_infinite_retry_ids = exhausted_ids & all_pending_ids & previous_day_top_retry_ids
+        if newly_infinite_retry_ids:
+            infinite_retry_track_ids.update(newly_infinite_retry_ids)
+            print(
+                f"Moving {len(newly_infinite_retry_ids)} previous-day top-"
+                f"{INFINITE_RETRY_PREVIOUS_DAY_TOP_N} pending track(s) to infinite background retry."
+            )
+        foreground_exhausted_ids = exhausted_ids - previous_day_top_retry_ids
+        pending_retry_ids = all_pending_ids - foreground_exhausted_ids - infinite_retry_track_ids
 
         if not pending_retry_ids:
             print("No pending track IDs left to retry; stopping pending retries.")
@@ -2145,7 +2218,7 @@ def main():
     if not dry_run_mode and not local_test_mode and not debug_daily_mode and track_retry_counts:
         exhausted_after_all = {
             tid for tid, count in track_retry_counts.items()
-            if count >= MAX_PENDING_RETRY_ROUNDS
+            if count >= MAX_PENDING_RETRY_ROUNDS and tid not in previous_day_top_retry_ids
         }
         still_pending = {
             r["track_id"] for r in summary.get("results", [])
@@ -2186,6 +2259,33 @@ def main():
                 print(f"Wrote {written_pending} exhausted pending track(s) with daily=0.")
                 summary["all_done"] = True
                 summary["pending_this_run"] = 0
+
+    current_pending_ids = {
+        r["track_id"] for r in summary.get("results", [])
+        if r and r.get("status") == "pending" and r.get("track_id")
+    }
+    infinite_retry_track_ids &= current_pending_ids
+    if infinite_retry_track_ids and not dry_run_mode and not local_test_mode and not debug_daily_mode:
+        print(
+            f"Starting infinite background retry for {len(infinite_retry_track_ids)} previous-day "
+            f"top-{INFINITE_RETRY_PREVIOUS_DAY_TOP_N} pending track(s); posting can continue."
+        )
+        infinite_retry_thread = threading.Thread(
+            target=retry_pending_tracks_until_collected,
+            kwargs={
+                "track_ids": set(infinite_retry_track_ids),
+                "stats_date": stats_date,
+                "stats_date_override": stats_date_override,
+                "token_mgr": token_mgr,
+                "force_reprocess": force_reprocess,
+                "write_history": write_history,
+                "collected_ids": infinite_retry_collected_ids,
+            },
+            daemon=False,
+        )
+        infinite_retry_thread.start()
+        summary["all_done"] = True
+        summary["pending_this_run"] = 0
 
     print_remaining_details(summary)
     if local_test_mode:
@@ -2251,7 +2351,7 @@ def main():
             all_tracks_for_check = load_tracks_from_discography()
             non_extra_ids = {t["track_id"] for t in all_tracks_for_check if not t.get("chart_extra")}
             done_ids_for_date = load_history_track_ids_for_date(stats_date)
-            missing_non_extra = non_extra_ids - done_ids_for_date
+            missing_non_extra = non_extra_ids - done_ids_for_date - infinite_retry_track_ids
             if not missing_non_extra:
                 break
 
@@ -2291,6 +2391,24 @@ def main():
     posted_album_updates = album_update_poster.stop()
     initial_post_state = album_update_poster.post_state()
 
+    def _album_tracks_done_for_finalize(album_name: str, check_date: str) -> bool:
+        if check_date != stats_date or not infinite_retry_track_ids:
+            return album_tracks_done_for(album_name, check_date)
+        album_ids = load_album_track_ids_for_album(album_name)
+        if not album_ids:
+            return False
+        done_ids = load_history_track_ids_for_date(check_date)
+        return (album_ids - infinite_retry_track_ids).issubset(done_ids)
+
+    def _all_album_tracks_done_finalize(check_date: str) -> bool:
+        if check_date != stats_date or not infinite_retry_track_ids:
+            return all_album_tracks_done(check_date)
+        album_ids = load_album_track_ids()
+        if not album_ids:
+            return True
+        done_ids = load_history_track_ids_for_date(check_date)
+        return (album_ids - infinite_retry_track_ids).issubset(done_ids)
+
     run_final_update_tasks(FinalizeContext(
         script_dir=_SCRIPT_DIR,
         repo_root=_REPO_ROOT,
@@ -2305,8 +2423,8 @@ def main():
         artist_result=_artist_result,
         export_web_data=export_web_data,
         update_artist_metadata=update_artist_metadata,
-        album_tracks_done_for=album_tracks_done_for,
-        all_album_tracks_done=all_album_tracks_done,
+        album_tracks_done_for=_album_tracks_done_for_finalize,
+        all_album_tracks_done=_all_album_tracks_done_finalize,
         load_album_sections_flat=load_album_sections_flat,
         extract_track_id=extract_track_id,
         load_history_track_ids_for_date=load_history_track_ids_for_date,
@@ -2319,6 +2437,20 @@ def main():
         throwback_label=throwback_label,
         throwback_force=throwback_force,
     ))
+
+    if infinite_retry_thread is not None:
+        print(
+            f"Waiting for infinite top-{INFINITE_RETRY_PREVIOUS_DAY_TOP_N} retry worker "
+            "to finish after posting..."
+        )
+        infinite_retry_thread.join()
+        if infinite_retry_collected_ids:
+            all_updated_track_ids.update(infinite_retry_collected_ids)
+            git_commit_and_push(
+                _REPO_ROOT,
+                f"partial export {stats_date} (top {INFINITE_RETRY_PREVIOUS_DAY_TOP_N} infinite retry)",
+            )
+        print("Infinite retry worker finished.")
 
     if not dry_run_mode and not debug_daily_mode and not local_test_mode and not throwback_mode:
         run_discography_backfill_after_streams(token_mgr, stats_date)

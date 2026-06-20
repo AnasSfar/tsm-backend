@@ -182,6 +182,21 @@ def load_album_track_ids() -> set[str]:
                 ids.add(tid)
     return ids
 
+def load_album_track_ids_for_album(album_name: str) -> set[str]:
+    """Returns track IDs from one album, excluding chart_extra tracks."""
+    sections = load_album_sections_flat()
+    ids = set()
+    for section in sections:
+        if section.get("album") != album_name:
+            continue
+        for track in section.get("tracks", []):
+            if _is_chart_extra(section, track):
+                continue
+            tid = extract_track_id(track.get("url") or track.get("spotify_url") or "")
+            if tid:
+                ids.add(tid)
+    return ids
+
 def _daily_for_spotlight(history_index: HistoryIndex, track_id: str, stats_date: str) -> int | None:
     daily = history_index.get_daily_for_date(track_id, stats_date)
     if daily is not None:
@@ -251,17 +266,7 @@ def all_album_tracks_done(stats_date: str) -> bool:
 
 def album_tracks_done_for(album_name: str, stats_date: str) -> bool:
     """Returns True when every track from the given album has a history row for stats_date."""
-    sections = load_album_sections_flat()
-    album_ids = set()
-    for section in sections:
-        if section.get("album") != album_name:
-            continue
-        for track in section.get("tracks", []):
-            if _is_chart_extra(section, track):
-                continue
-            tid = extract_track_id(track.get("url") or track.get("spotify_url") or "")
-            if tid:
-                album_ids.add(tid)
+    album_ids = load_album_track_ids_for_album(album_name)
     if not album_ids:
         return False
     done_ids = load_history_track_ids_for_date(stats_date)
@@ -731,12 +736,16 @@ def load_track_priorities_from_specific_date(target_date: str) -> dict[str, int]
 
     return result
 
-def get_priority_top_50_track_ids_from_previous_day(tracks: list[dict], stats_date: str) -> set[str]:
+def get_priority_top_track_ids_from_previous_day(tracks: list[dict], stats_date: str, limit: int) -> set[str]:
     previous_date = get_previous_stats_date_str(stats_date)
     priorities = load_track_priorities_from_specific_date(previous_date)
 
+    eligible_tracks = [t for t in tracks if t["track_id"] in priorities]
     ordered = sorted(
-        tracks,
+        eligible_tracks,
         key=lambda t: (-priorities.get(t["track_id"], 0), t["title"].casefold())
     )
-    return {t["track_id"] for t in ordered[:50]}
+    return {t["track_id"] for t in ordered[:limit]}
+
+def get_priority_top_50_track_ids_from_previous_day(tracks: list[dict], stats_date: str) -> set[str]:
+    return get_priority_top_track_ids_from_previous_day(tracks, stats_date, 50)
