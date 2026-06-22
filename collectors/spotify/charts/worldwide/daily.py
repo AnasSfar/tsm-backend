@@ -909,6 +909,13 @@ def main() -> int:
         help="Post the priority Global NEW card as soon as the global chart is fetched.",
     )
     parser.add_argument(
+        "--post-priority-region",
+        action="append",
+        choices=("global", "fr"),
+        default=[],
+        help="Post this regional chart as soon as its priority fetch is written.",
+    )
+    parser.add_argument(
         "--force-priority-global-new",
         action="store_true",
         help="Ignore the posted lock for the priority Global NEW card.",
@@ -1061,7 +1068,10 @@ def main() -> int:
 
     # Phase 1 : fetch global et fr en priorité pour poster pendant la phase 2
     post_priority_global_new = args.post_priority_global_new and not args.dates and not args.dates_file
-    _PRIORITY = {"global"} if post_priority_global_new else (set() if args.no_post else {"global", "fr"})
+    priority_post_regions = set(args.post_priority_region or [])
+    if post_priority_global_new:
+        priority_post_regions.add("global")
+    _PRIORITY = ({"global", "fr"} if not args.no_post else set()) | priority_post_regions
     priority_to_fetch = {k: v for k, v in regions_to_fetch.items() if k in _PRIORITY}
     other_to_fetch    = {k: v for k, v in regions_to_fetch.items() if k not in _PRIORITY}
 
@@ -1097,14 +1107,24 @@ def main() -> int:
 
     # Lancer le posting global/fr en background pendant le fetch des autres régions
     _posting_thread: threading.Thread | None = None
-    if not args.no_post and priority_to_fetch:
+    regional_post_scripts = {
+        "global": GLOBAL_DAILY,
+        "fr": FR_DAILY,
+    }
+    if args.no_post:
+        regions_to_post = [region for region in ("global", "fr") if region in priority_post_regions]
+    else:
+        regions_to_post = [region for region in ("global", "fr") if region in priority_to_fetch]
+    regions_to_post = [region for region in regions_to_post if region in priority_results and priority_results[region]]
+    if regions_to_post:
         def _post_regional() -> None:
             if _priority_card_thread is not None and _priority_card_thread.is_alive():
                 print("[INFO] Waiting for priority Global NEW card before regional posts...", flush=True)
                 _priority_card_thread.join(timeout=600)
                 if _priority_card_thread.is_alive():
                     print("[WARN] Priority Global NEW card still running after 10 minutes; regional posts continue.", flush=True)
-            for script in (GLOBAL_DAILY, FR_DAILY):
+            for region in regions_to_post:
+                script = regional_post_scripts[region]
                 if not script.exists():
                     continue
                 result = subprocess.run(

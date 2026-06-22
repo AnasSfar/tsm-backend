@@ -1515,6 +1515,9 @@ def main() -> int:
             # run_all orchestre les posts apres la collecte pour garder l'ordre:
             # regional images, cards worldwide, puis extras. worldwide reste data-only.
             extra = ["--no-post"]
+            for region in ("global", "fr"):
+                if region in post_parts:
+                    extra.extend(["--post-priority-region", region])
             if "cards" in post_parts:
                 extra.append("--post-priority-global-new")
                 if args.force_cards or args.force:
