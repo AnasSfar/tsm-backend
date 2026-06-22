@@ -23,6 +23,7 @@ DB_SONGS_JSON = DISCOGRAPHY_DIR / "songs.json"
 MAX_DAILY_INCREASE = 50_000_000
 LOG_MODE = "normal"
 _R2_TRACK_PREFIX = os.getenv("SPOTIFY_R2_TRACK_PREFIX", "history-by-track")
+HISTORY_FIELDNAMES = ["date", "track_id", "streams", "daily_streams", "estimated", "estimated_reason"]
 
 
 def get_previous_stats_date_str(stats_date: str) -> str:
@@ -302,7 +303,7 @@ def ensure_history_file() -> None:
     if not HISTORY_PATH.exists():
         with HISTORY_PATH.open("w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
-            writer.writerow(["date", "track_id", "streams", "daily_streams"])
+            writer.writerow(HISTORY_FIELDNAMES)
 
 def get_last_stats_date_in_history() -> str | None:
     if not HISTORY_PATH.exists():
@@ -365,10 +366,13 @@ def dedupe_history_rows_by_date_track() -> int:
     return removed
 
 def append_history_row(row: list) -> None:
+    out_row = list(row)
+    if len(out_row) < len(HISTORY_FIELDNAMES):
+        out_row.extend([""] * (len(HISTORY_FIELDNAMES) - len(out_row)))
     HISTORY_PATH.parent.mkdir(parents=True, exist_ok=True)
     with HISTORY_PATH.open("a", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow(row)
+        writer.writerow(out_row)
     if row:
         day = str(row[0])
         daily_path = update_streams_dir(day) / "streams_history.csv"
@@ -377,8 +381,8 @@ def append_history_row(row: list) -> None:
         with daily_path.open("a", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
             if is_new:
-                writer.writerow(["date", "track_id", "streams", "daily_streams"])
-            writer.writerow(row)
+                writer.writerow(HISTORY_FIELDNAMES)
+            writer.writerow(out_row)
 
 def load_history_rows() -> list[dict]:
     if not HISTORY_PATH.exists():
@@ -389,19 +393,16 @@ def load_history_rows() -> list[dict]:
 
 def save_history_rows(rows: list[dict]) -> None:
     HISTORY_PATH.parent.mkdir(parents=True, exist_ok=True)
-    fieldnames = ["date", "track_id", "streams", "daily_streams"]
+    fieldnames = list(HISTORY_FIELDNAMES)
+    for row in rows:
+        for key in row.keys():
+            if key not in fieldnames:
+                fieldnames.append(key)
     with HISTORY_PATH.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         for row in rows:
-            writer.writerow(
-                {
-                    "date": row.get("date", ""),
-                    "track_id": row.get("track_id", ""),
-                    "streams": row.get("streams", ""),
-                    "daily_streams": row.get("daily_streams", ""),
-                }
-            )
+            writer.writerow({field: row.get(field, "") for field in fieldnames})
 
 class HistoryIndex:
     """In-memory view of streams_history.csv for fast worker lookups."""
@@ -432,11 +433,14 @@ class HistoryIndex:
             return
 
         daily_raw = (row.get("daily_streams") or "").strip()
+        estimated = str(row.get("estimated") or "").strip().lower() in {"1", "true", "yes", "y"}
         clean_row = {
             "date": date_value,
             "track_id": track_id,
             "streams": str(streams),
             "daily_streams": daily_raw,
+            "estimated": "1" if estimated else "",
+            "estimated_reason": (row.get("estimated_reason") or "").strip(),
         }
         self.rows.append(clean_row)
         self.last_total_by_track[track_id] = streams
@@ -449,6 +453,10 @@ class HistoryIndex:
                 point["daily_streams"] = int(daily_raw)
             except Exception:
                 pass
+        if estimated:
+            point["estimated"] = True
+            if clean_row["estimated_reason"]:
+                point["estimated_reason"] = clean_row["estimated_reason"]
         self.points_by_track.setdefault(track_id, []).append(point)
 
     def get_last_total(self, track_id: str) -> int | None:

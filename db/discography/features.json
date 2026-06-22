@@ -25,7 +25,13 @@
         "song_family": "the_joker_and_the_queen",
         "version_tag": "featured__feature",
         "image_url": "https://i.scdn.co/image/ab67616d0000b2730351028f3e973b76dcf1db60",
-        "display_era": "Features"
+        "display_era": "Features",
+        "filter_tags": [
+          "feature"
+        ],
+        "filter_tag_sources": {
+          "feature": "high:type_or_primary_artist"
+        }
       },
       {
         "title": "Both of Us (feat. Taylor Swift)",
@@ -48,7 +54,13 @@
         "song_family": "both_of_us",
         "version_tag": "featured__feature",
         "image_url": "https://i.scdn.co/image/ab67616d0000b273a191830c8b300bc71c2faac7",
-        "display_era": "Features"
+        "display_era": "Features",
+        "filter_tags": [
+          "feature"
+        ],
+        "filter_tag_sources": {
+          "feature": "high:type_or_primary_artist"
+        }
       },
       {
         "title": "Better Man",
@@ -69,7 +81,13 @@
         "version_tag": "feature",
         "release_date": "2017-11-09T00:00:00Z",
         "historical_track_ids": [],
-        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27363d77f99117b28af9f656918"
+        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27363d77f99117b28af9f656918",
+        "filter_tags": [
+          "feature"
+        ],
+        "filter_tag_sources": {
+          "feature": "high:type_or_primary_artist"
+        }
       }
     ]
   },

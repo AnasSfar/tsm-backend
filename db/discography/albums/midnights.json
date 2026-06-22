@@ -64,7 +64,17 @@
             "lastfm": "The Great War"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_great_war"
+          "genre_canonical_key": "family:the_great_war",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "Bigger Than The Whole Sky",
@@ -122,7 +132,17 @@
             "lastfm": "Bigger Than The Whole Sky"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:bigger_than_the_whole_sky"
+          "genre_canonical_key": "family:bigger_than_the_whole_sky",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "Paris",
@@ -180,7 +200,17 @@
             "lastfm": "Paris"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:paris"
+          "genre_canonical_key": "family:paris",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "High Infidelity",
@@ -238,7 +268,17 @@
             "lastfm": "High Infidelity"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:high_infidelity"
+          "genre_canonical_key": "family:high_infidelity",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "Glitch",
@@ -296,7 +336,17 @@
             "lastfm": "Glitch"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:glitch"
+          "genre_canonical_key": "family:glitch",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "Would've, Could've, Should've",
@@ -354,7 +404,17 @@
             "lastfm": "Would've, Could've, Should've"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:would_ve_could_ve_should_ve"
+          "genre_canonical_key": "family:would_ve_could_ve_should_ve",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "Dear Reader",
@@ -412,7 +472,17 @@
             "lastfm": "Dear Reader"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:dear_reader"
+          "genre_canonical_key": "family:dear_reader",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
         }
       ]
     },
@@ -452,7 +522,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:you_re_losing_me"
+          "genre_canonical_key": "family:you_re_losing_me",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "from_the_vault": "high:title_section_or_edition"
+          }
         }
       ]
     },
@@ -517,7 +599,15 @@
             "lastfm": "Lavender Haze"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:lavender_haze"
+          "genre_canonical_key": "family:lavender_haze",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Maroon",
@@ -575,7 +665,15 @@
             "lastfm": "Maroon"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:maroon"
+          "genre_canonical_key": "family:maroon",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Anti-Hero",
@@ -633,7 +731,15 @@
             "lastfm": "Anti-Hero"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:anti_hero"
+          "genre_canonical_key": "family:anti_hero",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Snow On The Beach (feat. Lana Del Rey)",
@@ -694,7 +800,15 @@
             "lastfm": "Snow On The Beach (feat. Lana Del Rey)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:snow_on_the_beach"
+          "genre_canonical_key": "family:snow_on_the_beach",
+          "filter_tags": [
+            "feature",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "You're On Your Own, Kid",
@@ -752,7 +866,15 @@
             "lastfm": "You're On Your Own, Kid"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:you_re_on_your_own_kid"
+          "genre_canonical_key": "family:you_re_on_your_own_kid",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Midnight Rain",
@@ -810,7 +932,15 @@
             "lastfm": "Midnight Rain"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:midnight_rain"
+          "genre_canonical_key": "family:midnight_rain",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Question...?",
@@ -868,7 +998,15 @@
             "lastfm": "Question...?"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:question"
+          "genre_canonical_key": "family:question",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Vigilante Shit",
@@ -926,7 +1064,15 @@
             "lastfm": "Vigilante Shit"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:vigilante_shit"
+          "genre_canonical_key": "family:vigilante_shit",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Bejeweled",
@@ -981,7 +1127,15 @@
             "lastfm": "Bejeweled"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:bejeweled"
+          "genre_canonical_key": "family:bejeweled",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Labyrinth",
@@ -1039,7 +1193,15 @@
             "lastfm": "Labyrinth"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:labyrinth"
+          "genre_canonical_key": "family:labyrinth",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Karma",
@@ -1094,7 +1256,15 @@
             "lastfm": "Karma"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:karma"
+          "genre_canonical_key": "family:karma",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Sweet Nothing",
@@ -1152,7 +1322,15 @@
             "lastfm": "Sweet Nothing"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:sweet_nothing"
+          "genre_canonical_key": "family:sweet_nothing",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Mastermind",
@@ -1210,7 +1388,15 @@
             "lastfm": "Mastermind"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:mastermind"
+          "genre_canonical_key": "family:mastermind",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         }
       ]
     },
@@ -1275,7 +1461,15 @@
             "lastfm": "Hits Different"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:hits_different"
+          "genre_canonical_key": "family:hits_different",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "Snow On The Beach (feat. More Lana Del Rey)",
@@ -1336,7 +1530,13 @@
             "lastfm": "Snow On The Beach (feat. Lana Del Rey)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:snow_on_the_beach"
+          "genre_canonical_key": "family:snow_on_the_beach",
+          "filter_tags": [
+            "feature"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist"
+          }
         },
         {
           "title": "Karma (feat. Ice Spice)",
@@ -1394,7 +1594,13 @@
             "lastfm": "Karma"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:karma"
+          "genre_canonical_key": "family:karma",
+          "filter_tags": [
+            "feature"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist"
+          }
         }
       ]
     },
@@ -1462,7 +1668,13 @@
             "lastfm": "Anti-Hero"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:anti_hero"
+          "genre_canonical_key": "family:anti_hero",
+          "filter_tags": [
+            "feature"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist"
+          }
         },
         {
           "title": "Anti-Hero - ILLENIUM Remix",
@@ -1520,7 +1732,15 @@
             "lastfm": "Anti-Hero"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:anti_hero"
+          "genre_canonical_key": "family:anti_hero",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "Anti-Hero - Jayda G Remix",
@@ -1578,7 +1798,15 @@
             "lastfm": "Anti-Hero"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:anti_hero"
+          "genre_canonical_key": "family:anti_hero",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "Anti-Hero - Kungs Remix",
@@ -1636,7 +1864,15 @@
             "lastfm": "Anti-Hero"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:anti_hero"
+          "genre_canonical_key": "family:anti_hero",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "Anti-Hero - Roosevelt Remix",
@@ -1694,7 +1930,15 @@
             "lastfm": "Anti-Hero"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:anti_hero"
+          "genre_canonical_key": "family:anti_hero",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "Anti-Hero - Acoustic Version",
@@ -1752,7 +1996,19 @@
             "lastfm": "Anti-Hero"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:anti_hero"
+          "genre_canonical_key": "family:anti_hero",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Lavender Haze - Felix Jaehn Remix",
@@ -1812,7 +2068,15 @@
             "lastfm": "Lavender Haze"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:lavender_haze"
+          "genre_canonical_key": "family:lavender_haze",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "Lavender Haze - Jungle Remix",
@@ -1870,7 +2134,15 @@
             "lastfm": "Lavender Haze"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:lavender_haze"
+          "genre_canonical_key": "family:lavender_haze",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "Lavender Haze - Snakehips Remix",
@@ -1928,7 +2200,15 @@
             "lastfm": "Lavender Haze"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:lavender_haze"
+          "genre_canonical_key": "family:lavender_haze",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "Lavender Haze - Tensnake Remix",
@@ -1986,7 +2266,15 @@
             "lastfm": "Lavender Haze"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:lavender_haze"
+          "genre_canonical_key": "family:lavender_haze",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         }
       ]
     },
@@ -2053,7 +2341,19 @@
             "lastfm": "Lavender Haze"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:lavender_haze_acoustic_version"
+          "genre_canonical_key": "family:lavender_haze_acoustic_version",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         }
       ]
     }

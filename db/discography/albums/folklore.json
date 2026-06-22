@@ -64,7 +64,15 @@
             "lastfm": "the lakes - bonus track"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_lakes_bonus_track"
+          "genre_canonical_key": "family:the_lakes_bonus_track",
+          "filter_tags": [
+            "solo",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "alternate_version": "medium:type_or_title"
+          }
         }
       ]
     },
@@ -104,7 +112,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:the_lakes"
+          "genre_canonical_key": "family:the_lakes",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "alternate_version": "medium:type_or_title"
+          }
         }
       ]
     },
@@ -171,7 +189,19 @@
             "lastfm": "betty"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:betty"
+          "genre_canonical_key": "family:betty",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "live",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "live": "high:type_title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "cardigan - cabin in candlelight version",
@@ -210,6 +240,16 @@
           "genre_canonical_key": "family:cardigan",
           "genre_query_titles": {
             "lastfm": "cardigan"
+          },
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "alternate_version": "medium:type_or_title"
           }
         }
       ]
@@ -252,7 +292,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:carolina_where_the_crawdads_sing_video_edition"
+          "genre_canonical_key": "family:carolina_where_the_crawdads_sing_video_edition",
+          "filter_tags": [
+            "solo",
+            "soundtrack"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "soundtrack": "high:title_album_or_section"
+          }
         },
         {
           "title": "Carolina - From The Motion Picture “Where The Crawdads Sing”",
@@ -286,7 +334,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:carolina_from_the_motion_picture_where_the_crawdads_sing"
+          "genre_canonical_key": "family:carolina_from_the_motion_picture_where_the_crawdads_sing",
+          "filter_tags": [
+            "solo",
+            "soundtrack"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "soundtrack": "high:title_album_or_section"
+          }
         }
       ]
     },
@@ -334,6 +390,14 @@
           "genre_canonical_key": "family:cardigan",
           "genre_query_titles": {
             "lastfm": "cardigan"
+          },
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
           }
         },
         {
@@ -397,7 +461,15 @@
             "lastfm": "exile (feat. Bon Iver)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:exile"
+          "genre_canonical_key": "family:exile",
+          "filter_tags": [
+            "feature",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "my tears ricochet",
@@ -457,7 +529,15 @@
             "lastfm": "my tears ricochet"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:my_tears_ricochet"
+          "genre_canonical_key": "family:my_tears_ricochet",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "seven",
@@ -517,7 +597,15 @@
             "lastfm": "seven"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:seven"
+          "genre_canonical_key": "family:seven",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "august",
@@ -551,7 +639,15 @@
           "genre_sources": {},
           "genre_raw_sources": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:august"
+          "genre_canonical_key": "family:august",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "this is me trying",
@@ -609,7 +705,15 @@
             "lastfm": "this is me trying"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:this_is_me_trying"
+          "genre_canonical_key": "family:this_is_me_trying",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "illicit affairs",
@@ -667,7 +771,15 @@
             "lastfm": "illicit affairs"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:illicit_affairs"
+          "genre_canonical_key": "family:illicit_affairs",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "invisible string",
@@ -725,7 +837,15 @@
             "lastfm": "invisible string"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:invisible_string"
+          "genre_canonical_key": "family:invisible_string",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "mirrorball",
@@ -785,7 +905,15 @@
             "lastfm": "mirrorball"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:mirrorball"
+          "genre_canonical_key": "family:mirrorball",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "mad woman",
@@ -843,7 +971,15 @@
             "lastfm": "mad woman"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:mad_woman"
+          "genre_canonical_key": "family:mad_woman",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "epiphany",
@@ -901,7 +1037,15 @@
             "lastfm": "epiphany"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:epiphany"
+          "genre_canonical_key": "family:epiphany",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "betty",
@@ -959,7 +1103,15 @@
             "lastfm": "betty"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:betty"
+          "genre_canonical_key": "family:betty",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "peace",
@@ -1017,7 +1169,15 @@
             "lastfm": "peace"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:peace"
+          "genre_canonical_key": "family:peace",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "hoax",
@@ -1075,7 +1235,15 @@
             "lastfm": "hoax"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:hoax"
+          "genre_canonical_key": "family:hoax",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "the 1",
@@ -1135,7 +1303,15 @@
             "lastfm": "the 1"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_1"
+          "genre_canonical_key": "family:the_1",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "the last great american dynasty",
@@ -1195,7 +1371,15 @@
             "lastfm": "the last great american dynasty"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_last_great_american_dynasty"
+          "genre_canonical_key": "family:the_last_great_american_dynasty",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         }
       ]
     },
@@ -1234,7 +1418,15 @@
           "genre_sources": {},
           "genre_raw_sources": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:august"
+          "genre_canonical_key": "family:august",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "betty - the long pond studio sessions",
@@ -1292,7 +1484,15 @@
             "lastfm": "betty"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:betty"
+          "genre_canonical_key": "family:betty",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "epiphany - the long pond studio sessions",
@@ -1350,7 +1550,15 @@
             "lastfm": "epiphany"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:epiphany"
+          "genre_canonical_key": "family:epiphany",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "hoax - the long pond studio sessions",
@@ -1408,7 +1616,15 @@
             "lastfm": "hoax"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:hoax"
+          "genre_canonical_key": "family:hoax",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "illicit affairs - the long pond studio sessions",
@@ -1466,7 +1682,15 @@
             "lastfm": "illicit affairs"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:illicit_affairs"
+          "genre_canonical_key": "family:illicit_affairs",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "invisible string - the long pond studio sessions",
@@ -1524,7 +1748,15 @@
             "lastfm": "invisible string"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:invisible_string"
+          "genre_canonical_key": "family:invisible_string",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "mad woman - the long pond studio sessions",
@@ -1582,7 +1814,15 @@
             "lastfm": "mad woman"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:mad_woman"
+          "genre_canonical_key": "family:mad_woman",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "mirrorball - the long pond studio sessions",
@@ -1640,7 +1880,15 @@
             "lastfm": "mirrorball"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:mirrorball"
+          "genre_canonical_key": "family:mirrorball",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "my tears ricochet - the long pond studio sessions",
@@ -1698,7 +1946,15 @@
             "lastfm": "my tears ricochet"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:my_tears_ricochet"
+          "genre_canonical_key": "family:my_tears_ricochet",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "peace - the long pond studio sessions",
@@ -1756,7 +2012,15 @@
             "lastfm": "peace"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:peace"
+          "genre_canonical_key": "family:peace",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "seven - the long pond studio sessions",
@@ -1814,7 +2078,15 @@
             "lastfm": "seven"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:seven"
+          "genre_canonical_key": "family:seven",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "the lakes - the long pond studio sessions",
@@ -1847,7 +2119,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:the_lakes"
+          "genre_canonical_key": "family:the_lakes",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "this is me trying - the long pond studio sessions",
@@ -1905,7 +2185,15 @@
             "lastfm": "this is me trying"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:this_is_me_trying"
+          "genre_canonical_key": "family:this_is_me_trying",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         }
       ]
     },
@@ -1953,6 +2241,14 @@
           "genre_canonical_key": "family:cardigan",
           "genre_query_titles": {
             "lastfm": "cardigan"
+          },
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
           }
         },
         {
@@ -1987,7 +2283,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:exile_feat_bon_iver"
+          "genre_canonical_key": "family:exile_feat_bon_iver",
+          "filter_tags": [
+            "collab",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "collab": "high:artists_or_featured_artists",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "the 1 - the long pond studio sessions",
@@ -2046,7 +2350,15 @@
             "lastfm": "the 1"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_1"
+          "genre_canonical_key": "family:the_1",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "the last great american dynasty - the long pond studio sessions",
@@ -2105,7 +2417,15 @@
             "lastfm": "the last great american dynasty"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_last_great_american_dynasty"
+          "genre_canonical_key": "family:the_last_great_american_dynasty",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         }
       ]
     }

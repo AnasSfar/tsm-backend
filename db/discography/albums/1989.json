@@ -67,7 +67,15 @@
             "lastfm": "Bad Blood"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:bad_blood"
+          "genre_canonical_key": "family:bad_blood",
+          "filter_tags": [
+            "collab",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "collab": "high:artists_or_featured_artists",
+            "alternate_version": "medium:type_or_title"
+          }
         }
       ]
     },
@@ -132,7 +140,15 @@
             "lastfm": "Wildest Dreams"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:wildest_dreams"
+          "genre_canonical_key": "family:wildest_dreams",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         }
       ]
     },
@@ -172,7 +188,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:all_you_had_to_do_was_stay"
+          "genre_canonical_key": "family:all_you_had_to_do_was_stay",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Bad Blood",
@@ -230,7 +254,15 @@
             "lastfm": "Bad Blood"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:bad_blood"
+          "genre_canonical_key": "family:bad_blood",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Blank Space",
@@ -267,7 +299,15 @@
           "genre_errors": {
             "lastfm": "LASTFM_API_KEY missing"
           },
-          "genre_canonical_key": "family:blank_space"
+          "genre_canonical_key": "family:blank_space",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Clean",
@@ -300,7 +340,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:clean"
+          "genre_canonical_key": "family:clean",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "How You Get The Girl",
@@ -333,7 +381,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:how_you_get_the_girl"
+          "genre_canonical_key": "family:how_you_get_the_girl",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "I Know Places",
@@ -366,7 +422,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:i_know_places"
+          "genre_canonical_key": "family:i_know_places",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "I Wish You Would",
@@ -399,7 +463,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:i_wish_you_would"
+          "genre_canonical_key": "family:i_wish_you_would",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "New Romantics",
@@ -454,7 +526,15 @@
             "lastfm": "New Romantics"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:new_romantics"
+          "genre_canonical_key": "family:new_romantics",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Out Of The Woods",
@@ -512,7 +592,15 @@
             "lastfm": "Out Of The Woods"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:out_of_the_woods"
+          "genre_canonical_key": "family:out_of_the_woods",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Shake It Off",
@@ -564,7 +652,15 @@
             "lastfm": "Shake It Off"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:shake_it_off"
+          "genre_canonical_key": "family:shake_it_off",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Style",
@@ -622,7 +718,15 @@
             "lastfm": "Style"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:style"
+          "genre_canonical_key": "family:style",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "This Love",
@@ -655,7 +759,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:this_love"
+          "genre_canonical_key": "family:this_love",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Welcome To New York",
@@ -713,7 +825,15 @@
             "lastfm": "Welcome To New York"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:welcome_to_new_york"
+          "genre_canonical_key": "family:welcome_to_new_york",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Wildest Dreams",
@@ -771,7 +891,15 @@
             "lastfm": "Wildest Dreams"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:wildest_dreams"
+          "genre_canonical_key": "family:wildest_dreams",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Wonderland",
@@ -804,7 +932,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:wonderland"
+          "genre_canonical_key": "family:wonderland",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "You Are In Love",
@@ -837,7 +973,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:you_are_in_love"
+          "genre_canonical_key": "family:you_are_in_love",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         }
       ]
     },
@@ -883,7 +1027,17 @@
           "genre_errors": {
             "lastfm": "LASTFM_API_KEY missing"
           },
-          "genre_canonical_key": "family:blank_space_voice_memo"
+          "genre_canonical_key": "family:blank_space_voice_memo",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "voice_memo"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "voice_memo": "high:title_or_section"
+          }
         },
         {
           "title": "I Know Places - Voice Memo",
@@ -918,7 +1072,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:i_know_places_voice_memo"
+          "genre_canonical_key": "family:i_know_places_voice_memo",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "voice_memo"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "voice_memo": "high:title_or_section"
+          }
         },
         {
           "title": "I Wish You Would - Voice Memo",
@@ -953,7 +1117,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:i_wish_you_would_voice_memo"
+          "genre_canonical_key": "family:i_wish_you_would_voice_memo",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "voice_memo"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "voice_memo": "high:title_or_section"
+          }
         }
       ]
     },
@@ -994,7 +1168,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:sweeter_than_fiction_from_one_chance_soundtrack"
+          "genre_canonical_key": "family:sweeter_than_fiction_from_one_chance_soundtrack",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "soundtrack"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "soundtrack": "high:title_album_or_section"
+          }
         }
       ]
     },
@@ -1082,7 +1266,17 @@
           "genre_errors": {
             "lastfm": "LASTFM_API_KEY missing"
           },
-          "genre_canonical_key": "family:blank_space_karaoke_version"
+          "genre_canonical_key": "family:blank_space_karaoke_version",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "karaoke"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "karaoke": "high:title_or_section"
+          }
         },
         {
           "title": "Shake It Off - Karaoke Version",
@@ -1135,7 +1329,17 @@
             "lastfm": "Shake It Off"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:shake_it_off_karaoke_version"
+          "genre_canonical_key": "family:shake_it_off_karaoke_version",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "karaoke"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "karaoke": "high:title_or_section"
+          }
         },
         {
           "title": "Style - Karaoke Version",
@@ -1194,7 +1398,17 @@
             "lastfm": "Style"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:style_karaoke_version"
+          "genre_canonical_key": "family:style_karaoke_version",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "karaoke"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "karaoke": "high:title_or_section"
+          }
         },
         {
           "title": "Wildest Dreams (Arr. Lawson for Harp)",
@@ -1227,7 +1441,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:wildest_dreams_arr_lawson_for_harp"
+          "genre_canonical_key": "family:wildest_dreams_arr_lawson_for_harp",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         }
       ]
     }

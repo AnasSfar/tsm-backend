@@ -66,7 +66,17 @@
             "lastfm": "willow"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:willow"
+          "genre_canonical_key": "family:willow",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "willow - moonlit witch version",
@@ -126,7 +136,17 @@
             "lastfm": "willow"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:willow"
+          "genre_canonical_key": "family:willow",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "alternate_version": "medium:type_or_title"
+          }
         }
       ]
     },
@@ -191,7 +211,15 @@
             "lastfm": "right where you left me - bonus track"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:right_where_you_left_me_bonus_track"
+          "genre_canonical_key": "family:right_where_you_left_me_bonus_track",
+          "filter_tags": [
+            "solo",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "it's time to go - bonus track",
@@ -224,7 +252,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:it_s_time_to_go_bonus_track"
+          "genre_canonical_key": "family:it_s_time_to_go_bonus_track",
+          "filter_tags": [
+            "solo",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "alternate_version": "medium:type_or_title"
+          }
         }
       ]
     },
@@ -289,7 +325,15 @@
             "lastfm": "willow"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:willow"
+          "genre_canonical_key": "family:willow",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "willow - dancing witch version (Elvira remix)",
@@ -349,7 +393,15 @@
             "lastfm": "willow"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:willow"
+          "genre_canonical_key": "family:willow",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         }
       ]
     },
@@ -414,7 +466,15 @@
             "lastfm": "willow"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:willow"
+          "genre_canonical_key": "family:willow",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "champagne problems",
@@ -472,7 +532,15 @@
             "lastfm": "champagne problems"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:champagne_problems"
+          "genre_canonical_key": "family:champagne_problems",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "gold rush",
@@ -530,7 +598,15 @@
             "lastfm": "gold rush"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:gold_rush"
+          "genre_canonical_key": "family:gold_rush",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "tolerate it",
@@ -588,7 +664,15 @@
             "lastfm": "tolerate it"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:tolerate_it"
+          "genre_canonical_key": "family:tolerate_it",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "no body, no crime (feat. HAIM)",
@@ -649,7 +733,15 @@
             "lastfm": "no body, no crime (feat. HAIM)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:no_body_no_crime"
+          "genre_canonical_key": "family:no_body_no_crime",
+          "filter_tags": [
+            "feature",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "happiness",
@@ -707,7 +799,15 @@
             "lastfm": "happiness"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:happiness"
+          "genre_canonical_key": "family:happiness",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "dorothea",
@@ -765,7 +865,15 @@
             "lastfm": "dorothea"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:dorothea"
+          "genre_canonical_key": "family:dorothea",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "coney island (feat. The National)",
@@ -826,7 +934,15 @@
             "lastfm": "coney island (feat. The National)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:coney_island"
+          "genre_canonical_key": "family:coney_island",
+          "filter_tags": [
+            "feature",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "ivy",
@@ -884,7 +1000,15 @@
             "lastfm": "ivy"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:ivy"
+          "genre_canonical_key": "family:ivy",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "cowboy like me",
@@ -942,7 +1066,15 @@
             "lastfm": "cowboy like me"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:cowboy_like_me"
+          "genre_canonical_key": "family:cowboy_like_me",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "long story short",
@@ -1000,7 +1132,15 @@
             "lastfm": "long story short"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:long_story_short"
+          "genre_canonical_key": "family:long_story_short",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "marjorie",
@@ -1058,7 +1198,15 @@
             "lastfm": "marjorie"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:marjorie"
+          "genre_canonical_key": "family:marjorie",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "closure",
@@ -1116,7 +1264,15 @@
             "lastfm": "closure"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:closure"
+          "genre_canonical_key": "family:closure",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "evermore (feat. Bon Iver)",
@@ -1177,7 +1333,15 @@
             "lastfm": "evermore (feat. Bon Iver)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:evermore"
+          "genre_canonical_key": "family:evermore",
+          "filter_tags": [
+            "feature",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "'tis the damn season",
@@ -1210,7 +1374,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:tis_the_damn_season"
+          "genre_canonical_key": "family:tis_the_damn_season",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         }
       ]
     }

@@ -42,7 +42,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:castles_crumbling"
+          "genre_canonical_key": "family:castles_crumbling",
+          "filter_tags": [
+            "feature",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
         },
         {
           "title": "Electric Touch (feat. Fall Out Boy) (Taylor's Version) (From The Vault)",
@@ -78,7 +88,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:electric_touch"
+          "genre_canonical_key": "family:electric_touch",
+          "filter_tags": [
+            "feature",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
         },
         {
           "title": "Foolish One (Taylor's Version) (From The Vault)",
@@ -111,7 +131,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:foolish_one"
+          "genre_canonical_key": "family:foolish_one",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
         },
         {
           "title": "I Can See You (Taylor's Version) (From The Vault)",
@@ -144,7 +176,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:i_can_see_you"
+          "genre_canonical_key": "family:i_can_see_you",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
         },
         {
           "title": "Timeless (Taylor's Version) (From The Vault)",
@@ -177,7 +221,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:timeless"
+          "genre_canonical_key": "family:timeless",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
         },
         {
           "title": "When Emma Falls in Love (Taylor's Version) (From The Vault)",
@@ -210,7 +266,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:when_emma_falls_in_love"
+          "genre_canonical_key": "family:when_emma_falls_in_love",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
         }
       ]
     },
@@ -250,7 +318,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:mine"
+          "genre_canonical_key": "family:mine",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Sparks Fly (Taylor's Version)",
@@ -283,7 +363,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:sparks_fly"
+          "genre_canonical_key": "family:sparks_fly",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Back To December (Taylor's Version)",
@@ -341,7 +433,19 @@
             "lastfm": "Back To December"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:back_to_december"
+          "genre_canonical_key": "family:back_to_december",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Speak Now (Taylor's Version)",
@@ -374,7 +478,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:speak_now"
+          "genre_canonical_key": "family:speak_now",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Dear John (Taylor's Version)",
@@ -407,7 +523,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:dear_john"
+          "genre_canonical_key": "family:dear_john",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Mean (Taylor's Version)",
@@ -440,7 +568,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:mean"
+          "genre_canonical_key": "family:mean",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "The Story Of Us (Taylor's Version)",
@@ -473,7 +613,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:the_story_of_us"
+          "genre_canonical_key": "family:the_story_of_us",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Never Grow Up (Taylor's Version)",
@@ -506,7 +658,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:never_grow_up"
+          "genre_canonical_key": "family:never_grow_up",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Enchanted (Taylor's Version)",
@@ -564,7 +728,19 @@
             "lastfm": "Enchanted"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:enchanted"
+          "genre_canonical_key": "family:enchanted",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Better Than Revenge (Taylor's Version)",
@@ -622,7 +798,19 @@
             "lastfm": "Better Than Revenge"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:better_than_revenge"
+          "genre_canonical_key": "family:better_than_revenge",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Innocent (Taylor's Version)",
@@ -655,7 +843,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:innocent"
+          "genre_canonical_key": "family:innocent",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Haunted (Taylor's Version)",
@@ -688,7 +888,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:haunted"
+          "genre_canonical_key": "family:haunted",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Last Kiss (Taylor's Version)",
@@ -721,7 +933,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:last_kiss"
+          "genre_canonical_key": "family:last_kiss",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Long Live (Taylor's Version)",
@@ -754,7 +978,21 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:long_live"
+          "genre_canonical_key": "family:long_live",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "live",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "live": "high:type_title_or_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Ours (Taylor's Version)",
@@ -787,7 +1025,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:ours"
+          "genre_canonical_key": "family:ours",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Superman (Taylor's Version)",
@@ -820,7 +1070,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:superman"
+          "genre_canonical_key": "family:superman",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         }
       ]
     }

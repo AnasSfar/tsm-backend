@@ -286,6 +286,8 @@ def load_tracks_from_discography() -> list[dict]:
                 "appearances": [],
                 "historical_track_ids": historical_ids,
                 "release_date": track.get("release_date") or None,
+                "filter_tags": track.get("filter_tags") or [],
+                "filter_tag_sources": track.get("filter_tag_sources") or {},
             }
 
     return list(seen.values())
@@ -313,6 +315,8 @@ def _read_history_csv(path: Path, by_date: dict) -> None:
             by_date[date_value][track_id] = {
                 "streams": streams,
                 "daily_streams": daily_streams,
+                "estimated": str(row.get("estimated") or "").strip().lower() in {"1", "true", "yes", "y"},
+                "estimated_reason": (row.get("estimated_reason") or "").strip(),
             }
 
 
@@ -356,6 +360,19 @@ def dedupe_songs_for_site(
 ) -> tuple[list[dict], dict[str, str]]:
     counts = history_count_by_track(raw_history_by_date)
 
+    def merge_filter_tags(group: list[dict]) -> tuple[list[str], dict]:
+        tags = []
+        seen_tags = set()
+        sources = {}
+        for song in group:
+            for tag in song.get("filter_tags") or []:
+                if tag in seen_tags:
+                    continue
+                seen_tags.add(tag)
+                tags.append(tag)
+            sources.update(song.get("filter_tag_sources") or {})
+        return tags, sources
+
     groups: dict[str, list[dict]] = defaultdict(list)
     for song in songs:
         groups[song["title_key"]].append(song)
@@ -394,6 +411,7 @@ def dedupe_songs_for_site(
 
         kept["appearances"] = merged_appearances
         kept["merged_track_ids"] = merged_track_ids
+        kept["filter_tags"], kept["filter_tag_sources"] = merge_filter_tags(group)
 
         album_apps = [a for a in merged_appearances if a.get("source_type") == "album"]
         primary = album_apps[0] if album_apps else (merged_appearances[0] if merged_appearances else None)
@@ -448,6 +466,8 @@ def merge_history_by_kept_track(
             merged[date_value][kept_track_id] = {
                 "streams": best.get("streams"),
                 "daily_streams": best.get("daily_streams"),
+                "estimated": bool(best.get("estimated")),
+                "estimated_reason": best.get("estimated_reason") or "",
             }
 
     return merged
@@ -485,6 +505,8 @@ def enrich_history_with_milestones(
             enriched[date_value][track_id] = {
                 "streams": streams,
                 "daily_streams": daily_streams,
+                "estimated": bool(values.get("estimated")),
+                "estimated_reason": values.get("estimated_reason") or "",
                 "current_milestone": curr_ms,
                 "current_milestone_label": format_milestone_label(curr_ms),
                 "next_milestone": nxt_ms,
@@ -1341,6 +1363,7 @@ def export_for_web(stats_date: str | None = None, *, dry_run: bool = False) -> N
         if day:
             song["streams"] = day.get("streams")
             song["daily_streams"] = day.get("daily_streams")
+            song["estimated"] = bool(day.get("estimated"))
 
     deduped_songs = add_ranks(deduped_songs)
     songs_by_id = {song["track_id"]: song for song in deduped_songs}
@@ -1472,10 +1495,12 @@ def export_for_web(stats_date: str | None = None, *, dry_run: bool = False) -> N
 
     for date_str in history_dates_to_write:
         day_data = merged_history[date_str]
-        compact = {
-            tid: {"s": v["streams"], "d": v["daily_streams"]}
-            for tid, v in day_data.items()
-        }
+        compact = {}
+        for tid, v in day_data.items():
+            point = {"s": v["streams"], "d": v["daily_streams"]}
+            if v.get("estimated"):
+                point["e"] = True
+            compact[tid] = point
         (SITE_HISTORY_DIR / f"{date_str}.json").write_text(
             json.dumps(compact, ensure_ascii=False), encoding="utf-8"
         )

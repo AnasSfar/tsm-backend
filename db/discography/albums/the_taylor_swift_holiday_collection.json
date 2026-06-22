@@ -39,7 +39,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:christmas_tree_farm"
+          "genre_canonical_key": "family:christmas_tree_farm",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "christmas"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "christmas": "high:title_album_or_section"
+          }
         },
         {
           "title": "Christmas Tree Farm - Old Timey Version",
@@ -72,7 +84,21 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:christmas_tree_farm"
+          "genre_canonical_key": "family:christmas_tree_farm",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "alternate_version",
+            "christmas"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "alternate_version": "medium:type_or_title",
+            "christmas": "high:title_album_or_section"
+          }
         },
         {
           "title": "Christmas Tree Farm - Recorded Live at the 2019 iHeartRadio Jingle Ball",
@@ -105,7 +131,21 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:christmas_tree_farm"
+          "genre_canonical_key": "family:christmas_tree_farm",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "live",
+            "christmas"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section",
+            "christmas": "high:title_album_or_section"
+          }
         }
       ]
     },
@@ -145,7 +185,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:christmas_must_be_something_more"
+          "genre_canonical_key": "family:christmas_must_be_something_more",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "christmas"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "christmas": "high:title_album_or_section"
+          }
         },
         {
           "title": "Christmases When You Were Mine",
@@ -178,7 +228,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:christmases_when_you_were_mine"
+          "genre_canonical_key": "family:christmases_when_you_were_mine",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "christmas"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "christmas": "high:title_album_or_section"
+          }
         },
         {
           "title": "Last Christmas",
@@ -211,7 +271,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:last_christmas"
+          "genre_canonical_key": "family:last_christmas",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "christmas"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "christmas": "high:title_album_or_section"
+          }
         },
         {
           "title": "Santa Baby",
@@ -244,7 +314,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:santa_baby"
+          "genre_canonical_key": "family:santa_baby",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "christmas"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "christmas": "high:title_album_or_section"
+          }
         },
         {
           "title": "Silent Night",
@@ -277,7 +357,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:silent_night"
+          "genre_canonical_key": "family:silent_night",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "christmas"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "christmas": "high:title_album_or_section"
+          }
         },
         {
           "title": "White Christmas",
@@ -310,7 +400,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:white_christmas"
+          "genre_canonical_key": "family:white_christmas",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "christmas"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "christmas": "high:title_album_or_section"
+          }
         }
       ]
     }

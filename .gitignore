@@ -125,6 +125,7 @@ collectors\spotify\streams\history
 twitter_session.json
 log
 *.old
+*.track-flags-*.bak
 LOCK
 f_*
 

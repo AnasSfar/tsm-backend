@@ -68,7 +68,15 @@
             "lastfm": "Fortnight (feat. Post Malone)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:fortnight"
+          "genre_canonical_key": "family:fortnight",
+          "filter_tags": [
+            "feature",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "The Tortured Poets Department",
@@ -126,7 +134,15 @@
             "lastfm": "The Tortured Poets Department"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_tortured_poets_department"
+          "genre_canonical_key": "family:the_tortured_poets_department",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "My Boy Only Breaks His Favorite Toys",
@@ -184,7 +200,15 @@
             "lastfm": "My Boy Only Breaks His Favorite Toys"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:my_boy_only_breaks_his_favorite_toys"
+          "genre_canonical_key": "family:my_boy_only_breaks_his_favorite_toys",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Down Bad",
@@ -242,7 +266,15 @@
             "lastfm": "Down Bad"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:down_bad"
+          "genre_canonical_key": "family:down_bad",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "So Long, London",
@@ -300,7 +332,15 @@
             "lastfm": "So Long, London"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:so_long_london"
+          "genre_canonical_key": "family:so_long_london",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "But Daddy I Love Him",
@@ -360,7 +400,15 @@
             "lastfm": "But Daddy I Love Him"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:but_daddy_i_love_him"
+          "genre_canonical_key": "family:but_daddy_i_love_him",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Fresh Out The Slammer",
@@ -418,7 +466,15 @@
             "lastfm": "Fresh Out The Slammer"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:fresh_out_the_slammer"
+          "genre_canonical_key": "family:fresh_out_the_slammer",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Florida!!! (feat. Florence + The Machine)",
@@ -479,7 +535,15 @@
             "lastfm": "Florida!!! (feat. Florence + The Machine)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:florida"
+          "genre_canonical_key": "family:florida",
+          "filter_tags": [
+            "feature",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Guilty as Sin?",
@@ -537,7 +601,15 @@
             "lastfm": "Guilty as Sin?"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:guilty_as_sin"
+          "genre_canonical_key": "family:guilty_as_sin",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Who's Afraid of Little Old Me?",
@@ -570,7 +642,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:who_s_afraid_of_little_old_me"
+          "genre_canonical_key": "family:who_s_afraid_of_little_old_me",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "I Can Fix Him (No Really I Can)",
@@ -628,7 +708,15 @@
             "lastfm": "I Can Fix Him (No Really I Can)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:i_can_fix_him_no_really_i_can"
+          "genre_canonical_key": "family:i_can_fix_him_no_really_i_can",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "loml",
@@ -686,7 +774,15 @@
             "lastfm": "loml"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:loml"
+          "genre_canonical_key": "family:loml",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "I Can Do It With a Broken Heart",
@@ -744,7 +840,15 @@
             "lastfm": "I Can Do It With a Broken Heart"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:i_can_do_it_with_a_broken_heart"
+          "genre_canonical_key": "family:i_can_do_it_with_a_broken_heart",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "The Smallest Man Who Ever Lived",
@@ -802,7 +906,15 @@
             "lastfm": "The Smallest Man Who Ever Lived"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_smallest_man_who_ever_lived"
+          "genre_canonical_key": "family:the_smallest_man_who_ever_lived",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "The Alchemy",
@@ -860,7 +972,15 @@
             "lastfm": "The Alchemy"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_alchemy"
+          "genre_canonical_key": "family:the_alchemy",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Clara Bow",
@@ -915,7 +1035,15 @@
             "lastfm": "Clara Bow"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:clara_bow"
+          "genre_canonical_key": "family:clara_bow",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         }
       ]
     },
@@ -978,7 +1106,13 @@
             "lastfm": "The Black Dog"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_black_dog"
+          "genre_canonical_key": "family:the_black_dog",
+          "filter_tags": [
+            "solo"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit"
+          }
         },
         {
           "title": "imgonnagetyouback",
@@ -1036,7 +1170,13 @@
             "lastfm": "imgonnagetyouback"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:imgonnagetyouback"
+          "genre_canonical_key": "family:imgonnagetyouback",
+          "filter_tags": [
+            "solo"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit"
+          }
         },
         {
           "title": "The Albatross",
@@ -1094,7 +1234,13 @@
             "lastfm": "The Albatross"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_albatross"
+          "genre_canonical_key": "family:the_albatross",
+          "filter_tags": [
+            "solo"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit"
+          }
         },
         {
           "title": "Chloe or Sam or Sophia or Marcus",
@@ -1152,7 +1298,13 @@
             "lastfm": "Chloe or Sam or Sophia or Marcus"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:chloe_or_sam_or_sophia_or_marcus"
+          "genre_canonical_key": "family:chloe_or_sam_or_sophia_or_marcus",
+          "filter_tags": [
+            "solo"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit"
+          }
         },
         {
           "title": "How Did It End?",
@@ -1210,7 +1362,13 @@
             "lastfm": "How Did It End?"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:how_did_it_end"
+          "genre_canonical_key": "family:how_did_it_end",
+          "filter_tags": [
+            "solo"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit"
+          }
         },
         {
           "title": "So High School",
@@ -1268,7 +1426,13 @@
             "lastfm": "So High School"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:so_high_school"
+          "genre_canonical_key": "family:so_high_school",
+          "filter_tags": [
+            "solo"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit"
+          }
         },
         {
           "title": "I Hate It Here",
@@ -1326,7 +1490,13 @@
             "lastfm": "I Hate It Here"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:i_hate_it_here"
+          "genre_canonical_key": "family:i_hate_it_here",
+          "filter_tags": [
+            "solo"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit"
+          }
         },
         {
           "title": "thanK you aIMee",
@@ -1384,7 +1554,13 @@
             "lastfm": "thanK you aIMee"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:thank_you_aimee"
+          "genre_canonical_key": "family:thank_you_aimee",
+          "filter_tags": [
+            "solo"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit"
+          }
         },
         {
           "title": "I Look in People's Windows",
@@ -1442,7 +1618,13 @@
             "lastfm": "I Look in People's Windows"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:i_look_in_people_s_windows"
+          "genre_canonical_key": "family:i_look_in_people_s_windows",
+          "filter_tags": [
+            "solo"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit"
+          }
         },
         {
           "title": "The Prophecy",
@@ -1500,7 +1682,13 @@
             "lastfm": "The Prophecy"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_prophecy"
+          "genre_canonical_key": "family:the_prophecy",
+          "filter_tags": [
+            "solo"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit"
+          }
         },
         {
           "title": "Cassandra",
@@ -1558,7 +1746,13 @@
             "lastfm": "Cassandra"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:cassandra"
+          "genre_canonical_key": "family:cassandra",
+          "filter_tags": [
+            "solo"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit"
+          }
         },
         {
           "title": "Peter",
@@ -1616,7 +1810,13 @@
             "lastfm": "Peter"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:peter"
+          "genre_canonical_key": "family:peter",
+          "filter_tags": [
+            "solo"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit"
+          }
         },
         {
           "title": "The Bolter",
@@ -1674,7 +1874,13 @@
             "lastfm": "The Bolter"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_bolter"
+          "genre_canonical_key": "family:the_bolter",
+          "filter_tags": [
+            "solo"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit"
+          }
         },
         {
           "title": "Robin",
@@ -1732,7 +1938,13 @@
             "lastfm": "Robin"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:robin"
+          "genre_canonical_key": "family:robin",
+          "filter_tags": [
+            "solo"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit"
+          }
         },
         {
           "title": "The Manuscript",
@@ -1790,7 +2002,13 @@
             "lastfm": "The Manuscript"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_manuscript"
+          "genre_canonical_key": "family:the_manuscript",
+          "filter_tags": [
+            "solo"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit"
+          }
         }
       ]
     },
@@ -1859,7 +2077,15 @@
             "lastfm": "Fortnight (feat. Post Malone)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:fortnight"
+          "genre_canonical_key": "family:fortnight",
+          "filter_tags": [
+            "collab",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "collab": "high:artists_or_featured_artists",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "I Can Do It With a Broken Heart - Dombresky Remix",
@@ -1917,7 +2143,15 @@
             "lastfm": "I Can Do It With a Broken Heart"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:i_can_do_it_with_a_broken_heart"
+          "genre_canonical_key": "family:i_can_do_it_with_a_broken_heart",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "I Can Do It With a Broken Heart - Instrumental",
@@ -1975,7 +2209,15 @@
             "lastfm": "I Can Do It With a Broken Heart"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:i_can_do_it_with_a_broken_heart"
+          "genre_canonical_key": "family:i_can_do_it_with_a_broken_heart",
+          "filter_tags": [
+            "solo",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Fortnight (feat. Post Malone) - Acoustic Version",
@@ -2036,7 +2278,17 @@
             "lastfm": "Fortnight (feat. Post Malone)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:fortnight"
+          "genre_canonical_key": "family:fortnight",
+          "filter_tags": [
+            "collab",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "collab": "high:artists_or_featured_artists",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Fortnight (feat. Post Malone) - Cults Remix",
@@ -2097,7 +2349,15 @@
             "lastfm": "Fortnight (feat. Post Malone)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:fortnight"
+          "genre_canonical_key": "family:fortnight",
+          "filter_tags": [
+            "collab",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "collab": "high:artists_or_featured_artists",
+            "remix": "high:type_or_title"
+          }
         }
       ]
     }

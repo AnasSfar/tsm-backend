@@ -39,7 +39,21 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:red"
+          "genre_canonical_key": "family:red",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "acoustic",
+            "demo",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "acoustic": "high:title_or_section",
+            "demo": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Treacherous - Original Demo Recording",
@@ -72,7 +86,21 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:treacherous"
+          "genre_canonical_key": "family:treacherous",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "acoustic",
+            "demo",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "acoustic": "high:title_or_section",
+            "demo": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "State Of Grace - Acoustic",
@@ -105,7 +133,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:state_of_grace"
+          "genre_canonical_key": "family:state_of_grace",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         }
       ]
     },
@@ -145,7 +185,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:state_of_grace"
+          "genre_canonical_key": "family:state_of_grace",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Red",
@@ -178,7 +226,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:red"
+          "genre_canonical_key": "family:red",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Treacherous",
@@ -211,7 +267,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:treacherous"
+          "genre_canonical_key": "family:treacherous",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "I Knew You Were Trouble.",
@@ -269,7 +333,15 @@
             "lastfm": "I Knew You Were Trouble (Taylor's Version)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:i_knew_you_were_trouble"
+          "genre_canonical_key": "family:i_knew_you_were_trouble",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "All Too Well",
@@ -302,7 +374,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:all_too_well"
+          "genre_canonical_key": "family:all_too_well",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "22",
@@ -360,7 +440,15 @@
             "lastfm": "22"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:22"
+          "genre_canonical_key": "family:22",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "I Almost Do",
@@ -393,7 +481,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:i_almost_do"
+          "genre_canonical_key": "family:i_almost_do",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "We Are Never Ever Getting Back Together",
@@ -451,7 +547,15 @@
             "lastfm": "We Are Never Ever Getting Back Together"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:we_are_never_ever_getting_back_together"
+          "genre_canonical_key": "family:we_are_never_ever_getting_back_together",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Stay Stay Stay",
@@ -484,7 +588,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:stay_stay_stay"
+          "genre_canonical_key": "family:stay_stay_stay",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "The Last Time",
@@ -517,7 +629,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:the_last_time"
+          "genre_canonical_key": "family:the_last_time",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Holy Ground",
@@ -550,7 +670,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:holy_ground"
+          "genre_canonical_key": "family:holy_ground",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Sad Beautiful Tragic",
@@ -583,7 +711,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:sad_beautiful_tragic"
+          "genre_canonical_key": "family:sad_beautiful_tragic",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "The Lucky One",
@@ -616,7 +752,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:the_lucky_one"
+          "genre_canonical_key": "family:the_lucky_one",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Everything Has Changed",
@@ -649,7 +793,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:everything_has_changed"
+          "genre_canonical_key": "family:everything_has_changed",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Starlight",
@@ -682,7 +834,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:starlight"
+          "genre_canonical_key": "family:starlight",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Begin Again",
@@ -715,7 +875,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:begin_again"
+          "genre_canonical_key": "family:begin_again",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Come Back...Be Here",
@@ -748,7 +916,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:come_back_be_here"
+          "genre_canonical_key": "family:come_back_be_here",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Girl At Home",
@@ -781,7 +957,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:girl_at_home"
+          "genre_canonical_key": "family:girl_at_home",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         }
       ]
     },
@@ -823,7 +1007,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:ronan"
+          "genre_canonical_key": "family:ronan",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         }
       ]
     },
@@ -865,7 +1057,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:all_too_well"
+          "genre_canonical_key": "family:all_too_well",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "All Too Well (Sad Girl Autumn Version) - Recorded at Long Pond Studios",
@@ -899,7 +1101,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:all_too_well"
+          "genre_canonical_key": "family:all_too_well",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "alternate_version": "medium:type_or_title"
+          }
         }
       ]
     },
@@ -940,7 +1152,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:safe_sound_from_the_hunger_games_soundtrack"
+          "genre_canonical_key": "family:safe_sound_from_the_hunger_games_soundtrack",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "soundtrack"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "soundtrack": "high:title_album_or_section"
+          }
         }
       ]
     },
@@ -985,7 +1207,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:babe"
+          "genre_canonical_key": "family:babe",
+          "filter_tags": [
+            "feature",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "standalone": "medium:section_or_type"
+          }
         }
       ]
     },
@@ -1027,7 +1257,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:the_last_time_karaoke_version"
+          "genre_canonical_key": "family:the_last_time_karaoke_version",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "karaoke"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "karaoke": "high:title_or_section"
+          }
         },
         {
           "title": "The Moment I Knew",
@@ -1061,7 +1301,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:the_moment_i_knew"
+          "genre_canonical_key": "family:the_moment_i_knew",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         }
       ]
     }

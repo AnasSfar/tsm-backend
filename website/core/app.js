@@ -293,7 +293,8 @@ async function loadData(options = {}) {
     s._searchText = normalize([
       s.title, s.title_clean, s.primary_album, s.primary_artist,
       Array.isArray(s.artists) ? s.artists.join(" ") : (s.primary_artist || ""),
-      s.version_tag, s.edition, s.type
+      s.version_tag, s.edition, s.type,
+      Array.isArray(s.filter_tags) ? s.filter_tags.join(" ") : ""
     ].join(" "));
   });
 

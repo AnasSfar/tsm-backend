@@ -1,8 +1,9 @@
 """TayBoard Albums — weekly album chart.
 
-Source des données : db/swift_top_songs_history.csv (Spotify + Apple Music units
-calculés pour toutes les chansons par swift_top_100.py). Les units sont groupées
-par album via la discographie, hors extras/live/remixes/track-by-track.
+Source des données : db/swift_top_100_not_combined_songs_history.csv
+(Spotify + Apple Music units calculés pour chaque version par swift_top_100.py).
+Les units sont groupées par album via la discographie, hors extras/live/remixes/
+track-by-track.
 
 Outputs:
 - db/swift_top_albums_history.csv
@@ -41,7 +42,7 @@ from core.data_paths import WEB_EXPORT_DATA_DIR, billboard_snapshot_dir  # noqa:
 _DB_DIR = _REPO_ROOT / "db"
 _SITE_DATA_DIR = WEB_EXPORT_DATA_DIR
 
-SWIFT_TOP_SONGS_HISTORY_CSV = _DB_DIR / "swift_top_songs_history.csv"
+SWIFT_TOP_SONGS_HISTORY_CSV = _DB_DIR / "swift_top_100_not_combined_songs_history.csv"
 SWIFT_TOP_ALBUMS_HISTORY_CSV = _DB_DIR / "swift_top_albums_history.csv"
 CHART_SLUG = "swift_top_albums"
 CHART_TITLE = "TayBoard Albums"
@@ -495,6 +496,7 @@ def _build_album_week(
     chart_date: str,
     song_rows: list[dict],
     track_to_album: dict[str, AlbumMeta],
+    albums_by_id: dict[str, AlbumMeta],
     logger: Logger,
 ) -> tuple[dict[str, dict], dict[str, int]]:
     """Aggregate song rows for chart_date into album-level streams.
@@ -552,8 +554,10 @@ def _build_album_week(
         logger.log(f"  unmatched      : {len(unmatched_track_ids)} tracks not linked to any album")
 
     scored = sorted(album_total_units.items(), key=lambda kv: kv[1], reverse=True)
-    points_by_album = {
-        aid: {
+    points_by_album = {}
+    for aid, total_units in scored:
+        meta = albums_by_id.get(aid)
+        points_by_album[aid] = {
             "album_id": aid,
             "weekly_streams": album_weekly_streams.get(aid, 0),
             "units_am": album_units_am.get(aid, 0),
@@ -563,10 +567,8 @@ def _build_album_week(
             "units_charts": album_units_charts.get(aid, 0),
             "units_surplus": album_units_surplus.get(aid, 0),
             "total_units": total_units,
-            "track_count": len(album_track_ids.get(aid, set())),
+            "track_count": len(meta.track_ids) if meta else len(album_track_ids.get(aid, set())),
         }
-        for aid, total_units in scored
-    }
     rank_by_album = {aid: i for i, (aid, _) in enumerate(scored, 1)}
 
     logger.log(f"  top            : {len(scored)} albums ranked")
@@ -756,6 +758,7 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool, skip_r
         chart_date=chart_date_str,
         song_rows=song_rows,
         track_to_album=track_to_album,
+        albums_by_id=albums_by_id,
         logger=logger,
     )
 
@@ -776,6 +779,7 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool, skip_r
                 chart_date=prev_date_str,
                 song_rows=song_rows,
                 track_to_album=track_to_album,
+                albums_by_id=albums_by_id,
                 logger=logger,
             )
         else:

@@ -39,7 +39,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:breathe"
+          "genre_canonical_key": "family:breathe",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "Come In With The Rain",
@@ -72,7 +82,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:come_in_with_the_rain"
+          "genre_canonical_key": "family:come_in_with_the_rain",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "Fearless",
@@ -105,7 +125,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:fearless"
+          "genre_canonical_key": "family:fearless",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "Fifteen",
@@ -138,7 +168,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:fifteen"
+          "genre_canonical_key": "family:fifteen",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "Forever & Always - Piano Version",
@@ -171,7 +211,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:forever_always"
+          "genre_canonical_key": "family:forever_always",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Hey Stephen",
@@ -204,7 +256,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:hey_stephen"
+          "genre_canonical_key": "family:hey_stephen",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "Jump Then Fall",
@@ -237,7 +299,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:jump_then_fall"
+          "genre_canonical_key": "family:jump_then_fall",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "Love Story",
@@ -295,7 +367,17 @@
             "lastfm": "Love Story"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:love_story"
+          "genre_canonical_key": "family:love_story",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "SuperStar",
@@ -328,7 +410,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:superstar"
+          "genre_canonical_key": "family:superstar",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "Tell Me Why",
@@ -361,7 +453,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:tell_me_why"
+          "genre_canonical_key": "family:tell_me_why",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "The Other Side Of The Door",
@@ -394,7 +496,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:the_other_side_of_the_door"
+          "genre_canonical_key": "family:the_other_side_of_the_door",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "Untouchable",
@@ -427,7 +539,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:untouchable"
+          "genre_canonical_key": "family:untouchable",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "White Horse",
@@ -460,7 +582,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:white_horse"
+          "genre_canonical_key": "family:white_horse",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "You Belong With Me",
@@ -518,7 +650,17 @@
             "lastfm": "You Belong With Me"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:you_belong_with_me"
+          "genre_canonical_key": "family:you_belong_with_me",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "You're Not Sorry",
@@ -551,7 +693,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:you_re_not_sorry"
+          "genre_canonical_key": "family:you_re_not_sorry",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
         }
       ]
     },
@@ -616,7 +768,15 @@
             "lastfm": "Love Story"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:love_story"
+          "genre_canonical_key": "family:love_story",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "You're Not Sorry - CSI Remix",
@@ -649,7 +809,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:you_re_not_sorry"
+          "genre_canonical_key": "family:you_re_not_sorry",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         }
       ]
     },
@@ -689,7 +857,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:change"
+          "genre_canonical_key": "family:change",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "Forever & Always",
@@ -722,7 +898,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:forever_always"
+          "genre_canonical_key": "family:forever_always",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "The Best Day",
@@ -755,7 +939,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:the_best_day"
+          "genre_canonical_key": "family:the_best_day",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "The Way I Loved You",
@@ -788,7 +980,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:the_way_i_loved_you"
+          "genre_canonical_key": "family:the_way_i_loved_you",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         }
       ]
     },
@@ -830,7 +1030,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:today_was_a_fairytale"
+          "genre_canonical_key": "family:today_was_a_fairytale",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         }
       ]
     },
@@ -872,7 +1080,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:change_live_from_clear_channel_stripped_2008"
+          "genre_canonical_key": "family:change_live_from_clear_channel_stripped_2008",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         },
         {
           "title": "Fearless - Live From Clear Channel Stripped 2008",
@@ -906,7 +1124,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:fearless_live_from_clear_channel_stripped_2008"
+          "genre_canonical_key": "family:fearless_live_from_clear_channel_stripped_2008",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         },
         {
           "title": "Hey Stephen - Commentary",
@@ -940,7 +1168,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:hey_stephen_commentary"
+          "genre_canonical_key": "family:hey_stephen_commentary",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "Love Story - Instrumental with BGV",
@@ -974,7 +1210,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:love_story_instrumental_with_bgv"
+          "genre_canonical_key": "family:love_story_instrumental_with_bgv",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "Love Story - J Stax Radio Mix",
@@ -1007,7 +1251,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:love_story_j_stax_radio_mix"
+          "genre_canonical_key": "family:love_story_j_stax_radio_mix",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "Love Story - Live From Clear Channel Stripped 2008",
@@ -1066,7 +1320,17 @@
             "lastfm": "Love Story"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:love_story_live_from_clear_channel_stripped_2008"
+          "genre_canonical_key": "family:love_story_live_from_clear_channel_stripped_2008",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         },
         {
           "title": "Love Story - Pop Mix",
@@ -1100,7 +1364,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:love_story_pop_mix"
+          "genre_canonical_key": "family:love_story_pop_mix",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "Today Was A Fairytale - US Version",
@@ -1133,7 +1407,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:today_was_a_fairytale_us_version"
+          "genre_canonical_key": "family:today_was_a_fairytale_us_version",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Untouchable - Live From Clear Channel Stripped 2008",
@@ -1167,7 +1451,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:untouchable_live_from_clear_channel_stripped_2008"
+          "genre_canonical_key": "family:untouchable_live_from_clear_channel_stripped_2008",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         }
       ]
     }

@@ -159,6 +159,8 @@ NOT_FOUND_STREAK_PATH = DATA_DIR / "not_found_streak.json"
 MAX_NOT_FOUND_DAYS = 7
 
 MAX_DAILY_INCREASE = 50_000_000
+MAX_ESTIMATED_STREAM_GAP_DAYS = 2
+ESTIMATED_MISSING_DAY_REASON = "missing_daily_gap"
 NEW_RELEASE_RETRY_ATTEMPTS = int(os.getenv("NEW_RELEASE_RETRY_ATTEMPTS", "12"))
 NEW_RELEASE_RETRY_SLEEP_SECONDS = int(os.getenv("NEW_RELEASE_RETRY_SLEEP_SECONDS", "10"))
 
@@ -881,11 +883,170 @@ def repair_missing_daily_streams_for_date(stats_date: str, track_ids: set[str] |
     daily_path = update_streams_dir(stats_date) / "streams_history.csv"
     daily_path.parent.mkdir(parents=True, exist_ok=True)
     with daily_path.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=["date", "track_id", "streams", "daily_streams"])
+        fieldnames = ["date", "track_id", "streams", "daily_streams", "estimated", "estimated_reason"]
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerows(day_rows)
+        for row in day_rows:
+            writer.writerow({field: row.get(field, "") for field in fieldnames})
 
     return repaired_ids
+
+
+def _is_estimated_history_row(row: dict) -> bool:
+    return str(row.get("estimated") or "").strip().lower() in {"1", "true", "yes", "y"}
+
+
+def _estimate_daily_weight(points: list[dict], target_day: date) -> int:
+    same_weekday: list[tuple[int, int]] = []
+    recent: list[tuple[int, int]] = []
+
+    for point in points:
+        if _is_estimated_history_row(point):
+            continue
+        daily_raw = str(point.get("daily_streams") or "").strip()
+        if not daily_raw:
+            continue
+        try:
+            point_day = date.fromisoformat(str(point.get("date") or ""))
+            daily = int(daily_raw)
+        except Exception:
+            continue
+        if point_day >= target_day or daily < 0:
+            continue
+        days_back = (target_day - point_day).days
+        if point_day.weekday() == target_day.weekday() and days_back <= 7 * 8:
+            same_weekday.append((days_back, daily))
+        if days_back <= 35:
+            recent.append((days_back, daily))
+
+    same_weekday.sort(key=lambda item: item[0])
+    if same_weekday:
+        weighted = same_weekday[:4]
+        total_weight = 0
+        total_value = 0
+        for idx, (_, daily) in enumerate(weighted):
+            weight = len(weighted) - idx
+            total_weight += weight
+            total_value += daily * weight
+        return max(1, round(total_value / total_weight))
+
+    recent.sort(key=lambda item: item[0])
+    if recent:
+        values = [daily for _, daily in recent[:7]]
+        return max(1, round(sum(values) / len(values)))
+
+    return 1
+
+
+def estimate_missing_stream_history_gaps(max_gap_days: int = MAX_ESTIMATED_STREAM_GAP_DAYS) -> set[str]:
+    rows = load_history_rows()
+    if not rows:
+        return set()
+
+    parsed_rows: list[tuple[int, date, str, int, dict]] = []
+    for idx, row in enumerate(rows):
+        track_id = str(row.get("track_id") or "").strip()
+        date_value = str(row.get("date") or "").strip()
+        streams_raw = str(row.get("streams") or "").strip()
+        if not track_id or not date_value or not streams_raw:
+            continue
+        try:
+            row_day = date.fromisoformat(date_value)
+            streams = int(streams_raw)
+        except Exception:
+            continue
+        parsed_rows.append((idx, row_day, track_id, streams, row))
+
+    by_track: dict[str, list[tuple[int, date, str, int, dict]]] = {}
+    for item in parsed_rows:
+        by_track.setdefault(item[2], []).append(item)
+    for items in by_track.values():
+        items.sort(key=lambda item: (item[1], item[0]))
+
+    new_rows: list[dict] = []
+    touched_dates: set[str] = set()
+    touched_track_ids: set[str] = set()
+
+    for track_id, items in by_track.items():
+        for previous, current in zip(items, items[1:]):
+            prev_idx, prev_day, _, prev_total, _ = previous
+            _curr_idx, curr_day, _, curr_total, curr_row = current
+            gap_days = (curr_day - prev_day).days - 1
+            if gap_days <= 0 or gap_days > max_gap_days:
+                continue
+            if curr_total <= prev_total:
+                continue
+
+            allocation_days = [prev_day + timedelta(days=offset) for offset in range(1, gap_days + 2)]
+            historical_points = [item[4] for item in items if item[0] <= prev_idx]
+            weights = [_estimate_daily_weight(historical_points, day) for day in allocation_days]
+            weight_sum = sum(weights)
+            if weight_sum <= 0:
+                continue
+
+            total_gap = curr_total - prev_total
+            allocated = [max(0, round(total_gap * weight / weight_sum)) for weight in weights]
+            allocated[-1] += total_gap - sum(allocated)
+            if allocated[-1] < 0 or allocated[-1] > MAX_DAILY_INCREASE:
+                continue
+
+            running_total = prev_total
+            estimated_rows_for_gap: list[dict] = []
+            for missing_day, daily in zip(allocation_days[:-1], allocated[:-1]):
+                if daily > MAX_DAILY_INCREASE:
+                    estimated_rows_for_gap = []
+                    break
+                running_total += daily
+                estimated_rows_for_gap.append({
+                    "date": missing_day.isoformat(),
+                    "track_id": track_id,
+                    "streams": str(running_total),
+                    "daily_streams": str(daily),
+                    "estimated": "1",
+                    "estimated_reason": ESTIMATED_MISSING_DAY_REASON,
+                })
+            if not estimated_rows_for_gap:
+                continue
+
+            current_daily = max(0, curr_total - running_total)
+            if current_daily > MAX_DAILY_INCREASE:
+                continue
+
+            curr_row["daily_streams"] = str(current_daily)
+            curr_row.setdefault("estimated", "")
+            curr_row.setdefault("estimated_reason", "")
+            new_rows.extend(estimated_rows_for_gap)
+            touched_track_ids.add(track_id)
+            touched_dates.add(curr_day.isoformat())
+            touched_dates.update(row["date"] for row in estimated_rows_for_gap)
+
+    if not new_rows:
+        return set()
+
+    merged_rows = rows + new_rows
+    merged_rows.sort(key=lambda row: (
+        str(row.get("date") or ""),
+        str(row.get("track_id") or ""),
+        1 if _is_estimated_history_row(row) else 0,
+    ))
+    save_history_rows(merged_rows)
+
+    for day in sorted(touched_dates):
+        day_rows = [row for row in merged_rows if str(row.get("date") or "").strip() == day]
+        daily_path = update_streams_dir(day) / "streams_history.csv"
+        daily_path.parent.mkdir(parents=True, exist_ok=True)
+        with daily_path.open("w", newline="", encoding="utf-8") as f:
+            fieldnames = ["date", "track_id", "streams", "daily_streams", "estimated", "estimated_reason"]
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            for row in day_rows:
+                writer.writerow({field: row.get(field, "") for field in fieldnames})
+
+    print(
+        f"[streams-estimate] Added {len(new_rows)} estimated history row(s) "
+        f"for {len(touched_track_ids)} track(s)."
+    )
+    return touched_track_ids
 
 
 def recent_release_track_ids_missing_positive_history(stats_date: str) -> set[str]:
@@ -1754,6 +1915,10 @@ def main():
             print(f"Streams scraping already done for {stats_date} ({lock_path.name}); skipping WARP/token/scraping.")
             print_summary_block(summary)
             print_api_metrics(summary)
+            estimated_track_ids = estimate_missing_stream_history_gaps()
+            if estimated_track_ids:
+                summary["history_index"] = HistoryIndex.load()
+                push_updated_track_histories_to_r2(estimated_track_ids, summary["history_index"])
             run_final_update_tasks(FinalizeContext(
                 script_dir=_SCRIPT_DIR,
                 repo_root=_REPO_ROOT,
@@ -2293,6 +2458,10 @@ def main():
     else:
         update_json_logs_from_summary(summary)
     if not dry_run_mode and not local_test_mode:
+        estimated_track_ids = estimate_missing_stream_history_gaps()
+        if estimated_track_ids:
+            all_updated_track_ids.update(estimated_track_ids)
+            summary["history_index"] = HistoryIndex.load()
         push_updated_track_histories_to_r2(
             all_updated_track_ids,
             summary["history_index"],

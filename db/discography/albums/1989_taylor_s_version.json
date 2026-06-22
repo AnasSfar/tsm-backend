@@ -67,7 +67,15 @@
             "lastfm": "Bad Blood"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:bad_blood"
+          "genre_canonical_key": "family:bad_blood",
+          "filter_tags": [
+            "collab",
+            "taylor_version"
+          ],
+          "filter_tag_sources": {
+            "collab": "high:artists_or_featured_artists",
+            "taylor_version": "high:title_or_section"
+          }
         }
       ]
     },
@@ -132,7 +140,19 @@
             "lastfm": "\"Slut!\" (Taylor's Version) (From The Vault)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:slut"
+          "genre_canonical_key": "family:slut",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
         },
         {
           "title": "Welcome To New York (Taylor's Version)",
@@ -190,7 +210,19 @@
             "lastfm": "Welcome To New York"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:welcome_to_new_york"
+          "genre_canonical_key": "family:welcome_to_new_york",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Blank Space (Taylor's Version)",
@@ -227,7 +259,19 @@
           "genre_errors": {
             "lastfm": "LASTFM_API_KEY missing"
           },
-          "genre_canonical_key": "family:blank_space"
+          "genre_canonical_key": "family:blank_space",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Is It Over Now? (Taylor's Version) (From The Vault)",
@@ -285,7 +329,21 @@
             "lastfm": "Is It Over Now? (Taylor's Version) (From The Vault)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:is_it_over_now"
+          "genre_canonical_key": "family:is_it_over_now",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
         },
         {
           "title": "Now That We Don't Talk (Taylor's Version) (From The Vault)",
@@ -343,7 +401,21 @@
             "lastfm": "Now That We Don't Talk (Taylor's Version) (From The Vault)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:now_that_we_don_t_talk"
+          "genre_canonical_key": "family:now_that_we_don_t_talk",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
         },
         {
           "title": "Style (Taylor's Version)",
@@ -401,7 +473,19 @@
             "lastfm": "Style"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:style"
+          "genre_canonical_key": "family:style",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Out Of The Woods (Taylor's Version)",
@@ -459,7 +543,19 @@
             "lastfm": "Out Of The Woods"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:out_of_the_woods"
+          "genre_canonical_key": "family:out_of_the_woods",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Say Don't Go (Taylor's Version) (From The Vault)",
@@ -517,7 +613,21 @@
             "lastfm": "Say Don't Go (Taylor's Version) (From The Vault)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:say_don_t_go"
+          "genre_canonical_key": "family:say_don_t_go",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
         },
         {
           "title": "All You Had To Do Was Stay (Taylor's Version)",
@@ -550,7 +660,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:all_you_had_to_do_was_stay"
+          "genre_canonical_key": "family:all_you_had_to_do_was_stay",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Suburban Legends (Taylor's Version) (From The Vault)",
@@ -605,7 +727,21 @@
             "lastfm": "Suburban Legends (Taylor's Version) (From The Vault)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:suburban_legends"
+          "genre_canonical_key": "family:suburban_legends",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
         },
         {
           "title": "Shake It Off (Taylor's Version)",
@@ -657,7 +793,19 @@
             "lastfm": "Shake It Off"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:shake_it_off"
+          "genre_canonical_key": "family:shake_it_off",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "I Wish You Would (Taylor's Version)",
@@ -690,7 +838,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:i_wish_you_would"
+          "genre_canonical_key": "family:i_wish_you_would",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Bad Blood (Taylor's Version)",
@@ -748,7 +908,19 @@
             "lastfm": "Bad Blood"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:bad_blood"
+          "genre_canonical_key": "family:bad_blood",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Wildest Dreams (Taylor's Version)",
@@ -806,7 +978,19 @@
             "lastfm": "Wildest Dreams"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:wildest_dreams"
+          "genre_canonical_key": "family:wildest_dreams",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "How You Get The Girl (Taylor's Version)",
@@ -839,7 +1023,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:how_you_get_the_girl"
+          "genre_canonical_key": "family:how_you_get_the_girl",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "This Love (Taylor's Version)",
@@ -872,7 +1068,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:this_love"
+          "genre_canonical_key": "family:this_love",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Clean (Taylor's Version)",
@@ -905,7 +1113,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:clean"
+          "genre_canonical_key": "family:clean",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "New Romantics (Taylor's Version)",
@@ -960,7 +1180,19 @@
             "lastfm": "New Romantics"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:new_romantics"
+          "genre_canonical_key": "family:new_romantics",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Wonderland (Taylor's Version)",
@@ -993,7 +1225,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:wonderland"
+          "genre_canonical_key": "family:wonderland",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "You Are In Love (Taylor's Version)",
@@ -1026,7 +1270,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:you_are_in_love"
+          "genre_canonical_key": "family:you_are_in_love",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "I Know Places (Taylor's Version)",
@@ -1059,7 +1315,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:i_know_places"
+          "genre_canonical_key": "family:i_know_places",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         }
       ]
     }

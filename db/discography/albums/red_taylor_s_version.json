@@ -39,7 +39,21 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:all_too_well"
+          "genre_canonical_key": "family:all_too_well",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
         },
         {
           "title": "Babe (Taylor's Version) (From The Vault)",
@@ -72,7 +86,21 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:babe"
+          "genre_canonical_key": "family:babe",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
         },
         {
           "title": "Better Man (Taylor's Version) (From The Vault)",
@@ -130,7 +158,21 @@
             "lastfm": "Better Man (Taylor's Version) (From The Vault)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:better_man"
+          "genre_canonical_key": "family:better_man",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
         },
         {
           "title": "Forever Winter (Taylor's Version) (From The Vault)",
@@ -163,7 +205,21 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:forever_winter"
+          "genre_canonical_key": "family:forever_winter",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
         },
         {
           "title": "I Bet You Think About Me (feat. Chris Stapleton) (Taylor's Version) (From The Vault)",
@@ -199,7 +255,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:i_bet_you_think_about_me"
+          "genre_canonical_key": "family:i_bet_you_think_about_me",
+          "filter_tags": [
+            "feature",
+            "album_track",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
         },
         {
           "title": "Message In A Bottle (Taylor's Version) (From The Vault)",
@@ -257,7 +325,21 @@
             "lastfm": "Message In A Bottle (Taylor's Version) (From The Vault)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:message_in_a_bottle"
+          "genre_canonical_key": "family:message_in_a_bottle",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
         },
         {
           "title": "Nothing New (feat. Phoebe Bridgers) (Taylor's Version) (From The Vault)",
@@ -293,7 +375,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:nothing_new"
+          "genre_canonical_key": "family:nothing_new",
+          "filter_tags": [
+            "feature",
+            "album_track",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
         },
         {
           "title": "Run (feat. Ed Sheeran) (Taylor's Version) (From The Vault)",
@@ -329,7 +423,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:run"
+          "genre_canonical_key": "family:run",
+          "filter_tags": [
+            "feature",
+            "album_track",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
         },
         {
           "title": "The Very First Night (Taylor's Version) (From The Vault)",
@@ -387,7 +493,21 @@
             "lastfm": "The Very First Night (Taylor's Version) (From The Vault)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_very_first_night"
+          "genre_canonical_key": "family:the_very_first_night",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
         },
         {
           "title": "State Of Grace (Acoustic Version) (Taylor's Version)",
@@ -420,7 +540,23 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:state_of_grace_acoustic_version"
+          "genre_canonical_key": "family:state_of_grace_acoustic_version",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "acoustic",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "acoustic": "high:title_or_section",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
         }
       ]
     },
@@ -460,7 +596,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:state_of_grace"
+          "genre_canonical_key": "family:state_of_grace",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Red (Taylor's Version)",
@@ -493,7 +641,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:red"
+          "genre_canonical_key": "family:red",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Treacherous (Taylor's Version)",
@@ -526,7 +686,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:treacherous"
+          "genre_canonical_key": "family:treacherous",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "I Knew You Were Trouble (Taylor's Version)",
@@ -584,7 +756,19 @@
             "lastfm": "I Knew You Were Trouble (Taylor's Version)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:i_knew_you_were_trouble"
+          "genre_canonical_key": "family:i_knew_you_were_trouble",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "All Too Well (Taylor's Version)",
@@ -617,7 +801,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:all_too_well"
+          "genre_canonical_key": "family:all_too_well",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "22 (Taylor's Version)",
@@ -675,7 +871,19 @@
             "lastfm": "22"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:22"
+          "genre_canonical_key": "family:22",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "I Almost Do (Taylor's Version)",
@@ -708,7 +916,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:i_almost_do"
+          "genre_canonical_key": "family:i_almost_do",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "We Are Never Ever Getting Back Together (Taylor's Version)",
@@ -766,7 +986,19 @@
             "lastfm": "We Are Never Ever Getting Back Together"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:we_are_never_ever_getting_back_together"
+          "genre_canonical_key": "family:we_are_never_ever_getting_back_together",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Stay Stay Stay (Taylor's Version)",
@@ -799,7 +1031,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:stay_stay_stay"
+          "genre_canonical_key": "family:stay_stay_stay",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "The Last Time (feat. Gary Lightbody of Snow Patrol) (Taylor's Version)",
@@ -835,7 +1079,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:the_last_time"
+          "genre_canonical_key": "family:the_last_time",
+          "filter_tags": [
+            "feature",
+            "album_track",
+            "taylor_version"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section"
+          }
         },
         {
           "title": "Holy Ground (Taylor's Version)",
@@ -868,7 +1122,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:holy_ground"
+          "genre_canonical_key": "family:holy_ground",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Sad Beautiful Tragic (Taylor's Version)",
@@ -901,7 +1167,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:sad_beautiful_tragic"
+          "genre_canonical_key": "family:sad_beautiful_tragic",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "The Lucky One (Taylor's Version)",
@@ -934,7 +1212,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:the_lucky_one"
+          "genre_canonical_key": "family:the_lucky_one",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Everything Has Changed (feat. Ed Sheeran) (Taylor's Version)",
@@ -970,7 +1260,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:everything_has_changed"
+          "genre_canonical_key": "family:everything_has_changed",
+          "filter_tags": [
+            "feature",
+            "album_track",
+            "taylor_version"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section"
+          }
         },
         {
           "title": "Starlight (Taylor's Version)",
@@ -1003,7 +1303,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:starlight"
+          "genre_canonical_key": "family:starlight",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Begin Again (Taylor's Version)",
@@ -1036,7 +1348,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:begin_again"
+          "genre_canonical_key": "family:begin_again",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Girl At Home (Taylor's Version)",
@@ -1069,7 +1393,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:girl_at_home"
+          "genre_canonical_key": "family:girl_at_home",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Ronan (Taylor's Version)",
@@ -1102,7 +1438,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:ronan"
+          "genre_canonical_key": "family:ronan",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Come Back...Be Here (Taylor's Version)",
@@ -1135,7 +1483,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:come_back_be_here"
+          "genre_canonical_key": "family:come_back_be_here",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "The Moment I Knew (Taylor's Version)",
@@ -1168,7 +1528,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:the_moment_i_knew"
+          "genre_canonical_key": "family:the_moment_i_knew",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         }
       ]
     },
@@ -1212,7 +1584,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:eyes_open"
+          "genre_canonical_key": "family:eyes_open",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "taylor_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section"
+          }
         },
         {
           "title": "Safe & Sound (feat. Joy Williams and John Paul White) (Taylor's Version)",
@@ -1253,7 +1635,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:safe_sound"
+          "genre_canonical_key": "family:safe_sound",
+          "filter_tags": [
+            "feature",
+            "taylor_version"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "taylor_version": "high:title_or_section"
+          }
         }
       ]
     }

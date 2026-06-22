@@ -39,7 +39,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:september_recorded_at_the_tracking_room_nashville"
+          "genre_canonical_key": "family:september_recorded_at_the_tracking_room_nashville",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         }
       ]
     },
@@ -101,7 +109,17 @@
             "lastfm": "...Ready For It?"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:ready_for_it"
+          "genre_canonical_key": "family:ready_for_it",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Call It What You Want - Karaoke Version",
@@ -159,7 +177,17 @@
             "lastfm": "Call It What You Want"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:call_it_what_you_want"
+          "genre_canonical_key": "family:call_it_what_you_want",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Dancing With Our Hands Tied - Karaoke Version",
@@ -214,7 +242,17 @@
             "lastfm": "Dancing With Our Hands Tied"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:dancing_with_our_hands_tied"
+          "genre_canonical_key": "family:dancing_with_our_hands_tied",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Delicate - Karaoke Version",
@@ -272,7 +310,17 @@
             "lastfm": "Delicate"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:delicate"
+          "genre_canonical_key": "family:delicate",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Don't Blame Me - Karaoke Version",
@@ -305,7 +353,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:don_t_blame_me"
+          "genre_canonical_key": "family:don_t_blame_me",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Dress - Karaoke Version",
@@ -363,7 +421,17 @@
             "lastfm": "Dress"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:dress"
+          "genre_canonical_key": "family:dress",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "End Game - Karaoke Version",
@@ -418,7 +486,17 @@
             "lastfm": "End Game"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:end_game"
+          "genre_canonical_key": "family:end_game",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Getaway Car - Karaoke Version",
@@ -476,7 +554,17 @@
             "lastfm": "Getaway Car"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:getaway_car"
+          "genre_canonical_key": "family:getaway_car",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Gorgeous - Karaoke Version",
@@ -534,7 +622,17 @@
             "lastfm": "Gorgeous"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:gorgeous"
+          "genre_canonical_key": "family:gorgeous",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "I Did Something Bad - Karaoke Version",
@@ -592,7 +690,17 @@
             "lastfm": "I Did Something Bad"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:i_did_something_bad"
+          "genre_canonical_key": "family:i_did_something_bad",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "King Of My Heart - Karaoke Version",
@@ -650,7 +758,17 @@
             "lastfm": "King Of My Heart"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:king_of_my_heart"
+          "genre_canonical_key": "family:king_of_my_heart",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Look What You Made Me Do - Karaoke Version",
@@ -708,7 +826,17 @@
             "lastfm": "Look What You Made Me Do"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:look_what_you_made_me_do"
+          "genre_canonical_key": "family:look_what_you_made_me_do",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "New Year's Day - Karaoke Version",
@@ -741,7 +869,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:new_year_s_day"
+          "genre_canonical_key": "family:new_year_s_day",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "So It Goes... - Karaoke Version",
@@ -796,7 +934,17 @@
             "lastfm": "So It Goes..."
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:so_it_goes"
+          "genre_canonical_key": "family:so_it_goes",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "This Is Why We Can't Have Nice Things - Karaoke Version",
@@ -854,7 +1002,17 @@
             "lastfm": "This Is Why We Can't Have Nice Things"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:this_is_why_we_can_t_have_nice_things"
+          "genre_canonical_key": "family:this_is_why_we_can_t_have_nice_things",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         }
       ]
     },
@@ -916,7 +1074,17 @@
             "lastfm": "...Ready For It?"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:ready_for_it"
+          "genre_canonical_key": "family:ready_for_it",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "Delicate - Seeb Remix",
@@ -974,7 +1142,15 @@
             "lastfm": "Delicate"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:delicate"
+          "genre_canonical_key": "family:delicate",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "Delicate - Recorded at The Tracking Room Nashville",
@@ -1007,7 +1183,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:delicate_recorded_at_the_tracking_room_nashville"
+          "genre_canonical_key": "family:delicate_recorded_at_the_tracking_room_nashville",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "Delicate - Sawyr And Ryan Tedder Mix",
@@ -1040,7 +1224,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:delicate_sawyr_and_ryan_tedder_mix"
+          "genre_canonical_key": "family:delicate_sawyr_and_ryan_tedder_mix",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "remix": "high:type_or_title"
+          }
         }
       ]
     },
@@ -1083,7 +1277,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:i_don_t_wanna_live_forever_fifty_shades_darker"
+          "genre_canonical_key": "family:i_don_t_wanna_live_forever_fifty_shades_darker",
+          "filter_tags": [
+            "collab",
+            "soundtrack",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "collab": "high:artists_or_featured_artists",
+            "soundtrack": "high:title_album_or_section",
+            "live": "high:type_title_or_section"
+          }
         }
       ]
     },
@@ -1145,7 +1349,15 @@
             "lastfm": "...Ready For It?"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:ready_for_it"
+          "genre_canonical_key": "family:ready_for_it",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "End Game",
@@ -1200,7 +1412,15 @@
             "lastfm": "End Game"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:end_game"
+          "genre_canonical_key": "family:end_game",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "I Did Something Bad",
@@ -1258,7 +1478,15 @@
             "lastfm": "I Did Something Bad"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:i_did_something_bad"
+          "genre_canonical_key": "family:i_did_something_bad",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Don't Blame Me",
@@ -1291,7 +1519,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:don_t_blame_me"
+          "genre_canonical_key": "family:don_t_blame_me",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Delicate",
@@ -1349,7 +1585,15 @@
             "lastfm": "Delicate"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:delicate"
+          "genre_canonical_key": "family:delicate",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Look What You Made Me Do",
@@ -1407,7 +1651,15 @@
             "lastfm": "Look What You Made Me Do"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:look_what_you_made_me_do"
+          "genre_canonical_key": "family:look_what_you_made_me_do",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "So It Goes...",
@@ -1462,7 +1714,15 @@
             "lastfm": "So It Goes..."
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:so_it_goes"
+          "genre_canonical_key": "family:so_it_goes",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Gorgeous",
@@ -1520,7 +1780,15 @@
             "lastfm": "Gorgeous"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:gorgeous"
+          "genre_canonical_key": "family:gorgeous",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Getaway Car",
@@ -1578,7 +1846,15 @@
             "lastfm": "Getaway Car"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:getaway_car"
+          "genre_canonical_key": "family:getaway_car",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "King Of My Heart",
@@ -1636,7 +1912,15 @@
             "lastfm": "King Of My Heart"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:king_of_my_heart"
+          "genre_canonical_key": "family:king_of_my_heart",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Dancing With Our Hands Tied",
@@ -1691,7 +1975,15 @@
             "lastfm": "Dancing With Our Hands Tied"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:dancing_with_our_hands_tied"
+          "genre_canonical_key": "family:dancing_with_our_hands_tied",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Dress",
@@ -1749,7 +2041,15 @@
             "lastfm": "Dress"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:dress"
+          "genre_canonical_key": "family:dress",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "This Is Why We Can't Have Nice Things",
@@ -1807,7 +2107,15 @@
             "lastfm": "This Is Why We Can't Have Nice Things"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:this_is_why_we_can_t_have_nice_things"
+          "genre_canonical_key": "family:this_is_why_we_can_t_have_nice_things",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Call It What You Want",
@@ -1865,7 +2173,15 @@
             "lastfm": "Call It What You Want"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:call_it_what_you_want"
+          "genre_canonical_key": "family:call_it_what_you_want",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "New Year's Day",
@@ -1898,7 +2214,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:new_year_s_day"
+          "genre_canonical_key": "family:new_year_s_day",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         }
       ]
     },
@@ -1962,7 +2286,17 @@
             "lastfm": "...Ready For It?"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:ready_for_it_bloodpopa_remix"
+          "genre_canonical_key": "family:ready_for_it_bloodpopa_remix",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "remix": "high:type_or_title"
+          }
         }
       ]
     }

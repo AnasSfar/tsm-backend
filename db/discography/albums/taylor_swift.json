@@ -38,7 +38,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:crazier"
+          "genre_canonical_key": "family:crazier",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         }
       ]
     },
@@ -78,7 +86,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:a_perfectly_good_heart"
+          "genre_canonical_key": "family:a_perfectly_good_heart",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "A Place in this World",
@@ -111,7 +127,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:a_place_in_this_world"
+          "genre_canonical_key": "family:a_place_in_this_world",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Cold As You",
@@ -144,7 +168,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:cold_as_you"
+          "genre_canonical_key": "family:cold_as_you",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "I'm Only Me When I'm With You",
@@ -177,7 +209,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:i_m_only_me_when_i_m_with_you"
+          "genre_canonical_key": "family:i_m_only_me_when_i_m_with_you",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Invisible",
@@ -210,7 +250,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:invisible"
+          "genre_canonical_key": "family:invisible",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Mary's Song (Oh My My My)",
@@ -243,7 +291,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:mary_s_song_oh_my_my_my"
+          "genre_canonical_key": "family:mary_s_song_oh_my_my_my",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Our Song",
@@ -301,7 +357,15 @@
             "lastfm": "Our Song"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:our_song"
+          "genre_canonical_key": "family:our_song",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Picture To Burn",
@@ -359,7 +423,15 @@
             "lastfm": "Picture To Burn"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:picture_to_burn"
+          "genre_canonical_key": "family:picture_to_burn",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Should've Said No",
@@ -392,7 +464,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:should_ve_said_no"
+          "genre_canonical_key": "family:should_ve_said_no",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Stay Beautiful",
@@ -425,7 +505,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:stay_beautiful"
+          "genre_canonical_key": "family:stay_beautiful",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Teardrops on My Guitar - Pop Version",
@@ -458,7 +546,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:teardrops_on_my_guitar"
+          "genre_canonical_key": "family:teardrops_on_my_guitar",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Teardrops On My Guitar - Radio Single Remix",
@@ -491,7 +589,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:teardrops_on_my_guitar"
+          "genre_canonical_key": "family:teardrops_on_my_guitar",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "The Outside",
@@ -524,7 +630,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:the_outside"
+          "genre_canonical_key": "family:the_outside",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Tied Together with a Smile",
@@ -557,7 +671,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:tied_together_with_a_smile"
+          "genre_canonical_key": "family:tied_together_with_a_smile",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Tim McGraw",
@@ -590,7 +712,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:tim_mcgraw"
+          "genre_canonical_key": "family:tim_mcgraw",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         }
       ]
     },
@@ -632,7 +762,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:beautiful_eyes_live_from_clear_channel_stripped_2008"
+          "genre_canonical_key": "family:beautiful_eyes_live_from_clear_channel_stripped_2008",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         },
         {
           "title": "Picture To Burn - Live From Clear Channel Stripped 2008",
@@ -691,7 +831,17 @@
             "lastfm": "Picture To Burn"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:picture_to_burn_live_from_clear_channel_stripped_2008"
+          "genre_canonical_key": "family:picture_to_burn_live_from_clear_channel_stripped_2008",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         },
         {
           "title": "Should've Said No - Live From Clear Channel Stripped 2008",
@@ -725,7 +875,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:shouldve_said_no_live_from_clear_channel_stripped_2008"
+          "genre_canonical_key": "family:shouldve_said_no_live_from_clear_channel_stripped_2008",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         },
         {
           "title": "Should've Said No - The 3D Concert Experience",
@@ -758,7 +918,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:shouldve_said_no_the_3d_concert_experience"
+          "genre_canonical_key": "family:shouldve_said_no_the_3d_concert_experience",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "Teardrops On My Guitar",
@@ -791,7 +959,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:teardrops_on_my_guitar"
+          "genre_canonical_key": "family:teardrops_on_my_guitar",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "Teardrops On My Guitar - Live From Clear Channel Stripped 2008",
@@ -825,7 +1001,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:teardrops_on_my_guitar_live_from_clear_channel_stripped_2008"
+          "genre_canonical_key": "family:teardrops_on_my_guitar_live_from_clear_channel_stripped_2008",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         }
       ]
     }

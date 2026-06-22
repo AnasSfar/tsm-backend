@@ -1019,7 +1019,7 @@ def _run(
 
 def _run_swift_top_charts_if_ready(target_date: date, *, env: dict[str, str], verbose: bool) -> bool:
     gate_status = check_swift_top_gate(target_date, source="charts")
-    if gate_status == "not_wednesday":
+    if gate_status == "not_thursday":
         return False
     if gate_status == "done":
         print(f"[Swift Top] deja genere pour {target_date}")

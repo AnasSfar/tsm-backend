@@ -23,9 +23,9 @@ def _read_ready_source(path: Path) -> str:
 
 
 def check_swift_top_gate(chart_date: date, *, source: str) -> str:
-    """Return not_wednesday, done, waiting, or ready for the Swift Top rendezvous."""
-    if chart_date.weekday() != 2:
-        return "not_wednesday"
+    """Return not_thursday, done, waiting, or ready for the Swift Top rendezvous."""
+    if chart_date.weekday() != 3:
+        return "not_thursday"
 
     source = source.strip().casefold()
     lock_dir = _lock_dir(chart_date)

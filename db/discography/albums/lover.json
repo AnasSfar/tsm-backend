@@ -39,7 +39,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:lover_feat_shawn_mendes"
+          "genre_canonical_key": "family:lover_feat_shawn_mendes",
+          "filter_tags": [
+            "collab",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "collab": "high:artists_or_featured_artists",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "Lover - First Dance Remix",
@@ -97,7 +105,15 @@
             "lastfm": "Lover"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:lover"
+          "genre_canonical_key": "family:lover",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "Lover - Live From Paris",
@@ -155,7 +171,17 @@
             "lastfm": "Lover"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:lover"
+          "genre_canonical_key": "family:lover",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         },
         {
           "title": "You Need To Calm Down - Clean Bandit Remix",
@@ -213,7 +239,15 @@
             "lastfm": "You Need To Calm Down"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:you_need_to_calm_down"
+          "genre_canonical_key": "family:you_need_to_calm_down",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "You Need To Calm Down - Live From Paris",
@@ -271,7 +305,17 @@
             "lastfm": "You Need To Calm Down"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:you_need_to_calm_down"
+          "genre_canonical_key": "family:you_need_to_calm_down",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         },
         {
           "title": "Cornelia Street - Live From Paris",
@@ -329,7 +373,17 @@
             "lastfm": "Cornelia Street"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:cornelia_street"
+          "genre_canonical_key": "family:cornelia_street",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         },
         {
           "title": "Daylight - Live From Paris",
@@ -387,7 +441,17 @@
             "lastfm": "Daylight"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:daylight"
+          "genre_canonical_key": "family:daylight",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         },
         {
           "title": "Death By A Thousand Cuts - Live From Paris",
@@ -445,7 +509,17 @@
             "lastfm": "Death By A Thousand Cuts"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:death_by_a_thousand_cuts"
+          "genre_canonical_key": "family:death_by_a_thousand_cuts",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         },
         {
           "title": "The Archer - Live From Paris",
@@ -503,7 +577,17 @@
             "lastfm": "The Archer"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_archer"
+          "genre_canonical_key": "family:the_archer",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         },
         {
           "title": "The Man - Live From Paris",
@@ -561,7 +645,17 @@
             "lastfm": "The Man"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_man"
+          "genre_canonical_key": "family:the_man",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         },
         {
           "title": "ME! - Live From Paris",
@@ -616,7 +710,17 @@
             "lastfm": "ME! (feat. Brendon Urie of Panic! At The Disco)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:me"
+          "genre_canonical_key": "family:me",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         }
       ]
     },
@@ -685,7 +789,15 @@
             "lastfm": "All Of The Girls You Loved Before"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:all_of_the_girls_you_loved_before"
+          "genre_canonical_key": "family:all_of_the_girls_you_loved_before",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         }
       ]
     },
@@ -750,7 +862,15 @@
             "lastfm": "I Forgot That You Existed"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:i_forgot_that_you_existed"
+          "genre_canonical_key": "family:i_forgot_that_you_existed",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Cruel Summer",
@@ -808,7 +928,15 @@
             "lastfm": "Cruel Summer"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:cruel_summer"
+          "genre_canonical_key": "family:cruel_summer",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Lover",
@@ -866,7 +994,15 @@
             "lastfm": "Lover"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:lover"
+          "genre_canonical_key": "family:lover",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "The Man",
@@ -924,7 +1060,15 @@
             "lastfm": "The Man"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_man"
+          "genre_canonical_key": "family:the_man",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "The Archer",
@@ -982,7 +1126,15 @@
             "lastfm": "The Archer"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_archer"
+          "genre_canonical_key": "family:the_archer",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "I Think He Knows",
@@ -1040,7 +1192,15 @@
             "lastfm": "I Think He Knows"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:i_think_he_knows"
+          "genre_canonical_key": "family:i_think_he_knows",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Miss Americana & The Heartbreak Prince",
@@ -1098,7 +1258,15 @@
             "lastfm": "Miss Americana & The Heartbreak Prince"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:miss_americana_the_heartbreak_prince"
+          "genre_canonical_key": "family:miss_americana_the_heartbreak_prince",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Paper Rings",
@@ -1156,7 +1324,15 @@
             "lastfm": "Paper Rings"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:paper_rings"
+          "genre_canonical_key": "family:paper_rings",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Cornelia Street",
@@ -1214,7 +1390,15 @@
             "lastfm": "Cornelia Street"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:cornelia_street"
+          "genre_canonical_key": "family:cornelia_street",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Death By A Thousand Cuts",
@@ -1272,7 +1456,15 @@
             "lastfm": "Death By A Thousand Cuts"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:death_by_a_thousand_cuts"
+          "genre_canonical_key": "family:death_by_a_thousand_cuts",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "London Boy",
@@ -1330,7 +1522,15 @@
             "lastfm": "London Boy"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:london_boy"
+          "genre_canonical_key": "family:london_boy",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Soon You'll Get Better (feat. The Chicks)",
@@ -1366,7 +1566,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:soon_you_ll_get_better"
+          "genre_canonical_key": "family:soon_you_ll_get_better",
+          "filter_tags": [
+            "feature",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "False God",
@@ -1424,7 +1632,15 @@
             "lastfm": "False God"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:false_god"
+          "genre_canonical_key": "family:false_god",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "You Need To Calm Down",
@@ -1482,7 +1698,15 @@
             "lastfm": "You Need To Calm Down"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:you_need_to_calm_down"
+          "genre_canonical_key": "family:you_need_to_calm_down",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Afterglow",
@@ -1540,7 +1764,15 @@
             "lastfm": "Afterglow"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:afterglow"
+          "genre_canonical_key": "family:afterglow",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "ME! (feat. Brendon Urie of Panic! At The Disco)",
@@ -1598,7 +1830,15 @@
             "lastfm": "ME! (feat. Brendon Urie of Panic! At The Disco)"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:me"
+          "genre_canonical_key": "family:me",
+          "filter_tags": [
+            "feature",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "It's Nice To Have A Friend",
@@ -1631,7 +1871,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:it_s_nice_to_have_a_friend"
+          "genre_canonical_key": "family:it_s_nice_to_have_a_friend",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Daylight",
@@ -1689,7 +1937,15 @@
             "lastfm": "Daylight"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:daylight"
+          "genre_canonical_key": "family:daylight",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         }
       ]
     },
@@ -1811,7 +2067,15 @@
             "lastfm": "Cruel Summer"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:cruel_summer"
+          "genre_canonical_key": "family:cruel_summer",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "Cruel Summer - LP Giobbi Remix - Extended Version",
@@ -1869,7 +2133,15 @@
             "lastfm": "Cruel Summer"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:cruel_summer"
+          "genre_canonical_key": "family:cruel_summer",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         }
       ]
     },
@@ -1911,7 +2183,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:only_the_young_featured_in_miss_americana"
+          "genre_canonical_key": "family:only_the_young_featured_in_miss_americana",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         }
       ]
     }

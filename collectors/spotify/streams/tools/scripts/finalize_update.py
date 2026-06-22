@@ -822,7 +822,7 @@ def _run_swift_top_charts_if_needed(ctx: FinalizeContext) -> None:
             return
 
         stats_date = date_cls.fromisoformat(ctx.summary["stats_date"])
-        if stats_date.weekday() != 2:
+        if stats_date.weekday() != 3:
             return
 
         gate_status = check_swift_top_gate(stats_date, source="streams")

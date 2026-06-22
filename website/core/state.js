@@ -15,6 +15,8 @@ export const state = {
 
   page: document.body.dataset.page || "home",
   combineVersions: localStorage.getItem("site-combine-versions") === "true",
+  filtersOpen: localStorage.getItem("site-filters-open") === "true",
+  activeFlagFilter: localStorage.getItem("site-active-flag-filter") || "all",
 
   updateLogText: "",
   updateLogClass: "update-log",

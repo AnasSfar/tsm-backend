@@ -67,6 +67,7 @@ SWIFT_TOP_100_BONUSES_JSON = _DB_DIR / "swift_top_100_bonuses.json"
 CHART_SLUG = "swift_top_100"
 CHART_TITLE = "TayBoard TOP 100"
 COMBINE_VERSIONS = True
+MAX_ESTIMATED_MISSING_STREAM_DAYS = 2
 
 DISCOGRAPHY_DIR = _DB_DIR / "discography"
 ALBUMS_DIR = DISCOGRAPHY_DIR / "albums"
@@ -335,7 +336,11 @@ def _all_stream_dates() -> list[date]:
 
 
 def _latest_complete_week_end() -> date | None:
-    """Return the most recent complete Thursday-ended week in streams data."""
+    """Return the most recent Thursday-ended week that can be scored.
+
+    A week can still be scored when one or two daily stream snapshots are
+    missing; those days are estimated later from recent per-track history.
+    """
     stream_dates = _all_stream_dates()
     if not stream_dates:
         return None
@@ -348,7 +353,8 @@ def _latest_complete_week_end() -> date | None:
     min_date = stream_dates[0]
     while candidate >= min_date:
         week_start, week_days = _week_dates(candidate)
-        if week_start >= min_date and all(_parse_iso_date(day) in date_set for day in week_days):
+        missing = [day for day in week_days if _parse_iso_date(day) not in date_set]
+        if week_start >= min_date and len(missing) <= MAX_ESTIMATED_MISSING_STREAM_DAYS:
             return candidate
         candidate -= timedelta(days=7)
 
@@ -383,6 +389,7 @@ def _aggregate_weekly_streams(
         except Exception:
             return 0
 
+    all_daily: dict[str, dict[str, int]] = {}
     seen: set[tuple[str, str]] = set()  # (date, track_id) — deduplicate across CSVs
     for csv_path in active_paths:
         if not csv_path.exists():
@@ -391,8 +398,6 @@ def _aggregate_weekly_streams(
             reader = csv.DictReader(f)
             for row in reader:
                 day = (row.get("date") or "").strip()
-                if day not in week_dates:
-                    continue
                 track_id = (row.get("track_id") or "").strip()
                 if not track_id:
                     continue
@@ -401,11 +406,104 @@ def _aggregate_weekly_streams(
                     continue
                 seen.add(key)
                 streams = _to_int(row.get("daily_streams"))
+                all_daily.setdefault(track_id, {})[day] = streams
+                if day not in week_dates:
+                    continue
                 counts[day] = counts.get(day, 0) + 1
                 weekly[track_id] = weekly.get(track_id, 0) + streams
                 daily.setdefault(track_id, {})[day] = streams
 
+    missing_days = sorted(day for day in week_dates if counts.get(day, 0) <= 0)
+    if missing_days and len(missing_days) <= MAX_ESTIMATED_MISSING_STREAM_DAYS:
+        estimated = _estimate_missing_stream_days(
+            missing_days=missing_days,
+            week_dates=week_dates,
+            all_daily=all_daily,
+        )
+        for day, by_track in estimated.items():
+            counts[day] = len(by_track)
+            for track_id, streams in by_track.items():
+                weekly[track_id] = weekly.get(track_id, 0) + streams
+                daily.setdefault(track_id, {})[day] = streams
+        logger.log(
+            "  streams_est    : "
+            + ", ".join(f"{day}={len(estimated.get(day, {}))} songs" for day in missing_days)
+        )
+
     return weekly, counts, daily
+
+
+def _weighted_average(values: list[int]) -> int:
+    if not values:
+        return 0
+    weights = list(range(len(values), 0, -1))
+    total_weight = sum(weights)
+    return round(sum(value * weight for value, weight in zip(values, weights)) / total_weight)
+
+
+def _estimate_missing_stream_days(
+    *,
+    missing_days: list[str],
+    week_dates: set[str],
+    all_daily: dict[str, dict[str, int]],
+) -> dict[str, dict[str, int]]:
+    estimates: dict[str, dict[str, int]] = {day: {} for day in missing_days}
+    parsed_week_days = sorted(day for day in (_parse_iso_date(d) for d in week_dates) if day is not None)
+    if not parsed_week_days:
+        return estimates
+
+    week_day_strings = {_format_date(day) for day in parsed_week_days}
+
+    for track_id, points in all_daily.items():
+        for missing_day in missing_days:
+            target = _parse_iso_date(missing_day)
+            if target is None:
+                continue
+
+            same_weekday_values: list[int] = []
+            for offset in range(7, 7 * 9, 7):
+                value = points.get(_format_date(target - timedelta(days=offset)))
+                if value is not None and value > 0:
+                    same_weekday_values.append(value)
+                if len(same_weekday_values) >= 4:
+                    break
+
+            if same_weekday_values:
+                estimate = _weighted_average(same_weekday_values)
+            else:
+                recent_values: list[int] = []
+                for offset in range(1, 29):
+                    value = points.get(_format_date(target - timedelta(days=offset)))
+                    if value is not None and value > 0:
+                        recent_values.append(value)
+                    if len(recent_values) >= 7:
+                        break
+                if not recent_values:
+                    continue
+                estimate = round(sum(recent_values) / len(recent_values))
+
+            current_observed = 0
+            previous_matching = 0
+            for day in week_day_strings:
+                if day == missing_day:
+                    continue
+                parsed = _parse_iso_date(day)
+                if parsed is None:
+                    continue
+                current = points.get(day)
+                previous = points.get(_format_date(parsed - timedelta(days=7)))
+                if current is not None and previous is not None and previous > 0:
+                    current_observed += current
+                    previous_matching += previous
+
+            if previous_matching > 0:
+                ratio = current_observed / previous_matching
+                estimate = round(estimate * max(0.55, min(1.75, ratio)))
+
+            if estimate > 0:
+                estimates[missing_day][track_id] = estimate
+
+    return estimates
 
 
 def _best_global_rank_by_title(*, week_dates: set[str], logger: Logger) -> dict[str, int]:
@@ -1153,11 +1251,18 @@ def run(
     _, requested_week_days = _week_dates(chart_date)
     missing_days = [day for day in requested_week_days if _parse_iso_date(day) not in stream_dates]
     if missing_days:
-        logger.log(
-            f"⚠ incomplete week : {_format_date(chart_date)} missing "
-            + ", ".join(missing_days)
-        )
-        return 2
+        if len(missing_days) <= MAX_ESTIMATED_MISSING_STREAM_DAYS:
+            logger.log(
+                f"  streams_est    : {_format_date(chart_date)} missing "
+                + ", ".join(missing_days)
+                + " (estimating from recent history)"
+            )
+        else:
+            logger.log(
+                f"⚠ incomplete week : {_format_date(chart_date)} missing "
+                + ", ".join(missing_days)
+            )
+            return 2
 
     week_start, _ = _week_dates(chart_date)
     _, day_list = _week_dates(chart_date)

@@ -460,29 +460,151 @@ async function downloadAlbumImage(albumName, blocks, totalStreams, totalDaily, d
    HOME PAGE
 ========================= */
 
+const FLAG_FILTERS = [
+  ["all", "All"],
+  ["solo", "Solo"],
+  ["feature", "Features"],
+  ["collab", "Collabs"],
+  ["single", "Singles"],
+  ["album_track", "Album tracks"],
+  ["standalone", "Standalone"],
+  ["soundtrack", "Soundtracks"],
+  ["remix", "Remixes"],
+  ["live", "Live"],
+  ["acoustic", "Acoustic"],
+  ["taylor_version", "Taylor's Version"],
+  ["from_the_vault", "Vault"],
+];
+
+function _songHasFlag(song, flag) {
+  if (!flag || flag === "all") return true;
+  return _songFlags(song).includes(flag);
+}
+
+function _songFlags(song) {
+  if (Array.isArray(song.filter_tags) && song.filter_tags.length) {
+    return song.filter_tags;
+  }
+
+  const tags = new Set();
+  const text = [
+    song.title,
+    song.title_clean,
+    song.base_title,
+    song.primary_album,
+    song.primary_section,
+    song.display_section,
+    song.edition,
+    song.type,
+    song.version_tag,
+  ].join(" ").toLowerCase();
+
+  const artists = Array.isArray(song.artists) ? song.artists : [];
+  const otherArtists = artists.filter(a => String(a || "").toLowerCase() !== "taylor swift");
+  const primary = String(song.primary_artist || "").toLowerCase();
+
+  if (song.type === "feature" || primary && primary !== "taylor swift" || /\bfeat(?:\.|uring)?\s+taylor swift\b/.test(text)) tags.add("feature");
+  else if (otherArtists.length || /\bfeat(?:\.|uring)?\b/.test(text)) tags.add("collab");
+  else tags.add("solo");
+
+  if (song.type === "track" || /standard edition|from the vault|3am edition|anthology/.test(text)) tags.add("album_track");
+  if (song.type === "standalone" || /standalone|extras/.test(text)) tags.add("standalone");
+  if (/soundtrack|motion picture|cats|hunger games|fifty shades|valentine's day|one chance/.test(text)) tags.add("soundtrack");
+  if (song.type === "remix" || /\bremix\b|\bmix\b/.test(text)) tags.add("remix");
+  if (song.type === "live" || /\blive\b|live\//.test(text)) tags.add("live");
+  if (/acoustic/.test(text)) tags.add("acoustic");
+  if (/taylor'?s version/.test(text)) tags.add("taylor_version");
+  if (/from the vault|vault/.test(text)) tags.add("from_the_vault");
+
+  return [...tags];
+}
+
+function _filterSongsByFlag(rows) {
+  const flag = state.activeFlagFilter || "all";
+  if (flag === "all") return rows;
+  return rows.filter(song => _songHasFlag(song, flag));
+}
+
+function _flagCounts(rows) {
+  const counts = new Map([["all", rows.length]]);
+  for (const song of rows) {
+    for (const tag of _songFlags(song)) {
+      counts.set(tag, (counts.get(tag) || 0) + 1);
+    }
+  }
+  return counts;
+}
+
+function _renderFlagFilterPanel(rows) {
+  const counts = _flagCounts(rows);
+  const chips = FLAG_FILTERS
+    .filter(([key]) => key === "all" || counts.get(key))
+    .map(([key, label]) => {
+      const active = (state.activeFlagFilter || "all") === key;
+      const count = counts.get(key) || 0;
+      return `
+        <button class="flag-filter-chip${active ? " active" : ""}" data-flag-filter="${key}" type="button">
+          <span>${label}</span>
+          <strong>${count}</strong>
+        </button>
+      `;
+    })
+    .join("");
+
+  return `
+    <div id="home-filter-panel" class="filter-panel${state.filtersOpen ? " open" : ""}">
+      <div class="filter-section">
+        <div class="filter-section-title">
+          <span>Flags</span>
+          <em>BETA</em>
+        </div>
+        <div class="flag-filter-grid">
+          ${chips}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 function _buildHomeRows() {
-  const raw    = enrichSongsForDate(state.selectedDate);
+  const raw    = enrichSongsForDate(state.selectedDate)
+    .map(song => ({ ...song, filter_tags: _songFlags(song) }));
   const base   = state.combineVersions ? combineSongVersions(raw) : raw;
   const ranked = withRankChanges(base, state.selectedDate, state.sortMode);
-  const filtered = filterSongsByQuery(ranked);
+  const queried = filterSongsByQuery(ranked);
+  const filtered = _filterSongsByFlag(queried);
   const sorted   = sortSongs(filtered, state.sortMode);
-  return { ranked, filtered, sorted };
+  return { ranked, queried, filtered, sorted };
 }
 
 function _bindHomeButtons() {
-  document.getElementById("sortStreamsBtn")?.addEventListener("click", () => {
+  const sortStreamsBtn = document.getElementById("sortStreamsBtn");
+  if (sortStreamsBtn) sortStreamsBtn.onclick = () => {
     state.sortMode = "streams"; localStorage.setItem("site-sort-mode", "streams"); updateHomeTable();
-  });
-  document.getElementById("sortDailyBtn")?.addEventListener("click", () => {
+  };
+  const sortDailyBtn = document.getElementById("sortDailyBtn");
+  if (sortDailyBtn) sortDailyBtn.onclick = () => {
     state.sortMode = "daily"; localStorage.setItem("site-sort-mode", "daily"); updateHomeTable();
-  });
-  document.getElementById("combineBtn")?.addEventListener("click", () => {
+  };
+  const combineBtn = document.getElementById("combineBtn");
+  if (combineBtn) combineBtn.onclick = () => {
     state.combineVersions = !state.combineVersions; localStorage.setItem("site-combine-versions", String(state.combineVersions)); updateHomeTable();
+  };
+  const filtersBtn = document.getElementById("filtersBtn");
+  if (filtersBtn) filtersBtn.onclick = () => {
+    state.filtersOpen = !state.filtersOpen; localStorage.setItem("site-filters-open", String(state.filtersOpen)); updateHomeTable();
+  };
+  document.querySelectorAll("[data-flag-filter]").forEach(btn => {
+    btn.onclick = () => {
+      state.activeFlagFilter = btn.dataset.flagFilter || "all";
+      localStorage.setItem("site-active-flag-filter", state.activeFlagFilter);
+      updateHomeTable();
+    };
   });
 }
 
 export function updateHomeTable() {
-  const { filtered, sorted } = _buildHomeRows();
+  const { ranked, filtered, sorted } = _buildHomeRows();
 
   const tbody = document.getElementById("home-songs-body");
   if (tbody) tbody.innerHTML = sorted.map(songRow).join("");
@@ -492,10 +614,16 @@ export function updateHomeTable() {
     desc.textContent = `${state.selectedDate} • sorted by ${state.sortMode === "daily" ? "daily streams" : "total streams"} • ${filtered.length} result${filtered.length !== 1 ? "s" : ""}`;
   }
 
+  const panel = document.getElementById("home-filter-panel");
+  if (panel) {
+    panel.outerHTML = _renderFlagFilterPanel(ranked);
+  }
+
   const btns = {
     sortStreamsBtn: state.sortMode === "streams",
     sortDailyBtn:  state.sortMode === "daily",
     combineBtn:    state.combineVersions,
+    filtersBtn:    state.filtersOpen || (state.activeFlagFilter || "all") !== "all",
   };
   for (const [id, active] of Object.entries(btns)) {
     const el = document.getElementById(id);
@@ -504,6 +632,8 @@ export function updateHomeTable() {
 
   const si = document.getElementById("searchInput");
   if (si && document.activeElement !== si) si.value = state.searchQuery;
+
+  _bindHomeButtons();
 }
 
 export function renderHome(container) {
@@ -538,7 +668,9 @@ export function renderHome(container) {
             <button id="sortStreamsBtn" class="${state.sortMode === "streams" ? "active" : ""}">Total streams</button>
             <button id="sortDailyBtn"  class="${state.sortMode === "daily"   ? "active" : ""}">Daily streams</button>
             <button id="combineBtn"    class="${state.combineVersions        ? "active" : ""}">Combine</button>
+            <button id="filtersBtn"    class="${state.filtersOpen || (state.activeFlagFilter || "all") !== "all" ? "active" : ""}">Filters</button>
           </div>
+          ${_renderFlagFilterPanel(ranked)}
         </div>
 
         <div class="table-wrap ranking-wrap">

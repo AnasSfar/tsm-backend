@@ -41,7 +41,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:mine_pop_mix"
+          "genre_canonical_key": "family:mine_pop_mix",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "remix",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "remix": "high:type_or_title",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Back To December - Acoustic",
@@ -99,7 +111,19 @@
             "lastfm": "Back To December"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:back_to_december"
+          "genre_canonical_key": "family:back_to_december",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Haunted - Acoustic Version",
@@ -132,7 +156,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:haunted"
+          "genre_canonical_key": "family:haunted",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Better Than Revenge - Live/2011",
@@ -190,7 +226,19 @@
             "lastfm": "Better Than Revenge"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:better_than_revenge"
+          "genre_canonical_key": "family:better_than_revenge",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "live",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "live": "high:type_title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Last Kiss - Live/2011",
@@ -223,7 +271,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:last_kiss"
+          "genre_canonical_key": "family:last_kiss",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "live",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "live": "high:type_title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Mean - Live/2011",
@@ -256,7 +316,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:mean"
+          "genre_canonical_key": "family:mean",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "live",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "live": "high:type_title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Mine - Live/2011",
@@ -289,7 +361,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:mine"
+          "genre_canonical_key": "family:mine",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "live",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "live": "high:type_title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Ours - Live/2011",
@@ -322,7 +406,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:ours"
+          "genre_canonical_key": "family:ours",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "live",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "live": "high:type_title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Sparks Fly - Live/2011",
@@ -355,7 +451,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:sparks_fly"
+          "genre_canonical_key": "family:sparks_fly",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "live",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "live": "high:type_title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Speak Now - Live/2011",
@@ -388,7 +496,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:speak_now"
+          "genre_canonical_key": "family:speak_now",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "live",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "live": "high:type_title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "The Story Of Us - Live",
@@ -421,7 +541,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:the_story_of_us"
+          "genre_canonical_key": "family:the_story_of_us",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "live",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "live": "high:type_title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         }
       ]
     },
@@ -486,7 +618,15 @@
             "lastfm": "Back To December"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:back_to_december"
+          "genre_canonical_key": "family:back_to_december",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Better Than Revenge",
@@ -544,7 +684,15 @@
             "lastfm": "Better Than Revenge"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:better_than_revenge"
+          "genre_canonical_key": "family:better_than_revenge",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Dear John",
@@ -577,7 +725,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:dear_john"
+          "genre_canonical_key": "family:dear_john",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Enchanted",
@@ -635,7 +791,15 @@
             "lastfm": "Enchanted"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:enchanted"
+          "genre_canonical_key": "family:enchanted",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Haunted",
@@ -668,7 +832,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:haunted"
+          "genre_canonical_key": "family:haunted",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "If This Was A Movie",
@@ -701,7 +873,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:if_this_was_a_movie"
+          "genre_canonical_key": "family:if_this_was_a_movie",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Innocent",
@@ -734,7 +914,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:innocent"
+          "genre_canonical_key": "family:innocent",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Last Kiss",
@@ -767,7 +955,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:last_kiss"
+          "genre_canonical_key": "family:last_kiss",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Mean",
@@ -800,7 +996,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:mean"
+          "genre_canonical_key": "family:mean",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Mine",
@@ -833,7 +1037,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:mine"
+          "genre_canonical_key": "family:mine",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Never Grow Up",
@@ -866,7 +1078,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:never_grow_up"
+          "genre_canonical_key": "family:never_grow_up",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Ours",
@@ -899,7 +1119,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:ours"
+          "genre_canonical_key": "family:ours",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Sparks Fly",
@@ -932,7 +1160,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:sparks_fly"
+          "genre_canonical_key": "family:sparks_fly",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Speak Now",
@@ -965,7 +1201,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:speak_now"
+          "genre_canonical_key": "family:speak_now",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Superman",
@@ -998,7 +1242,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:superman"
+          "genre_canonical_key": "family:superman",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "The Story Of Us",
@@ -1031,7 +1283,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:the_story_of_us"
+          "genre_canonical_key": "family:the_story_of_us",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Long Live",
@@ -1064,7 +1324,19 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:long_live"
+          "genre_canonical_key": "family:long_live",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "live",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "live": "high:type_title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         }
       ]
     },
@@ -1106,7 +1378,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:back_to_december_apologize_you_re_not_sorry"
+          "genre_canonical_key": "family:back_to_december_apologize_you_re_not_sorry",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         }
       ]
     },
@@ -1148,7 +1430,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:dear_john_live2011"
+          "genre_canonical_key": "family:dear_john_live2011",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         },
         {
           "title": "Enchanted - Live/2011",
@@ -1207,7 +1499,17 @@
             "lastfm": "Enchanted"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:enchanted_live2011"
+          "genre_canonical_key": "family:enchanted_live2011",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         },
         {
           "title": "Haunted - Live/2011",
@@ -1241,7 +1543,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:haunted_live2011"
+          "genre_canonical_key": "family:haunted_live2011",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         },
         {
           "title": "Long Live - Live/2011",
@@ -1275,7 +1587,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:long_live_live2011"
+          "genre_canonical_key": "family:long_live_live2011",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         }
       ]
     }

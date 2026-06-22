@@ -27,6 +27,19 @@ function _nextMs(streams) {
   return x;
 }
 
+function _uniqueTags(...tagLists) {
+  const seen = new Set();
+  const out = [];
+  for (const tags of tagLists) {
+    for (const tag of (tags || [])) {
+      if (!tag || seen.has(tag)) continue;
+      seen.add(tag);
+      out.push(tag);
+    }
+  }
+  return out;
+}
+
 function _msLabel(v) {
   if (v == null) return null;
   if (v >= 1e9) { const b = v / 1e9; return (b % 1 === 0) ? `${b}B` : `${b.toFixed(1)}B`; }
@@ -241,6 +254,13 @@ export function combineSongVersions(rows) {
 
     existing.total_change =
       (existing.total_change || 0) + (song.total_change || 0);
+
+    existing.filter_tags = _uniqueTags(existing.filter_tags, song.filter_tags);
+
+    existing.filter_tag_sources = {
+      ...(existing.filter_tag_sources || {}),
+      ...(song.filter_tag_sources || {}),
+    };
 
     existing.combined_versions_count++;
 
