@@ -103,11 +103,47 @@ def ref_streams_from_archive(track: str, ref_date: str):
     return None
 
 
-def ref_streams(track_hist: dict, track: str, ref_date: str):
+_worldwide_rows_cache: dict[str, dict] = {}
+
+
+def ref_streams_from_worldwide(row: dict, ref_date: str):
+    if CHART_REGION == "global":
+        return None
+    track_id = str(row.get("track_id") or "").strip()
+    if not track_id:
+        return None
+    if ref_date not in _worldwide_rows_cache:
+        json_path = first_existing(
+            spotify_chart_dir("worldwide", ref_date) / f"ts_worldwide_{ref_date}.json",
+            legacy_spotify_chart_dir("worldwide", ref_date) / f"ts_worldwide_{ref_date}.json",
+        )
+        if not json_path.exists():
+            _worldwide_rows_cache[ref_date] = {}
+        else:
+            try:
+                data = load_json(json_path)
+                _worldwide_rows_cache[ref_date] = data.get("by_track", {}) if isinstance(data, dict) else {}
+            except Exception:
+                _worldwide_rows_cache[ref_date] = {}
+    for entry in _worldwide_rows_cache.get(ref_date, {}).get(track_id, []):
+        if entry.get("country") == CHART_REGION:
+            streams = nan_to_none(entry.get("streams"))
+            return int(streams) if streams else None
+    return None
+
+
+def ref_streams(track_hist: dict, track: str, ref_date: str, row: dict | None = None):
     streams = (track_hist.get(ref_date) or {}).get("streams")
     if streams:
         return streams
-    return ref_streams_from_chart(track, ref_date) or ref_streams_from_archive(track, ref_date)
+    from_chart = ref_streams_from_chart(track, ref_date)
+    if from_chart:
+        return from_chart
+    if row is not None:
+        from_worldwide = ref_streams_from_worldwide(row, ref_date)
+        if from_worldwide:
+            return from_worldwide
+    return ref_streams_from_archive(track, ref_date)
 
 
 def get_out_songs(chart_date: str, current_rows: list[dict]) -> list[dict]:

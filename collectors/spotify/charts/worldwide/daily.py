@@ -103,6 +103,7 @@ SEMAPHORE       = int(os.getenv("SPOTIFY_WORLDWIDE_SEMAPHORE", "10"))
 FETCH_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_WORLDWIDE_FETCH_MAX_ATTEMPTS", "0"))
 SKIP_LATEST_FALLBACK_ON_404 = os.getenv("SPOTIFY_SKIP_LATEST_FALLBACK_ON_404", "").strip().lower() in {"1", "true", "yes", "on"}
 _OVERVIEW_URL   = "https://charts-spotify-com-service.spotify.com/auth/v1/overview/GLOBAL"
+MULTI_SONG_REGIONAL_POST_MIN_SONGS = 3
 
 _ALBUM_EMOJI: list[tuple[str, str]] = [
     ("the life of a showgirl", "❤️‍🔥"),
@@ -996,7 +997,7 @@ def _post_multi_song_regions(
     candidates = [
         (region, rows)
         for region, rows in by_region.items()
-        if region not in {"global", "fr"} and len(rows) >= 2
+        if region not in {"global", "fr"} and len(rows) >= MULTI_SONG_REGIONAL_POST_MIN_SONGS
     ]
     candidates.sort(key=lambda item: _region_priority_score(item[1]), reverse=True)
     if not candidates:
@@ -1059,7 +1060,7 @@ def main() -> int:
     parser.add_argument(
         "--post-multi-song-regions",
         action="store_true",
-        help="Post non-global/non-FR regions that have at least 2 Taylor Swift songs.",
+        help=f"Post non-global/non-FR regions that have at least {MULTI_SONG_REGIONAL_POST_MIN_SONGS} Taylor Swift songs.",
     )
     parser.add_argument(
         "--force-priority-global-new",
@@ -1300,7 +1301,7 @@ def main() -> int:
         multi_song_region_rows = {
             region: rows
             for region, rows in by_region.items()
-            if region not in {"global", "fr"} and len(rows) >= 2
+            if region not in {"global", "fr"} and len(rows) >= MULTI_SONG_REGIONAL_POST_MIN_SONGS
         }
         for region, rows in multi_song_region_rows.items():
             _write_regional_ts_chart(chart_date, region, rows, manual_lookup, track_lookup)

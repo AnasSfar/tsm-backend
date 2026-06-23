@@ -368,8 +368,12 @@ def build_rows_html(
         cover_url = url_to_data_uri(get_album_cover(track, track_album_map, cover_map, track_image_map, scraped_img))
 
         track_hist   = history.get(track, {})
-        prev_streams = ref_streams_fn(track_hist, track, yesterday)
-        week_streams = ref_streams_fn(track_hist, track, week_ago)
+        try:
+            prev_streams = ref_streams_fn(track_hist, track, yesterday, row)
+            week_streams = ref_streams_fn(track_hist, track, week_ago, row)
+        except TypeError:
+            prev_streams = ref_streams_fn(track_hist, track, yesterday)
+            week_streams = ref_streams_fn(track_hist, track, week_ago)
         streams_int  = int(streams) if streams else None
 
         daily_pct  = get_pct(streams_int, prev_streams)

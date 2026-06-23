@@ -62,7 +62,7 @@ def ref_streams_from_chart(track: str, ref_date: str):
     return None
 
 
-def ref_streams(track_hist: dict, track: str, ref_date: str):
+def ref_streams(track_hist: dict, track: str, ref_date: str, row: dict | None = None):
     streams = (track_hist.get(ref_date) or {}).get("streams")
     if streams:
         return streams
