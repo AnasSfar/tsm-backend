@@ -208,10 +208,11 @@ def _build_html(rows: list[dict[str, Any]], chart_date: str) -> str:
   <div class="days">{row.get('days_at_pos', 1)}d</div>
 </div>"""
             )
+        column_rows = "\n".join(row_html)
         columns.append(
             f"""<div class="col">
   <div class="heads"><div>Region</div><div>Pos</div><div>Chg</div><div>Days</div></div>
-  {"\n".join(row_html)}
+  {column_rows}
 </div>"""
         )
     rows_markup = "\n".join(columns)
@@ -220,7 +221,7 @@ def _build_html(rows: list[dict[str, Any]], chart_date: str) -> str:
 <head>
 <meta charset="utf-8">
 <style>
-*{{box-sizing:border-box}} body{{margin:0;width:900px;font-family:Inter,Arial,sans-serif;background:#f3f8f5;color:#102018}}
+*{{box-sizing:border-box}} body{{margin:0;width:1200px;font-family:Inter,Arial,sans-serif;background:#f3f8f5;color:#102018}}
 .card{{padding:34px;background:linear-gradient(180deg,#ffffff 0%,#edf8f2 100%);border:1px solid #ccebd8}}
 .top{{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}}
 .title{{font-size:34px;font-weight:900;letter-spacing:-.02em}}
@@ -260,10 +261,10 @@ def _render(html: str, out_path: Path) -> None:
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True, args=["--no-sandbox"])
-            page = browser.new_page(viewport={"width": 900, "height": 1600}, device_scale_factor=2)
+            page = browser.new_page(viewport={"width": 1200, "height": 1200}, device_scale_factor=2)
             page.set_content(html, wait_until="domcontentloaded")
             full_h = page.evaluate("() => document.body.scrollHeight")
-            page.set_viewport_size({"width": 900, "height": max(400, min(int(full_h), 6000))})
+            page.set_viewport_size({"width": 1200, "height": max(400, min(int(full_h), 4000))})
             page.locator("#card").screenshot(path=str(out_path))
             browser.close()
     finally:
