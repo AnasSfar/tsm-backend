@@ -463,8 +463,8 @@ async function downloadAlbumImage(albumName, blocks, totalStreams, totalDaily, d
 const FLAG_FILTERS = [
   ["all", "All"],
   ["solo", "Solo"],
-  ["feature", "Features"],
-  ["collab", "Collabs"],
+  ["taylor_lead_collab", "Taylor + artist"],
+  ["taylor_featured", "Artist + Taylor"],
   ["single", "Singles"],
   ["album_track", "Album tracks"],
   ["standalone", "Standalone"],
@@ -482,10 +482,6 @@ function _songHasFlag(song, flag) {
 }
 
 function _songFlags(song) {
-  if (Array.isArray(song.filter_tags) && song.filter_tags.length) {
-    return song.filter_tags;
-  }
-
   const tags = new Set();
   const text = [
     song.title,
@@ -503,18 +499,37 @@ function _songFlags(song) {
   const otherArtists = artists.filter(a => String(a || "").toLowerCase() !== "taylor swift");
   const primary = String(song.primary_artist || "").toLowerCase();
 
-  if (song.type === "feature" || primary && primary !== "taylor swift" || /\bfeat(?:\.|uring)?\s+taylor swift\b/.test(text)) tags.add("feature");
-  else if (otherArtists.length || /\bfeat(?:\.|uring)?\b/.test(text)) tags.add("collab");
+  if (primary && primary !== "taylor swift" || /\bfeat(?:\.|uring)?\s+taylor swift\b/.test(text)) tags.add("taylor_featured");
+  else if (otherArtists.length || /\bfeat(?:\.|uring)?\b/.test(text) || song.type === "feature") tags.add("taylor_lead_collab");
   else tags.add("solo");
 
   if (song.type === "track" || /standard edition|from the vault|3am edition|anthology/.test(text)) tags.add("album_track");
   if (song.type === "standalone" || /standalone|extras/.test(text)) tags.add("standalone");
   if (/soundtrack|motion picture|cats|hunger games|fifty shades|valentine's day|one chance/.test(text)) tags.add("soundtrack");
   if (song.type === "remix" || /\bremix\b|\bmix\b/.test(text)) tags.add("remix");
-  if (song.type === "live" || /\blive\b|live\//.test(text)) tags.add("live");
+  if (
+    song.type === "live"
+    || /(?:^|\s+-\s+|\()\blive(?:\/|\s+(?:from|at|version|acoustic|on|in)\b)/.test(text)
+    || /live from|live at/.test(text)
+  ) tags.add("live");
   if (/acoustic/.test(text)) tags.add("acoustic");
   if (/taylor'?s version/.test(text)) tags.add("taylor_version");
   if (/from the vault|vault/.test(text)) tags.add("from_the_vault");
+
+  (song.filter_tags || []).forEach(tag => {
+    if (tag === "feature") {
+      if (primary && primary !== "taylor swift") tags.add("taylor_featured");
+      else tags.add("taylor_lead_collab");
+      return;
+    }
+    if (tag === "collab") {
+      tags.add("taylor_lead_collab");
+      return;
+    }
+    tags.add(tag);
+  });
+
+  if (tags.has("taylor_featured") || tags.has("taylor_lead_collab")) tags.delete("solo");
 
   return [...tags];
 }

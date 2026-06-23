@@ -15,9 +15,10 @@ def git_commit_and_push(repo_root: Path, message: str) -> None:
     try:
         subprocess.run(
             [
-                "git", "add",
+                "git", "add", "-f",
                 "collectors/youtube/tools/json/",
                 "db/youtube_views_history.csv",
+                "db/youtube_title_history.csv",
             ],
             cwd=str(repo_root),
             check=True,

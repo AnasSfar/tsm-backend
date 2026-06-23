@@ -96,6 +96,7 @@ SPOTIFY_UA = (
 # artists_global, global et fr postent dès leur collecte terminée (pas d'attente de worldwide)
 # us/uk sont geres par worldwide.
 COLLECT_RUNNERS: list[tuple[str, Path, list[str]]] = [
+    ("artists_global", CHARTS_ROOT / "artists_global" / "artist_global_daily.py", []),
     ("worldwide",      CHARTS_ROOT / "worldwide"      / "daily.py",         ["--force"]),
 ]
 
@@ -142,6 +143,7 @@ def _r2_export_is_fresh(target: date) -> bool:
         REPO_ROOT / "db" / "charts_history_us.csv",
         REPO_ROOT / "db" / "charts_history_uk.csv",
         WEB_EXPORT_DATA_DIR / "charts_worldwide.json",
+        WEB_EXPORT_DATA_DIR / "charts_artists_global_worldwide.json",
     ]
     for path in watched_paths:
         try:
@@ -1218,7 +1220,7 @@ def _ensure_worldwide_valid(
     return ok, 0
 
 
-_ALL_POST_PARTS = {"artists", "global", "fr", "cards"}
+_ALL_POST_PARTS = {"artists", "global", "fr", "cards", "regions"}
 _EXTRA_POST_PARTS = {"best-day-since"}  # non inclus dans le défaut, à passer explicitement via --post
 
 
@@ -1457,7 +1459,7 @@ def main() -> int:
         metavar="PART",
         default=None,
         help=(
-            "Parties à poster sur Twitter: artists, best-day-since, cards, fr, global. "
+            "Parties à poster sur Twitter: artists, best-day-since, cards, fr, global, regions. "
             "Défaut: toutes. Exemple: --post global fr"
         ),
     )
@@ -1518,6 +1520,8 @@ def main() -> int:
             for region in ("global", "fr"):
                 if region in post_parts:
                     extra.extend(["--post-priority-region", region])
+            if "regions" in post_parts:
+                extra.append("--post-multi-song-regions")
             if "cards" in post_parts:
                 extra.append("--post-priority-global-new")
                 if args.force_cards or args.force:
@@ -1704,6 +1708,22 @@ def main() -> int:
         if regional_post_failures:
             failed_names = ", ".join(n for n, _ in regional_post_failures)
             print(f"[WARN] posts regionaux echoues, suite du run maintenue: {failed_names}")
+
+    if not args.dry_run and "artists" in post_parts and not failures:
+        print("\n[PHASE3] generation et publication de la card artists worldwide...")
+        artist_worldwide_args = [str(target_date), "--post"]
+        if args.force:
+            artist_worldwide_args.append("--force")
+        rc_artist_worldwide = _run(
+            "artists-worldwide-card",
+            CHARTS_ROOT / "artists_global" / "tools" / "scripts" / "generate_artist_worldwide_card.py",
+            artist_worldwide_args,
+            dry_run=False,
+            env=env,
+            verbose=args.verbose,
+        )
+        if rc_artist_worldwide != 0:
+            failures.append(("artists-worldwide-card", rc_artist_worldwide))
 
     if not args.dry_run and should_generate_cards and not _worldwide_data_ready(target_date):
         failures.append(("cards-data", 1))

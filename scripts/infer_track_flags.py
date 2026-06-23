@@ -28,8 +28,8 @@ DEFAULT_ARTIST = "Taylor Swift"
 
 TAG_ORDER = (
     "solo",
-    "feature",
-    "collab",
+    "taylor_lead_collab",
+    "taylor_featured",
     "single",
     "album_track",
     "standalone",
@@ -202,12 +202,14 @@ def infer_tags(track: dict[str, Any]) -> tuple[list[str], dict[str, str]]:
     title_names_default_as_feature = bool(re.search(r"\bfeat(?:\.|uring)?\s+taylor swift\b", title))
     title_has_feature_credit = bool(re.search(r"\bfeat(?:\.|uring)?\b", title))
 
-    if track_type == "feature" or primary_artist and primary_artist != norm(DEFAULT_ARTIST) or title_names_default_as_feature:
-        add_tag(tags, sources, "feature", "type_or_primary_artist")
+    if primary_artist and primary_artist != norm(DEFAULT_ARTIST) or title_names_default_as_feature:
+        add_tag(tags, sources, "taylor_featured", "primary_artist_or_title")
     elif any(norm(name) != norm(DEFAULT_ARTIST) for name in featured_names) or other_artists or title_has_feature_credit:
-        add_tag(tags, sources, "collab", "artists_or_featured_artists")
+        add_tag(tags, sources, "taylor_lead_collab", "artists_or_featured_artists")
+    elif track_type == "feature":
+        add_tag(tags, sources, "taylor_lead_collab", "type", confidence="medium")
 
-    if "feature" not in tags and "collab" not in tags and not other_artists:
+    if "taylor_featured" not in tags and "taylor_lead_collab" not in tags and not other_artists:
         add_tag(tags, sources, "solo", "artist_credit")
 
     if album_type == "single":
@@ -244,7 +246,15 @@ def infer_tags(track: dict[str, Any]) -> tuple[list[str], dict[str, str]]:
 
     if track_type == "remix" or re.search(r"\b(remix|mix)\b", title):
         add_tag(tags, sources, "remix", "type_or_title")
-    if track_type == "live" or re.search(r"\blive\b|live/", title) or "live_from" in section or "live" in display_section:
+    live_marker = (
+        track_type == "live"
+        or re.search(r"(?:^|\s+-\s+|\()\blive(?:/|\s+(?:from|at|version|acoustic|on|in)\b)", title)
+        or "live_from" in section
+        or display_section.startswith("live")
+        or " live from " in blob
+        or " live at " in blob
+    )
+    if live_marker:
         add_tag(tags, sources, "live", "type_title_or_section")
     if "acoustic" in blob:
         add_tag(tags, sources, "acoustic", "title_or_section")
@@ -279,7 +289,7 @@ def aggregate_track_tags(
             for tag, source in suggested_sources.items():
                 sources.setdefault(tag, source)
 
-        if "feature" in tags or "collab" in tags:
+        if "taylor_featured" in tags or "taylor_lead_collab" in tags:
             tags.discard("solo")
             sources.pop("solo", None)
 

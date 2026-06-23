@@ -43,10 +43,40 @@ UPLOADS_PLAYLIST_ID = "UUqECaJ8Gagnn7YCbPEzWH6g"
 NTFY_TOPIC = os.getenv("NTFY_TOPIC_YOUTUBE", "taylormuseum-youtube")
 
 CSV_PATH = DB_DIR / "youtube_views_history.csv"
+TITLE_HISTORY_PATH = DB_DIR / "youtube_title_history.csv"
 VIDEO_DB_PATH = TOOLS_JSON_DIR / "video_db.json"
 HISTORY_PATH = TOOLS_JSON_DIR / "youtube_history.json"
+DISCOGRAPHY_SONGS_PATH = DB_DIR / "discography" / "songs.json"
 
 BATCH_SIZE = 50  # max IDs par appel videos.list
 API_BASE = "https://www.googleapis.com/youtube/v3"
 
-CSV_FIELDNAMES = ["date", "video_id", "title", "total_views", "daily_views"]
+CSV_FIELDNAMES = [
+    "date",
+    "video_id",
+    "title",
+    "published_at",
+    "duration",
+    "total_views",
+    "daily_views",
+    "like_count",
+    "comment_count",
+    "category_id",
+    "live_broadcast_content",
+    "privacy_status",
+    "upload_status",
+    "tags",
+]
+
+TITLE_CSV_FIELDNAMES = [
+    "date",
+    "title_key",
+    "title",
+    "video_count",
+    "total_views",
+    "daily_views",
+    "like_count",
+    "comment_count",
+    "video_ids",
+    "video_titles",
+]

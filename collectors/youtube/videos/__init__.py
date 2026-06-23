@@ -1,0 +1,2 @@
+"""YouTube Videos collector package."""
+

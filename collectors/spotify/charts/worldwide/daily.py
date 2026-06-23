@@ -883,6 +883,74 @@ def _run_async_with_token_refresh(
 
 # ── Entry point ────────────────────────────────────────────────────────────────
 
+def _fmt_streams(value) -> str:
+    try:
+        return f"{int(value):,}"
+    except (TypeError, ValueError):
+        return "N/A"
+
+
+def _multi_song_region_lock_path(chart_date: str, region: str) -> Path:
+    return spotify_chart_dir("worldwide", chart_date) / "regional_posts" / f"posted_{region}.lock"
+
+
+def _build_multi_song_region_tweet(chart_date: str, region: str, region_name: str, rows: list[dict]) -> str:
+    date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    count = len(rows)
+    song_word = "song" if count == 1 else "songs"
+    lines = [
+        f"📈 | Taylor Swift has {count} {song_word} charting on Spotify in {region_name} yesterday ({date_fmt}).",
+        "",
+    ]
+    for row in sorted(rows, key=lambda item: item.get("rank") or 9999):
+        title = str(row.get("track_name") or "Taylor Swift song")
+        rank = row.get("rank") or "?"
+        streams = _fmt_streams(row.get("streams"))
+        lines.append(f'#{rank} "{title}" - {streams} streams')
+    lines.extend([
+        "",
+        f"See full update here : https://thetsmuseum.app/charts?region={region}&view=today",
+    ])
+    return "\n".join(lines)
+
+
+def _post_multi_song_regions(
+    chart_date: str,
+    regions: dict[str, str],
+    by_region: dict[str, list[dict]],
+    *,
+    force: bool = False,
+) -> None:
+    if not TWITTER_SESSION.exists():
+        print(f"[WARN] Multi-song regional posts skipped: Twitter session missing: {TWITTER_SESSION}", flush=True)
+        return
+
+    candidates = [
+        (region, rows)
+        for region, rows in sorted(by_region.items())
+        if region not in {"global", "fr"} and len(rows) >= 2
+    ]
+    if not candidates:
+        print("[INFO] No multi-song regional Spotify posts needed.", flush=True)
+        return
+
+    print(f"[INFO] Multi-song regional posts: {len(candidates)} candidate(s)", flush=True)
+    for region, rows in candidates:
+        lock_path = _multi_song_region_lock_path(chart_date, region)
+        if lock_path.exists() and not force:
+            print(f"[SKIP] regional post {region} already done for {chart_date}", flush=True)
+            continue
+        region_name = regions.get(region, region.upper())
+        tweet = _build_multi_song_region_tweet(chart_date, region, region_name, rows)
+        print(f"[regional-post] {region}: {tweet}", flush=True)
+        if post_thread([tweet], TWITTER_SESSION):
+            lock_path.parent.mkdir(parents=True, exist_ok=True)
+            lock_path.touch()
+            print(f"[INFO] Posted regional Spotify update: {region}", flush=True)
+        else:
+            print(f"[WARN] Regional Spotify post failed: {region}", flush=True)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Fetch worldwide Spotify charts for Taylor Swift songs."
@@ -914,6 +982,11 @@ def main() -> int:
         choices=("global", "fr"),
         default=[],
         help="Post this regional chart as soon as its priority fetch is written.",
+    )
+    parser.add_argument(
+        "--post-multi-song-regions",
+        action="store_true",
+        help="Post non-global/non-FR regions that have at least 2 Taylor Swift songs.",
     )
     parser.add_argument(
         "--force-priority-global-new",
@@ -1149,6 +1222,28 @@ def main() -> int:
         if region in by_region and by_region[region]:
             _write_regional_ts_chart(chart_date, region, by_region[region], manual_lookup, track_lookup)
 
+    _multi_song_post_thread: threading.Thread | None = None
+    if args.post_multi_song_regions:
+        multi_song_region_rows = {
+            region: rows
+            for region, rows in by_region.items()
+            if region not in {"global", "fr"} and len(rows) >= 2
+        }
+        for region, rows in multi_song_region_rows.items():
+            _write_regional_ts_chart(chart_date, region, rows, manual_lookup, track_lookup)
+        if multi_song_region_rows:
+            _multi_song_post_thread = threading.Thread(
+                target=lambda: _post_multi_song_regions(
+                    chart_date,
+                    regions,
+                    multi_song_region_rows,
+                    force=args.force,
+                ),
+                daemon=True,
+                name="multi-song-regional-posting",
+            )
+            _multi_song_post_thread.start()
+
     by_track: dict[str, list[dict]] = {}
     track_names: dict[str, str] = {}
     unresolved: list[dict]          = []
@@ -1345,6 +1440,12 @@ def main() -> int:
         _priority_card_thread.join(timeout=600)
         if _priority_card_thread.is_alive():
             print("[WARN] Priority Global NEW card toujours en cours apres 10 minutes", flush=True)
+
+    if _multi_song_post_thread is not None and _multi_song_post_thread.is_alive():
+        print("[INFO] Attente fin posts regions multi-titres...", flush=True)
+        _multi_song_post_thread.join(timeout=600)
+        if _multi_song_post_thread.is_alive():
+            print("[WARN] Posts regions multi-titres toujours en cours apres 10 minutes", flush=True)
 
     git_commit_and_push(ROOT, f"charts worldwide {chart_date}")
     return 0

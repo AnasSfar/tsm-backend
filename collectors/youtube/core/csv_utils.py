@@ -23,9 +23,11 @@ def append_rows(
     rows: Iterable[dict],
     fieldnames: list[str],
 ) -> None:
-    """Append rows to CSV. Writes header only when file is new/empty."""
+    """Append rows to CSV. Migrates an existing header when new columns appear."""
     path.parent.mkdir(parents=True, exist_ok=True)
     is_new = not path.exists() or path.stat().st_size == 0
+    if not is_new:
+        _ensure_fieldnames(path, fieldnames)
     with path.open("a", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
         if is_new:
@@ -33,10 +35,50 @@ def append_rows(
         writer.writerows(rows)
 
 
+def _ensure_fieldnames(path: Path, fieldnames: list[str]) -> None:
+    with path.open(newline="", encoding="utf-8-sig") as f:
+        reader = csv.DictReader(f)
+        existing = reader.fieldnames or []
+        if existing == fieldnames:
+            return
+        rows = list(reader)
+
+    with path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
+        writer.writeheader()
+        for row in rows:
+            writer.writerow({name: row.get(name, "") for name in fieldnames})
+
+
+def remove_rows_for_date(path: Path, target_date: str, fieldnames: list[str]) -> int:
+    """Remove all CSV rows for target_date and return the number removed."""
+    if not path.exists() or path.stat().st_size == 0:
+        return 0
+
+    _ensure_fieldnames(path, fieldnames)
+    rows = read_csv_rows(path)
+    kept = [row for row in rows if row.get("date") != target_date]
+    removed = len(rows) - len(kept)
+    if removed == 0:
+        return 0
+
+    with path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
+        writer.writeheader()
+        writer.writerows(kept)
+    return removed
+
+
 def date_already_collected(path: Path, date: str) -> bool:
     """Return True if any row with this date already exists in the CSV."""
     rows = read_csv_rows(path)
     return any(r.get("date") == date for r in rows)
+
+
+def has_collection_before(path: Path, target_date: str) -> bool:
+    """Return True when the CSV has at least one row from another date."""
+    rows = read_csv_rows(path)
+    return any(r.get("date") and r.get("date") != target_date for r in rows)
 
 
 # ---------------------------------------------------------------------------

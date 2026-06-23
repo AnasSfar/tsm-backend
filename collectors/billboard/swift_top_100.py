@@ -230,7 +230,7 @@ def _iter_discography_tracks() -> list[TrackMeta]:
         if not title:
             return
         base_title = (track.get("base_title") or "").strip() or None
-        if _is_taylor_feature_track(title) or _is_non_song_tayboard_track(title):
+        if _is_non_song_tayboard_track(title):
             return
         spotify_url = f"https://open.spotify.com/track/{track_id}"
         image_url = track.get("image_url") or None
@@ -852,7 +852,7 @@ def _weekly_apple_music_ts_points(*, week_dates: set[str], logger: Logger) -> di
     return scores
 
 
-def _load_existing_history_before_date(chart_date: str, logger: Logger) -> list[dict]:
+def _load_existing_history(logger: Logger) -> list[dict]:
     if not SWIFT_TOP_100_HISTORY_CSV.exists():
         return []
 
@@ -863,6 +863,11 @@ def _load_existing_history_before_date(chart_date: str, logger: Logger) -> list[
         logger.log(f"⚠ history        : failed to read CSV — {exc}")
         return []
 
+    return rows
+
+
+def _load_existing_history_before_date(chart_date: str, logger: Logger) -> list[dict]:
+    rows = _load_existing_history(logger)
     return [r for r in rows if (r.get("date") or "").strip() < chart_date]
 
 
@@ -1135,12 +1140,16 @@ def _build_week_chart(
     best_rank = _best_global_rank_by_title(week_dates=week_set, logger=logger)
 
     scored: list[dict] = []
+    skipped_unknown_track_ids: set[str] = set()
     for tid, wk_streams in weekly_streams.items():
         if wk_streams <= 0:
             continue
         meta = tracks.get(tid)
-        title = meta.title if meta else tid
-        base_title = meta.base_title if meta else None
+        if meta is None:
+            skipped_unknown_track_ids.add(tid)
+            continue
+        title = meta.title
+        base_title = meta.base_title
         norm_title = _chart_lookup_key(title, combined=COMBINE_VERSIONS, base_title=base_title)
         br = best_rank.get(norm_title)
         # Points calculated later after top-100 selection (need sum of top 100 streams)
@@ -1157,6 +1166,13 @@ def _build_week_chart(
                 "week_start": _format_date(week_start),
                 "week_end": _format_date(week_end),
             }
+        )
+
+    if skipped_unknown_track_ids:
+        sample = ", ".join(sorted(skipped_unknown_track_ids)[:5])
+        suffix = "..." if len(skipped_unknown_track_ids) > 5 else ""
+        logger.log(
+            f"  metadata       : skipped {len(skipped_unknown_track_ids)} unknown stream track id(s): {sample}{suffix}"
         )
 
     scored.sort(
@@ -1583,7 +1599,11 @@ def run(
         combined_song_rows.sort(key=lambda r: ((r.get("date") or ""), int(r.get("rank") or 9999), r.get("track_id") or ""))
         _write_songs_history_csv(combined_song_rows, logger)
 
-        combined_rows = existing_rows + top_out_entries
+        all_existing_rows = _load_existing_history(logger)
+        combined_rows = [
+            r for r in all_existing_rows
+            if (r.get("date") or "").strip() != chart_date_str
+        ] + top_out_entries
         combined_rows.sort(key=lambda r: ((r.get("date") or ""), int(r.get("rank") or 9999), r.get("track_id") or ""))
         _write_history_csv(combined_rows, logger)
 

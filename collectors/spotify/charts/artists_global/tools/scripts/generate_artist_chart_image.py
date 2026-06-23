@@ -202,6 +202,12 @@ def fmt_streak(days) -> str:
     return f"{int(days)}d"
 
 
+def fmt_days_at_pos(days) -> str:
+    if days is None:
+        return "—"
+    return f"{int(days)}d"
+
+
 # ── CSS (same light glassmorphism as generate_chart_image.py) ─────────────────
 
 CSS = """
@@ -228,7 +234,7 @@ body{
 /* Column headers */
 .col-heads{
   display:grid;
-  grid-template-columns:52px 56px minmax(200px,1fr) 80px 80px;
+  grid-template-columns:48px 50px minmax(170px,1fr) 64px 72px 82px;
   column-gap:8px;
   padding:7px 14px;
   background:rgba(241,245,246,.95);
@@ -243,7 +249,7 @@ body{
 /* Artist cards */
 .artist-card{
   display:grid;
-  grid-template-columns:52px 56px minmax(200px,1fr) 80px 80px;
+  grid-template-columns:48px 50px minmax(170px,1fr) 64px 72px 82px;
   column-gap:8px;
   align-items:center;
   padding:9px 14px;
@@ -336,6 +342,7 @@ def _artist_row_html(artist: dict, idx: int) -> str:
     name = artist["artist_name"]
     peak = artist.get("peak_rank", "—")
     streak = fmt_streak(artist.get("streak"))
+    days_at_pos = fmt_days_at_pos(artist.get("days_at_pos"))
     is_ts = name.lower() == TS_NAME.lower()
 
     if is_ts:
@@ -359,6 +366,7 @@ def _artist_row_html(artist: dict, idx: int) -> str:
   </div>
   <div class="col-num">#{peak}</div>
   <div class="col-num">{streak}</div>
+  <div class="col-num">{days_at_pos}</div>
 </div>"""
 
 
@@ -402,6 +410,7 @@ def build_top5_html(artists: list[dict], stats_date: str, header_img: Path | Non
     <span>Artist</span>
     <span class="right">Peak</span>
     <span class="right">Streak</span>
+    <span class="right">Days at Pos</span>
   </div>
   {rows_html}
   <div class="ftr">
@@ -432,6 +441,7 @@ def build_top10_html(artists: list[dict], stats_date: str, header_img: Path | No
     <span>Artist</span>
     <span class="right">Peak</span>
     <span class="right">Streak</span>
+    <span class="right">Days at Pos</span>
   </div>
   {rows_html}
   <div class="ftr">
@@ -448,6 +458,7 @@ def build_solo_html(ts_artist: dict, stats_date: str, header_img: Path | None, p
     rank = ts_artist["rank"]
     chg_label, chg_cls = rank_change_label(rank, ts_artist.get("previous_rank"))
     streak = fmt_streak(ts_artist.get("streak"))
+    days_at_pos = fmt_days_at_pos(ts_artist.get("days_at_pos"))
     peak = ts_artist.get("peak_rank", "—")
     img_uri = url_to_data_uri(ts_artist.get("image_url", ""))
     img_tag = (
@@ -482,6 +493,10 @@ def build_solo_html(ts_artist: dict, stats_date: str, header_img: Path | None, p
         <div class="solo-stat">
           <span class="solo-stat-label">Peak</span>
           <span class="solo-stat-val">#{peak}</span>
+        </div>
+        <div class="solo-stat">
+          <span class="solo-stat-label">Days at Pos</span>
+          <span class="solo-stat-val">{days_at_pos}</span>
         </div>
       </div>
     </div>
@@ -580,9 +595,7 @@ def main() -> None:
     out_path = spotify_chart_dir("artists_global", stats_date) / out_name
     generate_image(html, out_path)
 
-    if not args.no_post and not gained_rank_spot(ts_artist):
-        print("Twitter post skipped: Taylor Swift did not gain a rank spot.")
-    elif not args.no_post:
+    if not args.no_post:
         twitter_session = Path(args.session) if args.session else TWITTER_SESSION
         if not twitter_session.exists():
             print(f"Twitter session not found: {twitter_session} — skipping post.")

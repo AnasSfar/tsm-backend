@@ -37,7 +37,7 @@ ROOT = Path(__file__).resolve().parents[4]
 CHARTS_ROOT = ROOT / "collectors" / "spotify" / "charts"
 COLLECTOR_ROOT = CHARTS_ROOT / "artists_global"
 sys.path.insert(0, str(ROOT / "collectors" / "spotify"))
-from core.data_paths import WEB_EXPORT_DATA_DIR, spotify_chart_dir
+from core.data_paths import WEB_EXPORT_DATA_DIR, spotify_chart_dir, spotify_chart_snapshot_candidates
 
 PERIOD_CONFIG = {
     "daily": {
@@ -328,6 +328,69 @@ def _history_csv_path(chart_date: str, period: str) -> Path:
     return spotify_chart_dir("artists_global", chart_date) / PERIOD_CONFIG[period]["csv_name"]
 
 
+def _artist_key(row: dict[str, Any]) -> str:
+    artist_id = str(row.get("artist_id") or "").strip().lower()
+    if artist_id:
+        return f"id:{artist_id}"
+    return f"name:{str(row.get('artist_name') or '').strip().lower()}"
+
+
+def _load_previous_rows(chart_date: date, period: str) -> list[dict[str, Any]] | None:
+    filename = PERIOD_CONFIG[period]["json_name"]
+    for path in spotify_chart_snapshot_candidates("artists_global", chart_date.isoformat(), filename):
+        if not path.exists():
+            continue
+        try:
+            data = json.loads(path.read_text(encoding="utf-8-sig"))
+        except (OSError, ValueError):
+            continue
+        artists = data.get("artists")
+        if isinstance(artists, list):
+            return [row for row in artists if isinstance(row, dict)]
+    return None
+
+
+def _add_days_at_pos(rows: list[dict[str, Any]], chart_date: str, period: str) -> None:
+    try:
+        cursor = datetime.strptime(chart_date, "%Y-%m-%d").date()
+    except ValueError:
+        for row in rows:
+            row["days_at_pos"] = 1
+        return
+
+    step = 7 if period == "weekly" else 1
+    counters: dict[str, int] = {_artist_key(row): step for row in rows}
+    active: dict[str, int] = {
+        _artist_key(row): int(row["rank"])
+        for row in rows
+        if _artist_key(row) != "name:" and row.get("rank") is not None
+    }
+
+    cursor -= timedelta(days=step)
+    while active:
+        previous_rows = _load_previous_rows(cursor, period)
+        if not previous_rows:
+            break
+        previous_by_key = {_artist_key(row): row for row in previous_rows}
+        still_active: dict[str, int] = {}
+        for key, rank in active.items():
+            previous = previous_by_key.get(key)
+            if previous is None:
+                continue
+            try:
+                previous_rank = int(previous.get("rank"))
+            except (TypeError, ValueError):
+                continue
+            if previous_rank == rank:
+                counters[key] += step
+                still_active[key] = rank
+        active = still_active
+        cursor -= timedelta(days=step)
+
+    for row in rows:
+        row["days_at_pos"] = counters.get(_artist_key(row), step)
+
+
 def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fieldnames = [
@@ -339,6 +402,7 @@ def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "previous_rank",
         "peak_rank",
         "streak",
+        "days_at_pos",
         "image_url",
     ]
     with path.open("w", newline="", encoding="utf-8") as f:
@@ -425,6 +489,8 @@ def main() -> int:
         chart_date = route_value
     else:
         chart_date = expected_date
+
+    _add_days_at_pos(rows, chart_date, period)
 
     output = {
         "date": chart_date,

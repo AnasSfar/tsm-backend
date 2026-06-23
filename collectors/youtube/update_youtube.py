@@ -16,6 +16,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from datetime import date
 from pathlib import Path
@@ -32,9 +33,12 @@ from .core.config import (
     BATCH_SIZE,
     CSV_FIELDNAMES,
     CSV_PATH,
+    DISCOGRAPHY_SONGS_PATH,
     HISTORY_PATH,
     NTFY_TOPIC,
     REPO_ROOT,
+    TITLE_CSV_FIELDNAMES,
+    TITLE_HISTORY_PATH,
     VIDEO_DB_PATH,
     YOUTUBE_API_KEY,
 )
@@ -42,9 +46,12 @@ from .core.csv_utils import (
     append_rows,
     date_already_collected,
     get_last_views,
+    has_collection_before,
+    remove_rows_for_date,
     save_last_views,
 )
 from .core.git_ops import git_commit_and_push
+from .core.title_groups import build_title_rows, write_title_history
 
 
 def parse_args() -> argparse.Namespace:
@@ -80,6 +87,11 @@ def parse_args() -> argparse.Namespace:
         "--commit",
         action="store_true",
         help="Git commit + push après la collecte (désactivé par défaut).",
+    )
+    p.add_argument(
+        "--force",
+        action="store_true",
+        help="Remplace les lignes CSV existantes pour la date collectée.",
     )
     return p.parse_args()
 
@@ -149,7 +161,7 @@ def main() -> int:
     # ------------------------------------------------------------------
     # 3. Vérifier si la date est déjà collectée
     # ------------------------------------------------------------------
-    if not args.dry_run and date_already_collected(CSV_PATH, today):
+    if not args.dry_run and not args.force and date_already_collected(CSV_PATH, today):
         print(f"[INFO] Date {today} déjà dans le CSV — skip (utiliser --date pour forcer).")
         return 0
 
@@ -172,7 +184,10 @@ def main() -> int:
     # ------------------------------------------------------------------
     # 5. Calculer daily_views et construire les lignes CSV
     # ------------------------------------------------------------------
-    prev_views = get_last_views(HISTORY_PATH)
+    has_prior_csv_day = has_collection_before(CSV_PATH, today)
+    prev_views = get_last_views(HISTORY_PATH) if has_prior_csv_day else {}
+    if not has_prior_csv_day:
+        print("[INFO] Aucune date précédente dans le CSV — daily_views restera vide.")
     new_views: dict[str, int] = {}
     rows: list[dict] = []
 
@@ -187,8 +202,17 @@ def main() -> int:
                 "date": today,
                 "video_id": vid_id,
                 "title": stat.get("title") or video_db.get(vid_id, {}).get("title", ""),
+                "published_at": stat.get("publishedAt", ""),
+                "duration": stat.get("duration", ""),
                 "total_views": total,
                 "daily_views": daily if daily is not None else "",
+                "like_count": stat.get("likeCount") if stat.get("likeCount") is not None else "",
+                "comment_count": stat.get("commentCount") if stat.get("commentCount") is not None else "",
+                "category_id": stat.get("categoryId", ""),
+                "live_broadcast_content": stat.get("liveBroadcastContent", ""),
+                "privacy_status": stat.get("privacyStatus", ""),
+                "upload_status": stat.get("uploadStatus", ""),
+                "tags": json.dumps(stat.get("tags") or [], ensure_ascii=False),
             }
         )
 
@@ -218,8 +242,25 @@ def main() -> int:
     # 7. Écriture CSV + state JSON
     # ------------------------------------------------------------------
     all_rows = rows_with_daily + rows_no_daily
+    if args.force:
+        removed = remove_rows_for_date(CSV_PATH, today, CSV_FIELDNAMES)
+        if removed:
+            print(f"[INFO] {removed} ligne(s) existante(s) supprimée(s) pour {today}")
     append_rows(CSV_PATH, all_rows, CSV_FIELDNAMES)
     print(f"[INFO] CSV mis à jour : {CSV_PATH}")
+
+    title_rows = build_title_rows(
+        date=today,
+        video_rows=all_rows,
+        songs_path=DISCOGRAPHY_SONGS_PATH,
+    )
+    write_title_history(
+        TITLE_HISTORY_PATH,
+        title_rows,
+        TITLE_CSV_FIELDNAMES,
+        date=today,
+    )
+    print(f"[INFO] CSV titres mis à jour : {TITLE_HISTORY_PATH}")
 
     save_last_views(HISTORY_PATH, new_views)
     print(f"[INFO] State delta mis à jour : {HISTORY_PATH}")

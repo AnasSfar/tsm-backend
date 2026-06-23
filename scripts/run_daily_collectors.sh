@@ -37,7 +37,7 @@ ensure_git_identity
 
 run_step "spotify_streams" "$PY" collectors/spotify/streams/update_streams.py || true
 run_step "spotify_charts" "$PY" collectors/spotify/charts/run_all_charts.py || true
-run_step "youtube" "$PY" -m collectors.youtube.update_youtube || true
+run_step "youtube_videos" "$PY" -m collectors.youtube.videos.update_youtube || true
 run_step "billboard" "$PY" collectors/billboard/scrape_billboard.py || true
 
 echo "===== TSM daily collectors end $(date -Is) ====="

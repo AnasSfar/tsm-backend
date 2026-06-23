@@ -44,17 +44,23 @@ def iter_uploads(api_key: str, playlist_id: str) -> Iterator[dict]:
             break
 
 
+def _int_or_none(value: object) -> int | None:
+    try:
+        return int(value) if value is not None else None
+    except (TypeError, ValueError):
+        return None
+
+
 def fetch_video_stats(api_key: str, video_ids: list[str]) -> dict[str, dict]:
-    """Fetch statistics + snippet for up to BATCH_SIZE video IDs in one call.
+    """Fetch public metadata + statistics for up to BATCH_SIZE video IDs.
 
     Cost: 1 API unit per call (not per video).
-    Returns {video_id: {"title": str, "viewCount": int, "likeCount": int}}.
     """
     if not video_ids:
         return {}
 
     params = {
-        "part": "statistics,snippet",
+        "part": "statistics,snippet,contentDetails,status",
         "id": ",".join(video_ids[:BATCH_SIZE]),
         "key": api_key,
     }
@@ -66,11 +72,20 @@ def fetch_video_stats(api_key: str, video_ids: list[str]) -> dict[str, dict]:
         vid_id = item.get("id", "")
         stats = item.get("statistics", {})
         snippet = item.get("snippet", {})
+        content = item.get("contentDetails", {})
+        status = item.get("status", {})
         result[vid_id] = {
             "title": snippet.get("title", ""),
+            "publishedAt": snippet.get("publishedAt", ""),
+            "duration": content.get("duration", ""),
             "viewCount": int(stats.get("viewCount", 0)),
-            "likeCount": int(stats.get("likeCount", 0)),
-            "publishedAt": snippet.get("publishedAt", "")[:10],
+            "likeCount": _int_or_none(stats.get("likeCount")),
+            "commentCount": _int_or_none(stats.get("commentCount")),
+            "tags": snippet.get("tags", []),
+            "categoryId": snippet.get("categoryId", ""),
+            "liveBroadcastContent": snippet.get("liveBroadcastContent", ""),
+            "privacyStatus": status.get("privacyStatus", ""),
+            "uploadStatus": status.get("uploadStatus", ""),
         }
     return result
 

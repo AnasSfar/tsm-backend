@@ -7,7 +7,7 @@ echo  TSM YouTube Views - %date% %time%
 echo ========================================
 echo.
 
-C:\Users\sfara\AppData\Local\Microsoft\WindowsApps\python3.13.exe -m collectors.youtube.update_youtube --commit
+C:\Users\sfara\AppData\Local\Microsoft\WindowsApps\python3.13.exe -m collectors.youtube.videos.update_youtube --commit
 if errorlevel 1 goto :error
 
 echo.
