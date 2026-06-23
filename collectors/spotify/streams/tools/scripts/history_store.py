@@ -200,7 +200,7 @@ def load_album_track_ids_for_album(album_name: str) -> set[str]:
 
 def _daily_for_spotlight(history_index: HistoryIndex, track_id: str, stats_date: str) -> int | None:
     daily = history_index.get_daily_for_date(track_id, stats_date)
-    if daily is not None:
+    if daily is not None and daily > 0:
         return daily
 
     total = history_index.get_total_for_date(track_id, stats_date)
