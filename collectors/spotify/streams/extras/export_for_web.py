@@ -1552,7 +1552,7 @@ def export_for_web(stats_date: str | None = None, *, dry_run: bool = False) -> N
                 + ", ".join(missing)
             )
         else:
-            print("Uploading per-track history to R2...")
+            print("Uploading daily web data to R2...")
             _r2_script = Path(__file__).resolve().parents[4] / "scripts" / "r2.py"
             try:
                 _cmd = [

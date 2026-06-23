@@ -122,8 +122,6 @@ def _pick_gainers(target_date: str, *, compare_days: int, limit: int, min_baseli
             continue
         if daily_baseline < min_baseline:
             continue
-        if not _is_postable_song_title(track.get("title") or ""):
-            continue
         pct = gain / daily_baseline * 100
         rows.append({
             "track": track,

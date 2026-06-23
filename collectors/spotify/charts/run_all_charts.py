@@ -1203,6 +1203,35 @@ def _verify_regional_posts(
     return failures
 
 
+def _verify_multi_song_regional_posts(
+    target_date: date,
+    post_parts: set[str],
+    *,
+    force: bool,
+    env: dict[str, str],
+    verbose: bool,
+) -> list[tuple[str, int]]:
+    if "regions" not in post_parts:
+        return []
+    if not _load_worldwide_snapshot(target_date):
+        print(f"[FAIL] posts multi-regions: snapshot worldwide absent pour {target_date}")
+        return [("regions-post-data", 1)]
+
+    print("\n[CHECK] verification posts multi-regions...")
+    args = [str(target_date), "--post-multi-song-regions-only"]
+    if force:
+        args.append("--force")
+    rc = _run(
+        "regions-post",
+        CHARTS_ROOT / "worldwide" / "daily.py",
+        args,
+        dry_run=False,
+        env=env,
+        verbose=verbose,
+    )
+    return [] if rc == 0 else [("regions-post", rc)]
+
+
 def _ensure_worldwide_valid(
     runners: list[tuple[str, Path, list[str]]],
     *,
@@ -1706,6 +1735,13 @@ def main() -> int:
             env=env,
             verbose=args.verbose,
         )
+        regional_post_failures.extend(_verify_multi_song_regional_posts(
+            target_date,
+            post_parts,
+            force=args.force,
+            env=env,
+            verbose=args.verbose,
+        ))
         if regional_post_failures:
             failed_names = ", ".join(n for n, _ in regional_post_failures)
             print(f"[WARN] posts regionaux echoues, suite du run maintenue: {failed_names}")

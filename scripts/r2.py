@@ -432,6 +432,13 @@ def upload_static_data(
         ("songs-appearances.json",   "data/songs-appearances.json"),
         ("charts_worldwide.json",    "data/charts_worldwide.json"),
     ]
+    if streams_daily:
+        # The daily Spotify streams export should not re-check Apple Music
+        # payloads; applemusic_history.json can be multiple GB.
+        json_mappings = [
+            item for item in json_mappings
+            if item[0] not in {"applemusic.json", "applemusic_history.json"}
+        ]
     if charts_only:
         json_mappings = [
             item for item in json_mappings

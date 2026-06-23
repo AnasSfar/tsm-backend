@@ -426,9 +426,6 @@ def _best_day_rows(target_date: str, *, limit: int, min_days: int) -> list[dict]
 
     rows: list[dict] = []
     for _track_id, track in tracks.items():
-        title = track.title
-        if not post_gainer_thread._is_postable_song_title(title):
-            continue
         points = history.get(track.track_id)
         if not points:
             continue

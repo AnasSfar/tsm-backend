@@ -314,6 +314,9 @@ def run(chart_date: str, *, post: bool, force: bool, limit: int) -> int:
         if posted_lock.exists() and not force:
             print(f"[SKIP] Artist worldwide card already posted for {chart_date}")
             return 0
+        if not image_path.exists():
+            print(f"[FAIL] Artist worldwide image missing, post aborted: {image_path}")
+            return 1
         if not TWITTER_SESSION.exists():
             print(f"[WARN] Twitter session missing: {TWITTER_SESSION}")
             return 0

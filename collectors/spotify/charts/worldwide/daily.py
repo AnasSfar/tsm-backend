@@ -1025,6 +1025,111 @@ def _post_multi_song_regions(
             print(f"[WARN] Regional Spotify post failed: {region}", flush=True)
 
 
+def _build_id_to_name() -> dict[str, str]:
+    id_to_name: dict[str, str] = {}
+    for item in _iter_website_songs():
+        tid = _get_track_id_from_item(item)
+        if not tid:
+            continue
+        name = (item.get("title") or item.get("name") or "").strip()
+        if name:
+            id_to_name.setdefault(tid, name)
+    for item in _iter_disco_tracks():
+        tid = _get_track_id_from_item(item)
+        if not tid:
+            continue
+        name = (item.get("title") or item.get("name") or "").strip()
+        if name:
+            id_to_name.setdefault(tid, name)
+    return id_to_name
+
+
+def _load_snapshot_by_region(chart_date: str) -> tuple[dict[str, list[dict]], dict[str, str]]:
+    path = _worldwide_history_path(chart_date)
+    if not path.exists():
+        path = legacy_spotify_chart_dir("worldwide", chart_date) / f"ts_worldwide_{chart_date}.json"
+    if not path.exists():
+        print(f"[FAIL] Multi-song regional posts: snapshot missing for {chart_date}", flush=True)
+        return {}, {}
+
+    try:
+        data = json.loads(path.read_text(encoding="utf-8-sig"))
+    except Exception as exc:
+        print(f"[FAIL] Multi-song regional posts: snapshot unreadable ({exc})", flush=True)
+        return {}, {}
+
+    by_track = data.get("by_track") if isinstance(data, dict) else None
+    if not isinstance(by_track, dict):
+        print(f"[FAIL] Multi-song regional posts: invalid snapshot format: {path}", flush=True)
+        return {}, {}
+
+    id_to_name = _build_id_to_name()
+    by_region: dict[str, list[dict]] = {}
+    regions: dict[str, str] = {}
+    for track_id, entries in by_track.items():
+        if not isinstance(entries, list):
+            continue
+        track_name = id_to_name.get(str(track_id), str(track_id))
+        for entry in entries:
+            if not isinstance(entry, dict):
+                continue
+            region = str(entry.get("country") or "").strip()
+            if not region:
+                continue
+            region_name = str(entry.get("country_name") or region.upper()).strip()
+            regions.setdefault(region, region_name)
+            row = {
+                "rank": entry.get("rank"),
+                "track_name": track_name,
+                "artist_names": TS_NAME,
+                "_track_id_uri": str(track_id),
+                "streams": entry.get("streams"),
+                "previous_rank": entry.get("previous_rank"),
+                "peak_rank": entry.get("peak_rank"),
+                "total_days": entry.get("total_days"),
+                "is_new": bool(entry.get("is_new")),
+                "is_re_entry": bool(entry.get("is_re_entry")),
+                "movement": entry.get("movement"),
+                "stream_change": entry.get("stream_change"),
+            }
+            by_region.setdefault(region, []).append(row)
+
+    for rows in by_region.values():
+        rows.sort(key=lambda row: row.get("rank") or 9999)
+    print(f"[INFO] Loaded snapshot for regional posts: {len(by_region)} region(s)", flush=True)
+    return by_region, regions
+
+
+def _post_multi_song_regions_from_snapshot(
+    chart_date: str,
+    regions: dict[str, str],
+    *,
+    force: bool = False,
+) -> int:
+    by_region, snapshot_regions = _load_snapshot_by_region(chart_date)
+    if not by_region:
+        return 1
+    regions = {**snapshot_regions, **regions}
+
+    track_lookup = build_track_lookup()
+    manual_lookup = build_manual_mapping()
+    multi_song_region_rows = {
+        region: rows
+        for region, rows in by_region.items()
+        if region not in {"global", "fr"} and len(rows) >= MULTI_SONG_REGIONAL_POST_MIN_SONGS
+    }
+    for region, rows in multi_song_region_rows.items():
+        _write_regional_ts_chart(chart_date, region, rows, manual_lookup, track_lookup)
+
+    _post_multi_song_regions(
+        chart_date,
+        regions,
+        multi_song_region_rows,
+        force=force,
+    )
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Fetch worldwide Spotify charts for Taylor Swift songs."
@@ -1061,6 +1166,11 @@ def main() -> int:
         "--post-multi-song-regions",
         action="store_true",
         help=f"Post non-global/non-FR regions that have at least {MULTI_SONG_REGIONAL_POST_MIN_SONGS} Taylor Swift songs.",
+    )
+    parser.add_argument(
+        "--post-multi-song-regions-only",
+        action="store_true",
+        help="Post multi-song regional cards from an existing worldwide snapshot without fetching Spotify.",
     )
     parser.add_argument(
         "--force-priority-global-new",
@@ -1146,6 +1256,10 @@ def main() -> int:
         print(f"[ERROR] Invalid date: {raw_date!r}")
         return 1
 
+    if args.post_multi_song_regions_only:
+        print(f"[INFO] chart_date = {chart_date}")
+        return _post_multi_song_regions_from_snapshot(chart_date, {}, force=args.force)
+
     if not SESSION_FILE.exists():
         print(f"[ERROR] Session file not found: {SESSION_FILE}")
         return 1
@@ -1190,23 +1304,17 @@ def main() -> int:
     track_lookup  = build_track_lookup()
     manual_lookup = build_manual_mapping()
 
-    id_to_name: dict[str, str] = {}
+    id_to_name = _build_id_to_name()
     id_to_album: dict[str, str] = {}
     for _item in _iter_website_songs():
         _tid = _get_track_id_from_item(_item)
         if _tid:
-            _name = (_item.get("title") or _item.get("name") or "").strip()
-            if _name:
-                id_to_name.setdefault(_tid, _name)
             _album = (_item.get("album") or "").strip()
             if _album:
                 id_to_album.setdefault(_tid, _album)
     for _item in _iter_disco_tracks():
         _tid = _get_track_id_from_item(_item)
         if _tid:
-            _name = (_item.get("title") or _item.get("name") or "").strip()
-            if _name:
-                id_to_name.setdefault(_tid, _name)
             _album = (_item.get("album") or "").strip()
             if _album:
                 id_to_album.setdefault(_tid, _album)
