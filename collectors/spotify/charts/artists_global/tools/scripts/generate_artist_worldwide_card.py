@@ -192,19 +192,29 @@ def _date_label(chart_date: str) -> str:
 def _build_html(rows: list[dict[str, Any]], chart_date: str) -> str:
     date_label = _date_label(chart_date)
     top_rank = min((int(row.get("rank") or 9999) for row in rows), default=0)
-    row_html = []
-    for row in rows:
-        change = _format_change(row)
-        change_class = "up" if change.startswith("+") else "down" if change.startswith("-") else "flat"
-        row_html.append(
-            f"""<div class="row">
+    column_count = 1 if len(rows) <= 14 else 2 if len(rows) <= 34 else 3
+    chunk_size = max(1, (len(rows) + column_count - 1) // column_count)
+    columns: list[str] = []
+    for start in range(0, len(rows), chunk_size):
+        row_html = []
+        for row in rows[start:start + chunk_size]:
+            change = _format_change(row)
+            change_class = "up" if change.startswith("+") else "down" if change.startswith("-") else "flat"
+            row_html.append(
+                f"""<div class="row">
   <div class="country">{row.get('country_name')}</div>
   <div class="rank">#{row.get('rank')}</div>
   <div class="change {change_class}">{change}</div>
   <div class="days">{row.get('days_at_pos', 1)}d</div>
 </div>"""
+            )
+        columns.append(
+            f"""<div class="col">
+  <div class="heads"><div>Region</div><div>Pos</div><div>Chg</div><div>Days</div></div>
+  {"\n".join(row_html)}
+</div>"""
         )
-    rows_markup = "\n".join(row_html)
+    rows_markup = "\n".join(columns)
     return f"""<!doctype html>
 <html>
 <head>
@@ -216,9 +226,11 @@ def _build_html(rows: list[dict[str, Any]], chart_date: str) -> str:
 .title{{font-size:34px;font-weight:900;letter-spacing:-.02em}}
 .sub{{font-size:15px;color:#5d7167;margin-top:5px;font-weight:700}}
 .badge{{background:#1db954;color:white;border-radius:999px;padding:12px 16px;font-weight:900;font-size:18px}}
-.heads,.row{{display:grid;grid-template-columns:minmax(280px,1fr) 100px 110px 130px;gap:12px;align-items:center}}
-.heads{{padding:0 14px 8px;color:#667085;text-transform:uppercase;font-size:12px;font-weight:900;letter-spacing:.06em}}
-.row{{padding:12px 14px;border-top:1px solid #d8eadf;font-size:19px;background:rgba(255,255,255,.65)}}
+.columns{{display:grid;grid-template-columns:repeat({column_count},minmax(0,1fr));gap:14px;align-items:start}}
+.col{{min-width:0;border:1px solid #d8eadf;border-radius:10px;overflow:hidden;background:rgba(255,255,255,.42)}}
+.heads,.row{{display:grid;grid-template-columns:minmax(0,1fr) 46px 42px 50px;gap:8px;align-items:center}}
+.heads{{padding:9px 10px;color:#667085;text-transform:uppercase;font-size:10px;font-weight:900;letter-spacing:.06em;background:#eaf7ef}}
+.row{{padding:9px 10px;border-top:1px solid #d8eadf;font-size:15px;background:rgba(255,255,255,.65)}}
 .row:nth-child(odd){{background:rgba(237,248,242,.82)}}
 .country{{font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
 .rank,.change,.days{{text-align:right;font-weight:900}}
@@ -235,8 +247,7 @@ def _build_html(rows: list[dict[str, Any]], chart_date: str) -> str:
     </div>
     <div class="badge">Best #{top_rank}</div>
   </div>
-  <div class="heads"><div>Region</div><div>Pos</div><div>Chg</div><div>Days at Pos</div></div>
-  {rows_markup}
+  <div class="columns">{rows_markup}</div>
   <div class="foot"><span>@tsmusem13</span><span>Global included</span></div>
 </div>
 </body>
@@ -263,7 +274,6 @@ def _render(html: str, out_path: Path) -> None:
 def _tweet(chart_date: str, rows: list[dict[str, Any]]) -> str:
     return (
         f"Taylor Swift on Spotify Artist Charts worldwide yesterday ({_date_label(chart_date)}) :\n\n"
-        f"Charting in {len(rows)} regions, including Global."
     )
 
 

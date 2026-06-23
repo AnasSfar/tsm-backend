@@ -251,11 +251,11 @@ def _runner_args_for_run_all(name: str, fixed: list[str], forwarded: list[str], 
         args = [*fixed, *forwarded]
         if not explicit_target_date:
             args.append(str(target_date))
-        return list(dict.fromkeys(args))
+        return args
     artist_args = list(fixed)
     if explicit_target_date:
         artist_args.extend(["--date", str(target_date)])
-    return list(dict.fromkeys(artist_args))
+    return artist_args
 
 
 def _already_done(
@@ -1221,6 +1221,7 @@ def _ensure_worldwide_valid(
 
 
 _ALL_POST_PARTS = {"artists", "global", "fr", "cards", "regions"}
+_DEFAULT_POST_PARTS = set(_ALL_POST_PARTS)
 _EXTRA_POST_PARTS = {"best-day-since"}  # non inclus dans le défaut, à passer explicitement via --post
 
 
@@ -1504,7 +1505,7 @@ def main() -> int:
     elif args.post is not None:
         post_parts = set(args.post)
     else:
-        post_parts = set(_ALL_POST_PARTS)  # défaut: tout poster
+        post_parts = set(_DEFAULT_POST_PARTS)
 
     started = time.perf_counter()
     env = _build_env()

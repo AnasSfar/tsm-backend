@@ -21,6 +21,36 @@ TWITTER_BROWSER_LAUNCH_RETRY_DELAY = int(os.getenv("TWITTER_BROWSER_LAUNCH_RETRY
 TWITTER_LOCK_STALE_SECONDS = int(os.getenv("TWITTER_LOCK_STALE_SECONDS", str(TWITTER_POST_LOCK_TIMEOUT)))
 
 
+def _lock_pid_alive(path: Path) -> bool:
+    try:
+        raw = path.read_text(encoding="ascii").strip()
+        pid = int(raw)
+    except Exception:
+        return True
+    if pid <= 0 or pid == os.getpid():
+        return True
+    if os.name == "nt":
+        try:
+            import ctypes
+
+            PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
+            STILL_ACTIVE = 259
+            handle = ctypes.windll.kernel32.OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, False, pid)
+            if not handle:
+                return False
+            exit_code = ctypes.c_ulong()
+            ok = ctypes.windll.kernel32.GetExitCodeProcess(handle, ctypes.byref(exit_code))
+            ctypes.windll.kernel32.CloseHandle(handle)
+            return bool(ok) and exit_code.value == STILL_ACTIVE
+        except Exception:
+            return True
+    try:
+        os.kill(pid, 0)
+        return True
+    except OSError:
+        return False
+
+
 def _profile_dir(session_file: Path) -> Path:
     """Dossier du profil Chrome persistant, a cote du fichier de session."""
     return Path(session_file).parent / "chrome_profile"
@@ -41,6 +71,11 @@ def _exclusive_file(path: Path, *, timeout: int, stale_after: int | None = None)
             os.write(fd, str(os.getpid()).encode("ascii", errors="ignore"))
         except FileExistsError:
             try:
+                if not _lock_pid_alive(path):
+                    if not _safe_unlink(path):
+                        time.sleep(2)
+                        continue
+                    continue
                 max_age = stale_after or timeout
                 if time.time() - path.stat().st_mtime > max_age:
                     if not _safe_unlink(path):

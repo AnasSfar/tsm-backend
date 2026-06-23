@@ -60,7 +60,7 @@ from core.data_paths import (
     spotify_chart_dir,
 )
 from core.git_ops import git_commit_and_push
-from core.twitter import post_thread, split_tweets
+from core.twitter import post_thread, post_with_image, split_tweets
 
 def _build_http_session() -> _requests.Session:
     retry = Retry(total=3, connect=3, read=3, backoff_factor=1.0,
@@ -77,6 +77,7 @@ _http = _build_http_session()
 ROOT            = Path(__file__).resolve().parents[4]
 GLOBAL_DAILY    = ROOT / "collectors" / "spotify" / "charts" / "global" / "daily.py"
 FR_DAILY        = ROOT / "collectors" / "spotify" / "charts" / "fr" / "daily.py"
+GLOBAL_CHART_IMAGE_SCRIPT = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "script" / "generate_chart_image.py"
 SESSION_FILE        = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "spotify_session.json"
 _BEARER_CACHE_FILE  = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "bearer_cache.json"
 _BEARER_TOKEN_TTL   = 50 * 60
@@ -890,28 +891,95 @@ def _fmt_streams(value) -> str:
         return "N/A"
 
 
+def _to_int(value) -> int | None:
+    try:
+        if value in (None, ""):
+            return None
+        return int(float(value))
+    except (TypeError, ValueError):
+        return None
+
+
 def _multi_song_region_lock_path(chart_date: str, region: str) -> Path:
     return spotify_chart_dir("worldwide", chart_date) / "regional_posts" / f"posted_{region}.lock"
+
+
+def _multi_song_region_chart_image_path(chart_date: str, region: str) -> Path:
+    return spotify_chart_dir(region, chart_date) / "chart_image.png"
+
+
+def _region_priority_score(rows: list[dict]) -> tuple[int, int, int, int]:
+    best_rank_change = 0
+    best_stream_change = 0
+    total_streams = 0
+    for row in rows:
+        rank = _to_int(row.get("rank"))
+        previous_rank = _to_int(row.get("previous_rank"))
+        if rank is not None and previous_rank is not None:
+            best_rank_change = max(best_rank_change, abs(previous_rank - rank))
+
+        streams = _to_int(row.get("streams"))
+        previous_streams = (
+            _to_int(row.get("previous_streams"))
+            or _to_int(row.get("prev_streams"))
+            or _to_int(row.get("last_streams"))
+        )
+        if streams is not None:
+            total_streams += streams
+            if previous_streams is not None:
+                best_stream_change = max(best_stream_change, abs(streams - previous_streams))
+
+    return (len(rows), best_rank_change, best_stream_change, total_streams)
 
 
 def _build_multi_song_region_tweet(chart_date: str, region: str, region_name: str, rows: list[dict]) -> str:
     date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
     count = len(rows)
-    song_word = "song" if count == 1 else "songs"
-    lines = [
-        f"📈 | Taylor Swift has {count} {song_word} charting on Spotify in {region_name} yesterday ({date_fmt}).",
-        "",
-    ]
-    for row in sorted(rows, key=lambda item: item.get("rank") or 9999):
-        title = str(row.get("track_name") or "Taylor Swift song")
-        rank = row.get("rank") or "?"
-        streams = _fmt_streams(row.get("streams"))
-        lines.append(f'#{rank} "{title}" - {streams} streams')
+    lines = [f"📈 | Taylor Swift on Spotify {region_name} Charts yesterday ({date_fmt}) :"]
+    if count >= 2:
+        lines.extend([
+            "",
+            f"{count} songs charting in {region_name}.",
+        ])
     lines.extend([
         "",
         f"See full update here : https://thetsmuseum.app/charts?region={region}&view=today",
     ])
     return "\n".join(lines)
+
+
+def _generate_multi_song_region_image(chart_date: str, region: str, region_name: str) -> Path | None:
+    if not GLOBAL_CHART_IMAGE_SCRIPT.exists():
+        print(f"[WARN] Regional image skipped for {region}: script missing: {GLOBAL_CHART_IMAGE_SCRIPT}", flush=True)
+        return None
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(GLOBAL_CHART_IMAGE_SCRIPT),
+            chart_date,
+            "--region",
+            region,
+            "--region-name",
+            region_name,
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    if result.stdout:
+        print(result.stdout, flush=True)
+    if result.stderr:
+        print(result.stderr, flush=True)
+    if result.returncode != 0:
+        print(f"[WARN] Regional image generation failed for {region} (code {result.returncode})", flush=True)
+        return None
+    image_path = _multi_song_region_chart_image_path(chart_date, region)
+    if not image_path.exists():
+        print(f"[WARN] Regional image missing after generation for {region}: {image_path}", flush=True)
+        return None
+    return image_path
 
 
 def _post_multi_song_regions(
@@ -927,9 +995,10 @@ def _post_multi_song_regions(
 
     candidates = [
         (region, rows)
-        for region, rows in sorted(by_region.items())
+        for region, rows in by_region.items()
         if region not in {"global", "fr"} and len(rows) >= 2
     ]
+    candidates.sort(key=lambda item: _region_priority_score(item[1]), reverse=True)
     if not candidates:
         print("[INFO] No multi-song regional Spotify posts needed.", flush=True)
         return
@@ -942,8 +1011,12 @@ def _post_multi_song_regions(
             continue
         region_name = regions.get(region, region.upper())
         tweet = _build_multi_song_region_tweet(chart_date, region, region_name, rows)
+        image_path = _generate_multi_song_region_image(chart_date, region, region_name)
+        if not image_path:
+            print(f"[WARN] Regional Spotify post skipped for {region}: image unavailable", flush=True)
+            continue
         print(f"[regional-post] {region}: {tweet}", flush=True)
-        if post_thread([tweet], TWITTER_SESSION):
+        if post_with_image(tweet, image_path, TWITTER_SESSION):
             lock_path.parent.mkdir(parents=True, exist_ok=True)
             lock_path.touch()
             print(f"[INFO] Posted regional Spotify update: {region}", flush=True)

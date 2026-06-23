@@ -41,12 +41,14 @@ DISCOGRAPHY_ROOT = Path(__file__).parents[6] / "db" / "discography"
 COVERS_PATH      = DISCOGRAPHY_ROOT / "covers.json"
 HEADERS_DIR      = _TOOLS / "headers"
 HANDLE           = "@swiftiescharts"
+CHART_REGION     = "global"
+CHART_REGION_NAME = "Global"
 
 
 def date_dir_for(chart_date: str) -> Path:
     return first_existing(
-        spotify_chart_dir("global", chart_date),
-        legacy_spotify_chart_dir("global", chart_date),
+        spotify_chart_dir(CHART_REGION, chart_date),
+        legacy_spotify_chart_dir(CHART_REGION, chart_date),
     )
 
 
@@ -87,6 +89,8 @@ def _archive_rows_by_date() -> dict[str, list[dict]]:
 
 def ref_streams_from_archive(track: str, ref_date: str):
     """Read streams from db/charts_history_global.csv when snapshots are missing."""
+    if CHART_REGION != "global":
+        return None
     for row in _archive_rows_by_date().get(ref_date, []):
         name = str(row.get("song_name") or row.get("track_name") or "")
         if name != track:
@@ -175,7 +179,7 @@ def build_html(
   <div class="hdr" {hdr_style}>
     {SPOTIFY_SVG}
     <div>
-      <div class="hdr-title">Taylor Swift · Global Spotify</div>
+      <div class="hdr-title">Taylor Swift · {CHART_REGION_NAME} Spotify</div>
       <div class="hdr-sub">Daily Chart · {date_fmt}</div>
     </div>
   </div>
@@ -207,7 +211,7 @@ def generate(chart_date: str, header_img: Path | None = None) -> Path:
         raise FileNotFoundError(f"ts_chart_{chart_date}.json introuvable: {json_path}")
 
     rows    = load_json(json_path)
-    history = load_json(TS_HISTORY_PATH) if TS_HISTORY_PATH.exists() else {}
+    history = load_json(TS_HISTORY_PATH) if CHART_REGION == "global" and TS_HISTORY_PATH.exists() else {}
 
     if not rows:
         raise ValueError(f"Aucune chanson TS dans {json_path}")
@@ -242,7 +246,7 @@ def generate_all_headers(chart_date: str) -> list[Path]:
         raise FileNotFoundError(f"ts_chart_{chart_date}.json introuvable: {json_path}")
 
     rows    = load_json(json_path)
-    history = load_json(TS_HISTORY_PATH) if TS_HISTORY_PATH.exists() else {}
+    history = load_json(TS_HISTORY_PATH) if CHART_REGION == "global" and TS_HISTORY_PATH.exists() else {}
 
     cover_map       = build_cover_map(COVERS_PATH)
     track_album_map = build_track_album_map(DISCOGRAPHY_ROOT)
@@ -286,7 +290,7 @@ def generate_multi(chart_dates: list[str], header_img: Path | None = None) -> Pa
     """Génère une seule image PNG combinant plusieurs dates (séparées par un bandeau)."""
     out_path = ROOT / "chart_image_multi.png"
 
-    history         = load_json(TS_HISTORY_PATH) if TS_HISTORY_PATH.exists() else {}
+    history         = load_json(TS_HISTORY_PATH) if CHART_REGION == "global" and TS_HISTORY_PATH.exists() else {}
     cover_map       = build_cover_map(COVERS_PATH)
     track_album_map = build_track_album_map(DISCOGRAPHY_ROOT)
     track_image_map = _build_track_image_map()
@@ -336,7 +340,7 @@ def generate_multi(chart_dates: list[str], header_img: Path | None = None) -> Pa
   <div class="hdr" {hdr_style}>
     {SPOTIFY_SVG}
     <div>
-      <div class="hdr-title">Taylor Swift · Global Spotify</div>
+      <div class="hdr-title">Taylor Swift · {CHART_REGION_NAME} Spotify</div>
       <div class="hdr-sub">{subtitle}</div>
     </div>
   </div>
@@ -355,13 +359,31 @@ def generate_multi(chart_dates: list[str], header_img: Path | None = None) -> Pa
 
 
 def main():
+    global CHART_REGION, CHART_REGION_NAME
     args = sys.argv[1:]
     if not args:
         print("Usage:")
         print("  python generate_chart_image.py YYYY-MM-DD [YYYY-MM-DD ...]")
         print("  python generate_chart_image.py YYYY-MM-DD --all-headers")
         print("  python generate_chart_image.py YYYY-MM-DD photo.jpg")
+        print("  python generate_chart_image.py YYYY-MM-DD --region REGION --region-name NAME")
         sys.exit(1)
+
+    cleaned_args: list[str] = []
+    i = 0
+    while i < len(args):
+        arg = args[i]
+        if arg == "--region" and i + 1 < len(args):
+            CHART_REGION = args[i + 1].strip().lower()
+            i += 2
+            continue
+        if arg == "--region-name" and i + 1 < len(args):
+            CHART_REGION_NAME = args[i + 1].strip() or CHART_REGION_NAME
+            i += 2
+            continue
+        cleaned_args.append(arg)
+        i += 1
+    args = cleaned_args
 
     dates     = [a for a in args if re.match(r"^\d{4}-\d{2}-\d{2}$", a)]
     non_dates = [a for a in args if not re.match(r"^\d{4}-\d{2}-\d{2}$", a)]
