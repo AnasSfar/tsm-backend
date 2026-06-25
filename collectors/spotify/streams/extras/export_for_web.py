@@ -228,6 +228,7 @@ def load_album_sections_flat() -> list[dict]:
             continue
 
         album_name = payload.get("album", "") if isinstance(payload, dict) else ""
+        album_release_date = payload.get("release_date") if isinstance(payload, dict) else None
         raw_sections = payload.get("sections", []) if isinstance(payload, dict) else []
         if not isinstance(raw_sections, list):
             continue
@@ -238,6 +239,8 @@ def load_album_sections_flat() -> list[dict]:
             item = dict(section)
             if not item.get("album"):
                 item["album"] = album_name
+            if album_release_date and not item.get("album_release_date"):
+                item["album_release_date"] = album_release_date
             sections.append(item)
 
     return sections
@@ -685,6 +688,14 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                 "sections":    album_sections,
                 "track_ids":   unique_ids,
                 "track_count": len(unique_ids),
+                "release_date": next(
+                    (
+                        data.get("album_release_date") or data.get("release_date")
+                        for data in albums_data[album_name]
+                        if data.get("album_release_date") or data.get("release_date")
+                    ),
+                    None,
+                ),
             }
             albums_payload.append(album_payload)
             album_map[album_name] = album_payload
@@ -925,7 +936,7 @@ def enrich_albums_payload(albums_payload: list[dict], songs_by_id: dict[str, dic
         enriched["daily_streams_sum"] = daily_streams_sum
         enriched["top_song_total"] = top_song_total
         enriched["top_song_daily"] = top_song_daily
-        enriched["release_date"] = min(release_dates) if release_dates else None
+        enriched["release_date"] = album.get("release_date") or (min(release_dates) if release_dates else None)
 
         if album.get("album") == "Misc":
             for group in enriched.get("groups", []):

@@ -15,18 +15,12 @@ import time
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
-import requests
-from dotenv import load_dotenv
-
-for _stream in (sys.stdout, sys.stderr):
-    try:
-        _stream.reconfigure(encoding="utf-8", errors="replace")
-    except Exception:
-        pass
-
 CHARTS_ROOT = Path(__file__).resolve().parent
 REPO_ROOT = CHARTS_ROOT.parents[2]
 sys.path.insert(0, str(REPO_ROOT / "collectors" / "spotify"))
+
+import requests
+from dotenv import load_dotenv
 from core.data_paths import legacy_spotify_chart_dir, run_all_charts_root, spotify_chart_dir
 from core.data_paths import LEGACY_WEBSITE_DATA_DIR, WEB_EXPORT_DATA_DIR, first_existing
 from core.data_paths import spotify_chart_snapshot_files
@@ -34,6 +28,12 @@ from core.git_ops import git_commit_and_push
 from core.notify import send as _notify
 from core.retention import cleanup_generated_artifacts
 from core.swift_top_gate import check_swift_top_gate, mark_swift_top_done
+
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
 
 NTFY_TOPIC_CHARTS = os.getenv("NTFY_TOPIC_CHARTS", "taylormuseum-charts")
 
@@ -1172,12 +1172,13 @@ def _verify_regional_posts(
     scripts = {
         "global": CHARTS_ROOT / "global" / "daily.py",
         "fr": CHARTS_ROOT / "fr" / "daily.py",
+        "us": CHARTS_ROOT / "us" / "daily.py",
     }
-    requested = [name for name in ("global", "fr") if name in post_parts]
+    requested = [name for name in ("global", "fr", "us") if name in post_parts]
     if not requested:
         return failures
 
-    print("\n[CHECK] verification posts Global/FR...")
+    print("\n[CHECK] verification posts Global/FR/US...")
     for name in requested:
         if _region_lock_exists(name, target_date, "posted.lock") and not force:
             print(f"[SKIP] post {name} deja fait pour {target_date}")
@@ -1249,7 +1250,7 @@ def _ensure_worldwide_valid(
     return ok, 0
 
 
-_ALL_POST_PARTS = {"artists", "global", "fr", "cards", "regions"}
+_ALL_POST_PARTS = {"artists", "global", "fr", "us", "cards", "regions"}
 _DEFAULT_POST_PARTS = set(_ALL_POST_PARTS)
 _EXTRA_POST_PARTS = {"best-day-since"}  # non inclus dans le défaut, à passer explicitement via --post
 
@@ -1547,7 +1548,7 @@ def main() -> int:
             # run_all orchestre les posts apres la collecte pour garder l'ordre:
             # regional images, cards worldwide, puis extras. worldwide reste data-only.
             extra = ["--no-post"]
-            for region in ("global", "fr"):
+            for region in ("global", "fr", "us"):
                 if region in post_parts:
                     extra.extend(["--post-priority-region", region])
             if "regions" in post_parts:

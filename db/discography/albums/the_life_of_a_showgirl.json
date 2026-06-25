@@ -1,5 +1,6 @@
 {
   "album": "The Life of a Showgirl",
+  "release_date": "2025-10-03T00:00:00Z",
   "section_count": 5,
   "track_count": 39,
   "sections": [
@@ -31,7 +32,7 @@
             "3CFKUvybrj8Jg5F018tyuA",
             "3wXuJTeA7dkrWShvbdUk0A"
           ],
-          "release_date": "2025-10-31T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop",
             "dance-pop",
@@ -101,7 +102,7 @@
             "1jgTiNob5cVyXeJ3WgX5bL",
             "6virCtlwc98cKYVyeZYXqq"
           ],
-          "release_date": "2026-03-31T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop"
           ],
@@ -164,7 +165,7 @@
             "4s1Sql0NqvLh0ioDzSTaET",
             "4utwUoDcx4zhAKXd4DD6P6"
           ],
-          "release_date": "2026-02-06T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop",
@@ -232,7 +233,7 @@
           "historical_track_ids": [
             "6H0nEKqkTRxa30Pru1h7SD"
           ],
-          "release_date": "2025-11-07T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop"
@@ -298,7 +299,7 @@
             "5XhaIFhtZeqcExorrYSVDM",
             "6nhsv9Jeluz5gXt592KN3m"
           ],
-          "release_date": "2025-11-07T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop",
             "rock"
@@ -363,7 +364,7 @@
           "historical_track_ids": [
             "05VwM318oU6aNc1GS4MtLV"
           ],
-          "release_date": "2025-11-07T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop",
             "country pop",
@@ -431,7 +432,7 @@
           "historical_track_ids": [
             "6G3dUZrsaOYhe2gRyNukwA"
           ],
-          "release_date": "2025-11-07T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop rock",
             "pop",
@@ -499,7 +500,7 @@
           "historical_track_ids": [
             "6udRZQi3g501XNOcRnE9fo"
           ],
-          "release_date": "2025-11-07T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop"
@@ -565,7 +566,7 @@
             "0fWfEPHNFueq2UafmJlY6d",
             "4Ox858TeUXjy7WEKOcxaFI"
           ],
-          "release_date": "2025-11-07T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop"
           ],
@@ -627,7 +628,7 @@
           "historical_track_ids": [
             "67SmofYg9enUWfcPqUuoVm"
           ],
-          "release_date": "2025-11-07T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop",
             "rock",
@@ -696,7 +697,7 @@
             "2TUxAAf8NbwbZjr2Ii3Hg9",
             "7jHzBmxAGVVPvLiq4Y45pD"
           ],
-          "release_date": "2025-11-07T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop",
             "soft rock"
@@ -765,7 +766,7 @@
             "5CHOrwxKLXkY1XVZauxvnw",
             "6EqHzZp61G5uQ12QEiibpT"
           ],
-          "release_date": "2025-11-07T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},

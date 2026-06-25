@@ -561,6 +561,7 @@ def main() -> None:
     parser.add_argument("--period", choices=sorted(PERIOD_FILES), default="daily")
     parser.add_argument("--no-post", action="store_true", help="Generate image but skip Twitter posting")
     parser.add_argument("--session", help="Path to a Twitter session JSON file (overrides default)")
+    parser.add_argument("--force", action="store_true", help="Ignore the posted lock and post again")
     args = parser.parse_args()
 
     stats_date = args.date or find_latest_date(args.period)
@@ -600,12 +601,18 @@ def main() -> None:
         if not twitter_session.exists():
             print(f"Twitter session not found: {twitter_session} — skipping post.")
             return
+        posted_lock = spotify_chart_dir("artists_global", stats_date) / f"artist_chart_{args.period}_{mode}_posted.lock"
+        if posted_lock.exists() and not args.force:
+            print(f"[SKIP] Artist chart already posted for {stats_date} ({args.period}/{mode})")
+            return
         tweet = build_tweet(ts_artist, mode, stats_date, args.period)
         print(f"\nTweet:\n{tweet}\n")
         try:
             from core.twitter import post_with_image
             success = post_with_image(tweet, out_path, twitter_session)
             if success:
+                posted_lock.parent.mkdir(parents=True, exist_ok=True)
+                posted_lock.touch()
                 print("✓ Posté avec succès.")
             else:
                 print("✗ Échec du post Twitter.")

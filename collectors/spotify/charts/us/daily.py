@@ -33,6 +33,7 @@ except ImportError:
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from core.twitter import post_thread, post_with_image, split_tweets
 from core.notify import send as notify
+from core.data_paths import first_existing, legacy_spotify_chart_dir, spotify_chart_dir
 from playwright.sync_api import sync_playwright
 
 ROOT                  = Path(__file__).parent
@@ -43,6 +44,7 @@ TWITTER_SESSION       = ROOT / "tools/json/twitter_session.json"
 SPOTIFY_SESSION       = ROOT / "tools/json/spotify_session.json"
 FILTER_SCRIPT         = ROOT / "tools/scripts/filter.py"
 GENERATE_IMAGE_SCRIPT = ROOT / "tools/scripts/generate_chart_image.py"
+GLOBAL_CHART_IMAGE_SCRIPT = _REPO_ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "script" / "generate_chart_image.py"
 
 sys.path.insert(0, str(ROOT / "tools" / "scripts"))
 from git_ops import git_commit_and_push
@@ -80,6 +82,12 @@ def mark_posted(d: date):
     p.parent.mkdir(parents=True, exist_ok=True)
     p.touch()
     log("INFO", f"posted.lock crÃ©Ã©: {p}")
+
+def mark_updated(d: date):
+    p = spotify_chart_dir("us", d) / "updated.lock"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.touch()
+    log("INFO", f"updated.lock created: {p}")
 
 
 def tweet_path(d: date) -> Path:
@@ -221,6 +229,7 @@ def maybe_upload_to_r2() -> None:
 def main():
     force = "--force" in sys.argv
     no_post = "--no-post" in sys.argv
+    post_only = "--post-only" in sys.argv
     date_args = [a for a in sys.argv[1:] if not a.startswith("--")]
 
     # Mode manuel : python daily.py [--force] [YYYY-MM-DD]
@@ -261,6 +270,67 @@ def main():
     target = unposted[0]  # la plus rÃ©cente dÃ©bloquera les autres
 
     # Attendre que la page cible soit disponible (cutoff Ã  CUTOFF_HOUR)
+    if post_only:
+        chart_json = spotify_chart_dir("us", target) / f"ts_chart_{target}.json"
+        if not chart_json.exists():
+            log("ERROR", f"--post-only: ts_chart_{target}.json missing for {target}")
+            sys.exit(1)
+        log("INFO", "Mode --post-only: data provided by worldwide, skipping filter.py")
+        processed = [target]
+        mark_updated(target)
+        date_fmt = target.strftime("%B %d, %Y")
+        tweet_content = f"US | Taylor Swift on Spotify US Charts yesterday ({date_fmt}) :"
+        (ROOT / "twitter_post.txt").write_text(tweet_content, encoding="utf-8")
+        print(f"\nPost :\n{tweet_content}\n", flush=True)
+
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(GLOBAL_CHART_IMAGE_SCRIPT),
+                str(target),
+                "--region",
+                "us",
+                "--region-name",
+                "United States",
+            ],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            cwd=str(_REPO_ROOT),
+        )
+        if result.stdout:
+            print(result.stdout, flush=True)
+        if result.stderr:
+            print(result.stderr, flush=True)
+
+        image_path = first_existing(
+            spotify_chart_dir("us", target) / "chart_image.png",
+            legacy_spotify_chart_dir("us", target) / "chart_image.png",
+        ) if result.returncode == 0 else None
+        if not image_path or not image_path.exists():
+            if no_post:
+                log("WARN", "Image generation failed (--no-post, continuing)")
+            else:
+                log("ERROR", "Image generation failed; post aborted")
+                sys.exit(1)
+
+        if no_post:
+            log("INFO", "Twitter post skipped (--no-post)")
+            posted = True
+        else:
+            log("STEP", "Twitter post")
+            posted = post_with_image(tweet_content, image_path, TWITTER_SESSION)
+
+        if posted:
+            for d in processed:
+                mark_posted(d)
+            log("INFO", "Done (--post-only)")
+        else:
+            log("ERROR", "Twitter post failed (--post-only)")
+            sys.exit(1)
+        return
+
     attempt = 1
     while True:
         if past_cutoff():
@@ -331,18 +401,18 @@ def main():
         print(img_result.stderr, flush=True)
     if img_result.returncode != 0:
         if no_post:
-            log(“WARN”, “Génération d'image échouée (--no-post, on continue)”)
+            log("WARN", "Image generation failed (--no-post, continuing)")
             image_path = None
         else:
-            log(“ERROR”, “Génération d'image échouée — publication annulée”)
+            log("ERROR", "Image generation failed; post aborted")
             sys.exit(1)
 
     # Poster
     if no_post:
-        log(“INFO”, “Publication Twitter ignorée (--no-post)”)
+        log("INFO", "Twitter post skipped (--no-post)")
         posted = True
     else:
-        log(“STEP”, “Publication Twitter”)
+        log("STEP", "Twitter post")
         posted = post_with_image(tweet_content, image_path, TWITTER_SESSION)
 
     if posted:
