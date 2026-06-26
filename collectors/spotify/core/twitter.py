@@ -15,6 +15,7 @@ TWITTER_POST_LOCK_TIMEOUT = 30 * 60
 TWITTER_ACCOUNT_SPACING_SECONDS = int(os.getenv("TWITTER_ACCOUNT_SPACING_SECONDS", "180"))
 TWITTER_MAX_ACTIVE_ACCOUNTS = int(os.getenv("TWITTER_MAX_ACTIVE_ACCOUNTS", "2"))
 TWITTER_FILE_UPLOAD_TIMEOUT_MS = int(os.getenv("TWITTER_FILE_UPLOAD_TIMEOUT_MS", "120000"))
+TWITTER_COMPOSE_EDITOR_TIMEOUT_MS = int(os.getenv("TWITTER_COMPOSE_EDITOR_TIMEOUT_MS", "60000"))
 TWITTER_TEXT_LIMIT = 280
 TWITTER_BROWSER_LAUNCH_ATTEMPTS = int(os.getenv("TWITTER_BROWSER_LAUNCH_ATTEMPTS", "3"))
 TWITTER_BROWSER_LAUNCH_RETRY_DELAY = int(os.getenv("TWITTER_BROWSER_LAUNCH_RETRY_DELAY", "10"))
@@ -306,9 +307,77 @@ def _wait_post_submitted(page, expected_text: str = "", timeout_ms: int = 45_000
 
 
 def _wait_visible_editor(page, index: int = 0, timeout_ms: int = 15_000):
-    editor = page.locator(f"[data-testid='tweetTextarea_{index}']").first
-    editor.wait_for(state="visible", timeout=timeout_ms)
-    return editor
+    selectors = [
+        f"[data-testid='tweetTextarea_{index}']",
+        f"[role='textbox'][data-testid='tweetTextarea_{index}']",
+    ]
+    if index == 0:
+        selectors.extend([
+            "[data-testid^='tweetTextarea_']",
+            "div[role='textbox'][contenteditable='true']",
+        ])
+    last_error = None
+    per_selector_timeout = max(1_000, min(timeout_ms, 10_000))
+    deadline = time.time() + timeout_ms / 1000
+    while time.time() < deadline:
+        for selector in selectors:
+            editor = page.locator(selector).first
+            try:
+                editor.wait_for(state="visible", timeout=per_selector_timeout)
+                return editor
+            except PlaywrightTimeout as exc:
+                last_error = exc
+            except Exception as exc:
+                last_error = exc
+        time.sleep(1)
+    if last_error:
+        raise last_error
+    raise TimeoutError("X compose editor not visible")
+
+
+def _open_compose_and_wait_editor(page, session_file: Path, index: int = 0, timeout_ms: int = TWITTER_COMPOSE_EDITOR_TIMEOUT_MS):
+    """Open X compose and recover from slow loads or expired sessions."""
+    session_file = Path(session_file)
+    credentials = None
+    attempted_login = False
+
+    for attempt in range(1, 4):
+        if "compose/post" not in page.url:
+            page.goto("https://x.com/compose/post", wait_until="domcontentloaded", timeout=30_000)
+        time.sleep(2)
+
+        if _looks_logged_out(page):
+            credentials = credentials or _load_credentials(session_file)
+            if credentials and not attempted_login:
+                print("Session expiree. Reconnexion automatique...")
+                _auto_login(page, credentials["username"], credentials["password"], credentials.get("email", ""))
+                attempted_login = True
+                page.goto("https://x.com/compose/post", wait_until="domcontentloaded", timeout=30_000)
+                time.sleep(2)
+            else:
+                raise RuntimeError(f"X session non connectee, URL actuelle: {page.url}")
+
+        try:
+            return _wait_visible_editor(page, index, timeout_ms=timeout_ms)
+        except Exception as exc:
+            if attempt >= 3:
+                title = ""
+                body_text = ""
+                try:
+                    title = page.title()
+                except Exception:
+                    pass
+                try:
+                    body_text = page.locator("body").inner_text(timeout=2_000)[:500]
+                except Exception:
+                    pass
+                raise RuntimeError(
+                    f"X compose editor introuvable apres {attempt} essais. "
+                    f"URL: {page.url}. Title: {title!r}. Body: {body_text!r}"
+                ) from exc
+            print("X compose: editeur introuvable, rechargement...")
+            page.reload(wait_until="domcontentloaded", timeout=30_000)
+            time.sleep(3)
 
 
 def _click_thread_add_button(page) -> bool:
@@ -757,15 +826,7 @@ def post_thread(tweets: list[str], session_file: Path) -> bool:
                     else:
                         for i, tweet in enumerate(tweets, 1):
                             page.goto("https://x.com/compose/post", wait_until="domcontentloaded")
-                            time.sleep(2)
-                            if _looks_logged_out(page):
-                                print("Session expiree. Reconnexion automatique...")
-                                credentials = _load_credentials(session_file)
-                                if credentials:
-                                    _auto_login(page, credentials["username"], credentials["password"], credentials.get("email", ""))
-                                    page.goto("https://x.com/compose/post", wait_until="domcontentloaded")
-                                    time.sleep(2)
-                            editor = page.locator("[data-testid='tweetTextarea_0']").first
+                            editor = _open_compose_and_wait_editor(page, session_file, 0)
                             editor.click(timeout=10_000)
                             editor.fill(tweet)
                             time.sleep(1)
@@ -817,7 +878,7 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
                 page.goto("https://x.com/home", wait_until="domcontentloaded")
                 time.sleep(2)
 
-                if "login" in page.url:
+                if _looks_logged_out(page):
                     print("Session expiree. Reconnexion automatique...")
                     credentials = _load_credentials(session_file)
                     if credentials:
@@ -832,9 +893,8 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
 
                 _wait_account_spacing(account_key)
                 page.goto("https://x.com/compose/post", wait_until="domcontentloaded")
-                time.sleep(2)
 
-                editor = page.locator("[data-testid='tweetTextarea_0']").first
+                editor = _open_compose_and_wait_editor(page, session_file, 0)
                 editor.click(timeout=10_000)
                 editor.fill(tweet)
                 _attach_image_to_composer(page, editor, image_path, 0)

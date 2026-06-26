@@ -1132,6 +1132,31 @@ def _probe_latest_available_date(
     return resolved if ok else None
 
 
+def _skip_lagging_artists_global(
+    runners: list[tuple[str, Path, list[str]]],
+    target: date,
+    post_parts: set[str],
+    *,
+    allow_stale: bool,
+) -> list[tuple[str, Path, list[str]]]:
+    artist_runner = next((runner for runner in runners if runner[0] == "artists_global"), None)
+    if artist_runner is None:
+        return runners
+
+    latest = _probe_latest_available_date([artist_runner], allow_stale=allow_stale)
+    if latest is None or latest >= target:
+        return runners
+
+    if _runner_done("artists_global", latest, post_parts):
+        print(
+            f"[SKIP] artists_global: Spotify latest={latest}, deja collecte; "
+            f"{target} pas encore publie"
+        )
+        return [runner for runner in runners if runner[0] != "artists_global"]
+
+    return runners
+
+
 def _date_span(start: date, end: date) -> list[date]:
     days: list[date] = []
     cur = start
@@ -1590,6 +1615,7 @@ def main() -> int:
 
     failures: list[tuple[str, int]] = []
     ran_collect = False
+    deferred_artists_global: list[tuple[str, Path, list[str]]] = []
 
     if needs_collect:
         original_collect_runners = collect_runners
@@ -1597,6 +1623,18 @@ def main() -> int:
             print(f"[FORCE] pre-skip ignore pour {target_date}: collecte relancee")
         elif not args.dry_run:
             collect_runners = _filter_pending_runners(collect_runners, target_date, post_parts)
+            if not _explicit_target_date:
+                before_artist_skip = collect_runners
+                collect_runners = _skip_lagging_artists_global(
+                    collect_runners,
+                    target_date,
+                    post_parts,
+                    allow_stale=args.watch_release,
+                )
+                if len(collect_runners) < len(before_artist_skip):
+                    deferred_artists_global = [
+                        runner for runner in before_artist_skip if runner[0] == "artists_global"
+                    ]
         if not collect_runners:
             _print_already_done(original_collect_runners, target_date, post_parts)
         else:
@@ -1768,21 +1806,49 @@ def main() -> int:
             failed_names = ", ".join(n for n, _ in regional_post_failures)
             print(f"[WARN] posts regionaux echoues, suite du run maintenue: {failed_names}")
 
-    if not args.dry_run and "artists" in post_parts and not failures:
-        print("\n[PHASE3] generation et publication de la card artists worldwide...")
-        artist_worldwide_args = [str(target_date), "--post"]
-        if args.force:
-            artist_worldwide_args.append("--force")
-        rc_artist_worldwide = _run(
-            "artists-worldwide-card",
-            CHARTS_ROOT / "artists_global" / "tools" / "scripts" / "generate_artist_worldwide_card.py",
-            artist_worldwide_args,
-            dry_run=False,
-            env=env,
-            verbose=args.verbose,
+    if not args.dry_run and deferred_artists_global and "artists" in post_parts and not failures:
+        latest_artists = _probe_latest_available_date(
+            deferred_artists_global,
+            allow_stale=args.watch_release,
         )
-        if rc_artist_worldwide != 0:
-            failures.append(("artists-worldwide-card", rc_artist_worldwide))
+        if latest_artists is not None and latest_artists >= target_date:
+            print("\n[PHASE3] collecte differee artists_global...")
+            artist_failures = _run_parallel(
+                deferred_artists_global,
+                forwarded=forwarded,
+                target_date=target_date,
+                explicit_target_date=_explicit_target_date,
+                dry_run=False,
+                env=env,
+                verbose=args.verbose,
+            )
+            failures.extend(artist_failures)
+            if not artist_failures:
+                ran_collect = True
+        else:
+            print(
+                f"[SKIP] artists_global differe: latest={latest_artists or 'N/A'}, "
+                f"{target_date} toujours pas publie"
+            )
+
+    if not args.dry_run and "artists" in post_parts and not failures:
+        if _runner_done("artists_global", target_date, post_parts):
+            print("\n[PHASE3] generation et publication de la card artists worldwide...")
+            artist_worldwide_args = [str(target_date), "--post"]
+            if args.force:
+                artist_worldwide_args.append("--force")
+            rc_artist_worldwide = _run(
+                "artists-worldwide-card",
+                CHARTS_ROOT / "artists_global" / "tools" / "scripts" / "generate_artist_worldwide_card.py",
+                artist_worldwide_args,
+                dry_run=False,
+                env=env,
+                verbose=args.verbose,
+            )
+            if rc_artist_worldwide != 0:
+                failures.append(("artists-worldwide-card", rc_artist_worldwide))
+        else:
+            print(f"[SKIP] card artists worldwide: donnees artists_global absentes pour {target_date}")
 
     if not args.dry_run and should_generate_cards and not _worldwide_data_ready(target_date):
         failures.append(("cards-data", 1))

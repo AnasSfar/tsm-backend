@@ -41,7 +41,8 @@ _REPO_ROOT            = ROOT.parents[3]
 DATA_DIR              = ROOT / "history"
 CHART_ID              = "regional-fr-daily"
 TWITTER_SESSION       = ROOT / "tools/json/twitter_session.json"
-SPOTIFY_SESSION       = ROOT.parent / "global" / "tools" / "json" / "spotify_session.json"
+# FR uses the theflameofanas Spotify session, not the global/swiftiescharts one.
+SPOTIFY_SESSION       = ROOT / "tools/json/spotify_session.json"
 FILTER_SCRIPT         = ROOT / "tools/scripts/filter.py"
 GENERATE_IMAGE_SCRIPT = ROOT / "tools/scripts/generate_chart_image.py"
 

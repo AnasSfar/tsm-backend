@@ -40,8 +40,10 @@ ROOT                  = Path(__file__).parent
 _REPO_ROOT            = ROOT.parents[3]
 DATA_DIR              = ROOT / "history"
 CHART_ID              = "regional-us-daily"
-TWITTER_SESSION       = ROOT / "tools/json/twitter_session.json"
-SPOTIFY_SESSION       = ROOT.parent / "global" / "tools" / "json" / "spotify_session.json"
+TWITTER_SESSION       = ROOT.parent / "worldwide" / "tools/json/twitter_session.json"
+# US posts use the tsmuseum13 Twitter session, shared with worldwide.
+# US uses the tsmuseum13 Spotify session, not the global/swiftiescharts one.
+SPOTIFY_SESSION       = ROOT / "tools/json/spotify_session.json"
 FILTER_SCRIPT         = ROOT / "tools/scripts/filter.py"
 GENERATE_IMAGE_SCRIPT = ROOT / "tools/scripts/generate_chart_image.py"
 GLOBAL_CHART_IMAGE_SCRIPT = _REPO_ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "script" / "generate_chart_image.py"
