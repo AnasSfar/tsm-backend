@@ -64,7 +64,7 @@ MUSICBRAINZ_HEADERS = {
 ROOT        = Path(__file__).parent
 _TOOLS      = Path(__file__).parent.parent          # = fr/tools/
 DATA_DIR    = _TOOLS.parent / "history"             # = fr/history/
-SESSION_FILE  = _TOOLS / "json" / "spotify_session.json"
+SESSION_FILE  = _TOOLS.parent.parent / "global" / "tools" / "json" / "spotify_session.json"
 LOCAL_DB_FILE = _TOOLS / "json" / "songs_db.json"
 TS_HISTORY_PATH     = _TOOLS / "json" / "ts_history.json"
 TS_POP_HISTORY_PATH = _TOOLS / "json" / "ts_pop_history.json"
