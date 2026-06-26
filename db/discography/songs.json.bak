@@ -2,7 +2,7 @@
   {
     "album": "Standalone & Extras",
     "section": "kworb_extras",
-    "track_count": 27,
+    "track_count": 29,
     "tracks": [
       {
         "title": "Babe",
@@ -35,7 +35,15 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:babe"
+        "genre_canonical_key": "family:babe",
+        "filter_tags": [
+          "feature",
+          "standalone"
+        ],
+        "filter_tag_sources": {
+          "feature": "high:type_or_primary_artist",
+          "standalone": "medium:section_or_type"
+        }
       },
       {
         "title": "Beautiful Ghosts - From The Motion Picture Soundtrack \"Cats\"",
@@ -67,7 +75,17 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:beautiful_ghosts_from_the_motion_picture_soundtrack_cats"
+        "genre_canonical_key": "family:beautiful_ghosts_from_the_motion_picture_soundtrack_cats",
+        "filter_tags": [
+          "solo",
+          "standalone",
+          "soundtrack"
+        ],
+        "filter_tag_sources": {
+          "solo": "high:artist_credit",
+          "standalone": "medium:section_or_type",
+          "soundtrack": "high:title_album_or_section"
+        }
       },
       {
         "title": "Bette Davis Eyes - Live/2011",
@@ -100,7 +118,17 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:bette_davis_eyes_live2011"
+        "genre_canonical_key": "family:bette_davis_eyes_live2011",
+        "filter_tags": [
+          "solo",
+          "standalone",
+          "live"
+        ],
+        "filter_tag_sources": {
+          "solo": "high:artist_credit",
+          "standalone": "medium:section_or_type",
+          "live": "high:type_title_or_section"
+        }
       },
       {
         "title": "Big Star (with Taylor Swift) - Live",
@@ -132,7 +160,17 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:big_star_with_taylor_swift_live"
+        "genre_canonical_key": "family:big_star_with_taylor_swift_live",
+        "filter_tags": [
+          "solo",
+          "standalone",
+          "live"
+        ],
+        "filter_tag_sources": {
+          "solo": "high:artist_credit",
+          "standalone": "medium:section_or_type",
+          "live": "high:type_title_or_section"
+        }
       },
       {
         "title": "Birch",
@@ -164,7 +202,15 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:birch"
+        "genre_canonical_key": "family:birch",
+        "filter_tags": [
+          "solo",
+          "standalone"
+        ],
+        "filter_tag_sources": {
+          "solo": "high:artist_credit",
+          "standalone": "medium:section_or_type"
+        }
       },
       {
         "title": "Both of Us (feat. Taylor Swift)",
@@ -196,7 +242,15 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:both_of_us_feat_taylor_swift"
+        "genre_canonical_key": "family:both_of_us_feat_taylor_swift",
+        "filter_tags": [
+          "feature",
+          "standalone"
+        ],
+        "filter_tag_sources": {
+          "feature": "high:type_or_primary_artist",
+          "standalone": "medium:section_or_type"
+        }
       },
       {
         "title": "Drops Of Jupiter - Live/2011",
@@ -229,7 +283,17 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:drops_of_jupiter_live2011"
+        "genre_canonical_key": "family:drops_of_jupiter_live2011",
+        "filter_tags": [
+          "solo",
+          "standalone",
+          "live"
+        ],
+        "filter_tag_sources": {
+          "solo": "high:artist_credit",
+          "standalone": "medium:section_or_type",
+          "live": "high:type_title_or_section"
+        }
       },
       {
         "title": "Gasoline (feat. Taylor Swift)",
@@ -261,7 +325,15 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:gasoline_feat_taylor_swift"
+        "genre_canonical_key": "family:gasoline_feat_taylor_swift",
+        "filter_tags": [
+          "feature",
+          "standalone"
+        ],
+        "filter_tag_sources": {
+          "feature": "high:type_or_primary_artist",
+          "standalone": "medium:section_or_type"
+        }
       },
       {
         "title": "Highway Don't Care",
@@ -293,7 +365,15 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:highway_dont_care"
+        "genre_canonical_key": "family:highway_dont_care",
+        "filter_tags": [
+          "solo",
+          "standalone"
+        ],
+        "filter_tag_sources": {
+          "solo": "high:artist_credit",
+          "standalone": "medium:section_or_type"
+        }
       },
       {
         "title": "I Want You Back - Live/2011",
@@ -326,7 +406,17 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:i_want_you_back_live2011"
+        "genre_canonical_key": "family:i_want_you_back_live2011",
+        "filter_tags": [
+          "solo",
+          "standalone",
+          "live"
+        ],
+        "filter_tag_sources": {
+          "solo": "high:artist_credit",
+          "standalone": "medium:section_or_type",
+          "live": "high:type_title_or_section"
+        }
       },
       {
         "title": "Macavity - From The Motion Picture Soundtrack \"Cats\"",
@@ -358,7 +448,17 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:macavity_from_the_motion_picture_soundtrack_cats"
+        "genre_canonical_key": "family:macavity_from_the_motion_picture_soundtrack_cats",
+        "filter_tags": [
+          "solo",
+          "standalone",
+          "soundtrack"
+        ],
+        "filter_tag_sources": {
+          "solo": "high:artist_credit",
+          "standalone": "medium:section_or_type",
+          "soundtrack": "high:title_album_or_section"
+        }
       },
       {
         "title": "Message In A Bottle (Fat Max G Remix) (Taylor's Version)",
@@ -391,7 +491,19 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:message_in_a_bottle_fat_max_g_remix_taylors_version"
+        "genre_canonical_key": "family:message_in_a_bottle_fat_max_g_remix_taylors_version",
+        "filter_tags": [
+          "solo",
+          "standalone",
+          "remix",
+          "taylor_version"
+        ],
+        "filter_tag_sources": {
+          "solo": "high:artist_credit",
+          "standalone": "medium:section_or_type",
+          "remix": "high:type_or_title",
+          "taylor_version": "high:title_or_section"
+        }
       },
       {
         "title": "Renegade",
@@ -423,7 +535,15 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:renegade"
+        "genre_canonical_key": "family:renegade",
+        "filter_tags": [
+          "solo",
+          "standalone"
+        ],
+        "filter_tag_sources": {
+          "solo": "high:artist_credit",
+          "standalone": "medium:section_or_type"
+        }
       },
       {
         "title": "Renegade - Pop Version",
@@ -456,7 +576,17 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:renegade_pop_version"
+        "genre_canonical_key": "family:renegade_pop_version",
+        "filter_tags": [
+          "solo",
+          "standalone",
+          "alternate_version"
+        ],
+        "filter_tag_sources": {
+          "solo": "high:artist_credit",
+          "standalone": "medium:section_or_type",
+          "alternate_version": "medium:type_or_title"
+        }
       },
       {
         "title": "The Alcott (feat. Taylor Swift)",
@@ -488,7 +618,15 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:the_alcott_feat_taylor_swift"
+        "genre_canonical_key": "family:the_alcott_feat_taylor_swift",
+        "filter_tags": [
+          "feature",
+          "standalone"
+        ],
+        "filter_tag_sources": {
+          "feature": "high:type_or_primary_artist",
+          "standalone": "medium:section_or_type"
+        }
       },
       {
         "title": "The Joker And The Queen (feat. Taylor Swift)",
@@ -521,7 +659,15 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:the_joker_and_the_queen_feat_taylor_swift"
+        "genre_canonical_key": "family:the_joker_and_the_queen_feat_taylor_swift",
+        "filter_tags": [
+          "feature",
+          "standalone"
+        ],
+        "filter_tag_sources": {
+          "feature": "high:type_or_primary_artist",
+          "standalone": "medium:section_or_type"
+        }
       },
       {
         "title": "Two Is Better Than One (feat. Taylor Swift)",
@@ -553,7 +699,15 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:two_is_better_than_one_feat_taylor_swift"
+        "genre_canonical_key": "family:two_is_better_than_one_feat_taylor_swift",
+        "filter_tags": [
+          "feature",
+          "standalone"
+        ],
+        "filter_tag_sources": {
+          "feature": "high:type_or_primary_artist",
+          "standalone": "medium:section_or_type"
+        }
       },
       {
         "title": "us. (feat. Taylor Swift)",
@@ -585,7 +739,15 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:us_feat_taylor_swift"
+        "genre_canonical_key": "family:us_feat_taylor_swift",
+        "filter_tags": [
+          "feature",
+          "standalone"
+        ],
+        "filter_tag_sources": {
+          "feature": "high:type_or_primary_artist",
+          "standalone": "medium:section_or_type"
+        }
       },
       {
         "title": "Cruel Summer - Live from TS | The Eras Tour",
@@ -643,7 +805,17 @@
           "lastfm": "Cruel Summer"
         },
         "genre_errors": {},
-        "genre_canonical_key": "family:cruel_summer"
+        "genre_canonical_key": "family:cruel_summer",
+        "filter_tags": [
+          "solo",
+          "standalone",
+          "live"
+        ],
+        "filter_tag_sources": {
+          "solo": "high:artist_credit",
+          "standalone": "medium:section_or_type",
+          "live": "high:type_title_or_section"
+        }
       },
       {
         "title": "Everything Has Changed - Remix",
@@ -679,7 +851,17 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:everything_has_changed"
+        "genre_canonical_key": "family:everything_has_changed",
+        "filter_tags": [
+          "collab",
+          "standalone",
+          "remix"
+        ],
+        "filter_tag_sources": {
+          "collab": "high:artists_or_featured_artists",
+          "standalone": "medium:section_or_type",
+          "remix": "high:type_or_title"
+        }
       },
       {
         "title": "Our Song - International Mix",
@@ -712,7 +894,15 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:our_song_international_mix"
+        "genre_canonical_key": "family:our_song_international_mix",
+        "filter_tags": [
+          "solo",
+          "remix"
+        ],
+        "filter_tag_sources": {
+          "solo": "high:artist_credit",
+          "remix": "high:type_or_title"
+        }
       },
       {
         "title": "Should've Said No - International Mix",
@@ -745,7 +935,15 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:should_ve_said_no_international_mix"
+        "genre_canonical_key": "family:should_ve_said_no_international_mix",
+        "filter_tags": [
+          "solo",
+          "remix"
+        ],
+        "filter_tag_sources": {
+          "solo": "high:artist_credit",
+          "remix": "high:type_or_title"
+        }
       },
       {
         "title": "Teardrops On My Guitar - International Mix",
@@ -778,7 +976,15 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:teardrops_on_my_guitar_international_mix"
+        "genre_canonical_key": "family:teardrops_on_my_guitar_international_mix",
+        "filter_tags": [
+          "solo",
+          "remix"
+        ],
+        "filter_tag_sources": {
+          "solo": "high:artist_credit",
+          "remix": "high:type_or_title"
+        }
       },
       {
         "title": "The Life of a Showgirl Intro",
@@ -811,7 +1017,13 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:the_life_of_a_showgirl_intro"
+        "genre_canonical_key": "family:the_life_of_a_showgirl_intro",
+        "filter_tags": [
+          "solo"
+        ],
+        "filter_tag_sources": {
+          "solo": "high:artist_credit"
+        }
       },
       {
         "title": "The Life of a Showgirl Outro",
@@ -844,7 +1056,13 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:the_life_of_a_showgirl_outro"
+        "genre_canonical_key": "family:the_life_of_a_showgirl_outro",
+        "filter_tags": [
+          "solo"
+        ],
+        "filter_tag_sources": {
+          "solo": "high:artist_credit"
+        }
       },
       {
         "title": "The Story Of Us",
@@ -877,7 +1095,106 @@
         },
         "genre_query_titles": {},
         "genre_errors": {},
-        "genre_canonical_key": "family:the_story_of_us"
+        "genre_canonical_key": "family:the_story_of_us",
+        "filter_tags": [
+          "solo"
+        ],
+        "filter_tag_sources": {
+          "solo": "high:artist_credit"
+        }
+      },
+      {
+        "title": "I Knew It, I Knew You",
+        "url": "https://open.spotify.com/intl-fr/track/5uPaqMMt59KGrdKIitDRqa",
+        "type": "standalone",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10008,
+        "base_title": "I Knew It, I Knew You",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "I Knew It, I Knew You",
+        "song_family": "i_knew_it_i_knew_you",
+        "version_tag": "standalone",
+        "image_url": "https://i.scdn.co/image/ab67616d00001e02a35a1d4983e2b4fd0094f910",
+        "release_date": "2026-06-05T00:00:00Z",
+        "historical_track_ids": [],
+        "filter_tags": [
+          "solo",
+          "standalone"
+        ],
+        "filter_tag_sources": {
+          "solo": "high:artist_credit",
+          "standalone": "medium:section_or_type"
+        }
+      },
+      {
+        "title": "I Knew It, I Knew You - Acoustic Version",
+        "url": "https://open.spotify.com/intl-fr/track/23NnOJGyMrD7k3NaGDX0bb",
+        "type": "standalone",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10009,
+        "base_title": "I Knew It, I Knew You",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "I Knew It, I Knew You - Acoustic Version",
+        "song_family": "i_knew_it_i_knew_you",
+        "version_tag": "acoustic",
+        "image_url": "https://i.scdn.co/image/ab67616d00001e0219d3f76e49141d4f4f683257",
+        "release_date": "2026-06-12T00:00:00Z",
+        "historical_track_ids": [],
+        "filter_tags": [
+          "solo",
+          "standalone",
+          "acoustic",
+          "alternate_version"
+        ],
+        "filter_tag_sources": {
+          "solo": "high:artist_credit",
+          "standalone": "medium:section_or_type",
+          "acoustic": "high:title_or_section",
+          "alternate_version": "medium:type_or_title"
+        }
+      },
+      {
+        "title": "I Knew It, I Knew You - Piano Version",
+        "url": "https://open.spotify.com/intl-fr/track/6ZwVl8oPsraGB177TNEzaX",
+        "type": "standalone",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10010,
+        "base_title": "I Knew It, I Knew You",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "I Knew It, I Knew You - Piano Version",
+        "song_family": "i_knew_it_i_knew_you",
+        "version_tag": "piano",
+        "image_url": "https://i.scdn.co/image/ab67616d00001e0219d3f76e49141d4f4f683257",
+        "release_date": "2026-06-12T00:00:00Z",
+        "historical_track_ids": [],
+        "filter_tags": [
+          "solo",
+          "standalone",
+          "alternate_version"
+        ],
+        "filter_tag_sources": {
+          "solo": "high:artist_credit",
+          "standalone": "medium:section_or_type",
+          "alternate_version": "medium:type_or_title"
+        }
       }
     ]
   }

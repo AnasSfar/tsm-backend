@@ -62,43 +62,8 @@ SWIFT_TOP_100_JSON_PATH = SITE_DATA_DIR / "swift_top_100.json"
 TRACK_ID_RE = re.compile(r"track/([A-Za-z0-9]+)")
 DATE_RE = re.compile(r"(\d{4}-\d{2}-\d{2})")
 
-MILESTONES = [
-    100_000_000,
-    200_000_000,
-    300_000_000,
-    400_000_000,
-    500_000_000,
-    600_000_000,
-    700_000_000,
-    800_000_000,
-    900_000_000,
-    1_000_000_000,
-    1_100_000_000,
-    1_200_000_000,
-    1_300_000_000,
-    1_400_000_000,
-    1_500_000_000,
-    1_600_000_000,
-    1_700_000_000,
-    1_800_000_000,
-    1_900_000_000,
-    2_000_000_000,
-    2_100_000_000,
-    2_200_000_000,
-    2_300_000_000,
-    2_400_000_000,
-    2_500_000_000,
-    2_600_000_000,
-    2_700_000_000,
-    2_800_000_000,
-    2_900_000_000,
-    3_000_000_000,
-    3_100_000_000,
-    3_200_000_000,
-    3_300_000_000,
-    3_400_000_000,
-    3_500_000_000,
-]
+MILESTONE_STEP = 100_000_000
+MILESTONES = list(range(MILESTONE_STEP, 5_000_000_000 + MILESTONE_STEP, MILESTONE_STEP))
 
 
 def load_album_covers() -> dict:
@@ -154,7 +119,7 @@ def next_milestone(streams: int | None) -> int | None:
 
     x = MILESTONES[-1]
     while streams >= x:
-        x += 100_000_000
+        x += MILESTONE_STEP
     return x
 
 
@@ -647,6 +612,7 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                     file_tracks.append({
                         "track_id":       track_id,
                         "title":          track.get("title"),
+                        "release_date":   track.get("release_date"),
                         "type":           track_type,
                         "edition":        edition,
                         "display_section": display_section,

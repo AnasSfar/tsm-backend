@@ -937,6 +937,50 @@ def _snapshot_entry_for_region(snapshot: dict[str, list[dict]], track_id: str | 
     return None
 
 
+def _apply_track_id_history(chart_date: str, by_region: dict[str, list[dict]]) -> None:
+    """Use stable Spotify track IDs to correct title-change false NEW/RE states."""
+    current_date = datetime.strptime(chart_date, "%Y-%m-%d").date()
+    prev_day = (current_date - timedelta(days=1)).strftime("%Y-%m-%d")
+    prev_day_by_track = _load_snapshot_by_track(prev_day)
+    if not prev_day_by_track:
+        return
+
+    corrected = 0
+    for region, rows in by_region.items():
+        for row in rows:
+            track_id = row.get("_track_id_uri") or row.get("track_id")
+            prev_entry = _snapshot_entry_for_region(prev_day_by_track, track_id, region)
+            if not prev_entry:
+                continue
+
+            prev_rank = _to_int(prev_entry.get("rank"))
+            if row.get("previous_rank") in (None, "") and prev_rank is not None:
+                row["previous_rank"] = prev_rank
+                corrected += 1
+
+            if row.get("is_new") or row.get("is_re_entry") or row.get("movement") in {"NEW", "RE"}:
+                row["is_new"] = False
+                row["is_re_entry"] = False
+                row["movement"] = None
+                corrected += 1
+
+            prev_total_days = _to_int(prev_entry.get("total_days"))
+            total_days = _to_int(row.get("total_days"))
+            if prev_total_days is not None and (total_days is None or total_days <= 1):
+                row["total_days"] = prev_total_days + 1
+                corrected += 1
+
+            prev_peak = _to_int(prev_entry.get("peak_rank"))
+            rank = _to_int(row.get("rank"))
+            peak_rank = _to_int(row.get("peak_rank"))
+            if rank is not None and prev_peak is not None and (peak_rank is None or peak_rank > min(prev_peak, rank)):
+                row["peak_rank"] = min(prev_peak, rank)
+                corrected += 1
+
+    if corrected:
+        print(f"[INFO] Track-ID history corrections applied: {corrected}", flush=True)
+
+
 def _enrich_multi_song_region_rows(chart_date: str, by_region: dict[str, list[dict]]) -> None:
     current_date = datetime.strptime(chart_date, "%Y-%m-%d").date()
     prev_day = (current_date - timedelta(days=1)).strftime("%Y-%m-%d")
@@ -1437,6 +1481,7 @@ def main() -> int:
     if priority_to_fetch:
         print(f"[INFO] Phase 1 : fetch prioritaire ({', '.join(sorted(priority_to_fetch))})…")
         tokens, _, priority_results = _run_async_with_token_refresh(chart_date, tokens, priority_to_fetch)
+        _apply_track_id_history(chart_date, priority_results)
         print(f"[INFO] Phase 1 terminée en {time.perf_counter() - t0:.1f}s")
         for region in PRIORITY_POST_REGIONS:
             if region in priority_results and priority_results[region]:
@@ -1503,6 +1548,7 @@ def main() -> int:
         other_results = {}
 
     by_region = {**priority_results, **other_results}
+    _apply_track_id_history(chart_date, by_region)
     for region in PRIORITY_POST_REGIONS:
         if region in by_region and by_region[region]:
             _write_regional_ts_chart(chart_date, region, by_region[region], manual_lookup, track_lookup)

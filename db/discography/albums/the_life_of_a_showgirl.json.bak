@@ -1,5 +1,6 @@
 {
   "album": "The Life of a Showgirl",
+  "release_date": "2025-10-03T00:00:00Z",
   "section_count": 5,
   "track_count": 39,
   "sections": [
@@ -28,9 +29,10 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [
             "5cKBWgDjB5IXZ5jnryewOH",
-            "3CFKUvybrj8Jg5F018tyuA"
+            "3CFKUvybrj8Jg5F018tyuA",
+            "3wXuJTeA7dkrWShvbdUk0A"
           ],
-          "release_date": "2025-10-31T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop",
             "dance-pop",
@@ -67,7 +69,15 @@
             "lastfm": "The Fate of Ophelia"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_fate_of_ophelia"
+          "genre_canonical_key": "family:the_fate_of_ophelia",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Elizabeth Taylor",
@@ -89,9 +99,10 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc6e4c7774e0c77c210d3a31",
           "single_image": "https://i.scdn.co/image/ab67616d0000b273dc6e4c7774e0c77c210d3a31",
           "historical_track_ids": [
-            "1jgTiNob5cVyXeJ3WgX5bL"
+            "1jgTiNob5cVyXeJ3WgX5bL",
+            "6virCtlwc98cKYVyeZYXqq"
           ],
-          "release_date": "2026-03-31T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop"
           ],
@@ -122,7 +133,15 @@
             "lastfm": "Elizabeth Taylor"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:elizabeth_taylor"
+          "genre_canonical_key": "family:elizabeth_taylor",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Opalite",
@@ -143,9 +162,10 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "historical_track_ids": [
-            "4s1Sql0NqvLh0ioDzSTaET"
+            "4s1Sql0NqvLh0ioDzSTaET",
+            "4utwUoDcx4zhAKXd4DD6P6"
           ],
-          "release_date": "2026-02-06T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop",
@@ -182,7 +202,15 @@
             "lastfm": "Opalite"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:opalite"
+          "genre_canonical_key": "family:opalite",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Father Figure",
@@ -205,7 +233,7 @@
           "historical_track_ids": [
             "6H0nEKqkTRxa30Pru1h7SD"
           ],
-          "release_date": "2025-11-07T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop"
@@ -239,7 +267,15 @@
             "lastfm": "Father Figure"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:father_figure"
+          "genre_canonical_key": "family:father_figure",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Eldest Daughter",
@@ -263,7 +299,7 @@
             "5XhaIFhtZeqcExorrYSVDM",
             "6nhsv9Jeluz5gXt592KN3m"
           ],
-          "release_date": "2025-11-07T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop",
             "rock"
@@ -297,7 +333,15 @@
             "lastfm": "Eldest Daughter"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:eldest_daughter"
+          "genre_canonical_key": "family:eldest_daughter",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Ruin The Friendship",
@@ -320,7 +364,7 @@
           "historical_track_ids": [
             "05VwM318oU6aNc1GS4MtLV"
           ],
-          "release_date": "2025-11-07T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop",
             "country pop",
@@ -357,7 +401,15 @@
             "lastfm": "Ruin The Friendship"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:ruin_the_friendship"
+          "genre_canonical_key": "family:ruin_the_friendship",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Actually Romantic",
@@ -380,7 +432,7 @@
           "historical_track_ids": [
             "6G3dUZrsaOYhe2gRyNukwA"
           ],
-          "release_date": "2025-11-07T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop rock",
             "pop",
@@ -417,7 +469,15 @@
             "lastfm": "Actually Romantic"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:actually_romantic"
+          "genre_canonical_key": "family:actually_romantic",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Wi$h Li$t",
@@ -440,7 +500,7 @@
           "historical_track_ids": [
             "6udRZQi3g501XNOcRnE9fo"
           ],
-          "release_date": "2025-11-07T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop"
@@ -474,7 +534,15 @@
             "lastfm": "Wi$h Li$t"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:wi_h_li_t"
+          "genre_canonical_key": "family:wi_h_li_t",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Wood",
@@ -498,7 +566,7 @@
             "0fWfEPHNFueq2UafmJlY6d",
             "4Ox858TeUXjy7WEKOcxaFI"
           ],
-          "release_date": "2025-11-07T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop"
           ],
@@ -529,7 +597,15 @@
             "lastfm": "Wood"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:wood"
+          "genre_canonical_key": "family:wood",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "CANCELLED!",
@@ -552,7 +628,7 @@
           "historical_track_ids": [
             "67SmofYg9enUWfcPqUuoVm"
           ],
-          "release_date": "2025-11-07T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop",
             "rock",
@@ -589,7 +665,15 @@
             "lastfm": "CANCELLED!"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:cancelled"
+          "genre_canonical_key": "family:cancelled",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Honey",
@@ -613,7 +697,7 @@
             "2TUxAAf8NbwbZjr2Ii3Hg9",
             "7jHzBmxAGVVPvLiq4Y45pD"
           ],
-          "release_date": "2025-11-07T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [
             "pop",
             "soft rock"
@@ -647,7 +731,15 @@
             "lastfm": "Honey"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:honey"
+          "genre_canonical_key": "family:honey",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
@@ -674,7 +766,7 @@
             "5CHOrwxKLXkY1XVZauxvnw",
             "6EqHzZp61G5uQ12QEiibpT"
           ],
-          "release_date": "2025-11-07T00:00:00Z",
+          "release_date": "2025-10-03T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -686,7 +778,15 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:the_life_of_a_showgirl"
+          "genre_canonical_key": "family:the_life_of_a_showgirl",
+          "filter_tags": [
+            "feature",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section"
+          }
         }
       ]
     },
@@ -751,7 +851,17 @@
             "lastfm": "The Fate of Ophelia"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_fate_of_ophelia"
+          "genre_canonical_key": "family:the_fate_of_ophelia",
+          "filter_tags": [
+            "solo",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Opalite - Life Is A Song Acoustic Version",
@@ -811,7 +921,17 @@
             "lastfm": "Opalite"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:opalite"
+          "genre_canonical_key": "family:opalite",
+          "filter_tags": [
+            "solo",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Wi$h Li$t - Settled Down Acoustic Version",
@@ -866,7 +986,17 @@
             "lastfm": "Wi$h Li$t"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:wi_h_li_t"
+          "genre_canonical_key": "family:wi_h_li_t",
+          "filter_tags": [
+            "solo",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Ruin The Friendship - My Advice Version",
@@ -924,7 +1054,17 @@
             "lastfm": "Ruin The Friendship"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:ruin_the_friendship"
+          "genre_canonical_key": "family:ruin_the_friendship",
+          "filter_tags": [
+            "solo",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Eldest Daughter - Now You're Home Acoustic Version",
@@ -979,7 +1119,17 @@
             "lastfm": "Eldest Daughter"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:eldest_daughter"
+          "genre_canonical_key": "family:eldest_daughter",
+          "filter_tags": [
+            "solo",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Elizabeth Taylor - So Glamorous Cabaret Version",
@@ -1033,7 +1183,17 @@
             "lastfm": "Elizabeth Taylor"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:elizabeth_taylor"
+          "genre_canonical_key": "family:elizabeth_taylor",
+          "filter_tags": [
+            "solo",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "The Life of a Showgirl (feat. Sabrina Carpenter) - Dressing Room Rehearsal Version",
@@ -1069,7 +1229,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:the_life_of_a_showgirl"
+          "genre_canonical_key": "family:the_life_of_a_showgirl",
+          "filter_tags": [
+            "collab",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "collab": "high:artists_or_featured_artists",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         }
       ]
     },
@@ -1134,7 +1304,15 @@
             "lastfm": "Opalite"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:opalite"
+          "genre_canonical_key": "family:opalite",
+          "filter_tags": [
+            "solo",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Opalite - Official Music Video Extended Version Part 2",
@@ -1192,7 +1370,15 @@
             "lastfm": "Opalite"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:opalite"
+          "genre_canonical_key": "family:opalite",
+          "filter_tags": [
+            "solo",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "alternate_version": "medium:type_or_title"
+          }
         }
       ]
     },
@@ -1257,7 +1443,15 @@
             "lastfm": "Opalite"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:opalite"
+          "genre_canonical_key": "family:opalite",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "Opalite - Chris Lake Remix",
@@ -1315,7 +1509,15 @@
             "lastfm": "Opalite"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:opalite"
+          "genre_canonical_key": "family:opalite",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "Opalite - Ely Oaks Remix",
@@ -1373,7 +1575,15 @@
             "lastfm": "Opalite"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:opalite"
+          "genre_canonical_key": "family:opalite",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "Opalite - Skream Remix",
@@ -1431,7 +1641,15 @@
             "lastfm": "Opalite"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:opalite"
+          "genre_canonical_key": "family:opalite",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "The Fate of Ophelia - Loud Luxury Remix",
@@ -1489,7 +1707,15 @@
             "lastfm": "The Fate of Ophelia"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_fate_of_ophelia"
+          "genre_canonical_key": "family:the_fate_of_ophelia",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "The Fate of Ophelia - The Chainsmokers Remix",
@@ -1547,7 +1773,15 @@
             "lastfm": "The Fate of Ophelia"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_fate_of_ophelia"
+          "genre_canonical_key": "family:the_fate_of_ophelia",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         }
       ]
     },
@@ -1606,7 +1840,17 @@
             "lastfm": "Elizabeth Taylor"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:elizabeth_taylor"
+          "genre_canonical_key": "family:elizabeth_taylor",
+          "filter_tags": [
+            "solo",
+            "track_by_track",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "track_by_track": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Father Figure - Track by Track",
@@ -1661,7 +1905,17 @@
             "lastfm": "Father Figure"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:father_figure"
+          "genre_canonical_key": "family:father_figure",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "track_by_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "track_by_track": "high:title_or_section"
+          }
         },
         {
           "title": "Opalite - Track by Track",
@@ -1719,7 +1973,17 @@
             "lastfm": "Opalite"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:opalite"
+          "genre_canonical_key": "family:opalite",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "track_by_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "track_by_track": "high:title_or_section"
+          }
         },
         {
           "title": "The Fate of Ophelia - Track by Track",
@@ -1777,7 +2041,17 @@
             "lastfm": "The Fate of Ophelia"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_fate_of_ophelia"
+          "genre_canonical_key": "family:the_fate_of_ophelia",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "track_by_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "track_by_track": "high:title_or_section"
+          }
         },
         {
           "title": "The Life of a Showgirl - Track by Track",
@@ -1810,7 +2084,17 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:the_life_of_a_showgirl"
+          "genre_canonical_key": "family:the_life_of_a_showgirl",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "track_by_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "track_by_track": "high:title_or_section"
+          }
         },
         {
           "title": "Actually Romantic - Track by Track",
@@ -1869,7 +2153,17 @@
             "lastfm": "Actually Romantic"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:actually_romantic"
+          "genre_canonical_key": "family:actually_romantic",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "track_by_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "track_by_track": "high:title_or_section"
+          }
         },
         {
           "title": "CANCELLED! - Track by Track",
@@ -1928,7 +2222,17 @@
             "lastfm": "CANCELLED!"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:cancelled"
+          "genre_canonical_key": "family:cancelled",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "track_by_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "track_by_track": "high:title_or_section"
+          }
         },
         {
           "title": "Eldest Daughter - Track by Track",
@@ -1984,7 +2288,17 @@
             "lastfm": "Eldest Daughter"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:eldest_daughter"
+          "genre_canonical_key": "family:eldest_daughter",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "track_by_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "track_by_track": "high:title_or_section"
+          }
         },
         {
           "title": "Honey - Track by Track",
@@ -2040,7 +2354,17 @@
             "lastfm": "Honey"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:honey"
+          "genre_canonical_key": "family:honey",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "track_by_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "track_by_track": "high:title_or_section"
+          }
         },
         {
           "title": "Ruin The Friendship - Track by Track",
@@ -2099,7 +2423,17 @@
             "lastfm": "Ruin The Friendship"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:ruin_the_friendship"
+          "genre_canonical_key": "family:ruin_the_friendship",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "track_by_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "track_by_track": "high:title_or_section"
+          }
         },
         {
           "title": "Wi$h Li$t - Track by Track",
@@ -2155,7 +2489,17 @@
             "lastfm": "Wi$h Li$t"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:wiSh_liSt"
+          "genre_canonical_key": "family:wiSh_liSt",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "track_by_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "track_by_track": "high:title_or_section"
+          }
         },
         {
           "title": "Wood - Track by Track",
@@ -2208,7 +2552,17 @@
             "lastfm": "Wood"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:wood"
+          "genre_canonical_key": "family:wood",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "track_by_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "track_by_track": "high:title_or_section"
+          }
         }
       ]
     }

@@ -916,12 +916,8 @@ body{
 """
 
 
-_MILESTONES = [
-    100_000_000, 200_000_000, 300_000_000, 400_000_000, 500_000_000,
-    600_000_000, 700_000_000, 800_000_000, 900_000_000,
-    1_000_000_000, 1_500_000_000, 2_000_000_000, 2_500_000_000,
-    3_000_000_000, 3_500_000_000, 4_000_000_000, 5_000_000_000,
-]
+_MILESTONE_STEP = 100_000_000
+_MILESTONES = list(range(_MILESTONE_STEP, 5_000_000_000 + _MILESTONE_STEP, _MILESTONE_STEP))
 
 
 def _just_crossed_milestone(total: int, total_yesterday: int | None) -> int | None:
@@ -1434,13 +1430,15 @@ def main() -> None:
     else:
         tweet_lines.append(f'Total streams: {total_tweet}.')
     try:
-        if args.combined:
-            print("Best-day-since note skipped: combined mode.")
-        else:
-            from best_day_since import best_day_since_for_track, row_label
-            best_day = best_day_since_for_track(track["track_id"], stats_date, min_days=14)
-            if best_day:
-                tweet_lines.append(f"The song earned its {row_label(best_day)}.")
+        from best_day_since import best_day_since_for_track, row_label
+        best_day = best_day_since_for_track(
+            track["track_id"],
+            stats_date,
+            min_days=14,
+            combined=args.combined,
+        )
+        if best_day:
+            tweet_lines.append(f"The song earned its {row_label(best_day)}.")
     except Exception as e:
         print(f"Best-day-since note skipped: {e}")
     tweet = "\n\n".join(tweet_lines)

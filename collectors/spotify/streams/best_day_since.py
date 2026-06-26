@@ -43,6 +43,7 @@ class Track:
     title: str
     album: str
     spotify_url: str
+    song_family: str = ""
 
 
 @dataclass(frozen=True)
@@ -155,6 +156,7 @@ def load_tracks(*, include_extras: bool = False) -> dict[str, Track]:
                 title=title,
                 album=album,
                 spotify_url=f"https://open.spotify.com/track/{track_id}",
+                song_family=str(item.get("song_family") or "").strip(),
             )
 
     return tracks
@@ -205,6 +207,66 @@ def fill_missing_dailies(points: list[Point]) -> list[Point]:
             previous_total = point.total
 
     return filled
+
+
+def combine_points(points_by_track: list[list[Point]]) -> list[Point]:
+    filled_by_track = [fill_missing_dailies(points) for points in points_by_track if points]
+    dates = sorted({point.day for points in filled_by_track for point in points})
+    combined: list[Point] = []
+
+    for day in dates:
+        total_sum = 0
+        total_seen = False
+        daily_sum = 0
+        daily_seen = False
+        for points in filled_by_track:
+            point = next((p for p in points if p.day == day), None)
+            if point is None:
+                continue
+            if point.total is not None:
+                total_sum += point.total
+                total_seen = True
+            if point.daily is not None:
+                daily_sum += point.daily
+                daily_seen = True
+        combined.append(
+            Point(
+                day=day,
+                total=total_sum if total_seen else None,
+                daily=daily_sum if daily_seen else None,
+            )
+        )
+
+    return combined
+
+
+def combined_tracks_for(track: Track, tracks: dict[str, Track]) -> list[Track]:
+    family = (track.song_family or "").strip()
+    if not family:
+        return [track]
+    related = [candidate for candidate in tracks.values() if candidate.song_family == family]
+    return related or [track]
+
+
+def compute_best_day_since_combined(
+    track: Track,
+    related_tracks: list[Track],
+    history: dict[str, list[Point]],
+    target_date: date,
+) -> dict | None:
+    points_by_track = [
+        history.get(related.track_id) or []
+        for related in related_tracks
+    ]
+    points = combine_points(points_by_track)
+    row = compute_best_day_since(track, points, target_date)
+    if not row:
+        return None
+    related_ids = [related.track_id for related in related_tracks]
+    row["combined"] = len(related_ids) > 1
+    row["combined_track_ids"] = related_ids
+    row["combined_version_count"] = len(related_ids)
+    return row
 
 
 def latest_history_date(history: dict[str, list[Point]]) -> date | None:
@@ -293,17 +355,34 @@ def passes_filters(row: dict, *, min_days: int) -> bool:
     return (row.get("days_since") or 0) >= min_days
 
 
-def best_day_since_for_track(track_id: str, target_date: str, *, min_days: int = 14) -> dict | None:
-    """Return best-day-since data for one album track, excluding extras."""
-    track = load_tracks(include_extras=False).get(track_id)
+def best_day_since_for_track(
+    track_id: str,
+    target_date: str,
+    *,
+    min_days: int = 14,
+    combined: bool = True,
+) -> dict | None:
+    """Return best-day-since data for one album track, with combined versions by default."""
+    base_tracks = load_tracks(include_extras=False)
+    all_tracks = load_tracks(include_extras=True)
+    track = base_tracks.get(track_id) or all_tracks.get(track_id)
     if not track:
         return None
 
-    points = load_history().get(track_id)
-    if not points:
-        return None
+    history = load_history()
+    if combined:
+        row = compute_best_day_since_combined(
+            track,
+            combined_tracks_for(all_tracks.get(track_id, track), all_tracks),
+            history,
+            date.fromisoformat(target_date),
+        )
+    else:
+        points = history.get(track_id)
+        if not points:
+            return None
+        row = compute_best_day_since(track, points, date.fromisoformat(target_date))
 
-    row = compute_best_day_since(track, points, date.fromisoformat(target_date))
     if not row or not passes_filters(row, min_days=min_days):
         return None
     return row
@@ -345,6 +424,7 @@ def main() -> None:
     args = parser.parse_args()
 
     tracks = load_tracks(include_extras=args.include_extras)
+    all_tracks = load_tracks(include_extras=True)
     history = load_history()
     if not history:
         raise SystemExit(f"No history found: {HISTORY_PATH}")
@@ -358,11 +438,18 @@ def main() -> None:
         target_date = latest
 
     rows = []
+    seen_families: set[str] = set()
     for track_id, track in tracks.items():
-        points = history.get(track_id)
-        if not points:
+        family = (track.song_family or track_id).strip()
+        if family in seen_families:
             continue
-        row = compute_best_day_since(track, points, target_date)
+        seen_families.add(family)
+        row = compute_best_day_since_combined(
+            track,
+            combined_tracks_for(all_tracks.get(track_id, track), all_tracks),
+            history,
+            target_date,
+        )
         if row:
             rows.append(row)
 

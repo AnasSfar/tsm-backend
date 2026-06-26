@@ -685,7 +685,7 @@ def _post_spotlight_gainers(ctx: FinalizeContext, state: dict[str, float]) -> No
         return
 
     highlights_script = ctx.script_dir / "tools" / "scripts" / "post_stream_highlights_thread.py"
-    print("Posting separate stream highlight threads (daily %, weekly %, best-day-since)...")
+    print("Posting separate stream highlight threads (daily %, weekly %)...")
     cmd = [
         sys.executable,
         str(highlights_script),
@@ -699,25 +699,6 @@ def _post_spotlight_gainers(ctx: FinalizeContext, state: dict[str, float]) -> No
         ctx,
         cmd,
         label="stream highlights thread",
-        should_post=not ctx.no_post_mode,
-        state=state,
-    )
-
-
-def _post_best_day_since(ctx: FinalizeContext, state: dict[str, float]) -> None:
-    if not ctx.all_album_tracks_done(ctx.summary["stats_date"]):
-        print("Best-day-since posts skipped: not all album tracks are done yet.")
-        return
-
-    print("Posting top long-range best-day-since songs to @tsmuseum13...")
-    post_script = ctx.script_dir / "tools" / "scripts" / "post_best_day_since_twitter.py"
-    cmd = [sys.executable, str(post_script), ctx.summary["stats_date"], "--limit", "3"]
-    if ctx.no_post_mode:
-        cmd.append("--no-post")
-    _run(
-        ctx,
-        cmd,
-        label="best-day-since songs",
         should_post=not ctx.no_post_mode,
         state=state,
     )
@@ -882,12 +863,8 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                 lambda: _run_forecast_and_image_refresh(ctx),
             )
 
-        spotlight_thread = None
-        if (
-            not ctx.debug_daily_mode
-            and not ctx.local_test_mode
-        ):
-            spotlight_thread = _start_spotlight_gainers(ctx)
+        with timer.step("albums daily post"):
+            _post_albums_daily(ctx, post_state)
 
         with timer.step("streams post"):
             _post_streams_image(ctx, post_state)
@@ -895,12 +872,12 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
         if ctx.debug_daily_mode or ctx.local_test_mode:
             return
 
+        spotlight_thread = _start_spotlight_gainers(ctx)
+
         with timer.step("debut posts"):
             _post_debut_releases(ctx, post_state)
         with timer.step("album update posts"):
             _post_album_updates(ctx, post_state)
-        with timer.step("albums daily post"):
-            _post_albums_daily(ctx, post_state)
         if spotlight_thread is not None:
             start = time.perf_counter()
             spotlight_thread.join()
@@ -908,8 +885,6 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
             spotlight_errors = getattr(spotlight_thread, "post_errors", [])
             if spotlight_errors:
                 raise SystemExit(f"stream highlights thread failed: {spotlight_errors[0]}")
-        with timer.step("best-day-since posts"):
-            _post_best_day_since(ctx, post_state)
         _join_background_task(forecast_thread, "forecast/image refresh", timer)
 
         if ctx.test_mode:

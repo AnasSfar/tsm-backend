@@ -421,15 +421,23 @@ def _render_table_image(rows: list[dict], *, period: str, target_date: str, out_
 
 def _best_day_rows(target_date: str, *, limit: int, min_days: int) -> list[dict]:
     tracks = best_day_since.load_tracks(include_extras=False)
+    all_tracks = best_day_since.load_tracks(include_extras=True)
     history = best_day_since.load_history()
     target = date.fromisoformat(target_date)
 
     rows: list[dict] = []
-    for _track_id, track in tracks.items():
-        points = history.get(track.track_id)
-        if not points:
+    seen_families: set[str] = set()
+    for track_id, track in tracks.items():
+        family = (track.song_family or track_id).strip()
+        if family in seen_families:
             continue
-        row = best_day_since.compute_best_day_since(track, points, target)
+        seen_families.add(family)
+        row = best_day_since.compute_best_day_since_combined(
+            track,
+            best_day_since.combined_tracks_for(all_tracks.get(track_id, track), all_tracks),
+            history,
+            target,
+        )
         days_since = row.get("days_since") if row else None
         if (
             row
@@ -463,7 +471,7 @@ def _collect_highlight_groups(
         limit=limit,
         min_baseline=min_baseline,
     )
-    best_rows = _best_day_rows(target_date, limit=best_limit, min_days=min_days)
+    best_rows: list[dict] = []
 
     tracks_by_id = {track["track_id"]: track for track in spotlight.load_all_tracks()}
     best_items: list[dict] = []
@@ -655,34 +663,6 @@ def main() -> int:
         lock.touch()
         posted_any = True
         print(f"[stream_highlights] Posted {label} table for {target_date}.")
-
-    group_name = "best_day"
-    label = "best-day-since"
-    items = groups[group_name]
-    lock = day_dir / f"stream_highlights_{group_name}_posted.lock"
-    if lock.exists() and not args.no_post:
-        print(f"[stream_highlights] {label} already posted for {target_date}, skipping.")
-    elif not items:
-        print(f"[stream_highlights] No {label} found for {target_date}.")
-    else:
-        posts: list[tuple[str, Path]] = []
-        for idx, item in enumerate(items, 1):
-            tweet = _build_tweet(item, target_date)
-            image_path = _image_for_item(item, target_date, covers)
-            print(f"[stream_highlights] {label} {idx}/{len(items)} {item['track'].get('title')}")
-            print(f"[stream_highlights] Tweet ({len(tweet)} chars):\n{tweet}")
-            print(f"[stream_highlights] Image: {image_path}")
-            posts.append((tweet, image_path))
-
-        if args.no_post:
-            print(f"[stream_highlights] {label} Twitter thread skipped (--no-post).")
-        else:
-            if not post_image_thread(posts, TWITTER_SESSION):
-                print(f"[stream_highlights] Failed to post {label} thread.")
-                return 1
-            lock.touch()
-            posted_any = True
-            print(f"[stream_highlights] Posted {len(posts)} {label} highlight song(s) for {target_date}.")
 
     if not posted_any and not args.no_post:
         print(f"[stream_highlights] No new highlight threads posted for {target_date}.")

@@ -52,14 +52,20 @@ def date_dir_for(chart_date: str) -> Path:
     )
 
 
-def ref_streams_from_chart(track: str, ref_date: str):
+def ref_streams_from_chart(track: str, ref_date: str, row: dict | None = None):
     json_path = date_dir_for(ref_date) / f"ts_chart_{ref_date}.json"
     if not json_path.exists():
         return None
+    track_id = str((row or {}).get("track_id") or "").strip()
     try:
-        for row in load_json(json_path):
-            if str(row.get("track_name") or "") == track:
-                streams = nan_to_none(row.get("streams"))
+        for ref_row in load_json(json_path):
+            ref_track_id = str(ref_row.get("track_id") or "").strip()
+            if track_id and ref_track_id and ref_track_id != track_id:
+                continue
+            if not track_id and str(ref_row.get("track_name") or "") != track:
+                continue
+            streams = nan_to_none(ref_row.get("streams"))
+            if streams:
                 return int(streams) if streams else None
     except Exception:
         return None
@@ -107,8 +113,6 @@ _worldwide_rows_cache: dict[str, dict] = {}
 
 
 def ref_streams_from_worldwide(row: dict, ref_date: str):
-    if CHART_REGION == "global":
-        return None
     track_id = str(row.get("track_id") or "").strip()
     if not track_id:
         return None
@@ -136,7 +140,7 @@ def ref_streams(track_hist: dict, track: str, ref_date: str, row: dict | None = 
     streams = (track_hist.get(ref_date) or {}).get("streams")
     if streams:
         return streams
-    from_chart = ref_streams_from_chart(track, ref_date)
+    from_chart = ref_streams_from_chart(track, ref_date, row)
     if from_chart:
         return from_chart
     if row is not None:
@@ -150,14 +154,19 @@ def get_out_songs(chart_date: str, current_rows: list[dict]) -> list[dict]:
     """Returns TS songs from yesterday's CSV (or archive) that are not in today's chart."""
     date_obj  = datetime.strptime(chart_date, "%Y-%m-%d").date()
     yesterday = str(date_obj - timedelta(days=1))
-    csv_path  = date_dir_for(yesterday) / "ts_all_songs.csv"
-    if not csv_path.exists() and yesterday not in _archive_rows_by_date():
+    yesterday_dir = date_dir_for(yesterday)
+    json_path = yesterday_dir / f"ts_chart_{yesterday}.json"
+    csv_path  = yesterday_dir / "ts_all_songs.csv"
+    if not json_path.exists() and not csv_path.exists() and yesterday not in _archive_rows_by_date():
         return []
     try:
         current_names = {str(r.get("song_name", "") or r.get("track_name", "")).lower() for r in current_rows}
+        current_ids = {str(r.get("track_id") or "").strip() for r in current_rows if str(r.get("track_id") or "").strip()}
         out_rows = []
         source_rows: list[dict]
-        if csv_path.exists():
+        if json_path.exists():
+            source_rows = list(load_json(json_path))
+        elif csv_path.exists():
             with open(csv_path, newline="", encoding="utf-8-sig") as f:
                 source_rows = list(csv.DictReader(f))
         else:
@@ -165,7 +174,9 @@ def get_out_songs(chart_date: str, current_rows: list[dict]) -> list[dict]:
         for row in source_rows:
             name = str(row.get("song_name", "") or row.get("track_name", ""))
             row["track_name"] = name
-            if name.lower() not in current_names:
+            track_id = str(row.get("track_id") or "").strip()
+            present_today = (track_id in current_ids) if track_id and current_ids else (name.lower() in current_names)
+            if not present_today:
                 try:
                     row["rank"] = int(float(row["rank"])) if row.get("rank") else None
                 except (ValueError, TypeError):

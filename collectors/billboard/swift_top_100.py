@@ -1129,13 +1129,16 @@ def _build_week_chart(
     # Merge historical track IDs streams into their primary track ID (cumulative sum).
     for meta in tracks.values():
         for h_id in meta.historical_track_ids:
-            if h_id in weekly_streams:
-                weekly_streams[meta.track_id] = weekly_streams.get(meta.track_id, 0) + weekly_streams.pop(h_id)
             if h_id in daily_streams:
                 h_daily = daily_streams.pop(h_id)
                 primary_daily = daily_streams.setdefault(meta.track_id, {})
                 for d, s in h_daily.items():
-                    primary_daily[d] = primary_daily.get(d, 0) + s
+                    existing = primary_daily.get(d, 0)
+                    primary_daily[d] = max(existing, s)
+                weekly_streams[meta.track_id] = sum(primary_daily.values())
+                weekly_streams.pop(h_id, None)
+            elif h_id in weekly_streams:
+                weekly_streams[meta.track_id] = weekly_streams.get(meta.track_id, 0) + weekly_streams.pop(h_id)
 
     best_rank = _best_global_rank_by_title(week_dates=week_set, logger=logger)
 

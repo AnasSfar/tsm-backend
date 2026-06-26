@@ -49,15 +49,23 @@ def _fmt_pct(current: int | None, previous: int | None) -> str:
 
 def _pick_rows(target_date: str, *, limit: int, min_days: int) -> list[dict]:
     tracks = best_day_since.load_tracks(include_extras=False)
+    all_tracks = best_day_since.load_tracks(include_extras=True)
     history = best_day_since.load_history()
     target = date.fromisoformat(target_date)
 
     rows: list[dict] = []
+    seen_families: set[str] = set()
     for track_id, track in tracks.items():
-        points = history.get(track_id)
-        if not points:
+        family = (track.song_family or track_id).strip()
+        if family in seen_families:
             continue
-        row = best_day_since.compute_best_day_since(track, points, target)
+        seen_families.add(family)
+        row = best_day_since.compute_best_day_since_combined(
+            track,
+            best_day_since.combined_tracks_for(all_tracks.get(track_id, track), all_tracks),
+            history,
+            target,
+        )
         if row and row.get("kind") == "since" and best_day_since.passes_filters(row, min_days=min_days):
             rows.append(row)
 
@@ -182,8 +190,9 @@ def main() -> None:
             print(f"[best_day_since_post] Track missing in spotlight DB: {row['title']} [{row['track_id']}]")
             continue
 
+        track_ids = row.get("combined_track_ids") or [row["track_id"]]
         total_today, total_yesterday, daily_today, daily_yesterday, _daily_last_week = (
-            spotlight.load_history_for_tracks([row["track_id"]], target_date)
+            spotlight.load_history_for_tracks(track_ids, target_date)
         )
         if total_today is None:
             print(f"[best_day_since_post] Missing total streams for {row['title']} on {target_date}; skipping.")

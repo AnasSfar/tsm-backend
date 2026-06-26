@@ -48,7 +48,7 @@ COVERS_PATH  = DB_DIR / "discography" / "covers.json"
 ALBUMS_DIR   = DB_DIR / "discography" / "albums"
 SONGS_JSON   = DB_DIR / "discography" / "songs.json"
 HEADERS_DIR  = _TOOLS / "headers"
-HANDLE       = "@swiftiescharts"
+HANDLE       = "@tsmuseum13"
 
 # Regroupe OG + Taylor's Version sous la même ère.
 ERA_MAP: dict[str, str] = {
@@ -83,6 +83,18 @@ _ALBUMS_EXTRA_CSS = """
 
 def _norm(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "_", (s or "").lower()).strip("_")
+
+
+def _is_unranked_era(name: str) -> bool:
+    norm = _norm(name)
+    parts = set(norm.split("_"))
+    if "misc" in parts or "standalone" in parts:
+        return True
+    return norm in {
+        "miscellaneous",
+        "standalone_extras",
+        "standalone_and_extras",
+    }
 
 
 # Compatibility alias: load_covers used by generate_weekend_streams_image.py
@@ -291,7 +303,8 @@ def build_album_rows(
         )
         yest_rank_by_album = {r["album"]: i + 1 for i, r in enumerate(yest_ranked)}
         rows = sorted(albums.values(), key=lambda r: r["daily_streams"], reverse=True)
-        for row in rows:
+        for rank, row in enumerate(rows, 1):
+            row["rank"] = rank
             row["prev_rank"] = yest_rank_by_album.get(row["album"])
         return rows
 
@@ -321,14 +334,24 @@ def build_album_rows(
         eras[era_name]["week_daily"]    += album_data["week_daily"]
 
     yest_ranked = sorted(
-        [r for r in eras.values() if r.get("yest_daily")],
+        [r for r in eras.values() if r.get("yest_daily") and not _is_unranked_era(r["album"])],
         key=lambda r: r["yest_daily"],
         reverse=True,
     )
     yest_rank_by_album = {r["album"]: i + 1 for i, r in enumerate(yest_ranked)}
 
-    rows = sorted(eras.values(), key=lambda r: r["daily_streams"], reverse=True)
+    rows = sorted(
+        eras.values(),
+        key=lambda r: (_is_unranked_era(r["album"]), -int(r["daily_streams"] or 0), r["album"]),
+    )
+    rank = 0
     for row in rows:
+        if _is_unranked_era(row["album"]):
+            row["rank"] = None
+            row["prev_rank"] = None
+            continue
+        rank += 1
+        row["rank"] = rank
         row["prev_rank"] = yest_rank_by_album.get(row["album"])
     return rows
 
@@ -352,7 +375,7 @@ def prefetch_covers(rows: list[dict]) -> dict[str, str]:
 def build_rows_html(rows: list[dict], image_cache: dict[str, str]) -> str:
     html = ""
     for i, row in enumerate(rows):
-        rank  = i + 1
+        rank = row.get("rank")
         album = row["album"]
         daily = row["daily_streams"]
         total = row["streams"]
@@ -368,7 +391,8 @@ def build_rows_html(rows: list[dict], image_cache: dict[str, str]) -> str:
 
         delta_num, delta_pct, delta_cls = fmt_delta(daily, yest)
         week_num, week_pct, week_cls = fmt_delta(daily, week)
-        chg_text, chg_css = rank_change(rank, row.get("prev_rank"))
+        rank_label = f"#{rank}" if rank else ""
+        chg_text, chg_css = rank_change(rank, row.get("prev_rank")) if rank else ("", "neutral")
 
         card_cls = "data-row"
         if rank == 1:
@@ -377,7 +401,7 @@ def build_rows_html(rows: list[dict], image_cache: dict[str, str]) -> str:
             card_cls += " row-odd"
 
         html += f"""<div class="{card_cls}">
-  <div class="col-rank">#{rank}</div>
+  <div class="col-rank">{rank_label}</div>
   <div class="col-chg {chg_css}">{chg_text}</div>
   <div class="col-entity">
     {art_html}
@@ -444,8 +468,9 @@ def generate(target_date: str | None = None) -> Path:
 
     rows = build_album_rows(today, yest, week, track_map, covers)
     print(f"[albums_image] {len(rows)} albums")
-    for i, r in enumerate(rows, 1):
-        print(f"  #{i:2d} {r['album']:<45} daily={r['daily_streams']:>12,}  total={r['streams']:>15,}")
+    for r in rows:
+        rank_label = f"#{int(r['rank']):2d}" if r.get("rank") else "-- "
+        print(f"  {rank_label} {r['album']:<45} daily={r['daily_streams']:>12,}  total={r['streams']:>15,}")
 
     print("[albums_image] Téléchargement des covers...")
     image_cache = prefetch_covers(rows)

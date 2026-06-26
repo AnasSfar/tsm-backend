@@ -82,7 +82,7 @@ WATCH_MAX_SECONDS = int(os.getenv("SPOTIFY_WATCH_MAX_SECONDS", "0"))
 WATCH_BASE_SECONDS = int(os.getenv("SPOTIFY_WATCH_BASE_SECONDS", "10"))
 WATCH_LATE_SECONDS = int(os.getenv("SPOTIFY_WATCH_LATE_SECONDS", "10"))
 WATCH_HOT_SECONDS = int(os.getenv("SPOTIFY_WATCH_HOT_SECONDS", "20"))
-WATCH_ERROR_SECONDS = int(os.getenv("SPOTIFY_WATCH_ERROR_SECONDS", "120"))
+WATCH_ERROR_SECONDS = int(os.getenv("SPOTIFY_WATCH_ERROR_SECONDS", "10"))
 RATE_LIMIT_RETRY_SECONDS = int(os.getenv("SPOTIFY_RATE_LIMIT_RETRY_SECONDS", "120"))
 PLAYWRIGHT_LAUNCH_TIMEOUT_MS = int(os.getenv("SPOTIFY_PLAYWRIGHT_LAUNCH_TIMEOUT_MS", "15000"))
 PLAYWRIGHT_GOTO_TIMEOUT_MS = int(os.getenv("SPOTIFY_PLAYWRIGHT_GOTO_TIMEOUT_MS", "15000"))
@@ -673,6 +673,8 @@ def _chart_available(
             return False, f"reseau: latest {short}", None, None
         retry_after = resp.headers.get("Retry-After")
         retry_after_seconds = int(retry_after) if retry_after and retry_after.isdigit() else None
+        if resp.status_code in {401, 403}:
+            return False, f"auth=HTTP {resp.status_code}", retry_after_seconds, None
         if resp.status_code != 200:
             return False, f"latest=HTTP {resp.status_code}", retry_after_seconds, None
         try:
@@ -700,6 +702,11 @@ def _chart_available(
         except Exception:
             entries = []
         return bool(entries), f"HTTP 200 ({len(entries)} lignes)", None, target
+
+    if resp.status_code in {401, 403}:
+        retry_after = resp.headers.get("Retry-After")
+        retry_after_seconds = int(retry_after) if retry_after and retry_after.isdigit() else None
+        return False, f"auth=HTTP {resp.status_code}", retry_after_seconds, None
 
     if resp.status_code == 404:
         try:
@@ -739,6 +746,8 @@ def _chart_available(
             return False, f"HTTP 404 date, latest sans date ({len(entries)} lignes)", None, None
         retry_after = latest_resp.headers.get("Retry-After")
         retry_after_seconds = int(retry_after) if retry_after and retry_after.isdigit() else None
+        if latest_resp.status_code in {401, 403}:
+            return False, f"auth=HTTP {latest_resp.status_code}", retry_after_seconds, None
         return False, f"HTTP 404 date, latest=HTTP {latest_resp.status_code}", retry_after_seconds, None
 
     retry_after = resp.headers.get("Retry-After")
@@ -760,7 +769,7 @@ def _watch_wait_seconds(
         return max(30, min(retry_after, 15 * 60))
     if detail.startswith("HTTP 200"):
         return hot_seconds
-    if detail.startswith("reseau:") or detail in {"token indisponible", "HTTP 401", "HTTP 403", "HTTP 429"}:
+    if detail.startswith("reseau:") or detail.startswith("auth=HTTP") or detail in {"token indisponible", "HTTP 401", "HTTP 403", "HTTP 429"}:
         return error_seconds
     if elapsed > 2 * 60 * 60:
         return max(late_seconds, base_seconds)
@@ -890,6 +899,21 @@ def _wait_for_charts_available(
             return warp_active, resolved_target or target
         is_network_err = detail.startswith("reseau:")
         is_rate_limited = "HTTP 429" in detail
+        is_auth_err = detail.startswith("auth=HTTP")
+        if is_auth_err:
+            consecutive_429 = 0
+            if _rotate_check_token():
+                attempt += 1
+                continue
+            _reset_check_token_cycle()
+            refresh_token = True
+            check_tokens.clear()
+            check_token_idx = 0
+            wait = 5
+            print(f"[CHECK] token Spotify refuse ({detail}) - refresh et retry dans {wait}s")
+            time.sleep(wait)
+            attempt += 1
+            continue
         if is_rate_limited:
             consecutive_429 += 1
             if _rotate_check_token():
@@ -899,9 +923,6 @@ def _wait_for_charts_available(
         else:
             consecutive_429 = 0
             _reset_check_token_cycle()
-        if "HTTP 401" in detail or "HTTP 403" in detail:
-            refresh_token = True
-
         if is_network_err and warp_on_token_fail and not warp_active:
             print("[CHECK] reseau instable - bascule via WARP pour le prochain probe...")
             _warp_connect()
