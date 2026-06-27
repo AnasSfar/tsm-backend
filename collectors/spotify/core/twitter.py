@@ -3,9 +3,11 @@
 import json
 import hashlib
 import os
+import re
 import tempfile
 import time
 from contextlib import contextmanager
+from datetime import datetime
 from pathlib import Path
 from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeout
 
@@ -304,6 +306,256 @@ def _wait_post_submitted(page, expected_text: str = "", timeout_ms: int = 45_000
 
     print(f"X Post non confirme. URL actuelle: {page.url}. Texte editeur restant: {last_editor_text!r}")
     return False
+
+
+def _wait_post_scheduled(page, expected_text: str = "", timeout_ms: int = 45_000) -> bool:
+    """Return True when X accepts a scheduled post."""
+    expected_text = _clean_editor_text(expected_text)
+    deadline = time.time() + timeout_ms / 1000
+    last_editor_text = None
+
+    while time.time() < deadline:
+        feedback = "\n".join(
+            text for text in [
+                _visible_text(page.locator("[data-testid='toast']")),
+                _visible_text(page.locator("[role='alert']")),
+                _visible_text(page.locator("[aria-live='assertive']")),
+                _visible_text(page.locator("[aria-live='polite']")),
+                _visible_text(page.locator("body")),
+            ]
+            if text
+        ).lower()
+
+        if any(marker in feedback for marker in [
+            "post scheduled",
+            "tweet scheduled",
+            "your post was scheduled",
+            "your tweet was scheduled",
+            "scheduled for",
+            "post programme",
+            "post programm",
+            "tweet programme",
+            "tweet programm",
+        ]):
+            return True
+        if any(marker in feedback for marker in [
+            "error",
+            "failed",
+            "something went wrong",
+            "try again",
+            "erreur",
+            "echoue",
+            "rÃ©essayez",
+        ]):
+            print(f"X feedback programmation erreur: {feedback[:500]}")
+            return False
+
+        editor_text = _composer_text(page)
+        if editor_text is None:
+            time.sleep(1)
+            return _post_feedback_state(page) != "error"
+
+        last_editor_text = editor_text
+        if expected_text and expected_text in editor_text:
+            time.sleep(1)
+            continue
+        if not editor_text:
+            time.sleep(1)
+            return _post_feedback_state(page) != "error"
+
+        time.sleep(1)
+
+    print(f"X programmation non confirmee. URL actuelle: {page.url}. Texte editeur restant: {last_editor_text!r}")
+    return False
+
+
+def _coerce_schedule_datetime(value: datetime | str) -> datetime:
+    if isinstance(value, datetime):
+        return value
+
+    raw = str(value or "").strip()
+    if not raw:
+        raise ValueError("scheduled_at is required")
+
+    normalized = raw.replace("Z", "+00:00")
+    for fmt in ("%Y-%m-%d %H:%M", "%Y-%m-%d %H:%M:%S"):
+        try:
+            return datetime.strptime(raw, fmt)
+        except ValueError:
+            pass
+    try:
+        parsed = datetime.fromisoformat(normalized)
+    except ValueError as exc:
+        raise ValueError(
+            "scheduled_at must be an ISO datetime or 'YYYY-MM-DD HH:MM'"
+        ) from exc
+    if parsed.tzinfo:
+        return parsed.astimezone().replace(tzinfo=None)
+    return parsed
+
+
+def _visible_controls(root, selector: str):
+    controls = []
+    locator = root.locator(selector)
+    try:
+        count = locator.count()
+    except Exception:
+        return controls
+    for index in range(count):
+        control = locator.nth(index)
+        try:
+            if control.is_visible(timeout=500):
+                controls.append(control)
+        except Exception:
+            pass
+    return controls
+
+
+def _dialog_control_by_label(dialog, labels: list[str]):
+    for label in labels:
+        control = dialog.get_by_label(re.compile(label, re.I)).first
+        try:
+            if control.count() and control.is_visible(timeout=500):
+                return control
+        except Exception:
+            pass
+    return None
+
+
+def _choose_schedule_value(page, control, labels: list[str], values: list[str] | None = None) -> bool:
+    values = values or []
+    for label in labels:
+        try:
+            control.select_option(label=label, timeout=1_000)
+            return True
+        except Exception:
+            pass
+    for value in values:
+        try:
+            control.select_option(value=value, timeout=1_000)
+            return True
+        except Exception:
+            pass
+    for label in labels:
+        try:
+            control.click(timeout=2_000)
+            option = page.get_by_role("option", name=re.compile(rf"^{re.escape(label)}$", re.I)).first
+            option.wait_for(state="visible", timeout=2_000)
+            option.click(timeout=2_000)
+            return True
+        except Exception:
+            pass
+    for label in labels:
+        try:
+            control.fill(label, timeout=1_000)
+            return True
+        except Exception:
+            pass
+    return False
+
+
+def _click_first_visible(page, selectors: list[str], *, timeout_ms: int = 5_000) -> bool:
+    deadline = time.time() + timeout_ms / 1000
+    while time.time() < deadline:
+        for selector in selectors:
+            locator = page.locator(selector).first
+            try:
+                if locator.count() and locator.is_visible(timeout=500):
+                    locator.click(timeout=2_000)
+                    return True
+            except Exception:
+                pass
+        time.sleep(0.5)
+    return False
+
+
+def _open_schedule_dialog(page):
+    selectors = [
+        "[data-testid='scheduleOption']",
+        "[aria-label='Schedule post']",
+        "[aria-label='Schedule Tweet']",
+        "[aria-label='Schedule']",
+        "[aria-label='Programmer le post']",
+        "[aria-label='Programmer le Tweet']",
+        "[aria-label='Programmer']",
+    ]
+    if not _click_first_visible(page, selectors, timeout_ms=8_000):
+        raise RuntimeError("X bouton de programmation introuvable.")
+
+    dialog = page.locator("[role='dialog']").filter(
+        has_text=re.compile("Schedule|Programmer|Programmation|Date|Time|Heure", re.I)
+    ).last
+    dialog.wait_for(state="visible", timeout=10_000)
+    return dialog
+
+
+def _set_schedule_dialog(page, scheduled_at: datetime | str) -> None:
+    scheduled_at = _coerce_schedule_datetime(scheduled_at)
+    if scheduled_at <= datetime.now():
+        raise ValueError(f"scheduled_at must be in the future: {scheduled_at}")
+
+    dialog = _open_schedule_dialog(page)
+
+    month_names_en = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December",
+    ]
+    month_names_fr = [
+        "janvier", "fevrier", "février", "mars", "avril", "mai", "juin",
+        "juillet", "aout", "août", "septembre", "octobre", "novembre", "decembre", "décembre",
+    ]
+    month = scheduled_at.month
+    day = scheduled_at.day
+    year = scheduled_at.year
+    hour_24 = scheduled_at.hour
+    minute = scheduled_at.minute
+    hour_12 = hour_24 % 12 or 12
+    ampm = "AM" if hour_24 < 12 else "PM"
+
+    controls = _visible_controls(dialog, "select, [role='combobox'], input")
+    month_control = _dialog_control_by_label(dialog, ["month", "mois"]) or (controls[0] if len(controls) > 0 else None)
+    day_control = _dialog_control_by_label(dialog, ["day", "jour"]) or (controls[1] if len(controls) > 1 else None)
+    year_control = _dialog_control_by_label(dialog, ["year", "annee", "année"]) or (controls[2] if len(controls) > 2 else None)
+    hour_control = _dialog_control_by_label(dialog, ["hour", "heure"]) or (controls[3] if len(controls) > 3 else None)
+    minute_control = _dialog_control_by_label(dialog, ["minute"]) or (controls[4] if len(controls) > 4 else None)
+    ampm_control = _dialog_control_by_label(dialog, ["am", "pm"]) or (controls[5] if len(controls) > 5 else None)
+
+    required = [month_control, day_control, year_control, hour_control, minute_control]
+    if any(control is None for control in required):
+        body = _visible_text(dialog)[:800]
+        raise RuntimeError(f"X modal programmation incomplet. Contenu: {body!r}")
+
+    month_labels = [
+        month_names_en[month - 1],
+        month_names_fr[month - 1],
+        str(month),
+        f"{month:02d}",
+    ]
+    if not _choose_schedule_value(page, month_control, month_labels, [str(month), str(month - 1), f"{month:02d}"]):
+        raise RuntimeError("X impossible de choisir le mois.")
+    if not _choose_schedule_value(page, day_control, [str(day), f"{day:02d}"]):
+        raise RuntimeError("X impossible de choisir le jour.")
+    if not _choose_schedule_value(page, year_control, [str(year)]):
+        raise RuntimeError("X impossible de choisir l'annee.")
+
+    hour_labels = [str(hour_12), f"{hour_12:02d}", str(hour_24), f"{hour_24:02d}"]
+    if not _choose_schedule_value(page, hour_control, hour_labels):
+        raise RuntimeError("X impossible de choisir l'heure.")
+    if not _choose_schedule_value(page, minute_control, [f"{minute:02d}", str(minute)]):
+        raise RuntimeError("X impossible de choisir les minutes.")
+    if ampm_control is not None:
+        _choose_schedule_value(page, ampm_control, [ampm])
+
+    confirm_selectors = [
+        "[data-testid='scheduledConfirmationPrimaryAction']",
+        "[data-testid='scheduleButton']",
+        "[role='button']:has-text('Confirm')",
+        "[role='button']:has-text('Schedule')",
+        "[role='button']:has-text('Confirmer')",
+        "[role='button']:has-text('Programmer')",
+    ]
+    if not _click_first_visible(page, confirm_selectors, timeout_ms=8_000):
+        raise RuntimeError("X bouton de confirmation programmation introuvable.")
 
 
 def _wait_visible_editor(page, index: int = 0, timeout_ms: int = 15_000):
@@ -911,6 +1163,92 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
 
             except Exception as e:
                 print(f"X Erreur post_with_image: {e}")
+                return False
+
+            finally:
+                if context is not None:
+                    context.close()
+
+
+def schedule_post(
+    tweet: str,
+    scheduled_at: datetime | str,
+    session_file: Path,
+    image_path: Path | None = None,
+) -> bool:
+    """Schedule a single native X post through the web UI."""
+    session_file = Path(session_file)
+    profile_dir = _profile_dir(session_file)
+    tweet = str(tweet or "").strip()
+
+    if not tweet and image_path is None:
+        print("Aucun contenu a programmer.")
+        return False
+    if not _validate_tweet_lengths([tweet], label="post programme"):
+        return False
+
+    image_path = Path(image_path) if image_path else None
+    if image_path is not None and not image_path.exists():
+        print(f"X image introuvable: {image_path}")
+        return False
+
+    try:
+        scheduled_dt = _coerce_schedule_datetime(scheduled_at)
+    except ValueError as exc:
+        print(f"X date programmation invalide: {exc}")
+        return False
+
+    with _twitter_account_slot(session_file) as account_key:
+        if not (profile_dir / "Default").exists() and not _load_storage_state(session_file):
+            print("Aucun profil Twitter trouve. Connexion initiale requise...")
+            setup_session(session_file)
+
+        with sync_playwright() as p:
+            context = None
+            try:
+                context = _launch(p, profile_dir)
+                _restore_storage_state(context, session_file)
+                page = context.new_page()
+
+                page.goto("https://x.com/home", wait_until="domcontentloaded", timeout=30_000)
+                time.sleep(2)
+
+                if _looks_logged_out(page):
+                    print("Session expiree. Reconnexion automatique...")
+                    credentials = _load_credentials(session_file)
+                    if credentials:
+                        _auto_login(page, credentials["username"], credentials["password"], credentials.get("email", ""))
+                    else:
+                        context.close()
+                        setup_session(session_file)
+                        context = _launch(p, profile_dir)
+                        page = context.new_page()
+                    page.goto("https://x.com/home", wait_until="domcontentloaded", timeout=30_000)
+                    time.sleep(2)
+
+                _wait_account_spacing(account_key)
+                page.goto("https://x.com/compose/post", wait_until="domcontentloaded", timeout=30_000)
+
+                editor = _open_compose_and_wait_editor(page, session_file, 0)
+                editor.click(timeout=10_000)
+                if tweet:
+                    editor.fill(tweet)
+                if image_path is not None:
+                    _attach_image_to_composer(page, editor, image_path, 0)
+
+                _set_schedule_dialog(page, scheduled_dt)
+                page.locator(
+                    "[data-testid='tweetButton'], [data-testid='tweetButtonInline']"
+                ).first.click(timeout=10_000)
+                if not _wait_post_scheduled(page, tweet):
+                    return False
+
+                _mark_account_posted(account_key)
+                print(f"OK Post programme pour {scheduled_dt:%Y-%m-%d %H:%M}")
+                return True
+
+            except Exception as e:
+                print(f"X Erreur schedule_post: {e}")
                 return False
 
             finally:

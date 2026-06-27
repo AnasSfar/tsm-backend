@@ -93,6 +93,10 @@ def updated_lock_path(d: date) -> Path:
     return spotify_chart_dir("global", d) / "updated.lock"
 
 
+def exported_done_lock_path(d: date) -> Path:
+    return spotify_chart_dir("global", d) / "exported_done.lock"
+
+
 def tweet_path(d: date) -> Path:
     return first_existing(
         spotify_chart_dir("global", d) / "tweet.txt",
@@ -132,6 +136,13 @@ def mark_updated(d: date) -> None:
     p.parent.mkdir(parents=True, exist_ok=True)
     p.touch()
     log("INFO", f"updated.lock créé: {p}")
+
+
+def mark_exported_done(d: date) -> None:
+    p = exported_done_lock_path(d)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text("exported_done=true\n", encoding="utf-8")
+    log("INFO", f"exported_done=true -> {p}")
 
 
 def cleanup_tweet_files(dates: list[date]) -> None:
@@ -562,7 +573,12 @@ def build_global_us_combined_image(global_image: Path, us_image: Path, target_da
     return out_path
 
 
-def maybe_upload_to_r2() -> None:
+def maybe_upload_to_r2(target: date, *, force: bool = False) -> None:
+    exported_lock = exported_done_lock_path(target)
+    if exported_lock.exists() and not force:
+        log("INFO", f"R2 upload skipped ({exported_lock.name} exists; use --force to re-export)")
+        return
+
     if os.getenv("UPLOAD_TO_R2", "").strip().lower() in ("0", "false", "no"):
         log("INFO", "R2 upload skipped (UPLOAD_TO_R2 explicitly disabled)")
         return
@@ -576,6 +592,8 @@ def maybe_upload_to_r2() -> None:
     result = subprocess.run([sys.executable, str(r2_script)], check=False, cwd=str(_REPO_ROOT))
     if result.returncode != 0:
         log("WARN", f"R2 upload failed with code {result.returncode} (non-blocking)")
+        return
+    mark_exported_done(target)
 
 
 def main() -> None:
@@ -738,7 +756,7 @@ def main() -> None:
         log("INFO", f"Terminé avec succès ({len(processed)} date(s) postée(s))")
 
         migrate_archive_csv(MIGRATE_SCRIPT)
-        maybe_upload_to_r2()
+        maybe_upload_to_r2(processed[-1], force=force)
 
         if NTFY_TOPIC:
             try:

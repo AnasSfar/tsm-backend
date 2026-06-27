@@ -320,6 +320,17 @@ def _updated_lock_path(chart_date: str) -> Path:
     return spotify_chart_dir("worldwide", chart_date) / "updated.lock"
 
 
+def _exported_done_lock_path(chart_date: str) -> Path:
+    return spotify_chart_dir("worldwide", chart_date) / "exported_done.lock"
+
+
+def _mark_exported_done(chart_date: str) -> None:
+    lock = _exported_done_lock_path(chart_date)
+    lock.parent.mkdir(parents=True, exist_ok=True)
+    lock.write_text("exported_done=true\n", encoding="utf-8")
+    print(f"[DONE] exported_done=true -> {lock}", flush=True)
+
+
 def _load_cached_bearer() -> str | None:
     try:
         data = json.loads(_BEARER_CACHE_FILE.read_text(encoding="utf-8-sig"))
@@ -662,7 +673,9 @@ def _parse_ts_entries(data: dict) -> list[dict]:
             continue
         previous_rank = _clean_int(ced.get("previousRank"))
         peak_rank = _clean_int(ced.get("peakRank"))
-        total_days = _clean_int(ced.get("consecutiveAppearancesOnChart"))
+        appearances = _clean_int(ced.get("appearancesOnChart"))
+        streak = _clean_int(ced.get("consecutiveAppearancesOnChart"))
+        total_days = appearances if appearances is not None else streak
         is_new = previous_rank is None and (peak_rank is None or peak_rank == rank)
         is_re_entry = previous_rank is None and not is_new
         movement = "NEW" if is_new else ("RE" if is_re_entry else None)
@@ -682,6 +695,7 @@ def _parse_ts_entries(data: dict) -> list[dict]:
             "previous_rank": previous_rank,
             "peak_rank":     peak_rank,
             "total_days":    total_days,
+            "streak":        streak,
             "is_new":        is_new,
             "is_re_entry":   is_re_entry,
             "movement":      movement,
@@ -1668,9 +1682,14 @@ def main() -> int:
                 entry["stream_change_pct"] = None
 
             key = f"{track_id}|{entry['country']}"
-            stored = total_days_store.get(key, 0)
-            entry["total_days"] = stored + 1
-            total_days_store[key] = stored + 1
+            api_total_days = _to_int(entry.get("total_days"))
+            if api_total_days is not None:
+                entry["total_days"] = api_total_days
+                total_days_store[key] = api_total_days
+            else:
+                stored = total_days_store.get(key, 0)
+                entry["total_days"] = stored + 1
+                total_days_store[key] = stored + 1
 
     try:
         TOTAL_DAYS_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -1711,7 +1730,7 @@ def main() -> int:
     updated_lock = _updated_lock_path(chart_date)
     updated_lock.touch()
     print(f"[DONE] Written -> {updated_lock}")
-    maybe_upload_to_r2()
+    maybe_upload_to_r2(chart_date, force=args.force)
 
     if args.post_song_updates and not args.no_post and TWITTER_SESSION.exists():
         has_prev = prev_path.exists()
@@ -1810,7 +1829,7 @@ def _write_regional_ts_chart(
             "previous_rank": row.get("previous_rank"),
             "peak_rank":     row.get("peak_rank"),
             "total_days":    row.get("total_days"),
-            "streak":        row.get("total_days"),
+            "streak":        row.get("streak"),
             "is_new":        bool(row.get("is_new")),
             "is_re_entry":   bool(row.get("is_re_entry")),
             "movement":      row.get("movement"),
@@ -1830,7 +1849,12 @@ def _write_regional_ts_chart(
     (out_dir / "updated.lock").touch()
 
 
-def maybe_upload_to_r2() -> None:
+def maybe_upload_to_r2(chart_date: str, *, force: bool = False) -> None:
+    exported_lock = _exported_done_lock_path(chart_date)
+    if exported_lock.exists() and not force:
+        print(f"[INFO] R2 upload skipped ({exported_lock.name} exists; use --force to re-export)")
+        return
+
     if os.getenv("UPLOAD_TO_R2", "").strip().lower() in ("0", "false", "no"):
         print("[INFO] R2 upload skipped (UPLOAD_TO_R2 explicitly disabled)")
         return
@@ -1844,6 +1868,7 @@ def maybe_upload_to_r2() -> None:
     for attempt in range(1, 6):
         result = subprocess.run([sys.executable, str(r2_script)], check=False, cwd=str(ROOT))
         if result.returncode == 0:
+            _mark_exported_done(chart_date)
             return
         wait = 30 * attempt
         print(f"[WARN] R2 upload failed (exit {result.returncode}), retry dans {wait}s (tentative {attempt}/5)")

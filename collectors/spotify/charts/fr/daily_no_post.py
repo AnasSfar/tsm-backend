@@ -204,7 +204,23 @@ def build_multi_tweet(dates: list[date]) -> str:
     return f"Taylor Swift on {' & '.join(parts)}, {year}"
 
 
-def maybe_upload_to_r2() -> None:
+def exported_done_lock_path(d: date) -> Path:
+    return spotify_chart_dir("fr", d) / "exported_done.lock"
+
+
+def mark_exported_done(d: date) -> None:
+    p = exported_done_lock_path(d)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text("exported_done=true\n", encoding="utf-8")
+    log("INFO", f"exported_done=true -> {p}")
+
+
+def maybe_upload_to_r2(target: date, *, force: bool = False) -> None:
+    exported_lock = exported_done_lock_path(target)
+    if exported_lock.exists() and not force:
+        log("INFO", f"R2 upload skipped ({exported_lock.name} exists; use --force to re-export)")
+        return
+
     if os.getenv("UPLOAD_TO_R2", "").strip().lower() in ("0", "false", "no"):
         log("INFO", "R2 upload skipped (UPLOAD_TO_R2 explicitly disabled)")
         return
@@ -218,14 +234,17 @@ def maybe_upload_to_r2() -> None:
     result = subprocess.run([sys.executable, str(r2_script)], check=False, cwd=str(_REPO_ROOT))
     if result.returncode != 0:
         raise RuntimeError(f"R2 upload failed with code {result.returncode}")
+    mark_exported_done(target)
 
 
 def main():
-    if len(sys.argv) > 1:
+    force = "--force" in sys.argv
+    date_args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    if date_args:
         try:
-            unposted = [datetime.strptime(sys.argv[1], "%Y-%m-%d").date()]
+            unposted = [datetime.strptime(date_args[0], "%Y-%m-%d").date()]
         except ValueError:
-            log("ERROR", f"Date invalide '{sys.argv[1]}', format attendu : YYYY-MM-DD")
+            log("ERROR", f"Date invalide '{date_args[0]}', format attendu : YYYY-MM-DD")
             sys.exit(1)
     else:
         unposted = get_dates_to_process()
@@ -315,7 +334,7 @@ def main():
         log("WARN", "Pas d'image disponible")
 
     log("INFO", f"Terminé ({len(processed)} date(s) traitée(s)) — Twitter non publié, posted.lock non créé")
-    maybe_upload_to_r2()
+    maybe_upload_to_r2(processed[-1], force=force)
 
 
 if __name__ == "__main__":

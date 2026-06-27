@@ -142,6 +142,51 @@ def _fmt_pct(value: Any) -> str:
     return s.replace("+0.0%", "0.0%")
 
 
+def _to_number(value: Any) -> float | None:
+    if value is None or value == "":
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    cleaned = str(value).replace("%", "").replace(",", "").strip()
+    if not cleaned:
+        return None
+    suffix = cleaned[-1:].lower()
+    multiplier = {"k": 1_000, "m": 1_000_000, "b": 1_000_000_000}.get(suffix)
+    if multiplier:
+        cleaned = cleaned[:-1].strip()
+    try:
+        n = float(cleaned)
+    except Exception:
+        return None
+    return n * (multiplier or 1)
+
+
+def _percent_change(current: Any, previous: Any) -> float | None:
+    current_n = _to_number(current)
+    previous_n = _to_number(previous)
+    if current_n is None or previous_n is None or previous_n <= 0:
+        return None
+    return round(((current_n - previous_n) / previous_n) * 100, 1)
+
+
+def _entry_component_value(entry: dict[str, Any] | None, keys: list[str]) -> Any:
+    if not entry:
+        return None
+    for key in keys:
+        value = entry.get(key)
+        if _to_number(value) is not None:
+            return value
+    return None
+
+
+def _entry_key(entry: dict[str, Any]) -> str | None:
+    track_id = entry.get("track_id")
+    if track_id:
+        return str(track_id)
+    title = entry.get("title") or entry.get("song_title")
+    return str(title) if title else None
+
+
 def _delta_label(entry: dict[str, Any]) -> tuple[str, str]:
     prev_rank = entry.get("prev_rank")
     rank_change = entry.get("rank_change")
@@ -181,6 +226,7 @@ def _sorted_rows(payload: dict[str, Any], limit: int) -> list[dict[str, Any]]:
 def build_html(
     *,
     payload: dict[str, Any],
+    previous_payload: dict[str, Any] | None = None,
     columns: int,
     limit: int,
     width: int,
@@ -206,6 +252,17 @@ def build_html(
     start = max(0, int(offset))
     rows = rows[start : start + max(0, int(limit))]
 
+    previous_entries = previous_payload.get("entries") if isinstance(previous_payload, dict) else []
+    if not isinstance(previous_entries, list):
+        previous_entries = []
+    previous_by_key = {
+        key: e
+        for e in previous_entries
+        if isinstance(e, dict)
+        for key in [_entry_key(e)]
+        if key
+    }
+
     columns = max(1, int(columns))
     per_col = (len(rows) + columns - 1) // columns
     chunks = [rows[i : i + per_col] for i in range(0, len(rows), per_col)]
@@ -226,6 +283,37 @@ def build_html(
         if rc > 0:
             return f"<span class='badge badge-up'>+{rc}</span>"
         return f"<span class='badge badge-down'>{rc}</span>"
+
+    def _component_pct(e: dict[str, Any], previous: dict[str, Any] | None, keys: list[str]) -> float | None:
+        return _percent_change(
+            _entry_component_value(e, keys),
+            _entry_component_value(previous, keys),
+        )
+
+    def _metric_cell(value: str, pct: Any = None, change: Any = None) -> str:
+        value_html = html.escape(str(value or "â€”"))
+        pct_label = ""
+        pct_cls = ""
+        if change == "NEW":
+            pct_label = "NEW"
+            pct_cls = "metric-change-new"
+        elif change == "RE":
+            pct_label = "RE"
+            pct_cls = "metric-change-new"
+        elif pct is not None and pct != "":
+            pct_label = _fmt_pct(pct)
+            try:
+                pct_cls = "metric-change-up" if float(pct) >= 0 else "metric-change-down"
+            except Exception:
+                pct_cls = ""
+        if not pct_label or pct_label == "â€”":
+            return f"<div class='metric-stack'><span class='metric-value'>{value_html}</span></div>"
+        return (
+            "<div class='metric-stack'>"
+            f"<span class='metric-value'>{value_html}</span>"
+            f"<span class='metric-change {pct_cls}'>{html.escape(pct_label)}</span>"
+            "</div>"
+        )
 
     def _render_table(chunk: list[dict[str, Any]]) -> str:
         out = []
@@ -256,6 +344,7 @@ def build_html(
         for r in chunk:
             e = r["e"]
             rank = r["rank"]
+            previous = previous_by_key.get(_entry_key(e) or "")
             title = html.escape(str(e.get("title") or ""))
             album = html.escape(str(e.get("primary_album") or ""))
             points_s = html.escape(str(e.get("points_display") or _fmt_int(e.get("points"))))
@@ -306,6 +395,11 @@ def build_html(
             streams_s = html.escape(str(e.get("units_surplus_display") or "—"))
             units_s = html.escape(str(e.get("units") or "—"))
 
+            am_pct = _component_pct(e, previous, ["am_ts_units", "units_am_ts", "am_ts_units_display"])
+            gl_pct = _component_pct(e, previous, ["am_global_units", "units_am_overall", "am_global_units_display"])
+            charts_pct = _component_pct(e, previous, ["units_charts", "units_charts_display"])
+            streams_pct = _component_pct(e, previous, ["units_surplus", "units_surplus_display"])
+
             img = url_to_data_uri(e.get("image_url"))
             img = html.escape(img)
 
@@ -329,11 +423,11 @@ def build_html(
             out.append(f"<td class='td-num td-pct {pct_cls}'>{html.escape(pct_s)}</td>")
             out.append(f"<td class='td-num td-peak{peak_cls}'>{peak_s}</td>")
             out.append(f"<td class='td-num td-woc'>{woc_s}</td>")
-            out.append(f"<td class='td-num td-am'>{am_s}</td>")
-            out.append(f"<td class='td-num td-gl'>{gl_s}</td>")
-            out.append(f"<td class='td-num td-charts'>{charts_s}</td>")
-            out.append(f"<td class='td-num td-streams'>{streams_s}</td>")
-            out.append(f"<td class='td-num td-units'>{units_s}</td>")
+            out.append(f"<td class='td-num td-am'>{_metric_cell(am_s, am_pct)}</td>")
+            out.append(f"<td class='td-num td-gl'>{_metric_cell(gl_s, gl_pct)}</td>")
+            out.append(f"<td class='td-num td-charts'>{_metric_cell(charts_s, charts_pct)}</td>")
+            out.append(f"<td class='td-num td-streams'>{_metric_cell(streams_s, streams_pct)}</td>")
+            out.append(f"<td class='td-num td-units'>{_metric_cell(units_s, pct_val, change)}</td>")
             out.append("</tr>")
         out.append("</tbody></table>")
         return "".join(out)
@@ -573,6 +667,30 @@ def build_html(
     .td-streams {{ background: rgba(16, 185, 129, 0.05); color: #10b981; font-weight: 600; }}
     .td-units   {{ background: rgba(139, 92, 246, 0.05); color: #8b5cf6; font-weight: 600; }}
 
+    .metric-stack {{
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1px;
+      line-height: 1;
+    }}
+
+    .metric-value {{
+      font-size: 1em;
+    }}
+
+    .metric-change {{
+      font-size: 8px;
+      font-weight: 600;
+      line-height: 1;
+      opacity: 0.58;
+    }}
+
+    .metric-change-up {{ color: #166534; }}
+    .metric-change-down {{ color: #991b1b; }}
+    .metric-change-new {{ color: #6b7280; }}
+
     /* Peak best highlight */
     .td-peak.peak-best {{
       background: #fef9c3;
@@ -638,6 +756,7 @@ def build_html(
 def render_png(
     *,
     payload: dict[str, Any],
+    previous_payload: dict[str, Any] | None = None,
     output_path: Path,
     columns: int = 2,
     limit: int = 100,
@@ -645,7 +764,14 @@ def render_png(
     scale: int = 2,
     offset: int = 0,
 ) -> None:
-    html_doc = build_html(payload=payload, columns=columns, limit=limit, width=width, offset=offset)
+    html_doc = build_html(
+        payload=payload,
+        previous_payload=previous_payload,
+        columns=columns,
+        limit=limit,
+        width=width,
+        offset=offset,
+    )
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -669,6 +795,46 @@ def load_payload(path: Path) -> dict[str, Any]:
     return obj if isinstance(obj, dict) else {}
 
 
+def load_previous_payload(input_path: Path, payload: dict[str, Any]) -> dict[str, Any] | None:
+    chart_date = str(payload.get("chart_date") or "").strip()
+    if not chart_date:
+        return None
+
+    index_path = input_path.parent / "swift_top_100_index.json"
+    if not index_path.exists():
+        return None
+
+    try:
+        raw_index = json.loads(index_path.read_text(encoding="utf-8-sig"))
+    except Exception:
+        return None
+
+    dates: list[str] = []
+    if isinstance(raw_index, list):
+        for item in raw_index:
+            if isinstance(item, str):
+                dates.append(item)
+            elif isinstance(item, dict) and item.get("date"):
+                dates.append(str(item["date"]))
+
+    dates = sorted(set(dates), reverse=True)
+    try:
+        idx = dates.index(chart_date)
+    except ValueError:
+        return None
+    if idx >= len(dates) - 1:
+        return None
+
+    previous_date = dates[idx + 1]
+    previous_path = input_path.parent / f"swift_top_100_{previous_date}.json"
+    if not previous_path.exists():
+        return None
+    try:
+        return load_payload(previous_path)
+    except Exception:
+        return None
+
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Render Swift Top 100 to a PNG")
     p.add_argument("--input", default=str(_DEFAULT_INPUT), help="Path to swift_top_100.json")
@@ -690,11 +856,11 @@ def main(argv: list[str] | None = None) -> None:
         # On construit le chemin du fichier pour la semaine demandée
         week_str = args.week.strip()
         # Ex: website/site/data/swift_top_100-2026-04-03.json
-        week_input = _DEFAULT_INPUT.parent / f"swift_top_100-{week_str}.json"
+        week_input = _DEFAULT_INPUT.parent / f"swift_top_100_{week_str}.json"
         in_path = week_input
         # Si l'utilisateur n'a pas spécifié --output, on adapte aussi le nom du PNG
         if args.output == str(_DEFAULT_OUTPUT):
-            out_path = _DEFAULT_OUTPUT.parent / f"swift_top_100-{week_str}.png"
+            out_path = _DEFAULT_OUTPUT.parent / f"swift_top_100_{week_str}.png"
         else:
             out_path = Path(args.output)
     else:
@@ -702,8 +868,10 @@ def main(argv: list[str] | None = None) -> None:
         out_path = Path(args.output)
 
     payload = load_payload(in_path)
+    previous_payload = load_previous_payload(in_path, payload)
     render_png(
         payload=payload,
+        previous_payload=previous_payload,
         output_path=out_path,
         columns=int(args.columns),
         limit=int(args.limit),

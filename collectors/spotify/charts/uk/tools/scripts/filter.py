@@ -413,6 +413,8 @@ def _parse_api_entries(data: dict) -> list[dict]:
         track = meta.get("trackName") or ""
         if not track or rank is None:
             continue
+        appearances = clean_int(ced.get("appearancesOnChart"))
+        streak = clean_int(ced.get("consecutiveAppearancesOnChart"))
         rows.append({
             "rank":          rank,
             "track_name":    track.strip(),
@@ -420,7 +422,8 @@ def _parse_api_entries(data: dict) -> list[dict]:
             "streams":       streams,
             "previous_rank": clean_int(ced.get("previousRank")),
             "peak_rank":     clean_int(ced.get("peakRank")),
-            "total_days":    clean_int(ced.get("consecutiveAppearancesOnChart")),
+            "total_days":    appearances if appearances is not None else streak,
+            "streak":        streak,
             "image_url":     (meta.get("displayImageUri") or "").replace("spotify:image:", "https://i.scdn.co/image/") or None,
         })
     rows.sort(key=lambda r: r["rank"])
@@ -893,8 +896,12 @@ def process_one(chart_date: str, db, ts_history):
         streak_list = []
         for _, row in ts_df.iterrows():
             track = str(row.get("track_name", ""))
-            td = calculate_total_days(ts_history, track, chart_date)
-            st = calculate_streak(ts_history, track, chart_date)
+            td = clean_int(row.get("total_days"))
+            st = clean_int(row.get("streak"))
+            if td is None:
+                td = calculate_total_days(ts_history, track, chart_date)
+            if st is None:
+                st = calculate_streak(ts_history, track, chart_date)
             total_days_list.append(td)
             streak_list.append(st)
         ts_df["total_days"] = total_days_list

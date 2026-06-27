@@ -328,6 +328,17 @@ def _history_csv_path(chart_date: str, period: str) -> Path:
     return spotify_chart_dir("artists_global", chart_date) / PERIOD_CONFIG[period]["csv_name"]
 
 
+def _exported_done_lock(chart_date: str, period: str) -> Path:
+    suffix = "" if period == "daily" else f"_{period}"
+    return spotify_chart_dir("artists_global", chart_date) / f"exported_done{suffix}.lock"
+
+
+def _mark_exported_done(chart_date: str, period: str) -> None:
+    lock = _exported_done_lock(chart_date, period)
+    lock.parent.mkdir(parents=True, exist_ok=True)
+    lock.write_text("exported_done=true\n", encoding="utf-8")
+
+
 def _artist_key(row: dict[str, Any]) -> str:
     artist_id = str(row.get("artist_id") or "").strip().lower()
     if artist_id:
@@ -411,7 +422,12 @@ def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         writer.writerows(rows)
 
 
-def maybe_upload_to_r2() -> None:
+def maybe_upload_to_r2(chart_date: str, period: str, *, force: bool = False) -> None:
+    lock = _exported_done_lock(chart_date, period)
+    if lock.exists() and not force:
+        print(f"[INFO] R2 upload skipped ({lock.name} exists; use --force to re-export)")
+        return
+
     if os.getenv("UPLOAD_TO_R2", "").strip().lower() in ("0", "false", "no"):
         print("[INFO] R2 upload skipped (UPLOAD_TO_R2 explicitly disabled)")
         return
@@ -425,6 +441,9 @@ def maybe_upload_to_r2() -> None:
     result = subprocess.run([sys.executable, str(r2_script)], check=False, cwd=str(ROOT))
     if result.returncode != 0:
         print(f"[WARN] R2 upload failed with code {result.returncode} (non-blocking)")
+        return
+    _mark_exported_done(chart_date, period)
+    print(f"[DONE] exported_done=true -> {lock}")
 
 
 def main() -> int:
@@ -441,6 +460,7 @@ def main() -> int:
     parser.add_argument("--no-csv", action="store_true", help="Do not write the CSV snapshot.")
     parser.add_argument("--no-upload", action="store_true", help="Skip the R2 upload step.")
     parser.add_argument("--no-post", action="store_true", help="Skip image generation and Twitter posting.")
+    parser.add_argument("--force", action="store_true", help="Re-export/upload even if exported_done.lock exists.")
     parser.add_argument("--force-post", action="store_true", help="Post even if this weekly snapshot already exists.")
     parser.add_argument("--no-warp", action="store_true", help="Skip Cloudflare WARP connect/disconnect.")
     args = parser.parse_args()
@@ -519,7 +539,7 @@ def main() -> int:
     if args.no_upload:
         print("[INFO] R2 upload skipped (--no-upload)")
     else:
-        maybe_upload_to_r2()
+        maybe_upload_to_r2(chart_date, period, force=args.force)
 
     if period == "weekly" and already_collected and not args.force_post:
         print(f"[INFO] Weekly chart {chart_date} already collected; post skipped.")

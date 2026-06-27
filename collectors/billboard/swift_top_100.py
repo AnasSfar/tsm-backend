@@ -230,8 +230,6 @@ def _iter_discography_tracks() -> list[TrackMeta]:
         if not title:
             return
         base_title = (track.get("base_title") or "").strip() or None
-        if _is_non_song_tayboard_track(title):
-            return
         spotify_url = f"https://open.spotify.com/track/{track_id}"
         image_url = track.get("image_url") or None
         historical_track_ids = tuple(
@@ -1096,14 +1094,14 @@ def _write_snapshot_json(payload: dict, logger: Logger) -> None:
     _rebuild_snapshot_index(logger)
 
 
-def _maybe_upload_to_r2(*, logger: Logger) -> None:
+def _maybe_upload_to_r2(*, logger: Logger, slugs: list[str] | None = None) -> None:
     logger.log("  r2             : uploading...")
     try:
         _scripts_dir = str(_REPO_ROOT / "scripts")
         if _scripts_dir not in sys.path:
             sys.path.insert(0, _scripts_dir)
         import r2 as _r2
-        ok = _r2.upload_all()
+        ok = _r2.upload_slugs(slugs) if slugs and hasattr(_r2, "upload_slugs") else _r2.upload_all()
         if ok:
             logger.log("✔ r2             : upload complete")
         else:
@@ -1294,7 +1292,11 @@ def run(
     tracks = {t.track_id: t for t in tracks_list}
     logger.log(f"  discography    : {len(tracks)} tracks indexed")
 
-    curr_points, curr_ranks = _build_week_chart(week_end=chart_date, tracks=tracks, logger=logger)
+    curr_points, curr_ranks = _build_week_chart(
+        week_end=chart_date,
+        tracks=tracks,
+        logger=logger,
+    )
 
     am_global_score_by_title = _weekly_apple_music_global_points(week_dates=week_set, logger=logger)
     am_country_score_by_title = _weekly_apple_music_country_points(week_dates=week_set, logger=logger)
@@ -1335,7 +1337,11 @@ def run(
     else:
         prior_weeks = len({(r.get("date") or "").strip() for r in existing_rows if r.get("date")})
         logger.log(f"  history        : {prior_weeks} prior week{'s' if prior_weeks != 1 else ''} loaded")
-        prev_points, _spotify_prev_ranks = _build_week_chart(week_end=prev_week_end, tracks=tracks, logger=logger)
+        prev_points, _spotify_prev_ranks = _build_week_chart(
+            week_end=prev_week_end,
+            tracks=tracks,
+            logger=logger,
+        )
         # Use stored final ranks (total_units-based) for correct rank_change.
         # _build_week_chart ranks by Spotify streams only, but final ranks use total_units.
         _prev_week_str = _format_date(prev_week_end)
@@ -1652,31 +1658,8 @@ def run(
             except Exception as exc:
                 logger.log(f"⚠ image          : generation failed — {exc}")
 
-        # Run albums chart now that songs history CSV is up to date
-        try:
-            import importlib
-            _billboard_dir = str(_SCRIPT_DIR)
-            if _billboard_dir not in sys.path:
-                sys.path.insert(0, _billboard_dir)
-            _albums_mod = sys.modules.get("swift_top_albums") or importlib.import_module("swift_top_albums")
-            _song_rows = _albums_mod._load_song_history()
-            for _alb_variant in ("albums", "eras"):
-                _albums_mod._configure_variant(_alb_variant)
-                _rc = _albums_mod.run(
-                    chart_date=chart_date,
-                    song_rows=_song_rows,
-                    dry_run=False,
-                    skip_r2=True,
-                )
-                if _rc == 0:
-                    logger.log(f"✔ albums         : {_alb_variant} chart generated")
-                else:
-                    logger.log(f"⚠ albums         : {_alb_variant} returned code {_rc}")
-        except Exception as exc:
-            logger.log(f"⚠ albums         : failed — {exc}")
-
         if not skip_r2:
-            logger.log("  r2             : final upload (top100 + albums/eras)")
+            logger.log("  r2             : uploading...")
             _maybe_upload_to_r2(logger=logger)
 
     if not dry_run:
@@ -1721,25 +1704,61 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p.add_argument("--skip-r2", dest="skip_r2", action="store_true", help="Do not upload generated files to R2")
     p.add_argument("--skip-images", dest="skip_images", action="store_true",
                    help="Do not generate PNG chart images")
-    p.add_argument("--variant", dest="variant", choices=["combined", "not-combined", "all"], default="combined",
-                   help="Generate combined songs, not-combined songs, or both")
+    p.add_argument("--variant", dest="variant", choices=["combined", "not-combined", "all"], default="all",
+                   help="Generate combined songs, not-combined songs, or the full TayBoard suite")
     return p.parse_args(argv)
+
+
+def _run_wrapper(module_name: str, args: argparse.Namespace) -> int:
+    import importlib
+
+    if str(_SCRIPT_DIR) not in sys.path:
+        sys.path.insert(0, str(_SCRIPT_DIR))
+
+    mod = importlib.import_module(module_name)
+    next_args = argparse.Namespace(**vars(args))
+    next_args.skip_r2 = True
+
+    try:
+        if hasattr(mod, "run_from_args"):
+            return int(mod.run_from_args(next_args, engine=sys.modules[__name__]) or 0)
+        mod.main_from_args(next_args)
+    except SystemExit as exc:
+        return int(exc.code or 0)
+    return 0
+
+
+def _run_all_from_args(args: argparse.Namespace) -> int:
+    steps = [
+        ("swift_top_seperate", "not-combined songs"),
+        ("swift_top_combined", "combined songs"),
+        ("swift_top_album", "albums"),
+        ("swift_top_era", "eras"),
+    ]
+
+    for module_name, label in steps:
+        print(f"[swift_top_100] Generating {label}...")
+        rc = _run_wrapper(module_name, args)
+        if rc != 0:
+            print(f"[swift_top_100] {label} failed with code {rc}")
+            return rc
+
+    if not args.dry_run and not args.skip_r2:
+        logger = Logger()
+        logger.log("  r2             : final upload (songs combined/not-combined + albums/eras)")
+        _maybe_upload_to_r2(
+            logger=logger,
+            slugs=["swift_top_100_not_combined", "swift_top_100", "swift_top_albums", "swift_top_eras"],
+        )
+
+    return 0
 
 
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
 
     if args.variant == "all":
-        for variant in ("combined", "not-combined"):
-            _configure_variant(variant)
-            next_args = argparse.Namespace(**vars(args))
-            next_args.variant = variant
-            try:
-                main_from_args(next_args)
-            except SystemExit as exc:
-                if exc.code not in (0, None):
-                    raise
-        raise SystemExit(0)
+        raise SystemExit(_run_all_from_args(args))
 
     _configure_variant(args.variant)
     main_from_args(args)
