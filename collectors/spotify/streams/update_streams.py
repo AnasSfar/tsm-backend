@@ -451,6 +451,17 @@ def try_apply_track_update(
         real_update = True
 
     if reason == "same_total_zero":
+        current_day_total = (
+            history_index.get_total_for_date(track_id, stats_date)
+            if history_index is not None
+            else get_history_total_for_date(track_id, stats_date)
+        )
+        if write_history and not dry_run_mode and current_day_total is None:
+            with lock:
+                if history_index is not None:
+                    history_index.append(stats_date, track_id, total, 0)
+                else:
+                    append_history_row([stats_date, track_id, total, 0])
         status = "skipped"
     elif real_update and dry_run_mode:
         status = "pending"

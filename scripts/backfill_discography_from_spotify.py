@@ -151,6 +151,55 @@ def clean_base_title(title: str) -> str:
     return value or original
 
 
+def track_base_title(track: dict[str, Any]) -> str:
+    return str(track.get("base_title") or clean_base_title(str(track.get("title") or ""))).strip()
+
+
+def track_family_key(track: dict[str, Any]) -> str:
+    return str(track.get("song_family") or song_family(track_base_title(track))).strip()
+
+
+def version_bucket(tag: str | None) -> str:
+    value = str(tag or "").strip().casefold()
+    if value in {"", "standalone"}:
+        return "plain"
+    return value
+
+
+def dedupe_identity_for_track(track: dict[str, Any], total: int | None) -> tuple[str, str, str, int] | None:
+    if total is None:
+        return None
+    base_title = track_base_title(track)
+    family = track_family_key(track)
+    if not base_title or not family:
+        return None
+    return (
+        family,
+        normalized_title(base_title),
+        version_bucket(track.get("version_tag")),
+        total,
+    )
+
+
+def dedupe_identity_for_api_track(
+    track: dict[str, Any],
+    *,
+    kind: str,
+    total: int | None,
+) -> tuple[str, str, str, int] | None:
+    if total is None:
+        return None
+    base_title = clean_base_title(str(track.get("title") or ""))
+    if not base_title:
+        return None
+    return (
+        song_family(base_title),
+        normalized_title(base_title),
+        version_bucket(version_tag(str(track.get("title") or ""), kind)),
+        total,
+    )
+
+
 def release_type(release: dict[str, Any]) -> str:
     return str(release.get("type") or "").strip().upper()
 
@@ -378,18 +427,18 @@ def dedupe_existing_discography_by_title_streams(
     locations: list[TrackLocation],
     history_totals: dict[str, int],
 ) -> tuple[int, set[Path]]:
-    groups: dict[tuple[str, int], list[TrackLocation]] = defaultdict(list)
+    groups: dict[tuple[str, str, str, int], list[TrackLocation]] = defaultdict(list)
     for loc in locations:
         track_id = extract_track_id(loc.track.get("url") or loc.track.get("spotify_url"))
-        title_key = normalized_title(str(loc.track.get("title") or ""))
         total = history_totals.get(track_id)
-        if not track_id or not title_key or total is None:
+        identity = dedupe_identity_for_track(loc.track, total)
+        if not track_id or identity is None:
             continue
-        groups[(title_key, total)].append(loc)
+        groups[identity].append(loc)
 
     removed = 0
     touched: set[Path] = set()
-    for (_title_key, total), matches in groups.items():
+    for (_family_key, _base_title_key, _version_key, total), matches in groups.items():
         if len(matches) < 2:
             continue
         canonical = choose_existing_canonical(matches)
@@ -709,10 +758,15 @@ def run_backfill(
     ]
     by_id = {extract_track_id(loc.track.get("url") or loc.track.get("spotify_url")): loc for loc in locations}
     by_title: dict[str, list[TrackLocation]] = defaultdict(list)
+    by_dedupe_identity: dict[tuple[str, str, str, int], list[TrackLocation]] = defaultdict(list)
     for loc in locations:
         title = str(loc.track.get("title") or "")
         if title:
             by_title[normalized_title(title)].append(loc)
+        track_id = extract_track_id(loc.track.get("url") or loc.track.get("spotify_url"))
+        identity = dedupe_identity_for_track(loc.track, history_totals.get(track_id))
+        if identity is not None:
+            by_dedupe_identity[identity].append(loc)
 
     if skip_api:
         print(f"[summary] db_duplicates_removed={db_duplicates_removed} api_skipped=True")
@@ -780,9 +834,31 @@ def run_backfill(
                 touched.add(existing.path)
             continue
 
+        kind = track_type(track, primary)
+        playcount = track.get("playcount")
+        identity = dedupe_identity_for_api_track(track, kind=kind, total=playcount)
+        same_identity_matches = by_dedupe_identity.get(identity, []) if identity is not None else []
+        if same_identity_matches:
+            matched_existing_by_title_streams += 1
+            duplicate_ids = [track_id]
+            for loc in same_identity_matches:
+                if merge_historical_track_ids(loc.track, duplicate_ids):
+                    updates += 1
+                    touched.add(loc.path)
+                if api_release_date and loc.track.get("release_date") != api_release_date:
+                    loc.track["release_date"] = api_release_date
+                    updates += 1
+                    touched.add(loc.path)
+            if verbose:
+                kept_ids = ", ".join(
+                    extract_track_id(loc.track.get("url") or loc.track.get("spotify_url"))
+                    for loc in same_identity_matches
+                )
+                print(f"[dedupe] matched family/base/streams: {track.get('title')} -> {kept_ids}")
+            continue
+
         title_key = normalized_title(track.get("title") or "")
         title_matches = by_title.get(title_key, [])
-        playcount = track.get("playcount")
         if playcount is not None:
             same_stream_matches = [
                 loc for loc in title_matches
@@ -797,7 +873,6 @@ def run_backfill(
                         touched.add(loc.path)
                 continue
 
-        kind = track_type(track, primary)
         release_album_name = release_name(primary)
         album_path = album_file_for_release(release_album_name)
         if kind == "feature":
@@ -823,6 +898,9 @@ def run_backfill(
         touched.add(target_path)
         by_id[track_id] = TrackLocation(target_path, data_by_path[target_path], target_section, entry)
         by_title[title_key].append(by_id[track_id])
+        entry_identity = dedupe_identity_for_track(entry, playcount)
+        if entry_identity is not None:
+            by_dedupe_identity[entry_identity].append(by_id[track_id])
         if verbose:
             print(f"[add] {entry['title']} -> {target_path.relative_to(ROOT)}")
 

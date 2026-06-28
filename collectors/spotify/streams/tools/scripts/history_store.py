@@ -275,6 +275,7 @@ def album_tracks_done_for(album_name: str, stats_date: str) -> bool:
 
 def load_active_track_ids_from_discography() -> set[str]:
     active_track_ids = set()
+    historical_track_ids = set()
 
     for data in load_album_sections_flat():
         for track in data.get("tracks", []):
@@ -282,6 +283,11 @@ def load_active_track_ids_from_discography() -> set[str]:
             track_id = extract_track_id(url)
             if track_id:
                 active_track_ids.add(track_id)
+            historical_track_ids.update(
+                str(item).strip()
+                for item in (track.get("historical_track_ids") or [])
+                if str(item).strip()
+            )
 
     if DB_SONGS_JSON.exists():
         try:
@@ -294,8 +300,13 @@ def load_active_track_ids_from_discography() -> set[str]:
                 track_id = extract_track_id(url)
                 if track_id:
                     active_track_ids.add(track_id)
+                historical_track_ids.update(
+                    str(item).strip()
+                    for item in (track.get("historical_track_ids") or [])
+                    if str(item).strip()
+                )
 
-    return active_track_ids
+    return active_track_ids - historical_track_ids
 
 def ensure_history_file() -> None:
     HISTORY_PATH.parent.mkdir(parents=True, exist_ok=True)
