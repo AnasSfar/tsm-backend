@@ -1122,7 +1122,9 @@
         "version_tag": "standalone",
         "image_url": "https://i.scdn.co/image/ab67616d00001e02a35a1d4983e2b4fd0094f910",
         "release_date": "2026-06-05T00:00:00Z",
-        "historical_track_ids": [],
+        "historical_track_ids": [
+          "1jN9NsOkcQz2WWOj3kT1FC"
+        ],
         "filter_tags": [
           "solo",
           "standalone"
@@ -1195,27 +1197,6 @@
           "standalone": "medium:section_or_type",
           "alternate_version": "medium:type_or_title"
         }
-      },
-      {
-        "title": "I Knew It, I Knew You - From \"Toy Story 5\"",
-        "url": "https://open.spotify.com/intl-fr/track/1jN9NsOkcQz2WWOj3kT1FC",
-        "type": "standalone",
-        "edition": "extras",
-        "display_section": "Extras",
-        "display_order": 10011,
-        "base_title": "I Knew It, I Knew You",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "I Knew It, I Knew You - From \"Toy Story 5\"",
-        "song_family": "i_knew_it_i_knew_you",
-        "version_tag": "standalone",
-        "image_url": "https://i.scdn.co/image/ab67616d00001e02e8852f06eca817333d20e60b",
-        "release_date": "2026-06-12T00:00:00Z",
-        "historical_track_ids": []
       }
     ]
   }
