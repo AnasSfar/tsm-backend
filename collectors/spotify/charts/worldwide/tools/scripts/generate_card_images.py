@@ -356,24 +356,51 @@ def _dominant_album_theme(
 _img_cache: dict[str, str] = {}
 
 
+def _spotify_image_variant(url: str, size_marker: str) -> str:
+    return re.sub(r"ab67616d[0-9a-f]{8}", f"ab67616d{size_marker}", url, count=1)
+
+
+def _image_url_candidates(url: str) -> list[str]:
+    candidates = [url]
+    if "scdn.co/image/" in url or "spotifycdn.com/image/" in url:
+        for size_marker in ("0000b273", "00001e02", "00004851", "00001e03"):
+            candidate = _spotify_image_variant(url, size_marker)
+            if candidate not in candidates:
+                candidates.append(candidate)
+    return candidates
+
+
+def _image_url_from_meta(song: dict) -> str:
+    for key in ("image_url", "apple_music_image_url", "cover_url", "album_image_url"):
+        value = str(song.get(key) or "").strip()
+        if value.startswith("http"):
+            return value
+    return ""
+
+
 def _url_to_data_uri(url: str) -> str:
+    url = str(url or "").strip()
     if not url or not url.startswith("http"):
-        return url
+        return ""
     if url in _img_cache:
         return _img_cache[url]
-    for _ in range(2):
-        try:
-            req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
-            with urlopen(req, timeout=8) as resp:
-                mime = resp.headers.get_content_type() or "image/jpeg"
-                data = base64.b64encode(resp.read()).decode()
-                result = f"data:{mime};base64,{data}"
-            _img_cache[url] = result
-            return result
-        except Exception:
-            pass
-    _img_cache[url] = url
-    return url
+    last_exc = None
+    for candidate in _image_url_candidates(url):
+        for _ in range(2):
+            try:
+                req = Request(candidate, headers={"User-Agent": "Mozilla/5.0"})
+                with urlopen(req, timeout=8) as resp:
+                    mime = resp.headers.get_content_type() or "image/jpeg"
+                    data = base64.b64encode(resp.read()).decode()
+                    result = f"data:{mime};base64,{data}"
+                _img_cache[url] = result
+                _img_cache[candidate] = result
+                return result
+            except Exception as exc:
+                last_exc = exc
+    print(f"[WARN] image download failed, using placeholder: {url} ({last_exc})")
+    _img_cache[url] = ""
+    return ""
 
 
 def _load_json(path: Path) -> object:
@@ -496,7 +523,7 @@ def _build_card_html(song: dict, entries: list[dict], palette: dict[str, str], c
     global _LOGO_URI
     if not _LOGO_URI:
         _LOGO_URI = _logo_data_uri()
-    img_uri = _url_to_data_uri(song.get("image_url", ""))
+    img_uri = _url_to_data_uri(_image_url_from_meta(song))
     title   = html.escape(song.get("title", "Unknown"))
     artist  = html.escape(song.get("primary_artist", "Taylor Swift"))
 
@@ -732,7 +759,7 @@ def _build_low_country_group_html(
         song = song_meta.get(track_id, {})
         title = html.escape(song.get("title", track_id))
         artist = html.escape(song.get("primary_artist", "Taylor Swift"))
-        img_uri = _url_to_data_uri(song.get("image_url", ""))
+        img_uri = _url_to_data_uri(_image_url_from_meta(song))
         cover_html = (
             f'<img class="mini-cover" src="{img_uri}" alt="cover" />'
             if img_uri else
@@ -1140,7 +1167,7 @@ def _summary_rows(
         rows.append(
             {
                 "song": title,
-                "image_url": meta.get("image_url") or "",
+                "image_url": _image_url_from_meta(meta),
                 "countries": len(entries),
                 "peak_streams": peak_streams,
                 "peak_rank": peak_rank,

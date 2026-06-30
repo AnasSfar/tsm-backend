@@ -3,6 +3,7 @@ from __future__ import annotations
 import base64
 import colorsys
 import random
+import re
 from collections.abc import Callable
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -27,6 +28,20 @@ except ImportError:
 _img_cache: dict[str, str] = {}
 
 
+def _image_url_candidates(url: str) -> list[str]:
+    candidates = [url]
+    if "scdn.co/image/" in url or "spotifycdn.com/image/" in url:
+        for size_marker in ("0000b273", "00001e02", "00004851", "00001e03"):
+            alt = re_sub_spotify_size(url, size_marker)
+            if alt not in candidates:
+                candidates.append(alt)
+    return candidates
+
+
+def re_sub_spotify_size(url: str, size_marker: str) -> str:
+    return re.sub(r"ab67616d[0-9a-f]{8}", f"ab67616d{size_marker}", url, count=1)
+
+
 def download_as_data_uri(url: str) -> str:
     """One-shot download returning a base64 data URI, or empty string on failure."""
     if not url:
@@ -42,26 +57,28 @@ def download_as_data_uri(url: str) -> str:
 
 
 def url_to_data_uri(url: str) -> str:
-    """Fetches an image URL and returns a base64 data URI, or the original URL on failure."""
+    """Fetch an image URL as a base64 data URI, or return empty on failure."""
     if not url or not url.startswith("http"):
         return url
     if url in _img_cache:
         return _img_cache[url]
     last_exc = None
-    for _ in range(2):
-        try:
-            req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
-            with urlopen(req, timeout=8) as resp:
-                mime = resp.headers.get_content_type() or "image/jpeg"
-                data = base64.b64encode(resp.read()).decode()
-                result = f"data:{mime};base64,{data}"
-            _img_cache[url] = result
-            return result
-        except Exception as e:
-            last_exc = e
+    for candidate in _image_url_candidates(url):
+        for _ in range(2):
+            try:
+                req = Request(candidate, headers={"User-Agent": "Mozilla/5.0"})
+                with urlopen(req, timeout=8) as resp:
+                    mime = resp.headers.get_content_type() or "image/jpeg"
+                    data = base64.b64encode(resp.read()).decode()
+                    result = f"data:{mime};base64,{data}"
+                _img_cache[url] = result
+                _img_cache[candidate] = result
+                return result
+            except Exception as e:
+                last_exc = e
     print(f"[warn] url_to_data_uri: failed for {url} ({last_exc})")
-    _img_cache[url] = url
-    return url
+    _img_cache[url] = ""
+    return ""
 
 
 def pick_header_image(headers_dir: Path) -> Path | None:
