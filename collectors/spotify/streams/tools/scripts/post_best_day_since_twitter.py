@@ -40,6 +40,12 @@ def _fmt_int(value: int | None) -> str:
     return f"{int(value):,}"
 
 
+def _fmt_signed_int(value: int | None) -> str:
+    if value is None:
+        return "?"
+    return f"+{int(value):,}"
+
+
 def _fmt_pct(current: int | None, previous: int | None) -> str:
     if current is None or previous is None or previous <= 0:
         return "+0.0%"
@@ -121,13 +127,14 @@ def _generate_best_day_since_image(
         eyebrow="Spotify Streams",
         subtitle=f"{label} - {date_text}",
         stats=[
-            {"label": "Daily Streams", "value": _fmt_int(daily), "badge": pct, "badge_class": _badge_class(pct)},
+            {"label": "Daily Streams", "value": _fmt_signed_int(daily), "badge": pct, "badge_class": _badge_class(pct)},
             {"label": "Total Streams", "value": _fmt_int(total_today), "badge": "Since release", "badge_class": "flat"},
         ],
         cover_url=cover_url,
         footer_left="@tsmuseum13",
         footer_right=date_text,
         extra=label,
+        best_since=True,
     )
     out_dir = _day_dir(target_date) / "best_day_since"
     out_path = out_dir / f"best_day_since_{slugify(track.get('title') or row['title'])}_{target_date}.png"

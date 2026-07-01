@@ -1,9 +1,13 @@
 from __future__ import annotations
 
+import argparse
 import base64
 import html
+import random
 import re
+import sys
 import unicodedata
+from datetime import datetime, timedelta
 from pathlib import Path
 from urllib.request import Request, urlopen
 
@@ -17,6 +21,10 @@ except ImportError:
 
 
 SPOTIFY_SVG = """<svg class="logo" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>"""
+SCRIPT_DIR = Path(__file__).resolve().parent
+REPO_ROOT = SCRIPT_DIR.parents[1]
+SPOTIFY_STREAMS_DIR = REPO_ROOT / "collectors" / "spotify" / "streams"
+SPOTIFY_STREAMS_SCRIPTS_DIR = SPOTIFY_STREAMS_DIR / "tools" / "scripts"
 
 
 def slugify(value: str) -> str:
@@ -144,6 +152,19 @@ def _title_font_size(title: str) -> int:
     return 22
 
 
+def _best_since_title_font_size(title: str) -> int:
+    n = len(title)
+    if n <= 13:
+        return 48
+    if n <= 18:
+        return 42
+    if n <= 24:
+        return 35
+    if n <= 32:
+        return 29
+    return 24
+
+
 def render_song_card(
     *,
     title: str,
@@ -155,6 +176,7 @@ def render_song_card(
     footer_right: str,
     extra: str = "",
     logo_svg: str = SPOTIFY_SVG,
+    best_since: bool = False,
 ) -> str:
     cover_uri, cover_bytes = image_data_uri(cover_url)
     gradient, _accent = cover_palette(cover_bytes)
@@ -172,7 +194,80 @@ def render_song_card(
       </div>"""
         )
     extra_html = f'<div class="extra">{html.escape(extra)}</div>' if extra else ""
-    css = f"""
+    body_class = "best-since" if best_since else "default"
+    if best_since:
+        css = f"""
+*{{margin:0;padding:0;box-sizing:border-box}}
+body{{
+  font-family:Inter,-apple-system,'Helvetica Neue',Arial,sans-serif;
+  width:800px;height:299px;
+  background:{gradient};
+  position:relative;overflow:hidden;color:#fff;
+}}
+body:before{{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(90deg,rgba(4,10,16,.74) 0%,rgba(4,10,16,.52) 49%,rgba(4,10,16,.14) 100%),
+    radial-gradient(circle at 18% 85%,rgba(255,255,255,.16),rgba(255,255,255,0) 34%);
+}}
+.layout{{height:299px;position:relative;z-index:1}}
+.cover-col{{
+  position:absolute;right:24px;top:23px;width:252px;height:252px;
+  overflow:hidden;border-radius:26px;
+  box-shadow:0 24px 50px rgba(0,0,0,.42),0 0 0 1px rgba(255,255,255,.18);
+}}
+.cover,.cover-ph{{width:252px;height:252px;object-fit:cover;display:block}}
+.cover-ph{{background:#172421}}
+.info-col{{
+  position:absolute;left:28px;top:22px;bottom:26px;width:470px;
+  display:flex;flex-direction:column;justify-content:center;gap:12px;
+}}
+.hdr-row{{display:flex;align-items:center;gap:9px}}
+.logo{{width:26px;height:26px;flex-shrink:0}}
+.hdr-label{{
+  color:rgba(255,255,255,.92);font-size:12px;font-weight:900;
+  letter-spacing:.12em;text-transform:uppercase;
+}}
+.title{{
+  color:#fff;font-size:{_best_since_title_font_size(title)}px;font-weight:950;
+  line-height:1.04;letter-spacing:0;
+  max-width:455px;display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden;
+  text-shadow:0 3px 18px rgba(0,0,0,.28);
+}}
+.subtitle{{
+  width:max-content;max-width:440px;
+  color:#0b1f18;background:rgba(255,255,255,.94);
+  font-size:13px;font-weight:900;border-radius:999px;
+  padding:7px 13px;
+}}
+.stats{{display:flex;gap:10px;margin-top:2px}}
+.stat{{
+  background:rgba(7,14,22,.58);border:1px solid rgba(255,255,255,.20);
+  border-radius:16px;padding:11px 15px 10px;min-width:132px;
+  box-shadow:0 12px 30px rgba(0,0,0,.18);
+}}
+.stat-lbl{{
+  font-size:9px;font-weight:900;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(255,255,255,.58);margin-bottom:4px;
+}}
+.stat-val{{font-size:24px;font-weight:950;color:#fff;line-height:1}}
+.chg{{font-size:10px;font-weight:900;margin-top:5px;letter-spacing:.02em}}
+.chg.new,.chg.re,.chg.up{{color:#7ee787}}
+.chg.down{{color:#fca5a5}}
+.chg.flat{{color:rgba(255,255,255,.52)}}
+.extra{{
+  color:rgba(255,255,255,.72);font-size:12px;font-weight:750;
+  max-width:430px;
+}}
+.ftr{{
+  position:absolute;bottom:10px;left:30px;right:30px;z-index:2;
+  display:flex;justify-content:space-between;
+}}
+.ftr-l,.ftr-r{{font-size:10px;color:rgba(255,255,255,.52);font-weight:700}}
+"""
+    else:
+        css = f"""
 *{{margin:0;padding:0;box-sizing:border-box}}
 body{{
   font-family:Inter,-apple-system,'Helvetica Neue',Arial,sans-serif;
@@ -224,7 +319,7 @@ body{{
 .ftr-l,.ftr-r{{font-size:10px;color:rgba(255,255,255,.4);font-weight:600}}
 """
     return f"""<!doctype html><html><head><meta charset="utf-8"><style>{css}</style></head>
-<body>
+<body class="{body_class}">
 <div class="layout">
   <div class="cover-col">{art_html}</div>
   <div class="info-col">
@@ -233,11 +328,11 @@ body{{
       <span class="hdr-label">{html.escape(eyebrow)}</span>
     </div>
     <div class="title">{html.escape(title)}</div>
+    {extra_html}
     <div class="subtitle">{html.escape(subtitle)}</div>
     <div class="stats">
       {''.join(stat_html)}
     </div>
-    {extra_html}
   </div>
 </div>
 <div class="ftr">
@@ -247,7 +342,7 @@ body{{
 </body></html>"""
 
 
-def write_song_card_png(html_text: str, output_path: Path, tmp_path: Path) -> Path:
+def write_song_card_png(html_text: str, output_path: Path, tmp_path: Path, *, keep_html: bool = False) -> Path:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     tmp_path.write_text(html_text, encoding="utf-8")
     try:
@@ -258,5 +353,242 @@ def write_song_card_png(html_text: str, output_path: Path, tmp_path: Path) -> Pa
             page.locator("body").screenshot(path=str(output_path))
             browser.close()
     finally:
-        tmp_path.unlink(missing_ok=True)
+        if not keep_html:
+            tmp_path.unlink(missing_ok=True)
     return output_path
+
+
+def _fmt_int(value: int | None) -> str:
+    return "?" if value is None else f"{int(value):,}"
+
+
+def _fmt_signed_int(value: int | None) -> str:
+    return "?" if value is None else f"+{int(value):,}"
+
+
+def _fmt_pct(current: int | None, previous: int | None) -> str:
+    if current is None or previous is None or previous <= 0:
+        return "+0.0%"
+    return f"{(current - previous) / previous * 100:+.1f}%"
+
+
+def _badge_class(text: str) -> str:
+    if text in {"+0.0%", "0.0%"}:
+        return "flat"
+    if text.startswith("+"):
+        return "up"
+    if text.startswith("-"):
+        return "down"
+    return "flat"
+
+
+def _preview_imports():
+    for path in (SPOTIFY_STREAMS_DIR, SPOTIFY_STREAMS_SCRIPTS_DIR, REPO_ROOT / "collectors"):
+        path_str = str(path)
+        if path_str not in sys.path:
+            sys.path.insert(0, path_str)
+    import best_day_since
+    import spotlight
+
+    return best_day_since, spotlight
+
+
+def _latest_preview_date(best_day_since) -> str:
+    history = best_day_since.load_history()
+    latest = best_day_since.latest_history_date(history)
+    if latest is None:
+        raise SystemExit("No streams history date found for preview generation.")
+    print(f"[preview] Using latest streams date: {latest.isoformat()}", flush=True)
+    return latest.isoformat()
+
+
+def _pick_real_track(best_day_since, spotlight, stats_date: str, title: str | None) -> tuple[dict, int, int | None, int | None]:
+    tracks = spotlight.load_all_tracks()
+    print(f"[preview] Loaded {len(tracks)} track(s).", flush=True)
+    track = spotlight.find_track(title, tracks) if title else None
+    if track is None:
+        print(f"[preview] Picking a random track with real stream data for {stats_date}...", flush=True)
+        target_day = datetime.strptime(stats_date, "%Y-%m-%d").date()
+        previous_day = target_day - timedelta(days=1)
+        history = best_day_since.load_history()
+        candidates = []
+        for candidate in tracks:
+            point_by_day = {point.day: point for point in history.get(candidate["track_id"], [])}
+            current = point_by_day.get(target_day)
+            if current is None or current.total is None or current.daily is None or current.daily <= 0:
+                continue
+            previous = point_by_day.get(previous_day)
+            candidates.append((
+                candidate,
+                current.total,
+                current.daily,
+                previous.daily if previous else None,
+            ))
+        if not candidates:
+            raise SystemExit(f"No track with real stream data found for {stats_date}.")
+        picked = random.choice(candidates)
+        print(f"[preview] Selected default track: {picked[0]['title']}", flush=True)
+        return picked
+
+    total_today, _total_yesterday, daily_today, daily_yesterday, _daily_last_week = (
+        spotlight.load_history_for_tracks([track["track_id"]], stats_date)
+    )
+    if total_today is None or daily_today is None:
+        raise SystemExit(f"No stream data found for {track['title']} on {stats_date}.")
+    print(f"[preview] Selected default track: {track['title']}", flush=True)
+    return track, total_today, daily_today, daily_yesterday
+
+
+def _pick_real_best_since(best_day_since, spotlight, stats_date: str, title: str | None) -> tuple[dict, dict, int, int | None]:
+    print(f"[preview] Searching best-day-since rows for {stats_date}...", flush=True)
+    base_tracks = best_day_since.load_tracks(include_extras=False)
+    all_tracks = best_day_since.load_tracks(include_extras=True)
+    history = best_day_since.load_history()
+    target = datetime.strptime(stats_date, "%Y-%m-%d").date()
+    spotlight_tracks = {track["track_id"]: track for track in spotlight.load_all_tracks()}
+
+    rows = []
+    seen_families: set[str] = set()
+    for track_id, track in base_tracks.items():
+        if title and title.casefold() not in track.title.casefold():
+            continue
+        family = (track.song_family or track_id).strip()
+        if family in seen_families:
+            continue
+        seen_families.add(family)
+        row = best_day_since.compute_best_day_since_combined(
+            track,
+            best_day_since.combined_tracks_for(all_tracks.get(track_id, track), all_tracks),
+            history,
+            target,
+        )
+        if row and row.get("kind") == "since" and best_day_since.passes_filters(row, min_days=1):
+            rows.append(row)
+
+    if not rows and title:
+        raise SystemExit(f"No best-day-since row found for {title} on {stats_date}.")
+    if not rows:
+        raise SystemExit(f"No best-day-since rows found for {stats_date}.")
+
+    row = random.choice(rows) if not title else sorted(rows, key=best_day_since.sort_key, reverse=True)[0]
+    print(
+        f"[preview] Selected best-since track: {row['title']} "
+        f"({best_day_since.row_label(row)})",
+        flush=True,
+    )
+    track = spotlight_tracks.get(row["track_id"])
+    if not track:
+        raise SystemExit(f"Track missing in spotlight DB: {row['title']} [{row['track_id']}]")
+
+    track_ids = row.get("combined_track_ids") or [row["track_id"]]
+    total_today, _total_yesterday, _daily_today, daily_yesterday, _daily_last_week = (
+        spotlight.load_history_for_tracks(track_ids, stats_date)
+    )
+    if total_today is None:
+        raise SystemExit(f"Missing total streams for {row['title']} on {stats_date}.")
+    return row, track, total_today, daily_yesterday
+
+
+def _render_preview(*, best_since: bool, output_dir: Path, keep_html: bool, title: str | None, stats_date: str | None) -> Path:
+    mode = "best_since" if best_since else "default"
+    print(f"[preview] Building {mode} preview...", flush=True)
+    best_day_since, spotlight = _preview_imports()
+    target_date = stats_date or _latest_preview_date(best_day_since)
+    date_text = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    covers = spotlight.load_covers()
+    print(f"[preview] Loaded {len(covers)} cover fallback(s).", flush=True)
+
+    if best_since:
+        row, track, total_today, daily_yesterday = _pick_real_best_since(
+            best_day_since,
+            spotlight,
+            target_date,
+            title,
+        )
+        label = best_day_since.row_label(row)
+        daily = int(row["daily_streams"])
+        pct = _fmt_pct(daily, daily_yesterday)
+        cover_url = spotlight.get_cover_url(track, covers)
+        card_title = track.get("title") or row["title"]
+        subtitle = f"{label} - {date_text}"
+        stats = [
+            {"label": "Daily Streams", "value": _fmt_signed_int(daily), "badge": pct, "badge_class": _badge_class(pct)},
+            {"label": "Total Streams", "value": _fmt_int(total_today), "badge": "Since release", "badge_class": "flat"},
+        ]
+        extra = ""
+    else:
+        track, total_today, daily_today, daily_yesterday = _pick_real_track(best_day_since, spotlight, target_date, title)
+        pct = _fmt_pct(daily_today, daily_yesterday)
+        cover_url = spotlight.get_cover_url(track, covers)
+        card_title = track["title"]
+        subtitle = f"Spotify Streams preview - {date_text}"
+        stats = [
+            {"label": "Daily Streams", "value": _fmt_signed_int(daily_today), "badge": pct, "badge_class": _badge_class(pct)},
+            {"label": "Total Streams", "value": _fmt_int(total_today), "badge": "Since release", "badge_class": "flat"},
+        ]
+        extra = track.get("album") or track.get("artist") or ""
+
+    html_text = render_song_card(
+        title=card_title,
+        eyebrow="Spotify Streams",
+        subtitle=subtitle,
+        stats=stats,
+        cover_url=cover_url,
+        footer_left="@tsmuseum13",
+        footer_right=date_text,
+        extra=extra,
+        best_since=best_since,
+    )
+    output_dir.mkdir(parents=True, exist_ok=True)
+    slug = slugify(card_title)
+    out_path = output_dir / f"song_card_{mode}_{slug}.png"
+    html_path = output_dir / f"song_card_{mode}_{slug}.html"
+    print(f"[preview] Writing HTML: {html_path}", flush=True)
+    print(f"[preview] Rendering PNG: {out_path}", flush=True)
+    return write_song_card_png(html_text, out_path, html_path, keep_html=keep_html)
+
+
+def _clear_previous_previews(output_dir: Path) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    removed = 0
+    for pattern in ("song_card_*.png", "song_card_*.html"):
+        for path in output_dir.glob(pattern):
+            if not path.is_file():
+                continue
+            path.unlink()
+            removed += 1
+    if removed:
+        print(f"[preview] Deleted {removed} previous song card preview file(s).", flush=True)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Generate a preview song card PNG/HTML.")
+    parser.add_argument("--best-since", action="store_true", help="Generate only the best-day-since card design.")
+    parser.add_argument("--title", help="Use a real track matching this title instead of automatic random selection.")
+    parser.add_argument("--date", help="Stats date YYYY-MM-DD. Defaults to latest date in streams history.")
+    parser.add_argument(
+        "--output-dir",
+        default=str(Path(__file__).resolve().parent / "previews"),
+        help="Directory for generated previews.",
+    )
+    parser.add_argument("--keep-html", action="store_true", default=True, help="Keep the generated HTML preview.")
+    parser.add_argument("--no-keep-html", action="store_false", dest="keep_html", help="Delete the temporary HTML.")
+    args = parser.parse_args()
+
+    output_dir = Path(args.output_dir)
+    modes = [args.best_since] if args.best_since or args.title else [False, True]
+    print(f"[preview] Output dir: {output_dir}", flush=True)
+    _clear_previous_previews(output_dir)
+    for best_since in modes:
+        path = _render_preview(
+            best_since=best_since,
+            output_dir=output_dir,
+            keep_html=args.keep_html,
+            title=args.title,
+            stats_date=args.date,
+        )
+        print(f"Generated preview: {path}")
+
+
+if __name__ == "__main__":
+    main()

@@ -317,31 +317,7 @@ def _post_streams_image(ctx: FinalizeContext, state: dict[str, float]) -> None:
         return
 
     if _is_weekend_stats_date(ctx.summary["stats_date"]):
-        post_script = ctx.script_dir / "tools" / "scripts" / "post_weekend_streams_twitter.py"
-        if ctx.no_post_mode:
-            print("Weekend detected: generating combined streams image only (--no-post).")
-            _run(
-                ctx,
-                [sys.executable, str(post_script), ctx.summary["stats_date"], "--no-post"],
-                label="weekend streams image (no-post)",
-                should_post=False,
-                state=state,
-            )
-            return
-
-        if not _streams_post_ready(ctx):
-            print("Skipping weekend streams post: blocking tracks are still pending.")
-            return
-
-        print("Weekend detected: posting one combined streams image to Twitter...")
-        _run(
-            ctx,
-            [sys.executable, str(post_script), ctx.summary["stats_date"]],
-            label="weekend streams image",
-            should_post=True,
-            state=state,
-        )
-        print("Weekend streams post done.")
+        print("Weekend detected: combined recap card already handled as the first post.")
         return
 
     post_script = ctx.script_dir / "tools" / "scripts" / "post_streams_twitter.py"
@@ -369,6 +345,43 @@ def _post_streams_image(ctx: FinalizeContext, state: dict[str, float]) -> None:
         state=state,
     )
     print("Twitter post done.")
+
+
+def _post_daily_recap_card(ctx: FinalizeContext, state: dict[str, float]) -> None:
+    if ctx.debug_daily_mode:
+        print("[DEBUG-DAILY] Skip: daily recap card.")
+        return
+
+    post_script = ctx.script_dir / "tools" / "scripts" / "post_weekend_streams_twitter.py"
+    cmd = [sys.executable, str(post_script), ctx.summary["stats_date"]]
+    if not _is_weekend_stats_date(ctx.summary["stats_date"]):
+        cmd.append("--force-weekday")
+
+    if ctx.no_post_mode:
+        print("Generating daily recap card only (--no-post).")
+        cmd.append("--no-post")
+        _run(
+            ctx,
+            cmd,
+            label="daily recap card (no-post)",
+            should_post=False,
+            state=state,
+        )
+        return
+
+    if not _streams_post_ready(ctx):
+        print("Skipping daily recap card: blocking tracks are still pending.")
+        return
+
+    print("Posting daily recap card to Twitter...")
+    _run(
+        ctx,
+        cmd,
+        label="daily recap card",
+        should_post=True,
+        state=state,
+    )
+    print("Daily recap card done.")
 
 
 def _streams_post_ready(ctx: FinalizeContext) -> bool:
@@ -679,6 +692,32 @@ def _post_debut_releases(ctx: FinalizeContext, state: dict[str, float]) -> None:
     _mark_post_done(should_post=not ctx.no_post_mode, state=state)
 
 
+def _post_best_day_since(ctx: FinalizeContext, state: dict[str, float]) -> None:
+    if not ctx.summary.get("all_done"):
+        print("Best-day-since posts skipped: not all tracks are done yet.")
+        return
+
+    best_day_script = ctx.script_dir / "tools" / "scripts" / "post_best_day_since_twitter.py"
+    cmd = [
+        sys.executable,
+        str(best_day_script),
+        ctx.summary["stats_date"],
+        "--post-spacing-seconds",
+        str(ctx.post_spacing_seconds),
+    ]
+    if ctx.no_post_mode:
+        cmd.append("--no-post")
+
+    print("Posting best-day-since stream cards...")
+    _run(
+        ctx,
+        cmd,
+        label="best-day-since posts",
+        should_post=not ctx.no_post_mode,
+        state=state,
+    )
+
+
 def _post_spotlight_gainers(ctx: FinalizeContext, state: dict[str, float]) -> None:
     if not ctx.all_album_tracks_done(ctx.summary["stats_date"]):
         print("Stream highlights skipped: not all album tracks are done yet.")
@@ -863,6 +902,9 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                 lambda: _run_forecast_and_image_refresh(ctx),
             )
 
+        with timer.step("daily recap card"):
+            _post_daily_recap_card(ctx, post_state)
+
         with timer.step("albums daily post"):
             _post_albums_daily(ctx, post_state)
 
@@ -876,6 +918,8 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
 
         with timer.step("debut posts"):
             _post_debut_releases(ctx, post_state)
+        with timer.step("best-day-since posts"):
+            _post_best_day_since(ctx, post_state)
         with timer.step("album update posts"):
             _post_album_updates(ctx, post_state)
         if spotlight_thread is not None:
