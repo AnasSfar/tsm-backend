@@ -25,6 +25,11 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parents[1]
 SPOTIFY_STREAMS_DIR = REPO_ROOT / "collectors" / "spotify" / "streams"
 SPOTIFY_STREAMS_SCRIPTS_DIR = SPOTIFY_STREAMS_DIR / "tools" / "scripts"
+TSM_LOGO_PATHS = (
+    REPO_ROOT / "db" / "logo.png",
+    REPO_ROOT.parent / "tsm-frontend" / "frontend" / "public" / "icons" / "logo.gif",
+    REPO_ROOT.parent / "tsm-frontend" / "icons" / "logo.gif",
+)
 
 
 def slugify(value: str) -> str:
@@ -44,6 +49,19 @@ def image_data_uri(url: str | None) -> tuple[str, bytes]:
             return f"data:{mime};base64,{base64.b64encode(data).decode()}", data
     except Exception:
         return "", b""
+
+
+def _tsm_logo_data_uri() -> str:
+    for path in TSM_LOGO_PATHS:
+        if not path.exists():
+            continue
+        try:
+            data = path.read_bytes()
+        except OSError:
+            continue
+        mime = "image/gif" if path.suffix.lower() == ".gif" else "image/png"
+        return f"data:{mime};base64,{base64.b64encode(data).decode('ascii')}"
+    return ""
 
 
 def _boost_color(rgb: tuple[int, int, int], *, min_sat: float = 0.48, min_val: float = 0.34) -> tuple[str, str]:
@@ -67,6 +85,61 @@ def _deep_color(rgb: tuple[int, int, int]) -> str:
     v = min(0.30, max(0.12, v * 0.46))
     rb, gb, bb = colorsys.hsv_to_rgb(h, s, v)
     return f"#{int(rb * 255):02x}{int(gb * 255):02x}{int(bb * 255):02x}"
+
+
+def _hex_to_rgb(value: str) -> tuple[int, int, int] | None:
+    raw = (value or "").strip().lstrip("#")
+    if len(raw) != 6:
+        return None
+    try:
+        return int(raw[0:2], 16), int(raw[2:4], 16), int(raw[4:6], 16)
+    except ValueError:
+        return None
+
+
+def _rgb_distance(a: tuple[int, int, int], b: tuple[int, int, int]) -> float:
+    return sum((x - y) ** 2 for x, y in zip(a, b)) ** 0.5
+
+
+def _luma(rgb: tuple[int, int, int]) -> float:
+    r, g, b = rgb
+    return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255
+
+
+def _cover_badge_colors(img_bytes: bytes, avoid_hex: str) -> tuple[str, str]:
+    if not _PIL or not img_bytes:
+        return "#d7b46a", "#111827"
+    try:
+        from io import BytesIO
+        import colorsys
+
+        avoid_rgb = _hex_to_rgb(avoid_hex) or (29, 185, 84)
+        img = PilImage.open(BytesIO(img_bytes)).convert("RGB").resize((90, 90), PilImage.LANCZOS)
+        colors = img.quantize(colors=16, method=PilImage.Quantize.MEDIANCUT).convert("RGB").getcolors(90 * 90) or []
+        candidates = []
+        for count, rgb in colors:
+            r, g, b = rgb
+            h, s, v = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
+            if (r > 238 and g > 238 and b > 238) or (r < 20 and g < 20 and b < 20):
+                continue
+            distance = _rgb_distance(rgb, avoid_rgb)
+            distance_bonus = min(distance / 120, 1.0)
+            score = (count ** 0.5) * (0.35 + s) * (0.35 + v) * (0.65 + distance_bonus)
+            candidates.append((score, rgb, s, v))
+        if not candidates:
+            return "#d7b46a", "#111827"
+
+        _score, rgb, s, v = max(candidates, key=lambda item: item[0])
+        h, _s, _v = colorsys.rgb_to_hsv(rgb[0] / 255, rgb[1] / 255, rgb[2] / 255)
+        s = min(1.0, max(0.42, s * 1.35))
+        v = min(0.82, max(0.42, v * 1.05))
+        rb, gb, bb = colorsys.hsv_to_rgb(h, s, v)
+        final_rgb = (int(rb * 255), int(gb * 255), int(bb * 255))
+        bg = f"#{final_rgb[0]:02x}{final_rgb[1]:02x}{final_rgb[2]:02x}"
+        text = "#101828" if _luma(final_rgb) > 0.58 else "#ffffff"
+        return bg, text
+    except Exception:
+        return "#d7b46a", "#111827"
 
 
 def cover_palette(img_bytes: bytes) -> tuple[str, str]:
@@ -177,9 +250,11 @@ def render_song_card(
     extra: str = "",
     logo_svg: str = SPOTIFY_SVG,
     best_since: bool = False,
+    combined_versions: bool = False,
 ) -> str:
     cover_uri, cover_bytes = image_data_uri(cover_url)
-    gradient, _accent = cover_palette(cover_bytes)
+    gradient, accent = cover_palette(cover_bytes)
+    badge_bg, badge_text = _cover_badge_colors(cover_bytes, accent)
     art_html = f'<img class="cover" src="{cover_uri}" />' if cover_uri else '<div class="cover-ph"></div>'
     stat_html = []
     for stat in stats:
@@ -194,6 +269,16 @@ def render_song_card(
       </div>"""
         )
     extra_html = f'<div class="extra">{html.escape(extra)}</div>' if extra else ""
+    subtitle_html = f'<div class="subtitle">{html.escape(subtitle)}</div>' if best_since and subtitle else ""
+    mode_badge_text = "COMBINED VERSIONS" if combined_versions else footer_right
+    mode_badge_html = f'<span class="mode-badge">{html.escape(mode_badge_text)}</span>' if mode_badge_text else ""
+    tsm_logo_uri = _tsm_logo_data_uri()
+    footer_left_html = html.escape(footer_left)
+    if tsm_logo_uri:
+        footer_left_html = (
+            f'<span class="ftr-brand"><img class="tsm-logo" src="{tsm_logo_uri}" alt="TSM" />'
+            f"<span>{html.escape(footer_left)}</span></span>"
+        )
     body_class = "best-since" if best_since else "default"
     if best_since:
         css = f"""
@@ -222,11 +307,18 @@ body:before{{
   position:absolute;left:28px;top:22px;bottom:26px;width:470px;
   display:flex;flex-direction:column;justify-content:center;gap:12px;
 }}
-.hdr-row{{display:flex;align-items:center;gap:9px}}
+.hdr-row{{display:flex;align-items:center;gap:9px;width:100%}}
 .logo{{width:26px;height:26px;flex-shrink:0}}
 .hdr-label{{
   color:rgba(255,255,255,.92);font-size:12px;font-weight:900;
   letter-spacing:.12em;text-transform:uppercase;
+}}
+.mode-badge{{
+  margin-left:auto;color:rgba(255,255,255,.88);
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);
+  border-radius:999px;padding:6px 10px;
+  font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;
+  white-space:nowrap;
 }}
 .title{{
   color:#fff;font-size:{_best_since_title_font_size(title)}px;font-weight:950;
@@ -234,12 +326,20 @@ body:before{{
   max-width:455px;display:-webkit-box;-webkit-line-clamp:2;
   -webkit-box-orient:vertical;overflow:hidden;
   text-shadow:0 3px 18px rgba(0,0,0,.28);
+  margin-bottom:-4px;
 }}
 .subtitle{{
   width:max-content;max-width:440px;
-  color:#0b1f18;background:rgba(255,255,255,.94);
+  color:{badge_text};background:{badge_bg};
   font-size:13px;font-weight:900;border-radius:999px;
-  padding:7px 13px;
+  padding:7px 13px;display:flex;align-items:center;gap:8px;
+  text-transform:uppercase;
+  box-shadow:0 12px 28px rgba(0,0,0,.20),0 0 0 1px rgba(255,255,255,.18);
+}}
+.subtitle:before{{
+  content:"\\2605";display:inline-flex;align-items:center;justify-content:center;
+  width:20px;height:20px;border-radius:999px;
+  color:{badge_bg};background:{badge_text};font-size:12px;line-height:1;
 }}
 .stats{{display:flex;gap:10px;margin-top:2px}}
 .stat{{
@@ -257,14 +357,16 @@ body:before{{
 .chg.down{{color:#fca5a5}}
 .chg.flat{{color:rgba(255,255,255,.52)}}
 .extra{{
-  color:rgba(255,255,255,.72);font-size:12px;font-weight:750;
-  max-width:430px;
+  color:rgba(255,255,255,.76);font-size:13px;font-weight:750;
+  max-width:430px;margin-top:0;margin-bottom:2px;
 }}
 .ftr{{
   position:absolute;bottom:10px;left:30px;right:30px;z-index:2;
   display:flex;justify-content:space-between;
 }}
 .ftr-l,.ftr-r{{font-size:10px;color:rgba(255,255,255,.52);font-weight:700}}
+.ftr-brand{{display:flex;align-items:center;gap:6px}}
+.tsm-logo{{width:18px;height:18px;object-fit:contain;border-radius:4px}}
 """
     else:
         css = f"""
@@ -273,50 +375,73 @@ body{{
   font-family:Inter,-apple-system,'Helvetica Neue',Arial,sans-serif;
   width:800px;height:299px;
   background:{gradient};
-  position:relative;overflow:hidden;
+  position:relative;overflow:hidden;color:#fff;
 }}
-.layout{{display:flex;height:299px}}
-.cover-col{{width:334px;flex-shrink:0;overflow:hidden;border-radius:10px}}
-.cover{{width:334px;height:299px;object-fit:cover;display:block}}
-.cover-ph{{width:334px;height:299px;background:#1a2a26}}
+body:before{{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(90deg,rgba(4,10,16,.74) 0%,rgba(4,10,16,.52) 49%,rgba(4,10,16,.14) 100%),
+    radial-gradient(circle at 18% 85%,rgba(255,255,255,.16),rgba(255,255,255,0) 34%);
+}}
+.layout{{height:299px;position:relative;z-index:1}}
+.cover-col{{
+  position:absolute;right:24px;top:23px;width:252px;height:252px;
+  overflow:hidden;border-radius:26px;
+  box-shadow:0 24px 50px rgba(0,0,0,.42),0 0 0 1px rgba(255,255,255,.18);
+}}
+.cover,.cover-ph{{width:252px;height:252px;object-fit:cover;display:block}}
+.cover-ph{{background:#172421}}
 .info-col{{
-  flex:1;display:flex;flex-direction:column;
-  justify-content:center;padding:24px 28px 20px 20px;gap:14px;
+  position:absolute;left:28px;top:22px;bottom:26px;width:470px;
+  display:flex;flex-direction:column;justify-content:center;gap:12px;
 }}
-.hdr-row{{display:flex;align-items:center;gap:8px}}
+.hdr-row{{display:flex;align-items:center;gap:9px;width:100%}}
 .logo{{width:26px;height:26px;flex-shrink:0}}
 .hdr-label{{
-  color:#fff;font-size:12px;font-weight:800;
+  color:rgba(255,255,255,.92);font-size:12px;font-weight:900;
   letter-spacing:.12em;text-transform:uppercase;
 }}
-.title{{
-  color:#fff;font-size:{_title_font_size(title)}px;font-weight:900;
-  line-height:1.1;letter-spacing:0;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+.mode-badge{{
+  margin-left:auto;color:rgba(255,255,255,.88);
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);
+  border-radius:999px;padding:6px 10px;
+  font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;
+  white-space:nowrap;
 }}
-.subtitle{{color:rgba(255,255,255,.6);font-size:12px;font-weight:500}}
-.stats{{display:flex;gap:10px;margin-top:4px}}
+.title{{
+  color:#fff;font-size:{_best_since_title_font_size(title)}px;font-weight:950;
+  line-height:1.04;letter-spacing:0;
+  max-width:455px;display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden;
+  text-shadow:0 3px 18px rgba(0,0,0,.28);
+  margin-bottom:-4px;
+}}
+.stats{{display:flex;gap:10px;margin-top:2px}}
 .stat{{
-  background:rgba(255,255,255,.93);border-radius:18px;
-  padding:10px 18px 8px;min-width:90px;
+  background:rgba(7,14,22,.58);border:1px solid rgba(255,255,255,.20);
+  border-radius:16px;padding:11px 15px 10px;min-width:132px;
+  box-shadow:0 12px 30px rgba(0,0,0,.18);
 }}
 .stat-lbl{{
-  font-size:9px;font-weight:800;letter-spacing:.1em;
-  text-transform:uppercase;color:#667085;margin-bottom:2px;
+  font-size:9px;font-weight:900;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(255,255,255,.58);margin-bottom:4px;
 }}
-.stat-val{{font-size:22px;font-weight:900;color:#0b1f44;line-height:1}}
-.chg{{font-size:10px;font-weight:800;margin-top:4px;letter-spacing:.02em}}
-.chg.new{{color:#16a34a}}
-.chg.re{{color:#0ea5e9}}
-.chg.up{{color:#16a34a}}
-.chg.down{{color:#dc2626}}
-.chg.flat{{color:#9ca3af}}
-.extra{{color:rgba(255,255,255,.55);font-size:11px;font-weight:500}}
+.stat-val{{font-size:24px;font-weight:950;color:#fff;line-height:1}}
+.chg{{font-size:10px;font-weight:900;margin-top:5px;letter-spacing:.02em}}
+.chg.new,.chg.re,.chg.up{{color:#7ee787}}
+.chg.down{{color:#fca5a5}}
+.chg.flat{{color:rgba(255,255,255,.52)}}
+.extra{{
+  color:rgba(255,255,255,.76);font-size:13px;font-weight:750;
+  max-width:430px;margin-top:0;margin-bottom:2px;
+}}
 .ftr{{
-  position:absolute;bottom:10px;left:346px;right:20px;
+  position:absolute;bottom:10px;left:30px;right:30px;z-index:2;
   display:flex;justify-content:space-between;
 }}
-.ftr-l,.ftr-r{{font-size:10px;color:rgba(255,255,255,.4);font-weight:600}}
+.ftr-l,.ftr-r{{font-size:10px;color:rgba(255,255,255,.52);font-weight:700}}
+.ftr-brand{{display:flex;align-items:center;gap:6px}}
+.tsm-logo{{width:18px;height:18px;object-fit:contain;border-radius:4px}}
 """
     return f"""<!doctype html><html><head><meta charset="utf-8"><style>{css}</style></head>
 <body class="{body_class}">
@@ -326,17 +451,18 @@ body{{
     <div class="hdr-row">
       {logo_svg}
       <span class="hdr-label">{html.escape(eyebrow)}</span>
+      {mode_badge_html}
     </div>
     <div class="title">{html.escape(title)}</div>
     {extra_html}
-    <div class="subtitle">{html.escape(subtitle)}</div>
+    {subtitle_html}
     <div class="stats">
       {''.join(stat_html)}
     </div>
   </div>
 </div>
 <div class="ftr">
-  <span class="ftr-l">{html.escape(footer_left)}</span>
+  <span class="ftr-l">{footer_left_html}</span>
   <span class="ftr-r">{html.escape(footer_right)}</span>
 </div>
 </body></html>"""
@@ -510,23 +636,25 @@ def _render_preview(*, best_since: bool, output_dir: Path, keep_html: bool, titl
         pct = _fmt_pct(daily, daily_yesterday)
         cover_url = spotlight.get_cover_url(track, covers)
         card_title = track.get("title") or row["title"]
-        subtitle = f"{label} - {date_text}"
+        subtitle = label
         stats = [
             {"label": "Daily Streams", "value": _fmt_signed_int(daily), "badge": pct, "badge_class": _badge_class(pct)},
             {"label": "Total Streams", "value": _fmt_int(total_today), "badge": "Since release", "badge_class": "flat"},
         ]
-        extra = ""
+        extra = track.get("album") or row.get("album") or ""
+        combined_versions = bool(row.get("combined"))
     else:
         track, total_today, daily_today, daily_yesterday = _pick_real_track(best_day_since, spotlight, target_date, title)
         pct = _fmt_pct(daily_today, daily_yesterday)
         cover_url = spotlight.get_cover_url(track, covers)
         card_title = track["title"]
-        subtitle = f"Spotify Streams preview - {date_text}"
+        subtitle = ""
         stats = [
             {"label": "Daily Streams", "value": _fmt_signed_int(daily_today), "badge": pct, "badge_class": _badge_class(pct)},
             {"label": "Total Streams", "value": _fmt_int(total_today), "badge": "Since release", "badge_class": "flat"},
         ]
         extra = track.get("album") or track.get("artist") or ""
+        combined_versions = False
 
     html_text = render_song_card(
         title=card_title,
@@ -538,6 +666,7 @@ def _render_preview(*, best_since: bool, output_dir: Path, keep_html: bool, titl
         footer_right=date_text,
         extra=extra,
         best_since=best_since,
+        combined_versions=combined_versions,
     )
     output_dir.mkdir(parents=True, exist_ok=True)
     slug = slugify(card_title)
@@ -546,6 +675,209 @@ def _render_preview(*, best_since: bool, output_dir: Path, keep_html: bool, titl
     print(f"[preview] Writing HTML: {html_path}", flush=True)
     print(f"[preview] Rendering PNG: {out_path}", flush=True)
     return write_song_card_png(html_text, out_path, html_path, keep_html=keep_html)
+
+
+def _title_case(title: str) -> str:
+    return "long" if len(title or "") >= 30 else "short"
+
+
+def _write_preview_card(
+    *,
+    output_dir: Path,
+    keep_html: bool,
+    case_slug: str,
+    card_title: str,
+    date_text: str,
+    stats: list[dict],
+    cover_url: str,
+    extra: str,
+    subtitle: str = "",
+    best_since: bool = False,
+    combined_versions: bool = False,
+) -> Path:
+    html_text = render_song_card(
+        title=card_title,
+        eyebrow="Spotify Streams",
+        subtitle=subtitle,
+        stats=stats,
+        cover_url=cover_url,
+        footer_left="@tsmuseum13",
+        footer_right=date_text,
+        extra=extra,
+        best_since=best_since,
+        combined_versions=combined_versions,
+    )
+    output_dir.mkdir(parents=True, exist_ok=True)
+    slug = slugify(card_title)
+    out_path = output_dir / f"song_card_{case_slug}_{slug}.png"
+    html_path = output_dir / f"song_card_{case_slug}_{slug}.html"
+    print(f"[preview] Writing HTML: {html_path}", flush=True)
+    print(f"[preview] Rendering PNG: {out_path}", flush=True)
+    return write_song_card_png(html_text, out_path, html_path, keep_html=keep_html)
+
+
+def _best_since_rows_for_date(best_day_since, stats_date: str) -> list[dict]:
+    base_tracks = best_day_since.load_tracks(include_extras=False)
+    all_tracks = best_day_since.load_tracks(include_extras=True)
+    history = best_day_since.load_history()
+    target = datetime.strptime(stats_date, "%Y-%m-%d").date()
+
+    rows = []
+    seen_families: set[str] = set()
+    for track_id, track in base_tracks.items():
+        family = (track.song_family or track_id).strip()
+        if family in seen_families:
+            continue
+        seen_families.add(family)
+        row = best_day_since.compute_best_day_since_combined(
+            track,
+            best_day_since.combined_tracks_for(all_tracks.get(track_id, track), all_tracks),
+            history,
+            target,
+        )
+        if row and row.get("kind") == "since" and best_day_since.passes_filters(row, min_days=1):
+            rows.append(row)
+    return rows
+
+
+def _default_candidates_for_date(best_day_since, spotlight, stats_date: str, best_track_ids: set[str]) -> list[dict]:
+    target_day = datetime.strptime(stats_date, "%Y-%m-%d").date()
+    previous_day = target_day - timedelta(days=1)
+    history = best_day_since.load_history()
+    tracks = spotlight.load_all_tracks()
+    covers = spotlight.load_covers()
+    candidates = []
+    for track in tracks:
+        point_by_day = {point.day: point for point in history.get(track["track_id"], [])}
+        current = point_by_day.get(target_day)
+        if current is None or current.total is None or current.daily is None or current.daily <= 0:
+            continue
+        if track["track_id"] in best_track_ids:
+            continue
+        previous = point_by_day.get(previous_day)
+        candidates.append({
+            "track": track,
+            "total_today": current.total,
+            "daily_today": current.daily,
+            "daily_yesterday": previous.daily if previous else None,
+            "cover_url": spotlight.get_cover_url(track, covers),
+        })
+    if not candidates and best_track_ids:
+        print("[preview] No non-best-day default candidates found; allowing all real stream tracks.", flush=True)
+        return _default_candidates_for_date(best_day_since, spotlight, stats_date, set())
+    return candidates
+
+
+def _pick_case(candidates: list[dict], *, title_case: str) -> dict | None:
+    matching = [item for item in candidates if _title_case(item["title"]) == title_case]
+    return random.choice(matching) if matching else None
+
+
+def _render_preview_gallery(
+    *,
+    output_dir: Path,
+    keep_html: bool,
+    stats_date: str | None,
+    only_best_since: bool,
+) -> list[Path]:
+    print("[preview] Building full song_card preview gallery...", flush=True)
+    best_day_since, spotlight = _preview_imports()
+    target_date = stats_date or _latest_preview_date(best_day_since)
+    date_text = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    covers = spotlight.load_covers()
+    spotlight_tracks = {track["track_id"]: track for track in spotlight.load_all_tracks()}
+    paths: list[Path] = []
+
+    best_rows = _best_since_rows_for_date(best_day_since, target_date)
+    best_track_ids = {row["track_id"] for row in best_rows}
+    print(f"[preview] Found {len(best_rows)} best-day-since row(s).", flush=True)
+
+    if not only_best_since:
+        default_candidates = _default_candidates_for_date(best_day_since, spotlight, target_date, best_track_ids)
+        print(f"[preview] Found {len(default_candidates)} default non-best candidate(s).", flush=True)
+        default_items = [
+            {
+                **candidate,
+                "title": candidate["track"].get("title") or "",
+            }
+            for candidate in default_candidates
+        ]
+        for case in ("short", "long"):
+            selected = _pick_case(default_items, title_case=case)
+            if not selected:
+                print(f"[preview] Skip default_not_best_{case}: no real candidate.", flush=True)
+                continue
+            track = selected["track"]
+            daily = selected["daily_today"]
+            pct = _fmt_pct(daily, selected["daily_yesterday"])
+            paths.append(_write_preview_card(
+                output_dir=output_dir,
+                keep_html=keep_html,
+                case_slug=f"default_not_best_{case}",
+                card_title=track["title"],
+                date_text=date_text,
+                stats=[
+                    {"label": "Daily Streams", "value": _fmt_signed_int(daily), "badge": pct, "badge_class": _badge_class(pct)},
+                    {"label": "Total Streams", "value": _fmt_int(selected["total_today"]), "badge": "Since release", "badge_class": "flat"},
+                ],
+                cover_url=selected["cover_url"],
+                extra=track.get("album") or track.get("artist") or "",
+            ))
+
+    best_items = []
+    for row in best_rows:
+        track = spotlight_tracks.get(row["track_id"])
+        if not track:
+            continue
+        title = track.get("title") or row["title"]
+        best_items.append({
+            "row": row,
+            "track": track,
+            "title": title,
+            "combined": bool(row.get("combined")),
+        })
+
+    for combined in (False, True):
+        combined_label = "combined" if combined else "solo"
+        for case in ("short", "long"):
+            matching = [
+                item for item in best_items
+                if item["combined"] == combined and _title_case(item["title"]) == case
+            ]
+            if not matching:
+                print(f"[preview] Skip best_since_{combined_label}_{case}: no real candidate.", flush=True)
+                continue
+            item = random.choice(matching)
+            row = item["row"]
+            track = item["track"]
+            track_ids = row.get("combined_track_ids") or [row["track_id"]]
+            total_today, _total_yesterday, _daily_today, daily_yesterday, _daily_last_week = (
+                spotlight.load_history_for_tracks(track_ids, target_date)
+            )
+            if total_today is None:
+                print(f"[preview] Skip best_since_{combined_label}_{case}: missing total streams.", flush=True)
+                continue
+            daily = int(row["daily_streams"])
+            label = best_day_since.row_label(row)
+            pct = _fmt_pct(daily, daily_yesterday)
+            paths.append(_write_preview_card(
+                output_dir=output_dir,
+                keep_html=keep_html,
+                case_slug=f"best_since_{combined_label}_{case}",
+                card_title=item["title"],
+                date_text=date_text,
+                subtitle=label,
+                stats=[
+                    {"label": "Daily Streams", "value": _fmt_signed_int(daily), "badge": pct, "badge_class": _badge_class(pct)},
+                    {"label": "Total Streams", "value": _fmt_int(total_today), "badge": "Since release", "badge_class": "flat"},
+                ],
+                cover_url=spotlight.get_cover_url(track, covers),
+                extra=track.get("album") or row.get("album") or "",
+                best_since=True,
+                combined_versions=combined,
+            ))
+
+    return paths
 
 
 def _clear_previous_previews(output_dir: Path) -> None:
@@ -576,18 +908,28 @@ def main() -> None:
     args = parser.parse_args()
 
     output_dir = Path(args.output_dir)
-    modes = [args.best_since] if args.best_since or args.title else [False, True]
     print(f"[preview] Output dir: {output_dir}", flush=True)
     _clear_previous_previews(output_dir)
-    for best_since in modes:
+    if args.title:
         path = _render_preview(
-            best_since=best_since,
+            best_since=args.best_since,
             output_dir=output_dir,
             keep_html=args.keep_html,
             title=args.title,
             stats_date=args.date,
         )
         print(f"Generated preview: {path}")
+        return
+
+    paths = _render_preview_gallery(
+        output_dir=output_dir,
+        keep_html=args.keep_html,
+        stats_date=args.date,
+        only_best_since=args.best_since,
+    )
+    print(f"[preview] Generated {len(paths)} preview file(s).", flush=True)
+    for path in paths:
+        print(f"Generated preview: {path}", flush=True)
 
 
 if __name__ == "__main__":

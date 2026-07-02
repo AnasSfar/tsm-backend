@@ -20,6 +20,7 @@ import io
 import json
 import re
 import sys
+import unicodedata
 from collections import defaultdict
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
@@ -41,6 +42,7 @@ COMP_DIR = REPO_ROOT / "collectors" / "comp"
 DEFAULT_IMAGE_DIR = REPO_ROOT / "snapshots" / "recap"
 HEADERS_DIR = REPO_ROOT / "db" / "discography" / "headers"
 CORE_DIR = REPO_ROOT / "collectors" / "spotify" / "core"
+SPOTIFY_SCRIPT_DIR = REPO_ROOT / "collectors" / "spotify" / "streams" / "tools" / "scripts"
 DEFAULT_SESSION = (
     REPO_ROOT
     / "collectors"
@@ -55,6 +57,18 @@ DAILY_ARCHIVE_FILES = [
     DB_DIR / "2026 & 2025 - Daily Archive 2026.csv",
     DB_DIR / "2026 & 2025 - Копія аркуша Daily Archive 2025.csv",
 ]
+
+if str(SPOTIFY_SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SPOTIFY_SCRIPT_DIR))
+
+try:
+    from catalog_gap_report import _normalize_title as spotify_normalize_title  # noqa: E402
+except Exception:
+    def spotify_normalize_title(value: str) -> str:
+        ascii_text = unicodedata.normalize("NFKD", value or "")
+        ascii_text = "".join(char for char in ascii_text if not unicodedata.combining(char))
+        return re.sub(r"[^a-z0-9]+", " ", ascii_text.casefold()).strip()
+
 
 ERA_ALIASES = {
     "taylor swift": "Taylor Swift",
@@ -79,6 +93,13 @@ ERA_ALIASES = {
     "misc": "Misc",
     "other": "Misc",
 }
+
+NON_SONG_TITLE_RE = re.compile(
+    r"(?:\bcommentary\b|\bkaraoke\b|\binstrumental\b|\btrack by track\b|"
+    r"\bvoice memo\b|\bofficial music video\b|\bmusic video\b|"
+    r"\binstrumental with\b|\binstrumental w/)",
+    re.I,
+)
 
 
 @dataclass
@@ -171,6 +192,33 @@ def safe_replace_year(day: date, year: int) -> date:
         return day.replace(year=year, day=28)
 
 
+def month_range(year: int, month: int) -> tuple[date, date]:
+    last = calendar.monthrange(year, month)[1]
+    return date(year, month, 1), date(year, month, last)
+
+
+def is_full_month(start: date, end: date) -> bool:
+    return start.day == 1 and end == month_range(start.year, start.month)[1]
+
+
+def is_full_year(start: date, end: date) -> bool:
+    return start == date(start.year, 1, 1) and end == date(start.year, 12, 31)
+
+
+def previous_period_range(rng: Range) -> Range:
+    if rng.period == "year" or is_full_year(rng.start, rng.end):
+        return range_from_dates(date(rng.start.year - 1, 1, 1), date(rng.start.year - 1, 12, 31), "year")
+    if rng.period == "month" or is_full_month(rng.start, rng.end):
+        prev_start, prev_end = previous_month(rng.start)
+        return range_from_dates(prev_start, prev_end, "month")
+    if rng.period == "week":
+        return range_from_dates(rng.start - timedelta(days=7), rng.end - timedelta(days=7), "week")
+    span = (rng.end - rng.start).days + 1
+    prev_end = rng.start - timedelta(days=1)
+    prev_start = prev_end - timedelta(days=span - 1)
+    return range_from_dates(prev_start, prev_end, "custom")
+
+
 def range_from_dates(start: date, end: date, period: str) -> Range:
     if period == "month":
         label = f"{start:%B %Y}"
@@ -188,22 +236,11 @@ def range_from_dates(start: date, end: date, period: str) -> Range:
 
 
 def comparison_ranges(rng: Range) -> list[tuple[str, Range]]:
-    if rng.period == "month":
-        prev_start, prev_end = previous_month(rng.start)
-        prev = range_from_dates(prev_start, prev_end, "month")
-    elif rng.period == "year":
-        prev = range_from_dates(date(rng.start.year - 1, 1, 1), date(rng.start.year - 1, 12, 31), "year")
-    elif rng.period == "week":
-        prev = range_from_dates(rng.start - timedelta(days=7), rng.end - timedelta(days=7), "week")
-    else:
-        length = (rng.end - rng.start).days + 1
-        prev_end = rng.start - timedelta(days=1)
-        prev = range_from_dates(prev_end - timedelta(days=length - 1), prev_end, "custom")
-
+    prev = previous_period_range(rng)
     yoy = range_from_dates(
         safe_replace_year(rng.start, rng.start.year - 1),
         safe_replace_year(rng.end, rng.end.year - 1),
-        rng.period,
+        "year" if is_full_year(rng.start, rng.end) else "month" if is_full_month(rng.start, rng.end) else rng.period,
     )
 
     ranges = [("prev", prev)]
@@ -278,6 +315,33 @@ def loose_song_key(value: Any) -> str:
     return " ".join(raw.split())
 
 
+def archive_title_for_match(value: Any) -> str:
+    raw = str(value or "").replace("’", "'").replace("`", "'")
+    raw = re.sub(r"\b10\s*mv\b", "10 minute version", raw, flags=re.I)
+    raw = re.sub(r"\btv\b", "taylor's version", raw, flags=re.I)
+    raw = re.sub(r"\bftv\b", "from the vault", raw, flags=re.I)
+    return raw
+
+
+def song_exact_key(value: Any) -> str:
+    return spotify_normalize_title(archive_title_for_match(value))
+
+
+def song_base_key(value: Any) -> str:
+    raw = archive_title_for_match(value)
+    raw = re.sub(r"\s*\([^)]*\)", "", raw)
+    raw = re.sub(r"\s*-\s*(?:from .+|single|ep)$", "", raw, flags=re.I)
+    return spotify_normalize_title(raw)
+
+
+def song_lookup_keys(value: Any) -> list[str]:
+    keys: list[str] = []
+    for key in (song_exact_key(value), song_base_key(value)):
+        if key and key not in keys:
+            keys.append(key)
+    return keys
+
+
 def canonical_song_family(value: Any) -> str:
     raw = str(value or "").strip()
     if not raw:
@@ -304,6 +368,10 @@ def canonical_era(value: Any) -> str:
     return raw
 
 
+def is_recap_song(title: Any) -> bool:
+    return not NON_SONG_TITLE_RE.search(str(title or ""))
+
+
 def read_spotify_catalog() -> tuple[dict[str, dict[str, Any]], list[dict[str, Any]]]:
     songs_payload = load_json(WEB_DATA / "songs.json")
     albums_payload = load_json(WEB_DATA / "albums.json")
@@ -316,9 +384,9 @@ def build_song_lookup(songs: dict[str, dict[str, Any]]) -> dict[str, dict[str, A
     lookup: dict[str, dict[str, Any]] = {}
     for song in songs.values():
         for title in (song.get("base_title"), song.get("title")):
-            key = loose_song_key(title)
-            if key and key not in lookup:
-                lookup[key] = song
+            for key in song_lookup_keys(title):
+                if key and key not in lookup:
+                    lookup[key] = song
     return lookup
 
 
@@ -333,11 +401,13 @@ def apply_daily_archive_fallback(
     if not wanted:
         return
     song_lookup = build_song_lookup(songs)
-    seen_keys = {
-        loose_song_key(song.get("base_title") or song.get("title") or track_id)
-        for track_id in song_totals
-        for song in [songs.get(track_id, {})]
-    }
+    seen_keys = set()
+    for track_id in song_totals:
+        song = songs.get(track_id, {})
+        for title in (song.get("base_title"), song.get("title")):
+            key = song_exact_key(title)
+            if key:
+                seen_keys.add(key)
 
     for path in DAILY_ARCHIVE_FILES:
         if not path.exists():
@@ -349,8 +419,10 @@ def apply_daily_archive_fallback(
                 continue
             for row in reader:
                 title = (row.get("Title") or "").strip()
-                key = loose_song_key(title)
-                if not key or key in seen_keys:
+                if not is_recap_song(title):
+                    continue
+                exact_key = song_exact_key(title)
+                if not exact_key:
                     continue
                 total = 0
                 best_streams = 0
@@ -366,9 +438,30 @@ def apply_daily_archive_fallback(
                 if total <= 0:
                     continue
 
-                catalog_song = song_lookup.get(key, {})
-                track_id = catalog_song.get("track_id") or f"archive:{key}"
-                if track_id in song_totals:
+                catalog_song = {}
+                for key in song_lookup_keys(title):
+                    catalog_song = song_lookup.get(key, {})
+                    if catalog_song:
+                        break
+                track_id = catalog_song.get("track_id") or f"archive:{exact_key}"
+                catalog_exact_keys = {
+                    song_exact_key(catalog_title)
+                    for catalog_title in (catalog_song.get("base_title"), catalog_song.get("title"))
+                    if catalog_title
+                }
+                versioned_exact_match = (
+                    bool(catalog_song)
+                    and exact_key in catalog_exact_keys
+                    and exact_key != song_base_key(title)
+                )
+                existing_total = song_totals.get(track_id)
+                if existing_total:
+                    if versioned_exact_match and total > existing_total * 2:
+                        song_totals[track_id] = total
+                        song_best[track_id] = (best_streams, best_day)
+                        seen_keys.add(exact_key)
+                    continue
+                if exact_key in seen_keys:
                     continue
                 song_totals[track_id] += total
                 song_best[track_id] = (best_streams, best_day)
@@ -378,7 +471,11 @@ def apply_daily_archive_fallback(
                     "primary_album": catalog_song.get("primary_album") or "Other",
                     "image_url": catalog_song.get("image_url") or "",
                 }
-                seen_keys.add(key)
+                seen_keys.add(exact_key)
+                for catalog_title in (catalog_song.get("base_title"), catalog_song.get("title")):
+                    catalog_key = song_exact_key(catalog_title)
+                    if catalog_key:
+                        seen_keys.add(catalog_key)
 
 
 def spotify_period_stats(rng: Range) -> dict[str, Any]:
@@ -407,6 +504,8 @@ def spotify_period_stats(rng: Range) -> dict[str, Any]:
     songs_ranked = []
     for track_id, total in song_totals.items():
         song = songs.get(track_id, {}) or archive_meta.get(track_id, {})
+        if not is_recap_song(song.get("title") or track_id):
+            continue
         family_title = canonical_song_family(song.get("base_title") or song.get("title") or track_id)
         songs_ranked.append({
             "track_id": track_id,
@@ -422,6 +521,8 @@ def spotify_period_stats(rng: Range) -> dict[str, Any]:
             "best_day": song_best.get(track_id, (0, ""))[1],
         })
     songs_ranked.sort(key=lambda item: (-item["streams"], item["title"].casefold()))
+    for index, item in enumerate(songs_ranked, 1):
+        item["rank"] = index
 
     combined_by_key: dict[str, dict[str, Any]] = {}
     eras_by_key: dict[str, dict[str, Any]] = {}
@@ -461,6 +562,15 @@ def spotify_period_stats(rng: Range) -> dict[str, Any]:
 
     songs_combined = sorted(combined_by_key.values(), key=lambda item: (-item["streams"], item["title"].casefold()))
     eras_ranked = sorted(eras_by_key.values(), key=lambda item: (-item["streams"], item["title"].casefold()))
+    for index, item in enumerate(songs_combined, 1):
+        item["rank"] = index
+    era_rank = 1
+    for item in eras_ranked:
+        if is_misc_era(item):
+            item["rank"] = None
+            continue
+        item["rank"] = era_rank
+        era_rank += 1
 
     return {
         "dates_used": dates_used,
@@ -492,6 +602,7 @@ def enrich_spotify_comparisons(current: dict[str, Any], comparisons: dict[str, d
             item["comparisons"][key] = {
                 "streams": previous.get("streams") if previous else None,
                 "best_day_streams": previous.get("best_day_streams") if previous else None,
+                "rank": previous.get("rank") if previous else None,
             }
     for item in current.get("songs_combined", []):
         item["comparisons"] = {}
@@ -500,6 +611,7 @@ def enrich_spotify_comparisons(current: dict[str, Any], comparisons: dict[str, d
             item["comparisons"][key] = {
                 "streams": previous.get("streams") if previous else None,
                 "best_day_streams": previous.get("best_day_streams") if previous else None,
+                "rank": previous.get("rank") if previous else None,
             }
     for item in current.get("eras", []):
         item["comparisons"] = {}
@@ -507,6 +619,7 @@ def enrich_spotify_comparisons(current: dict[str, Any], comparisons: dict[str, d
             previous = lookup.get(item["era_key"])
             item["comparisons"][key] = {
                 "streams": previous.get("streams") if previous else None,
+                "rank": previous.get("rank") if previous else None,
             }
     current["songs"] = current.get("songs_non_combined", [])
     current["albums"] = current.get("eras", [])
@@ -616,6 +729,10 @@ def clear_previous_images(output_dir: Path, rng: Range) -> None:
         print(f"Deleted {removed} previous recap preview file(s) from {output_dir}")
 
 
+def recap_period_output_dir(base_dir: Path, rng: Range) -> Path:
+    return base_dir / rng.slug
+
+
 def image_art(tables_image, image_url: str) -> str:
     data_uri = tables_image.url_to_data_uri(image_url or "")
     if data_uri:
@@ -682,6 +799,10 @@ RECAP_EXTRA_CSS = """
 .col-num.pos .metric-main,.col-num.pos{color:#067647}
 .col-num.neg .metric-main,.col-num.neg{color:#b42318}
 .col-num.neutral .metric-main,.col-num.neutral{color:#667085}
+.col-rank-delta{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10px;font-weight:800;text-transform:uppercase;line-height:1.05}
+.rank-delta.pos{color:#067647}
+.rank-delta.neg{color:#b42318}
+.rank-delta.neutral{color:#667085}
 """
 
 
@@ -698,12 +819,51 @@ def value_cell(value: str | dict[str, str]) -> str:
     return f'  <div class="col-num">{html.escape(str(value))}</div>'
 
 
-def delta_cell(current: int | None, previous: int | None) -> dict[str, str]:
+def rank_change_parts(current_rank: int | None, previous_rank: int | None) -> tuple[str, str]:
+    if current_rank is None:
+        return "", ""
+    if previous_rank is None:
+        return "new", "pos"
+    delta = int(previous_rank) - int(current_rank)
+    if delta == 0:
+        return "=", "neutral"
+    sign = "+" if delta > 0 else "-"
+    cls = "pos" if delta > 0 else "neg"
+    return f"{sign}{abs(delta)}", cls
+
+
+def rank_delta_cell(item: dict[str, Any], compare_keys: list[str]) -> str:
+    parts: list[str] = []
+    comparisons = item.get("comparisons") or {}
+    show_labels = len(compare_keys) > 1
+    labels = {"prev": "P", "yoy": "Y"}
+    for key in compare_keys:
+        text, cls = rank_change_parts(item.get("rank"), (comparisons.get(key) or {}).get("rank"))
+        if not text:
+            continue
+        prefix = f"{labels.get(key, key[:1].upper())} " if show_labels else ""
+        parts.append(f'<span class="rank-delta {html.escape(cls)}">{html.escape(prefix + text)}</span>')
+    if not parts:
+        parts.append('<span class="rank-delta neutral">-</span>')
+    return '<div class="col-rank-delta">' + "".join(parts) + "</div>"
+
+
+def delta_cell(
+    current: int | None,
+    previous: int | None,
+    *,
+    current_rank: int | None = None,
+    previous_rank: int | None = None,
+) -> dict[str, str]:
     text, cls = fmt_stream_delta(current, previous)
     if "<" in text:
         main, rest = text.split("<span", 1)
-        return {"class": cls, "html": f'<span class="metric-main">{html.escape(main)}</span><span{rest}'}
-    return {"class": cls, "main": text}
+        sub = rest.split(">", 1)[1].rsplit("</span>", 1)[0]
+        return {
+            "class": cls,
+            "html": f'<span class="metric-main">{html.escape(main)}</span><span class="metric-sub">{html.escape(sub)}</span>',
+        }
+    return {"class": cls, "html": f'<span class="metric-main">{html.escape(text)}</span>'}
 
 
 def metric_row_html(
@@ -715,12 +875,14 @@ def metric_row_html(
     image_url: str,
     values: list[str | dict[str, str]],
     rank_label: str | None = None,
+    rank_delta_html: str = "",
 ) -> str:
     row_class = "data-row row-gold" if index == 1 else ("data-row row-odd" if index % 2 else "data-row")
     value_html = "\n".join(value_cell(value) for value in values)
     rank_text = rank_label if rank_label is not None else f"#{index}"
     return f"""<div class="{row_class}">
   <div class="col-rank">{html.escape(rank_text)}</div>
+  {rank_delta_html or '<div class="col-rank-delta"><span class="rank-delta neutral">-</span></div>'}
   <div class="col-entity">
     {image_art(tables_image, image_url)}
     <div class="entity-info">
@@ -779,13 +941,14 @@ def render_recap_images(
     compare_labels: dict[str, str],
 ) -> list[Path]:
     tables_image = import_comp_tables()
+    output_dir = recap_period_output_dir(output_dir, rng)
     clear_previous_images(output_dir, rng)
     date_text = rng.label
     images: list[Path] = []
     compare_keys = [key for key in ("prev", "yoy") if key in compare_labels]
     compare_heads = [(f"Vs {compare_labels[key]}", True) for key in compare_keys]
-    stream_grid = "52px minmax(300px,1fr) 130px" + (" " + " ".join("108px" for _ in compare_keys) if compare_keys else "")
-    song_grid = "52px minmax(250px,1fr) 120px" + (" " + " ".join("94px" for _ in compare_keys) if compare_keys else "") + " 122px"
+    stream_grid = "52px 46px minmax(300px,1fr) 130px" + (" " + " ".join("108px" for _ in compare_keys) if compare_keys else "")
+    song_grid = "52px 46px minmax(230px,1fr) 120px" + (" " + " ".join("94px" for _ in compare_keys) if compare_keys else "") + " 122px"
     non_combined_header = header_background_for_cover(
         tables_image,
         (spotify.get("songs_non_combined") or [{}])[0].get("image_url") or "",
@@ -804,11 +967,17 @@ def render_recap_images(
             values=[
                 fmt_int(item["streams"]),
                 *[
-                    delta_cell(item.get("streams"), (item.get("comparisons") or {}).get(key, {}).get("streams"))
+                    delta_cell(
+                        item.get("streams"),
+                        (item.get("comparisons") or {}).get(key, {}).get("streams"),
+                        current_rank=item.get("rank"),
+                        previous_rank=(item.get("comparisons") or {}).get(key, {}).get("rank"),
+                    )
                     for key in compare_keys
                 ],
                 {"main": fmt_int(item["best_day_streams"]), "sub": item["best_day"]},
             ],
+            rank_delta_html=rank_delta_cell(item, compare_keys),
         )
         for index, item in enumerate(spotify["songs_non_combined"][:top], 1)
     )
@@ -821,7 +990,7 @@ def render_recap_images(
         subtitle="Spotify streams recap",
         date_text=date_text,
         rows_html=song_rows,
-        col_heads=[("Pos", False), ("Track", False), ("Streams", True), *compare_heads, ("Best day", True)],
+        col_heads=[("Pos", False), ("Rank", False), ("Track", False), ("Streams", True), *compare_heads, ("Best day", True)],
         grid_cols=song_grid,
         header_background=non_combined_header,
         keep_html=keep_html,
@@ -837,11 +1006,17 @@ def render_recap_images(
             values=[
                 fmt_int(item["streams"]),
                 *[
-                    delta_cell(item.get("streams"), (item.get("comparisons") or {}).get(key, {}).get("streams"))
+                    delta_cell(
+                        item.get("streams"),
+                        (item.get("comparisons") or {}).get(key, {}).get("streams"),
+                        current_rank=item.get("rank"),
+                        previous_rank=(item.get("comparisons") or {}).get(key, {}).get("rank"),
+                    )
                     for key in compare_keys
                 ],
                 {"main": fmt_int(item["best_day_streams"]), "sub": item["best_day"]},
             ],
+            rank_delta_html=rank_delta_cell(item, compare_keys),
         )
         for index, item in enumerate(spotify["songs_combined"][:top], 1)
     )
@@ -854,7 +1029,7 @@ def render_recap_images(
         subtitle="Spotify streams recap",
         date_text=date_text,
         rows_html=combined_rows,
-        col_heads=[("Pos", False), ("Track", False), ("Streams", True), *compare_heads, ("Best day", True)],
+        col_heads=[("Pos", False), ("Rank", False), ("Track", False), ("Streams", True), *compare_heads, ("Best day", True)],
         grid_cols=song_grid,
         header_background=combined_header,
         keep_html=keep_html,
@@ -885,11 +1060,17 @@ def render_recap_images(
             values=[
                 fmt_int(item["streams"]),
                 *[
-                    delta_cell(item.get("streams"), (item.get("comparisons") or {}).get(key, {}).get("streams"))
+                    delta_cell(
+                        item.get("streams"),
+                        (item.get("comparisons") or {}).get(key, {}).get("streams"),
+                        current_rank=item.get("rank"),
+                        previous_rank=(item.get("comparisons") or {}).get(key, {}).get("rank"),
+                    )
                     for key in compare_keys
                 ],
             ],
             rank_label=rank_label,
+            rank_delta_html=rank_delta_cell(item, compare_keys),
         )
         for index, item, rank_label in era_display_rows
     )
@@ -902,7 +1083,7 @@ def render_recap_images(
         subtitle="Spotify streams recap",
         date_text=date_text,
         rows_html=era_rows,
-        col_heads=[("Pos", False), ("Era", False), ("Streams", True), *compare_heads],
+        col_heads=[("Pos", False), ("Rank", False), ("Era", False), ("Streams", True), *compare_heads],
         grid_cols=stream_grid,
         header_background=era_header,
         keep_html=keep_html,
@@ -934,6 +1115,14 @@ def write_artifact(rng: Range, payload: dict[str, Any], tweets: list[str], image
     return out
 
 
+def stats_has_stream_data(stats: dict[str, Any]) -> bool:
+    for section in ("songs_non_combined", "songs_combined", "eras"):
+        for item in stats.get(section, []):
+            if (item.get("streams") or 0) > 0:
+                return True
+    return False
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build/post a period recap for @tsmuseum13.")
     parser.add_argument("--period", choices=["week", "month", "year"], default="month")
@@ -953,9 +1142,16 @@ def main() -> int:
 
     rng = build_range(args)
     spotify = spotify_period_stats(rng)
-    compare_ranges = comparison_ranges(rng)
+    candidate_compare_ranges = comparison_ranges(rng)
+    spotify_comparisons: dict[str, dict[str, Any]] = {}
+    compare_ranges: list[tuple[str, Range]] = []
+    for key, compare_rng in candidate_compare_ranges:
+        stats = spotify_period_stats(compare_rng)
+        if not stats_has_stream_data(stats):
+            continue
+        spotify_comparisons[key] = stats
+        compare_ranges.append((key, compare_rng))
     compare_labels = {key: compact_label(compare_rng) for key, compare_rng in compare_ranges}
-    spotify_comparisons = {key: spotify_period_stats(compare_rng) for key, compare_rng in compare_ranges}
     enrich_spotify_comparisons(spotify, spotify_comparisons)
     top = max(1, args.top)
     tweets = build_thread(rng, spotify, top)

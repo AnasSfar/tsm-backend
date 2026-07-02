@@ -125,7 +125,7 @@ def _generate_best_day_since_image(
     html = render_song_card(
         title=track.get("title") or row["title"],
         eyebrow="Spotify Streams",
-        subtitle=f"{label} - {date_text}",
+        subtitle=label,
         stats=[
             {"label": "Daily Streams", "value": _fmt_signed_int(daily), "badge": pct, "badge_class": _badge_class(pct)},
             {"label": "Total Streams", "value": _fmt_int(total_today), "badge": "Since release", "badge_class": "flat"},
@@ -133,8 +133,9 @@ def _generate_best_day_since_image(
         cover_url=cover_url,
         footer_left="@tsmuseum13",
         footer_right=date_text,
-        extra=label,
+        extra=track.get("album") or row.get("album") or "",
         best_since=True,
+        combined_versions=bool(row.get("combined")),
     )
     out_dir = _day_dir(target_date) / "best_day_since"
     out_path = out_dir / f"best_day_since_{slugify(track.get('title') or row['title'])}_{target_date}.png"

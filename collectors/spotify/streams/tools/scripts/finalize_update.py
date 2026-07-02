@@ -902,8 +902,16 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                 lambda: _run_forecast_and_image_refresh(ctx),
             )
 
+        if not ctx.debug_daily_mode and not ctx.local_test_mode:
+            with timer.step("debut posts"):
+                _post_debut_releases(ctx, post_state)
+
         with timer.step("daily recap card"):
             _post_daily_recap_card(ctx, post_state)
+
+        if not ctx.debug_daily_mode and not ctx.local_test_mode:
+            with timer.step("best-day-since posts"):
+                _post_best_day_since(ctx, post_state)
 
         with timer.step("albums daily post"):
             _post_albums_daily(ctx, post_state)
@@ -916,10 +924,6 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
 
         spotlight_thread = _start_spotlight_gainers(ctx)
 
-        with timer.step("debut posts"):
-            _post_debut_releases(ctx, post_state)
-        with timer.step("best-day-since posts"):
-            _post_best_day_since(ctx, post_state)
         with timer.step("album update posts"):
             _post_album_updates(ctx, post_state)
         if spotlight_thread is not None:
