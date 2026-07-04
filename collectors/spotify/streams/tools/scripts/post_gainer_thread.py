@@ -142,11 +142,13 @@ def _build_tweet(row: dict, *, rank: int, target_date: str, period: str) -> str:
     date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
     emoji = album_emoji(track.get("album"))
     title = track["title"]
-    compare_label = "yesterday" if period == "daily" else "last week"
+    max_days = history_store.days_covered_by_row(row["track_id"], target_date) if period == "daily" else 1
+    when = "yesterday" if max_days <= 1 else f"over the last {max_days} days"
+    compare_label = when if period == "daily" else "last week"
     song_url = f"https://thetsmuseum.app/songs/{row['track_id']}"
     return (
         f'{emoji} #{rank} "{title}" was one of Taylor Swift\'s biggest {period} gainers '
-        f"by % yesterday ({date_fmt}).\n\n"
+        f"by % {when} ({date_fmt}).\n\n"
         f"It rose {_fmt_pct(row['pct'])} vs {compare_label}, with {_fmt_int(row['daily_today'])} streams "
         f"(+{_fmt_int(row['gain'])}).\n\n"
         f"See full track's history here : {song_url}"

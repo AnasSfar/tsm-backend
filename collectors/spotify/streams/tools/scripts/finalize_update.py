@@ -26,7 +26,7 @@ ALBUM_UPDATE_TARGETS = (
     "The Life of a Showgirl",
     "THE TORTURED POETS DEPARTMENT",
 )
-ALBUM_UPDATE_GAIN_THRESHOLD_PCT = 15.0
+ALBUM_UPDATE_GAIN_THRESHOLD_PCT = 10.0
 GAINER_ALBUM_UPDATE_MIN_TRACKS = 2
 GAINER_ALBUM_UPDATE_LIMIT = 5
 GAINER_ALBUM_UPDATE_MIN_BASELINE = 1000
@@ -811,6 +811,34 @@ def _post_albums_daily(ctx: FinalizeContext, state: dict[str, float]) -> None:
     )
 
 
+def _post_all_albums_thread(ctx: FinalizeContext, state: dict[str, float]) -> None:
+    """Mondays and Fridays only: post every album (excluding Misc/standalone)
+    as a single thread, independently of the ALBUM_UPDATE_TARGETS posts."""
+    if ctx.debug_daily_mode or ctx.local_test_mode:
+        print("[DEBUG-DAILY/LOCAL-TEST] Skip all-albums thread.")
+        return
+
+    weekday = date_cls.fromisoformat(ctx.summary["stats_date"]).weekday()
+    if weekday not in (0, 4):  # Monday, Friday
+        return
+
+    if not ctx.no_post_mode and not ctx.summary.get("all_done"):
+        print("Skipping all-albums thread: not all tracks are done yet.")
+        return
+
+    thread_script = ctx.script_dir / "tools" / "scripts" / "post_all_albums_thread.py"
+    thread_cmd = [sys.executable, str(thread_script), ctx.summary["stats_date"]]
+    if ctx.no_post_mode:
+        thread_cmd.append("--no-post")
+    _run(
+        ctx,
+        thread_cmd,
+        label="all-albums thread",
+        should_post=not ctx.no_post_mode,
+        state=state,
+    )
+
+
 def _post_debut_releases(ctx: FinalizeContext, state: dict[str, float]) -> None:
     label = "debut release posts"
     _wait_before_post(
@@ -1051,6 +1079,10 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
 
         with timer.step("albums daily post"):
             _post_albums_daily(ctx, post_state)
+
+        if not ctx.debug_daily_mode and not ctx.local_test_mode:
+            with timer.step("all-albums thread"):
+                _post_all_albums_thread(ctx, post_state)
 
         with timer.step("streams post"):
             _post_streams_image(ctx, post_state)

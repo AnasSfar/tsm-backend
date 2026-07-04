@@ -512,8 +512,13 @@ def try_apply_track_update(
         reason = f"anomaly_delta_gt_{MAX_DAILY_INCREASE}"
         real_update = False
     elif missing_previous_day_total:
-        reason = "missing_previous_day_total"
-        real_update = False
+        # No row for the immediate previous day, but the total genuinely grew
+        # since the last real data point — write it as-is (real, measured
+        # data), just note that this delta may span more than one day so
+        # posts can word it accordingly instead of implying a single day.
+        reason = "updated_multi_day_gap"
+        real_update = True
+        daily = compute_daily(last_total, total)
     else:
         reason = "updated"
         real_update = True

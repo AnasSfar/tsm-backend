@@ -484,17 +484,25 @@ def build_html(top_rows: list[dict], target_date: str, cover_map: dict, track_al
                top_n: int,
                image_cache: dict[str, str] | None = None) -> str:
     from datetime import datetime
+    import history_store
     date_fmt   = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
     rows_html  = build_rows_html(top_rows, cover_map, track_album_map, image_cache)
     first_rank = top_rows[0].get("rank", 1) if top_rows else 1
     last_rank  = top_rows[-1].get("rank", top_n) if top_rows else top_n
 
+    max_days = history_store.max_days_covered(
+        [row.get("track_id") for row in top_rows if row.get("track_id")], target_date,
+    )
+    title = "Taylor Swift · Daily Streams" if max_days <= 1 else f"Taylor Swift · {max_days}-Day Streams"
+    period_note = f" · {date_fmt}" if max_days <= 1 else f" · up to {date_fmt} ({max_days} days)"
+    col_label = "Daily" if max_days <= 1 else f"{max_days}d"
+
     return build_table_html(
-        title="Taylor Swift · Daily Streams",
-        subtitle=f"Taylor Swift's #{first_rank}-{last_rank} most streamed songs · {date_fmt}",
+        title=title,
+        subtitle=f"Taylor Swift's #{first_rank}-{last_rank} most streamed songs{period_note}",
         col_heads=[
             ("Rank", False), ("+/-", False), ("Track", False),
-            ("Daily", True), ("Daily Chg", True), ("Weekly Chg", True), ("Total", True),
+            (col_label, True), ("Daily Chg", True), ("Weekly Chg", True), ("Total", True),
         ],
         grid_cols="46px 42px minmax(130px,1fr) 104px 94px 94px 92px",
         rows_html=rows_html,

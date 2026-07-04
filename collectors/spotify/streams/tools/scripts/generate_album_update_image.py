@@ -47,6 +47,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT.parent))   # collectors/spotify/ for core.*
 
 from core.data_paths import first_existing_db_history, update_streams_dir
+import history_store
 
 HISTORY_PATH    = first_existing_db_history("streams_history.csv")
 ALBUMS_DIR      = DB_DIR / "discography" / "albums"
@@ -1619,7 +1620,10 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
     if is_ttpd_anniversary:
         first_line = f'📈| "{canonical_name}" received {total_daily_fmt} streams on its second anniversary, April 19th 2026.{album_pct_str}'
     else:
-        first_line = f'📈| "{canonical_name}" received {total_daily_fmt} streams yesterday, {date_fmt}.{album_pct_str}'
+        album_track_ids = [t.get("track_id") for t in tracks if t.get("track_id")]
+        max_days = history_store.max_days_covered(album_track_ids, target_date)
+        when = f"yesterday, {date_fmt}" if max_days <= 1 else f"over the last {max_days} days, up to {date_fmt}"
+        first_line = f'📈| "{canonical_name}" received {total_daily_fmt} streams {when}.{album_pct_str}'
 
     return (
         f"{first_line}\n\n"

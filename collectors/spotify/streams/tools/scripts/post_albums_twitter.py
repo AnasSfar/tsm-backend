@@ -23,6 +23,7 @@ from core.data_paths import update_streams_dir
 from core.twitter import post_with_image
 
 import generate_albums_image
+import history_store
 from post_locks import mark_posted, should_skip_post
 
 TWITTER_MAX = 280
@@ -160,10 +161,13 @@ def build_tweet(rows: list[dict], target_date: str) -> str:
     month = d.strftime("%B")
     day_ord = _ordinal(d.day)
     year = d.year
+    max_days = history_store.max_days_covered(history_store.load_album_track_ids(), target_date)
+    when = f"yesterday, {weekday}, {month} {day_ord}, {year}" if max_days <= 1 else (
+        f"over the last {max_days} days, up to {month} {day_ord}, {year}"
+    )
 
     return (
-        f"📊 | Taylor Swift's eras on Spotify yesterday, "
-        f"{weekday}, {month} {day_ord}, {year}.\n\n"
+        f"📊 | Taylor Swift's eras on Spotify {when}.\n\n"
         "See the combined version here :\n"
         "🔗 : https://thetsmuseum.app/albums/date/latest"
     )

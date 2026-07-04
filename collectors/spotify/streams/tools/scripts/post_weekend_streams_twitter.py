@@ -24,6 +24,7 @@ from core.data_paths import update_streams_dir  # noqa: E402
 from core.twitter import post_with_image  # noqa: E402
 
 import generate_weekend_streams_image
+import history_store
 from post_locks import mark_posted, should_skip_post
 
 
@@ -35,9 +36,14 @@ def _ordinal(n: int) -> str:
 
 def build_tweet(target_date: str) -> str:
     d = date.fromisoformat(target_date)
+    max_days = history_store.max_days_covered(history_store.load_album_track_ids(), target_date)
+    when = (
+        f"yesterday, {d.strftime('%A')}, {d.strftime('%B')} {_ordinal(d.day)}, {d.year}"
+        if max_days <= 1
+        else f"over the last {max_days} days, up to {d.strftime('%B')} {_ordinal(d.day)}, {d.year}"
+    )
     return (
-        "Taylor Swift's albums and songs on the Spotify counter yesterday, "
-        f"{d.strftime('%A')}, {d.strftime('%B')} {_ordinal(d.day)}, {d.year}.\n"
+        f"Taylor Swift's albums and songs on the Spotify counter {when}.\n"
         "Full update here : https://thetsmuseum.app/streams/latest"
     )
 

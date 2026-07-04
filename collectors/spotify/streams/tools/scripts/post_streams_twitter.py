@@ -27,7 +27,15 @@ from core.twitter import post_image_thread
 from core.data_paths import update_streams_dir
 
 import generate_streams_image
+import history_store
 from post_locks import mark_posted, should_skip_post
+
+
+def _streams_period_phrase(target_date: str) -> str:
+    """"yesterday" for a normal single-day update, or "the last N days" when
+    some tracks' daily figure actually covers a multi-day gap."""
+    max_days = history_store.max_days_covered(history_store.load_album_track_ids(), target_date)
+    return "yesterday" if max_days <= 1 else f"over the last {max_days} days"
 
 
 def main():
@@ -77,25 +85,15 @@ def main():
 
     # Build tweet text
     date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    period = _streams_period_phrase(target_date)
     tweet = (
-            f"Taylor Swift's most streamed songs yesterday ({date_fmt}) :\n\n"
-            f"See full update here : https://thetsmuseum.app/streams/latest ❤️‍🔥"
-        )
-
-    thread_posts = [
-        (tweet, image_paths[0]),
-        (f"Taylor Swift's most streamed songs yesterday ({date_fmt}) — #{top_n + 1}-{top_n * 2} :", image_paths[1]),
-        (f"Taylor Swift's most streamed songs yesterday ({date_fmt}) — #{top_n * 2 + 1}-{top_n * 3} :", image_paths[2]),
-    ]
-
-    tweet = (
-        f"🧵 Taylor Swift's most streamed {top_n} songs yesterday ({date_fmt}) :\n\n"
+        f"🧵 Taylor Swift's most streamed {top_n} songs {period} ({date_fmt}) :\n\n"
         "See full update here : https://thetsmuseum.app/streams/latest ❤️‍🔥"
     )
     thread_posts = [
         (tweet, image_paths[0]),
-        (f"Taylor Swift's most streamed {top_n + 1}-{top_n * 2} songs yesterday ({date_fmt}) :", image_paths[1]),
-        (f"Taylor Swift's most streamed {top_n * 2 + 1}-{top_n * 3} songs yesterday ({date_fmt}) :", image_paths[2]),
+        (f"Taylor Swift's most streamed {top_n + 1}-{top_n * 2} songs {period} ({date_fmt}) :", image_paths[1]),
+        (f"Taylor Swift's most streamed {top_n * 2 + 1}-{top_n * 3} songs {period} ({date_fmt}) :", image_paths[2]),
     ]
 
     print(f"Tweet: {tweet}")

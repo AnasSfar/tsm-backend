@@ -77,9 +77,17 @@ def _compact_title(title: str) -> str:
     )
 
 
-def _build_table_tweet(*, period: str, target_date: str) -> str:
+def _build_table_tweet(*, period: str, target_date: str, rows: list[dict] | None = None) -> str:
     date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
-    return f"Taylor Swift's biggest {period} gainers by % yesterday ({date_fmt})."
+    if period == "daily" and rows:
+        max_days = max(
+            post_gainer_thread.history_store.days_covered_by_row(row["track_id"], target_date)
+            for row in rows
+        )
+    else:
+        max_days = 1
+    when = "yesterday" if max_days <= 1 else f"over the last {max_days} days"
+    return f"Taylor Swift's biggest {period} gainers by % {when} ({date_fmt})."
 
 
 def _table_title(*, period: str) -> str:
@@ -500,12 +508,19 @@ def _build_tweet(item: dict, target_date: str) -> str:
     date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
     gainer_periods = [period for period in ("daily", "weekly") if period in item]
 
+    max_days = (
+        post_gainer_thread.history_store.days_covered_by_row(item["track_id"], target_date)
+        if "daily" in item
+        else 1
+    )
+    when = "yesterday" if max_days <= 1 else f"over the last {max_days} days"
+
     def compose(display_title: str, *, compact: bool = False) -> str:
         if gainer_periods:
             period_label = " & ".join(gainer_periods)
             intro = (
                 f'{emoji} "{display_title}" was one of Taylor Swift\'s biggest '
-                f"{period_label} gainers by % yesterday ({date_fmt})."
+                f"{period_label} gainers by % {when} ({date_fmt})."
             )
         else:
             intro = f'{emoji} "{display_title}" earned its {best_day_since.row_label(item["best_day"])}.'
@@ -523,18 +538,18 @@ def _build_tweet(item: dict, target_date: str) -> str:
             daily = item["daily"]
             weekly = item["weekly"]
             lines.append(
-                f"It rose {_fmt_pct(daily['pct'])} vs yesterday and {_fmt_pct(weekly['pct'])} vs last week, "
+                f"It rose {_fmt_pct(daily['pct'])} vs {when} and {_fmt_pct(weekly['pct'])} vs last week, "
                 f"with {_fmt_int(daily['daily_today'])} streams."
             )
         elif "daily" in item:
             row = item["daily"]
             line = (
-                f"It rose {_fmt_pct(row['pct'])} vs yesterday, with {_fmt_int(row['daily_today'])} streams "
+                f"It rose {_fmt_pct(row['pct'])} vs {when}, with {_fmt_int(row['daily_today'])} streams "
                 f"(+{_fmt_int(row['gain'])})"
             )
             if best_label:
                 line = (
-                    f"It rose {_fmt_pct(row['pct'])} vs yesterday, {_fmt_int(row['daily_today'])} streams, "
+                    f"It rose {_fmt_pct(row['pct'])} vs {when}, {_fmt_int(row['daily_today'])} streams, "
                     f"earning its {best_label}"
                 )
             lines.append(f"{line}.")
@@ -646,7 +661,7 @@ def main() -> int:
             continue
 
         rows = [item[group_name] for item in items]
-        tweet = _build_table_tweet(period=group_name, target_date=target_date)
+        tweet = _build_table_tweet(period=group_name, target_date=target_date, rows=rows)
         image_path = _render_table_image(rows, period=group_name, target_date=target_date, out_dir=day_dir)
         print(f"[stream_highlights] {label} table ({len(tweet)} chars):\n{tweet}")
         print(f"[stream_highlights] Image: {image_path}")

@@ -731,6 +731,47 @@ def get_previous_total_before_date(track_id: str, stats_date: str) -> int | None
 
     return best_total
 
+def days_covered_by_row(track_id: str, stats_date: str) -> int:
+    """Return how many calendar days the daily_streams figure on stats_date
+    actually spans for this track (1 for a normal day-over-day delta, more
+    when there's a gap before it and the delta was computed against an
+    earlier date, e.g. reason="updated_multi_day_gap")."""
+    if not HISTORY_PATH.exists():
+        return 1
+
+    target = date.fromisoformat(stats_date)
+    best_date = None
+
+    with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            if (row.get("track_id") or "").strip() != track_id:
+                continue
+            d_raw = (row.get("date") or "").strip()
+            if not d_raw:
+                continue
+            try:
+                d = date.fromisoformat(d_raw)
+            except Exception:
+                continue
+            if d >= target:
+                continue
+            if best_date is None or d > best_date:
+                best_date = d
+
+    if best_date is None:
+        return 1
+    return max(1, (target - best_date).days)
+
+
+def max_days_covered(track_ids: list[str] | set[str], stats_date: str) -> int:
+    """Max day-span across a set of tracks for stats_date (e.g. an album or a
+    Top-N list) — used to decide whether a post must say "last N days"."""
+    if not track_ids:
+        return 1
+    return max(days_covered_by_row(track_id, stats_date) for track_id in track_ids)
+
+
 def has_real_update(previous_streams: int | None, new_streams: int) -> bool:
     if previous_streams is None:
         return True
