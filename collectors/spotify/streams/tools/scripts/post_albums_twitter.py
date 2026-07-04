@@ -14,7 +14,7 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent          # streams/tools/scripts/
 ROOT = SCRIPT_DIR.parents[1]                          # streams/
-TWITTER_SESSION = SCRIPT_DIR.parents[2] / "charts" / "worldwide" / "tools" / "json" / "twitter_session.json"
+TWITTER_SESSION = SCRIPT_DIR.parents[2] / "charts" / "global" / "tools" / "json" / "twitter_session.json"
 
 sys.path.insert(0, str(SCRIPT_DIR.parents[2]))        # collectors/spotify/
 sys.path.insert(0, str(ROOT))                         # collectors/spotify/streams/

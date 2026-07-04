@@ -63,6 +63,14 @@ def collect_apple_music(args: argparse.Namespace, passthrough: list[str]) -> int
     return _run(script, forwarded)
 
 
+def collect_youtube(args: argparse.Namespace, passthrough: list[str]) -> int:
+    script = REPO_ROOT / "collectors" / "youtube" / "update_youtube.py"
+    forwarded = _ensure_no_conflicting_post_flags(passthrough, args.no_post, False)
+    if args.date:
+        forwarded.extend(["--date", args.date])
+    return _run(script, forwarded)
+
+
 def daily(args: argparse.Namespace, passthrough: list[str]) -> int:
     chart_args = argparse.Namespace(date=args.date, no_post=args.no_post, post=args.post)
     stream_args = argparse.Namespace(date=args.date, no_post=args.no_post, post=args.post)
@@ -305,6 +313,11 @@ def build_parser() -> argparse.ArgumentParser:
         p.add_argument("--post", action="store_true")
     p = collect_sub.add_parser("apple-music")
     p.add_argument("--no-post", action="store_true")
+    p = collect_sub.add_parser("youtube")
+    p.add_argument("date", nargs="?")
+    p.add_argument("--no-post", action="store_true")
+    p.add_argument("--post", action="store_true")
+    p.add_argument("--force", action="store_true")
 
     export_parser = sub.add_parser("export", help="Run exports.")
     export_sub = export_parser.add_subparsers(dest="exporter", required=True)
@@ -340,6 +353,11 @@ def main(argv: list[str] | None = None) -> int:
             return collect_charts(args, passthrough)
         if args.collector == "apple-music":
             return collect_apple_music(args, passthrough)
+        if args.collector == "youtube":
+            forwarded = list(passthrough)
+            if getattr(args, "force", False):
+                forwarded.append("--force")
+            return collect_youtube(args, forwarded)
     if args.command == "export" and args.exporter == "web":
         return export_web(args, passthrough)
     if args.command == "audit" and args.audit_target == "data":

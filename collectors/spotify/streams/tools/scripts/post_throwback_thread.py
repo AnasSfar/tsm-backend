@@ -13,9 +13,8 @@ from playwright.sync_api import sync_playwright
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 ROOT = SCRIPT_DIR.parents[1]
-TSM_TWITTER_SESSION = ROOT.parent / "charts" / "worldwide" / "tools" / "json" / "twitter_session.json"
 SWIFTIES_TWITTER_SESSION = ROOT.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json"
-HANDLE = "@tsmuseum13"
+HANDLE = "@swiftiescharts"
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
@@ -361,7 +360,7 @@ def main() -> int:
     day_dir = update_streams_dir(target_date)
     day_dir.mkdir(parents=True, exist_ok=True)
     legacy_lock = day_dir / "throwback_posted.lock"
-    tsm_lock = day_dir / "throwback_tsmuseum13_posted.lock"
+    tsm_lock = day_dir / "throwback_swiftiescharts_main_posted.lock"
     swifties_lock = day_dir / "throwback_swiftiescharts_albums_posted.lock"
     if legacy_lock.exists() and not args.no_post:
         print(f"[throwback] Already posted for {target_date}, skipping.")
@@ -378,9 +377,9 @@ def main() -> int:
         songs_top_n=songs_top_n,
     )
 
-    print(f"[throwback] @tsmuseum13 thread: {len(tsm_posts)} post(s)")
+    print(f"[throwback] @swiftiescharts main thread: {len(tsm_posts)} post(s)")
     for idx, (tweet, image_path) in enumerate(tsm_posts, 1):
-        print(f"[throwback] @tsmuseum13 post {idx}/{len(tsm_posts)} ({len(tweet)} chars):\n{tweet}")
+        print(f"[throwback] @swiftiescharts post {idx}/{len(tsm_posts)} ({len(tweet)} chars):\n{tweet}")
         print(f"[throwback] Image: {image_path}")
     print(f"[throwback] @swiftiescharts album updates: {len(swifties_posts)} post(s)")
     for idx, (tweet, image_path) in enumerate(swifties_posts, 1):
@@ -391,18 +390,15 @@ def main() -> int:
         print("[throwback] Twitter post skipped (--no-post).")
         return 0
 
-    if tsm_posts and not TSM_TWITTER_SESSION.exists():
-        print(f"ERROR: @tsmuseum13 Twitter session not found at {TSM_TWITTER_SESSION}")
-        return 1
-    if swifties_posts and not SWIFTIES_TWITTER_SESSION.exists():
+    if (tsm_posts or swifties_posts) and not SWIFTIES_TWITTER_SESSION.exists():
         print(f"ERROR: @swiftiescharts Twitter session not found at {SWIFTIES_TWITTER_SESSION}")
         return 1
 
     if tsm_lock.exists():
-        print(f"[throwback] @tsmuseum13 already posted for {target_date}, skipping.")
+        print(f"[throwback] @swiftiescharts main thread already posted for {target_date}, skipping.")
     else:
-        if tsm_posts and not post_image_thread(tsm_posts, TSM_TWITTER_SESSION):
-            print("[throwback] Failed to post @tsmuseum13 thread.")
+        if tsm_posts and not post_image_thread(tsm_posts, SWIFTIES_TWITTER_SESSION):
+            print("[throwback] Failed to post @swiftiescharts main thread.")
             return 1
         tsm_lock.touch()
 

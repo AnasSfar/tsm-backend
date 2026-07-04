@@ -12,7 +12,7 @@ from playwright.sync_api import sync_playwright
 
 SCRIPT_DIR = Path(__file__).resolve().parent          # streams/tools/scripts/
 ROOT = SCRIPT_DIR.parents[1]                          # streams/
-TWITTER_SESSION = ROOT.parent / "charts" / "worldwide" / "tools" / "json" / "twitter_session.json"
+TWITTER_SESSION = ROOT.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json"
 BEST_DAY_THREAD_MIN_DAYS = 30
 BEST_DAY_THREAD_MAX_DAYS = 60
 
@@ -373,7 +373,7 @@ body {{
     </div>
     {rows_html}
     <div class="ftr">
-      <span class="ftr-handle" style="color:{handle_color}">@tsmuseum13</span>
+      <span class="ftr-handle" style="color:{handle_color}">@swiftiescharts</span>
       <span class="ftr-date">{html.escape(date_fmt)}</span>
     </div>
   </div>
@@ -595,7 +595,7 @@ def _image_for_item(item: dict, target_date: str, covers: dict) -> Path:
         comparison_label=comparison_label,
         cover_url=spotlight.get_cover_url(track, covers),
         stats_date=target_date,
-        handle="@tsmuseum13",
+        handle="@swiftiescharts",
         combined=False,
         highlight="vs",
     )

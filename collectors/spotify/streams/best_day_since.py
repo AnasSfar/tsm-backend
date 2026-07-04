@@ -44,6 +44,7 @@ class Track:
     album: str
     spotify_url: str
     song_family: str = ""
+    is_alt_version: bool = False
 
 
 @dataclass(frozen=True)
@@ -157,6 +158,7 @@ def load_tracks(*, include_extras: bool = False) -> dict[str, Track]:
                 album=album,
                 spotify_url=f"https://open.spotify.com/track/{track_id}",
                 song_family=str(item.get("song_family") or "").strip(),
+                is_alt_version=is_extra_track(section, item),
             )
 
     return tracks
@@ -196,15 +198,23 @@ def load_history() -> dict[str, list[Point]]:
 def fill_missing_dailies(points: list[Point]) -> list[Point]:
     filled: list[Point] = []
     previous_total: int | None = None
+    previous_day: date | None = None
 
     for point in points:
         daily = point.daily
-        if daily is None and point.total is not None and previous_total is not None:
+        if (
+            daily is None
+            and point.total is not None
+            and previous_total is not None
+            and previous_day is not None
+            and point.day == previous_day + timedelta(days=1)
+        ):
             diff = point.total - previous_total
             daily = diff if diff >= 0 else None
         filled.append(Point(point.day, point.total, daily))
         if point.total is not None:
             previous_total = point.total
+            previous_day = point.day
 
     return filled
 
@@ -244,7 +254,10 @@ def combined_tracks_for(track: Track, tracks: dict[str, Track]) -> list[Track]:
     family = (track.song_family or "").strip()
     if not family:
         return [track]
-    related = [candidate for candidate in tracks.values() if candidate.song_family == family]
+    related = [
+        candidate for candidate in tracks.values()
+        if candidate.song_family == family and not candidate.is_alt_version
+    ]
     return related or [track]
 
 
@@ -254,11 +267,31 @@ def compute_best_day_since_combined(
     history: dict[str, list[Point]],
     target_date: date,
 ) -> dict | None:
+    # Solo streams take priority: only fall back to the family-wide sum (and
+    # flag the row as "combined") when the track's own streams alone don't
+    # produce a best-day-since result.
+    solo_row = compute_best_day_since(track, history.get(track.track_id) or [], target_date)
+    if solo_row:
+        solo_row["combined"] = False
+        solo_row["combined_track_ids"] = [track.track_id]
+        solo_row["combined_version_count"] = 1
+        return solo_row
+
     points_by_track = [
         history.get(related.track_id) or []
         for related in related_tracks
     ]
     points = combine_points(points_by_track)
+
+    # Only compare against days where every related track already existed,
+    # so a "combined" record is checked against past combined sums — never
+    # against an old day when a single version's solo total stood in for
+    # the sum because the other versions hadn't been released yet.
+    track_start_days = [pts[0].day for pts in points_by_track if pts]
+    if len(track_start_days) > 1:
+        combined_start = max(track_start_days)
+        points = [point for point in points if point.day >= combined_start]
+
     row = compute_best_day_since(track, points, target_date)
     if not row:
         return None
@@ -266,6 +299,43 @@ def compute_best_day_since_combined(
     row["combined"] = len(related_ids) > 1
     row["combined_track_ids"] = related_ids
     row["combined_version_count"] = len(related_ids)
+    return row
+
+
+def load_album_track_ids(tracks: dict[str, Track]) -> dict[str, list[str]]:
+    """Group standard-edition track IDs (no karaoke/live/remix/acoustic) by album."""
+    by_album: dict[str, list[str]] = {}
+    for track_id, track in tracks.items():
+        if track.is_alt_version or not track.album:
+            continue
+        by_album.setdefault(track.album, []).append(track_id)
+    return by_album
+
+
+def compute_album_best_day_since(
+    album: str,
+    track_ids: list[str],
+    history: dict[str, list[Point]],
+    target_date: date,
+) -> dict | None:
+    points_by_track = [history.get(track_id) or [] for track_id in track_ids]
+    points = combine_points(points_by_track)
+
+    # Same guard as compute_best_day_since_combined: only compare against
+    # days where every album track already had data, so we're never
+    # comparing today's full-album total against a day when the album
+    # wasn't complete yet (e.g. before a bonus/deluxe track was added).
+    track_start_days = [pts[0].day for pts in points_by_track if pts]
+    if len(track_start_days) > 1:
+        combined_start = max(track_start_days)
+        points = [point for point in points if point.day >= combined_start]
+
+    album_track = Track(track_id="", title=album, album=album, spotify_url="")
+    row = compute_best_day_since(album_track, points, target_date)
+    if not row:
+        return None
+    row["album"] = album
+    row["track_ids"] = track_ids
     return row
 
 
@@ -283,6 +353,9 @@ def compute_best_day_since(track: Track, points: list[Point], target_date: date)
     point_by_date = {point.day: point for point in points}
     current = point_by_date.get(target_date)
     if current is None or current.daily is None or current.daily <= 0:
+        return None
+    previous_day = point_by_date.get(target_date - timedelta(days=1))
+    if previous_day is None or previous_day.total is None:
         return None
 
     previous_points = [point for point in points if point.day < target_date and point.daily is not None]

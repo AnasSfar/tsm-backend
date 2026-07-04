@@ -31,7 +31,9 @@ from backfill_discography_from_spotify import run_backfill as run_discography_ba
 from finalize_update import (
     ALBUM_UPDATE_TARGETS,
     FinalizeContext,
+    PeriodicWebExporter,
     ReadyAlbumUpdatePoster,
+    ReadyBestDaySincePoster,
     run_final_update_tasks,
 )
 from release_targets import is_recent_release_date, recent_release_album_names
@@ -147,19 +149,25 @@ HILL_429_THRESHOLD = 0.15   # taux de 429 au-delà duquel on retire 1 worker
 HILL_MIN_WORKERS   = 2
 HILL_INITIAL       = 9      # point de départ (was 6 — start near max immediately)
 
-PROBE_CANDIDATES = 10  # top N tracks (by streams) used as probe candidates
+PROBE_REQUIRED_UPDATED = 1
+PROBE_FORCE_TOKEN_REFRESH_AFTER_ZERO_UPDATES = 3
+PROBE_BROWSER_FALLBACK_AFTER_ZERO_UPDATES = 6
+PROBE_MAX_RETRIES_BEFORE_FULL_RUN = 30
 
 PENDING_RETRY_SLEEP_SECONDS = 20
 MAX_PENDING_RETRY_ROUNDS = 15
+KNOWN_STUCK_PENDING_RETRY_ROUNDS = 5
 INFINITE_RETRY_PREVIOUS_DAY_TOP_N = 70
 POST_BETWEEN_STREAMS_POSTS_SECONDS = 0
 INCREMENTAL_PUBLISH_ON_UPDATE = False
+PARTIAL_WEB_EXPORT_INTERVAL_SECONDS = 300
 
 NOT_FOUND_STREAK_PATH = DATA_DIR / "not_found_streak.json"
+KNOWN_STUCK_PENDING_PATH = ROOT / "spotify_streams" / "known_stuck_pending_tracks.json"
 MAX_NOT_FOUND_DAYS = 7
 
 MAX_DAILY_INCREASE = 50_000_000
-MAX_ESTIMATED_STREAM_GAP_DAYS = 2
+MAX_ESTIMATED_STREAM_GAP_DAYS = 4
 ESTIMATED_MISSING_DAY_REASON = "missing_daily_gap"
 NEW_RELEASE_RETRY_ATTEMPTS = int(os.getenv("NEW_RELEASE_RETRY_ATTEMPTS", "12"))
 NEW_RELEASE_RETRY_SLEEP_SECONDS = int(os.getenv("NEW_RELEASE_RETRY_SLEEP_SECONDS", "10"))
@@ -181,6 +189,62 @@ def _write_daily_lock(stats_date: str, lock_name: str, payload: dict) -> None:
         **payload,
     }
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def load_known_stuck_pending_tracks() -> dict[str, dict]:
+    if not KNOWN_STUCK_PENDING_PATH.exists():
+        return {}
+    try:
+        payload = json.loads(KNOWN_STUCK_PENDING_PATH.read_text(encoding="utf-8-sig"))
+    except Exception:
+        return {}
+    tracks = payload.get("tracks") if isinstance(payload, dict) else payload
+    if not isinstance(tracks, dict):
+        return {}
+    return {
+        str(track_id): info if isinstance(info, dict) else {}
+        for track_id, info in tracks.items()
+        if str(track_id).strip()
+    }
+
+
+def save_known_stuck_pending_tracks(tracks: dict[str, dict]) -> None:
+    KNOWN_STUCK_PENDING_PATH.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "updated_at": get_scrape_date_str(),
+        "retry_limit": KNOWN_STUCK_PENDING_RETRY_ROUNDS,
+        "tracks": dict(sorted(tracks.items())),
+    }
+    KNOWN_STUCK_PENDING_PATH.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+
+
+def remember_known_stuck_pending_tracks(
+    known_stuck: dict[str, dict],
+    *,
+    pending_results: list[dict],
+    stats_date: str,
+) -> bool:
+    changed = False
+    for result in pending_results:
+        track_id = str(result.get("track_id") or "").strip()
+        if not track_id:
+            continue
+        previous = known_stuck.get(track_id, {})
+        known_stuck[track_id] = {
+            "track_id": track_id,
+            "title": result.get("title") or previous.get("title") or "",
+            "spotify_url": result.get("spotify_url") or previous.get("spotify_url") or "",
+            "first_stuck_date": previous.get("first_stuck_date") or stats_date,
+            "last_stuck_date": stats_date,
+            "last_reason": result.get("reason") or "",
+            "last_streams": result.get("streams"),
+            "times_stuck": int(previous.get("times_stuck") or 0) + 1,
+        }
+        changed = True
+    return changed
 
 
 def _daily_lock_exists(stats_date: str, lock_name: str) -> bool:
@@ -426,13 +490,7 @@ def try_apply_track_update(
         else get_history_total_for_date(track_id, previous_stats_date)
     )
     daily = compute_daily(previous_day_total, total)
-    if daily is None:
-        previous_total_before_date = (
-            history_index.get_previous_total_before_date(track_id, stats_date)
-            if history_index is not None
-            else get_previous_total_before_date(track_id, stats_date)
-        )
-        daily = compute_daily(previous_total_before_date, total)
+    missing_previous_day_total = previous_day_total is None and last_total is not None
 
     if last_total is None:
         reason = "first_seen"
@@ -445,6 +503,9 @@ def try_apply_track_update(
         real_update = True
     elif total - last_total > MAX_DAILY_INCREASE:
         reason = f"anomaly_delta_gt_{MAX_DAILY_INCREASE}"
+        real_update = False
+    elif missing_previous_day_total:
+        reason = "missing_previous_day_total"
         real_update = False
     else:
         reason = "updated"
@@ -493,6 +554,7 @@ def try_apply_track_update(
         "track_id": track_id,
         "title": track["title"],
         "spotify_url": track["spotify_url"],
+        "chart_extra": bool(track.get("chart_extra")),
         "status": status,
         "streams": total,
         "daily_streams": daily,
@@ -504,9 +566,7 @@ def try_apply_track_update(
 
 def _probe_on_page(probe_tracks: list[dict], page) -> dict:
     """
-    Logique séquentielle :
-    - Cherche la 1ère chanson OK → si non updatée → can_start=False
-    - Si 1ère updatée → cherche la 2ème chanson OK → si updatée → can_start=True
+    Check several top tracks before deciding whether Spotify's daily update started.
     """
     results = []
     successful_probes = 0
@@ -532,11 +592,11 @@ def _probe_on_page(probe_tracks: list[dict], page) -> dict:
                 "updated": updated,
                 "raw": raw,
             })
-            if successful_probes == 1 and not updated:
-                break  # 1ère chanson pas updatée → inutile de continuer
-            if successful_probes == 2:
-                can_start_full_run = updated
-                break  # 2ème chanson OK → décision finale
+            if updated_probes >= PROBE_REQUIRED_UPDATED:
+                can_start_full_run = True
+                break
+            if successful_probes >= len(probe_tracks):
+                break
         else:
             results.append({
                 "title": title,
@@ -556,11 +616,13 @@ def _probe_on_page(probe_tracks: list[dict], page) -> dict:
 
 
 def build_probe_tracks(tracks: list[dict]) -> list[dict]:
-    """Retourne les PROBE_CANDIDATES tracks avec le plus de streams hier, triées décroissant."""
-    last_totals = get_all_last_history_totals()
-    scored = [(t, last_totals.get(t["track_id"], 0)) for t in tracks]
-    scored.sort(key=lambda x: x[1], reverse=True)
-    return [t for t, _ in scored[:PROBE_CANDIDATES]]
+    """Return all loaded database tracks, shuffled so each retry scans a different order."""
+    probe_tracks = [
+        t for t in tracks
+        if t.get("track_id") and t.get("spotify_url")
+    ]
+    random.shuffle(probe_tracks)
+    return probe_tracks
 
 
 def build_album_post_priority_track_ids(stats_date: str | None = None) -> set[str]:
@@ -606,6 +668,7 @@ def retry_pending_tracks_until_collected(
     force_reprocess: bool,
     write_history: bool,
     collected_ids: set[str],
+    use_browser_scrape: bool = False,
 ) -> None:
     pending_ids = set(track_ids)
     retry_round = 0
@@ -631,6 +694,7 @@ def retry_pending_tracks_until_collected(
             token_mgr=token_mgr,
             force_reprocess=force_reprocess,
             write_history=write_history,
+            use_browser_scrape=use_browser_scrape,
         )
         print_summary_block(retry_summary)
         print_api_metrics(retry_summary)
@@ -1109,6 +1173,7 @@ def _worker(
     api_run_metrics: ApiRunMetrics | None = None,
     write_history: bool = True,
     compare_before_stats_date: bool = False,
+    use_browser_scrape: bool = False,
 ):
     if adaptive is not None:
         while True:
@@ -1120,6 +1185,17 @@ def _worker(
     _api_session = _requests.Session()
     _adapter = HTTPAdapter(pool_connections=1, pool_maxsize=4)
     _api_session.mount("https://", _adapter)
+    _playwright = None
+    _browser = None
+    _browser_context = None
+    _browser_page = None
+
+    if use_browser_scrape:
+        _playwright = sync_playwright().start()
+        _browser = launch_browser(_playwright)
+        _browser_context = _browser.new_context(locale="fr-FR")
+        _browser_page = _browser_context.new_page()
+        _browser_page.route("**/*", block_unneeded)
 
     try:
         while True:
@@ -1152,6 +1228,12 @@ def _worker(
                 scrape_status = "ok"
                 if LOG_MODE == "verbose":
                     print(f"  [pre-scraped] {track['title']} -> {total:,}")
+            elif use_browser_scrape and _browser_page is not None:
+                total, raw, scrape_status, _ = scrape_track_total(
+                    _browser_page,
+                    track["title"],
+                    track["spotify_url"],
+                )
             elif token_mgr is not None and token_mgr.available:
                 # fetch_playcount_api already handles transient retries; failures get a run-level retry pass.
                 api_result = fetch_playcount_api(
@@ -1198,7 +1280,12 @@ def _worker(
 
             elif scrape_status == "not_found" or total is None:
                 # Retry API immédiat pour les tracks du top-50
-                if track["track_id"] in priority_top_50_ids and token_mgr is not None and token_mgr.available:
+                if (
+                    not use_browser_scrape
+                    and track["track_id"] in priority_top_50_ids
+                    and token_mgr is not None
+                    and token_mgr.available
+                ):
                     for _retry in range(2):
                         api_result = fetch_playcount_api(
                             track["track_id"],
@@ -1262,6 +1349,16 @@ def _worker(
             _api_session.close()
         except Exception:
             pass
+        try:
+            if _browser is not None:
+                _browser.close()
+        except Exception:
+            pass
+        try:
+            if _playwright is not None:
+                _playwright.stop()
+        except Exception:
+            pass
 
 
 def run_update(
@@ -1273,6 +1370,7 @@ def run_update(
     token_mgr: "TokenManager | None" = None,
     force_reprocess: bool = False,
     write_history: bool = True,
+    use_browser_scrape: bool = False,
 ):
     ensure_history_file()
     removed_duplicates = dedupe_history_rows_by_date_track()
@@ -1343,9 +1441,12 @@ def run_update(
     if queue.qsize() > 0:
         lock = threading.Lock()
         publish_lock = threading.Lock()
-        initial_workers = min(HILL_INITIAL, queue.qsize())
-        max_workers     = min(MAX_PARALLEL_PAGES, queue.qsize())
+        worker_cap = 4 if use_browser_scrape else MAX_PARALLEL_PAGES
+        initial_workers = min(HILL_INITIAL, worker_cap, queue.qsize())
+        max_workers     = min(worker_cap, queue.qsize())
         adaptive = AdaptiveWorkerState(initial=initial_workers)
+        if use_browser_scrape:
+            print("Using browser page scrape for playcounts (API fallback mode).")
 
         # Spawner max_workers threads dès maintenant.
         # Les workers avec worker_id >= initial_workers attendent leur activation (pas de fenêtre ouverte).
@@ -1370,6 +1471,7 @@ def run_update(
                     api_run_metrics,
                     write_history,
                     force_reprocess,
+                    use_browser_scrape,
                 ),
                 daemon=True,
             )
@@ -1407,16 +1509,18 @@ def run_update(
             retry_results = [None] * retry_total
             retry_failed: list[dict] = []
             retry_adaptive = AdaptiveWorkerState(initial=min(6, retry_total))
+            retry_worker_cap = min(4 if use_browser_scrape else 6, retry_total)
             retry_workers  = [
                 threading.Thread(
                     target=_worker,
                     args=(retry_queue, retry_results, retry_failed, lock, publish_lock,
                           None, retry_total, dry_run_mode, idx, retry_adaptive,
                           frozenset(), None, token_mgr, history_index,
-                          api_run_metrics, write_history, force_reprocess),
+                          api_run_metrics, write_history, force_reprocess,
+                          use_browser_scrape),
                     daemon=True,
                 )
-                for idx in range(min(6, retry_total))
+                for idx in range(retry_worker_cap)
             ]
             for w in retry_workers:
                 w.start()
@@ -1961,6 +2065,16 @@ def main():
 
     _warp_connect()
 
+    if not dry_run_mode and not local_test_mode and not debug_daily_mode:
+        estimated_track_ids = estimate_missing_stream_history_gaps()
+        if estimated_track_ids:
+            print(
+                f"[streams-estimate] Prepared {len(estimated_track_ids)} track(s) "
+                "with estimated rows before collection."
+            )
+            already_done_for_stats_date = load_history_track_ids_for_date(stats_date)
+            done_tracks_before_run = len(already_done_for_stats_date)
+
     if debug_daily_mode:
         unfinished_ids = load_last_unfinished_update_track_ids(stats_date)
         if not unfinished_ids:
@@ -2157,6 +2271,7 @@ def main():
         and not local_test_mode
         and not debug_daily_mode
     )
+    use_browser_scrape_for_run = False
 
     if should_run_probe:
         probe_tracks = build_probe_tracks(tracks)
@@ -2164,12 +2279,28 @@ def main():
         if not probe_tracks:
             print("Probe skipped: no probe tracks found in database.")
         else:
-            def _print_probe(probe):
+            def _print_probe_progress(row, scanned, total):
+                if row["status"] == "ok":
+                    print(
+                        f"PROBE progress {scanned}/{total} | "
+                        f"{row['title']} | current={format_int(row['streams'])} | "
+                        f"previous={format_int(row['previous_streams'])} | "
+                        f"updated={'yes' if row['updated'] else 'no'}"
+                    )
+                else:
+                    print(
+                        f"PROBE progress {scanned}/{total} | "
+                        f"{row['title']} | status={row['status']}"
+                    )
+
+            def _print_probe(probe, *, print_rows: bool = False):
                 print(
                     f"Probe result | successful={probe['successful_probes']} | "
                     f"updated={probe['updated_probes']} | "
                     f"start_full_run={probe['can_start_full_run']}"
                 )
+                if not print_rows:
+                    return
                 for row in probe["results"]:
                     if row["status"] == "ok":
                         print(
@@ -2182,18 +2313,70 @@ def main():
                         print(f"PROBE {row['title']} | status={row['status']}")
 
             # Essai probe via API
-            api_probe = _probe_via_api(probe_tracks, token_mgr)
+            print(f"Running probe check... [API] ({len(probe_tracks)} track(s))")
+            api_probe = _probe_via_api(
+                probe_tracks,
+                token_mgr,
+                required_successful=len(probe_tracks),
+                required_updated=PROBE_REQUIRED_UPDATED,
+                progress_callback=_print_probe_progress,
+            )
             if api_probe is not None:
-                print("Running probe check... [API]")
                 _print_probe(api_probe)
+                probe_retry_count = 0
+                zero_update_probe_count = 1 if api_probe.get("updated_probes", 0) == 0 else 0
+                browser_fallback_checked = False
                 while not api_probe["can_start_full_run"]:
+                    if probe_retry_count >= PROBE_MAX_RETRIES_BEFORE_FULL_RUN:
+                        print()
+                        print(
+                            "Probe did not detect an update after "
+                            f"{probe_retry_count} retries; starting full run anyway."
+                        )
+                        break
+                    if zero_update_probe_count >= PROBE_FORCE_TOKEN_REFRESH_AFTER_ZERO_UPDATES:
+                        print()
+                        print(
+                            "Probe still sees zero updates; forcing a fresh Spotify token/session "
+                            "before retrying."
+                        )
+                        token_mgr.mark_expired()
+                        zero_update_probe_count = 0
+                    if (
+                        not browser_fallback_checked
+                        and probe_retry_count >= PROBE_BROWSER_FALLBACK_AFTER_ZERO_UPDATES
+                    ):
+                        print()
+                        print("Playcount API still sees zero updates; checking once via browser page scrape.")
+                        browser_probe = run_probe(tracks)
+                        _print_probe(browser_probe, print_rows=True)
+                        browser_fallback_checked = True
+                        if browser_probe["can_start_full_run"]:
+                            print("Browser probe detected the update; starting full run with browser scraping.")
+                            use_browser_scrape_for_run = True
+                            break
+                    probe_retry_count += 1
                     print()
-                    print("Spotify does not appear to have started the next daily update yet.")
+                    print("Spotify playcount API does not appear to expose the next daily totals yet.")
                     print("Retrying in 2 seconds...")
                     time.sleep(2)
-                    print("Running probe check... [API]")
-                    api_probe = _probe_via_api(probe_tracks, token_mgr)
+                    probe_tracks = build_probe_tracks(tracks)
+                    if not probe_tracks:
+                        print("Probe skipped: no probe tracks found in database.")
+                        break
+                    print(f"Running probe check... [API] ({len(probe_tracks)} track(s))")
+                    api_probe = _probe_via_api(
+                        probe_tracks,
+                        token_mgr,
+                        required_successful=len(probe_tracks),
+                        required_updated=PROBE_REQUIRED_UPDATED,
+                        progress_callback=_print_probe_progress,
+                    )
                     _print_probe(api_probe)
+                    if api_probe.get("updated_probes", 0) == 0:
+                        zero_update_probe_count += 1
+                    else:
+                        zero_update_probe_count = 0
             else:
                 print("Probe via API unavailable (no token) — skipping probe, starting run.")
     elif done_tracks_before_run < total_tracks and not debug_daily_mode:
@@ -2231,9 +2414,30 @@ def main():
             *ALBUM_UPDATE_TARGETS,
             *recent_release_album_names(load_album_sections_flat(), stats_date),
         ],
-        enabled=False,
+        enabled=True,
     )
     album_update_poster.start()
+
+    best_day_since_poster = ReadyBestDaySincePoster(
+        script_dir=_SCRIPT_DIR,
+        stats_date=stats_date,
+        track_ids=[t["track_id"] for t in tracks if not t.get("chart_extra")],
+        load_history_track_ids_for_date=load_history_track_ids_for_date,
+        spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
+        log_mode=LOG_MODE,
+        enabled=True,
+        no_post_mode=no_post_mode,
+    )
+    best_day_since_poster.start()
+
+    partial_web_exporter = PeriodicWebExporter(
+        stats_date=stats_date,
+        export_web_data=export_web_data,
+        load_history_track_ids_for_date=load_history_track_ids_for_date,
+        interval_seconds=PARTIAL_WEB_EXPORT_INTERVAL_SECONDS,
+        enabled=True,
+    )
+    partial_web_exporter.start()
 
     previous_day_top_retry_ids = get_priority_top_track_ids_from_previous_day(
         tracks,
@@ -2253,6 +2457,7 @@ def main():
         token_mgr=token_mgr,
         force_reprocess=force_reprocess,
         write_history=write_history,
+        use_browser_scrape=use_browser_scrape_for_run,
     )
     all_updated_track_ids = set(summary.get("updated_track_ids") or set())
     print_summary_block(summary)
@@ -2282,6 +2487,13 @@ def main():
 
     retry_round = 0
     track_retry_counts: dict[str, int] = {}
+    allowed_chart_extra_pending_ids: set[str] = set()
+    known_stuck_pending_tracks = load_known_stuck_pending_tracks()
+    if known_stuck_pending_tracks:
+        print(
+            f"Known stuck pending list: {len(known_stuck_pending_tracks)} track(s); "
+            f"chart_extra retry limit is {KNOWN_STUCK_PENDING_RETRY_ROUNDS} for those tracks."
+        )
     previous_pending_signature = {
         (r.get("track_id"), r.get("streams"), r.get("reason"))
         for r in summary.get("results", [])
@@ -2310,21 +2522,56 @@ def main():
             for r in summary.get("results", [])
             if r and r.get("status") == "pending" and r.get("track_id")
         }
+        chart_extra_pending_ids = {
+            r["track_id"]
+            for r in summary.get("results", [])
+            if (
+                r
+                and r.get("status") == "pending"
+                and r.get("track_id")
+                and r.get("chart_extra")
+            )
+        }
         for tid in all_pending_ids:
             track_retry_counts[tid] = track_retry_counts.get(tid, 0) + 1
 
         exhausted_ids = {
             tid for tid, count in track_retry_counts.items()
-            if count >= MAX_PENDING_RETRY_ROUNDS
+            if count >= (
+                KNOWN_STUCK_PENDING_RETRY_ROUNDS
+                if tid in known_stuck_pending_tracks and tid in chart_extra_pending_ids
+                else MAX_PENDING_RETRY_ROUNDS
+            )
         }
-        newly_infinite_retry_ids = exhausted_ids & all_pending_ids & previous_day_top_retry_ids
+        exhausted_chart_extra_ids = exhausted_ids & chart_extra_pending_ids
+        exhausted_blocking_ids = exhausted_ids - chart_extra_pending_ids
+        if exhausted_blocking_ids:
+            print(
+                f"{len(exhausted_blocking_ids)} non-extra pending track(s) reached "
+                f"{MAX_PENDING_RETRY_ROUNDS} retries; starting another retry block."
+            )
+            for tid in exhausted_blocking_ids:
+                track_retry_counts[tid] = 0
+        allowed_chart_extra_pending_ids.update(exhausted_chart_extra_ids)
+        if exhausted_chart_extra_ids:
+            exhausted_chart_extra_results = [
+                r for r in summary.get("results", [])
+                if r and r.get("track_id") in exhausted_chart_extra_ids
+            ]
+            if remember_known_stuck_pending_tracks(
+                known_stuck_pending_tracks,
+                pending_results=exhausted_chart_extra_results,
+                stats_date=stats_date,
+            ):
+                save_known_stuck_pending_tracks(known_stuck_pending_tracks)
+        newly_infinite_retry_ids: set[str] = set()
         if newly_infinite_retry_ids:
             infinite_retry_track_ids.update(newly_infinite_retry_ids)
             print(
                 f"Moving {len(newly_infinite_retry_ids)} previous-day top-"
                 f"{INFINITE_RETRY_PREVIOUS_DAY_TOP_N} pending track(s) to infinite background retry."
             )
-        foreground_exhausted_ids = exhausted_ids - previous_day_top_retry_ids
+        foreground_exhausted_ids = exhausted_chart_extra_ids
         pending_retry_ids = all_pending_ids - foreground_exhausted_ids - infinite_retry_track_ids
 
         if not pending_retry_ids:
@@ -2364,6 +2611,7 @@ def main():
             token_mgr=token_mgr,
             force_reprocess=force_reprocess,
             write_history=write_history,
+            use_browser_scrape=use_browser_scrape_for_run,
         )
         all_updated_track_ids.update(summary.get("updated_track_ids") or set())
         not_found_ids.update(
@@ -2392,49 +2640,62 @@ def main():
 
     # Notify if tracks are still pending after exhausting all retry rounds
     if not dry_run_mode and not local_test_mode and not debug_daily_mode and track_retry_counts:
+        chart_extra_pending_ids = {
+            r["track_id"] for r in summary.get("results", [])
+            if (
+                r
+                and r.get("status") == "pending"
+                and r.get("track_id")
+                and r.get("chart_extra")
+            )
+        }
         exhausted_after_all = {
             tid for tid, count in track_retry_counts.items()
-            if count >= MAX_PENDING_RETRY_ROUNDS and tid not in previous_day_top_retry_ids
+            if count >= (
+                KNOWN_STUCK_PENDING_RETRY_ROUNDS
+                if tid in known_stuck_pending_tracks and tid in chart_extra_pending_ids
+                else MAX_PENDING_RETRY_ROUNDS
+            )
+            and (tid not in previous_day_top_retry_ids or tid in chart_extra_pending_ids)
         }
         still_pending = {
             r["track_id"] for r in summary.get("results", [])
             if r and r.get("status") == "pending" and r.get("track_id")
         } & exhausted_after_all
         if still_pending:
+            pending_results = [
+                r for r in summary.get("results", [])
+                if r and r.get("track_id") in still_pending
+            ]
+            if remember_known_stuck_pending_tracks(
+                known_stuck_pending_tracks,
+                pending_results=pending_results,
+                stats_date=stats_date,
+            ):
+                save_known_stuck_pending_tracks(known_stuck_pending_tracks)
             pending_titles = [
                 r["title"] for r in summary.get("results", [])
                 if r and r.get("track_id") in still_pending
             ]
             tracks_list = "\n".join(f"• {t}" for t in sorted(pending_titles))
+            retry_limits = sorted(
+                {
+                    track_retry_counts.get(tid, MAX_PENDING_RETRY_ROUNDS)
+                    for tid in still_pending
+                }
+            )
+            retry_limit_label = "/".join(str(limit) for limit in retry_limits)
             notify(
                 NTFY_TOPIC,
-                f"{len(still_pending)} track(s) still pending after {MAX_PENDING_RETRY_ROUNDS} retries ({stats_date}):\n{tracks_list}",
+                f"{len(still_pending)} track(s) still pending after {retry_limit_label} retries ({stats_date}):\n{tracks_list}",
                 title="Taylor Swift - Tracks stuck pending",
                 tags="warning,hourglass_flowing_sand",
             )
 
-            # Write exhausted pending tracks with daily=0 so history is complete.
-            history_index = summary.get("history_index")
-            written_pending = 0
-            for r in summary.get("results", []):
-                if not r or r.get("track_id") not in still_pending:
-                    continue
-                total = r.get("streams")
-                if total is None:
-                    continue
-                daily_val = r.get("daily_streams")
-                if daily_val is None:
-                    daily_val = 0
-                if history_index is not None:
-                    history_index.append(stats_date, r["track_id"], total, daily_val)
-                else:
-                    append_history_row([stats_date, r["track_id"], total, str(daily_val)])
-                written_pending += 1
-                all_updated_track_ids.add(r["track_id"])
-            if written_pending:
-                print(f"Wrote {written_pending} exhausted pending track(s) with daily=0.")
-                summary["all_done"] = True
-                summary["pending_this_run"] = 0
+            print(
+                "Keeping exhausted pending track(s) open; unchanged totals are not "
+                "written as today's completed stream rows."
+            )
 
     current_pending_ids = {
         r["track_id"] for r in summary.get("results", [])
@@ -2443,25 +2704,32 @@ def main():
     infinite_retry_track_ids &= current_pending_ids
     if infinite_retry_track_ids and not dry_run_mode and not local_test_mode and not debug_daily_mode:
         print(
-            f"Starting infinite background retry for {len(infinite_retry_track_ids)} previous-day "
-            f"top-{INFINITE_RETRY_PREVIOUS_DAY_TOP_N} pending track(s); posting can continue."
+            f"Blocking final export/post: {len(infinite_retry_track_ids)} previous-day "
+            f"top-{INFINITE_RETRY_PREVIOUS_DAY_TOP_N} track(s) are still pending."
         )
-        infinite_retry_thread = threading.Thread(
-            target=retry_pending_tracks_until_collected,
-            kwargs={
-                "track_ids": set(infinite_retry_track_ids),
-                "stats_date": stats_date,
-                "stats_date_override": stats_date_override,
-                "token_mgr": token_mgr,
-                "force_reprocess": force_reprocess,
-                "write_history": write_history,
-                "collected_ids": infinite_retry_collected_ids,
-            },
-            daemon=False,
+
+    current_pending_results = [
+        r for r in summary.get("results", [])
+        if r and r.get("status") == "pending" and r.get("track_id")
+    ]
+    current_pending_ids = {r["track_id"] for r in current_pending_results}
+    allowed_pending_ids = current_pending_ids & allowed_chart_extra_pending_ids
+    blocking_pending_ids = current_pending_ids - allowed_pending_ids - infinite_retry_track_ids
+    if (
+        allowed_pending_ids
+        and not blocking_pending_ids
+        and not infinite_retry_track_ids
+        and not dry_run_mode
+        and not local_test_mode
+        and not debug_daily_mode
+    ):
+        print(
+            f"Allowing final export/post with {len(allowed_pending_ids)} exhausted "
+            "chart_extra pending track(s). No fake history rows were written."
         )
-        infinite_retry_thread.start()
         summary["all_done"] = True
         summary["pending_this_run"] = 0
+        summary["allowed_pending_chart_extra"] = len(allowed_pending_ids)
 
     print_remaining_details(summary)
     if local_test_mode:
@@ -2499,18 +2767,28 @@ def main():
         return
 
     if summary["all_done"]:
-        print("All target tracks updated.")
+        allowed_pending_chart_extra = int(summary.get("allowed_pending_chart_extra", 0) or 0)
+        if allowed_pending_chart_extra:
+            print(
+                "All blocking target tracks updated; "
+                f"{allowed_pending_chart_extra} chart_extra pending track(s) remain non-blocking."
+            )
+        else:
+            print("All target tracks updated.")
         if normal_lock_mode:
             _write_daily_lock(stats_date, STREAMS_SCRAPED_LOCK_NAME, {
                 "total_tracks": summary.get("total_tracks"),
                 "updated_this_run": summary.get("updated_this_run"),
                 "pending_this_run": summary.get("pending_this_run"),
+                "allowed_pending_chart_extra": summary.get("allowed_pending_chart_extra", 0),
                 "not_found_this_run": summary.get("not_found_this_run"),
             })
     else:
         print("Run finished, but not all target tracks are done.")
         print("Keeping local progress only; final export/post will run after all tracks are collected.")
         album_update_poster.stop()
+        best_day_since_poster.stop()
+        partial_web_exporter.stop()
         if not debug_daily_mode and not local_test_mode:
             notify(
                 NTFY_TOPIC,
@@ -2558,10 +2836,33 @@ def main():
                 only_track_ids=missing_non_extra,
                 token_mgr=token_mgr,
                 write_history=write_history,
+                use_browser_scrape=use_browser_scrape_for_run,
             )
             all_updated_track_ids.update(completeness_summary.get("updated_track_ids") or set())
             print_summary_block(completeness_summary)
             print_api_metrics(completeness_summary)
+
+        previous_stats_date = get_previous_stats_date_str(stats_date)
+        previous_done_ids = load_history_track_ids_for_date(previous_stats_date)
+        missing_previous_non_extra = non_extra_ids - previous_done_ids
+        if missing_previous_non_extra:
+            missing_titles = sorted(
+                t["title"] for t in all_tracks_for_check if t["track_id"] in missing_previous_non_extra
+            )
+            tracks_list = "\n".join(f"• {title}" for title in missing_titles[:50])
+            if len(missing_titles) > 50:
+                tracks_list += f"\n… and {len(missing_titles) - 50} more"
+            print(
+                f"\n⛔ Posting blocked: {len(missing_previous_non_extra)} non-extra track(s) "
+                f"are missing comparison history for {previous_stats_date}:\n{tracks_list}"
+            )
+            notify(
+                NTFY_TOPIC,
+                f"Posting blocked: {len(missing_previous_non_extra)} non-extra track(s) missing comparison history for {previous_stats_date}",
+                title="Taylor Swift - Comparison history missing",
+                tags="no_entry,chart_increasing",
+            )
+            return
 
     if local_test_mode:
         print("[LOCAL-TEST] Skip streams history CSV migration.")
@@ -2569,7 +2870,14 @@ def main():
         print("Skipping legacy site-history CSV migration: this collector writes db/streams_history.csv directly.")
 
     posted_album_updates = album_update_poster.stop()
-    initial_post_state = album_update_poster.post_state()
+    posted_best_day_since_tracks = best_day_since_poster.stop()
+    partial_web_exporter.stop()
+    album_post_state = album_update_poster.post_state()
+    best_day_since_post_state = best_day_since_poster.post_state()
+    initial_post_state = {
+        "posted_count": album_post_state["posted_count"] + best_day_since_post_state["posted_count"],
+        "last_post_at": max(album_post_state["last_post_at"], best_day_since_post_state["last_post_at"]),
+    }
 
     def _album_tracks_done_for_finalize(album_name: str, check_date: str) -> bool:
         if check_date != stats_date or not infinite_retry_track_ids:
@@ -2611,6 +2919,7 @@ def main():
         find_biggest_album_gainer_for_spotlight=find_biggest_album_gainer_for_spotlight,
         posted_album_updates=posted_album_updates,
         initial_post_state=initial_post_state,
+        posted_best_day_since_tracks=posted_best_day_since_tracks,
         throwback_mode=throwback_mode,
         throwback_action=throwback_action,
         throwback_event=throwback_event,

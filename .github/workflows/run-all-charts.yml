@@ -48,3 +48,33 @@ jobs:
 
       - name: Run all charts (no post)
         run: python -m tsm collect charts --no-post
+
+      - name: Download YouTube CSV history from R2
+        run: |
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          import boto3
+
+          bucket = os.environ.get("R2_BUCKET", "taylor-data")
+          client = boto3.client(
+              "s3",
+              endpoint_url=f"https://{os.environ['R2_ACCOUNT_ID']}.r2.cloudflarestorage.com",
+              aws_access_key_id=os.environ["R2_ACCESS_KEY_ID"],
+              aws_secret_access_key=os.environ["R2_SECRET_ACCESS_KEY"],
+              region_name="auto",
+          )
+          Path("db").mkdir(exist_ok=True)
+          for key, dest in {
+              "data/youtube_views_history.csv": Path("db/youtube_views_history.csv"),
+              "data/youtube_title_history.csv": Path("db/youtube_title_history.csv"),
+          }.items():
+              try:
+                  client.download_file(bucket, key, str(dest))
+                  print(f"downloaded {key} -> {dest}")
+              except Exception as exc:
+                  print(f"skip {key}: {exc}")
+          PY
+
+      - name: Run YouTube charts (no post)
+        run: python -m tsm collect youtube --no-post

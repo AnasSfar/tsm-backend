@@ -26,6 +26,15 @@ _R2_TRACK_PREFIX = os.getenv("SPOTIFY_R2_TRACK_PREFIX", "history-by-track")
 HISTORY_FIELDNAMES = ["date", "track_id", "streams", "daily_streams", "estimated", "estimated_reason"]
 
 
+def _clean_csv_fieldnames(fieldnames: list[str] | None) -> list[str]:
+    cleaned = [name for name in (fieldnames or HISTORY_FIELDNAMES) if name]
+    return cleaned or list(HISTORY_FIELDNAMES)
+
+
+def _clean_csv_row(row: dict, fieldnames: list[str]) -> dict:
+    return {field: row.get(field, "") for field in fieldnames}
+
+
 def get_previous_stats_date_str(stats_date: str) -> str:
     return (date.fromisoformat(stats_date) - timedelta(days=1)).isoformat()
 
@@ -58,6 +67,7 @@ def load_album_sections_flat() -> list[dict]:
                 item["album"] = album_name
             sections.append(item)
     return sections
+
 
 def _r2_config() -> dict | None:
     if os.getenv("UPLOAD_TO_R2", "").strip().lower() in ("0", "false", "no", "off"):
@@ -336,7 +346,7 @@ def delete_history_rows_for_date(target_date: str) -> int:
     with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         rows = list(reader)
-        fieldnames = reader.fieldnames or ["date", "track_id", "streams", "daily_streams"]
+        fieldnames = _clean_csv_fieldnames(reader.fieldnames)
 
     kept_rows = [r for r in rows if (r.get("date") or "").strip() != target_date]
     removed = len(rows) - len(kept_rows)
@@ -344,7 +354,7 @@ def delete_history_rows_for_date(target_date: str) -> int:
     with HISTORY_PATH.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerows(kept_rows)
+        writer.writerows(_clean_csv_row(row, fieldnames) for row in kept_rows)
 
     return removed
 
@@ -355,7 +365,7 @@ def dedupe_history_rows_by_date_track() -> int:
     with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         rows = list(reader)
-        fieldnames = reader.fieldnames or ["date", "track_id", "streams", "daily_streams"]
+        fieldnames = _clean_csv_fieldnames(reader.fieldnames)
 
     deduped: dict[tuple[str, str], dict] = {}
     for row in rows:
@@ -372,7 +382,7 @@ def dedupe_history_rows_by_date_track() -> int:
     with HISTORY_PATH.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerows(deduped.values())
+        writer.writerows(_clean_csv_row(row, fieldnames) for row in deduped.values())
 
     return removed
 
@@ -388,12 +398,49 @@ def append_history_row(row: list) -> None:
         day = str(row[0])
         daily_path = update_streams_dir(day) / "streams_history.csv"
         daily_path.parent.mkdir(parents=True, exist_ok=True)
-        is_new = not daily_path.exists() or daily_path.stat().st_size == 0
-        with daily_path.open("a", newline="", encoding="utf-8") as f:
-            writer = csv.writer(f)
-            if is_new:
-                writer.writerow(HISTORY_FIELDNAMES)
-            writer.writerow(out_row)
+        _upsert_daily_history_row(daily_path, out_row)
+
+
+def _upsert_daily_history_row(daily_path: Path, out_row: list) -> None:
+    row_dict = {
+        field: out_row[index] if index < len(out_row) else ""
+        for index, field in enumerate(HISTORY_FIELDNAMES)
+    }
+    row_key = (str(row_dict.get("date") or ""), str(row_dict.get("track_id") or ""))
+    if not daily_path.exists() or daily_path.stat().st_size == 0:
+        with daily_path.open("w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=HISTORY_FIELDNAMES)
+            writer.writeheader()
+            writer.writerow(row_dict)
+        return
+
+    with daily_path.open("r", newline="", encoding="utf-8-sig") as f:
+        reader = csv.DictReader(f)
+        fieldnames = _clean_csv_fieldnames(reader.fieldnames)
+        rows = [_clean_csv_row(row, fieldnames) for row in reader]
+
+    if any((str(row.get("date") or ""), str(row.get("track_id") or "")) == row_key for row in rows):
+        fieldnames = list(dict.fromkeys([*fieldnames, *HISTORY_FIELDNAMES]))
+        replaced = False
+        cleaned_rows = []
+        for row in rows:
+            current_key = (str(row.get("date") or ""), str(row.get("track_id") or ""))
+            if current_key == row_key:
+                if replaced:
+                    continue
+                cleaned_rows.append({field: row_dict.get(field, "") for field in fieldnames})
+                replaced = True
+            else:
+                cleaned_rows.append({field: row.get(field, "") for field in fieldnames})
+        with daily_path.open("w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(cleaned_rows)
+        return
+
+    with daily_path.open("a", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writerow({field: row_dict.get(field, "") for field in fieldnames})
 
 def load_history_rows() -> list[dict]:
     if not HISTORY_PATH.exists():
@@ -407,7 +454,7 @@ def save_history_rows(rows: list[dict]) -> None:
     fieldnames = list(HISTORY_FIELDNAMES)
     for row in rows:
         for key in row.keys():
-            if key not in fieldnames:
+            if key and key not in fieldnames:
                 fieldnames.append(key)
     with HISTORY_PATH.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)

@@ -80,6 +80,20 @@ def generate_country_cards(scraped_at: str, force: bool = False) -> int:
     return result.returncode
 
 
+def generate_snapshot_images(scraped_at: str) -> int:
+    script = HERE / "generate_snapshot_images.py"
+    if not script.exists():
+        print(f"[Apple Music] Snapshot image script missing: {script}")
+        return 1
+
+    chart_date = scraped_at.split("T", 1)[0]
+    args = [sys.executable, str(script), "--date", chart_date]
+
+    print("[Apple Music] Generating snapshot images (Global, US, US Pop, US Country, US Alternative)...")
+    result = subprocess.run(args, cwd=REPO_ROOT, env=child_env(), check=False)
+    return result.returncode
+
+
 def run_script(script_path: Path, scraped_at: str) -> int:
     if not script_path.exists():
         print(f"[ERROR] Missing script: {script_path}")
@@ -143,7 +157,12 @@ def main() -> None:
             if cards_code != 0:
                 print("[Apple Music] Card image generation failed, skipping R2 upload")
                 sys.exit(1)
-        
+
+            snapshot_code = generate_snapshot_images(scraped_at)
+            if snapshot_code != 0:
+                print("[Apple Music] Snapshot image generation failed, skipping R2 upload")
+                sys.exit(1)
+
         maybe_upload_to_r2()
         print(f"{'=' * 80}")
 

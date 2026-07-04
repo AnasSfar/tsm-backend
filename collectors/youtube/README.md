@@ -40,10 +40,19 @@ Output columns:
 - `date`
 - `video_id`
 - `title`
+- `rank`
+- `previous_rank`
+- `rank_change`
+- `total_rank`
+- `previous_total_rank`
+- `total_rank_change`
 - `published_at`
 - `duration`
+- `thumbnail_url`
 - `total_views` (`viewCount` from YouTube)
 - `daily_views`
+- `daily_change`
+- `daily_change_pct`
 - `like_count`
 - `comment_count`
 - `category_id`

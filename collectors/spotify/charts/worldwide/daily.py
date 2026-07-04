@@ -84,7 +84,7 @@ _BEARER_TOKEN_TTL   = 50 * 60
 OUTPUT_PATH     = WEB_EXPORT_DATA_DIR / "charts_worldwide.json"
 HISTORY_ROOT    = ROOT / "snapshots" / "spotify_charts"
 TOTAL_DAYS_PATH = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "json" / "total_days.json"
-TWITTER_SESSION = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "json" / "twitter_session.json"
+TWITTER_SESSION = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "twitter_session.json"
 GLOBAL_NEW_RELEASES_SCRIPT = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "scripts" / "post_global_new_releases.py"
 
 WEBSITE_SONGS_PATH = first_existing(WEB_EXPORT_DATA_DIR / "songs.json", LEGACY_WEBSITE_DATA_DIR / "songs.json")

@@ -6,7 +6,7 @@ import sys
 import threading
 import time
 from contextlib import contextmanager
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date as date_cls
 from pathlib import Path
 from typing import Any, Callable
@@ -110,6 +110,57 @@ class FinalizeContext:
     throwback_label: str | None = None
     throwback_force: bool = False
     test_mode: bool = False
+    posted_best_day_since_tracks: set[str] = field(default_factory=set)
+
+
+class PeriodicWebExporter:
+    """Re-export web/site data on an interval while the streams collection is
+    still running, so already-updated tracks show current numbers on the
+    site without waiting for every pending track to finish."""
+
+    def __init__(
+        self,
+        *,
+        stats_date: str,
+        export_web_data: Callable[..., None],
+        load_history_track_ids_for_date: Callable[[str], set[str]],
+        interval_seconds: int,
+        enabled: bool,
+    ) -> None:
+        self.stats_date = stats_date
+        self.export_web_data = export_web_data
+        self.load_history_track_ids_for_date = load_history_track_ids_for_date
+        self.interval_seconds = interval_seconds
+        self.enabled = enabled
+        self._last_done_count = 0
+        self._stop = threading.Event()
+        self._thread: threading.Thread | None = None
+
+    def start(self) -> None:
+        if not self.enabled or self._thread is not None:
+            return
+        self._thread = threading.Thread(target=self._run, name="periodic-web-export", daemon=True)
+        self._thread.start()
+
+    def stop(self) -> None:
+        self._stop.set()
+        if self._thread is not None:
+            self._thread.join()
+
+    def _run(self) -> None:
+        while not self._stop.wait(self.interval_seconds):
+            self._maybe_export()
+
+    def _maybe_export(self) -> None:
+        done_ids = self.load_history_track_ids_for_date(self.stats_date)
+        if len(done_ids) <= self._last_done_count:
+            return
+        self._last_done_count = len(done_ids)
+        print(f"Periodic web export: {len(done_ids)} track(s) done so far for {self.stats_date}.")
+        try:
+            self.export_web_data(stats_date=self.stats_date)
+        except Exception as exc:
+            print(f"Periodic web export failed: {exc}")
 
 
 class ReadyAlbumUpdatePoster:
@@ -199,6 +250,113 @@ class ReadyAlbumUpdatePoster:
                 return True
             with self._lock:
                 self._posted.add(album)
+            return True
+        return False
+
+
+class ReadyBestDaySincePoster:
+    """Post individual best-day-since track records as soon as they update,
+    without waiting for the full streams collection to finish."""
+
+    def __init__(
+        self,
+        *,
+        script_dir: Path,
+        stats_date: str,
+        track_ids: list[str],
+        load_history_track_ids_for_date: Callable[[str], set[str]],
+        spacing_seconds: int,
+        log_mode: str,
+        enabled: bool,
+        no_post_mode: bool,
+        max_posts: int = 5,
+        min_days: int | None = None,
+    ) -> None:
+        self.script_dir = script_dir
+        self.stats_date = stats_date
+        self.track_ids = tuple(dict.fromkeys(track_ids))
+        self.load_history_track_ids_for_date = load_history_track_ids_for_date
+        self.spacing_seconds = spacing_seconds
+        self.log_mode = log_mode
+        self.enabled = enabled
+        self.no_post_mode = no_post_mode
+        self.max_posts = max_posts
+        self.min_days = min_days
+        self._checked: set[str] = set()
+        self._posted: set[str] = set()
+        self._lock = threading.Lock()
+        self._stop = threading.Event()
+        self._thread: threading.Thread | None = None
+        self._post_state = {"posted_count": 0, "last_post_at": 0.0}
+
+    def start(self) -> None:
+        if not self.enabled or self._thread is not None:
+            return
+        self._thread = threading.Thread(target=self._run, name="ready-best-day-since-posts", daemon=True)
+        self._thread.start()
+
+    def stop(self) -> set[str]:
+        self._stop.set()
+        if self._thread is not None:
+            self._thread.join()
+        with self._lock:
+            return set(self._posted)
+
+    def post_state(self) -> dict[str, float]:
+        with self._lock:
+            return dict(self._post_state)
+
+    def _run(self) -> None:
+        while not self._stop.is_set():
+            if self._post_newly_ready_track():
+                continue
+            if self._done():
+                return
+            self._stop.wait(3.0)
+
+    def _done(self) -> bool:
+        with self._lock:
+            if len(self._posted) >= self.max_posts:
+                return True
+            return len(self._checked) >= len(self.track_ids)
+
+    def _post_newly_ready_track(self) -> bool:
+        with self._lock:
+            if len(self._posted) >= self.max_posts:
+                return False
+        done_ids = self.load_history_track_ids_for_date(self.stats_date)
+        for track_id in self.track_ids:
+            with self._lock:
+                if track_id in self._checked:
+                    continue
+            if track_id not in done_ids:
+                continue
+            with self._lock:
+                self._checked.add(track_id)
+
+            best_day_script = self.script_dir / "tools" / "scripts" / "post_best_day_since_twitter.py"
+            cmd = [sys.executable, str(best_day_script), self.stats_date, "--only-track", track_id]
+            if self.min_days is not None:
+                cmd.extend(["--min-days", str(self.min_days)])
+            if self.no_post_mode:
+                cmd.append("--no-post")
+
+            _wait_before_post(
+                label=f"early best-day-since ({track_id})",
+                should_post=not self.no_post_mode,
+                state=self._post_state,
+                spacing_seconds=self.spacing_seconds,
+                log_mode=self.log_mode,
+            )
+            result = _run_subprocess(cmd, check=False)
+            if result.returncode == 0:
+                print(f"Best-day-since posted early during streams run: {track_id}")
+                _mark_post_done(should_post=not self.no_post_mode, state=self._post_state)
+                with self._lock:
+                    self._posted.add(track_id)
+                return True
+            if result.returncode != 3:
+                print(f"Early best-day-since check failed for {track_id} (exit {result.returncode}); skipping.")
             return True
         return False
 
@@ -705,6 +863,8 @@ def _post_best_day_since(ctx: FinalizeContext, state: dict[str, float]) -> None:
         "--post-spacing-seconds",
         str(ctx.post_spacing_seconds),
     ]
+    if ctx.posted_best_day_since_tracks:
+        cmd.extend(["--exclude-tracks", ",".join(sorted(ctx.posted_best_day_since_tracks))])
     if ctx.no_post_mode:
         cmd.append("--no-post")
 

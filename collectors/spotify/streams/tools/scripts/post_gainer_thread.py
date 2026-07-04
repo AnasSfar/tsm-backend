@@ -10,7 +10,7 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent          # streams/tools/scripts/
 ROOT = SCRIPT_DIR.parents[1]                          # streams/
-TWITTER_SESSION = ROOT.parent / "charts" / "worldwide" / "tools" / "json" / "twitter_session.json"
+TWITTER_SESSION = ROOT.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json"
 
 sys.path.insert(0, str(ROOT))                         # collectors/spotify/streams/
 sys.path.insert(0, str(ROOT.parent))                  # collectors/spotify/
@@ -170,7 +170,7 @@ def _image_for_row(row: dict, *, target_date: str, period: str, covers: dict) ->
         comparison_label=comparison_label,
         cover_url=spotlight.get_cover_url(track, covers),
         stats_date=target_date,
-        handle="@tsmuseum13",
+        handle="@swiftiescharts",
         combined=False,
         highlight="vs",
     )

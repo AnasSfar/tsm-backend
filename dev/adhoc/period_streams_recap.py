@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a Spotify period recap thread for @tsmuseum13.
+"""Build a Spotify period recap thread for @swiftiescharts.
 
 Examples:
   python dev/adhoc/period_streams_recap.py --period month
@@ -915,7 +915,7 @@ def render_recap_table(
         col_heads=col_heads,
         grid_cols=grid_cols,
         rows_html=rows_html,
-        handle="@tsmuseum13",
+        handle="@swiftiescharts",
         date_str=date_text,
         headers_dir=HEADERS_DIR,
         body_width=920,
@@ -1124,7 +1124,7 @@ def stats_has_stream_data(stats: dict[str, Any]) -> bool:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Build/post a period recap for @tsmuseum13.")
+    parser = argparse.ArgumentParser(description="Build/post a period recap for @swiftiescharts.")
     parser.add_argument("--period", choices=["week", "month", "year"], default="month")
     parser.add_argument("--date", help="Anchor date for period calculations, YYYY-MM-DD.")
     parser.add_argument("--current", action="store_true", help="Use the current period containing --date/today.")

@@ -152,6 +152,23 @@ def _sum_optional_int(rows: list[dict], field: str) -> int | str:
     return sum(int(value) for value in values)
 
 
+def _best_group_video(rows: list[dict]) -> dict:
+    def sort_key(row: dict) -> tuple[int, int]:
+        daily = row.get("daily_views")
+        total = row.get("total_views")
+        try:
+            daily_value = int(daily) if daily not in ("", None) else -1
+        except (TypeError, ValueError):
+            daily_value = -1
+        try:
+            total_value = int(total) if total not in ("", None) else 0
+        except (TypeError, ValueError):
+            total_value = 0
+        return (daily_value, total_value)
+
+    return max(rows, key=sort_key) if rows else {}
+
+
 def build_title_rows(
     *,
     date: str,
@@ -176,12 +193,15 @@ def build_title_rows(
     out: list[dict] = []
     for group in groups.values():
         rows = group["rows"]
+        primary = _best_group_video(rows)
         out.append(
             {
                 "date": date,
                 "title_key": group["title_key"],
                 "title": group["title"],
                 "video_count": len(rows),
+                "thumbnail_url": primary.get("thumbnail_url", ""),
+                "primary_video_id": primary.get("video_id", ""),
                 "total_views": _sum_int(rows, "total_views"),
                 "daily_views": _sum_optional_int(rows, "daily_views"),
                 "like_count": _sum_optional_int(rows, "like_count"),

@@ -115,7 +115,7 @@ def _card_html(payload: dict[str, Any], index: int, total: int, width: int, heig
     week_start = html.escape(str(payload.get("week_start") or ""))
     week_end = html.escape(str(payload.get("week_end") or payload.get("chart_date") or ""))
     logo = _logo_data_uri()
-    logo_html = f"<img class='logo' src='{logo}' alt=''/>" if logo else "<div class='logo-fallback'>TSM</div>"
+    logo_html = f"<img class='logo' src='{logo}' alt=''/>" if logo else "<div class='logo-fallback'>Swifties Charts</div>"
 
     if index == 1:
         title = "Introducing TayBoard"

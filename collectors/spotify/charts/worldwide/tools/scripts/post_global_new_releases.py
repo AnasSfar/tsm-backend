@@ -25,11 +25,11 @@ from core.data_paths import LEGACY_WEBSITE_DATA_DIR, WEB_EXPORT_DATA_DIR, first_
 from core.twitter import post_with_image  # noqa: E402
 import generate_card_images  # noqa: E402
 
-TWITTER_SESSION = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "json" / "twitter_session.json"
+TWITTER_SESSION = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "twitter_session.json"
 DISCOGRAPHY_DIR = ROOT / "db" / "discography"
 CHARTS_HISTORY_GLOBAL = ROOT / "db" / "charts_history_global.csv"
 SONGS_JSON = first_existing(WEB_EXPORT_DATA_DIR / "songs.json", LEGACY_WEBSITE_DATA_DIR / "songs.json")
-HANDLE = "@tsmuseum13"
+HANDLE = "@swiftiescharts"
 PRIORITY_WINDOW_DAYS = 7
 
 
@@ -787,7 +787,7 @@ def post_worldwide_cards(
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("date", help="Chart date YYYY-MM-DD")
-    parser.add_argument("--post", action="store_true", help="Post to @tsmuseum13")
+    parser.add_argument("--post", action="store_true", help="Post to @swiftiescharts")
     parser.add_argument("--post-worldwide", action="store_true", help="Post matching worldwide cards individually.")
     parser.add_argument("--no-post", action="store_true", help="Generate only")
     parser.add_argument("--force", action="store_true", help="Ignore posted lock")

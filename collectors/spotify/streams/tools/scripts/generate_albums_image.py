@@ -48,7 +48,7 @@ COVERS_PATH  = DB_DIR / "discography" / "covers.json"
 ALBUMS_DIR   = DB_DIR / "discography" / "albums"
 SONGS_JSON   = DB_DIR / "discography" / "songs.json"
 HEADERS_DIR  = _TOOLS / "headers"
-HANDLE       = "@tsmuseum13"
+HANDLE       = "@swiftiescharts"
 
 # Regroupe OG + Taylor's Version sous la même ère.
 ERA_MAP: dict[str, str] = {

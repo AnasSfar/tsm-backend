@@ -489,6 +489,7 @@ def upload_static_data(
         ("charts_history_us.csv",           ["data/charts_us.csv",          "data/charts_history_us.csv"]),
         ("charts_history_uk.csv",           ["data/charts_uk.csv",          "data/charts_history_uk.csv"]),
         ("youtube_views_history.csv",       ["data/youtube_views.csv",      "data/youtube_views_history.csv"]),
+        ("youtube_title_history.csv",       ["data/youtube_titles.csv",     "data/youtube_title_history.csv"]),
     ]
     if charts_only:
         csv_mappings = [
@@ -800,6 +801,65 @@ def upload_slugs(
         dry_run=dry_run,
         slugs=slugs,
     )
+    return True
+
+
+def upload_youtube(
+    *,
+    dry_run: bool = False,
+    bucket: str | None = None,
+    data_prefix: str | None = None,
+    db_prefix: str | None = None,
+) -> bool:
+    """Upload YouTube CSV outputs only.
+
+    This keeps the daily YouTube collector cheap: no Spotify track history,
+    no Apple Music history JSON, no images.
+    """
+    ok, reason = _r2_ready()
+    if not ok:
+        print(f"[r2] skipped — {reason}")
+        return False
+
+    _bucket = bucket or os.getenv("R2_BUCKET", "taylor-data")
+    _data_prefix = data_prefix or os.getenv("R2_STATIC_DATA_PREFIX", "data")
+    _db_prefix = db_prefix or os.getenv("R2_DB_PREFIX", "db")
+    client = get_s3_client()
+    mappings = [
+        (DB_DIR / "youtube_views_history.csv", [
+            f"{_data_prefix}/youtube_views.csv",
+            f"{_data_prefix}/youtube_views_history.csv",
+            f"{_db_prefix}/youtube_views_history.csv",
+        ]),
+        (DB_DIR / "youtube_title_history.csv", [
+            f"{_data_prefix}/youtube_titles.csv",
+            f"{_data_prefix}/youtube_title_history.csv",
+            f"{_db_prefix}/youtube_title_history.csv",
+        ]),
+    ]
+
+    uploaded = 0
+    unchanged = 0
+    for path, keys in mappings:
+        if not path.exists():
+            print(f"[r2] youtube skip missing: {path}")
+            continue
+        data = path.read_bytes()
+        for key in keys:
+            changed = upload_raw_if_changed(
+                client=client,
+                bucket=_bucket,
+                key=key,
+                data=data,
+                content_type="text/csv; charset=utf-8",
+                dry_run=dry_run,
+            )
+            if changed:
+                uploaded += 1
+            else:
+                unchanged += 1
+
+    print(f"[r2] youtube: {uploaded} uploaded, {unchanged} unchanged")
     return True
 
 

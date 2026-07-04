@@ -44,12 +44,12 @@ SCRIPT_DIR      = Path(__file__).resolve()
 ARTISTS_GLOBAL  = SCRIPT_DIR.parents[2]                    # artists_global/
 REPO_ROOT       = SCRIPT_DIR.parents[6]                    # tsm-backend/
 HEADERS_DIR     = REPO_ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "headers"
-TWITTER_SESSION = REPO_ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "json" / "twitter_session.json"
+TWITTER_SESSION = REPO_ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "twitter_session.json"
 
 sys.path.insert(0, str(REPO_ROOT / "collectors" / "spotify"))
 from core.data_paths import legacy_spotify_chart_dir, spotify_chart_dir
 
-HANDLE  = "@tsmusem13"
+HANDLE  = "@swiftiescharts"
 TS_NAME = "Taylor Swift"
 PERIOD_FILES = {
     "daily": "artist_global_daily.json",

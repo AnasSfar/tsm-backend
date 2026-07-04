@@ -51,6 +51,16 @@ def _int_or_none(value: object) -> int | None:
         return None
 
 
+def _best_thumbnail_url(thumbnails: dict) -> str:
+    if not isinstance(thumbnails, dict):
+        return ""
+    for key in ("maxres", "standard", "high", "medium", "default"):
+        url = thumbnails.get(key, {}).get("url")
+        if url:
+            return str(url)
+    return ""
+
+
 def fetch_video_stats(api_key: str, video_ids: list[str]) -> dict[str, dict]:
     """Fetch public metadata + statistics for up to BATCH_SIZE video IDs.
 
@@ -77,6 +87,7 @@ def fetch_video_stats(api_key: str, video_ids: list[str]) -> dict[str, dict]:
         result[vid_id] = {
             "title": snippet.get("title", ""),
             "publishedAt": snippet.get("publishedAt", ""),
+            "thumbnailUrl": _best_thumbnail_url(snippet.get("thumbnails", {})),
             "duration": content.get("duration", ""),
             "viewCount": int(stats.get("viewCount", 0)),
             "likeCount": _int_or_none(stats.get("likeCount")),

@@ -221,7 +221,7 @@ def card_html(
       </section>
       <footer class="foot">
         <span>https://thetsmuseum.app/</span>
-        <span>@tsmuseum13</span>
+        <span>@swiftiescharts</span>
       </footer>
     </article>
   </body>

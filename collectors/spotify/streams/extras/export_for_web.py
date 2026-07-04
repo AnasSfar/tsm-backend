@@ -6,6 +6,7 @@ import re
 import shutil
 import sys
 from collections import defaultdict
+from datetime import datetime, timedelta
 from pathlib import Path
 
 
@@ -292,7 +293,38 @@ def load_raw_history() -> tuple[list[str], dict[str, dict[str, dict]]]:
     by_date: dict[str, dict[str, dict]] = defaultdict(dict)
     if HISTORY_CSV_PATH.exists():
         _read_history_csv(HISTORY_CSV_PATH, by_date)
+    normalize_daily_streams_from_totals(by_date)
     return sorted_unique_dates(list(by_date.keys())), dict(by_date)
+
+
+def normalize_daily_streams_from_totals(by_date: dict[str, dict[str, dict]]) -> int:
+    """Ensure exported daily streams match consecutive-day total deltas."""
+    corrected = 0
+    for date_value in sorted_unique_dates(list(by_date.keys())):
+        try:
+            previous_date = (datetime.strptime(date_value, "%Y-%m-%d").date() - timedelta(days=1)).isoformat()
+        except ValueError:
+            continue
+        previous_day = by_date.get(previous_date)
+        if not previous_day:
+            continue
+        for track_id, values in by_date.get(date_value, {}).items():
+            previous_values = previous_day.get(track_id)
+            if not previous_values:
+                continue
+            current_total = values.get("streams")
+            previous_total = previous_values.get("streams")
+            if current_total is None or previous_total is None:
+                continue
+            expected_daily = current_total - previous_total
+            if expected_daily < 0:
+                continue
+            if values.get("daily_streams") != expected_daily:
+                values["daily_streams"] = expected_daily
+                corrected += 1
+    if corrected:
+        print(f"[history] Corrected {corrected} daily_streams value(s) from consecutive totals before export.")
+    return corrected
 
 
 def history_count_by_track(raw_history_by_date: dict[str, dict[str, dict]]) -> dict[str, int]:
@@ -1331,6 +1363,7 @@ def export_for_web(stats_date: str | None = None, *, dry_run: bool = False) -> N
                 old_to_kept[h_id] = kept_id
 
     merged_history = merge_history_by_kept_track(dates, raw_history_by_date, old_to_kept)
+    normalize_daily_streams_from_totals(merged_history)
 
     latest_date = dates[-1] if dates else None
     latest_values = merged_history.get(latest_date, {})

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-update_youtube.py — YouTube views collector for Taylor Swift Museum.
+update_youtube.py — YouTube views collector for Swifties Charts.
 
 Collecte les vues quotidiennes de toutes les vidéos de la chaîne officielle
 Taylor Swift via YouTube Data API v3.
@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from datetime import date
 from pathlib import Path
@@ -47,6 +48,7 @@ from .core.csv_utils import (
     date_already_collected,
     get_last_views,
     has_collection_before,
+    read_csv_rows,
     remove_rows_for_date,
     save_last_views,
 )
@@ -101,6 +103,111 @@ def _fmt_views(n: int | str) -> str:
         return f"{int(n):,}".replace(",", " ")
     except (TypeError, ValueError):
         return str(n)
+
+
+def _int_or_none(value: object) -> int | None:
+    if value in ("", None):
+        return None
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _pct_change(current: int | None, previous: int | None) -> str:
+    if current is None or previous is None or previous <= 0:
+        return ""
+    return f"{((current - previous) / previous) * 100:.6f}"
+
+
+def _latest_rows_before(rows: list[dict], target_date: str) -> list[dict]:
+    dates = sorted({row.get("date", "") for row in rows if row.get("date", "") < target_date})
+    if not dates:
+        return []
+    latest = dates[-1]
+    return [row for row in rows if row.get("date") == latest]
+
+
+def _last_total_views_from_csv(csv_path: Path, target_date: str) -> dict[str, int]:
+    rows = read_csv_rows(csv_path)
+    latest_rows = _latest_rows_before(rows, target_date)
+    out: dict[str, int] = {}
+    for row in latest_rows:
+        video_id = row.get("video_id")
+        total = _int_or_none(row.get("total_views"))
+        if video_id and total is not None:
+            out[video_id] = total
+    return out
+
+
+def _rank_rows(rows: list[dict], field: str, rank_field: str) -> None:
+    ranked = sorted(
+        rows,
+        key=lambda row: (_int_or_none(row.get(field)) is None, -(_int_or_none(row.get(field)) or 0), str(row.get("title") or "")),
+    )
+    for index, row in enumerate(ranked, 1):
+        row[rank_field] = index
+
+
+def enrich_chart_rows(
+    rows: list[dict],
+    *,
+    existing_rows: list[dict],
+    target_date: str,
+    key_field: str,
+) -> list[dict]:
+    previous_rows = _latest_rows_before(existing_rows, target_date)
+    previous_by_key = {
+        str(row.get(key_field) or ""): row
+        for row in previous_rows
+        if row.get(key_field)
+    }
+
+    _rank_rows(rows, "daily_views", "rank")
+    _rank_rows(rows, "total_views", "total_rank")
+    previous_ranked = [dict(row) for row in previous_rows]
+    _rank_rows(previous_ranked, "daily_views", "rank")
+    _rank_rows(previous_ranked, "total_views", "total_rank")
+    previous_ranked_by_key = {
+        str(row.get(key_field) or ""): row
+        for row in previous_ranked
+        if row.get(key_field)
+    }
+
+    for row in rows:
+        key = str(row.get(key_field) or "")
+        previous = previous_by_key.get(key, {})
+        previous_ranked_row = previous_ranked_by_key.get(key, {})
+        daily = _int_or_none(row.get("daily_views"))
+        previous_daily = _int_or_none(previous.get("daily_views"))
+        previous_rank = _int_or_none(previous_ranked_row.get("rank"))
+        previous_total_rank = _int_or_none(previous_ranked_row.get("total_rank"))
+        rank = _int_or_none(row.get("rank"))
+        total_rank = _int_or_none(row.get("total_rank"))
+
+        row["previous_rank"] = previous_rank or ""
+        row["rank_change"] = (previous_rank - rank) if previous_rank and rank else ""
+        row["previous_total_rank"] = previous_total_rank or ""
+        row["total_rank_change"] = (previous_total_rank - total_rank) if previous_total_rank and total_rank else ""
+        row["daily_change"] = (daily - previous_daily) if daily is not None and previous_daily is not None else ""
+        row["daily_change_pct"] = _pct_change(daily, previous_daily)
+
+    return sorted(rows, key=lambda row: _int_or_none(row.get("rank")) or 999999)
+
+
+def maybe_upload_youtube_to_r2(today: str) -> None:
+    if os.getenv("UPLOAD_TO_R2", "").strip().lower() in ("0", "false", "no"):
+        print("[INFO] R2 upload skippé (UPLOAD_TO_R2 explicitement désactivé).")
+        return
+    try:
+        from scripts import r2
+        ok = r2.upload_youtube()
+        if ok:
+            print("[INFO] R2 upload YouTube terminé.")
+        else:
+            print("[WARN] R2 upload YouTube skippé.")
+    except Exception as exc:
+        print(f"[WARN] R2 upload YouTube échoué (non bloquant): {exc}")
 
 
 def _notify(title: str, message: str) -> None:
@@ -186,6 +293,9 @@ def main() -> int:
     # ------------------------------------------------------------------
     has_prior_csv_day = has_collection_before(CSV_PATH, today)
     prev_views = get_last_views(HISTORY_PATH) if has_prior_csv_day else {}
+    csv_prev_views = _last_total_views_from_csv(CSV_PATH, today) if has_prior_csv_day else {}
+    if csv_prev_views:
+        prev_views = {**prev_views, **csv_prev_views}
     if not has_prior_csv_day:
         print("[INFO] Aucune date précédente dans le CSV — daily_views restera vide.")
     new_views: dict[str, int] = {}
@@ -202,10 +312,19 @@ def main() -> int:
                 "date": today,
                 "video_id": vid_id,
                 "title": stat.get("title") or video_db.get(vid_id, {}).get("title", ""),
+                "rank": "",
+                "previous_rank": "",
+                "rank_change": "",
+                "total_rank": "",
+                "previous_total_rank": "",
+                "total_rank_change": "",
                 "published_at": stat.get("publishedAt", ""),
                 "duration": stat.get("duration", ""),
+                "thumbnail_url": stat.get("thumbnailUrl", ""),
                 "total_views": total,
                 "daily_views": daily if daily is not None else "",
+                "daily_change": "",
+                "daily_change_pct": "",
                 "like_count": stat.get("likeCount") if stat.get("likeCount") is not None else "",
                 "comment_count": stat.get("commentCount") if stat.get("commentCount") is not None else "",
                 "category_id": stat.get("categoryId", ""),
@@ -241,7 +360,13 @@ def main() -> int:
     # ------------------------------------------------------------------
     # 7. Écriture CSV + state JSON
     # ------------------------------------------------------------------
-    all_rows = rows_with_daily + rows_no_daily
+    existing_video_rows = read_csv_rows(CSV_PATH)
+    all_rows = enrich_chart_rows(
+        rows_with_daily + rows_no_daily,
+        existing_rows=existing_video_rows,
+        target_date=today,
+        key_field="video_id",
+    )
     if args.force:
         removed = remove_rows_for_date(CSV_PATH, today, CSV_FIELDNAMES)
         if removed:
@@ -253,6 +378,13 @@ def main() -> int:
         date=today,
         video_rows=all_rows,
         songs_path=DISCOGRAPHY_SONGS_PATH,
+    )
+    existing_title_rows = read_csv_rows(TITLE_HISTORY_PATH)
+    title_rows = enrich_chart_rows(
+        title_rows,
+        existing_rows=existing_title_rows,
+        target_date=today,
+        key_field="title_key",
     )
     write_title_history(
         TITLE_HISTORY_PATH,
@@ -267,6 +399,8 @@ def main() -> int:
 
     save_video_db(video_db, VIDEO_DB_PATH)
     print(f"[INFO] Catalogue vidéos mis à jour : {VIDEO_DB_PATH}")
+
+    maybe_upload_youtube_to_r2(today)
 
     # ------------------------------------------------------------------
     # 8. Git commit/push (opt-in avec --commit)

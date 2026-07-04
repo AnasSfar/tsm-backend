@@ -804,7 +804,7 @@ def _build_card_html(item: dict, chart_date: str) -> str:
   </div>
   {_tables_html(placements)}
   <div class="footer">
-    <div class="brand"><img class="logo" src="{logo_uri}" alt="TSM" /><span>@tsmuseum13</span></div>
+    <div class="brand"><img class="logo" src="{logo_uri}" alt="Swifties Charts" /><span>@swiftiescharts</span></div>
     <span>thetsmuseum.app</span>
   </div>
 </div>

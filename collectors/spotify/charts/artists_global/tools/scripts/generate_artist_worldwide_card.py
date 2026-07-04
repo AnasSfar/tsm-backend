@@ -36,7 +36,7 @@ from collectors.spotify.charts.worldwide.daily import (  # noqa: E402
 )
 
 TS_NAME = "Taylor Swift"
-TWITTER_SESSION = REPO_ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "json" / "twitter_session.json"
+TWITTER_SESSION = REPO_ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "twitter_session.json"
 OUTPUT_NAME = "artist_global_worldwide.json"
 LATEST_OUTPUT = WEB_EXPORT_DATA_DIR / "charts_artists_global_worldwide.json"
 
@@ -249,7 +249,7 @@ def _build_html(rows: list[dict[str, Any]], chart_date: str) -> str:
     <div class="badge">Best #{top_rank}</div>
   </div>
   <div class="columns">{rows_markup}</div>
-  <div class="foot"><span>@tsmusem13</span><span>Global included</span></div>
+  <div class="foot"><span>@swiftiescharts</span><span>Global included</span></div>
 </div>
 </body>
 </html>"""

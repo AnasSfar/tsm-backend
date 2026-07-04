@@ -14,7 +14,7 @@ Options:
   --no-post   : Generate image but skip Twitter posting (default: will post)
   --no-scrape : Use history CSV total only, skip live scraping or API retry
   --url URL   : Provide Spotify track URL instead of title
-  --account   : Twitter account to post with: flame (@theflameofanas) or tsm (@tsmuseum13)
+  --account   : Twitter account to post with: flame (@theflameofanas) or tsm (@swiftiescharts)
   --combined  : Sum all versions sharing the selected track's song_family
 
 Behavior:
@@ -77,8 +77,8 @@ ACCOUNT_CONFIG = {
         "session": SCRIPT_DIR.parent / "charts" / "fr" / "tools" / "json" / "twitter_session.json",
     },
     "tsm": {
-        "handle": "@tsmuseum13",
-        "session": SCRIPT_DIR.parent / "charts" / "worldwide" / "tools" / "json" / "twitter_session.json",
+        "handle": "@swiftiescharts",
+        "session": SCRIPT_DIR.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json",
     },
 }
 PAGE_TIMEOUT_MS = 20_000
@@ -1278,7 +1278,7 @@ def main() -> None:
         "--account",
         choices=sorted(ACCOUNT_CONFIG),
         default=DEFAULT_ACCOUNT,
-        help="Twitter account to post with: flame (@theflameofanas) or tsm (@tsmuseum13).",
+        help="Twitter account to post with: flame (@theflameofanas) or tsm (@swiftiescharts).",
     )
     parser.add_argument(
         "--session",

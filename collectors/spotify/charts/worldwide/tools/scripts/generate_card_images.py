@@ -42,7 +42,7 @@ ROOT           = Path(__file__).resolve().parents[6]
 WORLDWIDE_JSON = None
 SONGS_JSON     = None
 LOGO_PATH        = Path(__file__).parents[7] / "tsm-frontend" / "frontend" / "public" / "icons" / "logo.gif"
-TWITTER_SESSION  = Path(__file__).resolve().parents[1] / "json" / "twitter_session.json"
+TWITTER_SESSION  = Path(__file__).resolve().parents[3] / "global" / "tools" / "json" / "twitter_session.json"
 
 _SPOTIFY_ROOT = ROOT / "collectors" / "spotify"
 if str(_SPOTIFY_ROOT) not in sys.path:
@@ -701,8 +701,8 @@ def _build_card_html(song: dict, entries: list[dict], palette: dict[str, str], c
   {_tables_html(sorted_entries)}
   <div class="card-footer">
     <div class="card-footer-brand">
-      <img class="card-footer-logo" src="{_LOGO_URI}" alt="TSM" />
-      <span>@tsmuseum13</span>
+      <img class="card-footer-logo" src="{_LOGO_URI}" alt="Swifties Charts" />
+      <span>@swiftiescharts</span>
     </div>
     <span>thetsmuseum.app</span>
   </div>
@@ -944,8 +944,8 @@ def _build_low_country_group_html(
   {rows}
   <div class="card-footer">
     <div class="card-footer-brand">
-      <img class="card-footer-logo" src="{_LOGO_URI}" alt="TSM" />
-      <span>@tsmuseum13</span>
+      <img class="card-footer-logo" src="{_LOGO_URI}" alt="Swifties Charts" />
+      <span>@swiftiescharts</span>
     </div>
     <span>thetsmuseum.app</span>
   </div>
@@ -1406,8 +1406,8 @@ def _build_summary_html(
   </table>
   <div class="footer">
     <div class="brand">
-      <img class="logo" src="{_LOGO_URI}" alt="TSM" />
-      <span>@tsmuseum13</span>
+      <img class="logo" src="{_LOGO_URI}" alt="Swifties Charts" />
+      <span>@swiftiescharts</span>
     </div>
     <span>thetsmuseum.app</span>
   </div>

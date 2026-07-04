@@ -211,6 +211,12 @@ class TokenManager:
         except Exception:
             pass
 
+    def _clear_cache(self) -> None:
+        try:
+            _TOKEN_CACHE_PATH.unlink(missing_ok=True)
+        except Exception:
+            pass
+
     def _try_cached(self) -> bool:
         """Charge les tokens depuis le cache disque et vérifie leur validité. Retourne True si réutilisables."""
         if not _TOKEN_CACHE_PATH.exists():
@@ -249,9 +255,11 @@ class TokenManager:
             print("TokenManager: échec HTTP direct")
         return False
 
-    def capture(self) -> bool:
+    def capture(self, *, force_refresh: bool = False) -> bool:
         """Essaie dans l'ordre : cache disque → HTTP direct → Playwright (x5)."""
-        if self._try_cached():
+        if force_refresh:
+            self._clear_cache()
+        elif self._try_cached():
             return True
         _warp_connect()
         try:
@@ -354,7 +362,7 @@ class TokenManager:
                 pass
             return
         try:
-            self.capture()
+            self.capture(force_refresh=True)
         finally:
             self._recapture_lock.release()
 
@@ -401,8 +409,10 @@ def fetch_playcount_api(
             "spotify-app-version": APP_VERSION,
             "app-platform":        "WebPlayer",
             "Accept":              "application/json",
+            "Cache-Control":       "no-cache",
             "Content-Type":        "application/json;charset=UTF-8",
             "Origin":              "https://open.spotify.com",
+            "Pragma":              "no-cache",
             "Referer":             "https://open.spotify.com/",
             "User-Agent":          (
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -479,11 +489,19 @@ def fetch_playcount_api(
             return None
     return None
 
-def _probe_via_api(probe_tracks: list[dict], token_mgr: TokenManager) -> dict | None:
+def _probe_via_api(
+    probe_tracks: list[dict],
+    token_mgr: TokenManager,
+    *,
+    required_successful: int = 5,
+    required_updated: int = 2,
+    progress_callback=None,
+    progress_every: int = 25,
+) -> dict | None:
     """
     Probe via API GraphQL. Retourne le même dict que _probe_on_page,
     ou None si l'API n'est pas disponible.
-    Logique séquentielle : 1ère chanson OK updatée → check 2ème → si updatée → can_start=True.
+    Checks several top tracks before deciding whether the daily update started.
     """
     if not token_mgr.available:
         return None
@@ -493,6 +511,7 @@ def _probe_via_api(probe_tracks: list[dict], token_mgr: TokenManager) -> dict | 
     updated_probes = 0
     results = []
     can_start = False
+    total_probe_tracks = len(probe_tracks)
 
     try:
         for track in probe_tracks:
@@ -504,28 +523,38 @@ def _probe_via_api(probe_tracks: list[dict], token_mgr: TokenManager) -> dict | 
                 successful_probes += 1
                 if updated:
                     updated_probes += 1
-                results.append({
+                row = {
                     "title":            track["title"],
                     "status":           "ok",
                     "streams":          pc,
                     "previous_streams": last_total,
                     "updated":          updated,
                     "raw":              str(pc),
-                })
-                if successful_probes == 1 and not updated:
-                    break  # 1ère chanson pas updatée → inutile de continuer
-                if successful_probes == 2:
-                    can_start = updated
-                    break  # 2ème chanson OK → décision finale
+                }
+                results.append(row)
+                if progress_callback and (
+                    updated
+                    or successful_probes == 1
+                    or successful_probes % max(1, progress_every) == 0
+                ):
+                    progress_callback(row, len(results), total_probe_tracks)
+                if updated_probes >= required_updated:
+                    can_start = True
+                    break
+                if successful_probes >= required_successful:
+                    break
             else:
-                results.append({
+                row = {
                     "title":            track["title"],
                     "status":           "not_found",
                     "streams":          None,
                     "previous_streams": last_total,
                     "updated":          False,
                     "raw":              None,
-                })
+                }
+                results.append(row)
+                if progress_callback and len(results) % max(1, progress_every) == 0:
+                    progress_callback(row, len(results), total_probe_tracks)
     finally:
         session.close()
 

@@ -1,9 +1,7 @@
 from __future__ import annotations
 
-import argparse
 import base64
 import colorsys
-import html
 import random
 import re
 import sys
@@ -502,6 +500,7 @@ body{
 .chg-up{color:#067647}.chg-dn{color:#b42318}
 .chg-eq{color:#9ca3af}
 .chg-new{color:#5bbde4;font-size:11px;font-weight:800}
+.chg-re{color:#5bbde4;font-size:11px;font-weight:800}
 .col-entity{display:flex;align-items:center;gap:12px;min-width:0}
 .art{
   width:var(--art-size,54px);height:var(--art-size,54px);border-radius:7px;
@@ -555,6 +554,7 @@ def build_table_html(
     extra_css: str = "",
     header_background: str | None = None,
     handle_color_override: str | None = None,
+    logo_svg: str = SPOTIFY_SVG,
 ) -> str:
     """Build a complete glassmorphism table image HTML document.
 
@@ -591,7 +591,7 @@ def build_table_html(
 <body>
 <div class="container">
   <div class="hdr" {hdr_style}>
-    {SPOTIFY_SVG}
+    {logo_svg}
     <div>
       <div class="hdr-title">{title}</div>
       <div class="hdr-sub">{subtitle}</div>
@@ -644,151 +644,3 @@ def render_html_to_png(
     return out_path
 
 
-def _preview_imports():
-    repo_root = Path(__file__).resolve().parents[2]
-    streams_dir = repo_root / "collectors" / "spotify" / "streams"
-    streams_scripts_dir = streams_dir / "tools" / "scripts"
-    for path in (repo_root / "collectors", streams_dir, streams_scripts_dir):
-        path_str = str(path)
-        if path_str not in sys.path:
-            sys.path.insert(0, path_str)
-    import best_day_since
-    import spotlight
-
-    return best_day_since, spotlight
-
-
-def _latest_preview_date(best_day_since) -> str:
-    history = best_day_since.load_history()
-    latest = best_day_since.latest_history_date(history)
-    if latest is None:
-        raise SystemExit("No streams history date found for table preview generation.")
-    print(f"[tables-preview] Using latest streams date: {latest.isoformat()}", flush=True)
-    return latest.isoformat()
-
-
-def _preview_rows(best_day_since, spotlight, stats_date: str, limit: int) -> list[dict]:
-    target_day = datetime.strptime(stats_date, "%Y-%m-%d").date()
-    previous_day = target_day - timedelta(days=1)
-    week_day = target_day - timedelta(days=7)
-    history = best_day_since.load_history()
-    tracks = spotlight.load_all_tracks()
-    covers = spotlight.load_covers()
-    print(f"[tables-preview] Loaded {len(tracks)} track(s) and {len(covers)} cover fallback(s).", flush=True)
-
-    candidates = []
-    for track in tracks:
-        point_by_day = {point.day: point for point in history.get(track["track_id"], [])}
-        current = point_by_day.get(target_day)
-        if current is None or current.total is None or current.daily is None or current.daily <= 0:
-            continue
-        previous = point_by_day.get(previous_day)
-        week = point_by_day.get(week_day)
-        candidates.append({
-            "track": track,
-            "total": current.total,
-            "daily": current.daily,
-            "previous_daily": previous.daily if previous else None,
-            "week_daily": week.daily if week else None,
-            "cover_url": spotlight.get_cover_url(track, covers),
-        })
-
-    if not candidates:
-        raise SystemExit(f"No stream rows found for {stats_date}.")
-    sample_size = min(max(limit, 1), len(candidates))
-    rows = random.sample(candidates, sample_size)
-    rows.sort(key=lambda row: row["daily"], reverse=True)
-    print(f"[tables-preview] Selected {len(rows)} real stream row(s).", flush=True)
-    return rows
-
-
-def _preview_rows_html(rows: list[dict]) -> str:
-    output = []
-    for index, row in enumerate(rows, 1):
-        track = row["track"]
-        daily_pct = get_pct(row["daily"], row["previous_daily"])
-        weekly_pct = get_pct(row["daily"], row["week_daily"])
-        cover = url_to_data_uri(row["cover_url"])
-        art_html = f'<img class="art" src="{cover}" />' if cover else '<div class="art-ph"></div>'
-        row_class = "data-row row-gold" if index == 1 else ("data-row row-odd" if index % 2 else "data-row")
-        output.append(f"""<div class="{row_class}">
-  <div class="col-rank">#{index}</div>
-  <div class="col-entity">
-    {art_html}
-    <div class="entity-info">
-      <div class="entity-name">{html.escape(track.get("title") or "")}</div>
-      <div class="entity-sub">{html.escape(track.get("album") or track.get("artist") or "")}</div>
-    </div>
-  </div>
-  <div class="col-num">{fmt_streams(row["daily"])}</div>
-  <div class="col-num">{fmt_streams(row["total"])}</div>
-  <div class="col-num {pct_cls(daily_pct)}">{fmt_pct(daily_pct)}</div>
-  <div class="col-num {pct_cls(weekly_pct)}">{fmt_pct(weekly_pct)}</div>
-</div>""")
-    return "\n".join(output)
-
-
-def generate_preview(
-    *,
-    output_dir: Path,
-    stats_date: str | None = None,
-    limit: int = 10,
-    keep_html: bool = True,
-) -> Path:
-    print("[tables-preview] Building tables_image preview...", flush=True)
-    best_day_since, spotlight = _preview_imports()
-    target_date = stats_date or _latest_preview_date(best_day_since)
-    date_text = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
-    rows = _preview_rows(best_day_since, spotlight, target_date, limit)
-    html_text = build_table_html(
-        title="Spotify Streams Preview",
-        subtitle=f"Real stream rows - {date_text}",
-        col_heads=[
-            ("Pos", False),
-            ("Track", False),
-            ("Daily", True),
-            ("Total", True),
-            ("Vs Day", True),
-            ("Vs Week", True),
-        ],
-        grid_cols="52px minmax(260px,1fr) 108px 118px 82px 82px",
-        rows_html=_preview_rows_html(rows),
-        handle="@tsmuseum13",
-        date_str=date_text,
-        headers_dir=Path(__file__).resolve().parent / "headers",
-        body_width=920,
-        art_size=48,
-        header_background="linear-gradient(135deg,#1db954 0%,#0f5132 100%)",
-    )
-    output_dir.mkdir(parents=True, exist_ok=True)
-    out_path = output_dir / f"tables_image_preview_{target_date}.png"
-    html_path = output_dir / f"tables_image_preview_{target_date}.html"
-    print(f"[tables-preview] Writing HTML: {html_path}", flush=True)
-    print(f"[tables-preview] Rendering PNG: {out_path}", flush=True)
-    return render_html_to_png(html_text, out_path, html_path, width=920, keep_html=keep_html)
-
-
-def main() -> None:
-    parser = argparse.ArgumentParser(description="Generate tables_image preview PNG/HTML.")
-    parser.add_argument("--date", help="Stats date YYYY-MM-DD. Defaults to latest date in streams history.")
-    parser.add_argument("--limit", type=int, default=10, help="Number of real stream rows to include.")
-    parser.add_argument(
-        "--output-dir",
-        default=str(Path(__file__).resolve().parent / "previews"),
-        help="Directory for generated previews.",
-    )
-    parser.add_argument("--keep-html", action="store_true", default=True, help="Keep the generated HTML preview.")
-    parser.add_argument("--no-keep-html", action="store_false", dest="keep_html", help="Delete the temporary HTML.")
-    args = parser.parse_args()
-
-    path = generate_preview(
-        output_dir=Path(args.output_dir),
-        stats_date=args.date,
-        limit=args.limit,
-        keep_html=args.keep_html,
-    )
-    print(f"Generated table preview: {path}", flush=True)
-
-
-if __name__ == "__main__":
-    main()
