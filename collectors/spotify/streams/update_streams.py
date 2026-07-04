@@ -31,7 +31,7 @@ from backfill_discography_from_spotify import run_backfill as run_discography_ba
 from finalize_update import (
     ALBUM_UPDATE_TARGETS,
     FinalizeContext,
-    PeriodicWebExporter,
+    PartialWebExporter,
     ReadyAlbumUpdatePoster,
     ReadyBestDaySincePoster,
     run_final_update_tasks,
@@ -95,6 +95,7 @@ from history_store import (
     load_album_sections_flat,
     load_history_rows,
     load_history_track_ids_for_date,
+    load_history_track_ids_with_daily_for_date,
     load_track_priorities_from_specific_date,
     load_tracks_from_discography,
     push_updated_track_histories_to_r2,
@@ -160,7 +161,6 @@ KNOWN_STUCK_PENDING_RETRY_ROUNDS = 5
 INFINITE_RETRY_PREVIOUS_DAY_TOP_N = 70
 POST_BETWEEN_STREAMS_POSTS_SECONDS = 0
 INCREMENTAL_PUBLISH_ON_UPDATE = False
-PARTIAL_WEB_EXPORT_INTERVAL_SECONDS = 300
 
 NOT_FOUND_STREAK_PATH = DATA_DIR / "not_found_streak.json"
 KNOWN_STUCK_PENDING_PATH = ROOT / "spotify_streams" / "known_stuck_pending_tracks.json"
@@ -499,8 +499,15 @@ def try_apply_track_update(
         reason = "same_total_zero" if total == 0 else "same_total"
         real_update = False
     elif total < last_total:
-        reason = "lower_than_previous"
-        real_update = True
+        if missing_previous_day_total:
+            # last_total comes from a date beyond the immediate previous day
+            # (a gap, e.g. a backfilled/injected later total) — our fetch just
+            # hasn't caught up to that figure yet, this isn't a real regression.
+            reason = "missing_previous_day_total"
+            real_update = False
+        else:
+            reason = "lower_than_previous"
+            real_update = True
     elif total - last_total > MAX_DAILY_INCREASE:
         reason = f"anomaly_delta_gt_{MAX_DAILY_INCREASE}"
         real_update = False
@@ -1014,114 +1021,9 @@ def _estimate_daily_weight(points: list[dict], target_day: date) -> int:
 
 
 def estimate_missing_stream_history_gaps(max_gap_days: int = MAX_ESTIMATED_STREAM_GAP_DAYS) -> set[str]:
-    rows = load_history_rows()
-    if not rows:
-        return set()
-
-    parsed_rows: list[tuple[int, date, str, int, dict]] = []
-    for idx, row in enumerate(rows):
-        track_id = str(row.get("track_id") or "").strip()
-        date_value = str(row.get("date") or "").strip()
-        streams_raw = str(row.get("streams") or "").strip()
-        if not track_id or not date_value or not streams_raw:
-            continue
-        try:
-            row_day = date.fromisoformat(date_value)
-            streams = int(streams_raw)
-        except Exception:
-            continue
-        parsed_rows.append((idx, row_day, track_id, streams, row))
-
-    by_track: dict[str, list[tuple[int, date, str, int, dict]]] = {}
-    for item in parsed_rows:
-        by_track.setdefault(item[2], []).append(item)
-    for items in by_track.values():
-        items.sort(key=lambda item: (item[1], item[0]))
-
-    new_rows: list[dict] = []
-    touched_dates: set[str] = set()
-    touched_track_ids: set[str] = set()
-
-    for track_id, items in by_track.items():
-        for previous, current in zip(items, items[1:]):
-            prev_idx, prev_day, _, prev_total, _ = previous
-            _curr_idx, curr_day, _, curr_total, curr_row = current
-            gap_days = (curr_day - prev_day).days - 1
-            if gap_days <= 0 or gap_days > max_gap_days:
-                continue
-            if curr_total <= prev_total:
-                continue
-
-            allocation_days = [prev_day + timedelta(days=offset) for offset in range(1, gap_days + 2)]
-            historical_points = [item[4] for item in items if item[0] <= prev_idx]
-            weights = [_estimate_daily_weight(historical_points, day) for day in allocation_days]
-            weight_sum = sum(weights)
-            if weight_sum <= 0:
-                continue
-
-            total_gap = curr_total - prev_total
-            allocated = [max(0, round(total_gap * weight / weight_sum)) for weight in weights]
-            allocated[-1] += total_gap - sum(allocated)
-            if allocated[-1] < 0 or allocated[-1] > MAX_DAILY_INCREASE:
-                continue
-
-            running_total = prev_total
-            estimated_rows_for_gap: list[dict] = []
-            for missing_day, daily in zip(allocation_days[:-1], allocated[:-1]):
-                if daily > MAX_DAILY_INCREASE:
-                    estimated_rows_for_gap = []
-                    break
-                running_total += daily
-                estimated_rows_for_gap.append({
-                    "date": missing_day.isoformat(),
-                    "track_id": track_id,
-                    "streams": str(running_total),
-                    "daily_streams": str(daily),
-                    "estimated": "1",
-                    "estimated_reason": ESTIMATED_MISSING_DAY_REASON,
-                })
-            if not estimated_rows_for_gap:
-                continue
-
-            current_daily = max(0, curr_total - running_total)
-            if current_daily > MAX_DAILY_INCREASE:
-                continue
-
-            curr_row["daily_streams"] = str(current_daily)
-            curr_row.setdefault("estimated", "")
-            curr_row.setdefault("estimated_reason", "")
-            new_rows.extend(estimated_rows_for_gap)
-            touched_track_ids.add(track_id)
-            touched_dates.add(curr_day.isoformat())
-            touched_dates.update(row["date"] for row in estimated_rows_for_gap)
-
-    if not new_rows:
-        return set()
-
-    merged_rows = rows + new_rows
-    merged_rows.sort(key=lambda row: (
-        str(row.get("date") or ""),
-        str(row.get("track_id") or ""),
-        1 if _is_estimated_history_row(row) else 0,
-    ))
-    save_history_rows(merged_rows)
-
-    for day in sorted(touched_dates):
-        day_rows = [row for row in merged_rows if str(row.get("date") or "").strip() == day]
-        daily_path = update_streams_dir(day) / "streams_history.csv"
-        daily_path.parent.mkdir(parents=True, exist_ok=True)
-        with daily_path.open("w", newline="", encoding="utf-8") as f:
-            fieldnames = ["date", "track_id", "streams", "daily_streams", "estimated", "estimated_reason"]
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            for row in day_rows:
-                writer.writerow({field: row.get(field, "") for field in fieldnames})
-
-    print(
-        f"[streams-estimate] Added {len(new_rows)} estimated history row(s) "
-        f"for {len(touched_track_ids)} track(s)."
-    )
-    return touched_track_ids
+    # Disabled: streams_history.csv must only ever contain real Spotify totals,
+    # never invented/interpolated values, even to backfill a gap.
+    return set()
 
 
 def recent_release_track_ids_missing_positive_history(stats_date: str) -> set[str]:
@@ -2430,14 +2332,11 @@ def main():
     )
     best_day_since_poster.start()
 
-    partial_web_exporter = PeriodicWebExporter(
+    partial_web_exporter = PartialWebExporter(
         stats_date=stats_date,
         export_web_data=export_web_data,
-        load_history_track_ids_for_date=load_history_track_ids_for_date,
-        interval_seconds=PARTIAL_WEB_EXPORT_INTERVAL_SECONDS,
         enabled=True,
     )
-    partial_web_exporter.start()
 
     previous_day_top_retry_ids = get_priority_top_track_ids_from_previous_day(
         tracks,
@@ -2462,6 +2361,7 @@ def main():
     all_updated_track_ids = set(summary.get("updated_track_ids") or set())
     print_summary_block(summary)
     print_api_metrics(summary)
+    partial_web_exporter.export_if_updated(summary)
 
     if (
         new_release_track_ids
@@ -2619,6 +2519,7 @@ def main():
         )
         print_summary_block(summary)
         print_api_metrics(summary)
+        partial_web_exporter.export_if_updated(summary)
         if not local_test_mode and summary.get("updated_this_run", 0) > 0:
             print("Committing partial progress after retry...")
             git_commit_and_push(_REPO_ROOT, f"partial export {summary['stats_date']} (after retry {retry_round})")
@@ -2788,7 +2689,6 @@ def main():
         print("Keeping local progress only; final export/post will run after all tracks are collected.")
         album_update_poster.stop()
         best_day_since_poster.stop()
-        partial_web_exporter.stop()
         if not debug_daily_mode and not local_test_mode:
             notify(
                 NTFY_TOPIC,
@@ -2808,7 +2708,7 @@ def main():
         while True:
             all_tracks_for_check = load_tracks_from_discography()
             non_extra_ids = {t["track_id"] for t in all_tracks_for_check if not t.get("chart_extra")}
-            done_ids_for_date = load_history_track_ids_for_date(stats_date)
+            done_ids_for_date = load_history_track_ids_with_daily_for_date(stats_date)
             missing_non_extra = non_extra_ids - done_ids_for_date - infinite_retry_track_ids
             if not missing_non_extra:
                 break
@@ -2843,7 +2743,7 @@ def main():
             print_api_metrics(completeness_summary)
 
         previous_stats_date = get_previous_stats_date_str(stats_date)
-        previous_done_ids = load_history_track_ids_for_date(previous_stats_date)
+        previous_done_ids = load_history_track_ids_with_daily_for_date(previous_stats_date)
         missing_previous_non_extra = non_extra_ids - previous_done_ids
         if missing_previous_non_extra:
             missing_titles = sorted(
@@ -2871,7 +2771,6 @@ def main():
 
     posted_album_updates = album_update_poster.stop()
     posted_best_day_since_tracks = best_day_since_poster.stop()
-    partial_web_exporter.stop()
     album_post_state = album_update_poster.post_state()
     best_day_since_post_state = best_day_since_poster.post_state()
     initial_post_state = {
@@ -2885,7 +2784,7 @@ def main():
         album_ids = load_album_track_ids_for_album(album_name)
         if not album_ids:
             return False
-        done_ids = load_history_track_ids_for_date(check_date)
+        done_ids = load_history_track_ids_with_daily_for_date(check_date)
         return (album_ids - infinite_retry_track_ids).issubset(done_ids)
 
     def _all_album_tracks_done_finalize(check_date: str) -> bool:
@@ -2894,7 +2793,7 @@ def main():
         album_ids = load_album_track_ids()
         if not album_ids:
             return True
-        done_ids = load_history_track_ids_for_date(check_date)
+        done_ids = load_history_track_ids_with_daily_for_date(check_date)
         return (album_ids - infinite_retry_track_ids).issubset(done_ids)
 
     run_final_update_tasks(FinalizeContext(

@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: "0 13 * * *"  # 13h UTC = 15h Paris (CEST, UTC+2)
 
+concurrency:
+  group: update-streams
+  cancel-in-progress: false
+
 jobs:
   update-streams:
     runs-on: ubuntu-latest

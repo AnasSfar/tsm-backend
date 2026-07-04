@@ -113,54 +113,30 @@ class FinalizeContext:
     posted_best_day_since_tracks: set[str] = field(default_factory=set)
 
 
-class PeriodicWebExporter:
-    """Re-export web/site data on an interval while the streams collection is
-    still running, so already-updated tracks show current numbers on the
-    site without waiting for every pending track to finish."""
+class PartialWebExporter:
+    """Re-export web/site data after each retry round while the streams
+    collection is still running, so already-updated tracks show current
+    numbers on the site without waiting for every pending track to finish."""
 
     def __init__(
         self,
         *,
         stats_date: str,
         export_web_data: Callable[..., None],
-        load_history_track_ids_for_date: Callable[[str], set[str]],
-        interval_seconds: int,
         enabled: bool,
     ) -> None:
         self.stats_date = stats_date
         self.export_web_data = export_web_data
-        self.load_history_track_ids_for_date = load_history_track_ids_for_date
-        self.interval_seconds = interval_seconds
         self.enabled = enabled
-        self._last_done_count = 0
-        self._stop = threading.Event()
-        self._thread: threading.Thread | None = None
 
-    def start(self) -> None:
-        if not self.enabled or self._thread is not None:
+    def export_if_updated(self, summary: dict) -> None:
+        if not self.enabled or not summary.get("updated_this_run"):
             return
-        self._thread = threading.Thread(target=self._run, name="periodic-web-export", daemon=True)
-        self._thread.start()
-
-    def stop(self) -> None:
-        self._stop.set()
-        if self._thread is not None:
-            self._thread.join()
-
-    def _run(self) -> None:
-        while not self._stop.wait(self.interval_seconds):
-            self._maybe_export()
-
-    def _maybe_export(self) -> None:
-        done_ids = self.load_history_track_ids_for_date(self.stats_date)
-        if len(done_ids) <= self._last_done_count:
-            return
-        self._last_done_count = len(done_ids)
-        print(f"Periodic web export: {len(done_ids)} track(s) done so far for {self.stats_date}.")
+        print(f"Partial web export after retry round (stats_date={self.stats_date})...")
         try:
             self.export_web_data(stats_date=self.stats_date)
         except Exception as exc:
-            print(f"Periodic web export failed: {exc}")
+            print(f"Partial web export failed: {exc}")
 
 
 class ReadyAlbumUpdatePoster:

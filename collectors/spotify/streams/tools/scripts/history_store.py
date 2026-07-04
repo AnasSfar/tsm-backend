@@ -268,19 +268,19 @@ def find_biggest_album_gainer_for_spotlight(
     return best
 
 def all_album_tracks_done(stats_date: str) -> bool:
-    """Returns True when every album-file track has a history row for stats_date."""
+    """Returns True when every album-file track has a real daily_streams value for stats_date."""
     album_ids = load_album_track_ids()
     if not album_ids:
         return True
-    done_ids = load_history_track_ids_for_date(stats_date)
+    done_ids = load_history_track_ids_with_daily_for_date(stats_date)
     return album_ids.issubset(done_ids)
 
 def album_tracks_done_for(album_name: str, stats_date: str) -> bool:
-    """Returns True when every track from the given album has a history row for stats_date."""
+    """Returns True when every track from the given album has a real daily_streams value for stats_date."""
     album_ids = load_album_track_ids_for_album(album_name)
     if not album_ids:
         return False
-    done_ids = load_history_track_ids_for_date(stats_date)
+    done_ids = load_history_track_ids_with_daily_for_date(stats_date)
     return album_ids.issubset(done_ids)
 
 def load_active_track_ids_from_discography() -> set[str]:
@@ -611,6 +611,39 @@ def load_history_track_ids_for_date(stats_date: str) -> set[str]:
                 track_id = (row.get("track_id") or "").strip()
                 if track_id:
                     done.add(track_id)
+    return done
+
+
+def load_history_track_ids_with_daily_for_date(stats_date: str) -> set[str]:
+    """Like load_history_track_ids_for_date, but only counts a track as done
+    when it has a real (non-blank, valid) daily_streams value for that date.
+
+    A row can exist for a date without a usable daily figure (e.g. a
+    same-day fetch that came back lower than a later-recorded total during a
+    gap) — that must never count as "ready to post" for album/Top-45/gainer
+    posts, even though the track technically has a history row.
+    """
+    if not HISTORY_PATH.exists():
+        return set()
+
+    done = set()
+    with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            if (row.get("date") or "").strip() != stats_date:
+                continue
+            track_id = (row.get("track_id") or "").strip()
+            if not track_id:
+                continue
+            daily_raw = (row.get("daily_streams") or "").strip()
+            if not daily_raw:
+                continue
+            try:
+                if int(daily_raw) < 0:
+                    continue
+            except ValueError:
+                continue
+            done.add(track_id)
     return done
 
 def get_last_history_total(track_id: str) -> int | None:
