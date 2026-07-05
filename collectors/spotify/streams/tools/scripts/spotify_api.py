@@ -13,7 +13,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from playwright.sync_api import sync_playwright
 
-from history_store import get_last_history_total, has_real_update
+from history_store import get_last_history_total, has_real_update, is_gap_affected
 
 STREAMS_DIR = Path(__file__).resolve().parents[2]
 _SESSION_FILE = STREAMS_DIR.parent / "charts/global/tools/json/spotify_session.json"
@@ -497,6 +497,7 @@ def _probe_via_api(
     required_updated: int = 2,
     progress_callback=None,
     progress_every: int = 25,
+    previous_stats_date: str | None = None,
 ) -> dict | None:
     """
     Probe via API GraphQL. Retourne le même dict que _probe_on_page,
@@ -520,6 +521,14 @@ def _probe_via_api(
 
             if pc is not None:
                 updated = has_real_update(last_total, pc)
+                if (
+                    updated
+                    and last_total is not None
+                    and pc < last_total
+                    and previous_stats_date is not None
+                    and is_gap_affected(track["track_id"], previous_stats_date)
+                ):
+                    updated = False
                 successful_probes += 1
                 if updated:
                     updated_probes += 1

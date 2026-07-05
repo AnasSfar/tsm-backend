@@ -23,8 +23,10 @@ REPO_ROOT = SCRIPT_DIR.parents[4]                     # repo root
 COLLECTORS_ROOT = REPO_ROOT / "collectors"
 DB_ROOT = REPO_ROOT / "db"
 TWITTER_SESSION = ROOT.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json"
-INDEPENDENT_BEST_DAY_MIN_DAYS = 61
-ALBUM_BEST_DAY_MIN_DAYS = 61
+INDEPENDENT_BEST_DAY_MIN_DAYS = 14
+ALBUM_BEST_DAY_MIN_DAYS = 14
+INDIVIDUAL_BEST_DAY_MIN_PCT_CHANGE = 5.0
+RECAP_BEST_DAY_MIN_DAYS = 15
 
 sys.path.insert(0, str(COLLECTORS_ROOT))              # collectors/
 sys.path.insert(0, str(ROOT))                         # collectors/spotify/streams/
@@ -60,7 +62,27 @@ def _fmt_pct(current: int | None, previous: int | None) -> str:
     return f"{pct:+.1f}%"
 
 
-def _find_all_rows(target_date: str, *, min_days: int) -> list[dict]:
+def _pct_change_for_track_ids(track_ids: list[str], history: dict, target: date) -> float | None:
+    """Day-over-day % change (today vs yesterday) summed across track_ids."""
+    previous_day = target - timedelta(days=1)
+    today_total = 0
+    yesterday_total = 0
+    found_today = False
+    found_yesterday = False
+    for track_id in track_ids:
+        for point in history.get(track_id) or []:
+            if point.day == target and point.daily is not None:
+                today_total += point.daily
+                found_today = True
+            elif point.day == previous_day and point.daily is not None:
+                yesterday_total += point.daily
+                found_yesterday = True
+    if not found_today or not found_yesterday or yesterday_total <= 0:
+        return None
+    return (today_total - yesterday_total) / yesterday_total * 100
+
+
+def _find_all_rows(target_date: str, *, min_days: int, min_pct_change: float | None = None) -> list[dict]:
     tracks = best_day_since.load_tracks(include_extras=False)
     all_tracks = best_day_since.load_tracks(include_extras=True)
     history = best_day_since.load_history()
@@ -79,25 +101,40 @@ def _find_all_rows(target_date: str, *, min_days: int) -> list[dict]:
             history,
             target,
         )
-        if row and row.get("kind") == "since" and best_day_since.passes_filters(row, min_days=min_days):
-            rows.append(row)
+        if not row or row.get("kind") != "since" or not best_day_since.passes_filters(row, min_days=min_days):
+            continue
+        if min_pct_change is not None:
+            pct = _pct_change_for_track_ids(row.get("combined_track_ids") or [track_id], history, target)
+            if pct is None or pct < min_pct_change:
+                continue
+        rows.append(row)
     return rows
 
 
 def _pick_rows(target_date: str, *, limit: int, min_days: int, exclude_ids: set[str] | None = None) -> list[dict]:
-    rows = _find_all_rows(target_date, min_days=min_days)
+    rows = _find_all_rows(target_date, min_days=min_days, min_pct_change=INDIVIDUAL_BEST_DAY_MIN_PCT_CHANGE)
     if exclude_ids:
         rows = [row for row in rows if row["track_id"] not in exclude_ids]
     rows.sort(key=best_day_since.sort_key, reverse=True)
     return rows[:limit]
 
 
+def _track_posted_lock_path(track_id: str, target_date: str) -> Path:
+    return _day_dir(target_date) / "best_day_since_track_locks" / f"{track_id}.lock"
+
+
 def _post_single_track_early(track_id: str, target_date: str, *, min_days: int, no_post: bool) -> str:
     """Compute and post one track's best-day-since record immediately, if it
     already qualifies, without waiting for the rest of the day's collection.
 
-    Returns "posted", "skipped" (doesn't qualify yet / missing data), or "error".
+    Returns "posted", "skipped" (doesn't qualify yet / missing data, or already
+    posted for this track+date), or "error".
     """
+    lock = _track_posted_lock_path(track_id, target_date)
+    if lock.exists() and not no_post:
+        print(f"[best_day_since_early] Already posted for {track_id} on {target_date}, skipping.")
+        return "skipped"
+
     row = best_day_since.best_day_since_for_track(track_id, target_date, min_days=min_days, combined=True)
     if not row:
         return "skipped"
@@ -112,6 +149,10 @@ def _post_single_track_early(track_id: str, target_date: str, *, min_days: int, 
         spotlight.load_history_for_tracks(track_ids, target_date)
     )
     if total_today is None or total_yesterday is None or daily_today is None or daily_yesterday is None or daily_yesterday <= 0:
+        return "skipped"
+
+    pct_change = (daily_today - daily_yesterday) / daily_yesterday * 100
+    if pct_change < INDIVIDUAL_BEST_DAY_MIN_PCT_CHANGE:
         return "skipped"
 
     covers = spotlight.load_covers()
@@ -137,6 +178,9 @@ def _post_single_track_early(track_id: str, target_date: str, *, min_days: int, 
     if not post_with_image(tweet, image_path, TWITTER_SESSION):
         print(f"[best_day_since_early] Failed to post {row['title']}.")
         return "error"
+
+    lock.parent.mkdir(parents=True, exist_ok=True)
+    lock.touch()
     return "posted"
 
 
@@ -151,8 +195,12 @@ def _pick_album_rows(target_date: str, *, limit: int, min_days: int) -> list[dic
         if len(track_ids) < 2:
             continue
         row = best_day_since.compute_album_best_day_since(album, track_ids, history, target)
-        if row and row.get("kind") == "since" and best_day_since.passes_filters(row, min_days=min_days):
-            rows.append(row)
+        if not row or row.get("kind") != "since" or not best_day_since.passes_filters(row, min_days=min_days):
+            continue
+        pct = _pct_change_for_track_ids(track_ids, history, target)
+        if pct is None or pct < INDIVIDUAL_BEST_DAY_MIN_PCT_CHANGE:
+            continue
+        rows.append(row)
 
     rows.sort(key=best_day_since.sort_key, reverse=True)
     return rows[:limit]
@@ -429,6 +477,9 @@ def main() -> None:
         sys.exit(1)
 
     exclude_ids = {t.strip() for t in args.exclude_tracks.split(",") if t.strip()}
+    track_locks_dir = day_dir / "best_day_since_track_locks"
+    if track_locks_dir.exists():
+        exclude_ids.update(p.stem for p in track_locks_dir.glob("*.lock"))
     remaining_limit = max(0, limit - len(exclude_ids))
     rows = (
         []
@@ -483,6 +534,9 @@ def main() -> None:
             print(f"[best_day_since_post] Failed to post {row['title']}.")
             sys.exit(1)
         posted_count += 1
+        track_lock = _track_posted_lock_path(row["track_id"], target_date)
+        track_lock.parent.mkdir(parents=True, exist_ok=True)
+        track_lock.touch()
         if index < len(rows) and args.post_spacing_seconds > 0:
             print(f"[best_day_since_post] Waiting {args.post_spacing_seconds}s before next post...")
             time.sleep(args.post_spacing_seconds)
@@ -552,7 +606,7 @@ def main() -> None:
     elif args.no_recap:
         pass
     else:
-        recap_rows = _find_all_rows(target_date, min_days=args.min_days)
+        recap_rows = _find_all_rows(target_date, min_days=RECAP_BEST_DAY_MIN_DAYS)
         recap_rows.sort(key=lambda row: row["best_day_since"])
         if not recap_rows:
             print(f"[best_day_since_post] No best-day-since songs found for recap on {target_date}.")

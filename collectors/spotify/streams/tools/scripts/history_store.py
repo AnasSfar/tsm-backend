@@ -471,6 +471,7 @@ class HistoryIndex:
         self.last_total_by_track: dict[str, int] = {}
         self.total_by_date_track: dict[tuple[str, str], int] = {}
         self.ids_by_date: dict[str, set[str]] = {}
+        self.ids_with_daily_by_date: dict[str, set[str]] = {}
         self.points_by_track: dict[str, list[dict]] = {}
         for row in rows or []:
             self._consume_row(row)
@@ -508,7 +509,10 @@ class HistoryIndex:
         point: dict = {"date": date_value, "streams": streams}
         if daily_raw:
             try:
-                point["daily_streams"] = int(daily_raw)
+                daily_value = int(daily_raw)
+                point["daily_streams"] = daily_value
+                if daily_value >= 0:
+                    self.ids_with_daily_by_date.setdefault(date_value, set()).add(track_id)
             except Exception:
                 pass
         if estimated:
@@ -553,6 +557,14 @@ class HistoryIndex:
     def done_ids_for_date(self, stats_date: str) -> set[str]:
         with self._lock:
             return set(self.ids_by_date.get(stats_date, set()))
+
+    def has_any_real_update_for_date(self, stats_date: str) -> bool:
+        """True once at least one track has a genuine (non-blank) daily_streams
+        value recorded for stats_date — used as a "canary" signal: if nothing
+        has confirmed stats_date's growth yet, a track whose previous day is
+        missing more likely just caught up to that earlier day, not this one."""
+        with self._lock:
+            return bool(self.ids_with_daily_by_date.get(stats_date))
 
     def append(self, stats_date: str, track_id: str, total: int, daily: int | None) -> None:
         row = {
@@ -770,6 +782,17 @@ def max_days_covered(track_ids: list[str] | set[str], stats_date: str) -> int:
     if not track_ids:
         return 1
     return max(days_covered_by_row(track_id, stats_date) for track_id in track_ids)
+
+
+def is_gap_affected(track_id: str, previous_stats_date: str) -> bool:
+    """True when this track has an earlier known total but no row for the
+    immediate previous day (e.g. a backfilled/injected later total during a
+    Spotify gap) — a probe fetch lower than its last known total most likely
+    just hasn't caught up to that later figure yet, not a genuine change."""
+    last_total = get_last_history_total(track_id)
+    if last_total is None:
+        return False
+    return get_history_total_for_date(track_id, previous_stats_date) is None
 
 
 def has_real_update(previous_streams: int | None, new_streams: int) -> bool:

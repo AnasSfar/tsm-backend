@@ -292,15 +292,15 @@ body:before{{
 }}
 .layout{{height:299px;position:relative;z-index:1}}
 .cover-col{{
-  position:absolute;right:24px;top:23px;width:252px;height:252px;
+  position:absolute;right:10px;top:10px;width:279px;height:279px;
   overflow:hidden;border-radius:26px;
   box-shadow:0 24px 50px rgba(0,0,0,.42),0 0 0 1px rgba(255,255,255,.18);
 }}
-.cover,.cover-ph{{width:252px;height:252px;object-fit:cover;display:block}}
+.cover,.cover-ph{{width:279px;height:279px;object-fit:cover;display:block}}
 .cover-ph{{background:#172421}}
 .info-col{{
-  position:absolute;left:28px;top:22px;bottom:26px;width:470px;
-  display:flex;flex-direction:column;justify-content:center;gap:12px;
+  position:absolute;left:28px;top:14px;bottom:14px;width:460px;
+  display:flex;flex-direction:column;justify-content:center;gap:7px;
 }}
 .hdr-row{{display:flex;align-items:center;gap:9px;width:100%}}
 .logo{{width:26px;height:26px;flex-shrink:0}}
@@ -317,7 +317,7 @@ body:before{{
 }}
 .title{{
   color:#fff;font-size:{_best_since_title_font_size(title)}px;font-weight:950;
-  line-height:1.04;letter-spacing:0;
+  line-height:1.14;letter-spacing:0;flex-shrink:0;
   max-width:455px;display:-webkit-box;-webkit-line-clamp:2;
   -webkit-box-orient:vertical;overflow:hidden;
   text-shadow:0 3px 18px rgba(0,0,0,.28);
@@ -339,7 +339,7 @@ body:before{{
 .stats{{display:flex;gap:10px;margin-top:2px}}
 .stat{{
   background:rgba(7,14,22,.58);border:1px solid rgba(255,255,255,.20);
-  border-radius:16px;padding:11px 15px 10px;min-width:132px;
+  border-radius:16px;padding:9px 14px 8px;min-width:132px;
   box-shadow:0 12px 30px rgba(0,0,0,.18);
 }}
 .stat-lbl{{
@@ -380,15 +380,15 @@ body:before{{
 }}
 .layout{{height:299px;position:relative;z-index:1}}
 .cover-col{{
-  position:absolute;right:24px;top:23px;width:252px;height:252px;
+  position:absolute;right:10px;top:10px;width:279px;height:279px;
   overflow:hidden;border-radius:26px;
   box-shadow:0 24px 50px rgba(0,0,0,.42),0 0 0 1px rgba(255,255,255,.18);
 }}
-.cover,.cover-ph{{width:252px;height:252px;object-fit:cover;display:block}}
+.cover,.cover-ph{{width:279px;height:279px;object-fit:cover;display:block}}
 .cover-ph{{background:#172421}}
 .info-col{{
-  position:absolute;left:28px;top:22px;bottom:26px;width:470px;
-  display:flex;flex-direction:column;justify-content:center;gap:12px;
+  position:absolute;left:28px;top:14px;bottom:14px;width:460px;
+  display:flex;flex-direction:column;justify-content:center;gap:7px;
 }}
 .hdr-row{{display:flex;align-items:center;gap:9px;width:100%}}
 .logo{{width:26px;height:26px;flex-shrink:0}}
@@ -405,7 +405,7 @@ body:before{{
 }}
 .title{{
   color:#fff;font-size:{_best_since_title_font_size(title)}px;font-weight:950;
-  line-height:1.04;letter-spacing:0;
+  line-height:1.14;letter-spacing:0;flex-shrink:0;
   max-width:455px;display:-webkit-box;-webkit-line-clamp:2;
   -webkit-box-orient:vertical;overflow:hidden;
   text-shadow:0 3px 18px rgba(0,0,0,.28);
@@ -414,7 +414,7 @@ body:before{{
 .stats{{display:flex;gap:10px;margin-top:2px}}
 .stat{{
   background:rgba(7,14,22,.58);border:1px solid rgba(255,255,255,.20);
-  border-radius:16px;padding:11px 15px 10px;min-width:132px;
+  border-radius:16px;padding:9px 14px 8px;min-width:132px;
   box-shadow:0 12px 30px rgba(0,0,0,.18);
 }}
 .stat-lbl{{

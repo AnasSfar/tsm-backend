@@ -432,7 +432,7 @@ def best_day_since_for_track(
     track_id: str,
     target_date: str,
     *,
-    min_days: int = 14,
+    min_days: int = 21,
     combined: bool = True,
 ) -> dict | None:
     """Return best-day-since data for one album track, with combined versions by default."""
@@ -490,7 +490,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Compute best-day-since stream stats.")
     parser.add_argument("date", nargs="?", help="Stats date YYYY-MM-DD (default: latest date in history)")
     parser.add_argument("--limit", type=int, default=50, help="Number of rows to print (default: 50)")
-    parser.add_argument("--min-days", type=int, default=14, help="Minimum days since previous higher/equal day (default: 14)")
+    parser.add_argument("--min-days", type=int, default=21, help="Minimum days since previous higher/equal day (default: 21)")
     parser.add_argument("--include-extras", action="store_true", help="Include songs.json extras too")
     parser.add_argument("--output", default=str(DEFAULT_OUTPUT), help="JSON output path")
     parser.add_argument("--no-write", action="store_true", help="Print only, do not write JSON")
