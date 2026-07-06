@@ -1296,9 +1296,9 @@ def _ensure_worldwide_valid(
     return ok, 0
 
 
-_ALL_POST_PARTS = {"artists", "global", "fr", "us", "cards", "regions"}
+_ALL_POST_PARTS = {"artists", "global", "fr", "us", "cards"}
 _DEFAULT_POST_PARTS = set(_ALL_POST_PARTS)
-_EXTRA_POST_PARTS = {"best-day-since"}  # non inclus dans le défaut, à passer explicitement via --post
+_EXTRA_POST_PARTS = {"best-day-since", "regions"}  # non inclus dans le défaut, à passer explicitement via --post
 
 
 def _streams_history_path() -> Path:
@@ -1536,8 +1536,9 @@ def main() -> int:
         metavar="PART",
         default=None,
         help=(
-            "Parties à poster sur Twitter: artists, best-day-since, cards, fr, global, regions. "
-            "Défaut: toutes. Exemple: --post global fr"
+            "Parties à poster sur Twitter: artists, cards, fr, global, us (défaut: toutes). "
+            "Extras non inclus par défaut (à passer explicitement): best-day-since, regions. "
+            "Exemple: --post global fr"
         ),
     )
     parser.add_argument("--no-post", action="store_true", help="Désactive tout le posting Twitter.")

@@ -289,6 +289,7 @@ def run(chart_date: str, *, post: bool, force: bool, limit: int) -> int:
         print(f"[SKIP] Artist worldwide data already exists for {chart_date} ({len(rows)} regions)")
     else:
         token, regions = _get_bearer_token_and_regions()
+        regions = {code: name for code, name in regions.items() if code in {"global", "us"}}
         rows = asyncio.run(_fetch_all(chart_date, token, regions, limit))
         _add_worldwide_days_at_pos(rows, chart_date)
         data = {

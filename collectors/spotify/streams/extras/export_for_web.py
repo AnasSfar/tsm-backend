@@ -309,6 +309,8 @@ def normalize_daily_streams_from_totals(by_date: dict[str, dict[str, dict]]) -> 
         if not previous_day:
             continue
         for track_id, values in by_date.get(date_value, {}).items():
+            if values.get("estimated_reason") == "manual_trusted":
+                continue
             previous_values = previous_day.get(track_id)
             if not previous_values:
                 continue
@@ -1352,6 +1354,34 @@ def export_for_web(stats_date: str | None = None, *, dry_run: bool = False) -> N
         song["display_order"] = primary.get("display_order") if primary else None
         song["base_title"] = primary.get("base_title") if primary else None
         song["chart_extra"] = primary.get("chart_extra") if primary else song.get("chart_extra")
+
+    # Never publish a date to the site while its chart_extra=false ("main")
+    # tracks are still mid-collection — a partially-collected day produces
+    # nonsensical aggregates (bogus "biggest gainer", % changes, etc.).
+    # Extras-only tracks are allowed to lag behind (see gap_split_estimate).
+    # Only requires tracks that were ALREADY being tracked the day before —
+    # this avoids false positives for tracks that simply weren't released
+    # yet on older dates.
+    main_track_ids = {s["track_id"] for s in raw_songs if s.get("chart_extra") is False}
+
+    def _date_is_complete_for_site(date_str: str) -> bool:
+        day = raw_history_by_date.get(date_str) or {}
+        try:
+            prev_date = (datetime.strptime(date_str, "%Y-%m-%d").date() - timedelta(days=1)).isoformat()
+        except ValueError:
+            return True
+        prev_day = raw_history_by_date.get(prev_date) or {}
+        required_ids = main_track_ids & set(prev_day.keys())
+        if not required_ids:
+            return True
+        return all(
+            day.get(tid) is not None and day[tid].get("daily_streams") is not None
+            for tid in required_ids
+        )
+
+    while dates and not _date_is_complete_for_site(dates[-1]):
+        print(f"[export] {dates[-1]}: chart_extra=false tracks not fully collected yet — not publishing to the site.")
+        dates.pop()
 
     deduped_songs, old_to_kept = dedupe_songs_for_site(raw_songs, raw_history_by_date)
 

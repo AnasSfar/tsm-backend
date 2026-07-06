@@ -23,10 +23,10 @@ REPO_ROOT = SCRIPT_DIR.parents[4]                     # repo root
 COLLECTORS_ROOT = REPO_ROOT / "collectors"
 DB_ROOT = REPO_ROOT / "db"
 TWITTER_SESSION = ROOT.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json"
-INDEPENDENT_BEST_DAY_MIN_DAYS = 14
-ALBUM_BEST_DAY_MIN_DAYS = 14
-INDIVIDUAL_BEST_DAY_MIN_PCT_CHANGE = 5.0
-RECAP_BEST_DAY_MIN_DAYS = 15
+RECAP_INDIVIDUAL_BEST_DAY_MIN_DAYS = 21
+ALBUM_BEST_DAY_MIN_DAYS = 21
+LIVE_BEST_DAY_MIN_PCT_CHANGE = 6.0
+RECAP_BEST_DAY_MIN_DAYS = 21
 
 sys.path.insert(0, str(COLLECTORS_ROOT))              # collectors/
 sys.path.insert(0, str(ROOT))                         # collectors/spotify/streams/
@@ -62,27 +62,7 @@ def _fmt_pct(current: int | None, previous: int | None) -> str:
     return f"{pct:+.1f}%"
 
 
-def _pct_change_for_track_ids(track_ids: list[str], history: dict, target: date) -> float | None:
-    """Day-over-day % change (today vs yesterday) summed across track_ids."""
-    previous_day = target - timedelta(days=1)
-    today_total = 0
-    yesterday_total = 0
-    found_today = False
-    found_yesterday = False
-    for track_id in track_ids:
-        for point in history.get(track_id) or []:
-            if point.day == target and point.daily is not None:
-                today_total += point.daily
-                found_today = True
-            elif point.day == previous_day and point.daily is not None:
-                yesterday_total += point.daily
-                found_yesterday = True
-    if not found_today or not found_yesterday or yesterday_total <= 0:
-        return None
-    return (today_total - yesterday_total) / yesterday_total * 100
-
-
-def _find_all_rows(target_date: str, *, min_days: int, min_pct_change: float | None = None) -> list[dict]:
+def _find_all_rows(target_date: str, *, min_days: int) -> list[dict]:
     tracks = best_day_since.load_tracks(include_extras=False)
     all_tracks = best_day_since.load_tracks(include_extras=True)
     history = best_day_since.load_history()
@@ -103,16 +83,12 @@ def _find_all_rows(target_date: str, *, min_days: int, min_pct_change: float | N
         )
         if not row or row.get("kind") != "since" or not best_day_since.passes_filters(row, min_days=min_days):
             continue
-        if min_pct_change is not None:
-            pct = _pct_change_for_track_ids(row.get("combined_track_ids") or [track_id], history, target)
-            if pct is None or pct < min_pct_change:
-                continue
         rows.append(row)
     return rows
 
 
 def _pick_rows(target_date: str, *, limit: int, min_days: int, exclude_ids: set[str] | None = None) -> list[dict]:
-    rows = _find_all_rows(target_date, min_days=min_days, min_pct_change=INDIVIDUAL_BEST_DAY_MIN_PCT_CHANGE)
+    rows = _find_all_rows(target_date, min_days=min_days)
     if exclude_ids:
         rows = [row for row in rows if row["track_id"] not in exclude_ids]
     rows.sort(key=best_day_since.sort_key, reverse=True)
@@ -152,7 +128,7 @@ def _post_single_track_early(track_id: str, target_date: str, *, min_days: int, 
         return "skipped"
 
     pct_change = (daily_today - daily_yesterday) / daily_yesterday * 100
-    if pct_change < INDIVIDUAL_BEST_DAY_MIN_PCT_CHANGE:
+    if pct_change < LIVE_BEST_DAY_MIN_PCT_CHANGE:
         return "skipped"
 
     covers = spotlight.load_covers()
@@ -196,9 +172,6 @@ def _pick_album_rows(target_date: str, *, limit: int, min_days: int) -> list[dic
             continue
         row = best_day_since.compute_album_best_day_since(album, track_ids, history, target)
         if not row or row.get("kind") != "since" or not best_day_since.passes_filters(row, min_days=min_days):
-            continue
-        pct = _pct_change_for_track_ids(track_ids, history, target)
-        if pct is None or pct < INDIVIDUAL_BEST_DAY_MIN_PCT_CHANGE:
             continue
         rows.append(row)
 
@@ -410,8 +383,8 @@ def main() -> None:
     parser.add_argument(
         "--min-days",
         type=int,
-        default=INDEPENDENT_BEST_DAY_MIN_DAYS,
-        help=f"Minimum days for best-day-since (default: {INDEPENDENT_BEST_DAY_MIN_DAYS}).",
+        default=RECAP_INDIVIDUAL_BEST_DAY_MIN_DAYS,
+        help=f"Minimum days for best-day-since (default: {RECAP_INDIVIDUAL_BEST_DAY_MIN_DAYS}).",
     )
     parser.add_argument(
         "--post-spacing-seconds",

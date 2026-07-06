@@ -87,7 +87,6 @@ from history_store import (
     get_last_stats_date_in_history,
     get_previous_total_before_date,
     get_priority_top_50_track_ids_from_previous_day,
-    get_priority_top_track_ids_from_previous_day,
     has_real_update,
     is_gap_affected,
     load_active_track_ids_from_discography,
@@ -572,6 +571,14 @@ def try_apply_track_update(
                 else:
                     append_history_row([stats_date, track_id, total, daily if daily is not None else ""])
         status = "updated"
+
+        if reason == "lower_than_previous" and not dry_run_mode:
+            notify(
+                NTFY_TOPIC,
+                f"{track['title']} ({track_id}) decreased on {stats_date}: {last_total:,} -> {total:,}",
+                title="Taylor Swift - Stream total decreased",
+                tags="warning,chart_increasing",
+            )
 
         if write_history and not _UPDATE_SIGNAL_SENT.is_set():
             _UPDATE_SIGNAL_SENT.set()
@@ -1770,6 +1777,13 @@ def main():
     snapshot_date = stats_date_override or get_stats_date_str()
     snapshot_collected_date = get_scrape_date_str()
     stats_date = snapshot_date
+
+    if force_reprocess and not any((dry_run_mode, local_test_mode, debug_daily_mode, debug_total_mode, test_mode, throwback_mode)):
+        removed = delete_history_rows_for_date(stats_date)
+        if removed:
+            print(f"[FORCE] Removed {removed} row(s) for stats date: {stats_date}")
+        else:
+            print(f"[FORCE] No existing rows to clear for stats date: {stats_date}")
     
     print("=" * 70)
     print("Taylor Swift - Spotify Streams Collector")
@@ -2322,11 +2336,11 @@ def main():
                         zero_update_probe_count = 0
             else:
                 print("Probe via API unavailable (no token) — skipping probe, starting run.")
-    elif done_tracks_before_run < total_tracks and not debug_daily_mode:
-        print("Partial progress already exists for this stats date.")
-        print("Skipping probe and resuming unfinished tracks.")
     elif debug_daily_mode:
         print("Skipping probe in debug-daily mode.")
+    elif done_tracks_before_run < total_tracks:
+        print("Partial progress already exists for this stats date.")
+        print("Skipping probe and resuming unfinished tracks.")
     else:
         print("All tracks already appear done for this stats date.")
         print("Skipping probe and refreshing export/publish anyway.")
@@ -2379,14 +2393,48 @@ def main():
         enabled=True,
     )
 
-    previous_day_top_retry_ids = get_priority_top_track_ids_from_previous_day(
-        tracks,
-        stats_date,
-        INFINITE_RETRY_PREVIOUS_DAY_TOP_N,
-    )
+    seen_before_ids = {
+        track["track_id"]
+        for track in tracks
+        if get_previous_total_before_date(track["track_id"], stats_date) is not None
+    }
     infinite_retry_thread: threading.Thread | None = None
     infinite_retry_track_ids: set[str] = set()
+    abandoned_pending_track_ids: set[str] = set()
     infinite_retry_collected_ids: set[str] = set()
+
+    def _abandon_pending_track(track_id: str) -> bool:
+        if track_id in abandoned_pending_track_ids:
+            return False
+
+        result = next((r for r in summary.get("results", []) if r and r.get("track_id") == track_id), None)
+        if not result or result.get("status") != "pending":
+            return False
+
+        total = result.get("streams")
+        if total is None:
+            total = result.get("previous_streams")
+        if total is None:
+            return False
+
+        if write_history and not dry_run_mode:
+            history_index = summary.get("history_index")
+            if history_index is not None:
+                history_index.append(stats_date, track_id, int(total), 0)
+            else:
+                append_history_row([stats_date, track_id, int(total), 0])
+
+        result["status"] = "updated"
+        result["daily_streams"] = 0
+        result["reason"] = "abandoned_after_retry_cap"
+        abandoned_pending_track_ids.add(track_id)
+
+        summary["updated_this_run"] = int(summary.get("updated_this_run", 0)) + 1
+        summary["pending_this_run"] = max(int(summary.get("pending_this_run", 0)) - 1, 0)
+        summary["done_tracks"] = int(summary.get("done_tracks", 0)) + 1
+        summary["all_done"] = summary["pending_this_run"] == 0
+        all_updated_track_ids.add(track_id)
+        return True
 
     progress = ProgressLogger(LOG_MODE)
     summary = run_update(
@@ -2462,8 +2510,8 @@ def main():
         for tid in all_pending_ids:
             track_retry_counts[tid] = track_retry_counts.get(tid, 0) + 1
 
-        # chart_extra tracks are retried exactly like every other track — no
-        # exemption, nothing gets dropped from collection after N rounds.
+        # Tracks that already existed before this date can move to background
+        # retry after the cap; brand-new tracks keep blocking until they land.
         exhausted_ids = {
             tid for tid, count in track_retry_counts.items()
             if count >= MAX_PENDING_RETRY_ROUNDS
@@ -2473,16 +2521,19 @@ def main():
                 f"{len(exhausted_ids)} pending track(s) reached "
                 f"{MAX_PENDING_RETRY_ROUNDS} retries; starting another retry block."
             )
-            for tid in exhausted_ids:
-                track_retry_counts[tid] = 0
-        newly_infinite_retry_ids: set[str] = set()
-        if newly_infinite_retry_ids:
-            infinite_retry_track_ids.update(newly_infinite_retry_ids)
+        abandoned_ids: set[str] = {
+            tid for tid in exhausted_ids
+            if tid in seen_before_ids
+        }
+        if abandoned_ids:
             print(
-                f"Moving {len(newly_infinite_retry_ids)} previous-day top-"
-                f"{INFINITE_RETRY_PREVIOUS_DAY_TOP_N} pending track(s) to infinite background retry."
+                f"Abandoning {len(abandoned_ids)} previously-seen pending track(s) after {MAX_PENDING_RETRY_ROUNDS} retries; writing daily=0."
             )
-        pending_retry_ids = all_pending_ids - infinite_retry_track_ids
+            for tid in sorted(abandoned_ids):
+                _abandon_pending_track(tid)
+        for tid in exhausted_ids - abandoned_ids:
+            track_retry_counts[tid] = 0
+        pending_retry_ids = all_pending_ids - infinite_retry_track_ids - abandoned_pending_track_ids
 
         if not pending_retry_ids:
             print("No pending track IDs left to retry; stopping pending retries.")
@@ -2554,7 +2605,7 @@ def main():
         exhausted_after_all = {
             tid for tid, count in track_retry_counts.items()
             if count >= MAX_PENDING_RETRY_ROUNDS
-            and tid not in previous_day_top_retry_ids
+            and tid not in seen_before_ids
         }
         still_pending = {
             r["track_id"] for r in summary.get("results", [])
@@ -2600,10 +2651,11 @@ def main():
         if r and r.get("status") == "pending" and r.get("track_id")
     }
     infinite_retry_track_ids &= current_pending_ids
-    if infinite_retry_track_ids and not dry_run_mode and not local_test_mode and not debug_daily_mode:
+    abandoned_pending_track_ids &= current_pending_ids
+    blocking_pending_ids = current_pending_ids - infinite_retry_track_ids - abandoned_pending_track_ids
+    if blocking_pending_ids and not dry_run_mode and not local_test_mode and not debug_daily_mode:
         print(
-            f"Blocking final export/post: {len(infinite_retry_track_ids)} previous-day "
-            f"top-{INFINITE_RETRY_PREVIOUS_DAY_TOP_N} track(s) are still pending."
+            f"Blocking final export/post: {len(blocking_pending_ids)} pending track(s) are still unresolved."
         )
 
     print_remaining_details(summary)
@@ -2641,8 +2693,29 @@ def main():
         print("[DRY-RUN] Scraping terminé — aucune modification appliquée.")
         return
 
-    if summary["all_done"]:
-        print("All target tracks updated.")
+    if not blocking_pending_ids:
+        if infinite_retry_track_ids and infinite_retry_thread is None and not dry_run_mode and not local_test_mode and not debug_daily_mode:
+            infinite_retry_thread = threading.Thread(
+                target=retry_pending_tracks_until_collected,
+                args=(set(infinite_retry_track_ids),),
+                kwargs={
+                    "stats_date": stats_date,
+                    "stats_date_override": stats_date_override,
+                    "token_mgr": token_mgr,
+                    "force_reprocess": force_reprocess,
+                    "write_history": write_history,
+                    "collected_ids": infinite_retry_collected_ids,
+                    "use_browser_scrape": use_browser_scrape_for_run,
+                },
+                daemon=True,
+            )
+            infinite_retry_thread.start()
+        if current_pending_ids:
+            print(
+                f"All non-blocking pending tracks are handled; continuing with post/finalization while {len(current_pending_ids)} previously-seen track(s) remain in retry mode."
+            )
+        else:
+            print("All target tracks updated.")
         if normal_lock_mode:
             _write_daily_lock(stats_date, STREAMS_SCRAPED_LOCK_NAME, {
                 "total_tracks": summary.get("total_tracks"),
@@ -2652,7 +2725,7 @@ def main():
             })
     else:
         print("Run finished, but not all target tracks are done.")
-        print("Keeping local progress only; final export/post will run after all tracks are collected.")
+        print("Keeping local progress only; final export/post will run after all blocking tracks are collected.")
         album_update_poster.stop()
         best_day_since_poster.stop()
         if not debug_daily_mode and not local_test_mode:

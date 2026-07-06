@@ -460,7 +460,7 @@ def _post_streams_image(ctx: FinalizeContext, state: dict[str, float]) -> None:
         _run(
             ctx,
             [sys.executable, str(post_script), ctx.summary["stats_date"], "--no-post"],
-            label="streams image (no-post)",
+            label="top 45 songs thread (no-post)",
             should_post=False,
             state=state,
         )
@@ -470,11 +470,11 @@ def _post_streams_image(ctx: FinalizeContext, state: dict[str, float]) -> None:
         print("Skipping Twitter post: blocking tracks are still pending.")
         return
 
-    print("Posting streams image to Twitter...")
+    print("Posting top 45 songs thread to Twitter...")
     _run(
         ctx,
         [sys.executable, str(post_script), ctx.summary["stats_date"]],
-        label="streams image",
+        label="top 45 songs thread",
         should_post=True,
         state=state,
     )
@@ -791,11 +791,11 @@ def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
 
 def _post_albums_daily(ctx: FinalizeContext, state: dict[str, float]) -> None:
     if _is_weekend_stats_date(ctx.summary["stats_date"]):
-        print("Weekend detected: skipping separate albums daily post (included in combined streams image).")
+        print("Weekend detected: skipping separate top eras post (included in combined streams image).")
         return
 
     if not ctx.no_post_mode and not ctx.summary.get("all_done"):
-        print("Skipping albums daily post: not all tracks are done yet.")
+        print("Skipping top eras post: not all tracks are done yet.")
         return
 
     albums_post_script = ctx.script_dir / "tools" / "scripts" / "post_albums_twitter.py"
@@ -805,7 +805,7 @@ def _post_albums_daily(ctx: FinalizeContext, state: dict[str, float]) -> None:
     _run(
         ctx,
         albums_cmd,
-        label="albums daily image",
+        label="top eras image",
         should_post=not ctx.no_post_mode,
         state=state,
     )
@@ -1077,14 +1077,14 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
             with timer.step("best-day-since posts"):
                 _post_best_day_since(ctx, post_state)
 
-        with timer.step("albums daily post"):
+        with timer.step("top eras post"):
             _post_albums_daily(ctx, post_state)
 
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
             with timer.step("all-albums thread"):
                 _post_all_albums_thread(ctx, post_state)
 
-        with timer.step("streams post"):
+        with timer.step("top 45 songs post"):
             _post_streams_image(ctx, post_state)
 
         if ctx.debug_daily_mode or ctx.local_test_mode:

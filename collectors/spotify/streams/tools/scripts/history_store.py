@@ -469,6 +469,7 @@ class HistoryIndex:
         self._lock = threading.Lock()
         self.rows: list[dict] = []
         self.last_total_by_track: dict[str, int] = {}
+        self._last_total_date_by_track: dict[str, str] = {}
         self.total_by_date_track: dict[tuple[str, str], int] = {}
         self.ids_by_date: dict[str, set[str]] = {}
         self.ids_with_daily_by_date: dict[str, set[str]] = {}
@@ -502,7 +503,14 @@ class HistoryIndex:
             "estimated_reason": (row.get("estimated_reason") or "").strip(),
         }
         self.rows.append(clean_row)
-        self.last_total_by_track[track_id] = streams
+        # Rows aren't guaranteed to appear in chronological order in the CSV
+        # (e.g. manual backfills appended out of order) — only treat this row
+        # as the "last known total" if its date is actually the newest seen
+        # so far for this track, not just the newest to be read from disk.
+        last_date = self._last_total_date_by_track.get(track_id)
+        if last_date is None or date_value >= last_date:
+            self.last_total_by_track[track_id] = streams
+            self._last_total_date_by_track[track_id] = date_value
         self.total_by_date_track[(date_value, track_id)] = streams
         self.ids_by_date.setdefault(date_value, set()).add(track_id)
 
@@ -663,27 +671,45 @@ def get_last_history_total(track_id: str) -> int | None:
         return None
 
     last = None
+    last_date = None
     with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            if row.get("track_id") == track_id:
-                try:
-                    last = int(row["streams"])
-                except Exception:
-                    pass
+            if row.get("track_id") != track_id:
+                continue
+            row_date = (row.get("date") or "").strip()
+            if not row_date or (last_date is not None and row_date < last_date):
+                # Rows aren't guaranteed to be in chronological order (e.g.
+                # manual backfills appended out of order) — never let an
+                # older row overwrite a newer one just because it was read later.
+                continue
+            try:
+                last = int(row["streams"])
+                last_date = row_date
+            except Exception:
+                pass
     return last
 
 def get_all_last_history_totals() -> dict[str, int]:
     """Lit le CSV une seule fois et retourne {track_id: last_streams}."""
     result: dict[str, int] = {}
+    last_dates: dict[str, str] = {}
     if not HISTORY_PATH.exists():
         return result
     with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
             track_id = (row.get("track_id") or "").strip()
+            row_date = (row.get("date") or "").strip()
+            if not track_id or not row_date:
+                continue
+            last_date = last_dates.get(track_id)
+            if last_date is not None and row_date < last_date:
+                # Same out-of-order guard as get_last_history_total().
+                continue
             try:
                 result[track_id] = int(row["streams"])
+                last_dates[track_id] = row_date
             except Exception:
                 pass
     return result

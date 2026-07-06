@@ -77,21 +77,17 @@ def _compact_title(title: str) -> str:
     )
 
 
-def _build_table_tweet(*, period: str, target_date: str, rows: list[dict] | None = None) -> str:
+def _build_combined_tweet(*, target_date: str, daily_rows: list[dict]) -> str:
     date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
-    if period == "daily" and rows:
+    if daily_rows:
         max_days = max(
             post_gainer_thread.history_store.days_covered_by_row(row["track_id"], target_date)
-            for row in rows
+            for row in daily_rows
         )
     else:
         max_days = 1
     when = "yesterday" if max_days <= 1 else f"over the last {max_days} days"
-    return f"Taylor Swift's biggest {period} gainers by % {when} ({date_fmt})."
-
-
-def _table_title(*, period: str) -> str:
-    return f"Taylor Swift biggest {period} gainers"
+    return f"Taylor Swift's biggest gainers by % {when} ({date_fmt}) — daily & weekly."
 
 
 def _track_entry(row: dict) -> dict:
@@ -209,17 +205,16 @@ def _build_gainer_rows_html(
     return "\n".join(row_html)
 
 
-def _build_gainer_table_html(
-    rows: list[dict],
+def _build_combined_gainer_table_html(
+    daily_rows: list[dict],
+    weekly_rows: list[dict],
     *,
-    period: str,
     target_date: str,
     image_cache: dict[str, str],
     cover_map: dict,
     track_album_map: dict,
 ) -> str:
     date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
-    compare_label = "yesterday" if period == "daily" else "last week"
     header_img = generate_streams_image._pick_header_image()
     handle_color = "#1db954"
     if header_img:
@@ -231,12 +226,34 @@ def _build_gainer_table_html(
         )
     else:
         hdr_style = 'style="background:linear-gradient(135deg,#1db954 0%,#17a34a 100%);"'
-    rows_html = _build_gainer_rows_html(
-        rows,
-        period=period,
-        image_cache=image_cache,
-        cover_map=cover_map,
-        track_album_map=track_album_map,
+
+    def _section(rows: list[dict], *, period: str, title: str) -> str:
+        if not rows:
+            return ""
+        rows_html = _build_gainer_rows_html(
+            rows,
+            period=period,
+            image_cache=image_cache,
+            cover_map=cover_map,
+            track_album_map=track_album_map,
+        )
+        return f"""
+    <div class="section-hdr">
+      <span class="section-title">{html.escape(title)}</span>
+      <span class="badge">Top {len(rows)}</span>
+    </div>
+    <div class="col-heads">
+      <span>Track</span>
+      <span class="right">Daily</span>
+      <span class="right">Daily Chg</span>
+      <span class="right">Weekly Chg</span>
+      <span class="right">Total</span>
+    </div>
+    {rows_html}"""
+
+    sections_html = (
+        _section(daily_rows, period="daily", title="Daily Gainers · vs yesterday")
+        + _section(weekly_rows, period="weekly", title="Weekly Gainers · vs last week")
     )
 
     return f"""<!DOCTYPE html>
@@ -267,6 +284,20 @@ body {{
 .hdr-logo {{ width:64px; height:64px; flex-shrink:0; }}
 .hdr-title {{ color:#fff; font-size:26px; font-weight:800; letter-spacing:0; }}
 .hdr-sub {{ color:rgba(255,255,255,.85); font-size:15px; margin-top:5px; }}
+.section-hdr {{
+  padding:16px 18px 0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}}
+.section-title {{
+  font-size:15px;
+  font-weight:800;
+  color:#101828;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}}
 .badge {{
   color:#fff;
   border:1px solid rgba(255,255,255,.35);
@@ -276,11 +307,17 @@ body {{
   font-weight:800;
   white-space:nowrap;
 }}
+.section-hdr .badge {{
+  color:#1db954;
+  border-color:rgba(29,185,84,.35);
+  background:rgba(29,185,84,.08);
+}}
 .col-heads {{
   display: grid;
   grid-template-columns:minmax(220px,1fr) 104px 94px 94px 92px;
   column-gap:8px;
   padding:9px 18px;
+  margin-top:8px;
   background:rgba(241,245,246,.95);
   border-bottom:1px solid rgba(16,24,40,.07);
 }}
@@ -355,6 +392,7 @@ body {{
   justify-content:space-between;
   align-items:center;
   border-top:1px solid rgba(16,24,40,.07);
+  margin-top:8px;
 }}
 .ftr-handle {{ font-size:13px; color:#1db954; font-weight:700; }}
 .ftr-date {{ font-size:13px; color:#667085; font-weight:500; }}
@@ -366,20 +404,12 @@ body {{
       <div class="hdr-brand">
         {generate_streams_image.SPOTIFY_SVG}
         <div>
-          <div class="hdr-title">{html.escape(_table_title(period=period))}</div>
-          <div class="hdr-sub">{html.escape(date_fmt)} &middot; compared to {html.escape(compare_label)}</div>
+          <div class="hdr-title">Taylor Swift biggest gainers</div>
+          <div class="hdr-sub">{html.escape(date_fmt)}</div>
         </div>
       </div>
-      <div class="badge">Top {len(rows)}</div>
     </div>
-    <div class="col-heads">
-      <span>Track</span>
-      <span class="right">Daily</span>
-      <span class="right">Daily Chg</span>
-      <span class="right">Weekly Chg</span>
-      <span class="right">Total</span>
-    </div>
-    {rows_html}
+    {sections_html}
     <div class="ftr">
       <span class="ftr-handle" style="color:{handle_color}">@swiftiescharts</span>
       <span class="ftr-date">{html.escape(date_fmt)}</span>
@@ -389,21 +419,28 @@ body {{
 </html>"""
 
 
-def _render_table_image(rows: list[dict], *, period: str, target_date: str, out_dir: Path) -> Path:
-    rows = _enrich_gainer_rows(rows, target_date=target_date)
+def _render_combined_table_image(
+    daily_rows: list[dict],
+    weekly_rows: list[dict],
+    *,
+    target_date: str,
+    out_dir: Path,
+) -> Path:
+    daily_rows = _enrich_gainer_rows(daily_rows, target_date=target_date)
+    weekly_rows = _enrich_gainer_rows(weekly_rows, target_date=target_date)
     cover_map = generate_streams_image.load_covers()
     track_album_map = generate_streams_image.load_track_album_map()
     image_cache = generate_streams_image.prefetch_images(
-        [_track_entry(row) for row in rows],
+        [_track_entry(row) for row in (*daily_rows, *weekly_rows)],
         cover_map,
         track_album_map,
     )
-    out_path = out_dir / f"stream_highlights_{period}_gainers_top{len(rows)}.png"
-    tmp_html = out_dir / f"_stream_highlights_{period}_gainers.html"
+    out_path = out_dir / f"stream_highlights_gainers_{target_date}.png"
+    tmp_html = out_dir / "_stream_highlights_gainers.html"
     tmp_html.write_text(
-        _build_gainer_table_html(
-            rows,
-            period=period,
+        _build_combined_gainer_table_html(
+            daily_rows,
+            weekly_rows,
             target_date=target_date,
             image_cache=image_cache,
             cover_map=cover_map,
@@ -411,10 +448,12 @@ def _render_table_image(rows: list[dict], *, period: str, target_date: str, out_
         ),
         encoding="utf-8",
     )
+    row_count = len(daily_rows) + len(weekly_rows)
+    viewport_height = 400 + row_count * 72
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
-            page = browser.new_page(viewport={"width": 880, "height": 760}, device_scale_factor=2)
+            page = browser.new_page(viewport={"width": 880, "height": viewport_height}, device_scale_factor=2)
             page.goto(f"file:///{tmp_html.as_posix()}", wait_until="load")
             page.wait_for_timeout(300)
             page.locator("body").screenshot(path=str(out_path))
@@ -641,46 +680,35 @@ def main() -> int:
         min_baseline=max(0, int(args.min_baseline)),
         min_days=max(0, int(args.min_days)),
     )
-    if not any(groups.values()):
+    daily_rows = [item["daily"] for item in groups["daily"]]
+    weekly_rows = [item["weekly"] for item in groups["weekly"]]
+    if not daily_rows and not weekly_rows:
         print(f"[stream_highlights] No highlights found for {target_date}.")
         return 0
 
-    covers = spotlight.load_covers()
-    posted_any = False
-    for group_name, label in [
-        ("daily", "daily gainers"),
-        ("weekly", "weekly gainers"),
-    ]:
-        items = groups[group_name]
-        lock = day_dir / f"stream_highlights_{group_name}_posted.lock"
-        if lock.exists() and not args.no_post:
-            print(f"[stream_highlights] {label} table already posted for {target_date}, skipping.")
-            continue
-        if not items:
-            print(f"[stream_highlights] No {label} found for {target_date}.")
-            continue
+    lock = day_dir / "stream_highlights_posted.lock"
+    if lock.exists() and not args.no_post:
+        print(f"[stream_highlights] Gainers table already posted for {target_date}, skipping.")
+        return 0
 
-        rows = [item[group_name] for item in items]
-        tweet = _build_table_tweet(period=group_name, target_date=target_date, rows=rows)
-        image_path = _render_table_image(rows, period=group_name, target_date=target_date, out_dir=day_dir)
-        print(f"[stream_highlights] {label} table ({len(tweet)} chars):\n{tweet}")
-        print(f"[stream_highlights] Image: {image_path}")
-        for rank, row in enumerate(rows, 1):
-            print(f"[stream_highlights] {label} #{rank}: {row['track'].get('title')} {_fmt_pct(row['pct'])}")
+    tweet = _build_combined_tweet(target_date=target_date, daily_rows=daily_rows)
+    image_path = _render_combined_table_image(daily_rows, weekly_rows, target_date=target_date, out_dir=day_dir)
+    print(f"[stream_highlights] Combined gainers table ({len(tweet)} chars):\n{tweet}")
+    print(f"[stream_highlights] Image: {image_path}")
+    for rank, row in enumerate(daily_rows, 1):
+        print(f"[stream_highlights] daily gainers #{rank}: {row['track'].get('title')} {_fmt_pct(row['pct'])}")
+    for rank, row in enumerate(weekly_rows, 1):
+        print(f"[stream_highlights] weekly gainers #{rank}: {row['track'].get('title')} {_fmt_pct(row['pct'])}")
 
-        if args.no_post:
-            print(f"[stream_highlights] {label} table post skipped (--no-post).")
-            continue
+    if args.no_post:
+        print("[stream_highlights] Combined gainers table post skipped (--no-post).")
+        return 0
 
-        if not post_with_image(tweet, image_path, TWITTER_SESSION):
-            print(f"[stream_highlights] Failed to post {label} table.")
-            return 1
-        lock.touch()
-        posted_any = True
-        print(f"[stream_highlights] Posted {label} table for {target_date}.")
-
-    if not posted_any and not args.no_post:
-        print(f"[stream_highlights] No new highlight threads posted for {target_date}.")
+    if not post_with_image(tweet, image_path, TWITTER_SESSION):
+        print("[stream_highlights] Failed to post combined gainers table.")
+        return 1
+    lock.touch()
+    print(f"[stream_highlights] Posted combined gainers table for {target_date}.")
     return 0
 
 
