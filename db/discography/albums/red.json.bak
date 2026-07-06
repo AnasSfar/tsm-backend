@@ -27,7 +27,33 @@
           "version_tag": "demo__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:red",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "acoustic",
+            "demo",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "acoustic": "high:title_or_section",
+            "demo": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Treacherous - Original Demo Recording",
@@ -48,7 +74,33 @@
           "version_tag": "demo__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:treacherous",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "acoustic",
+            "demo",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "acoustic": "high:title_or_section",
+            "demo": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "State Of Grace - Acoustic",
@@ -69,7 +121,31 @@
           "version_tag": "acoustic__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:state_of_grace",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
         }
       ]
     },
@@ -97,7 +173,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:state_of_grace",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Red",
@@ -118,7 +214,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:red",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Treacherous",
@@ -139,7 +255,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:treacherous",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "I Knew You Were Trouble.",
@@ -160,7 +296,52 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [
+            "pop",
+            "dance-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "dance-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dance-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "dance-pop",
+              "electropop",
+              "pop rock",
+              "dubstep",
+              "teen pop",
+              "melodic dubstep",
+              "rock",
+              "heartland rock",
+              "contemporary folk"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "I Knew You Were Trouble (Taylor's Version)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_knew_you_were_trouble",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "All Too Well",
@@ -181,7 +362,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:all_too_well",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "22",
@@ -202,7 +403,52 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [
+            "pop",
+            "country",
+            "dance-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "country": 2.0,
+            "dance-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "dance-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "taylor swift",
+              "love at first listen",
+              "female vocalists",
+              "dance-pop",
+              "catchy",
+              "shameless fun",
+              "bubblegum pop",
+              "country pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "22"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:22",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "I Almost Do",
@@ -223,7 +469,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_almost_do",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "We Are Never Ever Getting Back Together",
@@ -244,7 +510,52 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [
+            "pop",
+            "country",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "country": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "country pop",
+              "taylor swift",
+              "female vocalists",
+              "red",
+              "2012",
+              "best of 2012",
+              "Love",
+              "catchy"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "We Are Never Ever Getting Back Together"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:we_are_never_ever_getting_back_together",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Stay Stay Stay",
@@ -265,7 +576,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:stay_stay_stay",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "The Last Time",
@@ -286,7 +617,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_last_time",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Holy Ground",
@@ -307,7 +658,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:holy_ground",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Sad Beautiful Tragic",
@@ -328,7 +699,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:sad_beautiful_tragic",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "The Lucky One",
@@ -349,7 +740,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_lucky_one",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Everything Has Changed",
@@ -370,7 +781,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:everything_has_changed",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Starlight",
@@ -391,7 +822,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:starlight",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Begin Again",
@@ -412,7 +863,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:begin_again",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Come Back...Be Here",
@@ -420,7 +891,7 @@
           "type": "track",
           "edition": "standard",
           "display_section": "Standard Edition",
-          "display_order": 17,
+          "display_order": 18,
           "base_title": "Come Back...Be Here",
           "album": "Red",
           "primary_artist": "Taylor Swift",
@@ -433,7 +904,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:come_back_be_here",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Girl At Home",
@@ -441,7 +932,7 @@
           "type": "track",
           "edition": "standard",
           "display_section": "Standard Edition",
-          "display_order": 18,
+          "display_order": 19,
           "base_title": "Girl At Home",
           "album": "Red",
           "primary_artist": "Taylor Swift",
@@ -454,7 +945,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:girl_at_home",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         }
       ]
     },
@@ -484,7 +995,27 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dbe6e4dd1b2a61e375a12c63",
           "display_era": "Red",
           "historical_track_ids": [],
-          "release_date": "2012-09-08T00:00:00Z"
+          "release_date": "2012-09-08T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:ronan",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         }
       ]
     },
@@ -514,7 +1045,29 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738e16c6e20dbed531a9006d58",
           "display_era": "Red",
           "historical_track_ids": [],
-          "release_date": "2022-06-11T00:00:00Z"
+          "release_date": "2022-06-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:all_too_well",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "All Too Well (Sad Girl Autumn Version) - Recorded at Long Pond Studios",
@@ -536,7 +1089,29 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b27370f88b5ee2da16d3f3929fea",
           "display_era": "Red",
           "historical_track_ids": [],
-          "release_date": "2021-11-18T00:00:00Z"
+          "release_date": "2021-11-18T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:all_too_well",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "alternate_version": "medium:type_or_title"
+          }
         }
       ]
     },
@@ -565,7 +1140,29 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d29a5d713277b0b3d517507b",
           "display_era": "Red",
-          "historical_track_ids": []
+          "historical_track_ids": [],
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:safe_sound_from_the_hunger_games_soundtrack",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "soundtrack"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "soundtrack": "high:title_album_or_section"
+          }
         }
       ]
     },
@@ -573,7 +1170,7 @@
       "album": "Red",
       "section": "collabs_and_features",
       "track_count": 1,
-      "chart_extra": false,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Babe (feat. Taylor Swift)",
@@ -598,7 +1195,27 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b27363d77f99117b28af9f656918",
           "display_era": "Red",
           "historical_track_ids": [],
-          "release_date": "2017-11-09T00:00:00Z"
+          "release_date": "2017-11-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:babe",
+          "filter_tags": [
+            "feature",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "standalone": "medium:section_or_type"
+          }
         }
       ]
     },
@@ -628,7 +1245,29 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273220563fb6c59f7e470ba3272",
           "display_era": "Red",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_last_time_karaoke_version",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "karaoke"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "karaoke": "high:title_or_section"
+          }
         },
         {
           "title": "The Moment I Knew",
@@ -636,7 +1275,7 @@
           "type": "standalone",
           "edition": "extras",
           "display_section": "Extras",
-          "display_order": 9999,
+          "display_order": 17,
           "base_title": "The Moment I Knew",
           "album": "Red",
           "primary_artist": "Taylor Swift",
@@ -650,7 +1289,27 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
           "display_era": "Red",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z"
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_moment_i_knew",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         }
       ]
     }

@@ -2469,11 +2469,6 @@ def main():
         r["track_id"] for r in summary["failed_results"] if r["status"] == "not_found"
     }
 
-    # Check if this is the first run of the day with zero updates (Spotify hasn't updated yet)
-    history_entries_for_this_date = load_history_track_ids_for_date(summary["stats_date"])
-    is_first_run_of_day = len(history_entries_for_this_date) == 0
-    has_zero_real_updates = summary["updated_this_run"] == 0
-
     retry_round = 0
     track_retry_counts: dict[str, int] = {}
     known_stuck_pending_tracks = load_known_stuck_pending_tracks()
@@ -2491,17 +2486,6 @@ def main():
         and not summary["all_done"]
         and summary["pending_this_run"] > 0
     ):
-        # Don't retry on first run of the day if there are zero real updates
-        # This means Spotify hasn't done its daily update yet - wait for next run instead
-        if retry_round == 0 and is_first_run_of_day and has_zero_real_updates:
-            print()
-            print(
-                f"⚠ {summary['pending_this_run']} unchanged track(s) detected, "
-                f"but this is the first run for {stats_date} with zero updates."
-            )
-            print("Spotify may not have updated yet. Skipping retries for now.")
-            break
-
         all_pending_ids = {
             r["track_id"]
             for r in summary.get("results", [])

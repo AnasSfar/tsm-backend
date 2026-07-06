@@ -2,7 +2,7 @@
   {
     "album": "Standalone & Extras",
     "section": "kworb_extras",
-    "track_count": 57,
+    "track_count": 55,
     "tracks": [
       {
         "title": "Babe",
@@ -64,7 +64,9 @@
         "song_family": "beautiful_ghosts_from_the_motion_picture_soundtrack_cats",
         "version_tag": null,
         "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27370d80ce758278c0ac3a63d9e",
-        "historical_track_ids": [],
+        "historical_track_ids": [
+          "6PPbs1c7f7Ove5JHUPmNZ2"
+        ],
         "genres": [],
         "genre_status": "missing",
         "genre_scores": {},
@@ -1551,27 +1553,6 @@
         "historical_track_ids": []
       },
       {
-        "title": "Safe & Sound - from “The Hunger Games” Soundtrack",
-        "url": "https://open.spotify.com/intl-fr/track/4HGaRnv2HuMKaZMLTJQZqV",
-        "type": "standalone",
-        "edition": "extras",
-        "display_section": "Kworb Extras",
-        "display_order": 9999,
-        "base_title": "Safe & Sound - from “The Hunger Games” Soundtrack",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "Safe & Sound - from “The Hunger Games” Soundtrack",
-        "song_family": "safe_sound_from_the_hunger_games_soundtrack",
-        "version_tag": null,
-        "image_url": "",
-        "release_date": null,
-        "historical_track_ids": []
-      },
-      {
         "title": "American Girl",
         "url": "https://open.spotify.com/intl-fr/track/4MPLRsmea37qS8imbKUC6p",
         "type": "standalone",
@@ -1692,27 +1673,6 @@
         ],
         "title_clean": "Long Live (feat. Paula Fernandes)",
         "song_family": "long_live_feat_paula_fernandes",
-        "version_tag": null,
-        "image_url": "",
-        "release_date": null,
-        "historical_track_ids": []
-      },
-      {
-        "title": "Beautiful Ghosts - From The Motion Picture Soundtrack “Cats”",
-        "url": "https://open.spotify.com/intl-fr/track/6PPbs1c7f7Ove5JHUPmNZ2",
-        "type": "standalone",
-        "edition": "extras",
-        "display_section": "Kworb Extras",
-        "display_order": 9999,
-        "base_title": "Beautiful Ghosts - From The Motion Picture Soundtrack “Cats”",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "Beautiful Ghosts - From The Motion Picture Soundtrack “Cats”",
-        "song_family": "beautiful_ghosts_from_the_motion_picture_soundtrack_cats",
         "version_tag": null,
         "image_url": "",
         "release_date": null,

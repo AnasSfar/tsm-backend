@@ -1254,7 +1254,7 @@
         },
         {
           "title": "The Story Of Us",
-          "url": "https://open.spotify.com/track/2jt90bYlYDg1lXYWES34LJ",
+          "url": "https://open.spotify.com/track/3lXekiVK1ZPZbKconsys73",
           "type": "track",
           "edition": "standard",
           "display_section": "Standard Edition",
@@ -1270,7 +1270,9 @@
           "song_family": "the_story_of_us",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "2jt90bYlYDg1lXYWES34LJ"
+          ],
           "release_date": "2010-10-25T00:00:00Z",
           "genres": [],
           "genre_status": "missing",

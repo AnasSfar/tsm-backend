@@ -2,7 +2,7 @@
   {
     "album": "Standalone & Extras",
     "section": "collabs_and_features",
-    "track_count": 4,
+    "track_count": 3,
     "tracks": [
       {
         "title": "The Joker And The Queen (feat. Taylor Swift)",
@@ -88,30 +88,6 @@
         "filter_tag_sources": {
           "feature": "high:type_or_primary_artist"
         }
-      },
-      {
-        "title": "Highway Don’t Care (feat. Taylor Swift & Keith Urban)",
-        "url": "https://open.spotify.com/intl-fr/track/6Bb5aUjzUT5ozbbr0VpnZ8",
-        "type": "feature",
-        "edition": "extras",
-        "display_section": "Extras",
-        "display_order": 9999,
-        "base_title": "Highway Don’t Care (feat. Taylor Swift & Keith Urban)",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [
-          "Taylor Swift"
-        ],
-        "artists": [
-          "Taylor Swift",
-          "Taylor Swift"
-        ],
-        "title_clean": "Highway Don’t Care (feat. Taylor Swift & Keith Urban)",
-        "song_family": "highway_dont_care_feat_taylor_swift_keith_urban",
-        "version_tag": "featured__feature",
-        "image_url": "",
-        "release_date": null,
-        "historical_track_ids": []
       }
     ]
   },
