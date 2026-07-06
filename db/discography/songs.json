@@ -1027,45 +1027,6 @@
         }
       },
       {
-        "title": "The Life of a Showgirl Outro",
-        "url": "https://open.spotify.com/intl-fr/track/1ohk1U9KWGSKqwfVFQbVjG",
-        "type": "album_track",
-        "edition": "extras",
-        "display_section": "Extras",
-        "display_order": 10006,
-        "base_title": "The Life of a Showgirl Outro",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "The Life of a Showgirl Outro",
-        "song_family": "the_life_of_a_showgirl_outro",
-        "version_tag": null,
-        "release_date": "2025-10-02T00:00:00Z",
-        "historical_track_ids": [],
-        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2737e0698e1398b6473de43f901",
-        "genres": [],
-        "genre_status": "missing",
-        "genre_scores": {},
-        "genre_sources": {
-          "lastfm": []
-        },
-        "genre_raw_sources": {
-          "lastfm": []
-        },
-        "genre_query_titles": {},
-        "genre_errors": {},
-        "genre_canonical_key": "family:the_life_of_a_showgirl_outro",
-        "filter_tags": [
-          "solo"
-        ],
-        "filter_tag_sources": {
-          "solo": "high:artist_credit"
-        }
-      },
-      {
         "title": "The Story Of Us",
         "url": "https://open.spotify.com/intl-fr/track/2jt90bYlYDg1lXYWES34LJ",
         "type": "album_track",

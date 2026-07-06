@@ -1170,7 +1170,7 @@
       "album": "Red",
       "section": "collabs_and_features",
       "track_count": 1,
-      "chart_extra": false,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Babe (feat. Taylor Swift)",
