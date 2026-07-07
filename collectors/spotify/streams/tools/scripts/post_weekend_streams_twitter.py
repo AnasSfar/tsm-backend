@@ -43,8 +43,8 @@ def build_tweet(target_date: str) -> str:
         else f"over the last {max_days} days, up to {d.strftime('%B')} {_ordinal(d.day)}, {d.year}"
     )
     return (
-        f"Taylor Swift's albums and songs on the Spotify counter {when}.\n"
-        "Full update here : https://thetsmuseum.app/streams/latest"
+        f"📈 | Taylor Swift's albums and songs on the Spotify counter {when}.\n"
+        "See the full update here : https://thetsmuseum.app/streams/latest"
     )
 
 

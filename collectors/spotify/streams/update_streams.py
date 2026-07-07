@@ -25,6 +25,7 @@ sys.path.insert(0, str(_REPO_ROOT / "scripts"))
 sys.path.insert(0, str(_SCRIPT_DIR.parents[0]))  # collectors/spotify/ for core.*
 sys.path.insert(0, str(_SCRIPT_DIR / "tools" / "scripts"))
 sys.path.insert(0, str(_SCRIPT_DIR / "extras"))
+sys.path.insert(0, str(_REPO_ROOT / "collectors" / "comp"))
 
 import export_for_web
 from backfill_discography_from_spotify import run_backfill as run_discography_backfill
@@ -54,6 +55,7 @@ from spotify_api import (
     _warp_connect,
     fetch_playcount_api,
 )
+from track_cover_cache import merge_track_cover_cache
 import page_scraper as _page_scraper
 from page_scraper import scrape_track_total
 import run_logs as _run_logs
@@ -87,8 +89,6 @@ from history_store import (
     get_last_stats_date_in_history,
     get_previous_total_before_date,
     get_priority_top_50_track_ids_from_previous_day,
-    has_real_update,
-    is_gap_affected,
     load_active_track_ids_from_discography,
     load_album_track_ids,
     load_album_track_ids_for_album,
@@ -150,9 +150,8 @@ HILL_429_THRESHOLD = 0.15   # taux de 429 au-delà duquel on retire 1 worker
 HILL_MIN_WORKERS   = 2
 HILL_INITIAL       = 9      # point de départ (was 6 — start near max immediately)
 
-PROBE_REQUIRED_UPDATED = 1
+PROBE_REQUIRED_UPDATED = 10  # non-extra (chart_extra=False) tracks that must show a real update
 PROBE_FORCE_TOKEN_REFRESH_AFTER_ZERO_UPDATES = 3
-PROBE_BROWSER_FALLBACK_AFTER_ZERO_UPDATES = 6
 PROBE_MAX_RETRIES_BEFORE_FULL_RUN = 30
 
 PENDING_RETRY_SLEEP_SECONDS = 20
@@ -609,65 +608,6 @@ def try_apply_track_update(
     }
 
 
-def _probe_on_page(probe_tracks: list[dict], page, *, previous_stats_date: str | None = None) -> dict:
-    """
-    Check several top tracks before deciding whether Spotify's daily update started.
-    """
-    results = []
-    successful_probes = 0
-    updated_probes = 0
-    can_start_full_run = False
-
-    for track in probe_tracks:
-        title = track["title"]
-        url = track["spotify_url"]
-        total, raw, scrape_status, _ = scrape_track_total(page, title, url)
-        last_total = get_last_history_total(track["track_id"])
-
-        if scrape_status == "ok" and total is not None:
-            updated = has_real_update(last_total, total)
-            if (
-                updated
-                and last_total is not None
-                and total < last_total
-                and previous_stats_date is not None
-                and is_gap_affected(track["track_id"], previous_stats_date)
-            ):
-                updated = False
-            successful_probes += 1
-            if updated:
-                updated_probes += 1
-            results.append({
-                "title": title,
-                "status": "ok",
-                "streams": total,
-                "previous_streams": last_total,
-                "updated": updated,
-                "raw": raw,
-            })
-            if updated_probes >= PROBE_REQUIRED_UPDATED:
-                can_start_full_run = True
-                break
-            if successful_probes >= len(probe_tracks):
-                break
-        else:
-            results.append({
-                "title": title,
-                "status": scrape_status,
-                "streams": None,
-                "previous_streams": last_total,
-                "updated": False,
-                "raw": None,
-            })
-
-    return {
-        "can_start_full_run": can_start_full_run,
-        "successful_probes": successful_probes,
-        "updated_probes": updated_probes,
-        "results": results,
-    }
-
-
 def build_probe_tracks(tracks: list[dict]) -> list[dict]:
     """Return all loaded database tracks, shuffled so each retry scans a different order."""
     probe_tracks = [
@@ -1078,31 +1018,6 @@ def recent_release_track_ids_missing_positive_history(stats_date: str) -> set[st
     return recent_release_ids - load_positive_history_track_ids_for_date(stats_date)
 
 
-def run_probe(tracks: list[dict], *, previous_stats_date: str | None = None) -> dict:
-    probe_tracks = build_probe_tracks(tracks)
-
-    if not probe_tracks:
-        print("Probe skipped: no probe tracks found in database.")
-        return {
-            "can_start_full_run": True,
-            "successful_probes": 0,
-            "updated_probes": 0,
-            "results": [],
-        }
-
-    p = sync_playwright().start()
-    browser = launch_browser(p)
-    context = browser.new_context(locale="fr-FR")
-    page = context.new_page()
-    page.route("**/*", block_unneeded)
-
-    try:
-        return _probe_on_page(probe_tracks, page, previous_stats_date=previous_stats_date)
-    finally:
-        browser.close()
-        p.stop()
-
-
 def _worker(
     queue,
     results,
@@ -1122,6 +1037,7 @@ def _worker(
     write_history: bool = True,
     compare_before_stats_date: bool = False,
     use_browser_scrape: bool = False,
+    cover_updates: dict | None = None,
 ):
     if adaptive is not None:
         while True:
@@ -1204,6 +1120,9 @@ def _worker(
                 adaptive.record(got_429=bool(api_metrics.get("had_429")))
             if api_run_metrics is not None:
                 api_run_metrics.add(api_metrics)
+            if cover_updates is not None and api_metrics.get("cover_url"):
+                with lock:
+                    cover_updates[track["track_id"]] = api_metrics["cover_url"]
 
             if scrape_status == "timeout":
                 result = {
@@ -1364,6 +1283,7 @@ def run_update(
 
     queue = Queue()
     failed_results: list[dict] = []
+    cover_updates: dict[str, str] = {}
     results = [None] * total_tracks
 
     for index, track in enumerate(tracks, 1):
@@ -1420,6 +1340,7 @@ def run_update(
                     write_history,
                     force_reprocess,
                     use_browser_scrape,
+                    cover_updates,
                 ),
                 daemon=True,
             )
@@ -1465,7 +1386,7 @@ def run_update(
                           None, retry_total, dry_run_mode, idx, retry_adaptive,
                           frozenset(), None, token_mgr, history_index,
                           api_run_metrics, write_history, force_reprocess,
-                          use_browser_scrape),
+                          use_browser_scrape, cover_updates),
                     daemon=True,
                 )
                 for idx in range(retry_worker_cap)
@@ -1486,6 +1407,9 @@ def run_update(
             print(
                 f"  Retry terminé : {len(resolved_ids)} récupérés, {len(retry_candidates) - len(resolved_ids)} encore en échec"
             )
+
+    if cover_updates:
+        merge_track_cover_cache(cover_updates)
 
     final_done_for_stats_date = history_index.done_ids_for_date(stats_date)
     filtered_results = [r for r in results if r is not None]
@@ -2252,6 +2176,7 @@ def main():
                 print(
                     f"Probe result | successful={probe['successful_probes']} | "
                     f"updated={probe['updated_probes']} | "
+                    f"updated_non_extra={probe.get('updated_non_extra_probes', 0)} | "
                     f"start_full_run={probe['can_start_full_run']}"
                 )
                 if not print_rows:
@@ -2280,8 +2205,7 @@ def main():
             if api_probe is not None:
                 _print_probe(api_probe)
                 probe_retry_count = 0
-                zero_update_probe_count = 1 if api_probe.get("updated_probes", 0) == 0 else 0
-                browser_fallback_checked = False
+                zero_update_probe_count = 1 if api_probe.get("updated_non_extra_probes", 0) == 0 else 0
                 while not api_probe["can_start_full_run"]:
                     if probe_retry_count >= PROBE_MAX_RETRIES_BEFORE_FULL_RUN:
                         print()
@@ -2298,19 +2222,6 @@ def main():
                         )
                         token_mgr.mark_expired()
                         zero_update_probe_count = 0
-                    if (
-                        not browser_fallback_checked
-                        and probe_retry_count >= PROBE_BROWSER_FALLBACK_AFTER_ZERO_UPDATES
-                    ):
-                        print()
-                        print("Playcount API still sees zero updates; checking once via browser page scrape.")
-                        browser_probe = run_probe(tracks, previous_stats_date=get_previous_stats_date_str(stats_date))
-                        _print_probe(browser_probe, print_rows=True)
-                        browser_fallback_checked = True
-                        if browser_probe["can_start_full_run"]:
-                            print("Browser probe detected the update; starting full run with browser scraping.")
-                            use_browser_scrape_for_run = True
-                            break
                     probe_retry_count += 1
                     print()
                     print("Spotify playcount API does not appear to expose the next daily totals yet.")
@@ -2330,7 +2241,7 @@ def main():
                         previous_stats_date=get_previous_stats_date_str(stats_date),
                     )
                     _print_probe(api_probe)
-                    if api_probe.get("updated_probes", 0) == 0:
+                    if api_probe.get("updated_non_extra_probes", 0) == 0:
                         zero_update_probe_count += 1
                     else:
                         zero_update_probe_count = 0
@@ -2904,3 +2815,18 @@ if __name__ == "__main__":
         main()
     except KeyboardInterrupt:
         print("\nStopped by user.")
+    except Exception as _exc:
+        import traceback as _traceback
+        _tb = _traceback.format_exc()
+        print(_tb, flush=True)
+        try:
+            notify(
+                NTFY_TOPIC,
+                f"{_exc}\n\n{_tb[-1500:]}",
+                title="Taylor Swift - Streams pipeline CRASHED",
+                tags="rotating_light,warning",
+                priority="urgent",
+            )
+        except Exception:
+            pass
+        raise

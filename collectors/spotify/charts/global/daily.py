@@ -47,6 +47,7 @@ from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+from core.chart_comment import build_chart_comment
 from core.data_paths import first_existing, legacy_spotify_chart_dir, spotify_chart_dir
 from core.notify import send as notify
 from core.twitter import post_thread, post_with_image, split_tweets
@@ -77,6 +78,8 @@ LOOKBACK_DAYS = 7
 PAGE_TIMEOUT_MS = 120_000
 POST_GOTO_WAIT_MS = 6000
 ENABLE_GLOBAL_US_COMBINED_IMAGE = False
+
+TS_HISTORY_PATH = ROOT / "tools" / "json" / "ts_history.json"
 
 _SCRIPT_START = datetime.now()
 
@@ -438,7 +441,11 @@ def build_tweet_content(processed: list[date]) -> str:
     processed = processed[:1]
     if len(processed) == 1:
         d = processed[0]
-        return f"📈 | Taylor Swift on Spotify Global Charts yesterday ({d.strftime('%B %d, %Y')}) :"
+        header = f"🌍 | Taylor Swift on Spotify Global Charts yesterday ({d.strftime('%B %d, %Y')}) :"
+        comment = build_chart_comment("global", d, TS_HISTORY_PATH)
+        if comment:
+            return f"{header}\n{comment}"
+        return header
 
 def generate_image(processed: list[date]) -> Path | None:
     log("STEP", "Génération de l'image du chart")

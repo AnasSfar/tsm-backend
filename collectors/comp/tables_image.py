@@ -320,6 +320,7 @@ def build_out_rows_html(
     cover_map: dict,
     track_image_map: dict,
     chart_date: str,
+    track_cover_cache: dict | None = None,
 ) -> str:
     if not out_songs:
         return ""
@@ -329,8 +330,12 @@ def build_out_rows_html(
         track       = str(row.get("track_name") or "")
         artist      = str(row.get("artist_names") or "")
         rank        = row.get("rank")
+        track_id    = str(row.get("track_id") or "").strip()
         scraped_img = row.get("image_url") or ""
-        cover_url   = url_to_data_uri(get_album_cover(track, track_album_map, cover_map, track_image_map, scraped_img))
+        cover_url   = url_to_data_uri(get_album_cover(
+            track, track_album_map, cover_map, track_image_map, scraped_img,
+            track_id=track_id, track_cover_cache=track_cover_cache,
+        ))
         art_html    = (
             f'<img class="art" src="{cover_url}" />'
             if cover_url
@@ -360,6 +365,7 @@ def build_rows_html(
     cover_map: dict,
     track_image_map: dict,
     ref_streams_fn: Callable,
+    track_cover_cache: dict | None = None,
 ) -> str:
     """ref_streams_fn(track_hist, track, ref_date) → int | None — region-specific lookup."""
     date_obj  = datetime.strptime(chart_date, "%Y-%m-%d").date()
@@ -377,6 +383,7 @@ def build_rows_html(
         streak      = nan_to_none(row.get("streak"))
         total_days  = nan_to_none(row.get("total_days"))
         scraped_img = row.get("image_url") or ""
+        track_id    = str(row.get("track_id") or "").strip()
 
         if rank is None:
             continue
@@ -388,7 +395,10 @@ def build_rows_html(
             total_days,
             int(peak_rank) if peak_rank else None,
         )
-        cover_url = url_to_data_uri(get_album_cover(track, track_album_map, cover_map, track_image_map, scraped_img))
+        cover_url = url_to_data_uri(get_album_cover(
+            track, track_album_map, cover_map, track_image_map, scraped_img,
+            track_id=track_id, track_cover_cache=track_cover_cache,
+        ))
 
         track_hist   = history.get(track, {})
         try:

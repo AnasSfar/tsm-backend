@@ -2,7 +2,14 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from pathlib import Path
+
+try:
+    from .track_cover_cache import get_cached_cover
+except ImportError:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    from comp.track_cover_cache import get_cached_cover
 
 
 def _norm(s: str) -> str:
@@ -149,11 +156,20 @@ def get_album_cover(
     cover_map: dict,
     track_image_map: dict,
     fallback_url: str = "",
+    *,
+    track_id: str = "",
+    track_cover_cache: dict | None = None,
 ) -> str:
     """Cover URL for a track.
 
-    Priority: covers.json (album) > per-track image_url from albums/*.json > fallback CDN URL.
+    Priority: live-API cache keyed by track_id (exact per version) > covers.json
+    (album) > per-track image_url from albums/*.json (includes Apple Music
+    fallback) > fallback CDN URL (scraped chart image_url, often null).
     """
+    if track_id and track_cover_cache:
+        cached = get_cached_cover(track_cover_cache, track_id)
+        if cached:
+            return cached
     lookup_keys = _title_lookup_keys(track_name)
     album_name = next((track_album_map.get(key, "") for key in lookup_keys if track_album_map.get(key, "")), "")
     if album_name:

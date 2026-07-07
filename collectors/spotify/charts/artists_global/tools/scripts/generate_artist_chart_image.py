@@ -544,13 +544,13 @@ def build_tweet(ts_artist: dict, mode: str, stats_date: str, period: str) -> str
     chart_label = "Weekly" if period == "weekly" else "Top Artists"
 
     if mode == "top10":
-        return f"The top 10 most streamed artists on Spotify Charts {time_label} ({date_fmt}) :"
+        return f"📈 | The top 10 most streamed artists on Spotify Charts {time_label} ({date_fmt}) :"
     
     elif mode == "top5":
-        return f"The top 5 most streamed artists on Spotify Charts {time_label} ({date_fmt}) :"
+        return f"📈 | The top 5 most streamed artists on Spotify Charts {time_label} ({date_fmt}) :"
     
     else:
-        return f"Taylor Swift on Spotify {chart_label} charts {time_label} ({date_fmt}) :"
+        return f"📈 | Taylor Swift on Spotify {chart_label} charts {time_label} ({date_fmt}) :"
 
 
 # ── Main ───────────────────────────────────────────────────────────────────────

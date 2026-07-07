@@ -1834,8 +1834,8 @@ def main() -> int:
 
     if not args.dry_run and "artists" in post_parts and not failures:
         if _runner_done("artists_global", target_date, post_parts):
-            print("\n[PHASE3] generation et publication de la card artists worldwide...")
-            artist_worldwide_args = [str(target_date), "--post"]
+            print("\n[PHASE3] generation de la card artists worldwide (no-post)...")
+            artist_worldwide_args = [str(target_date)]
             if args.force:
                 artist_worldwide_args.append("--force")
             rc_artist_worldwide = _run(

@@ -417,9 +417,14 @@ def _export_web_data_once(ctx: FinalizeContext, *, force: bool = False) -> None:
         return
 
     print("Re-exporting web data...")
-    allow_r2 = not ctx.local_test_mode and not ctx.test_mode and not r2_export_lock.exists()
-    if r2_export_lock.exists():
-        print(f"R2 export already done for {ctx.stats_date} (r2_exported.lock exists), skipping R2 upload.")
+    allow_r2 = not ctx.local_test_mode and not ctx.test_mode
+    if allow_r2 and r2_export_lock.exists():
+        # An earlier partial export (mid-run, before the day was fully complete)
+        # already uploaded once and left this lock behind. This call only runs
+        # once the day's collection is 100% done, so it must always push the
+        # final, complete numbers to R2 rather than staying skipped forever.
+        print(f"R2 export lock exists for {ctx.stats_date} from an earlier partial export; forcing a final R2 upload with complete data.")
+        r2_export_lock.unlink()
     ctx.export_web_data(allow_r2=allow_r2, stats_date=ctx.stats_date)
     if not ctx.local_test_mode and not ctx.test_mode:
         run_dir.mkdir(parents=True, exist_ok=True)

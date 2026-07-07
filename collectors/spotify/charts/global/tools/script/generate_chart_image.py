@@ -28,6 +28,7 @@ from core.data_paths import (
 )
 from comp.fmt import load_json, nan_to_none, fmt_streams, fmt_pct, pct_cls, get_pct
 from comp.discography import build_cover_map, build_track_album_map, build_track_image_map, get_album_cover
+from comp.track_cover_cache import load_track_cover_cache
 from comp.tables_image import (
     url_to_data_uri, pick_header_image, get_dominant_color,
     rank_change, CSS, SPOTIFY_SVG, COL_HEADS_HTML,
@@ -200,10 +201,11 @@ def build_html(
     track_image_map: dict,
     header_img: Path | None = None,
     out_songs: list | None = None,
+    track_cover_cache: dict | None = None,
 ) -> str:
     date_fmt  = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
-    rows_html  = build_rows_html(rows, history, chart_date, track_album_map, cover_map, track_image_map, ref_streams)
-    rows_html += build_out_rows_html(out_songs or [], track_album_map, cover_map, track_image_map, chart_date)
+    rows_html  = build_rows_html(rows, history, chart_date, track_album_map, cover_map, track_image_map, ref_streams, track_cover_cache)
+    rows_html += build_out_rows_html(out_songs or [], track_album_map, cover_map, track_image_map, chart_date, track_cover_cache)
 
     if header_img is None:
         header_img = pick_header_image(HEADERS_DIR)
@@ -263,13 +265,14 @@ def generate(chart_date: str, header_img: Path | None = None) -> Path:
     if not rows:
         raise ValueError(f"Aucune chanson TS dans {json_path}")
 
-    cover_map       = build_cover_map(COVERS_PATH)
-    track_album_map = build_track_album_map(DISCOGRAPHY_ROOT)
-    track_image_map = _build_track_image_map()
-    out_songs       = get_out_songs(chart_date, rows)
+    cover_map         = build_cover_map(COVERS_PATH)
+    track_album_map   = build_track_album_map(DISCOGRAPHY_ROOT)
+    track_image_map   = _build_track_image_map()
+    track_cover_cache = load_track_cover_cache()
+    out_songs         = get_out_songs(chart_date, rows)
 
     html = build_html(rows, history, chart_date, track_album_map, cover_map, track_image_map,
-                      header_img=header_img, out_songs=out_songs)
+                      header_img=header_img, out_songs=out_songs, track_cover_cache=track_cover_cache)
     render_html_to_png(html, out_path, date_dir / "_chart_tmp.html")
     print(f"OK image: {out_path}")
     return out_path
@@ -295,9 +298,10 @@ def generate_all_headers(chart_date: str) -> list[Path]:
     rows    = load_json(json_path)
     history = load_json(TS_HISTORY_PATH) if CHART_REGION == "global" and TS_HISTORY_PATH.exists() else {}
 
-    cover_map       = build_cover_map(COVERS_PATH)
-    track_album_map = build_track_album_map(DISCOGRAPHY_ROOT)
-    track_image_map = _build_track_image_map()
+    cover_map         = build_cover_map(COVERS_PATH)
+    track_album_map   = build_track_album_map(DISCOGRAPHY_ROOT)
+    track_image_map   = _build_track_image_map()
+    track_cover_cache = load_track_cover_cache()
 
     results = []
     with sync_playwright() as p:
@@ -305,7 +309,7 @@ def generate_all_headers(chart_date: str) -> list[Path]:
         for img_path in imgs:
             out_path = date_dir / f"chart_image_{img_path.stem}.png"
             html     = build_html(rows, history, chart_date, track_album_map, cover_map, track_image_map,
-                                  header_img=img_path)
+                                  header_img=img_path, track_cover_cache=track_cover_cache)
             html_tmp = date_dir / "_chart_tmp.html"
             html_tmp.write_text(html, encoding="utf-8")
             try:
@@ -337,10 +341,11 @@ def generate_multi(chart_dates: list[str], header_img: Path | None = None) -> Pa
     """Génère une seule image PNG combinant plusieurs dates (séparées par un bandeau)."""
     out_path = ROOT / "chart_image_multi.png"
 
-    history         = load_json(TS_HISTORY_PATH) if CHART_REGION == "global" and TS_HISTORY_PATH.exists() else {}
-    cover_map       = build_cover_map(COVERS_PATH)
-    track_album_map = build_track_album_map(DISCOGRAPHY_ROOT)
-    track_image_map = _build_track_image_map()
+    history           = load_json(TS_HISTORY_PATH) if CHART_REGION == "global" and TS_HISTORY_PATH.exists() else {}
+    cover_map         = build_cover_map(COVERS_PATH)
+    track_album_map   = build_track_album_map(DISCOGRAPHY_ROOT)
+    track_image_map   = _build_track_image_map()
+    track_cover_cache = load_track_cover_cache()
 
     combined_rows_html = ""
     valid_dates = []
@@ -356,8 +361,8 @@ def generate_multi(chart_dates: list[str], header_img: Path | None = None) -> Pa
         valid_dates.append(chart_date)
         date_label = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
         combined_rows_html += f'<div class="day-hdr">{date_label}</div>\n'
-        combined_rows_html += build_rows_html(rows, history, chart_date, track_album_map, cover_map, track_image_map, ref_streams)
-        combined_rows_html += build_out_rows_html(get_out_songs(chart_date, rows), track_album_map, cover_map, track_image_map, chart_date)
+        combined_rows_html += build_rows_html(rows, history, chart_date, track_album_map, cover_map, track_image_map, ref_streams, track_cover_cache)
+        combined_rows_html += build_out_rows_html(get_out_songs(chart_date, rows), track_album_map, cover_map, track_image_map, chart_date, track_cover_cache)
 
     if not valid_dates:
         raise ValueError("Aucun JSON trouvé pour les dates fournies")

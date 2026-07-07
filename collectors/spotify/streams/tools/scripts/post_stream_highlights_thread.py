@@ -87,7 +87,7 @@ def _build_combined_tweet(*, target_date: str, daily_rows: list[dict]) -> str:
     else:
         max_days = 1
     when = "yesterday" if max_days <= 1 else f"over the last {max_days} days"
-    return f"Taylor Swift's biggest gainers by % {when} ({date_fmt}) — daily & weekly."
+    return f"📈 | Taylor Swift's biggest gainers {when} ({date_fmt}) — daily & weekly."
 
 
 def _track_entry(row: dict) -> dict:

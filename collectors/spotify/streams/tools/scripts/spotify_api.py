@@ -371,6 +371,16 @@ class TokenManager:
         with self._lock:
             return bool(self._tokens.get("bearer"))
 
+def _extract_cover_url(track_union: dict) -> str:
+    """Cover art for the exact track version (albumOfTrack.coverArt), from the
+    same getTrack response already fetched for playcount — largest source wins."""
+    sources = ((track_union.get("albumOfTrack") or {}).get("coverArt") or {}).get("sources") or []
+    if not sources:
+        return ""
+    best = max(sources, key=lambda s: s.get("width") or 0)
+    return best.get("url") or ""
+
+
 def fetch_playcount_api(
     track_id: str,
     token_mgr: TokenManager,
@@ -445,6 +455,10 @@ def fetch_playcount_api(
                     data = {}
                 track_union = (data.get("data") or {}).get("trackUnion") or {}
                 pc = track_union.get("playcount")
+                if metrics is not None:
+                    cover_url = _extract_cover_url(track_union)
+                    if cover_url:
+                        metrics["cover_url"] = cover_url
                 if pc is not None:
                     try:
                         return int(pc)
@@ -494,7 +508,7 @@ def _probe_via_api(
     token_mgr: TokenManager,
     *,
     required_successful: int = 5,
-    required_updated: int = 2,
+    required_updated: int = 10,
     progress_callback=None,
     progress_every: int = 25,
     previous_stats_date: str | None = None,
@@ -510,6 +524,7 @@ def _probe_via_api(
     session = _requests.Session()
     successful_probes = 0
     updated_probes = 0
+    updated_non_extra_probes = 0
     results = []
     can_start = False
     total_probe_tracks = len(probe_tracks)
@@ -532,6 +547,8 @@ def _probe_via_api(
                 successful_probes += 1
                 if updated:
                     updated_probes += 1
+                    if not track.get("chart_extra"):
+                        updated_non_extra_probes += 1
                 row = {
                     "title":            track["title"],
                     "status":           "ok",
@@ -547,7 +564,7 @@ def _probe_via_api(
                     or successful_probes % max(1, progress_every) == 0
                 ):
                     progress_callback(row, len(results), total_probe_tracks)
-                if updated_probes >= required_updated:
+                if updated_non_extra_probes >= required_updated:
                     can_start = True
                     break
                 if successful_probes >= required_successful:
@@ -568,8 +585,9 @@ def _probe_via_api(
         session.close()
 
     return {
-        "can_start_full_run":  can_start,
-        "successful_probes":   successful_probes,
-        "updated_probes":      updated_probes,
-        "results":             results,
+        "can_start_full_run":       can_start,
+        "successful_probes":        successful_probes,
+        "updated_probes":           updated_probes,
+        "updated_non_extra_probes": updated_non_extra_probes,
+        "results":                  results,
     }

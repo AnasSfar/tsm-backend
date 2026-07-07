@@ -16,6 +16,7 @@ _DB_ROOT    = _REPO_ROOT / "db"
 _DATA_ROOT  = _REPO_ROOT / "data"
 _ARCHIVE_DB_ROOT = _DATA_ROOT / "_archive" / "original" / "db"
 sys.path.insert(0, str(_REPO_ROOT / "collectors" / "spotify"))
+sys.path.insert(0, str(_REPO_ROOT / "collectors" / "spotify" / "streams" / "tools" / "scripts"))
 from core.data_paths import (  # noqa: E402
     LEGACY_WEBSITE_DATA_DIR,
     LEGACY_WEBSITE_HISTORY_DIR,
@@ -30,6 +31,8 @@ from core.data_paths import (  # noqa: E402
     spotify_chart_dir,
     update_streams_dir,
 )
+from config import NTFY_TOPIC  # noqa: E402
+from core.notify import send as notify  # noqa: E402
 
 ROOT = WEB_EXPORT_ROOT
 
@@ -62,6 +65,8 @@ SWIFT_TOP_100_JSON_PATH = SITE_DATA_DIR / "swift_top_100.json"
 
 TRACK_ID_RE = re.compile(r"track/([A-Za-z0-9]+)")
 DATE_RE = re.compile(r"(\d{4}-\d{2}-\d{2})")
+
+KEPT_TRACK_CACHE_PATH = _DB_ROOT / "discography" / "dedupe_kept_track_cache.json"
 
 MILESTONE_STEP = 100_000_000
 MILESTONES = list(range(MILESTONE_STEP, 5_000_000_000 + MILESTONE_STEP, MILESTONE_STEP))
@@ -438,6 +443,55 @@ def dedupe_songs_for_site(
 
     deduped.sort(key=lambda s: (s["title"].casefold(), s["track_id"]))
     return deduped, old_to_kept
+
+
+def check_and_alert_kept_track_changes(deduped_songs: list[dict]) -> None:
+    """Alert when the 'winning' track_id for a title with multiple colliding
+    track_ids changes between runs (e.g. the site silently starts serving a
+    different edition's numbers under the same title, without anyone touching
+    discography files). Persists the current winners so the next run can diff."""
+    current: dict[str, str] = {}
+    for song in deduped_songs:
+        merged = song.get("merged_track_ids") or []
+        if len(merged) < 2:
+            continue
+        current[song["title_key"]] = song["track_id"]
+
+    if not current:
+        return
+
+    previous: dict[str, str] = {}
+    if KEPT_TRACK_CACHE_PATH.exists():
+        try:
+            previous = json.loads(KEPT_TRACK_CACHE_PATH.read_text(encoding="utf-8"))
+        except Exception:
+            previous = {}
+
+    changes = [
+        (title_key, previous[title_key], kept_id)
+        for title_key, kept_id in current.items()
+        if previous.get(title_key) and previous[title_key] != kept_id
+    ]
+
+    KEPT_TRACK_CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    KEPT_TRACK_CACHE_PATH.write_text(json.dumps(current, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    if not changes:
+        return
+
+    lines = [f"- \"{title_key}\": {old_id} -> {new_id}" for title_key, old_id, new_id in changes]
+    message = "Le track_id 'gagnant' a changé pour ces titres en collision :\n" + "\n".join(lines)
+    print(f"[dedupe] WARNING: {message}")
+    try:
+        notify(
+            NTFY_TOPIC,
+            message[:1500],
+            title="Taylor Swift - track_id \"gagnant\" a changé",
+            tags="warning,mag",
+            priority="high",
+        )
+    except Exception:
+        pass
 
 
 def merge_history_by_kept_track(
@@ -1384,6 +1438,7 @@ def export_for_web(stats_date: str | None = None, *, dry_run: bool = False) -> N
         dates.pop()
 
     deduped_songs, old_to_kept = dedupe_songs_for_site(raw_songs, raw_history_by_date)
+    check_and_alert_kept_track_changes(deduped_songs)
 
     # Add explicit historical_track_ids mappings (for single re-releases where track ID changed)
     for song in raw_songs:

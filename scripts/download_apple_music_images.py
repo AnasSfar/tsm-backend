@@ -16,9 +16,9 @@ import hashlib
 import io
 import json
 import os
+import re
 import sys
 import time
-from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
@@ -45,6 +45,11 @@ DOWNLOAD_TIMEOUT = 10
 MAX_RETRIES = 3
 RETRY_DELAY = 1
 IMAGE_SIZE_MB_LIMIT = 10  # Max 10MB per image
+
+
+def _norm_title(s: str) -> str:
+    """Same normalization convention as collectors/comp/discography.py's _norm()."""
+    return re.sub(r"[^a-z0-9]+", "_", (s or "").lower()).strip("_")
 
 
 def get_env(name: str) -> str:
@@ -139,111 +144,138 @@ def upload_image_to_r2(
         return False
 
 
-def load_apple_music_images() -> dict[str, str]:
-    """Load Apple Music image URLs from CSV (deduplicated by URL)."""
-    images = {}  # URL -> filename
-    
+def load_apple_music_images() -> tuple[dict[str, str], dict[str, str]]:
+    """Load Apple Music image URLs from CSV (deduplicated by URL).
+
+    Returns (images, url_to_title):
+      images: {image_url -> filename}
+      url_to_title: {image_url -> normalized song_name}, keeping the most
+      recent row (by date) per image_url since the CSV has one row per
+      country/date and titles are otherwise the only usable join key
+      (apple_music_id / artist_name are empty in practice).
+    """
+    images: dict[str, str] = {}
+    url_to_title: dict[str, str] = {}
+    url_to_date: dict[str, str] = {}
+
     if not APPLE_MUSIC_CSV.exists():
         print(f"[WARN] Apple Music CSV not found: {APPLE_MUSIC_CSV}")
-        return images
-    
+        return images, url_to_title
+
     try:
         with open(APPLE_MUSIC_CSV, "r", encoding="utf-8-sig") as f:
             reader = csv.DictReader(f)
             for row in reader:
                 image_url = (row.get("image_url") or "").strip()
-                if image_url and image_url not in images:
+                song_name = (row.get("song_name") or "").strip()
+                date = (row.get("date") or "").strip()
+                if not image_url or not song_name:
+                    continue
+                if image_url not in images:
                     images[image_url] = extract_filename_from_url(image_url)
+                if image_url not in url_to_date or date > url_to_date[image_url]:
+                    url_to_date[image_url] = date
+                    url_to_title[image_url] = _norm_title(song_name)
     except Exception as e:
         print(f"[ERROR] Failed to read Apple Music CSV: {e}")
-    
-    return images
+
+    return images, url_to_title
 
 
-def load_songs() -> list[dict]:
-    """Load songs.json."""
+def load_songs_payload() -> Any:
+    """Load songs.json as-is (whatever its top-level shape is)."""
     if not SONGS_JSON_PATH.exists():
-        return []
-    
+        return None
     try:
         return json.loads(SONGS_JSON_PATH.read_text(encoding="utf-8-sig"))
     except Exception:
-        return []
+        return None
 
 
-def save_songs(songs: list[dict]) -> None:
-    """Save songs.json."""
-    payload = json.dumps(songs, ensure_ascii=False, separators=(",", ":"))
-    SONGS_JSON_PATH.write_text(payload, encoding="utf-8")
+def _iter_tracks(payload: Any):
+    """Yield every track dict in songs.json, regardless of shape:
+    {"songs": [track, ...]} (current export shape), {"...": [{"tracks": [...]}]}
+    (older section-wrapped shape), or a bare list of either."""
+    if isinstance(payload, dict):
+        payload = payload.get("songs") or payload.get("tracks") or payload.get("sections") or []
+    if not isinstance(payload, list):
+        return
+    for item in payload:
+        if not isinstance(item, dict):
+            continue
+        if isinstance(item.get("tracks"), list):
+            yield from (t for t in item["tracks"] if isinstance(t, dict))
+        else:
+            yield item
 
 
-def map_urls_to_track_ids(apple_images: dict[str, str]) -> dict[str, list[str]]:
-    """Map Apple Music image URLs to track IDs from songs.json."""
-    url_to_track_ids = defaultdict(list)
-    
-    for section in load_songs():
-        for track in section.get("tracks", []):
-            track_id = track.get("track_id")
-            if not track_id:
-                continue
-            
-            # Check if track has an image_url that matches Apple Music
-            image_url = track.get("image_url", "").strip()
-            if image_url and image_url in apple_images:
-                url_to_track_ids[image_url].append(track_id)
-    
-    return url_to_track_ids
+def save_songs(payload: Any) -> None:
+    """Save songs.json, preserving its original top-level shape (e.g. summary + songs)."""
+    text = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+    SONGS_JSON_PATH.write_text(text, encoding="utf-8")
 
 
-def update_songs_with_r2_urls(url_to_r2_urls: dict[str, str]) -> None:
-    """Update songs.json with apple_music_image_url field containing R2 URLs."""
-    songs = load_songs()
+def update_songs_with_r2_urls(url_to_r2_urls: dict[str, str], url_to_title: dict[str, str]) -> None:
+    """Update songs.json with apple_music_image_url, joined by normalized title.
+
+    The Spotify and Apple Music CDN URLs can never be equal (different domains),
+    so the join key is the song title, not image_url — apple_music_id/artist_name
+    are empty in the CSV in practice, so title is the only usable join field.
+    """
+    title_to_r2_url: dict[str, str] = {}
+    for apple_url, r2_url in url_to_r2_urls.items():
+        title = url_to_title.get(apple_url)
+        if title:
+            title_to_r2_url.setdefault(title, r2_url)
+
+    payload = load_songs_payload()
+    if payload is None:
+        print(f"[WARN] Could not read songs.json: {SONGS_JSON_PATH}")
+        return
     updated_count = 0
-    
-    for section in songs:
-        for track in section.get("tracks", []):
-            image_url = track.get("image_url", "").strip()
-            if image_url and image_url in url_to_r2_urls:
-                r2_url = url_to_r2_urls[image_url]
-                track["apple_music_image_url"] = r2_url
-                updated_count += 1
-    
-    save_songs(songs)
+
+    for track in _iter_tracks(payload):
+        title = (track.get("title") or track.get("name") or "").strip()
+        if not title:
+            continue
+        r2_url = title_to_r2_url.get(_norm_title(title))
+        if r2_url:
+            track["apple_music_image_url"] = r2_url
+            updated_count += 1
+
+    save_songs(payload)
     print(f"[INFO] Updated {updated_count} tracks with apple_music_image_url")
     print(f"[INFO] Saved updated songs.json: {SONGS_JSON_PATH}")
 
 
 def main() -> None:
     print("[STEP] Loading Apple Music images from CSV...")
-    apple_images = load_apple_music_images()
+    apple_images, url_to_title = load_apple_music_images()
     print(f"Found {len(apple_images)} unique Apple Music image URLs")
-    
+
     if not apple_images:
         print("[INFO] No Apple Music images found. Exiting.")
         return
-    
+
     print("[STEP] Downloading and uploading images to R2...")
     client = get_s3_client()
     bucket = os.getenv("R2_BUCKET", "taylor-data")
     images_prefix = os.getenv("R2_IMAGES_PREFIX", "images/apple-music")
     dry_run = os.getenv("DRY_RUN", "0").strip().lower() in ("1", "true", "yes")
-    
-    # Map URLs to track IDs
-    url_to_track_ids = map_urls_to_track_ids(apple_images)
-    
+
     # Store mapping of URL -> R2 URL
     url_to_r2_urls = {}
-    
+
     uploaded = 0
     saved_locally = 0
     failed = 0
     skipped = 0
-    
+
     for url, filename in sorted(apple_images.items()):
-        track_ids = url_to_track_ids.get(url, [])
-        
+        title = url_to_title.get(url, "")
+
         print(f"\nProcessing: {url[:60]}...")
-        print(f"  Tracks: {len(track_ids)} | File: {filename}")
+        print(f"  Title: {title or '(unknown)'} | File: {filename}")
         
         # Download image
         image_data = download_image(url)
@@ -255,7 +287,7 @@ def main() -> None:
         if not dry_run:
             if save_image_locally(filename, image_data):
                 saved_locally += 1
-                print(f"  ✓ Saved locally: {LOCAL_IMAGES_DIR / filename}")
+                print(f"  [OK] Saved locally: {LOCAL_IMAGES_DIR / filename}")
             else:
                 failed += 1
                 continue
@@ -270,7 +302,7 @@ def main() -> None:
             public_url = f"https://{account_id}.r2.cloudflarestorage.com/{bucket}/{r2_key}"
             url_to_r2_urls[url] = public_url
             
-            print(f"  ✓ Uploaded to R2: {r2_key}")
+            print(f"  [OK] Uploaded to R2: {r2_key}")
             print(f"  Public URL: {public_url}")
         else:
             failed += 1
@@ -286,7 +318,7 @@ def main() -> None:
     # Update songs.json with R2 URLs
     if url_to_r2_urls and not dry_run:
         print(f"\n[STEP] Updating songs.json with R2 image URLs...")
-        update_songs_with_r2_urls(url_to_r2_urls)
+        update_songs_with_r2_urls(url_to_r2_urls, url_to_title)
     elif dry_run:
         print(f"\n[DRY-RUN] Would update songs.json with {len(url_to_r2_urls)} R2 image URLs")
 

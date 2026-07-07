@@ -31,6 +31,7 @@ except ImportError:
     pass
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+from core.chart_comment import build_chart_comment
 from core.twitter import post_thread, post_with_image, split_tweets
 from core.notify import send as notify
 from core.data_paths import first_existing, legacy_spotify_chart_dir, spotify_chart_dir
@@ -40,6 +41,7 @@ ROOT                  = Path(__file__).parent
 _REPO_ROOT            = ROOT.parents[3]
 DATA_DIR              = ROOT / "history"
 CHART_ID              = "regional-us-daily"
+TS_HISTORY_PATH       = ROOT / "tools" / "json" / "ts_history.json"
 TWITTER_SESSION       = ROOT.parent / "global" / "tools/json/twitter_session.json"
 # US posts use the swiftiescharts Twitter session, shared with global.
 # US uses the tsmuseum13 Spotify session, not the global/swiftiescharts one.
@@ -299,7 +301,10 @@ def main():
         processed = [target]
         mark_updated(target)
         date_fmt = target.strftime("%B %d, %Y")
-        tweet_content = f"US | Taylor Swift on Spotify US Charts yesterday ({date_fmt}) :"
+        tweet_content = f"📈 | Taylor Swift on Spotify US Charts yesterday ({date_fmt}) :"
+        _comment = build_chart_comment("us", target, TS_HISTORY_PATH)
+        if _comment:
+            tweet_content = f"{tweet_content}\n{_comment}"
         (ROOT / "twitter_post.txt").write_text(tweet_content, encoding="utf-8")
         print(f"\nPost :\n{tweet_content}\n", flush=True)
 
@@ -395,7 +400,10 @@ def main():
     # Contenu du tweet
     _last_date = processed[-1]
     _date_fmt  = _last_date.strftime("%B %d, %Y")
-    tweet_content = f"US | Taylor Swift on Spotify US Charts yesterday ({_date_fmt}) :"
+    tweet_content = f"📈 | Taylor Swift on Spotify US Charts yesterday ({_date_fmt}) :"
+    _comment = build_chart_comment("us", _last_date, TS_HISTORY_PATH)
+    if _comment:
+        tweet_content = f"{tweet_content}\n{_comment}"
 
     (ROOT / "twitter_post.txt").write_text(tweet_content, encoding="utf-8")
     log("INFO", "twitter_post.txt mis Ã  jour")

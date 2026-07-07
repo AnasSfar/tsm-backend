@@ -31,6 +31,7 @@ except ImportError:
     pass
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+from core.chart_comment import build_chart_comment
 from core.data_paths import first_existing, legacy_spotify_chart_dir, spotify_chart_dir
 from core.twitter import post_thread, post_with_image, split_tweets
 from core.notify import send as notify
@@ -40,6 +41,7 @@ ROOT                  = Path(__file__).parent
 _REPO_ROOT            = ROOT.parents[3]
 DATA_DIR              = ROOT / "history"
 CHART_ID              = "regional-fr-daily"
+TS_HISTORY_PATH       = ROOT / "tools" / "json" / "ts_history.json"
 TWITTER_SESSION       = ROOT / "tools/json/twitter_session.json"
 # FR uses the theflameofanas Spotify session, not the global/swiftiescharts one.
 SPOTIFY_SESSION       = ROOT / "tools/json/spotify_session.json"
@@ -314,6 +316,9 @@ def main():
         mark_updated(target)
         _date_fmt = target.strftime("%B %d, %Y")
         tweet_content = f"🇫🇷 | Taylor Swift on Spotify France Charts yesterday ({_date_fmt}) :"
+        _comment = build_chart_comment("fr", target, TS_HISTORY_PATH)
+        if _comment:
+            tweet_content = f"{tweet_content}\n{_comment}"
         (ROOT / "twitter_post.txt").write_text(tweet_content, encoding="utf-8")
         log("INFO", "twitter_post.txt mis à jour")
         print(f"\nPost :\n{tweet_content}\n", flush=True)
@@ -403,6 +408,9 @@ def main():
     _last_date = processed[-1]
     _date_fmt  = _last_date.strftime("%B %d, %Y")
     tweet_content = f"🇫🇷 | Taylor Swift on Spotify France Charts yesterday ({_date_fmt}) :"
+    _comment = build_chart_comment("fr", _last_date, TS_HISTORY_PATH)
+    if _comment:
+        tweet_content = f"{tweet_content}\n{_comment}"
 
     (ROOT / "twitter_post.txt").write_text(tweet_content, encoding="utf-8")
     log("INFO", "twitter_post.txt mis à jour")
