@@ -1043,6 +1043,39 @@ def _run_swift_top_charts_if_needed(ctx: FinalizeContext) -> None:
         print(f"Swift Top charts trigger failed - {exc}")
 
 
+# Étapes de post invocables individuellement via `update_streams.py --post-only`.
+POST_ONLY_STEPS = {
+    "top-eras": _post_albums_daily,
+    "all-albums": _post_all_albums_thread,
+    "top45": _post_streams_image,
+    "recap": _post_daily_recap_card,
+    "best-day-since": _post_best_day_since,
+    "debut": _post_debut_releases,
+    "gainers": _post_spotlight_gainers,
+    "album-updates": _post_album_updates,
+}
+
+
+def run_post_only_steps(ctx: FinalizeContext, step_names: list[str]) -> None:
+    """Rejoue uniquement les étapes de post demandées sur l'history existante.
+
+    Mêmes règles que la finalisation quotidienne : garde-fous de complétude,
+    locks anti-double-post et restrictions de jour (all-albums lundi/vendredi,
+    top eras hors week-end) s'appliquent toujours."""
+    post_state = dict(ctx.initial_post_state or {"posted_count": 0, "last_post_at": 0.0})
+    failures: list[str] = []
+    for name in step_names:
+        step = POST_ONLY_STEPS[name]
+        print(f"[POST-ONLY] Running step: {name}")
+        try:
+            step(ctx, post_state)
+        except SystemExit as exc:
+            print(f"[POST-ONLY] {name} failed: {exc}")
+            failures.append(f"{name} ({exc})")
+    if failures:
+        raise SystemExit("post-only step(s) failed: " + " | ".join(failures))
+
+
 def run_final_update_tasks(ctx: FinalizeContext) -> None:
     timer = StepTimer("finalize")
     post_state = dict(ctx.initial_post_state or {"posted_count": 0, "last_post_at": 0.0})
@@ -1071,26 +1104,33 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                 lambda: _run_forecast_and_image_refresh(ctx),
             )
 
+        # Chaque étape de post est indépendante : un échec (après ses propres
+        # retries) ne doit pas annuler les posts suivants ni le commit git.
+        # Les échecs sont collectés et re-signalés en fin de finalisation.
+        post_step_failures: list[str] = []
+
+        def _guarded_post_step(step_label: str, fn) -> None:
+            with timer.step(step_label):
+                try:
+                    fn()
+                except SystemExit as exc:
+                    print(f"{step_label} failed; continuing finalization: {exc}")
+                    post_step_failures.append(f"{step_label} ({exc})")
+
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
-            with timer.step("debut posts"):
-                _post_debut_releases(ctx, post_state)
+            _guarded_post_step("debut posts", lambda: _post_debut_releases(ctx, post_state))
 
-        with timer.step("daily recap card"):
-            _post_daily_recap_card(ctx, post_state)
+        _guarded_post_step("daily recap card", lambda: _post_daily_recap_card(ctx, post_state))
 
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
-            with timer.step("best-day-since posts"):
-                _post_best_day_since(ctx, post_state)
+            _guarded_post_step("best-day-since posts", lambda: _post_best_day_since(ctx, post_state))
 
-        with timer.step("top eras post"):
-            _post_albums_daily(ctx, post_state)
+        _guarded_post_step("top eras post", lambda: _post_albums_daily(ctx, post_state))
 
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
-            with timer.step("all-albums thread"):
-                _post_all_albums_thread(ctx, post_state)
+            _guarded_post_step("all-albums thread", lambda: _post_all_albums_thread(ctx, post_state))
 
-        with timer.step("top 45 songs post"):
-            _post_streams_image(ctx, post_state)
+        _guarded_post_step("top 45 songs post", lambda: _post_streams_image(ctx, post_state))
 
         if ctx.debug_daily_mode or ctx.local_test_mode:
             return
@@ -1105,7 +1145,8 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
             timer.add("wait stream highlights", time.perf_counter() - start)
             spotlight_errors = getattr(spotlight_thread, "post_errors", [])
             if spotlight_errors:
-                raise SystemExit(f"stream highlights thread failed: {spotlight_errors[0]}")
+                print(f"stream highlights thread failed; continuing finalization: {spotlight_errors[0]}")
+                post_step_failures.append(f"stream highlights thread ({spotlight_errors[0]})")
         _join_background_task(forecast_thread, "forecast/image refresh", timer)
 
         if ctx.test_mode:
@@ -1118,5 +1159,11 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                 git_commit_and_push(ctx.repo_root, f"daily final export {ctx.summary['stats_date']}")
             with timer.step("swift top charts"):
                 _run_swift_top_charts_if_needed(ctx)
+
+        if post_step_failures:
+            raise SystemExit(
+                "Finalization completed with failed post step(s): "
+                + " | ".join(post_step_failures)
+            )
     finally:
         timer.summary()

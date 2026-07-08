@@ -31,11 +31,13 @@ import export_for_web
 from backfill_discography_from_spotify import run_backfill as run_discography_backfill
 from finalize_update import (
     ALBUM_UPDATE_TARGETS,
+    POST_ONLY_STEPS,
     FinalizeContext,
     PartialWebExporter,
     ReadyAlbumUpdatePoster,
     ReadyBestDaySincePoster,
     run_final_update_tasks,
+    run_post_only_steps,
 )
 from release_targets import is_recent_release_date, recent_release_album_names
 from reporting import ProgressLogger, print_remaining_details, print_summary_block, update_json_logs_from_summary
@@ -156,6 +158,10 @@ PROBE_MAX_RETRIES_BEFORE_FULL_RUN = 30
 
 PENDING_RETRY_SLEEP_SECONDS = 20
 MAX_PENDING_RETRY_ROUNDS = 15
+# Extras (chart_extra=True) épuisés en same_total : si la moyenne de streams/jour
+# depuis la sortie est sous ce seuil, un vrai 0 est plausible → on écrit daily=0
+# au lieu de bloquer l'export final. Ne s'applique JAMAIS aux non-extra.
+EXTRA_ASSUME_ZERO_MAX_AVG_DAILY = 500
 INFINITE_RETRY_PREVIOUS_DAY_TOP_N = 70
 POST_BETWEEN_STREAMS_POSTS_SECONDS = 0
 INCREMENTAL_PUBLISH_ON_UPDATE = False
@@ -384,6 +390,15 @@ Usage:
       Run finalization scripts against existing history data for the latest
       available date (or the provided date), with no R2, no web export writes,
       no Twitter posts, no git, and no scraping.
+
+  python update_streams.py [YYYY-MM-DD] --post-only top-eras
+  python update_streams.py [YYYY-MM-DD] --post-only recap,top-eras,top45
+      Post only the selected step(s) from existing history data for the latest
+      available date (or the provided date). No scraping, no web export, no git.
+      Completeness guards, posting locks and weekday rules still apply.
+      Steps (comma- or space-separated): top-eras, all-albums, top45, recap,
+      best-day-since, debut, gainers, album-updates.
+      Add --no-post to only generate the images without posting.
 
   python update_streams.py --no-post
       Run full pipeline but skip all Twitter posting steps.
@@ -1593,10 +1608,35 @@ def main():
     throwback_action = None
     throwback_event = None
     throwback_label = None
+    post_only_steps_raw = None
 
     i = 0
     while i < len(remaining_args):
         arg = remaining_args[i]
+
+        if arg == "--post-only":
+            # Accepte les étapes séparées par virgules et/ou espaces (PowerShell
+            # éclate « a, b, c » en plusieurs arguments) ; une date ISO ou un
+            # flag arrête la consommation.
+            j = i + 1
+            value_parts: list[str] = []
+            while j < len(remaining_args):
+                nxt = remaining_args[j]
+                if nxt.startswith("-"):
+                    break
+                try:
+                    date.fromisoformat(nxt)
+                    break
+                except ValueError:
+                    pass
+                value_parts.append(nxt)
+                j += 1
+            if not value_parts:
+                print("Missing value after --post-only (e.g. --post-only top-eras or --post-only top45,gainers)")
+                sys.exit(1)
+            post_only_steps_raw = ",".join(value_parts)
+            i = j
+            continue
 
         if arg == "--reset-date":
             if i + 1 >= len(remaining_args):
@@ -1643,6 +1683,20 @@ def main():
         print("Use either --reset-last-date or --reset-date YYYY-MM-DD, not both.")
         sys.exit(1)
 
+    post_only_mode = post_only_steps_raw is not None
+    post_only_steps: list[str] = []
+    if post_only_mode:
+        if any((debug_daily_mode, debug_total_mode, dry_run_mode, local_test_mode, test_mode, throwback_mode)):
+            print("Use --post-only by itself (optionally with a date, --no-post, --quiet, or --verbose).")
+            sys.exit(1)
+        post_only_steps = [s.strip() for s in post_only_steps_raw.split(",") if s.strip()]
+        unknown_steps = [s for s in post_only_steps if s not in POST_ONLY_STEPS]
+        if not post_only_steps or unknown_steps:
+            if unknown_steps:
+                print(f"Unknown --post-only step(s): {', '.join(unknown_steps)}")
+            print(f"Available steps: {', '.join(POST_ONLY_STEPS)}")
+            sys.exit(1)
+
     if throwback_mode:
         if throwback_action not in {"announced", "released"}:
             print("--throwback requires --throwback-action announced|released")
@@ -1681,22 +1735,24 @@ def main():
         print("[DEBUG-TOTAL] Replace totals for an existing date in streams_history.csv.")
     elif throwback_mode:
         print("[THROWBACK] Generate/post throwback thread instead of normal daily posts.")
+    elif post_only_mode:
+        print(f"[POST-ONLY] Post selected step(s) from existing history, no scraping/export/git: {', '.join(post_only_steps)}")
     else:
         print("[NORMAL] Official run mode.")
 
-    if dry_run_mode or debug_daily_mode or local_test_mode or throwback_mode or test_mode:
+    if dry_run_mode or debug_daily_mode or local_test_mode or throwback_mode or test_mode or post_only_mode:
         os.environ["UPLOAD_TO_R2"] = "0"
         print("R2 upload disabled for this run mode.")
     else:
         os.environ["UPLOAD_TO_R2"] = "1"
         print("R2 upload enabled for this run (UPLOAD_TO_R2=1).")
 
-    if test_mode and stats_date_override is None:
+    if (test_mode or post_only_mode) and stats_date_override is None:
         stats_date_override = get_last_stats_date_in_history()
         if not stats_date_override:
-            print("[TEST] No date found in streams_history.csv.")
+            print("No date found in streams_history.csv.")
             sys.exit(1)
-        print(f"[TEST] Using latest history date: {stats_date_override}")
+        print(f"Using latest history date: {stats_date_override}")
 
     snapshot_date = stats_date_override or get_stats_date_str()
     snapshot_collected_date = get_scrape_date_str()
@@ -1790,6 +1846,39 @@ def main():
             initial_post_state={"posted_count": 0, "last_post_at": 0.0},
             test_mode=True,
         ))
+        return
+
+    if post_only_mode:
+        print("[POST-ONLY] Using existing streams_history.csv data only; skipping Spotify collection.")
+        run_post_only_steps(FinalizeContext(
+            script_dir=_SCRIPT_DIR,
+            repo_root=_REPO_ROOT,
+            stats_date=stats_date,
+            summary={
+                "stats_date": stats_date,
+                "all_done": True,
+                "updated_this_run": 0,
+                "pending_this_run": 0,
+                "not_found_this_run": 0,
+            },
+            no_post_mode=no_post_mode,
+            debug_daily_mode=False,
+            local_test_mode=False,
+            post_spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
+            log_mode=LOG_MODE,
+            artist_thread=None,
+            artist_result=[None],
+            export_web_data=export_web_data,
+            update_artist_metadata=update_artist_metadata,
+            album_tracks_done_for=album_tracks_done_for,
+            all_album_tracks_done=all_album_tracks_done,
+            load_album_sections_flat=load_album_sections_flat,
+            extract_track_id=extract_track_id,
+            load_history_track_ids_for_date=load_history_track_ids_for_date,
+            find_biggest_album_gainer_for_spotlight=find_biggest_album_gainer_for_spotlight,
+            posted_album_updates=set(),
+            initial_post_state={"posted_count": 0, "last_post_at": 0.0},
+        ), post_only_steps)
         return
 
     if debug_total_mode:
@@ -2304,17 +2393,12 @@ def main():
         enabled=True,
     )
 
-    seen_before_ids = {
-        track["track_id"]
-        for track in tracks
-        if get_previous_total_before_date(track["track_id"], stats_date) is not None
-    }
     infinite_retry_thread: threading.Thread | None = None
     infinite_retry_track_ids: set[str] = set()
     abandoned_pending_track_ids: set[str] = set()
     infinite_retry_collected_ids: set[str] = set()
 
-    def _abandon_pending_track(track_id: str) -> bool:
+    def _abandon_pending_track(track_id: str, reason: str = "abandoned_after_retry_cap") -> bool:
         if track_id in abandoned_pending_track_ids:
             return False
 
@@ -2337,7 +2421,7 @@ def main():
 
         result["status"] = "updated"
         result["daily_streams"] = 0
-        result["reason"] = "abandoned_after_retry_cap"
+        result["reason"] = reason
         abandoned_pending_track_ids.add(track_id)
 
         summary["updated_this_run"] = int(summary.get("updated_this_run", 0)) + 1
@@ -2346,6 +2430,58 @@ def main():
         summary["all_done"] = summary["pending_this_run"] == 0
         all_updated_track_ids.add(track_id)
         return True
+
+    tracks_by_id = {t["track_id"]: t for t in tracks}
+
+    def _assume_zero_low_traffic_extra_ids(candidate_ids: set[str]) -> set[str]:
+        """Extras same_total épuisés pour lesquels un vrai 0 est plausible : moyenne
+        streams/jour depuis la sortie sous EXTRA_ASSUME_ZERO_MAX_AVG_DAILY, ou — si
+        la release_date manque au catalogue — dailies récents enregistrés quasi nuls.
+        On accepte alors le total observé avec daily=0. Non-extra : jamais éligible."""
+        target_day = date.fromisoformat(stats_date)
+        history_index = summary.get("history_index")
+        eligible: set[str] = set()
+        for tid in candidate_ids:
+            track = tracks_by_id.get(tid)
+            if not track or not track.get("chart_extra"):
+                continue
+            result = next(
+                (r for r in summary.get("results", []) if r and r.get("track_id") == tid),
+                None,
+            )
+            if not result or result.get("status") != "pending":
+                continue
+            total = result.get("streams")
+            if total is None:
+                total = result.get("previous_streams")
+            if total is None:
+                continue
+
+            try:
+                released = date.fromisoformat((track.get("release_date") or "").strip())
+                days_since_release = max(1, (target_day - released).days)
+                if int(total) / days_since_release <= EXTRA_ASSUME_ZERO_MAX_AVG_DAILY:
+                    eligible.add(tid)
+                continue
+            except Exception:
+                pass
+
+            if history_index is None:
+                continue
+            recent_dailies = [
+                point["daily_streams"]
+                for point in sorted(history_index.points_for_track(tid), key=lambda p: p["date"])
+                if "daily_streams" in point
+                and point["daily_streams"] >= 0
+                and not point.get("estimated")
+                and str(point.get("date")) < stats_date
+            ][-14:]
+            if (
+                len(recent_dailies) >= 3
+                and sum(recent_dailies) / len(recent_dailies) <= EXTRA_ASSUME_ZERO_MAX_AVG_DAILY
+            ):
+                eligible.add(tid)
+        return eligible
 
     progress = ProgressLogger(LOG_MODE)
     summary = run_update(
@@ -2382,6 +2518,7 @@ def main():
 
     retry_round = 0
     track_retry_counts: dict[str, int] = {}
+    exhausted_blocking_track_ids: set[str] = set()
     known_stuck_pending_tracks = load_known_stuck_pending_tracks()
     if known_stuck_pending_tracks:
         print(f"Known stuck pending list: {len(known_stuck_pending_tracks)} track(s).")
@@ -2405,30 +2542,40 @@ def main():
         for tid in all_pending_ids:
             track_retry_counts[tid] = track_retry_counts.get(tid, 0) + 1
 
-        # Tracks that already existed before this date can move to background
-        # retry after the cap; brand-new tracks keep blocking until they land.
+        # Unchanged totals are ambiguous: do not publish them as zero streams.
+        # After the retry cap, keep them pending and block final posting/export.
+        # Exception (décision propriétaire) : extras à très faible trafic moyen
+        # depuis la sortie → un vrai 0 est plausible, on écrit daily=0.
         exhausted_ids = {
             tid for tid, count in track_retry_counts.items()
             if count >= MAX_PENDING_RETRY_ROUNDS
         }
         if exhausted_ids:
-            print(
-                f"{len(exhausted_ids)} pending track(s) reached "
-                f"{MAX_PENDING_RETRY_ROUNDS} retries; starting another retry block."
-            )
-        abandoned_ids: set[str] = {
-            tid for tid in exhausted_ids
-            if tid in seen_before_ids
-        }
-        if abandoned_ids:
-            print(
-                f"Abandoning {len(abandoned_ids)} previously-seen pending track(s) after {MAX_PENDING_RETRY_ROUNDS} retries; writing daily=0."
-            )
-            for tid in sorted(abandoned_ids):
-                _abandon_pending_track(tid)
-        for tid in exhausted_ids - abandoned_ids:
-            track_retry_counts[tid] = 0
-        pending_retry_ids = all_pending_ids - infinite_retry_track_ids - abandoned_pending_track_ids
+            assumed_zero_ids = _assume_zero_low_traffic_extra_ids(exhausted_ids)
+            for tid in sorted(assumed_zero_ids):
+                _abandon_pending_track(tid, reason="assumed_zero_low_traffic_extra")
+            if assumed_zero_ids:
+                assumed_titles = sorted(
+                    tracks_by_id[tid]["title"] for tid in assumed_zero_ids if tid in tracks_by_id
+                )
+                print(
+                    f"{len(assumed_zero_ids)} low-traffic extra track(s) assumed daily=0 after "
+                    f"{MAX_PENDING_RETRY_ROUNDS} retries (avg <= {EXTRA_ASSUME_ZERO_MAX_AVG_DAILY}/day "
+                    f"since release): {', '.join(assumed_titles)}"
+                )
+            blocking_exhausted_ids = exhausted_ids - assumed_zero_ids
+            if blocking_exhausted_ids:
+                print(
+                    f"{len(blocking_exhausted_ids)} pending unchanged-total track(s) reached "
+                    f"{MAX_PENDING_RETRY_ROUNDS} retries; keeping them open and blocking final posting."
+                )
+                exhausted_blocking_track_ids.update(blocking_exhausted_ids)
+        pending_retry_ids = (
+            all_pending_ids
+            - infinite_retry_track_ids
+            - exhausted_blocking_track_ids
+            - abandoned_pending_track_ids
+        )
 
         if not pending_retry_ids:
             print("No pending track IDs left to retry; stopping pending retries.")
@@ -2497,6 +2644,11 @@ def main():
 
     # Notify if tracks are still pending after exhausting all retry rounds
     if not dry_run_mode and not local_test_mode and not debug_daily_mode and track_retry_counts:
+        summary_history_index = summary.get("history_index") or HistoryIndex.load()
+        seen_before_ids = {
+            tid for tid in track_retry_counts
+            if summary_history_index.get_previous_total_before_date(tid, stats_date) is not None
+        }
         exhausted_after_all = {
             tid for tid, count in track_retry_counts.items()
             if count >= MAX_PENDING_RETRY_ROUNDS
@@ -2547,7 +2699,12 @@ def main():
     }
     infinite_retry_track_ids &= current_pending_ids
     abandoned_pending_track_ids &= current_pending_ids
-    blocking_pending_ids = current_pending_ids - infinite_retry_track_ids - abandoned_pending_track_ids
+    exhausted_blocking_track_ids &= current_pending_ids
+    blocking_pending_ids = (
+        current_pending_ids
+        - infinite_retry_track_ids
+        - abandoned_pending_track_ids
+    ) | exhausted_blocking_track_ids
     if blocking_pending_ids and not dry_run_mode and not local_test_mode and not debug_daily_mode:
         print(
             f"Blocking final export/post: {len(blocking_pending_ids)} pending track(s) are still unresolved."

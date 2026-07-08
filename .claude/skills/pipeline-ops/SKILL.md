@@ -1,0 +1,43 @@
+---
+name: pipeline-ops
+description: Opérations du pipeline de données TSM (tsm-backend) — streams Spotify, charts, YouTube ; scripts, Task Scheduler, pannes connues (WARP), rattrapage d'un jour manqué, conventions de commit data. À utiliser pour tout ce qui touche à la collecte/l'update des données.
+---
+
+# Ops pipeline TSM (tsm-backend)
+
+Référence exhaustive (chaque script + ses options) : `REPO_CONTEXT.md` à la racine de tsm-backend.
+Règles d'intégrité data/posting (jamais de fausse data, manual_trusted, locks, comptes) : → skill `data-rules`.
+
+Tout tourne **en local via le Planificateur de tâches Windows** (pas GitHub Actions). Les launchers `.bat` du scheduler sont dans `tsm-frontend/tasks/` (`run_spotify_streams.bat`, `run_spotify_charts_global.bat`, `run_spotify_charts_fr.bat`, `watch_logs.bat`) et font `cd` vers tsm-backend.
+
+## Commandes
+| Quoi | Commande | Où |
+|---|---|---|
+| Collecte quotidienne complète | `python -m tsm daily` | racine tsm-backend (`run_daily.bat`) |
+| Tous les charts | `python -m tsm collect charts` | racine (`run_all_charts.bat`) |
+| Streams Spotify | `python update_streams.py` | `collectors/spotify/streams/` (log : `run_update_streams.log` à côté) |
+| Reposter UNE étape (ex. top eras raté) | `python update_streams.py [D] --post-only top-eras` | idem ; étapes : top-eras, all-albums, top45, recap, best-day-since, debut, gainers, album-updates ; locks/guards respectés, `--no-post` = images seulement |
+
+CLI définie dans `tsm/cli.py`. Outils streams : `collectors/spotify/streams/tools/scripts/` (`history_store.py`, `spotify_api.py`, `generate_albums_image.py`, `post_albums_twitter.py`).
+
+## Pannes connues
+- **WARP instable → lecture infinie** : le script reste bloqué en requête. Tuer le process (fenêtre PowerShell du .bat) et relancer ; vérifier WARP avant.
+- **Silence après le header `Run — stats_date`** : depuis le fix du 2026-07-08 (`seen_before_ids` calculé via `HistoryIndex` en mémoire au lieu de 533 relectures du CSV), la progression démarre en quelques secondes. Un silence prolongé à cet endroit = vrai blocage réseau (WARP), pas une phase normale.
+- Un run bloqué peut laisser un jour manquant → rattrapage ci-dessous.
+
+## Rattraper un jour manqué (streams)
+Script : `collectors/spotify/streams/tools/scripts/reconcile_gap_catchup.py` — reclasse les totaux réellement observés sur les bons jours (raison `manual_trusted`), n'invente jamais de valeur.
+```powershell
+python reconcile_gap_catchup.py 2026-07-03 --all-pending          # dry-run, classification
+python reconcile_gap_catchup.py 2026-07-03 --all-pending --apply  # écrit les lignes sûres
+# ciblé : --track-ids id1,id2   ou   --album Lover
+```
+Classifications : `single_day` / `fully_caught_up` / `partial_catchup` appliquées ; `uncertain` = jamais auto-appliqué, revue manuelle. Cross-check optionnel via `RAPIDAPI_KEY`.
+
+## Données & commits
+- Catalogue maître : `db/discography/artist.json` ; cache covers : `db/discography/track_cover_cache.json`.
+- Conventions de commit data (voir historique) : `charts run all YYYY-MM-DD`, `youtube views YYYY-MM-DD`. Ne committer que sur demande.
+- Les données finissent dans R2 (`taylor-data`) d'où l'API du frontend les lit — pas de deploy nécessaire côté backend pour que le site voie les nouvelles données.
+
+## Maintenance (obligatoire)
+Nouveau script, option changée, nouvelle panne connue ou nouveau workflow de rattrapage → mets à jour cette skill ET `REPO_CONTEXT.md` dans la même session.

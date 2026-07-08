@@ -1,11 +1,14 @@
-## graphify
+## Repo map
 
-This project has a graphify knowledge graph at graphify-out/.
+`REPO_CONTEXT.md` (repo root) is the full annotated tree of this repo: every folder/file's role and each script's CLI options. Read the relevant section there before exploring `collectors/` or `scripts/` with search tools.
 
-Rules:
-- Before answering architecture or codebase questions, read graphify-out/GRAPH_REPORT.md for god nodes and community structure
-- If graphify-out/wiki/index.md exists, navigate it instead of reading raw files
-- After modifying code files in this session, run `python3 -c "from graphify.watch import _rebuild_code; from pathlib import Path; _rebuild_code(Path('.'))"` to keep the graph current
+## Living documentation (mandatory)
+
+After ANY change, update the impacted docs in the same session — stale docs are worse than no docs:
+- Script added/modified/moved, or its CLI options changed → update `REPO_CONTEXT.md`.
+- Workflow, data/posting rule, or convention changed → update the matching skill in `.claude/skills/`.
+- New product decision that isn't written anywhere → write it into the closest skill or context doc.
+Never end a session leaving a context file that contradicts the code.
 
 ## TSM Frontend Rule
 

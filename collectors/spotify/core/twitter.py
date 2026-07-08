@@ -1115,11 +1115,13 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
         print(f"X image introuvable: {image_path}")
         return False
 
+    print("X: attente du slot de post (verrou compte)...", flush=True)
     with _twitter_account_slot(session_file) as account_key:
         if not (profile_dir / "Default").exists():
             print("Aucun profil Twitter trouve. Connexion initiale requise...")
             setup_session(session_file)
 
+        print("X: ouverture du navigateur...", flush=True)
         with sync_playwright() as p:
             context = None
             try:

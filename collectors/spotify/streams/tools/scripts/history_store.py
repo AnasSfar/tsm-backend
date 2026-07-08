@@ -318,6 +318,114 @@ def load_active_track_ids_from_discography() -> set[str]:
 
     return active_track_ids - historical_track_ids
 
+
+class IncompleteHistoryError(RuntimeError):
+    """Raised when a publishable stream artifact would use incomplete history."""
+
+
+def track_is_released_for_stats_date(track: dict, stats_date: str) -> bool:
+    release_raw = str(track.get("release_date") or "").strip()
+    if not release_raw:
+        return True
+    try:
+        release_day = date.fromisoformat(release_raw[:10])
+        target_day = date.fromisoformat(stats_date)
+    except ValueError:
+        return True
+    return release_day <= target_day
+
+
+def load_released_active_tracks_for_date(stats_date: str) -> list[dict]:
+    active_track_ids = load_active_track_ids_from_discography()
+    tracks = load_tracks_from_discography(active_track_ids)
+    return [track for track in tracks if track_is_released_for_stats_date(track, stats_date)]
+
+
+def validate_released_active_history_complete(
+    stats_date: str,
+    *,
+    comparison_dates: list[str] | tuple[str, ...] = (),
+    label: str = "stream artifact",
+) -> None:
+    """Require exact daily_streams rows before generating a publishable artifact.
+
+    The target date is checked against tracks released by that date. Each
+    comparison date is checked against tracks released by that comparison date,
+    so a brand-new release does not require impossible pre-release history.
+    """
+    checks = [stats_date, *comparison_dates]
+    missing_by_date: dict[str, list[str]] = {}
+    unchanged_zero_by_date: dict[str, list[str]] = {}
+    rows_by_date_track = {
+        (
+            str(row.get("date") or "").strip(),
+            str(row.get("track_id") or "").strip(),
+        ): row
+        for row in load_history_rows()
+        if str(row.get("date") or "").strip() and str(row.get("track_id") or "").strip()
+    }
+
+    for check_date in checks:
+        tracks = load_released_active_tracks_for_date(check_date)
+        required_ids = {track["track_id"] for track in tracks}
+        done_ids = load_history_track_ids_with_daily_for_date(check_date)
+        title_by_id = {
+            track["track_id"]: (track.get("title") or track["track_id"])
+            for track in tracks
+        }
+        missing_ids = required_ids - done_ids
+        if missing_ids:
+            missing_by_date[check_date] = [
+                title_by_id.get(track_id, track_id)
+                for track_id in sorted(missing_ids)
+            ]
+
+        previous_date = (date.fromisoformat(check_date) - timedelta(days=1)).isoformat()
+        unchanged_zero_titles: list[str] = []
+        for track in tracks:
+            # Décision propriétaire 2026-07-08 : les extras à trafic quasi nul
+            # reçoivent un daily=0 assumé (assumed_zero_low_traffic_extra) après
+            # épuisement des retries — un 0 à total inchangé n'est ambigu que
+            # pour le catalogue officiel (chart_extra=False).
+            if track.get("chart_extra"):
+                continue
+            track_id = track["track_id"]
+            cur = rows_by_date_track.get((check_date, track_id))
+            prev = rows_by_date_track.get((previous_date, track_id))
+            if cur is None or prev is None:
+                continue
+            if str(cur.get("daily_streams") or "").strip() != "0":
+                continue
+            cur_total = str(cur.get("streams") or "").strip()
+            prev_total = str(prev.get("streams") or "").strip()
+            if cur_total and cur_total == prev_total:
+                unchanged_zero_titles.append(track.get("title") or track_id)
+        if unchanged_zero_titles:
+            unchanged_zero_by_date[check_date] = sorted(unchanged_zero_titles)
+
+    if not missing_by_date and not unchanged_zero_by_date:
+        return
+
+    parts = [f"{label} blocked: incomplete exact stream history."]
+    if missing_by_date:
+        parts.append("Missing released active track(s) with valid daily_streams:")
+    for check_date, titles in missing_by_date.items():
+        shown = titles[:25]
+        parts.append(f"{check_date}: {len(titles)} missing")
+        parts.extend(f"  - {title}" for title in shown)
+        if len(titles) > len(shown):
+            parts.append(f"  ... and {len(titles) - len(shown)} more")
+    if unchanged_zero_by_date:
+        parts.append("Ambiguous unchanged-total row(s) with daily_streams=0:")
+    for check_date, titles in unchanged_zero_by_date.items():
+        shown = titles[:25]
+        parts.append(f"{check_date}: {len(titles)} ambiguous")
+        parts.extend(f"  - {title}" for title in shown)
+        if len(titles) > len(shown):
+            parts.append(f"  ... and {len(titles) - len(shown)} more")
+
+    raise IncompleteHistoryError("\n".join(parts))
+
 def ensure_history_file() -> None:
     HISTORY_PATH.parent.mkdir(parents=True, exist_ok=True)
 

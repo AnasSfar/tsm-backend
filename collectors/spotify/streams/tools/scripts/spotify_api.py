@@ -173,9 +173,18 @@ def _warp_connect() -> None:
     cli = str(_WARP_CLI) if _WARP_CLI.exists() else "warp-cli"
     try:
         res = subprocess.run([cli, "status"], timeout=5, capture_output=True, text=True, check=False)
-        if "Connected" in (res.stdout or ""):
-            print("TokenManager: WARP deja connecte")
-            return
+        status_out = res.stdout or ""
+        if "Connected" in status_out:
+            # Un tunnel "Connected" mais "Network: unstable" laisse passer les octets
+            # au compte-gouttes: les requetes ne timeoutent jamais et le run gele.
+            # On recycle le tunnel au lieu de le reutiliser tel quel.
+            if "unstable" in status_out.lower():
+                print("TokenManager: WARP connecte mais reseau instable — reconnexion du tunnel")
+                subprocess.run([cli, "disconnect"], timeout=15, check=False, capture_output=True)
+                time.sleep(2)
+            else:
+                print("TokenManager: WARP deja connecte")
+                return
         subprocess.run([cli, "connect"], timeout=15, check=False, capture_output=True)
         # Poll warp-cli status until "Connected" — up to 15s
         for _ in range(15):
@@ -434,7 +443,14 @@ def fetch_playcount_api(
             if metrics is not None:
                 metrics["requests"] = int(metrics.get("requests") or 0) + 1
             try:
-                resp = session.post(GRAPHQL_URL, json=body, headers=headers, timeout=(5, 15))
+                # stream=True + lecture bornee: le timeout (5, 15) ne couvre que
+                # l'attente entre deux paquets, pas la duree totale. Un serveur qui
+                # egrene la reponse octet par octet (tunnel WARP instable, tarpit)
+                # bloquerait sinon ce post() indefiniment.
+                resp = session.post(GRAPHQL_URL, json=body, headers=headers, timeout=(5, 15), stream=True)
+                raw_body = _read_body_with_deadline(resp)
+                if raw_body is None:
+                    raise TimeoutError("body read exceeded total deadline")
             except Exception:
                 if metrics is not None:
                     metrics["network_errors"] = int(metrics.get("network_errors") or 0) + 1
@@ -450,7 +466,7 @@ def fetch_playcount_api(
 
             if code == 200:
                 try:
-                    data = resp.json()
+                    data = json.loads(raw_body)
                 except Exception:
                     data = {}
                 track_union = (data.get("data") or {}).get("trackUnion") or {}
@@ -502,6 +518,27 @@ def fetch_playcount_api(
             # Other errors are not transient.
             return None
     return None
+
+def _read_body_with_deadline(resp, deadline_s: float = 45.0) -> bytes | None:
+    """Lit le corps d'une reponse stream=True avec une limite de duree totale.
+
+    Retourne None (et ferme la connexion) si la lecture depasse deadline_s,
+    ce que le timeout par-lecture de requests ne peut pas garantir.
+    """
+    chunks: list[bytes] = []
+    start = time.monotonic()
+    try:
+        for chunk in resp.iter_content(chunk_size=8192):
+            if chunk:
+                chunks.append(chunk)
+            if time.monotonic() - start > deadline_s:
+                resp.close()
+                return None
+    except Exception:
+        resp.close()
+        return None
+    return b"".join(chunks)
+
 
 def _probe_via_api(
     probe_tracks: list[dict],

@@ -42,6 +42,7 @@ from comp.tables_image import (  # noqa: E402
     download_as_data_uri, pick_header_image, get_dominant_color,
     rank_change, SPOTIFY_SVG, build_table_html,
 )
+import history_store  # noqa: E402
 
 HISTORY_PATH = first_existing_db_history("streams_history.csv")
 COVERS_PATH  = DB_DIR / "discography" / "covers.json"
@@ -458,6 +459,12 @@ def generate(target_date: str | None = None) -> Path:
     if target_date is None:
         target_date = get_latest_date()
     print(f"[albums_image] Date: {target_date}")
+    previous_date = str(date_cls.fromisoformat(target_date) - timedelta(days=1))
+    history_store.validate_released_active_history_complete(
+        target_date,
+        comparison_dates=(previous_date,),
+        label="albums image",
+    )
 
     covers        = load_covers()
     track_map     = load_album_track_map()
@@ -502,4 +509,8 @@ def generate(target_date: str | None = None) -> Path:
 
 if __name__ == "__main__":
     date_arg = sys.argv[1] if len(sys.argv) > 1 else None
-    generate(date_arg)
+    try:
+        generate(date_arg)
+    except history_store.IncompleteHistoryError as exc:
+        print(f"ERROR: {exc}")
+        sys.exit(1)

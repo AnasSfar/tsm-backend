@@ -22,6 +22,7 @@ import asyncio
 import io
 import json
 import os
+import random
 import re
 import subprocess
 import sys
@@ -104,10 +105,22 @@ FETCH_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_WORLDWIDE_FETCH_MAX_ATTEMPTS", "0"))
 SKIP_LATEST_FALLBACK_ON_404 = os.getenv("SPOTIFY_SKIP_LATEST_FALLBACK_ON_404", "").strip().lower() in {"1", "true", "yes", "on"}
 _OVERVIEW_URL   = "https://charts-spotify-com-service.spotify.com/auth/v1/overview/GLOBAL"
 MULTI_SONG_REGIONAL_POST_MIN_SONGS = 3
-MULTI_SONG_REGIONAL_POST_MAX_POSTS = 2
+MULTI_SONG_REGIONAL_POST_MAX_POSTS = 1
+MULTI_SONG_REGIONAL_POST_POOL_SIZE = 3
+MULTI_SONG_REGIONAL_NO_REPEAT_DAYS = 1
 MULTI_SONG_REGIONAL_WEEKLY_LOOKBACK_DAYS = 7
 PRIORITY_POST_REGIONS = ("global", "fr", "us")
 SCORED_REGIONAL_POST_EXCLUDED_REGIONS = set(PRIORITY_POST_REGIONS)
+
+# Bonus/malus fixes evenements de chart, independants du rang exact.
+# RE-ENTRY > NEW car un retour d'un titre du catalogue est un signal plus fort
+# qu'une premiere entree ; un dropout coute plus cher qu'un simple recul de rang.
+NEW_ENTRY_BASE = 40.0
+NEW_ENTRY_RANK_FACTOR = 0.6
+RE_ENTRY_BASE = 80.0
+RE_ENTRY_RANK_FACTOR = 0.8
+DROPOUT_BASE = 70.0
+DROPOUT_RANK_FACTOR = 0.5
 
 _ALBUM_EMOJI: list[tuple[str, str]] = [
     ("the life of a showgirl", "❤️‍🔥"),
@@ -1024,53 +1037,95 @@ def _enrich_multi_song_region_rows(chart_date: str, by_region: dict[str, list[di
                     row["weekly_stream_change_pct"] = round(weekly_stream_change / previous_week_streams * 100, 2)
 
 
-def _region_priority_score(rows: list[dict]) -> tuple[int, int, int, int, int, int]:
-    best_rank_gain = 0
-    best_daily_stream_gain = 0
-    best_weekly_stream_gain = 0
-    total_streams = 0
+def _clamp(value: float, lo: float, hi: float) -> float:
+    return max(lo, min(hi, value))
+
+
+def _rank_weight(rank: int) -> float:
+    """Poids d'une position: bouger en haut du chart vaut plus qu'en bas (#1 ≈ x2, #200 = x1)."""
+    return 1.0 + (200 - _clamp(rank, 1, 200)) / 200.0
+
+
+def _region_score(region: str, rows: list[dict], prev_day_by_track: dict[str, list[dict]]) -> tuple[float, dict]:
+    """Score signe d'une region: les hausses rapportent des points, les baisses en coutent.
+
+    Par chanson:
+    - mouvement de rang (previous_rank - rank), pondere par la position
+    - NEW: +NEW_ENTRY_BASE + (201 - rank) * NEW_ENTRY_RANK_FACTOR
+    - RE-ENTRY (plus fort que NEW, retour d'un titre du catalogue):
+      +RE_ENTRY_BASE + (201 - rank) * RE_ENTRY_RANK_FACTOR
+    - bonus nouveau peak (+15 pondere position)
+    - variation de streams jour (%) bornee a +/-50, poids 1.2 ; semaine (%), poids 0.5
+    Par region:
+    - malus pour chaque chanson sortie du chart depuis hier (evenement fort,
+      pas juste un recul de rang): -DROPOUT_BASE - (201 - prev_rank) * DROPOUT_RANK_FACTOR
+    """
+    score = 0.0
+    moves_up = moves_down = entries_in = 0
+    charting_ids: set[str] = set()
     for row in rows:
+        track_id = str(row.get("_track_id_uri") or row.get("track_id") or "")
+        if track_id:
+            charting_ids.add(track_id)
         rank = _to_int(row.get("rank"))
-        previous_rank = _to_int(row.get("previous_rank"))
-        if rank is not None and previous_rank is not None:
-            best_rank_gain = max(best_rank_gain, previous_rank - rank)
-        elif rank is not None and (row.get("is_new") or row.get("is_re_entry")):
-            best_rank_gain = max(best_rank_gain, max(0, 201 - rank))
+        if rank is None:
+            continue
+        prev_rank = _to_int(row.get("previous_rank"))
 
-        streams = _to_int(row.get("streams"))
-        if streams is not None:
-            total_streams += streams
+        if row.get("is_new"):
+            score += NEW_ENTRY_BASE + (201 - _clamp(rank, 1, 200)) * NEW_ENTRY_RANK_FACTOR
+            entries_in += 1
+        elif row.get("is_re_entry"):
+            score += RE_ENTRY_BASE + (201 - _clamp(rank, 1, 200)) * RE_ENTRY_RANK_FACTOR
+            entries_in += 1
+        elif prev_rank is not None and prev_rank > 0:
+            delta = prev_rank - rank
+            score += delta * _rank_weight(min(rank, prev_rank))
+            if delta > 0:
+                moves_up += 1
+                peak_rank = _to_int(row.get("peak_rank"))
+                if peak_rank is not None and rank <= peak_rank:
+                    score += 15 * _rank_weight(rank)
+            elif delta < 0:
+                moves_down += 1
 
-        daily_stream_gain = _to_int(row.get("stream_change"))
-        if daily_stream_gain is not None:
-            best_daily_stream_gain = max(best_daily_stream_gain, daily_stream_gain)
+        pct = row.get("stream_change_pct")
+        if isinstance(pct, (int, float)):
+            score += _clamp(float(pct), -50.0, 50.0) * 1.2
+        weekly_pct = row.get("weekly_stream_change_pct")
+        if isinstance(weekly_pct, (int, float)):
+            score += _clamp(float(weekly_pct), -50.0, 50.0) * 0.5
 
-        weekly_stream_gain = _to_int(row.get("weekly_stream_change"))
-        if weekly_stream_gain is not None:
-            best_weekly_stream_gain = max(best_weekly_stream_gain, weekly_stream_gain)
+    dropouts = 0
+    for track_id, entries in prev_day_by_track.items():
+        if str(track_id) in charting_ids:
+            continue
+        for entry in entries:
+            if isinstance(entry, dict) and entry.get("country") == region:
+                prev_rank = _to_int(entry.get("rank"))
+                if prev_rank is not None:
+                    score -= DROPOUT_BASE + (201 - _clamp(prev_rank, 1, 200)) * DROPOUT_RANK_FACTOR
+                    dropouts += 1
+                break
 
-    good_update_score = (
-        max(0, best_rank_gain) * 1000
-        + max(0, best_daily_stream_gain) // 100
-        + max(0, best_weekly_stream_gain) // 250
-    )
-    return (
-        good_update_score,
-        best_rank_gain,
-        best_daily_stream_gain,
-        best_weekly_stream_gain,
-        total_streams,
-        len(rows),
-    )
+    detail = {"up": moves_up, "down": moves_down, "in": entries_in, "out": dropouts, "songs": len(rows)}
+    return round(score, 1), detail
 
 
-def _has_good_multi_song_region_update(rows: list[dict]) -> bool:
-    score, best_rank_gain, best_daily_stream_gain, best_weekly_stream_gain, _total_streams, _count = _region_priority_score(rows)
-    return score > 0 and (
-        best_rank_gain > 0
-        or best_daily_stream_gain > 0
-        or best_weekly_stream_gain > 0
-    )
+def _regions_posted_on(chart_date: str) -> set[str]:
+    posted: set[str] = set()
+    for base in (spotify_chart_dir("worldwide", chart_date), legacy_spotify_chart_dir("worldwide", chart_date)):
+        for lock in (base / "regional_posts").glob("posted_*.lock"):
+            posted.add(lock.stem[len("posted_"):])
+    return posted
+
+
+def _regions_posted_recently(chart_date: str, days: int = MULTI_SONG_REGIONAL_NO_REPEAT_DAYS) -> set[str]:
+    current = datetime.strptime(chart_date, "%Y-%m-%d").date()
+    posted: set[str] = set()
+    for offset in range(1, days + 1):
+        posted |= _regions_posted_on((current - timedelta(days=offset)).strftime("%Y-%m-%d"))
+    return posted
 
 
 def _build_multi_song_region_tweet(chart_date: str, region: str, region_name: str, rows: list[dict]) -> str:
@@ -1134,31 +1189,61 @@ def _post_multi_song_regions(
         print(f"[WARN] Multi-song regional posts skipped: Twitter session missing: {TWITTER_SESSION}", flush=True)
         return
 
-    candidates = [
-        (region, rows)
-        for region, rows in by_region.items()
-        if (
-            region not in SCORED_REGIONAL_POST_EXCLUDED_REGIONS
-            and len(rows) >= MULTI_SONG_REGIONAL_POST_MIN_SONGS
-            and _has_good_multi_song_region_update(rows)
+    already_posted_today = _regions_posted_on(chart_date)
+    if already_posted_today and not force:
+        print(
+            f"[SKIP] Regional scored post already done for {chart_date}: "
+            f"{', '.join(sorted(already_posted_today))}",
+            flush=True,
         )
-    ]
-    candidates.sort(key=lambda item: _region_priority_score(item[1]), reverse=True)
-    candidates = candidates[:MULTI_SONG_REGIONAL_POST_MAX_POSTS]
-    if not candidates:
+        return
+
+    prev_day = (datetime.strptime(chart_date, "%Y-%m-%d").date() - timedelta(days=1)).strftime("%Y-%m-%d")
+    prev_day_by_track = _load_snapshot_by_track(prev_day)
+
+    scored: list[tuple[str, list[dict], float, dict]] = []
+    for region, rows in by_region.items():
+        if region in SCORED_REGIONAL_POST_EXCLUDED_REGIONS or len(rows) < MULTI_SONG_REGIONAL_POST_MIN_SONGS:
+            continue
+        score, detail = _region_score(region, rows, prev_day_by_track)
+        scored.append((region, rows, score, detail))
+    scored.sort(key=lambda item: item[2], reverse=True)
+    if scored:
+        print(
+            "[INFO] Scores regionaux: " + ", ".join(
+                f"{region}={score:+.1f} (up:{d['up']} down:{d['down']} in:{d['in']} out:{d['out']})"
+                for region, _, score, d in scored[:10]
+            ),
+            flush=True,
+        )
+
+    positive = [c for c in scored if c[2] > 0]
+    recent = _regions_posted_recently(chart_date)
+    eligible = [c for c in positive if c[0] not in recent]
+    excluded = [c[0] for c in positive if c[0] in recent]
+    if excluded:
+        print(f"[INFO] Regions exclues (postees la veille): {', '.join(excluded)}", flush=True)
+
+    pool = eligible[:MULTI_SONG_REGIONAL_POST_POOL_SIZE]
+    if not pool:
         print("[INFO] No multi-song regional Spotify posts needed.", flush=True)
         return
 
-    score_labels = [
-        f"{region}={_region_priority_score(rows)[0]}"
-        for region, rows in candidates
-    ]
+    total_weight = sum(c[2] for c in pool)
     print(
-        f"[INFO] Multi-song regional posts: {len(candidates)} selected "
-        f"(max {MULTI_SONG_REGIONAL_POST_MAX_POSTS}): {', '.join(score_labels)}",
+        f"[INFO] Tirage pondere par score parmi top {len(pool)}: "
+        + ", ".join(f"{c[0]}={c[2] / total_weight * 100:.0f}%" for c in pool),
         flush=True,
     )
-    for region, rows in candidates:
+    candidates: list[tuple[str, list[dict], float, dict]] = []
+    pool_left = list(pool)
+    for _ in range(min(MULTI_SONG_REGIONAL_POST_MAX_POSTS, len(pool_left))):
+        pick = random.choices(pool_left, weights=[c[2] for c in pool_left], k=1)[0]
+        pool_left.remove(pick)
+        candidates.append(pick)
+    print(f"[INFO] Region(s) choisie(s): {', '.join(c[0] for c in candidates)}", flush=True)
+
+    for region, rows, _score, _detail in candidates:
         lock_path = _multi_song_region_lock_path(chart_date, region)
         if lock_path.exists() and not force:
             print(f"[SKIP] regional post {region} already done for {chart_date}", flush=True)
@@ -1323,8 +1408,9 @@ def main() -> int:
         "--post-multi-song-regions",
         action="store_true",
         help=(
-            f"Post up to {MULTI_SONG_REGIONAL_POST_MAX_POSTS} non-priority regions "
-            f"with at least {MULTI_SONG_REGIONAL_POST_MIN_SONGS} Taylor Swift songs and a strong update."
+            f"Post {MULTI_SONG_REGIONAL_POST_MAX_POSTS} non-priority region picked score-weighted at random "
+            f"among the top {MULTI_SONG_REGIONAL_POST_POOL_SIZE} scored regions "
+            f"(min {MULTI_SONG_REGIONAL_POST_MIN_SONGS} songs, positive score, not posted the previous day)."
         ),
     )
     parser.add_argument(

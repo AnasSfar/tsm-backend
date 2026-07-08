@@ -12,6 +12,14 @@ import csv
 from datetime import date, timedelta
 from pathlib import Path
 
+# Console Windows en cp1252 : les prints contenant emoji/typo Unicode (texte du
+# tweet) ne doivent jamais faire planter le post lui-même.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(errors="replace")
+    except Exception:
+        pass
+
 SCRIPT_DIR = Path(__file__).resolve().parent          # streams/tools/scripts/
 ROOT = SCRIPT_DIR.parents[1]                          # streams/
 TWITTER_SESSION = SCRIPT_DIR.parents[2] / "charts" / "global" / "tools" / "json" / "twitter_session.json"
@@ -227,9 +235,21 @@ def main():
         print(f"ERROR: Twitter session not found at {TWITTER_SESSION}")
         sys.exit(1)
 
+    previous_date = str(d - timedelta(days=1))
+    try:
+        history_store.validate_released_active_history_complete(
+            target_date,
+            comparison_dates=(previous_date,),
+            label="albums post",
+        )
+    except history_store.IncompleteHistoryError as exc:
+        print(f"ERROR: {exc}")
+        sys.exit(1)
+
     print(f"[albums_post] Generating image for {target_date}...")
     image_path = generate_albums_image.generate(target_date)
 
+    print("[albums_post] Composing tweet (biggest gainer / best-day lookup on history)...", flush=True)
     covers = generate_albums_image.load_covers()
     track_map = generate_albums_image.load_album_track_map()
     today, yest, week = generate_albums_image.load_history(target_date)
@@ -243,6 +263,7 @@ def main():
         print("[albums_post] Twitter post skipped (--no-post).")
         return
 
+    print("[albums_post] Posting to Twitter...", flush=True)
     success = post_with_image(tweet, image_path, TWITTER_SESSION)
     if not success:
         print(f"[albums_post] Failed to post for {target_date}.")
