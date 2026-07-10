@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import random
 import re
 import subprocess
@@ -21,7 +22,16 @@ BROWSER_CACHE_DIR = STREAMS_DIR / "tools" / "browser_cache"
 _TOKEN_CACHE_PATH = STREAMS_DIR / "tools" / ".token_cache.json"
 _WARP_CLI = Path(r"C:\Program Files\Cloudflare\Cloudflare WARP\warp-cli.exe")
 
-HEADLESS = True
+def _env_bool(name: str, default: bool) -> bool:
+    raw = os.getenv(name, "").strip().lower()
+    if raw in {"1", "true", "yes", "on"}:
+        return True
+    if raw in {"0", "false", "no", "off"}:
+        return False
+    return default
+
+
+HEADLESS = _env_bool("TSM_HEADLESS", True)
 MAX_PARALLEL_PAGES = 10
 HILL_WINDOW = 12
 HILL_429_THRESHOLD = 0.15
@@ -272,9 +282,6 @@ class TokenManager:
             return True
         _warp_connect()
         try:
-            if self._try_via_http():
-                return True
-
             MAX_ATTEMPTS = 5
             for attempt in range(1, MAX_ATTEMPTS + 1):
                 tokens: dict = {}

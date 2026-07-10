@@ -2,6 +2,9 @@
 title TSM Daily Tasks
 cd /d "C:\Users\sfara\Documents\GitHub\tsm-backend"
 
+set TSM_HEADLESS=1
+set TWITTER_HEADLESS=1
+
 echo ========================================
 echo  TSM Daily - %date% %time%
 echo ========================================

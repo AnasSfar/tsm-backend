@@ -789,7 +789,7 @@ def _render_html_image(html_text: str, out_path: Path, tmp_name: str) -> Path:
     tmp_html.write_text(html_text, encoding="utf-8")
     try:
         with sync_playwright() as p:
-            browser = p.chromium.launch()
+            browser = p.chromium.launch(headless=True)
             page = browser.new_page(viewport={"width": 1000, "height": 900}, device_scale_factor=2)
             page.goto(f"file:///{tmp_html.as_posix()}", wait_until="load")
             page.locator("body").screenshot(path=str(out_path))

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import re
 from datetime import date, timedelta
 
@@ -55,7 +56,18 @@ def block_unneeded(route):
         route.continue_()
 
 
-def launch_browser(playwright, *, headless: bool = True):
+def _env_bool(name: str, default: bool) -> bool:
+    raw = os.getenv(name, "").strip().lower()
+    if raw in {"1", "true", "yes", "on"}:
+        return True
+    if raw in {"0", "false", "no", "off"}:
+        return False
+    return default
+
+
+def launch_browser(playwright, *, headless: bool | None = None):
+    if headless is None:
+        headless = _env_bool("TSM_HEADLESS", True)
     return playwright.chromium.launch(
         headless=headless,
         args=[

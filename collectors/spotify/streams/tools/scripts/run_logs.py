@@ -20,6 +20,7 @@ FAILED_PATH = DATA_DIR / "not_found_today.csv"
 PENDING_LOG_PATH = DATA_DIR / "pending_debug_today.csv"
 LAST_SUCCESSFUL_UPDATE_JSON = DATA_DIR / "last_successful_updates.json"
 LAST_UNFINISHED_UPDATE_JSON = DATA_DIR / "last_unfinished_updates.json"
+SAME_TOTAL_JSON = DATA_DIR / "same_total.json"
 NOT_FOUND_STREAK_PATH = DATA_DIR / "not_found_streak.json"
 MAX_NOT_FOUND_DAYS = 7
 
@@ -30,13 +31,14 @@ def get_scrape_date_str() -> str:
 
 def configure_daily_data_paths(stats_date: str) -> None:
     global DATA_DIR, FAILED_PATH, PENDING_LOG_PATH
-    global LAST_SUCCESSFUL_UPDATE_JSON, LAST_UNFINISHED_UPDATE_JSON, NOT_FOUND_STREAK_PATH
+    global LAST_SUCCESSFUL_UPDATE_JSON, LAST_UNFINISHED_UPDATE_JSON, SAME_TOTAL_JSON, NOT_FOUND_STREAK_PATH
 
     DATA_DIR = update_streams_dir(stats_date)
     FAILED_PATH = DATA_DIR / "not_found_today.csv"
     PENDING_LOG_PATH = DATA_DIR / "pending_debug_today.csv"
     LAST_SUCCESSFUL_UPDATE_JSON = DATA_DIR / "last_successful_updates.json"
     LAST_UNFINISHED_UPDATE_JSON = DATA_DIR / "last_unfinished_updates.json"
+    SAME_TOTAL_JSON = DATA_DIR / "same_total.json"
     NOT_FOUND_STREAK_PATH = DATA_DIR / "not_found_streak.json"
 
 def save_failed_rows(rows: list[dict]) -> None:
@@ -107,6 +109,37 @@ def save_last_successful_updates_json(stats_date: str, updated_results: list[dic
         ],
     }
     LAST_SUCCESSFUL_UPDATE_JSON.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+
+def save_same_total_json(stats_date: str, same_total_results: list[dict]) -> None:
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    if not same_total_results:
+        if SAME_TOTAL_JSON.exists():
+            SAME_TOTAL_JSON.unlink()
+        return
+
+    payload = {
+        "generated_at": get_scrape_date_str(),
+        "stats_date": stats_date,
+        "track_ids": [r["track_id"] for r in same_total_results if r.get("track_id")],
+        "tracks": [
+            {
+                "track_id": r.get("track_id"),
+                "title": r.get("title"),
+                "spotify_url": r.get("spotify_url"),
+                "status": r.get("status"),
+                "streams": r.get("streams"),
+                "previous_streams": r.get("previous_streams"),
+                "daily_streams": r.get("daily_streams"),
+                "reason": r.get("reason"),
+            }
+            for r in same_total_results
+            if r.get("track_id")
+        ],
+    }
+    SAME_TOTAL_JSON.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )

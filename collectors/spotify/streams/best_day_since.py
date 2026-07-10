@@ -35,6 +35,9 @@ ALBUMS_DIR = DISCOGRAPHY_DIR / "albums"
 SONGS_JSON = DISCOGRAPHY_DIR / "songs.json"
 DEFAULT_OUTPUT = WEB_EXPORT_DATA_DIR / "best_day_since.json"
 HISTORY_START_DATE = date(2025, 1, 1)
+DEFAULT_MIN_DAYS = 30
+LIVE_COLLECTION_MIN_DAYS = 30
+LIVE_COLLECTION_MIN_PCT_CHANGE = 10.0
 
 
 @dataclass(frozen=True)
@@ -384,6 +387,7 @@ def compute_best_day_since(track: Track, points: list[Point], target_date: date)
             "spotify_url": track.spotify_url,
             "date": target_date.isoformat(),
             "daily_streams": current.daily,
+            "previous_day_daily": previous_day.daily,
             "kind": kind,
             "best_day_since": best_day_since,
             "previous_higher_or_equal_date": None,
@@ -403,6 +407,7 @@ def compute_best_day_since(track: Track, points: list[Point], target_date: date)
         "spotify_url": track.spotify_url,
         "date": target_date.isoformat(),
         "daily_streams": current.daily,
+        "previous_day_daily": previous_day.daily,
         "kind": "since",
         "best_day_since": best_since.isoformat(),
         "previous_higher_or_equal_date": last_at_or_above.day.isoformat(),
@@ -422,7 +427,15 @@ def sort_key(row: dict) -> tuple[int, int, int]:
     return (is_record, days_since, row["daily_streams"])
 
 
-def passes_filters(row: dict, *, min_days: int) -> bool:
+def passes_filters(row: dict, *, min_days: int, min_pct_change: float | None = None) -> bool:
+    if min_pct_change is not None:
+        previous_day_daily = row.get("previous_day_daily")
+        if previous_day_daily is None or previous_day_daily <= 0:
+            return False
+        pct_change = (row["daily_streams"] - previous_day_daily) / previous_day_daily * 100
+        if pct_change < min_pct_change:
+            return False
+
     if row["kind"] in {"best_ever", "before_history"}:
         return True
     return (row.get("days_since") or 0) >= min_days
@@ -432,7 +445,8 @@ def best_day_since_for_track(
     track_id: str,
     target_date: str,
     *,
-    min_days: int = 21,
+    min_days: int = DEFAULT_MIN_DAYS,
+    min_pct_change: float | None = None,
     combined: bool = True,
 ) -> dict | None:
     """Return best-day-since data for one album track, with combined versions by default."""
@@ -456,7 +470,7 @@ def best_day_since_for_track(
             return None
         row = compute_best_day_since(track, points, date.fromisoformat(target_date))
 
-    if not row or not passes_filters(row, min_days=min_days):
+    if not row or not passes_filters(row, min_days=min_days, min_pct_change=min_pct_change):
         return None
     return row
 
@@ -490,7 +504,12 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Compute best-day-since stream stats.")
     parser.add_argument("date", nargs="?", help="Stats date YYYY-MM-DD (default: latest date in history)")
     parser.add_argument("--limit", type=int, default=50, help="Number of rows to print (default: 50)")
-    parser.add_argument("--min-days", type=int, default=21, help="Minimum days since previous higher/equal day (default: 21)")
+    parser.add_argument(
+        "--min-days",
+        type=int,
+        default=DEFAULT_MIN_DAYS,
+        help=f"Minimum days since previous higher/equal day (default: {DEFAULT_MIN_DAYS})",
+    )
     parser.add_argument("--include-extras", action="store_true", help="Include songs.json extras too")
     parser.add_argument("--output", default=str(DEFAULT_OUTPUT), help="JSON output path")
     parser.add_argument("--no-write", action="store_true", help="Print only, do not write JSON")

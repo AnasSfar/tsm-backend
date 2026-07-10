@@ -2,7 +2,13 @@ from __future__ import annotations
 
 import time
 
-from run_logs import save_failed_rows, save_last_successful_updates_json, save_last_unfinished_updates_json, save_pending_debug_rows
+from run_logs import (
+    save_failed_rows,
+    save_last_successful_updates_json,
+    save_last_unfinished_updates_json,
+    save_pending_debug_rows,
+    save_same_total_json,
+)
 
 
 def format_int(value: int | None) -> str:
@@ -137,8 +143,24 @@ def print_summary_block(summary: dict) -> None:
     print()
 
 def update_json_logs_from_summary(summary: dict) -> None:
-    updated_results = [r for r in summary.get("results", []) if r and r.get("status") == "updated"]
+    same_total_reasons = {"same_total_zero"}
+    same_total_results = [
+        r
+        for r in summary.get("results", [])
+        if r
+        and r.get("reason") in same_total_reasons
+        and r.get("daily_streams") == 0
+    ]
+    same_total_ids = {r.get("track_id") for r in same_total_results if r.get("track_id")}
+    updated_results = [
+        r
+        for r in summary.get("results", [])
+        if r
+        and r.get("status") == "updated"
+        and r.get("track_id") not in same_total_ids
+    ]
     save_last_successful_updates_json(summary["stats_date"], updated_results)
+    save_same_total_json(summary["stats_date"], same_total_results)
     save_last_unfinished_updates_json(summary["stats_date"], summary.get("results", []), summary.get("failed_results", []))
 
     pending_debug_rows = [

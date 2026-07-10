@@ -40,6 +40,18 @@ NTFY_TOPIC_CHARTS = os.getenv("NTFY_TOPIC_CHARTS", "taylormuseum-charts")
 _WARP_CLI = Path(r"C:\Program Files\Cloudflare\Cloudflare WARP\warp-cli.exe")
 
 
+def _env_bool(name: str, default: bool) -> bool:
+    raw = os.getenv(name, "").strip().lower()
+    if raw in {"1", "true", "yes", "on"}:
+        return True
+    if raw in {"0", "false", "no", "off"}:
+        return False
+    return default
+
+
+HEADLESS = _env_bool("TSM_HEADLESS", True)
+
+
 def _warp_connect() -> None:
     cli = str(_WARP_CLI) if _WARP_CLI.exists() else "warp-cli"
     try:
@@ -443,7 +455,7 @@ def _load_extra_tokens_via_playwright(primary_token: str) -> list[str]:
             from playwright.sync_api import sync_playwright
             with sync_playwright() as p:
                 browser = p.chromium.launch(
-                    headless=True,
+                    headless=HEADLESS,
                     args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
                     timeout=PLAYWRIGHT_LAUNCH_TIMEOUT_MS,
                 )
@@ -507,7 +519,7 @@ def _acquire_bearer_token(names: list[str], *, refresh: bool = False, allow_stal
 
         with sync_playwright() as p:
             browser = p.chromium.launch(
-                headless=True,
+                headless=HEADLESS,
                 args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
                 timeout=PLAYWRIGHT_LAUNCH_TIMEOUT_MS,
             )
@@ -619,7 +631,7 @@ def _latest_chart_page_date() -> str | None:
 
         with sync_playwright() as p:
             browser = p.chromium.launch(
-                headless=True,
+                headless=HEADLESS,
                 args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
             )
             try:

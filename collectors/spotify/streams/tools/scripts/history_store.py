@@ -356,6 +356,7 @@ def validate_released_active_history_complete(
     checks = [stats_date, *comparison_dates]
     missing_by_date: dict[str, list[str]] = {}
     unchanged_zero_by_date: dict[str, list[str]] = {}
+    off_month_start_negative_by_date: dict[str, list[str]] = {}
     rows_by_date_track = {
         (
             str(row.get("date") or "").strip(),
@@ -366,7 +367,10 @@ def validate_released_active_history_complete(
     }
 
     for check_date in checks:
-        tracks = load_released_active_tracks_for_date(check_date)
+        tracks = [
+            track for track in load_released_active_tracks_for_date(check_date)
+            if not track.get("chart_extra")
+        ]
         required_ids = {track["track_id"] for track in tracks}
         done_ids = load_history_track_ids_with_daily_for_date(check_date)
         title_by_id = {
@@ -382,28 +386,33 @@ def validate_released_active_history_complete(
 
         previous_date = (date.fromisoformat(check_date) - timedelta(days=1)).isoformat()
         unchanged_zero_titles: list[str] = []
+        negative_titles: list[str] = []
+        check_day = date.fromisoformat(check_date)
         for track in tracks:
-            # Décision propriétaire 2026-07-08 : les extras à trafic quasi nul
-            # reçoivent un daily=0 assumé (assumed_zero_low_traffic_extra) après
-            # épuisement des retries — un 0 à total inchangé n'est ambigu que
-            # pour le catalogue officiel (chart_extra=False).
-            if track.get("chart_extra"):
-                continue
             track_id = track["track_id"]
             cur = rows_by_date_track.get((check_date, track_id))
             prev = rows_by_date_track.get((previous_date, track_id))
-            if cur is None or prev is None:
+            if cur is None:
                 continue
-            if str(cur.get("daily_streams") or "").strip() != "0":
-                continue
-            cur_total = str(cur.get("streams") or "").strip()
-            prev_total = str(prev.get("streams") or "").strip()
-            if cur_total and cur_total == prev_total:
-                unchanged_zero_titles.append(track.get("title") or track_id)
+            daily_raw = str(cur.get("daily_streams") or "").strip()
+            title = track.get("title") or track_id
+            if check_day.day != 1:
+                try:
+                    if int(daily_raw) < 0:
+                        negative_titles.append(title)
+                except ValueError:
+                    pass
+            if prev is not None and daily_raw == "0":
+                cur_total = str(cur.get("streams") or "").strip()
+                prev_total = str(prev.get("streams") or "").strip()
+                if cur_total and cur_total == prev_total:
+                    unchanged_zero_titles.append(title)
         if unchanged_zero_titles:
             unchanged_zero_by_date[check_date] = sorted(unchanged_zero_titles)
+        if negative_titles:
+            off_month_start_negative_by_date[check_date] = sorted(negative_titles)
 
-    if not missing_by_date and not unchanged_zero_by_date:
+    if not missing_by_date and not unchanged_zero_by_date and not off_month_start_negative_by_date:
         return
 
     parts = [f"{label} blocked: incomplete exact stream history."]
@@ -420,6 +429,14 @@ def validate_released_active_history_complete(
     for check_date, titles in unchanged_zero_by_date.items():
         shown = titles[:25]
         parts.append(f"{check_date}: {len(titles)} ambiguous")
+        parts.extend(f"  - {title}" for title in shown)
+        if len(titles) > len(shown):
+            parts.append(f"  ... and {len(titles) - len(shown)} more")
+    if off_month_start_negative_by_date:
+        parts.append("Negative daily_streams outside the first day of a month:")
+    for check_date, titles in off_month_start_negative_by_date.items():
+        shown = titles[:25]
+        parts.append(f"{check_date}: {len(titles)} invalid negative")
         parts.extend(f"  - {title}" for title in shown)
         if len(titles) > len(shown):
             parts.append(f"  ... and {len(titles) - len(shown)} more")

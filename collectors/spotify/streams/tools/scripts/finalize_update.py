@@ -230,6 +230,106 @@ class ReadyAlbumUpdatePoster:
         return False
 
 
+class ReadyAlbumBestDaySincePoster:
+    """Post album best-day-since updates as soon as their album is complete."""
+
+    def __init__(
+        self,
+        *,
+        script_dir: Path,
+        stats_date: str,
+        export_web_data: Callable[..., None],
+        album_tracks_done_for: Callable[[str, str], bool],
+        spacing_seconds: int,
+        log_mode: str,
+        enabled: bool,
+        no_post_mode: bool,
+        target_albums: list[str] | tuple[str, ...],
+    ) -> None:
+        self.script_dir = script_dir
+        self.stats_date = stats_date
+        self.export_web_data = export_web_data
+        self.album_tracks_done_for = album_tracks_done_for
+        self.spacing_seconds = spacing_seconds
+        self.log_mode = log_mode
+        self.enabled = enabled
+        self.no_post_mode = no_post_mode
+        self.target_albums = tuple(dict.fromkeys(target_albums))
+        self._checked: set[str] = set()
+        self._posted: set[str] = set()
+        self._stop = threading.Event()
+        self._lock = threading.Lock()
+        self._thread: threading.Thread | None = None
+        self._post_state = {"posted_count": 0, "last_post_at": 0.0}
+
+    def start(self) -> None:
+        if not self.enabled or self._thread is not None:
+            return
+        self._thread = threading.Thread(target=self._run, name="ready-album-best-day-posts", daemon=True)
+        self._thread.start()
+
+    def stop(self) -> set[str]:
+        self._stop.set()
+        if self._thread is not None:
+            self._thread.join()
+        with self._lock:
+            return set(self._posted)
+
+    def post_state(self) -> dict[str, float]:
+        with self._lock:
+            return dict(self._post_state)
+
+    def _run(self) -> None:
+        while not self._stop.is_set():
+            if self._post_newly_ready_album():
+                continue
+            if self._done():
+                return
+            self._stop.wait(1.0)
+
+    def _done(self) -> bool:
+        with self._lock:
+            return len(self._checked) >= len(self.target_albums)
+
+    def _post_newly_ready_album(self) -> bool:
+        for album in self.target_albums:
+            with self._lock:
+                if album in self._checked:
+                    continue
+            if not self.album_tracks_done_for(album, self.stats_date):
+                continue
+            with self._lock:
+                self._checked.add(album)
+
+            print(f"Album best-day-since check ready during streams run: {album}")
+            print("Exporting current web data before early album best-day post...")
+            self.export_web_data(stats_date=self.stats_date)
+
+            best_day_script = self.script_dir / "tools" / "scripts" / "post_best_day_since_twitter.py"
+            cmd = [sys.executable, str(best_day_script), self.stats_date, "--only-album", album]
+            if self.no_post_mode:
+                cmd.append("--no-post")
+
+            _wait_before_post(
+                label=f"early album best-day-since ({album})",
+                should_post=not self.no_post_mode,
+                state=self._post_state,
+                spacing_seconds=self.spacing_seconds,
+                log_mode=self.log_mode,
+            )
+            result = _run_subprocess(cmd, check=False)
+            if result.returncode == 0:
+                print(f"Album best-day-since posted early during streams run: {album}")
+                _mark_post_done(should_post=not self.no_post_mode, state=self._post_state)
+                with self._lock:
+                    self._posted.add(album)
+                return True
+            if result.returncode != 3:
+                print(f"Early album best-day-since check failed for {album} (exit {result.returncode}); skipping.")
+            return True
+        return False
+
+
 class ReadyBestDaySincePoster:
     """Post individual best-day-since track records as soon as they update,
     without waiting for the full streams collection to finish."""
@@ -1118,12 +1218,12 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                     post_step_failures.append(f"{step_label} ({exc})")
 
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
+            _guarded_post_step("best-day-since posts", lambda: _post_best_day_since(ctx, post_state))
+
+        if not ctx.debug_daily_mode and not ctx.local_test_mode:
             _guarded_post_step("debut posts", lambda: _post_debut_releases(ctx, post_state))
 
         _guarded_post_step("daily recap card", lambda: _post_daily_recap_card(ctx, post_state))
-
-        if not ctx.debug_daily_mode and not ctx.local_test_mode:
-            _guarded_post_step("best-day-since posts", lambda: _post_best_day_since(ctx, post_state))
 
         _guarded_post_step("top eras post", lambda: _post_albums_daily(ctx, post_state))
 

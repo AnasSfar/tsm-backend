@@ -863,11 +863,20 @@ def _short_error(exc: Exception) -> str:
     return text[0] if text else exc.__class__.__name__
 
 
+def _env_bool(name: str, default: bool) -> bool:
+    raw = os.getenv(name, "").strip().lower()
+    if raw in {"1", "true", "yes", "on"}:
+        return True
+    if raw in {"0", "false", "no", "off"}:
+        return False
+    return default
+
+
 def _launch(p, profile_dir: Path):
     """Lance un contexte Chrome persistant avec anti-detection."""
     profile_dir.mkdir(parents=True, exist_ok=True)
     args = ["--disable-blink-features=AutomationControlled"]
-    headless = os.getenv("TWITTER_HEADLESS", "").strip().lower() in {"1", "true", "yes", "on"}
+    headless = _env_bool("TWITTER_HEADLESS", _env_bool("TSM_HEADLESS", True))
     if os.name != "nt" and not os.getenv("DISPLAY"):
         headless = True
 

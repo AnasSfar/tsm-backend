@@ -11,35 +11,38 @@ from __future__ import annotations
 
 import argparse
 import html
+import re
 import sys
 import time
 from datetime import date, timedelta
 from pathlib import Path
-from urllib.parse import quote
 
 SCRIPT_DIR = Path(__file__).resolve().parent          # streams/tools/scripts/
 ROOT = SCRIPT_DIR.parents[1]                          # streams/
 REPO_ROOT = SCRIPT_DIR.parents[4]                     # repo root
 COLLECTORS_ROOT = REPO_ROOT / "collectors"
-DB_ROOT = REPO_ROOT / "db"
 TWITTER_SESSION = ROOT.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json"
-RECAP_INDIVIDUAL_BEST_DAY_MIN_DAYS = 21
-ALBUM_BEST_DAY_MIN_DAYS = 21
-LIVE_BEST_DAY_MIN_PCT_CHANGE = 6.0
-RECAP_BEST_DAY_MIN_DAYS = 21
+POST_COLLECTION_BEST_DAY_MIN_DAYS = 30
+ALBUM_BEST_DAY_MIN_DAYS = 30
+RECAP_BEST_DAY_MIN_DAYS = 30
+MAX_BEST_DAY_SONG_POSTS_PER_ALBUM = 3
+POST_COLLECTION_MIN_SONG_DAILY_STREAMS = 300_000
+POST_COLLECTION_MAX_SONG_POSTS = 10
+MIN_SONG_DAILY_STREAMS_TO_POST = 80_000
+ALBUM_UPDATE_MIN_BEST_DAY_SONGS = 3
 
 sys.path.insert(0, str(COLLECTORS_ROOT))              # collectors/
 sys.path.insert(0, str(ROOT))                         # collectors/spotify/streams/
 sys.path.insert(0, str(ROOT.parent))                  # collectors/spotify/
 
 from comp.song_card import render_song_card, slugify, write_song_card_png  # noqa: E402
-from comp.discography import build_cover_map, _norm  # noqa: E402
 from comp.tables_image import build_table_html, render_html_to_png, url_to_data_uri  # noqa: E402
 from comp.fmt import fmt_streams, fmt_pct, pct_cls, get_pct  # noqa: E402
 from core.twitter import post_with_image  # noqa: E402
 from core.album_emoji import album_emoji  # noqa: E402
 from core.data_paths import update_streams_dir  # noqa: E402
 import best_day_since  # noqa: E402
+import generate_album_update_image  # noqa: E402
 import spotlight  # noqa: E402
 
 
@@ -87,12 +90,91 @@ def _find_all_rows(target_date: str, *, min_days: int) -> list[dict]:
     return rows
 
 
-def _pick_rows(target_date: str, *, limit: int, min_days: int, exclude_ids: set[str] | None = None) -> list[dict]:
+def _album_key(album: str | None) -> str:
+    text = re.sub(r"\s+", " ", (album or "").strip())
+    if not text:
+        return ""
+
+    normalized = text.casefold()
+    aliases = {
+        "fearless (taylor's version)": "fearless",
+        "speak now (taylor's version)": "speak now",
+        "red (taylor's version)": "red",
+        "1989 (taylor's version)": "1989",
+        "the tortured poets department: the anthology": "the tortured poets department",
+        "midnights (the til dawn edition)": "midnights",
+        "midnights (3am edition)": "midnights",
+        "folklore: the long pond studio sessions": "folklore",
+    }
+    if normalized in aliases:
+        return aliases[normalized]
+
+    text = re.sub(r"\s*\(taylor's version\)", "", text, flags=re.IGNORECASE)
+    text = re.sub(
+        r"\s*\((?:deluxe|standard|expanded|bonus|anniversary|karaoke|acoustic|live|tour|edition|"
+        r"the anthology|the til dawn edition|3am edition)[^)]*\)",
+        "",
+        text,
+        flags=re.IGNORECASE,
+    )
+    text = re.sub(
+        r"\s*[-–—]\s*(?:deluxe|standard|expanded|bonus|anniversary|karaoke|acoustic|live|tour|edition).*$",
+        "",
+        text,
+        flags=re.IGNORECASE,
+    )
+    text = re.sub(r"\s*:\s*(?:the anthology|the long pond studio sessions|.*edition).*$", "", text, flags=re.IGNORECASE)
+
+    karaoke_match = re.match(r"Taylor Swift Karaoke:\s*(.+)", text, flags=re.IGNORECASE)
+    if karaoke_match:
+        text = karaoke_match.group(1)
+
+    return re.sub(r"\s+", " ", text.strip()).casefold()
+
+
+def _track_album_counts(track_ids: set[str], tracks_by_id: dict[str, dict]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for track_id in track_ids:
+        album = _album_key((tracks_by_id.get(track_id) or {}).get("album"))
+        if not album:
+            continue
+        counts[album] = counts.get(album, 0) + 1
+    return counts
+
+
+def _pick_rows(
+    target_date: str,
+    *,
+    limit: int,
+    min_days: int,
+    min_daily_streams: int | None = None,
+    exclude_ids: set[str] | None = None,
+    album_post_counts: dict[str, int] | None = None,
+    max_per_album: int = MAX_BEST_DAY_SONG_POSTS_PER_ALBUM,
+) -> list[dict]:
     rows = _find_all_rows(target_date, min_days=min_days)
     if exclude_ids:
         rows = [row for row in rows if row["track_id"] not in exclude_ids]
+    if min_daily_streams is not None:
+        rows = [row for row in rows if int(row.get("daily_streams") or 0) > min_daily_streams]
     rows.sort(key=best_day_since.sort_key, reverse=True)
-    return rows[:limit]
+
+    picked: list[dict] = []
+    counts = dict(album_post_counts or {})
+    for row in rows:
+        album = _album_key(row.get("album"))
+        if album and counts.get(album, 0) >= max_per_album:
+            print(
+                f"[best_day_since_post] Skipping {row['title']}: "
+                f"already {max_per_album} best-day song post(s) for {row.get('album')}."
+            )
+            continue
+        picked.append(row)
+        if album:
+            counts[album] = counts.get(album, 0) + 1
+        if len(picked) >= limit:
+            break
+    return picked
 
 
 def _track_posted_lock_path(track_id: str, target_date: str) -> Path:
@@ -111,13 +193,31 @@ def _post_single_track_early(track_id: str, target_date: str, *, min_days: int, 
         print(f"[best_day_since_early] Already posted for {track_id} on {target_date}, skipping.")
         return "skipped"
 
-    row = best_day_since.best_day_since_for_track(track_id, target_date, min_days=min_days, combined=True)
-    if not row:
-        return "skipped"
-
     tracks_by_id = {track["track_id"]: track for track in spotlight.load_all_tracks()}
     track = tracks_by_id.get(track_id)
     if not track:
+        return "skipped"
+
+    track_locks_dir = _day_dir(target_date) / "best_day_since_track_locks"
+    locked_track_ids = {p.stem for p in track_locks_dir.glob("*.lock")} if track_locks_dir.exists() else set()
+    album_counts = _track_album_counts(locked_track_ids, tracks_by_id)
+    album = _album_key(track.get("album"))
+    if album and album_counts.get(album, 0) >= MAX_BEST_DAY_SONG_POSTS_PER_ALBUM:
+        print(
+            f"[best_day_since_early] Skipping {track_id}: already "
+            f"{MAX_BEST_DAY_SONG_POSTS_PER_ALBUM} best-day song post(s) for {track.get('album')}."
+        )
+        return "skipped"
+
+    live_min_days = max(min_days, best_day_since.LIVE_COLLECTION_MIN_DAYS)
+    row = best_day_since.best_day_since_for_track(
+        track_id,
+        target_date,
+        min_days=live_min_days,
+        min_pct_change=best_day_since.LIVE_COLLECTION_MIN_PCT_CHANGE,
+        combined=True,
+    )
+    if not row:
         return "skipped"
 
     track_ids = row.get("combined_track_ids") or [track_id]
@@ -126,9 +226,11 @@ def _post_single_track_early(track_id: str, target_date: str, *, min_days: int, 
     )
     if total_today is None or total_yesterday is None or daily_today is None or daily_yesterday is None or daily_yesterday <= 0:
         return "skipped"
-
-    pct_change = (daily_today - daily_yesterday) / daily_yesterday * 100
-    if pct_change < LIVE_BEST_DAY_MIN_PCT_CHANGE:
+    if daily_today < MIN_SONG_DAILY_STREAMS_TO_POST:
+        print(
+            f"[best_day_since_early] Skipping {track_id}: "
+            f"{daily_today:,} daily streams is below {MIN_SONG_DAILY_STREAMS_TO_POST:,}."
+        )
         return "skipped"
 
     covers = spotlight.load_covers()
@@ -179,6 +281,80 @@ def _pick_album_rows(target_date: str, *, limit: int, min_days: int) -> list[dic
     return rows[:limit]
 
 
+def _album_names_by_key() -> dict[str, str]:
+    return {
+        _album_key(track.album): track.album
+        for track in best_day_since.load_tracks(include_extras=False).values()
+        if track.album and _album_key(track.album)
+    }
+
+
+def _pick_album_rows_from_song_best_days(
+    target_date: str,
+    *,
+    limit: int,
+    min_days: int,
+    min_song_count: int = ALBUM_UPDATE_MIN_BEST_DAY_SONGS,
+) -> list[dict]:
+    song_rows = _find_all_rows(target_date, min_days=min_days)
+    by_album_key: dict[str, list[dict]] = {}
+    for row in song_rows:
+        album_key = _album_key(row.get("album"))
+        if not album_key:
+            continue
+        by_album_key.setdefault(album_key, []).append(row)
+
+    album_names = _album_names_by_key()
+    rows: list[dict] = []
+    for album_key, album_song_rows in by_album_key.items():
+        if len(album_song_rows) < min_song_count:
+            continue
+        album = album_names.get(album_key) or album_song_rows[0].get("album")
+        if not album:
+            continue
+        best_song = max(album_song_rows, key=best_day_since.sort_key)
+        rows.append(
+            {
+                "album": album,
+                "date": target_date,
+                "daily_streams": sum(int(row.get("daily_streams") or 0) for row in album_song_rows),
+                "song_best_day_count": len(album_song_rows),
+                "song_best_day_rows": album_song_rows,
+                "best_day_since": best_song.get("best_day_since"),
+                "days_since": max(int(row.get("days_since") or 0) for row in album_song_rows),
+            }
+        )
+
+    rows.sort(key=lambda row: (row["song_best_day_count"], row["days_since"], row["daily_streams"]), reverse=True)
+    return rows[:limit]
+
+
+def _album_row(
+    target_date: str,
+    album_name: str,
+    *,
+    min_days: int,
+    min_pct_change: float | None = None,
+) -> dict | None:
+    tracks = best_day_since.load_tracks(include_extras=False)
+    history = best_day_since.load_history()
+    target = date.fromisoformat(target_date)
+    by_album = best_day_since.load_album_track_ids(tracks)
+
+    track_ids = by_album.get(album_name)
+    if not track_ids or len(track_ids) < 2:
+        return None
+
+    row = best_day_since.compute_album_best_day_since(album_name, track_ids, history, target)
+    if (
+        not row
+        or row.get("kind") != "since"
+        or not best_day_since.passes_filters(row, min_days=min_days, min_pct_change=min_pct_change)
+    ):
+        return None
+    return row
+
+
 def _build_tweet(row: dict, daily_yesterday: int | None) -> str:
     emoji = album_emoji(row.get("album"))
     title = row["title"]
@@ -190,19 +366,6 @@ def _build_tweet(row: dict, daily_yesterday: int | None) -> str:
     return (
         f'{emoji} "{title}" earned its {label} with {_fmt_int(daily)} streams [{pct}].\n\n'
         f"See full track's history here : {song_url}"
-    )
-
-
-def _build_album_tweet(row: dict, daily_yesterday: int | None) -> str:
-    emoji = album_emoji(row.get("album"))
-    album = row["album"]
-    label = best_day_since.row_label(row)
-    daily = int(row["daily_streams"])
-    pct = _fmt_pct(daily, daily_yesterday)
-    album_url = f"https://thetsmuseum.app/albums/{quote(album)}"
-    return (
-        f'{emoji} "{album}" earned its {label} with {_fmt_int(daily)} streams [{pct}].\n\n'
-        f"See full album's history here : {album_url}"
     )
 
 
@@ -338,40 +501,78 @@ def _generate_best_day_since_image(
     return write_song_card_png(html, out_path, tmp_path)
 
 
-def _generate_album_best_day_since_image(
-    *,
-    row: dict,
-    total_today: int,
-    daily_yesterday: int | None,
-    cover_url: str,
-    target_date: str,
-) -> Path:
-    from datetime import datetime
+def _post_album_best_day_rows(args, target_date: str, album_lock: Path, *, only_album: str | None = None) -> int:
+    album_locked = only_album and album_lock.exists() and not args.no_post and not args.force
+    if album_locked:
+        print(f"[best_day_since_post] Album already posted for {target_date}, skipping.")
+        return 0
+    if args.no_albums or args.album_limit <= 0:
+        return 0
 
-    date_text = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
-    album = row["album"]
-    daily = int(row["daily_streams"])
-    pct = _fmt_pct(daily, daily_yesterday)
-    label = best_day_since.row_label(row)
-    html = render_song_card(
-        title=album,
-        eyebrow="Spotify Streams",
-        subtitle=label,
-        stats=[
-            {"label": "Daily Streams", "value": _fmt_signed_int(daily), "badge": pct, "badge_class": _badge_class(pct)},
-            {"label": "Total Streams", "value": _fmt_int(total_today), "badge": "Since release", "badge_class": "flat"},
-        ],
-        cover_url=cover_url,
-        footer_left="@swiftiescharts",
-        footer_right=date_text,
-        extra="",
-        best_since=True,
-        badge_text=f"{album} - {date_text}",
-    )
-    out_dir = _day_dir(target_date) / "best_day_since"
-    out_path = out_dir / f"best_day_since_album_{slugify(album)}_{target_date}.png"
-    tmp_path = out_dir / f"_best_day_since_album_{slugify(album)}.html"
-    return write_song_card_png(html, out_path, tmp_path)
+    if only_album:
+        row = _album_row(
+            target_date,
+            only_album,
+            min_days=max(args.album_min_days, best_day_since.LIVE_COLLECTION_MIN_DAYS),
+            min_pct_change=best_day_since.LIVE_COLLECTION_MIN_PCT_CHANGE,
+        )
+        album_rows = [row] if row else []
+    else:
+        album_rows = _pick_album_rows_from_song_best_days(
+            target_date,
+            limit=args.album_limit,
+            min_days=args.album_min_days,
+        )
+    if not album_rows:
+        label = f" for {only_album}" if only_album else ""
+        print(f"[best_day_since_post] No album best-day-since found{label} on {target_date}.")
+        return 0
+
+    album_posted_count = 0
+    for index, row in enumerate(album_rows, 1):
+        if only_album:
+            track_ids = row.get("track_ids") or []
+            total_today, total_yesterday, daily_today, daily_yesterday, _daily_last_week = (
+                spotlight.load_history_for_tracks(track_ids, target_date)
+            )
+            if total_today is None or total_yesterday is None or daily_today is None or daily_yesterday is None or daily_yesterday <= 0:
+                print(f"[best_day_since_post] Incomplete comparison history for album {row['album']} on {target_date}; skipping.")
+                continue
+        existing_album_update_lock = generate_album_update_image.existing_album_update_lock_path(
+            row["album"],
+            target_date,
+        )
+        if existing_album_update_lock is not None and not args.no_post and not args.force:
+            print(
+                f"[best_day_since_post] Album update already posted "
+                f"({existing_album_update_lock.name}); skipping best-day-since album post."
+            )
+            continue
+
+        image_path = generate_album_update_image.generate(row["album"], target_date)
+        print(f"[best_day_since_post] Album update {index}/{len(album_rows)}: {row['album']}")
+        print(f"[best_day_since_post] Image: {image_path}")
+
+        album_posted_count += 1
+        if args.no_post:
+            continue
+
+        if not generate_album_update_image.post(row["album"], image_path, target_date):
+            print(f"[best_day_since_post] Failed to post album {row['album']}.")
+            sys.exit(1)
+        generate_album_update_image.album_update_lock_path(row["album"], target_date).write_text(
+            f"posted {target_date}\n",
+            encoding="utf-8",
+        )
+        if index < len(album_rows) and args.post_spacing_seconds > 0:
+            print(f"[best_day_since_post] Waiting {args.post_spacing_seconds}s before next post...")
+            time.sleep(args.post_spacing_seconds)
+
+    if album_posted_count and only_album and not args.no_post:
+        album_lock.touch()
+    if album_rows:
+        print(f"[best_day_since_post] Posted {album_posted_count} album(s) for {target_date}.")
+    return album_posted_count
 
 
 def main() -> None:
@@ -379,12 +580,17 @@ def main() -> None:
     parser.add_argument("date", nargs="?", help="Stats date YYYY-MM-DD. Defaults to yesterday.")
     parser.add_argument("--no-post", action="store_true", help="Generate images but skip Twitter posts.")
     parser.add_argument("--force", action="store_true", help="Post again even if best_day_since_posted.lock exists.")
-    parser.add_argument("--limit", type=int, default=5, help="Number of individual song posts (default: 5).")
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=POST_COLLECTION_MAX_SONG_POSTS,
+        help=f"Number of individual song posts (default: {POST_COLLECTION_MAX_SONG_POSTS}).",
+    )
     parser.add_argument(
         "--min-days",
         type=int,
-        default=RECAP_INDIVIDUAL_BEST_DAY_MIN_DAYS,
-        help=f"Minimum days for best-day-since (default: {RECAP_INDIVIDUAL_BEST_DAY_MIN_DAYS}).",
+        default=POST_COLLECTION_BEST_DAY_MIN_DAYS,
+        help=f"Minimum days for best-day-since (default: {POST_COLLECTION_BEST_DAY_MIN_DAYS}).",
     )
     parser.add_argument(
         "--post-spacing-seconds",
@@ -392,7 +598,7 @@ def main() -> None:
         default=0,
         help="Extra seconds to wait between Twitter posts; core.twitter enforces account spacing.",
     )
-    parser.add_argument("--album-limit", type=int, default=1, help="Number of album posts to add (default: 1).")
+    parser.add_argument("--album-limit", type=int, default=10, help="Number of album posts to add (default: 10).")
     parser.add_argument(
         "--album-min-days",
         type=int,
@@ -407,6 +613,14 @@ def main() -> None:
             "Post best-day-since for a single track id immediately, bypassing the normal "
             "batch/lock flow. Used to post records early during collection, before the rest "
             "of the day's tracks are done. Exits 0 if posted, 3 if it doesn't qualify yet."
+        ),
+    )
+    parser.add_argument(
+        "--only-album",
+        help=(
+            "Post best-day-since for a single album immediately, bypassing the normal "
+            "batch flow. Used during collection once all album tracks are done. "
+            "Exits 0 if posted, 3 if it doesn't qualify yet."
         ),
     )
     parser.add_argument(
@@ -428,15 +642,23 @@ def main() -> None:
             sys.exit(3)
         sys.exit(1)
 
-    limit = max(0, int(args.limit))
+    day_dir = _day_dir(target_date)
+    day_dir.mkdir(parents=True, exist_ok=True)
+    album_lock = day_dir / "best_day_since_album_posted.lock"
+
+    if args.only_album:
+        if not args.no_post and not TWITTER_SESSION.exists():
+            print(f"ERROR: Twitter session not found at {TWITTER_SESSION}")
+            sys.exit(1)
+        count = _post_album_best_day_rows(args, target_date, album_lock, only_album=args.only_album)
+        sys.exit(0 if count else 3)
+
+    limit = min(POST_COLLECTION_MAX_SONG_POSTS, max(0, int(args.limit)))
     if limit == 0:
         print("[best_day_since_post] Limit is 0, nothing to do.")
         return
 
-    day_dir = _day_dir(target_date)
-    day_dir.mkdir(parents=True, exist_ok=True)
     lock = day_dir / "best_day_since_posted.lock"
-    album_lock = day_dir / "best_day_since_album_posted.lock"
     recap_lock = day_dir / "best_day_since_recap_posted.lock"
 
     track_locked = lock.exists() and not args.no_post and not args.force
@@ -449,20 +671,32 @@ def main() -> None:
         print(f"ERROR: Twitter session not found at {TWITTER_SESSION}")
         sys.exit(1)
 
+    # Album best-day-since posts are the highest-priority best-day posts:
+    # they use the full album update image and should go out before song cards.
+    _post_album_best_day_rows(args, target_date, album_lock)
+
+    tracks_by_id = {track["track_id"]: track for track in spotlight.load_all_tracks()}
     exclude_ids = {t.strip() for t in args.exclude_tracks.split(",") if t.strip()}
     track_locks_dir = day_dir / "best_day_since_track_locks"
     if track_locks_dir.exists():
         exclude_ids.update(p.stem for p in track_locks_dir.glob("*.lock"))
-    remaining_limit = max(0, limit - len(exclude_ids))
+    album_post_counts = _track_album_counts(exclude_ids, tracks_by_id)
+    remaining_song_limit = max(0, limit - len(exclude_ids))
     rows = (
         []
-        if track_locked
-        else _pick_rows(target_date, limit=remaining_limit, min_days=args.min_days, exclude_ids=exclude_ids)
+        if track_locked or remaining_song_limit <= 0
+        else _pick_rows(
+            target_date,
+            limit=remaining_song_limit,
+            min_days=args.min_days,
+            min_daily_streams=max(POST_COLLECTION_MIN_SONG_DAILY_STREAMS, MIN_SONG_DAILY_STREAMS_TO_POST),
+            exclude_ids=exclude_ids,
+            album_post_counts=album_post_counts,
+        )
     )
     if not rows:
         print(f"[best_day_since_post] No best-day-since songs found for {target_date}.")
 
-    tracks_by_id = {track["track_id"]: track for track in spotlight.load_all_tracks()}
     covers = spotlight.load_covers()
 
     posted_count = 0
@@ -518,58 +752,6 @@ def main() -> None:
         lock.touch()
     if rows:
         print(f"[best_day_since_post] Posted {posted_count} song(s) for {target_date}.")
-
-    # Album best-day-since is its own slot: it never competes with track
-    # posts for the --limit spots above.
-    album_locked = album_lock.exists() and not args.no_post and not args.force
-    if album_locked:
-        print(f"[best_day_since_post] Album already posted for {target_date}, skipping.")
-    elif args.no_albums or args.album_limit <= 0:
-        pass
-    else:
-        album_rows = _pick_album_rows(target_date, limit=args.album_limit, min_days=args.album_min_days)
-        if not album_rows:
-            print(f"[best_day_since_post] No album best-day-since found for {target_date}.")
-        else:
-            album_covers = build_cover_map(DB_ROOT / "discography" / "covers.json")
-            album_posted_count = 0
-            for index, row in enumerate(album_rows, 1):
-                track_ids = row.get("track_ids") or []
-                total_today, total_yesterday, daily_today, daily_yesterday, _daily_last_week = (
-                    spotlight.load_history_for_tracks(track_ids, target_date)
-                )
-                if total_today is None or total_yesterday is None or daily_today is None or daily_yesterday is None or daily_yesterday <= 0:
-                    print(f"[best_day_since_post] Incomplete comparison history for album {row['album']} on {target_date}; skipping.")
-                    continue
-
-                cover_url = album_covers.get(_norm(row["album"]), "")
-                image_path = _generate_album_best_day_since_image(
-                    row=row,
-                    total_today=total_today,
-                    daily_yesterday=daily_yesterday,
-                    cover_url=cover_url,
-                    target_date=target_date,
-                )
-
-                tweet = _build_album_tweet(row, daily_yesterday)
-                print(f"[best_day_since_post] Album tweet {index}/{len(album_rows)} ({len(tweet)} chars):\n{tweet}")
-                print(f"[best_day_since_post] Image: {image_path}")
-
-                if args.no_post:
-                    continue
-
-                if not post_with_image(tweet, image_path, TWITTER_SESSION):
-                    print(f"[best_day_since_post] Failed to post album {row['album']}.")
-                    sys.exit(1)
-                album_posted_count += 1
-                if index < len(album_rows) and args.post_spacing_seconds > 0:
-                    print(f"[best_day_since_post] Waiting {args.post_spacing_seconds}s before next post...")
-                    time.sleep(args.post_spacing_seconds)
-
-            if album_posted_count and not args.no_post:
-                album_lock.touch()
-            if album_rows:
-                print(f"[best_day_since_post] Posted {album_posted_count} album(s) for {target_date}.")
 
     # Full recap table: every song that hit a best-day-since record today
     # (not just the ones with individual posts), oldest record first.

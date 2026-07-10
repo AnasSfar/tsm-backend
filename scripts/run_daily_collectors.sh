@@ -4,6 +4,7 @@ set -u
 cd /home/anassfar_fr/tsm-backend
 
 export TWITTER_HEADLESS=1
+export TSM_HEADLESS=1
 export PYTHONUNBUFFERED=1
 
 PY=/home/anassfar_fr/tsm-backend/.venv/bin/python

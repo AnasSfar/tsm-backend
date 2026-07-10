@@ -48,6 +48,7 @@ sys.path.insert(0, str(ROOT.parent))   # collectors/spotify/ for core.*
 
 from core.data_paths import first_existing_db_history, update_streams_dir
 import history_store
+import best_day_since
 
 HISTORY_PATH    = first_existing_db_history("streams_history.csv")
 ALBUMS_DIR      = DB_DIR / "discography" / "albums"
@@ -1008,13 +1009,18 @@ def _estimate_title_width_px(text: str, font_size_px: float = 13.0) -> float:
     return total * font_size_px
 
 
-def _compute_layout_metrics(sections: list[dict], show_filter_cols: bool) -> dict:
+def _compute_layout_metrics(
+    sections: list[dict],
+    show_filter_cols: bool,
+    best_day_track_ids: set[str] | None = None,
+) -> dict:
     """Compute dynamic grid/body sizing to avoid extra whitespace in final PNG."""
     total_tracks = sum(len(s["tracks"]) for s in sections)
     row_h = max(20, min(36, 20 + (16 - total_tracks) * 2))
+    best_day_track_ids = best_day_track_ids or set()
 
     titles = [
-        _shorten_title(t.get("title_clean") or "")
+        _display_song_title(t, t.get("track_id") in best_day_track_ids)
         for s in sections
         for t in s.get("tracks", [])
     ]
@@ -1100,8 +1106,21 @@ def _build_totals_chip(items: list[tuple[str, str]]) -> str:
     return f'<div class="tot-chip">{"".join(vals)}</div>'
 
 
-def build_song_row_html(si: int, track: dict, hdata: dict, alt: bool, show_filter_cols: bool) -> str:
+def _display_song_title(track: dict, is_best_day: bool) -> str:
     title = _shorten_title(track["title_clean"])
+    return f"&#9733; {title}" if is_best_day else title
+
+
+def build_song_row_html(
+    si: int,
+    track: dict,
+    hdata: dict,
+    alt: bool,
+    show_filter_cols: bool,
+    best_day_track_ids: set[str] | None = None,
+) -> str:
+    best_day_track_ids = best_day_track_ids or set()
+    title = _display_song_title(track, track.get("track_id") in best_day_track_ids)
     daily = hdata.get("daily")
     change = hdata.get("change")
     pct = hdata.get("pct")
@@ -1210,6 +1229,7 @@ def build_html(
     show_filter_cols: bool = False,
     layout: dict | None = None,
     handle_icon_uri: str = "",
+    best_day_track_ids: set[str] | None = None,
 ) -> str:
     from datetime import datetime
     date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
@@ -1259,7 +1279,8 @@ def build_html(
     tint_bg_css = f"rgba({dr},{dg},{db},0.08)"
     tint_border_css = f"rgba({dr},{dg},{db},0.18)"
 
-    layout = layout or _compute_layout_metrics(sections, show_filter_cols)
+    best_day_track_ids = best_day_track_ids or set()
+    layout = layout or _compute_layout_metrics(sections, show_filter_cols, best_day_track_ids)
     row_h = layout["row_h"]
     grid_cols = layout["grid_cols"]
     col_heads_html = layout["col_heads_html"]
@@ -1288,7 +1309,7 @@ def build_html(
             hd = hist.get(track["track_id"], {"daily": None, "change": None, "pct": None, "streams": None})
             if not show_filter_cols:
                 hd = {**hd, "filtered_streams": None, "filter_rate": None}
-            rows_html += build_song_row_html(si, track, hd, si % 2 != 0, show_filter_cols)
+            rows_html += build_song_row_html(si, track, hd, si % 2 != 0, show_filter_cols, best_day_track_ids)
         rows_html += build_section_total_html(sec["name"], sec["tracks"], hist, accent, bg, show_filter_cols)
 
         for t in sec["tracks"]:
@@ -1423,6 +1444,87 @@ def album_update_already_posted(album_name: str, target_date: str) -> bool:
     return existing_album_update_lock_path(album_name, target_date) is not None
 
 
+def _best_day_track_ids_for_sections(
+    sections: list[dict],
+    target_date: str,
+    *,
+    min_days: int = best_day_since.DEFAULT_MIN_DAYS,
+) -> set[str]:
+    target = date_cls.fromisoformat(target_date)
+    base_tracks = best_day_since.load_tracks(include_extras=False)
+    all_tracks = best_day_since.load_tracks(include_extras=True)
+    history = best_day_since.load_history()
+
+    marked: set[str] = set()
+    seen: set[str] = set()
+    for section in sections:
+        for item in section.get("tracks", []):
+            track_id = item.get("track_id")
+            if not track_id or track_id in seen:
+                continue
+            seen.add(track_id)
+
+            track = base_tracks.get(track_id) or all_tracks.get(track_id)
+            if track is None:
+                continue
+
+            row = best_day_since.compute_best_day_since_combined(
+                track,
+                best_day_since.combined_tracks_for(all_tracks.get(track_id, track), all_tracks),
+                history,
+                target,
+            )
+            if (
+                row
+                and row.get("kind") == "since"
+                and best_day_since.passes_filters(row, min_days=min_days)
+            ):
+                marked.add(track_id)
+
+    return marked
+
+
+def _best_day_rows_for_sections(
+    sections: list[dict],
+    target_date: str,
+    *,
+    min_days: int = best_day_since.DEFAULT_MIN_DAYS,
+) -> list[dict]:
+    target = date_cls.fromisoformat(target_date)
+    base_tracks = best_day_since.load_tracks(include_extras=False)
+    all_tracks = best_day_since.load_tracks(include_extras=True)
+    history = best_day_since.load_history()
+
+    rows: list[dict] = []
+    seen: set[str] = set()
+    for section in sections:
+        for item in section.get("tracks", []):
+            track_id = item.get("track_id")
+            if not track_id or track_id in seen:
+                continue
+            seen.add(track_id)
+
+            track = base_tracks.get(track_id) or all_tracks.get(track_id)
+            if track is None:
+                continue
+
+            row = best_day_since.compute_best_day_since_combined(
+                track,
+                best_day_since.combined_tracks_for(all_tracks.get(track_id, track), all_tracks),
+                history,
+                target,
+            )
+            if (
+                row
+                and row.get("kind") == "since"
+                and best_day_since.passes_filters(row, min_days=min_days)
+            ):
+                rows.append(row)
+
+    rows.sort(key=best_day_since.sort_key, reverse=True)
+    return rows
+
+
 def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_daily: bool = False) -> Path:
     if target_date is None:
         target_date = get_latest_date()
@@ -1436,6 +1538,8 @@ def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_
     hist = load_history_for_album(sections, target_date)
     if sort_tracks_by_daily:
         sort_album_sections_by_daily_streams(sections, hist)
+
+    best_day_track_ids = _best_day_track_ids_for_sections(sections, target_date)
 
     show_filter_cols = False
     if ENABLE_FILTERED_CHARTS:
@@ -1466,7 +1570,7 @@ def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_
     print("[album_update] Téléchargement de la cover...")
     cover_uri = _url_to_data_uri(cover_url) if cover_url else ""
 
-    layout = _compute_layout_metrics(sections, show_filter_cols)
+    layout = _compute_layout_metrics(sections, show_filter_cols, best_day_track_ids)
     hdr_target_w = (layout["body_width_px"] - 2 * BODY_PADDING_CSS) * RENDER_DPR
     hdr_target_h = HEADER_HEIGHT_CSS * RENDER_DPR
     header_uri = _prepare_header_for_render(header_img, hdr_target_w, hdr_target_h) if header_img else ""
@@ -1488,6 +1592,7 @@ def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_
         show_filter_cols=show_filter_cols,
         layout=layout,
         handle_icon_uri=handle_icon_uri,
+        best_day_track_ids=best_day_track_ids,
     )
 
     album_slug = album_update_slug(album_name)
@@ -1618,6 +1723,33 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
         f'"{selected_song}" was the {label} with {track_daily_fmt} streams{track_pct_str}.\n\n'
         f"See full update here : https://thetsmuseum.app/streams/latest ❤️‍🔥"
     )
+
+
+_build_album_post_text_base = _build_album_post_text
+
+
+def _build_album_post_text(album_name: str, target_date: str) -> str:
+    tweet = _build_album_post_text_base(album_name, target_date)
+    sections, _canonical_name = load_album_sections(album_name)
+    if not sections:
+        return tweet
+
+    best_day_rows = _best_day_rows_for_sections(sections, target_date)
+    if not best_day_rows:
+        return tweet
+
+    def note_title(title: str) -> str:
+        return _shorten_title(title).replace("(Taylor's Version)", "(TV)")
+
+    titles = f'"{note_title(best_day_rows[0]["title"])}"'
+    extra = len(best_day_rows) - 1
+    suffix = f" and {extra} more" if extra > 0 else ""
+    plural = "s" if len(best_day_rows) != 1 else ""
+    note = f"{titles}{suffix} earned best-day-since record{plural}."
+    marker = "\n\nSee full update here"
+    if marker in tweet:
+        return tweet.replace(marker, f"\n\n{note}{marker}", 1)
+    return f"{tweet}\n\n{note}"
 
 
 def post(album_name: str, image_path: Path, target_date: str) -> bool:
