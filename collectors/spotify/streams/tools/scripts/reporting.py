@@ -143,7 +143,7 @@ def print_summary_block(summary: dict) -> None:
     print()
 
 def update_json_logs_from_summary(summary: dict) -> None:
-    same_total_reasons = {"same_total_zero"}
+    same_total_reasons = {"same_total_zero", "persistent_same_total_extra_zero"}
     same_total_results = [
         r
         for r in summary.get("results", [])

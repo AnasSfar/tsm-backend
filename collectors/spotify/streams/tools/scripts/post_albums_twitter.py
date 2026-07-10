@@ -127,6 +127,31 @@ def _era_daily_series(era: str, track_map: dict) -> dict[str, int]:
     return series
 
 
+def _max_days_covered_fast(track_ids: set[str], target_date: str) -> int:
+    if not track_ids:
+        return 1
+    target = date.fromisoformat(target_date)
+    latest_before: dict[str, date] = {}
+    with open(generate_albums_image.HISTORY_PATH, newline="", encoding="utf-8-sig") as f:
+        for row in csv.DictReader(f):
+            track_id = row.get("track_id")
+            if track_id not in track_ids:
+                continue
+            d_raw = (row.get("date") or "").strip()
+            if not d_raw or d_raw >= target_date:
+                continue
+            try:
+                d = date.fromisoformat(d_raw)
+            except Exception:
+                continue
+            prev = latest_before.get(track_id)
+            if prev is None or d > prev:
+                latest_before[track_id] = d
+    if not latest_before:
+        return 1
+    return max(1, max((target - d).days for d in latest_before.values()))
+
+
 def _era_best_day_label(era: str, target_date: str, current_daily: int, track_map: dict, *, min_days: int = 14) -> str:
     if current_daily <= 0:
         return ""
@@ -163,13 +188,12 @@ def _era_best_day_label(era: str, target_date: str, current_daily: int, track_ma
     return f"best day since {best_since.strftime('%B')} {_ordinal(best_since.day)}, {best_since.year}"
 
 
-def build_tweet(rows: list[dict], target_date: str) -> str:
+def build_tweet(rows: list[dict], target_date: str, *, max_days: int = 1) -> str:
     d = date.fromisoformat(target_date)
     weekday = d.strftime("%A")
     month = d.strftime("%B")
     day_ord = _ordinal(d.day)
     year = d.year
-    max_days = history_store.max_days_covered(history_store.load_album_track_ids(), target_date)
     when = f"yesterday, {weekday}, {month} {day_ord}, {year}" if max_days <= 1 else (
         f"over the last {max_days} days, up to {month} {day_ord}, {year}"
     )
@@ -181,8 +205,8 @@ def build_tweet(rows: list[dict], target_date: str) -> str:
     )
 
 
-def build_tweet_with_best_day(rows: list[dict], target_date: str) -> str:
-    tweet = build_tweet(rows, target_date)
+def build_tweet_with_best_day(rows: list[dict], target_date: str, track_map: dict, *, max_days: int = 1) -> str:
+    tweet = build_tweet(rows, target_date, max_days=max_days)
 
     biggest_gain = None
     for row in rows:
@@ -198,7 +222,6 @@ def build_tweet_with_best_day(rows: list[dict], target_date: str) -> str:
         return tweet
 
     _, row = biggest_gain
-    track_map = generate_albums_image.load_album_track_map()
     label = _era_best_day_label(
         row["album"],
         target_date,
@@ -250,12 +273,23 @@ def main():
     image_path = generate_albums_image.generate(target_date)
 
     print("[albums_post] Composing tweet (biggest gainer / best-day lookup on history)...", flush=True)
+    print("[albums_post] Loading covers...", flush=True)
     covers = generate_albums_image.load_covers()
+    print("[albums_post] Loading album track map...", flush=True)
     track_map = generate_albums_image.load_album_track_map()
+    print("[albums_post] Loading daily history slices...", flush=True)
     today, yest, week = generate_albums_image.load_history(target_date)
+    print("[albums_post] Building album rows...", flush=True)
     rows = generate_albums_image.build_album_rows(today, yest, week, track_map, covers)
+    album_track_ids = {
+        track_id for track_id, info in track_map.items()
+        if not info.get("chart_extra")
+    }
+    print("[albums_post] Calculating covered day span...", flush=True)
+    max_days = _max_days_covered_fast(album_track_ids, target_date)
+    print("[albums_post] Building tweet text...", flush=True)
 
-    tweet = build_tweet_with_best_day(rows, target_date)
+    tweet = build_tweet_with_best_day(rows, target_date, track_map, max_days=max_days)
     print(f"[albums_post] Tweet ({len(tweet)} chars):\n{tweet}")
     print(f"[albums_post] Image: {image_path}")
 

@@ -28,7 +28,7 @@ tsm-backend (Python, local, Task Scheduler)  →  R2 (bucket prod: taylor-data) 
 
 ## tsm-frontend (`c:\Users\sfara\Documents\GitHub\tsm-frontend`)
 
-- `frontend/` = React 19 + Vite, build vers `../public`. `api/` = FastAPI (`api/index.py`, routes dans `api/routes/` : `site_settings.py`, `leaderboard.py`, `daily.py`, `news.py`, `journalist.py` (fact-checks + tips anonymes + votes helpful de `/journalist-department`), `image_proxy.py`, `admin_upload.py`, etc.).
+- `frontend/` = React 19 + Vite, build vers `../public`. `api/` = FastAPI (`api/index.py`, routes dans `api/routes/` : `site_settings.py`, `leaderboard.py`, `daily.py`, `news.py`, `journalist.py` (fact-checks + tips anonymes + votes helpful + traductions DeepL des notes de `/journalist-department`), `image_proxy.py`, `admin_upload.py`, etc.).
 - Déploiement : push sur `main` (GitHub AnasSfar/tsm-frontend) → Vercel (config `vercel.ts`, front + API ensemble). → skill `deploy`.
 - Dev local : `dev.bat` racine (uvicorn port 8003 + Vite port 3000 ; fallback data disque via `TSM_BACKEND_ROOT=..\tsm-backend`).
 

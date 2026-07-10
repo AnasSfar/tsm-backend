@@ -280,7 +280,12 @@ def load_previous_same_total_pending_track_ids(stats_date: str) -> set[str]:
             track_id = str(row.get("track_id") or "").strip()
             if not track_id:
                 continue
-            if row.get("reason") not in {"same_total", "same_total_zero"}:
+            if row.get("reason") not in {
+                "same_total",
+                "same_total_zero",
+                "assumed_zero_low_traffic_extra",
+                "persistent_same_total_extra_zero",
+            }:
                 continue
             streams = row.get("streams")
             previous_streams = row.get("previous_streams")
@@ -2471,6 +2476,7 @@ def main():
         album_tracks_done_for=album_tracks_done_for,
         spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
         log_mode=LOG_MODE,
+        no_post_mode=no_post_mode,
         target_albums=[
             *ALBUM_UPDATE_TARGETS,
             *recent_release_album_names(album_sections_flat, stats_date),
@@ -2502,6 +2508,44 @@ def main():
     infinite_retry_collected_ids: set[str] = set()
 
     tracks_by_id = {t["track_id"]: t for t in tracks}
+
+    def _complete_persistent_same_total_extra(track_id: str) -> bool:
+        track = tracks_by_id.get(track_id)
+        if not track or not track.get("chart_extra"):
+            return False
+        if track_id not in previous_same_total_pending_ids:
+            return False
+
+        result = next((r for r in summary.get("results", []) if r and r.get("track_id") == track_id), None)
+        if not result or result.get("status") != "pending" or result.get("reason") != "same_total":
+            return False
+
+        total = result.get("streams")
+        previous_total = result.get("previous_streams")
+        if total is None or previous_total is None:
+            return False
+        try:
+            if int(total) != int(previous_total):
+                return False
+        except (TypeError, ValueError):
+            return False
+
+        if write_history and not dry_run_mode:
+            history_index = summary.get("history_index")
+            if history_index is not None:
+                history_index.append(stats_date, track_id, int(total), 0)
+            else:
+                append_history_row([stats_date, track_id, int(total), 0])
+
+        result["status"] = "updated"
+        result["daily_streams"] = 0
+        result["reason"] = "persistent_same_total_extra_zero"
+        summary["updated_this_run"] = int(summary.get("updated_this_run", 0)) + 1
+        summary["pending_this_run"] = max(int(summary.get("pending_this_run", 0)) - 1, 0)
+        summary["done_tracks"] = int(summary.get("done_tracks", 0)) + 1
+        summary["all_done"] = summary["pending_this_run"] == 0
+        all_updated_track_ids.add(track_id)
+        return True
 
     progress = ProgressLogger(LOG_MODE)
     summary = run_update(
@@ -2586,16 +2630,32 @@ def main():
             tid for tid, count in track_retry_counts.items()
             if count >= MAX_PENDING_RETRY_ROUNDS
         }
+        persistent_zero_ids: set[str] = set()
         if exhausted_ids:
-            print(
-                f"{len(exhausted_ids)} pending unchanged-total track(s) reached "
-                f"{MAX_PENDING_RETRY_ROUNDS} retries; keeping them open and blocking final posting."
-            )
-            exhausted_blocking_track_ids.update(exhausted_ids)
+            persistent_zero_ids = {
+                tid for tid in exhausted_ids
+                if _complete_persistent_same_total_extra(tid)
+            }
+            if persistent_zero_ids:
+                titles = sorted(
+                    tracks_by_id[tid]["title"] for tid in persistent_zero_ids if tid in tracks_by_id
+                )
+                print(
+                    f"{len(persistent_zero_ids)} extra same-total track(s) persisted from yesterday; "
+                    f"writing daily=0 after {MAX_PENDING_RETRY_ROUNDS} retries: {', '.join(titles)}"
+                )
+            blocking_exhausted_ids = exhausted_ids - persistent_zero_ids
+            if blocking_exhausted_ids:
+                print(
+                    f"{len(blocking_exhausted_ids)} pending unchanged-total track(s) reached "
+                    f"{MAX_PENDING_RETRY_ROUNDS} retries; keeping them open."
+                )
+                exhausted_blocking_track_ids.update(blocking_exhausted_ids)
         pending_retry_ids = (
             all_pending_ids
             - infinite_retry_track_ids
             - exhausted_blocking_track_ids
+            - persistent_zero_ids
         )
 
         if not pending_retry_ids:
@@ -2784,25 +2844,9 @@ def main():
         return
 
     if not blocking_pending_ids:
-        if infinite_retry_track_ids and infinite_retry_thread is None and not dry_run_mode and not local_test_mode and not debug_daily_mode:
-            infinite_retry_thread = threading.Thread(
-                target=retry_pending_tracks_until_collected,
-                args=(set(infinite_retry_track_ids),),
-                kwargs={
-                    "stats_date": stats_date,
-                    "stats_date_override": stats_date_override,
-                    "token_mgr": token_mgr,
-                    "force_reprocess": force_reprocess,
-                    "write_history": write_history,
-                    "collected_ids": infinite_retry_collected_ids,
-                    "use_browser_scrape": use_browser_scrape_for_run,
-                },
-                daemon=True,
-            )
-            infinite_retry_thread.start()
         if current_pending_ids:
             print(
-                f"All non-blocking pending tracks are handled; continuing with post/finalization while {len(current_pending_ids)} previously-seen track(s) remain in retry mode."
+                f"All non-blocking pending tracks are handled; continuing with post/finalization before retrying {len(current_pending_ids)} extra track(s)."
             )
         else:
             print("All target tracks updated.")
@@ -2968,6 +3012,27 @@ def main():
         throwback_label=throwback_label,
         throwback_force=throwback_force,
     ))
+
+    if infinite_retry_track_ids and infinite_retry_thread is None and not dry_run_mode and not local_test_mode and not debug_daily_mode:
+        print(
+            f"Starting extra retry worker after final export/post "
+            f"({len(infinite_retry_track_ids)} track(s))."
+        )
+        infinite_retry_thread = threading.Thread(
+            target=retry_pending_tracks_until_collected,
+            args=(set(infinite_retry_track_ids),),
+            kwargs={
+                "stats_date": stats_date,
+                "stats_date_override": stats_date_override,
+                "token_mgr": token_mgr,
+                "force_reprocess": force_reprocess,
+                "write_history": write_history,
+                "collected_ids": infinite_retry_collected_ids,
+                "use_browser_scrape": use_browser_scrape_for_run,
+            },
+            daemon=True,
+        )
+        infinite_retry_thread.start()
 
     if infinite_retry_thread is not None:
         print(

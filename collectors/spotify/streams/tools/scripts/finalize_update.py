@@ -152,6 +152,7 @@ class ReadyAlbumUpdatePoster:
         spacing_seconds: int,
         log_mode: str,
         enabled: bool,
+        no_post_mode: bool,
         target_albums: list[str] | tuple[str, ...] | None = None,
     ) -> None:
         self.script_dir = script_dir
@@ -161,6 +162,7 @@ class ReadyAlbumUpdatePoster:
         self.spacing_seconds = spacing_seconds
         self.log_mode = log_mode
         self.enabled = enabled
+        self.no_post_mode = no_post_mode
         self.target_albums = tuple(dict.fromkeys(target_albums or ALBUM_UPDATE_TARGETS))
         self._posted: set[str] = set()
         self._stop = threading.Event()
@@ -210,11 +212,16 @@ class ReadyAlbumUpdatePoster:
             self.export_web_data(stats_date=self.stats_date)
 
             album_img_script = self.script_dir / "tools" / "scripts" / "generate_album_update_image.py"
+            cmd = [sys.executable, str(album_img_script), album, self.stats_date]
+            if self.no_post_mode:
+                cmd.append("--no-post")
+            else:
+                cmd.append("--post")
             try:
                 _run_streams_post(
-                    [sys.executable, str(album_img_script), album, self.stats_date, "--post"],
+                    cmd,
                     label=f"early album update ({album})",
-                    should_post=True,
+                    should_post=not self.no_post_mode,
                     state=self._post_state,
                     spacing_seconds=self.spacing_seconds,
                     log_mode=self.log_mode,
