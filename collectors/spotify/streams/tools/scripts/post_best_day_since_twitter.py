@@ -359,7 +359,7 @@ def _build_tweet(row: dict, daily_yesterday: int | None) -> str:
     emoji = album_emoji(row.get("album"))
     title = row["title"]
     track_id = row["track_id"]
-    label = best_day_since.row_label(row)
+    label = best_day_since.row_label(row).replace("best day", "BEST DAY", 1)
     daily = int(row["daily_streams"])
     pct = _fmt_pct(daily, daily_yesterday)
     song_url = f"https://thetsmuseum.app/songs/{track_id}"
@@ -451,6 +451,15 @@ def _build_recap_tweet(rows: list[dict], target_date: str) -> str:
     return f"📊 {count} song{plural} hit a best day since record on {date_text}. Full recap below."
 
 
+def _best_since_badge_text(row: dict) -> str:
+    if row.get("kind") == "best_ever":
+        return "best ever"
+    value = row.get("best_day_since")
+    if value == "before 2025" or row.get("kind") == "before_history":
+        return "best since before 2025"
+    return f"best since {date.fromisoformat(str(value)).strftime('%m/%d/%Y')}"
+
+
 def _day_dir(target_date: str) -> Path:
     return update_streams_dir(target_date)
 
@@ -479,7 +488,7 @@ def _generate_best_day_since_image(
     date_text = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
     daily = int(row["daily_streams"])
     pct = _fmt_pct(daily, daily_yesterday)
-    label = best_day_since.row_label(row)
+    label = _best_since_badge_text(row)
     html = render_song_card(
         title=track.get("title") or row["title"],
         eyebrow="Spotify Streams",

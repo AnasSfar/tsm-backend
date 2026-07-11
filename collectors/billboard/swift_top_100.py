@@ -431,6 +431,64 @@ def _aggregate_weekly_streams(
     return weekly, counts, daily
 
 
+def _remove_duplicate_daily_series(
+    *,
+    weekly_streams: dict[str, int],
+    daily_streams: dict[str, dict[str, int]],
+    tracks: dict[str, TrackMeta],
+    week_dates: set[str],
+    logger: Logger,
+) -> None:
+    """Drop duplicate active IDs that carry the same exact daily stream series.
+
+    This protects combined rankings from double-counting a track when a new
+    Spotify ID and an old ID both remain in streams_history with copied daily
+    values. Real alternate versions remain additive because their daily series
+    differ.
+    """
+    by_song_key: dict[str, list[str]] = {}
+    for track_id, days in daily_streams.items():
+        meta = tracks.get(track_id)
+        if meta is None:
+            continue
+        key = _chart_lookup_key(
+            meta.title,
+            combined=True,
+            base_title=meta.base_title,
+        )
+        if key:
+            by_song_key.setdefault(key, []).append(track_id)
+
+    removed: set[str] = set()
+    week_day_list = sorted(week_dates)
+    for song_key, track_ids in by_song_key.items():
+        if len(track_ids) < 2:
+            continue
+        by_signature: dict[tuple[int, ...], list[str]] = {}
+        for track_id in track_ids:
+            days = daily_streams.get(track_id) or {}
+            signature = tuple(int(days.get(day, 0) or 0) for day in week_day_list)
+            if any(signature):
+                by_signature.setdefault(signature, []).append(track_id)
+        for duplicate_ids in by_signature.values():
+            if len(duplicate_ids) < 2:
+                continue
+            keep = sorted(duplicate_ids, reverse=True)[0]
+            for duplicate_id in duplicate_ids:
+                if duplicate_id == keep:
+                    continue
+                weekly_streams.pop(duplicate_id, None)
+                daily_streams.pop(duplicate_id, None)
+                removed.add(duplicate_id)
+
+    if removed:
+        sample = ", ".join(sorted(removed)[:5])
+        suffix = "..." if len(removed) > 5 else ""
+        logger.log(
+            f"  streams_dedupe : dropped {len(removed)} duplicate daily series: {sample}{suffix}"
+        )
+
+
 def _weighted_average(values: list[int]) -> int:
     if not values:
         return 0
@@ -504,12 +562,25 @@ def _estimate_missing_stream_days(
     return estimates
 
 
-def _best_global_rank_by_title(*, week_dates: set[str], logger: Logger) -> dict[str, int]:
+def _best_global_rank_by_title(
+    *,
+    week_dates: set[str],
+    tracks: dict[str, TrackMeta],
+    logger: Logger,
+) -> dict[str, int]:
     """Return normalized_title -> best rank (min)."""
     best: dict[str, int] = {}
     if not CHARTS_GLOBAL_CSV.exists():
         logger.log("  spotify_charts : missing — bonus disabled")
         return best
+
+    track_keys: dict[str, str] = {}
+    for track in tracks.values():
+        key = _chart_lookup_key(track.title, combined=COMBINE_VERSIONS, base_title=track.base_title)
+        if key:
+            track_keys[track.track_id] = key
+            for historical_id in track.historical_track_ids:
+                track_keys[historical_id] = key
 
     def _to_int(v: str | None) -> int | None:
         try:
@@ -518,25 +589,31 @@ def _best_global_rank_by_title(*, week_dates: set[str], logger: Logger) -> dict[
             return None
 
     matched_rows = 0
+    skipped_missing_track_id = 0
     with CHARTS_GLOBAL_CSV.open("r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
             day = (row.get("date") or "").strip()
             if day not in week_dates:
                 continue
-            title = (row.get("song_name") or "").strip()
-            rank = _to_int(row.get("rank"))
-            if not title or not rank:
-                continue
-            key = _normalize_title(title)
+            track_id = (row.get("track_id") or "").strip()
+            key = track_keys.get(track_id)
             if not key:
+                skipped_missing_track_id += 1
+                continue
+            rank = _to_int(row.get("rank"))
+            if not rank:
                 continue
             prev = best.get(key)
             if prev is None or rank < prev:
                 best[key] = rank
             matched_rows += 1
 
-    logger.log(f"  spotify_charts : {matched_rows} rows")
+    logger.log(
+        "  spotify_charts : "
+        f"{matched_rows} exact rows"
+        + (f", {skipped_missing_track_id} skipped without track_id" if skipped_missing_track_id else "")
+    )
     return best
 
 
@@ -624,6 +701,7 @@ def _weekly_charts_streams_by_title(
     fallback_days = week_dates - worldwide_days
     active_paths = [path for path in CHARTS_REGION_CSVS if path.exists()]
     csv_rows = 0
+    csv_skipped_without_track_id = 0
 
     if fallback_days and active_paths:
         # Deduplicate within each source: same exact stream count for the same song
@@ -639,12 +717,12 @@ def _weekly_charts_streams_by_title(
                     day = (row.get("date") or "").strip()
                     if day not in fallback_days:
                         continue
-                    title = (row.get("song_name") or "").strip()
+                    track_id = (row.get("track_id") or "").strip()
+                    key = track_keys.get(track_id)
                     streams = _to_int(row.get("streams"))
-                    if not title or streams <= 0:
-                        continue
-                    key = _chart_lookup_key(title, combined=COMBINE_VERSIONS)
-                    if not key:
+                    if not key or streams <= 0:
+                        if not track_id:
+                            csv_skipped_without_track_id += 1
                         continue
                     dedup_key = (source, day, key, streams)
                     if dedup_key in seen_csv:
@@ -665,6 +743,7 @@ def _weekly_charts_streams_by_title(
         "  spotify_units  : "
         f"{worldwide_rows} worldwide rows ({worldwide_files}/7 days)"
         + (f", {csv_rows} csv fallback rows ({len(fallback_days)} day(s))" if fallback_days else "")
+        + (f", {csv_skipped_without_track_id} csv rows skipped without track_id" if csv_skipped_without_track_id else "")
         + (f", {skipped_tracks} unmapped worldwide track(s)" if skipped_tracks else "")
     )
     return totals
@@ -1138,7 +1217,16 @@ def _build_week_chart(
             elif h_id in weekly_streams:
                 weekly_streams[meta.track_id] = weekly_streams.get(meta.track_id, 0) + weekly_streams.pop(h_id)
 
-    best_rank = _best_global_rank_by_title(week_dates=week_set, logger=logger)
+    if COMBINE_VERSIONS:
+        _remove_duplicate_daily_series(
+            weekly_streams=weekly_streams,
+            daily_streams=daily_streams,
+            tracks=tracks,
+            week_dates=week_set,
+            logger=logger,
+        )
+
+    best_rank = _best_global_rank_by_title(week_dates=week_set, tracks=tracks, logger=logger)
 
     scored: list[dict] = []
     skipped_unknown_track_ids: set[str] = set()
@@ -1244,6 +1332,7 @@ def run(
     dry_run: bool,
     skip_r2: bool = False,
     skip_images: bool = False,
+    allow_legacy_weekday: bool = False,
 ) -> int:
     logger = Logger()
 
@@ -1258,11 +1347,17 @@ def run(
 
     # Tracking weeks are fixed Friday -> Thursday. Never silently snap dates.
     if chart_date.weekday() != 3:
-        logger.log(
-            f"⚠ invalid date    : {_format_date(chart_date)} is not a Thursday "
-            "(tracking week must end on Thursday)"
-        )
-        return 2
+        if allow_legacy_weekday:
+            logger.log(
+                f"  legacy_weekday : {_format_date(chart_date)} is not a Thursday; "
+                "explicit historical regeneration allowed"
+            )
+        else:
+            logger.log(
+                f"⚠ invalid date    : {_format_date(chart_date)} is not a Thursday "
+                "(tracking week must end on Thursday)"
+            )
+            return 2
 
     stream_dates = set(_all_stream_dates())
     _, requested_week_days = _week_dates(chart_date)
@@ -1424,7 +1519,8 @@ def run(
         units_am = round((am_ts_raw + am_overall_raw) * 1000)
 
         # Spotify units (on-chart + surplus × 0.7)
-        units_charts = charts_streams_by_title.get(key, 0)
+        raw_units_charts = charts_streams_by_title.get(key, 0)
+        units_charts = min(raw_units_charts, weekly_streams)
         units_surplus = max(0, weekly_streams - units_charts)
         units_spotify = round(units_charts + units_surplus * 0.7)
 
@@ -1706,6 +1802,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                    help="Do not generate PNG chart images")
     p.add_argument("--variant", dest="variant", choices=["combined", "not-combined", "all"], default="all",
                    help="Generate combined songs, not-combined songs, or the full TayBoard suite")
+    p.add_argument("--allow-legacy-weekday", dest="allow_legacy_weekday", action="store_true",
+                   help="Allow explicit regeneration of old non-Thursday history rows")
     return p.parse_args(argv)
 
 
@@ -1820,6 +1918,7 @@ def main_from_args(args: argparse.Namespace) -> None:
         dry_run=bool(args.dry_run),
         skip_r2=bool(args.skip_r2),
         skip_images=bool(args.skip_images),
+        allow_legacy_weekday=bool(args.allow_legacy_weekday),
     )
     raise SystemExit(code)
 

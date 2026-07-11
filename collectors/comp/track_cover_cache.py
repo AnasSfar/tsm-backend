@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import os
+import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -20,10 +22,23 @@ def load_track_cover_cache() -> dict[str, dict]:
 
 def save_track_cover_cache(data: dict[str, dict]) -> None:
     CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    CACHE_PATH.write_text(
-        json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True),
-        encoding="utf-8",
+    payload = json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True)
+    fd, tmp_name = tempfile.mkstemp(
+        prefix=f".{CACHE_PATH.name}.",
+        suffix=".tmp",
+        dir=CACHE_PATH.parent,
+        text=True,
     )
+    tmp_path = Path(tmp_name)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as f:
+            f.write(payload)
+        os.replace(tmp_path, CACHE_PATH)
+    finally:
+        try:
+            tmp_path.unlink()
+        except FileNotFoundError:
+            pass
 
 
 def merge_track_cover_cache(updates: dict[str, str]) -> dict[str, dict]:

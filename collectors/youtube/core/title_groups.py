@@ -152,6 +152,11 @@ def _sum_optional_int(rows: list[dict], field: str) -> int | str:
     return sum(int(value) for value in values)
 
 
+def _shared_value(rows: list[dict], field: str) -> str:
+    values = {str(row.get(field) or "") for row in rows if row.get(field) not in ("", None)}
+    return values.pop() if len(values) == 1 else ""
+
+
 def _best_group_video(rows: list[dict]) -> dict:
     def sort_key(row: dict) -> tuple[int, int]:
         daily = row.get("daily_views")
@@ -204,6 +209,9 @@ def build_title_rows(
                 "primary_video_id": primary.get("video_id", ""),
                 "total_views": _sum_int(rows, "total_views"),
                 "daily_views": _sum_optional_int(rows, "daily_views"),
+                "period_gain_views": _sum_optional_int(rows, "period_gain_views"),
+                "period_days": _shared_value(rows, "period_days"),
+                "period_label": _shared_value(rows, "period_label"),
                 "like_count": _sum_optional_int(rows, "like_count"),
                 "comment_count": _sum_optional_int(rows, "comment_count"),
                 "video_ids": json.dumps([row.get("video_id", "") for row in rows], ensure_ascii=False),

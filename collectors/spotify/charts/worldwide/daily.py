@@ -79,8 +79,17 @@ ROOT            = Path(__file__).resolve().parents[4]
 GLOBAL_DAILY    = ROOT / "collectors" / "spotify" / "charts" / "global" / "daily.py"
 FR_DAILY        = ROOT / "collectors" / "spotify" / "charts" / "fr" / "daily.py"
 GLOBAL_CHART_IMAGE_SCRIPT = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "script" / "generate_chart_image.py"
-SESSION_FILE        = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "spotify_session.json"
-_BEARER_CACHE_FILE  = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "bearer_cache.json"
+_DEFAULT_SESSION_FILE = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "spotify_session.json"
+SESSION_FILE        = Path(os.getenv("SPOTIFY_CHARTS_SESSION_FILE", str(_DEFAULT_SESSION_FILE)))
+_BEARER_CACHE_FILE  = Path(
+    os.getenv(
+        "SPOTIFY_CHARTS_BEARER_CACHE_FILE",
+        str(SESSION_FILE.with_name(f"bearer_cache_{SESSION_FILE.stem}.json"))
+        if SESSION_FILE != _DEFAULT_SESSION_FILE
+        else str(ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "bearer_cache.json"),
+    )
+)
+SINGLE_SESSION_TOKEN_POOL = os.getenv("SPOTIFY_CHARTS_SINGLE_SESSION", "").strip().lower() in {"1", "true", "yes", "on"}
 _BEARER_TOKEN_TTL   = 50 * 60
 OUTPUT_PATH     = WEB_EXPORT_DATA_DIR / "charts_worldwide.json"
 HISTORY_ROOT    = ROOT / "snapshots" / "spotify_charts"
@@ -452,12 +461,15 @@ def _get_bearer_token_and_regions(*, force_refresh: bool = False) -> tuple[str, 
         token = token_holder[0]
 
     # 1. API overview — avec rotation de tokens sur 429
-    _overview_tokens = [token] + [
-        t for sf in sorted(SESSION_FILE.parent.glob("spotify_session*.json"))
-        if sf != SESSION_FILE
-        for t in [_get_bearer_from_cookies(sf)]
-        if t
-    ]
+    _overview_tokens = [token]
+    if not SINGLE_SESSION_TOKEN_POOL:
+        _overview_tokens.extend(
+            t
+            for sf in sorted(SESSION_FILE.parent.glob("spotify_session*.json"))
+            if sf != SESSION_FILE
+            for t in [_get_bearer_from_cookies(sf)]
+            if t
+        )
     _ov_idx = 0
     _ov_exhausted = 0
 
@@ -1428,6 +1440,11 @@ def main() -> int:
         action="store_true",
         help="Re-fetch all regions even if already present for this date.",
     )
+    parser.add_argument(
+        "--backfill-mode",
+        action="store_true",
+        help="Historical data-only mode: no latest write, no R2, no git commit, no total_days store write.",
+    )
     args = parser.parse_args()
 
     if args.dates or args.dates_file or args.backfill_from or args.backfill_to:
@@ -1517,13 +1534,14 @@ def main() -> int:
         print("[INFO] Using cached bearer token and regions.")
     token, regions = _get_bearer_token_and_regions()
     tokens: list[str] = [token]
-    for sf in sorted(SESSION_FILE.parent.glob("spotify_session*.json")):
-        if sf == SESSION_FILE:
-            continue
-        t = _get_bearer_from_cookies(sf)
-        if t:
-            tokens.append(t)
-            print(f"[INFO] Token supplémentaire chargé depuis {sf.name}")
+    if not SINGLE_SESSION_TOKEN_POOL:
+        for sf in sorted(SESSION_FILE.parent.glob("spotify_session*.json")):
+            if sf == SESSION_FILE:
+                continue
+            t = _get_bearer_from_cookies(sf)
+            if t:
+                tokens.append(t)
+                print(f"[INFO] Token supplémentaire chargé depuis {sf.name}")
     print(f"[INFO] {len(tokens)} token(s) disponible(s). {len(regions)} regions to fetch.")
 
 
@@ -1777,14 +1795,15 @@ def main() -> int:
                 entry["total_days"] = stored + 1
                 total_days_store[key] = stored + 1
 
-    try:
-        TOTAL_DAYS_PATH.parent.mkdir(parents=True, exist_ok=True)
-        TOTAL_DAYS_PATH.write_text(
-            json.dumps(total_days_store, ensure_ascii=False, indent=2),
-            encoding="utf-8",
-        )
-    except Exception as exc:
-        print(f"[WARN] Could not save total_days store: {exc}")
+    if not args.backfill_mode:
+        try:
+            TOTAL_DAYS_PATH.parent.mkdir(parents=True, exist_ok=True)
+            TOTAL_DAYS_PATH.write_text(
+                json.dumps(total_days_store, ensure_ascii=False, indent=2),
+                encoding="utf-8",
+            )
+        except Exception as exc:
+            print(f"[WARN] Could not save total_days store: {exc}")
 
     # Sort each track's country list by rank
     for entries in by_track.values():
@@ -1807,16 +1826,17 @@ def main() -> int:
     )
     print(f"[DONE] Written → {per_date_path}")
 
-    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT_PATH.write_text(
-        json.dumps(output, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
-    print(f"[DONE] Written latest → {OUTPUT_PATH}")
-    updated_lock = _updated_lock_path(chart_date)
-    updated_lock.touch()
-    print(f"[DONE] Written -> {updated_lock}")
-    maybe_upload_to_r2(chart_date, force=args.force)
+    if not args.backfill_mode:
+        OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+        OUTPUT_PATH.write_text(
+            json.dumps(output, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        print(f"[DONE] Written latest → {OUTPUT_PATH}")
+        updated_lock = _updated_lock_path(chart_date)
+        updated_lock.touch()
+        print(f"[DONE] Written -> {updated_lock}")
+        maybe_upload_to_r2(chart_date, force=args.force)
 
     if args.post_song_updates and not args.no_post and TWITTER_SESSION.exists():
         has_prev = prev_path.exists()
@@ -1893,7 +1913,8 @@ def main() -> int:
         if _multi_song_post_thread.is_alive():
             print("[WARN] Posts regions multi-titres toujours en cours apres 10 minutes", flush=True)
 
-    git_commit_and_push(ROOT, f"charts worldwide {chart_date}")
+    if not args.backfill_mode:
+        git_commit_and_push(ROOT, f"charts worldwide {chart_date}")
     return 0
 
 

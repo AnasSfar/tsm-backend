@@ -19,7 +19,7 @@ import argparse
 import json
 import os
 import sys
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 
 from .core.api import chunked, fetch_video_stats
@@ -128,6 +128,23 @@ def _latest_rows_before(rows: list[dict], target_date: str) -> list[dict]:
     return [row for row in rows if row.get("date") == latest]
 
 
+def _latest_date_before(rows: list[dict], target_date: str) -> str:
+    dates = sorted({row.get("date", "") for row in rows if row.get("date", "") < target_date})
+    return dates[-1] if dates else ""
+
+
+def _days_between(previous_date: str, target_date: str) -> int | None:
+    if not previous_date:
+        return None
+    try:
+        prev = datetime.strptime(previous_date, "%Y-%m-%d").date()
+        current = datetime.strptime(target_date, "%Y-%m-%d").date()
+    except ValueError:
+        return None
+    days = (current - prev).days
+    return days if days > 0 else None
+
+
 def _last_total_views_from_csv(csv_path: Path, target_date: str) -> dict[str, int]:
     rows = read_csv_rows(csv_path)
     latest_rows = _latest_rows_before(rows, target_date)
@@ -141,9 +158,12 @@ def _last_total_views_from_csv(csv_path: Path, target_date: str) -> dict[str, in
 
 
 def _rank_rows(rows: list[dict], field: str, rank_field: str) -> None:
+    for row in rows:
+        row[rank_field] = ""
+    eligible = [row for row in rows if _int_or_none(row.get(field)) is not None]
     ranked = sorted(
-        rows,
-        key=lambda row: (_int_or_none(row.get(field)) is None, -(_int_or_none(row.get(field)) or 0), str(row.get("title") or "")),
+        eligible,
+        key=lambda row: (-(_int_or_none(row.get(field)) or 0), str(row.get("title") or "")),
     )
     for index, row in enumerate(ranked, 1):
         row[rank_field] = index
@@ -291,20 +311,31 @@ def main() -> int:
     # ------------------------------------------------------------------
     # 5. Calculer daily_views et construire les lignes CSV
     # ------------------------------------------------------------------
+    existing_video_rows = read_csv_rows(CSV_PATH)
     has_prior_csv_day = has_collection_before(CSV_PATH, today)
     prev_views = get_last_views(HISTORY_PATH) if has_prior_csv_day else {}
+    previous_csv_date = _latest_date_before(existing_video_rows, today)
+    period_days = _days_between(previous_csv_date, today)
+    is_daily_snapshot = period_days == 1
     csv_prev_views = _last_total_views_from_csv(CSV_PATH, today) if has_prior_csv_day else {}
     if csv_prev_views:
         prev_views = {**prev_views, **csv_prev_views}
     if not has_prior_csv_day:
         print("[INFO] Aucune date précédente dans le CSV — daily_views restera vide.")
+    elif not is_daily_snapshot:
+        label = f"{period_days}-day gain" if period_days else "period gain"
+        print(f"[WARN] Date précédente: {previous_csv_date}; {today} sera marqué en {label}, pas en daily.")
     new_views: dict[str, int] = {}
     rows: list[dict] = []
 
     for vid_id, stat in stats.items():
         total = stat.get("viewCount", 0)
         prev = prev_views.get(vid_id)
-        daily = (total - prev) if prev is not None else None
+        gain = (total - prev) if prev is not None else None
+        daily = gain if is_daily_snapshot else None
+        period_label = ""
+        if gain is not None and period_days and period_days > 1:
+            period_label = f"{period_days}-day gain"
         new_views[vid_id] = total
 
         rows.append(
@@ -325,6 +356,9 @@ def main() -> int:
                 "daily_views": daily if daily is not None else "",
                 "daily_change": "",
                 "daily_change_pct": "",
+                "period_gain_views": gain if gain is not None and not is_daily_snapshot else "",
+                "period_days": period_days if gain is not None and not is_daily_snapshot and period_days else "",
+                "period_label": period_label,
                 "like_count": stat.get("likeCount") if stat.get("likeCount") is not None else "",
                 "comment_count": stat.get("commentCount") if stat.get("commentCount") is not None else "",
                 "category_id": stat.get("categoryId", ""),
@@ -360,7 +394,6 @@ def main() -> int:
     # ------------------------------------------------------------------
     # 7. Écriture CSV + state JSON
     # ------------------------------------------------------------------
-    existing_video_rows = read_csv_rows(CSV_PATH)
     all_rows = enrich_chart_rows(
         rows_with_daily + rows_no_daily,
         existing_rows=existing_video_rows,

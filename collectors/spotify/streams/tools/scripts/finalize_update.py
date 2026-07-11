@@ -347,6 +347,7 @@ class ReadyBestDaySincePoster:
         script_dir: Path,
         stats_date: str,
         track_ids: list[str],
+        export_web_data: Callable[..., None],
         load_history_track_ids_for_date: Callable[[str], set[str]],
         spacing_seconds: int,
         log_mode: str,
@@ -358,6 +359,7 @@ class ReadyBestDaySincePoster:
         self.script_dir = script_dir
         self.stats_date = stats_date
         self.track_ids = tuple(dict.fromkeys(track_ids))
+        self.export_web_data = export_web_data
         self.load_history_track_ids_for_date = load_history_track_ids_for_date
         self.spacing_seconds = spacing_seconds
         self.log_mode = log_mode
@@ -416,6 +418,10 @@ class ReadyBestDaySincePoster:
                 continue
             with self._lock:
                 self._checked.add(track_id)
+
+            print(f"Best-day-since check ready during streams run: {track_id}")
+            print("Exporting current web data before early best-day post...")
+            self.export_web_data(stats_date=self.stats_date)
 
             best_day_script = self.script_dir / "tools" / "scripts" / "post_best_day_since_twitter.py"
             cmd = [sys.executable, str(best_day_script), self.stats_date, "--only-track", track_id]

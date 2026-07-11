@@ -11,7 +11,7 @@ Référence complète : `tsm-frontend/frontend/src/pages/ADMIN_CONTEXT.md` — *
 - Primitives obligatoires depuis `components/adminUI.jsx` : `AdminCard`, `Field`, `Toggle`, `StatusChip`, `SaveBar`, `ConfirmButton`, `ScheduleFields`, `Icon`. **Ne pas recréer d'équivalents.**
 - `StatusChip` : tones **live / warn / off uniquement** (pas d'autres valeurs).
 - Segmented control : `.adm-segmented` > `.adm-segment.active`. Boutons : `.adm-btn --primary/--soft/--ghost`. CSS admin : classes préfixées `adm-` dans `styles/Admin.css`.
-- Auth : toutes les écritures passent par `X-News-Token` (backend `require_admin_token`).
+- Auth : toutes les écritures passent par `X-News-Token`. Deux surfaces depuis juillet 2026 : `/admin` = page de choix (`AdminGate.jsx`), `/admin/console` = console (`ADMIN_TOKEN`, backend `require_admin_token`), `/admin/journalist` = page autonome Journalist (`JournalistAdmin.jsx`, accepte `JOURNALIST_TOKEN` ou `ADMIN_TOKEN` via `require_journalist_or_admin_token`, sessionStorage séparé `journalist_admin_token`). Login partagé : `components/AdminLoginScreen.jsx` ; accent : `utils/adminAccent.js`. Détails → section « Authentification » d'ADMIN_CONTEXT.md.
 - Planification : `isWithinSchedule` de `utils/schedule.js` (`start_at`/`end_at`, chaîne vide = illimité) + `ScheduleFields` côté UI + pattern « hiddenReason » (callout warn expliquant pourquoi un contenu activé n'est pas visible : pas commencé / expiré / incomplet).
 
 ## Pattern module admin

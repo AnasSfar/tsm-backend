@@ -9,7 +9,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 DB_DIR = ROOT / "db"
-FIELDNAMES = ["date", "song_name", "rank", "streams", "previous_rank", "peak_rank", "total_days", "streak", "movement"]
+FIELDNAMES = ["date", "track_id", "song_name", "rank", "streams", "previous_rank", "peak_rank", "total_days", "streak", "movement"]
 
 COUNTRIES = {
     "global": ("global",),
@@ -74,10 +74,11 @@ def to_int(value: Any) -> int | None:
         return None
 
 
-def csv_row(chart_date: str, song_name: str, entry: dict[str, Any]) -> dict[str, str]:
+def csv_row(chart_date: str, track_id: str, song_name: str, entry: dict[str, Any]) -> dict[str, str]:
     previous_rank = to_int(entry.get("previous_rank"))
     return {
         "date": chart_date,
+        "track_id": track_id,
         "song_name": song_name,
         "rank": str(to_int(entry.get("rank")) or ""),
         "streams": str(to_int(entry.get("streams")) or 0),
@@ -98,8 +99,9 @@ def rows_from_regional_snapshot(path: Path) -> list[dict[str, str]]:
         if not isinstance(entry, dict):
             continue
         name = str(entry.get("track_name") or entry.get("song_name") or "").strip()
+        track_id = str(entry.get("track_id") or entry.get("_track_id_uri") or "").strip()
         if name:
-            out.append(csv_row(chart_date, name, entry))
+            out.append(csv_row(chart_date, track_id, name, entry))
     return out
 
 
@@ -110,12 +112,13 @@ def rows_from_worldwide_snapshot(path: Path, chart: str, names: dict[str, str]) 
     wanted = set(COUNTRIES[chart])
     out = []
     for track_id, entries in by_track.items():
-        name = names.get(str(track_id), str(track_id))
+        track_id = str(track_id).strip()
+        name = names.get(track_id, track_id)
         if not isinstance(entries, list):
             continue
         for entry in entries:
             if isinstance(entry, dict) and entry.get("country") in wanted:
-                out.append(csv_row(chart_date, name, entry))
+                out.append(csv_row(chart_date, track_id, name, entry))
     return out
 
 
@@ -149,20 +152,20 @@ def sync_chart(chart: str, names: dict[str, str], dry_run: bool) -> tuple[int, s
     existing_rows = read_existing(csv_path)
     existing_keys: set[tuple[str, str]] = set()
     for row in existing_rows:
-        key = (row["date"], row["song_name"])
+        key = (row["date"], row.get("track_id") or row["song_name"])
         existing_keys.add(key)
 
     before_dates = {date for date, _ in existing_keys}
     additions: dict[tuple[str, str], dict[str, str]] = {}
     for path in snapshot_files(chart):
         for row in rows_from_regional_snapshot(path):
-            key = (row["date"], row["song_name"])
+            key = (row["date"], row.get("track_id") or row["song_name"])
             if key not in existing_keys:
                 additions.setdefault(key, row)
 
     for path in worldwide_files():
         for row in rows_from_worldwide_snapshot(path, chart, names):
-            key = (row["date"], row["song_name"])
+            key = (row["date"], row.get("track_id") or row["song_name"])
             if key not in existing_keys:
                 additions.setdefault(key, row)
 

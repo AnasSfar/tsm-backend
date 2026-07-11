@@ -39,7 +39,7 @@ tsm-backend (Python, local, Task Scheduler)  →  R2 (bucket prod: taylor-data) 
 | `App.jsx` | Routing, application des settings (`applySiteSettings`), thème : `activeTheme = forcedTheme ?? routeTheme ?? userTheme ?? themeMode`, classes `body.page-*` via `PageClassManager`, timer de bornes du thème custom |
 | `store/useStore.js` | Zustand ; `partialize` = sous-ensemble persisté (le reste = session) |
 | `api/client.js` | Appels API ; `patchSiteSettings` dispatche `SITE_SETTINGS_UPDATED_EVENT` |
-| `pages/Admin.jsx` (~3000 l.) | Page admin — **lire `pages/ADMIN_CONTEXT.md` (section ciblée) avant d'y toucher** → skill `admin-work` |
+| `pages/Admin.jsx` (~3000 l.) | Console admin (`/admin/console`) — **lire `pages/ADMIN_CONTEXT.md` (section ciblée) avant d'y toucher** → skill `admin-work`. `/admin` = page de choix `AdminGate.jsx` ; `/admin/journalist` = `JournalistAdmin.jsx` (token journalist séparé) |
 | `pages/ImageStudio.jsx` | Générateur d'images PNG (templates dans `components/imageTemplates/`) |
 | `components/adminUI.jsx` | Primitives admin : AdminCard, Field, Toggle, StatusChip (tones live/warn/off UNIQUEMENT), SaveBar, ConfirmButton, ScheduleFields, Icon |
 | `components/CustomThemeModule.jsx` | Thème temporaire (éditeur de tokens) |

@@ -49,11 +49,15 @@ def save(history: dict, path: Path = None):
 
 
 def update(history: dict, track: str, chart_date: str, rank: int, streams,
-           previous_rank=None, peak_rank=None):
-    if track not in history:
-        history[track] = {}
+           previous_rank=None, peak_rank=None, track_id=None):
+    key = str(track_id or "").strip() or track
+    if key not in history:
+        history[key] = {}
     streams_int = _to_int(streams) or 0
     entry = {"rank": rank, "streams": streams_int}
+    if track_id:
+        entry["track_id"] = str(track_id).strip()
+        entry["track_name"] = track
     if previous_rank is not None:
         v = _to_int(previous_rank)
         if v and v > 0:
@@ -62,7 +66,7 @@ def update(history: dict, track: str, chart_date: str, rank: int, streams,
         v = _to_int(peak_rank)
         if v and v > 0:
             entry["peak_rank"] = v
-    history[track][chart_date] = entry
+    history[key][chart_date] = entry
 
 
 def get_best_day(history: dict, track: str, current_date: str):
@@ -131,6 +135,7 @@ def rebuild_from_csvs(root: Path, chart_id_prefix: str) -> dict:
                 row.get("streams"),
                 previous_rank=row.get("previous_rank"),
                 peak_rank=row.get("peak_rank"),
+                track_id=row.get("track_id"),
             )
 
     return history

@@ -58,27 +58,32 @@ def _tsm_logo_data_uri() -> str:
     return ""
 
 
-def _boost_color(rgb: tuple[int, int, int], *, min_sat: float = 0.48, min_val: float = 0.34) -> tuple[str, str]:
+def _boost_color(rgb: tuple[int, int, int], *, min_sat: float = 0.48, min_val: float = 0.34, max_val: float = 0.86) -> tuple[str, str]:
     import colorsys
 
     r, g, b = rgb
     h, s, v = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
     s = min(1.0, max(min_sat, s * 1.25))
-    v = min(0.86, max(min_val, v * 0.86))
+    v = min(max_val, max(min_val, v * 0.92))
     rb, gb, bb = colorsys.hsv_to_rgb(h, s, v)
     color = f"#{int(rb * 255):02x}{int(gb * 255):02x}{int(bb * 255):02x}"
     return color, f"rgba({int(rb * 255)},{int(gb * 255)},{int(bb * 255)},.42)"
 
 
-def _deep_color(rgb: tuple[int, int, int]) -> str:
+def _deep_color(rgb: tuple[int, int, int], *, min_val: float = 0.22, max_val: float = 0.42) -> str:
     import colorsys
 
     r, g, b = rgb
     h, s, v = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
     s = min(1.0, max(0.42, s * 1.12))
-    v = min(0.30, max(0.12, v * 0.46))
+    v = min(max_val, max(min_val, v * 0.58))
     rb, gb, bb = colorsys.hsv_to_rgb(h, s, v)
     return f"#{int(rb * 255):02x}{int(gb * 255):02x}{int(bb * 255):02x}"
+
+
+def _rgba_from_rgb(rgb: tuple[int, int, int], alpha: float) -> str:
+    r, g, b = rgb
+    return f"rgba({r},{g},{b},{alpha:.2f})"
 
 
 def _hex_to_rgb(value: str) -> tuple[int, int, int] | None:
@@ -150,10 +155,13 @@ def cover_palette(img_bytes: bytes) -> tuple[str, str]:
             r, g, b = color
             h, s, v = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
             hue = h * 360
-            if (r > 235 and g > 235 and b > 235) or (r < 18 and g < 18 and b < 18):
+            if (r > 242 and g > 242 and b > 242) or (r < 12 and g < 12 and b < 12):
+                continue
+            if s < 0.10 and (v < 0.18 or v > 0.86):
                 continue
             mud_penalty = 0.6 if 35 <= hue <= 78 and s < 0.62 else 0.0
-            score = (count ** 0.5) * (0.35 + s) * (0.35 + v) - mud_penalty
+            readable_val_bonus = 1.0 - min(abs(v - 0.56) / 0.56, 1.0) * 0.30
+            score = (count ** 0.5) * (0.35 + s) * (0.35 + v) * readable_val_bonus - mud_penalty
             candidates.append({"rgb": color, "hue": hue, "sat": s, "val": v, "score": score})
         if not candidates:
             candidates = [{"rgb": (29, 185, 84), "hue": 141, "sat": 0.84, "val": 0.73, "score": 1}]
@@ -173,30 +181,40 @@ def cover_palette(img_bytes: bytes) -> tuple[str, str]:
         avg_sat = weighted_sat / total
         avg_val = weighted_val / total
         if neutral_ratio >= 0.70 or avg_sat < 0.16:
-            base = max(16, min(42, int(avg_val * 58)))
-            mid = max(24, min(58, base + 18))
+            base = max(24, min(48, int(avg_val * 70)))
+            mid = max(48, min(82, base + 28))
             primary = f"#{mid:02x}{mid:02x}{mid:02x}"
             secondary = f"#{base:02x}{base:02x}{base + 4:02x}"
             accent_candidates = [c for c in candidates if c["sat"] >= 0.28 and 0.18 <= c["val"] <= 0.78]
             if accent_candidates:
-                _accent, glow = _boost_color(max(accent_candidates, key=lambda c: c["score"])["rgb"], min_sat=0.36, min_val=0.22)
+                accent_rgb = max(accent_candidates, key=lambda c: c["score"])["rgb"]
+                _accent, glow = _boost_color(accent_rgb, min_sat=0.38, min_val=0.34, max_val=0.74)
             else:
-                glow = "rgba(255,255,255,.10)"
+                glow = "rgba(255,255,255,.16)"
             gradient = (
-                f"radial-gradient(circle at 76% 18%,{glow} 0%,rgba(16,18,24,0) 24%),"
+                f"radial-gradient(circle at 76% 18%,{glow} 0%,rgba(16,18,24,0) 30%),"
+                f"radial-gradient(circle at 8% 92%,rgba(255,255,255,.14) 0%,rgba(255,255,255,0) 28%),"
                 f"linear-gradient(135deg,{primary} 0%,{secondary} 100%)"
             )
             return (gradient, primary)
 
-        cool = [c for c in candidates if 150 <= c["hue"] <= 220 and c["sat"] >= 0.24]
-        warm = [c for c in candidates if (0 <= c["hue"] <= 32 or 330 <= c["hue"] <= 360) and c["sat"] >= 0.32]
-        primary_choice = max(cool or candidates, key=lambda c: c["score"] + (0.8 if 165 <= c["hue"] <= 200 else 0))
-        secondary_choice = max(warm or candidates, key=lambda c: c["score"] + (0.5 if c in warm else 0))
-        primary, _ = _boost_color(primary_choice["rgb"], min_sat=0.58, min_val=0.40)
-        secondary = _deep_color(secondary_choice["rgb"])
-        _glow_color, glow = _boost_color(secondary_choice["rgb"], min_sat=0.52, min_val=0.30)
+        vivid = [c for c in candidates if c["sat"] >= 0.22 and 0.18 <= c["val"] <= 0.88]
+        cool = [c for c in vivid if 150 <= c["hue"] <= 225 and c["sat"] >= 0.24]
+        warm = [c for c in vivid if (0 <= c["hue"] <= 35 or 325 <= c["hue"] <= 360) and c["sat"] >= 0.28]
+        primary_pool = cool or vivid or candidates
+        primary_choice = max(primary_pool, key=lambda c: c["score"] + (0.55 if 165 <= c["hue"] <= 205 else 0))
+        contrast_pool = [
+            c for c in (warm or vivid or candidates)
+            if _rgb_distance(c["rgb"], primary_choice["rgb"]) >= 34
+        ] or warm or vivid or candidates
+        secondary_choice = max(contrast_pool, key=lambda c: c["score"] + (0.4 if c in warm else 0))
+        primary, _ = _boost_color(primary_choice["rgb"], min_sat=0.50, min_val=0.46, max_val=0.78)
+        secondary = _deep_color(secondary_choice["rgb"], min_val=0.24, max_val=0.40)
+        _glow_color, glow = _boost_color(secondary_choice["rgb"], min_sat=0.46, min_val=0.36, max_val=0.72)
+        primary_glow = _rgba_from_rgb(primary_choice["rgb"], 0.24)
         gradient = (
-            f"radial-gradient(circle at 76% 18%,{glow} 0%,rgba(16,24,40,0) 28%),"
+            f"radial-gradient(circle at 76% 18%,{glow} 0%,rgba(16,24,40,0) 32%),"
+            f"radial-gradient(circle at 10% 92%,{primary_glow} 0%,rgba(16,24,40,0) 30%),"
             f"linear-gradient(135deg,{primary} 0%,{secondary} 100%)"
         )
         return (gradient, primary)
@@ -264,7 +282,17 @@ def render_song_card(
       </div>"""
         )
     extra_html = f'<div class="extra">{html.escape(extra)}</div>' if extra else ""
-    subtitle_html = f'<div class="subtitle">{html.escape(subtitle)}</div>' if best_since and subtitle else ""
+    best_since_badge_html = (
+        f'<span class="best-marker"><span class="best-star">&#9733;</span><span>({html.escape(subtitle)})</span></span>'
+        if best_since and subtitle
+        else ""
+    )
+    title_html = (
+        f'<div class="title-row">{best_since_badge_html}<div class="title">{html.escape(title)}</div></div>'
+        if best_since_badge_html
+        else f'<div class="title">{html.escape(title)}</div>'
+    )
+    subtitle_html = ""
     mode_badge_text = badge_text if badge_text else ("COMBINED VERSIONS" if combined_versions else footer_right)
     mode_badge_html = f'<span class="mode-badge">{html.escape(mode_badge_text)}</span>' if mode_badge_text else ""
     tsm_logo_uri = _tsm_logo_data_uri()
@@ -287,8 +315,8 @@ body{{
 body:before{{
   content:"";position:absolute;inset:0;
   background:
-    linear-gradient(90deg,rgba(4,10,16,.74) 0%,rgba(4,10,16,.52) 49%,rgba(4,10,16,.14) 100%),
-    radial-gradient(circle at 18% 85%,rgba(255,255,255,.16),rgba(255,255,255,0) 34%);
+    linear-gradient(90deg,rgba(4,10,16,.62) 0%,rgba(4,10,16,.42) 49%,rgba(4,10,16,.08) 100%),
+    radial-gradient(circle at 18% 85%,rgba(255,255,255,.20),rgba(255,255,255,0) 36%);
 }}
 .layout{{height:299px;position:relative;z-index:1}}
 .cover-col{{
@@ -322,6 +350,24 @@ body:before{{
   -webkit-box-orient:vertical;overflow:hidden;
   text-shadow:0 3px 18px rgba(0,0,0,.28);
   margin-bottom:-4px;
+}}
+.title-row{{
+  display:flex;align-items:center;gap:10px;max-width:455px;
+}}
+.title-row .title{{
+  min-width:0;max-width:100%;
+}}
+.best-marker{{
+  color:{badge_fg};background:{badge_bg};
+  font-size:12px;font-weight:900;border-radius:999px;
+  padding:6px 10px 6px 7px;display:inline-flex;align-items:center;gap:6px;
+  white-space:nowrap;flex-shrink:0;
+  box-shadow:0 12px 28px rgba(0,0,0,.20),0 0 0 1px rgba(255,255,255,.18);
+}}
+.best-star{{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:19px;height:19px;border-radius:999px;
+  color:{badge_bg};background:{badge_fg};font-size:11px;line-height:1;
 }}
 .subtitle{{
   width:max-content;max-width:440px;
@@ -375,8 +421,8 @@ body{{
 body:before{{
   content:"";position:absolute;inset:0;
   background:
-    linear-gradient(90deg,rgba(4,10,16,.74) 0%,rgba(4,10,16,.52) 49%,rgba(4,10,16,.14) 100%),
-    radial-gradient(circle at 18% 85%,rgba(255,255,255,.16),rgba(255,255,255,0) 34%);
+    linear-gradient(90deg,rgba(4,10,16,.62) 0%,rgba(4,10,16,.42) 49%,rgba(4,10,16,.08) 100%),
+    radial-gradient(circle at 18% 85%,rgba(255,255,255,.20),rgba(255,255,255,0) 36%);
 }}
 .layout{{height:299px;position:relative;z-index:1}}
 .cover-col{{
@@ -448,7 +494,7 @@ body:before{{
       <span class="hdr-label">{html.escape(eyebrow)}</span>
       {mode_badge_html}
     </div>
-    <div class="title">{html.escape(title)}</div>
+    {title_html}
     {extra_html}
     {subtitle_html}
     <div class="stats">

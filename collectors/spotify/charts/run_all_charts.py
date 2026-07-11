@@ -112,6 +112,8 @@ COLLECT_RUNNERS: list[tuple[str, Path, list[str]]] = [
     ("worldwide",      CHARTS_ROOT / "worldwide"      / "daily.py",         ["--force"]),
 ]
 
+SPOTIFY_HISTORY_BACKFILL = REPO_ROOT / "scripts" / "backfill_spotify_charts_history.py"
+
 CHART_AVAILABILITY: dict[str, str] = {
     "artists_global": "artist-global-daily",
     "worldwide": "regional-global-daily",  # probe via le chart global
@@ -1366,28 +1368,24 @@ def _run_best_day_since_post(
 
 def _run_backfill(args, env: dict[str, str]) -> int:
     env = _build_backfill_env(env)
-    yesterday = date.today() - timedelta(days=1)
-
-    if not args.backfill_from:
-        print("[FAIL] --backfill requiert --backfill-from DATE (ex: --backfill-from 2026-01-01)")
-        return 1
-    try:
-        backfill_from = datetime.strptime(args.backfill_from, "%Y-%m-%d").date()
-    except ValueError:
-        print(f"[FAIL] date invalide pour --backfill-from: {args.backfill_from}")
-        return 1
-
-    backfill_to = yesterday
-    if args.backfill_to:
-        try:
-            backfill_to = datetime.strptime(args.backfill_to, "%Y-%m-%d").date()
-        except ValueError:
-            print(f"[FAIL] date invalide pour --backfill-to: {args.backfill_to}")
-            return 1
-
-    if backfill_from > backfill_to:
-        print(f"[FAIL] --backfill-from ({backfill_from}) > --backfill-to ({backfill_to})")
-        return 1
+    start = args.backfill_from or "2017-01-01"
+    end = args.backfill_to or str(date.today() - timedelta(days=1))
+    cmd = [
+        sys.executable,
+        str(SPOTIFY_HISTORY_BACKFILL),
+        "--start",
+        start,
+        "--end",
+        end,
+        "--workers",
+        str(args.backfill_workers),
+    ]
+    if args.force:
+        cmd.append("--refetch-done")
+    if args.dry_run:
+        cmd.append("--dry-run")
+    print(f"[BACKFILL] historique Spotify Charts no-post: {start} -> {end}")
+    return subprocess.run(cmd, cwd=REPO_ROOT, env=env).returncode
 
     # Backfill : seulement worldwide (global/fr ne sont plus nécessaires sans posting)
     collect_runners = [
@@ -1577,10 +1575,11 @@ def main() -> int:
     parser.add_argument(
         "--backfill",
         action="store_true",
-        help="Mode rattrapage: collecte les dates manquantes sans poster.",
+        help="Mode rattrapage historique: depuis 2017-01-01 par defaut, sans poster, avec reprise JSON.",
     )
-    parser.add_argument("--backfill-from", metavar="DATE", help="Date de début du rattrapage (YYYY-MM-DD).")
-    parser.add_argument("--backfill-to", metavar="DATE", help="Date de fin du rattrapage (YYYY-MM-DD, défaut: hier).")
+    parser.add_argument("--backfill-from", metavar="DATE", help="Date de debut du rattrapage (YYYY-MM-DD, defaut: 2017-01-01).")
+    parser.add_argument("--backfill-to", metavar="DATE", help="Date de fin du rattrapage (YYYY-MM-DD, defaut: hier).")
+    parser.add_argument("--backfill-workers", type=int, default=2, help="Nombre de dates Spotify Charts a collecter en parallele (defaut: 2).")
     args, passthrough = parser.parse_known_args()
 
     forwarded = list(passthrough)

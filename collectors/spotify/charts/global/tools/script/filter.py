@@ -63,6 +63,17 @@ _TOKEN_TTL    = 50 * 60  # 50 minutes (conservateur)
 
 # ── API helpers ──────────────────────────────────────────────────────────────
 
+def _extract_track_id_from_meta(meta: dict) -> str | None:
+    track_uri = str(meta.get("trackUri") or meta.get("uri") or "").strip()
+    if track_uri.startswith("spotify:track:"):
+        return track_uri.split(":")[-1]
+    for key in ("trackId", "trackID", "id"):
+        value = str(meta.get(key) or "").strip()
+        if value:
+            return value
+    return None
+
+
 def _load_cached_token() -> str | None:
     """Retourne le token en cache s'il est encore valide, sinon None."""
     try:
@@ -162,6 +173,7 @@ def _parse_api_entries(data: dict) -> list[dict]:
         rows.append({
             "rank":          rank,
             "track_name":    track.strip(),
+            "track_id":      _extract_track_id_from_meta(meta),
             "artist_names":  artist_str.strip(),
             "streams":       streams,
             "previous_rank": clean_int(ced.get("previousRank")),
@@ -307,10 +319,24 @@ def get_songs_present_yesterday(chart_date, ts_history):
     if csv_path.exists():
         try:
             df = pd.read_csv(csv_path)
+            if "track_id" in df.columns:
+                return {
+                    str(row.get("track_id") or row.get("track_name") or "").strip()
+                    for _, row in df.iterrows()
+                    if str(row.get("track_id") or row.get("track_name") or "").strip()
+                }
             return set(df["track_name"].astype(str).tolist())
         except Exception:
             pass
     return {track for track, entries in ts_history.items() if yesterday in entries}
+
+
+def _history_key_from_row(row) -> str:
+    return str(row.get("track_id") or row.get("track_name") or "").strip()
+
+
+def _display_name_for_history_key(key: str, entry: dict) -> str:
+    return str(entry.get("track_name") or key)
 
 
 def update_total_days_file(ts_df, chart_date: str) -> None:
@@ -755,9 +781,10 @@ def scrape_chart_rows(chart_date: str) -> tuple[list[dict], str]:
 
 def _fmt_song_line(row, chart_date, ts_history) -> str:
     track = str(row["track_name"])
+    history_key = _history_key_from_row(row)
     dg = fmt_delta(row["rank"], row.get("previous_rank"), row.get("peak_rank"), row.get("total_days"))
     s = fmt_streams(row.get("streams"))
-    sd = fmt_streams_delta(track, row.get("streams"), chart_date, ts_history)
+    sd = fmt_streams_delta(history_key, row.get("streams"), chart_date, ts_history)
 
     line = f"#{int(row['rank'])} ({dg}) {track} | {s}"
     if sd:
@@ -770,7 +797,7 @@ def write_log(log, ts_df, chart_date, ts_history):
     log.log("")
     log.log("Spotify Global :")
 
-    present_today = set(ts_df["track_name"].astype(str).tolist())
+    present_today = {_history_key_from_row(row) for _, row in ts_df.iterrows()}
     dropped_out = get_songs_present_yesterday(chart_date, ts_history) - present_today
 
     for _, row in ts_df.sort_values("rank").iterrows():
@@ -779,7 +806,7 @@ def write_log(log, ts_df, chart_date, ts_history):
     for track in sorted(dropped_out):
         yesterday = str(parse_date(chart_date) - timedelta(days=1))
         entry = ts_history.get(track, {}).get(yesterday, {})
-        log.log(f"(OUT) {track} | last position #{entry.get('rank', '?')}")
+        log.log(f"(OUT) {_display_name_for_history_key(track, entry)} | last position #{entry.get('rank', '?')}")
 
 
 def _fmt_date(chart_date: str) -> str:
@@ -791,7 +818,7 @@ def generate_tweet(ts_df, chart_date, ts_history) -> str:
     header = f"📈 | Taylor Swift on Daily Global 🌍 Spotify charts ({_fmt_date(chart_date)}) :"
     lines = [header, ""]
 
-    present_today = set(ts_df["track_name"].astype(str).tolist())
+    present_today = {_history_key_from_row(row) for _, row in ts_df.iterrows()}
     dropped_out = get_songs_present_yesterday(chart_date, ts_history) - present_today
 
     for _, row in ts_df.sort_values("rank").iterrows():
@@ -800,7 +827,7 @@ def generate_tweet(ts_df, chart_date, ts_history) -> str:
     for track in sorted(dropped_out):
         yesterday = str(parse_date(chart_date) - timedelta(days=1))
         entry = ts_history.get(track, {}).get(yesterday, {})
-        lines.append(f"(OUT) {track} | last position #{entry.get('rank', '?')}")
+        lines.append(f"(OUT) {_display_name_for_history_key(track, entry)} | last position #{entry.get('rank', '?')}")
 
     full = "\n".join(lines)
     if len(full) <= 280:
@@ -842,6 +869,7 @@ def process_one(requested_date: str, ts_history, *, force: bool = False):
             row.get("streams"),
             previous_rank=row.get("previous_rank"),
             peak_rank=row.get("peak_rank"),
+            track_id=row.get("track_id"),
         )
     print(f"  [filtrage TS] {time.time() - t0:.1f}s — {len(ts_df)} chansons")
 
@@ -851,12 +879,13 @@ def process_one(requested_date: str, ts_history, *, force: bool = False):
         streak_list = []
         for _, row in ts_df.iterrows():
             track = str(row.get("track_name", ""))
+            history_key = str(row.get("track_id") or "").strip() or track
             td = clean_int(row.get("total_days"))
             st = clean_int(row.get("streak"))
             if td is None:
-                td = calculate_total_days(ts_history, track, actual_chart_date)
+                td = calculate_total_days(ts_history, history_key, actual_chart_date)
             if st is None:
-                st = calculate_streak(ts_history, track, actual_chart_date)
+                st = calculate_streak(ts_history, history_key, actual_chart_date)
             total_days_list.append(td)
             streak_list.append(st)
         ts_df["total_days"] = total_days_list
@@ -918,7 +947,7 @@ def _remove_date_from_archive_csv(chart_date: str) -> None:
     if not ARCHIVE_CSV.exists():
         return
     import csv as _csv
-    FIELDNAMES = ["date", "song_name", "rank", "streams", "previous_rank", "peak_rank", "total_days", "streak", "movement"]
+    FIELDNAMES = ["date", "track_id", "song_name", "rank", "streams", "previous_rank", "peak_rank", "total_days", "streak", "movement"]
     with ARCHIVE_CSV.open("r", newline="", encoding="utf-8-sig") as f:
         kept = [r for r in _csv.DictReader(f) if (r.get("date") or "").strip() != chart_date]
     with ARCHIVE_CSV.open("w", newline="", encoding="utf-8") as f:
@@ -948,19 +977,20 @@ def append_to_archive_csv(chart_date: str, ts_df, *, force: bool = False) -> Non
             return ""
         return val
 
-    _EXPECTED_HEADER = ["date", "song_name", "rank", "streams", "previous_rank", "peak_rank", "total_days", "streak", "movement"]
+    _EXPECTED_HEADER = ["date", "track_id", "song_name", "rank", "streams", "previous_rank", "peak_rank", "total_days", "streak", "movement"]
 
     # Migrate existing CSV if it's missing the "streak" column
     if ARCHIVE_CSV.exists():
         with ARCHIVE_CSV.open("r", encoding="utf-8", newline="") as f:
             reader = _csv.reader(f)
             existing_header = next(reader, [])
-        if "streak" not in existing_header:
+        if "streak" not in existing_header or "track_id" not in existing_header:
             rows_to_migrate = []
             with ARCHIVE_CSV.open("r", encoding="utf-8", newline="") as f:
                 dr = _csv.DictReader(f)
                 for r in dr:
                     r["streak"] = r.get("total_days", "")
+                    r.setdefault("track_id", "")
                     rows_to_migrate.append(r)
             with ARCHIVE_CSV.open("w", newline="", encoding="utf-8") as f:
                 w = _csv.writer(f)
@@ -977,6 +1007,7 @@ def append_to_archive_csv(chart_date: str, ts_df, *, force: bool = False) -> Non
             w.writerow(
                 [
                     chart_date,
+                    _v(row.get("track_id")),
                     _v(row.get("track_name")),
                     _v(row.get("rank")),
                     _v(row.get("streams")),
@@ -1005,6 +1036,7 @@ def rebuild_from_ts_csvs(root: Path) -> dict:
                     row.get("streams"),
                     previous_rank=row.get("previous_rank"),
                     peak_rank=row.get("peak_rank"),
+                    track_id=row.get("track_id"),
                 )
         except Exception as e:
             print(f"Ignore {csv_file}: {e}")

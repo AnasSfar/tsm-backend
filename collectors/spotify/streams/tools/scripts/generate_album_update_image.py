@@ -1741,11 +1741,21 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
     def note_title(title: str) -> str:
         return _shorten_title(title).replace("(Taylor's Version)", "(TV)")
 
-    titles = f'"{note_title(best_day_rows[0]["title"])}"'
-    extra = len(best_day_rows) - 1
-    suffix = f" and {extra} more" if extra > 0 else ""
-    plural = "s" if len(best_day_rows) != 1 else ""
-    note = f"{titles}{suffix} earned best-day-since record{plural}."
+    def note_rank(row: dict) -> tuple[int, int]:
+        days_since = row.get("days_since")
+        if days_since is None:
+            best_since = row.get("best_day_since")
+            if isinstance(best_since, str) and re.match(r"\d{4}-\d{2}-\d{2}$", best_since):
+                days_since = (date_cls.fromisoformat(target_date) - date_cls.fromisoformat(best_since)).days + 1
+        return (int(days_since or 0), int(row.get("daily_streams") or 0))
+
+    best_row = max(best_day_rows, key=note_rank)
+    best_since = best_row.get("best_day_since")
+    if isinstance(best_since, str) and re.match(r"\d{4}-\d{2}-\d{2}$", best_since):
+        best_since_text = date_cls.fromisoformat(best_since).strftime("%m/%d/%Y")
+    else:
+        best_since_text = str(best_since or "before 2025")
+    note = f'"{note_title(best_row["title"])}" had its best day since {best_since_text}.'
     marker = "\n\nSee full update here"
     if marker in tweet:
         return tweet.replace(marker, f"\n\n{note}{marker}", 1)

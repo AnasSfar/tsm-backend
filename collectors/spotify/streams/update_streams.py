@@ -163,11 +163,8 @@ HILL_MIN_WORKERS   = 2
 HILL_INITIAL       = 9      # point de départ (was 6 — start near max immediately)
 
 PROBE_REQUIRED_UPDATED = 10  # non-extra (chart_extra=False) tracks that must show a real update
-PROBE_FORCE_TOKEN_REFRESH_AFTER_ZERO_UPDATES = 3
-PROBE_MAX_RETRIES_BEFORE_FULL_RUN = 30
-
 PENDING_RETRY_SLEEP_SECONDS = 20
-MAX_PENDING_RETRY_ROUNDS = 15
+EXTRA_PENDING_RETRY_ROUNDS_BEFORE_ZERO = 5
 INFINITE_RETRY_PREVIOUS_DAY_TOP_N = 70
 POST_BETWEEN_STREAMS_POSTS_SECONDS = 0
 INCREMENTAL_PUBLISH_ON_UPDATE = False
@@ -222,7 +219,7 @@ def save_known_stuck_pending_tracks(tracks: dict[str, dict]) -> None:
     KNOWN_STUCK_PENDING_PATH.parent.mkdir(parents=True, exist_ok=True)
     payload = {
         "updated_at": get_scrape_date_str(),
-        "retry_limit": MAX_PENDING_RETRY_ROUNDS,
+        "extra_retry_limit_after_non_extra_done": EXTRA_PENDING_RETRY_ROUNDS_BEFORE_ZERO,
         "tracks": dict(sorted(tracks.items())),
     }
     KNOWN_STUCK_PENDING_PATH.write_text(
@@ -2364,27 +2361,15 @@ def main():
             if api_probe is not None:
                 _print_probe(api_probe)
                 probe_retry_count = 0
-                zero_update_probe_count = 1 if api_probe.get("updated_non_extra_probes", 0) == 0 else 0
                 while not api_probe["can_start_full_run"]:
-                    if probe_retry_count >= PROBE_MAX_RETRIES_BEFORE_FULL_RUN:
-                        print()
-                        print(
-                            "Probe did not detect an update after "
-                            f"{probe_retry_count} retries; starting full run anyway."
-                        )
-                        break
-                    if zero_update_probe_count >= PROBE_FORCE_TOKEN_REFRESH_AFTER_ZERO_UPDATES:
-                        print()
-                        print(
-                            "Probe still sees zero updates; forcing a fresh Spotify token/session "
-                            "before retrying."
-                        )
-                        token_mgr.mark_expired()
-                        zero_update_probe_count = 0
                     probe_retry_count += 1
                     print()
                     print("Spotify playcount API does not appear to expose the next daily totals yet.")
-                    print("Retrying in 2 seconds...")
+                    print(
+                        f"Retrying probe in 2 seconds until "
+                        f"{PROBE_REQUIRED_UPDATED} non-extra track(s) update "
+                        f"(attempt {probe_retry_count})."
+                    )
                     time.sleep(2)
                     probe_tracks = build_probe_tracks(tracks)
                     if not probe_tracks:
@@ -2400,10 +2385,6 @@ def main():
                         previous_stats_date=get_previous_stats_date_str(stats_date),
                     )
                     _print_probe(api_probe)
-                    if api_probe.get("updated_non_extra_probes", 0) == 0:
-                        zero_update_probe_count += 1
-                    else:
-                        zero_update_probe_count = 0
                 if api_probe.get("can_start_full_run"):
                     probe_confirmed_full_run = True
                     confirmed_probe = api_probe
@@ -2489,6 +2470,7 @@ def main():
         script_dir=_SCRIPT_DIR,
         stats_date=stats_date,
         track_ids=[t["track_id"] for t in tracks if not t.get("chart_extra")],
+        export_web_data=export_web_data,
         load_history_track_ids_for_date=load_history_track_ids_for_date,
         spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
         log_mode=LOG_MODE,
@@ -2509,11 +2491,9 @@ def main():
 
     tracks_by_id = {t["track_id"]: t for t in tracks}
 
-    def _complete_persistent_same_total_extra(track_id: str) -> bool:
+    def _complete_same_total_extra_as_zero(track_id: str, reason: str) -> bool:
         track = tracks_by_id.get(track_id)
         if not track or not track.get("chart_extra"):
-            return False
-        if track_id not in previous_same_total_pending_ids:
             return False
 
         result = next((r for r in summary.get("results", []) if r and r.get("track_id") == track_id), None)
@@ -2525,25 +2505,26 @@ def main():
         if total is None or previous_total is None:
             return False
         try:
-            if int(total) != int(previous_total):
-                return False
+            total_int = int(total)
+            previous_int = int(previous_total)
         except (TypeError, ValueError):
+            return False
+        if total_int != previous_int:
             return False
 
         if write_history and not dry_run_mode:
             history_index = summary.get("history_index")
             if history_index is not None:
-                history_index.append(stats_date, track_id, int(total), 0)
+                history_index.append(stats_date, track_id, total_int, 0)
             else:
-                append_history_row([stats_date, track_id, int(total), 0])
+                append_history_row([stats_date, track_id, total_int, 0])
 
         result["status"] = "updated"
         result["daily_streams"] = 0
-        result["reason"] = "persistent_same_total_extra_zero"
+        result["reason"] = reason
         summary["updated_this_run"] = int(summary.get("updated_this_run", 0)) + 1
         summary["pending_this_run"] = max(int(summary.get("pending_this_run", 0)) - 1, 0)
         summary["done_tracks"] = int(summary.get("done_tracks", 0)) + 1
-        summary["all_done"] = summary["pending_this_run"] == 0
         all_updated_track_ids.add(track_id)
         return True
 
@@ -2582,27 +2563,11 @@ def main():
 
     retry_round = 0
     track_retry_counts: dict[str, int] = {}
-    exhausted_blocking_track_ids: set[str] = set()
+    extra_retry_counts_after_non_extra_done: dict[str, int] = {}
     previous_same_total_pending_ids = load_previous_same_total_pending_track_ids(stats_date)
     known_stuck_pending_tracks = load_known_stuck_pending_tracks()
     if known_stuck_pending_tracks:
         print(f"Known stuck pending list: {len(known_stuck_pending_tracks)} track(s).")
-    if previous_same_total_pending_ids:
-        current_previous_same_total_ids = {
-            r["track_id"]
-            for r in summary.get("results", [])
-            if r
-            and r.get("status") == "pending"
-            and r.get("reason") == "same_total"
-            and r.get("track_id") in previous_same_total_pending_ids
-        }
-        if current_previous_same_total_ids:
-            for tid in current_previous_same_total_ids:
-                track_retry_counts[tid] = max(track_retry_counts.get(tid, 0), MAX_PENDING_RETRY_ROUNDS - 1)
-            print(
-                f"{len(current_previous_same_total_ids)} pending same-total track(s) were already "
-                f"unchanged yesterday; counting that prior persistence toward the retry cap."
-            )
     previous_pending_signature = {
         (r.get("track_id"), r.get("streams"), r.get("reason"))
         for r in summary.get("results", [])
@@ -2623,44 +2588,69 @@ def main():
         for tid in all_pending_ids:
             track_retry_counts[tid] = track_retry_counts.get(tid, 0) + 1
 
-        # Unchanged totals are ambiguous: do not publish them as zero streams.
-        # After the retry cap, keep them pending; non-extra completeness gates
-        # final posting, while extras may continue in the background.
-        exhausted_ids = {
-            tid for tid, count in track_retry_counts.items()
-            if count >= MAX_PENDING_RETRY_ROUNDS
+        non_extra_pending_ids_now = {
+            tid for tid in all_pending_ids
+            if tid in tracks_by_id and not tracks_by_id[tid].get("chart_extra")
         }
-        persistent_zero_ids: set[str] = set()
-        if exhausted_ids:
-            persistent_zero_ids = {
-                tid for tid in exhausted_ids
-                if _complete_persistent_same_total_extra(tid)
+        extra_pending_ids_now = {
+            tid for tid in all_pending_ids
+            if tid in tracks_by_id and tracks_by_id[tid].get("chart_extra")
+        }
+
+        if not non_extra_pending_ids_now and extra_pending_ids_now:
+            yesterday_persistent_ids = extra_pending_ids_now & previous_same_total_pending_ids
+            new_persistent_ids = extra_pending_ids_now - previous_same_total_pending_ids
+            retry_exhausted_new_ids = {
+                tid for tid in new_persistent_ids
+                if extra_retry_counts_after_non_extra_done.get(tid, 0) >= EXTRA_PENDING_RETRY_ROUNDS_BEFORE_ZERO
             }
-            if persistent_zero_ids:
+            zero_ids = yesterday_persistent_ids | retry_exhausted_new_ids
+            completed_zero_ids = {
+                tid
+                for tid in zero_ids
+                if _complete_same_total_extra_as_zero(tid, "persistent_same_total_extra_zero")
+            }
+            if completed_zero_ids:
                 titles = sorted(
-                    tracks_by_id[tid]["title"] for tid in persistent_zero_ids if tid in tracks_by_id
+                    tracks_by_id[tid]["title"] for tid in completed_zero_ids if tid in tracks_by_id
                 )
                 print(
-                    f"{len(persistent_zero_ids)} extra same-total track(s) persisted from yesterday; "
-                    f"writing daily=0 after {MAX_PENDING_RETRY_ROUNDS} retries: {', '.join(titles)}"
+                    f"{len(completed_zero_ids)} extra same-total track(s) closed with daily=0 "
+                    f"after non-extra completion: {', '.join(titles)}"
                 )
-            blocking_exhausted_ids = exhausted_ids - persistent_zero_ids
-            if blocking_exhausted_ids:
+
+            all_pending_ids -= completed_zero_ids
+            extra_pending_ids_now -= completed_zero_ids
+            summary["all_done"] = summary.get("pending_this_run", 0) == 0
+
+            if not all_pending_ids:
+                print("All pending tracks are resolved.")
+                break
+
+            waiting_new_extra_ids = extra_pending_ids_now - previous_same_total_pending_ids
+            if waiting_new_extra_ids:
+                waiting_counts = sorted(
+                    extra_retry_counts_after_non_extra_done.get(tid, 0)
+                    for tid in waiting_new_extra_ids
+                )
                 print(
-                    f"{len(blocking_exhausted_ids)} pending unchanged-total track(s) reached "
-                    f"{MAX_PENDING_RETRY_ROUNDS} retries; keeping them open."
+                    f"{len(waiting_new_extra_ids)} new extra same-total track(s) still pending after "
+                    f"non-extra completion; retry counts {waiting_counts} / "
+                    f"{EXTRA_PENDING_RETRY_ROUNDS_BEFORE_ZERO}."
                 )
-                exhausted_blocking_track_ids.update(blocking_exhausted_ids)
-        pending_retry_ids = (
-            all_pending_ids
-            - infinite_retry_track_ids
-            - exhausted_blocking_track_ids
-            - persistent_zero_ids
-        )
+
+        pending_retry_ids = set(all_pending_ids)
 
         if not pending_retry_ids:
             print("No pending track IDs left to retry; stopping pending retries.")
             break
+
+        if not non_extra_pending_ids_now:
+            for tid in pending_retry_ids:
+                if tid in tracks_by_id and tracks_by_id[tid].get("chart_extra") and tid not in previous_same_total_pending_ids:
+                    extra_retry_counts_after_non_extra_done[tid] = (
+                        extra_retry_counts_after_non_extra_done.get(tid, 0) + 1
+                    )
 
         if (
             retry_round > 0
@@ -2727,50 +2717,6 @@ def main():
             )
         previous_pending_signature = current_pending_signature
 
-    # Notify if tracks are still pending after exhausting all retry rounds
-    if not dry_run_mode and not local_test_mode and not debug_daily_mode and track_retry_counts:
-        exhausted_after_all = {
-            tid for tid, count in track_retry_counts.items()
-            if count >= MAX_PENDING_RETRY_ROUNDS
-        }
-        still_pending = {
-            r["track_id"] for r in summary.get("results", [])
-            if r and r.get("status") == "pending" and r.get("track_id")
-        } & exhausted_after_all
-        if still_pending:
-            pending_results = [
-                r for r in summary.get("results", [])
-                if r and r.get("track_id") in still_pending
-            ]
-            if remember_known_stuck_pending_tracks(
-                known_stuck_pending_tracks,
-                pending_results=pending_results,
-                stats_date=stats_date,
-            ):
-                save_known_stuck_pending_tracks(known_stuck_pending_tracks)
-            pending_titles = [
-                r["title"] for r in summary.get("results", [])
-                if r and r.get("track_id") in still_pending
-            ]
-            tracks_list = "\n".join(f"• {t}" for t in sorted(pending_titles))
-            retry_limits = sorted(
-                {
-                    track_retry_counts.get(tid, MAX_PENDING_RETRY_ROUNDS)
-                    for tid in still_pending
-                }
-            )
-            retry_limit_label = "/".join(str(limit) for limit in retry_limits)
-            notify(
-                NTFY_TOPIC,
-                f"{len(still_pending)} track(s) still pending after {retry_limit_label} retries ({stats_date}):\n{tracks_list}",
-                title="Taylor Swift - Tracks stuck pending",
-                tags="warning,hourglass_flowing_sand",
-            )
-
-            print(
-                "Keeping exhausted pending track(s) open; unchanged totals are not "
-                "written as today's completed stream rows."
-            )
 
     current_pending_ids = {
         r["track_id"] for r in summary.get("results", [])
@@ -2784,25 +2730,17 @@ def main():
         tid for tid in current_pending_ids
         if tid in tracks_by_id and tracks_by_id[tid].get("chart_extra")
     }
-    if extra_pending_ids and not dry_run_mode and not local_test_mode and not debug_daily_mode:
-        infinite_retry_track_ids.update(extra_pending_ids)
-        print(
-            f"Keeping {len(extra_pending_ids)} extra pending track(s) in open retry mode; "
-            "final posting remains gated by non-extra completeness only."
-        )
     if non_extra_pending_ids and not dry_run_mode and not local_test_mode and not debug_daily_mode:
         print(
             f"{len(non_extra_pending_ids)} non-extra pending track(s) remain; "
-            "the completeness check will keep retrying them before final posting."
+            "posting remains blocked."
         )
-    infinite_retry_track_ids &= current_pending_ids
-    exhausted_blocking_track_ids &= current_pending_ids
-    exhausted_blocking_track_ids -= (extra_pending_ids | non_extra_pending_ids)
-    blocking_pending_ids = (
-        current_pending_ids
-        - non_extra_pending_ids
-        - infinite_retry_track_ids
-    ) | exhausted_blocking_track_ids
+    if extra_pending_ids and not dry_run_mode and not local_test_mode and not debug_daily_mode:
+        print(
+            f"{len(extra_pending_ids)} extra pending track(s) remain after the extra retry rule; "
+            "posting remains blocked."
+        )
+    blocking_pending_ids = set(current_pending_ids)
     if blocking_pending_ids and not dry_run_mode and not local_test_mode and not debug_daily_mode:
         print(
             f"Blocking final export/post: {len(blocking_pending_ids)} pending track(s) are still unresolved."
@@ -2844,12 +2782,7 @@ def main():
         return
 
     if not blocking_pending_ids:
-        if current_pending_ids:
-            print(
-                f"All non-blocking pending tracks are handled; continuing with post/finalization before retrying {len(current_pending_ids)} extra track(s)."
-            )
-        else:
-            print("All target tracks updated.")
+        print("All target tracks updated or explicitly closed.")
         if normal_lock_mode:
             _write_daily_lock(stats_date, STREAMS_SCRAPED_LOCK_NAME, {
                 "total_tracks": summary.get("total_tracks"),
