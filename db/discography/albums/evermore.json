@@ -4,408 +4,6 @@
   "track_count": 21,
   "sections": [
     {
-      "section": "remixes",
-      "chart_extra": true,
-      "track_count": 2,
-      "tracks": [
-        {
-          "title": "willow - lonely witch version",
-          "url": "https://open.spotify.com/intl-fr/track/0U0etHtpARihOUUY8Akc7y",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 1,
-          "base_title": "willow",
-          "album": "evermore",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "willow - lonely witch version",
-          "song_family": "willow",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
-          "historical_track_ids": [
-            "77d7q9TNbsIDmRTDPkPv3L"
-          ],
-          "release_date": "2020-12-15T00:00:00Z",
-          "genres": [
-            "folk pop",
-            "folk",
-            "singer-songwriter"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "folk pop": 3.0,
-            "folk": 2.0,
-            "singer-songwriter": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "folk pop",
-              "folk",
-              "singer-songwriter"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "folk pop",
-              "chamber folk",
-              "singer-songwriter",
-              "folk",
-              "indie folk",
-              "pop",
-              "overrated",
-              "indie",
-              "indie pop",
-              "alternative"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "willow"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:willow",
-          "filter_tags": [
-            "solo",
-            "standalone",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "willow - moonlit witch version",
-          "url": "https://open.spotify.com/intl-fr/track/5XkJj6sV2XLMaURdmdXgNx",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 2,
-          "base_title": "willow",
-          "album": "evermore",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "willow - moonlit witch version",
-          "song_family": "willow",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273ec07f0fc562d46804df394b4",
-          "historical_track_ids": [
-            "5F7hpFKLmWgMHGxQuwssuv"
-          ],
-          "release_date": "2020-12-16T00:00:00Z",
-          "genres": [
-            "folk pop",
-            "folk",
-            "singer-songwriter"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "folk pop": 3.0,
-            "folk": 2.0,
-            "singer-songwriter": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "folk pop",
-              "folk",
-              "singer-songwriter"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "folk pop",
-              "chamber folk",
-              "singer-songwriter",
-              "folk",
-              "indie folk",
-              "pop",
-              "overrated",
-              "indie",
-              "indie pop",
-              "alternative"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "willow"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:willow",
-          "filter_tags": [
-            "solo",
-            "standalone",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type",
-            "alternate_version": "medium:type_or_title"
-          }
-        }
-      ]
-    },
-    {
-      "section": "deluxe_edition",
-      "track_count": 2,
-      "chart_extra": false,
-      "tracks": [
-        {
-          "title": "right where you left me - bonus track",
-          "url": "https://open.spotify.com/intl-fr/track/3zwMVvkBe2qIKDObWgXw4N",
-          "type": "alternate_version",
-          "edition": "deluxe",
-          "display_section": "deluxe edition",
-          "display_order": 1,
-          "base_title": "right where you left me - bonus track",
-          "album": "evermore",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "right where you left me - bonus track",
-          "song_family": "right_where_you_left_me_bonus_track",
-          "version_tag": "deluxe__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27390fd9741e1838115cd90b3b6",
-          "historical_track_ids": [],
-          "release_date": "2021-01-07T00:00:00Z",
-          "genres": [
-            "folk pop",
-            "country",
-            "folk"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "folk pop": 3.0,
-            "country": 2.0,
-            "folk": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "folk pop",
-              "country",
-              "folk"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "folk pop",
-              "country",
-              "folk-pop",
-              "folk",
-              "country pop",
-              "evermore",
-              "female vocalist",
-              "pop",
-              "singer-songwriter",
-              "alt pop"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "right where you left me - bonus track"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:right_where_you_left_me_bonus_track",
-          "filter_tags": [
-            "solo",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "it's time to go - bonus track",
-          "url": "https://open.spotify.com/intl-fr/track/1kdWw77ZpYOkhxeuhzU1j6",
-          "type": "alternate_version",
-          "edition": "deluxe",
-          "display_section": "deluxe edition",
-          "display_order": 2,
-          "base_title": "it's time to go - bonus track",
-          "album": "evermore",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "it's time to go - bonus track",
-          "song_family": "it_s_time_to_go_bonus_track",
-          "version_tag": "deluxe__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27390fd9741e1838115cd90b3b6",
-          "historical_track_ids": [],
-          "release_date": "2021-01-07T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:it_s_time_to_go_bonus_track",
-          "filter_tags": [
-            "solo",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "alternate_version": "medium:type_or_title"
-          }
-        }
-      ]
-    },
-    {
-      "section": "remixes",
-      "track_count": 2,
-      "chart_extra": true,
-      "tracks": [
-        {
-          "title": "willow - 90's trend remix",
-          "url": "https://open.spotify.com/intl-fr/track/77p4fRpoeiZMtUy3P9kN21",
-          "type": "remix",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 1,
-          "base_title": "willow",
-          "album": "evermore",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "willow - 90's trend remix",
-          "song_family": "willow",
-          "version_tag": "remix",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27348ea2c0fbc6682c6d10d91aa",
-          "historical_track_ids": [],
-          "release_date": "2021-06-14T00:00:00Z",
-          "genres": [
-            "folk pop",
-            "folk",
-            "singer-songwriter"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "folk pop": 3.0,
-            "folk": 2.0,
-            "singer-songwriter": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "folk pop",
-              "folk",
-              "singer-songwriter"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "folk pop",
-              "chamber folk",
-              "singer-songwriter",
-              "folk",
-              "indie folk",
-              "pop",
-              "overrated",
-              "indie",
-              "indie pop",
-              "alternative"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "willow"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:willow",
-          "filter_tags": [
-            "solo",
-            "remix"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "remix": "high:type_or_title"
-          }
-        },
-        {
-          "title": "willow - dancing witch version (Elvira remix)",
-          "url": "https://open.spotify.com/intl-fr/track/2NnrAdjE9cPdMklonMBuAv",
-          "type": "remix",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 2,
-          "base_title": "willow",
-          "album": "evermore",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "willow - dancing witch version (Elvira remix)",
-          "song_family": "willow",
-          "version_tag": "remix",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273e141efa4999ddb4b52512a7c",
-          "historical_track_ids": [
-            "2Ta5c5Z6DvM8GX0U1polSo"
-          ],
-          "release_date": "2020-12-13T00:00:00Z",
-          "genres": [
-            "folk pop",
-            "folk",
-            "singer-songwriter"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "folk pop": 3.0,
-            "folk": 2.0,
-            "singer-songwriter": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "folk pop",
-              "folk",
-              "singer-songwriter"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "folk pop",
-              "chamber folk",
-              "singer-songwriter",
-              "folk",
-              "indie folk",
-              "pop",
-              "overrated",
-              "indie",
-              "indie pop",
-              "alternative"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "willow"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:willow",
-          "filter_tags": [
-            "solo",
-            "remix"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "remix": "high:type_or_title"
-          }
-        }
-      ]
-    },
-    {
       "section": "standard_edition",
       "track_count": 15,
       "chart_extra": false,
@@ -1382,6 +980,408 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
+          }
+        }
+      ]
+    },
+    {
+      "section": "deluxe_edition",
+      "track_count": 2,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "right where you left me - bonus track",
+          "url": "https://open.spotify.com/intl-fr/track/3zwMVvkBe2qIKDObWgXw4N",
+          "type": "alternate_version",
+          "edition": "deluxe",
+          "display_section": "deluxe edition",
+          "display_order": 1,
+          "base_title": "right where you left me - bonus track",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "right where you left me - bonus track",
+          "song_family": "right_where_you_left_me_bonus_track",
+          "version_tag": "deluxe__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27390fd9741e1838115cd90b3b6",
+          "historical_track_ids": [],
+          "release_date": "2021-01-07T00:00:00Z",
+          "genres": [
+            "folk pop",
+            "country",
+            "folk"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk pop": 3.0,
+            "country": 2.0,
+            "folk": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk pop",
+              "country",
+              "folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk pop",
+              "country",
+              "folk-pop",
+              "folk",
+              "country pop",
+              "evermore",
+              "female vocalist",
+              "pop",
+              "singer-songwriter",
+              "alt pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "right where you left me - bonus track"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:right_where_you_left_me_bonus_track",
+          "filter_tags": [
+            "solo",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "it's time to go - bonus track",
+          "url": "https://open.spotify.com/intl-fr/track/1kdWw77ZpYOkhxeuhzU1j6",
+          "type": "alternate_version",
+          "edition": "deluxe",
+          "display_section": "deluxe edition",
+          "display_order": 2,
+          "base_title": "it's time to go - bonus track",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "it's time to go - bonus track",
+          "song_family": "it_s_time_to_go_bonus_track",
+          "version_tag": "deluxe__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27390fd9741e1838115cd90b3b6",
+          "historical_track_ids": [],
+          "release_date": "2021-01-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:it_s_time_to_go_bonus_track",
+          "filter_tags": [
+            "solo",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "alternate_version": "medium:type_or_title"
+          }
+        }
+      ]
+    },
+    {
+      "section": "remixes",
+      "track_count": 2,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "willow - 90's trend remix",
+          "url": "https://open.spotify.com/intl-fr/track/77p4fRpoeiZMtUy3P9kN21",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "willow",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "willow - 90's trend remix",
+          "song_family": "willow",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27348ea2c0fbc6682c6d10d91aa",
+          "historical_track_ids": [],
+          "release_date": "2021-06-14T00:00:00Z",
+          "genres": [
+            "folk pop",
+            "folk",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk pop",
+              "chamber folk",
+              "singer-songwriter",
+              "folk",
+              "indie folk",
+              "pop",
+              "overrated",
+              "indie",
+              "indie pop",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "willow"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:willow",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
+        },
+        {
+          "title": "willow - dancing witch version (Elvira remix)",
+          "url": "https://open.spotify.com/intl-fr/track/2NnrAdjE9cPdMklonMBuAv",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "willow",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "willow - dancing witch version (Elvira remix)",
+          "song_family": "willow",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e141efa4999ddb4b52512a7c",
+          "historical_track_ids": [
+            "2Ta5c5Z6DvM8GX0U1polSo"
+          ],
+          "release_date": "2020-12-13T00:00:00Z",
+          "genres": [
+            "folk pop",
+            "folk",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk pop",
+              "chamber folk",
+              "singer-songwriter",
+              "folk",
+              "indie folk",
+              "pop",
+              "overrated",
+              "indie",
+              "indie pop",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "willow"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:willow",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
+        }
+      ]
+    },
+    {
+      "section": "remixes",
+      "chart_extra": true,
+      "track_count": 2,
+      "tracks": [
+        {
+          "title": "willow - lonely witch version",
+          "url": "https://open.spotify.com/intl-fr/track/0U0etHtpARihOUUY8Akc7y",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "willow",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "willow - lonely witch version",
+          "song_family": "willow",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": [
+            "77d7q9TNbsIDmRTDPkPv3L"
+          ],
+          "release_date": "2020-12-15T00:00:00Z",
+          "genres": [
+            "folk pop",
+            "folk",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk pop",
+              "chamber folk",
+              "singer-songwriter",
+              "folk",
+              "indie folk",
+              "pop",
+              "overrated",
+              "indie",
+              "indie pop",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "willow"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:willow",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "willow - moonlit witch version",
+          "url": "https://open.spotify.com/intl-fr/track/5XkJj6sV2XLMaURdmdXgNx",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "willow",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "willow - moonlit witch version",
+          "song_family": "willow",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273ec07f0fc562d46804df394b4",
+          "historical_track_ids": [
+            "5F7hpFKLmWgMHGxQuwssuv"
+          ],
+          "release_date": "2020-12-16T00:00:00Z",
+          "genres": [
+            "folk pop",
+            "folk",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk pop",
+              "chamber folk",
+              "singer-songwriter",
+              "folk",
+              "indie folk",
+              "pop",
+              "overrated",
+              "indie",
+              "indie pop",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "willow"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:willow",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "alternate_version": "medium:type_or_title"
           }
         }
       ]

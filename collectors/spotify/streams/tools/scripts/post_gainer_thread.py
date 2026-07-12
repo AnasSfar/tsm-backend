@@ -32,6 +32,12 @@ def _fmt_pct(value: float) -> str:
     return f"+{value:.1f}%"
 
 
+def _ordinal(n: int) -> str:
+    if 11 <= (n % 100) <= 13:
+        return f"{n}th"
+    return f"{n}{['th','st','nd','rd','th','th','th','th','th','th'][n % 10]}"
+
+
 _EXCLUDED_TITLE_MARKERS = (
     "commentary",
     "track by track",
@@ -139,12 +145,13 @@ def _pick_gainers(target_date: str, *, compare_days: int, limit: int, min_baseli
 
 def _build_tweet(row: dict, *, rank: int, target_date: str, period: str) -> str:
     track = row["track"]
-    date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    d = datetime.strptime(target_date, "%Y-%m-%d").date()
+    date_fmt = f"{d.strftime('%A')}, {d.strftime('%B')} {_ordinal(d.day)}, {d.year}"
     emoji = album_emoji(track.get("album"))
     title = track["title"]
     max_days = history_store.days_covered_by_row(row["track_id"], target_date) if period == "daily" else 1
-    when = "yesterday" if max_days <= 1 else f"over the last {max_days} days"
-    compare_label = when if period == "daily" else "last week"
+    when = f"on {date_fmt}"
+    compare_label = "the previous day" if period == "daily" else "last week"
     song_url = f"https://thetsmuseum.app/songs/{row['track_id']}"
     return (
         f'{emoji} #{rank} "{title}" was one of Taylor Swift\'s biggest {period} gainers '

@@ -4,6 +4,1258 @@
   "track_count": 22,
   "sections": [
     {
+      "section": "standard_edition_tv",
+      "chart_extra": false,
+      "track_count": 21,
+      "tracks": [
+        {
+          "title": "Welcome To New York (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/1hR8BSuEqPCCZfv93zzzz9",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 1,
+          "base_title": "Welcome To New York",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Welcome To New York",
+          "song_family": "welcome_to_new_york",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
+          "historical_track_ids": [],
+          "release_date": "2023-10-26T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "female vocalists",
+              "electropop",
+              "new york",
+              "love at first listen",
+              "New York City",
+              "taylor swift",
+              "NYC",
+              "synth-pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Welcome To New York"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:welcome_to_new_york",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Blank Space (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/45wMBGri1PORPjM9PwFfrS",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 2,
+          "base_title": "Blank Space",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Blank Space",
+          "song_family": "blank_space",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
+          "historical_track_ids": [],
+          "release_date": "2023-10-26T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {
+            "lastfm": "Blank Space"
+          },
+          "genre_errors": {
+            "lastfm": "LASTFM_API_KEY missing"
+          },
+          "genre_canonical_key": "family:blank_space",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Style (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/1hjRhYpWyqDpPahmSlUTlc",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 3,
+          "base_title": "Style",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Style",
+          "song_family": "style",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
+          "historical_track_ids": [],
+          "release_date": "2023-10-26T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "pop rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "pop rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "pop rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "taylor swift",
+              "love at first listen",
+              "1989",
+              "pop rock",
+              "female vocalists",
+              "max martin",
+              "Funk-Pop",
+              "2015"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Style"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:style",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Out Of The Woods (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/045ZeOHPIzhxxsm8bq5kyE",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 4,
+          "base_title": "Out Of The Woods",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Out Of The Woods",
+          "song_family": "out_of_the_woods",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
+          "historical_track_ids": [],
+          "release_date": "2023-10-26T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "pop rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "pop rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "pop rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "love at first listen",
+              "synthpop",
+              "female vocalists",
+              "1989",
+              "taylor swift",
+              "amazing",
+              "synth-pop",
+              "2014",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Out Of The Woods"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:out_of_the_woods",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "All You Had To Do Was Stay (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/6GXgd1BPD9bUpqw5AntGV5",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 5,
+          "base_title": "All You Had To Do Was Stay",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "All You Had To Do Was Stay",
+          "song_family": "all_you_had_to_do_was_stay",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
+          "historical_track_ids": [],
+          "release_date": "2023-10-26T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:all_you_had_to_do_was_stay",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Shake It Off (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/3pv7Q5v2dpdefwdWIvE7yH",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 6,
+          "base_title": "Shake It Off",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Shake It Off",
+          "song_family": "shake_it_off",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
+          "historical_track_ids": [],
+          "release_date": "2023-10-26T00:00:00Z",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "2014",
+              "haters gonna hate",
+              "taylor swift",
+              "love at first listen",
+              "dance",
+              "happy",
+              "1989",
+              "shake it off",
+              "best of 2014"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Shake It Off"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:shake_it_off",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "I Wish You Would (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/43y1WpBdnEy5TR9aZoSQL9",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 7,
+          "base_title": "I Wish You Would",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Wish You Would",
+          "song_family": "i_wish_you_would",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
+          "historical_track_ids": [],
+          "release_date": "2023-10-26T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_wish_you_would",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Bad Blood (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/64FzgoLZ3oXu2SriZblHic",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 8,
+          "base_title": "Bad Blood",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Bad Blood",
+          "song_family": "bad_blood",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
+          "historical_track_ids": [],
+          "release_date": "2023-10-26T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "Chupa essa Katy perry",
+              "love at first listen",
+              "taylor swift",
+              "2015",
+              "synthpop",
+              "singer-songwriter",
+              "shade",
+              "BAD BLOOD",
+              "2010s"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Bad Blood"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:bad_blood",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Wildest Dreams (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/1K39ty6o1sHwwlZwO6a7wK",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 9,
+          "base_title": "Wildest Dreams",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Wildest Dreams",
+          "song_family": "wildest_dreams",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
+          "historical_track_ids": [],
+          "release_date": "2023-10-26T00:00:00Z",
+          "genres": [
+            "pop",
+            "dream pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "dream pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dream pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "dream pop",
+              "max martin",
+              "love at first listen",
+              "lana del rey -ish",
+              "synthpop",
+              "10s",
+              "singer-songwriter",
+              "taylor swift",
+              "epic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Wildest Dreams"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:wildest_dreams",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "How You Get The Girl (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/733OhaXQIHY7BKtY3vnSkn",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 10,
+          "base_title": "How You Get The Girl",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "How You Get The Girl",
+          "song_family": "how_you_get_the_girl",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
+          "historical_track_ids": [],
+          "release_date": "2023-10-27T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:how_you_get_the_girl",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "This Love (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/4WBEj8TeGtRPNJdOmT3WJW",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 11,
+          "base_title": "This Love",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "This Love",
+          "song_family": "this_love",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
+          "historical_track_ids": [],
+          "release_date": "2023-10-27T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:this_love",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "I Know Places (Taylor's Version)",
+          "url": "https://open.spotify.com/track/1ULabO0PEsdJekqVH6G10G",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 12,
+          "base_title": "I Know Places",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Know Places",
+          "song_family": "i_know_places",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
+          "historical_track_ids": [],
+          "release_date": "2023-10-27T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_know_places",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Clean (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/0lKUBmEyQfzsQHozyeXzES",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 13,
+          "base_title": "Clean",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Clean",
+          "song_family": "clean",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
+          "historical_track_ids": [],
+          "release_date": "2023-10-27T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:clean",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Wonderland (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/6HRsJu8vcnzYDN4t0570FY",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 14,
+          "base_title": "Wonderland",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Wonderland",
+          "song_family": "wonderland",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
+          "historical_track_ids": [],
+          "release_date": "2023-10-27T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:wonderland",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "You Are In Love (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/0TyGh27YQ5LknmiDhCzJiT",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 15,
+          "base_title": "You Are In Love",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You Are In Love",
+          "song_family": "you_are_in_love",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
+          "historical_track_ids": [],
+          "release_date": "2023-10-27T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_are_in_love",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "New Romantics (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/5M787RexsAiVYjQusM98CV",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 16,
+          "base_title": "New Romantics",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "New Romantics",
+          "song_family": "new_romantics",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
+          "historical_track_ids": [],
+          "release_date": "2023-10-27T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "why on earth is this just a bonus track",
+              "love at first listen",
+              "synthpop",
+              "female vocalists",
+              "fave fave fave",
+              "fode essa buceta",
+              "max martin",
+              "2014",
+              "taylor swift"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "New Romantics"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:new_romantics",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "\"Slut!\" (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/0CD7DzeCsuPJygddqlUVYa",
+          "type": "from_the_vault",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 17,
+          "base_title": "\"Slut!\" (Taylor's Version) (From The Vault)",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "\"Slut!\"",
+          "song_family": "slut",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
+          "historical_track_ids": [],
+          "release_date": "2023-10-27T00:00:00Z",
+          "genres": [
+            "synth-pop",
+            "pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "synth-pop": 3.0,
+            "pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "synth-pop",
+              "pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "synthpop",
+              "pop",
+              "dream pop",
+              "female vocalists",
+              "singer song writer",
+              "taylors version",
+              "singer songwriter",
+              "From the Vault",
+              "female vocalist",
+              "bedroom pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "\"Slut!\" (Taylor's Version) (From The Vault)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:slut",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
+        },
+        {
+          "title": "Say Don't Go (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/3CCRVu4F91Qp2mnGjmWBrf",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 18,
+          "base_title": "Say Don't Go (Taylor's Version) (From The Vault)",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Say Don't Go",
+          "song_family": "say_don_t_go",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
+          "historical_track_ids": [],
+          "release_date": "2023-10-27T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "pop rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "pop rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "pop rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "female vocalists",
+              "pop rock",
+              "taylors version",
+              "singer songwriter",
+              "diane warren",
+              "From the Vault",
+              "female vocalist",
+              "power pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Say Don't Go (Taylor's Version) (From The Vault)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:say_don_t_go",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
+        },
+        {
+          "title": "Now That We Don't Talk (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/5QUIK7ZtziW8kGWo8RqopF",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 19,
+          "base_title": "Now That We Don't Talk (Taylor's Version) (From The Vault)",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Now That We Don't Talk",
+          "song_family": "now_that_we_don_t_talk",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
+          "historical_track_ids": [],
+          "release_date": "2023-10-27T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "alternative": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "From the Vault",
+              "female vocalist",
+              "Legendary",
+              "alt-pop",
+              "Acid Rock",
+              "taylors version",
+              "goodgirl owns this song",
+              "owned by taylor swift"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Now That We Don't Talk (Taylor's Version) (From The Vault)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:now_that_we_don_t_talk",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
+        },
+        {
+          "title": "Suburban Legends (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/6M9ppdfFjR1AbpUl3Y8DcV",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 20,
+          "base_title": "Suburban Legends (Taylor's Version) (From The Vault)",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Suburban Legends",
+          "song_family": "suburban_legends",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
+          "historical_track_ids": [],
+          "release_date": "2023-10-27T00:00:00Z",
+          "genres": [
+            "synth-pop",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "synth-pop": 3.0,
+            "alternative": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "synth-pop",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "my top songs",
+              "synthpop",
+              "From the Vault",
+              "synth pop",
+              "alt-pop",
+              "amazing",
+              "Summer vibes",
+              "hino",
+              "synthwave",
+              "Suburban Legends"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Suburban Legends (Taylor's Version) (From The Vault)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:suburban_legends",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
+        },
+        {
+          "title": "Is It Over Now? (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/6IG3sQ8s9nfk6TUlVzRhbN",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 21,
+          "base_title": "Is It Over Now? (Taylor's Version) (From The Vault)",
+          "album": "1989 (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Is It Over Now?",
+          "song_family": "is_it_over_now",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
+          "historical_track_ids": [],
+          "release_date": "2023-10-27T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "synthwave",
+              "electropop",
+              "break-up",
+              "adult contemporary",
+              "Masterpiece",
+              "From the Vault",
+              "us number one",
+              "sad"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Is It Over Now? (Taylor's Version) (From The Vault)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:is_it_over_now",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
+        }
+      ]
+    },
+    {
       "section": "deluxe_edition",
       "track_count": 1,
       "chart_extra": false,
@@ -75,1258 +1327,6 @@
           "filter_tag_sources": {
             "collab": "high:artists_or_featured_artists",
             "taylor_version": "high:title_or_section"
-          }
-        }
-      ]
-    },
-    {
-      "section": "standard_edition_tv",
-      "chart_extra": false,
-      "track_count": 21,
-      "tracks": [
-        {
-          "title": "\"Slut!\" (Taylor's Version) (From The Vault)",
-          "url": "https://open.spotify.com/intl-fr/track/0CD7DzeCsuPJygddqlUVYa",
-          "type": "from_the_vault",
-          "edition": "standard",
-          "display_section": "from the vault",
-          "display_order": 17,
-          "base_title": "\"Slut!\" (Taylor's Version) (From The Vault)",
-          "album": "1989 (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "\"Slut!\"",
-          "song_family": "slut",
-          "version_tag": "vault__taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
-          "genres": [
-            "synth-pop",
-            "pop",
-            "dream pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "synth-pop": 3.0,
-            "pop": 2.0,
-            "dream pop": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "synth-pop",
-              "pop",
-              "dream pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "synthpop",
-              "pop",
-              "dream pop",
-              "female vocalists",
-              "singer song writer",
-              "taylors version",
-              "singer songwriter",
-              "From the Vault",
-              "female vocalist",
-              "bedroom pop"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "\"Slut!\" (Taylor's Version) (From The Vault)"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:slut",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "taylor_version",
-            "from_the_vault"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "taylor_version": "high:title_or_section",
-            "from_the_vault": "high:title_section_or_edition"
-          }
-        },
-        {
-          "title": "Welcome To New York (Taylor's Version)",
-          "url": "https://open.spotify.com/intl-fr/track/1hR8BSuEqPCCZfv93zzzz9",
-          "type": "alternate_version",
-          "edition": "standard",
-          "display_section": "standard edition",
-          "display_order": 1,
-          "base_title": "Welcome To New York",
-          "album": "1989 (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Welcome To New York",
-          "song_family": "welcome_to_new_york",
-          "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
-          "release_date": "2023-10-26T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop",
-            "electropop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "electropop": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop",
-              "electropop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "synthpop",
-              "female vocalists",
-              "electropop",
-              "new york",
-              "love at first listen",
-              "New York City",
-              "taylor swift",
-              "NYC",
-              "synth-pop"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Welcome To New York"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:welcome_to_new_york",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "taylor_version",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "taylor_version": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "Blank Space (Taylor's Version)",
-          "url": "https://open.spotify.com/intl-fr/track/45wMBGri1PORPjM9PwFfrS",
-          "type": "alternate_version",
-          "edition": "standard",
-          "display_section": "standard edition",
-          "display_order": 2,
-          "base_title": "Blank Space",
-          "album": "1989 (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Blank Space",
-          "song_family": "blank_space",
-          "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
-          "release_date": "2023-10-26T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {
-            "lastfm": "Blank Space"
-          },
-          "genre_errors": {
-            "lastfm": "LASTFM_API_KEY missing"
-          },
-          "genre_canonical_key": "family:blank_space",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "taylor_version",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "taylor_version": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "Is It Over Now? (Taylor's Version) (From The Vault)",
-          "url": "https://open.spotify.com/intl-fr/track/6IG3sQ8s9nfk6TUlVzRhbN",
-          "type": "standalone",
-          "edition": "standard",
-          "display_section": "from the vault",
-          "display_order": 21,
-          "base_title": "Is It Over Now? (Taylor's Version) (From The Vault)",
-          "album": "1989 (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Is It Over Now?",
-          "song_family": "is_it_over_now",
-          "version_tag": "vault__taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop",
-            "electropop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "electropop": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop",
-              "electropop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "synthpop",
-              "synthwave",
-              "electropop",
-              "break-up",
-              "adult contemporary",
-              "Masterpiece",
-              "From the Vault",
-              "us number one",
-              "sad"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Is It Over Now? (Taylor's Version) (From The Vault)"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:is_it_over_now",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone",
-            "taylor_version",
-            "from_the_vault"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type",
-            "taylor_version": "high:title_or_section",
-            "from_the_vault": "high:title_section_or_edition"
-          }
-        },
-        {
-          "title": "Now That We Don't Talk (Taylor's Version) (From The Vault)",
-          "url": "https://open.spotify.com/intl-fr/track/5QUIK7ZtziW8kGWo8RqopF",
-          "type": "standalone",
-          "edition": "standard",
-          "display_section": "from the vault",
-          "display_order": 19,
-          "base_title": "Now That We Don't Talk (Taylor's Version) (From The Vault)",
-          "album": "1989 (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Now That We Don't Talk",
-          "song_family": "now_that_we_don_t_talk",
-          "version_tag": "vault__taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop",
-            "alternative"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "alternative": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop",
-              "alternative"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "synthpop",
-              "From the Vault",
-              "female vocalist",
-              "Legendary",
-              "alt-pop",
-              "Acid Rock",
-              "taylors version",
-              "goodgirl owns this song",
-              "owned by taylor swift"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Now That We Don't Talk (Taylor's Version) (From The Vault)"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:now_that_we_don_t_talk",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone",
-            "taylor_version",
-            "from_the_vault"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type",
-            "taylor_version": "high:title_or_section",
-            "from_the_vault": "high:title_section_or_edition"
-          }
-        },
-        {
-          "title": "Style (Taylor's Version)",
-          "url": "https://open.spotify.com/intl-fr/track/1hjRhYpWyqDpPahmSlUTlc",
-          "type": "alternate_version",
-          "edition": "standard",
-          "display_section": "standard edition",
-          "display_order": 3,
-          "base_title": "Style",
-          "album": "1989 (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Style",
-          "song_family": "style",
-          "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
-          "release_date": "2023-10-26T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop",
-            "pop rock"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "pop rock": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop",
-              "pop rock"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "synthpop",
-              "taylor swift",
-              "love at first listen",
-              "1989",
-              "pop rock",
-              "female vocalists",
-              "max martin",
-              "Funk-Pop",
-              "2015"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Style"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:style",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "taylor_version",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "taylor_version": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "Out Of The Woods (Taylor's Version)",
-          "url": "https://open.spotify.com/intl-fr/track/045ZeOHPIzhxxsm8bq5kyE",
-          "type": "alternate_version",
-          "edition": "standard",
-          "display_section": "standard edition",
-          "display_order": 4,
-          "base_title": "Out Of The Woods",
-          "album": "1989 (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Out Of The Woods",
-          "song_family": "out_of_the_woods",
-          "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
-          "release_date": "2023-10-26T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop",
-            "pop rock"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "pop rock": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop",
-              "pop rock"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "love at first listen",
-              "synthpop",
-              "female vocalists",
-              "1989",
-              "taylor swift",
-              "amazing",
-              "synth-pop",
-              "2014",
-              "pop rock"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Out Of The Woods"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:out_of_the_woods",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "taylor_version",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "taylor_version": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "Say Don't Go (Taylor's Version) (From The Vault)",
-          "url": "https://open.spotify.com/intl-fr/track/3CCRVu4F91Qp2mnGjmWBrf",
-          "type": "standalone",
-          "edition": "standard",
-          "display_section": "from the vault",
-          "display_order": 18,
-          "base_title": "Say Don't Go (Taylor's Version) (From The Vault)",
-          "album": "1989 (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Say Don't Go",
-          "song_family": "say_don_t_go",
-          "version_tag": "vault__taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop",
-            "pop rock"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "pop rock": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop",
-              "pop rock"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "synthpop",
-              "female vocalists",
-              "pop rock",
-              "taylors version",
-              "singer songwriter",
-              "diane warren",
-              "From the Vault",
-              "female vocalist",
-              "power pop"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Say Don't Go (Taylor's Version) (From The Vault)"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:say_don_t_go",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone",
-            "taylor_version",
-            "from_the_vault"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type",
-            "taylor_version": "high:title_or_section",
-            "from_the_vault": "high:title_section_or_edition"
-          }
-        },
-        {
-          "title": "All You Had To Do Was Stay (Taylor's Version)",
-          "url": "https://open.spotify.com/intl-fr/track/6GXgd1BPD9bUpqw5AntGV5",
-          "type": "alternate_version",
-          "edition": "standard",
-          "display_section": "standard edition",
-          "display_order": 5,
-          "base_title": "All You Had To Do Was Stay",
-          "album": "1989 (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "All You Had To Do Was Stay",
-          "song_family": "all_you_had_to_do_was_stay",
-          "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
-          "release_date": "2023-10-26T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:all_you_had_to_do_was_stay",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "taylor_version",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "taylor_version": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "Suburban Legends (Taylor's Version) (From The Vault)",
-          "url": "https://open.spotify.com/intl-fr/track/6M9ppdfFjR1AbpUl3Y8DcV",
-          "type": "standalone",
-          "edition": "standard",
-          "display_section": "from the vault",
-          "display_order": 20,
-          "base_title": "Suburban Legends (Taylor's Version) (From The Vault)",
-          "album": "1989 (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Suburban Legends",
-          "song_family": "suburban_legends",
-          "version_tag": "vault__taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
-          "genres": [
-            "synth-pop",
-            "alternative"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "synth-pop": 3.0,
-            "alternative": 2.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "synth-pop",
-              "alternative"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "my top songs",
-              "synthpop",
-              "From the Vault",
-              "synth pop",
-              "alt-pop",
-              "amazing",
-              "Summer vibes",
-              "hino",
-              "synthwave",
-              "Suburban Legends"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Suburban Legends (Taylor's Version) (From The Vault)"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:suburban_legends",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone",
-            "taylor_version",
-            "from_the_vault"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type",
-            "taylor_version": "high:title_or_section",
-            "from_the_vault": "high:title_section_or_edition"
-          }
-        },
-        {
-          "title": "Shake It Off (Taylor's Version)",
-          "url": "https://open.spotify.com/intl-fr/track/3pv7Q5v2dpdefwdWIvE7yH",
-          "type": "alternate_version",
-          "edition": "standard",
-          "display_section": "standard edition",
-          "display_order": 6,
-          "base_title": "Shake It Off",
-          "album": "1989 (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Shake It Off",
-          "song_family": "shake_it_off",
-          "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
-          "release_date": "2023-10-26T00:00:00Z",
-          "genres": [
-            "pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "2014",
-              "haters gonna hate",
-              "taylor swift",
-              "love at first listen",
-              "dance",
-              "happy",
-              "1989",
-              "shake it off",
-              "best of 2014"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Shake It Off"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:shake_it_off",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "taylor_version",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "taylor_version": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "I Wish You Would (Taylor's Version)",
-          "url": "https://open.spotify.com/intl-fr/track/43y1WpBdnEy5TR9aZoSQL9",
-          "type": "alternate_version",
-          "edition": "standard",
-          "display_section": "standard edition",
-          "display_order": 7,
-          "base_title": "I Wish You Would",
-          "album": "1989 (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "I Wish You Would",
-          "song_family": "i_wish_you_would",
-          "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
-          "release_date": "2023-10-26T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:i_wish_you_would",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "taylor_version",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "taylor_version": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "Bad Blood (Taylor's Version)",
-          "url": "https://open.spotify.com/intl-fr/track/64FzgoLZ3oXu2SriZblHic",
-          "type": "alternate_version",
-          "edition": "standard",
-          "display_section": "standard edition",
-          "display_order": 8,
-          "base_title": "Bad Blood",
-          "album": "1989 (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Bad Blood",
-          "song_family": "bad_blood",
-          "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
-          "release_date": "2023-10-26T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop",
-            "singer-songwriter"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "singer-songwriter": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop",
-              "singer-songwriter"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "Chupa essa Katy perry",
-              "love at first listen",
-              "taylor swift",
-              "2015",
-              "synthpop",
-              "singer-songwriter",
-              "shade",
-              "BAD BLOOD",
-              "2010s"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Bad Blood"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:bad_blood",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "taylor_version",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "taylor_version": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "Wildest Dreams (Taylor's Version)",
-          "url": "https://open.spotify.com/intl-fr/track/1K39ty6o1sHwwlZwO6a7wK",
-          "type": "alternate_version",
-          "edition": "standard",
-          "display_section": "standard edition",
-          "display_order": 9,
-          "base_title": "Wildest Dreams",
-          "album": "1989 (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Wildest Dreams",
-          "song_family": "wildest_dreams",
-          "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
-          "release_date": "2023-10-26T00:00:00Z",
-          "genres": [
-            "pop",
-            "dream pop",
-            "synth-pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "dream pop": 2.0,
-            "synth-pop": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "dream pop",
-              "synth-pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "dream pop",
-              "max martin",
-              "love at first listen",
-              "lana del rey -ish",
-              "synthpop",
-              "10s",
-              "singer-songwriter",
-              "taylor swift",
-              "epic"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Wildest Dreams"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:wildest_dreams",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "taylor_version",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "taylor_version": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "How You Get The Girl (Taylor's Version)",
-          "url": "https://open.spotify.com/intl-fr/track/733OhaXQIHY7BKtY3vnSkn",
-          "type": "alternate_version",
-          "edition": "standard",
-          "display_section": "standard edition",
-          "display_order": 10,
-          "base_title": "How You Get The Girl",
-          "album": "1989 (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "How You Get The Girl",
-          "song_family": "how_you_get_the_girl",
-          "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:how_you_get_the_girl",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "taylor_version",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "taylor_version": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "This Love (Taylor's Version)",
-          "url": "https://open.spotify.com/intl-fr/track/4WBEj8TeGtRPNJdOmT3WJW",
-          "type": "alternate_version",
-          "edition": "standard",
-          "display_section": "standard edition",
-          "display_order": 11,
-          "base_title": "This Love",
-          "album": "1989 (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "This Love",
-          "song_family": "this_love",
-          "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:this_love",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "taylor_version",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "taylor_version": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "Clean (Taylor's Version)",
-          "url": "https://open.spotify.com/intl-fr/track/0lKUBmEyQfzsQHozyeXzES",
-          "type": "alternate_version",
-          "edition": "standard",
-          "display_section": "standard edition",
-          "display_order": 13,
-          "base_title": "Clean",
-          "album": "1989 (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Clean",
-          "song_family": "clean",
-          "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:clean",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "taylor_version",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "taylor_version": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "New Romantics (Taylor's Version)",
-          "url": "https://open.spotify.com/intl-fr/track/5M787RexsAiVYjQusM98CV",
-          "type": "alternate_version",
-          "edition": "standard",
-          "display_section": "standard edition",
-          "display_order": 16,
-          "base_title": "New Romantics",
-          "album": "1989 (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "New Romantics",
-          "song_family": "new_romantics",
-          "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "why on earth is this just a bonus track",
-              "love at first listen",
-              "synthpop",
-              "female vocalists",
-              "fave fave fave",
-              "fode essa buceta",
-              "max martin",
-              "2014",
-              "taylor swift"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "New Romantics"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:new_romantics",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "taylor_version",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "taylor_version": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "Wonderland (Taylor's Version)",
-          "url": "https://open.spotify.com/intl-fr/track/6HRsJu8vcnzYDN4t0570FY",
-          "type": "alternate_version",
-          "edition": "standard",
-          "display_section": "standard edition",
-          "display_order": 14,
-          "base_title": "Wonderland",
-          "album": "1989 (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Wonderland",
-          "song_family": "wonderland",
-          "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:wonderland",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "taylor_version",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "taylor_version": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "You Are In Love (Taylor's Version)",
-          "url": "https://open.spotify.com/intl-fr/track/0TyGh27YQ5LknmiDhCzJiT",
-          "type": "alternate_version",
-          "edition": "standard",
-          "display_section": "standard edition",
-          "display_order": 15,
-          "base_title": "You Are In Love",
-          "album": "1989 (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "You Are In Love",
-          "song_family": "you_are_in_love",
-          "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:you_are_in_love",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "taylor_version",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "taylor_version": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "I Know Places (Taylor's Version)",
-          "url": "https://open.spotify.com/track/1ULabO0PEsdJekqVH6G10G",
-          "type": "alternate_version",
-          "edition": "standard",
-          "display_section": "standard edition",
-          "display_order": 12,
-          "base_title": "I Know Places",
-          "album": "1989 (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "I Know Places",
-          "song_family": "i_know_places",
-          "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:i_know_places",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "taylor_version",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "taylor_version": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
           }
         }
       ]

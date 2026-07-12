@@ -423,7 +423,7 @@ def _fmt_streams(n: int | None) -> str:
 def _rank_delta_html(entry: dict) -> str:
     if entry.get("out"):
         prev = entry.get("previous_rank")
-        suffix = f" (#{prev} yesterday)" if prev else ""
+        suffix = f" (prev #{prev})" if prev else ""
         return f'<span class="oct-rank-delta rank-tag">{html.escape(suffix)}</span>'
 
     rank_change = entry.get("rank_change")
@@ -1069,7 +1069,7 @@ def _build_tweet(song: dict, entries: list[dict], chart_date: str, prev_count: i
     emoji    = _album_emoji(album)
     count    = len(entries)
     try:
-        date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
+        date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%A, %B %d, %Y")
     except Exception:
         date_fmt = chart_date
     if count == 1:
@@ -1079,10 +1079,10 @@ def _build_tweet(song: dict, entries: list[dict], chart_date: str, prev_count: i
         streams = _fmt_streams(entry.get("streams"))
         return (
             f'{emoji} | "{title}" charted on Spotify in {country} at #{rank} '
-            f"with {streams} streams yesterday ({date_fmt}).\n\n{_OVERALL_URL}"
+            f"with {streams} streams on {date_fmt}.\n\n{_OVERALL_URL}"
         )
     country_str = _country_count_text(count, prev_count)
-    return f'{emoji} | "{title}" charted in {country_str} on Spotify yesterday ({date_fmt}).\n\n{_OVERALL_URL}'
+    return f'{emoji} | "{title}" charted in {country_str} on Spotify on {date_fmt}.\n\n{_OVERALL_URL}'
 
 
 def _build_reentry_tweet(song: dict, entries: list[dict], chart_date: str) -> str:
@@ -1090,7 +1090,7 @@ def _build_reentry_tweet(song: dict, entries: list[dict], chart_date: str) -> st
     count = len(entries)
     country_word = "country" if count == 1 else "countries"
     try:
-        date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
+        date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%A, %B %d, %Y")
     except Exception:
         date_fmt = chart_date
     if count == 1:
@@ -1101,11 +1101,11 @@ def _build_reentry_tweet(song: dict, entries: list[dict], chart_date: str) -> st
         return (
             f'"{title}" re-entered the Spotify Charts.\n\n'
             f"Charted on Spotify in {country} at #{rank} with {streams} streams "
-            f"yesterday ({date_fmt}).\n\n{_OVERALL_URL}"
+            f"on {date_fmt}.\n\n{_OVERALL_URL}"
         )
     return (
         f'"{title}" re-entered the Spotify Charts in {count} {country_word} '
-        f"yesterday ({date_fmt}).\n\n{_OVERALL_URL}"
+        f"on {date_fmt}.\n\n{_OVERALL_URL}"
     )
 
 
@@ -1115,7 +1115,7 @@ def _build_low_country_group_tweet(
     chart_date: str,
 ) -> str:
     try:
-        date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
+        date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%A, %B %d, %Y")
     except Exception:
         date_fmt = chart_date
 
@@ -1127,7 +1127,7 @@ def _build_low_country_group_tweet(
 
     return (
         f"🎵 | {len(tracks)} Taylor Swift songs charted in one or two countries "
-        f"on Spotify yesterday ({date_fmt}): {title_text}.\n\n{_OVERALL_URL}"
+        f"on Spotify on {date_fmt}: {title_text}.\n\n{_OVERALL_URL}"
     )
 
 
@@ -1230,7 +1230,7 @@ def _build_summary_html(
         _LOGO_URI = _logo_data_uri()
 
     try:
-        date_label = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
+        date_label = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%A, %B %d, %Y")
     except Exception:
         date_label = chart_date
 
@@ -1418,7 +1418,7 @@ def _build_summary_html(
 
 def _summary_tweet(chart_date: str, track_count: int, prev_track_count: int | None = None) -> str:
     try:
-        date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
+        date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%A, %B %d, %Y")
     except Exception:
         date_fmt = chart_date
     if prev_track_count is None:
@@ -1428,7 +1428,7 @@ def _summary_tweet(chart_date: str, track_count: int, prev_track_count: int | No
         delta_text = " (=)" if delta == 0 else f" ({delta:+d})"
     return (
         f"🧵 Taylor Swift charted {track_count} songs{delta_text} "
-        f"on the Spotify Charts yesterday ({date_fmt}).\n\n{_OVERALL_URL}"
+        f"on the Spotify Charts on {date_fmt}.\n\n{_OVERALL_URL}"
     )
 
 

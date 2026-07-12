@@ -4,541 +4,6 @@
   "track_count": 35,
   "sections": [
     {
-      "section": "3am_edition",
-      "track_count": 7,
-      "chart_extra": false,
-      "tracks": [
-        {
-          "title": "The Great War",
-          "url": "https://open.spotify.com/intl-fr/track/2VuqMjgoKaOHNM8HpxtXKx",
-          "type": "standalone",
-          "edition": "3am",
-          "display_section": "3am Edition",
-          "display_order": 14,
-          "base_title": "The Great War",
-          "album": "Midnights",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "The Great War",
-          "song_family": "the_great_war",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop",
-            "singer-songwriter"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "singer-songwriter": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop",
-              "singer-songwriter"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "synthpop",
-              "singer-songwriter",
-              "dream pop",
-              "midnights",
-              "The Eras Tour",
-              "Maria Jose Cardoso",
-              "folk pop",
-              "Masterpiece",
-              "electronic"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "The Great War"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:the_great_war",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type"
-          }
-        },
-        {
-          "title": "Bigger Than The Whole Sky",
-          "url": "https://open.spotify.com/intl-fr/track/71CBDRKmF2VeRKYMG1DFBh",
-          "type": "standalone",
-          "edition": "3am",
-          "display_section": "3am Edition",
-          "display_order": 15,
-          "base_title": "Bigger Than The Whole Sky",
-          "album": "Midnights",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Bigger Than The Whole Sky",
-          "song_family": "bigger_than_the_whole_sky",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop",
-            "singer-songwriter"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "singer-songwriter": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop",
-              "singer-songwriter"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "synthpop",
-              "Ballad",
-              "singer-songwriter",
-              "dream pop",
-              "sad",
-              "midnights",
-              "best of 2022",
-              "melancholic",
-              "ambient"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Bigger Than The Whole Sky"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:bigger_than_the_whole_sky",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type"
-          }
-        },
-        {
-          "title": "Paris",
-          "url": "https://open.spotify.com/intl-fr/track/5tWxKWq1DSP1s9WQ5PWuqu",
-          "type": "standalone",
-          "edition": "3am",
-          "display_section": "3am Edition",
-          "display_order": 16,
-          "base_title": "Paris",
-          "album": "Midnights",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Paris",
-          "song_family": "paris",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
-          "genres": [
-            "pop",
-            "singer-songwriter",
-            "synth-pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "singer-songwriter": 2.0,
-            "synth-pop": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "singer-songwriter",
-              "synth-pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "singer-songwriter",
-              "synthpop",
-              "electropop",
-              "Colleen Hoover",
-              "female vocalist",
-              "electronic",
-              "death metal",
-              "bubblegum pop",
-              "american"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Paris"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:paris",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type"
-          }
-        },
-        {
-          "title": "High Infidelity",
-          "url": "https://open.spotify.com/intl-fr/track/1SztNGCwEHJEVFx90E5g7D",
-          "type": "standalone",
-          "edition": "3am",
-          "display_section": "3am Edition",
-          "display_order": 17,
-          "base_title": "High Infidelity",
-          "album": "Midnights",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "High Infidelity",
-          "song_family": "high_infidelity",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
-          "genres": [
-            "synth-pop",
-            "pop",
-            "singer-songwriter"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "synth-pop": 3.0,
-            "pop": 2.0,
-            "singer-songwriter": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "synth-pop",
-              "pop",
-              "singer-songwriter"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "synthpop",
-              "pop",
-              "singer-songwriter",
-              "electronic",
-              "Colleen Hoover",
-              "best of 2022",
-              "electropop",
-              "racist",
-              "awful",
-              "artpop"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "High Infidelity"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:high_infidelity",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type"
-          }
-        },
-        {
-          "title": "Glitch",
-          "url": "https://open.spotify.com/intl-fr/track/7C0w28EsX0Um2FrZs9gso2",
-          "type": "standalone",
-          "edition": "3am",
-          "display_section": "3am Edition",
-          "display_order": 18,
-          "base_title": "Glitch",
-          "album": "Midnights",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Glitch",
-          "song_family": "glitch",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
-          "genres": [
-            "singer-songwriter",
-            "synth-pop",
-            "pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "singer-songwriter": 3.0,
-            "synth-pop": 2.0,
-            "pop": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "singer-songwriter",
-              "synth-pop",
-              "pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "singer-songwriter",
-              "synthpop",
-              "pop",
-              "electronic",
-              "Colleen Hoover",
-              "female vocalists",
-              "electronica",
-              "slayAM edition",
-              "female vocalist",
-              "synth pop"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Glitch"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:glitch",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type"
-          }
-        },
-        {
-          "title": "Would've, Could've, Should've",
-          "url": "https://open.spotify.com/intl-fr/track/4txojlesMFQZGWxwz2EeqB",
-          "type": "standalone",
-          "edition": "3am",
-          "display_section": "3am Edition",
-          "display_order": 19,
-          "base_title": "Would've, Could've, Should've",
-          "album": "Midnights",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Would've, Could've, Should've",
-          "song_family": "would_ve_could_ve_should_ve",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
-          "genres": [
-            "pop",
-            "soft rock",
-            "singer-songwriter"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "soft rock": 2.0,
-            "singer-songwriter": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "soft rock",
-              "singer-songwriter"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "soft rock",
-              "singer-songwriter",
-              "pop rock",
-              "dream pop",
-              "Post-punk revival",
-              "best of 2022",
-              "Midnights (The Til Dawn Edition)",
-              "ðŸ˜­",
-              "soty"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Would've, Could've, Should've"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:would_ve_could_ve_should_ve",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type"
-          }
-        },
-        {
-          "title": "Dear Reader",
-          "url": "https://open.spotify.com/intl-fr/track/10GRRCR5fctuOF4GFmATJI",
-          "type": "standalone",
-          "edition": "3am",
-          "display_section": "3am Edition",
-          "display_order": 20,
-          "base_title": "Dear Reader",
-          "album": "Midnights",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Dear Reader",
-          "song_family": "dear_reader",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
-          "genres": [
-            "singer-songwriter",
-            "synth-pop",
-            "pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "singer-songwriter": 3.0,
-            "synth-pop": 2.0,
-            "pop": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "singer-songwriter",
-              "synth-pop",
-              "pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "singer-songwriter",
-              "synthpop",
-              "pop",
-              "female vocalists",
-              "why on earth is this just a bonus track",
-              "dream pop",
-              "electropop",
-              "chill",
-              "synth pop",
-              "amazing"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Dear Reader"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:dear_reader",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type"
-          }
-        }
-      ]
-    },
-    {
-      "section": "from_the_vault",
-      "track_count": 1,
-      "chart_extra": false,
-      "tracks": [
-        {
-          "title": "You're Losing Me (From The Vault)",
-          "url": "https://open.spotify.com/intl-fr/track/3CWq0pAKKTWb0K4yiglDc4",
-          "type": "standalone",
-          "edition": "From The Vault",
-          "display_section": "From The Vault",
-          "display_order": 24,
-          "base_title": "You're Losing Me (From The Vault)",
-          "album": "Midnights",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "You're Losing Me",
-          "song_family": "you_re_losing_me",
-          "version_tag": "vault__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2734fe1868aa6838eb595f3673a",
-          "historical_track_ids": [],
-          "release_date": "2023-11-29T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:you_re_losing_me",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone",
-            "from_the_vault"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type",
-            "from_the_vault": "high:title_section_or_edition"
-          }
-        }
-      ]
-    },
-    {
       "section": "standard_edition",
       "track_count": 13,
       "chart_extra": false,
@@ -1401,6 +866,489 @@
       ]
     },
     {
+      "section": "3am_edition",
+      "track_count": 7,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "The Great War",
+          "url": "https://open.spotify.com/intl-fr/track/2VuqMjgoKaOHNM8HpxtXKx",
+          "type": "standalone",
+          "edition": "3am",
+          "display_section": "3am Edition",
+          "display_order": 14,
+          "base_title": "The Great War",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Great War",
+          "song_family": "the_great_war",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+          "historical_track_ids": [],
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "singer-songwriter",
+              "dream pop",
+              "midnights",
+              "The Eras Tour",
+              "Maria Jose Cardoso",
+              "folk pop",
+              "Masterpiece",
+              "electronic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Great War"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_great_war",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
+        },
+        {
+          "title": "Bigger Than The Whole Sky",
+          "url": "https://open.spotify.com/intl-fr/track/71CBDRKmF2VeRKYMG1DFBh",
+          "type": "standalone",
+          "edition": "3am",
+          "display_section": "3am Edition",
+          "display_order": 15,
+          "base_title": "Bigger Than The Whole Sky",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Bigger Than The Whole Sky",
+          "song_family": "bigger_than_the_whole_sky",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+          "historical_track_ids": [],
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "Ballad",
+              "singer-songwriter",
+              "dream pop",
+              "sad",
+              "midnights",
+              "best of 2022",
+              "melancholic",
+              "ambient"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Bigger Than The Whole Sky"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:bigger_than_the_whole_sky",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
+        },
+        {
+          "title": "Paris",
+          "url": "https://open.spotify.com/intl-fr/track/5tWxKWq1DSP1s9WQ5PWuqu",
+          "type": "standalone",
+          "edition": "3am",
+          "display_section": "3am Edition",
+          "display_order": 16,
+          "base_title": "Paris",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Paris",
+          "song_family": "paris",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+          "historical_track_ids": [],
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "pop",
+            "singer-songwriter",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "singer-songwriter": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "synthpop",
+              "electropop",
+              "Colleen Hoover",
+              "female vocalist",
+              "electronic",
+              "death metal",
+              "bubblegum pop",
+              "american"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Paris"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:paris",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
+        },
+        {
+          "title": "High Infidelity",
+          "url": "https://open.spotify.com/intl-fr/track/1SztNGCwEHJEVFx90E5g7D",
+          "type": "standalone",
+          "edition": "3am",
+          "display_section": "3am Edition",
+          "display_order": 17,
+          "base_title": "High Infidelity",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "High Infidelity",
+          "song_family": "high_infidelity",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+          "historical_track_ids": [],
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "synth-pop",
+            "pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "synth-pop": 3.0,
+            "pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "synth-pop",
+              "pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "synthpop",
+              "pop",
+              "singer-songwriter",
+              "electronic",
+              "Colleen Hoover",
+              "best of 2022",
+              "electropop",
+              "racist",
+              "awful",
+              "artpop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "High Infidelity"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:high_infidelity",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
+        },
+        {
+          "title": "Glitch",
+          "url": "https://open.spotify.com/intl-fr/track/7C0w28EsX0Um2FrZs9gso2",
+          "type": "standalone",
+          "edition": "3am",
+          "display_section": "3am Edition",
+          "display_order": 18,
+          "base_title": "Glitch",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Glitch",
+          "song_family": "glitch",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+          "historical_track_ids": [],
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "singer-songwriter",
+            "synth-pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "singer-songwriter": 3.0,
+            "synth-pop": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "synth-pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "synthpop",
+              "pop",
+              "electronic",
+              "Colleen Hoover",
+              "female vocalists",
+              "electronica",
+              "slayAM edition",
+              "female vocalist",
+              "synth pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Glitch"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:glitch",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
+        },
+        {
+          "title": "Would've, Could've, Should've",
+          "url": "https://open.spotify.com/intl-fr/track/4txojlesMFQZGWxwz2EeqB",
+          "type": "standalone",
+          "edition": "3am",
+          "display_section": "3am Edition",
+          "display_order": 19,
+          "base_title": "Would've, Could've, Should've",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Would've, Could've, Should've",
+          "song_family": "would_ve_could_ve_should_ve",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+          "historical_track_ids": [],
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "pop",
+            "soft rock",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "soft rock": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "soft rock",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "soft rock",
+              "singer-songwriter",
+              "pop rock",
+              "dream pop",
+              "Post-punk revival",
+              "best of 2022",
+              "Midnights (The Til Dawn Edition)",
+              "ðŸ˜­",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Would've, Could've, Should've"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:would_ve_could_ve_should_ve",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
+        },
+        {
+          "title": "Dear Reader",
+          "url": "https://open.spotify.com/intl-fr/track/10GRRCR5fctuOF4GFmATJI",
+          "type": "standalone",
+          "edition": "3am",
+          "display_section": "3am Edition",
+          "display_order": 20,
+          "base_title": "Dear Reader",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Dear Reader",
+          "song_family": "dear_reader",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+          "historical_track_ids": [],
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "singer-songwriter",
+            "synth-pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "singer-songwriter": 3.0,
+            "synth-pop": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "synth-pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "synthpop",
+              "pop",
+              "female vocalists",
+              "why on earth is this just a bonus track",
+              "dream pop",
+              "electropop",
+              "chill",
+              "synth pop",
+              "amazing"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Dear Reader"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:dear_reader",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
+        }
+      ]
+    },
+    {
       "section": "til_dawn_edition",
       "track_count": 3,
       "chart_extra": false,
@@ -1600,6 +1548,58 @@
           ],
           "filter_tag_sources": {
             "feature": "high:type_or_primary_artist"
+          }
+        }
+      ]
+    },
+    {
+      "section": "from_the_vault",
+      "track_count": 1,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "You're Losing Me (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/3CWq0pAKKTWb0K4yiglDc4",
+          "type": "standalone",
+          "edition": "From The Vault",
+          "display_section": "From The Vault",
+          "display_order": 24,
+          "base_title": "You're Losing Me (From The Vault)",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You're Losing Me",
+          "song_family": "you_re_losing_me",
+          "version_tag": "vault__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2734fe1868aa6838eb595f3673a",
+          "historical_track_ids": [],
+          "release_date": "2023-11-29T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_re_losing_me",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "from_the_vault": "high:title_section_or_edition"
           }
         }
       ]
@@ -2280,7 +2280,7 @@
     },
     {
       "album": "Midnights",
-      "section": "kworb_extras",
+      "section": "streaming_extras",
       "track_count": 1,
       "chart_extra": true,
       "tracks": [

@@ -38,6 +38,12 @@ def _fmt_pct(value: float) -> str:
     return f"+{value:.1f}%"
 
 
+def _ordinal(n: int) -> str:
+    if 11 <= (n % 100) <= 13:
+        return f"{n}th"
+    return f"{n}{['th','st','nd','rd','th','th','th','th','th','th'][n % 10]}"
+
+
 def _short_date_label(label: str) -> str:
     return (
         label.replace("January", "Jan")
@@ -78,16 +84,9 @@ def _compact_title(title: str) -> str:
 
 
 def _build_combined_tweet(*, target_date: str, daily_rows: list[dict]) -> str:
-    date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
-    if daily_rows:
-        max_days = max(
-            post_gainer_thread.history_store.days_covered_by_row(row["track_id"], target_date)
-            for row in daily_rows
-        )
-    else:
-        max_days = 1
-    when = "yesterday" if max_days <= 1 else f"over the last {max_days} days"
-    return f"📈 | Taylor Swift's biggest gainers {when} ({date_fmt}) — daily & weekly."
+    d = datetime.strptime(target_date, "%Y-%m-%d").date()
+    date_fmt = f"{d.strftime('%A')}, {d.strftime('%B')} {_ordinal(d.day)}, {d.year}"
+    return f"ðŸ“ˆ | Taylor Swift's biggest gainers on {date_fmt} â€” daily & weekly."
 
 
 def _track_entry(row: dict) -> dict:
@@ -252,7 +251,7 @@ def _build_combined_gainer_table_html(
     {rows_html}"""
 
     sections_html = (
-        _section(daily_rows, period="daily", title="Daily Gainers · vs yesterday")
+        _section(daily_rows, period="daily", title="Daily Gainers · vs previous day")
         + _section(weekly_rows, period="weekly", title="Weekly Gainers · vs last week")
     )
 
@@ -544,22 +543,18 @@ def _build_tweet(item: dict, target_date: str) -> str:
     track = item["track"]
     title = track.get("title") or item["track_id"]
     emoji = album_emoji(track.get("album"))
-    date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    d = datetime.strptime(target_date, "%Y-%m-%d").date()
+    date_fmt = f"{d.strftime('%A')}, {d.strftime('%B')} {_ordinal(d.day)}, {d.year}"
     gainer_periods = [period for period in ("daily", "weekly") if period in item]
 
-    max_days = (
-        post_gainer_thread.history_store.days_covered_by_row(item["track_id"], target_date)
-        if "daily" in item
-        else 1
-    )
-    when = "yesterday" if max_days <= 1 else f"over the last {max_days} days"
+    when = f"on {date_fmt}"
 
     def compose(display_title: str, *, compact: bool = False) -> str:
         if gainer_periods:
             period_label = " & ".join(gainer_periods)
             intro = (
                 f'{emoji} "{display_title}" was one of Taylor Swift\'s biggest '
-                f"{period_label} gainers by % {when} ({date_fmt})."
+                f"{period_label} gainers by % {when}."
             )
         else:
             intro = f'{emoji} "{display_title}" earned its {best_day_since.row_label(item["best_day"])}.'

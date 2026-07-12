@@ -4,6 +4,7 @@ import argparse
 import csv
 import hashlib
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -26,12 +27,42 @@ from collectors.spotify.core.data_paths import (
     WEB_EXPORT_HISTORY_DIR,
     WEB_EXPORT_ROOT,
 )
+from tsm.terminal_log import TerminalLog, terminal_log_path
 
 
 def _run(script: Path, args: list[str]) -> int:
-    cmd = [sys.executable, str(script), *args]
+    cmd = [sys.executable, "-u", str(script), *args]
     print("$ " + " ".join(cmd))
-    return subprocess.run(cmd, cwd=REPO_ROOT, check=False).returncode
+    env = os.environ.copy()
+    env["PYTHONUNBUFFERED"] = "1"
+    proc = subprocess.Popen(
+        cmd,
+        cwd=REPO_ROOT,
+        env=env,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+    )
+    assert proc.stdout is not None
+    while True:
+        chunk = proc.stdout.read(8192)
+        if not chunk:
+            break
+        sys.stdout.buffer.write(chunk)
+        sys.stdout.buffer.flush()
+    return proc.wait()
+
+
+def _log_date_for_args(args: argparse.Namespace) -> str | None:
+    return getattr(args, "date", None) or getattr(args, "new_date", None)
+
+
+def _log_name(args: argparse.Namespace) -> str:
+    parts = [str(getattr(args, "command", "tsm"))]
+    for attr in ("collector", "exporter", "audit_target", "migration"):
+        value = getattr(args, attr, None)
+        if value:
+            parts.append(str(value))
+    return "_".join(parts)
 
 
 def _ensure_no_conflicting_post_flags(args: list[str], no_post: bool, post: bool) -> list[str]:
@@ -343,6 +374,13 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args, passthrough = parser.parse_known_args(argv)
+    log_path = terminal_log_path(_log_name(args), _log_date_for_args(args))
+
+    with TerminalLog(log_path):
+        return _dispatch(args, passthrough, parser)
+
+
+def _dispatch(args: argparse.Namespace, passthrough: list[str], parser: argparse.ArgumentParser) -> int:
 
     if args.command == "daily":
         return daily(args, passthrough)

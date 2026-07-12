@@ -228,7 +228,7 @@ def find_biggest_album_gainer_for_spotlight(
     *,
     compare_days: int,
 ) -> dict | None:
-    """Find biggest album-track daily gain vs yesterday or last week.
+    """Find biggest album-track daily gain vs previous day or last week.
 
     Uses only tracks present in db/discography/albums/*.json, so songs.json extras
     and other extras are excluded from spotlight automation.

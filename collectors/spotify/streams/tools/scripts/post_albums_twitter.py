@@ -194,9 +194,7 @@ def build_tweet(rows: list[dict], target_date: str, *, max_days: int = 1) -> str
     month = d.strftime("%B")
     day_ord = _ordinal(d.day)
     year = d.year
-    when = f"yesterday, {weekday}, {month} {day_ord}, {year}" if max_days <= 1 else (
-        f"over the last {max_days} days, up to {month} {day_ord}, {year}"
-    )
+    when = f"on {weekday}, {month} {day_ord}, {year}"
 
     return (
         f"📊 | Taylor Swift's eras on Spotify {when}.\n\n"

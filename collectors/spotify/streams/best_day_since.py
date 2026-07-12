@@ -38,6 +38,8 @@ HISTORY_START_DATE = date(2025, 1, 1)
 DEFAULT_MIN_DAYS = 30
 LIVE_COLLECTION_MIN_DAYS = 30
 LIVE_COLLECTION_MIN_PCT_CHANGE = 10.0
+YEAR_RECORD_IGNORE_DAYS = 15
+MONTH_RECORD_IGNORE_DAYS = 10
 
 
 @dataclass(frozen=True)
@@ -48,6 +50,7 @@ class Track:
     spotify_url: str
     song_family: str = ""
     is_alt_version: bool = False
+    release_date: date | None = None
 
 
 @dataclass(frozen=True)
@@ -70,6 +73,16 @@ def parse_int(value: str | None) -> int | None:
         return None
     try:
         return int(raw)
+    except ValueError:
+        return None
+
+
+def parse_release_date(value: str | None) -> date | None:
+    raw = (value or "").strip()
+    if not raw:
+        return None
+    try:
+        return date.fromisoformat(raw[:10])
     except ValueError:
         return None
 
@@ -162,6 +175,7 @@ def load_tracks(*, include_extras: bool = False) -> dict[str, Track]:
                 spotify_url=f"https://open.spotify.com/track/{track_id}",
                 song_family=str(item.get("song_family") or "").strip(),
                 is_alt_version=is_extra_track(section, item),
+                release_date=parse_release_date(item.get("release_date") or section.get("release_date")),
             )
 
     return tracks
@@ -351,6 +365,61 @@ def latest_history_date(history: dict[str, list[Point]]) -> date | None:
     return latest
 
 
+def _has_complete_daily_span(points: list[Point], start: date, end: date) -> bool:
+    by_day = {point.day: point for point in points}
+    cursor = start
+    while cursor <= end:
+        point = by_day.get(cursor)
+        if point is None or point.daily is None:
+            return False
+        cursor += timedelta(days=1)
+    return True
+
+
+def _is_biggest_daily_in_period(
+    points: list[Point],
+    *,
+    target_date: date,
+    current_daily: int,
+    period_start: date,
+) -> bool:
+    if target_date < period_start:
+        return False
+
+    period_points = [
+        point
+        for point in points
+        if period_start <= point.day <= target_date and point.daily is not None
+    ]
+    if not period_points:
+        return False
+
+    first_available = min(point.day for point in period_points)
+    if not _has_complete_daily_span(points, first_available, target_date):
+        return False
+
+    return current_daily >= max(int(point.daily or 0) for point in period_points)
+
+
+def period_record_flags(points: list[Point], target_date: date, current_daily: int) -> dict[str, bool]:
+    year_start = date(target_date.year, 1, 1) + timedelta(days=YEAR_RECORD_IGNORE_DAYS)
+    month_start = date(target_date.year, target_date.month, 1) + timedelta(days=MONTH_RECORD_IGNORE_DAYS)
+    return {
+        "is_biggest_day_of_year": _is_biggest_daily_in_period(
+            points,
+            target_date=target_date,
+            current_daily=current_daily,
+            period_start=year_start,
+        ),
+        "is_biggest_day_of_month": _is_biggest_daily_in_period(
+            points,
+            target_date=target_date,
+            current_daily=current_daily,
+            period_start=month_start,
+        ),
+    }
+
+
 def compute_best_day_since(track: Track, points: list[Point], target_date: date) -> dict | None:
     points = fill_missing_dailies(points)
     point_by_date = {point.day: point for point in points}
@@ -360,6 +429,7 @@ def compute_best_day_since(track: Track, points: list[Point], target_date: date)
     previous_day = point_by_date.get(target_date - timedelta(days=1))
     if previous_day is None or previous_day.total is None:
         return None
+    record_flags = period_record_flags(points, target_date, current.daily)
 
     previous_points = [point for point in points if point.day < target_date and point.daily is not None]
     if not previous_points:
@@ -373,12 +443,11 @@ def compute_best_day_since(track: Track, points: list[Point], target_date: date)
 
     if last_at_or_above is None:
         first_available_date = previous_points[0].day if previous_points else target_date
-        if first_available_date > HISTORY_START_DATE:
+        if track.release_date is not None and track.release_date >= HISTORY_START_DATE:
             kind = "best_ever"
             best_day_since = "ever"
         else:
-            kind = "before_history"
-            best_day_since = "before 2025"
+            return None
 
         return {
             "track_id": track.track_id,
@@ -394,6 +463,7 @@ def compute_best_day_since(track: Track, points: list[Point], target_date: date)
             "previous_higher_or_equal_daily": None,
             "days_since": None,
             "first_available_date": first_available_date.isoformat(),
+            **record_flags,
         }
 
     best_since = last_at_or_above.day + timedelta(days=1)
@@ -414,6 +484,7 @@ def compute_best_day_since(track: Track, points: list[Point], target_date: date)
         "previous_higher_or_equal_daily": last_at_or_above.daily,
         "days_since": (target_date - best_since).days + 1,
         "first_available_date": points[0].day.isoformat() if points else None,
+        **record_flags,
     }
 
 
@@ -422,7 +493,7 @@ def format_int(value: int | None) -> str:
 
 
 def sort_key(row: dict) -> tuple[int, int, int]:
-    is_record = 1 if row["kind"] in {"best_ever", "before_history"} else 0
+    is_record = 1 if row["kind"] == "best_ever" else 0
     days_since = row.get("days_since") or 0
     return (is_record, days_since, row["daily_streams"])
 
@@ -436,7 +507,9 @@ def passes_filters(row: dict, *, min_days: int, min_pct_change: float | None = N
         if pct_change < min_pct_change:
             return False
 
-    if row["kind"] in {"best_ever", "before_history"}:
+    if row["kind"] == "before_history":
+        return False
+    if row["kind"] == "best_ever":
         return True
     return (row.get("days_since") or 0) >= min_days
 
@@ -495,8 +568,10 @@ def format_long_date(value: str) -> str:
 def row_label(row: dict) -> str:
     if row["kind"] == "best_ever":
         return "best day ever"
-    if row["kind"] == "before_history":
-        return "best day since before 2025"
+    if row.get("is_biggest_day_of_year"):
+        return "biggest day of the year"
+    if row.get("is_biggest_day_of_month"):
+        return "biggest day of the month"
     return f"best day since {format_long_date(row['best_day_since'])}"
 
 

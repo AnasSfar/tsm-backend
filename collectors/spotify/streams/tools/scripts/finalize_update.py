@@ -11,7 +11,7 @@ from datetime import date as date_cls
 from pathlib import Path
 from typing import Any, Callable
 
-from core.data_paths import update_streams_dir
+from core.data_paths import db_file, update_streams_dir
 from core.swift_top_gate import check_swift_top_gate, mark_swift_top_done
 from core.retention import cleanup_generated_artifacts
 from git_ops import git_commit_and_push
@@ -19,7 +19,6 @@ import generate_albums_image
 import generate_album_update_image
 import post_gainer_thread
 from post_debut_releases import post_debut_releases as run_debut_release_posts
-from release_targets import recent_release_album_names
 
 
 ALBUM_UPDATE_TARGETS = (
@@ -139,6 +138,50 @@ class PartialWebExporter:
             print(f"Partial web export failed: {exc}")
 
 
+class SharedWebExportGate:
+    """Serialize early web exports and skip repeats when source data is unchanged."""
+
+    def __init__(
+        self,
+        *,
+        export_web_data: Callable[..., None],
+        stats_date: str,
+        history_path: Path | None = None,
+    ) -> None:
+        self.export_web_data = export_web_data
+        self.stats_date = stats_date
+        self.history_path = history_path or db_file("streams_history.csv")
+        self.daily_history_path = update_streams_dir(stats_date) / "streams_history.csv"
+        self._lock = threading.Lock()
+        self._last_signature: tuple[tuple[str, int, int], ...] | None = None
+
+    def _source_signature(self) -> tuple[tuple[str, int, int], ...]:
+        signature: list[tuple[str, int, int]] = []
+        for path in (self.history_path, self.daily_history_path):
+            try:
+                stat = path.stat()
+            except FileNotFoundError:
+                signature.append((str(path), -1, -1))
+                continue
+            signature.append((str(path), stat.st_mtime_ns, stat.st_size))
+        return tuple(signature)
+
+    def export_partial(self, **kwargs) -> None:
+        """Export the current site state once per source-data version.
+
+        Early posts need a fresh local site export, but they do not need to
+        upload to R2 while collection may still be incomplete.
+        """
+        stats_date = kwargs.pop("stats_date", self.stats_date)
+        signature = self._source_signature()
+        with self._lock:
+            if signature == self._last_signature:
+                print(f"Early web export skipped for {stats_date}: source data unchanged since last export.")
+                return
+            self.export_web_data(stats_date=stats_date, allow_r2=False, **kwargs)
+            self._last_signature = signature
+
+
 class ReadyAlbumUpdatePoster:
     """Post ready album updates early after exporting the partial site state."""
 
@@ -252,6 +295,7 @@ class ReadyAlbumBestDaySincePoster:
         enabled: bool,
         no_post_mode: bool,
         target_albums: list[str] | tuple[str, ...],
+        priority_ready: Callable[[], bool] | None = None,
     ) -> None:
         self.script_dir = script_dir
         self.stats_date = stats_date
@@ -262,6 +306,7 @@ class ReadyAlbumBestDaySincePoster:
         self.enabled = enabled
         self.no_post_mode = no_post_mode
         self.target_albums = tuple(dict.fromkeys(target_albums))
+        self.priority_ready = priority_ready or (lambda: True)
         self._checked: set[str] = set()
         self._posted: set[str] = set()
         self._stop = threading.Event()
@@ -305,6 +350,8 @@ class ReadyAlbumBestDaySincePoster:
                     continue
             if not self.album_tracks_done_for(album, self.stats_date):
                 continue
+            if not self.priority_ready():
+                return False
             with self._lock:
                 self._checked.add(album)
 
@@ -337,6 +384,85 @@ class ReadyAlbumBestDaySincePoster:
         return False
 
 
+class ReadyDebutReleasePoster:
+    """Post debut release cards as soon as all same-day release tracks are ready."""
+
+    def __init__(
+        self,
+        *,
+        stats_date: str,
+        track_ids: set[str],
+        load_history_track_ids_for_date: Callable[[str], set[str]],
+        spacing_seconds: int,
+        log_mode: str,
+        enabled: bool,
+        no_post_mode: bool,
+    ) -> None:
+        self.stats_date = stats_date
+        self.track_ids = set(track_ids)
+        self.load_history_track_ids_for_date = load_history_track_ids_for_date
+        self.spacing_seconds = spacing_seconds
+        self.log_mode = log_mode
+        self.enabled = enabled and bool(self.track_ids)
+        self.no_post_mode = no_post_mode
+        self._posted = False
+        self._stop = threading.Event()
+        self._finished = threading.Event()
+        self._lock = threading.Lock()
+        self._thread: threading.Thread | None = None
+        self._post_state = {"posted_count": 0, "last_post_at": 0.0}
+        if not self.enabled:
+            self._finished.set()
+
+    def start(self) -> None:
+        if not self.enabled or self._thread is not None:
+            return
+        self._thread = threading.Thread(target=self._run, name="ready-debut-release-posts", daemon=True)
+        self._thread.start()
+
+    def stop(self) -> dict[str, float]:
+        self._stop.set()
+        if self._thread is not None:
+            self._thread.join()
+        self._finished.set()
+        with self._lock:
+            return dict(self._post_state)
+
+    def is_done(self) -> bool:
+        return self._finished.is_set()
+
+    def _run(self) -> None:
+        try:
+            while not self._stop.is_set():
+                done_ids = self.load_history_track_ids_for_date(self.stats_date)
+                missing = self.track_ids - done_ids
+                if missing:
+                    self._stop.wait(2.0)
+                    continue
+
+                with self._lock:
+                    if self._posted:
+                        return
+                    self._posted = True
+
+                _wait_before_post(
+                    label="early debut release posts",
+                    should_post=not self.no_post_mode,
+                    state=self._post_state,
+                    spacing_seconds=self.spacing_seconds,
+                    log_mode=self.log_mode,
+                )
+                result = run_debut_release_posts(self.stats_date, no_post=self.no_post_mode)
+                if result == 0:
+                    _mark_post_done(should_post=not self.no_post_mode, state=self._post_state)
+                    print("[debut] Posted early during streams run.")
+                else:
+                    print(f"[debut] Early debut release post failed (exit {result}); finalization will retry if needed.")
+                return
+        finally:
+            self._finished.set()
+
+
 class ReadyBestDaySincePoster:
     """Post individual best-day-since track records as soon as they update,
     without waiting for the full streams collection to finish."""
@@ -355,6 +481,9 @@ class ReadyBestDaySincePoster:
         no_post_mode: bool,
         max_posts: int = 5,
         min_days: int | None = None,
+        min_daily_streams: int | None = None,
+        min_pct_change: float | None = None,
+        priority_ready: Callable[[], bool] | None = None,
     ) -> None:
         self.script_dir = script_dir
         self.stats_date = stats_date
@@ -367,6 +496,9 @@ class ReadyBestDaySincePoster:
         self.no_post_mode = no_post_mode
         self.max_posts = max_posts
         self.min_days = min_days
+        self.min_daily_streams = min_daily_streams
+        self.min_pct_change = min_pct_change
+        self.priority_ready = priority_ready or (lambda: True)
         self._checked: set[str] = set()
         self._posted: set[str] = set()
         self._lock = threading.Lock()
@@ -416,6 +548,8 @@ class ReadyBestDaySincePoster:
                     continue
             if track_id not in done_ids:
                 continue
+            if not self.priority_ready():
+                return False
             with self._lock:
                 self._checked.add(track_id)
 
@@ -427,6 +561,10 @@ class ReadyBestDaySincePoster:
             cmd = [sys.executable, str(best_day_script), self.stats_date, "--only-track", track_id]
             if self.min_days is not None:
                 cmd.extend(["--min-days", str(self.min_days)])
+            if self.min_daily_streams is not None:
+                cmd.extend(["--min-daily-streams", str(self.min_daily_streams)])
+            if self.min_pct_change is not None:
+                cmd.extend(["--min-pct-change", str(self.min_pct_change)])
             if self.no_post_mode:
                 cmd.append("--no-post")
 
@@ -578,7 +716,7 @@ def _post_streams_image(ctx: FinalizeContext, state: dict[str, float]) -> None:
         _run(
             ctx,
             [sys.executable, str(post_script), ctx.summary["stats_date"], "--no-post"],
-            label="top 45 songs thread (no-post)",
+            label="top 20 songs image (no-post)",
             should_post=False,
             state=state,
         )
@@ -588,11 +726,11 @@ def _post_streams_image(ctx: FinalizeContext, state: dict[str, float]) -> None:
         print("Skipping Twitter post: blocking tracks are still pending.")
         return
 
-    print("Posting top 45 songs thread to Twitter...")
+    print("Posting top 20 songs image to Twitter...")
     _run(
         ctx,
         [sys.executable, str(post_script), ctx.summary["stats_date"]],
-        label="top 45 songs thread",
+        label="top 20 songs image",
         should_post=True,
         state=state,
     )
@@ -809,21 +947,15 @@ def _album_gainer_update_targets(
 
 
 def _album_update_targets(ctx: FinalizeContext) -> list[str]:
-    albums: list[str] = list(ALBUM_UPDATE_TARGETS)
-    recent_albums = recent_release_album_names(
-        ctx.load_album_sections_flat(),
-        ctx.summary["stats_date"],
-    )
-    if recent_albums:
-        print("Recent release album targets: " + ", ".join(recent_albums))
-    for album in recent_albums:
-        if album not in albums:
-            albums.append(album)
-    return albums
+    return list(ALBUM_UPDATE_TARGETS)
 
 
 def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
     album_img_script = ctx.script_dir / "tools" / "scripts" / "generate_album_update_image.py"
+    weekday = date_cls.fromisoformat(ctx.summary["stats_date"]).weekday()
+    if weekday in (0, 4):
+        print("Album update posts skipped: top eras/all-albums grouped thread runs on Monday/Friday.")
+        return
     is_weekend = _is_weekend_stats_date(ctx.summary["stats_date"])
     gain_targets = _album_gain_update_targets(
         ctx.summary["stats_date"],
@@ -853,7 +985,7 @@ def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
             )
         )
 
-    albums_to_post: list[str] = [] if is_weekend else _album_update_targets(ctx)
+    albums_to_post: list[str] = _album_update_targets(ctx)
     for target in gain_targets:
         album = target["album"]
         if album not in albums_to_post:
@@ -908,15 +1040,11 @@ def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
 
 
 def _post_albums_daily(ctx: FinalizeContext, state: dict[str, float]) -> None:
-    if _is_weekend_stats_date(ctx.summary["stats_date"]):
-        print("Weekend detected: skipping separate top eras post (included in combined streams image).")
-        return
-
     if not ctx.no_post_mode and not ctx.summary.get("all_done"):
         print("Skipping top eras post: not all tracks are done yet.")
         return
 
-    albums_post_script = ctx.script_dir / "tools" / "scripts" / "post_albums_twitter.py"
+    albums_post_script = ctx.script_dir / "tools" / "scripts" / "post_all_albums_thread.py"
     albums_cmd = [sys.executable, str(albums_post_script), ctx.summary["stats_date"]]
     if ctx.no_post_mode:
         albums_cmd.append("--no-post")
@@ -930,31 +1058,7 @@ def _post_albums_daily(ctx: FinalizeContext, state: dict[str, float]) -> None:
 
 
 def _post_all_albums_thread(ctx: FinalizeContext, state: dict[str, float]) -> None:
-    """Mondays and Fridays only: post every album (excluding Misc/standalone)
-    as a single thread, independently of the ALBUM_UPDATE_TARGETS posts."""
-    if ctx.debug_daily_mode or ctx.local_test_mode:
-        print("[DEBUG-DAILY/LOCAL-TEST] Skip all-albums thread.")
-        return
-
-    weekday = date_cls.fromisoformat(ctx.summary["stats_date"]).weekday()
-    if weekday not in (0, 4):  # Monday, Friday
-        return
-
-    if not ctx.no_post_mode and not ctx.summary.get("all_done"):
-        print("Skipping all-albums thread: not all tracks are done yet.")
-        return
-
-    thread_script = ctx.script_dir / "tools" / "scripts" / "post_all_albums_thread.py"
-    thread_cmd = [sys.executable, str(thread_script), ctx.summary["stats_date"]]
-    if ctx.no_post_mode:
-        thread_cmd.append("--no-post")
-    _run(
-        ctx,
-        thread_cmd,
-        label="all-albums thread",
-        should_post=not ctx.no_post_mode,
-        state=state,
-    )
+    print("All-albums thread is merged into the top eras post.")
 
 
 def _post_debut_releases(ctx: FinalizeContext, state: dict[str, float]) -> None:
@@ -1160,6 +1264,7 @@ def _run_swift_top_charts_if_needed(ctx: FinalizeContext) -> None:
 POST_ONLY_STEPS = {
     "top-eras": _post_albums_daily,
     "all-albums": _post_all_albums_thread,
+    "top20": _post_streams_image,
     "top45": _post_streams_image,
     "recap": _post_daily_recap_card,
     "best-day-since": _post_best_day_since,
@@ -1231,19 +1336,16 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                     post_step_failures.append(f"{step_label} ({exc})")
 
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
-            _guarded_post_step("best-day-since posts", lambda: _post_best_day_since(ctx, post_state))
+            _guarded_post_step("debut posts", lambda: _post_debut_releases(ctx, post_state))
 
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
-            _guarded_post_step("debut posts", lambda: _post_debut_releases(ctx, post_state))
+            _guarded_post_step("best-day-since posts", lambda: _post_best_day_since(ctx, post_state))
 
         _guarded_post_step("daily recap card", lambda: _post_daily_recap_card(ctx, post_state))
 
         _guarded_post_step("top eras post", lambda: _post_albums_daily(ctx, post_state))
 
-        if not ctx.debug_daily_mode and not ctx.local_test_mode:
-            _guarded_post_step("all-albums thread", lambda: _post_all_albums_thread(ctx, post_state))
-
-        _guarded_post_step("top 45 songs post", lambda: _post_streams_image(ctx, post_state))
+        _guarded_post_step("top 20 songs post", lambda: _post_streams_image(ctx, post_state))
 
         if ctx.debug_daily_mode or ctx.local_test_mode:
             return

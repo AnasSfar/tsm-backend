@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Détecte les tracks Taylor Swift présents sur kworb mais absents de songs.json,
-et les ajoute dans songs.json (section "kworb_extras").
+et les ajoute dans songs.json (section "streaming_extras").
 
 Usage :
     python backfill_from_kworb.py
@@ -182,15 +182,15 @@ def existing_title_slugs() -> set[str]:
 def add_to_songs_json(new_tracks: list[dict]) -> int:
     data: list[dict] = json.loads(SONGS_JSON_PATH.read_text(encoding="utf-8-sig"))
 
-    # Cherche ou crée la section kworb_extras
+    # Cherche ou crée la section streaming_extras
     group = next(
         (g for g in data
          if g.get("album") == "Standalone & Extras"
-         and g.get("section") == "kworb_extras"),
+         and g.get("section") == "streaming_extras"),
         None,
     )
     if group is None:
-        group = {"album": "Standalone & Extras", "section": "kworb_extras",
+        group = {"album": "Standalone & Extras", "section": "streaming_extras",
                  "track_count": 0, "tracks": []}
         data.append(group)
 
@@ -210,7 +210,7 @@ def add_to_songs_json(new_tracks: list[dict]) -> int:
             "url":             f"https://open.spotify.com/intl-fr/track/{track['track_id']}",
             "type":            "standalone",
             "edition":         "extras",
-            "display_section": "Kworb Extras",
+            "display_section": "Extras",
             "display_order":   9999,
             "base_title":      track["title"],
             "album":           "Standalone & Extras",
@@ -262,7 +262,7 @@ def run(dry_run: bool) -> None:
 
     added = add_to_songs_json(new_tracks)
 
-    print(f"\n{added} tracks ajoutés à songs.json (section kworb_extras)")
+    print(f"\n{added} tracks ajoutés à songs.json (section streaming_extras)")
 
 
 def main() -> None:

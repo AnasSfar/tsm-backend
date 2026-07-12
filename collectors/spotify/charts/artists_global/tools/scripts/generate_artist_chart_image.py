@@ -540,17 +540,21 @@ def generate_image(html_content: str, out_path: Path) -> None:
 
 def build_tweet(ts_artist: dict, mode: str, stats_date: str, period: str) -> str:
     date_fmt = datetime.strptime(stats_date, "%Y-%m-%d").strftime("%B %d, %Y")
-    time_label = "this week" if period == "weekly" else "yesterday"
+    day_fmt = datetime.strptime(stats_date, "%Y-%m-%d").strftime("%A, %B %d, %Y")
+    time_label = "this week" if period == "weekly" else f"on {day_fmt}"
     chart_label = "Weekly" if period == "weekly" else "Top Artists"
 
     if mode == "top10":
-        return f"📈 | The top 10 most streamed artists on Spotify Charts {time_label} ({date_fmt}) :"
+        suffix = f" ({date_fmt})" if period == "weekly" else ""
+        return f"📈 | The top 10 most streamed artists on Spotify Charts {time_label}{suffix} :"
     
     elif mode == "top5":
-        return f"📈 | The top 5 most streamed artists on Spotify Charts {time_label} ({date_fmt}) :"
+        suffix = f" ({date_fmt})" if period == "weekly" else ""
+        return f"📈 | The top 5 most streamed artists on Spotify Charts {time_label}{suffix} :"
     
     else:
-        return f"📈 | Taylor Swift on Spotify {chart_label} charts {time_label} ({date_fmt}) :"
+        suffix = f" ({date_fmt})" if period == "weekly" else ""
+        return f"📈 | Taylor Swift on Spotify {chart_label} charts {time_label}{suffix} :"
 
 
 # ── Main ───────────────────────────────────────────────────────────────────────

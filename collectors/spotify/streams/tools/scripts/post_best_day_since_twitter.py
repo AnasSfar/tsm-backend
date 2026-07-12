@@ -29,7 +29,6 @@ MAX_BEST_DAY_SONG_POSTS_PER_ALBUM = 3
 POST_COLLECTION_MIN_SONG_DAILY_STREAMS = 300_000
 POST_COLLECTION_MAX_SONG_POSTS = 10
 MIN_SONG_DAILY_STREAMS_TO_POST = 80_000
-ALBUM_UPDATE_MIN_BEST_DAY_SONGS = 3
 
 sys.path.insert(0, str(COLLECTORS_ROOT))              # collectors/
 sys.path.insert(0, str(ROOT))                         # collectors/spotify/streams/
@@ -181,7 +180,15 @@ def _track_posted_lock_path(track_id: str, target_date: str) -> Path:
     return _day_dir(target_date) / "best_day_since_track_locks" / f"{track_id}.lock"
 
 
-def _post_single_track_early(track_id: str, target_date: str, *, min_days: int, no_post: bool) -> str:
+def _post_single_track_early(
+    track_id: str,
+    target_date: str,
+    *,
+    min_days: int,
+    min_daily_streams: int,
+    min_pct_change: float | None,
+    no_post: bool,
+) -> str:
     """Compute and post one track's best-day-since record immediately, if it
     already qualifies, without waiting for the rest of the day's collection.
 
@@ -209,12 +216,11 @@ def _post_single_track_early(track_id: str, target_date: str, *, min_days: int, 
         )
         return "skipped"
 
-    live_min_days = max(min_days, best_day_since.LIVE_COLLECTION_MIN_DAYS)
     row = best_day_since.best_day_since_for_track(
         track_id,
         target_date,
-        min_days=live_min_days,
-        min_pct_change=best_day_since.LIVE_COLLECTION_MIN_PCT_CHANGE,
+        min_days=min_days,
+        min_pct_change=min_pct_change,
         combined=True,
     )
     if not row:
@@ -226,10 +232,10 @@ def _post_single_track_early(track_id: str, target_date: str, *, min_days: int, 
     )
     if total_today is None or total_yesterday is None or daily_today is None or daily_yesterday is None or daily_yesterday <= 0:
         return "skipped"
-    if daily_today < MIN_SONG_DAILY_STREAMS_TO_POST:
+    if daily_today <= min_daily_streams:
         print(
             f"[best_day_since_early] Skipping {track_id}: "
-            f"{daily_today:,} daily streams is below {MIN_SONG_DAILY_STREAMS_TO_POST:,}."
+            f"{daily_today:,} daily streams is not above {min_daily_streams:,}."
         )
         return "skipped"
 
@@ -281,54 +287,6 @@ def _pick_album_rows(target_date: str, *, limit: int, min_days: int) -> list[dic
     return rows[:limit]
 
 
-def _album_names_by_key() -> dict[str, str]:
-    return {
-        _album_key(track.album): track.album
-        for track in best_day_since.load_tracks(include_extras=False).values()
-        if track.album and _album_key(track.album)
-    }
-
-
-def _pick_album_rows_from_song_best_days(
-    target_date: str,
-    *,
-    limit: int,
-    min_days: int,
-    min_song_count: int = ALBUM_UPDATE_MIN_BEST_DAY_SONGS,
-) -> list[dict]:
-    song_rows = _find_all_rows(target_date, min_days=min_days)
-    by_album_key: dict[str, list[dict]] = {}
-    for row in song_rows:
-        album_key = _album_key(row.get("album"))
-        if not album_key:
-            continue
-        by_album_key.setdefault(album_key, []).append(row)
-
-    album_names = _album_names_by_key()
-    rows: list[dict] = []
-    for album_key, album_song_rows in by_album_key.items():
-        if len(album_song_rows) < min_song_count:
-            continue
-        album = album_names.get(album_key) or album_song_rows[0].get("album")
-        if not album:
-            continue
-        best_song = max(album_song_rows, key=best_day_since.sort_key)
-        rows.append(
-            {
-                "album": album,
-                "date": target_date,
-                "daily_streams": sum(int(row.get("daily_streams") or 0) for row in album_song_rows),
-                "song_best_day_count": len(album_song_rows),
-                "song_best_day_rows": album_song_rows,
-                "best_day_since": best_song.get("best_day_since"),
-                "days_since": max(int(row.get("days_since") or 0) for row in album_song_rows),
-            }
-        )
-
-    rows.sort(key=lambda row: (row["song_best_day_count"], row["days_since"], row["daily_streams"]), reverse=True)
-    return rows[:limit]
-
-
 def _album_row(
     target_date: str,
     album_name: str,
@@ -359,7 +317,8 @@ def _build_tweet(row: dict, daily_yesterday: int | None) -> str:
     emoji = album_emoji(row.get("album"))
     title = row["title"]
     track_id = row["track_id"]
-    label = best_day_since.row_label(row).replace("best day", "BEST DAY", 1)
+    label = best_day_since.row_label(row)
+    label = label.replace("best day", "BEST DAY", 1).replace("biggest day", "BIGGEST DAY", 1)
     daily = int(row["daily_streams"])
     pct = _fmt_pct(daily, daily_yesterday)
     song_url = f"https://thetsmuseum.app/songs/{track_id}"
@@ -367,6 +326,41 @@ def _build_tweet(row: dict, daily_yesterday: int | None) -> str:
         f'{emoji} "{title}" earned its {label} with {_fmt_int(daily)} streams [{pct}].\n\n'
         f"See full track's history here : {song_url}"
     )
+
+
+def _validated_song_rows_for_post(
+    candidate_rows: list[dict],
+    *,
+    target_date: str,
+    tracks_by_id: dict[str, dict],
+    limit: int,
+) -> list[dict]:
+    rows: list[dict] = []
+    for row in candidate_rows:
+        track = tracks_by_id.get(row["track_id"])
+        if not track:
+            print(f"[best_day_since_post] Candidate skipped: track missing in spotlight DB: {row['title']} [{row['track_id']}].")
+            continue
+
+        track_ids = row.get("combined_track_ids") or [row["track_id"]]
+        total_today, total_yesterday, daily_today, daily_yesterday, daily_last_week = (
+            spotlight.load_history_for_tracks(track_ids, target_date)
+        )
+        if total_today is None:
+            print(f"[best_day_since_post] Candidate skipped: missing total streams for {row['title']} on {target_date}.")
+            continue
+        if total_yesterday is None or daily_today is None or daily_yesterday is None or daily_yesterday <= 0:
+            print(f"[best_day_since_post] Candidate skipped: incomplete comparison history for {row['title']} on {target_date}.")
+            continue
+
+        row["_post_track"] = track
+        row["_post_total_today"] = total_today
+        row["_post_daily_yesterday"] = daily_yesterday
+        row["_post_daily_last_week"] = daily_last_week
+        rows.append(row)
+        if len(rows) >= limit:
+            break
+    return rows
 
 
 def _recap_row_html(index: int, row: dict, track: dict, cover_url: str, daily: int, daily_pct: float | None, weekly_pct: float | None) -> str:
@@ -452,12 +446,7 @@ def _build_recap_tweet(rows: list[dict], target_date: str) -> str:
 
 
 def _best_since_badge_text(row: dict) -> str:
-    if row.get("kind") == "best_ever":
-        return "best ever"
-    value = row.get("best_day_since")
-    if value == "before 2025" or row.get("kind") == "before_history":
-        return "best since before 2025"
-    return f"best since {date.fromisoformat(str(value)).strftime('%m/%d/%Y')}"
+    return best_day_since.row_label(row)
 
 
 def _day_dir(target_date: str) -> Path:
@@ -527,7 +516,7 @@ def _post_album_best_day_rows(args, target_date: str, album_lock: Path, *, only_
         )
         album_rows = [row] if row else []
     else:
-        album_rows = _pick_album_rows_from_song_best_days(
+        album_rows = _pick_album_rows(
             target_date,
             limit=args.album_limit,
             min_days=args.album_min_days,
@@ -602,6 +591,21 @@ def main() -> None:
         help=f"Minimum days for best-day-since (default: {POST_COLLECTION_BEST_DAY_MIN_DAYS}).",
     )
     parser.add_argument(
+        "--min-daily-streams",
+        type=int,
+        default=MIN_SONG_DAILY_STREAMS_TO_POST,
+        help=f"Minimum daily streams for --only-track early posts (default: {MIN_SONG_DAILY_STREAMS_TO_POST}).",
+    )
+    parser.add_argument(
+        "--min-pct-change",
+        type=float,
+        default=best_day_since.LIVE_COLLECTION_MIN_PCT_CHANGE,
+        help=(
+            "Minimum day-over-day percent change for --only-track early posts "
+            f"(default: {best_day_since.LIVE_COLLECTION_MIN_PCT_CHANGE})."
+        ),
+    )
+    parser.add_argument(
         "--post-spacing-seconds",
         type=int,
         default=0,
@@ -643,7 +647,12 @@ def main() -> None:
 
     if args.only_track:
         result = _post_single_track_early(
-            args.only_track, target_date, min_days=args.min_days, no_post=args.no_post
+            args.only_track,
+            target_date,
+            min_days=args.min_days,
+            min_daily_streams=args.min_daily_streams,
+            min_pct_change=args.min_pct_change,
+            no_post=args.no_post,
         )
         if result == "posted":
             sys.exit(0)
@@ -691,17 +700,23 @@ def main() -> None:
         exclude_ids.update(p.stem for p in track_locks_dir.glob("*.lock"))
     album_post_counts = _track_album_counts(exclude_ids, tracks_by_id)
     remaining_song_limit = max(0, limit - len(exclude_ids))
-    rows = (
+    candidate_rows = (
         []
         if track_locked or remaining_song_limit <= 0
         else _pick_rows(
             target_date,
-            limit=remaining_song_limit,
+            limit=max(remaining_song_limit * 5, remaining_song_limit + 20),
             min_days=args.min_days,
             min_daily_streams=max(POST_COLLECTION_MIN_SONG_DAILY_STREAMS, MIN_SONG_DAILY_STREAMS_TO_POST),
             exclude_ids=exclude_ids,
             album_post_counts=album_post_counts,
         )
+    )
+    rows = _validated_song_rows_for_post(
+        candidate_rows,
+        target_date=target_date,
+        tracks_by_id=tracks_by_id,
+        limit=remaining_song_limit,
     )
     if not rows:
         print(f"[best_day_since_post] No best-day-since songs found for {target_date}.")
@@ -710,24 +725,9 @@ def main() -> None:
 
     posted_count = 0
     for index, row in enumerate(rows, 1):
-        track = tracks_by_id.get(row["track_id"])
-        if not track:
-            print(f"[best_day_since_post] Track missing in spotlight DB: {row['title']} [{row['track_id']}]")
-            continue
-
-        track_ids = row.get("combined_track_ids") or [row["track_id"]]
-        total_today, total_yesterday, daily_today, daily_yesterday, _daily_last_week = (
-            spotlight.load_history_for_tracks(track_ids, target_date)
-        )
-        if total_today is None:
-            print(f"[best_day_since_post] Missing total streams for {row['title']} on {target_date}; skipping.")
-            continue
-        if total_yesterday is None or daily_today is None or daily_yesterday is None or daily_yesterday <= 0:
-            print(
-                f"[best_day_since_post] Incomplete comparison history for {row['title']} "
-                f"on {target_date}; skipping."
-            )
-            continue
+        track = row["_post_track"]
+        total_today = row["_post_total_today"]
+        daily_yesterday = row["_post_daily_yesterday"]
 
         cover_url = spotlight.get_cover_url(track, covers)
         image_path = _generate_best_day_since_image(

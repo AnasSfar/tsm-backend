@@ -14,10 +14,12 @@ from playwright.sync_api import sync_playwright
 
 try:
     from .discography import get_album_cover
+    from .export_frame import add_export_frame
     from .fmt import fmt_pct, fmt_streams, get_pct, nan_to_none, pct_cls
 except ImportError:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
     from comp.discography import get_album_cover
+    from comp.export_frame import add_export_frame
     from comp.fmt import fmt_pct, fmt_streams, get_pct, nan_to_none, pct_cls
 
 try:
@@ -647,10 +649,10 @@ def render_html_to_png(
             except Exception:
                 pass
             page.locator("body").screenshot(path=str(out_path))
+            add_export_frame(out_path, device_scale_factor=2)
             browser.close()
     finally:
         if tmp_path.exists() and not keep_html:
             tmp_path.unlink()
     return out_path
-
 

@@ -441,7 +441,7 @@ def build_tweet_content(processed: list[date]) -> str:
     processed = processed[:1]
     if len(processed) == 1:
         d = processed[0]
-        header = f"🌍 | Taylor Swift on Spotify Global Charts yesterday ({d.strftime('%B %d, %Y')}) :"
+        header = f"🌍 | Taylor Swift on Spotify Global Charts on {d.strftime('%A, %B %d, %Y')} :"
         comment = build_chart_comment("global", d, TS_HISTORY_PATH)
         if comment:
             return f"{header}\n{comment}"

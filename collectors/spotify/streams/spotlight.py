@@ -1272,7 +1272,7 @@ def main() -> None:
         "--highlight",
         choices=["vs", "total"],
         default="vs",
-        help="Which stat card to emphasize: 'vs' (vs yesterday) or 'total' (total streams).",
+        help="Which stat card to emphasize: 'vs' (vs previous day) or 'total' (total streams).",
     )
     parser.add_argument(
         "--account",
@@ -1419,12 +1419,12 @@ def main() -> None:
     emoji = album_emoji(track.get("album"))
     tweet_lines.append(
         f'{emoji} "{track["title"]}" was one of the biggest {gainer_period} gainers '
-        f'yesterday{combined_suffix}, {date_fmt_long}. It received {daily_tweet} streams.'
+        f'on {date_fmt_long}{combined_suffix}. It received {daily_tweet} streams.'
     )
     if args.compare == "last-week":
         comparison = movement_line(daily, daily_last_week, "last week")
     else:
-        comparison = movement_line(daily, daily_yesterday, "yesterday")
+        comparison = movement_line(daily, daily_yesterday, "the previous day")
     if comparison:
         tweet_lines.append(comparison)
     else:

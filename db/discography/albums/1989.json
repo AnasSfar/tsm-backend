@@ -4,155 +4,6 @@
   "track_count": 27,
   "sections": [
     {
-      "section": "deluxe_edition",
-      "chart_extra": false,
-      "track_count": 1,
-      "tracks": [
-        {
-          "title": "Bad Blood (feat. Kendrick Lamar)",
-          "url": "https://open.spotify.com/track/6xsEAm6w9oMQYYg3jkEkMT",
-          "type": "alternate_version",
-          "edition": "deluxe",
-          "display_section": "deluxe edition",
-          "display_order": 1,
-          "base_title": "Bad Blood (feat. Kendrick Lamar)",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [
-            "Kendrick Lamar"
-          ],
-          "artists": [
-            "Taylor Swift",
-            "Kendrick Lamar"
-          ],
-          "title_clean": "Bad Blood",
-          "song_family": "bad_blood",
-          "version_tag": "featured__deluxe__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2737941dc6a3a023016acbe3d06",
-          "historical_track_ids": [],
-          "release_date": "2015-05-17T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop",
-            "singer-songwriter"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "singer-songwriter": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop",
-              "singer-songwriter"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "Chupa essa Katy perry",
-              "love at first listen",
-              "taylor swift",
-              "2015",
-              "synthpop",
-              "singer-songwriter",
-              "shade",
-              "BAD BLOOD",
-              "2010s"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Bad Blood"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:bad_blood",
-          "filter_tags": [
-            "collab",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "collab": "high:artists_or_featured_artists",
-            "alternate_version": "medium:type_or_title"
-          }
-        }
-      ]
-    },
-    {
-      "section": "remixes",
-      "track_count": 1,
-      "chart_extra": true,
-      "tracks": [
-        {
-          "title": "Wildest Dreams - R3hab Remix",
-          "url": "https://open.spotify.com/intl-fr/track/5VDHMi7own9vDZjiwDES1e",
-          "type": "remix",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 1,
-          "base_title": "Wildest Dreams",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Wildest Dreams - R3hab Remix",
-          "song_family": "wildest_dreams",
-          "version_tag": "remix",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273b8d01ff84dc531f884d90928",
-          "historical_track_ids": [],
-          "release_date": "2015-01-01T00:00:00Z",
-          "genres": [
-            "pop",
-            "dream pop",
-            "synth-pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "dream pop": 2.0,
-            "synth-pop": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "dream pop",
-              "synth-pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "dream pop",
-              "max martin",
-              "love at first listen",
-              "lana del rey -ish",
-              "synthpop",
-              "10s",
-              "singer-songwriter",
-              "taylor swift",
-              "epic"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Wildest Dreams"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:wildest_dreams",
-          "filter_tags": [
-            "solo",
-            "remix"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "remix": "high:type_or_title"
-          }
-        }
-      ]
-    },
-    {
       "section": "standard_edition",
       "track_count": 16,
       "chart_extra": false,
@@ -986,6 +837,133 @@
       ]
     },
     {
+      "section": "deluxe_edition",
+      "chart_extra": false,
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "Bad Blood (feat. Kendrick Lamar)",
+          "url": "https://open.spotify.com/track/6xsEAm6w9oMQYYg3jkEkMT",
+          "type": "alternate_version",
+          "edition": "deluxe",
+          "display_section": "deluxe edition",
+          "display_order": 1,
+          "base_title": "Bad Blood (feat. Kendrick Lamar)",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Kendrick Lamar"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Kendrick Lamar"
+          ],
+          "title_clean": "Bad Blood",
+          "song_family": "bad_blood",
+          "version_tag": "featured__deluxe__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737941dc6a3a023016acbe3d06",
+          "historical_track_ids": [],
+          "release_date": "2015-05-17T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "Chupa essa Katy perry",
+              "love at first listen",
+              "taylor swift",
+              "2015",
+              "synthpop",
+              "singer-songwriter",
+              "shade",
+              "BAD BLOOD",
+              "2010s"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Bad Blood"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:bad_blood",
+          "filter_tags": [
+            "collab",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "collab": "high:artists_or_featured_artists",
+            "alternate_version": "medium:type_or_title"
+          }
+        }
+      ]
+    },
+    {
+      "section": "soundtracks",
+      "track_count": 1,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Sweeter Than Fiction - From \"One Chance\" Soundtrack",
+          "url": "https://open.spotify.com/intl-fr/track/0RFCHlNuTeUHIB36VuVbOL",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 3,
+          "base_title": "Sweeter Than Fiction - From \"One Chance\" Soundtrack",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Sweeter Than Fiction - From \"One Chance\" Soundtrack",
+          "song_family": "sweeter_than_fiction_from_one_chance_soundtrack",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a8d770d373f0bb3f0818526c",
+          "display_era": "1989",
+          "historical_track_ids": [],
+          "release_date": "2013-10-21T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:sweeter_than_fiction_from_one_chance_soundtrack",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "soundtrack"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "soundtrack": "high:title_album_or_section"
+          }
+        }
+      ]
+    },
+    {
       "section": "voice_memos",
       "track_count": 3,
       "chart_extra": true,
@@ -1132,101 +1110,80 @@
       ]
     },
     {
-      "section": "soundtracks",
+      "section": "remixes",
       "track_count": 1,
       "chart_extra": true,
       "tracks": [
         {
-          "title": "Sweeter Than Fiction - From \"One Chance\" Soundtrack",
-          "url": "https://open.spotify.com/intl-fr/track/0RFCHlNuTeUHIB36VuVbOL",
-          "type": "standalone",
+          "title": "Wildest Dreams - R3hab Remix",
+          "url": "https://open.spotify.com/intl-fr/track/5VDHMi7own9vDZjiwDES1e",
+          "type": "remix",
           "edition": "extras",
           "display_section": "Extras",
-          "display_order": 3,
-          "base_title": "Sweeter Than Fiction - From \"One Chance\" Soundtrack",
+          "display_order": 1,
+          "base_title": "Wildest Dreams",
           "album": "1989",
           "primary_artist": "Taylor Swift",
           "featured_artists": [],
           "artists": [
             "Taylor Swift"
           ],
-          "title_clean": "Sweeter Than Fiction - From \"One Chance\" Soundtrack",
-          "song_family": "sweeter_than_fiction_from_one_chance_soundtrack",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a8d770d373f0bb3f0818526c",
-          "display_era": "1989",
+          "title_clean": "Wildest Dreams - R3hab Remix",
+          "song_family": "wildest_dreams",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273b8d01ff84dc531f884d90928",
           "historical_track_ids": [],
-          "release_date": "2013-10-21T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "release_date": "2015-01-01T00:00:00Z",
+          "genres": [
+            "pop",
+            "dream pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "dream pop": 2.0,
+            "synth-pop": 1.0
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [
+              "pop",
+              "dream pop",
+              "synth-pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [
+              "pop",
+              "dream pop",
+              "max martin",
+              "love at first listen",
+              "lana del rey -ish",
+              "synthpop",
+              "10s",
+              "singer-songwriter",
+              "taylor swift",
+              "epic"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "lastfm": "Wildest Dreams"
+          },
           "genre_errors": {},
-          "genre_canonical_key": "family:sweeter_than_fiction_from_one_chance_soundtrack",
+          "genre_canonical_key": "family:wildest_dreams",
           "filter_tags": [
             "solo",
-            "standalone",
-            "soundtrack"
+            "remix"
           ],
           "filter_tag_sources": {
             "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type",
-            "soundtrack": "high:title_album_or_section"
+            "remix": "high:type_or_title"
           }
         }
       ]
     },
     {
-      "album": "1989",
-      "section": "standard",
-      "track_count": 1,
-      "chart_extra": true,
-      "tracks": [
-        {
-          "title": "Sweeter Than Fiction (From \"One Chance\")",
-          "url": "",
-          "type": "album_track",
-          "edition": "standard",
-          "display_section": "standard",
-          "display_order": 999,
-          "base_title": "Sweeter Than Fiction (From \"One Chance\")",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Sweeter Than Fiction",
-          "song_family": "sweeter_than_fiction",
-          "version_tag": "album_track",
-          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/70/86/fd/7086fdfa-43e6-091f-b84e-6f2e813dad58/00602537602889.rgb.jpg/64x64bb.jpg",
-          "display_era": "1989",
-          "historical_track_ids": [],
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:sweeter_than_fiction"
-        }
-      ],
-      "display_section": "standard",
-      "edition": "standard"
-    },
-    {
-      "section": "kworb_extras",
+      "section": "streaming_extras",
       "track_count": 4,
       "chart_extra": true,
       "tracks": [
@@ -1452,6 +1409,49 @@
           }
         }
       ]
+    },
+    {
+      "album": "1989",
+      "section": "standard",
+      "track_count": 1,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Sweeter Than Fiction (From \"One Chance\")",
+          "url": "",
+          "type": "album_track",
+          "edition": "standard",
+          "display_section": "standard",
+          "display_order": 999,
+          "base_title": "Sweeter Than Fiction (From \"One Chance\")",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Sweeter Than Fiction",
+          "song_family": "sweeter_than_fiction",
+          "version_tag": "album_track",
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/70/86/fd/7086fdfa-43e6-091f-b84e-6f2e813dad58/00602537602889.rgb.jpg/64x64bb.jpg",
+          "display_era": "1989",
+          "historical_track_ids": [],
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:sweeter_than_fiction"
+        }
+      ],
+      "display_section": "standard",
+      "edition": "standard"
     }
   ]
 }

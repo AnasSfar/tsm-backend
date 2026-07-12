@@ -1,19 +1,6 @@
 [
   {
     "album": "Standalone & Extras",
-    "section": "misc_standalone",
-    "track_count": 0,
-    "tracks": []
-  },
-  {
-    "album": "Standalone & Extras",
-    "section": "soundtracks",
-    "track_count": 0,
-    "chart_extra": false,
-    "tracks": []
-  },
-  {
-    "album": "Standalone & Extras",
     "section": "live",
     "track_count": 3,
     "tracks": [
@@ -77,6 +64,66 @@
     ],
     "display_section": "Extras",
     "edition": "extras"
+  },
+  {
+    "album": "Standalone & Extras",
+    "section": "soundtracks",
+    "track_count": 0,
+    "chart_extra": false,
+    "tracks": []
+  },
+  {
+    "album": "Standalone & Extras",
+    "section": "vault_tracks",
+    "track_count": 2,
+    "tracks": [
+      {
+        "title": "Don't You (Taylor's Version) [From The Vault]",
+        "url": "",
+        "type": "standalone",
+        "edition": "vault",
+        "display_section": "vault tracks",
+        "display_order": 999,
+        "base_title": "Don't You [From The Vault]",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Don't You [From The Vault]",
+        "song_family": "don_t_you_from_the_vault",
+        "version_tag": "vault__taylors_version__vault_track__standalone",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/64x64bb.jpg"
+      },
+      {
+        "title": "Forever Winter (Taylor's Version) [From The Vault]",
+        "url": "",
+        "type": "standalone",
+        "edition": "vault",
+        "display_section": "vault tracks",
+        "display_order": 999,
+        "base_title": "Forever Winter [From The Vault]",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Forever Winter [From The Vault]",
+        "song_family": "forever_winter_from_the_vault",
+        "version_tag": "vault__taylors_version__vault_track__standalone",
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/38/9b/15389bf4-8074-06c3-11ee-655b5453af68/21UM1IM25046.rgb.jpg/64x64bb.jpg"
+      }
+    ],
+    "display_section": "vault tracks",
+    "edition": "vault"
+  },
+  {
+    "album": "Standalone & Extras",
+    "section": "misc_standalone",
+    "track_count": 0,
+    "tracks": []
   },
   {
     "album": "Standalone & Extras",
@@ -212,54 +259,7 @@
   },
   {
     "album": "Standalone & Extras",
-    "section": "vault_tracks",
-    "track_count": 2,
-    "tracks": [
-      {
-        "title": "Don't You (Taylor's Version) [From The Vault]",
-        "url": "",
-        "type": "standalone",
-        "edition": "vault",
-        "display_section": "vault tracks",
-        "display_order": 999,
-        "base_title": "Don't You [From The Vault]",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "Don't You [From The Vault]",
-        "song_family": "don_t_you_from_the_vault",
-        "version_tag": "vault__taylors_version__vault_track__standalone",
-        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/64x64bb.jpg"
-      },
-      {
-        "title": "Forever Winter (Taylor's Version) [From The Vault]",
-        "url": "",
-        "type": "standalone",
-        "edition": "vault",
-        "display_section": "vault tracks",
-        "display_order": 999,
-        "base_title": "Forever Winter [From The Vault]",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "Forever Winter [From The Vault]",
-        "song_family": "forever_winter_from_the_vault",
-        "version_tag": "vault__taylors_version__vault_track__standalone",
-        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/38/9b/15389bf4-8074-06c3-11ee-655b5453af68/21UM1IM25046.rgb.jpg/64x64bb.jpg"
-      }
-    ],
-    "display_section": "vault tracks",
-    "edition": "vault"
-  },
-  {
-    "album": "Standalone & Extras",
-    "section": "kworb_extras",
+    "section": "streaming_extras",
     "track_count": 0,
     "tracks": []
   }

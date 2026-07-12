@@ -1141,9 +1141,9 @@ def _regions_posted_recently(chart_date: str, days: int = MULTI_SONG_REGIONAL_NO
 
 
 def _build_multi_song_region_tweet(chart_date: str, region: str, region_name: str, rows: list[dict]) -> str:
-    date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%A, %B %d, %Y")
     count = len(rows)
-    lines = [f"📈 | Taylor Swift on Spotify {region_name} Charts yesterday ({date_fmt}) :"]
+    lines = [f"📈 | Taylor Swift on Spotify {region_name} Charts on {date_fmt} :"]
     if count >= 2:
         lines.extend([
             "",
@@ -1841,7 +1841,7 @@ def main() -> int:
     if args.post_song_updates and not args.no_post and TWITTER_SESSION.exists():
         has_prev = prev_path.exists()
         locks_dir = per_date_path.parent
-        date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
+        date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%A, %B %d, %Y")
         sorted_tracks = sorted(by_track.items(), key=lambda kv: len(kv[1]), reverse=True)
         url = "🔗 See full update here : https://thetsmuseum.app/charts?region=overall&view=today"
         reentry_items: list[tuple[str, str]] = []
@@ -1862,12 +1862,12 @@ def main() -> int:
                     streams_str = f"{streams:,}" if streams else "N/A"
                     tweet = (
                         f'{emoji} | "{song_name}" has re-entered the {region_name} Spotify Charts '
-                        f"at #{rank} with {streams_str} streams, yesterday ({date_fmt}).\n\n{url}"
+                        f"at #{rank} with {streams_str} streams on {date_fmt}.\n\n{url}"
                     )
                 else:
                     tweet = (
                         f'{emoji} | "{song_name}" has re-entered the Spotify Charts in {count} countries '
-                        f"yesterday ({date_fmt}).\n\n{url}"
+                        f"on {date_fmt}.\n\n{url}"
                     )
                 reentry_items.append((track_id, tweet))
             else:
@@ -1877,7 +1877,7 @@ def main() -> int:
                     country_str = f"{count} countries ({diff_str})"
                 else:
                     country_str = f"{count} countries"
-                regular_items.append((track_id, f'{emoji} | "{song_name}" charted in {country_str} on Spotify yesterday ({date_fmt}).\n\n{url}'))
+                regular_items.append((track_id, f'{emoji} | "{song_name}" charted in {country_str} on Spotify on {date_fmt}.\n\n{url}'))
 
         all_items = reentry_items + regular_items
         pending = [(tid, tw) for tid, tw in all_items if not (locks_dir / f"posted_{tid}.lock").exists()]

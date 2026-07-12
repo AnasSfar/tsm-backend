@@ -791,1001 +791,6 @@
       ]
     },
     {
-      "section": "acoustic_edition",
-      "track_count": 7,
-      "chart_extra": true,
-      "tracks": [
-        {
-          "title": "The Fate of Ophelia - Alone In My Tower Acoustic Version",
-          "url": "https://open.spotify.com/intl-fr/track/3Z2nTctPsTsgqqJm5fCSvG",
-          "type": "alternate_version",
-          "edition": "acoustic",
-          "display_section": "Acoustic Edition",
-          "display_order": 1,
-          "base_title": "The Fate of Ophelia",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "The Fate of Ophelia - Alone In My Tower Acoustic Version",
-          "song_family": "the_fate_of_ophelia",
-          "version_tag": "acoustic__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273bc755429117cac056edd2bf7",
-          "historical_track_ids": [],
-          "release_date": "2025-10-31T00:00:00Z",
-          "genres": [
-            "pop",
-            "dance-pop",
-            "synth-pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "dance-pop": 2.0,
-            "synth-pop": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "dance-pop",
-              "synth-pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "best of 2025",
-              "dance-pop",
-              "synthpop",
-              "2025",
-              "baroque pop",
-              "love at first listen",
-              "soty",
-              "2020s",
-              "AOTY"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "The Fate of Ophelia"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:the_fate_of_ophelia",
-          "filter_tags": [
-            "solo",
-            "acoustic",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "acoustic": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "Opalite - Life Is A Song Acoustic Version",
-          "url": "https://open.spotify.com/intl-fr/track/7y16ygjcEcfo1VYKxmgVZY",
-          "type": "alternate_version",
-          "edition": "acoustic",
-          "display_section": "Acoustic Edition",
-          "display_order": 2,
-          "base_title": "Opalite",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Opalite - Life Is A Song Acoustic Version",
-          "song_family": "opalite",
-          "version_tag": "acoustic__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2738b312c2d2873e7da95e316d2",
-          "historical_track_ids": [
-            "2ZbU5CJSi02RLNsldux0QQ"
-          ],
-          "release_date": "2026-02-06T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop",
-            "soft rock"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "soft rock": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop",
-              "soft rock"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "synthpop",
-              "rnb",
-              "soft rock",
-              "soty",
-              "christmas",
-              "holiday",
-              "synth pop",
-              "american",
-              "pop rock"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Opalite"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:opalite",
-          "filter_tags": [
-            "solo",
-            "acoustic",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "acoustic": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "Wi$h Li$t - Settled Down Acoustic Version",
-          "url": "https://open.spotify.com/track/1qwClaxDb5fCrLjXaAmB35",
-          "type": "alternate_version",
-          "edition": "acoustic",
-          "display_section": "Acoustic Edition",
-          "display_order": 3,
-          "base_title": "Wi$h Li$t",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Wi$h Li$t - Settled Down Acoustic Version",
-          "song_family": "wi_h_li_t",
-          "version_tag": "acoustic__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94",
-          "historical_track_ids": [],
-          "release_date": "2025-11-07T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "2025",
-              "female vocalist",
-              "synthpop",
-              "solo",
-              "synth pop",
-              "female",
-              "Dream",
-              "dreampop",
-              "fav"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Wi$h Li$t"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:wi_h_li_t",
-          "filter_tags": [
-            "solo",
-            "acoustic",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "acoustic": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "Ruin The Friendship - My Advice Version",
-          "url": "https://open.spotify.com/track/6hKfPNnVlA2cgTgKj6Vgcw",
-          "type": "alternate_version",
-          "edition": "acoustic",
-          "display_section": "Acoustic Edition",
-          "display_order": 4,
-          "base_title": "Ruin The Friendship",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Ruin The Friendship - My Advice Version",
-          "song_family": "ruin_the_friendship",
-          "version_tag": "alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94",
-          "historical_track_ids": [],
-          "release_date": "2025-11-07T00:00:00Z",
-          "genres": [
-            "pop",
-            "country pop",
-            "soft rock"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "country pop": 2.0,
-            "soft rock": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "country pop",
-              "soft rock"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "country pop",
-              "peter",
-              "soft rock",
-              "folk",
-              "female vocalist",
-              "country",
-              "singer-songwriter",
-              "sad",
-              "synthpop"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Ruin The Friendship"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:ruin_the_friendship",
-          "filter_tags": [
-            "solo",
-            "acoustic",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "acoustic": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "Eldest Daughter - Now You're Home Acoustic Version",
-          "url": "https://open.spotify.com/track/2JHzTARFUispsjZHKhrxxO",
-          "type": "alternate_version",
-          "edition": "acoustic",
-          "display_section": "Acoustic Edition",
-          "display_order": 5,
-          "base_title": "Eldest Daughter",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Eldest Daughter - Now You're Home Acoustic Version",
-          "song_family": "eldest_daughter",
-          "version_tag": "acoustic__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94",
-          "historical_track_ids": [],
-          "release_date": "2025-11-07T00:00:00Z",
-          "genres": [
-            "pop",
-            "rock"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "rock": 2.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "rock"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "2020s",
-              "sad",
-              "experimental",
-              "show tunes",
-              "Acid Rock",
-              "Ballad",
-              "soty",
-              "gay pop",
-              "Iconic"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Eldest Daughter"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:eldest_daughter",
-          "filter_tags": [
-            "solo",
-            "acoustic",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "acoustic": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "Elizabeth Taylor - So Glamorous Cabaret Version",
-          "url": "https://open.spotify.com/track/4UBWugj5D20ZveyzdGpqvD",
-          "type": "alternate_version",
-          "edition": "acoustic",
-          "display_section": "Acoustic Edition",
-          "display_order": 6,
-          "base_title": "Elizabeth Taylor",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Elizabeth Taylor - So Glamorous Cabaret Version",
-          "song_family": "elizabeth_taylor",
-          "version_tag": "alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94",
-          "historical_track_ids": [
-            "01ZJZOftkQ2kSeyG34C7g6"
-          ],
-          "release_date": "2026-03-31T00:00:00Z",
-          "genres": [
-            "pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "baroque pop",
-              "Who put Katy Perry?",
-              "soty",
-              "Sabrina Carpenter",
-              "halsey",
-              "Olivia Rodrigo",
-              "Ed Sheeran",
-              "katseye",
-              "Jorge Rivera-Herrans"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Elizabeth Taylor"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:elizabeth_taylor",
-          "filter_tags": [
-            "solo",
-            "acoustic",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "acoustic": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "The Life of a Showgirl (feat. Sabrina Carpenter) - Dressing Room Rehearsal Version",
-          "url": "https://open.spotify.com/track/2DF2sUvgHFKJ5TQGjm6n3T",
-          "type": "alternate_version",
-          "edition": "acoustic",
-          "display_section": "Acoustic Edition",
-          "display_order": 7,
-          "base_title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [
-            "Sabrina Carpenter"
-          ],
-          "artists": [
-            "Taylor Swift",
-            "Sabrina Carpenter"
-          ],
-          "title_clean": "The Life of a Showgirl - Dressing Room Rehearsal Version",
-          "song_family": "the_life_of_a_showgirl",
-          "version_tag": "featured__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94",
-          "historical_track_ids": [],
-          "release_date": "2025-11-07T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:the_life_of_a_showgirl",
-          "filter_tags": [
-            "collab",
-            "acoustic",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "collab": "high:artists_or_featured_artists",
-            "acoustic": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        }
-      ]
-    },
-    {
-      "section": "remixes",
-      "chart_extra": true,
-      "track_count": 2,
-      "tracks": [
-        {
-          "title": "Opalite - Official Music Video Extended Version Part 1",
-          "url": "https://open.spotify.com/intl-fr/track/7vf4GBEJmv0uXojpr5qPMX",
-          "type": "alternate_version",
-          "edition": "extended",
-          "display_section": "Extras",
-          "display_order": 1,
-          "base_title": "Opalite",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Opalite - Official Music Video Extended Version Part 1",
-          "song_family": "opalite",
-          "version_tag": "alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2738b312c2d2873e7da95e316d2",
-          "historical_track_ids": [],
-          "release_date": "2026-02-13T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop",
-            "soft rock"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "soft rock": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop",
-              "soft rock"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "synthpop",
-              "rnb",
-              "soft rock",
-              "soty",
-              "christmas",
-              "holiday",
-              "synth pop",
-              "american",
-              "pop rock"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Opalite"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:opalite",
-          "filter_tags": [
-            "solo",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "Opalite - Official Music Video Extended Version Part 2",
-          "url": "https://open.spotify.com/intl-fr/track/7EWLNUpx0QWUCYfmBJS9qb",
-          "type": "alternate_version",
-          "edition": "extended",
-          "display_section": "Extras",
-          "display_order": 2,
-          "base_title": "Opalite",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Opalite - Official Music Video Extended Version Part 2",
-          "song_family": "opalite",
-          "version_tag": "alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2738b312c2d2873e7da95e316d2",
-          "historical_track_ids": [],
-          "release_date": "2026-02-13T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop",
-            "soft rock"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "soft rock": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop",
-              "soft rock"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "synthpop",
-              "rnb",
-              "soft rock",
-              "soty",
-              "christmas",
-              "holiday",
-              "synth pop",
-              "american",
-              "pop rock"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Opalite"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:opalite",
-          "filter_tags": [
-            "solo",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "alternate_version": "medium:type_or_title"
-          }
-        }
-      ]
-    },
-    {
-      "section": "remixes",
-      "track_count": 6,
-      "chart_extra": true,
-      "tracks": [
-        {
-          "title": "Opalite - BUNT. Remix",
-          "url": "https://open.spotify.com/intl-fr/track/0E3Vtmgzk067KASoo0HwzV",
-          "type": "remix",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 1,
-          "base_title": "Opalite",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Opalite - BUNT. Remix",
-          "song_family": "opalite",
-          "version_tag": "remix",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2737796280b4d7e9692b354f902",
-          "historical_track_ids": [],
-          "release_date": "2026-02-19T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop",
-            "soft rock"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "soft rock": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop",
-              "soft rock"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "synthpop",
-              "rnb",
-              "soft rock",
-              "soty",
-              "christmas",
-              "holiday",
-              "synth pop",
-              "american",
-              "pop rock"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Opalite"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:opalite",
-          "filter_tags": [
-            "solo",
-            "remix"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "remix": "high:type_or_title"
-          }
-        },
-        {
-          "title": "Opalite - Chris Lake Remix",
-          "url": "https://open.spotify.com/intl-fr/track/0ttGLmxI0mAkMblE6iRm2S",
-          "type": "remix",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 2,
-          "base_title": "Opalite",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Opalite - Chris Lake Remix",
-          "song_family": "opalite",
-          "version_tag": "remix",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273156ba090375f53d5c8fac5c3",
-          "historical_track_ids": [],
-          "release_date": "2026-02-20T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop",
-            "soft rock"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "soft rock": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop",
-              "soft rock"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "synthpop",
-              "rnb",
-              "soft rock",
-              "soty",
-              "christmas",
-              "holiday",
-              "synth pop",
-              "american",
-              "pop rock"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Opalite"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:opalite",
-          "filter_tags": [
-            "solo",
-            "remix"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "remix": "high:type_or_title"
-          }
-        },
-        {
-          "title": "Opalite - Ely Oaks Remix",
-          "url": "https://open.spotify.com/intl-fr/track/5t1wMjV9ldVDdYs4l7mG2g",
-          "type": "remix",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 3,
-          "base_title": "Opalite",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Opalite - Ely Oaks Remix",
-          "song_family": "opalite",
-          "version_tag": "remix",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2738100654494e42240857384d9",
-          "historical_track_ids": [],
-          "release_date": "2026-02-19T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop",
-            "soft rock"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "soft rock": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop",
-              "soft rock"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "synthpop",
-              "rnb",
-              "soft rock",
-              "soty",
-              "christmas",
-              "holiday",
-              "synth pop",
-              "american",
-              "pop rock"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Opalite"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:opalite",
-          "filter_tags": [
-            "solo",
-            "remix"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "remix": "high:type_or_title"
-          }
-        },
-        {
-          "title": "Opalite - Skream Remix",
-          "url": "https://open.spotify.com/intl-fr/track/1VCcPLfDiR1S9PJaSp5qm5",
-          "type": "remix",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 4,
-          "base_title": "Opalite",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Opalite - Skream Remix",
-          "song_family": "opalite",
-          "version_tag": "remix",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273bcde9224bc1fb45f15c7bc56",
-          "historical_track_ids": [],
-          "release_date": "2026-02-19T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop",
-            "soft rock"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "soft rock": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop",
-              "soft rock"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "synthpop",
-              "rnb",
-              "soft rock",
-              "soty",
-              "christmas",
-              "holiday",
-              "synth pop",
-              "american",
-              "pop rock"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Opalite"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:opalite",
-          "filter_tags": [
-            "solo",
-            "remix"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "remix": "high:type_or_title"
-          }
-        },
-        {
-          "title": "The Fate of Ophelia - Loud Luxury Remix",
-          "url": "https://open.spotify.com/intl-fr/track/6PlBKImSl4AZoxBU7F649D",
-          "type": "remix",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 6,
-          "base_title": "The Fate of Ophelia",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "The Fate of Ophelia - Loud Luxury Remix",
-          "song_family": "the_fate_of_ophelia",
-          "version_tag": "remix",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27339b6ce4f493d53cfba83170a",
-          "historical_track_ids": [],
-          "release_date": "2025-11-06T00:00:00Z",
-          "genres": [
-            "pop",
-            "dance-pop",
-            "synth-pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "dance-pop": 2.0,
-            "synth-pop": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "dance-pop",
-              "synth-pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "best of 2025",
-              "dance-pop",
-              "synthpop",
-              "2025",
-              "baroque pop",
-              "love at first listen",
-              "soty",
-              "2020s",
-              "AOTY"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "The Fate of Ophelia"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:the_fate_of_ophelia",
-          "filter_tags": [
-            "solo",
-            "remix"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "remix": "high:type_or_title"
-          }
-        },
-        {
-          "title": "The Fate of Ophelia - The Chainsmokers Remix",
-          "url": "https://open.spotify.com/intl-fr/track/3JNaLxAymiSUMrmjOarjeo",
-          "type": "remix",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 7,
-          "base_title": "The Fate of Ophelia",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "The Fate of Ophelia - The Chainsmokers Remix",
-          "song_family": "the_fate_of_ophelia",
-          "version_tag": "remix",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2735a9197396cb52631e73364b9",
-          "historical_track_ids": [],
-          "release_date": "2025-11-28T00:00:00Z",
-          "genres": [
-            "pop",
-            "dance-pop",
-            "synth-pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "dance-pop": 2.0,
-            "synth-pop": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "dance-pop",
-              "synth-pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "best of 2025",
-              "dance-pop",
-              "synthpop",
-              "2025",
-              "baroque pop",
-              "love at first listen",
-              "soty",
-              "2020s",
-              "AOTY"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "The Fate of Ophelia"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:the_fate_of_ophelia",
-          "filter_tags": [
-            "solo",
-            "remix"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "remix": "high:type_or_title"
-          }
-        }
-      ]
-    },
-    {
       "section": "track_by_track",
       "track_count": 12,
       "chart_extra": true,
@@ -2562,6 +1567,1001 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "track_by_track": "high:title_or_section"
+          }
+        }
+      ]
+    },
+    {
+      "section": "acoustic_edition",
+      "track_count": 7,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "The Fate of Ophelia - Alone In My Tower Acoustic Version",
+          "url": "https://open.spotify.com/intl-fr/track/3Z2nTctPsTsgqqJm5fCSvG",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Acoustic Edition",
+          "display_order": 1,
+          "base_title": "The Fate of Ophelia",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Fate of Ophelia - Alone In My Tower Acoustic Version",
+          "song_family": "the_fate_of_ophelia",
+          "version_tag": "acoustic__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bc755429117cac056edd2bf7",
+          "historical_track_ids": [],
+          "release_date": "2025-10-31T00:00:00Z",
+          "genres": [
+            "pop",
+            "dance-pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "dance-pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dance-pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "best of 2025",
+              "dance-pop",
+              "synthpop",
+              "2025",
+              "baroque pop",
+              "love at first listen",
+              "soty",
+              "2020s",
+              "AOTY"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Fate of Ophelia"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_fate_of_ophelia",
+          "filter_tags": [
+            "solo",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Opalite - Life Is A Song Acoustic Version",
+          "url": "https://open.spotify.com/intl-fr/track/7y16ygjcEcfo1VYKxmgVZY",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Acoustic Edition",
+          "display_order": 2,
+          "base_title": "Opalite",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Opalite - Life Is A Song Acoustic Version",
+          "song_family": "opalite",
+          "version_tag": "acoustic__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738b312c2d2873e7da95e316d2",
+          "historical_track_ids": [
+            "2ZbU5CJSi02RLNsldux0QQ"
+          ],
+          "release_date": "2026-02-06T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "soft rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "rnb",
+              "soft rock",
+              "soty",
+              "christmas",
+              "holiday",
+              "synth pop",
+              "american",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Opalite"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:opalite",
+          "filter_tags": [
+            "solo",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Wi$h Li$t - Settled Down Acoustic Version",
+          "url": "https://open.spotify.com/track/1qwClaxDb5fCrLjXaAmB35",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Acoustic Edition",
+          "display_order": 3,
+          "base_title": "Wi$h Li$t",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Wi$h Li$t - Settled Down Acoustic Version",
+          "song_family": "wi_h_li_t",
+          "version_tag": "acoustic__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94",
+          "historical_track_ids": [],
+          "release_date": "2025-11-07T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "2025",
+              "female vocalist",
+              "synthpop",
+              "solo",
+              "synth pop",
+              "female",
+              "Dream",
+              "dreampop",
+              "fav"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Wi$h Li$t"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:wi_h_li_t",
+          "filter_tags": [
+            "solo",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Ruin The Friendship - My Advice Version",
+          "url": "https://open.spotify.com/track/6hKfPNnVlA2cgTgKj6Vgcw",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Acoustic Edition",
+          "display_order": 4,
+          "base_title": "Ruin The Friendship",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Ruin The Friendship - My Advice Version",
+          "song_family": "ruin_the_friendship",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94",
+          "historical_track_ids": [],
+          "release_date": "2025-11-07T00:00:00Z",
+          "genres": [
+            "pop",
+            "country pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "country pop": 2.0,
+            "soft rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country pop",
+              "peter",
+              "soft rock",
+              "folk",
+              "female vocalist",
+              "country",
+              "singer-songwriter",
+              "sad",
+              "synthpop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Ruin The Friendship"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:ruin_the_friendship",
+          "filter_tags": [
+            "solo",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Eldest Daughter - Now You're Home Acoustic Version",
+          "url": "https://open.spotify.com/track/2JHzTARFUispsjZHKhrxxO",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Acoustic Edition",
+          "display_order": 5,
+          "base_title": "Eldest Daughter",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Eldest Daughter - Now You're Home Acoustic Version",
+          "song_family": "eldest_daughter",
+          "version_tag": "acoustic__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94",
+          "historical_track_ids": [],
+          "release_date": "2025-11-07T00:00:00Z",
+          "genres": [
+            "pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "rock": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "2020s",
+              "sad",
+              "experimental",
+              "show tunes",
+              "Acid Rock",
+              "Ballad",
+              "soty",
+              "gay pop",
+              "Iconic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Eldest Daughter"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:eldest_daughter",
+          "filter_tags": [
+            "solo",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Elizabeth Taylor - So Glamorous Cabaret Version",
+          "url": "https://open.spotify.com/track/4UBWugj5D20ZveyzdGpqvD",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Acoustic Edition",
+          "display_order": 6,
+          "base_title": "Elizabeth Taylor",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Elizabeth Taylor - So Glamorous Cabaret Version",
+          "song_family": "elizabeth_taylor",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94",
+          "historical_track_ids": [
+            "01ZJZOftkQ2kSeyG34C7g6"
+          ],
+          "release_date": "2026-03-31T00:00:00Z",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "baroque pop",
+              "Who put Katy Perry?",
+              "soty",
+              "Sabrina Carpenter",
+              "halsey",
+              "Olivia Rodrigo",
+              "Ed Sheeran",
+              "katseye",
+              "Jorge Rivera-Herrans"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Elizabeth Taylor"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:elizabeth_taylor",
+          "filter_tags": [
+            "solo",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "The Life of a Showgirl (feat. Sabrina Carpenter) - Dressing Room Rehearsal Version",
+          "url": "https://open.spotify.com/track/2DF2sUvgHFKJ5TQGjm6n3T",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Acoustic Edition",
+          "display_order": 7,
+          "base_title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Sabrina Carpenter"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Sabrina Carpenter"
+          ],
+          "title_clean": "The Life of a Showgirl - Dressing Room Rehearsal Version",
+          "song_family": "the_life_of_a_showgirl",
+          "version_tag": "featured__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94",
+          "historical_track_ids": [],
+          "release_date": "2025-11-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_life_of_a_showgirl",
+          "filter_tags": [
+            "collab",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "collab": "high:artists_or_featured_artists",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        }
+      ]
+    },
+    {
+      "section": "remixes",
+      "track_count": 6,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Opalite - BUNT. Remix",
+          "url": "https://open.spotify.com/intl-fr/track/0E3Vtmgzk067KASoo0HwzV",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "Opalite",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Opalite - BUNT. Remix",
+          "song_family": "opalite",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737796280b4d7e9692b354f902",
+          "historical_track_ids": [],
+          "release_date": "2026-02-19T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "soft rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "rnb",
+              "soft rock",
+              "soty",
+              "christmas",
+              "holiday",
+              "synth pop",
+              "american",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Opalite"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:opalite",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
+        },
+        {
+          "title": "Opalite - Chris Lake Remix",
+          "url": "https://open.spotify.com/intl-fr/track/0ttGLmxI0mAkMblE6iRm2S",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "Opalite",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Opalite - Chris Lake Remix",
+          "song_family": "opalite",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273156ba090375f53d5c8fac5c3",
+          "historical_track_ids": [],
+          "release_date": "2026-02-20T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "soft rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "rnb",
+              "soft rock",
+              "soty",
+              "christmas",
+              "holiday",
+              "synth pop",
+              "american",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Opalite"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:opalite",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
+        },
+        {
+          "title": "Opalite - Ely Oaks Remix",
+          "url": "https://open.spotify.com/intl-fr/track/5t1wMjV9ldVDdYs4l7mG2g",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 3,
+          "base_title": "Opalite",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Opalite - Ely Oaks Remix",
+          "song_family": "opalite",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738100654494e42240857384d9",
+          "historical_track_ids": [],
+          "release_date": "2026-02-19T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "soft rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "rnb",
+              "soft rock",
+              "soty",
+              "christmas",
+              "holiday",
+              "synth pop",
+              "american",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Opalite"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:opalite",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
+        },
+        {
+          "title": "Opalite - Skream Remix",
+          "url": "https://open.spotify.com/intl-fr/track/1VCcPLfDiR1S9PJaSp5qm5",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 4,
+          "base_title": "Opalite",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Opalite - Skream Remix",
+          "song_family": "opalite",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bcde9224bc1fb45f15c7bc56",
+          "historical_track_ids": [],
+          "release_date": "2026-02-19T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "soft rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "rnb",
+              "soft rock",
+              "soty",
+              "christmas",
+              "holiday",
+              "synth pop",
+              "american",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Opalite"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:opalite",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
+        },
+        {
+          "title": "The Fate of Ophelia - Loud Luxury Remix",
+          "url": "https://open.spotify.com/intl-fr/track/6PlBKImSl4AZoxBU7F649D",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 6,
+          "base_title": "The Fate of Ophelia",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Fate of Ophelia - Loud Luxury Remix",
+          "song_family": "the_fate_of_ophelia",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27339b6ce4f493d53cfba83170a",
+          "historical_track_ids": [],
+          "release_date": "2025-11-06T00:00:00Z",
+          "genres": [
+            "pop",
+            "dance-pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "dance-pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dance-pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "best of 2025",
+              "dance-pop",
+              "synthpop",
+              "2025",
+              "baroque pop",
+              "love at first listen",
+              "soty",
+              "2020s",
+              "AOTY"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Fate of Ophelia"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_fate_of_ophelia",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
+        },
+        {
+          "title": "The Fate of Ophelia - The Chainsmokers Remix",
+          "url": "https://open.spotify.com/intl-fr/track/3JNaLxAymiSUMrmjOarjeo",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 7,
+          "base_title": "The Fate of Ophelia",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Fate of Ophelia - The Chainsmokers Remix",
+          "song_family": "the_fate_of_ophelia",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2735a9197396cb52631e73364b9",
+          "historical_track_ids": [],
+          "release_date": "2025-11-28T00:00:00Z",
+          "genres": [
+            "pop",
+            "dance-pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "dance-pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dance-pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "best of 2025",
+              "dance-pop",
+              "synthpop",
+              "2025",
+              "baroque pop",
+              "love at first listen",
+              "soty",
+              "2020s",
+              "AOTY"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Fate of Ophelia"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_fate_of_ophelia",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
+        }
+      ]
+    },
+    {
+      "section": "remixes",
+      "chart_extra": true,
+      "track_count": 2,
+      "tracks": [
+        {
+          "title": "Opalite - Official Music Video Extended Version Part 1",
+          "url": "https://open.spotify.com/intl-fr/track/7vf4GBEJmv0uXojpr5qPMX",
+          "type": "alternate_version",
+          "edition": "extended",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "Opalite",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Opalite - Official Music Video Extended Version Part 1",
+          "song_family": "opalite",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738b312c2d2873e7da95e316d2",
+          "historical_track_ids": [],
+          "release_date": "2026-02-13T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "soft rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "rnb",
+              "soft rock",
+              "soty",
+              "christmas",
+              "holiday",
+              "synth pop",
+              "american",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Opalite"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:opalite",
+          "filter_tags": [
+            "solo",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Opalite - Official Music Video Extended Version Part 2",
+          "url": "https://open.spotify.com/intl-fr/track/7EWLNUpx0QWUCYfmBJS9qb",
+          "type": "alternate_version",
+          "edition": "extended",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "Opalite",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Opalite - Official Music Video Extended Version Part 2",
+          "song_family": "opalite",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738b312c2d2873e7da95e316d2",
+          "historical_track_ids": [],
+          "release_date": "2026-02-13T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "soft rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "rnb",
+              "soft rock",
+              "soty",
+              "christmas",
+              "holiday",
+              "synth pop",
+              "american",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Opalite"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:opalite",
+          "filter_tags": [
+            "solo",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "alternate_version": "medium:type_or_title"
           }
         }
       ]

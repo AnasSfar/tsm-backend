@@ -797,13 +797,13 @@ def _wait_for_attached_image(root, expected_count: int) -> None:
     raise TimeoutError(f"X image upload non confirmee: {last_count}/{expected_count} preview(s)")
 
 
-def _post_compose_image_thread(page, posts: list[tuple[str, Path]]) -> bool:
+def _post_compose_image_thread(page, posts: list[tuple[str, tuple[Path, ...]]]) -> bool:
     print("X compose: ouverture du composer...", flush=True)
     page.goto("https://x.com/compose/post", wait_until="domcontentloaded", timeout=30_000)
     time.sleep(2)
 
     upload_scopes = []
-    for i, (text, image_path) in enumerate(posts):
+    for i, (text, image_paths) in enumerate(posts):
         if i > 0:
             print(f"X compose: ajout du post #{i + 1}...", flush=True)
             if not _click_thread_add_button(page):
@@ -816,10 +816,17 @@ def _post_compose_image_thread(page, posts: list[tuple[str, Path]]) -> bool:
         editor.click(timeout=10_000)
         if text:
             editor.fill(text)
-        print(f"X compose: upload image post #{i + 1}/{len(posts)} ({image_path.name})...", flush=True)
-        upload_scopes.append(_attach_image_to_composer(page, editor, image_path, i))
+        scope = None
+        for image_index, image_path in enumerate(image_paths):
+            print(
+                f"X compose: upload image {image_index + 1}/{len(image_paths)} "
+                f"post #{i + 1}/{len(posts)} ({image_path.name})...",
+                flush=True,
+            )
+            scope = _attach_image_to_composer(page, editor, image_path, i)
+        upload_scopes.append(scope)
 
-    for i, _ in enumerate(posts):
+    for i, (_text, image_paths) in enumerate(posts):
         print(f"X compose: verification image post #{i + 1}/{len(posts)}...", flush=True)
         editor = _wait_visible_editor(page, i, timeout_ms=5_000)
         scope = upload_scopes[i] if i < len(upload_scopes) else None
@@ -829,8 +836,8 @@ def _post_compose_image_thread(page, posts: list[tuple[str, Path]]) -> bool:
             print(f"X composer post #{i + 1} introuvable pour verification image")
             return False
         attached = _attached_image_count(scope)
-        if attached < 1:
-            print(f"X image absente dans le post #{i + 1}")
+        if attached < len(image_paths):
+            print(f"X image absente dans le post #{i + 1}: {attached}/{len(image_paths)}")
             return False
 
     print("X compose: clic publication du thread...", flush=True)
@@ -1267,16 +1274,23 @@ def schedule_post(
                     context.close()
 
 
-def post_image_thread(posts: list[tuple[str, Path]], session_file: Path) -> bool:
-    """Post a native X thread where each post has one image attached."""
-    posts = [(str(text or "").strip(), Path(image_path)) for text, image_path in posts]
-    posts = [(text, image_path) for text, image_path in posts if image_path]
+def post_image_thread(posts: list[tuple[str, Path | list[Path] | tuple[Path, ...]]], session_file: Path) -> bool:
+    """Post a native X thread where each post has one or more images attached."""
+    normalized_posts: list[tuple[str, tuple[Path, ...]]] = []
+    for text, image_paths in posts:
+        if isinstance(image_paths, (list, tuple)):
+            paths = tuple(Path(path) for path in image_paths if path)
+        else:
+            paths = (Path(image_paths),) if image_paths else ()
+        if paths:
+            normalized_posts.append((str(text or "").strip(), paths))
+    posts = normalized_posts
     if not posts:
         print("Aucun post image a publier.")
         return False
     if not _validate_tweet_lengths([text for text, _ in posts], label="thread image"):
         return False
-    missing = [image_path for _, image_path in posts if not image_path.exists()]
+    missing = [image_path for _, image_paths in posts for image_path in image_paths if not image_path.exists()]
     if missing:
         print(f"X image introuvable: {missing[0]}")
         return False

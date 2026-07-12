@@ -618,12 +618,14 @@ def merge_album_sections_by_display_label(sections: list[dict]) -> list[dict]:
                 or section.get("name")
                 or "Other Editions"
             )
-            key = normalize_title_for_site(label)
+            chart_extra = track.get("chart_extra", section.get("chart_extra"))
+            key = f"{normalize_title_for_site(label)}|extra:{bool(chart_extra)}"
 
             if key not in merged:
                 merged[key] = {
                     **section,
                     "name": label,
+                    "chart_extra": chart_extra,
                     "tracks": [],
                     "track_ids": [],
                     "track_count": 0,
@@ -669,14 +671,44 @@ def build_discography_index() -> tuple[dict, list[dict]]:
             "from_the_vault": 30, "from_the_vault_tv": 30,
             "long_pond_studio_sessions": 40, "acoustic_edition": 40,
         }
+        _EXTRA_SECTIONS = {
+            "streaming_extras", "extras", "remixes", "remixes_and_live",
+            "soundtracks", "voice_memos", "karaoke", "standalone",
+            "demos_and_acoustic", "collabs_and_features",
+            "taylor_versions_standalone", "extras_and_live",
+            "misc_standalone", "standard",
+        }
+
+        def _section_release_date(data: dict) -> str:
+            dates = [
+                str(track.get("release_date") or "")[:10]
+                for track in data.get("tracks", [])
+                if re.match(r"\d{4}-\d{2}-\d{2}", str(track.get("release_date") or ""))
+            ]
+            return min(dates) if dates else "9999-12-31"
+
+        def _is_extra_section(data: dict) -> bool:
+            if isinstance(data.get("chart_extra"), bool):
+                return bool(data.get("chart_extra"))
+            return (data.get("section") or "").casefold() in _EXTRA_SECTIONS
+
+        def _album_section_sort_key(data: dict) -> tuple[int, str, int, str]:
+            section_name = data.get("section") or ""
+            if _is_extra_section(data):
+                return (1, _section_release_date(data), 0, section_name.casefold())
+            return (
+                0,
+                _section_release_date(data),
+                _SECTION_PRIORITY.get(section_name, 50),
+                section_name.casefold(),
+            )
 
         for album_name in sorted(albums_order, key=str.casefold):
             album_track_ids_ordered: list[str] = []
             album_sections: list[dict] = []
 
             for data in sorted(albums_data[album_name],
-                               key=lambda d: (_SECTION_PRIORITY.get(d.get("section", ""), 50),
-                                              d.get("section", "").casefold())):
+                               key=_album_section_sort_key):
                 section_name = data.get("section") or ""
                 file_name    = section_name + ".json"
                 source_path  = f"discography/albums/{album_name}/{file_name}"
@@ -1636,6 +1668,12 @@ def export_for_web(stats_date: str | None = None, *, dry_run: bool = False) -> N
         pass
     if _os.getenv("UPLOAD_TO_R2", "").strip().lower() not in ("0", "false", "no"):
         r2_export_lock = _os.getenv("R2_EXPORT_LOCK_PATH", "").strip()
+        if stats_date and latest_date != stats_date:
+            print(
+                f"[R2] Upload skipped: requested date {stats_date} is not fully exported "
+                f"to the site yet (latest exported site date: {latest_date or 'none'})."
+            )
+            return
         if r2_export_lock and Path(r2_export_lock).exists():
             print(f"[R2] Upload skipped: exported lock exists ({r2_export_lock}).")
             return

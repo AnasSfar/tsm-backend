@@ -708,120 +708,6 @@
       ]
     },
     {
-      "section": "remixes",
-      "track_count": 2,
-      "chart_extra": true,
-      "tracks": [
-        {
-          "title": "Love Story - Digital Dog Remix",
-          "url": "https://open.spotify.com/intl-fr/track/3RNDw7yywLNyawDKV99hTx",
-          "type": "remix",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 1,
-          "base_title": "Love Story",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Love Story - Digital Dog Remix",
-          "song_family": "love_story",
-          "version_tag": "remix",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273c4d3acdcb5d53a2a3856786e",
-          "historical_track_ids": [],
-          "release_date": "2020-02-07T00:00:00Z",
-          "genres": [
-            "country",
-            "pop",
-            "country pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "country": 3.0,
-            "pop": 2.0,
-            "country pop": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "country",
-              "pop",
-              "country pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "country",
-              "taylor swift",
-              "pop",
-              "Love",
-              "romantic",
-              "female vocalists",
-              "country pop",
-              "love story",
-              "love song",
-              "female vocalist"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Love Story"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:love_story",
-          "filter_tags": [
-            "solo",
-            "remix"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "remix": "high:type_or_title"
-          }
-        },
-        {
-          "title": "You're Not Sorry - CSI Remix",
-          "url": "https://open.spotify.com/intl-fr/track/4VbErhGDMTnvPAnt5z70DL",
-          "type": "remix",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 2,
-          "base_title": "You're Not Sorry",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "You're Not Sorry - CSI Remix",
-          "song_family": "you_re_not_sorry",
-          "version_tag": "remix",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273e8ae61ef7ff5c29b9f84828f",
-          "historical_track_ids": [],
-          "release_date": "2020-02-07T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:you_re_not_sorry",
-          "filter_tags": [
-            "solo",
-            "remix"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "remix": "high:type_or_title"
-          }
-        }
-      ]
-    },
-    {
       "section": "platinum_edition",
       "track_count": 4,
       "chart_extra": false,
@@ -1044,7 +930,7 @@
     },
     {
       "album": "Fearless",
-      "section": "kworb_extras",
+      "section": "streaming_extras",
       "track_count": 9,
       "chart_extra": true,
       "tracks": [
@@ -1461,6 +1347,120 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "live": "high:type_title_or_section"
+          }
+        }
+      ]
+    },
+    {
+      "section": "remixes",
+      "track_count": 2,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Love Story - Digital Dog Remix",
+          "url": "https://open.spotify.com/intl-fr/track/3RNDw7yywLNyawDKV99hTx",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "Love Story",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Love Story - Digital Dog Remix",
+          "song_family": "love_story",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273c4d3acdcb5d53a2a3856786e",
+          "historical_track_ids": [],
+          "release_date": "2020-02-07T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "taylor swift",
+              "pop",
+              "Love",
+              "romantic",
+              "female vocalists",
+              "country pop",
+              "love story",
+              "love song",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Love Story"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:love_story",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
+        },
+        {
+          "title": "You're Not Sorry - CSI Remix",
+          "url": "https://open.spotify.com/intl-fr/track/4VbErhGDMTnvPAnt5z70DL",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "You're Not Sorry",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You're Not Sorry - CSI Remix",
+          "song_family": "you_re_not_sorry",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e8ae61ef7ff5c29b9f84828f",
+          "historical_track_ids": [],
+          "release_date": "2020-02-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_re_not_sorry",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
           }
         }
       ]

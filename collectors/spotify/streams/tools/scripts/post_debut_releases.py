@@ -913,7 +913,7 @@ def _build_debut_html(
               </div>
               <div class="debut-inline-stat">
                 <div class="debut-inline-num {pct_class}">{_fmt_pct(change_pct)}</div>
-                <div class="debut-inline-label">Vs yesterday</div>
+                <div class="debut-inline-label">Vs previous day</div>
               </div>
             </div>
           </div>
@@ -1069,7 +1069,7 @@ def _build_post_threads(
             if direction == "stable at":
                 movement = f", {direction} {pct_text}"
             else:
-                movement = f", {direction} {pct_text} vs yesterday"
+                movement = f", {direction} {pct_text} vs the previous day"
         show_version_details = version_count > 1
         image_path = _generate_debut_image(
             target_date,

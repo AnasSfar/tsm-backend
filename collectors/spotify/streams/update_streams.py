@@ -36,11 +36,13 @@ from finalize_update import (
     PartialWebExporter,
     ReadyAlbumBestDaySincePoster,
     ReadyAlbumUpdatePoster,
+    ReadyDebutReleasePoster,
     ReadyBestDaySincePoster,
+    SharedWebExportGate,
     run_final_update_tasks,
     run_post_only_steps,
 )
-from release_targets import is_recent_release_date, recent_release_album_names
+from release_targets import is_recent_release_date
 from reporting import ProgressLogger, print_remaining_details, print_summary_block, update_json_logs_from_summary
 import spotify_api as _spotify_api
 from stream_utils import (
@@ -437,11 +439,11 @@ Usage:
       no Twitter posts, no git, and no scraping.
 
   python update_streams.py [YYYY-MM-DD] --post-only top-eras
-  python update_streams.py [YYYY-MM-DD] --post-only recap,top-eras,top45
+  python update_streams.py [YYYY-MM-DD] --post-only recap,top-eras,top20
       Post only the selected step(s) from existing history data for the latest
       available date (or the provided date). No scraping, no web export, no git.
       Completeness guards, posting locks and weekday rules still apply.
-      Steps (comma- or space-separated): top-eras, all-albums, top45, recap,
+      Steps (comma- or space-separated): top-eras, all-albums, top20, recap,
       best-day-since, debut, gainers, album-updates.
       Add --no-post to only generate the images without posting.
 
@@ -688,8 +690,6 @@ def build_album_post_priority_track_ids(stats_date: str | None = None) -> set[st
     priority_ids: set[str] = set()
     target_albums = set(ALBUM_UPDATE_TARGETS)
     sections = load_album_sections_flat()
-    if stats_date:
-        target_albums.update(recent_release_album_names(sections, stats_date))
 
     for section in sections:
         if section.get("album") not in target_albums:
@@ -1697,7 +1697,7 @@ def main():
                 value_parts.append(nxt)
                 j += 1
             if not value_parts:
-                print("Missing value after --post-only (e.g. --post-only top-eras or --post-only top45,gainers)")
+                print("Missing value after --post-only (e.g. --post-only top-eras or --post-only top20,gainers)")
                 sys.exit(1)
             post_only_steps_raw = ",".join(value_parts)
             i = j
@@ -2286,7 +2286,7 @@ def main():
                 priority_target_ids - load_positive_history_track_ids_for_date(stats_date)
             ) | recent_release_track_ids_missing_daily(stats_date)
             if not missing_after_priority:
-                print("[debut] Priority tracks collected; debut posts deferred until full collection is complete.")
+                print("[debut] Priority tracks collected; early debut poster will post during collection.")
             else:
                 print(
                     f"[debut] {len(missing_after_priority)} new release track(s) still missing after "
@@ -2436,32 +2436,49 @@ def main():
             if section.get("album")
         )
     ]
-
-    album_best_day_since_poster = ReadyAlbumBestDaySincePoster(
-        script_dir=_SCRIPT_DIR,
-        stats_date=stats_date,
+    early_web_export_gate = SharedWebExportGate(
         export_web_data=export_web_data,
-        album_tracks_done_for=album_tracks_done_for,
+        stats_date=stats_date,
+    )
+
+    debut_release_track_ids = set()
+    if new_release_track_ids and not dry_run_mode and not local_test_mode and not debug_daily_mode:
+        debut_release_track_ids = filter_tracks_released_on(new_release_track_ids, stats_date)
+
+    debut_release_poster = ReadyDebutReleasePoster(
+        stats_date=stats_date,
+        track_ids=debut_release_track_ids,
+        load_history_track_ids_for_date=load_history_track_ids_for_date,
         spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
         log_mode=LOG_MODE,
         enabled=True,
         no_post_mode=no_post_mode,
+    )
+    debut_release_poster.start()
+
+    album_best_day_since_poster = ReadyAlbumBestDaySincePoster(
+        script_dir=_SCRIPT_DIR,
+        stats_date=stats_date,
+        export_web_data=early_web_export_gate.export_partial,
+        album_tracks_done_for=album_tracks_done_for,
+        spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
+        log_mode=LOG_MODE,
+        enabled=False,
+        no_post_mode=no_post_mode,
         target_albums=album_names,
+        priority_ready=debut_release_poster.is_done,
     )
     album_best_day_since_poster.start()
 
     album_update_poster = ReadyAlbumUpdatePoster(
         script_dir=_SCRIPT_DIR,
         stats_date=stats_date,
-        export_web_data=export_web_data,
+        export_web_data=early_web_export_gate.export_partial,
         album_tracks_done_for=album_tracks_done_for,
         spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
         log_mode=LOG_MODE,
         no_post_mode=no_post_mode,
-        target_albums=[
-            *ALBUM_UPDATE_TARGETS,
-            *recent_release_album_names(album_sections_flat, stats_date),
-        ],
+        target_albums=list(ALBUM_UPDATE_TARGETS),
         enabled=True,
     )
     album_update_poster.start()
@@ -2470,18 +2487,22 @@ def main():
         script_dir=_SCRIPT_DIR,
         stats_date=stats_date,
         track_ids=[t["track_id"] for t in tracks if not t.get("chart_extra")],
-        export_web_data=export_web_data,
+        export_web_data=early_web_export_gate.export_partial,
         load_history_track_ids_for_date=load_history_track_ids_for_date,
         spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
         log_mode=LOG_MODE,
         enabled=True,
         no_post_mode=no_post_mode,
+        min_days=21,
+        min_daily_streams=900_000,
+        min_pct_change=0.0,
+        priority_ready=debut_release_poster.is_done,
     )
     best_day_since_poster.start()
 
     partial_web_exporter = PartialWebExporter(
         stats_date=stats_date,
-        export_web_data=export_web_data,
+        export_web_data=early_web_export_gate.export_partial,
         enabled=True,
     )
 
@@ -2553,7 +2574,7 @@ def main():
         debut_ids = filter_tracks_released_on(new_release_track_ids, stats_date)
         missing_debut_ids = debut_ids - load_history_track_ids_for_date(stats_date)
         if not missing_debut_ids:
-            print("[debut] Tracks collected; debut posts deferred until finalization.")
+            print("[debut] Tracks collected; early debut poster has priority before best-day-since.")
         else:
             print(f"[debut] Post skipped: {len(missing_debut_ids)} debut track(s) still missing streams.")
 
@@ -2882,6 +2903,7 @@ def main():
     posted_album_best_day_updates = album_best_day_since_poster.stop()
     posted_album_updates = album_update_poster.stop()
     posted_best_day_since_tracks = best_day_since_poster.stop()
+    debut_post_state = debut_release_poster.stop()
     album_best_day_post_state = album_best_day_since_poster.post_state()
     album_post_state = album_update_poster.post_state()
     best_day_since_post_state = best_day_since_poster.post_state()
@@ -2890,11 +2912,13 @@ def main():
             album_best_day_post_state["posted_count"]
             + album_post_state["posted_count"]
             + best_day_since_post_state["posted_count"]
+            + debut_post_state["posted_count"]
         ),
         "last_post_at": max(
             album_best_day_post_state["last_post_at"],
             album_post_state["last_post_at"],
             best_day_since_post_state["last_post_at"],
+            debut_post_state["last_post_at"],
         ),
     }
 

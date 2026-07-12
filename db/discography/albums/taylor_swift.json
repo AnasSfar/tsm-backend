@@ -4,53 +4,6 @@
   "track_count": 22,
   "sections": [
     {
-      "section": "extras",
-      "track_count": 1,
-      "chart_extra": true,
-      "tracks": [
-        {
-          "title": "Crazier",
-          "url": "https://open.spotify.com/intl-fr/track/5vyxXfD5gLlyPxGZMEjtmd",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 1,
-          "base_title": "Crazier",
-          "album": "Taylor Swift",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Crazier",
-          "song_family": "crazier",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730e8ba185f3e9f15630a7b5fb",
-          "historical_track_ids": [],
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:crazier",
-          "filter_tags": [
-            "solo",
-            "standalone"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type"
-          }
-        }
-      ]
-    },
-    {
       "section": "standard_edition",
       "track_count": 15,
       "chart_extra": false,
@@ -726,7 +679,7 @@
     },
     {
       "album": "Taylor Swift",
-      "section": "kworb_extras",
+      "section": "streaming_extras",
       "track_count": 6,
       "chart_extra": true,
       "tracks": [
@@ -1011,6 +964,53 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "live": "high:type_title_or_section"
+          }
+        }
+      ]
+    },
+    {
+      "section": "extras",
+      "track_count": 1,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Crazier",
+          "url": "https://open.spotify.com/intl-fr/track/5vyxXfD5gLlyPxGZMEjtmd",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "Crazier",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Crazier",
+          "song_family": "crazier",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730e8ba185f3e9f15630a7b5fb",
+          "historical_track_ids": [],
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:crazier",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
           }
         }
       ]

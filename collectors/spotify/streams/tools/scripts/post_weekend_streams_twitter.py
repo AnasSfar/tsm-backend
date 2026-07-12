@@ -36,12 +36,7 @@ def _ordinal(n: int) -> str:
 
 def build_tweet(target_date: str) -> str:
     d = date.fromisoformat(target_date)
-    max_days = history_store.max_days_covered(history_store.load_album_track_ids(), target_date)
-    when = (
-        f"yesterday, {d.strftime('%A')}, {d.strftime('%B')} {_ordinal(d.day)}, {d.year}"
-        if max_days <= 1
-        else f"over the last {max_days} days, up to {d.strftime('%B')} {_ordinal(d.day)}, {d.year}"
-    )
+    when = f"on {d.strftime('%A')}, {d.strftime('%B')} {_ordinal(d.day)}, {d.year}"
     return (
         f"📈 | Taylor Swift's albums and songs on the Spotify counter {when}.\n"
         "See the full update here : https://thetsmuseum.app/streams/latest"

@@ -326,7 +326,7 @@ def _song_card_gallery(output_dir: Path, keep_html: bool, target_date: str) -> l
                 cover_url=cover_url,
                 extra="",
                 best_since=True,
-                badge_text=f"{row['album']} - {date_text}",
+                badge_text=f"Album - {date_text}",
             ))
     else:
         print("[preview] Skip best_since_album: no real candidate.", flush=True)

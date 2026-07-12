@@ -4,152 +4,6 @@
   "track_count": 9,
   "sections": [
     {
-      "section": "christmas_tree_farm_single",
-      "track_count": 3,
-      "chart_extra": true,
-      "tracks": [
-        {
-          "title": "Christmas Tree Farm",
-          "url": "https://open.spotify.com/intl-fr/track/4mKye6Z1kXuKolzMkJoKFA",
-          "type": "standalone",
-          "edition": "standard edition",
-          "display_section": "standard edition",
-          "display_order": 1,
-          "base_title": "Christmas Tree Farm",
-          "album": "The Taylor Swift Holiday Collection",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Christmas Tree Farm",
-          "song_family": "christmas_tree_farm",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8",
-          "historical_track_ids": [],
-          "release_date": "2021-11-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:christmas_tree_farm",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone",
-            "christmas"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type",
-            "christmas": "high:title_album_or_section"
-          }
-        },
-        {
-          "title": "Christmas Tree Farm - Old Timey Version",
-          "url": "https://open.spotify.com/intl-fr/track/50ho0AOvkm8E5l8zf7OfJI",
-          "type": "standalone",
-          "edition": "standard edition",
-          "display_section": "standard edition",
-          "display_order": 2,
-          "base_title": "Christmas Tree Farm",
-          "album": "The Taylor Swift Holiday Collection",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Christmas Tree Farm - Old Timey Version",
-          "song_family": "christmas_tree_farm",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8",
-          "historical_track_ids": [],
-          "release_date": "2021-11-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:christmas_tree_farm",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone",
-            "alternate_version",
-            "christmas"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type",
-            "alternate_version": "medium:type_or_title",
-            "christmas": "high:title_album_or_section"
-          }
-        },
-        {
-          "title": "Christmas Tree Farm - Recorded Live at the 2019 iHeartRadio Jingle Ball",
-          "url": "https://open.spotify.com/intl-fr/track/1alAo6dYalSx8yZUn17JxF",
-          "type": "standalone",
-          "edition": "standard edition",
-          "display_section": "standard edition",
-          "display_order": 3,
-          "base_title": "Christmas Tree Farm",
-          "album": "The Taylor Swift Holiday Collection",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Christmas Tree Farm - Recorded Live at the 2019 iHeartRadio Jingle Ball",
-          "song_family": "christmas_tree_farm",
-          "version_tag": "live__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8",
-          "historical_track_ids": [],
-          "release_date": "2021-11-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:christmas_tree_farm",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone",
-            "live",
-            "christmas"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type",
-            "live": "high:type_title_or_section",
-            "christmas": "high:title_album_or_section"
-          }
-        }
-      ]
-    },
-    {
       "section": "standard_edition",
       "track_count": 6,
       "chart_extra": true,
@@ -409,6 +263,152 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
+            "christmas": "high:title_album_or_section"
+          }
+        }
+      ]
+    },
+    {
+      "section": "christmas_tree_farm_single",
+      "track_count": 3,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Christmas Tree Farm",
+          "url": "https://open.spotify.com/intl-fr/track/4mKye6Z1kXuKolzMkJoKFA",
+          "type": "standalone",
+          "edition": "standard edition",
+          "display_section": "standard edition",
+          "display_order": 1,
+          "base_title": "Christmas Tree Farm",
+          "album": "The Taylor Swift Holiday Collection",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Christmas Tree Farm",
+          "song_family": "christmas_tree_farm",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8",
+          "historical_track_ids": [],
+          "release_date": "2021-11-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:christmas_tree_farm",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "christmas"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "christmas": "high:title_album_or_section"
+          }
+        },
+        {
+          "title": "Christmas Tree Farm - Old Timey Version",
+          "url": "https://open.spotify.com/intl-fr/track/50ho0AOvkm8E5l8zf7OfJI",
+          "type": "standalone",
+          "edition": "standard edition",
+          "display_section": "standard edition",
+          "display_order": 2,
+          "base_title": "Christmas Tree Farm",
+          "album": "The Taylor Swift Holiday Collection",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Christmas Tree Farm - Old Timey Version",
+          "song_family": "christmas_tree_farm",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8",
+          "historical_track_ids": [],
+          "release_date": "2021-11-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:christmas_tree_farm",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "alternate_version",
+            "christmas"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "alternate_version": "medium:type_or_title",
+            "christmas": "high:title_album_or_section"
+          }
+        },
+        {
+          "title": "Christmas Tree Farm - Recorded Live at the 2019 iHeartRadio Jingle Ball",
+          "url": "https://open.spotify.com/intl-fr/track/1alAo6dYalSx8yZUn17JxF",
+          "type": "standalone",
+          "edition": "standard edition",
+          "display_section": "standard edition",
+          "display_order": 3,
+          "base_title": "Christmas Tree Farm",
+          "album": "The Taylor Swift Holiday Collection",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Christmas Tree Farm - Recorded Live at the 2019 iHeartRadio Jingle Ball",
+          "song_family": "christmas_tree_farm",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8",
+          "historical_track_ids": [],
+          "release_date": "2021-11-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:christmas_tree_farm",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "live",
+            "christmas"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section",
             "christmas": "high:title_album_or_section"
           }
         }

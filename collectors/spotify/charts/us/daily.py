@@ -300,8 +300,8 @@ def main():
         log("INFO", "Mode --post-only: data provided by worldwide, skipping filter.py")
         processed = [target]
         mark_updated(target)
-        date_fmt = target.strftime("%B %d, %Y")
-        tweet_content = f"📈 | Taylor Swift on Spotify US Charts yesterday ({date_fmt}) :"
+        date_fmt = target.strftime("%A, %B %d, %Y")
+        tweet_content = f"📈 | Taylor Swift on Spotify US Charts on {date_fmt} :"
         _comment = build_chart_comment("us", target, TS_HISTORY_PATH)
         if _comment:
             tweet_content = f"{tweet_content}\n{_comment}"
@@ -399,8 +399,8 @@ def main():
 
     # Contenu du tweet
     _last_date = processed[-1]
-    _date_fmt  = _last_date.strftime("%B %d, %Y")
-    tweet_content = f"📈 | Taylor Swift on Spotify US Charts yesterday ({_date_fmt}) :"
+    _date_fmt  = _last_date.strftime("%A, %B %d, %Y")
+    tweet_content = f"📈 | Taylor Swift on Spotify US Charts on {_date_fmt} :"
     _comment = build_chart_comment("us", _last_date, TS_HISTORY_PATH)
     if _comment:
         tweet_content = f"{tweet_content}\n{_comment}"

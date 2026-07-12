@@ -1,568 +1,11 @@
 {
   "album": "Red (Taylor's Version)",
-  "section_count": 3,
+  "section_count": 2,
   "track_count": 32,
   "sections": [
     {
-      "section": "from_the_vault_tv",
-      "track_count": 10,
-      "chart_extra": false,
-      "tracks": [
-        {
-          "title": "All Too Well (10 Minute Version) (Taylor's Version) (From The Vault)",
-          "url": "https://open.spotify.com/intl-fr/track/5enxwA8aAbwZbf5qCHORXi",
-          "type": "standalone",
-          "edition": "vault",
-          "display_section": "From The Vault",
-          "display_order": 30,
-          "base_title": "All Too Well (10 Minute Version) (Taylor's Version) (From The Vault)",
-          "album": "Red (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "All Too Well (10 Minute Version)",
-          "song_family": "all_too_well",
-          "version_tag": "vault__taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
-          "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:all_too_well",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone",
-            "taylor_version",
-            "from_the_vault"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type",
-            "taylor_version": "high:title_or_section",
-            "from_the_vault": "high:title_section_or_edition"
-          }
-        },
-        {
-          "title": "Babe (Taylor's Version) (From The Vault)",
-          "url": "https://open.spotify.com/intl-fr/track/0v4z1tuZvn6LGknom9Qx7d",
-          "type": "standalone",
-          "edition": "vault",
-          "display_section": "From The Vault",
-          "display_order": 24,
-          "base_title": "Babe (Taylor's Version) (From The Vault)",
-          "album": "Red (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Babe",
-          "song_family": "babe",
-          "version_tag": "vault__taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
-          "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:babe",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone",
-            "taylor_version",
-            "from_the_vault"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type",
-            "taylor_version": "high:title_or_section",
-            "from_the_vault": "high:title_section_or_edition"
-          }
-        },
-        {
-          "title": "Better Man (Taylor's Version) (From The Vault)",
-          "url": "https://open.spotify.com/intl-fr/track/4OmFmE0fzcMG6g0Y8p4eSD",
-          "type": "standalone",
-          "edition": "vault",
-          "display_section": "From The Vault",
-          "display_order": 22,
-          "base_title": "Better Man (Taylor's Version) (From The Vault)",
-          "album": "Red (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Better Man",
-          "song_family": "better_man",
-          "version_tag": "vault__taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
-          "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z",
-          "genres": [
-            "country",
-            "pop",
-            "singer-songwriter"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "country": 3.0,
-            "pop": 2.0,
-            "singer-songwriter": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "country",
-              "pop",
-              "singer-songwriter"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "female vocalists",
-              "country",
-              "pop",
-              "singer-songwriter",
-              "country pop",
-              "From the Vault",
-              "Ballad",
-              "rock",
-              "folk pop",
-              "soft rock"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Better Man (Taylor's Version) (From The Vault)"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:better_man",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone",
-            "taylor_version",
-            "from_the_vault"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type",
-            "taylor_version": "high:title_or_section",
-            "from_the_vault": "high:title_section_or_edition"
-          }
-        },
-        {
-          "title": "Forever Winter (Taylor's Version) (From The Vault)",
-          "url": "https://open.spotify.com/intl-fr/track/3oGVx9RBmiYGv5ZCecWLkx",
-          "type": "standalone",
-          "edition": "vault",
-          "display_section": "From The Vault",
-          "display_order": 27,
-          "base_title": "Forever Winter (Taylor's Version) (From The Vault)",
-          "album": "Red (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Forever Winter",
-          "song_family": "forever_winter",
-          "version_tag": "vault__taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
-          "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:forever_winter",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone",
-            "taylor_version",
-            "from_the_vault"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type",
-            "taylor_version": "high:title_or_section",
-            "from_the_vault": "high:title_section_or_edition"
-          }
-        },
-        {
-          "title": "I Bet You Think About Me (feat. Chris Stapleton) (Taylor's Version) (From The Vault)",
-          "url": "https://open.spotify.com/intl-fr/track/4CkgMiMqZ5JzW9iYXSTMTL",
-          "type": "feature",
-          "edition": "vault",
-          "display_section": "From The Vault",
-          "display_order": 26,
-          "base_title": "I Bet You Think About Me (feat. Chris Stapleton) (Taylor's Version) (From The Vault)",
-          "album": "Red (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [
-            "Chris Stapleton"
-          ],
-          "artists": [
-            "Taylor Swift",
-            "Chris Stapleton"
-          ],
-          "title_clean": "I Bet You Think About Me",
-          "song_family": "i_bet_you_think_about_me",
-          "version_tag": "featured__vault__taylors_version__feature",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
-          "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:i_bet_you_think_about_me",
-          "filter_tags": [
-            "feature",
-            "album_track",
-            "taylor_version",
-            "from_the_vault"
-          ],
-          "filter_tag_sources": {
-            "feature": "high:type_or_primary_artist",
-            "album_track": "high:section_or_display_section",
-            "taylor_version": "high:title_or_section",
-            "from_the_vault": "high:title_section_or_edition"
-          }
-        },
-        {
-          "title": "Message In A Bottle (Taylor's Version) (From The Vault)",
-          "url": "https://open.spotify.com/intl-fr/track/3z6XUommYDWPHeFhmhhT6j",
-          "type": "standalone",
-          "edition": "vault",
-          "display_section": "From The Vault",
-          "display_order": 25,
-          "base_title": "Message In A Bottle (Taylor's Version) (From The Vault)",
-          "album": "Red (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Message In A Bottle",
-          "song_family": "message_in_a_bottle",
-          "version_tag": "vault__taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
-          "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z",
-          "genres": [
-            "pop",
-            "electropop",
-            "dance-pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0,
-            "dance-pop": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "electropop",
-              "dance-pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "electropop",
-              "dance-pop",
-              "bubblegum pop",
-              "singer-songwriter",
-              "dance",
-              "electronic",
-              "pop perfection",
-              "From the Vault",
-              "synthpop"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Message In A Bottle (Taylor's Version) (From The Vault)"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:message_in_a_bottle",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone",
-            "taylor_version",
-            "from_the_vault"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type",
-            "taylor_version": "high:title_or_section",
-            "from_the_vault": "high:title_section_or_edition"
-          }
-        },
-        {
-          "title": "Nothing New (feat. Phoebe Bridgers) (Taylor's Version) (From The Vault)",
-          "url": "https://open.spotify.com/intl-fr/track/01K4zKU104LyJ8gMb7227B",
-          "type": "feature",
-          "edition": "vault",
-          "display_section": "From The Vault",
-          "display_order": 23,
-          "base_title": "Nothing New (feat. Phoebe Bridgers) (Taylor's Version) (From The Vault)",
-          "album": "Red (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [
-            "Phoebe Bridgers"
-          ],
-          "artists": [
-            "Taylor Swift",
-            "Phoebe Bridgers"
-          ],
-          "title_clean": "Nothing New",
-          "song_family": "nothing_new",
-          "version_tag": "featured__vault__taylors_version__feature",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
-          "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:nothing_new",
-          "filter_tags": [
-            "feature",
-            "album_track",
-            "taylor_version",
-            "from_the_vault"
-          ],
-          "filter_tag_sources": {
-            "feature": "high:type_or_primary_artist",
-            "album_track": "high:section_or_display_section",
-            "taylor_version": "high:title_or_section",
-            "from_the_vault": "high:title_section_or_edition"
-          }
-        },
-        {
-          "title": "Run (feat. Ed Sheeran) (Taylor's Version) (From The Vault)",
-          "url": "https://open.spotify.com/intl-fr/track/4IQkfUsrwXol38VV3U7t7T",
-          "type": "feature",
-          "edition": "vault",
-          "display_section": "From The Vault",
-          "display_order": 28,
-          "base_title": "Run (feat. Ed Sheeran) (Taylor's Version) (From The Vault)",
-          "album": "Red (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [
-            "Ed Sheeran"
-          ],
-          "artists": [
-            "Taylor Swift",
-            "Ed Sheeran"
-          ],
-          "title_clean": "Run",
-          "song_family": "run",
-          "version_tag": "featured__vault__taylors_version__feature",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
-          "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:run",
-          "filter_tags": [
-            "feature",
-            "album_track",
-            "taylor_version",
-            "from_the_vault"
-          ],
-          "filter_tag_sources": {
-            "feature": "high:type_or_primary_artist",
-            "album_track": "high:section_or_display_section",
-            "taylor_version": "high:title_or_section",
-            "from_the_vault": "high:title_section_or_edition"
-          }
-        },
-        {
-          "title": "The Very First Night (Taylor's Version) (From The Vault)",
-          "url": "https://open.spotify.com/intl-fr/track/6pYNq0ZwpPVazKzsqpf0G8",
-          "type": "standalone",
-          "edition": "vault",
-          "display_section": "From The Vault",
-          "display_order": 29,
-          "base_title": "The Very First Night (Taylor's Version) (From The Vault)",
-          "album": "Red (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "The Very First Night",
-          "song_family": "the_very_first_night",
-          "version_tag": "vault__taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
-          "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z",
-          "genres": [
-            "pop",
-            "singer-songwriter",
-            "folk pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "singer-songwriter": 2.0,
-            "folk pop": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "singer-songwriter",
-              "folk pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "singer-songwriter",
-              "folk pop",
-              "pop rock",
-              "country pop",
-              "From the Vault",
-              "rock",
-              "Sentimental",
-              "dance-pop",
-              "guitar"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "The Very First Night (Taylor's Version) (From The Vault)"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:the_very_first_night",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone",
-            "taylor_version",
-            "from_the_vault"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type",
-            "taylor_version": "high:title_or_section",
-            "from_the_vault": "high:title_section_or_edition"
-          }
-        },
-        {
-          "title": "State Of Grace (Acoustic Version) (Taylor's Version)",
-          "url": "https://open.spotify.com/intl-fr/track/5jAIouBES8LWMiriuNq170",
-          "type": "standalone",
-          "edition": "vault",
-          "display_section": "From The Vault",
-          "display_order": 20,
-          "base_title": "State Of Grace (Acoustic Version)",
-          "album": "Red (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "State Of Grace (Acoustic Version)",
-          "song_family": "state_of_grace_acoustic_version",
-          "version_tag": "acoustic__taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
-          "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:state_of_grace_acoustic_version",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone",
-            "acoustic",
-            "taylor_version",
-            "from_the_vault"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type",
-            "acoustic": "high:title_or_section",
-            "taylor_version": "high:title_or_section",
-            "from_the_vault": "high:title_section_or_edition"
-          }
-        }
-      ]
-    },
-    {
       "section": "standard_edition_tv",
-      "track_count": 20,
+      "track_count": 30,
       "chart_extra": false,
       "tracks": [
         {
@@ -570,7 +13,7 @@
           "url": "https://open.spotify.com/intl-fr/track/6lzc0Al0zfZOIFsFvBS1ki",
           "type": "alternate_version",
           "edition": "standard",
-          "display_section": "Other Editions",
+          "display_section": "Standard Edition Tv",
           "display_order": 1,
           "base_title": "State Of Grace",
           "album": "Red (Taylor's Version)",
@@ -615,7 +58,7 @@
           "url": "https://open.spotify.com/intl-fr/track/4OAuvHryIVv4kMDNSLuPt6",
           "type": "alternate_version",
           "edition": "standard",
-          "display_section": "Other Editions",
+          "display_section": "Standard Edition Tv",
           "display_order": 2,
           "base_title": "Red",
           "album": "Red (Taylor's Version)",
@@ -660,7 +103,7 @@
           "url": "https://open.spotify.com/intl-fr/track/3S7HNKPakdwNEBFIVTL6dZ",
           "type": "alternate_version",
           "edition": "standard",
-          "display_section": "Other Editions",
+          "display_section": "Standard Edition Tv",
           "display_order": 3,
           "base_title": "Treacherous",
           "album": "Red (Taylor's Version)",
@@ -705,7 +148,7 @@
           "url": "https://open.spotify.com/intl-fr/track/6AtZLIzUINvExIUy4QhdjP",
           "type": "alternate_version",
           "edition": "standard",
-          "display_section": "Other Editions",
+          "display_section": "Standard Edition Tv",
           "display_order": 4,
           "base_title": "I Knew You Were Trouble",
           "album": "Red (Taylor's Version)",
@@ -775,7 +218,7 @@
           "url": "https://open.spotify.com/intl-fr/track/3nsfB1vus2qaloUdcBZvDu",
           "type": "alternate_version",
           "edition": "standard",
-          "display_section": "Other Editions",
+          "display_section": "Standard Edition Tv",
           "display_order": 5,
           "base_title": "All Too Well",
           "album": "Red (Taylor's Version)",
@@ -820,7 +263,7 @@
           "url": "https://open.spotify.com/intl-fr/track/3yII7UwgLF6K5zW3xad3MP",
           "type": "alternate_version",
           "edition": "standard",
-          "display_section": "Other Editions",
+          "display_section": "Standard Edition Tv",
           "display_order": 6,
           "base_title": "22",
           "album": "Red (Taylor's Version)",
@@ -890,7 +333,7 @@
           "url": "https://open.spotify.com/intl-fr/track/2r9CbjYgFhtAmcFv1cSquB",
           "type": "alternate_version",
           "edition": "standard",
-          "display_section": "Other Editions",
+          "display_section": "Standard Edition Tv",
           "display_order": 7,
           "base_title": "I Almost Do",
           "album": "Red (Taylor's Version)",
@@ -935,7 +378,7 @@
           "url": "https://open.spotify.com/intl-fr/track/5YqltLsjdqFtvqE7Nrysvs",
           "type": "alternate_version",
           "edition": "standard",
-          "display_section": "Other Editions",
+          "display_section": "Standard Edition Tv",
           "display_order": 8,
           "base_title": "We Are Never Ever Getting Back Together",
           "album": "Red (Taylor's Version)",
@@ -1005,7 +448,7 @@
           "url": "https://open.spotify.com/intl-fr/track/7eQj6r5PIdYKEIZjucBMcq",
           "type": "alternate_version",
           "edition": "standard",
-          "display_section": "Other Editions",
+          "display_section": "Standard Edition Tv",
           "display_order": 9,
           "base_title": "Stay Stay Stay",
           "album": "Red (Taylor's Version)",
@@ -1050,7 +493,7 @@
           "url": "https://open.spotify.com/intl-fr/track/0y6kdSRCVQhSsHSpWvTUm7",
           "type": "feature",
           "edition": "standard",
-          "display_section": "Other Editions",
+          "display_section": "Standard Edition Tv",
           "display_order": 10,
           "base_title": "The Last Time (feat. Gary Lightbody of Snow Patrol)",
           "album": "Red (Taylor's Version)",
@@ -1096,7 +539,7 @@
           "url": "https://open.spotify.com/intl-fr/track/7J4b3LVCIGO4CMBDFLPoP6",
           "type": "alternate_version",
           "edition": "standard",
-          "display_section": "Other Editions",
+          "display_section": "Standard Edition Tv",
           "display_order": 11,
           "base_title": "Holy Ground",
           "album": "Red (Taylor's Version)",
@@ -1141,7 +584,7 @@
           "url": "https://open.spotify.com/intl-fr/track/73qMN9bXy7MSPwwGfH3wQr",
           "type": "alternate_version",
           "edition": "standard",
-          "display_section": "Other Editions",
+          "display_section": "Standard Edition Tv",
           "display_order": 12,
           "base_title": "Sad Beautiful Tragic",
           "album": "Red (Taylor's Version)",
@@ -1186,7 +629,7 @@
           "url": "https://open.spotify.com/intl-fr/track/4e5ayHsOLJNLTGfjau2mEw",
           "type": "alternate_version",
           "edition": "standard",
-          "display_section": "Other Editions",
+          "display_section": "Standard Edition Tv",
           "display_order": 13,
           "base_title": "The Lucky One",
           "album": "Red (Taylor's Version)",
@@ -1231,7 +674,7 @@
           "url": "https://open.spotify.com/intl-fr/track/7qEUFOVcxRI19tbT68JcYK",
           "type": "feature",
           "edition": "standard",
-          "display_section": "Other Editions",
+          "display_section": "Standard Edition Tv",
           "display_order": 14,
           "base_title": "Everything Has Changed (feat. Ed Sheeran)",
           "album": "Red (Taylor's Version)",
@@ -1277,7 +720,7 @@
           "url": "https://open.spotify.com/intl-fr/track/7A2cNLRT0YJc1yjxHlKihs",
           "type": "alternate_version",
           "edition": "standard",
-          "display_section": "Other Editions",
+          "display_section": "Standard Edition Tv",
           "display_order": 15,
           "base_title": "Starlight",
           "album": "Red (Taylor's Version)",
@@ -1322,7 +765,7 @@
           "url": "https://open.spotify.com/intl-fr/track/05GsNucq8Bngd9fnd4fRa0",
           "type": "alternate_version",
           "edition": "standard",
-          "display_section": "Other Editions",
+          "display_section": "Standard Edition Tv",
           "display_order": 16,
           "base_title": "Begin Again",
           "album": "Red (Taylor's Version)",
@@ -1363,21 +806,21 @@
           }
         },
         {
-          "title": "Girl At Home (Taylor's Version)",
-          "url": "https://open.spotify.com/intl-fr/track/0DMVrlMUn01M0IcpDbwgu7",
+          "title": "The Moment I Knew (Taylor's Version)",
+          "url": "https://open.spotify.com/track/0NRHj8hDwwmSPaA41o379r",
           "type": "alternate_version",
           "edition": "standard",
-          "display_section": "Other Editions",
-          "display_order": 19,
-          "base_title": "Girl At Home",
+          "display_section": "Standard Edition Tv",
+          "display_order": 17,
+          "base_title": "The Moment I Knew",
           "album": "Red (Taylor's Version)",
           "primary_artist": "Taylor Swift",
           "featured_artists": [],
           "artists": [
             "Taylor Swift"
           ],
-          "title_clean": "Girl At Home",
-          "song_family": "girl_at_home",
+          "title_clean": "The Moment I Knew",
+          "song_family": "the_moment_i_knew",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
@@ -1393,52 +836,7 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:girl_at_home",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "taylor_version",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "taylor_version": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "Ronan (Taylor's Version)",
-          "url": "https://open.spotify.com/intl-fr/track/7nWui6jiMM2m9qFmET1Mtj",
-          "type": "alternate_version",
-          "edition": "standard",
-          "display_section": "Other Editions",
-          "display_order": 21,
-          "base_title": "Ronan",
-          "album": "Red (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Ronan",
-          "song_family": "ronan",
-          "version_tag": "taylors_version__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
-          "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:ronan",
+          "genre_canonical_key": "family:the_moment_i_knew",
           "filter_tags": [
             "solo",
             "album_track",
@@ -1457,7 +855,7 @@
           "url": "https://open.spotify.com/intl-fr/track/4pNApnaUWAL2J4KO2eqokq",
           "type": "alternate_version",
           "edition": "standard",
-          "display_section": "Other Editions",
+          "display_section": "Standard Edition Tv",
           "display_order": 18,
           "base_title": "Come Back...Be Here",
           "album": "Red (Taylor's Version)",
@@ -1498,21 +896,21 @@
           }
         },
         {
-          "title": "The Moment I Knew (Taylor's Version)",
-          "url": "https://open.spotify.com/track/0NRHj8hDwwmSPaA41o379r",
+          "title": "Girl At Home (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/0DMVrlMUn01M0IcpDbwgu7",
           "type": "alternate_version",
           "edition": "standard",
-          "display_section": "Other Editions",
-          "display_order": 17,
-          "base_title": "The Moment I Knew",
+          "display_section": "Standard Edition Tv",
+          "display_order": 19,
+          "base_title": "Girl At Home",
           "album": "Red (Taylor's Version)",
           "primary_artist": "Taylor Swift",
           "featured_artists": [],
           "artists": [
             "Taylor Swift"
           ],
-          "title_clean": "The Moment I Knew",
-          "song_family": "the_moment_i_knew",
+          "title_clean": "Girl At Home",
+          "song_family": "girl_at_home",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
@@ -1528,7 +926,7 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:the_moment_i_knew",
+          "genre_canonical_key": "family:girl_at_home",
           "filter_tags": [
             "solo",
             "album_track",
@@ -1540,6 +938,601 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "State Of Grace (Acoustic Version) (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/5jAIouBES8LWMiriuNq170",
+          "type": "standalone",
+          "edition": "vault",
+          "display_section": "Standard Edition Tv",
+          "display_order": 20,
+          "base_title": "State Of Grace (Acoustic Version)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "State Of Grace (Acoustic Version)",
+          "song_family": "state_of_grace_acoustic_version",
+          "version_tag": "acoustic__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": [],
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:state_of_grace_acoustic_version",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "acoustic",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "acoustic": "high:title_or_section",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
+        },
+        {
+          "title": "Ronan (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/7nWui6jiMM2m9qFmET1Mtj",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 21,
+          "base_title": "Ronan",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Ronan",
+          "song_family": "ronan",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": [],
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:ronan",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Better Man (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/4OmFmE0fzcMG6g0Y8p4eSD",
+          "type": "standalone",
+          "edition": "vault",
+          "display_section": "Standard Edition Tv",
+          "display_order": 22,
+          "base_title": "Better Man (Taylor's Version) (From The Vault)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Better Man",
+          "song_family": "better_man",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": [],
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "female vocalists",
+              "country",
+              "pop",
+              "singer-songwriter",
+              "country pop",
+              "From the Vault",
+              "Ballad",
+              "rock",
+              "folk pop",
+              "soft rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Better Man (Taylor's Version) (From The Vault)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:better_man",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
+        },
+        {
+          "title": "Nothing New (feat. Phoebe Bridgers) (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/01K4zKU104LyJ8gMb7227B",
+          "type": "feature",
+          "edition": "vault",
+          "display_section": "Standard Edition Tv",
+          "display_order": 23,
+          "base_title": "Nothing New (feat. Phoebe Bridgers) (Taylor's Version) (From The Vault)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Phoebe Bridgers"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Phoebe Bridgers"
+          ],
+          "title_clean": "Nothing New",
+          "song_family": "nothing_new",
+          "version_tag": "featured__vault__taylors_version__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": [],
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:nothing_new",
+          "filter_tags": [
+            "feature",
+            "album_track",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
+        },
+        {
+          "title": "Babe (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/0v4z1tuZvn6LGknom9Qx7d",
+          "type": "standalone",
+          "edition": "vault",
+          "display_section": "Standard Edition Tv",
+          "display_order": 24,
+          "base_title": "Babe (Taylor's Version) (From The Vault)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Babe",
+          "song_family": "babe",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": [],
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:babe",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
+        },
+        {
+          "title": "Message In A Bottle (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/3z6XUommYDWPHeFhmhhT6j",
+          "type": "standalone",
+          "edition": "vault",
+          "display_section": "Standard Edition Tv",
+          "display_order": 25,
+          "base_title": "Message In A Bottle (Taylor's Version) (From The Vault)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Message In A Bottle",
+          "song_family": "message_in_a_bottle",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": [],
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "dance-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "dance-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance-pop",
+              "bubblegum pop",
+              "singer-songwriter",
+              "dance",
+              "electronic",
+              "pop perfection",
+              "From the Vault",
+              "synthpop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Message In A Bottle (Taylor's Version) (From The Vault)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:message_in_a_bottle",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
+        },
+        {
+          "title": "I Bet You Think About Me (feat. Chris Stapleton) (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/4CkgMiMqZ5JzW9iYXSTMTL",
+          "type": "feature",
+          "edition": "vault",
+          "display_section": "Standard Edition Tv",
+          "display_order": 26,
+          "base_title": "I Bet You Think About Me (feat. Chris Stapleton) (Taylor's Version) (From The Vault)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Chris Stapleton"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Chris Stapleton"
+          ],
+          "title_clean": "I Bet You Think About Me",
+          "song_family": "i_bet_you_think_about_me",
+          "version_tag": "featured__vault__taylors_version__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": [],
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_bet_you_think_about_me",
+          "filter_tags": [
+            "feature",
+            "album_track",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
+        },
+        {
+          "title": "Forever Winter (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/3oGVx9RBmiYGv5ZCecWLkx",
+          "type": "standalone",
+          "edition": "vault",
+          "display_section": "Standard Edition Tv",
+          "display_order": 27,
+          "base_title": "Forever Winter (Taylor's Version) (From The Vault)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Forever Winter",
+          "song_family": "forever_winter",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": [],
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:forever_winter",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
+        },
+        {
+          "title": "Run (feat. Ed Sheeran) (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/4IQkfUsrwXol38VV3U7t7T",
+          "type": "feature",
+          "edition": "vault",
+          "display_section": "Standard Edition Tv",
+          "display_order": 28,
+          "base_title": "Run (feat. Ed Sheeran) (Taylor's Version) (From The Vault)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Ed Sheeran"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Ed Sheeran"
+          ],
+          "title_clean": "Run",
+          "song_family": "run",
+          "version_tag": "featured__vault__taylors_version__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": [],
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:run",
+          "filter_tags": [
+            "feature",
+            "album_track",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
+        },
+        {
+          "title": "The Very First Night (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/6pYNq0ZwpPVazKzsqpf0G8",
+          "type": "standalone",
+          "edition": "vault",
+          "display_section": "Standard Edition Tv",
+          "display_order": 29,
+          "base_title": "The Very First Night (Taylor's Version) (From The Vault)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Very First Night",
+          "song_family": "the_very_first_night",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": [],
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [
+            "pop",
+            "singer-songwriter",
+            "folk pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "singer-songwriter": 2.0,
+            "folk pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "folk pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "folk pop",
+              "pop rock",
+              "country pop",
+              "From the Vault",
+              "rock",
+              "Sentimental",
+              "dance-pop",
+              "guitar"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Very First Night (Taylor's Version) (From The Vault)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_very_first_night",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          }
+        },
+        {
+          "title": "All Too Well (10 Minute Version) (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/5enxwA8aAbwZbf5qCHORXi",
+          "type": "standalone",
+          "edition": "vault",
+          "display_section": "Standard Edition Tv",
+          "display_order": 30,
+          "base_title": "All Too Well (10 Minute Version) (Taylor's Version) (From The Vault)",
+          "album": "Red (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "All Too Well (10 Minute Version)",
+          "song_family": "all_too_well",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
+          "historical_track_ids": [],
+          "release_date": "2021-11-12T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:all_too_well",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
           }
         }
       ]

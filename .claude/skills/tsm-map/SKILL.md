@@ -28,7 +28,7 @@ tsm-backend (Python, local, Task Scheduler)  →  R2 (bucket prod: taylor-data) 
 
 ## tsm-frontend (`c:\Users\sfara\Documents\GitHub\tsm-frontend`)
 
-- `frontend/` = React 19 + Vite, build vers `../public`. `api/` = FastAPI (`api/index.py`, routes dans `api/routes/` : `site_settings.py`, `leaderboard.py`, `daily.py`, `news.py`, `journalist.py` (fact-checks + tips anonymes + votes helpful + traductions DeepL des notes de `/journalist-department`), `image_proxy.py`, `admin_upload.py`, etc.).
+- `frontend/` = React 19 + Vite, build vers `../public`. `api/` = FastAPI (`api/index.py`, routes dans `api/routes/` : `site_settings.py`, `leaderboard.py`, `daily.py`, `news.py`, `journalist.py` (fact-checks + tips anonymes + votes helpful + watchlist « comptes à signaler »/Twitter notes (community notes d'autrui à aller noter SUR Twitter, badge consigne helpful/not_helpful) + traductions DeepL des notes de `/journalist-department`), `image_proxy.py`, `admin_upload.py` (Media Library, tokens admin OU journalist ; les 302 `/api/landing-media/` ont un cache court + cache-buster `landingMediaSrc()` — piège cache 7 j corrigé juillet 2026), etc.).
 - Déploiement : push sur `main` (GitHub AnasSfar/tsm-frontend) → Vercel (config `vercel.ts`, front + API ensemble). → skill `deploy`.
 - Dev local : `dev.bat` racine (uvicorn port 8003 + Vite port 3000 ; fallback data disque via `TSM_BACKEND_ROOT=..\tsm-backend`).
 
@@ -43,6 +43,7 @@ tsm-backend (Python, local, Task Scheduler)  →  R2 (bucket prod: taylor-data) 
 | `pages/ImageStudio.jsx` | Générateur d'images PNG (templates dans `components/imageTemplates/`) |
 | `components/adminUI.jsx` | Primitives admin : AdminCard, Field, Toggle, StatusChip (tones live/warn/off UNIQUEMENT), SaveBar, ConfirmButton, ScheduleFields, Icon |
 | `components/CustomThemeModule.jsx` | Thème temporaire (éditeur de tokens) |
+| `components/MediaLibraryModule.jsx` | Media Library (extraite d'Admin.jsx) — rendue par la console ET `/admin/journalist` |
 | `utils/anniversaries.js` | `ALL_THEME_OPTIONS` (15 thèmes) |
 | `utils/customTheme.js` | `theme-custom` : tokens, dérivation dark, injection `<style id="tsm-custom-theme">` |
 | `utils/schedule.js` | `isWithinSchedule` (chaîne vide = borne illimitée) |

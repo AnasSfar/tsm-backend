@@ -5,12 +5,12 @@ post_streams_twitter.py — génère et poste l'image des top streams daily sur 
 Usage:
   python post_streams_twitter.py               # stats_date (hier par défaut)
   python post_streams_twitter.py 2026-03-15    # date spécifique
-    python post_streams_twitter.py 2026-03-15 --top-n 10
-    python post_streams_twitter.py 2026-03-15 --no-post --top-n 10
+    python post_streams_twitter.py 2026-03-15 --top-n 20
+    python post_streams_twitter.py 2026-03-15 --no-post --top-n 20
 """
 import sys
 import argparse
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 from pathlib import Path
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -27,15 +27,18 @@ from core.twitter import post_image_thread
 from core.data_paths import update_streams_dir
 
 import generate_streams_image
-import history_store
 from post_locks import mark_posted, should_skip_post
 
 
-def _streams_period_phrase(target_date: str) -> str:
-    """"yesterday" for a normal single-day update, or "the last N days" when
-    some tracks' daily figure actually covers a multi-day gap."""
-    max_days = history_store.max_days_covered(history_store.load_album_track_ids(), target_date)
-    return "yesterday" if max_days <= 1 else f"over the last {max_days} days"
+def _ordinal(n: int) -> str:
+    if 11 <= (n % 100) <= 13:
+        return f"{n}th"
+    return f"{n}{['th','st','nd','rd','th','th','th','th','th','th'][n % 10]}"
+
+
+def _date_phrase(target_date: str) -> str:
+    d = date.fromisoformat(target_date)
+    return f"on {d.strftime('%A')}, {d.strftime('%B')} {_ordinal(d.day)}, {d.year}"
 
 
 def main():
@@ -45,8 +48,8 @@ def main():
     parser.add_argument(
         "--top-n",
         type=int,
-        default=15,
-        help="Number of tracks per thread image (default: 15).",
+        default=20,
+        help="Number of tracks in the single top songs image (default: 20).",
     )
     ns = parser.parse_args()
 
@@ -76,24 +79,21 @@ def main():
         sys.exit(1)
 
     # Generate images
-    print(f"Generating streams thread images for {target_date}...")
+    print(f"Generating top {top_n} streams image for {target_date}...")
     image_paths = generate_streams_image.generate_thread_images(
         target_date,
         top_n=top_n,
-        pages=3,
+        pages=1,
     )
 
     # Build tweet text
-    date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
-    period = _streams_period_phrase(target_date)
+    period = _date_phrase(target_date)
     tweet = (
-        f"🧵 Taylor Swift's most streamed {top_n} songs {period} ({date_fmt}) :\n\n"
+        f"🧵 Taylor Swift's most streamed {top_n} songs {period} :\n\n"
         "See full update here : https://thetsmuseum.app/streams/latest ❤️‍🔥"
     )
     thread_posts = [
         (tweet, image_paths[0]),
-        (f"Taylor Swift's most streamed {top_n + 1}-{top_n * 2} songs {period} ({date_fmt}) :", image_paths[1]),
-        (f"Taylor Swift's most streamed {top_n * 2 + 1}-{top_n * 3} songs {period} ({date_fmt}) :", image_paths[2]),
     ]
 
     print(f"Tweet: {tweet}")

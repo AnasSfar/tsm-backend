@@ -4,349 +4,6 @@
   "track_count": 39,
   "sections": [
     {
-      "section": "deluxe_edition",
-      "track_count": 1,
-      "chart_extra": false,
-      "tracks": [
-        {
-          "title": "the lakes - bonus track",
-          "url": "https://open.spotify.com/intl-fr/track/0eFQWVz0qIxDOvhLpZ40P7",
-          "type": "alternate_version",
-          "edition": "deluxe",
-          "display_section": "deluxe edition",
-          "display_order": 1,
-          "base_title": "the lakes - bonus track",
-          "album": "folklore",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "the lakes - bonus track",
-          "song_family": "the_lakes_bonus_track",
-          "version_tag": "deluxe__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273c288028c2592f400dd0b9233",
-          "historical_track_ids": [],
-          "release_date": "2020-08-18T00:00:00Z",
-          "genres": [
-            "folk",
-            "indie pop",
-            "pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "folk": 3.0,
-            "indie pop": 2.0,
-            "pop": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "folk",
-              "indie pop",
-              "pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "folk",
-              "indie",
-              "orchestral",
-              "baroque pop",
-              "indie folk",
-              "poetry",
-              "female vocalist",
-              "folklore",
-              "contemporary folk",
-              "heaven"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "the lakes - bonus track"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:the_lakes_bonus_track",
-          "filter_tags": [
-            "solo",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "alternate_version": "medium:type_or_title"
-          }
-        }
-      ]
-    },
-    {
-      "section": "extras",
-      "track_count": 1,
-      "chart_extra": false,
-      "tracks": [
-        {
-          "title": "the lakes - original version",
-          "url": "https://open.spotify.com/track/0UAdDYrkCvVQftaKpL6q5f",
-          "type": "standalone",
-          "edition": "other editions",
-          "display_section": "deluxe edition",
-          "display_order": 1,
-          "base_title": "the lakes",
-          "album": "folklore",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "the lakes - original version",
-          "song_family": "the_lakes",
-          "version_tag": "deluxe__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2737d60bda8f85d66599c3fe851",
-          "historical_track_ids": [],
-          "release_date": "2021-07-24T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:the_lakes",
-          "filter_tags": [
-            "solo",
-            "standalone",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type",
-            "alternate_version": "medium:type_or_title"
-          }
-        }
-      ]
-    },
-    {
-      "section": "remixes_and_live",
-      "track_count": 2,
-      "chart_extra": true,
-      "tracks": [
-        {
-          "title": "betty - Live from the 2020 Academy of Country Music Awards",
-          "url": "https://open.spotify.com/intl-fr/track/4GS68CE8nKLIKjjapiSm2I",
-          "type": "alternate_version",
-          "edition": "live",
-          "display_section": "Other Editions",
-          "display_order": 1,
-          "base_title": "betty",
-          "album": "folklore",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "betty - Live from the 2020 Academy of Country Music Awards",
-          "song_family": "betty",
-          "version_tag": "live__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2736761ef4b8f9e8b2007f4d8c3",
-          "historical_track_ids": [
-            "1hm4V38egkiHOgxTUpu0zg"
-          ],
-          "release_date": "2020-09-18T00:00:00Z",
-          "genres": [
-            "folk",
-            "country",
-            "folk pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "folk": 3.0,
-            "country": 2.0,
-            "folk pop": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "folk",
-              "country",
-              "folk pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "folk",
-              "country",
-              "folk rock",
-              "folk pop",
-              "2020",
-              "singer-songwriter",
-              "americana",
-              "2020s",
-              "guitar pop",
-              "pop"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "betty"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:betty",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "live",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "live": "high:type_title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "cardigan - cabin in candlelight version",
-          "url": "https://open.spotify.com/intl-fr/track/2hmafYGj1CXYKIYcMnX4lj",
-          "type": "alternate_version",
-          "edition": "live",
-          "display_section": "Other Editions",
-          "display_order": 2,
-          "base_title": "cardigan",
-          "album": "folklore",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "cardigan - cabin in candlelight version",
-          "song_family": "cardigan",
-          "version_tag": "alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27326ade10c17424417bd06f1d6",
-          "historical_track_ids": [],
-          "release_date": "2020-07-30T00:00:00Z",
-          "genres": [
-            "folk pop",
-            "folk",
-            "pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "folk pop": 3.0,
-            "folk": 2.0,
-            "pop": 1.0
-          },
-          "genre_sources": {},
-          "genre_raw_sources": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:cardigan",
-          "genre_query_titles": {
-            "lastfm": "cardigan"
-          },
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        }
-      ]
-    },
-    {
-      "album": "folklore",
-      "section": "soundtracks",
-      "track_count": 2,
-      "chart_extra": true,
-      "tracks": [
-        {
-          "title": "Carolina - \"Where The Crawdads Sing\" - Video Edition",
-          "url": "https://open.spotify.com/intl-fr/track/12xIjI9A9UlB6zEc7kyZ06",
-          "type": "soundtrack",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 1,
-          "base_title": "Carolina - \"Where The Crawdads Sing\" - Video Edition",
-          "album": "folklore",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Carolina - \"Where The Crawdads Sing\" - Video Edition",
-          "song_family": "carolina_where_the_crawdads_sing_video_edition",
-          "version_tag": "soundtrack",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2732c683c1b9fa1b711499408f7",
-          "display_era": "folklore",
-          "historical_track_ids": [],
-          "release_date": "2022-06-24T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:carolina_where_the_crawdads_sing_video_edition",
-          "filter_tags": [
-            "solo",
-            "soundtrack"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "soundtrack": "high:title_album_or_section"
-          }
-        },
-        {
-          "title": "Carolina - From The Motion Picture “Where The Crawdads Sing”",
-          "url": "https://open.spotify.com/intl-fr/track/4axSuOg3BqsowKjRpj59RU",
-          "type": "soundtrack",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 2,
-          "base_title": "Carolina - From The Motion Picture “Where The Crawdads Sing”",
-          "album": "folklore",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Carolina - From The Motion Picture “Where The Crawdads Sing”",
-          "song_family": "carolina_from_the_motion_picture_where_the_crawdads_sing",
-          "version_tag": "soundtrack",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2732c683c1b9fa1b711499408f7",
-          "display_era": "folklore",
-          "historical_track_ids": [],
-          "release_date": "2022-06-24T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:carolina_from_the_motion_picture_where_the_crawdads_sing",
-          "filter_tags": [
-            "solo",
-            "soundtrack"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "soundtrack": "high:title_album_or_section"
-          }
-        }
-      ]
-    },
-    {
       "section": "standard_edition",
       "track_count": 16,
       "chart_extra": false,
@@ -1384,6 +1041,257 @@
       ]
     },
     {
+      "section": "deluxe_edition",
+      "track_count": 1,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "the lakes - bonus track",
+          "url": "https://open.spotify.com/intl-fr/track/0eFQWVz0qIxDOvhLpZ40P7",
+          "type": "alternate_version",
+          "edition": "deluxe",
+          "display_section": "deluxe edition",
+          "display_order": 1,
+          "base_title": "the lakes - bonus track",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "the lakes - bonus track",
+          "song_family": "the_lakes_bonus_track",
+          "version_tag": "deluxe__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273c288028c2592f400dd0b9233",
+          "historical_track_ids": [],
+          "release_date": "2020-08-18T00:00:00Z",
+          "genres": [
+            "folk",
+            "indie pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "indie pop": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "indie",
+              "orchestral",
+              "baroque pop",
+              "indie folk",
+              "poetry",
+              "female vocalist",
+              "folklore",
+              "contemporary folk",
+              "heaven"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "the lakes - bonus track"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_lakes_bonus_track",
+          "filter_tags": [
+            "solo",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "alternate_version": "medium:type_or_title"
+          }
+        }
+      ]
+    },
+    {
+      "section": "extras",
+      "track_count": 1,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "the lakes - original version",
+          "url": "https://open.spotify.com/track/0UAdDYrkCvVQftaKpL6q5f",
+          "type": "standalone",
+          "edition": "other editions",
+          "display_section": "deluxe edition",
+          "display_order": 1,
+          "base_title": "the lakes",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "the lakes - original version",
+          "song_family": "the_lakes",
+          "version_tag": "deluxe__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737d60bda8f85d66599c3fe851",
+          "historical_track_ids": [],
+          "release_date": "2021-07-24T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_lakes",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "alternate_version": "medium:type_or_title"
+          }
+        }
+      ]
+    },
+    {
+      "section": "remixes_and_live",
+      "track_count": 2,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "betty - Live from the 2020 Academy of Country Music Awards",
+          "url": "https://open.spotify.com/intl-fr/track/4GS68CE8nKLIKjjapiSm2I",
+          "type": "alternate_version",
+          "edition": "live",
+          "display_section": "Other Editions",
+          "display_order": 1,
+          "base_title": "betty",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "betty - Live from the 2020 Academy of Country Music Awards",
+          "song_family": "betty",
+          "version_tag": "live__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2736761ef4b8f9e8b2007f4d8c3",
+          "historical_track_ids": [
+            "1hm4V38egkiHOgxTUpu0zg"
+          ],
+          "release_date": "2020-09-18T00:00:00Z",
+          "genres": [
+            "folk",
+            "country",
+            "folk pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "country": 2.0,
+            "folk pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "country",
+              "folk pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "country",
+              "folk rock",
+              "folk pop",
+              "2020",
+              "singer-songwriter",
+              "americana",
+              "2020s",
+              "guitar pop",
+              "pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "betty"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:betty",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "live",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "live": "high:type_title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "cardigan - cabin in candlelight version",
+          "url": "https://open.spotify.com/intl-fr/track/2hmafYGj1CXYKIYcMnX4lj",
+          "type": "alternate_version",
+          "edition": "live",
+          "display_section": "Other Editions",
+          "display_order": 2,
+          "base_title": "cardigan",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "cardigan - cabin in candlelight version",
+          "song_family": "cardigan",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27326ade10c17424417bd06f1d6",
+          "historical_track_ids": [],
+          "release_date": "2020-07-30T00:00:00Z",
+          "genres": [
+            "folk pop",
+            "folk",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {},
+          "genre_raw_sources": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:cardigan",
+          "genre_query_titles": {
+            "lastfm": "cardigan"
+          },
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        }
+      ]
+    },
+    {
       "section": "long_pond_studio_sessions",
       "track_count": 13,
       "chart_extra": true,
@@ -2199,7 +2107,7 @@
     },
     {
       "album": "folklore",
-      "section": "kworb_extras",
+      "section": "streaming_extras",
       "track_count": 4,
       "chart_extra": true,
       "tracks": [
@@ -2425,6 +2333,98 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
+          }
+        }
+      ]
+    },
+    {
+      "album": "folklore",
+      "section": "soundtracks",
+      "track_count": 2,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Carolina - \"Where The Crawdads Sing\" - Video Edition",
+          "url": "https://open.spotify.com/intl-fr/track/12xIjI9A9UlB6zEc7kyZ06",
+          "type": "soundtrack",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "Carolina - \"Where The Crawdads Sing\" - Video Edition",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Carolina - \"Where The Crawdads Sing\" - Video Edition",
+          "song_family": "carolina_where_the_crawdads_sing_video_edition",
+          "version_tag": "soundtrack",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732c683c1b9fa1b711499408f7",
+          "display_era": "folklore",
+          "historical_track_ids": [],
+          "release_date": "2022-06-24T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:carolina_where_the_crawdads_sing_video_edition",
+          "filter_tags": [
+            "solo",
+            "soundtrack"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "soundtrack": "high:title_album_or_section"
+          }
+        },
+        {
+          "title": "Carolina - From The Motion Picture “Where The Crawdads Sing”",
+          "url": "https://open.spotify.com/intl-fr/track/4axSuOg3BqsowKjRpj59RU",
+          "type": "soundtrack",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "Carolina - From The Motion Picture “Where The Crawdads Sing”",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Carolina - From The Motion Picture “Where The Crawdads Sing”",
+          "song_family": "carolina_from_the_motion_picture_where_the_crawdads_sing",
+          "version_tag": "soundtrack",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732c683c1b9fa1b711499408f7",
+          "display_era": "folklore",
+          "historical_track_ids": [],
+          "release_date": "2022-06-24T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:carolina_from_the_motion_picture_where_the_crawdads_sing",
+          "filter_tags": [
+            "solo",
+            "soundtrack"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "soundtrack": "high:title_album_or_section"
           }
         }
       ]

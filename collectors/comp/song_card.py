@@ -10,6 +10,14 @@ from urllib.request import Request, urlopen
 from playwright.sync_api import sync_playwright
 
 try:
+    from .export_frame import add_export_frame
+except ImportError:
+    import sys
+
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    from comp.export_frame import add_export_frame
+
+try:
     from PIL import Image as PilImage
     _PIL = True
 except ImportError:
@@ -240,14 +248,24 @@ def _title_font_size(title: str) -> int:
 def _best_since_title_font_size(title: str) -> int:
     n = len(title)
     if n <= 13:
-        return 48
+        return 55
     if n <= 18:
-        return 42
+        return 48
     if n <= 24:
-        return 35
+        return 40
     if n <= 32:
-        return 29
-    return 24
+        return 33
+    return 28
+
+
+def _body_gap(title: str, *, has_extra: bool, has_subtitle: bool) -> int:
+    """Smaller gap when the title is likely to wrap or extra rows are present,
+    larger gap when the body block is short, so the block stays visually
+    balanced without ever growing enough to crowd the footer."""
+    n = len(title)
+    base = 16 if n <= 16 else 14 if n <= 24 else 10 if n <= 34 else 8
+    rows = (1 if has_extra else 0) + (1 if has_subtitle else 0)
+    return max(7, base - rows * 2)
 
 
 def render_song_card(
@@ -282,17 +300,9 @@ def render_song_card(
       </div>"""
         )
     extra_html = f'<div class="extra">{html.escape(extra)}</div>' if extra else ""
-    best_since_badge_html = (
-        f'<span class="best-marker"><span class="best-star">&#9733;</span><span>({html.escape(subtitle)})</span></span>'
-        if best_since and subtitle
-        else ""
-    )
-    title_html = (
-        f'<div class="title-row">{best_since_badge_html}<div class="title">{html.escape(title)}</div></div>'
-        if best_since_badge_html
-        else f'<div class="title">{html.escape(title)}</div>'
-    )
-    subtitle_html = ""
+    title_html = f'<div class="title">{html.escape(title)}</div>'
+    subtitle_html = f'<div class="subtitle">{html.escape(subtitle)}</div>' if best_since and subtitle else ""
+    body_gap = _body_gap(title, has_extra=bool(extra), has_subtitle=bool(subtitle_html))
     mode_badge_text = badge_text if badge_text else ("COMBINED VERSIONS" if combined_versions else footer_right)
     mode_badge_html = f'<span class="mode-badge">{html.escape(mode_badge_text)}</span>' if mode_badge_text else ""
     tsm_logo_uri = _tsm_logo_data_uri()
@@ -308,7 +318,7 @@ def render_song_card(
 *{{margin:0;padding:0;box-sizing:border-box}}
 body{{
   font-family:Inter,-apple-system,'Helvetica Neue',Arial,sans-serif;
-  width:800px;height:299px;
+  width:920px;height:344px;
   background:{gradient};
   position:relative;overflow:hidden;color:#fff;
 }}
@@ -318,103 +328,86 @@ body:before{{
     linear-gradient(90deg,rgba(4,10,16,.62) 0%,rgba(4,10,16,.42) 49%,rgba(4,10,16,.08) 100%),
     radial-gradient(circle at 18% 85%,rgba(255,255,255,.20),rgba(255,255,255,0) 36%);
 }}
-.layout{{height:299px;position:relative;z-index:1}}
+.layout{{height:344px;position:relative;z-index:1}}
 .cover-col{{
-  position:absolute;right:10px;top:10px;width:279px;height:279px;
-  overflow:hidden;border-radius:26px;
+  position:absolute;right:12px;top:12px;width:321px;height:321px;
+  overflow:hidden;border-radius:30px;
   box-shadow:0 24px 50px rgba(0,0,0,.42),0 0 0 1px rgba(255,255,255,.18);
 }}
-.cover,.cover-ph{{width:279px;height:279px;object-fit:cover;display:block}}
+.cover,.cover-ph{{width:321px;height:321px;object-fit:cover;display:block}}
 .cover-ph{{background:#172421}}
 .info-col{{
-  position:absolute;left:28px;top:14px;bottom:14px;width:460px;
-  display:flex;flex-direction:column;justify-content:center;gap:7px;
+  position:absolute;left:32px;top:24px;bottom:22px;width:529px;
+  display:flex;flex-direction:column;
 }}
-.hdr-row{{display:flex;align-items:center;gap:9px;width:100%}}
-.logo{{width:26px;height:26px;flex-shrink:0}}
+.hdr-row{{display:flex;align-items:center;gap:12px;width:100%;flex-shrink:0}}
+.body-col{{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:{body_gap}px;margin-top:7px}}
+.logo{{width:33px;height:33px;flex-shrink:0}}
 .hdr-label{{
-  color:rgba(255,255,255,.92);font-size:12px;font-weight:900;
+  color:rgba(255,255,255,.92);font-size:15px;font-weight:900;
   letter-spacing:.12em;text-transform:uppercase;
 }}
 .mode-badge{{
   margin-left:auto;color:rgba(255,255,255,.88);
   background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);
-  border-radius:999px;padding:6px 10px;
-  font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;
+  border-radius:999px;padding:8px 13px;
+  font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;
   white-space:nowrap;
 }}
 .title{{
   color:#fff;font-size:{_best_since_title_font_size(title)}px;font-weight:950;
   line-height:1.14;letter-spacing:0;flex-shrink:0;
-  max-width:455px;display:-webkit-box;-webkit-line-clamp:2;
+  max-width:523px;display:-webkit-box;-webkit-line-clamp:2;
   -webkit-box-orient:vertical;overflow:hidden;
   text-shadow:0 3px 18px rgba(0,0,0,.28);
-  margin-bottom:-4px;
-}}
-.title-row{{
-  display:flex;align-items:center;gap:10px;max-width:455px;
-}}
-.title-row .title{{
-  min-width:0;max-width:100%;
-}}
-.best-marker{{
-  color:{badge_fg};background:{badge_bg};
-  font-size:12px;font-weight:900;border-radius:999px;
-  padding:6px 10px 6px 7px;display:inline-flex;align-items:center;gap:6px;
-  white-space:nowrap;flex-shrink:0;
-  box-shadow:0 12px 28px rgba(0,0,0,.20),0 0 0 1px rgba(255,255,255,.18);
-}}
-.best-star{{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:19px;height:19px;border-radius:999px;
-  color:{badge_bg};background:{badge_fg};font-size:11px;line-height:1;
+  margin-bottom:-5px;
 }}
 .subtitle{{
-  width:max-content;max-width:440px;
+  width:max-content;max-width:505px;
   color:{badge_fg};background:{badge_bg};
-  font-size:13px;font-weight:900;border-radius:999px;
-  padding:7px 13px;display:flex;align-items:center;gap:8px;
+  font-size:15px;font-weight:900;border-radius:999px;
+  padding:8px 15px;display:flex;align-items:center;gap:9px;
   text-transform:uppercase;
   box-shadow:0 12px 28px rgba(0,0,0,.20),0 0 0 1px rgba(255,255,255,.18);
 }}
 .subtitle:before{{
   content:"\\2605";display:inline-flex;align-items:center;justify-content:center;
-  width:20px;height:20px;border-radius:999px;
-  color:{badge_bg};background:{badge_fg};font-size:12px;line-height:1;
+  width:23px;height:23px;border-radius:999px;
+  color:{badge_bg};background:{badge_fg};font-size:14px;line-height:1;
 }}
-.stats{{display:flex;gap:10px;margin-top:2px}}
+.stats{{display:flex;gap:12px;margin-top:2px}}
 .stat{{
   background:rgba(7,14,22,.58);border:1px solid rgba(255,255,255,.20);
-  border-radius:16px;padding:9px 14px 8px;min-width:132px;
+  border-radius:18px;padding:10px 16px 9px;min-width:152px;
   box-shadow:0 12px 30px rgba(0,0,0,.18);
 }}
 .stat-lbl{{
-  font-size:9px;font-weight:900;letter-spacing:.1em;
+  font-size:10px;font-weight:900;letter-spacing:.1em;
   text-transform:uppercase;color:rgba(255,255,255,.58);margin-bottom:4px;
 }}
-.stat-val{{font-size:24px;font-weight:950;color:#fff;line-height:1}}
-.chg{{font-size:10px;font-weight:900;margin-top:5px;letter-spacing:.02em}}
+.stat-val{{font-size:28px;font-weight:950;color:#fff;line-height:1}}
+.chg{{font-size:12px;font-weight:900;margin-top:5px;letter-spacing:.02em}}
 .chg.new,.chg.re,.chg.up{{color:#7ee787}}
 .chg.down{{color:#fca5a5}}
 .chg.flat{{color:rgba(255,255,255,.52)}}
 .extra{{
-  color:rgba(255,255,255,.76);font-size:13px;font-weight:750;
-  max-width:430px;margin-top:0;margin-bottom:2px;
+  color:rgba(255,255,255,.76);font-size:15px;font-weight:750;
+  max-width:495px;margin-top:0;margin-bottom:2px;
 }}
 .ftr{{
-  position:absolute;bottom:10px;left:30px;right:30px;z-index:2;
+  position:absolute;bottom:12px;left:35px;right:35px;z-index:2;
   display:flex;justify-content:space-between;
 }}
-.ftr-l,.ftr-r{{font-size:10px;color:rgba(255,255,255,.52);font-weight:700}}
-.ftr-brand{{display:flex;align-items:center;gap:6px}}
-.tsm-logo{{width:18px;height:18px;object-fit:contain;border-radius:4px}}
+.ftr-l,.ftr-r{{font-size:12px;color:rgba(255,255,255,.52);font-weight:700}}
+.ftr-brand{{display:flex;align-items:center;gap:7px}}
+.tsm-logo{{width:21px;height:21px;object-fit:contain;border-radius:4px}}
 """
     else:
         css = f"""
 *{{margin:0;padding:0;box-sizing:border-box}}
 body{{
   font-family:Inter,-apple-system,'Helvetica Neue',Arial,sans-serif;
-  width:800px;height:299px;
+  width:920px;height:344px;
   background:{gradient};
   position:relative;overflow:hidden;color:#fff;
 }}
@@ -424,65 +417,66 @@ body:before{{
     linear-gradient(90deg,rgba(4,10,16,.62) 0%,rgba(4,10,16,.42) 49%,rgba(4,10,16,.08) 100%),
     radial-gradient(circle at 18% 85%,rgba(255,255,255,.20),rgba(255,255,255,0) 36%);
 }}
-.layout{{height:299px;position:relative;z-index:1}}
+.layout{{height:344px;position:relative;z-index:1}}
 .cover-col{{
-  position:absolute;right:10px;top:10px;width:279px;height:279px;
-  overflow:hidden;border-radius:26px;
+  position:absolute;right:12px;top:12px;width:321px;height:321px;
+  overflow:hidden;border-radius:30px;
   box-shadow:0 24px 50px rgba(0,0,0,.42),0 0 0 1px rgba(255,255,255,.18);
 }}
-.cover,.cover-ph{{width:279px;height:279px;object-fit:cover;display:block}}
+.cover,.cover-ph{{width:321px;height:321px;object-fit:cover;display:block}}
 .cover-ph{{background:#172421}}
 .info-col{{
-  position:absolute;left:28px;top:14px;bottom:14px;width:460px;
-  display:flex;flex-direction:column;justify-content:center;gap:7px;
+  position:absolute;left:32px;top:24px;bottom:22px;width:529px;
+  display:flex;flex-direction:column;
 }}
-.hdr-row{{display:flex;align-items:center;gap:9px;width:100%}}
-.logo{{width:26px;height:26px;flex-shrink:0}}
+.hdr-row{{display:flex;align-items:center;gap:12px;width:100%;flex-shrink:0}}
+.body-col{{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:{body_gap}px;margin-top:7px}}
+.logo{{width:33px;height:33px;flex-shrink:0}}
 .hdr-label{{
-  color:rgba(255,255,255,.92);font-size:12px;font-weight:900;
+  color:rgba(255,255,255,.92);font-size:15px;font-weight:900;
   letter-spacing:.12em;text-transform:uppercase;
 }}
 .mode-badge{{
   margin-left:auto;color:rgba(255,255,255,.88);
   background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);
-  border-radius:999px;padding:6px 10px;
-  font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;
+  border-radius:999px;padding:8px 13px;
+  font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;
   white-space:nowrap;
 }}
 .title{{
   color:#fff;font-size:{_best_since_title_font_size(title)}px;font-weight:950;
   line-height:1.14;letter-spacing:0;flex-shrink:0;
-  max-width:455px;display:-webkit-box;-webkit-line-clamp:2;
+  max-width:523px;display:-webkit-box;-webkit-line-clamp:2;
   -webkit-box-orient:vertical;overflow:hidden;
   text-shadow:0 3px 18px rgba(0,0,0,.28);
-  margin-bottom:-4px;
+  margin-bottom:-5px;
 }}
-.stats{{display:flex;gap:10px;margin-top:2px}}
+.stats{{display:flex;gap:12px;margin-top:2px}}
 .stat{{
   background:rgba(7,14,22,.58);border:1px solid rgba(255,255,255,.20);
-  border-radius:16px;padding:9px 14px 8px;min-width:132px;
+  border-radius:18px;padding:10px 16px 9px;min-width:152px;
   box-shadow:0 12px 30px rgba(0,0,0,.18);
 }}
 .stat-lbl{{
-  font-size:9px;font-weight:900;letter-spacing:.1em;
+  font-size:10px;font-weight:900;letter-spacing:.1em;
   text-transform:uppercase;color:rgba(255,255,255,.58);margin-bottom:4px;
 }}
-.stat-val{{font-size:24px;font-weight:950;color:#fff;line-height:1}}
-.chg{{font-size:10px;font-weight:900;margin-top:5px;letter-spacing:.02em}}
+.stat-val{{font-size:28px;font-weight:950;color:#fff;line-height:1}}
+.chg{{font-size:12px;font-weight:900;margin-top:5px;letter-spacing:.02em}}
 .chg.new,.chg.re,.chg.up{{color:#7ee787}}
 .chg.down{{color:#fca5a5}}
 .chg.flat{{color:rgba(255,255,255,.52)}}
 .extra{{
-  color:rgba(255,255,255,.76);font-size:13px;font-weight:750;
-  max-width:430px;margin-top:0;margin-bottom:2px;
+  color:rgba(255,255,255,.76);font-size:15px;font-weight:750;
+  max-width:495px;margin-top:0;margin-bottom:2px;
 }}
 .ftr{{
-  position:absolute;bottom:10px;left:30px;right:30px;z-index:2;
+  position:absolute;bottom:12px;left:35px;right:35px;z-index:2;
   display:flex;justify-content:space-between;
 }}
-.ftr-l,.ftr-r{{font-size:10px;color:rgba(255,255,255,.52);font-weight:700}}
-.ftr-brand{{display:flex;align-items:center;gap:6px}}
-.tsm-logo{{width:18px;height:18px;object-fit:contain;border-radius:4px}}
+.ftr-l,.ftr-r{{font-size:12px;color:rgba(255,255,255,.52);font-weight:700}}
+.ftr-brand{{display:flex;align-items:center;gap:7px}}
+.tsm-logo{{width:21px;height:21px;object-fit:contain;border-radius:4px}}
 """
     return f"""<!doctype html><html><head><meta charset="utf-8"><style>{css}</style></head>
 <body class="{body_class}">
@@ -494,11 +488,13 @@ body:before{{
       <span class="hdr-label">{html.escape(eyebrow)}</span>
       {mode_badge_html}
     </div>
-    {title_html}
-    {extra_html}
-    {subtitle_html}
-    <div class="stats">
-      {''.join(stat_html)}
+    <div class="body-col">
+      {title_html}
+      {extra_html}
+      {subtitle_html}
+      <div class="stats">
+        {''.join(stat_html)}
+      </div>
     </div>
   </div>
 </div>
@@ -515,9 +511,10 @@ def write_song_card_png(html_text: str, output_path: Path, tmp_path: Path, *, ke
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
-            page = browser.new_page(viewport={"width": 800, "height": 299}, device_scale_factor=2)
+            page = browser.new_page(viewport={"width": 920, "height": 344}, device_scale_factor=2)
             page.goto(f"file:///{tmp_path.as_posix()}", wait_until="load")
             page.locator("body").screenshot(path=str(output_path))
+            add_export_frame(output_path, device_scale_factor=2)
             browser.close()
     finally:
         if not keep_html:

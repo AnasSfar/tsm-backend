@@ -186,7 +186,7 @@ def _format_change(row: dict[str, Any]) -> str:
 
 
 def _date_label(chart_date: str) -> str:
-    return datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    return datetime.strptime(chart_date, "%Y-%m-%d").strftime("%A, %B %d, %Y")
 
 
 def _build_html(rows: list[dict[str, Any]], chart_date: str) -> str:
@@ -274,7 +274,7 @@ def _render(html: str, out_path: Path) -> None:
 
 def _tweet(chart_date: str, rows: list[dict[str, Any]]) -> str:
     return (
-        f"Taylor Swift on Spotify Artist Charts worldwide yesterday ({_date_label(chart_date)}) :\n\n"
+        f"Taylor Swift on Spotify Artist Charts worldwide on {_date_label(chart_date)} :\n\n"
     )
 
 

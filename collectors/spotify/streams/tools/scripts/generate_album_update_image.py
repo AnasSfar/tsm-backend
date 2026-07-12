@@ -17,6 +17,7 @@ from __future__ import annotations
 import base64
 import colorsys
 import csv
+import html
 import io
 import json
 import random
@@ -81,6 +82,14 @@ def _shorten_title(t: str) -> str:
     t = re.sub(r"\bDressing Room\s*", "", t, flags=re.IGNORECASE)
     t = re.sub(r"\bRehearsal\b", "Reh.", t, flags=re.IGNORECASE)
     return re.sub(r"\s{2,}", " ", t).strip()
+
+
+def _ordinal(n: int) -> str:
+    if 10 <= n % 100 <= 20:
+        suffix = "th"
+    else:
+        suffix = {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")
+    return f"{n}{suffix}"
 
 
 def _dominant_color(img_path: Path) -> str:
@@ -474,6 +483,7 @@ def load_album_sections(album_name: str) -> list[dict]:
             tracks.append({
                 "track_id":     m.group(1),
                 "title_clean":  (t.get("title_clean") or t.get("title") or "").strip(),
+                "release_date":  (t.get("release_date") or "").strip(),
                 "version_tag":  (t.get("version_tag") or "").strip(),
                 "display_order": display_order,
                 "image_url":    (t.get("image_url") or "").strip(),
@@ -485,15 +495,21 @@ def load_album_sections(album_name: str) -> list[dict]:
             sec.get("display_section")
             or sec.get("section", "").replace("_", " ").title()
         )
-        sections.append({"name": name, "tracks": tracks})
+        release_dates = [
+            str(t.get("release_date") or "")[:10]
+            for t in tracks
+            if re.match(r"\d{4}-\d{2}-\d{2}", str(t.get("release_date") or ""))
+        ]
+        sections.append({
+            "name": name,
+            "tracks": tracks,
+            "release_date": min(release_dates) if release_dates else "",
+            "source_order": len(sections),
+        })
 
-    # Sort so "Standard Edition" (or "Standard") always appears first
+    # Keep album update sections in release-date order; preserve DB order for ties.
     def sort_key(sec):
-        name_lower = sec["name"].lower()
-        if "standard" in name_lower:
-            return (0, 0)  # Standard editions first
-        else:
-            return (1, sec["name"])  # Others alphabetically
+        return (sec.get("release_date") or "9999-12-31", sec.get("source_order", 9999))
     sections.sort(key=sort_key)
 
     return sections, canonical_name
@@ -778,7 +794,6 @@ body{
   padding:0 16px;
   position:relative;overflow:hidden;
   background:linear-gradient(135deg, rgba(29,185,84,.15) 0%, rgba(21,136,62,.08) 100%);
-  border-bottom:2px solid rgba(29,185,84,.15);
 }
 .hdr-overlay{
   position:absolute;inset:0;
@@ -872,6 +887,11 @@ body{
   display:block;
   text-align:center;
   white-space:nowrap;overflow:visible;text-overflow:clip;
+}
+.best-day-note{
+  font-size:10px;
+  font-weight:700;
+  color:#7f8794;
 }
 .song-title.has-tag{font-size:12.5px}
 .song-row.no-filter .col-song{grid-column:2/5}
@@ -995,6 +1015,8 @@ def _estimate_title_width_px(text: str, font_size_px: float = 13.0) -> float:
     if not text:
         return 0.0
 
+    text = html.unescape(re.sub(r"<[^>]+>", "", text))
+
     # Relative glyph width factors tuned for Inter-like sans serif fonts.
     narrow = set(" ilI'`.,:;!|()[]{}")
     wide = set("MW@#%&QGm")
@@ -1012,15 +1034,16 @@ def _estimate_title_width_px(text: str, font_size_px: float = 13.0) -> float:
 def _compute_layout_metrics(
     sections: list[dict],
     show_filter_cols: bool,
-    best_day_track_ids: set[str] | None = None,
+    best_day_labels_by_track: dict[str, str] | None = None,
 ) -> dict:
     """Compute dynamic grid/body sizing to avoid extra whitespace in final PNG."""
     total_tracks = sum(len(s["tracks"]) for s in sections)
     row_h = max(20, min(36, 20 + (16 - total_tracks) * 2))
-    best_day_track_ids = best_day_track_ids or set()
+    best_day_labels_by_track = best_day_labels_by_track or {}
+    song_header = "SONG (MM/DD/YYYY)" if best_day_labels_by_track else "SONG"
 
     titles = [
-        _display_song_title(t, t.get("track_id") in best_day_track_ids)
+        _display_song_title(t, best_day_labels_by_track.get(t.get("track_id", "")))
         for s in sections
         for t in s.get("tracks", [])
     ]
@@ -1036,9 +1059,9 @@ def _compute_layout_metrics(
         song_col_px = int(max(120, longest_title_px + song_buffer_px))
         cols[1] = song_col_px
         grid_cols = f"36px {song_col_px}px 106px 72px 106px 74px 66px 106px"
-        col_heads_html = """<div class="col-heads">
+        col_heads_html = f"""<div class="col-heads">
     <span class="center">#</span>
-    <span>SONG</span>
+    <span>{song_header}</span>
     <span class="right">FILTERED</span>
     <span class="right">RATE</span>
     <span class="right">DAILY</span>
@@ -1051,9 +1074,9 @@ def _compute_layout_metrics(
         song_col_px = int(max(130, longest_title_px + song_buffer_px))
         cols[1] = song_col_px
         grid_cols = f"40px {song_col_px}px 120px 80px 80px 110px"
-        col_heads_html = """<div class="col-heads">
+        col_heads_html = f"""<div class="col-heads">
     <span class="center">#</span>
-    <span>SONG</span>
+    <span>{song_header}</span>
     <span class="right">DAILY</span>
     <span class="right">CHG</span>
     <span class="right">%</span>
@@ -1106,9 +1129,12 @@ def _build_totals_chip(items: list[tuple[str, str]]) -> str:
     return f'<div class="tot-chip">{"".join(vals)}</div>'
 
 
-def _display_song_title(track: dict, is_best_day: bool) -> str:
+def _display_song_title(track: dict, best_day_label: str | None = None) -> str:
     title = _shorten_title(track["title_clean"])
-    return f"&#9733; {title}" if is_best_day else title
+    if best_day_label:
+        prefix = "" if best_day_label.startswith("of ") else "since "
+        return f"&#9733; {title} <span class=\"best-day-note\">&middot; {prefix}{html.escape(best_day_label)}</span>"
+    return title
 
 
 def build_song_row_html(
@@ -1117,10 +1143,10 @@ def build_song_row_html(
     hdata: dict,
     alt: bool,
     show_filter_cols: bool,
-    best_day_track_ids: set[str] | None = None,
+    best_day_labels_by_track: dict[str, str] | None = None,
 ) -> str:
-    best_day_track_ids = best_day_track_ids or set()
-    title = _display_song_title(track, track.get("track_id") in best_day_track_ids)
+    best_day_labels_by_track = best_day_labels_by_track or {}
+    title = _display_song_title(track, best_day_labels_by_track.get(track.get("track_id", "")))
     daily = hdata.get("daily")
     change = hdata.get("change")
     pct = hdata.get("pct")
@@ -1229,10 +1255,11 @@ def build_html(
     show_filter_cols: bool = False,
     layout: dict | None = None,
     handle_icon_uri: str = "",
-    best_day_track_ids: set[str] | None = None,
+    best_day_labels_by_track: dict[str, str] | None = None,
 ) -> str:
     from datetime import datetime
-    date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    date_obj = datetime.strptime(target_date, "%Y-%m-%d")
+    date_fmt = f"{date_obj.strftime('%A, %B')} {_ordinal(date_obj.day)}, {date_obj.year}"
 
     # Base accent RGB used across tinted UI blocks.
     m_dom = re.fullmatch(r"#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})", dominant_hex.lower())
@@ -1279,8 +1306,8 @@ def build_html(
     tint_bg_css = f"rgba({dr},{dg},{db},0.08)"
     tint_border_css = f"rgba({dr},{dg},{db},0.18)"
 
-    best_day_track_ids = best_day_track_ids or set()
-    layout = layout or _compute_layout_metrics(sections, show_filter_cols, best_day_track_ids)
+    best_day_labels_by_track = best_day_labels_by_track or {}
+    layout = layout or _compute_layout_metrics(sections, show_filter_cols, best_day_labels_by_track)
     row_h = layout["row_h"]
     grid_cols = layout["grid_cols"]
     col_heads_html = layout["col_heads_html"]
@@ -1309,7 +1336,7 @@ def build_html(
             hd = hist.get(track["track_id"], {"daily": None, "change": None, "pct": None, "streams": None})
             if not show_filter_cols:
                 hd = {**hd, "filtered_streams": None, "filter_rate": None}
-            rows_html += build_song_row_html(si, track, hd, si % 2 != 0, show_filter_cols, best_day_track_ids)
+            rows_html += build_song_row_html(si, track, hd, si % 2 != 0, show_filter_cols, best_day_labels_by_track)
         rows_html += build_section_total_html(sec["name"], sec["tracks"], hist, accent, bg, show_filter_cols)
 
         for t in sec["tracks"]:
@@ -1444,18 +1471,33 @@ def album_update_already_posted(album_name: str, target_date: str) -> bool:
     return existing_album_update_lock_path(album_name, target_date) is not None
 
 
-def _best_day_track_ids_for_sections(
+def _format_best_day_since_label(value: object) -> str | None:
+    if isinstance(value, str) and re.match(r"\d{4}-\d{2}-\d{2}$", value):
+        d = date_cls.fromisoformat(value)
+        return f"{d.strftime('%B')} {_ordinal(d.day)}, {d.year}"
+    return None
+
+
+def _format_best_day_marker_label(row: dict) -> str | None:
+    if row.get("is_biggest_day_of_year"):
+        return "of the year"
+    if row.get("is_biggest_day_of_month"):
+        return "of the month"
+    return _format_best_day_since_label(row.get("best_day_since"))
+
+
+def _best_day_labels_for_sections(
     sections: list[dict],
     target_date: str,
     *,
     min_days: int = best_day_since.DEFAULT_MIN_DAYS,
-) -> set[str]:
+) -> dict[str, str]:
     target = date_cls.fromisoformat(target_date)
     base_tracks = best_day_since.load_tracks(include_extras=False)
     all_tracks = best_day_since.load_tracks(include_extras=True)
     history = best_day_since.load_history()
 
-    marked: set[str] = set()
+    marked: dict[str, str] = {}
     seen: set[str] = set()
     for section in sections:
         for item in section.get("tracks", []):
@@ -1479,7 +1521,9 @@ def _best_day_track_ids_for_sections(
                 and row.get("kind") == "since"
                 and best_day_since.passes_filters(row, min_days=min_days)
             ):
-                marked.add(track_id)
+                label = _format_best_day_marker_label(row)
+                if label:
+                    marked[track_id] = label
 
     return marked
 
@@ -1539,7 +1583,7 @@ def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_
     if sort_tracks_by_daily:
         sort_album_sections_by_daily_streams(sections, hist)
 
-    best_day_track_ids = _best_day_track_ids_for_sections(sections, target_date)
+    best_day_labels_by_track = _best_day_labels_for_sections(sections, target_date)
 
     show_filter_cols = False
     if ENABLE_FILTERED_CHARTS:
@@ -1570,7 +1614,7 @@ def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_
     print("[album_update] Téléchargement de la cover...")
     cover_uri = _url_to_data_uri(cover_url) if cover_url else ""
 
-    layout = _compute_layout_metrics(sections, show_filter_cols, best_day_track_ids)
+    layout = _compute_layout_metrics(sections, show_filter_cols, best_day_labels_by_track)
     hdr_target_w = (layout["body_width_px"] - 2 * BODY_PADDING_CSS) * RENDER_DPR
     hdr_target_h = HEADER_HEIGHT_CSS * RENDER_DPR
     header_uri = _prepare_header_for_render(header_img, hdr_target_w, hdr_target_h) if header_img else ""
@@ -1592,7 +1636,7 @@ def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_
         show_filter_cols=show_filter_cols,
         layout=layout,
         handle_icon_uri=handle_icon_uri,
-        best_day_track_ids=best_day_track_ids,
+        best_day_labels_by_track=best_day_labels_by_track,
     )
 
     album_slug = album_update_slug(album_name)
@@ -1689,7 +1733,8 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
         track_pct = best.get("pct")
 
     # Format data for tweet
-    date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    date_obj = datetime.strptime(target_date, "%Y-%m-%d")
+    date_fmt = f"{date_obj.strftime('%A, %B')} {_ordinal(date_obj.day)}, {date_obj.year}"
     total_daily_fmt = f"{int(total_daily):,}"
     track_daily_fmt = f"{int(track_daily):,}"
 
@@ -1713,9 +1758,7 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
     if is_ttpd_anniversary:
         first_line = f'📈| "{canonical_name}" received {total_daily_fmt} streams on its second anniversary, April 19th 2026.{album_pct_str}'
     else:
-        album_track_ids = [t.get("track_id") for t in tracks if t.get("track_id")]
-        max_days = history_store.max_days_covered(album_track_ids, target_date)
-        when = f"yesterday, {date_fmt}" if max_days <= 1 else f"over the last {max_days} days, up to {date_fmt}"
+        when = f"on {date_fmt}"
         first_line = f'📈| "{canonical_name}" received {total_daily_fmt} streams {when}.{album_pct_str}'
 
     return (
@@ -1726,6 +1769,51 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
 
 
 _build_album_post_text_base = _build_album_post_text
+
+
+def _selected_album_post_track(sections: list[dict], target_date: str) -> dict | None:
+    hist = load_history_for_album(sections, target_date)
+    tracks = [t for sec in sections for t in sec["tracks"]]
+    scored = []
+    for t in tracks:
+        h = hist.get(t["track_id"], {})
+        pct = h.get("pct")
+        if pct is None:
+            continue
+        scored.append({
+            "track_id": t.get("track_id"),
+            "title": t.get("title_clean") or "Unknown",
+            "pct": pct,
+        })
+    if not scored:
+        return None
+    return max(scored, key=lambda x: x["pct"])
+
+
+def _note_song_key(title: str) -> str:
+    text = title or ""
+    text = re.sub(r"\(taylor'?s version\)|\(tv\)", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"\([^)]*\)", "", text)
+    return re.sub(r"[^a-z0-9]+", "", text.lower())
+
+
+def _same_note_song(a: str, b: str) -> bool:
+    return bool(_note_song_key(a)) and _note_song_key(a) == _note_song_key(b)
+
+
+def _format_best_since_long(value: object) -> str:
+    if isinstance(value, str) and re.match(r"\d{4}-\d{2}-\d{2}$", value):
+        d = date_cls.fromisoformat(value)
+        return f"{d.strftime('%B')} {_ordinal(d.day)}, {d.year}"
+    return str(value or "before 2025")
+
+
+def _best_day_post_label(row: dict) -> str:
+    if row.get("is_biggest_day_of_year"):
+        return "BIGGEST DAY of the year"
+    if row.get("is_biggest_day_of_month"):
+        return "BIGGEST DAY of the month"
+    return f"BEST DAY since {_format_best_since_long(row.get('best_day_since'))}"
 
 
 def _build_album_post_text(album_name: str, target_date: str) -> str:
@@ -1750,16 +1838,45 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
         return (int(days_since or 0), int(row.get("daily_streams") or 0))
 
     best_row = max(best_day_rows, key=note_rank)
-    best_since = best_row.get("best_day_since")
-    if isinstance(best_since, str) and re.match(r"\d{4}-\d{2}-\d{2}$", best_since):
-        best_since_text = date_cls.fromisoformat(best_since).strftime("%m/%d/%Y")
-    else:
-        best_since_text = str(best_since or "before 2025")
-    note = f'"{note_title(best_row["title"])}" had its best day since {best_since_text}.'
+    best_label = _best_day_post_label(best_row)
+    selected = _selected_album_post_track(sections, target_date)
+    selected_title = selected.get("title") if selected else ""
+    same_song = (
+        bool(selected)
+        and (
+            selected.get("track_id") == best_row.get("track_id")
+            or _same_note_song(selected_title, best_row.get("title") or "")
+        )
+    )
+
+    if same_song:
+        addition = f" It earned its {best_label}."
+        lines = tweet.splitlines()
+        for i, line in enumerate(lines):
+            if f'"{_shorten_title(selected_title)}" was the ' in line:
+                lines[i] = f"{line}{addition}"
+                return "\n".join(lines)
+
+    note = f'"{note_title(best_row["title"])}" had its {best_label}.'
     marker = "\n\nSee full update here"
     if marker in tweet:
         return tweet.replace(marker, f"\n\n{note}{marker}", 1)
     return f"{tweet}\n\n{note}"
+
+
+def fit_album_post_text(tweet: str) -> str:
+    if len(tweet) <= TWEET_CHAR_LIMIT:
+        return tweet
+    if "See full update here" in tweet:
+        tweet = tweet.split("See full update here", 1)[0].strip()
+    if len(tweet) <= TWEET_CHAR_LIMIT:
+        return tweet
+    lines = [
+        line
+        for line in tweet.splitlines()
+        if "had its best day since" not in line
+    ]
+    return "\n".join(lines).strip()
 
 
 def post(album_name: str, image_path: Path, target_date: str) -> bool:
@@ -1775,9 +1892,10 @@ def post(album_name: str, image_path: Path, target_date: str) -> bool:
 
     try:
         tweet = _build_album_post_text(album_name, target_date)
-        if len(tweet) > TWEET_CHAR_LIMIT and "See full update here" in tweet:
-            tweet = tweet.split("See full update here", 1)[0].strip()
-            print("[album_update] Tweet shortened: removed full-update link to fit X limit.")
+        fitted_tweet = fit_album_post_text(tweet)
+        if fitted_tweet != tweet:
+            print("[album_update] Tweet shortened to fit X limit.")
+        tweet = fitted_tweet
     except Exception as e:
         print(f"[album_update] Fallback tweet (erreur génération texte): {e}")
         from datetime import datetime
