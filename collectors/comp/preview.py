@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generate preview images for song_card.py and tables_image.py, covering every
+Generate preview images for song_card.py, chart_card.py and tables_image.py, covering every
 visual case with real stream data:
 
   song_card:
@@ -8,6 +8,9 @@ visual case with real stream data:
     - best_since_solo_short / best_since_solo_long
     - best_since_combined_short / best_since_combined_long
     - best_since_album
+
+  chart_card:
+    - global Spotify Charts highlight card
 
   tables_image:
     - streams table (Pos / Track / Daily / Total / Vs Day / Vs Week)
@@ -17,13 +20,16 @@ Usage:
   python preview.py
   python preview.py --date 2026-07-01
   python preview.py --only song-card
+  python preview.py --only chart-card
   python preview.py --only tables
 """
 from __future__ import annotations
 
 import argparse
+import csv
 import html
 import random
+import re
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -42,6 +48,7 @@ for _path in (COLLECTORS_ROOT, SPOTIFY_STREAMS_DIR, SPOTIFY_STREAMS_SCRIPTS_DIR)
     if _path_str not in sys.path:
         sys.path.insert(0, _path_str)
 
+from comp.chart_card import render_chart_card, write_chart_card_png  # noqa: E402
 from comp.song_card import render_song_card, slugify, write_song_card_png  # noqa: E402
 from comp.tables_image import build_table_html, render_html_to_png, url_to_data_uri  # noqa: E402
 from comp.discography import build_cover_map, _norm  # noqa: E402
@@ -335,6 +342,273 @@ def _song_card_gallery(output_dir: Path, keep_html: bool, target_date: str) -> l
 
 
 # ---------------------------------------------------------------------------
+# chart_card.py cases
+# ---------------------------------------------------------------------------
+
+CHARTS_HISTORY_GLOBAL = DB_ROOT / "charts_history_global.csv"
+
+
+def _to_int(value) -> int | None:
+    try:
+        if value in (None, ""):
+            return None
+        return int(float(str(value).replace(",", "").strip()))
+    except (TypeError, ValueError):
+        return None
+
+
+def _fmt_chart_int(value: int | None) -> str:
+    return "-" if value is None else f"{value:,}"
+
+
+def _fmt_chart_delta(value: int | None) -> str:
+    if value is None or value == 0:
+        return ""
+    sign = "+" if value > 0 else "-"
+    return f"{sign}{abs(value):,}"
+
+
+def _fmt_chart_pct(current: int | None, previous: int | None) -> str:
+    if current is None or previous is None or previous <= 0:
+        return ""
+    return f"{(current - previous) / previous * 100:+.1f}%"
+
+
+def _delta_class(value: int | float | None) -> str:
+    if value is None or value == 0:
+        return "flat"
+    return "up" if value > 0 else "down"
+
+
+def _rank_badge_class(movement: str) -> str:
+    raw = (movement or "").strip().upper()
+    if raw == "NEW":
+        return "new"
+    if raw == "RE":
+        return "re"
+    if raw.startswith("+"):
+        return "up"
+    if raw.startswith("-"):
+        return "down"
+    return "flat"
+
+
+def _date_pill(chart_date: str) -> str:
+    dt = datetime.strptime(chart_date, "%Y-%m-%d")
+    day = dt.day
+    if 10 <= day % 100 <= 20:
+        suffix = "TH"
+    else:
+        suffix = {1: "ST", 2: "ND", 3: "RD"}.get(day % 10, "TH")
+    return f"Spotify Charts · {dt.strftime('%B').upper()} {day}{suffix} {dt.year}"
+
+
+def _load_global_chart_rows() -> list[dict]:
+    if not CHARTS_HISTORY_GLOBAL.exists():
+        print(f"[preview] Skip chart_card: missing {CHARTS_HISTORY_GLOBAL}", flush=True)
+        return []
+    with CHARTS_HISTORY_GLOBAL.open(newline="", encoding="utf-8-sig") as f:
+        return list(csv.DictReader(f))
+
+
+def _same_chart_track(left: dict, right: dict) -> bool:
+    left_id = str(left.get("track_id") or "").strip()
+    right_id = str(right.get("track_id") or "").strip()
+    if left_id and right_id:
+        return left_id == right_id
+    return _norm(str(left.get("song_name") or "")) == _norm(str(right.get("song_name") or ""))
+
+
+def _previous_global_chart_row(row: dict, rows: list[dict]) -> dict | None:
+    row_date = datetime.strptime(str(row.get("date")), "%Y-%m-%d").date()
+    previous_date = (row_date - timedelta(days=1)).isoformat()
+    for candidate in rows:
+        if candidate.get("date") == previous_date and _same_chart_track(row, candidate):
+            return candidate
+    return None
+
+
+def _chart_stream_delta(row: dict, previous: dict | None) -> int | None:
+    streams = _to_int(row.get("streams"))
+    previous_streams = _to_int(previous.get("streams")) if previous else None
+    if streams is None or previous_streams is None:
+        return None
+    return streams - previous_streams
+
+
+def _best_chart_candidate(candidates: list[tuple[dict, dict | None]]) -> tuple[dict, dict | None] | None:
+    if not candidates:
+        return None
+    return min(
+        candidates,
+        key=lambda item: (
+            1 if re.fullmatch(r"[A-Za-z0-9]{16,}", str(item[0].get("song_name") or "").strip()) else 0,
+            0 if item[0].get("date") else 1,
+            _to_int(item[0].get("rank")) or 9999,
+            str(item[0].get("song_name") or ""),
+        ),
+    )
+
+
+def _chart_preview_cases(rows: list[dict]) -> list[tuple[str, str, dict, dict | None, str | None]]:
+    enriched = [(row, _previous_global_chart_row(row, rows)) for row in rows if row.get("date")]
+
+    def movement_is(value: str) -> list[tuple[dict, dict | None]]:
+        wanted = value.upper()
+        return [
+            item for item in enriched
+            if str(item[0].get("movement") or "").strip().upper() == wanted
+        ]
+
+    def movement_prefix(prefix: str) -> list[tuple[dict, dict | None]]:
+        return [
+            item for item in enriched
+            if str(item[0].get("movement") or "").strip().startswith(prefix)
+        ]
+
+    case_specs: list[tuple[str, str, list[tuple[dict, dict | None]], str | None]] = [
+        ("new", "NEW debut", movement_is("NEW"), "NEW"),
+        ("re", "RE entry", movement_is("RE"), "RE"),
+        ("rank_up", "Rank up", movement_prefix("+"), None),
+        ("rank_down", "Rank down", movement_prefix("-"), None),
+        ("rank_flat", "Rank flat", movement_is("0"), None),
+        (
+            "streams_up",
+            "Streams up",
+            [item for item in enriched if (_chart_stream_delta(item[0], item[1]) or 0) > 0],
+            None,
+        ),
+        (
+            "streams_down",
+            "Streams down",
+            [item for item in enriched if (_chart_stream_delta(item[0], item[1]) or 0) < 0],
+            None,
+        ),
+    ]
+
+    cases: list[tuple[str, str, dict, dict | None, str | None]] = []
+    used_keys: set[tuple[str, str]] = set()
+    for slug, label, candidates, forced_movement in case_specs:
+        selected = _best_chart_candidate([
+            item for item in candidates
+            if (str(item[0].get("date") or ""), str(item[0].get("song_name") or "")) not in used_keys
+        ])
+        if selected is None:
+            print(f"[preview] Skip chart_card_{slug}: no exact Global chart row.", flush=True)
+            continue
+        row, previous = selected
+        used_keys.add((str(row.get("date") or ""), str(row.get("song_name") or "")))
+        cases.append((slug, label, row, previous, forced_movement))
+    return cases
+
+
+def _chart_track_meta(row: dict) -> tuple[dict, str]:
+    tracks = spotlight.load_all_tracks()
+    covers = spotlight.load_covers()
+    track_id = str(row.get("track_id") or "").strip()
+    title = str(row.get("song_name") or "").strip()
+    for track in tracks:
+        if track_id and str(track.get("track_id") or "") == track_id:
+            return track, spotlight.get_cover_url(track, covers)
+    for track in tracks:
+        if _norm(str(track.get("title") or "")) == _norm(title):
+            return track, spotlight.get_cover_url(track, covers)
+    return {"title": title, "album": ""}, ""
+
+
+def _write_chart_card_case(
+    *,
+    output_dir: Path,
+    keep_html: bool,
+    case_slug: str,
+    _case_label: str,
+    row: dict,
+    previous: dict | None,
+    forced_movement: str | None = None,
+    layout: str = "wide",
+) -> Path:
+    chart_date = str(row.get("date") or "")
+    track, cover_url = _chart_track_meta(row)
+    title = str(track.get("title") or row.get("song_name") or "Chart highlight")
+    album = str(track.get("album") or "").strip()
+    rank = _to_int(row.get("rank"))
+    streams = _to_int(row.get("streams"))
+    previous_streams = _to_int(previous.get("streams")) if previous else None
+    streams_delta = _chart_stream_delta(row, previous)
+    movement = forced_movement or str(row.get("movement") or "").strip()
+    if not movement:
+        previous_rank = _to_int(row.get("previous_rank"))
+        movement = "NEW" if previous_rank in (None, -1) else ""
+
+    date_text = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    html_text = render_chart_card(
+        title=title,
+        eyebrow="Spotify Charts",
+        subtitle=album or "Global Spotify Charts",
+        stats=[
+            {
+                "label": "Rank",
+                "value": f"#{rank}" if rank is not None else "#-",
+                "badge": movement,
+                "badge_class": _rank_badge_class(movement),
+            },
+            {
+                "label": "Streams",
+                "value": _fmt_chart_int(streams),
+                "badge": _fmt_chart_pct(streams, previous_streams),
+                "badge_class": _delta_class(streams_delta),
+                "delta": _fmt_chart_delta(streams_delta),
+                "delta_class": _delta_class(streams_delta),
+            },
+        ],
+        cover_url=cover_url,
+        footer_left="@swiftiescharts",
+        footer_right=date_text,
+        badge_text=_date_pill(chart_date),
+        layout=layout,
+    )
+    output_dir.mkdir(parents=True, exist_ok=True)
+    slug = slugify(title)
+    out_path = output_dir / f"chart_card_{case_slug}_{layout}_{chart_date}_{slug}.png"
+    html_path = output_dir / f"chart_card_{case_slug}_{layout}_{chart_date}_{slug}.html"
+    print(f"[preview] Writing HTML: {html_path}", flush=True)
+    print(f"[preview] Rendering PNG: {out_path}", flush=True)
+    if layout == "square":
+        return write_chart_card_png(html_text, out_path, html_path, keep_html=keep_html, width=1080, height=1080)
+    return write_chart_card_png(html_text, out_path, html_path, keep_html=keep_html)
+
+
+def _chart_card_preview(output_dir: Path, _target_date: str, keep_html: bool) -> list[Path]:
+    print("[preview] Building chart_card preview gallery...", flush=True)
+    rows = _load_global_chart_rows()
+    if not rows:
+        return []
+    paths: list[Path] = []
+    for case_slug, case_label, row, previous, forced_movement in _chart_preview_cases(rows):
+        paths.append(_write_chart_card_case(
+            output_dir=output_dir,
+            keep_html=keep_html,
+            case_slug=case_slug,
+            _case_label=case_label,
+            row=row,
+            previous=previous,
+            forced_movement=forced_movement,
+        ))
+        if case_slug == "streams_down":
+            paths.append(_write_chart_card_case(
+                output_dir=output_dir,
+                keep_html=keep_html,
+                case_slug="square_trial",
+                _case_label=case_label,
+                row=row,
+                previous=previous,
+                forced_movement=forced_movement,
+                layout="square",
+            ))
+    return paths
+
+
+# ---------------------------------------------------------------------------
 # tables_image.py cases
 # ---------------------------------------------------------------------------
 
@@ -526,7 +800,14 @@ def _recap_table_preview(output_dir: Path, target_date: str, keep_html: bool, mi
 def _clear_previous_previews(output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     removed = 0
-    for pattern in ("song_card_*.png", "song_card_*.html", "tables_image_*.png", "tables_image_*.html"):
+    for pattern in (
+        "song_card_*.png",
+        "song_card_*.html",
+        "chart_card_*.png",
+        "chart_card_*.html",
+        "tables_image_*.png",
+        "tables_image_*.html",
+    ):
         for path in output_dir.glob(pattern):
             if not path.is_file():
                 continue
@@ -537,9 +818,9 @@ def _clear_previous_previews(output_dir: Path) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Generate previews for song_card.py and tables_image.py (all cases).")
+    parser = argparse.ArgumentParser(description="Generate previews for song_card.py, chart_card.py and tables_image.py.")
     parser.add_argument("--date", help="Stats date YYYY-MM-DD. Defaults to latest date in streams history.")
-    parser.add_argument("--only", choices=["song-card", "tables"], help="Restrict to one family of previews.")
+    parser.add_argument("--only", choices=["song-card", "chart-card", "tables"], help="Restrict to one family of previews.")
     parser.add_argument("--output-dir", default=str(OUTPUT_DIR), help="Directory for generated previews.")
     parser.add_argument("--limit", type=int, default=10, help="Number of rows for the streams table preview.")
     parser.add_argument("--min-days", type=int, default=1, help="Minimum days filter for best-day-since rows.")
@@ -556,6 +837,8 @@ def main() -> None:
     paths: list[Path] = []
     if args.only in (None, "song-card"):
         paths.extend(_song_card_gallery(output_dir, args.keep_html, target_date))
+    if args.only in (None, "chart-card"):
+        paths.extend(_chart_card_preview(output_dir, target_date, args.keep_html))
     if args.only in (None, "tables"):
         streams_path = _streams_table_preview(output_dir, target_date, args.limit, args.keep_html)
         if streams_path:

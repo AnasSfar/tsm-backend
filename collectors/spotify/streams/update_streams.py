@@ -798,7 +798,7 @@ def run_discography_backfill_after_streams(token_mgr: TokenManager | None, stats
         result = run_discography_backfill(
             apply=True,
             no_backup=False,
-            include_non_songs=False,
+            include_non_songs=True,
             skip_api=False,
             tokens=tokens,
             recent_release_limit=12,
@@ -844,7 +844,7 @@ def run_new_release_preflight(token_mgr: TokenManager | None, stats_date: str) -
             result = run_discography_backfill(
                 apply=True,
                 no_backup=False,
-                include_non_songs=False,
+                include_non_songs=True,
                 skip_api=False,
                 tokens=tokens,
                 recent_release_limit=12,
@@ -857,6 +857,7 @@ def run_new_release_preflight(token_mgr: TokenManager | None, stats_date: str) -
             continue
 
         added_ids.update(str(track_id) for track_id in (result.get("added_track_ids") or []) if str(track_id))
+        added_ids.update(str(track_id) for track_id in (result.get("resolved_existing_url_ids") or []) if str(track_id))
         for key in totals:
             totals[key] += int(result.get(key, 0) or 0)
 

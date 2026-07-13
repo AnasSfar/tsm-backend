@@ -41,6 +41,7 @@ TAYLOR_ARTIST_ID = "06HL4z0CvFAxyc27GXpf02"
 STANDALONE_ALBUM = "Standalone & Extras"
 STANDALONE_SECTION = "kworb_extras"
 STANDALONE_DISPLAY_SECTION = "Extras"
+SPOTIFY_SEARCH_URL = "https://api.spotify.com/v1/search"
 NON_SONG_TITLE_RE = re.compile(
     r"(?:\bcommentary\b|\bkaraoke\b|\binstrumental\b|\btrack by track\b|"
     r"\binstrumental with\b|\binstrumental w/)",
@@ -734,11 +735,140 @@ def is_non_song_track(track: dict[str, Any]) -> bool:
     return bool(NON_SONG_TITLE_RE.search(str(track.get("title") or "")))
 
 
+def _search_headers(tokens: dict[str, str]) -> dict[str, str]:
+    return {
+        "Authorization": f"Bearer {tokens['bearer']}",
+        "Accept": "application/json",
+        "User-Agent": "TSM stream catalog backfill",
+    }
+
+
+def _artist_name_key(value: str) -> str:
+    return normalized_title(value).replace(" ", "")
+
+
+def _expected_artist_keys(track: dict[str, Any]) -> set[str]:
+    raw_artists = track.get("artists") or []
+    if not raw_artists:
+        raw_artists = [
+            track.get("primary_artist"),
+            *(track.get("featured_artists") or []),
+        ]
+    return {
+        _artist_name_key(str(artist))
+        for artist in raw_artists
+        if str(artist or "").strip()
+    }
+
+
+def _search_track_candidates(
+    session: Any,
+    *,
+    tokens: dict[str, str],
+    title: str,
+) -> list[dict[str, Any]]:
+    try:
+        response = session.get(
+            SPOTIFY_SEARCH_URL,
+            headers=_search_headers(tokens),
+            params={"q": f'track:"{title}"', "type": "track", "limit": 10},
+            timeout=(5, 20),
+        )
+    except Exception:
+        return []
+    if response.status_code != 200:
+        return []
+    payload = response.json()
+    return [
+        item for item in (((payload.get("tracks") or {}).get("items")) or [])
+        if isinstance(item, dict)
+    ]
+
+
+def _candidate_cover_url(candidate: dict[str, Any]) -> str:
+    images = ((candidate.get("album") or {}).get("images") or [])
+    if not images:
+        return ""
+    best = max(images, key=lambda image: image.get("width") or 0)
+    return str(best.get("url") or "").strip()
+
+
+def resolve_existing_blank_urls(
+    data_by_path: dict[Path, Any],
+    locations: list[TrackLocation],
+    *,
+    tokens: dict[str, str],
+    verbose: bool,
+) -> tuple[int, set[Path], list[str]]:
+    """Fill existing DB entries that have a title but no Spotify URL.
+
+    This is deliberately conservative: one exact title match, and the candidate
+    must include one of the expected artists already recorded on the DB row.
+    """
+    import requests
+
+    updates = 0
+    touched: set[Path] = set()
+    resolved_ids: list[str] = []
+
+    with requests.Session() as session:
+        for loc in locations:
+            if extract_track_id(loc.track.get("url") or loc.track.get("spotify_url")):
+                continue
+            title = str(loc.track.get("title") or "").strip()
+            if not title:
+                continue
+            expected_artists = _expected_artist_keys(loc.track)
+            title_key = normalized_title(title)
+            matches: list[dict[str, Any]] = []
+            for candidate in _search_track_candidates(session, tokens=tokens, title=title):
+                if normalized_title(str(candidate.get("name") or "")) != title_key:
+                    continue
+                candidate_artist_keys = {
+                    _artist_name_key(str(artist.get("name") or ""))
+                    for artist in (candidate.get("artists") or [])
+                    if isinstance(artist, dict)
+                }
+                if expected_artists and not (candidate_artist_keys & expected_artists):
+                    continue
+                matches.append(candidate)
+
+            unique_by_id = {
+                str(candidate.get("id") or "").strip(): candidate
+                for candidate in matches
+                if str(candidate.get("id") or "").strip()
+            }
+            if len(unique_by_id) != 1:
+                if verbose and matches:
+                    print(f"[search-pending] {title}: {len(unique_by_id)} exact candidate(s), left unchanged")
+                continue
+
+            track_id, candidate = next(iter(unique_by_id.items()))
+            loc.track["url"] = spotify_track_url(track_id)
+            if not str(loc.track.get("image_url") or "").strip():
+                cover = _candidate_cover_url(candidate)
+                if cover:
+                    loc.track["image_url"] = cover
+            album = candidate.get("album") or {}
+            release_day = str(album.get("release_date") or "").strip()
+            if release_day and not str(loc.track.get("release_date") or "").strip():
+                loc.track["release_date"] = f"{release_day}T00:00:00Z" if len(release_day) == 10 else release_day
+            updates += 1
+            touched.add(loc.path)
+            resolved_ids.append(track_id)
+            if verbose:
+                print(f"[search-resolved] {title} -> {track_id}")
+
+    for path in touched:
+        refresh_counts(path, data_by_path[path])
+    return updates, touched, resolved_ids
+
+
 def run_backfill(
     *,
     apply: bool = False,
     no_backup: bool = False,
-    include_non_songs: bool = False,
+    include_non_songs: bool = True,
     skip_api: bool = False,
     tokens: dict[str, str] | None = None,
     recent_release_limit: int | None = None,
@@ -778,6 +908,7 @@ def run_backfill(
                 "updates": 0,
                 "additions": 0,
                 "matched_existing_by_title_streams": 0,
+                "resolved_existing_url_ids": [],
                 "written_files": 0,
                 "added_track_ids": [],
             }
@@ -792,9 +923,46 @@ def run_backfill(
             "updates": 0,
             "additions": 0,
             "matched_existing_by_title_streams": 0,
+            "resolved_existing_url_ids": [],
             "written_files": len(db_dedupe_touched),
             "added_track_ids": [],
         }
+
+    tokens = tokens or capture_tokens()
+    updates = 0
+    additions = 0
+    matched_existing_by_title_streams = 0
+    added_track_ids: list[str] = []
+    resolved_existing_url_ids: list[str] = []
+    touched: set[Path] = set(db_dedupe_touched)
+
+    search_updates, search_touched, search_ids = resolve_existing_blank_urls(
+        data_by_path,
+        locations,
+        tokens=tokens,
+        verbose=verbose,
+    )
+    updates += search_updates
+    touched.update(search_touched)
+    resolved_existing_url_ids.extend(search_ids)
+
+    if search_updates:
+        locations = [
+            loc
+            for loc in locations
+            if track_is_present(loc.section, loc.track)
+        ]
+        by_id = {extract_track_id(loc.track.get("url") or loc.track.get("spotify_url")): loc for loc in locations}
+        by_title = defaultdict(list)
+        by_dedupe_identity = defaultdict(list)
+        for loc in locations:
+            title = str(loc.track.get("title") or "")
+            if title:
+                by_title[normalized_title(title)].append(loc)
+            track_id = extract_track_id(loc.track.get("url") or loc.track.get("spotify_url"))
+            identity = dedupe_identity_for_track(loc.track, history_totals.get(track_id))
+            if identity is not None:
+                by_dedupe_identity[identity].append(loc)
 
     print("[spotify] Fetching artist catalog...")
     catalog_tracks = build_api_catalog(
@@ -804,12 +972,6 @@ def run_backfill(
         expand_target_date=expand_target_date,
     )
     canonical_tracks, duplicate_groups = canonicalize_api_tracks(catalog_tracks)
-
-    updates = 0
-    additions = 0
-    matched_existing_by_title_streams = 0
-    added_track_ids: list[str] = []
-    touched: set[Path] = set(db_dedupe_touched)
 
     for chosen, skipped in duplicate_groups:
         if not verbose:
@@ -921,6 +1083,7 @@ def run_backfill(
             "updates": updates,
             "additions": additions,
             "matched_existing_by_title_streams": matched_existing_by_title_streams,
+            "resolved_existing_url_ids": resolved_existing_url_ids,
             "written_files": 0,
             "added_track_ids": added_track_ids,
         }
@@ -937,6 +1100,7 @@ def run_backfill(
         "updates": updates,
         "additions": additions,
         "matched_existing_by_title_streams": matched_existing_by_title_streams,
+        "resolved_existing_url_ids": resolved_existing_url_ids,
         "written_files": len(touched),
         "added_track_ids": added_track_ids,
     }
@@ -951,7 +1115,14 @@ def main() -> None:
     parser.add_argument(
         "--include-non-songs",
         action="store_true",
-        help="Also add commentary, karaoke and instrumental tracks. Skipped by default.",
+        dest="include_non_songs",
+        help="Include commentary, karaoke and instrumental tracks. This is the default.",
+    )
+    parser.add_argument(
+        "--exclude-non-songs",
+        action="store_false",
+        dest="include_non_songs",
+        help="Skip commentary, karaoke and instrumental tracks.",
     )
     parser.add_argument(
         "--skip-api",
@@ -966,6 +1137,7 @@ def main() -> None:
         help="Only scan the N most recent Spotify releases instead of the full catalog.",
     )
     parser.add_argument("--target-release-date", default=None, help="Expand recent scan around this release date.")
+    parser.set_defaults(include_non_songs=True)
     args = parser.parse_args()
 
     run_backfill(

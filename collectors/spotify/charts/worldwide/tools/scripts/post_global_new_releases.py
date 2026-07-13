@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate and post a priority Global Spotify Charts card for NEW songs."""
+"""Generate and post priority Global Spotify Charts highlight cards."""
 from __future__ import annotations
 
 import argparse
@@ -20,7 +20,7 @@ if str(COLLECTORS_ROOT) not in sys.path:
 if str(SPOTIFY_ROOT) not in sys.path:
     sys.path.insert(0, str(SPOTIFY_ROOT))
 
-from comp.song_card import render_song_card, write_song_card_png  # noqa: E402
+from comp.chart_card import render_chart_card, write_chart_card_png  # noqa: E402
 from core.data_paths import LEGACY_WEBSITE_DATA_DIR, WEB_EXPORT_DATA_DIR, first_existing, spotify_chart_dir  # noqa: E402
 from core.twitter import post_with_image  # noqa: E402
 import generate_card_images  # noqa: E402
@@ -579,14 +579,26 @@ def _build_html(rows: list[dict], chart_date: str) -> tuple[str, str, str]:
     else:
         streams_badge = ""
         streams_badge_class = "flat"
+    streams_delta, streams_delta_class = _fmt_change(primary.get("streams_change"))
 
-    html_text = render_song_card(
+    subtitle = str(primary.get("album") or "").strip()
+    if not subtitle:
+        subtitle = f"Global Spotify Charts update - {date_text}"
+
+    html_text = render_chart_card(
         title=display_title,
         eyebrow="Global Spotify Charts",
-        subtitle=f"Global Spotify Charts update - {date_text}",
+        subtitle=subtitle,
         stats=[
             {"label": "Rank", "value": f"#{rank_val}", "badge": rank_badge, "badge_class": rank_badge_class},
-            {"label": "Streams", "value": streams_val, "badge": streams_badge, "badge_class": streams_badge_class},
+            {
+                "label": "Streams",
+                "value": streams_val,
+                "badge": streams_badge,
+                "badge_class": streams_badge_class,
+                "delta": streams_delta,
+                "delta_class": streams_delta_class,
+            },
         ],
         cover_url=primary.get("image_url"),
         footer_left=HANDLE,
@@ -599,7 +611,7 @@ def _build_html(rows: list[dict], chart_date: str) -> tuple[str, str, str]:
 def generate_cards(chart_date: str, *, force_songs: set[str] | None = None) -> list[Path]:
     rows = _load_priority_rows(chart_date, force_songs=force_songs)
     if not rows:
-        print(f"[global-new] No priority Global Spotify Chart entries for {chart_date}.")
+        print(f"[global-priority] No priority Global Spotify Chart entries for {chart_date}.")
         return []
     out_dir = spotify_chart_dir("global", chart_date)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -608,8 +620,8 @@ def generate_cards(chart_date: str, *, force_songs: set[str] | None = None) -> l
         html_text, slug, prefix = _build_html([row], chart_date)
         out_path = out_dir / f"{prefix}_{slug}.png"
         tmp_path = out_dir / f"_{prefix}_{slug}_tmp.html"
-        write_song_card_png(html_text, out_path, tmp_path)
-        print(f"[global-new] Card generated: {out_path}")
+        write_chart_card_png(html_text, out_path, tmp_path)
+        print(f"[global-priority] Card generated: {out_path}")
         paths.append(out_path)
     return paths
 
@@ -628,7 +640,7 @@ def post_card(
 ) -> int:
     rows = _load_priority_rows(chart_date, force_songs=force_songs)
     if not rows:
-        print(f"[global-new] No priority post needed for {chart_date}.")
+        print(f"[global-priority] No priority post needed for {chart_date}.")
         return 0
 
     out_dir = spotify_chart_dir("global", chart_date)
@@ -640,7 +652,7 @@ def post_card(
         except Exception:
             posted = set()
         if set(slugs).issubset(posted):
-            print(f"[global-new] Priority Global card already posted for {chart_date}.")
+            print(f"[global-priority] Priority Global card already posted for {chart_date}.")
             return 0
 
     image_paths = generate_cards(chart_date, force_songs=force_songs)
@@ -649,23 +661,23 @@ def post_card(
 
     tweets = [_new_card_tweet([row], chart_date) for row in rows]
     for tweet, image_path in zip(tweets, image_paths):
-        print(f"[global-new] Tweet: {tweet}")
-        print(f"[global-new] Image: {image_path}")
+        print(f"[global-priority] Tweet: {tweet}")
+        print(f"[global-priority] Image: {image_path}")
     if no_post:
-        print("[global-new] Twitter post skipped (--no-post).")
+        print("[global-priority] Twitter post skipped (--no-post).")
         return 0
     if not TWITTER_SESSION.exists():
-        print(f"[global-new] Twitter session missing: {TWITTER_SESSION}")
+        print(f"[global-priority] Twitter session missing: {TWITTER_SESSION}")
         return 1
     for tweet, image_path in zip(tweets, image_paths):
         if not post_with_image(tweet, image_path, TWITTER_SESSION):
-            print("[global-new] Twitter post failed.")
+            print("[global-priority] Twitter post failed.")
             return 1
     lock_path.write_text(
         json.dumps({"date": chart_date, "posted": slugs}, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
-    print("[global-new] Priority Global card posted.")
+    print("[global-priority] Priority Global card posted.")
     return 0
 
 
@@ -696,17 +708,17 @@ def post_worldwide_cards(
 ) -> int:
     rows = _load_priority_rows(chart_date, force_songs=force_songs)
     if not rows:
-        print(f"[global-new-worldwide] No priority worldwide card needed for {chart_date}.")
+        print(f"[global-priority-worldwide] No priority worldwide card needed for {chart_date}.")
         return 0
 
     data = _load_worldwide_snapshot(chart_date)
     if not isinstance(data, dict) or data.get("date") != chart_date:
-        print(f"[global-new-worldwide] Worldwide snapshot not ready for {chart_date}.")
+        print(f"[global-priority-worldwide] Worldwide snapshot not ready for {chart_date}.")
         return 0
 
     by_track = data.get("by_track", {})
     if not isinstance(by_track, dict) or not by_track:
-        print(f"[global-new-worldwide] Worldwide snapshot empty for {chart_date}.")
+        print(f"[global-priority-worldwide] Worldwide snapshot empty for {chart_date}.")
         return 0
 
     song_meta = _load_worldwide_song_meta()
@@ -725,23 +737,23 @@ def post_worldwide_cards(
     for row in rows:
         track_id = str(row.get("track_id") or "").strip()
         if track_id not in by_track:
-            print(f"[global-new-worldwide] Skip {row.get('title')}: not in worldwide snapshot.")
+            print(f"[global-priority-worldwide] Skip {row.get('title')}: not in worldwide snapshot.")
             continue
         meta = song_meta.get(track_id, {"track_id": track_id, "title": row.get("title") or track_id})
         slug = generate_card_images._slugify(str(meta.get("title") or row.get("title") or track_id))
         base_image_path = out_dir / f"{slug}.png"
         image_path = out_dir / f"worldwide_new_card_{slug}.png"
         if slug in already_posted and image_path.exists():
-            print(f"[global-new-worldwide] Skip {meta.get('title')}: already posted.")
+            print(f"[global-priority-worldwide] Skip {meta.get('title')}: already posted.")
             continue
         if slug in already_posted:
-            print(f"[global-new-worldwide] Requeue {meta.get('title')}: posted lock exists but image is missing.")
+            print(f"[global-priority-worldwide] Requeue {meta.get('title')}: posted lock exists but image is missing.")
         if not base_image_path.exists() or force:
             rc = generate_card_images.generate(chart_date, min_countries=1, force=force, post=False)
             if rc != 0:
                 return rc
         if not base_image_path.exists():
-            print(f"[global-new-worldwide] Missing card image: {base_image_path}")
+            print(f"[global-priority-worldwide] Missing card image: {base_image_path}")
             return 1
         if not image_path.exists() or force:
             shutil.copyfile(base_image_path, image_path)
@@ -754,24 +766,24 @@ def post_worldwide_cards(
         posts.append((slug, tweet, image_path))
 
     if not posts:
-        print(f"[global-new-worldwide] No pending worldwide priority posts for {chart_date}.")
+        print(f"[global-priority-worldwide] No pending worldwide priority posts for {chart_date}.")
         return 0
 
     for slug, tweet, image_path in posts:
-        print(f"[global-new-worldwide] {slug}: {tweet}")
-        print(f"[global-new-worldwide] Image: {image_path}")
+        print(f"[global-priority-worldwide] {slug}: {tweet}")
+        print(f"[global-priority-worldwide] Image: {image_path}")
 
     if no_post:
-        print("[global-new-worldwide] Twitter post skipped (--no-post).")
+        print("[global-priority-worldwide] Twitter post skipped (--no-post).")
         return 0
     if not TWITTER_SESSION.exists():
-        print(f"[global-new-worldwide] Twitter session missing: {TWITTER_SESSION}")
+        print(f"[global-priority-worldwide] Twitter session missing: {TWITTER_SESSION}")
         return 1
 
     posted = set(already_posted)
     for slug, tweet, image_path in posts:
         if not post_with_image(tweet, image_path, TWITTER_SESSION):
-            print(f"[global-new-worldwide] Twitter post failed for {slug}.")
+            print(f"[global-priority-worldwide] Twitter post failed for {slug}.")
             return 1
         posted.add(slug)
         lock_path.parent.mkdir(parents=True, exist_ok=True)
@@ -780,7 +792,7 @@ def post_worldwide_cards(
             encoding="utf-8",
         )
 
-    print(f"[global-new-worldwide] Posted {len(posts)} worldwide priority card(s).")
+    print(f"[global-priority-worldwide] Posted {len(posts)} worldwide priority card(s).")
     return 0
 
 
@@ -795,7 +807,7 @@ def main() -> int:
         "--force-song",
         action="append",
         default=[],
-        help="Test mode: treat this title or track_id as NEW for this run.",
+        help="Test mode: force this title or track_id into the priority NEW path for this run.",
     )
     args = parser.parse_args()
     force_songs = set(args.force_song or [])

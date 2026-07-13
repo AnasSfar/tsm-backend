@@ -77,6 +77,37 @@ R2_REQUIRED_ENV_VARS = (
 MAX_WORKERS = 32
 
 
+def wait_for_sections(
+    section_futures: dict[str, concurrent.futures.Future],
+) -> dict[str, tuple[int, int]]:
+    """Wait for top-level upload sections and cancel cleanly on Ctrl+C."""
+    results: dict[str, tuple[int, int]] = {}
+
+    try:
+        for future in concurrent.futures.as_completed(section_futures.values()):
+            name = next(
+                section_name
+                for section_name, section_future in section_futures.items()
+                if section_future is future
+            )
+            results[name] = future.result()
+    except KeyboardInterrupt:
+        for future in section_futures.values():
+            future.cancel()
+        print("\n[interrupted] R2 upload cancelled before all sections completed.")
+        raise
+
+    return results
+
+
+class InterruptibleThreadPoolExecutor(concurrent.futures.ThreadPoolExecutor):
+    def __exit__(self, exc_type, exc, tb):
+        if exc_type is KeyboardInterrupt:
+            self.shutdown(wait=False, cancel_futures=True)
+            return False
+        return super().__exit__(exc_type, exc, tb)
+
+
 def get_env(name: str) -> str:
     value = os.getenv(name, "").strip()
     if not value:
@@ -700,7 +731,7 @@ def main() -> int:
     # Run all 4 sections in parallel
     section_futures: dict[str, concurrent.futures.Future] = {}
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+    with InterruptibleThreadPoolExecutor(max_workers=4) as executor:
         if not args.skip_history_upload and daily_files:
             section_futures["history"] = executor.submit(
                 _run_history_upload, client, bucket, args.track_prefix, daily_files, args.dry_run
@@ -740,11 +771,12 @@ def main() -> int:
                 images_prefix=os.getenv("R2_IMAGES_PREFIX", "images/apple-music"),
                 dry_run=args.dry_run,
             )
+        section_results = wait_for_sections(section_futures)
 
-    history_uploaded, history_unchanged = section_futures["history"].result() if "history" in section_futures else (0, 0)
-    static_uploaded, static_unchanged = section_futures["static"].result() if "static" in section_futures else (0, 0)
-    db_uploaded, db_unchanged = section_futures["db"].result() if "db" in section_futures else (0, 0)
-    images_uploaded, images_unchanged = section_futures["images"].result() if "images" in section_futures else (0, 0)
+    history_uploaded, history_unchanged = section_results.get("history", (0, 0))
+    static_uploaded, static_unchanged = section_results.get("static", (0, 0))
+    db_uploaded, db_unchanged = section_results.get("db", (0, 0))
+    images_uploaded, images_unchanged = section_results.get("images", (0, 0))
 
     total_uploaded = history_uploaded + static_uploaded + db_uploaded + images_uploaded
     total_unchanged = history_unchanged + static_unchanged + db_unchanged + images_unchanged
@@ -893,7 +925,7 @@ def upload_all(
     client = get_s3_client()
 
     section_futures: dict[str, concurrent.futures.Future] = {}
-    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+    with InterruptibleThreadPoolExecutor(max_workers=4) as executor:
         if not skip_history and HISTORY_DIR.exists():
             daily_files = sorted(p for p in HISTORY_DIR.glob("*.json") if p.name != "index.json")
             if daily_files:
@@ -914,15 +946,13 @@ def upload_all(
                 upload_apple_music_images, client=client, bucket=_bucket,
                 images_prefix=_images_prefix, dry_run=dry_run,
             )
-
-    ok = True
-    for name, future in section_futures.items():
         try:
-            future.result()
+            wait_for_sections(section_futures)
         except Exception as exc:
-            print(f"[r2] {name} failed — {exc}")
-            ok = False
-    return ok
+            print(f"[r2] upload failed - {exc}")
+            return False
+
+    return True
 
 
 if __name__ == "__main__":

@@ -86,7 +86,7 @@ def _compact_title(title: str) -> str:
 def _build_combined_tweet(*, target_date: str, daily_rows: list[dict]) -> str:
     d = datetime.strptime(target_date, "%Y-%m-%d").date()
     date_fmt = f"{d.strftime('%A')}, {d.strftime('%B')} {_ordinal(d.day)}, {d.year}"
-    return f"ðŸ“ˆ | Taylor Swift's biggest gainers on {date_fmt} â€” daily & weekly."
+    return f"\U0001F4C8 | Taylor Swift's biggest gainers on {date_fmt} \u2014 daily & weekly."
 
 
 def _track_entry(row: dict) -> dict:
@@ -251,8 +251,8 @@ def _build_combined_gainer_table_html(
     {rows_html}"""
 
     sections_html = (
-        _section(daily_rows, period="daily", title="Daily Gainers · vs previous day")
-        + _section(weekly_rows, period="weekly", title="Weekly Gainers · vs last week")
+        _section(daily_rows, period="daily", title="Daily Gainers \u00B7 vs previous day")
+        + _section(weekly_rows, period="weekly", title="Weekly Gainers \u00B7 vs last week")
     )
 
     return f"""<!DOCTYPE html>

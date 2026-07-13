@@ -22,7 +22,7 @@ tsm-backend (Python, local, Task Scheduler)  →  R2 (bucket prod: taylor-data) 
 
 - CLI : `python -m tsm daily` et `python -m tsm collect charts` (code dans `tsm/cli.py`). Launchers racine : `run_daily.bat`, `run_all_charts.bat`.
 - `collectors/` : `spotify/` (streams + charts), `apple_music/`, `billboard/`, `youtube/`, `comp/`, `website/`.
-- Pipeline streams : `collectors/spotify/streams/update_streams.py` ; outils dans `collectors/spotify/streams/tools/scripts/` (`history_store.py`, `spotify_api.py`, `reconcile_gap_catchup.py`, `generate_albums_image.py`, `post_albums_twitter.py`).
+- Pipeline streams : `collectors/spotify/streams/update_streams.py` ; outils dans `collectors/spotify/streams/tools/scripts/` (`history_store.py`, `spotify_api.py`, `reconcile_gap_catchup.py`, `generate_albums_image.py`, `post_albums_twitter.py` hors week-end).
 - Catalogue maître : `db/discography/artist.json` ; cache covers : `db/discography/track_cover_cache.json`.
 - Ops détaillées → skill `pipeline-ops`.
 

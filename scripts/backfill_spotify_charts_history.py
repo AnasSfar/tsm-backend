@@ -24,6 +24,7 @@ WORLDWIDE_DAILY = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "da
 SYNC_COUNTRY_CSVS = ROOT / "scripts" / "sync_spotify_country_charts_from_worldwide.py"
 BACKFILL_TRACK_IDS = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "backfill_charts_history_track_ids.py"
 BACKFILL_TOTAL_DAYS = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "backfill_total_days.py"
+ENRICH_WORLDWIDE_SNAPSHOTS = ROOT / "scripts" / "enrich_spotify_worldwide_snapshots.py"
 DEFAULT_STATE = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "json" / "run_all_backfill_done.json"
 DEFAULT_SESSION_DIR = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json"
 
@@ -205,6 +206,9 @@ def main() -> int:
         if rc != 0:
             return rc
         rc = _run([sys.executable, str(BACKFILL_TRACK_IDS), "--rebuild-ts-history"], dry_run=args.dry_run)
+        if rc != 0:
+            return rc
+        rc = _run([sys.executable, str(ENRICH_WORLDWIDE_SNAPSHOTS), "--start", all_dates[0], "--end", all_dates[-1]], dry_run=args.dry_run)
         if rc != 0:
             return rc
         rc = _run([sys.executable, str(BACKFILL_TOTAL_DAYS)], dry_run=args.dry_run)

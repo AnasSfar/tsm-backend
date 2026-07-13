@@ -194,7 +194,9 @@ def build_tweet(rows: list[dict], target_date: str, *, max_days: int = 1) -> str
     month = d.strftime("%B")
     day_ord = _ordinal(d.day)
     year = d.year
-    when = f"on {weekday}, {month} {day_ord}, {year}"
+    when = f"yesterday, {weekday}, {month} {day_ord}, {year}" if max_days <= 1 else (
+        f"over the last {max_days} days, up to {month} {day_ord}, {year}"
+    )
 
     return (
         f"📊 | Taylor Swift's eras on Spotify {when}.\n\n"
@@ -239,6 +241,10 @@ def main():
     target_date = args[0] if args else str(date.today() - timedelta(days=1))
 
     d = date.fromisoformat(target_date)
+    if d.weekday() in (5, 6):
+        print(f"[albums_post] {target_date} is a weekend stats date; top eras post is included in the combined recap, skipping.")
+        return
+
     day_dir = update_streams_dir(target_date)
     day_dir.mkdir(parents=True, exist_ok=True)
     lock = day_dir / "albums_posted.lock"

@@ -1040,11 +1040,15 @@ def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
 
 
 def _post_albums_daily(ctx: FinalizeContext, state: dict[str, float]) -> None:
+    if _is_weekend_stats_date(ctx.summary["stats_date"]):
+        print("Weekend detected: skipping separate top eras post (included in combined streams image).")
+        return
+
     if not ctx.no_post_mode and not ctx.summary.get("all_done"):
         print("Skipping top eras post: not all tracks are done yet.")
         return
 
-    albums_post_script = ctx.script_dir / "tools" / "scripts" / "post_all_albums_thread.py"
+    albums_post_script = ctx.script_dir / "tools" / "scripts" / "post_albums_twitter.py"
     albums_cmd = [sys.executable, str(albums_post_script), ctx.summary["stats_date"]]
     if ctx.no_post_mode:
         albums_cmd.append("--no-post")

@@ -20,6 +20,8 @@ HISTORY_PATH = (
 DISCOGRAPHY_DIR = DB_ROOT / "discography"
 DB_ALBUMS_DIR = DISCOGRAPHY_DIR / "albums"
 DB_SONGS_JSON = DISCOGRAPHY_DIR / "songs.json"
+DB_FEATURES_JSON = DISCOGRAPHY_DIR / "features.json"
+DB_MISC_JSON = DISCOGRAPHY_DIR / "misc.json"
 MAX_DAILY_INCREASE = 50_000_000
 LOG_MODE = "normal"
 _R2_TRACK_PREFIX = os.getenv("SPOTIFY_R2_TRACK_PREFIX", "history-by-track")
@@ -67,6 +69,27 @@ def load_album_sections_flat() -> list[dict]:
                 item["album"] = album_name
             sections.append(item)
     return sections
+
+
+def load_extra_sections_flat() -> list[dict]:
+    """Sections outside album files that should still be collected for streams."""
+    sections: list[dict] = []
+    for path in (DB_SONGS_JSON, DB_FEATURES_JSON, DB_MISC_JSON):
+        if not path.exists():
+            continue
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8-sig"))
+        except Exception:
+            continue
+        raw_sections = payload if isinstance(payload, list) else []
+        for section in raw_sections:
+            if isinstance(section, dict):
+                sections.append(section)
+    return sections
+
+
+def load_stream_discography_sections_flat() -> list[dict]:
+    return load_album_sections_flat() + load_extra_sections_flat()
 
 
 def _r2_config() -> dict | None:
@@ -287,7 +310,7 @@ def load_active_track_ids_from_discography() -> set[str]:
     active_track_ids = set()
     historical_track_ids = set()
 
-    for data in load_album_sections_flat():
+    for data in load_stream_discography_sections_flat():
         for track in data.get("tracks", []):
             url = (track.get("url") or track.get("spotify_url") or "").strip()
             track_id = extract_track_id(url)
@@ -298,23 +321,6 @@ def load_active_track_ids_from_discography() -> set[str]:
                 for item in (track.get("historical_track_ids") or [])
                 if str(item).strip()
             )
-
-    if DB_SONGS_JSON.exists():
-        try:
-            sections = json.loads(DB_SONGS_JSON.read_text(encoding="utf-8-sig"))
-        except Exception:
-            sections = []
-        for data in sections:
-            for track in data.get("tracks", []):
-                url = (track.get("url") or track.get("spotify_url") or "").strip()
-                track_id = extract_track_id(url)
-                if track_id:
-                    active_track_ids.add(track_id)
-                historical_track_ids.update(
-                    str(item).strip()
-                    for item in (track.get("historical_track_ids") or [])
-                    if str(item).strip()
-                )
 
     return active_track_ids - historical_track_ids
 
@@ -972,12 +978,7 @@ def compute_daily(previous_streams: int | None, new_streams: int) -> int | None:
 def load_tracks_from_discography(active_track_ids: set[str] | None = None) -> list[dict]:
     seen: dict[str, dict] = {}
 
-    all_sections = load_album_sections_flat()
-    if DB_SONGS_JSON.exists():
-        try:
-            all_sections.extend(json.loads(DB_SONGS_JSON.read_text(encoding="utf-8-sig")))
-        except Exception:
-            pass
+    all_sections = load_stream_discography_sections_flat()
 
     for section in all_sections:
         for track in section.get("tracks", []):

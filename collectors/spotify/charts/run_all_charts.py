@@ -52,13 +52,38 @@ def _env_bool(name: str, default: bool) -> bool:
 HEADLESS = _env_bool("TSM_HEADLESS", True)
 
 
-def _warp_connect() -> None:
+def _warp_status_text() -> str:
     cli = str(_WARP_CLI) if _WARP_CLI.exists() else "warp-cli"
     try:
         status = subprocess.run([cli, "status"], timeout=5, check=False, capture_output=True, text=True)
-        if "Connected" in (status.stdout or ""):
+        return "\n".join(part for part in (status.stdout, status.stderr) if part).strip()
+    except Exception as e:
+        return f"status unavailable: {e}"
+
+
+def _warp_status_problem(status_text: str) -> str | None:
+    lowered = status_text.lower()
+    if "disconnected" in lowered or "not connected" in lowered:
+        return "deconnecte"
+    if "connected" not in lowered:
+        return "deconnecte"
+    if "unstable" in lowered:
+        return "reseau instable"
+    return None
+
+
+def _warp_connect() -> None:
+    cli = str(_WARP_CLI) if _WARP_CLI.exists() else "warp-cli"
+    try:
+        status_text = _warp_status_text()
+        problem = _warp_status_problem(status_text)
+        if problem is None:
             print("[WARP] deja connecte")
             return
+        if "connected" in status_text.lower() and problem == "reseau instable":
+            print("[WARP] connecte mais reseau instable - reconnexion du tunnel")
+            subprocess.run([cli, "disconnect"], timeout=15, check=False, capture_output=True)
+            time.sleep(2)
         t0 = time.perf_counter()
         print("[WARP] connexion en cours...")
         subprocess.run([cli, "connect"], timeout=15, check=False, capture_output=True)
@@ -78,9 +103,24 @@ def _warp_disconnect() -> None:
     print("[WARP] garde connecte")
 
 
+def _ensure_warp_still_connected() -> bool:
+    status_text = _warp_status_text()
+    problem = _warp_status_problem(status_text)
+    if problem is None:
+        return True
+    print(
+        f"[WARP] tunnel {problem} - reconnexion dans {WARP_RECONNECT_DELAY_SECONDS}s",
+        flush=True,
+    )
+    time.sleep(WARP_RECONNECT_DELAY_SECONDS)
+    _warp_connect()
+    return _warp_status_problem(_warp_status_text()) is None
+
+
 REPO_ENV_FILE = REPO_ROOT / ".env"
 load_dotenv(REPO_ENV_FILE, override=False)
 R2_ENV_VARS = ("R2_ACCOUNT_ID", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY")
+WARP_RECONNECT_DELAY_SECONDS = int(os.getenv("TSM_WARP_RECONNECT_DELAY_SECONDS", "120"))
 STREAMS_HISTORY_CSV = REPO_ROOT / "db" / "streams_history.csv"
 ARCHIVED_STREAMS_HISTORY_CSV = REPO_ROOT / "data" / "_archive" / "original" / "db" / "streams_history.csv"
 SPOTIFY_API_BASE = "https://charts-spotify-com-service.spotify.com/auth/v0/charts"
@@ -864,6 +904,13 @@ def _wait_for_charts_available(
                 f"{attempt - 1} tentative(s) et {_fmt(elapsed)} "
                 f"(limite: {', '.join(limits)})."
             )
+
+        if warp_active and warp_on_token_fail and not _ensure_warp_still_connected():
+            wait = 5
+            print(f"[WARP] tunnel toujours indisponible - retry dans {wait}s", flush=True)
+            time.sleep(wait)
+            attempt += 1
+            continue
 
         try:
             primary = _acquire_bearer_token(names, refresh=refresh_token, allow_stale=watch_release)
@@ -1867,12 +1914,12 @@ def main() -> int:
 
     if not args.dry_run and should_generate_cards and not failures:
         if should_post_cards:
-            print("\n[PHASE3] publication des worldwide cards priority Global NEW...")
+            print("\n[PHASE3] publication des worldwide cards priority Global highlights...")
             priority_args = [str(target_date), "--post-worldwide"]
             if args.force_cards or args.force:
                 priority_args.append("--force")
             rc_priority = _run(
-                "priority-global-new-worldwide",
+                "priority-global-highlights-worldwide",
                 CHARTS_ROOT / "worldwide" / "tools" / "scripts" / "post_global_new_releases.py",
                 priority_args,
                 dry_run=False,
@@ -1880,14 +1927,14 @@ def main() -> int:
                 verbose=args.verbose,
             )
             if rc_priority != 0:
-                failures.append(("priority-global-new-worldwide", rc_priority))
+                failures.append(("priority-global-highlights-worldwide", rc_priority))
 
             if not failures and not ran_collect:
                 global_new_args = [str(target_date), "--post"]
                 if args.force_cards or args.force:
                     global_new_args.append("--force")
                 rc_global_new = _run(
-                    "priority-global-new-catchup",
+                    "priority-global-highlights-catchup",
                     CHARTS_ROOT / "worldwide" / "tools" / "scripts" / "post_global_new_releases.py",
                     global_new_args,
                     dry_run=False,
@@ -1895,7 +1942,7 @@ def main() -> int:
                     verbose=args.verbose,
                 )
                 if rc_global_new != 0:
-                    failures.append(("priority-global-new-catchup", rc_global_new))
+                    failures.append(("priority-global-highlights-catchup", rc_global_new))
 
     if not args.dry_run and should_generate_cards and not failures:
         if should_post_cards:

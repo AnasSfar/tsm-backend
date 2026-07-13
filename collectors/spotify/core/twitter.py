@@ -345,7 +345,7 @@ def _wait_post_scheduled(page, expected_text: str = "", timeout_ms: int = 45_000
             "try again",
             "erreur",
             "echoue",
-            "rÃ©essayez",
+            "r\u00e9essayez",
         ]):
             print(f"X feedback programmation erreur: {feedback[:500]}")
             return False

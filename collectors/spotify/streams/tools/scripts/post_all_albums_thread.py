@@ -13,6 +13,7 @@ from __future__ import annotations
 import argparse
 import re
 import sys
+from datetime import date
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent          # streams/tools/scripts/
@@ -95,6 +96,14 @@ def main() -> None:
     args = parser.parse_args()
 
     target_date = args.date
+    weekday = date.fromisoformat(target_date).weekday()
+    if weekday in (5, 6):
+        print(f"[all_albums_thread] {target_date} is a weekend stats date; all-albums thread is not posted on weekends.")
+        return
+    if weekday not in (0, 4):
+        print(f"[all_albums_thread] {target_date} is not Monday or Friday; all-albums thread is limited to Monday/Friday.")
+        return
+
     day_dir = update_streams_dir(target_date)
     day_dir.mkdir(parents=True, exist_ok=True)
     lock = day_dir / "albums_posted.lock"

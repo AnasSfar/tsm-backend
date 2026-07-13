@@ -63,6 +63,7 @@ python -m tsm migrate layout --dry-run|--apply   # archive .bak + website/ avec 
 
 ### `update_streams.py` (script principal, ~114 Ko)
 Scrape les streams totaux de tout le catalogue, calcule les daily, écrit `streams_history.csv`, exporte pour le web, upload R2, poste sur Twitter, commit git. Log : `run_update_streams.log` à côté.
+Périmètre actif : `db/discography/albums/*.json`, `songs.json`, `features.json`, `misc.json` dès qu'une entrée a une URL Spotify ; les IDs listés dans `historical_track_ids` restent exclus comme anciens doublons/remplacements explicites.
 
 ```
 python update_streams.py                     # run normal pour hier
@@ -74,7 +75,7 @@ python update_streams.py YYYY-MM-DD          # run normal pour une date précise
   --local-test D     force le re-scrape même si la date existe ; aucune écriture history/R2/Twitter/git
   --test [D]         rejoue les scripts de finalisation sur l'history existante (rien d'externe)
   --post-only S[,S]  poste uniquement les étapes choisies depuis l'history existante (pas de scrape/export/git ;
-                     guards, locks et règles de jour respectés) : top-eras, all-albums, top45, recap,
+                     guards, locks et règles de jour respectés) : top-eras (hors week-end), all-albums (fusionné/no-op), top45, recap,
                      best-day-since, debut, gainers, album-updates ; avec --no-post = images seulement
   --throwback --throwback-action announced|released --throwback-event "..."   # thread throwback
   --reset-last-date  supprime les lignes de la dernière date avant de tourner
@@ -109,8 +110,8 @@ python update_streams.py YYYY-MM-DD          # run normal pour une date précise
 | `generate_album_update_image.py` | PNG « Album Daily Update » pour un album |
 | `generate_weekend_streams_image.py` | PNG récap week-end |
 | `post_streams_twitter.py` | Poste l'image top streams. `date`, `--no-post`, `--top-n 15` |
-| `post_albums_twitter.py` | Poste l'image « Albums on Spotify » |
-| `post_all_albums_thread.py` | Thread avec tous les albums. `date`, `--no-post` |
+| `post_albums_twitter.py` | Poste l'image « Albums on Spotify » / top eras, hors week-end |
+| `post_all_albums_thread.py` | Ancien thread avec tous les albums, fusionné dans top eras en finalisation ; direct limité lundi/vendredi. `date`, `--no-post` |
 | `post_best_day_since_twitter.py` | Posts « best day since » avec spotlights. `date`, `--limit 5`, `--min-days`, `--album-limit 1`, `--no-albums`, `--no-recap`, `--only-track ID`, `--exclude-tracks`, `--force`, `--post-spacing-seconds` |
 | `post_debut_releases.py` | Posts des nouvelles sorties. `date`, `--no-post`, `--snapshot-collected-date`, `--force-track-id`, `--force-song` |
 | `post_gainer_thread.py` | Thread top gainers en %. `date`, `--period`, `--limit`, `--min-baseline`, `--no-post` |
@@ -239,7 +240,7 @@ Modules importés par les générateurs d'images (pas des scripts, sauf preview)
 | `chartr2.py` | Upload R2 des charts |
 | `fetch_issues.py` | Récupère les signalements du site depuis R2. `--save`, `--images`, `--delete` |
 | `fetch_hiring.py` | Récupère les candidatures (préfixe `hiring/`). `--json`, `--role` |
-| `backfill_discography_from_spotify.py` | Backfill de la discographie depuis Spotify. `--apply` (déf. dry-run), `--no-backup`, `--include-non-songs`, `--skip-api`, `--recent-releases N`, `--target-release-date`, `--quiet` |
+| `backfill_discography_from_spotify.py` | Backfill de la discographie depuis Spotify. `--apply` (déf. dry-run), `--no-backup`, `--include-non-songs` (défaut), `--exclude-non-songs`, `--skip-api`, `--recent-releases N`, `--target-release-date`, `--quiet` |
 | `backfill_spotify_track_metadata.py` | Backfill métadonnées tracks. `--apply`, `--track`, `--limit`, `--skip-existing`, `--sleep` |
 | `backfill_global_charts.py` | Backfill `charts_history_global/fr.csv`. `--charts`, `--start`, `--end`, `--dl-workers`, `--filter-workers`, `--headless`, `--dry-run` |
 | `backfill_track_cover_cache.py` | Pré-chauffe `track_cover_cache.json` |

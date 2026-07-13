@@ -16,9 +16,10 @@ Tout tourne **en local via le Planificateur de tâches Windows** (pas GitHub Act
 | Collecte quotidienne complète | `python -m tsm daily` | racine tsm-backend (`run_daily.bat`) |
 | Tous les charts | `python -m tsm collect charts` | racine (`run_all_charts.bat`) |
 | Streams Spotify | `python update_streams.py` | `collectors/spotify/streams/` (log : `run_update_streams.log` à côté) |
-| Reposter UNE étape (ex. top eras raté) | `python update_streams.py [D] --post-only top-eras` | idem ; étapes : top-eras, all-albums, top45, recap, best-day-since, debut, gainers, album-updates ; locks/guards respectés, `--no-post` = images seulement |
+| Reposter UNE étape (ex. top eras raté) | `python update_streams.py [D] --post-only top-eras` | idem ; étapes : top-eras (hors week-end), all-albums (fusionné/no-op), top45, recap, best-day-since, debut, gainers, album-updates ; locks/guards respectés, `--no-post` = images seulement |
 
-CLI définie dans `tsm/cli.py`. Outils streams : `collectors/spotify/streams/tools/scripts/` (`history_store.py`, `spotify_api.py`, `generate_albums_image.py`, `post_albums_twitter.py`).
+CLI définie dans `tsm/cli.py`. Outils streams : `collectors/spotify/streams/tools/scripts/` (`history_store.py`, `spotify_api.py`, `generate_albums_image.py`, `post_albums_twitter.py` hors week-end).
+Sources actives streams : `db/discography/albums/*.json`, `songs.json`, `features.json`, `misc.json` quand une entrée a une URL Spotify ; seuls les `historical_track_ids` explicites sont retirés du périmètre actif.
 
 ## Pannes connues
 - **WARP instable → lecture infinie** : le script reste bloqué en requête. Tuer le process (fenêtre PowerShell du .bat) et relancer ; vérifier WARP avant.
@@ -36,6 +37,7 @@ Classifications : `single_day` / `fully_caught_up` / `partial_catchup` appliqué
 
 ## Données & commits
 - Catalogue maître : `db/discography/artist.json` ; cache covers : `db/discography/track_cover_cache.json`.
+- Backfill catalogue Spotify : `scripts/backfill_discography_from_spotify.py` inclut par défaut les commentary/karaoke/instrumental exposés par Spotify ; utiliser `--exclude-non-songs` pour les ignorer.
 - Conventions de commit data (voir historique) : `charts run all YYYY-MM-DD`, `youtube views YYYY-MM-DD`. Ne committer que sur demande.
 - Les données finissent dans R2 (`taylor-data`) d'où l'API du frontend les lit — pas de deploy nécessaire côté backend pour que le site voie les nouvelles données.
 
