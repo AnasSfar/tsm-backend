@@ -7,6 +7,7 @@ import re
 import subprocess
 import threading
 import time
+from collections import deque
 from datetime import date, timedelta
 from pathlib import Path
 from queue import Empty, Queue
@@ -164,7 +165,14 @@ HILL_429_THRESHOLD = 0.15   # taux de 429 au-delà duquel on retire 1 worker
 HILL_MIN_WORKERS   = 2
 HILL_INITIAL       = 9      # point de départ (was 6 — start near max immediately)
 
-PROBE_REQUIRED_UPDATED = 10  # non-extra (chart_extra=False) tracks that must show a real update
+PROBE_NON_EXTRA_SAMPLE_SIZE = 15
+PROBE_EXTRA_SAMPLE_SIZE = 15
+PROBE_SAMPLE_SIZE = PROBE_NON_EXTRA_SAMPLE_SIZE + PROBE_EXTRA_SAMPLE_SIZE
+PROBE_RECENT_BATCH_MEMORY = 5
+PROBE_REQUIRED_UPDATED = 10  # non-extra (chart_extra=False) Spotify probe tracks that must show a real update
+CHARTSNAPSHOT_REQUIRED_VALIDATED = 20  # non-extra tracks with total - daily == our previous-day total
+CHARTSNAPSHOT_ARTIST_URI = "06HL4z0CvFAxyc27GXpf02"
+CHARTSNAPSHOT_TOP_SONGS_URL = "https://www.chartsnapshot.com/get_top_songs"
 PENDING_RETRY_SLEEP_SECONDS = 20
 EXTRA_PENDING_RETRY_ROUNDS_BEFORE_ZERO = 5
 INFINITE_RETRY_PREVIOUS_DAY_TOP_N = 70
@@ -675,14 +683,154 @@ def try_apply_track_update(
     }
 
 
-def build_probe_tracks(tracks: list[dict]) -> list[dict]:
-    """Return all loaded database tracks, shuffled so each retry scans a different order."""
-    probe_tracks = [
+def build_probe_tracks(
+    tracks: list[dict],
+    *,
+    non_extra_size: int = PROBE_NON_EXTRA_SAMPLE_SIZE,
+    extra_size: int = PROBE_EXTRA_SAMPLE_SIZE,
+    recent_track_ids: set[str] | None = None,
+) -> list[dict]:
+    """Return a 15 non-extra + 15 extra random probe sample when possible."""
+    eligible_non_extra = [
         t for t in tracks
-        if t.get("track_id") and t.get("spotify_url")
+        if t.get("track_id") and t.get("spotify_url") and not t.get("chart_extra")
     ]
-    random.shuffle(probe_tracks)
-    return probe_tracks
+    eligible_extra = [
+        t for t in tracks
+        if t.get("track_id") and t.get("spotify_url") and t.get("chart_extra")
+    ]
+    recent_track_ids = recent_track_ids or set()
+
+    def pick(eligible: list[dict], size: int, excluded: set[str]) -> list[dict]:
+        fresh = [t for t in eligible if t["track_id"] not in recent_track_ids and t["track_id"] not in excluded]
+        random.shuffle(fresh)
+        selected = fresh[:size]
+        if len(selected) < size:
+            selected_ids = excluded | {t["track_id"] for t in selected}
+            fallback = [t for t in eligible if t["track_id"] not in selected_ids]
+            random.shuffle(fallback)
+            selected.extend(fallback[: size - len(selected)])
+        return selected
+
+    selected_non_extra = pick(eligible_non_extra, non_extra_size, set())
+    selected_ids = {t["track_id"] for t in selected_non_extra}
+    selected_extra = pick(eligible_extra, extra_size, selected_ids)
+    selected = selected_non_extra + selected_extra
+    random.shuffle(selected)
+
+    return selected
+
+
+def build_chartsnapshot_probe_id_map(tracks: list[dict]) -> tuple[dict[str, dict], dict[str, str]]:
+    tracks_by_id: dict[str, dict] = {}
+    id_map: dict[str, str] = {}
+    for track in tracks:
+        track_id = str(track.get("track_id") or "").strip()
+        if not track_id:
+            continue
+        tracks_by_id[track_id] = track
+        id_map[track_id] = track_id
+        for historical_id in track.get("historical_track_ids") or []:
+            historical_id = str(historical_id).strip()
+            if historical_id:
+                id_map[historical_id] = track_id
+    return tracks_by_id, id_map
+
+
+def parse_chartsnapshot_int(value) -> int | None:
+    if value is None:
+        return None
+    try:
+        return int(float(str(value).strip()))
+    except (TypeError, ValueError):
+        return None
+
+
+def probe_chartsnapshot_update(
+    stats_date: str,
+    tracks: list[dict],
+    *,
+    required_validated: int = CHARTSNAPSHOT_REQUIRED_VALIDATED,
+) -> dict:
+    previous_stats_date = get_previous_stats_date_str(stats_date)
+    tracks_by_id, id_map = build_chartsnapshot_probe_id_map(tracks)
+    result = {
+        "source": "chartsnapshot",
+        "can_start_full_run": False,
+        "source_rows": 0,
+        "validated_rows": 0,
+        "validated_non_extra_rows": 0,
+        "external_rows": 0,
+        "invalid_rows": 0,
+        "missing_previous_rows": 0,
+        "mismatch_rows": 0,
+        "required_validated": required_validated,
+        "results": [],
+    }
+
+    session = _requests.Session()
+    session.trust_env = False
+    try:
+        response = session.get(
+            CHARTSNAPSHOT_TOP_SONGS_URL,
+            params={"artist_uri": CHARTSNAPSHOT_ARTIST_URI, "date": stats_date},
+            headers={"User-Agent": "Mozilla/5.0"},
+            timeout=30,
+        )
+        response.raise_for_status()
+        payload = response.json()
+    except Exception as exc:
+        result["error"] = str(exc)
+        return result
+    finally:
+        session.close()
+
+    if not isinstance(payload, list):
+        result["error"] = f"unexpected_payload:{type(payload).__name__}"
+        return result
+
+    result["source_rows"] = len(payload)
+    for row in payload:
+        source_track_id = str(row.get("track_uri") or "").strip()
+        if str(row.get("date") or "").strip() != stats_date:
+            result["invalid_rows"] += 1
+            continue
+        total = parse_chartsnapshot_int(row.get("total_streams"))
+        daily = parse_chartsnapshot_int(row.get("daily_streams"))
+        if not source_track_id or total is None or daily is None or daily < 0:
+            result["invalid_rows"] += 1
+            continue
+        track_id = id_map.get(source_track_id)
+        track = tracks_by_id.get(track_id or "")
+        if not track_id or not track:
+            result["external_rows"] += 1
+            continue
+        previous_total = get_history_total_for_date(track_id, previous_stats_date)
+        if previous_total is None:
+            result["missing_previous_rows"] += 1
+            continue
+        validated = (total - daily) == previous_total
+        result["results"].append({
+            "title": track.get("title") or row.get("name") or track_id,
+            "track_id": track_id,
+            "source_track_id": source_track_id,
+            "total": total,
+            "daily": daily,
+            "previous_total": previous_total,
+            "validated": validated,
+            "chart_extra": bool(track.get("chart_extra")),
+        })
+        if not validated:
+            result["mismatch_rows"] += 1
+            continue
+        result["validated_rows"] += 1
+        if not track.get("chart_extra"):
+            result["validated_non_extra_rows"] += 1
+            if result["validated_non_extra_rows"] >= required_validated:
+                result["can_start_full_run"] = True
+                break
+
+    return result
 
 
 def build_album_post_priority_track_ids(stats_date: str | None = None) -> set[str]:
@@ -2310,15 +2458,33 @@ def main():
     confirmed_probe: dict | None = None
 
     if should_run_probe:
-        probe_tracks = build_probe_tracks(tracks)
+        recent_probe_batches: deque[set[str]] = deque(maxlen=PROBE_RECENT_BATCH_MEMORY)
+
+        def _recent_probe_track_ids() -> set[str]:
+            return set().union(*recent_probe_batches) if recent_probe_batches else set()
+
+        def _next_probe_tracks() -> list[dict]:
+            selected = build_probe_tracks(
+                tracks,
+                non_extra_size=PROBE_NON_EXTRA_SAMPLE_SIZE,
+                extra_size=PROBE_EXTRA_SAMPLE_SIZE,
+                recent_track_ids=_recent_probe_track_ids(),
+            )
+            if selected:
+                recent_probe_batches.append({t["track_id"] for t in selected if t.get("track_id")})
+            return selected
+
+        probe_tracks = _next_probe_tracks()
 
         if not probe_tracks:
             print("Probe skipped: no probe tracks found in database.")
         else:
             def _print_probe_progress(row, scanned, total):
+                kind = "extra" if row.get("chart_extra") else "non-extra"
                 if row["status"] == "ok":
                     print(
                         f"PROBE progress {scanned}/{total} | "
+                        f"source=spotify | kind={kind} | "
                         f"{row['title']} | current={format_int(row['streams'])} | "
                         f"previous={format_int(row['previous_streams'])} | "
                         f"updated={'yes' if row['updated'] else 'no'}"
@@ -2326,6 +2492,7 @@ def main():
                 else:
                     print(
                         f"PROBE progress {scanned}/{total} | "
+                        f"source=spotify | kind={kind} | "
                         f"{row['title']} | status={row['status']}"
                     )
 
@@ -2339,27 +2506,46 @@ def main():
                 if not print_rows:
                     return
                 for row in probe["results"]:
+                    kind = "extra" if row.get("chart_extra") else "non-extra"
                     if row["status"] == "ok":
                         print(
                             f"PROBE {row['title']} | "
+                            f"source=spotify | kind={kind} | "
                             f"current={format_int(row['streams'])} | "
                             f"previous={format_int(row['previous_streams'])} | "
                             f"updated={'yes' if row['updated'] else 'no'}"
                         )
                     else:
-                        print(f"PROBE {row['title']} | status={row['status']}")
+                        print(f"PROBE {row['title']} | source=spotify | kind={kind} | status={row['status']}")
+
+            def _print_chartsnapshot_probe(probe: dict):
+                if probe.get("error"):
+                    print(f"ChartSnapshot probe failed: {probe['error']}")
+                    return
+                print(
+                    "ChartSnapshot probe result | source=chartsnapshot | "
+                    f"rows={probe['source_rows']} | "
+                    f"validated={probe['validated_rows']} | "
+                    f"validated_non_extra={probe['validated_non_extra_rows']} | "
+                    f"external={probe['external_rows']} | "
+                    f"invalid={probe['invalid_rows']} | "
+                    f"missing_previous={probe['missing_previous_rows']} | "
+                    f"mismatch={probe['mismatch_rows']} | "
+                    f"start_full_run={probe['can_start_full_run']}"
+                )
 
             # Essai probe via API
             print(f"Running probe check... [API] ({len(probe_tracks)} track(s))")
             api_probe = _probe_via_api(
                 probe_tracks,
                 token_mgr,
-                required_successful=len(probe_tracks),
+                required_successful=min(PROBE_SAMPLE_SIZE, len(probe_tracks)),
                 required_updated=PROBE_REQUIRED_UPDATED,
                 progress_callback=_print_probe_progress,
                 previous_stats_date=get_previous_stats_date_str(stats_date),
             )
             if api_probe is not None:
+                api_probe["source"] = "spotify_api"
                 _print_probe(api_probe)
                 probe_retry_count = 0
                 while not api_probe["can_start_full_run"]:
@@ -2367,12 +2553,22 @@ def main():
                     print()
                     print("Spotify playcount API does not appear to expose the next daily totals yet.")
                     print(
+                        f"Checking ChartSnapshot for {stats_date} before the next Spotify probe..."
+                    )
+                    chartsnapshot_probe = probe_chartsnapshot_update(stats_date, tracks)
+                    _print_chartsnapshot_probe(chartsnapshot_probe)
+                    if chartsnapshot_probe.get("can_start_full_run"):
+                        print("ChartSnapshot validated the daily update; starting full Spotify collection.")
+                        probe_confirmed_full_run = True
+                        confirmed_probe = chartsnapshot_probe
+                        break
+                    print(
                         f"Retrying probe in 2 seconds until "
                         f"{PROBE_REQUIRED_UPDATED} non-extra track(s) update "
                         f"(attempt {probe_retry_count})."
                     )
                     time.sleep(2)
-                    probe_tracks = build_probe_tracks(tracks)
+                    probe_tracks = _next_probe_tracks()
                     if not probe_tracks:
                         print("Probe skipped: no probe tracks found in database.")
                         break
@@ -2380,13 +2576,17 @@ def main():
                     api_probe = _probe_via_api(
                         probe_tracks,
                         token_mgr,
-                        required_successful=len(probe_tracks),
+                        required_successful=min(PROBE_SAMPLE_SIZE, len(probe_tracks)),
                         required_updated=PROBE_REQUIRED_UPDATED,
                         progress_callback=_print_probe_progress,
                         previous_stats_date=get_previous_stats_date_str(stats_date),
                     )
+                    if api_probe is None:
+                        print("Probe via API unavailable during retry; starting run.")
+                        break
+                    api_probe["source"] = "spotify_api"
                     _print_probe(api_probe)
-                if api_probe.get("can_start_full_run"):
+                if api_probe and api_probe.get("can_start_full_run") and not probe_confirmed_full_run:
                     probe_confirmed_full_run = True
                     confirmed_probe = api_probe
             else:
@@ -2406,14 +2606,23 @@ def main():
     print("=" * 70)
 
     if probe_confirmed_full_run and confirmed_probe is not None:
-        notify(
-            NTFY_TOPIC,
-            (
-                f"Probe OK for {stats_date}: "
+        if confirmed_probe.get("source") == "chartsnapshot":
+            notify_message = (
+                f"ChartSnapshot probe OK for {stats_date}: "
+                f"{confirmed_probe.get('validated_non_extra_rows', 0)} validated non-extra "
+                f"track(s) with total - daily matching our previous-day total. "
+                "Starting full Spotify streams collection."
+            )
+        else:
+            notify_message = (
+                f"Spotify probe OK for {stats_date}: "
                 f"{confirmed_probe['successful_probes']}/{confirmed_probe.get('total_probe_tracks', '?')} "
                 f"successful, {confirmed_probe.get('updated_non_extra_probes', 0)} updated non-extra. "
                 "Starting full streams collection."
-            ),
+            )
+        notify(
+            NTFY_TOPIC,
+            notify_message,
             title="Taylor Swift - Streams collection starting",
             tags="white_check_mark,chart_increasing",
         )

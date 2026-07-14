@@ -599,6 +599,7 @@ def _probe_via_api(
                     "streams":          pc,
                     "previous_streams": last_total,
                     "updated":          updated,
+                    "chart_extra":      bool(track.get("chart_extra")),
                     "raw":              str(pc),
                 }
                 results.append(row)
@@ -620,6 +621,7 @@ def _probe_via_api(
                     "streams":          None,
                     "previous_streams": last_total,
                     "updated":          False,
+                    "chart_extra":      bool(track.get("chart_extra")),
                     "raw":              None,
                 }
                 results.append(row)

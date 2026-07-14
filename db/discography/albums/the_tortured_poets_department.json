@@ -2226,7 +2226,9 @@
           "song_family": "i_can_do_it_with_a_broken_heart",
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f7dd2c5a8045a39fcecbfe8e",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0Z8YQJNXTCZqflWehjoJqJ"
+          ],
           "release_date": "2024-07-16T00:00:00Z",
           "genres": [
             "pop",

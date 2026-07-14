@@ -1094,7 +1094,9 @@
           "song_family": "now_that_we_don_t_talk",
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "5KD6AEm19QnMbfWpfoOHMl"
+          ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [
             "pop",
@@ -1237,7 +1239,9 @@
           "song_family": "is_it_over_now",
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1Iq8oo9XkmmvCQiGOfORiz"
+          ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [
             "pop",

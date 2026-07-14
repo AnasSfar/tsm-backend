@@ -22,7 +22,9 @@
         "song_family": "babe",
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27363d77f99117b28af9f656918",
-        "historical_track_ids": [],
+        "historical_track_ids": [
+          "7fRruZ12gXGwBs0zXQ6e5V"
+        ],
         "release_date": "2017-11-09T00:00:00Z",
         "genres": [],
         "genre_status": "missing",
@@ -653,7 +655,10 @@
         "song_family": "the_joker_and_the_queen_feat_taylor_swift",
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27310109c08f2d5e4333dfddefe",
-        "historical_track_ids": [],
+        "historical_track_ids": [
+          "0v35bLSJRyWjnbGmBqbJtk",
+          "41KlVSwns7jnTVa37JmCwC"
+        ],
         "release_date": "2022-02-11T00:00:00Z",
         "genres": [],
         "genre_status": "missing",
@@ -1056,7 +1061,8 @@
         "image_url": "https://i.scdn.co/image/ab67616d00001e02a35a1d4983e2b4fd0094f910",
         "release_date": "2026-06-05T00:00:00Z",
         "historical_track_ids": [
-          "1jN9NsOkcQz2WWOj3kT1FC"
+          "1jN9NsOkcQz2WWOj3kT1FC",
+          "4cHQ0okN97O3vqAqRN9Osu"
         ],
         "filter_tags": [
           "solo",
@@ -1065,7 +1071,12 @@
         "filter_tag_sources": {
           "solo": "high:artist_credit",
           "standalone": "medium:section_or_type"
-        }
+        },
+        "version_tags": [
+          "standalone"
+        ],
+        "catalog_category": "standard",
+        "music_track": true
       },
       {
         "title": "I Knew It, I Knew You - Acoustic Version",
@@ -1098,7 +1109,12 @@
           "standalone": "medium:section_or_type",
           "acoustic": "high:title_or_section",
           "alternate_version": "medium:type_or_title"
-        }
+        },
+        "version_tags": [
+          "acoustic"
+        ],
+        "catalog_category": "acoustic",
+        "music_track": true
       },
       {
         "title": "I Knew It, I Knew You - Piano Version",
@@ -1129,7 +1145,12 @@
           "solo": "high:artist_credit",
           "standalone": "medium:section_or_type",
           "alternate_version": "medium:type_or_title"
-        }
+        },
+        "version_tags": [
+          "piano"
+        ],
+        "catalog_category": "piano",
+        "music_track": true
       },
       {
         "title": "Actually Romantic",
@@ -1151,7 +1172,12 @@
         "image_url": "https://i.scdn.co/image/ab67616d00001e02f756bdc2c11a985dc0c06d94",
         "release_date": "2025-11-07T00:00:00Z",
         "historical_track_ids": [],
-        "chart_extra": true
+        "chart_extra": true,
+        "version_tags": [
+          "standard"
+        ],
+        "catalog_category": "standard",
+        "music_track": true
       },
       {
         "title": "CANCELLED!",
@@ -1173,7 +1199,12 @@
         "image_url": "https://i.scdn.co/image/ab67616d00001e02f756bdc2c11a985dc0c06d94",
         "release_date": "2025-11-07T00:00:00Z",
         "historical_track_ids": [],
-        "chart_extra": true
+        "chart_extra": true,
+        "version_tags": [
+          "standard"
+        ],
+        "catalog_category": "standard",
+        "music_track": true
       },
       {
         "title": "Eldest Daughter",
@@ -1195,7 +1226,12 @@
         "image_url": "https://i.scdn.co/image/ab67616d00001e02f756bdc2c11a985dc0c06d94",
         "release_date": "2025-11-07T00:00:00Z",
         "historical_track_ids": [],
-        "chart_extra": true
+        "chart_extra": true,
+        "version_tags": [
+          "standard"
+        ],
+        "catalog_category": "standard",
+        "music_track": true
       },
       {
         "title": "Elizabeth Taylor - So Glamorous Cabaret Version",
@@ -1216,7 +1252,12 @@
         "version_tag": "standalone",
         "image_url": "https://i.scdn.co/image/ab67616d00001e02dc6e4c7774e0c77c210d3a31",
         "release_date": "2026-03-31T00:00:00Z",
-        "historical_track_ids": []
+        "historical_track_ids": [],
+        "version_tags": [
+          "standalone"
+        ],
+        "catalog_category": "standard",
+        "music_track": true
       },
       {
         "title": "Father Figure",
@@ -1238,7 +1279,12 @@
         "image_url": "https://i.scdn.co/image/ab67616d00001e02f756bdc2c11a985dc0c06d94",
         "release_date": "2025-11-07T00:00:00Z",
         "historical_track_ids": [],
-        "chart_extra": true
+        "chart_extra": true,
+        "version_tags": [
+          "standard"
+        ],
+        "catalog_category": "standard",
+        "music_track": true
       },
       {
         "title": "Honey",
@@ -1260,7 +1306,12 @@
         "image_url": "https://i.scdn.co/image/ab67616d00001e02f756bdc2c11a985dc0c06d94",
         "release_date": "2025-11-07T00:00:00Z",
         "historical_track_ids": [],
-        "chart_extra": true
+        "chart_extra": true,
+        "version_tags": [
+          "standard"
+        ],
+        "catalog_category": "standard",
+        "music_track": true
       },
       {
         "title": "Opalite",
@@ -1281,7 +1332,12 @@
         "version_tag": "standalone",
         "image_url": "https://i.scdn.co/image/ab67616d00001e02c2458a6f0b5b67c1955d3bc3",
         "release_date": "2026-02-06T00:00:00Z",
-        "historical_track_ids": []
+        "historical_track_ids": [],
+        "version_tags": [
+          "standalone"
+        ],
+        "catalog_category": "standard",
+        "music_track": true
       },
       {
         "title": "Opalite - Life Is A Song Acoustic Version",
@@ -1302,7 +1358,12 @@
         "version_tag": "acoustic",
         "image_url": "https://i.scdn.co/image/ab67616d00001e02c2458a6f0b5b67c1955d3bc3",
         "release_date": "2026-02-06T00:00:00Z",
-        "historical_track_ids": []
+        "historical_track_ids": [],
+        "version_tags": [
+          "acoustic"
+        ],
+        "catalog_category": "acoustic",
+        "music_track": true
       },
       {
         "title": "Ruin The Friendship",
@@ -1324,7 +1385,12 @@
         "image_url": "https://i.scdn.co/image/ab67616d00001e02f756bdc2c11a985dc0c06d94",
         "release_date": "2025-11-07T00:00:00Z",
         "historical_track_ids": [],
-        "chart_extra": true
+        "chart_extra": true,
+        "version_tags": [
+          "standard"
+        ],
+        "catalog_category": "standard",
+        "music_track": true
       },
       {
         "title": "The Fate of Ophelia",
@@ -1345,7 +1411,12 @@
         "version_tag": "standalone",
         "image_url": "https://i.scdn.co/image/ab67616d00001e02bc755429117cac056edd2bf7",
         "release_date": "2025-10-31T00:00:00Z",
-        "historical_track_ids": []
+        "historical_track_ids": [],
+        "version_tags": [
+          "standalone"
+        ],
+        "catalog_category": "standard",
+        "music_track": true
       },
       {
         "title": "Wi$h Li$t",
@@ -1367,7 +1438,12 @@
         "image_url": "https://i.scdn.co/image/ab67616d00001e02f756bdc2c11a985dc0c06d94",
         "release_date": "2025-11-07T00:00:00Z",
         "historical_track_ids": [],
-        "chart_extra": true
+        "chart_extra": true,
+        "version_tags": [
+          "standard"
+        ],
+        "catalog_category": "standard",
+        "music_track": true
       },
       {
         "title": "Wood",
@@ -1389,7 +1465,12 @@
         "image_url": "https://i.scdn.co/image/ab67616d00001e02f756bdc2c11a985dc0c06d94",
         "release_date": "2025-11-07T00:00:00Z",
         "historical_track_ids": [],
-        "chart_extra": true
+        "chart_extra": true,
+        "version_tags": [
+          "standard"
+        ],
+        "catalog_category": "standard",
+        "music_track": true
       },
       {
         "title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
@@ -1413,7 +1494,12 @@
         "version_tag": "featured",
         "image_url": "https://i.scdn.co/image/ab67616d00001e02f756bdc2c11a985dc0c06d94",
         "release_date": "2025-11-07T00:00:00Z",
-        "historical_track_ids": []
+        "historical_track_ids": [],
+        "version_tags": [
+          "featured"
+        ],
+        "catalog_category": "featured",
+        "music_track": true
       },
       {
         "title": "Teardrops On My Guitar - Acoustic Version",
@@ -1476,7 +1562,9 @@
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27322df0a89c40a1c47b684e86e",
         "release_date": null,
-        "historical_track_ids": []
+        "historical_track_ids": [
+          "0f4wi6bMMU5Pj6bb7Ga04R"
+        ]
       },
       {
         "title": "Teardrops On My Guitar - Alternate Version",
@@ -1562,7 +1650,9 @@
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273c168bf5b666051b066dba0dc",
         "release_date": null,
-        "historical_track_ids": []
+        "historical_track_ids": [
+          "5UV1IMOt1oxIBj7FodKe9v"
+        ]
       },
       {
         "title": "Soon You’ll Get Better - One World: Together At Home",
@@ -1822,7 +1912,7 @@
     "album": "Standalone & Extras",
     "section": "streaming_extras",
     "chart_extra": true,
-    "track_count": 140,
+    "track_count": 205,
     "tracks": [
       {
         "title": "22 - Commentary",
@@ -2891,7 +2981,9 @@
         "catalog_category": "instrumental",
         "music_track": false,
         "release_date": "2008-11-11T00:00:00Z",
-        "historical_track_ids": [],
+        "historical_track_ids": [
+          "1ReKQQQEroKx3MMU0KaQoi"
+        ],
         "excluded_from_public_stats": true,
         "catalog_exclusion_reason": "instrumental/backing vocals",
         "chart_extra": true,
@@ -4921,7 +5013,9 @@
         "catalog_category": "instrumental",
         "music_track": false,
         "release_date": "2008-11-11T00:00:00Z",
-        "historical_track_ids": [],
+        "historical_track_ids": [
+          "7qZk0GASFHvIg5dB0nc6LI"
+        ],
         "excluded_from_public_stats": true,
         "catalog_exclusion_reason": "instrumental/backing vocals",
         "chart_extra": true,
@@ -5880,6 +5974,1826 @@
         "catalog_exclusion_reason": "commentary",
         "chart_extra": true,
         "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+      },
+      {
+        "title": "Shake It Off - Cover",
+        "url": "https://open.spotify.com/track/5luKF6M5ULje5PERMqbDbV",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10024,
+        "base_title": "Shake It Off",
+        "album": "Women's version of muscle training BGM -Latest Western music-",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Shake It Off - Cover",
+        "song_family": "shake_it_off_chartsnapshot_external_5luKF6M5",
+        "version_tag": "cover",
+        "version_tags": [
+          "cover"
+        ],
+        "catalog_category": "cover",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "cover",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Women's version of muscle training BGM -Latest Western music-"
+      },
+      {
+        "title": "Out Of The Woods - Karaoke Version",
+        "url": "https://open.spotify.com/track/7x86Zn0YFrNyKQ9O7um0v2",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10025,
+        "base_title": "Out Of The Woods",
+        "album": "Taylor Swift Karaoke: 1989",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Out Of The Woods - Karaoke Version",
+        "song_family": "out_of_the_woods_chartsnapshot_external_7x86Zn0Y",
+        "version_tag": "karaoke",
+        "version_tags": [
+          "karaoke"
+        ],
+        "catalog_category": "karaoke",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "karaoke",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989"
+      },
+      {
+        "title": "Wildest Dreams - Karaoke Version",
+        "url": "https://open.spotify.com/track/66LjSOIkrnVlVbNaeJhyUF",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10026,
+        "base_title": "Wildest Dreams",
+        "album": "Taylor Swift Karaoke: 1989",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Wildest Dreams - Karaoke Version",
+        "song_family": "wildest_dreams_chartsnapshot_external_66LjSOIk",
+        "version_tag": "karaoke",
+        "version_tags": [
+          "karaoke"
+        ],
+        "catalog_category": "karaoke",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "karaoke",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989"
+      },
+      {
+        "title": "I Knew You Were Trouble. - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/1MDcFu6z8XNDGFyh5FIHee",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10027,
+        "base_title": "I Knew You Were Trouble.",
+        "album": "Red (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "I Knew You Were Trouble. - Instrumental With Background Vocals",
+        "song_family": "i_knew_you_were_trouble_chartsnapshot_external_1MDcFu6z",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Red (Karaoke Version)"
+      },
+      {
+        "title": "Teardrops on my Guitar",
+        "url": "https://open.spotify.com/track/2OHH1jLPtrNr4024V1DwZX",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10028,
+        "base_title": "Teardrops on my Guitar",
+        "album": "Taylor Swift",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Teardrops on my Guitar",
+        "song_family": "teardrops_on_my_guitar_chartsnapshot_external_2OHH1jLP",
+        "version_tag": "chartsnapshot_external_extra",
+        "version_tags": [
+          "chartsnapshot_external_extra"
+        ],
+        "catalog_category": "chartsnapshot_external_extra",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "chartsnapshot external extra",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Taylor Swift"
+      },
+      {
+        "title": "Welcome To New York - Karaoke Version",
+        "url": "https://open.spotify.com/track/2i54CJa3pEfUjTRhAU7y6R",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10029,
+        "base_title": "Welcome To New York",
+        "album": "Taylor Swift Karaoke: 1989",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Welcome To New York - Karaoke Version",
+        "song_family": "welcome_to_new_york_chartsnapshot_external_2i54CJa3",
+        "version_tag": "karaoke",
+        "version_tags": [
+          "karaoke"
+        ],
+        "catalog_category": "karaoke",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "karaoke",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989"
+      },
+      {
+        "title": "All Too Well - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/4foqCyc68cBj3D0yFxsI3j",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10030,
+        "base_title": "All Too Well",
+        "album": "Red (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "All Too Well - Instrumental With Background Vocals",
+        "song_family": "all_too_well_chartsnapshot_external_4foqCyc6",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Red (Karaoke Version)"
+      },
+      {
+        "title": "Bad Blood - Karaoke Version",
+        "url": "https://open.spotify.com/track/2fkN3ago8ded5UG0LqHKB5",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10031,
+        "base_title": "Bad Blood",
+        "album": "Taylor Swift Karaoke: 1989",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Bad Blood - Karaoke Version",
+        "song_family": "bad_blood_chartsnapshot_external_2fkN3ago",
+        "version_tag": "karaoke",
+        "version_tags": [
+          "karaoke"
+        ],
+        "catalog_category": "karaoke",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "karaoke",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989"
+      },
+      {
+        "title": "This Love - Karaoke Version",
+        "url": "https://open.spotify.com/track/7bbhFp3V4bZct8vpSCIrR8",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10032,
+        "base_title": "This Love",
+        "album": "Taylor Swift Karaoke: 1989",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "This Love - Karaoke Version",
+        "song_family": "this_love_chartsnapshot_external_7bbhFp3V",
+        "version_tag": "karaoke",
+        "version_tags": [
+          "karaoke"
+        ],
+        "catalog_category": "karaoke",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "karaoke",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989"
+      },
+      {
+        "title": "How You Get The Girl - Karaoke Version",
+        "url": "https://open.spotify.com/track/1h4lAVDzDt8oQY2yHTEdRx",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10033,
+        "base_title": "How You Get The Girl",
+        "album": "Taylor Swift Karaoke: 1989",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "How You Get The Girl - Karaoke Version",
+        "song_family": "how_you_get_the_girl_chartsnapshot_external_1h4lAVDz",
+        "version_tag": "karaoke",
+        "version_tags": [
+          "karaoke"
+        ],
+        "catalog_category": "karaoke",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "karaoke",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989"
+      },
+      {
+        "title": "Clean - Karaoke Version",
+        "url": "https://open.spotify.com/track/5F2684mgHARE8q5QxYY8RJ",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10034,
+        "base_title": "Clean",
+        "album": "Taylor Swift Karaoke: 1989",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Clean - Karaoke Version",
+        "song_family": "clean_chartsnapshot_external_5F2684mg",
+        "version_tag": "karaoke",
+        "version_tags": [
+          "karaoke"
+        ],
+        "catalog_category": "karaoke",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "karaoke",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989"
+      },
+      {
+        "title": "I Wish You Would - Karaoke Version",
+        "url": "https://open.spotify.com/track/6Bq4W1CV7IqqZ4Dm2WVG5w",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10035,
+        "base_title": "I Wish You Would",
+        "album": "Taylor Swift Karaoke: 1989",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "I Wish You Would - Karaoke Version",
+        "song_family": "i_wish_you_would_chartsnapshot_external_6Bq4W1CV",
+        "version_tag": "karaoke",
+        "version_tags": [
+          "karaoke"
+        ],
+        "catalog_category": "karaoke",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "karaoke",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989"
+      },
+      {
+        "title": "All You Had To Do Was Stay - Karaoke Version",
+        "url": "https://open.spotify.com/track/6AQbsCRdpQ4U8YaH9ySvzP",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10036,
+        "base_title": "All You Had To Do Was Stay",
+        "album": "Taylor Swift Karaoke: 1989",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "All You Had To Do Was Stay - Karaoke Version",
+        "song_family": "all_you_had_to_do_was_stay_chartsnapshot_external_6AQbsCRd",
+        "version_tag": "karaoke",
+        "version_tags": [
+          "karaoke"
+        ],
+        "catalog_category": "karaoke",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "karaoke",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989"
+      },
+      {
+        "title": "Long Live - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/3x4MisUs3dIkpDUcJMfFKA",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10037,
+        "base_title": "Long Live",
+        "album": "Speak Now (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Long Live - Instrumental With Background Vocals",
+        "song_family": "long_live_chartsnapshot_external_3x4MisUs",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Speak Now (Karaoke Version)"
+      },
+      {
+        "title": "Back To December - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/73B2UZR8luWSOugqpNuAuV",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10038,
+        "base_title": "Back To December",
+        "album": "Speak Now (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Back To December - Instrumental With Background Vocals",
+        "song_family": "back_to_december_chartsnapshot_external_73B2UZR8",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Speak Now (Karaoke Version)"
+      },
+      {
+        "title": "I Know Places - Karaoke Version",
+        "url": "https://open.spotify.com/track/56dqIqcOU4iuDb8EXpgpv4",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10039,
+        "base_title": "I Know Places",
+        "album": "Taylor Swift Karaoke: 1989",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "I Know Places - Karaoke Version",
+        "song_family": "i_know_places_chartsnapshot_external_56dqIqcO",
+        "version_tag": "karaoke",
+        "version_tags": [
+          "karaoke"
+        ],
+        "catalog_category": "karaoke",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "karaoke",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989"
+      },
+      {
+        "title": "We Are Never Ever Getting Back Together - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/46GNHUdBuPGnbyTlyv73px",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10040,
+        "base_title": "We Are Never Ever Getting Back Together",
+        "album": "Red (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "We Are Never Ever Getting Back Together - Instrumental With Background Vocals",
+        "song_family": "we_are_never_ever_getting_back_together_chartsnapshot_external_46GNHUdB",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Red (Karaoke Version)"
+      },
+      {
+        "title": "Red - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/3lHGtCM2wOkqxBdn6pihJs",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10041,
+        "base_title": "Red",
+        "album": "Red (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Red - Instrumental With Background Vocals",
+        "song_family": "red_chartsnapshot_external_3lHGtCM2",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Red (Karaoke Version)"
+      },
+      {
+        "title": "22 - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/2CyfahsenMvjhR99j1x6X2",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10042,
+        "base_title": "22",
+        "album": "Red (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "22 - Instrumental With Background Vocals",
+        "song_family": "22_chartsnapshot_external_2Cyfahse",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Red (Karaoke Version)"
+      },
+      {
+        "title": "Better Than Revenge - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/27vZ8jMjNk6NGcIfFzePw9",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10043,
+        "base_title": "Better Than Revenge",
+        "album": "Speak Now (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Better Than Revenge - Instrumental With Background Vocals",
+        "song_family": "better_than_revenge_chartsnapshot_external_27vZ8jMj",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Speak Now (Karaoke Version)"
+      },
+      {
+        "title": "Speak Now - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/5KNF5SJKehiNxuvavYTc9j",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10044,
+        "base_title": "Speak Now",
+        "album": "Speak Now (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Speak Now - Instrumental With Background Vocals",
+        "song_family": "speak_now_chartsnapshot_external_5KNF5SJK",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Speak Now (Karaoke Version)"
+      },
+      {
+        "title": "Mine - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/6kFgTVa0eIjO00Pc3OA0rF",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10045,
+        "base_title": "Mine",
+        "album": "Speak Now (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Mine - Instrumental With Background Vocals",
+        "song_family": "mine_chartsnapshot_external_6kFgTVa0",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Speak Now (Karaoke Version)"
+      },
+      {
+        "title": "Last Kiss - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/6RfWi0Jx3GvflsOtUfFpuT",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10046,
+        "base_title": "Last Kiss",
+        "album": "Speak Now (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Last Kiss - Instrumental With Background Vocals",
+        "song_family": "last_kiss_chartsnapshot_external_6RfWi0Jx",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Speak Now (Karaoke Version)"
+      },
+      {
+        "title": "Fifteen - Instrumental with BGV",
+        "url": "https://open.spotify.com/track/3h96cE8WodfMonauQOhltu",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10047,
+        "base_title": "Fifteen",
+        "album": "Fearless (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Fifteen - Instrumental with BGV",
+        "song_family": "fifteen_chartsnapshot_external_3h96cE8W",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Fearless (Karaoke Version)"
+      },
+      {
+        "title": "Holy Ground - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/6jHHWbARBOwQUqtAnNKMN6",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10048,
+        "base_title": "Holy Ground",
+        "album": "Red (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Holy Ground - Instrumental With Background Vocals",
+        "song_family": "holy_ground_chartsnapshot_external_6jHHWbAR",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Red (Karaoke Version)"
+      },
+      {
+        "title": "Mean - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/0LB5gCYdVYtXyPKhvZaEgI",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10049,
+        "base_title": "Mean",
+        "album": "Speak Now (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Mean - Instrumental With Background Vocals",
+        "song_family": "mean_chartsnapshot_external_0LB5gCYd",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Speak Now (Karaoke Version)"
+      },
+      {
+        "title": "White Horse - Instrumental with BGV",
+        "url": "https://open.spotify.com/track/3L84WEUYuc6Vryfi4Fd85j",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10050,
+        "base_title": "White Horse",
+        "album": "Fearless (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "White Horse - Instrumental with BGV",
+        "song_family": "white_horse_chartsnapshot_external_3L84WEUY",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Fearless (Karaoke Version)"
+      },
+      {
+        "title": "The Best Day - Instrumental with BGV",
+        "url": "https://open.spotify.com/track/3qcGsGTSDQYdy9xoMFj0YM",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10051,
+        "base_title": "The Best Day",
+        "album": "Fearless (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "The Best Day - Instrumental with BGV",
+        "song_family": "the_best_day_chartsnapshot_external_3qcGsGTS",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Fearless (Karaoke Version)"
+      },
+      {
+        "title": "Hey Stephen - Instrumental with BGV",
+        "url": "https://open.spotify.com/track/3Uown9ZvhJcCBJBHOXRRhS",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10052,
+        "base_title": "Hey Stephen",
+        "album": "Fearless (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Hey Stephen - Instrumental with BGV",
+        "song_family": "hey_stephen_chartsnapshot_external_3Uown9Zv",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Fearless (Karaoke Version)"
+      },
+      {
+        "title": "You're Not Sorry - Instrumental with BGV",
+        "url": "https://open.spotify.com/track/022VobQaEUvn0YWqYf97HA",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10053,
+        "base_title": "You're Not Sorry",
+        "album": "Fearless (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "You're Not Sorry - Instrumental with BGV",
+        "song_family": "you_re_not_sorry_chartsnapshot_external_022VobQa",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Fearless (Karaoke Version)"
+      },
+      {
+        "title": "The Lucky One - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/0PPT0FWjjipsLfdNo0jqfx",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10054,
+        "base_title": "The Lucky One",
+        "album": "Red (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "The Lucky One - Instrumental With Background Vocals",
+        "song_family": "the_lucky_one_chartsnapshot_external_0PPT0FWj",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Red (Karaoke Version)"
+      },
+      {
+        "title": "Innocent - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/6ZUSLV2UZPxqNXDX6DHBQp",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10055,
+        "base_title": "Innocent",
+        "album": "Speak Now (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Innocent - Instrumental With Background Vocals",
+        "song_family": "innocent_chartsnapshot_external_6ZUSLV2U",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Speak Now (Karaoke Version)"
+      },
+      {
+        "title": "Sad Beautiful Tragic - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/5XSPL0XMNxpeVV99iQQ7IX",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10056,
+        "base_title": "Sad Beautiful Tragic",
+        "album": "Red (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Sad Beautiful Tragic - Instrumental With Background Vocals",
+        "song_family": "sad_beautiful_tragic_chartsnapshot_external_5XSPL0XM",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Red (Karaoke Version)"
+      },
+      {
+        "title": "Change - Instrumental with BGV",
+        "url": "https://open.spotify.com/track/3lNRE17Ba1Verccqe2h6td",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10057,
+        "base_title": "Change",
+        "album": "Fearless (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Change - Instrumental with BGV",
+        "song_family": "change_chartsnapshot_external_3lNRE17B",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Fearless (Karaoke Version)"
+      },
+      {
+        "title": "I Don't Wanna Live Forever - Orchestral Instrumental",
+        "url": "https://open.spotify.com/track/6fZGI44cPfpjW6YMXrxuFJ",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10058,
+        "base_title": "I Don't Wanna Live Forever",
+        "album": "Hits Done Film Score Style",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "I Don't Wanna Live Forever - Orchestral Instrumental",
+        "song_family": "i_don_t_wanna_live_forever_chartsnapshot_external_6fZGI44c",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Hits Done Film Score Style"
+      },
+      {
+        "title": "Shake it Off",
+        "url": "https://open.spotify.com/track/0bj1bAhoHpHRSl4IIyFvfU",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10059,
+        "base_title": "Shake it Off",
+        "album": "25 or 6 to 4 - New Music for Flexible Instrumentation - Demo Tracks 2015-2016",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Shake it Off",
+        "song_family": "shake_it_off_chartsnapshot_external_0bj1bAho",
+        "version_tag": "chartsnapshot_external_extra",
+        "version_tags": [
+          "chartsnapshot_external_extra"
+        ],
+        "catalog_category": "chartsnapshot_external_extra",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "chartsnapshot external extra",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "25 or 6 to 4 - New Music for Flexible Instrumentation - Demo Tracks 2015-2016"
+      },
+      {
+        "title": "The Joker and the Queen (Arr. for Piano by David Önaç)",
+        "url": "https://open.spotify.com/track/5vX2ztdaQJVKqgPbSbKqkg",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10060,
+        "base_title": "The Joker and the Queen (Arr. for Piano by David Önaç)",
+        "album": "Piano Exam Pieces 2025 & 2026, ABRSM Grade 2",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "The Joker and the Queen (Arr. for Piano by David Önaç)",
+        "song_family": "the_joker_and_the_queen_arr_for_piano_by_david_onac_chartsnapshot_external_5vX2ztda",
+        "version_tag": "arrangement",
+        "version_tags": [
+          "arrangement"
+        ],
+        "catalog_category": "arrangement",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "arrangement",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Piano Exam Pieces 2025 & 2026, ABRSM Grade 2"
+      },
+      {
+        "title": "Shake It Off",
+        "url": "https://open.spotify.com/track/5VqtAFytMGL3nIsGAHJOYA",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10061,
+        "base_title": "Shake It Off",
+        "album": "BestWORK",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Shake It Off",
+        "song_family": "shake_it_off_chartsnapshot_external_5VqtAFyt",
+        "version_tag": "chartsnapshot_external_extra",
+        "version_tags": [
+          "chartsnapshot_external_extra"
+        ],
+        "catalog_category": "chartsnapshot_external_extra",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "chartsnapshot external extra",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "BestWORK"
+      },
+      {
+        "title": "We Are Never Ever Getting Back Together",
+        "url": "https://open.spotify.com/track/6U1sV6To5PiDattw67fHYF",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10062,
+        "base_title": "We Are Never Ever Getting Back Together",
+        "album": "BestWORK",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "We Are Never Ever Getting Back Together",
+        "song_family": "we_are_never_ever_getting_back_together_chartsnapshot_external_6U1sV6To",
+        "version_tag": "chartsnapshot_external_extra",
+        "version_tags": [
+          "chartsnapshot_external_extra"
+        ],
+        "catalog_category": "chartsnapshot_external_extra",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "chartsnapshot external extra",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "BestWORK"
+      },
+      {
+        "title": "You'll Always Find Your Way Back Home",
+        "url": "https://open.spotify.com/track/49Nfi3WOhDYAppczV12SqD",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10063,
+        "base_title": "You'll Always Find Your Way Back Home",
+        "album": "Disney Sing-Along - Hannah Montana The Movie",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "You'll Always Find Your Way Back Home",
+        "song_family": "you_ll_always_find_your_way_back_home_chartsnapshot_external_49Nfi3WO",
+        "version_tag": "chartsnapshot_external_extra",
+        "version_tags": [
+          "chartsnapshot_external_extra"
+        ],
+        "catalog_category": "chartsnapshot_external_extra",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "chartsnapshot external extra",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Disney Sing-Along - Hannah Montana The Movie"
+      },
+      {
+        "title": "Me! - Cover",
+        "url": "https://open.spotify.com/track/5BHa3hmDOiT6s7QQc0TT37",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10064,
+        "base_title": "Me!",
+        "album": "Women's version of muscle training BGM -Latest Western music-",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Me! - Cover",
+        "song_family": "me_chartsnapshot_external_5BHa3hmD",
+        "version_tag": "cover",
+        "version_tags": [
+          "cover"
+        ],
+        "catalog_category": "cover",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "cover",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Women's version of muscle training BGM -Latest Western music-"
+      },
+      {
+        "title": "Tim McGraw - Live",
+        "url": "https://open.spotify.com/track/2SOiWAqjpyGnMPLZd66rm0",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10065,
+        "base_title": "Tim McGraw",
+        "album": "Love Story",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Tim McGraw - Live",
+        "song_family": "tim_mcgraw_chartsnapshot_external_2SOiWAqj",
+        "version_tag": "live",
+        "version_tags": [
+          "live"
+        ],
+        "catalog_category": "live",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "chartsnapshot external extra",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Love Story"
+      },
+      {
+        "title": "Shake It Off/Lebedik un Freylach (Arr. ZRI for Mixed Ensemble)",
+        "url": "https://open.spotify.com/track/41AEhaPZAukouWaZMEBJoZ",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10066,
+        "base_title": "Shake It Off/Lebedik un Freylach (Arr. ZRI for Mixed Ensemble)",
+        "album": "Cellar Sessions",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Shake It Off/Lebedik un Freylach (Arr. ZRI for Mixed Ensemble)",
+        "song_family": "shake_it_off_lebedik_un_freylach_arr_zri_for_mixed_ensemble_chartsnapshot_external_41AEhaPZ",
+        "version_tag": "arrangement",
+        "version_tags": [
+          "arrangement"
+        ],
+        "catalog_category": "arrangement",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "arrangement",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Cellar Sessions"
+      },
+      {
+        "title": "Teardrops On My Guitar - Cahill Radio Edit",
+        "url": "https://open.spotify.com/track/2y2Y9tGcZLGNFfTCasJfgb",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10067,
+        "base_title": "Teardrops On My Guitar",
+        "album": "Teardrops On My Guitar",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Teardrops On My Guitar - Cahill Radio Edit",
+        "song_family": "teardrops_on_my_guitar_chartsnapshot_external_2y2Y9tGc",
+        "version_tag": "radio_edit",
+        "version_tags": [
+          "radio_edit"
+        ],
+        "catalog_category": "radio_edit",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "chartsnapshot external extra",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Teardrops On My Guitar"
+      },
+      {
+        "title": "Delicate - Acoustic Cover",
+        "url": "https://open.spotify.com/track/58q1k1dMUO6WM34yKspSD2",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10068,
+        "base_title": "Delicate",
+        "album": "Music for the Moment: Bonjour with Classical Music",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Delicate - Acoustic Cover",
+        "song_family": "delicate_chartsnapshot_external_58q1k1dM",
+        "version_tag": "cover",
+        "version_tags": [
+          "cover"
+        ],
+        "catalog_category": "cover",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "cover",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Music for the Moment: Bonjour with Classical Music"
+      },
+      {
+        "title": "Two Is Better Than One - Mike Rizzo Radio Remix",
+        "url": "https://open.spotify.com/track/6MRHt3aqSaobkqIpRhrVfE",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10069,
+        "base_title": "Two Is Better Than One - Mike Rizzo Radio Remix",
+        "album": "ThriveMix Presents: Dance Nation",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Two Is Better Than One - Mike Rizzo Radio Remix",
+        "song_family": "two_is_better_than_one_mike_rizzo_radio_remix_chartsnapshot_external_6MRHt3aq",
+        "version_tag": "remix",
+        "version_tags": [
+          "remix"
+        ],
+        "catalog_category": "remix",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "chartsnapshot external extra",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "ThriveMix Presents: Dance Nation"
+      },
+      {
+        "title": "Taylor Swift Interview",
+        "url": "https://open.spotify.com/track/6Bgc6CGzk4kvkQRiwQc6Yd",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10070,
+        "base_title": "Taylor Swift Interview",
+        "album": "Taylor Swift",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Taylor Swift Interview",
+        "song_family": "taylor_swift_interview_chartsnapshot_external_6Bgc6CGz",
+        "version_tag": "interview",
+        "version_tags": [
+          "interview"
+        ],
+        "catalog_category": "interview",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "interview",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Taylor Swift"
+      },
+      {
+        "title": "Enchanted - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/2XkUgopshJmI1WqFTkury3",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10071,
+        "base_title": "Enchanted",
+        "album": "Speak Now (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Enchanted - Instrumental With Background Vocals",
+        "song_family": "enchanted_chartsnapshot_external_2XkUgops",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Speak Now (Karaoke Version)"
+      },
+      {
+        "title": "Dear John - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/2biHaDJjwyvJAnvSqTBvk8",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10072,
+        "base_title": "Dear John",
+        "album": "Speak Now (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Dear John - Instrumental With Background Vocals",
+        "song_family": "dear_john_chartsnapshot_external_2biHaDJj",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Speak Now (Karaoke Version)"
+      },
+      {
+        "title": "Never Grow Up - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/5v3FHVgMp8AKLxMT0X7zph",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10073,
+        "base_title": "Never Grow Up",
+        "album": "Speak Now (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Never Grow Up - Instrumental With Background Vocals",
+        "song_family": "never_grow_up_chartsnapshot_external_5v3FHVgM",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Speak Now (Karaoke Version)"
+      },
+      {
+        "title": "Sparks Fly - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/3eVl0bkOfARGgQLvYJ4jbi",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10074,
+        "base_title": "Sparks Fly",
+        "album": "Speak Now (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Sparks Fly - Instrumental With Background Vocals",
+        "song_family": "sparks_fly_chartsnapshot_external_3eVl0bkO",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Speak Now (Karaoke Version)"
+      },
+      {
+        "title": "Everything Has Changed - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/5cXTESo2BLCYwmUKF2uE8A",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10075,
+        "base_title": "Everything Has Changed",
+        "album": "Red (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Everything Has Changed - Instrumental With Background Vocals",
+        "song_family": "everything_has_changed_chartsnapshot_external_5cXTESo2",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Red (Karaoke Version)"
+      },
+      {
+        "title": "State Of Grace - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/4pvmbMjyRH4tKJiw1CjWic",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10076,
+        "base_title": "State Of Grace",
+        "album": "Red (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "State Of Grace - Instrumental With Background Vocals",
+        "song_family": "state_of_grace_chartsnapshot_external_4pvmbMjy",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Red (Karaoke Version)"
+      },
+      {
+        "title": "The Way I Loved You - Instrumental with BGV",
+        "url": "https://open.spotify.com/track/0j42731ciU2x6LW4PJRnEv",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10077,
+        "base_title": "The Way I Loved You",
+        "album": "Fearless (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "The Way I Loved You - Instrumental with BGV",
+        "song_family": "the_way_i_loved_you_chartsnapshot_external_0j42731c",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Fearless (Karaoke Version)"
+      },
+      {
+        "title": "Begin Again - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/4qYZFWPHpNEZDICGCwqgrv",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10078,
+        "base_title": "Begin Again",
+        "album": "Red (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Begin Again - Instrumental With Background Vocals",
+        "song_family": "begin_again_chartsnapshot_external_4qYZFWPH",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Red (Karaoke Version)"
+      },
+      {
+        "title": "The Story Of Us - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/7eWWHv6LTMFcaj8QgTLcYf",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10079,
+        "base_title": "The Story Of Us",
+        "album": "Speak Now (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "The Story Of Us - Instrumental With Background Vocals",
+        "song_family": "the_story_of_us_chartsnapshot_external_7eWWHv6L",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Speak Now (Karaoke Version)"
+      },
+      {
+        "title": "Starlight - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/6yulzkix69bLw7WP7TAUfU",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10080,
+        "base_title": "Starlight",
+        "album": "Red (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Starlight - Instrumental With Background Vocals",
+        "song_family": "starlight_chartsnapshot_external_6yulzkix",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Red (Karaoke Version)"
+      },
+      {
+        "title": "I Almost Do - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/1B6UHn92SZSGOwXheAKAb9",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10081,
+        "base_title": "I Almost Do",
+        "album": "Red (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "I Almost Do - Instrumental With Background Vocals",
+        "song_family": "i_almost_do_chartsnapshot_external_1B6UHn92",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Red (Karaoke Version)"
+      },
+      {
+        "title": "Stay Stay Stay - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/6HCWHsGF3YM6BPnow9MkIR",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10082,
+        "base_title": "Stay Stay Stay",
+        "album": "Red (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Stay Stay Stay - Instrumental With Background Vocals",
+        "song_family": "stay_stay_stay_chartsnapshot_external_6HCWHsGF",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Red (Karaoke Version)"
+      },
+      {
+        "title": "You Belong With Me - Instrumental with BGV",
+        "url": "https://open.spotify.com/track/53PbrK3xHCahLA67KbR1Ck",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10083,
+        "base_title": "You Belong With Me",
+        "album": "Fearless (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "You Belong With Me - Instrumental with BGV",
+        "song_family": "you_belong_with_me_chartsnapshot_external_53PbrK3x",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Fearless (Karaoke Version)"
+      },
+      {
+        "title": "Haunted - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/2kv8uTMNaaxpXFkmFdVjat",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10084,
+        "base_title": "Haunted",
+        "album": "Speak Now (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Haunted - Instrumental With Background Vocals",
+        "song_family": "haunted_chartsnapshot_external_2kv8uTMN",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Speak Now (Karaoke Version)"
+      },
+      {
+        "title": "Forever & Always - Instrumental with BGV",
+        "url": "https://open.spotify.com/track/72PDdE0cAdmGxhMbrqG0PI",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10085,
+        "base_title": "Forever & Always",
+        "album": "Fearless (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Forever & Always - Instrumental with BGV",
+        "song_family": "forever_always_chartsnapshot_external_72PDdE0c",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Fearless (Karaoke Version)"
+      },
+      {
+        "title": "Treacherous - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/track/1TSPz0XU6Xu62x06eBtcyA",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10086,
+        "base_title": "Treacherous",
+        "album": "Red (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Treacherous - Instrumental With Background Vocals",
+        "song_family": "treacherous_chartsnapshot_external_1TSPz0XU",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Red (Karaoke Version)"
+      },
+      {
+        "title": "Teardrops On My Guitar - Acoustic Version",
+        "url": "https://open.spotify.com/track/17Kqa6MX5uZzLK7EOEeAxo",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10087,
+        "base_title": "Teardrops On My Guitar",
+        "album": "Teardrops On My Guitar (Acoustic)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Teardrops On My Guitar - Acoustic Version",
+        "song_family": "teardrops_on_my_guitar_chartsnapshot_external_17Kqa6MX",
+        "version_tag": "acoustic",
+        "version_tags": [
+          "acoustic"
+        ],
+        "catalog_category": "acoustic",
+        "music_track": true,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "chartsnapshot external extra",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Teardrops On My Guitar (Acoustic)"
+      },
+      {
+        "title": "Breathe - Instrumental only, no BV",
+        "url": "https://open.spotify.com/track/4Hk2aNSkhB6Y8jsJtrAjxa",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10088,
+        "base_title": "Breathe",
+        "album": "Fearless (Karaoke Version)",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Breathe - Instrumental only, no BV",
+        "song_family": "breathe_chartsnapshot_external_4Hk2aNSk",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "chartsnapshot_source_album": "Fearless (Karaoke Version)"
       }
     ]
   }
