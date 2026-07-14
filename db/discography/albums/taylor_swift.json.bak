@@ -4,33 +4,6 @@
   "track_count": 22,
   "sections": [
     {
-      "section": "extras",
-      "track_count": 1,
-      "chart_extra": true,
-      "tracks": [
-        {
-          "title": "Crazier",
-          "url": "https://open.spotify.com/intl-fr/track/5vyxXfD5gLlyPxGZMEjtmd",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 1,
-          "base_title": "Crazier",
-          "album": "Taylor Swift",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Crazier",
-          "song_family": "crazier",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2730e8ba185f3e9f15630a7b5fb",
-          "historical_track_ids": []
-        }
-      ]
-    },
-    {
       "section": "standard_edition",
       "track_count": 15,
       "chart_extra": false,
@@ -41,7 +14,7 @@
           "type": "track",
           "edition": "standard",
           "display_section": "Standard Edition",
-          "display_order": 1,
+          "display_order": 14,
           "base_title": "A Perfectly Good Heart",
           "album": "Taylor Swift",
           "primary_artist": "Taylor Swift",
@@ -54,7 +27,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-10-24T00:00:00Z"
+          "release_date": "2006-10-24T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:a_perfectly_good_heart",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "A Place in this World",
@@ -62,7 +55,7 @@
           "type": "track",
           "edition": "standard",
           "display_section": "Standard Edition",
-          "display_order": 2,
+          "display_order": 4,
           "base_title": "A Place in this World",
           "album": "Taylor Swift",
           "primary_artist": "Taylor Swift",
@@ -75,7 +68,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-01-01T00:00:00Z"
+          "release_date": "2006-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:a_place_in_this_world",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Cold As You",
@@ -83,7 +96,7 @@
           "type": "track",
           "edition": "standard",
           "display_section": "Standard Edition",
-          "display_order": 3,
+          "display_order": 5,
           "base_title": "Cold As You",
           "album": "Taylor Swift",
           "primary_artist": "Taylor Swift",
@@ -96,7 +109,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-01-01T00:00:00Z"
+          "release_date": "2006-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:cold_as_you",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "I'm Only Me When I'm With You",
@@ -104,7 +137,7 @@
           "type": "track",
           "edition": "standard",
           "display_section": "Standard Edition",
-          "display_order": 4,
+          "display_order": 12,
           "base_title": "I'm Only Me When I'm With You",
           "album": "Taylor Swift",
           "primary_artist": "Taylor Swift",
@@ -117,7 +150,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-10-24T00:00:00Z"
+          "release_date": "2006-10-24T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_m_only_me_when_i_m_with_you",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Invisible",
@@ -125,7 +178,7 @@
           "type": "track",
           "edition": "standard",
           "display_section": "Standard Edition",
-          "display_order": 5,
+          "display_order": 13,
           "base_title": "Invisible",
           "album": "Taylor Swift",
           "primary_artist": "Taylor Swift",
@@ -138,7 +191,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-10-24T00:00:00Z"
+          "release_date": "2006-10-24T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:invisible",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Mary's Song (Oh My My My)",
@@ -146,7 +219,7 @@
           "type": "track",
           "edition": "standard",
           "display_section": "Standard Edition",
-          "display_order": 6,
+          "display_order": 10,
           "base_title": "Mary's Song (Oh My My My)",
           "album": "Taylor Swift",
           "primary_artist": "Taylor Swift",
@@ -159,7 +232,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-01-01T00:00:00Z"
+          "release_date": "2006-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:mary_s_song_oh_my_my_my",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Our Song",
@@ -167,7 +260,7 @@
           "type": "track",
           "edition": "standard",
           "display_section": "Standard Edition",
-          "display_order": 7,
+          "display_order": 11,
           "base_title": "Our Song",
           "album": "Taylor Swift",
           "primary_artist": "Taylor Swift",
@@ -180,7 +273,52 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-01-01T00:00:00Z"
+          "release_date": "2006-01-01T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "female vocalists",
+              "taylor swift",
+              "pop",
+              "Love",
+              "fun",
+              "country pop",
+              "summer",
+              "singer-songwriter",
+              "sweet"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Our Song"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:our_song",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Picture To Burn",
@@ -188,7 +326,7 @@
           "type": "track",
           "edition": "standard",
           "display_section": "Standard Edition",
-          "display_order": 8,
+          "display_order": 2,
           "base_title": "Picture To Burn",
           "album": "Taylor Swift",
           "primary_artist": "Taylor Swift",
@@ -201,7 +339,52 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-01-01T00:00:00Z"
+          "release_date": "2006-01-01T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "taylor swift",
+              "pop",
+              "catchy",
+              "female vocalists",
+              "feel good",
+              "Picture To Burn",
+              "country pop",
+              "rock",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Picture To Burn"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:picture_to_burn",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Should've Said No",
@@ -222,7 +405,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-01-01T00:00:00Z"
+          "release_date": "2006-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:should_ve_said_no",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Stay Beautiful",
@@ -230,7 +433,7 @@
           "type": "track",
           "edition": "standard",
           "display_section": "Standard Edition",
-          "display_order": 10,
+          "display_order": 8,
           "base_title": "Stay Beautiful",
           "album": "Taylor Swift",
           "primary_artist": "Taylor Swift",
@@ -243,7 +446,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-01-01T00:00:00Z"
+          "release_date": "2006-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:stay_beautiful",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Teardrops on My Guitar - Pop Version",
@@ -251,7 +474,7 @@
           "type": "alternate_version",
           "edition": "standard",
           "display_section": "Other Editions",
-          "display_order": 11,
+          "display_order": 15,
           "base_title": "Teardrops on My Guitar",
           "album": "Taylor Swift",
           "primary_artist": "Taylor Swift",
@@ -264,7 +487,29 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-10-24T00:00:00Z"
+          "release_date": "2006-10-24T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:teardrops_on_my_guitar",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "alternate_version": "medium:type_or_title"
+          }
         },
         {
           "title": "Teardrops On My Guitar - Radio Single Remix",
@@ -272,7 +517,7 @@
           "type": "remix",
           "edition": "standard",
           "display_section": "Extras",
-          "display_order": 12,
+          "display_order": 3,
           "base_title": "Teardrops On My Guitar",
           "album": "Taylor Swift",
           "primary_artist": "Taylor Swift",
@@ -285,7 +530,27 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-01-01T00:00:00Z"
+          "release_date": "2006-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:teardrops_on_my_guitar",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
         },
         {
           "title": "The Outside",
@@ -293,7 +558,7 @@
           "type": "track",
           "edition": "standard",
           "display_section": "Standard Edition",
-          "display_order": 13,
+          "display_order": 6,
           "base_title": "The Outside",
           "album": "Taylor Swift",
           "primary_artist": "Taylor Swift",
@@ -306,7 +571,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-01-01T00:00:00Z"
+          "release_date": "2006-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_outside",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Tied Together with a Smile",
@@ -314,7 +599,7 @@
           "type": "track",
           "edition": "standard",
           "display_section": "Standard Edition",
-          "display_order": 14,
+          "display_order": 7,
           "base_title": "Tied Together with a Smile",
           "album": "Taylor Swift",
           "primary_artist": "Taylor Swift",
@@ -327,7 +612,27 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-01-01T00:00:00Z"
+          "release_date": "2006-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:tied_together_with_a_smile",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         },
         {
           "title": "Tim McGraw",
@@ -335,7 +640,7 @@
           "type": "track",
           "edition": "standard",
           "display_section": "Standard Edition",
-          "display_order": 15,
+          "display_order": 1,
           "base_title": "Tim McGraw",
           "album": "Taylor Swift",
           "primary_artist": "Taylor Swift",
@@ -348,13 +653,33 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
-          "release_date": "2006-01-01T00:00:00Z"
+          "release_date": "2006-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:tim_mcgraw",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
         }
       ]
     },
     {
       "album": "Taylor Swift",
-      "section": "kworb_extras",
+      "section": "streaming_extras",
       "track_count": 6,
       "chart_extra": true,
       "tracks": [
@@ -378,7 +703,29 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
           "display_era": "Taylor Swift",
           "historical_track_ids": [],
-          "release_date": "2008-06-28T00:00:00Z"
+          "release_date": "2008-06-28T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:beautiful_eyes_live_from_clear_channel_stripped_2008",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         },
         {
           "title": "Picture To Burn - Live From Clear Channel Stripped 2008",
@@ -400,7 +747,54 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
           "display_era": "Taylor Swift",
           "historical_track_ids": [],
-          "release_date": "2008-06-28T00:00:00Z"
+          "release_date": "2008-06-28T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "taylor swift",
+              "pop",
+              "catchy",
+              "female vocalists",
+              "feel good",
+              "Picture To Burn",
+              "country pop",
+              "rock",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Picture To Burn"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:picture_to_burn_live_from_clear_channel_stripped_2008",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         },
         {
           "title": "Should've Said No - Live From Clear Channel Stripped 2008",
@@ -422,7 +816,29 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
           "display_era": "Taylor Swift",
           "historical_track_ids": [],
-          "release_date": "2008-06-28T00:00:00Z"
+          "release_date": "2008-06-28T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:shouldve_said_no_live_from_clear_channel_stripped_2008",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
         },
         {
           "title": "Should've Said No - The 3D Concert Experience",
@@ -443,7 +859,27 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735e0f4b509e71ef57a82ccc3e",
           "display_era": "Taylor Swift",
-          "historical_track_ids": []
+          "historical_track_ids": [],
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:shouldve_said_no_the_3d_concert_experience",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "Teardrops On My Guitar",
@@ -464,7 +900,27 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b27334614bd156c2177e3c0dd051",
           "display_era": "Taylor Swift",
-          "historical_track_ids": []
+          "historical_track_ids": [],
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:teardrops_on_my_guitar",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         },
         {
           "title": "Teardrops On My Guitar - Live From Clear Channel Stripped 2008",
@@ -486,7 +942,76 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
           "display_era": "Taylor Swift",
           "historical_track_ids": [],
-          "release_date": "2008-06-28T00:00:00Z"
+          "release_date": "2008-06-28T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:teardrops_on_my_guitar_live_from_clear_channel_stripped_2008",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          }
+        }
+      ]
+    },
+    {
+      "section": "extras",
+      "track_count": 1,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Crazier",
+          "url": "https://open.spotify.com/intl-fr/track/5vyxXfD5gLlyPxGZMEjtmd",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "Crazier",
+          "album": "Taylor Swift",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Crazier",
+          "song_family": "crazier",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730e8ba185f3e9f15630a7b5fb",
+          "historical_track_ids": [],
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:crazier",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
         }
       ]
     }

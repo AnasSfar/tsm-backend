@@ -2,7 +2,7 @@
   {
     "album": "Standalone & Extras",
     "section": "streaming_extras",
-    "track_count": 55,
+    "track_count": 57,
     "tracks": [
       {
         "title": "Babe",
@@ -316,7 +316,9 @@
         "song_family": "gasoline_feat_taylor_swift",
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273667f8cfd1be0d0cc2b825e25",
-        "historical_track_ids": [],
+        "historical_track_ids": [
+          "645Exr2lJIO45Guht3qyIa"
+        ],
         "genres": [],
         "genre_status": "missing",
         "genre_scores": {},
@@ -356,7 +358,9 @@
         "song_family": "highway_dont_care",
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273af1e96b5514b5744bf5210fd",
-        "historical_track_ids": [],
+        "historical_track_ids": [
+          "1TSJsPnpjyUFsffwekaUUg"
+        ],
         "genres": [],
         "genre_status": "missing",
         "genre_scores": {},
@@ -730,7 +734,9 @@
         "song_family": "us_feat_taylor_swift",
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2736e2101520787791370f4a96b",
-        "historical_track_ids": [],
+        "historical_track_ids": [
+          "5WcsxoURbNjQPQvzKpHUMn"
+        ],
         "genres": [],
         "genre_status": "missing",
         "genre_scores": {},
@@ -770,7 +776,9 @@
         "song_family": "cruel_summer",
         "version_tag": "live",
         "release_date": "2023-10-19T00:00:00Z",
-        "historical_track_ids": [],
+        "historical_track_ids": [
+          "6EXHGKZ79AUTzCe9BMZjhT"
+        ],
         "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273f669b4e7f0327c92909bc762",
         "genres": [
           "electropop",
@@ -1508,9 +1516,11 @@
         "title_clean": "I Heart ?",
         "song_family": "i_heart",
         "version_tag": null,
-        "image_url": "",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/4/4f/Beautiful_Eyes.png",
         "release_date": null,
-        "historical_track_ids": []
+        "historical_track_ids": [
+          "2HxTSD72RBQR31HtyX72sf"
+        ]
       },
       {
         "title": "American Girl",
@@ -1592,9 +1602,11 @@
         "title_clean": "Beautiful Eyes",
         "song_family": "beautiful_eyes",
         "version_tag": null,
-        "image_url": "",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/4/4f/Beautiful_Eyes.png",
         "release_date": null,
-        "historical_track_ids": []
+        "historical_track_ids": [
+          "1a5kAD0K7zijLlZokbRDe2"
+        ]
       },
       {
         "title": "Red - 2013 CMA Awards Performance",
@@ -1656,7 +1668,7 @@
         "song_family": "slut_taylors_version_from_the_vault",
         "version_tag": null,
         "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2734110bfab1185fdfc9dfc2cf0",
-        "release_date": null,
+        "release_date": "2023-10-26T00:00:00Z",
         "historical_track_ids": []
       },
       {
@@ -1699,7 +1711,9 @@
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2739c351de6861e801c1b679d53",
         "release_date": null,
-        "historical_track_ids": []
+        "historical_track_ids": [
+          "6KEemo78n0RnCQWKkeOdXz"
+        ]
       },
       {
         "title": "The Story Of Us - International Mix",
@@ -1721,6 +1735,4151 @@
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273e1bc852a04501952c765d5cd",
         "release_date": null,
         "historical_track_ids": []
+      },
+      {
+        "title": "Our Song",
+        "url": "https://open.spotify.com/track/3iaYan8tKzKGP0MNWbSgxM",
+        "type": "standalone",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 9999,
+        "base_title": "Our Song",
+        "album": "Fearless",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Our Song",
+        "song_family": "our_song_chartsnapshot_historical_fearless",
+        "version_tag": "chartsnapshot_historical_extra",
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f4ca7bd",
+        "historical_track_ids": [],
+        "release_date": "2008-11-11T00:00:00Z",
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:our_song_chartsnapshot_historical_fearless",
+        "filter_tags": [
+          "standalone"
+        ],
+        "filter_tag_sources": {
+          "standalone": "medium:section_or_type"
+        },
+        "chart_extra": true
+      },
+      {
+        "title": "Long Live",
+        "url": "https://open.spotify.com/track/42pHJPLlDjfvdAUb7aeDXb",
+        "type": "standalone",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 9999,
+        "base_title": "Long Live",
+        "album": "Long Live",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Long Live",
+        "song_family": "long_live_chartsnapshot_historical_single",
+        "version_tag": "chartsnapshot_historical_extra",
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27345a15cc3f3142d121b18bd9f",
+        "historical_track_ids": [],
+        "release_date": "2012-01-01T00:00:00Z",
+        "genres": [],
+        "genre_status": "missing",
+        "genre_scores": {},
+        "genre_sources": {
+          "lastfm": []
+        },
+        "genre_raw_sources": {
+          "lastfm": []
+        },
+        "genre_query_titles": {},
+        "genre_errors": {},
+        "genre_canonical_key": "family:long_live_chartsnapshot_historical_single",
+        "filter_tags": [
+          "standalone"
+        ],
+        "filter_tag_sources": {
+          "standalone": "medium:section_or_type"
+        },
+        "chart_extra": true
+      }
+    ]
+  },
+  {
+    "album": "Standalone & Extras",
+    "section": "streaming_extras",
+    "chart_extra": true,
+    "track_count": 140,
+    "tracks": [
+      {
+        "title": "22 - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/1wePVBS4L6xhCvVUItPAZQ",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 1,
+        "base_title": "22",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "22 - Commentary",
+        "song_family": "22",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2012-10-22T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+      },
+      {
+        "title": "A Perfectly Good Heart - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/0MdvaY1bXQVxkInYNCQc7y",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 2,
+        "base_title": "A Perfectly Good Heart",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "A Perfectly Good Heart - Commentary",
+        "song_family": "a_perfectly_good_heart",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "A Perfectly Good Heart - Instrumental w/ BG vocals",
+        "url": "https://open.spotify.com/intl-fr/track/5NEP34PtTtFQaZpeeDPWeU",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 3,
+        "base_title": "A Perfectly Good Heart",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "A Perfectly Good Heart - Instrumental w/ BG vocals",
+        "song_family": "a_perfectly_good_heart",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "A Place In This World - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/5jPbjmpn2I9mw7HvSWvqFu",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 4,
+        "base_title": "A Place In This World",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "A Place In This World - Commentary",
+        "song_family": "a_place_in_this_world",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "A Place In This World - Instrumental w/ BG vocals",
+        "url": "https://open.spotify.com/intl-fr/track/07hRnco0bhycHEh6k92Xlk",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 5,
+        "base_title": "A Place In This World",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "A Place In This World - Instrumental w/ BG vocals",
+        "song_family": "a_place_in_this_world",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "All Too Well - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/1yVVoBDzSkFkZRWtq9x3u1",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 6,
+        "base_title": "All Too Well",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "All Too Well - Commentary",
+        "song_family": "all_too_well",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2012-10-22T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+      },
+      {
+        "title": "All You Had To Do Was Stay - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/1Z79tpetXTqujnp0UYOV7V",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 7,
+        "base_title": "All You Had To Do Was Stay",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "All You Had To Do Was Stay - Commentary",
+        "song_family": "all_you_had_to_do_was_stay",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2014-10-27T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+      },
+      {
+        "title": "All You Had To Do Was Stay - Karaoke Version",
+        "url": "https://open.spotify.com/intl-fr/track/4vWXPp6Tuf6ury2dCh0uAI",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 8,
+        "base_title": "All You Had To Do Was Stay",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "All You Had To Do Was Stay - Karaoke Version",
+        "song_family": "all_you_had_to_do_was_stay",
+        "version_tag": "karaoke",
+        "version_tags": [
+          "karaoke"
+        ],
+        "catalog_category": "karaoke",
+        "music_track": false,
+        "release_date": "2015-02-01T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "karaoke",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+      },
+      {
+        "title": "Back To December - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/3MqHevAhUErYJoC1ceESEe",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 9,
+        "base_title": "Back To December",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Back To December - Commentary",
+        "song_family": "back_to_december",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd"
+      },
+      {
+        "title": "Back To December - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/intl-fr/track/5fWNEKU1JTe07KsrJ7stft",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 10,
+        "base_title": "Back To December",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Back To December - Instrumental With Background Vocals",
+        "song_family": "back_to_december",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd"
+      },
+      {
+        "title": "Bad Blood - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/0Xtgj2RuEo5FInZ0b4KYuY",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 11,
+        "base_title": "Bad Blood",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Bad Blood - Commentary",
+        "song_family": "bad_blood",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2014-10-27T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+      },
+      {
+        "title": "Bad Blood - Karaoke Version",
+        "url": "https://open.spotify.com/intl-fr/track/6bzWVosI1yQkHUrN22cMWE",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 12,
+        "base_title": "Bad Blood",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Bad Blood - Karaoke Version",
+        "song_family": "bad_blood",
+        "version_tag": "karaoke",
+        "version_tags": [
+          "karaoke"
+        ],
+        "catalog_category": "karaoke",
+        "music_track": false,
+        "release_date": "2015-02-01T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "karaoke",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+      },
+      {
+        "title": "Begin Again - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/3JayaISg308IVZhUY0XUXe",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 13,
+        "base_title": "Begin Again",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Begin Again - Commentary",
+        "song_family": "begin_again",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2012-10-22T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+      },
+      {
+        "title": "Better Than Revenge - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/7msaHKbkc94FKxIMsH4DAm",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 14,
+        "base_title": "Better Than Revenge",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Better Than Revenge - Commentary",
+        "song_family": "better_than_revenge",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f"
+      },
+      {
+        "title": "Better Than Revenge - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/intl-fr/track/0UK4QL2zQWgWzj47V6qgsz",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 15,
+        "base_title": "Better Than Revenge",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Better Than Revenge - Instrumental With Background Vocals",
+        "song_family": "better_than_revenge",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f"
+      },
+      {
+        "title": "Blank Space - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/4fiLVxZ0UAsWAzUwGqkZA9",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 16,
+        "base_title": "Blank Space",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Blank Space - Commentary",
+        "song_family": "blank_space",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2014-10-27T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+      },
+      {
+        "title": "Breathe - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/3cAHqw3B2deaHRXV9WrYAA",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 17,
+        "base_title": "Breathe",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Breathe - Commentary",
+        "song_family": "breathe",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2"
+      },
+      {
+        "title": "Breathe - Instrumental only, no BV",
+        "url": "https://open.spotify.com/intl-fr/track/795ZVsHOr5ky9yrY6FDA6Q",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 18,
+        "base_title": "Breathe",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Breathe - Instrumental only, no BV",
+        "song_family": "breathe",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2"
+      },
+      {
+        "title": "Call It What You Want - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/4eRp4OhES42IiokxA59E60",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 19,
+        "base_title": "Call It What You Want",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Call It What You Want - Commentary",
+        "song_family": "call_it_what_you_want",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2017-11-10T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+      },
+      {
+        "title": "Change - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/1NTxT72xu3GkYq5wIq0RG5",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 20,
+        "base_title": "Change",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Change - Commentary",
+        "song_family": "change",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e"
+      },
+      {
+        "title": "Change - Instrumental with BGV",
+        "url": "https://open.spotify.com/intl-fr/track/6D0MZbrShD5AK8P2Ig6bow",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 21,
+        "base_title": "Change",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Change - Instrumental with BGV",
+        "song_family": "change",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e"
+      },
+      {
+        "title": "Clean - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/0w5HrA1s3WZIqAUYicJo0A",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 22,
+        "base_title": "Clean",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Clean - Commentary",
+        "song_family": "clean",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2014-10-27T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+      },
+      {
+        "title": "Clean - Karaoke Version",
+        "url": "https://open.spotify.com/intl-fr/track/7AiIXVMIrTqHlGn7bS3f31",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 23,
+        "base_title": "Clean",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Clean - Karaoke Version",
+        "song_family": "clean",
+        "version_tag": "karaoke",
+        "version_tags": [
+          "karaoke"
+        ],
+        "catalog_category": "karaoke",
+        "music_track": false,
+        "release_date": "2015-02-01T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "karaoke",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+      },
+      {
+        "title": "Cold As You - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/5f22cJ5bgEqYYpbAJn0D6D",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 24,
+        "base_title": "Cold As You",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Cold As You - Commentary",
+        "song_family": "cold_as_you",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "Cold As You - Instrumental w/ BG vocals",
+        "url": "https://open.spotify.com/intl-fr/track/0SwaNP777wQtTy9cEm886m",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 25,
+        "base_title": "Cold As You",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Cold As You - Instrumental w/ BG vocals",
+        "song_family": "cold_as_you",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "Dancing With Our Hands Tied - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/73AHP8EqSH8QXqqoFXKwdW",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 26,
+        "base_title": "Dancing With Our Hands Tied",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Dancing With Our Hands Tied - Commentary",
+        "song_family": "dancing_with_our_hands_tied",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2017-11-10T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+      },
+      {
+        "title": "Dear John - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/1WxSuTO0X0HKb1dkQjVkVo",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 27,
+        "base_title": "Dear John",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Dear John - Commentary",
+        "song_family": "dear_john",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd"
+      },
+      {
+        "title": "Dear John - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/intl-fr/track/4jqsWkHTmhBdTKHtsaw2gL",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 28,
+        "base_title": "Dear John",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Dear John - Instrumental With Background Vocals",
+        "song_family": "dear_john",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd"
+      },
+      {
+        "title": "Delicate - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/2XmWRdsQlXna2gcAn1Dquv",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 29,
+        "base_title": "Delicate",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Delicate - Commentary",
+        "song_family": "delicate",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2017-11-10T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+      },
+      {
+        "title": "Don't Blame Me - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/59ZmeIz57cGU5Gp9omjlYB",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 30,
+        "base_title": "Don't Blame Me",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Don't Blame Me - Commentary",
+        "song_family": "don_t_blame_me",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2017-11-10T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+      },
+      {
+        "title": "Dress - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/0FfnSwDzc5KuBCkhJzIL2c",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 31,
+        "base_title": "Dress",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Dress - Commentary",
+        "song_family": "dress",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2017-11-10T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+      },
+      {
+        "title": "Enchanted - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/1eGBTPSSrr9Lem1BVKzgia",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 32,
+        "base_title": "Enchanted",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Enchanted - Commentary",
+        "song_family": "enchanted",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd"
+      },
+      {
+        "title": "Enchanted - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/intl-fr/track/0ruvufCIGCWaf67Tb8R64O",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 33,
+        "base_title": "Enchanted",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Enchanted - Instrumental With Background Vocals",
+        "song_family": "enchanted",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd"
+      },
+      {
+        "title": "End Game - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/5v5s9gE1UVpPaPdOxkbBwP",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 34,
+        "base_title": "End Game",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "End Game - Commentary",
+        "song_family": "end_game",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2017-11-10T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+      },
+      {
+        "title": "Everything Has Changed - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/633FwmKmrHWn6sLTL3db72",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 35,
+        "base_title": "Everything Has Changed",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Everything Has Changed - Commentary",
+        "song_family": "everything_has_changed",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2012-10-22T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+      },
+      {
+        "title": "Fearless - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/7C7usPxKM74lA8HJbCqZnz",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 36,
+        "base_title": "Fearless",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Fearless - Commentary",
+        "song_family": "fearless",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2"
+      },
+      {
+        "title": "Fearless - Instrumental with BGV",
+        "url": "https://open.spotify.com/intl-fr/track/5Gz9GFSwHObbmjSRHgTphe",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 37,
+        "base_title": "Fearless",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Fearless - Instrumental with BGV",
+        "song_family": "fearless",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2"
+      },
+      {
+        "title": "Fifteen - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/3Aelp7PlkDvBvCPqvyIopZ",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 38,
+        "base_title": "Fifteen",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Fifteen - Commentary",
+        "song_family": "fifteen",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da"
+      },
+      {
+        "title": "Fifteen - Instrumental with BGV",
+        "url": "https://open.spotify.com/intl-fr/track/2p2iPBELfsen9imWH0NkId",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 39,
+        "base_title": "Fifteen",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Fifteen - Instrumental with BGV",
+        "song_family": "fifteen",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da"
+      },
+      {
+        "title": "Forever & Always - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/57USOybNwyjN8ZUZLm9hra",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 40,
+        "base_title": "Forever & Always",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Forever & Always - Commentary",
+        "song_family": "forever_and_always",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2"
+      },
+      {
+        "title": "Forever & Always - Instrumental with BGV",
+        "url": "https://open.spotify.com/intl-fr/track/3T7zAF5sfNq0blGbz21TTa",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 41,
+        "base_title": "Forever & Always",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Forever & Always - Instrumental with BGV",
+        "song_family": "forever_and_always",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2"
+      },
+      {
+        "title": "Getaway Car - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/2dAXNjG5vwMAlgHzAC7vZC",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 42,
+        "base_title": "Getaway Car",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Getaway Car - Commentary",
+        "song_family": "getaway_car",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2017-11-10T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+      },
+      {
+        "title": "Gorgeous - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/7enXOiKyiRhg84vgU8N8VS",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 43,
+        "base_title": "Gorgeous",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Gorgeous - Commentary",
+        "song_family": "gorgeous",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2017-11-10T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+      },
+      {
+        "title": "Haunted - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/6PnszbMFmzHaxT2ANFgRVQ",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 44,
+        "base_title": "Haunted",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Haunted - Commentary",
+        "song_family": "haunted",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f"
+      },
+      {
+        "title": "Haunted - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/intl-fr/track/6PiiQa5q6FjhBfaPsCp4mJ",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 45,
+        "base_title": "Haunted",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Haunted - Instrumental With Background Vocals",
+        "song_family": "haunted",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f"
+      },
+      {
+        "title": "Hey Stephen - Instrumental with BGV",
+        "url": "https://open.spotify.com/intl-fr/track/0wN94hAOTCu4Vv4TCbhVZD",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 46,
+        "base_title": "Hey Stephen",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Hey Stephen - Instrumental with BGV",
+        "song_family": "hey_stephen",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2"
+      },
+      {
+        "title": "Holy Ground - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/0HTZpLa2SjBmuJ6zJ7OqMm",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 47,
+        "base_title": "Holy Ground",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Holy Ground - Commentary",
+        "song_family": "holy_ground",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2012-10-22T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+      },
+      {
+        "title": "How You Get The Girl - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/2juzwShPy28xL3umOogU3u",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 48,
+        "base_title": "How You Get The Girl",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "How You Get The Girl - Commentary",
+        "song_family": "how_you_get_the_girl",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2014-10-27T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+      },
+      {
+        "title": "How You Get The Girl - Karaoke Version",
+        "url": "https://open.spotify.com/intl-fr/track/0uBYyYTfuuDigZvBN6HnUt",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 49,
+        "base_title": "How You Get The Girl",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "How You Get The Girl - Karaoke Version",
+        "song_family": "how_you_get_the_girl",
+        "version_tag": "karaoke",
+        "version_tags": [
+          "karaoke"
+        ],
+        "catalog_category": "karaoke",
+        "music_track": false,
+        "release_date": "2015-02-01T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "karaoke",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+      },
+      {
+        "title": "I Almost Do - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/2rLYkfJSgTPtOTLjYEdozL",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 50,
+        "base_title": "I Almost Do",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "I Almost Do - Commentary",
+        "song_family": "i_almost_do",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2012-10-22T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+      },
+      {
+        "title": "I Did Something Bad - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/5fUE3r8hdIUQug2028aA8F",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 51,
+        "base_title": "I Did Something Bad",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "I Did Something Bad - Commentary",
+        "song_family": "i_did_something_bad",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2017-11-10T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+      },
+      {
+        "title": "I Knew You Were Trouble. - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/2vTjAIZbfW7W8NGBOZ5rK5",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 52,
+        "base_title": "I Knew You Were Trouble.",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "I Knew You Were Trouble. - Commentary",
+        "song_family": "i_knew_you_were_trouble",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2012-10-22T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+      },
+      {
+        "title": "I Know Places - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/6xxSYpv0gGX7V7Bikx1gGy",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 53,
+        "base_title": "I Know Places",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "I Know Places - Commentary",
+        "song_family": "i_know_places",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2014-10-27T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+      },
+      {
+        "title": "I Know Places - Karaoke Version",
+        "url": "https://open.spotify.com/intl-fr/track/4Dzma7nri1H2XNQ7b8Fs5b",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 54,
+        "base_title": "I Know Places",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "I Know Places - Karaoke Version",
+        "song_family": "i_know_places",
+        "version_tag": "karaoke",
+        "version_tags": [
+          "karaoke"
+        ],
+        "catalog_category": "karaoke",
+        "music_track": false,
+        "release_date": "2015-02-01T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "karaoke",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+      },
+      {
+        "title": "I Wish You Would - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/2GZI4YxTKT07KaQZAMmz5N",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 55,
+        "base_title": "I Wish You Would",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "I Wish You Would - Commentary",
+        "song_family": "i_wish_you_would",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2014-10-27T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+      },
+      {
+        "title": "I Wish You Would - Karaoke Version",
+        "url": "https://open.spotify.com/intl-fr/track/3g7PbLRaKm2MmfHNyMbjJn",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 56,
+        "base_title": "I Wish You Would",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "I Wish You Would - Karaoke Version",
+        "song_family": "i_wish_you_would",
+        "version_tag": "karaoke",
+        "version_tags": [
+          "karaoke"
+        ],
+        "catalog_category": "karaoke",
+        "music_track": false,
+        "release_date": "2015-02-01T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "karaoke",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+      },
+      {
+        "title": "I'm Only Me When I'm With You - Instrumental w/ BG vocals",
+        "url": "https://open.spotify.com/intl-fr/track/0k7VfuL6QDZDItHMfStLGr",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 57,
+        "base_title": "I'm Only Me When I'm With You",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "I'm Only Me When I'm With You - Instrumental w/ BG vocals",
+        "song_family": "i_m_only_me_when_i_m_with_you",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "Innocent - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/4JOZRF1Tp23yeLDkaJvYiC",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 58,
+        "base_title": "Innocent",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Innocent - Commentary",
+        "song_family": "innocent",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f"
+      },
+      {
+        "title": "Innocent - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/intl-fr/track/5tcxJo6DZ1wjkC2Fv1xDiV",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 59,
+        "base_title": "Innocent",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Innocent - Instrumental With Background Vocals",
+        "song_family": "innocent",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f"
+      },
+      {
+        "title": "Invisible - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/30Is1TtZHWvnZbsMtzwv6n",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 60,
+        "base_title": "Invisible",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Invisible - Commentary",
+        "song_family": "invisible",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "Invisible - Instrumental w/ BG vocals",
+        "url": "https://open.spotify.com/intl-fr/track/5dNcm3dP4bdBHuFmOs2ZOG",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 61,
+        "base_title": "Invisible",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Invisible - Instrumental w/ BG vocals",
+        "song_family": "invisible",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "I’m Only Me When I’m With You - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/1nmUwsjwOgeBxETJ51VMjx",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 62,
+        "base_title": "I’m Only Me When I’m With You",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "I’m Only Me When I’m With You - Commentary",
+        "song_family": "im_only_me_when_im_with_you",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96f"
+      },
+      {
+        "title": "King Of My Heart - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/2d9Ud0fwm5Oq73F5vPSoQB",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 63,
+        "base_title": "King Of My Heart",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "King Of My Heart - Commentary",
+        "song_family": "king_of_my_heart",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2017-11-10T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+      },
+      {
+        "title": "Last Kiss - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/2YiBQKOQhgdSddgpCDZmYO",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 64,
+        "base_title": "Last Kiss",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Last Kiss - Commentary",
+        "song_family": "last_kiss",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f"
+      },
+      {
+        "title": "Last Kiss - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/intl-fr/track/7fdXE3zL3J2AmQLXSDNM8b",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 65,
+        "base_title": "Last Kiss",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Last Kiss - Instrumental With Background Vocals",
+        "song_family": "last_kiss",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f"
+      },
+      {
+        "title": "Long Live - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/6trbb1ao6xqh6FjKc0BRYF",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 66,
+        "base_title": "Long Live",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Long Live - Commentary",
+        "song_family": "long_live",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273e11a75a2f2ff39cec788a015"
+      },
+      {
+        "title": "Long Live - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/intl-fr/track/0yJ94T12iL5gGz5HDn1nos",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 67,
+        "base_title": "Long Live",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Long Live - Instrumental With Background Vocals",
+        "song_family": "long_live",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273e11a75a2f2ff39cec788a015"
+      },
+      {
+        "title": "Look What You Made Me Do - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/3ilBqQXWOO6FWaPyNsVUbw",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 68,
+        "base_title": "Look What You Made Me Do",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Look What You Made Me Do - Commentary",
+        "song_family": "look_what_you_made_me_do",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2017-11-10T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+      },
+      {
+        "title": "Love Story - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/7D4bd801muwRfuo5F3KkGk",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 69,
+        "base_title": "Love Story",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Love Story - Commentary",
+        "song_family": "love_story",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da"
+      },
+      {
+        "title": "Mary's Song (Oh My My My) - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/7vKXsy9iKZl4SaASFqSQKg",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 70,
+        "base_title": "Mary's Song (Oh My My My)",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Mary's Song (Oh My My My) - Commentary",
+        "song_family": "mary_s_song_oh_my_my_my",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "Mary's Song (Oh My My My) - Instrumental w/ BG vocals",
+        "url": "https://open.spotify.com/intl-fr/track/1QMmJSW0E8rdJRMGOUrnJd",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 71,
+        "base_title": "Mary's Song (Oh My My My)",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Mary's Song (Oh My My My) - Instrumental w/ BG vocals",
+        "song_family": "mary_s_song_oh_my_my_my",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "Mean - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/4JJz3bQDt922DzUNHsGtWk",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 72,
+        "base_title": "Mean",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Mean - Commentary",
+        "song_family": "mean",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd"
+      },
+      {
+        "title": "Mean - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/intl-fr/track/2Aho0iiNBf6E4XYtlha9xY",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 73,
+        "base_title": "Mean",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Mean - Instrumental With Background Vocals",
+        "song_family": "mean",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd"
+      },
+      {
+        "title": "Mine - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/6vmevdni3tJLxzRXSU7UVd",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 74,
+        "base_title": "Mine",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Mine - Commentary",
+        "song_family": "mine",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f"
+      },
+      {
+        "title": "Mine - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/intl-fr/track/7J4cg1IeDWDY4oE19CaIra",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 75,
+        "base_title": "Mine",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Mine - Instrumental With Background Vocals",
+        "song_family": "mine",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f"
+      },
+      {
+        "title": "Never Grow Up - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/0eRpceXMfMVYhMVrVkgWxS",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 76,
+        "base_title": "Never Grow Up",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Never Grow Up - Commentary",
+        "song_family": "never_grow_up",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd"
+      },
+      {
+        "title": "Never Grow Up - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/intl-fr/track/3d1fzbROHb17uYI40hbql7",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 77,
+        "base_title": "Never Grow Up",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Never Grow Up - Instrumental With Background Vocals",
+        "song_family": "never_grow_up",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd"
+      },
+      {
+        "title": "New Romantics - Karaoke Version",
+        "url": "https://open.spotify.com/intl-fr/track/248qgqZNy5T5KsGHgTxeIM",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 78,
+        "base_title": "New Romantics",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "New Romantics - Karaoke Version",
+        "song_family": "new_romantics",
+        "version_tag": "karaoke",
+        "version_tags": [
+          "karaoke"
+        ],
+        "catalog_category": "karaoke",
+        "music_track": false,
+        "release_date": "2015-02-01T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "karaoke",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+      },
+      {
+        "title": "New Year's Day - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/518FPNbDfkkxamoeR6lGo3",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 79,
+        "base_title": "New Year's Day",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "New Year's Day - Commentary",
+        "song_family": "new_year_s_day",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2017-11-10T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+      },
+      {
+        "title": "Our Song - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/2l74Cv256ElApUd119a9ib",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 80,
+        "base_title": "Our Song",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Our Song - Commentary",
+        "song_family": "our_song",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "Our Song - Instrumental w/ BG vocals",
+        "url": "https://open.spotify.com/intl-fr/track/0EQovrrG0oNLPLJrVGKqj0",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 81,
+        "base_title": "Our Song",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Our Song - Instrumental w/ BG vocals",
+        "song_family": "our_song",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "Out Of The Woods - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/5ckUacHVEsmgJI7akKHadD",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 82,
+        "base_title": "Out Of The Woods",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Out Of The Woods - Commentary",
+        "song_family": "out_of_the_woods",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2014-10-27T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+      },
+      {
+        "title": "Out Of The Woods - Karaoke Version",
+        "url": "https://open.spotify.com/intl-fr/track/4WrJR6LJ8MtIxouKHUkTEM",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 83,
+        "base_title": "Out Of The Woods",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Out Of The Woods - Karaoke Version",
+        "song_family": "out_of_the_woods",
+        "version_tag": "karaoke",
+        "version_tags": [
+          "karaoke"
+        ],
+        "catalog_category": "karaoke",
+        "music_track": false,
+        "release_date": "2015-02-01T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "karaoke",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+      },
+      {
+        "title": "Picture To Burn - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/3y40XaB0r8LwJzECdhXqmq",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 84,
+        "base_title": "Picture To Burn",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Picture To Burn - Commentary",
+        "song_family": "picture_to_burn",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "Picture To Burn - Instrumental w/ BG vocals",
+        "url": "https://open.spotify.com/intl-fr/track/6mEIFRsfukxqWeKXuKaalI",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 85,
+        "base_title": "Picture To Burn",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Picture To Burn - Instrumental w/ BG vocals",
+        "song_family": "picture_to_burn",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "Radio Outro - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/2btS16fbQxhnO3Hbh0a83v",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 86,
+        "base_title": "Radio Outro",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Radio Outro - Commentary",
+        "song_family": "radio_outro",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2017-11-10T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/7f/81/c1/7f81c122-95d2-c42a-f1d8-49db7cc88951/18OPBMR00211.rgb.jpg/64x64bb.jpg"
+      },
+      {
+        "title": "Red - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/1VW4AEDihVs3BQB6KnTYIY",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 87,
+        "base_title": "Red",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Red - Commentary",
+        "song_family": "red",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2012-10-22T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+      },
+      {
+        "title": "Sad Beautiful Tragic - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/3rMskQgCc54bAQUfE0U4Fw",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 88,
+        "base_title": "Sad Beautiful Tragic",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Sad Beautiful Tragic - Commentary",
+        "song_family": "sad_beautiful_tragic",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2012-10-22T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+      },
+      {
+        "title": "Shake It Off - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/4CWLOxjskk6fjixCboD4vJ",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 89,
+        "base_title": "Shake It Off",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Shake It Off - Commentary",
+        "song_family": "shake_it_off",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2014-10-27T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+      },
+      {
+        "title": "Should've Said No - Instrumental w/ BG vocals",
+        "url": "https://open.spotify.com/intl-fr/track/1gAwz7T7QfpDuSkdS7qdQ5",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 90,
+        "base_title": "Should've Said No",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Should've Said No - Instrumental w/ BG vocals",
+        "song_family": "should_ve_said_no",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "Should’ve Said No - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/0ST1G2zAOuSPd6rYdF3RS0",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 91,
+        "base_title": "Should’ve Said No",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Should’ve Said No - Commentary",
+        "song_family": "shouldve_said_no",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96f"
+      },
+      {
+        "title": "So It Goes… - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/4kxj7TJF4A88P4LPeLrsoZ",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 92,
+        "base_title": "So It Goes…",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "So It Goes… - Commentary",
+        "song_family": "so_it_goes",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2017-11-10T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+      },
+      {
+        "title": "Sparks Fly - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/3nWqFKQTstzwvrLEW82dgE",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 93,
+        "base_title": "Sparks Fly",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Sparks Fly - Commentary",
+        "song_family": "sparks_fly",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd"
+      },
+      {
+        "title": "Sparks Fly - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/intl-fr/track/4A7shC8pd0ddDSqrvETTsu",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 94,
+        "base_title": "Sparks Fly",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Sparks Fly - Instrumental With Background Vocals",
+        "song_family": "sparks_fly",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd"
+      },
+      {
+        "title": "Speak Now - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/35XDhcPNgNczxX0aUmiuKH",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 95,
+        "base_title": "Speak Now",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Speak Now - Commentary",
+        "song_family": "speak_now",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd"
+      },
+      {
+        "title": "Speak Now - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/intl-fr/track/6nHV1NXioyCPpewRMh2DxC",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 96,
+        "base_title": "Speak Now",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Speak Now - Instrumental With Background Vocals",
+        "song_family": "speak_now",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd"
+      },
+      {
+        "title": "Starlight - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/2ag2oLCwlFIA88hQrLMHzv",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 97,
+        "base_title": "Starlight",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Starlight - Commentary",
+        "song_family": "starlight",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2012-10-22T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+      },
+      {
+        "title": "State Of Grace - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/7HbZuazpPbDDMkb8Tmvxq0",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 98,
+        "base_title": "State Of Grace",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "State Of Grace - Commentary",
+        "song_family": "state_of_grace",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2012-10-22T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+      },
+      {
+        "title": "Stay Beautiful - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/2BYhoERzw4iA6h5fneotEy",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 99,
+        "base_title": "Stay Beautiful",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Stay Beautiful - Commentary",
+        "song_family": "stay_beautiful",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "Stay Beautiful - Instrumental w/ BG vocals",
+        "url": "https://open.spotify.com/intl-fr/track/7HLQ82LguDnF5MBC7F7Yte",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 100,
+        "base_title": "Stay Beautiful",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Stay Beautiful - Instrumental w/ BG vocals",
+        "song_family": "stay_beautiful",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "Stay Stay Stay - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/4sFwzqXqNcNV3cTyTybq0M",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 101,
+        "base_title": "Stay Stay Stay",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Stay Stay Stay - Commentary",
+        "song_family": "stay_stay_stay",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2012-10-22T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+      },
+      {
+        "title": "Style - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/4CyL8bBbVRYB0ogadF4aUS",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 102,
+        "base_title": "Style",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Style - Commentary",
+        "song_family": "style",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2014-10-27T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+      },
+      {
+        "title": "Teardrops On My Guitar - Instrumental w/ BG vocals",
+        "url": "https://open.spotify.com/intl-fr/track/6pwfOVtNVEvIYF6x0h45En",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 103,
+        "base_title": "Teardrops On My Guitar",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Teardrops On My Guitar - Instrumental w/ BG vocals",
+        "song_family": "teardrops_on_my_guitar",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "Teardrops On My Guitar - Pop Version / Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/0q0YAWyXhDggKzeicHhtfa",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 104,
+        "base_title": "Teardrops On My Guitar",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Teardrops On My Guitar - Pop Version / Commentary",
+        "song_family": "teardrops_on_my_guitar",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "Teardrops On My Guitar - Radio Single Remix / Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/0VsL7c4EBrLgaNfHQep2oy",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 105,
+        "base_title": "Teardrops On My Guitar",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Teardrops On My Guitar - Radio Single Remix / Commentary",
+        "song_family": "teardrops_on_my_guitar",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "Tell Me Why - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/1SARZTSJ1YeXgImYzpSxef",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 106,
+        "base_title": "Tell Me Why",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Tell Me Why - Commentary",
+        "song_family": "tell_me_why",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da"
+      },
+      {
+        "title": "Tell Me Why - Instrumental with BGV",
+        "url": "https://open.spotify.com/intl-fr/track/42WE7fJI5dYoa10luMp3Na",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 107,
+        "base_title": "Tell Me Why",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Tell Me Why - Instrumental with BGV",
+        "song_family": "tell_me_why",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da"
+      },
+      {
+        "title": "The Best Day - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/2MzoTHyQgopGUL8ABcOAyr",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 108,
+        "base_title": "The Best Day",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "The Best Day - Commentary",
+        "song_family": "the_best_day",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e"
+      },
+      {
+        "title": "The Best Day - Instrumental with BGV",
+        "url": "https://open.spotify.com/intl-fr/track/0sxxlg7d2UZ60TdtcuKYZ0",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 109,
+        "base_title": "The Best Day",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "The Best Day - Instrumental with BGV",
+        "song_family": "the_best_day",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e"
+      },
+      {
+        "title": "The Last Time - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/22Zg9JjEgM0JV5HvLXNJAh",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 110,
+        "base_title": "The Last Time",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "The Last Time - Commentary",
+        "song_family": "the_last_time",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2012-10-22T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+      },
+      {
+        "title": "The Life of a Showgirl Outro",
+        "url": "https://open.spotify.com/intl-fr/track/1ohk1U9KWGSKqwfVFQbVjG",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 111,
+        "base_title": "The Life of a Showgirl Outro",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "The Life of a Showgirl Outro",
+        "song_family": "the_life_of_a_showgirl_outro",
+        "version_tag": "outro",
+        "version_tags": [
+          "outro"
+        ],
+        "catalog_category": "intro_outro",
+        "music_track": true,
+        "release_date": "2025-10-02T00:00:00Z",
+        "historical_track_ids": [],
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+      },
+      {
+        "title": "The Lucky One - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/1J22bFnVC6Rmjxby941PDf",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 112,
+        "base_title": "The Lucky One",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "The Lucky One - Commentary",
+        "song_family": "the_lucky_one",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2012-10-22T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+      },
+      {
+        "title": "The Outside - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/6ZNW3DdJVZwPvZ8fuGfW6o",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 113,
+        "base_title": "The Outside",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "The Outside - Commentary",
+        "song_family": "the_outside",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "The Outside - Instrumental w/ BG vocals",
+        "url": "https://open.spotify.com/intl-fr/track/743KlSMdeOl9JJ0nNHTEKR",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 114,
+        "base_title": "The Outside",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "The Outside - Instrumental w/ BG vocals",
+        "song_family": "the_outside",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "The Story Of Us - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/44uwUM4YEfve5tDYEbVXQb",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 115,
+        "base_title": "The Story Of Us",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "The Story Of Us - Commentary",
+        "song_family": "the_story_of_us",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd"
+      },
+      {
+        "title": "The Story Of Us - Instrumental With Background Vocals",
+        "url": "https://open.spotify.com/intl-fr/track/6AK3WJz8eIJLePdy09nGR4",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 116,
+        "base_title": "The Story Of Us",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "The Story Of Us - Instrumental With Background Vocals",
+        "song_family": "the_story_of_us",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2010-10-25T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd"
+      },
+      {
+        "title": "The Way I Loved You - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/7lzMAvyDZyZm1hPMLpfIXy",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 117,
+        "base_title": "The Way I Loved You",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "The Way I Loved You - Commentary",
+        "song_family": "the_way_i_loved_you",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e"
+      },
+      {
+        "title": "The Way I Loved You - Instrumental with BGV",
+        "url": "https://open.spotify.com/intl-fr/track/1e380XUelS0g4AyrUfHKHL",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 118,
+        "base_title": "The Way I Loved You",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "The Way I Loved You - Instrumental with BGV",
+        "song_family": "the_way_i_loved_you",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e"
+      },
+      {
+        "title": "This Is Why We Can't Have Nice Things - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/0Fa1vab9Ssp9ah12rhfeRz",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 119,
+        "base_title": "This Is Why We Can't Have Nice Things",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "This Is Why We Can't Have Nice Things - Commentary",
+        "song_family": "this_is_why_we_can_t_have_nice_things",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2017-11-10T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
+      },
+      {
+        "title": "This Love - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/2eZbyz03ZHkqpZz2Vw3KXy",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 120,
+        "base_title": "This Love",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "This Love - Commentary",
+        "song_family": "this_love",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2014-10-27T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+      },
+      {
+        "title": "This Love - Karaoke Version",
+        "url": "https://open.spotify.com/intl-fr/track/7juXSUrMEd7f9ljLk7Pria",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 121,
+        "base_title": "This Love",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "This Love - Karaoke Version",
+        "song_family": "this_love",
+        "version_tag": "karaoke",
+        "version_tags": [
+          "karaoke"
+        ],
+        "catalog_category": "karaoke",
+        "music_track": false,
+        "release_date": "2015-02-01T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "karaoke",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+      },
+      {
+        "title": "Tied Together With A Smile - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/4eQCk8Vqfdr4mNK11QZGcT",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 122,
+        "base_title": "Tied Together With A Smile",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Tied Together With A Smile - Commentary",
+        "song_family": "tied_together_with_a_smile",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "Tied Together With A Smile - Instrumental w/ BG vocals",
+        "url": "https://open.spotify.com/intl-fr/track/0BeWU1gZfv3bb2BPnva3cy",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 123,
+        "base_title": "Tied Together With A Smile",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Tied Together With A Smile - Instrumental w/ BG vocals",
+        "song_family": "tied_together_with_a_smile",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "Tim McGraw - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/4511PLndxxMcob8Qq5KHNw",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 124,
+        "base_title": "Tim McGraw",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Tim McGraw - Commentary",
+        "song_family": "tim_mcgraw",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "Tim McGraw - Instrumental w/ BG vocals",
+        "url": "https://open.spotify.com/intl-fr/track/6FbCZTXJjwBQRsKb9leofw",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 125,
+        "base_title": "Tim McGraw",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Tim McGraw - Instrumental w/ BG vocals",
+        "song_family": "tim_mcgraw",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2006-10-24T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c"
+      },
+      {
+        "title": "Treacherous - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/3lD0QBGaxvoc9WBDnGHFUi",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 126,
+        "base_title": "Treacherous",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Treacherous - Commentary",
+        "song_family": "treacherous",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2012-10-22T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+      },
+      {
+        "title": "We Are Never Ever Getting Back Together - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/0kfTOGpi5eZCBxcRF5LFIh",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 127,
+        "base_title": "We Are Never Ever Getting Back Together",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "We Are Never Ever Getting Back Together - Commentary",
+        "song_family": "we_are_never_ever_getting_back_together",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2012-10-22T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+      },
+      {
+        "title": "Welcome to New York - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/4YugJd2i96PHwaflBauhXi",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 128,
+        "base_title": "Welcome to New York",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Welcome to New York - Commentary",
+        "song_family": "welcome_to_new_york",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2014-10-27T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+      },
+      {
+        "title": "Welcome To New York - Karaoke Version",
+        "url": "https://open.spotify.com/intl-fr/track/64FIHbthA4RhBv6fL6DGBO",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 129,
+        "base_title": "Welcome To New York",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Welcome To New York - Karaoke Version",
+        "song_family": "welcome_to_new_york",
+        "version_tag": "karaoke",
+        "version_tags": [
+          "karaoke"
+        ],
+        "catalog_category": "karaoke",
+        "music_track": false,
+        "release_date": "2015-02-01T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "karaoke",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+      },
+      {
+        "title": "White Horse - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/7F67ujlSkp8PT7uaDPuOjP",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 130,
+        "base_title": "White Horse",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "White Horse - Commentary",
+        "song_family": "white_horse",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2"
+      },
+      {
+        "title": "White Horse - Instrumental with BGV",
+        "url": "https://open.spotify.com/intl-fr/track/3t5kblMAefsRy9O9vOjkR4",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 131,
+        "base_title": "White Horse",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "White Horse - Instrumental with BGV",
+        "song_family": "white_horse",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2"
+      },
+      {
+        "title": "Wildest Dreams - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/0C5x4DoaPegrWqchk4SuLu",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 132,
+        "base_title": "Wildest Dreams",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Wildest Dreams - Commentary",
+        "song_family": "wildest_dreams",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2014-10-27T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+      },
+      {
+        "title": "Wildest Dreams - Karaoke Version",
+        "url": "https://open.spotify.com/intl-fr/track/1BXM0X5BxyUUOLEf9Rv6uZ",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 133,
+        "base_title": "Wildest Dreams",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Wildest Dreams - Karaoke Version",
+        "song_family": "wildest_dreams",
+        "version_tag": "karaoke",
+        "version_tags": [
+          "karaoke"
+        ],
+        "catalog_category": "karaoke",
+        "music_track": false,
+        "release_date": "2015-02-01T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "karaoke",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a"
+      },
+      {
+        "title": "Wonderland - Karaoke Version",
+        "url": "https://open.spotify.com/intl-fr/track/6wyqsJdxRsSM6k5hCF1pvt",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 134,
+        "base_title": "Wonderland",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Wonderland - Karaoke Version",
+        "song_family": "wonderland",
+        "version_tag": "karaoke",
+        "version_tags": [
+          "karaoke"
+        ],
+        "catalog_category": "karaoke",
+        "music_track": false,
+        "release_date": "2015-02-01T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "karaoke",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+      },
+      {
+        "title": "You Are In Love - Karaoke Version",
+        "url": "https://open.spotify.com/intl-fr/track/4xUyg90BLSnPFXbqDAlBKF",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 135,
+        "base_title": "You Are In Love",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "You Are In Love - Karaoke Version",
+        "song_family": "you_are_in_love",
+        "version_tag": "karaoke",
+        "version_tags": [
+          "karaoke"
+        ],
+        "catalog_category": "karaoke",
+        "music_track": false,
+        "release_date": "2015-02-01T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "karaoke",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2"
+      },
+      {
+        "title": "You Belong With Me - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/2BDqAaVKzQDnoVPZbdp68D",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 136,
+        "base_title": "You Belong With Me",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "You Belong With Me - Commentary",
+        "song_family": "you_belong_with_me",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da"
+      },
+      {
+        "title": "You Belong With Me - Instrumental with BGV",
+        "url": "https://open.spotify.com/intl-fr/track/02DtaJ6ADr4uQJbKEdpxxj",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 137,
+        "base_title": "You Belong With Me",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "You Belong With Me - Instrumental with BGV",
+        "song_family": "you_belong_with_me",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da"
+      },
+      {
+        "title": "You're Not Sorry - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/1V7nao9bFNvjFrmrnSz19Y",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 138,
+        "base_title": "You're Not Sorry",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "You're Not Sorry - Commentary",
+        "song_family": "you_re_not_sorry",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2"
+      },
+      {
+        "title": "You're Not Sorry - Instrumental with BGV",
+        "url": "https://open.spotify.com/intl-fr/track/6hABNvvhdtvcJNShuWhguU",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 139,
+        "base_title": "You're Not Sorry",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "You're Not Sorry - Instrumental with BGV",
+        "song_family": "you_re_not_sorry",
+        "version_tag": "instrumental",
+        "version_tags": [
+          "instrumental"
+        ],
+        "catalog_category": "instrumental",
+        "music_track": false,
+        "release_date": "2008-11-11T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "instrumental/backing vocals",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2"
+      },
+      {
+        "title": "…Ready For It? - Commentary",
+        "url": "https://open.spotify.com/intl-fr/track/61zIoCTqx0OY5pCj26Ve9W",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 140,
+        "base_title": "…Ready For It?",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "…Ready For It? - Commentary",
+        "song_family": "ready_for_it",
+        "version_tag": "commentary",
+        "version_tags": [
+          "commentary"
+        ],
+        "catalog_category": "commentary",
+        "music_track": false,
+        "release_date": "2017-11-10T00:00:00Z",
+        "historical_track_ids": [],
+        "excluded_from_public_stats": true,
+        "catalog_exclusion_reason": "commentary",
+        "chart_extra": true,
+        "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b"
       }
     ]
   }

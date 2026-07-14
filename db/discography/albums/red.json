@@ -1,7 +1,7 @@
 {
   "album": "Red",
   "section_count": 7,
-  "track_count": 28,
+  "track_count": 43,
   "sections": [
     {
       "album": "Red",
@@ -55,7 +55,7 @@
     },
     {
       "section": "standard_edition",
-      "track_count": 18,
+      "track_count": 33,
       "chart_extra": false,
       "tracks": [
         {
@@ -76,7 +76,10 @@
           "song_family": "state_of_grace",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0b16LTzby1YRVd2nq2Z0fw",
+            "5zyCYmiaVE5y26EZuwZbsw"
+          ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -117,7 +120,9 @@
           "song_family": "red",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1RvQQGwaPipiNgz8RXAKA8"
+          ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -158,7 +163,9 @@
           "song_family": "treacherous",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0XfOV7qY3834QpFVwOb6CC"
+          ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -199,7 +206,11 @@
           "song_family": "i_knew_you_were_trouble",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "3lKZf71jeNi14udIFPJ29V",
+            "6FB3v4YcR57y4tXFcdxI1E",
+            "0ciHz919LVKoH4zgxyMPZ9"
+          ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [
             "pop",
@@ -265,7 +276,9 @@
           "song_family": "all_too_well",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1q3RiD1tIWUpGsNFADMlvl"
+          ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -306,7 +319,10 @@
           "song_family": "22",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "6ce41JVa6KFaryfmC2bu2W",
+            "3bIxTsfeNMO7Nt2J3EUKrA"
+          ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [
             "pop",
@@ -372,7 +388,10 @@
           "song_family": "i_almost_do",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1eyqSYBCTane4rl4vc6PWJ",
+            "31pEV5lPJi7btskZoUr2yu"
+          ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -413,7 +432,10 @@
           "song_family": "we_are_never_ever_getting_back_together",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0VwNdo84DaVYLIkbVO86ND",
+            "1OYARuagDrpgNNQ4loO1Cs"
+          ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [
             "pop",
@@ -479,7 +501,10 @@
           "song_family": "stay_stay_stay",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0F2S1QlnMaOfmNHIgmES3k",
+            "1x0J8LFX23d5h1zzuzZorc"
+          ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -520,7 +545,9 @@
           "song_family": "the_last_time",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "2Tz4JnXZOcjcp8fWfMjBBk"
+          ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -561,7 +588,9 @@
           "song_family": "holy_ground",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1fGsZsIkQkOspfsT24nQP6"
+          ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -602,7 +631,9 @@
           "song_family": "sad_beautiful_tragic",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "5qD1xj5lXOaX1ZDpVKZeF3"
+          ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -643,7 +674,9 @@
           "song_family": "the_lucky_one",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "2X2J0BhxaLTmnxO4pPUhSd"
+          ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -684,7 +717,9 @@
           "song_family": "everything_has_changed",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "3Z1kZKYfRC8iRXnYeC5sCJ"
+          ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -725,7 +760,9 @@
           "song_family": "starlight",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1gL4vMhDV3RgJQmDuY5HK1"
+          ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -766,7 +803,9 @@
           "song_family": "begin_again",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0L4YCNRfXAoTvdpWeH2RGj"
+          ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -807,7 +846,9 @@
           "song_family": "come_back_be_here",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1n8rB9AhxiAvVP1E2c3yOd"
+          ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -848,7 +889,9 @@
           "song_family": "girl_at_home",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "6VFpuI0DDmbC5UyWZQ4IRY"
+          ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -870,6 +913,459 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
           }
+        },
+        {
+          "title": "22 - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/0LBW7lkY7L8cQUXXB16bXO",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 20,
+          "base_title": "22",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "22 - Karaoke Version",
+          "song_family": "22",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "5BIHTqXmBBdfdScTVyzUts"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+        },
+        {
+          "title": "All Too Well - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/3dWmDfq6hyHsJQG7BdGaWS",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 21,
+          "base_title": "All Too Well",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "All Too Well - Karaoke Version",
+          "song_family": "all_too_well",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "3To1MBLD7WqFoWEeiLDBzq"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+        },
+        {
+          "title": "Begin Again - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/2I2RxGMfoXihaLV68CJzm7",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 22,
+          "base_title": "Begin Again",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Begin Again - Karaoke Version",
+          "song_family": "begin_again",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "6W7G1EvtEMkSJkQFnWnpu1"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+        },
+        {
+          "title": "Everything Has Changed - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/2XD0r1dj4JinxYTSYx71fe",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 23,
+          "base_title": "Everything Has Changed",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Ed Sheeran"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Ed Sheeran"
+          ],
+          "title_clean": "Everything Has Changed - Karaoke Version",
+          "song_family": "everything_has_changed",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "536W1zo5ngO1mOTRG8cg6G"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+        },
+        {
+          "title": "Holy Ground - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/1RHdL2SIWNrv5uChsGuHWP",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 24,
+          "base_title": "Holy Ground",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Holy Ground - Karaoke Version",
+          "song_family": "holy_ground",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "6Bey6yUpkCDaIWotHLhbQm"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+        },
+        {
+          "title": "I Almost Do - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/2L3QJeJer1VeCLM7Belldq",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 25,
+          "base_title": "I Almost Do",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Almost Do - Karaoke Version",
+          "song_family": "i_almost_do",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "47D2v5qxq9BFVQV1cH5P8w"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+        },
+        {
+          "title": "I Knew You Were Trouble. - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/0gbBxe4PLriS6H3QijPsUq",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 26,
+          "base_title": "I Knew You Were Trouble.",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Knew You Were Trouble. - Karaoke Version",
+          "song_family": "i_knew_you_were_trouble",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "4EwrLjUsIF0PINB6sLZj3l"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+        },
+        {
+          "title": "Red - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/2tYdjm4wmx4LaxihipeFXC",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 27,
+          "base_title": "Red",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Red - Karaoke Version",
+          "song_family": "red",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "1AjXK5Gi1kkMRYGBjALDMr"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+        },
+        {
+          "title": "Sad Beautiful Tragic - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/7xZbFLqqa1dbwDNMFZryE7",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 28,
+          "base_title": "Sad Beautiful Tragic",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Sad Beautiful Tragic - Karaoke Version",
+          "song_family": "sad_beautiful_tragic",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "5yq6Ecb9LQvFS5rJCtPKLO"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+        },
+        {
+          "title": "Starlight - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/7DsgoKz3zlCb2zvMU062oo",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 29,
+          "base_title": "Starlight",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Starlight - Karaoke Version",
+          "song_family": "starlight",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "5v18oNV2JRQwbnCHTWILdH"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+        },
+        {
+          "title": "State Of Grace - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/2CUK34XwIWbs6J4ZJ5cFdU",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 30,
+          "base_title": "State Of Grace",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "State Of Grace - Karaoke Version",
+          "song_family": "state_of_grace",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "7r7RyzNBFfTRH9NRVBrFhJ"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+        },
+        {
+          "title": "Stay Stay Stay - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/6c38bS1QsXCuqxycGAgoRH",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 31,
+          "base_title": "Stay Stay Stay",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Stay Stay Stay - Karaoke Version",
+          "song_family": "stay_stay_stay",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "6qOF7qaj6vWfBIDyaUfFvP"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+        },
+        {
+          "title": "The Lucky One - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/6UndbaRk1yOrD5NGR9tDWb",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 32,
+          "base_title": "The Lucky One",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Lucky One - Karaoke Version",
+          "song_family": "the_lucky_one",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "7L0RPhAgKzWRLSxdtkrXFT"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+        },
+        {
+          "title": "Treacherous - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/28d5SkpM2XwX3iDrOJE9JZ",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 33,
+          "base_title": "Treacherous",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Treacherous - Karaoke Version",
+          "song_family": "treacherous",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "4wZTdfvAQRf3azGSLhNY9H"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+        },
+        {
+          "title": "We Are Never Ever Getting Back Together - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/1DSPw5AERmvyd9peYG3D48",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 34,
+          "base_title": "We Are Never Ever Getting Back Together",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "We Are Never Ever Getting Back Together - Karaoke Version",
+          "song_family": "we_are_never_ever_getting_back_together",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "6t9JL24FVFzXtpLlp6x5tZ"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
         }
       ]
     },
@@ -990,7 +1486,9 @@
           "song_family": "state_of_grace",
           "version_tag": "acoustic__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "5mfDBWY7ncZFm7ykmFTG4i"
+          ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -1044,7 +1542,9 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273220563fb6c59f7e470ba3272",
           "display_era": "Red",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "2mz69DJOIt4b1xxfxiJbBy"
+          ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -1088,7 +1588,9 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
           "display_era": "Red",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "4qTAwKJQ68gmnrnfPD3vlO"
+          ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -1141,7 +1643,9 @@
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27363d77f99117b28af9f656918",
           "display_era": "Red",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "7FFfYM4JE1vj5n4rhHxg8q"
+          ],
           "release_date": "2017-11-09T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -1288,7 +1792,8 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d29a5d713277b0b3d517507b",
           "display_era": "Red",
           "historical_track_ids": [
-            "4HGaRnv2HuMKaZMLTJQZqV"
+            "4HGaRnv2HuMKaZMLTJQZqV",
+            "4yTqjWF2EoFJM5BbSCe4YW"
           ],
           "genres": [],
           "genre_status": "missing",

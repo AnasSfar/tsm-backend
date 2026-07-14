@@ -26,8 +26,11 @@
           "song_family": "back_to_december",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
-          "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [
+            "0tr6XR58KBdDYd8qvHVTs8",
+            "5aNkiOMxQXkpoEY5bTYoCh"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
           "genres": [
             "country",
             "pop",
@@ -92,7 +95,9 @@
           "song_family": "better_than_revenge",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "55mh9j2aB7xZ1Oh463gK8k"
+          ],
           "release_date": "2010-01-01T00:00:00Z",
           "genres": [
             "country",
@@ -158,8 +163,10 @@
           "song_family": "dear_john",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
-          "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [
+            "1GeLxMgpeCnMJntwyW6rLw"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -199,8 +206,10 @@
           "song_family": "enchanted",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
-          "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [
+            "3sqrvkNC6IPTIXvvbx9Arw"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
           "genres": [
             "country",
             "pop",
@@ -265,7 +274,9 @@
           "song_family": "haunted",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "72idZxdEHLbi2YI486c3sE"
+          ],
           "release_date": "2010-01-01T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -306,7 +317,9 @@
           "song_family": "if_this_was_a_movie",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "5tSmAABuoOfR59lrtXdDqm"
+          ],
           "release_date": "2010-01-01T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -347,7 +360,9 @@
           "song_family": "innocent",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "4LraIz87diVQdDK0rhi0S4"
+          ],
           "release_date": "2010-01-01T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -388,7 +403,9 @@
           "song_family": "last_kiss",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1VCJ7vk3Y2DoJIAEOXe3V8"
+          ],
           "release_date": "2010-01-01T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -429,8 +446,10 @@
           "song_family": "mean",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
-          "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [
+            "6yM6QsnTCTVOkKEvg3hGlo"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -470,7 +489,9 @@
           "song_family": "mine",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "67Io3gxHwfbUreBf114c0u"
+          ],
           "release_date": "2010-01-01T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -511,8 +532,10 @@
           "song_family": "never_grow_up",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
-          "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [
+            "57w0Uyk2jJAkO2hMJ36xJZ"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -552,7 +575,9 @@
           "song_family": "ours",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0hK93KD6Y0j9giUGh4Valj"
+          ],
           "release_date": "2010-01-01T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -593,8 +618,10 @@
           "song_family": "sparks_fly",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
-          "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [
+            "09cM9BjyNFizKUOXh6j9rT"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -634,8 +661,10 @@
           "song_family": "speak_now",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
-          "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [
+            "2PBghI9zJkQEWBzMSMo2Ki"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -675,7 +704,9 @@
           "song_family": "superman",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "6aJ0ipi4EPmu1aTbFeXZnw"
+          ],
           "release_date": "2010-01-01T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -716,8 +747,10 @@
           "song_family": "the_story_of_us",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
-          "historical_track_ids": [],
-          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [
+            "7vBlnGdfOLzVEqiOQQxeU8"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -757,7 +790,9 @@
           "song_family": "long_live",
           "version_tag": "live__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e11a75a2f2ff39cec788a015",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "7BFc7ffruhZ4Hecnqf5xju"
+          ],
           "release_date": "2010-01-01T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -810,9 +845,10 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
           "historical_track_ids": [
-            "0fAbfDiuQiUwV7FUcFfRGY"
+            "0fAbfDiuQiUwV7FUcFfRGY",
+            "0OAHsZ8vrS2NKom3cvfJQD"
           ],
-          "release_date": "2010-10-25T00:00:00Z",
+          "release_date": "2010-01-01T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -856,7 +892,9 @@
           "song_family": "back_to_december",
           "version_tag": "acoustic__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "7k7BOXE4u6luKTwcLEAyrd"
+          ],
           "release_date": "2010-01-01T00:00:00Z",
           "genres": [
             "country",
@@ -926,7 +964,9 @@
           "song_family": "haunted",
           "version_tag": "acoustic__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "6SdBf0ZsJZoKaH5zcDaz9X"
+          ],
           "release_date": "2010-01-01T00:00:00Z",
           "genres": [],
           "genre_status": "missing",

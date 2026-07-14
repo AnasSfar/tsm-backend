@@ -92,6 +92,19 @@ def load_stream_discography_sections_flat() -> list[dict]:
     return load_album_sections_flat() + load_extra_sections_flat()
 
 
+def _is_stream_collection_excluded(track: dict) -> bool:
+    return bool(track.get("exclude_from_stream_collection"))
+
+
+def _is_public_stats_excluded(track: dict) -> bool:
+    title = str(track.get("title") or "").casefold()
+    return bool(
+        track.get("excluded_from_public_stats")
+        or track.get("music_track") is False
+        or re.search(r"\bcommentary\b|\bkaraoke\b|\binstrumental\b|\btrack by track\b|\bbackground vocals\b|\bbg vocals\b|\bbgv\b|\bno bv\b", title)
+    )
+
+
 def _r2_config() -> dict | None:
     if os.getenv("UPLOAD_TO_R2", "").strip().lower() in ("0", "false", "no", "off"):
         return None
@@ -164,6 +177,8 @@ def _is_chart_extra(section: dict, track: dict) -> bool:
     track_flag = _as_bool(track.get("chart_extra"))
     if track_flag is not None:
         return track_flag
+    if _is_public_stats_excluded(track):
+        return True
     section_flag = _as_bool(section.get("chart_extra"))
     if section_flag is not None:
         return bool(section_flag)
@@ -312,6 +327,8 @@ def load_active_track_ids_from_discography() -> set[str]:
 
     for data in load_stream_discography_sections_flat():
         for track in data.get("tracks", []):
+            if _is_stream_collection_excluded(track):
+                continue
             url = (track.get("url") or track.get("spotify_url") or "").strip()
             track_id = extract_track_id(url)
             if track_id:
@@ -982,6 +999,8 @@ def load_tracks_from_discography(active_track_ids: set[str] | None = None) -> li
 
     for section in all_sections:
         for track in section.get("tracks", []):
+            if _is_stream_collection_excluded(track):
+                continue
             url = (track.get("url") or track.get("spotify_url") or "").strip()
             track_id = extract_track_id(url)
             if not track_id or track_id in seen:

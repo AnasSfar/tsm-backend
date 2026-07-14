@@ -47,6 +47,9 @@ TWITTER_SESSION  = Path(__file__).resolve().parents[3] / "global" / "tools" / "j
 _SPOTIFY_ROOT = ROOT / "collectors" / "spotify"
 if str(_SPOTIFY_ROOT) not in sys.path:
     sys.path.insert(0, str(_SPOTIFY_ROOT))
+_COLLECTORS_ROOT = ROOT / "collectors"
+if str(_COLLECTORS_ROOT) not in sys.path:
+    sys.path.insert(0, str(_COLLECTORS_ROOT))
 _CORE = _SPOTIFY_ROOT / "core"
 if str(_CORE) not in sys.path:
     sys.path.insert(0, str(_CORE))
@@ -59,6 +62,7 @@ from core.data_paths import (  # noqa: E402
 )
 WORLDWIDE_JSON = first_existing(WEB_EXPORT_DATA_DIR / "charts_worldwide.json", LEGACY_WEBSITE_DATA_DIR / "charts_worldwide.json")
 SONGS_JSON = first_existing(WEB_EXPORT_DATA_DIR / "songs.json", LEGACY_WEBSITE_DATA_DIR / "songs.json")
+from comp.chart_card import render_chart_card  # noqa: E402
 from twitter import post_image_thread as _post_image_thread  # noqa: E402
 
 # Shared lock with core/twitter.py — prevents running Playwright while Twitter
@@ -1077,12 +1081,80 @@ def _build_tweet(song: dict, entries: list[dict], chart_date: str, prev_count: i
         country = _country_label(str(entry.get("country") or ""), str(entry.get("country_name") or ""))
         rank = entry.get("rank", "?")
         streams = _fmt_streams(entry.get("streams"))
+        is_re_entry = bool(entry.get("is_re_entry")) or str(entry.get("movement") or "").strip().upper() == "RE"
+        verb = "re-entered the Spotify Charts" if is_re_entry else "charted on Spotify"
         return (
-            f'{emoji} | "{title}" charted on Spotify in {country} at #{rank} '
+            f'{emoji} | "{title}" {verb} in {country} at #{rank} '
             f"with {streams} streams on {date_fmt}.\n\n{_OVERALL_URL}"
         )
     country_str = _country_count_text(count, prev_count)
     return f'{emoji} | "{title}" charted in {country_str} on Spotify on {date_fmt}.\n\n{_OVERALL_URL}'
+
+
+def _chart_card_date_pill(region_name: str, chart_date: str) -> str:
+    try:
+        dt = datetime.strptime(chart_date, "%Y-%m-%d")
+    except Exception:
+        return f"Spotify {region_name} Charts - {chart_date}"
+    day = dt.day
+    if 10 <= day % 100 <= 20:
+        suffix = "TH"
+    else:
+        suffix = {1: "ST", 2: "ND", 3: "RD"}.get(day % 10, "TH")
+    return f"Spotify {region_name} Charts - {dt.strftime('%B').upper()} {day}{suffix} {dt.year}"
+
+
+def _chart_card_footer_date(chart_date: str) -> str:
+    try:
+        return datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    except Exception:
+        return chart_date
+
+
+def _is_first_single_region_entry(
+    entries: list[dict],
+    track_id: str,
+    prev_country_counts: dict[str, int],
+    *,
+    has_prev_snapshot: bool,
+) -> bool:
+    if not has_prev_snapshot or len(entries) != 1:
+        return False
+    return int(prev_country_counts.get(track_id, 0) or 0) == 0
+
+
+def _render_single_region_chart_card_html(song: dict, entry: dict, chart_date: str) -> str:
+    region_name = _country_label(str(entry.get("country") or ""), str(entry.get("country_name") or ""))
+    rank = entry.get("rank")
+    streams = entry.get("streams")
+    album = _album_name(song)
+    title = str(song.get("title") or "Unknown")
+    return render_chart_card(
+        title=title,
+        eyebrow=f"Spotify {region_name} Charts",
+        subtitle=album or region_name,
+        stats=[
+            {
+                "label": "Rank",
+                "value": f"#{rank}" if rank is not None else "#-",
+                "badge": "RE",
+                "badge_class": "re",
+            },
+            {
+                "label": "Streams",
+                "value": f"{int(streams):,}" if streams is not None else "-",
+                "badge": "",
+                "badge_class": "flat",
+                "delta": "",
+                "delta_class": "flat",
+            },
+        ],
+        cover_url=_image_url_from_meta(song),
+        footer_left="@swiftiescharts",
+        footer_right=_chart_card_footer_date(chart_date),
+        extra=region_name,
+        badge_text=_chart_card_date_pill(region_name, chart_date),
+    )
 
 
 def _build_reentry_tweet(song: dict, entries: list[dict], chart_date: str) -> str:
@@ -1540,7 +1612,7 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
 
     generated: list[str] = []
     priority_index: dict[str, dict] = {}
-    to_post: list[tuple[Path, str]] = []  # (image_path, tweet_text)
+    to_post: list[tuple[Path, str, str]] = []  # (image_path, tweet_text, posted_key)
 
     # Load already-posted slugs to avoid re-posting on --force reruns
     posted_path = out_dir / "posted_cards.json"
@@ -1586,7 +1658,7 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
                 }
                 print(f"  -> {summary_path.name}")
                 if post and summary_slug not in already_posted:
-                    to_post.append((summary_path, _summary_tweet(chart_date, len(tracks), len(prev_by_track) if has_prev_snapshot else None)))
+                    to_post.append((summary_path, _summary_tweet(chart_date, len(tracks), len(prev_by_track) if has_prev_snapshot else None), summary_slug))
                 elif post:
                     print("    [SKIP] deja poste")
             except Exception as e:
@@ -1616,7 +1688,38 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
                     print(f"  → {out_path.name}")
                     prev_count = prev_country_counts.get(track_id)
                     if post and slug not in already_posted:
-                        to_post.append((out_path, _build_tweet(meta, entries, chart_date, prev_count)))
+                        post_image_path = out_path
+                        if _is_first_single_region_entry(
+                            entries,
+                            track_id,
+                            prev_country_counts,
+                            has_prev_snapshot=has_prev_snapshot,
+                        ):
+                            chart_out_path = out_dir / f"{slug}_chart_card.png"
+                            try:
+                                page.set_viewport_size({"width": 920, "height": 344})
+                                page.set_content(
+                                    _render_single_region_chart_card_html(meta, entries[0], chart_date),
+                                    wait_until="domcontentloaded",
+                                )
+                                chart_card = page.locator(".card")
+                                chart_card.wait_for(state="visible", timeout=5000)
+                                chart_card.screenshot(path=str(chart_out_path))
+                                generated.append(chart_out_path.name)
+                                priority_index[chart_out_path.name] = {
+                                    "level": 1,
+                                    "reason": "first_single_region_chart_card",
+                                    "track_id": track_id,
+                                    "region": entries[0].get("country"),
+                                    "source_card": out_path.name,
+                                    "theme": card_theme,
+                                }
+                                post_image_path = chart_out_path
+                                page.set_viewport_size({"width": 860, "height": 900})
+                            except Exception as e:
+                                print(f"  [WARN] echec chart_card regionale: {e}")
+                                page.set_viewport_size({"width": 860, "height": 900})
+                        to_post.append((post_image_path, _build_tweet(meta, entries, chart_date, prev_count), slug))
                     elif post:
                         print(f"    [SKIP] déjà posté")
                 except Exception as e:
@@ -1651,6 +1754,7 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
                             (
                                 out_path,
                                 _build_low_country_group_tweet(low_country_tracks, song_meta, chart_date),
+                                _LOW_COUNTRY_GROUP_SLUG,
                             )
                         )
                     elif post:
@@ -1675,9 +1779,9 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
 
     if post and to_post:
         print(f"[STEP] Publication d'un thread de {len(to_post)} card(s) sur Twitter...")
-        thread_posts = [(tweet_text, img_path) for img_path, tweet_text in to_post]
+        thread_posts = [(tweet_text, img_path) for img_path, tweet_text, _posted_key in to_post]
         if _post_image_thread(thread_posts, TWITTER_SESSION):
-            all_posted = sorted(already_posted | {img_path.stem for img_path, _ in to_post})
+            all_posted = sorted(already_posted | {posted_key for _img_path, _tweet_text, posted_key in to_post})
             posted_path.write_text(
                 json.dumps({"date": chart_date, "posted": all_posted}, ensure_ascii=False, indent=2),
                 encoding="utf-8",

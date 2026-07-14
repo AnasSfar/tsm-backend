@@ -26,7 +26,9 @@
           "song_family": "welcome_to_new_york",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "4WUepByoeqcedHoYhSNHRt"
+          ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [
             "pop",
@@ -96,7 +98,9 @@
           "song_family": "blank_space",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0108kcWLnn2HlH2kedi1gn"
+          ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -145,7 +149,9 @@
           "song_family": "style",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "3Vpk1hfMAQme8VJ0SNRSkd"
+          ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [
             "pop",
@@ -215,7 +221,9 @@
           "song_family": "out_of_the_woods",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1OcSfkeCg9hRC2sFKB4IMJ"
+          ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [
             "pop",
@@ -285,7 +293,9 @@
           "song_family": "all_you_had_to_do_was_stay",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "2k0ZEeAqzvYMcx9Qt5aClQ"
+          ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -330,7 +340,9 @@
           "song_family": "shake_it_off",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "50yNTF0Od55qnHLxYsA5Pw"
+          ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [
             "pop"
@@ -394,7 +406,9 @@
           "song_family": "i_wish_you_would",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "3FxJDucHWdw6caWTKO5b23"
+          ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -439,7 +453,9 @@
           "song_family": "bad_blood",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "7oZONwFiFIErZcXAtTu7FY"
+          ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [
             "pop",
@@ -509,8 +525,11 @@
           "song_family": "wildest_dreams",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
-          "release_date": "2023-10-26T00:00:00Z",
+          "historical_track_ids": [
+            "1Ov37jtRQ2YNAe8HzfczkL",
+            "27exgla7YBw9DUNNcTIpjy"
+          ],
+          "release_date": "2021-09-17T00:00:00Z",
           "genres": [
             "pop",
             "dream pop",
@@ -579,8 +598,10 @@
           "song_family": "how_you_get_the_girl",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
+          "historical_track_ids": [
+            "75W3SngKzTuoQ94uLf3y82"
+          ],
+          "release_date": "2023-10-26T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -624,8 +645,11 @@
           "song_family": "this_love",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
+          "historical_track_ids": [
+            "4d1CG5ei1E2vGbvmgf5KKv",
+            "5QVVjX0ZItqlVpEuVCM9Yg"
+          ],
+          "release_date": "2022-05-06T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -669,8 +693,10 @@
           "song_family": "i_know_places",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
+          "historical_track_ids": [
+            "2f0GI2ZLUtbGqFx8t2Gk6A"
+          ],
+          "release_date": "2023-10-26T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -714,8 +740,10 @@
           "song_family": "clean",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
+          "historical_track_ids": [
+            "2ByBBvpR9b7IynvRmnG7kG"
+          ],
+          "release_date": "2023-10-26T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -759,8 +787,10 @@
           "song_family": "wonderland",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
+          "historical_track_ids": [
+            "2ve0kuaWUCt4Zx8x4bf1MR"
+          ],
+          "release_date": "2023-10-26T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -804,8 +834,10 @@
           "song_family": "you_are_in_love",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
+          "historical_track_ids": [
+            "4UwqOWDpdeIDVQDuKT6iza"
+          ],
+          "release_date": "2023-10-26T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -849,8 +881,10 @@
           "song_family": "new_romantics",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
+          "historical_track_ids": [
+            "2vPMoMDXxu9uX1igWZmXSG"
+          ],
+          "release_date": "2023-10-26T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop"
@@ -986,8 +1020,10 @@
           "song_family": "say_don_t_go",
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
+          "historical_track_ids": [
+            "4NioO5R9sHEZh4cGzMHyNt"
+          ],
+          "release_date": "2023-10-26T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop",
@@ -1059,7 +1095,7 @@
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
           "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
+          "release_date": "2023-10-26T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop",
@@ -1130,8 +1166,10 @@
           "song_family": "suburban_legends",
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
+          "historical_track_ids": [
+            "6T0sEnqjmHISIKwFETeeiP"
+          ],
+          "release_date": "2023-10-26T00:00:00Z",
           "genres": [
             "synth-pop",
             "alternative"
@@ -1200,7 +1238,7 @@
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
           "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
+          "release_date": "2023-10-26T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop",

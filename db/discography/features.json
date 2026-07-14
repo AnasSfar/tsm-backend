@@ -37,7 +37,7 @@
     "tracks": [
       {
         "title": "Hold On (feat. Taylor Swift) [Live]",
-        "url": "",
+        "url": "https://open.spotify.com/track/2K9YhWKWpo9T4GgwWhoHCG",
         "type": "live",
         "edition": "extras",
         "display_section": "Extras",
@@ -197,7 +197,10 @@
         ],
         "filter_tag_sources": {
           "feature": "high:type_or_primary_artist"
-        }
+        },
+        "historical_track_ids": [
+          "2dk3qSc7779ecP8w6rNoT9"
+        ]
       },
       {
         "title": "Both of Us (feat. Taylor Swift)",

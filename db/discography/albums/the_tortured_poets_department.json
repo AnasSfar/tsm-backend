@@ -30,8 +30,10 @@
           "song_family": "fortnight",
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33",
-          "historical_track_ids": [],
-          "release_date": "2024-04-18T00:00:00Z",
+          "historical_track_ids": [
+            "6dODwocEuGzHAavXqTbwHv"
+          ],
+          "release_date": "2024-05-22T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop",
@@ -96,7 +98,9 @@
           "song_family": "the_tortured_poets_department",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "4PdLaGZubp4lghChqp8erB"
+          ],
           "release_date": "2024-04-18T00:00:00Z",
           "genres": [
             "pop",
@@ -162,7 +166,10 @@
           "song_family": "my_boy_only_breaks_his_favorite_toys",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "05msZuGKP3OCUGQnvLBOf4",
+            "7uGYWMwRy24dm7RUDDhUlD"
+          ],
           "release_date": "2024-04-18T00:00:00Z",
           "genres": [
             "pop",
@@ -228,7 +235,9 @@
           "song_family": "down_bad",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1kbEbBdEgQdQeLXCJh28pJ"
+          ],
           "release_date": "2024-04-18T00:00:00Z",
           "genres": [
             "pop",
@@ -294,7 +303,10 @@
           "song_family": "so_long_london",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0mWVScJbxO3tbXuiZOxYZE",
+            "7wAkQFShJ27V8362MqevQr"
+          ],
           "release_date": "2024-04-18T00:00:00Z",
           "genres": [
             "pop",
@@ -361,7 +373,9 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
           "historical_track_ids": [
-            "74sZKiwaGtSEEyjhDmi99y"
+            "74sZKiwaGtSEEyjhDmi99y",
+            "1Lad0NlRHi7iNtQ6TeYK56",
+            "4QMgEffJQuKtjCNvqfRZ0m"
           ],
           "release_date": "2024-04-18T00:00:00Z",
           "genres": [
@@ -428,7 +442,9 @@
           "song_family": "fresh_out_the_slammer",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "7IWcDWOfiooH5hRs9XOVYz"
+          ],
           "release_date": "2024-04-18T00:00:00Z",
           "genres": [
             "pop",
@@ -497,7 +513,9 @@
           "song_family": "florida",
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "5ExOm0dh4NyRyAdSAO9hyM"
+          ],
           "release_date": "2024-04-18T00:00:00Z",
           "genres": [
             "pop",
@@ -563,7 +581,9 @@
           "song_family": "guilty_as_sin",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2735076e4160d018e378f488c33",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "799KrpEbhZp0MHeiA8YK9P"
+          ],
           "release_date": "2024-04-18T00:00:00Z",
           "genres": [
             "pop",
@@ -629,8 +649,11 @@
           "song_family": "who_s_afraid_of_little_old_me",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c246cd7fb142b383672627c8",
-          "historical_track_ids": [],
-          "release_date": "2024-10-03T00:00:00Z",
+          "historical_track_ids": [
+            "36t6frENUtCYKuZus6aYDO",
+            "2d8UxVNhJinc8uat9PoM9y"
+          ],
+          "release_date": "2024-04-18T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -670,8 +693,10 @@
           "song_family": "i_can_fix_him_no_really_i_can",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
-          "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z",
+          "historical_track_ids": [
+            "2h3MDMf8sd9s4XIzpTBIjX"
+          ],
+          "release_date": "2024-04-18T00:00:00Z",
           "genres": [
             "singer-songwriter",
             "pop",
@@ -736,8 +761,11 @@
           "song_family": "loml",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
-          "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z",
+          "historical_track_ids": [
+            "4bDHouthhkbXJaaCem7mhX",
+            "6RSG1dKPV5gEvILwJb4QtS"
+          ],
+          "release_date": "2024-04-18T00:00:00Z",
           "genres": [
             "pop",
             "singer-songwriter",
@@ -802,8 +830,12 @@
           "song_family": "i_can_do_it_with_a_broken_heart",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c246cd7fb142b383672627c8",
-          "historical_track_ids": [],
-          "release_date": "2024-10-03T00:00:00Z",
+          "historical_track_ids": [
+            "4n93SK7dQsQVu9BM5QzvAx",
+            "4q5YezDOIPcoLr8R81x9qy",
+            "2fPvQfGQEZOKtJ9qXeL4x8"
+          ],
+          "release_date": "2024-07-16T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop",
@@ -868,8 +900,12 @@
           "song_family": "the_smallest_man_who_ever_lived",
           "version_tag": "live__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c246cd7fb142b383672627c8",
-          "historical_track_ids": [],
-          "release_date": "2024-10-03T00:00:00Z",
+          "historical_track_ids": [
+            "18ohHg4G5Svm0kaJFQsJ12",
+            "2v1ivOOsgn64g5OywuH55L",
+            "1xtw1krCR6Dw2KwkXw5z63"
+          ],
+          "release_date": "2024-04-18T00:00:00Z",
           "genres": [
             "pop",
             "singer-songwriter",
@@ -934,8 +970,10 @@
           "song_family": "the_alchemy",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
-          "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z",
+          "historical_track_ids": [
+            "1dhMTsEZz6ZEquGvmzVoHn"
+          ],
+          "release_date": "2024-04-18T00:00:00Z",
           "genres": [
             "pop",
             "singer-songwriter",
@@ -1000,8 +1038,10 @@
           "song_family": "clara_bow",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
-          "historical_track_ids": [],
-          "release_date": "2024-04-19T00:00:00Z",
+          "historical_track_ids": [
+            "1UlhrRvYzbHEyugEDspXUB"
+          ],
+          "release_date": "2024-04-18T00:00:00Z",
           "genres": [
             "pop",
             "singer-songwriter"
@@ -1071,7 +1111,9 @@
           "song_family": "the_black_dog",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1GPibQhTymrKGYuAK94diM"
+          ],
           "release_date": "2024-04-19T00:00:00Z",
           "genres": [
             "pop",
@@ -1260,7 +1302,9 @@
           "song_family": "chloe_or_sam_or_sophia_or_marcus",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1m7Fep6Dm8SG58ns8NLZhm"
+          ],
           "release_date": "2024-04-19T00:00:00Z",
           "genres": [
             "pop",
@@ -1324,7 +1368,9 @@
           "song_family": "how_did_it_end",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "2AS8i1xuWmeWGBBwI69vfn"
+          ],
           "release_date": "2024-04-19T00:00:00Z",
           "genres": [
             "folk",
@@ -1388,8 +1434,11 @@
           "song_family": "so_high_school",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c246cd7fb142b383672627c8",
-          "historical_track_ids": [],
-          "release_date": "2024-10-03T00:00:00Z",
+          "historical_track_ids": [
+            "1GP8VW5Wk2w2obkWjGCGXd",
+            "7Mts0OfPorF4iwOomvfqn1"
+          ],
+          "release_date": "2024-04-19T00:00:00Z",
           "genres": [
             "pop",
             "rock",
@@ -1516,7 +1565,9 @@
           "song_family": "thank_you_aimee",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "2AF66grrqUS0rkNURwiPXM"
+          ],
           "release_date": "2024-04-19T00:00:00Z",
           "genres": [
             "folk",
@@ -1772,7 +1823,9 @@
           "song_family": "peter",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "3NcGodJQTArBCZwNJHF1Zu"
+          ],
           "release_date": "2024-04-19T00:00:00Z",
           "genres": [
             "folk",
@@ -1836,7 +1889,9 @@
           "song_family": "the_bolter",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738ecc33f195df6aa257c39eaa",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1lCtHhx85FmwyUmwkKN1Ia"
+          ],
           "release_date": "2024-04-19T00:00:00Z",
           "genres": [
             "pop",
@@ -2172,7 +2227,7 @@
           "version_tag": "alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f7dd2c5a8045a39fcecbfe8e",
           "historical_track_ids": [],
-          "release_date": "2024-09-13T00:00:00Z",
+          "release_date": "2024-07-16T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop",

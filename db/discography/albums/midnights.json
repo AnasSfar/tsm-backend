@@ -26,8 +26,11 @@
           "song_family": "lavender_haze",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2022-10-21T00:00:00Z",
+          "historical_track_ids": [
+            "0u1YuY5CjyhlCXV3wN9yYJ",
+            "24emu3sabKISjRkrys28jq"
+          ],
+          "release_date": "2023-03-03T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop",
@@ -92,7 +95,10 @@
           "song_family": "maroon",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "09T4f2HgIJY1Ia6FRjzTk3",
+            "6qxvy9Pe4RJIq5JBVbbwbS"
+          ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "synth-pop",
@@ -158,8 +164,11 @@
           "song_family": "anti_hero",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2022-10-21T00:00:00Z",
+          "historical_track_ids": [
+            "1BdZWUTQyvuBYbp3Sl2Cc0",
+            "5qIHFdkW6phMsTZlN2g8Lc"
+          ],
+          "release_date": "2022-11-08T00:00:00Z",
           "genres": [
             "rock",
             "pop",
@@ -227,7 +236,9 @@
           "song_family": "snow_on_the_beach",
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "7GA86Uo2jYbj8vIXe2nyWd"
+          ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "dream pop",
@@ -293,7 +304,9 @@
           "song_family": "you_re_on_your_own_kid",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "6PQOU00xWNrGwCZzboriXy"
+          ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
@@ -359,7 +372,10 @@
           "song_family": "midnight_rain",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1DAHLigfUqSLrU3RLG1EKR",
+            "4eKMqf9ZMSclDX7V9Ptg7x"
+          ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
@@ -425,7 +441,9 @@
           "song_family": "question",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "7oomkQSYf1ia2VnVEWfFIU"
+          ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
@@ -491,7 +509,9 @@
           "song_family": "vigilante_shit",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0GKDhq6ZbmSbRHd3eyGlB7"
+          ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
@@ -557,7 +577,9 @@
           "song_family": "bejeweled",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0VpF6RLdCfPIeYRwMu4tZK"
+          ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
@@ -620,8 +642,10 @@
           "song_family": "labyrinth",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
+          "historical_track_ids": [
+            "0A1JLUlkZkp2EFrosoNQi0"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
             "dream pop",
@@ -686,8 +710,11 @@
           "song_family": "karma",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
+          "historical_track_ids": [
+            "5GjkD2Xujig8TPty57wfsS",
+            "7KokYm8cMIXCsGVmUvKtqf"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop"
@@ -749,8 +776,10 @@
           "song_family": "sweet_nothing",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
+          "historical_track_ids": [
+            "0wavGRldH0AWyu2zvTz8zb"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
             "singer-songwriter",
@@ -815,8 +844,11 @@
           "song_family": "mastermind",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
+          "historical_track_ids": [
+            "6pXGAXMfoi7q7sek9uCFSL",
+            "7FmYn9e7KHMXcxqGSj9LjH"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop",
@@ -888,8 +920,10 @@
           "song_family": "the_great_war",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
+          "historical_track_ids": [
+            "5BYl3SodS3rGmafWXRWmB7"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop",
@@ -956,8 +990,10 @@
           "song_family": "bigger_than_the_whole_sky",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
+          "historical_track_ids": [
+            "3jzbpOzoYa22FvzBkNkLvC"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop",
@@ -1024,8 +1060,10 @@
           "song_family": "paris",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
+          "historical_track_ids": [
+            "6J834IBcZJMH38ksrgAqwF"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
             "singer-songwriter",
@@ -1092,8 +1130,10 @@
           "song_family": "high_infidelity",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
+          "historical_track_ids": [
+            "4356PL6jkERzJouVfQQkZo"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "synth-pop",
             "pop",
@@ -1160,8 +1200,10 @@
           "song_family": "glitch",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
+          "historical_track_ids": [
+            "6RJBrG3VHz2hPITjv88chh"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "singer-songwriter",
             "synth-pop",
@@ -1228,8 +1270,10 @@
           "song_family": "would_ve_could_ve_should_ve",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
+          "historical_track_ids": [
+            "3pUa0ZxdSeaJXm0EIydD3F"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
             "soft rock",
@@ -1296,8 +1340,10 @@
           "song_family": "dear_reader",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
+          "historical_track_ids": [
+            "7lFNXsbcbds699xCWO3pSe"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "singer-songwriter",
             "synth-pop",
@@ -1371,7 +1417,9 @@
           "song_family": "hits_different",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "2BPLFluGLtHPN9EF6oK5w8"
+          ],
           "release_date": "2023-05-26T00:00:00Z",
           "genres": [
             "pop",
@@ -1630,8 +1678,10 @@
           "song_family": "anti_hero",
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2739954fa9f0ba8534c3897b59d",
-          "historical_track_ids": [],
-          "release_date": "2022-11-11T00:00:00Z",
+          "historical_track_ids": [
+            "7mz1Dj0C0sa8tG3ykgtLpD"
+          ],
+          "release_date": "2022-11-08T00:00:00Z",
           "genres": [
             "rock",
             "pop",
@@ -1760,7 +1810,9 @@
           "song_family": "anti_hero",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2739954fa9f0ba8534c3897b59d",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "22t8PQeP5klRoguomM4wZp"
+          ],
           "release_date": "2022-11-11T00:00:00Z",
           "genres": [
             "rock",
@@ -1826,7 +1878,9 @@
           "song_family": "anti_hero",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2739954fa9f0ba8534c3897b59d",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1h0GRtSo5NeVVb1vqb5Uh1"
+          ],
           "release_date": "2022-11-11T00:00:00Z",
           "genres": [
             "rock",
@@ -1892,7 +1946,9 @@
           "song_family": "anti_hero",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2739954fa9f0ba8534c3897b59d",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "2G19YDBzl32ASNiRJ1sT9s"
+          ],
           "release_date": "2022-11-11T00:00:00Z",
           "genres": [
             "rock",
@@ -2029,7 +2085,8 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27390212229c9230e320fe0ecd3",
           "historical_track_ids": [
-            "5KxZfCXXmVvKhPo8hQz2pS"
+            "5KxZfCXXmVvKhPo8hQz2pS",
+            "47Q0MEywj692L1RQn6mC7S"
           ],
           "release_date": "2023-02-10T00:00:00Z",
           "genres": [
@@ -2096,7 +2153,9 @@
           "song_family": "lavender_haze",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f7c84273e5c8ecb7594b4357",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1cY0NDSosVXD6Am57Ylbuy"
+          ],
           "release_date": "2023-03-03T00:00:00Z",
           "genres": [
             "pop",
@@ -2162,7 +2221,9 @@
           "song_family": "lavender_haze",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f7c84273e5c8ecb7594b4357",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "2PnWf3DoX5Ha3UL8VdpVrs"
+          ],
           "release_date": "2023-03-03T00:00:00Z",
           "genres": [
             "pop",
@@ -2228,7 +2289,9 @@
           "song_family": "lavender_haze",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f7c84273e5c8ecb7594b4357",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "6dokmh5E6obEI11G9VaWSB"
+          ],
           "release_date": "2023-03-03T00:00:00Z",
           "genres": [
             "pop",

@@ -4,77 +4,32 @@
   "track_count": 28,
   "sections": [
     {
-      "section": "demos_and_acoustic",
-      "track_count": 3,
-      "chart_extra": true,
+      "album": "Red",
+      "section": "misc_standalone",
+      "track_count": 1,
+      "chart_extra": false,
       "tracks": [
         {
-          "title": "Red - Original Demo Recording",
-          "url": "https://open.spotify.com/intl-fr/track/4mqgn90sCeVSYqcoftTQTd",
-          "type": "alternate_version",
-          "edition": "acoustic",
-          "display_section": "Other Editions",
-          "display_order": 1,
-          "base_title": "Red",
-          "album": "Red",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Red - Original Demo Recording",
-          "song_family": "red",
-          "version_tag": "demo__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
-          "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:red",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "acoustic",
-            "demo",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "acoustic": "high:title_or_section",
-            "demo": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "Treacherous - Original Demo Recording",
-          "url": "https://open.spotify.com/intl-fr/track/7BT9K9BDqq6HI2oWH5UMZQ",
-          "type": "alternate_version",
-          "edition": "acoustic",
-          "display_section": "Other Editions",
+          "title": "Ronan",
+          "url": "https://open.spotify.com/intl-fr/track/0Nw8hv79MLJa1yjtsEgz08",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
           "display_order": 2,
-          "base_title": "Treacherous",
+          "base_title": "Ronan",
           "album": "Red",
           "primary_artist": "Taylor Swift",
           "featured_artists": [],
           "artists": [
             "Taylor Swift"
           ],
-          "title_clean": "Treacherous - Original Demo Recording",
-          "song_family": "treacherous",
-          "version_tag": "demo__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "title_clean": "Ronan",
+          "song_family": "ronan",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dbe6e4dd1b2a61e375a12c63",
+          "display_era": "Red",
           "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z",
+          "release_date": "2012-09-08T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -86,65 +41,14 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:treacherous",
+          "genre_canonical_key": "family:ronan",
           "filter_tags": [
             "solo",
-            "album_track",
-            "acoustic",
-            "demo",
-            "alternate_version"
+            "standalone"
           ],
           "filter_tag_sources": {
             "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "acoustic": "high:title_or_section",
-            "demo": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "State Of Grace - Acoustic",
-          "url": "https://open.spotify.com/intl-fr/track/5G9AVKld9q7DCrmoY42raf",
-          "type": "alternate_version",
-          "edition": "acoustic",
-          "display_section": "Other Editions",
-          "display_order": 3,
-          "base_title": "State Of Grace",
-          "album": "Red",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "State Of Grace - Acoustic",
-          "song_family": "state_of_grace",
-          "version_tag": "acoustic__alternate_version",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
-          "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:state_of_grace",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "acoustic",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "acoustic": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
+            "standalone": "medium:section_or_type"
           }
         }
       ]
@@ -970,32 +874,30 @@
       ]
     },
     {
-      "album": "Red",
-      "section": "misc_standalone",
-      "track_count": 1,
-      "chart_extra": false,
+      "section": "demos_and_acoustic",
+      "track_count": 3,
+      "chart_extra": true,
       "tracks": [
         {
-          "title": "Ronan",
-          "url": "https://open.spotify.com/intl-fr/track/0Nw8hv79MLJa1yjtsEgz08",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 2,
-          "base_title": "Ronan",
+          "title": "Red - Original Demo Recording",
+          "url": "https://open.spotify.com/intl-fr/track/4mqgn90sCeVSYqcoftTQTd",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Other Editions",
+          "display_order": 1,
+          "base_title": "Red",
           "album": "Red",
           "primary_artist": "Taylor Swift",
           "featured_artists": [],
           "artists": [
             "Taylor Swift"
           ],
-          "title_clean": "Ronan",
-          "song_family": "ronan",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273dbe6e4dd1b2a61e375a12c63",
-          "display_era": "Red",
+          "title_clean": "Red - Original Demo Recording",
+          "song_family": "red",
+          "version_tag": "demo__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
           "historical_track_ids": [],
-          "release_date": "2012-09-08T00:00:00Z",
+          "release_date": "2012-10-22T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -1007,13 +909,258 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:ronan",
+          "genre_canonical_key": "family:red",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "acoustic",
+            "demo",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "acoustic": "high:title_or_section",
+            "demo": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Treacherous - Original Demo Recording",
+          "url": "https://open.spotify.com/intl-fr/track/7BT9K9BDqq6HI2oWH5UMZQ",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Other Editions",
+          "display_order": 2,
+          "base_title": "Treacherous",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Treacherous - Original Demo Recording",
+          "song_family": "treacherous",
+          "version_tag": "demo__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": [],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:treacherous",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "acoustic",
+            "demo",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "acoustic": "high:title_or_section",
+            "demo": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "State Of Grace - Acoustic",
+          "url": "https://open.spotify.com/intl-fr/track/5G9AVKld9q7DCrmoY42raf",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Other Editions",
+          "display_order": 3,
+          "base_title": "State Of Grace",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "State Of Grace - Acoustic",
+          "song_family": "state_of_grace",
+          "version_tag": "acoustic__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": [],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:state_of_grace",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        }
+      ]
+    },
+    {
+      "album": "Red",
+      "section": "streaming_extras",
+      "track_count": 2,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "The Last Time - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/3vM04liQIPwzatRCDvWvba",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9999,
+          "base_title": "The Last Time - Karaoke Version",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Last Time - Karaoke Version",
+          "song_family": "the_last_time_karaoke_version",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273220563fb6c59f7e470ba3272",
+          "display_era": "Red",
+          "historical_track_ids": [],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_last_time_karaoke_version",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "karaoke"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "karaoke": "high:title_or_section"
+          }
+        },
+        {
+          "title": "The Moment I Knew",
+          "url": "https://open.spotify.com/intl-fr/track/5AsmAjBSSQjRPWgAYIp8tm",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 17,
+          "base_title": "The Moment I Knew",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Moment I Knew",
+          "song_family": "the_moment_i_knew",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "display_era": "Red",
+          "historical_track_ids": [],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_moment_i_knew",
           "filter_tags": [
             "solo",
             "standalone"
           ],
           "filter_tag_sources": {
             "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
+        }
+      ]
+    },
+    {
+      "album": "Red",
+      "section": "collabs_and_features",
+      "track_count": 1,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Babe (feat. Taylor Swift)",
+          "url": "https://open.spotify.com/track/40PXEOFLJc7UIpLMrhSfW1",
+          "type": "feature",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 8,
+          "base_title": "Babe (feat. Taylor Swift)",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Taylor Swift"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Taylor Swift"
+          ],
+          "title_clean": "Babe",
+          "song_family": "babe",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27363d77f99117b28af9f656918",
+          "display_era": "Red",
+          "historical_track_ids": [],
+          "release_date": "2017-11-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:babe",
+          "filter_tags": [
+            "feature",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
             "standalone": "medium:section_or_type"
           }
         }
@@ -1140,7 +1287,9 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d29a5d713277b0b3d517507b",
           "display_era": "Red",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "4HGaRnv2HuMKaZMLTJQZqV"
+          ],
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -1162,153 +1311,6 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "soundtrack": "high:title_album_or_section"
-          }
-        }
-      ]
-    },
-    {
-      "album": "Red",
-      "section": "collabs_and_features",
-      "track_count": 1,
-      "chart_extra": true,
-      "tracks": [
-        {
-          "title": "Babe (feat. Taylor Swift)",
-          "url": "https://open.spotify.com/track/40PXEOFLJc7UIpLMrhSfW1",
-          "type": "feature",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 8,
-          "base_title": "Babe (feat. Taylor Swift)",
-          "album": "Red",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [
-            "Taylor Swift"
-          ],
-          "artists": [
-            "Taylor Swift",
-            "Taylor Swift"
-          ],
-          "title_clean": "Babe",
-          "song_family": "babe",
-          "version_tag": "featured__feature",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27363d77f99117b28af9f656918",
-          "display_era": "Red",
-          "historical_track_ids": [],
-          "release_date": "2017-11-09T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:babe",
-          "filter_tags": [
-            "feature",
-            "standalone"
-          ],
-          "filter_tag_sources": {
-            "feature": "high:type_or_primary_artist",
-            "standalone": "medium:section_or_type"
-          }
-        }
-      ]
-    },
-    {
-      "album": "Red",
-      "section": "kworb_extras",
-      "track_count": 2,
-      "chart_extra": true,
-      "tracks": [
-        {
-          "title": "The Last Time - Karaoke Version",
-          "url": "https://open.spotify.com/intl-fr/track/3vM04liQIPwzatRCDvWvba",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 9999,
-          "base_title": "The Last Time - Karaoke Version",
-          "album": "Red",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "The Last Time - Karaoke Version",
-          "song_family": "the_last_time_karaoke_version",
-          "version_tag": null,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273220563fb6c59f7e470ba3272",
-          "display_era": "Red",
-          "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:the_last_time_karaoke_version",
-          "filter_tags": [
-            "solo",
-            "standalone",
-            "karaoke"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type",
-            "karaoke": "high:title_or_section"
-          }
-        },
-        {
-          "title": "The Moment I Knew",
-          "url": "https://open.spotify.com/intl-fr/track/5AsmAjBSSQjRPWgAYIp8tm",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 17,
-          "base_title": "The Moment I Knew",
-          "album": "Red",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "The Moment I Knew",
-          "song_family": "the_moment_i_knew",
-          "version_tag": null,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
-          "display_era": "Red",
-          "historical_track_ids": [],
-          "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:the_moment_i_knew",
-          "filter_tags": [
-            "solo",
-            "standalone"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type"
           }
         }
       ]

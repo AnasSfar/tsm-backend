@@ -92,8 +92,10 @@
           "song_family": "cruel_summer",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
-          "historical_track_ids": [],
-          "release_date": "2019-08-23T00:00:00Z",
+          "historical_track_ids": [
+            "0NQOXTDg2p7hFYlFq6tZKW"
+          ],
+          "release_date": "2023-10-19T00:00:00Z",
           "genres": [
             "electropop",
             "pop",
@@ -2079,7 +2081,9 @@
           "song_family": "cruel_summer",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273905c0872bdf4e1787a6bb5da",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0pjBqAz8GlxGlpaU4W0DxS"
+          ],
           "release_date": "2023-10-19T00:00:00Z",
           "genres": [
             "electropop",

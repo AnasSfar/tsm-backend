@@ -291,8 +291,10 @@
           "song_family": "christmas_tree_farm",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8",
-          "historical_track_ids": [],
-          "release_date": "2021-11-22T00:00:00Z",
+          "historical_track_ids": [
+            "2mvabkN1i2gLnGAPUVdwek"
+          ],
+          "release_date": "2019-12-06T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -384,7 +386,7 @@
           "version_tag": "live__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8",
           "historical_track_ids": [],
-          "release_date": "2021-11-22T00:00:00Z",
+          "release_date": "2020-12-19T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},

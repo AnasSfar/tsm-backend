@@ -7,7 +7,7 @@ import re
 import shutil
 import sys
 import unicodedata
-from collections import defaultdict
+from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -57,6 +57,14 @@ class TrackLocation:
     track: dict[str, Any]
 
 
+@dataclass(frozen=True)
+class CatalogClassification:
+    tags: tuple[str, ...]
+    music_track: bool
+    category: str
+    reason: str = ""
+
+
 def read_json(path: Path) -> Any:
     with path.open("r", encoding="utf-8-sig") as handle:
         return json.load(handle)
@@ -97,6 +105,10 @@ def spotify_track_url(track_id: str) -> str:
 
 def normalized_title(value: str) -> str:
     return _normalize_title(value or "")
+
+
+def normalize_apostrophes(value: str) -> str:
+    return (value or "").replace("\u2018", "'").replace("\u2019", "'").replace("\u02bc", "'")
 
 
 def song_family(value: str) -> str:
@@ -162,9 +174,31 @@ def track_family_key(track: dict[str, Any]) -> str:
 
 def version_bucket(tag: str | None) -> str:
     value = str(tag or "").strip().casefold()
-    if value in {"", "standalone"}:
+    if value in {"", "standalone", "standard"}:
         return "plain"
-    return value
+    parts = set(value.split("__"))
+    for non_music in ("track_by_track", "commentary", "karaoke", "instrumental"):
+        if non_music in parts:
+            return non_music
+    priority = (
+        "taylors_version",
+        "from_the_vault",
+        "remix",
+        "live",
+        "acoustic",
+        "piano",
+        "pop_mix",
+        "pop_version",
+        "radio",
+        "edit",
+        "international",
+        "demo",
+        "voice_memo",
+        "feature",
+        "featured",
+    )
+    bucket = [part for part in priority if part in parts]
+    return "__".join(bucket) if bucket else value
 
 
 def dedupe_identity_for_track(track: dict[str, Any], total: int | None) -> tuple[str, str, str, int] | None:
@@ -271,24 +305,76 @@ def track_type(track: dict[str, Any], primary_release: dict[str, Any]) -> str:
     return "album_track"
 
 
-def version_tag(title: str, kind: str) -> str | None:
-    lowered = title.casefold()
-    tags = []
-    for marker, tag in (
-        ("taylor's version", "taylors_version"),
-        ("from the vault", "from_the_vault"),
-        ("acoustic", "acoustic"),
-        ("live", "live"),
-        ("remix", "remix"),
-        ("feat.", "featured"),
-    ):
-        if marker in lowered:
+def classify_title(title: str, kind: str) -> CatalogClassification:
+    normalized = normalize_apostrophes(title)
+    lowered = normalized.casefold()
+    tags: list[str] = []
+
+    non_music_rules = (
+        (r"\btrack by track\b", "track_by_track", "track by track"),
+        (r"\bcommentary\b", "commentary", "commentary"),
+        (r"\bkaraoke\b", "karaoke", "karaoke"),
+        (
+            r"\binstrumental\b|\bbackground vocals\b|\bbg vocals\b|\bbgv\b|\bno bv\b",
+            "instrumental",
+            "instrumental/backing vocals",
+        ),
+    )
+    for pattern, tag, reason in non_music_rules:
+        if re.search(pattern, lowered):
             tags.append(tag)
-    if kind == "feature" and "featured" not in tags:
+            return CatalogClassification(tuple(tags), False, tag, reason)
+
+    music_rules = (
+        ("taylor's version", "taylors_version", "taylor_version"),
+        ("from the vault", "from_the_vault", "vault"),
+        ("voice memo", "voice_memo", "demo_voice_memo"),
+        ("songwriting voice memo", "voice_memo", "demo_voice_memo"),
+        ("demo", "demo", "demo_voice_memo"),
+        ("acoustic", "acoustic", "acoustic"),
+        ("piano", "piano", "piano"),
+        ("live", "live", "live"),
+        ("remix", "remix", "remix"),
+        ("mix", "mix", "mix"),
+        ("radio", "radio", "radio_edit"),
+        ("edit", "edit", "radio_edit"),
+        ("international", "international", "regional_mix"),
+        ("pop version", "pop_version", "pop_version"),
+        ("pop mix", "pop_mix", "pop_version"),
+        ("clean version", "clean", "clean"),
+        ("intro", "intro", "intro_outro"),
+        ("outro", "outro", "intro_outro"),
+    )
+    categories: list[str] = []
+    for marker, tag, category in music_rules:
+        if marker in lowered and tag not in tags:
+            tags.append(tag)
+            categories.append(category)
+    if "remix" in tags and "mix" in tags:
+        tags.remove("mix")
+    if ("pop_mix" in tags or "pop_version" in tags) and "mix" in tags:
+        tags.remove("mix")
+
+    if "feat." in lowered or "feat " in lowered or "(feat" in lowered:
+        tags.append("featured")
+        categories.append("featured")
+    if kind == "feature" and "feature" not in tags:
         tags.append("feature")
-    if tags:
-        return "__".join(tags)
-    return "standalone" if kind in {"standalone", "feature"} else None
+        categories.append("feature")
+
+    if not tags:
+        tags.append("standalone" if kind in {"standalone", "feature"} else "standard")
+
+    category = categories[0] if categories else ("feature" if kind == "feature" else "standard")
+    return CatalogClassification(tuple(dict.fromkeys(tags)), True, category)
+
+
+def version_tag(title: str, kind: str) -> str | None:
+    classification = classify_title(title, kind)
+    tags = [tag for tag in classification.tags if tag not in {"standard"}]
+    if not tags:
+        return "standalone" if kind in {"standalone", "feature"} else None
+    return "__".join(tags)
 
 
 def image_url(track: dict[str, Any]) -> str:
@@ -298,6 +384,32 @@ def image_url(track: dict[str, Any]) -> str:
             if value:
                 return value
     return ""
+
+
+def apply_catalog_classification_fields(entry: dict[str, Any], classification: CatalogClassification) -> bool:
+    changed = False
+    desired = {
+        "version_tags": list(classification.tags),
+        "catalog_category": classification.category,
+        "music_track": classification.music_track,
+    }
+    for key, value in desired.items():
+        if entry.get(key) != value:
+            entry[key] = value
+            changed = True
+    if not classification.music_track:
+        non_music_fields = {
+            "chart_extra": True,
+            "excluded_from_public_stats": True,
+            "catalog_exclusion_reason": classification.reason,
+        }
+        for key, value in non_music_fields.items():
+            if entry.get(key) != value:
+                entry[key] = value
+                changed = True
+        if entry.pop("exclude_from_stream_collection", None) is not None:
+            changed = True
+    return changed
 
 
 def album_file_for_release(name: str) -> Path | None:
@@ -526,6 +638,7 @@ def ensure_album_section(album_data: dict[str, Any], release: dict[str, Any]) ->
 def make_track_entry(track: dict[str, Any], primary_release: dict[str, Any], target_album: str, display_order: int) -> dict[str, Any]:
     title = str(track.get("title") or "").strip()
     kind = track_type(track, primary_release)
+    classification = classify_title(title, kind)
     base = clean_base_title(title)
     artists = track_artists(track)
     release_date_value = release_date(primary_release)
@@ -548,6 +661,7 @@ def make_track_entry(track: dict[str, Any], primary_release: dict[str, Any], tar
         "release_date": release_date_value,
         "historical_track_ids": [],
     }
+    apply_catalog_classification_fields(entry, classification)
     if entry["edition"] is None:
         entry.pop("edition")
     if not entry["image_url"]:
@@ -566,6 +680,11 @@ def sorted_tracks(tracks: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 
 def capture_tokens() -> dict[str, str]:
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
     token_mgr = TokenManager()
     if not token_mgr.capture():
         raise RuntimeError("Could not capture Spotify tokens.")
@@ -732,7 +851,12 @@ def canonicalize_api_tracks(catalog_tracks: list[dict[str, Any]]) -> tuple[list[
 
 
 def is_non_song_track(track: dict[str, Any]) -> bool:
-    return bool(NON_SONG_TITLE_RE.search(str(track.get("title") or "")))
+    title = str(track.get("title") or "")
+    releases = track.get("releases") or []
+    kind = str(track.get("type") or "")
+    if not kind and releases:
+        kind = track_type(track, choose_primary_release(releases))
+    return not classify_title(title, kind or "standalone").music_track
 
 
 def _search_headers(tokens: dict[str, str]) -> dict[str, str]:
@@ -864,11 +988,29 @@ def resolve_existing_blank_urls(
     return updates, touched, resolved_ids
 
 
+def _counter_summary(counter: Counter[str]) -> str:
+    if not counter:
+        return "none"
+    return " ".join(f"{key}={value}" for key, value in sorted(counter.items()))
+
+
+def _track_label(track: dict[str, Any]) -> str:
+    track_id = str(track.get("track_id") or "").strip()
+    title = str(track.get("title") or "").strip() or "?"
+    return f"{title} [{track_id or '?'}]"
+
+
+def _location_label(loc: TrackLocation) -> str:
+    track_id = extract_track_id(loc.track.get("url") or loc.track.get("spotify_url")) or "?"
+    title = str(loc.track.get("title") or "").strip() or "?"
+    return f"{title} [{track_id}] in {loc.path.relative_to(ROOT)}"
+
+
 def run_backfill(
     *,
     apply: bool = False,
     no_backup: bool = False,
-    include_non_songs: bool = True,
+    include_non_songs: bool = False,
     skip_api: bool = False,
     tokens: dict[str, str] | None = None,
     recent_release_limit: int | None = None,
@@ -932,8 +1074,15 @@ def run_backfill(
     updates = 0
     additions = 0
     matched_existing_by_title_streams = 0
+    skipped_non_music = 0
     added_track_ids: list[str] = []
     resolved_existing_url_ids: list[str] = []
+    ambiguous_track_ids: list[str] = []
+    ambiguous_messages: list[str] = []
+    add_category_counts: Counter[str] = Counter()
+    add_target_counts: Counter[str] = Counter()
+    matched_kind_counts: Counter[str] = Counter()
+    update_kind_counts: Counter[str] = Counter()
     touched: set[Path] = set(db_dedupe_touched)
 
     search_updates, search_touched, search_ids = resolve_existing_blank_urls(
@@ -943,6 +1092,8 @@ def run_backfill(
         verbose=verbose,
     )
     updates += search_updates
+    if search_updates:
+        update_kind_counts["search_resolved_url"] += search_updates
     touched.update(search_touched)
     resolved_existing_url_ids.extend(search_ids)
 
@@ -983,33 +1134,43 @@ def run_backfill(
         track_id = str(track.get("track_id") or "").strip()
         if not track_id:
             continue
-        if is_non_song_track(track) and track_id not in by_id and not include_non_songs:
+        primary = choose_primary_release(track.get("releases") or [])
+        kind = track_type(track, primary)
+        classification = classify_title(str(track.get("title") or ""), kind)
+        if not classification.music_track and track_id not in by_id and not include_non_songs:
+            skipped_non_music += 1
             continue
 
-        primary = choose_primary_release(track.get("releases") or [])
         api_release_date = release_date(primary)
         existing = by_id.get(track_id)
         if existing is not None:
+            if apply_catalog_classification_fields(existing.track, classification):
+                updates += 1
+                update_kind_counts["catalog_classification"] += 1
+                touched.add(existing.path)
             if api_release_date and existing.track.get("release_date") != api_release_date:
                 existing.track["release_date"] = api_release_date
                 updates += 1
+                update_kind_counts["release_date_existing_id"] += 1
                 touched.add(existing.path)
             continue
 
-        kind = track_type(track, primary)
         playcount = track.get("playcount")
         identity = dedupe_identity_for_api_track(track, kind=kind, total=playcount)
         same_identity_matches = by_dedupe_identity.get(identity, []) if identity is not None else []
         if same_identity_matches:
             matched_existing_by_title_streams += 1
+            matched_kind_counts["family_base_version_streams"] += 1
             duplicate_ids = [track_id]
             for loc in same_identity_matches:
                 if merge_historical_track_ids(loc.track, duplicate_ids):
                     updates += 1
+                    update_kind_counts["historical_track_ids"] += 1
                     touched.add(loc.path)
                 if api_release_date and loc.track.get("release_date") != api_release_date:
                     loc.track["release_date"] = api_release_date
                     updates += 1
+                    update_kind_counts["release_date_duplicate_match"] += 1
                     touched.add(loc.path)
             if verbose:
                 kept_ids = ", ".join(
@@ -1028,12 +1189,29 @@ def run_backfill(
             ]
             if same_stream_matches:
                 matched_existing_by_title_streams += 1
+                matched_kind_counts["exact_title_streams"] += 1
                 for loc in same_stream_matches:
                     if api_release_date and loc.track.get("release_date") != api_release_date:
                         loc.track["release_date"] = api_release_date
                         updates += 1
+                        update_kind_counts["release_date_title_stream_match"] += 1
                         touched.add(loc.path)
                 continue
+        same_version_title_matches = [
+            loc for loc in title_matches
+            if version_bucket(loc.track.get("version_tag")) == version_bucket(version_tag(str(track.get("title") or ""), kind))
+        ]
+        if same_version_title_matches:
+            ambiguous_track_ids.append(track_id)
+            candidates = "; ".join(_location_label(loc) for loc in same_version_title_matches[:5])
+            message = (
+                f"{_track_label(track)} has exact-title/same-version DB match but no verified same-stream match: "
+                f"{candidates}"
+            )
+            ambiguous_messages.append(message)
+            if verbose:
+                print(f"[ambiguous] {message}")
+            continue
 
         release_album_name = release_name(primary)
         album_path = album_file_for_release(release_album_name)
@@ -1057,6 +1235,8 @@ def run_backfill(
         target_section["tracks"] = sorted_tracks(target_section["tracks"])
         additions += 1
         added_track_ids.append(track_id)
+        add_category_counts[classification.category] += 1
+        add_target_counts[str(target_path.relative_to(ROOT))] += 1
         touched.add(target_path)
         by_id[track_id] = TrackLocation(target_path, data_by_path[target_path], target_section, entry)
         by_title[title_key].append(by_id[track_id])
@@ -1074,6 +1254,18 @@ def run_backfill(
         f"db_duplicates_removed={db_duplicates_removed} updates={updates} additions={additions} "
         f"matched_existing_by_title_streams={matched_existing_by_title_streams}"
     )
+    print(
+        f"[catalog-audit] single_preferred_groups={len(duplicate_groups)} "
+        f"skipped_non_music={skipped_non_music} ambiguous_blocked={len(ambiguous_messages)}"
+    )
+    print(f"[catalog-audit] additions_by_category {_counter_summary(add_category_counts)}")
+    print(f"[catalog-audit] additions_by_target {_counter_summary(add_target_counts)}")
+    print(f"[catalog-audit] matched_existing {_counter_summary(matched_kind_counts)}")
+    print(f"[catalog-audit] updates_by_kind {_counter_summary(update_kind_counts)}")
+    if ambiguous_messages:
+        print("[catalog-audit] ambiguous samples:")
+        for message in ambiguous_messages[:20]:
+            print(f"  - {message}")
 
     if not apply:
         print("[dry-run] No files written. Re-run with --apply to update db/discography.")
@@ -1084,6 +1276,7 @@ def run_backfill(
             "additions": additions,
             "matched_existing_by_title_streams": matched_existing_by_title_streams,
             "resolved_existing_url_ids": resolved_existing_url_ids,
+            "ambiguous_track_ids": ambiguous_track_ids,
             "written_files": 0,
             "added_track_ids": added_track_ids,
         }
@@ -1101,6 +1294,7 @@ def run_backfill(
         "additions": additions,
         "matched_existing_by_title_streams": matched_existing_by_title_streams,
         "resolved_existing_url_ids": resolved_existing_url_ids,
+        "ambiguous_track_ids": ambiguous_track_ids,
         "written_files": len(touched),
         "added_track_ids": added_track_ids,
     }
@@ -1116,13 +1310,13 @@ def main() -> None:
         "--include-non-songs",
         action="store_true",
         dest="include_non_songs",
-        help="Include commentary, karaoke and instrumental tracks. This is the default.",
+        help="Also add commentary, karaoke and instrumental tracks. They are marked excluded from stream collection.",
     )
     parser.add_argument(
         "--exclude-non-songs",
         action="store_false",
         dest="include_non_songs",
-        help="Skip commentary, karaoke and instrumental tracks.",
+        help="Skip commentary, karaoke and instrumental tracks. This is the default.",
     )
     parser.add_argument(
         "--skip-api",
@@ -1137,7 +1331,7 @@ def main() -> None:
         help="Only scan the N most recent Spotify releases instead of the full catalog.",
     )
     parser.add_argument("--target-release-date", default=None, help="Expand recent scan around this release date.")
-    parser.set_defaults(include_non_songs=True)
+    parser.set_defaults(include_non_songs=False)
     args = parser.parse_args()
 
     run_backfill(

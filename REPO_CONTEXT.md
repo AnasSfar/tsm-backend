@@ -63,7 +63,7 @@ python -m tsm migrate layout --dry-run|--apply   # archive .bak + website/ avec 
 
 ### `update_streams.py` (script principal, ~114 Ko)
 Scrape les streams totaux de tout le catalogue, calcule les daily, écrit `streams_history.csv`, exporte pour le web, upload R2, poste sur Twitter, commit git. Log : `run_update_streams.log` à côté.
-Périmètre actif : `db/discography/albums/*.json`, `songs.json`, `features.json`, `misc.json` dès qu'une entrée a une URL Spotify ; les IDs listés dans `historical_track_ids` restent exclus comme anciens doublons/remplacements explicites.
+Périmètre actif : `db/discography/albums/*.json`, `songs.json`, `features.json`, `misc.json` dès qu'une entrée a une URL Spotify ; les IDs listés dans `historical_track_ids` et les entrées `exclude_from_stream_collection=true` restent exclus du périmètre actif. Les entrées `music_track=false` restent collectables mais sont traitées comme `chart_extra` / hors stats publiques.
 
 ```
 python update_streams.py                     # run normal pour hier
@@ -240,7 +240,7 @@ Modules importés par les générateurs d'images (pas des scripts, sauf preview)
 | `chartr2.py` | Upload R2 des charts |
 | `fetch_issues.py` | Récupère les signalements du site depuis R2. `--save`, `--images`, `--delete` |
 | `fetch_hiring.py` | Récupère les candidatures (préfixe `hiring/`). `--json`, `--role` |
-| `backfill_discography_from_spotify.py` | Backfill de la discographie depuis Spotify. `--apply` (déf. dry-run), `--no-backup`, `--include-non-songs` (défaut), `--exclude-non-songs`, `--skip-api`, `--recent-releases N`, `--target-release-date`, `--quiet` |
+| `backfill_discography_from_spotify.py` | Backfill de la discographie depuis Spotify. `--apply` (déf. dry-run), `--no-backup`, tracks musicales par défaut, `--include-non-songs` pour ajouter commentary/karaoke/instrumental en DB et les collecter comme `chart_extra`, `--exclude-non-songs` (défaut), `--skip-api`, `--recent-releases N`, `--target-release-date`, `--quiet` |
 | `backfill_spotify_track_metadata.py` | Backfill métadonnées tracks. `--apply`, `--track`, `--limit`, `--skip-existing`, `--sleep` |
 | `backfill_global_charts.py` | Backfill `charts_history_global/fr.csv`. `--charts`, `--start`, `--end`, `--dl-workers`, `--filter-workers`, `--headless`, `--dry-run` |
 | `backfill_track_cover_cache.py` | Pré-chauffe `track_cover_cache.json` |

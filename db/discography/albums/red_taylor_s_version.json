@@ -26,7 +26,9 @@
           "song_family": "state_of_grace",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "5lFDIbYMcFHPPgzMcnPqSz"
+          ],
           "release_date": "2021-11-12T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -116,7 +118,9 @@
           "song_family": "treacherous",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0YrMTMLpLq1UIkWgghNM6c"
+          ],
           "release_date": "2021-11-12T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -161,7 +165,9 @@
           "song_family": "i_knew_you_were_trouble",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1BY5apCyXIjMCaMvLBnUwM"
+          ],
           "release_date": "2021-11-12T00:00:00Z",
           "genres": [
             "pop",
@@ -231,7 +237,9 @@
           "song_family": "all_too_well",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1IBhYEvvi02tDVByxIiTh4"
+          ],
           "release_date": "2021-11-12T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -276,7 +284,9 @@
           "song_family": "22",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "18lJHS7U8vTCsh1tedD3n5"
+          ],
           "release_date": "2021-11-12T00:00:00Z",
           "genres": [
             "pop",
@@ -391,7 +401,9 @@
           "song_family": "we_are_never_ever_getting_back_together",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1vFMCv1AuIvYYrMsGojGRK"
+          ],
           "release_date": "2021-11-12T00:00:00Z",
           "genres": [
             "pop",
@@ -461,7 +473,9 @@
           "song_family": "stay_stay_stay",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1ftFtW8S1621tu0MIQy0Sg"
+          ],
           "release_date": "2021-11-12T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -552,7 +566,9 @@
           "song_family": "holy_ground",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "661CJWXysgwKXI1dreYNBU"
+          ],
           "release_date": "2021-11-12T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -597,7 +613,9 @@
           "song_family": "sad_beautiful_tragic",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "21SralRv4ucDT3i1rYrr85"
+          ],
           "release_date": "2021-11-12T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -733,7 +751,9 @@
           "song_family": "starlight",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "2bspOurPlpKv27SVt7UbHy"
+          ],
           "release_date": "2021-11-12T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -1007,7 +1027,9 @@
           "song_family": "ronan",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0WE0h1qUWJBt97DtvuMWRN"
+          ],
           "release_date": "2021-11-12T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -1220,7 +1242,7 @@
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273318443aab3531a0558e79a4d",
           "historical_track_ids": [],
-          "release_date": "2021-11-12T00:00:00Z",
+          "release_date": "2022-01-21T00:00:00Z",
           "genres": [
             "pop",
             "electropop",

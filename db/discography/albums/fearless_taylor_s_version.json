@@ -26,7 +26,9 @@
           "song_family": "fearless",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "5dwLFuYXsOikE1BMoBDMN6"
+          ],
           "release_date": "2021-04-09T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -116,8 +118,10 @@
           "song_family": "love_story",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
-          "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z",
+          "historical_track_ids": [
+            "3CeCwYWvdfXbZLXFhBrbnf"
+          ],
+          "release_date": "2021-02-12T00:00:00Z",
           "genres": [
             "country",
             "pop",
@@ -231,7 +235,9 @@
           "song_family": "white_horse",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "4ieGtGwqOpvIQhRngp5VvR"
+          ],
           "release_date": "2021-04-09T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -276,7 +282,9 @@
           "song_family": "you_belong_with_me",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "06qAK0pLx43pwzRi6MWV8g"
+          ],
           "release_date": "2021-04-09T00:00:00Z",
           "genres": [
             "country",
@@ -1025,7 +1033,7 @@
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z",
+          "release_date": "2021-04-07T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},

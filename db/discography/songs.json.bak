@@ -1,8 +1,8 @@
 [
   {
     "album": "Standalone & Extras",
-    "section": "kworb_extras",
-    "track_count": 57,
+    "section": "streaming_extras",
+    "track_count": 55,
     "tracks": [
       {
         "title": "Babe",
@@ -64,7 +64,9 @@
         "song_family": "beautiful_ghosts_from_the_motion_picture_soundtrack_cats",
         "version_tag": null,
         "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27370d80ce758278c0ac3a63d9e",
-        "historical_track_ids": [],
+        "historical_track_ids": [
+          "6PPbs1c7f7Ove5JHUPmNZ2"
+        ],
         "genres": [],
         "genre_status": "missing",
         "genre_scores": {},
@@ -1027,46 +1029,6 @@
         }
       },
       {
-        "title": "The Story Of Us",
-        "url": "https://open.spotify.com/intl-fr/track/2jt90bYlYDg1lXYWES34LJ",
-        "type": "album_track",
-        "edition": "extras",
-        "display_section": "Extras",
-        "display_order": 10007,
-        "base_title": "The Story Of Us",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "The Story Of Us",
-        "song_family": "the_story_of_us",
-        "version_tag": null,
-        "release_date": "2010-01-01T00:00:00Z",
-        "historical_track_ids": [],
-        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273e11a75a2f2ff39cec788a015",
-        "genres": [],
-        "genre_status": "missing",
-        "genre_scores": {},
-        "genre_sources": {
-          "lastfm": []
-        },
-        "genre_raw_sources": {
-          "lastfm": []
-        },
-        "genre_query_titles": {},
-        "genre_errors": {},
-        "genre_canonical_key": "family:the_story_of_us",
-        "filter_tags": [
-          "solo"
-        ],
-        "filter_tag_sources": {
-          "solo": "high:artist_credit"
-        },
-        "chart_extra": true
-      },
-      {
         "title": "I Knew It, I Knew You",
         "url": "https://open.spotify.com/intl-fr/track/5uPaqMMt59KGrdKIitDRqa",
         "type": "standalone",
@@ -1450,7 +1412,7 @@
         "url": "https://open.spotify.com/intl-fr/track/0g5eBFfWwNP7PXFGON6SB7",
         "type": "standalone",
         "edition": "extras",
-        "display_section": "Kworb Extras",
+        "display_section": "Extras",
         "display_order": 9999,
         "base_title": "Teardrops On My Guitar - Acoustic Version",
         "album": "Standalone & Extras",
@@ -1462,7 +1424,7 @@
         "title_clean": "Teardrops On My Guitar - Acoustic Version",
         "song_family": "teardrops_on_my_guitar_acoustic_version",
         "version_tag": null,
-        "image_url": "",
+        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273e3b7d972af5af2c2f5c678ba",
         "release_date": null,
         "historical_track_ids": []
       },
@@ -1471,7 +1433,7 @@
         "url": "https://open.spotify.com/intl-fr/track/12wSL3tGk3MtbDEhfG7xy3",
         "type": "standalone",
         "edition": "extras",
-        "display_section": "Kworb Extras",
+        "display_section": "Extras",
         "display_order": 9999,
         "base_title": "You’ll Always Find Your Way Back Home",
         "album": "Standalone & Extras",
@@ -1483,7 +1445,7 @@
         "title_clean": "You’ll Always Find Your Way Back Home",
         "song_family": "youll_always_find_your_way_back_home",
         "version_tag": null,
-        "image_url": "",
+        "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2730e8ba185f3e9f15630a7b5fb",
         "release_date": null,
         "historical_track_ids": []
       },
@@ -1492,7 +1454,7 @@
         "url": "https://open.spotify.com/intl-fr/track/193OdjKrgxsPHPG8fTGotc",
         "type": "standalone",
         "edition": "extras",
-        "display_section": "Kworb Extras",
+        "display_section": "Extras",
         "display_order": 9999,
         "base_title": "Love Story - J Stax Club Mix",
         "album": "Standalone & Extras",
@@ -1504,7 +1466,7 @@
         "title_clean": "Love Story - J Stax Club Mix",
         "song_family": "love_story_j_stax_club_mix",
         "version_tag": null,
-        "image_url": "",
+        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27322df0a89c40a1c47b684e86e",
         "release_date": null,
         "historical_track_ids": []
       },
@@ -1513,7 +1475,7 @@
         "url": "https://open.spotify.com/intl-fr/track/25CuBWzP3f3mngylSUgNaZ",
         "type": "standalone",
         "edition": "extras",
-        "display_section": "Kworb Extras",
+        "display_section": "Extras",
         "display_order": 9999,
         "base_title": "Teardrops On My Guitar - Alternate Version",
         "album": "Standalone & Extras",
@@ -1525,7 +1487,7 @@
         "title_clean": "Teardrops On My Guitar - Alternate Version",
         "song_family": "teardrops_on_my_guitar_alternate_version",
         "version_tag": null,
-        "image_url": "",
+        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273759fa152b919ccf538d8c190",
         "release_date": null,
         "historical_track_ids": []
       },
@@ -1534,7 +1496,7 @@
         "url": "https://open.spotify.com/intl-fr/track/2kttlwS9VA4Lc5ONJ5WeX8",
         "type": "standalone",
         "edition": "extras",
-        "display_section": "Kworb Extras",
+        "display_section": "Extras",
         "display_order": 9999,
         "base_title": "I Heart ?",
         "album": "Standalone & Extras",
@@ -1551,32 +1513,11 @@
         "historical_track_ids": []
       },
       {
-        "title": "Safe & Sound - from “The Hunger Games” Soundtrack",
-        "url": "https://open.spotify.com/intl-fr/track/4HGaRnv2HuMKaZMLTJQZqV",
-        "type": "standalone",
-        "edition": "extras",
-        "display_section": "Kworb Extras",
-        "display_order": 9999,
-        "base_title": "Safe & Sound - from “The Hunger Games” Soundtrack",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "Safe & Sound - from “The Hunger Games” Soundtrack",
-        "song_family": "safe_sound_from_the_hunger_games_soundtrack",
-        "version_tag": null,
-        "image_url": "",
-        "release_date": null,
-        "historical_track_ids": []
-      },
-      {
         "title": "American Girl",
         "url": "https://open.spotify.com/intl-fr/track/4MPLRsmea37qS8imbKUC6p",
         "type": "standalone",
         "edition": "extras",
-        "display_section": "Kworb Extras",
+        "display_section": "Extras",
         "display_order": 9999,
         "base_title": "American Girl",
         "album": "Standalone & Extras",
@@ -1588,7 +1529,7 @@
         "title_clean": "American Girl",
         "song_family": "american_girl",
         "version_tag": null,
-        "image_url": "",
+        "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273d50f8fbf728c7a6205a60ee8",
         "release_date": null,
         "historical_track_ids": []
       },
@@ -1597,7 +1538,7 @@
         "url": "https://open.spotify.com/intl-fr/track/4OzHfc5rHDDTIh5wyR0gQ0",
         "type": "standalone",
         "edition": "extras",
-        "display_section": "Kworb Extras",
+        "display_section": "Extras",
         "display_order": 9999,
         "base_title": "Love Story - Digital Dog Radio Mix",
         "album": "Standalone & Extras",
@@ -1609,7 +1550,7 @@
         "title_clean": "Love Story - Digital Dog Radio Mix",
         "song_family": "love_story_digital_dog_radio_mix",
         "version_tag": null,
-        "image_url": "",
+        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273c168bf5b666051b066dba0dc",
         "release_date": null,
         "historical_track_ids": []
       },
@@ -1618,7 +1559,7 @@
         "url": "https://open.spotify.com/intl-fr/track/4b3wGyyabId64t9rjMFdfY",
         "type": "standalone",
         "edition": "extras",
-        "display_section": "Kworb Extras",
+        "display_section": "Extras",
         "display_order": 9999,
         "base_title": "Soon You’ll Get Better - One World: Together At Home",
         "album": "Standalone & Extras",
@@ -1630,7 +1571,7 @@
         "title_clean": "Soon You’ll Get Better - One World: Together At Home",
         "song_family": "soon_youll_get_better_one_world_together_at_home",
         "version_tag": null,
-        "image_url": "",
+        "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273d43806cf68e3984ed158f1a7",
         "release_date": null,
         "historical_track_ids": []
       },
@@ -1639,7 +1580,7 @@
         "url": "https://open.spotify.com/intl-fr/track/4jXhdWmUhZEhE2t9SljMOj",
         "type": "standalone",
         "edition": "extras",
-        "display_section": "Kworb Extras",
+        "display_section": "Extras",
         "display_order": 9999,
         "base_title": "Beautiful Eyes",
         "album": "Standalone & Extras",
@@ -1660,7 +1601,7 @@
         "url": "https://open.spotify.com/intl-fr/track/58eq1csoygPppaeE6QnWlZ",
         "type": "standalone",
         "edition": "extras",
-        "display_section": "Kworb Extras",
+        "display_section": "Extras",
         "display_order": 9999,
         "base_title": "Red - 2013 CMA Awards Performance",
         "album": "Standalone & Extras",
@@ -1672,7 +1613,7 @@
         "title_clean": "Red - 2013 CMA Awards Performance",
         "song_family": "red_2013_cma_awards_performance",
         "version_tag": null,
-        "image_url": "",
+        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2730a829001d3c30e844bc0a202",
         "release_date": null,
         "historical_track_ids": []
       },
@@ -1681,7 +1622,7 @@
         "url": "https://open.spotify.com/intl-fr/track/5sbsEKN2PIwKe0l03qoeXn",
         "type": "standalone",
         "edition": "extras",
-        "display_section": "Kworb Extras",
+        "display_section": "Extras",
         "display_order": 9999,
         "base_title": "Long Live (feat. Paula Fernandes)",
         "album": "Standalone & Extras",
@@ -1693,28 +1634,7 @@
         "title_clean": "Long Live (feat. Paula Fernandes)",
         "song_family": "long_live_feat_paula_fernandes",
         "version_tag": null,
-        "image_url": "",
-        "release_date": null,
-        "historical_track_ids": []
-      },
-      {
-        "title": "Beautiful Ghosts - From The Motion Picture Soundtrack “Cats”",
-        "url": "https://open.spotify.com/intl-fr/track/6PPbs1c7f7Ove5JHUPmNZ2",
-        "type": "standalone",
-        "edition": "extras",
-        "display_section": "Kworb Extras",
-        "display_order": 9999,
-        "base_title": "Beautiful Ghosts - From The Motion Picture Soundtrack “Cats”",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "Beautiful Ghosts - From The Motion Picture Soundtrack “Cats”",
-        "song_family": "beautiful_ghosts_from_the_motion_picture_soundtrack_cats",
-        "version_tag": null,
-        "image_url": "",
+        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2730a281b042bd417c5b66036a1",
         "release_date": null,
         "historical_track_ids": []
       },
@@ -1723,7 +1643,7 @@
         "url": "https://open.spotify.com/intl-fr/track/71BqAINEnezjQfxE4VuJfq",
         "type": "standalone",
         "edition": "extras",
-        "display_section": "Kworb Extras",
+        "display_section": "Extras",
         "display_order": 9999,
         "base_title": "“Slut!” (Taylor’s Version) (From The Vault)",
         "album": "Standalone & Extras",
@@ -1735,7 +1655,7 @@
         "title_clean": "“Slut!” (Taylor’s Version) (From The Vault)",
         "song_family": "slut_taylors_version_from_the_vault",
         "version_tag": null,
-        "image_url": "",
+        "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2734110bfab1185fdfc9dfc2cf0",
         "release_date": null,
         "historical_track_ids": []
       },
@@ -1744,7 +1664,7 @@
         "url": "https://open.spotify.com/intl-fr/track/7lkzMhR95JrgYAurGLEP6g",
         "type": "standalone",
         "edition": "extras",
-        "display_section": "Kworb Extras",
+        "display_section": "Extras",
         "display_order": 9999,
         "base_title": "Fifteen - Pop Mix Edit",
         "album": "Standalone & Extras",
@@ -1756,7 +1676,7 @@
         "title_clean": "Fifteen - Pop Mix Edit",
         "song_family": "fifteen_pop_mix_edit",
         "version_tag": null,
-        "image_url": "",
+        "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2739ce6499637d451ebff574e9a",
         "release_date": null,
         "historical_track_ids": []
       },
@@ -1765,7 +1685,7 @@
         "url": "https://open.spotify.com/intl-fr/track/7wjbSn8QHsxqKXU5M0jXGM",
         "type": "standalone",
         "edition": "extras",
-        "display_section": "Kworb Extras",
+        "display_section": "Extras",
         "display_order": 9999,
         "base_title": "Eyes Open",
         "album": "Standalone & Extras",
@@ -1777,7 +1697,28 @@
         "title_clean": "Eyes Open",
         "song_family": "eyes_open",
         "version_tag": null,
-        "image_url": "",
+        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2739c351de6861e801c1b679d53",
+        "release_date": null,
+        "historical_track_ids": []
+      },
+      {
+        "title": "The Story Of Us - International Mix",
+        "url": "https://open.spotify.com/intl-fr/track/3lXekiVK1ZPZbKconsys73",
+        "type": "standalone",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 9999,
+        "base_title": "The Story Of Us - International Mix",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "The Story Of Us - International Mix",
+        "song_family": "the_story_of_us_international_mix",
+        "version_tag": null,
+        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273e1bc852a04501952c765d5cd",
         "release_date": null,
         "historical_track_ids": []
       }

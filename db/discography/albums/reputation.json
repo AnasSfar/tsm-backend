@@ -152,7 +152,9 @@
           "song_family": "i_did_something_bad",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "2nOeoic483mcNOx5TFpc3L"
+          ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
             "pop",
@@ -259,7 +261,9 @@
           "song_family": "delicate",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "5sOch9Cf4uxcMtwFzMtNqQ"
+          ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
             "pop",
@@ -325,7 +329,9 @@
           "song_family": "look_what_you_made_me_do",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1JbR9RDP3ogVNEWFgNXAjh"
+          ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
             "pop",
@@ -391,8 +397,10 @@
           "song_family": "so_it_goes",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
-          "historical_track_ids": [],
-          "release_date": "2017-11-10T00:00:00Z",
+          "historical_track_ids": [
+            "41T04yafZVrjNq2FqvLtId"
+          ],
+          "release_date": "2017-11-09T00:00:00Z",
           "genres": [
             "pop",
             "electropop"
@@ -454,7 +462,9 @@
           "song_family": "gorgeous",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "12WvaS3V4dPRBU2o37vX69"
+          ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
             "pop",
@@ -586,7 +596,9 @@
           "song_family": "king_of_my_heart",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "4d7JmiyEia47bpC1HhxUzY"
+          ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
             "pop",
@@ -652,7 +664,9 @@
           "song_family": "dancing_with_our_hands_tied",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "6P8j2SqbXOeaCvXh1ZXwWT"
+          ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
             "electropop",
@@ -715,7 +729,9 @@
           "song_family": "dress",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "50GXx9eZeiVWB3bgMop7Ti"
+          ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
             "pop",

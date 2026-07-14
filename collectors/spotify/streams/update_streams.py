@@ -798,7 +798,7 @@ def run_discography_backfill_after_streams(token_mgr: TokenManager | None, stats
         result = run_discography_backfill(
             apply=True,
             no_backup=False,
-            include_non_songs=True,
+            include_non_songs=False,
             skip_api=False,
             tokens=tokens,
             recent_release_limit=12,
@@ -844,7 +844,7 @@ def run_new_release_preflight(token_mgr: TokenManager | None, stats_date: str) -
             result = run_discography_backfill(
                 apply=True,
                 no_backup=False,
-                include_non_songs=True,
+                include_non_songs=False,
                 skip_api=False,
                 tokens=tokens,
                 recent_release_limit=12,

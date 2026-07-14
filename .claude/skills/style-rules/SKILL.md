@@ -29,6 +29,7 @@ Source de vérité : `tsm-frontend/frontend/src/styles/STYLE.md`. Ce condensé s
 
 ## Modules partagés à réutiliser (ne pas dupliquer)
 - Public : `.page`, `.section-card`, `.stat-card`, `.ranking-table`, `.song-row-card`, `.delta`, `.table-wrap`, `.toolbar`, `.sort-menu`, `.milestone-chip`, `.focus-overlay` ; composants `RankChange`, `Sparkline`.
+- Liste de `<SongRow>` : scope `.streams-songs-wrap` (Streams.css) = grid desktop + cartes `.song-row-mobile` ≤600px automatiques (SongRow rend les 2 DOM). Utilisé par Streams, SongDetail streams (`sgd-`, `SongDetail.css`) et AlbumDetail (`albd-`, `AlbumDetail.css`). Jamais de layout mobile maison en `::before`.
 - Admin : primitives de `adminUI.jsx` + patterns `adm-` (→ skill `admin-work`).
 
 ## Checklist avant livraison
