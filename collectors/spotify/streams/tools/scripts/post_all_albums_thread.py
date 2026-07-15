@@ -106,9 +106,11 @@ def main() -> None:
 
     day_dir = update_streams_dir(target_date)
     day_dir.mkdir(parents=True, exist_ok=True)
-    lock = day_dir / "albums_posted.lock"
+    # Lock distinct de albums_posted.lock (post top eras quotidien) : les deux
+    # posts coexistent le lundi/vendredi et ne doivent pas se bloquer entre eux.
+    lock = day_dir / "all_albums_thread_posted.lock"
 
-    if should_skip_post(lock, target_date=target_date, label="Top eras grouped thread", no_post=args.no_post):
+    if should_skip_post(lock, target_date=target_date, label="All-albums grouped thread", no_post=args.no_post):
         return
 
     if not args.no_post and not TWITTER_SESSION.exists():

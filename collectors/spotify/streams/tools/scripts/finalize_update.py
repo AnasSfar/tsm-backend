@@ -952,29 +952,20 @@ def _album_update_targets(ctx: FinalizeContext) -> list[str]:
 
 def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
     album_img_script = ctx.script_dir / "tools" / "scripts" / "generate_album_update_image.py"
-    weekday = date_cls.fromisoformat(ctx.summary["stats_date"]).weekday()
-    if weekday in (0, 4):
-        print("Album update posts skipped: top eras/all-albums grouped thread runs on Monday/Friday.")
+    if _is_weekend_stats_date(ctx.summary["stats_date"]):
+        print("Album update posts skipped: no album cards on weekend stats dates.")
         return
-    is_weekend = _is_weekend_stats_date(ctx.summary["stats_date"])
-    gain_targets = _album_gain_update_targets(
-        ctx.summary["stats_date"],
-        threshold_pct=0.0 if is_weekend else ALBUM_UPDATE_GAIN_THRESHOLD_PCT,
-    )
-    if is_weekend:
-        gain_targets = [target for target in gain_targets if float(target["gain_pct"]) > 0.0]
+    gain_targets = _album_gain_update_targets(ctx.summary["stats_date"])
     if gain_targets:
         print(
-            ("Weekend positive album update scan: " if is_weekend else "Album update gain scan: ")
+            "Album update gain scan: "
             + ", ".join(
                 f"{target['album']} +{target['gain_pct']:.1f}%"
                 for target in gain_targets
             )
         )
-    elif is_weekend:
-        print("Weekend detected: no positive album updates found.")
 
-    gainer_targets = [] if is_weekend else _album_gainer_update_targets(ctx, ctx.summary["stats_date"])
+    gainer_targets = _album_gainer_update_targets(ctx, ctx.summary["stats_date"])
     if gainer_targets:
         print(
             "Album update gainer scan: "
@@ -1062,7 +1053,26 @@ def _post_albums_daily(ctx: FinalizeContext, state: dict[str, float]) -> None:
 
 
 def _post_all_albums_thread(ctx: FinalizeContext, state: dict[str, float]) -> None:
-    print("All-albums thread is merged into the top eras post.")
+    weekday = date_cls.fromisoformat(ctx.summary["stats_date"]).weekday()
+    if weekday not in (0, 4):
+        print("All-albums thread skipped: posted on Monday/Friday stats dates only.")
+        return
+
+    if not ctx.no_post_mode and not ctx.summary.get("all_done"):
+        print("Skipping all-albums thread: not all tracks are done yet.")
+        return
+
+    thread_script = ctx.script_dir / "tools" / "scripts" / "post_all_albums_thread.py"
+    cmd = [sys.executable, str(thread_script), ctx.summary["stats_date"]]
+    if ctx.no_post_mode:
+        cmd.append("--no-post")
+    _run(
+        ctx,
+        cmd,
+        label="all-albums thread",
+        should_post=not ctx.no_post_mode,
+        state=state,
+    )
 
 
 def _post_debut_releases(ctx: FinalizeContext, state: dict[str, float]) -> None:
@@ -1348,6 +1358,8 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
         _guarded_post_step("daily recap card", lambda: _post_daily_recap_card(ctx, post_state))
 
         _guarded_post_step("top eras post", lambda: _post_albums_daily(ctx, post_state))
+
+        _guarded_post_step("all-albums thread", lambda: _post_all_albums_thread(ctx, post_state))
 
         _guarded_post_step("top 20 songs post", lambda: _post_streams_image(ctx, post_state))
 

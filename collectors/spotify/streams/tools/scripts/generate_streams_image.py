@@ -49,6 +49,25 @@ IMAGE_DATA_URI_CACHE_PATH = _TOOLS / ".image_data_uri_cache.json"
 
 TOP_N = 15
 
+TOP20_COMPACT_CSS = """
+.hdr{padding:18px 24px;gap:16px}
+.hdr-logo{width:56px;height:56px}
+.hdr-title{font-size:24px}
+.hdr-sub{font-size:13px;margin-top:4px}
+.col-heads{padding:7px 16px}
+.col-heads span{font-size:10px}
+.data-row{padding:5px 16px}
+.col-rank{font-size:18px}
+.col-chg{font-size:11px}
+.chg-new,.chg-re{font-size:10px}
+.col-entity{gap:10px}
+.entity-name{font-size:13px}
+.entity-sub{font-size:11px;margin-top:2px}
+.col-num{font-size:12px}
+.delta-num{font-size:12px}
+.delta-pct{font-size:10px}
+"""
+
 
 def _norm(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "_", (s or "").lower()).strip("_")
@@ -496,6 +515,13 @@ def build_html(top_rows: list[dict], target_date: str, cover_map: dict, track_al
     title = "Taylor Swift · Daily Streams" if max_days <= 1 else f"Taylor Swift · {max_days}-Day Streams"
     period_note = f" · {date_fmt}" if max_days <= 1 else f" · up to {date_fmt} ({max_days} days)"
     col_label = "Daily" if max_days <= 1 else f"{max_days}d"
+    compact = top_n >= 20
+    body_width = 900 if compact else 800
+    grid_cols = (
+        "46px 42px minmax(170px,1fr) 112px 100px 100px 104px"
+        if compact
+        else "46px 42px minmax(130px,1fr) 104px 94px 94px 92px"
+    )
 
     return build_table_html(
         title=title,
@@ -504,12 +530,15 @@ def build_html(top_rows: list[dict], target_date: str, cover_map: dict, track_al
             ("Rank", False), ("+/-", False), ("Track", False),
             (col_label, True), ("Daily Chg", True), ("Weekly Chg", True), ("Total", True),
         ],
-        grid_cols="46px 42px minmax(130px,1fr) 104px 94px 94px 92px",
+        grid_cols=grid_cols,
         rows_html=rows_html,
         handle=HANDLE,
         date_str=date_fmt,
         headers_dir=HEADERS_DIR,
-        body_width=800,
+        body_width=body_width,
+        art_size=44 if compact else 54,
+        col_gap=7 if compact else 8,
+        extra_css=TOP20_COMPACT_CSS if compact else "",
     )
 
 
@@ -523,11 +552,22 @@ def _streams_image_filename(*, top_n: int, start_rank: int) -> str:
     return f"streams_image_{start_rank}_{start_rank + top_n - 1}.png"
 
 
-def _render_html(browser, html: str, out_path: Path) -> None:
-    page = browser.new_page(viewport={"width": 800, "height": 200}, device_scale_factor=2)
+def _render_width(top_n: int) -> int:
+    return 900 if top_n >= 20 else 800
+
+
+def _render_html(browser, html: str, out_path: Path, *, width: int) -> None:
+    page = browser.new_page(viewport={"width": width, "height": 200}, device_scale_factor=2)
     try:
         page.set_content(html, wait_until="load")
         page.wait_for_timeout(300)
+        try:
+            full_h = page.evaluate("() => document.body.scrollHeight")
+            full_h = int(full_h) if full_h else 200
+            full_h = max(200, min(full_h, 6000))
+            page.set_viewport_size({"width": width, "height": full_h})
+        except Exception:
+            pass
         page.locator("body").screenshot(path=str(out_path))
     finally:
         page.close()
@@ -584,7 +624,7 @@ def generate_thread_images(
             for start_rank, top_rows in batches:
                 html = build_html(top_rows, target_date, cover_map, track_album_map, top_n_final, image_cache)
                 out_path = out_dir / _streams_image_filename(top_n=top_n_final, start_rank=start_rank)
-                _render_html(browser, html, out_path)
+                _render_html(browser, html, out_path, width=_render_width(top_n_final))
                 out_paths.append(out_path)
                 print(f"\nImage générée : {out_path}")
         finally:

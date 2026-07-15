@@ -18,12 +18,15 @@ Ces règles ont été édictées puis re-corrigées plusieurs fois — les viole
 7. **Données injectées manuellement** (source de confiance, ex. @spotifyswiftie) = raison `manual_trusted` : **ne jamais les écraser ni les recalculer** ; elles servent de canari pour dater des totaux ambigus.
 8. **Retard Spotify multi-jours** (ça arrive régulièrement) : ne jamais deviner à quelle date appartiennent les nouveaux totaux. Utiliser `reconcile_gap_catchup.py` (classe `single_day` / `fully_caught_up` / `partial_catchup` / `uncertain` — `uncertain` n'est JAMAIS auto-appliqué) et la logique canari. Deux updates ne doivent pas tourner en même temps sans savoir lequel date de quel jour.
 9. **Pas de scraping HTML de fallback** — retiré volontairement, ne pas le réintroduire.
+10. **Gap > 4 jours ⇒ daily VIDE, jamais le delta** (incident 12/07/2026 : 160 tracks backfillées ont enregistré leur total lifetime comme daily, +40M sur le jour). Quand un track n'a pas de ligne J-1 et que sa dernière ligne date de plus de `MAX_ESTIMATED_STREAM_GAP_DAYS` (4) jours : à la collecte, `try_apply_track_update` écrit le total en baseline avec daily vide (raison `baseline_after_long_gap`) ; à l'export, `normalize_daily_streams_from_totals` blanke tout daily couvrant un gap > 4 jours (sauf `manual_trusted`). Le vrai daily reprend le lendemain via l'invariant des totaux.
 
 ## Posting Twitter
 
 - **Jamais poster si un album/tableau a un track manquant ou à 0** (albums, top 45, biggest daily/weekly gainers…). Complétude d'abord.
 - **Locks `*_posted.lock`** pour tout ce qui poste (anti-double-post) ; `--force` les ignore consciemment.
 - **Espacement entre posts : 60 s** (pas 180).
+- **Règles albums (décision 15/07/2026)** : thread groupé all-albums à chaque collecte du **lundi et vendredi** (lock `all_albums_thread_posted.lock`, distinct du top eras) ; cards album update (targets, +10 % de gain, gainers) **tous les jours de semaine** y compris lundi/vendredi ; **aucune card album le week-end** (early poster désactivé aussi) ; la photo top eras se poste toujours (hors week-end où elle est dans la recap combinée).
+- **Un post avec image ne doit JAMAIS partir sans son image** : la vérification d'upload se fait dans le scope strict du composer (`core/twitter.py`) et re-check juste avant le clic — un attach non confirmé fait échouer le post (retry), il ne dégrade pas en texte seul (incident gainers du 13/07/2026).
 - **Tout est posté sur @swiftiescharts, sauf le chart FR.** L'ancien compte tsmusem13 n'est plus utilisé pour l'automatique.
 - Charts régionaux : ne pas poster la même région deux jours de suite (système de score probabiliste) ; une **RE vaut beaucoup de points +, une OUT beaucoup de −**.
 - **Apple Music : jamais de NEW pour une chanson déjà sortie** (on n'a pas l'historique complet AM) → tout est RE (affiché **en bleu**) ; NEW est réservé aux chansons qui sortiront après le début du scraping.

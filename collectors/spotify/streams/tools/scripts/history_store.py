@@ -681,6 +681,10 @@ class HistoryIndex:
         with self._lock:
             return self.last_total_by_track.get(track_id)
 
+    def get_last_total_date(self, track_id: str) -> str | None:
+        with self._lock:
+            return self._last_total_date_by_track.get(track_id)
+
     def get_total_for_date(self, track_id: str, stats_date: str) -> int | None:
         with self._lock:
             return self.total_by_date_track.get((stats_date, track_id))
@@ -709,6 +713,25 @@ class HistoryIndex:
                     best_date = point_date
                     best_total = point_total
         return best_total
+
+    def get_days_since_previous_row(self, track_id: str, stats_date: str) -> int | None:
+        """Écart en jours entre stats_date et la ligne la plus récente
+        strictement antérieure (None si aucune ligne antérieure)."""
+        target = date.fromisoformat(stats_date)
+        best_date = None
+        with self._lock:
+            for point in self.points_by_track.get(track_id, []):
+                try:
+                    point_date = date.fromisoformat(point["date"])
+                except Exception:
+                    continue
+                if point_date >= target:
+                    continue
+                if best_date is None or point_date > best_date:
+                    best_date = point_date
+        if best_date is None:
+            return None
+        return (target - best_date).days
 
     def done_ids_for_date(self, stats_date: str) -> set[str]:
         with self._lock:
@@ -837,6 +860,25 @@ def get_last_history_total(track_id: str) -> int | None:
             except Exception:
                 pass
     return last
+
+def get_last_history_total_date(track_id: str) -> str | None:
+    """Date de la dernière ligne connue pour ce track (même règle anti
+    désordre chronologique que get_last_history_total)."""
+    if not HISTORY_PATH.exists():
+        return None
+
+    last_date = None
+    with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            if row.get("track_id") != track_id:
+                continue
+            row_date = (row.get("date") or "").strip()
+            if not row_date or (last_date is not None and row_date < last_date):
+                continue
+            if (row.get("streams") or "").strip():
+                last_date = row_date
+    return last_date
 
 def get_all_last_history_totals() -> dict[str, int]:
     """Lit le CSV une seule fois et retourne {track_id: last_streams}."""
@@ -1029,6 +1071,11 @@ def load_tracks_from_discography(active_track_ids: set[str] | None = None) -> li
                 "primary_artist": primary_artist,
                 "release_date": track.get("release_date") or None,
                 "chart_extra": _is_chart_extra(section, track),
+                "chartsnapshot_only": bool(
+                    track.get("chartsnapshot_source_album")
+                    or "_chartsnapshot_external_" in str(track.get("song_family") or "")
+                    or track.get("version_tag") == "chartsnapshot_historical_extra"
+                ),
                 "artists_json": json.dumps(artists),
             }
 

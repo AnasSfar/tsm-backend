@@ -75,8 +75,8 @@ python update_streams.py YYYY-MM-DD          # run normal pour une date précise
   --local-test D     force le re-scrape même si la date existe ; aucune écriture history/R2/Twitter/git
   --test [D]         rejoue les scripts de finalisation sur l'history existante (rien d'externe)
   --post-only S[,S]  poste uniquement les étapes choisies depuis l'history existante (pas de scrape/export/git ;
-                     guards, locks et règles de jour respectés) : top-eras (hors week-end), all-albums (fusionné/no-op), top45, recap,
-                     best-day-since, debut, gainers, album-updates ; avec --no-post = images seulement
+                     guards, locks et règles de jour respectés) : top-eras (hors week-end), all-albums (thread groupé lundi/vendredi),
+                     top45, recap, best-day-since, debut, gainers, album-updates (jours de semaine seulement) ; avec --no-post = images seulement
   --throwback --throwback-action announced|released --throwback-event "..."   # thread throwback
   --reset-last-date  supprime les lignes de la dernière date avant de tourner
   --reset-date D     supprime les lignes de cette date avant de tourner
@@ -111,7 +111,7 @@ python update_streams.py YYYY-MM-DD          # run normal pour une date précise
 | `generate_weekend_streams_image.py` | PNG récap week-end |
 | `post_streams_twitter.py` | Poste l'image top streams. `date`, `--no-post`, `--top-n 15` |
 | `post_albums_twitter.py` | Poste l'image « Albums on Spotify » / top eras, hors week-end |
-| `post_all_albums_thread.py` | Ancien thread avec tous les albums, fusionné dans top eras en finalisation ; direct limité lundi/vendredi. `date`, `--no-post` |
+| `post_all_albums_thread.py` | Thread groupé tous albums (par ère), posté en finalisation le lundi/vendredi ; lock `all_albums_thread_posted.lock` (distinct de `albums_posted.lock`). `date`, `--no-post` |
 | `post_best_day_since_twitter.py` | Posts « best day since » avec spotlights. `date`, `--limit 5`, `--min-days`, `--album-limit 1`, `--no-albums`, `--no-recap`, `--only-track ID`, `--exclude-tracks`, `--force`, `--post-spacing-seconds` |
 | `post_debut_releases.py` | Posts des nouvelles sorties. `date`, `--no-post`, `--snapshot-collected-date`, `--force-track-id`, `--force-song` |
 | `post_gainer_thread.py` | Thread top gainers en %. `date`, `--period`, `--limit`, `--min-baseline`, `--no-post` |

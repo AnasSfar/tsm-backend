@@ -5,8 +5,9 @@ import json
 import re
 import shutil
 import sys
+from bisect import bisect_left
 from collections import defaultdict
-from datetime import datetime, timedelta
+from datetime import date as date_cls, datetime, timedelta
 from pathlib import Path
 
 
@@ -302,22 +303,50 @@ def load_raw_history() -> tuple[list[str], dict[str, dict[str, dict]]]:
     return sorted_unique_dates(list(by_date.keys())), dict(by_date)
 
 
+MAX_DAILY_GAP_DAYS = 4  # au-delà, un delta multi-jours n'est plus exporté comme daily
+
+
 def normalize_daily_streams_from_totals(by_date: dict[str, dict[str, dict]]) -> int:
-    """Ensure exported daily streams match consecutive-day total deltas."""
+    """Ensure exported daily streams match consecutive-day total deltas.
+
+    Garde-fou supplémentaire : quand un track n'a AUCUNE ligne la veille et que
+    sa ligne précédente la plus proche date de plus de MAX_DAILY_GAP_DAYS jours
+    (ex. track ajouté en DB avec un historique backfillé ancien), son
+    daily_streams est vidé — un delta couvrant des semaines/mois n'est pas un
+    daily et gonflerait les totaux du site."""
     corrected = 0
-    for date_value in sorted_unique_dates(list(by_date.keys())):
+    blanked = 0
+    dates_by_track: dict[str, list[date_cls]] = defaultdict(list)
+    for date_value, day_rows in by_date.items():
         try:
-            previous_date = (datetime.strptime(date_value, "%Y-%m-%d").date() - timedelta(days=1)).isoformat()
+            parsed = datetime.strptime(date_value, "%Y-%m-%d").date()
         except ValueError:
             continue
-        previous_day = by_date.get(previous_date)
-        if not previous_day:
+        for track_id in day_rows:
+            dates_by_track[track_id].append(parsed)
+    for track_dates in dates_by_track.values():
+        track_dates.sort()
+
+    for date_value in sorted_unique_dates(list(by_date.keys())):
+        try:
+            current_date = datetime.strptime(date_value, "%Y-%m-%d").date()
+        except ValueError:
             continue
+        previous_date = (current_date - timedelta(days=1)).isoformat()
+        previous_day = by_date.get(previous_date) or {}
         for track_id, values in by_date.get(date_value, {}).items():
             if values.get("estimated_reason") == "manual_trusted":
                 continue
             previous_values = previous_day.get(track_id)
             if not previous_values:
+                if values.get("daily_streams") is None:
+                    continue
+                track_dates = dates_by_track.get(track_id, [])
+                index = bisect_left(track_dates, current_date)
+                nearest_before = track_dates[index - 1] if index > 0 else None
+                if nearest_before is None or (current_date - nearest_before).days > MAX_DAILY_GAP_DAYS:
+                    values["daily_streams"] = None
+                    blanked += 1
                 continue
             current_total = values.get("streams")
             previous_total = previous_values.get("streams")
@@ -331,7 +360,9 @@ def normalize_daily_streams_from_totals(by_date: dict[str, dict[str, dict]]) -> 
                 corrected += 1
     if corrected:
         print(f"[history] Corrected {corrected} daily_streams value(s) from consecutive totals before export.")
-    return corrected
+    if blanked:
+        print(f"[history] Blanked {blanked} daily_streams value(s) spanning a gap > {MAX_DAILY_GAP_DAYS} day(s) before export.")
+    return corrected + blanked
 
 
 def history_count_by_track(raw_history_by_date: dict[str, dict[str, dict]]) -> dict[str, int]:

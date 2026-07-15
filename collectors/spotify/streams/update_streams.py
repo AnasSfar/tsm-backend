@@ -84,6 +84,7 @@ from history_store import (
     append_history_row,
     build_track_lookup,
     compute_daily,
+    days_covered_by_row,
     dedupe_history_rows_by_date_track,
     delete_history_rows_for_date,
     ensure_history_file,
@@ -559,8 +560,33 @@ def try_apply_track_update(
     )
     daily = compute_daily(previous_day_total, total)
     missing_previous_day_total = previous_day_total is None and last_total is not None
+    # Baseline (total écrit, daily VIDE) quand il n'y a pas de ligne J-1 et que
+    # le delta depuis la dernière ligne connue ne peut pas valoir un daily :
+    # extras (comportement historique extra_baseline), ou gap > 4 jours / aucun
+    # historique (ex. track ajoutée en DB avec un backfill chartsnapshot ancien
+    # — incident du 12/07/2026 où les totaux lifetime sont partis en daily).
+    # Les gaps courts (panne WARP 1-4 j) gardent la logique multi-day/canari
+    # plus bas, qui produit des posts « last N days » corrects.
+    gap_days_before_stats_date = (
+        history_index.get_days_since_previous_row(track_id, stats_date)
+        if history_index is not None
+        else (days_covered_by_row(track_id, stats_date) if last_total is not None else None)
+    )
+    missing_previous_day_baseline = previous_day_total is None and (
+        bool(track.get("chart_extra"))
+        or (
+            not is_recent_release_date(track.get("release_date"), stats_date)
+            and (
+                gap_days_before_stats_date is None
+                or gap_days_before_stats_date > MAX_ESTIMATED_STREAM_GAP_DAYS
+            )
+        )
+    )
 
-    if last_total is None:
+    if missing_previous_day_baseline:
+        reason = "missing_previous_day_baseline"
+        real_update = False
+    elif last_total is None:
         reason = "first_seen"
         real_update = True
     elif total == last_total:
@@ -585,26 +611,36 @@ def try_apply_track_update(
         reason = f"anomaly_delta_gt_{MAX_DAILY_INCREASE}"
         real_update = False
     elif missing_previous_day_total:
-        # No row for the immediate previous day. Use tracks that already have
-        # real data for stats_date as a canary: if none of them have shown
-        # real growth for stats_date yet, this fetch more likely just caught
-        # up to the missing previous day's number, not stats_date's — record
-        # it under that earlier date instead of mislabeling it. Once some
-        # track confirms stats_date growth, treat further catch-ups as real
-        # stats_date deltas (possibly spanning more than one day).
-        canary_confirmed_stats_date = (
-            history_index.has_any_real_update_for_date(stats_date)
-            if history_index is not None
-            else True
-        )
-        if canary_confirmed_stats_date:
-            reason = "updated_multi_day_gap"
+        # No row for the immediate previous day. Filet de sécurité : si la
+        # dernière ligne connue est plus vieille qu'un gap court WARP, le
+        # delta n'est pas un daily — baseline avec daily vide (cas normalement
+        # déjà couvert par missing_previous_day_baseline ci-dessus).
+        gap_days = gap_days_before_stats_date
+        if gap_days is not None and gap_days > MAX_ESTIMATED_STREAM_GAP_DAYS:
+            reason = "baseline_after_long_gap"
             real_update = True
-            daily = compute_daily(last_total, total)
+            daily = None
         else:
-            reason = "backfilled_previous_day"
-            real_update = False
-            daily = compute_daily(last_total, total)
+            # Use tracks that already have real data for stats_date as a
+            # canary: if none of them have shown real growth for stats_date
+            # yet, this fetch more likely just caught up to the missing
+            # previous day's number, not stats_date's — record it under that
+            # earlier date instead of mislabeling it. Once some track confirms
+            # stats_date growth, treat further catch-ups as real stats_date
+            # deltas (possibly spanning more than one day).
+            canary_confirmed_stats_date = (
+                history_index.has_any_real_update_for_date(stats_date)
+                if history_index is not None
+                else True
+            )
+            if canary_confirmed_stats_date:
+                reason = "updated_multi_day_gap"
+                real_update = True
+                daily = compute_daily(last_total, total)
+            else:
+                reason = "backfilled_previous_day"
+                real_update = False
+                daily = compute_daily(last_total, total)
     else:
         reason = "updated"
         real_update = True
@@ -621,6 +657,19 @@ def try_apply_track_update(
                     history_index.append(stats_date, track_id, total, 0)
                 else:
                     append_history_row([stats_date, track_id, total, 0])
+        status = "skipped"
+    elif reason == "missing_previous_day_baseline":
+        current_day_total = (
+            history_index.get_total_for_date(track_id, stats_date)
+            if history_index is not None
+            else get_history_total_for_date(track_id, stats_date)
+        )
+        if write_history and not dry_run_mode and current_day_total is None:
+            with lock:
+                if history_index is not None:
+                    history_index.append(stats_date, track_id, total, None)
+                else:
+                    append_history_row([stats_date, track_id, total, ""])
         status = "skipped"
     elif reason == "backfilled_previous_day":
         current_previous_day_total = (
@@ -2689,7 +2738,8 @@ def main():
         log_mode=LOG_MODE,
         no_post_mode=no_post_mode,
         target_albums=list(ALBUM_UPDATE_TARGETS),
-        enabled=True,
+        # Pas de cards album le week-end (règle posting) : early poster inclus.
+        enabled=date.fromisoformat(stats_date).weekday() < 5,
     )
     album_update_poster.start()
 

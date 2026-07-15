@@ -72,6 +72,36 @@ def oembed_image(track_url: str) -> str | None:
         print(f"    [oEmbed ERROR] {e}")
         return None
 
+
+def iter_track_entries(data) -> list[tuple[dict, str]]:
+    """Return (track, container_album) pairs from supported discography JSON shapes."""
+    entries: list[tuple[dict, str]] = []
+
+    def consume_section(section: dict, container_album: str = "") -> None:
+        tracks = section.get("tracks")
+        if not isinstance(tracks, list):
+            return
+        album = (section.get("album") or container_album or "").strip()
+        for track in tracks:
+            if isinstance(track, dict):
+                entries.append((track, album))
+
+    if isinstance(data, list):
+        for section in data:
+            if isinstance(section, dict):
+                consume_section(section)
+    elif isinstance(data, dict):
+        container_album = (data.get("album") or "").strip()
+        sections = data.get("sections")
+        if isinstance(sections, list):
+            for section in sections:
+                if isinstance(section, dict):
+                    consume_section(section, container_album)
+        else:
+            consume_section(data, container_album)
+
+    return entries
+
 # ── load reference data ────────────────────────────────────────────────────
 
 print("Loading songs.json …")
@@ -128,12 +158,10 @@ for path in edition_files:
     with open(path, encoding="utf-8-sig") as f:
         data = json.load(f)
 
-    # Support both list-of-sections format and single dict-with-tracks format
-    sections = data if isinstance(data, list) else [data]
-    tracks = [t for section in sections for t in section.get("tracks", [])]
+    tracks = iter_track_entries(data)
     changed = False
 
-    for track in tracks:
+    for track, container_album in tracks:
         total_tracks += 1
 
         if track.get("image_url") and not FORCE:
@@ -142,7 +170,7 @@ for path in edition_files:
 
         track_url = track.get("url", "")
         tid = extract_track_id(track_url)
-        album_name = (track.get("album") or data.get("album") or "").strip()
+        album_name = (track.get("album") or container_album or "").strip()
         img = None
 
         # 1 — songs.json lookup by track_id
@@ -214,21 +242,20 @@ if chart_names:
                 payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
             except Exception:
                 continue
-            for section in payload.get("sections", []) if isinstance(payload, dict) else []:
-                for t in section.get("tracks", []):
-                    img = t.get("image_url", "")
-                    if not img:
-                        continue
-                    for raw in [
-                        (t.get("title") or "").lower(),
-                        (t.get("base_title") or "").lower(),
-                        (t.get("title_clean") or "").lower(),
-                    ]:
-                        if raw:
-                            title_to_img[raw] = img
-                            normed = norm_apos(raw)
-                            if normed != raw:
-                                title_to_img[normed] = img
+            for t, _container_album in iter_track_entries(payload):
+                img = t.get("image_url", "")
+                if not img:
+                    continue
+                for raw in [
+                    (t.get("title") or "").lower(),
+                    (t.get("base_title") or "").lower(),
+                    (t.get("title_clean") or "").lower(),
+                ]:
+                    if raw:
+                        title_to_img[raw] = img
+                        normed = norm_apos(raw)
+                        if normed != raw:
+                            title_to_img[normed] = img
 
     songs_disco = DISCO_DIR / "songs.json"
     if songs_disco.exists():
@@ -268,7 +295,7 @@ if chart_names:
         for path in edition_files:
             with open(path, encoding="utf-8-sig") as f:
                 data = json.load(f)
-            for t in data.get("tracks", []):
+            for t, _container_album in iter_track_entries(data):
                 img = t.get("image_url", "")
                 if img:
                     for k in [t.get("title", ""), t.get("base_title", ""), t.get("title_clean", "")]:

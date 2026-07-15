@@ -679,6 +679,11 @@ def main() -> None:
     lock = day_dir / "best_day_since_posted.lock"
     recap_lock = day_dir / "best_day_since_recap_posted.lock"
 
+    recap_locked = recap_lock.exists() and not args.no_post and not args.force
+    if recap_locked and not args.no_recap:
+        print(f"[best_day_since_post] Recap already posted for {target_date}, skipping.")
+        return
+
     track_locked = lock.exists() and not args.no_post and not args.force
     if track_locked:
         print(f"[best_day_since_post] Already posted for {target_date}, skipping track posts.")
@@ -764,7 +769,6 @@ def main() -> None:
 
     # Full recap table: every song that hit a best-day-since record today
     # (not just the ones with individual posts), oldest record first.
-    recap_locked = recap_lock.exists() and not args.no_post and not args.force
     if recap_locked:
         print(f"[best_day_since_post] Recap already posted for {target_date}, skipping.")
     elif args.no_recap:

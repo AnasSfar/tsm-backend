@@ -16,12 +16,13 @@ Tout tourne **en local via le Planificateur de tâches Windows** (pas GitHub Act
 | Collecte quotidienne complète | `python -m tsm daily` | racine tsm-backend (`run_daily.bat`) |
 | Tous les charts | `python -m tsm collect charts` | racine (`run_all_charts.bat`) |
 | Streams Spotify | `python update_streams.py` | `collectors/spotify/streams/` (log : `run_update_streams.log` à côté) |
-| Reposter UNE étape (ex. top eras raté) | `python update_streams.py [D] --post-only top-eras` | idem ; étapes : top-eras (hors week-end), all-albums (fusionné/no-op), top45, recap, best-day-since, debut, gainers, album-updates ; locks/guards respectés, `--no-post` = images seulement |
+| Reposter UNE étape (ex. top eras raté) | `python update_streams.py [D] --post-only top-eras` | idem ; étapes : top-eras (hors week-end), all-albums (thread groupé, lundi/vendredi seulement, lock `all_albums_thread_posted.lock`), top45, recap, best-day-since, debut, gainers, album-updates (jours de semaine uniquement, aucune card album le week-end) ; locks/guards respectés, `--no-post` = images seulement |
 
 CLI définie dans `tsm/cli.py`. Outils streams : `collectors/spotify/streams/tools/scripts/` (`history_store.py`, `spotify_api.py`, `generate_albums_image.py`, `post_albums_twitter.py` hors week-end).
 Sources actives streams : `db/discography/albums/*.json`, `songs.json`, `features.json`, `misc.json` quand une entrée a une URL Spotify ; seuls les `historical_track_ids` explicites et les entrées `exclude_from_stream_collection=true` sont retirés du périmètre actif. Les entrées `music_track=false` restent collectables mais sont `chart_extra` / hors stats publiques.
 
 ## Pannes connues
+- **Run manuel sans tee = AUCUN log** : lancer `update_streams.py` à la main dans une console ne laisse aucune trace (le `run_update_streams.log` n'est alimenté que via `run_spotify_streams.bat` ; `python -m tsm` écrit dans `snapshots/run_logs/`). Diagnostic 14/07 : reconstruit uniquement depuis les artefacts snapshot. Toujours passer par le .bat ou `python -m tsm`.
 - **WARP instable → lecture infinie** : le script reste bloqué en requête. Tuer le process (fenêtre PowerShell du .bat) et relancer ; vérifier WARP avant.
 - **Silence après le header `Run — stats_date`** : depuis le fix du 2026-07-08 (`seen_before_ids` calculé via `HistoryIndex` en mémoire au lieu de 533 relectures du CSV), la progression démarre en quelques secondes. Un silence prolongé à cet endroit = vrai blocage réseau (WARP), pas une phase normale.
 - Un run bloqué peut laisser un jour manquant → rattrapage ci-dessous.

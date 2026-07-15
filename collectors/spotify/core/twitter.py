@@ -22,6 +22,16 @@ TWITTER_TEXT_LIMIT = 280
 TWITTER_BROWSER_LAUNCH_ATTEMPTS = int(os.getenv("TWITTER_BROWSER_LAUNCH_ATTEMPTS", "3"))
 TWITTER_BROWSER_LAUNCH_RETRY_DELAY = int(os.getenv("TWITTER_BROWSER_LAUNCH_RETRY_DELAY", "10"))
 TWITTER_LOCK_STALE_SECONDS = int(os.getenv("TWITTER_LOCK_STALE_SECONDS", str(TWITTER_POST_LOCK_TIMEOUT)))
+LAST_POST_ERROR = ""
+
+
+def get_last_post_error() -> str:
+    return LAST_POST_ERROR
+
+
+def _set_last_post_error(message: str) -> None:
+    global LAST_POST_ERROR
+    LAST_POST_ERROR = str(message or "")
 
 
 def _lock_pid_alive(path: Path) -> bool:
@@ -676,13 +686,29 @@ def _post_compose_text_thread(page, tweets: list[str]) -> bool:
     return _wait_post_submitted(page, "\n".join(tweets), timeout_ms=60_000)
 
 
+# Depuis ~2026-07-15, le conteneur commun éditeur/toolbar du composer modal est à
+# ancestor::div[17] (le DOM X s'est approfondi) : chercher au-delà de 16 est requis.
+# Le conteneur englobant les DEUX composers (modal + inline home) est vers 38, donc
+# 30 reste sans risque de fuite vers l'autre composer.
+TWITTER_COMPOSER_SCOPE_MAX_DEPTH = 30
+
+MEDIA_BUTTON_SELECTOR = (
+    "[aria-label='Add media'], "
+    "[aria-label='Ajouter des médias'], "
+    "[aria-label='Ajouter du contenu multimédia'], "
+    "[aria-label='Add photos or video'], "
+    "[aria-label='Ajouter des photos ou une vidéo'], "
+    "[aria-label='Ajouter des photos ou une video']"
+)
+
+
 def _composer_scope(editor):
-    for depth in range(1, 16):
+    for depth in range(1, TWITTER_COMPOSER_SCOPE_MAX_DEPTH):
         scope = editor.locator(f"xpath=ancestor::div[{depth}]")
         try:
             if (
                 scope.locator("input[type='file'][accept*='image']").count()
-                or scope.locator("[aria-label='Add photos or video'], [aria-label='Ajouter des photos ou une vidéo'], [aria-label='Ajouter des photos ou une video']").count()
+                or scope.locator(MEDIA_BUTTON_SELECTOR).count()
             ):
                 return scope
         except Exception:
@@ -693,10 +719,13 @@ def _composer_scope(editor):
 def _strict_composer_scope(editor):
     """Nearest composer block for one post, used to avoid counting another post's image."""
     candidate = None
-    for depth in range(1, 16):
+    for depth in range(1, TWITTER_COMPOSER_SCOPE_MAX_DEPTH):
         scope = editor.locator(f"xpath=ancestor::div[{depth}]")
         try:
-            if scope.locator("[data-testid^='tweetTextarea_']").count() == 1:
+            # role='textbox' exclut tweetTextarea_0_label et
+            # tweetTextarea_0RichTextInputContainer, qui matchent aussi le préfixe
+            # et plafonnaient le scope sous le vrai bloc composer (scope=0 garanti).
+            if scope.locator("div[role='textbox'][data-testid^='tweetTextarea_']").count() == 1:
                 candidate = scope
         except Exception:
             pass
@@ -705,6 +734,9 @@ def _strict_composer_scope(editor):
 
 def _media_button_candidates(root):
     selectors = [
+        "[aria-label='Add media']",
+        "[aria-label='Ajouter des médias']",
+        "[aria-label='Ajouter du contenu multimédia']",
         "[aria-label='Add photos or video']",
         "[aria-label='Ajouter des photos ou une vidéo']",
         "[aria-label='Ajouter des photos ou une video']",
@@ -737,7 +769,14 @@ def _attach_with_file_chooser(page, root, image_path: Path) -> bool:
 def _attach_image_to_composer(page, editor, image_path: Path, index: int = 0):
     scope = _composer_scope(editor)
     root = scope or page
-    before = _attached_image_count(root)
+    # La preview doit être vérifiée dans le bloc composer de CET éditeur :
+    # avec un scope page entière, une preview apparue dans un AUTRE composer
+    # (ex. composer inline du home derrière le modal) validait l'upload et le
+    # tweet partait sans image.
+    verify_scope = scope or _strict_composer_scope(editor)
+    if verify_scope is None:
+        raise RuntimeError("X composer scope introuvable — impossible de vérifier l'upload d'image")
+    before = _attached_image_count(verify_scope)
     if not _attach_with_file_chooser(page, root, image_path):
         print("X file chooser introuvable, fallback input[type=file]")
         file_inputs = root.locator("input[type='file'][accept*='image']")
@@ -752,8 +791,8 @@ def _attach_image_to_composer(page, editor, image_path: Path, index: int = 0):
                 str(image_path),
                 timeout=TWITTER_FILE_UPLOAD_TIMEOUT_MS,
             )
-    _wait_for_attached_image(root, before + 1)
-    return root
+    _wait_for_attached_image(verify_scope, before + 1, page=page, editor=editor, image_path=image_path)
+    return verify_scope
 
 
 def _attached_image_count(root) -> int:
@@ -784,7 +823,49 @@ def _attached_image_count(root) -> int:
     return total
 
 
-def _wait_for_attached_image(root, expected_count: int) -> None:
+def _locator_count(root, selector: str) -> int:
+    try:
+        return root.locator(selector).count()
+    except Exception:
+        return -1
+
+
+def _visible_locator_count(root, selector: str) -> int:
+    try:
+        locator = root.locator(selector)
+        count = locator.count()
+    except Exception:
+        return -1
+    total = 0
+    for index in range(count):
+        try:
+            if locator.nth(index).is_visible(timeout=200):
+                total += 1
+        except Exception:
+            pass
+    return total
+
+
+def _write_upload_debug_artifacts(page, image_path: Path) -> list[str]:
+    artifacts: list[str] = []
+    if page is None:
+        return artifacts
+    try:
+        TWITTER_COORD_DIR.mkdir(parents=True, exist_ok=True)
+        stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        base = TWITTER_COORD_DIR / f"x_upload_debug_{stamp}_{image_path.stem[:40]}"
+        png_path = base.with_suffix(".png")
+        html_path = base.with_suffix(".html")
+        page.screenshot(path=str(png_path), full_page=True, timeout=5_000)
+        artifacts.append(str(png_path))
+        html_path.write_text(page.content(), encoding="utf-8", errors="replace")
+        artifacts.append(str(html_path))
+    except Exception as exc:
+        artifacts.append(f"debug_artifacts_failed={exc}")
+    return artifacts
+
+
+def _wait_for_attached_image(root, expected_count: int, *, page=None, editor=None, image_path: Path | None = None) -> None:
     deadline = time.time() + TWITTER_FILE_UPLOAD_TIMEOUT_MS / 1000
     last_count = 0
     while time.time() < deadline:
@@ -794,7 +875,40 @@ def _wait_for_attached_image(root, expected_count: int) -> None:
             time.sleep(1)
             return
         time.sleep(1)
-    raise TimeoutError(f"X image upload non confirmee: {last_count}/{expected_count} preview(s)")
+    details = [f"scope={last_count}/{expected_count}"]
+    file_input_selector = "input[type='file'][accept*='image']"
+    media_button_selector = MEDIA_BUTTON_SELECTOR
+    if image_path is not None:
+        try:
+            details.append(f"file_exists={image_path.exists()}")
+            details.append(f"file_bytes={image_path.stat().st_size if image_path.exists() else 0}")
+        except Exception:
+            pass
+    try:
+        details.append(f"scope_file_inputs={_locator_count(root, file_input_selector)}")
+        details.append(f"scope_media_buttons={_visible_locator_count(root, media_button_selector)}")
+    except Exception:
+        pass
+    if editor is not None:
+        try:
+            strict = _strict_composer_scope(editor)
+            if strict is not None:
+                details.append(f"strict={_attached_image_count(strict)}")
+        except Exception:
+            pass
+    if page is not None:
+        try:
+            details.append(f"page={_attached_image_count(page)}")
+            details.append(f"page_file_inputs={_locator_count(page, file_input_selector)}")
+            details.append(f"page_media_buttons={_visible_locator_count(page, media_button_selector)}")
+            details.append(f"url={page.url}")
+        except Exception:
+            pass
+        if image_path is not None:
+            artifacts = _write_upload_debug_artifacts(page, image_path)
+            if artifacts:
+                details.append("debug=" + " | ".join(artifacts))
+    raise TimeoutError(f"X image upload non confirmee: {', '.join(details)} preview(s)")
 
 
 def _post_compose_image_thread(page, posts: list[tuple[str, tuple[Path, ...]]]) -> bool:
@@ -1120,6 +1234,7 @@ def post_thread(tweets: list[str], session_file: Path) -> bool:
 
 def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
     """Post a single tweet with one image attached."""
+    _set_last_post_error("")
     session_file = Path(session_file)
     image_path   = Path(image_path)
     profile_dir  = _profile_dir(session_file)
@@ -1167,12 +1282,15 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
                 editor = _open_compose_and_wait_editor(page, session_file, 0)
                 editor.click(timeout=10_000)
                 editor.fill(tweet)
-                _attach_image_to_composer(page, editor, image_path, 0)
+                attach_scope = _attach_image_to_composer(page, editor, image_path, 0)
+                if _attached_image_count(attach_scope) < 1:
+                    raise RuntimeError("image absente du composer juste avant le post — abandon")
 
                 page.locator(
                     "[data-testid='tweetButton'], [data-testid='tweetButtonInline']"
                 ).first.click(timeout=10_000)
                 if not _wait_post_submitted(page, tweet):
+                    _set_last_post_error("post non confirme apres clic")
                     return False
 
                 _mark_account_posted(account_key)
@@ -1180,6 +1298,7 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
                 return True
 
             except Exception as e:
+                _set_last_post_error(str(e))
                 print(f"X Erreur post_with_image: {e}")
                 return False
 
@@ -1252,7 +1371,9 @@ def schedule_post(
                 if tweet:
                     editor.fill(tweet)
                 if image_path is not None:
-                    _attach_image_to_composer(page, editor, image_path, 0)
+                    attach_scope = _attach_image_to_composer(page, editor, image_path, 0)
+                    if _attached_image_count(attach_scope) < 1:
+                        raise RuntimeError("image absente du composer juste avant la programmation — abandon")
 
                 _set_schedule_dialog(page, scheduled_dt)
                 page.locator(
