@@ -458,7 +458,7 @@ def load_album_sections(album_name: str) -> list[dict]:
     sections = []
     for sec in target_payload.get("sections", []):
         tracks = []
-        seen_in_section = set()
+        seen_track_ids = set()
         for t in sec.get("tracks", []):
             if _is_chart_extra(sec, t):
                 continue
@@ -466,14 +466,14 @@ def load_album_sections(album_name: str) -> list[dict]:
             m = re.search(r"track/([A-Za-z0-9]+)", url)
             if not m:
                 continue
+            track_id = m.group(1)
 
             # Some album JSONs can contain accidental duplicate rows for a section.
-            # Deduplicate by song family when present, fallback to normalized clean title.
-            dedupe_key = (t.get("song_family") or _norm(t.get("title_clean") or t.get("title") or "")).strip().lower()
-            if dedupe_key and dedupe_key in seen_in_section:
+            # Keep distinct versions in the same song family, e.g. All Too Well
+            # and All Too Well (10 Minute Version), and only drop exact track dupes.
+            if track_id in seen_track_ids:
                 continue
-            if dedupe_key:
-                seen_in_section.add(dedupe_key)
+            seen_track_ids.add(track_id)
 
             try:
                 display_order = int(t.get("display_order") or 9999)
@@ -481,7 +481,7 @@ def load_album_sections(album_name: str) -> list[dict]:
                 display_order = 9999
 
             tracks.append({
-                "track_id":     m.group(1),
+                "track_id":     track_id,
                 "title_clean":  (t.get("title_clean") or t.get("title") or "").strip(),
                 "release_date":  (t.get("release_date") or "").strip(),
                 "version_tag":  (t.get("version_tag") or "").strip(),

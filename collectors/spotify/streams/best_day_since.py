@@ -10,6 +10,10 @@ Examples:
 
 By default, only album tracks from db/discography/albums/*.json are included.
 This excludes songs.json extras.
+
+NOTE: the admin Image Studio (tsm-frontend) has a JS mirror of the core rules
+in frontend/src/components/imageTemplates/bestDaySince.js — if the record
+logic here changes (thresholds, ignore days, combine guard…), update it too.
 """
 from __future__ import annotations
 

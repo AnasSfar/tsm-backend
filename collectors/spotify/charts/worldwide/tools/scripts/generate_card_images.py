@@ -1687,14 +1687,18 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
                     priority_index[out_path.name] = priority
                     print(f"  → {out_path.name}")
                     prev_count = prev_country_counts.get(track_id)
-                    if post and slug not in already_posted:
+                    first_single_region = _is_first_single_region_entry(
+                        entries,
+                        track_id,
+                        prev_country_counts,
+                        has_prev_snapshot=has_prev_snapshot,
+                    )
+                    chart_card_slug = f"{slug}_chart_card"
+                    pending_key = chart_card_slug if first_single_region else slug
+                    if post and pending_key not in already_posted:
                         post_image_path = out_path
-                        if _is_first_single_region_entry(
-                            entries,
-                            track_id,
-                            prev_country_counts,
-                            has_prev_snapshot=has_prev_snapshot,
-                        ):
+                        posted_key = slug
+                        if first_single_region:
                             chart_out_path = out_dir / f"{slug}_chart_card.png"
                             try:
                                 page.set_viewport_size({"width": 920, "height": 344})
@@ -1715,11 +1719,12 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
                                     "theme": card_theme,
                                 }
                                 post_image_path = chart_out_path
+                                posted_key = chart_card_slug
                                 page.set_viewport_size({"width": 860, "height": 900})
                             except Exception as e:
                                 print(f"  [WARN] echec chart_card regionale: {e}")
                                 page.set_viewport_size({"width": 860, "height": 900})
-                        to_post.append((post_image_path, _build_tweet(meta, entries, chart_date, prev_count), slug))
+                        to_post.append((post_image_path, _build_tweet(meta, entries, chart_date, prev_count), posted_key))
                     elif post:
                         print(f"    [SKIP] déjà posté")
                 except Exception as e:

@@ -622,6 +622,20 @@ def _open_compose_and_wait_editor(page, session_file: Path, index: int = 0, time
         try:
             return _wait_visible_editor(page, index, timeout_ms=timeout_ms)
         except Exception as exc:
+            # La redirection vers le login peut arriver APRES le check du haut de
+            # boucle (SPA : l'URL reste compose/post pendant ~2 s) — re-vérifier ici,
+            # sinon l'auto-relogin n'est jamais tenté (incident fr-post 15/07/2026).
+            if _looks_logged_out(page):
+                credentials = credentials or _load_credentials(session_file)
+                if credentials and not attempted_login:
+                    print("Session expiree (redirect login). Reconnexion automatique...")
+                    _auto_login(page, credentials["username"], credentials["password"], credentials.get("email", ""))
+                    attempted_login = True
+                    page.goto("https://x.com/compose/post", wait_until="domcontentloaded", timeout=30_000)
+                    time.sleep(2)
+                    continue
+                if attempt >= 3 or attempted_login:
+                    raise RuntimeError(f"X session non connectee, URL actuelle: {page.url}") from exc
             if attempt >= 3:
                 title = ""
                 body_text = ""

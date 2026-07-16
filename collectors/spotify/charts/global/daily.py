@@ -444,7 +444,7 @@ def build_tweet_content(processed: list[date]) -> str:
         header = f"🌍 | Taylor Swift on Spotify Global Charts on {d.strftime('%A, %B %d, %Y')} :"
         comment = build_chart_comment("global", d, TS_HISTORY_PATH)
         if comment:
-            return f"{header}\n{comment}"
+            return f"{header}\n\n{comment}"
         return header
 
 def generate_image(processed: list[date]) -> Path | None:

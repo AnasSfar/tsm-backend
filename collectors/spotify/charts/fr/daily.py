@@ -318,7 +318,7 @@ def main():
         tweet_content = f"🇫🇷 | Taylor Swift on Spotify France Charts on {_date_fmt} :"
         _comment = build_chart_comment("fr", target, TS_HISTORY_PATH)
         if _comment:
-            tweet_content = f"{tweet_content}\n{_comment}"
+            tweet_content = f"{tweet_content}\n\n{_comment}"
         (ROOT / "twitter_post.txt").write_text(tweet_content, encoding="utf-8")
         log("INFO", "twitter_post.txt mis à jour")
         print(f"\nPost :\n{tweet_content}\n", flush=True)
@@ -410,7 +410,7 @@ def main():
     tweet_content = f"🇫🇷 | Taylor Swift on Spotify France Charts on {_date_fmt} :"
     _comment = build_chart_comment("fr", _last_date, TS_HISTORY_PATH)
     if _comment:
-        tweet_content = f"{tweet_content}\n{_comment}"
+        tweet_content = f"{tweet_content}\n\n{_comment}"
 
     (ROOT / "twitter_post.txt").write_text(tweet_content, encoding="utf-8")
     log("INFO", "twitter_post.txt mis à jour")

@@ -1311,6 +1311,27 @@ def _verify_regional_posts(
     return failures
 
 
+def _post_priority_global_cards(
+    target_date: date,
+    *,
+    force: bool,
+    env: dict[str, str],
+    verbose: bool,
+) -> tuple[str, int] | None:
+    args = [str(target_date), "--post-worldwide"]
+    if force:
+        args.append("--force")
+    rc = _run(
+        "priority-global-highlights-worldwide",
+        CHARTS_ROOT / "worldwide" / "tools" / "scripts" / "post_global_new_releases.py",
+        args,
+        dry_run=False,
+        env=env,
+        verbose=verbose,
+    )
+    return None if rc == 0 else ("priority-global-highlights-worldwide", rc)
+
+
 def _verify_multi_song_regional_posts(
     target_date: date,
     post_parts: set[str],
@@ -1846,6 +1867,16 @@ def main() -> int:
     should_post_cards = "cards" in post_parts
     regional_post_failures: list[tuple[str, int]] = []
 
+    if not args.dry_run and not args.no_post and should_post_cards and "global" in post_parts and not failures:
+        priority_failure = _post_priority_global_cards(
+            target_date,
+            force=args.force_cards or args.force,
+            env=env,
+            verbose=args.verbose,
+        )
+        if priority_failure:
+            failures.append(priority_failure)
+
     if not args.dry_run and not args.no_post:
         regional_post_failures = _verify_regional_posts(
             target_date,
@@ -1915,19 +1946,14 @@ def main() -> int:
     if not args.dry_run and should_generate_cards and not failures:
         if should_post_cards:
             print("\n[PHASE3] publication des worldwide cards priority Global highlights...")
-            priority_args = [str(target_date), "--post-worldwide"]
-            if args.force_cards or args.force:
-                priority_args.append("--force")
-            rc_priority = _run(
-                "priority-global-highlights-worldwide",
-                CHARTS_ROOT / "worldwide" / "tools" / "scripts" / "post_global_new_releases.py",
-                priority_args,
-                dry_run=False,
+            priority_failure = _post_priority_global_cards(
+                target_date,
+                force=args.force_cards or args.force,
                 env=env,
                 verbose=args.verbose,
             )
-            if rc_priority != 0:
-                failures.append(("priority-global-highlights-worldwide", rc_priority))
+            if priority_failure:
+                failures.append(priority_failure)
 
             if not failures and not ran_collect:
                 global_new_args = [str(target_date), "--post"]

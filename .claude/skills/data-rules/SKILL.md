@@ -25,6 +25,9 @@ Ces règles ont été édictées puis re-corrigées plusieurs fois — les viole
 - **Jamais poster si un album/tableau a un track manquant ou à 0** (albums, top 45, biggest daily/weekly gainers…). Complétude d'abord.
 - **Locks `*_posted.lock`** pour tout ce qui poste (anti-double-post) ; `--force` les ignore consciemment.
 - **Espacement entre posts : 60 s** (pas 180).
+- **Commentaires Spotify Charts** : quand un tweet chart ajoute un commentaire sous le header, laisser une ligne vide entre le header et le commentaire, finir le commentaire par une ponctuation, et inclure les streams exacts pour les NEW/RE quand le champ chart les fournit.
+- **Spotify Charts Global** : si une priority chart_card Global existe (NEW/RE, ex. re-entry Global), elle doit partir avant le tweet chart Global principal.
+- **Spotify Charts single-region** : une chanson qui entre/re-entre dans un seul pays doit utiliser/poster la chart_card régionale dédiée, avec un lock distinct du slug de card worldwide générale.
 - **Règles albums (décision 15/07/2026)** : thread groupé all-albums à chaque collecte du **lundi et vendredi** (lock `all_albums_thread_posted.lock`, distinct du top eras) ; cards album update (targets, +10 % de gain, gainers) **tous les jours de semaine** y compris lundi/vendredi ; **aucune card album le week-end** (early poster désactivé aussi) ; la photo top eras se poste toujours (hors week-end où elle est dans la recap combinée).
 - **Un post avec image ne doit JAMAIS partir sans son image** : la vérification d'upload se fait dans le scope strict du composer (`core/twitter.py`) et re-check juste avant le clic — un attach non confirmé fait échouer le post (retry), il ne dégrade pas en texte seul (incident gainers du 13/07/2026).
 - **Tout est posté sur @swiftiescharts, sauf le chart FR.** L'ancien compte tsmusem13 n'est plus utilisé pour l'automatique.

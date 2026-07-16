@@ -23,6 +23,22 @@ from core.history import load as load_ts_history
 JUMP_THRESHOLD = 15
 
 
+def _sentence(text: str) -> str:
+    text = str(text or "").strip()
+    if not text:
+        return text
+    if text[-1] in ".!?":
+        return text
+    return f"{text}."
+
+
+def _streams_suffix(streams) -> str:
+    value = _to_int(streams)
+    if value is None:
+        return ""
+    return f" with {value:,} streams"
+
+
 def _to_int(value) -> int | None:
     try:
         if value is None:
@@ -99,8 +115,8 @@ def build_chart_comment(
 
     ts_history = load_ts_history(ts_history_path)
 
-    new_entries: list[tuple[str, int]] = []
-    re_entries: list[tuple[str, int]] = []
+    new_entries: list[tuple[str, int, int | None]] = []
+    re_entries: list[tuple[str, int, int | None]] = []
     jumps: list[tuple[str, int, int, float | None]] = []
     gainers: list[tuple[str, int, float]] = []
     stable: list[tuple[str, int, int]] = []
@@ -112,14 +128,15 @@ def build_chart_comment(
             continue
 
         prev_rank = _to_int(row.get("previous_rank"))
+        streams = _to_int(row.get("streams"))
         total_days = _to_int(row.get("total_days")) or 0
         pct = _daily_streams_pct(track, row.get("streams"), d, ts_history)
 
         if prev_rank is None or prev_rank <= 0:
             if total_days > 1:
-                re_entries.append((track, rank))
+                re_entries.append((track, rank, streams))
             else:
-                new_entries.append((track, rank))
+                new_entries.append((track, rank, streams))
             continue
 
         delta = prev_rank - rank
@@ -131,26 +148,26 @@ def build_chart_comment(
             stable.append((track, rank, total_days))
 
     if re_entries or new_entries:
-        track, rank = random.choice(re_entries + new_entries)
-        if (track, rank) in re_entries:
+        track, rank, streams = random.choice(re_entries + new_entries)
+        if (track, rank, streams) in re_entries:
             tier = _top_tier_label(rank)
             if tier:
-                return f'"{track}" re-enters the {tier} at #{rank}'
-            return f'"{track}" re-enters the chart at #{rank}'
-        return f'"{track}" joins the chart at #{rank}'
+                return _sentence(f'"{track}" re-enters the {tier} at #{rank}{_streams_suffix(streams)}')
+            return _sentence(f'"{track}" re-enters the chart at #{rank}{_streams_suffix(streams)}')
+        return _sentence(f'"{track}" joins the chart at #{rank}{_streams_suffix(streams)}')
 
     if jumps:
         track, rank, _delta, pct = max(jumps, key=lambda x: x[2])
         if pct is not None:
-            return f'"{track}" jumped to the #{rank} spot, up {pct:+.1f}%'
-        return f'"{track}" jumped to the #{rank} spot'
+            return _sentence(f'"{track}" jumped to the #{rank} spot, up {pct:+.1f}%')
+        return _sentence(f'"{track}" jumped to the #{rank} spot')
 
     if gainers:
         track, rank, pct = max(gainers, key=lambda x: x[2])
-        return f'"{track}" is the biggest gainer today, up {pct:+.1f}% in streams'
+        return _sentence(f'"{track}" is the biggest gainer today, up {pct:+.1f}% in streams')
 
     if stable:
         track, rank, _total_days = max(stable, key=lambda x: x[2])
-        return f'"{track}" remains steady at #{rank}'
+        return _sentence(f'"{track}" remains steady at #{rank}')
 
     return None
