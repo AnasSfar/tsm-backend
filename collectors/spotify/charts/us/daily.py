@@ -266,7 +266,11 @@ def main():
             if lp.exists():
                 lp.unlink()
                 log("INFO", f"--force: posted.lock supprimÃ© pour {target}")
-        unposted = [target]
+        if not force and already_posted(target):
+            log("INFO", f"posted.lock deja present pour {target} — post ignore (--force pour reposter)")
+            unposted = []
+        else:
+            unposted = [target]
     else:
         if force:
             yesterday = date.today() - timedelta(days=1)
@@ -345,7 +349,10 @@ def main():
             posted = True
         else:
             log("STEP", "Twitter post")
-            posted = post_with_image(tweet_content, image_path, TWITTER_SESSION)
+            posted = post_with_image(
+                tweet_content, image_path, TWITTER_SESSION,
+                skip_if=lambda: already_posted(target),
+            )
 
         if posted:
             for d in processed:
@@ -441,7 +448,10 @@ def main():
         posted = True
     else:
         log("STEP", "Twitter post")
-        posted = post_with_image(tweet_content, image_path, TWITTER_SESSION)
+        posted = post_with_image(
+            tweet_content, image_path, TWITTER_SESSION,
+            skip_if=lambda: all(already_posted(d) for d in processed),
+        )
 
     if posted:
         for d in processed:

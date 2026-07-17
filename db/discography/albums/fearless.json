@@ -960,7 +960,9 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738d3b185c6a110a479e01e3c4",
           "display_era": "Fearless",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1P5QpwOgXJuoVTm3CWbnLY"
+          ],
           "release_date": "2011-02-15T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -1322,49 +1324,6 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "remix": "high:type_or_title"
-          }
-        },
-        {
-          "title": "Today Was A Fairytale - US Version",
-          "url": "https://open.spotify.com/intl-fr/track/1P5QpwOgXJuoVTm3CWbnLY",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 9999,
-          "base_title": "Today Was A Fairytale - US Version",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Today Was A Fairytale - US Version",
-          "song_family": "today_was_a_fairytale_us_version",
-          "version_tag": null,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27393b047c75268dd2847187910",
-          "display_era": "Fearless",
-          "historical_track_ids": [],
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:today_was_a_fairytale_us_version",
-          "filter_tags": [
-            "solo",
-            "standalone",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type",
-            "alternate_version": "medium:type_or_title"
           }
         },
         {

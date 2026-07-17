@@ -218,46 +218,6 @@
         }
       },
       {
-        "title": "Both of Us (feat. Taylor Swift)",
-        "url": "https://open.spotify.com/intl-fr/track/0lJWmQO1fw1Tr2p2M1m5cw",
-        "type": "standalone",
-        "edition": "extras",
-        "display_section": "Extras",
-        "display_order": 9999,
-        "base_title": "Both of Us (feat. Taylor Swift)",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "Both of Us (feat. Taylor Swift)",
-        "song_family": "both_of_us_feat_taylor_swift",
-        "version_tag": null,
-        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273cbc3bf3407cc078f63aa498a",
-        "historical_track_ids": [],
-        "genres": [],
-        "genre_status": "missing",
-        "genre_scores": {},
-        "genre_sources": {
-          "lastfm": []
-        },
-        "genre_raw_sources": {
-          "lastfm": []
-        },
-        "genre_query_titles": {},
-        "genre_errors": {},
-        "genre_canonical_key": "family:both_of_us_feat_taylor_swift",
-        "filter_tags": [
-          "feature",
-          "standalone"
-        ],
-        "filter_tag_sources": {
-          "feature": "high:type_or_primary_artist",
-          "standalone": "medium:section_or_type"
-        }
-      },
-      {
         "title": "Drops Of Jupiter - Live/2011",
         "url": "https://open.spotify.com/intl-fr/track/0BSmbCIY36iw04azzJ3S0S",
         "type": "standalone",
@@ -339,48 +299,6 @@
         ],
         "filter_tag_sources": {
           "feature": "high:type_or_primary_artist",
-          "standalone": "medium:section_or_type"
-        }
-      },
-      {
-        "title": "Highway Don't Care",
-        "url": "https://open.spotify.com/intl-fr/track/60hGQrn24APqEFSLObLeDc",
-        "type": "standalone",
-        "edition": "extras",
-        "display_section": "Extras",
-        "display_order": 9999,
-        "base_title": "Highway Don't Care",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "Highway Don't Care",
-        "song_family": "highway_dont_care",
-        "version_tag": null,
-        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273af1e96b5514b5744bf5210fd",
-        "historical_track_ids": [
-          "1TSJsPnpjyUFsffwekaUUg"
-        ],
-        "genres": [],
-        "genre_status": "missing",
-        "genre_scores": {},
-        "genre_sources": {
-          "lastfm": []
-        },
-        "genre_raw_sources": {
-          "lastfm": []
-        },
-        "genre_query_titles": {},
-        "genre_errors": {},
-        "genre_canonical_key": "family:highway_dont_care",
-        "filter_tags": [
-          "solo",
-          "standalone"
-        ],
-        "filter_tag_sources": {
-          "solo": "high:artist_credit",
           "standalone": "medium:section_or_type"
         }
       },
@@ -638,50 +556,6 @@
         }
       },
       {
-        "title": "The Joker And The Queen (feat. Taylor Swift)",
-        "url": "https://open.spotify.com/intl-fr/track/6N1K5OVVCopBjGViHs2IvP",
-        "type": "standalone",
-        "edition": "extras",
-        "display_section": "Extras",
-        "display_order": 9999,
-        "base_title": "The Joker And The Queen (feat. Taylor Swift)",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "The Joker And The Queen (feat. Taylor Swift)",
-        "song_family": "the_joker_and_the_queen_feat_taylor_swift",
-        "version_tag": null,
-        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27310109c08f2d5e4333dfddefe",
-        "historical_track_ids": [
-          "0v35bLSJRyWjnbGmBqbJtk",
-          "41KlVSwns7jnTVa37JmCwC"
-        ],
-        "release_date": "2022-02-11T00:00:00Z",
-        "genres": [],
-        "genre_status": "missing",
-        "genre_scores": {},
-        "genre_sources": {
-          "lastfm": []
-        },
-        "genre_raw_sources": {
-          "lastfm": []
-        },
-        "genre_query_titles": {},
-        "genre_errors": {},
-        "genre_canonical_key": "family:the_joker_and_the_queen_feat_taylor_swift",
-        "filter_tags": [
-          "feature",
-          "standalone"
-        ],
-        "filter_tag_sources": {
-          "feature": "high:type_or_primary_artist",
-          "standalone": "medium:section_or_type"
-        }
-      },
-      {
         "title": "Two Is Better Than One (feat. Taylor Swift)",
         "url": "https://open.spotify.com/intl-fr/track/1MaqkdFNIKPdpQGDzme5ss",
         "type": "standalone",
@@ -834,52 +708,6 @@
         }
       },
       {
-        "title": "Everything Has Changed - Remix",
-        "url": "https://open.spotify.com/intl-fr/track/3an4u3iZSy63ygYcWslJ5f",
-        "type": "standalone",
-        "edition": "extras",
-        "display_section": "Extras",
-        "display_order": 10001,
-        "base_title": "Everything Has Changed",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [
-          "Ed Sheeran"
-        ],
-        "artists": [
-          "Taylor Swift",
-          "Ed Sheeran"
-        ],
-        "title_clean": "Everything Has Changed - Remix",
-        "song_family": "everything_has_changed",
-        "version_tag": "remix",
-        "release_date": "2013-01-01T00:00:00Z",
-        "historical_track_ids": [],
-        "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2731c248e90c3e569f90aef9dec",
-        "genres": [],
-        "genre_status": "missing",
-        "genre_scores": {},
-        "genre_sources": {
-          "lastfm": []
-        },
-        "genre_raw_sources": {
-          "lastfm": []
-        },
-        "genre_query_titles": {},
-        "genre_errors": {},
-        "genre_canonical_key": "family:everything_has_changed",
-        "filter_tags": [
-          "collab",
-          "standalone",
-          "remix"
-        ],
-        "filter_tag_sources": {
-          "collab": "high:artists_or_featured_artists",
-          "standalone": "medium:section_or_type",
-          "remix": "high:type_or_title"
-        }
-      },
-      {
         "title": "Our Song - International Mix",
         "url": "https://open.spotify.com/intl-fr/track/5Ct2PYPUSogyWvbV40k9Bf",
         "type": "album_track",
@@ -911,88 +739,6 @@
         "genre_query_titles": {},
         "genre_errors": {},
         "genre_canonical_key": "family:our_song_international_mix",
-        "filter_tags": [
-          "solo",
-          "remix"
-        ],
-        "filter_tag_sources": {
-          "solo": "high:artist_credit",
-          "remix": "high:type_or_title"
-        }
-      },
-      {
-        "title": "Should've Said No - International Mix",
-        "url": "https://open.spotify.com/intl-fr/track/2gwvtlwlKhvkfjz7Fcb6Yk",
-        "type": "album_track",
-        "edition": "extras",
-        "display_section": "Extras",
-        "display_order": 10003,
-        "base_title": "Should've Said No - International Mix",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "Should've Said No - International Mix",
-        "song_family": "should_ve_said_no_international_mix",
-        "version_tag": null,
-        "release_date": "2008-11-11T00:00:00Z",
-        "historical_track_ids": [],
-        "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27374e5b00878adddd24c9ab44d",
-        "genres": [],
-        "genre_status": "missing",
-        "genre_scores": {},
-        "genre_sources": {
-          "lastfm": []
-        },
-        "genre_raw_sources": {
-          "lastfm": []
-        },
-        "genre_query_titles": {},
-        "genre_errors": {},
-        "genre_canonical_key": "family:should_ve_said_no_international_mix",
-        "filter_tags": [
-          "solo",
-          "remix"
-        ],
-        "filter_tag_sources": {
-          "solo": "high:artist_credit",
-          "remix": "high:type_or_title"
-        }
-      },
-      {
-        "title": "Teardrops On My Guitar - International Mix",
-        "url": "https://open.spotify.com/intl-fr/track/2RM02ladxD5mgdrlAwh3h9",
-        "type": "album_track",
-        "edition": "extras",
-        "display_section": "Extras",
-        "display_order": 10004,
-        "base_title": "Teardrops On My Guitar - International Mix",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "Teardrops On My Guitar - International Mix",
-        "song_family": "teardrops_on_my_guitar_international_mix",
-        "version_tag": null,
-        "release_date": "2008-11-11T00:00:00Z",
-        "historical_track_ids": [],
-        "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273516c279fe91ae3f6a79b23da",
-        "genres": [],
-        "genre_status": "missing",
-        "genre_scores": {},
-        "genre_sources": {
-          "lastfm": []
-        },
-        "genre_raw_sources": {
-          "lastfm": []
-        },
-        "genre_query_titles": {},
-        "genre_errors": {},
-        "genre_canonical_key": "family:teardrops_on_my_guitar_international_mix",
         "filter_tags": [
           "solo",
           "remix"
@@ -1738,27 +1484,6 @@
         "version_tag": null,
         "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2730a281b042bd417c5b66036a1",
         "release_date": null,
-        "historical_track_ids": []
-      },
-      {
-        "title": "“Slut!” (Taylor’s Version) (From The Vault)",
-        "url": "https://open.spotify.com/intl-fr/track/71BqAINEnezjQfxE4VuJfq",
-        "type": "standalone",
-        "edition": "extras",
-        "display_section": "Extras",
-        "display_order": 9999,
-        "base_title": "“Slut!” (Taylor’s Version) (From The Vault)",
-        "album": "Standalone & Extras",
-        "primary_artist": "Taylor Swift",
-        "featured_artists": [],
-        "artists": [
-          "Taylor Swift"
-        ],
-        "title_clean": "“Slut!” (Taylor’s Version) (From The Vault)",
-        "song_family": "slut_taylors_version_from_the_vault",
-        "version_tag": null,
-        "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2734110bfab1185fdfc9dfc2cf0",
-        "release_date": "2023-10-26T00:00:00Z",
         "historical_track_ids": []
       },
       {

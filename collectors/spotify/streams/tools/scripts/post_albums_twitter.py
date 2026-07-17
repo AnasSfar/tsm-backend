@@ -128,17 +128,29 @@ def _era_daily_series(era: str, track_map: dict) -> dict[str, int]:
 
 
 def _max_days_covered_fast(track_ids: set[str], target_date: str) -> int:
+    # Nombre de jours couverts par les daily du jour cible ("over the last N
+    # days" quand Spotify a eu du retard). Seuls comptent les tracks qui ont un
+    # daily non vide À la date cible : un track mort/délisté (dernière ligne il
+    # y a des semaines) ou une baseline post-gap (daily vide, cf.
+    # baseline_after_long_gap) ne doit pas gonfler N.
     if not track_ids:
         return 1
     target = date.fromisoformat(target_date)
     latest_before: dict[str, date] = {}
+    active_at_target: set[str] = set()
     with open(generate_albums_image.HISTORY_PATH, newline="", encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
             track_id = row.get("track_id")
             if track_id not in track_ids:
                 continue
             d_raw = (row.get("date") or "").strip()
-            if not d_raw or d_raw >= target_date:
+            if not d_raw:
+                continue
+            if d_raw == target_date:
+                if (row.get("daily_streams") or "").strip():
+                    active_at_target.add(track_id)
+                continue
+            if d_raw > target_date:
                 continue
             try:
                 d = date.fromisoformat(d_raw)
@@ -147,9 +159,14 @@ def _max_days_covered_fast(track_ids: set[str], target_date: str) -> int:
             prev = latest_before.get(track_id)
             if prev is None or d > prev:
                 latest_before[track_id] = d
-    if not latest_before:
+    gaps = [
+        (target - d).days
+        for track_id, d in latest_before.items()
+        if track_id in active_at_target
+    ]
+    if not gaps:
         return 1
-    return max(1, max((target - d).days for d in latest_before.values()))
+    return max(1, max(gaps))
 
 
 def _era_best_day_label(era: str, target_date: str, current_daily: int, track_map: dict, *, min_days: int = 14) -> str:

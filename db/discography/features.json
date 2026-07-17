@@ -199,7 +199,8 @@
           "feature": "high:type_or_primary_artist"
         },
         "historical_track_ids": [
-          "2dk3qSc7779ecP8w6rNoT9"
+          "2dk3qSc7779ecP8w6rNoT9",
+          "6N1K5OVVCopBjGViHs2IvP"
         ]
       },
       {
@@ -229,7 +230,10 @@
         ],
         "filter_tag_sources": {
           "feature": "high:type_or_primary_artist"
-        }
+        },
+        "historical_track_ids": [
+          "0lJWmQO1fw1Tr2p2M1m5cw"
+        ]
       },
       {
         "title": "Better Man",
@@ -280,7 +284,9 @@
         "version_tag": "featured__feature",
         "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273af1e96b5514b5744bf5210fd",
         "release_date": null,
-        "historical_track_ids": []
+        "historical_track_ids": [
+          "60hGQrn24APqEFSLObLeDc"
+        ]
       }
     ]
   },

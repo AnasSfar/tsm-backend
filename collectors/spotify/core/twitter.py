@@ -1246,8 +1246,15 @@ def post_thread(tweets: list[str], session_file: Path) -> bool:
             return success
 
 
-def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
-    """Post a single tweet with one image attached."""
+def post_with_image(tweet: str, image_path: Path, session_file: Path, *, skip_if=None) -> bool:
+    """Post a single tweet with one image attached.
+
+    skip_if : callable optionnelle re-évaluée APRES l'acquisition du slot de compte.
+    Si elle renvoie True (ex.: posted.lock créé entre-temps par un autre process qui
+    tenait le slot), le post est annulé et la fonction renvoie True (rien à refaire).
+    C'est la protection anti-double-post inter-process (incident global/us 17/07/2026 :
+    deux run_all_charts.py concurrents, le second postait après avoir attendu le slot).
+    """
     _set_last_post_error("")
     session_file = Path(session_file)
     image_path   = Path(image_path)
@@ -1262,6 +1269,15 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path) -> bool:
 
     print("X: attente du slot de post (verrou compte)...", flush=True)
     with _twitter_account_slot(session_file) as account_key:
+        if skip_if is not None:
+            try:
+                already = bool(skip_if())
+            except Exception as exc:
+                print(f"X skip_if en erreur (ignore): {exc}")
+                already = False
+            if already:
+                print("X: deja poste par un autre process (detecte apres le slot) — post annule")
+                return True
         if not (profile_dir / "Default").exists():
             print("Aucun profil Twitter trouve. Connexion initiale requise...")
             setup_session(session_file)

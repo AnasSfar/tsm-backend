@@ -1866,7 +1866,9 @@ def main() -> int:
     should_generate_cards = "cards" in post_parts or args.force_cards or (args.no_post and args.force)
     should_post_cards = "cards" in post_parts
     regional_post_failures: list[tuple[str, int]] = []
+    priority_global_cards_done = False
 
+    # Les priority cards Global (NEW/RE) doivent partir AVANT le tweet chart Global principal.
     if not args.dry_run and not args.no_post and should_post_cards and "global" in post_parts and not failures:
         priority_failure = _post_priority_global_cards(
             target_date,
@@ -1874,6 +1876,7 @@ def main() -> int:
             env=env,
             verbose=args.verbose,
         )
+        priority_global_cards_done = True
         if priority_failure:
             failures.append(priority_failure)
 
@@ -1945,15 +1948,19 @@ def main() -> int:
 
     if not args.dry_run and should_generate_cards and not failures:
         if should_post_cards:
-            print("\n[PHASE3] publication des worldwide cards priority Global highlights...")
-            priority_failure = _post_priority_global_cards(
-                target_date,
-                force=args.force_cards or args.force,
-                env=env,
-                verbose=args.verbose,
-            )
-            if priority_failure:
-                failures.append(priority_failure)
+            if priority_global_cards_done:
+                print("\n[PHASE3] worldwide cards priority Global highlights deja postees plus haut, skip")
+            else:
+                print("\n[PHASE3] publication des worldwide cards priority Global highlights...")
+                priority_failure = _post_priority_global_cards(
+                    target_date,
+                    force=args.force_cards or args.force,
+                    env=env,
+                    verbose=args.verbose,
+                )
+                priority_global_cards_done = True
+                if priority_failure:
+                    failures.append(priority_failure)
 
             if not failures and not ran_collect:
                 global_new_args = [str(target_date), "--post"]
