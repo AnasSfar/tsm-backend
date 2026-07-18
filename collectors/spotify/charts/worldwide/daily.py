@@ -1267,7 +1267,7 @@ def _post_multi_song_regions(
             print(f"[WARN] Regional Spotify post skipped for {region}: image unavailable", flush=True)
             continue
         print(f"[regional-post] {region}: {tweet}", flush=True)
-        if post_with_image(tweet, image_path, TWITTER_SESSION):
+        if post_with_image(tweet, image_path, TWITTER_SESSION, skip_if=lambda lp=lock_path: lp.exists() and not force):
             lock_path.parent.mkdir(parents=True, exist_ok=True)
             lock_path.touch()
             print(f"[INFO] Posted regional Spotify update: {region}", flush=True)

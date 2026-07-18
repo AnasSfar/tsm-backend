@@ -35,6 +35,7 @@ COUNTRY_CSV = DB_DIR / "apple_music_country_charts.csv"
 GENRE_CSV = DB_DIR / "apple_music_genre_charts.csv"
 GLOBAL_CSV = DB_DIR / "apple_music_global.csv"
 TS_TOP_CSV = DB_DIR / "apple_music_ts_top_songs.csv"
+MUSIC_VIDEO_CSV = DB_DIR / "apple_music_music_video_charts.csv"
 
 R2_PREFIX = "apple-music/history-by-song"
 CSV_R2_PREFIX = "apple-music/db"
@@ -202,9 +203,10 @@ def append_rows(
     rows: list[dict[str, str]],
     source_name: str,
     keep_fields: list[str],
+    name_field: str = "song_name",
 ) -> None:
     for row in rows:
-        name = (row.get("song_name") or "").strip()
+        name = (row.get(name_field) or "").strip()
         if not name:
             continue
 
@@ -221,6 +223,7 @@ def append_rows(
                     "genre_charts": [],
                     "global": [],
                     "ts_top_songs": [],
+                    "music_video_charts": [],
                 },
             },
         )
@@ -229,7 +232,7 @@ def append_rows(
         if not bucket.get("song_name"):
             bucket["song_name"] = name
 
-        bucket["sources"][source_name].append(clean_row(row, keep_fields))
+        bucket["sources"].setdefault(source_name, []).append(clean_row(row, keep_fields))
 
 
 def sort_points(points: list[dict[str, str]]) -> list[dict[str, str]]:
@@ -278,6 +281,14 @@ def build_history_objects() -> dict[str, dict[str, Any]]:
         rows=read_csv(TS_TOP_CSV),
         source_name="ts_top_songs",
         keep_fields=["date", "scraped_at", "storefront", "song_name", "rank", "previous_rank", "image_url", "url", "apple_music_id", "album_name"],
+    )
+
+    append_rows(
+        grouped=grouped,
+        rows=read_csv(MUSIC_VIDEO_CSV),
+        source_name="music_video_charts",
+        keep_fields=["date", "scraped_at", "country", "video_name", "rank", "previous_rank", "image_url", "url", "apple_music_id"],
+        name_field="video_name",
     )
 
     for normalized_name in list(grouped.keys()):

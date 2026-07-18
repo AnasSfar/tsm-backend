@@ -25,7 +25,7 @@ import json
 import os
 import re
 import sys
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
@@ -60,6 +60,7 @@ CHARTS_REGION_CSVS = [
 ]
 APPLE_MUSIC_GLOBAL_CSV = _DB_DIR / "apple_music_global.csv"
 APPLE_MUSIC_COUNTRY_CSV = _DB_DIR / "apple_music_country_charts.csv"
+APPLE_MUSIC_GENRE_CSV = _DB_DIR / "apple_music_genre_charts.csv"
 APPLE_MUSIC_TS_TOP_SONGS_CSV = _DB_DIR / "apple_music_ts_top_songs.csv"
 SWIFT_TOP_100_HISTORY_CSV = _DB_DIR / "swift_top_100_history.csv"
 SWIFT_TOP_SONGS_HISTORY_CSV = _DB_DIR / "swift_top_songs_history.csv"
@@ -77,7 +78,9 @@ OUTPUT_JSON = _SITE_DATA_DIR / "swift_top_100.json"
 OUTPUT_PNG = _SITE_DATA_DIR / "swift_top_100.png"
 
 _TRACK_ID_RE = re.compile(r"track/([A-Za-z0-9]+)")
+AM_GLOBAL_WEIGHT = float(os.getenv("TAYBOARD_AM_GLOBAL_WEIGHT", "0.1"))
 AM_COUNTRY_WEIGHT = float(os.getenv("TAYBOARD_AM_COUNTRY_WEIGHT", "0.08"))
+AM_GENRE_WEIGHT = float(os.getenv("TAYBOARD_AM_GENRE_WEIGHT", "0.05"))
 AM_TS_FLOOR_RANK = int(os.getenv("TAYBOARD_AM_TS_FLOOR_RANK", "100"))
 
 
@@ -93,6 +96,11 @@ def _parse_iso_date(value: str) -> date | None:
 
 def _format_date(value: date) -> str:
     return value.isoformat()
+
+
+def _is_valid_chart_date(value: str | None) -> bool:
+    parsed = _parse_iso_date(value or "")
+    return bool(parsed and parsed.weekday() == 3)
 
 
 def _configure_variant(variant: str) -> None:
@@ -207,6 +215,20 @@ def _format_number(value: int | float | None, decimals: int = 2) -> str:
     else:
         return f"{value / 1_000_000_000:.{decimals}f}".rstrip('0').rstrip('.') + "B"
 
+
+def _as_bool(value: object) -> bool | None:
+    if isinstance(value, bool):
+        return value
+    if value is None:
+        return None
+    text = str(value).strip().casefold()
+    if text in ("1", "true", "yes", "y", "on"):
+        return True
+    if text in ("0", "false", "no", "n", "off"):
+        return False
+    return None
+
+
 @dataclass(frozen=True)
 class TrackMeta:
     track_id: str
@@ -216,6 +238,18 @@ class TrackMeta:
     primary_album: str | None
     base_title: str | None = None
     historical_track_ids: tuple[str, ...] = ()
+    chart_extra: bool = False
+    music_track: bool = True
+    excluded_from_public_stats: bool = False
+
+    @property
+    def apple_music_floor_eligible(self) -> bool:
+        return (
+            self.music_track
+            and not self.chart_extra
+            and not self.excluded_from_public_stats
+            and not _is_non_song_tayboard_track(self.title)
+        )
 
 
 def _iter_discography_tracks() -> list[TrackMeta]:
@@ -224,10 +258,22 @@ def _iter_discography_tracks() -> list[TrackMeta]:
     def _ingest_track(track: dict, album_name: str | None) -> None:
         url = (track.get("url") or track.get("spotify_url") or "").strip()
         track_id = _extract_track_id(url)
-        if not track_id or track_id in items:
+        if not track_id:
             return
         title = (track.get("title") or "").strip()
         if not title:
+            return
+        chart_extra = _as_bool(track.get("chart_extra")) is True
+        music_track = _as_bool(track.get("music_track")) is not False
+        excluded_from_public_stats = _as_bool(track.get("excluded_from_public_stats")) is True
+        if track_id in items:
+            existing = items[track_id]
+            items[track_id] = replace(
+                existing,
+                chart_extra=existing.chart_extra or chart_extra,
+                music_track=existing.music_track and music_track,
+                excluded_from_public_stats=existing.excluded_from_public_stats or excluded_from_public_stats,
+            )
             return
         base_title = (track.get("base_title") or "").strip() or None
         spotify_url = f"https://open.spotify.com/track/{track_id}"
@@ -243,6 +289,9 @@ def _iter_discography_tracks() -> list[TrackMeta]:
             primary_album=album_name,
             base_title=base_title,
             historical_track_ids=historical_track_ids,
+            chart_extra=chart_extra,
+            music_track=music_track,
+            excluded_from_public_stats=excluded_from_public_stats,
         )
 
     # Albums
@@ -787,7 +836,9 @@ def _apple_music_ts_floor_score(week_dates: set[str]) -> float:
 def _weekly_apple_music_global_points(*, week_dates: set[str], logger: Logger) -> dict[str, float]:
     """Return normalized_title -> sum of daily AM Global raw scores over the week.
 
-    Formula: 500 / rank^0.75 per day (power law). Best rank per (title, day) kept.
+    Formula: (500 / rank^0.75) * AM_GLOBAL_WEIGHT per day.
+    Best rank per (title, day) kept. This is the worldwide Apple Music chart,
+    so its default weight is higher than regional country and genre charts.
     Multiply by 1000 externally when computing units_am.
     """
     scores: dict[str, float] = {}
@@ -827,9 +878,9 @@ def _weekly_apple_music_global_points(*, week_dates: set[str], logger: Logger) -
                 matched_rows += 1
 
     for (key, _day), rank in best_per_day.items():
-        scores[key] = scores.get(key, 0.0) + _rank_to_am_units_score(rank)
+        scores[key] = scores.get(key, 0.0) + (_rank_to_am_units_score(rank) * AM_GLOBAL_WEIGHT)
 
-    logger.log(f"  apple_global   : {matched_rows} rows ({len(active_paths)} file(s))")
+    logger.log(f"  apple_global   : {matched_rows} rows ({len(active_paths)} file(s), weight={AM_GLOBAL_WEIGHT:g})")
     return scores
 
 
@@ -837,6 +888,8 @@ def _weekly_apple_music_country_points(*, week_dates: set[str], logger: Logger) 
     """Return normalized_title -> weighted sum of daily AM country-chart scores.
 
     Formula: (500 / rank^0.75) * AM_COUNTRY_WEIGHT for each country/day placement.
+    This is the general Top Songs chart inside each region, not the worldwide
+    Apple Music global chart.
     Best rank per (title, country, day) is kept.
     """
     scores: dict[str, float] = {}
@@ -880,6 +933,57 @@ def _weekly_apple_music_country_points(*, week_dates: set[str], logger: Logger) 
         scores[key] = scores.get(key, 0.0) + (_rank_to_am_units_score(rank) * AM_COUNTRY_WEIGHT)
 
     logger.log(f"  apple_country  : {matched_rows} rows ({len(active_paths)} file(s), weight={AM_COUNTRY_WEIGHT:g})")
+    return scores
+
+
+def _weekly_apple_music_genre_points(*, week_dates: set[str], logger: Logger) -> dict[str, float]:
+    """Return normalized_title -> weighted sum of daily AM country-genre scores.
+
+    Formula: (500 / rank^0.75) * AM_GENRE_WEIGHT for each country/day with a genre placement.
+    Best genre rank per (title, country, day) is kept so multiple genre charts do not stack.
+    """
+    scores: dict[str, float] = {}
+    active_paths = _active_apple_music_csvs(APPLE_MUSIC_GENRE_CSV)
+    if not active_paths:
+        logger.log("  apple_genre    : missing - genre score disabled")
+        return scores
+
+    def _to_int(v: str | None) -> int | None:
+        try:
+            return int((v or "").strip())
+        except Exception:
+            return None
+
+    best_per_genre_day: dict[tuple[str, str, str], int] = {}
+    matched_rows = 0
+    for csv_path in active_paths:
+        with csv_path.open("r", newline="", encoding="utf-8-sig") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                day = (row.get("date") or "").strip()
+                if day not in week_dates:
+                    continue
+                chart_type = (row.get("chart_type") or "").strip().lower()
+                if chart_type and chart_type != "genre":
+                    continue
+                country = (row.get("country") or "").strip().lower()
+                genre_id = (row.get("genre_id") or row.get("genre_name") or "").strip().lower()
+                title = (row.get("song_name") or "").strip()
+                rank = _to_int(row.get("rank"))
+                if not country or not genre_id or not title or not rank or rank < 1 or rank > 200:
+                    continue
+                key = _normalize_title(title)
+                if not key:
+                    continue
+                cell = (key, country, day)
+                if cell not in best_per_genre_day or rank < best_per_genre_day[cell]:
+                    best_per_genre_day[cell] = rank
+                matched_rows += 1
+
+    for (key, _country, _day), rank in best_per_genre_day.items():
+        scores[key] = scores.get(key, 0.0) + (_rank_to_am_units_score(rank) * AM_GENRE_WEIGHT)
+
+    logger.log(f"  apple_genre    : {matched_rows} rows ({len(active_paths)} file(s), weight={AM_GENRE_WEIGHT:g})")
     return scores
 
 
@@ -945,7 +1049,11 @@ def _load_existing_history(logger: Logger) -> list[dict]:
 
 def _load_existing_history_before_date(chart_date: str, logger: Logger) -> list[dict]:
     rows = _load_existing_history(logger)
-    return [r for r in rows if (r.get("date") or "").strip() < chart_date]
+    return [
+        r for r in rows
+        if (r.get("date") or "").strip() < chart_date
+        and _is_valid_chart_date((r.get("date") or "").strip())
+    ]
 
 
 def _history_stats(rows: list[dict]) -> tuple[dict[str, int], dict[str, int], dict[str, int]]:
@@ -1080,6 +1188,8 @@ def _generate_song_files(logger: Logger) -> None:
             continue
 
         chart_date = payload.get("chart_date") or snapshot_path.stem[len(CHART_SLUG) + 1:]
+        if not _is_valid_chart_date(chart_date):
+            continue
         for entry in (payload.get("entries") or []):
             tid = entry.get("track_id")
             if not tid:
@@ -1123,7 +1233,9 @@ def _generate_song_files(logger: Logger) -> None:
             })
 
     written = 0
+    expected_files = set()
     for tid, data in by_track.items():
+        expected_files.add(f"{tid}.json")
         history = data["history"]
         ranks = [h["rank"] for h in history if h.get("rank")]
         peak = min(ranks) if ranks else None
@@ -1144,7 +1256,14 @@ def _generate_song_files(logger: Logger) -> None:
         )
         written += 1
 
-    logger.log(f"✔ songs          → {written} history files")
+    removed = 0
+    for stale_path in songs_dir.glob("*.json"):
+        if stale_path.name not in expected_files:
+            stale_path.unlink()
+            removed += 1
+
+    suffix = f", {removed} stale removed" if removed else ""
+    logger.log(f"✔ songs          → {written} history files{suffix}")
 
 
 def _rebuild_snapshot_index(logger: Logger) -> None:
@@ -1152,6 +1271,8 @@ def _rebuild_snapshot_index(logger: Logger) -> None:
     dates = []
     for p in _SITE_DATA_DIR.glob(f"{CHART_SLUG}_????-??-??.json"):
         date_str = p.stem[len(CHART_SLUG) + 1:]
+        if not _is_valid_chart_date(date_str):
+            continue
         dates.append(date_str)
     dates.sort(reverse=True)
     index_path = _SITE_DATA_DIR / f"{CHART_SLUG}_index.json"
@@ -1395,6 +1516,7 @@ def run(
 
     am_global_score_by_title = _weekly_apple_music_global_points(week_dates=week_set, logger=logger)
     am_country_score_by_title = _weekly_apple_music_country_points(week_dates=week_set, logger=logger)
+    am_genre_score_by_title = _weekly_apple_music_genre_points(week_dates=week_set, logger=logger)
     am_ts_best_rank = _weekly_apple_music_ts_points(week_dates=week_set, logger=logger)
     am_ts_floor_raw = _apple_music_ts_floor_score(week_set)
     logger.log(f"  apple_ts_floor : rank #{max(1, AM_TS_FLOOR_RANK)} ({round(am_ts_floor_raw * 1000)} units)")
@@ -1467,19 +1589,20 @@ def run(
     for tid, rank in sorted(curr_ranks.items(), key=lambda kv: kv[1]):
         row = curr_points[tid]
         meta = tracks.get(tid)
+        apple_music_floor_eligible = bool(meta and meta.apple_music_floor_eligible)
 
         pr = prev_ranks.get(tid)
         prev_row = prev_points.get(tid)
         # Fallback: look up by normalized title when track_id changed between versions
         _title_key = _normalize_title(row.get("title") or "")
-        _alt_prev_tid = _prev_tid_by_title.get(_title_key)
+        _alt_prev_tid = _prev_tid_by_title.get(_title_key) if apple_music_floor_eligible else None
         if pr is None and _alt_prev_tid and _alt_prev_tid != tid:
             pr = prev_ranks.get(_alt_prev_tid)
             if pr is not None and prev_row is None:
                 prev_row = prev_points.get(_alt_prev_tid)
         prev_points_value = prev_row.get("points") if prev_row else None
 
-        _alt_hist_tid = _hist_tid_by_title.get(_title_key)
+        _alt_hist_tid = _hist_tid_by_title.get(_title_key) if apple_music_floor_eligible else None
         _eff_tid = tid if tid in weeks_on_chart_by_track else (_alt_hist_tid or tid)
 
         if pr is None:
@@ -1510,11 +1633,16 @@ def run(
         weekly_streams = row["weekly_streams"]
 
         # Apple Music units (loi de puissance × 1000)
-        am_ts_raw = am_ts_best_rank.get(key, 0.0)
-        if am_ts_raw <= 0:
-            am_ts_raw = am_ts_floor_raw
-        am_global_raw = am_global_score_by_title.get(key, 0.0)
-        am_country_raw = am_country_score_by_title.get(key, 0.0)
+        if apple_music_floor_eligible:
+            am_ts_raw = am_ts_best_rank.get(key, 0.0)
+            if am_ts_raw <= 0:
+                am_ts_raw = am_ts_floor_raw
+            am_global_raw = am_global_score_by_title.get(key, 0.0)
+            am_country_raw = am_country_score_by_title.get(key, 0.0) + am_genre_score_by_title.get(key, 0.0)
+        else:
+            am_ts_raw = 0.0
+            am_global_raw = 0.0
+            am_country_raw = 0.0
         am_overall_raw = am_global_raw + am_country_raw
         units_am = round((am_ts_raw + am_overall_raw) * 1000)
 

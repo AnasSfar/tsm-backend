@@ -10,14 +10,6 @@ from urllib.request import Request, urlopen
 from playwright.sync_api import sync_playwright
 
 try:
-    from .export_frame import add_export_frame
-except ImportError:
-    import sys
-
-    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-    from comp.export_frame import add_export_frame
-
-try:
     from PIL import Image as PilImage
     _PIL = True
 except ImportError:
@@ -258,6 +250,10 @@ def _best_since_title_font_size(title: str) -> int:
     return 28
 
 
+def _show_inline_album(title: str, album: str) -> bool:
+    return bool(album.strip()) and len(title.strip()) <= 18
+
+
 def _body_gap(title: str, *, has_extra: bool, has_subtitle: bool) -> int:
     """Smaller gap when the title is likely to wrap or extra rows are present,
     larger gap when the body block is short, so the block stays visually
@@ -299,10 +295,17 @@ def render_song_card(
         {badge_html}
       </div>"""
         )
-    extra_html = f'<div class="extra">{html.escape(extra)}</div>' if extra else ""
-    title_html = f'<div class="title">{html.escape(title)}</div>'
+    inline_album = _show_inline_album(title, extra)
+    extra_html = ""
+    if inline_album:
+        title_html = (
+            f'<div class="title"><span class="album-prefix">{html.escape(extra)}</span>'
+            f'{html.escape(title)}</div>'
+        )
+    else:
+        title_html = f'<div class="title">{html.escape(title)}</div>'
     subtitle_html = f'<div class="subtitle">{html.escape(subtitle)}</div>' if best_since and subtitle else ""
-    body_gap = _body_gap(title, has_extra=bool(extra), has_subtitle=bool(subtitle_html))
+    body_gap = _body_gap(title, has_extra=False, has_subtitle=bool(subtitle_html))
     mode_badge_text = badge_text if badge_text else ("COMBINED VERSIONS" if combined_versions else footer_right)
     mode_badge_html = f'<span class="mode-badge">{html.escape(mode_badge_text)}</span>' if mode_badge_text else ""
     tsm_logo_uri = _tsm_logo_data_uri()
@@ -361,6 +364,14 @@ body:before{{
   -webkit-box-orient:vertical;overflow:hidden;
   text-shadow:0 3px 18px rgba(0,0,0,.28);
   margin-bottom:-5px;
+}}
+.album-prefix{{
+  display:inline-block;margin-right:14px;vertical-align:.22em;
+  color:rgba(255,255,255,.86);background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.22);border-radius:999px;
+  padding:.34em .58em;font-size:.34em;font-weight:900;
+  letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;
+  text-shadow:none;
 }}
 .subtitle{{
   width:max-content;max-width:505px;
@@ -451,6 +462,14 @@ body:before{{
   text-shadow:0 3px 18px rgba(0,0,0,.28);
   margin-bottom:-5px;
 }}
+.album-prefix{{
+  display:inline-block;margin-right:14px;vertical-align:.22em;
+  color:rgba(255,255,255,.86);background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.22);border-radius:999px;
+  padding:.34em .58em;font-size:.34em;font-weight:900;
+  letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;
+  text-shadow:none;
+}}
 .stats{{display:flex;gap:12px;margin-top:2px}}
 .stat{{
   background:rgba(7,14,22,.58);border:1px solid rgba(255,255,255,.20);
@@ -514,7 +533,6 @@ def write_song_card_png(html_text: str, output_path: Path, tmp_path: Path, *, ke
             page = browser.new_page(viewport={"width": 920, "height": 344}, device_scale_factor=2)
             page.goto(f"file:///{tmp_path.as_posix()}", wait_until="load")
             page.locator("body").screenshot(path=str(output_path))
-            add_export_frame(output_path, device_scale_factor=2)
             browser.close()
     finally:
         if not keep_html:

@@ -63,6 +63,7 @@ from core.data_paths import (  # noqa: E402
 WORLDWIDE_JSON = first_existing(WEB_EXPORT_DATA_DIR / "charts_worldwide.json", LEGACY_WEBSITE_DATA_DIR / "charts_worldwide.json")
 SONGS_JSON = first_existing(WEB_EXPORT_DATA_DIR / "songs.json", LEGACY_WEBSITE_DATA_DIR / "songs.json")
 from comp.chart_card import render_chart_card  # noqa: E402
+from comp.export_frame import add_export_frame  # noqa: E402
 from twitter import post_image_thread as _post_image_thread  # noqa: E402
 
 # Shared lock with core/twitter.py — prevents running Playwright while Twitter
@@ -1649,6 +1650,7 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
                 card = page.locator("#card")
                 card.wait_for(state="visible", timeout=5000)
                 card.screenshot(path=str(summary_path))
+                add_export_frame(summary_path, device_scale_factor=3)
                 generated.append(summary_path.name)
                 priority_index[summary_path.name] = {
                     "level": -1,
@@ -1681,6 +1683,7 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
                     card = page.locator("#card")
                     card.wait_for(state="visible", timeout=5000)
                     card.screenshot(path=str(out_path))
+                    add_export_frame(out_path, device_scale_factor=3)
                     generated.append(out_path.name)
                     priority = _priority_payload(entries)
                     priority["theme"] = card_theme
@@ -1709,6 +1712,7 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
                                 chart_card = page.locator(".card")
                                 chart_card.wait_for(state="visible", timeout=5000)
                                 chart_card.screenshot(path=str(chart_out_path))
+                                add_export_frame(chart_out_path, device_scale_factor=3)
                                 generated.append(chart_out_path.name)
                                 priority_index[chart_out_path.name] = {
                                     "level": 1,
@@ -1745,6 +1749,7 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
                     card = page.locator("#card")
                     card.wait_for(state="visible", timeout=5000)
                     card.screenshot(path=str(out_path))
+                    add_export_frame(out_path, device_scale_factor=3)
                     generated.append(out_path.name)
                     priority_index[out_path.name] = {
                         "level": 2,

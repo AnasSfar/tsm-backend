@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import csv
+import re
+from datetime import date, timedelta
 from pathlib import Path
 from typing import Iterable
 
@@ -8,19 +10,40 @@ from .filters import rank_key
 from .config import ARCHIVE_DB_DIR
 from collectors.spotify.core.data_paths import apple_music_daily_csv, apple_music_daily_csv_paths
 
+# Only the latest snapshot strictly before the current day is ever needed for
+# previous ranks; reading the full multi-year daily history is wasted I/O.
+PREV_RANK_WINDOW_DAYS = 30
+
+_DAY_DIR_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
-def _daily_csv_paths(csv_path: Path) -> list[Path]:
-    return apple_music_daily_csv_paths(csv_path.name)
+def _path_day(path: Path) -> str:
+    for parent in (path.parent, path.parent.parent):
+        if _DAY_DIR_RE.match(parent.name):
+            return parent.name
+    return ""
 
 
-def read_csv_rows(csv_path: Path, *, include_daily_history: bool = False) -> list[dict[str, str]]:
+def _daily_csv_paths(csv_path: Path, days: int | None = None) -> list[Path]:
+    paths = apple_music_daily_csv_paths(csv_path.name)
+    if days is None:
+        return paths
+    cutoff = (date.today() - timedelta(days=days)).isoformat()
+    return [p for p in paths if _path_day(p) >= cutoff]
+
+
+def read_csv_rows(
+    csv_path: Path,
+    *,
+    include_daily_history: bool = False,
+    history_days: int | None = None,
+) -> list[dict[str, str]]:
     paths = [csv_path]
     archive_path = ARCHIVE_DB_DIR / csv_path.name
     if archive_path != csv_path:
         paths.append(archive_path)
     if include_daily_history:
-        paths.extend(_daily_csv_paths(csv_path))
+        paths.extend(_daily_csv_paths(csv_path, days=history_days))
 
     seen_paths: set[Path] = set()
     unique_paths: list[Path] = []
@@ -72,7 +95,7 @@ def rewrite_for_snapshot(
 ) -> None:
     """Append a new snapshot, removing any existing rows with the same scraped_at (idempotent).
     Skips write if the new data is identical to the most recent existing snapshot."""
-    existing = read_csv_rows(csv_path)
+    existing = read_csv_rows(csv_path, include_daily_history=True, history_days=7)
 
     # Find the most recent previous snapshot rows
     prev_keys = sorted(
@@ -95,6 +118,12 @@ def rewrite_for_snapshot(
             if prev_day == new_day:
                 print(f"[skip] snapshot identical to previous ({prev_keys[0]}), not writing")
                 return
+            # Cross-day identical: weak signal (TS-filtered subsets can genuinely
+            # repeat), so keep the data but leave a trace for diagnosis.
+            print(
+                f"[info] {csv_path.name}: snapshot identical to last known snapshot "
+                f"({prev_keys[0]}) — Apple chart may not have refreshed yet; writing anyway"
+            )
 
     current_day = scraped_at[:10]
     csv_path = apple_music_daily_csv(current_day, csv_path.name)
@@ -116,12 +145,18 @@ def load_previous_ranks(
     song_field: str = "song_name",
     rank_field: str = "rank",
 ) -> dict[tuple[str, ...], int]:
-    rows = read_csv_rows(csv_path, include_daily_history=True)
+    """Ranks from the last snapshot of the most recent *previous day*.
+
+    Same-day earlier snapshots are ignored on purpose: movement markers must
+    always mean "vs yesterday", not "vs this morning's rerun".
+    """
+    rows = read_csv_rows(csv_path, include_daily_history=True, history_days=PREV_RANK_WINDOW_DAYS)
     if not rows:
         return {}
 
+    current_day = (today or "")[:10]
     all_keys = sorted(
-        {_snapshot_key(r) for r in rows if _snapshot_key(r) and _snapshot_key(r) < today},
+        {_snapshot_key(r) for r in rows if _snapshot_key(r) and _snapshot_key(r)[:10] < current_day},
         reverse=True,
     )
     if not all_keys:

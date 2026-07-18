@@ -27,10 +27,10 @@ tsm-backend/
 ├── runtime/                ← sorties runtime (exports/web/ avant upload R2, tmp, logs) — non versionné
 ├── scripts/                ← outils one-shot/maintenance (backfills, R2, enrichissement)
 ├── dev/                    ← scripts ad-hoc de debug/vérification (jetables)
-├── docs/                   ← runbook.md + data-layout-audit.md
+├── docs/                   ← runbook.md + data-layout-audit.md + apple-music-script-context.md
 ├── website/                ← ⚠️ site statique LEGACY — INTERDIT sauf demande explicite
 ├── .github/workflows/      ← workflows GitHub (peu utilisés : tout tourne en local)
-├── .claude/skills/         ← skills Claude Code (tsm-map, pipeline-ops, data-rules, image-gen, deploy, admin-work, style-rules)
+├── .claude/skills/         ← skills Claude Code (tsm-map, pipeline-ops, data-rules, image-gen, deploy, admin-work, style-rules, collector-apple-music)
 ├── run_daily.bat           ← launcher : python -m tsm daily
 └── run_all_charts.bat      ← launcher : python -m tsm collect charts
 ```
@@ -154,6 +154,8 @@ python update_streams.py YYYY-MM-DD          # run normal pour une date précise
 
 ### Par région (chaque dossier a `daily.py` + `tools/` avec `filter.py` scraper, `generate_chart_image.py` PNG, `git_ops.py`)
 
+Idempotence (fix 17/07/2026, après double post global/us) : les `daily.py` global/fr/us/uk appelés avec une date explicite (dont `--post-only <date>`) respectent désormais `posted.lock` (skip, exit 0) — seul `--force` reposte. En plus, le lock est re-vérifié via `skip_if` juste après l'acquisition du slot de compte X (voir `core/twitter.py`), ce qui ferme la course entre deux process concurrents.
+
 | Dossier | Contenu notable |
 |---|---|
 | `global/` | `daily.py` / `daily_no_post.py` ; `tools/script/` : `refresh_session.py` (relogin Playwright → `spotify_session.json`, `--output`), `import_cookies.py` (Cookie-Editor JSON → session, `input`, `--output`), `fix_missing.py` (reconstruit les jours manquants sans poster), `rebuild.py`, `rebuild_history_from_logs.py`, `migrate_charts_to_csv.py`, `daily_test.py` (dry-run) |
@@ -166,7 +168,7 @@ python update_streams.py YYYY-MM-DD          # run normal pour une date précise
 
 | Fichier | Rôle |
 |---|---|
-| `twitter.py` (49 Ko) | Post Twitter via Playwright (profil Chrome persistant), espacement entre posts, sessions par compte |
+| `twitter.py` (49 Ko) | Post Twitter via Playwright (profil Chrome persistant), espacement entre posts, sessions par compte ; `post_with_image(..., skip_if=cb)` : callback re-évaluée après l'acquisition du slot de compte — si True, post annulé et retour True (anti-double-post inter-process) |
 | `data_paths.py` | **Source de vérité de tous les chemins** (REPO_ROOT, runtime, snapshots, exports web, legacy) |
 | `download.py` | Téléchargement CSV Spotify Charts |
 | `history.py` | Gestion `ts_history.json` |
@@ -178,19 +180,22 @@ python update_streams.py YYYY-MM-DD          # run normal pour une date précise
 
 ## 4. `collectors/apple_music/` — charts Apple Music
 
-Orchestrateur : `run_apple_music.py` (appelé par `python -m tsm collect apple-music`) — `--no-post`, `--no-images`, `--force-images`. Launcher : `run_apple_music.bat`.
+**Avant tout travail ici : charger le skill `collector-apple-music`** (briefing complet : `docs/apple-music-script-context.md`).
+
+Orchestrateur : `run_apple_music.py` (appelé par `python -m tsm collect apple-music`) — `--no-post` (flag mort, compat CLI : ce pipeline ne poste rien), `--no-images`, `--force-images`. Launcher : `run_apple_music.bat`. Un collecteur en échec = run abandonné (pas d'export/images/upload). Ordre du runner : `global.py` → `ts_page.py` → `country_all.py` → `genre_all.py`.
 
 | Fichier | Rôle / lancement |
 |---|---|
-| `country_charts.py` | Top songs par pays. `--countries`, `--date`, `--scraped-at` |
-| `country_albums.py` | Top albums par pays. idem |
-| `genre_charts.py` / `genre_album_charts.py` | Charts par genre (songs/albums). idem |
-| `global.py` / `global_albums.py` | Top 100 global (songs/albums). `--date`, `--scraped-at` |
-| `music_video_charts.py` / `top_music_videos.py` | Charts vidéos. (`storefront` pour top_music_videos) |
-| `ts_page.py` | Top songs de la page artiste TS. `storefront`, `--date`, `--scraped-at` |
+| `country_all.py` | **(runner)** Songs + albums + vidéos par pays en 1 requête combinée (`types=songs,albums,music-videos`) ; écrit les 3 CSV legacy. `--countries`, `--date`, `--scraped-at`. Fallback per-type sur 400 ; abort si >5% storefronts en échec |
+| `genre_all.py` | **(runner)** Songs + albums par (pays, genre) en 1 requête (`types=songs,albums&genre=`) ; écrit les 2 CSV legacy. idem |
+| `global.py` | **(runner)** Top 100 global (playlist publique). `--date`, `--scraped-at` |
+| `ts_page.py` | **(runner)** Top songs page artiste TS. `storefront`, `--date`, `--scraped-at` |
+| `country_charts.py` / `country_albums.py` / `music_video_charts.py` | Legacy per-type (manuels ; remplacés par `country_all.py` dans le runner) |
+| `genre_charts.py` / `genre_album_charts.py` | Legacy per-type (manuels ; remplacés par `genre_all.py`) |
+| `global_albums.py` / `top_music_videos.py` | Legacy hors runner (`storefront` pour top_music_videos) |
 | `generate_country_card_images.py` | Cards PNG par pays. `date`, `--min-countries`, `--limit`, `--force` |
 | `generate_snapshot_images.py` | PNG des snapshots. `--date`, `--region us\|fr\|global…`, `--genre` (avec `--region`), `--list-genres`, `--out-dir` |
-| `core/` | `token.py` (jeton API), `http.py`, `storefronts.py`, `filters.py`, `csv_utils.py`, `r2.py`, `config.py`, `export.py`, `models.py` |
+| `core/` | `token.py` (jeton API + `TokenManager` refresh coordonné pour les pools), `http.py`, `storefronts.py`, `filters.py`, `csv_utils.py` (`previous_rank` = dernier snapshot du **jour précédent**, fenêtre lecture 30 j), `r2.py`, `config.py`, `export.py`, `models.py` |
 
 ---
 
@@ -236,7 +241,8 @@ Modules importés par les générateurs d'images (pas des scripts, sauf preview)
 | `export_for_web.py` | Wrapper → `streams/extras/export_for_web.py`. `--new-date`, `--dry-run` |
 | `check_r2_storage.py` | Alerte ntfy si le stockage R2 dépasse les seuils. `--dry-run`, `--bucket-limits b=size,…`, `--warning-percent`, `--topic` |
 | `migrate_app_r2.py` | Copie bucket public → bucket app. `--dry-run`, `--overwrite`, `--key`, `--prefix` |
-| `upload_ap_r2.py` | Upload Apple Music vers R2. `--bucket`, `--prefix`, `--dry-run` |
+| `upload_ap_r2.py` | Upload Apple Music vers R2 (JSON, snapshots par date, CSV du jour, history-by-song incl. vidéos). `--bucket`, `--prefix`, `--dry-run` |
+| `prune_apple_music_snapshots.py` | Rétention snapshots Apple Music : garde le dernier snapshot par jour passé, lignes retirées archivées en `.csv.gz` dans `_pruned_archive/` (dry-run par défaut). `--apply`, `--since`, `--no-archive` |
 | `chartr2.py` | Upload R2 des charts |
 | `fetch_issues.py` | Récupère les signalements du site depuis R2. `--save`, `--images`, `--delete` |
 | `fetch_hiring.py` | Récupère les candidatures (préfixe `hiring/`). `--json`, `--role` |
@@ -252,7 +258,8 @@ Modules importés par les générateurs d'images (pas des scripts, sauf preview)
 | `repair_charts_fr_archive_from_history.py` | Répare l'archive FR. `dates…`, `--archive`, `--history-root`, `--dry-run` |
 | `reset_swift_top_100_history.py` | ⚠️ Reset de l'historique Swift Top 100. Dry-run par défaut ; `--yes` pour supprimer, `--remove-bonuses`, `--skip-r2` |
 | `refresh_spotify_session.py` | Rafraîchit `spotify_session.json` |
-| `download_apple_music_images.py` / `merge_am_csv.py` / `export_apple_music.py` | Outils Apple Music |
+| `download_apple_music_images.py` / `merge_am_csv.py` | Outils Apple Music |
+| `export_apple_music.py` | Export CSV → `applemusic.json` (+ section `last_charted` précalculée) et `applemusic_history.json` **fenêtré** (`APPLE_MUSIC_HISTORY_DAYS`, défaut 30 j, jours passés réduits à leur dernier snapshot, JSON compact) |
 | `generate_glitter_images.py` | Images glitter pour les boutons du site |
 | `explore_streams_api.py` / `test_streams_api.py` / `probe_gettrack_response.py` | Exploration API (ne touchent pas la DB) |
 | `migrate_daily_data_layout.py` | Migration du layout data. `--apply`, `--move` |
@@ -282,11 +289,12 @@ Modules importés par les générateurs d'images (pas des scripts, sauf preview)
 | `run_all_charts.bat` | Launcher : `python -m tsm collect charts` |
 | `docs/runbook.md` | Runbook : layout canonique + commandes principales + règles de sécurité |
 | `docs/data-layout-audit.md` | Audit généré par `python -m tsm audit data --write` |
+| `docs/apple-music-script-context.md` | Briefing d'audit du pipeline Apple Music (architecture, comportement d'échec, points fragiles) — version condensée dans le skill `collector-apple-music` |
 | `README.md` / `README_FULL.md` / `CONTRIBUTING.md` / `AGENTS.md` / `CLAUDE.md` | Docs générales / instructions IA |
 | `DEPLOYMENT_AUDIT.md`, `GITHUB_SECRETS_SETUP.md`, `add_github_secrets.py` | Setup GitHub Actions (secrets) |
 | `setup.py`, `requirements.txt`, `.python-version` | Packaging/deps Python |
 | `.github/workflows/` | `run-all-charts.yml`, `update-streams.yml`, `run-apple-music.yml`, `check-r2-storage.yml`, `keepalive.yml` — **en pratique la prod tourne en LOCAL via Task Scheduler**, pas via ces workflows |
-| `.claude/skills/` | Skills Claude Code : `tsm-map`, `pipeline-ops`, `data-rules`, `image-gen`, `deploy`, `admin-work`, `style-rules` |
+| `.claude/skills/` | Skills Claude Code : `tsm-map`, `pipeline-ops`, `data-rules`, `image-gen`, `deploy`, `admin-work`, `style-rules`, `collector-apple-music` (série « un skill par collecteur » — à charger avant tout travail sur le collecteur correspondant) |
 
 Les `.bat` du Task Scheduler vivent dans **`tsm-frontend/tasks/`** (`run_spotify_streams.bat`, `run_spotify_charts_global.bat`, `run_spotify_charts_fr.bat`, `watch_logs.bat`) et font `cd` vers ce repo.
 

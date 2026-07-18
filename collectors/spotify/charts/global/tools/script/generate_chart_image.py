@@ -273,7 +273,7 @@ def generate(chart_date: str, header_img: Path | None = None) -> Path:
 
     html = build_html(rows, history, chart_date, track_album_map, cover_map, track_image_map,
                       header_img=header_img, out_songs=out_songs, track_cover_cache=track_cover_cache)
-    render_html_to_png(html, out_path, date_dir / "_chart_tmp.html")
+    render_html_to_png(html, out_path, date_dir / "_chart_tmp.html", export_frame=True)
     print(f"OK image: {out_path}")
     return out_path
 
@@ -405,7 +405,7 @@ def generate_multi(chart_dates: list[str], header_img: Path | None = None) -> Pa
 </div>
 </body></html>"""
 
-    render_html_to_png(html, out_path, ROOT / "_chart_tmp.html")
+    render_html_to_png(html, out_path, ROOT / "_chart_tmp.html", export_frame=True)
     print(f"OK image multi: {out_path}")
     return out_path
 

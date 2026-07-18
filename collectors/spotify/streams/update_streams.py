@@ -174,6 +174,8 @@ PROBE_REQUIRED_UPDATED = 10  # non-extra (chart_extra=False) Spotify probe track
 CHARTSNAPSHOT_REQUIRED_VALIDATED = 20  # non-extra tracks with total - daily == our previous-day total
 CHARTSNAPSHOT_ARTIST_URI = "06HL4z0CvFAxyc27GXpf02"
 CHARTSNAPSHOT_TOP_SONGS_URL = "https://www.chartsnapshot.com/get_top_songs"
+EARLY_BEST_DAY_MIN_DAILY_STREAMS = 900_000
+EARLY_BEST_DAY_TRACK_LIMIT = 80
 PENDING_RETRY_SLEEP_SECONDS = 20
 EXTRA_PENDING_RETRY_ROUNDS_BEFORE_ZERO = 5
 INFINITE_RETRY_PREVIOUS_DAY_TOP_N = 70
@@ -828,6 +830,19 @@ def probe_chartsnapshot_update(
         )
         response.raise_for_status()
         payload = response.json()
+    except _requests.HTTPError as exc:
+        response = exc.response
+        result["error"] = str(exc)
+        if response is not None and response.status_code == 403:
+            try:
+                payload = response.json()
+            except ValueError:
+                payload = {}
+            message = str(payload.get("error") or "")
+            if "Role 3 or higher required" in message:
+                result["blocked_reason"] = "chartsnapshot_role_required"
+                result["error"] = message
+        return result
     except Exception as exc:
         result["error"] = str(exc)
         return result
@@ -1161,6 +1176,49 @@ def load_positive_history_track_ids_missing_daily_for_date(target_date: str) -> 
         if streams > 0 and not daily_raw:
             missing_ids.add(track_id)
     return missing_ids
+
+
+def load_daily_streams_by_track_for_date(target_date: str) -> dict[str, int]:
+    daily_by_track: dict[str, int] = {}
+    for row in load_history_rows():
+        track_id = str(row.get("track_id") or "").strip()
+        row_date = str(row.get("date") or "").strip()
+        if not track_id or row_date != target_date:
+            continue
+        try:
+            daily = int(str(row.get("daily_streams") or "").strip())
+        except ValueError:
+            continue
+        daily_by_track[track_id] = daily
+    return daily_by_track
+
+
+def build_early_best_day_track_ids(
+    tracks: list[dict],
+    stats_date: str,
+    *,
+    min_previous_daily_streams: int = EARLY_BEST_DAY_MIN_DAILY_STREAMS,
+    limit: int = EARLY_BEST_DAY_TRACK_LIMIT,
+) -> list[str]:
+    """Limit early best-day checks to plausible high-volume candidates.
+
+    The final best-day step still scans every eligible track after collection,
+    so this only reduces mid-run subprocess/export churn.
+    """
+    previous_stats_date = get_previous_stats_date_str(stats_date)
+    previous_daily = load_daily_streams_by_track_for_date(previous_stats_date)
+    active_ids = {
+        str(track.get("track_id") or "").strip()
+        for track in tracks
+        if track.get("track_id") and not track.get("chart_extra")
+    }
+    candidates = [
+        (track_id, daily)
+        for track_id, daily in previous_daily.items()
+        if track_id in active_ids and daily >= min_previous_daily_streams
+    ]
+    candidates.sort(key=lambda item: item[1], reverse=True)
+    return [track_id for track_id, _daily in candidates[:limit]]
 
 
 def recent_release_track_ids_missing_daily(stats_date: str) -> set[str]:
@@ -2597,20 +2655,25 @@ def main():
                 api_probe["source"] = "spotify_api"
                 _print_probe(api_probe)
                 probe_retry_count = 0
+                chartsnapshot_probe_disabled = False
                 while not api_probe["can_start_full_run"]:
                     probe_retry_count += 1
                     print()
                     print("Spotify playcount API does not appear to expose the next daily totals yet.")
-                    print(
-                        f"Checking ChartSnapshot for {stats_date} before the next Spotify probe..."
-                    )
-                    chartsnapshot_probe = probe_chartsnapshot_update(stats_date, tracks)
-                    _print_chartsnapshot_probe(chartsnapshot_probe)
-                    if chartsnapshot_probe.get("can_start_full_run"):
-                        print("ChartSnapshot validated the daily update; starting full Spotify collection.")
-                        probe_confirmed_full_run = True
-                        confirmed_probe = chartsnapshot_probe
-                        break
+                    if not chartsnapshot_probe_disabled:
+                        print(
+                            f"Checking ChartSnapshot for {stats_date} before the next Spotify probe..."
+                        )
+                        chartsnapshot_probe = probe_chartsnapshot_update(stats_date, tracks)
+                        _print_chartsnapshot_probe(chartsnapshot_probe)
+                        if chartsnapshot_probe.get("blocked_reason") == "chartsnapshot_role_required":
+                            chartsnapshot_probe_disabled = True
+                            print("ChartSnapshot historical endpoint requires a higher role; skipping it for the rest of this probe loop.")
+                        if chartsnapshot_probe.get("can_start_full_run"):
+                            print("ChartSnapshot validated the daily update; starting full Spotify collection.")
+                            probe_confirmed_full_run = True
+                            confirmed_probe = chartsnapshot_probe
+                            break
                     print(
                         f"Retrying probe in 2 seconds until "
                         f"{PROBE_REQUIRED_UPDATED} non-extra track(s) update "
@@ -2743,10 +2806,20 @@ def main():
     )
     album_update_poster.start()
 
+    early_best_day_track_ids = build_early_best_day_track_ids(
+        tracks,
+        stats_date,
+        min_previous_daily_streams=EARLY_BEST_DAY_MIN_DAILY_STREAMS,
+        limit=EARLY_BEST_DAY_TRACK_LIMIT,
+    )
+    print(
+        f"Early best-day-since watcher limited to {len(early_best_day_track_ids)} "
+        f"high-volume track(s) from {get_previous_stats_date_str(stats_date)}."
+    )
     best_day_since_poster = ReadyBestDaySincePoster(
         script_dir=_SCRIPT_DIR,
         stats_date=stats_date,
-        track_ids=[t["track_id"] for t in tracks if not t.get("chart_extra")],
+        track_ids=early_best_day_track_ids,
         export_web_data=early_web_export_gate.export_partial,
         load_history_track_ids_for_date=load_history_track_ids_for_date,
         spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
@@ -2754,7 +2827,7 @@ def main():
         enabled=True,
         no_post_mode=no_post_mode,
         min_days=21,
-        min_daily_streams=900_000,
+        min_daily_streams=EARLY_BEST_DAY_MIN_DAILY_STREAMS,
         min_pct_change=0.0,
         priority_ready=debut_release_poster.is_done,
     )

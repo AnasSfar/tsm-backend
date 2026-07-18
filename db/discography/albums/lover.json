@@ -1154,6 +1154,133 @@
       ]
     },
     {
+      "album": "Lover",
+      "section": "standalone",
+      "chart_extra": true,
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "All Of The Girls You Loved Before",
+          "url": "https://open.spotify.com/intl-fr/track/4P9Q0GojKVXpRTJCaL3kyy",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "All Of The Girls You Loved Before",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "All Of The Girls You Loved Before",
+          "song_family": "all_of_the_girls_you_loved_before",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738481d8f15859aa5bae75ee17",
+          "display_era": "Lover",
+          "historical_track_ids": [
+            "17yraMKqmZIKAv3iaGcoLX"
+          ],
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "dream pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "dream pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dream pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "lover",
+              "pop",
+              "dream pop",
+              "synthpop",
+              "rnb",
+              "female vocalists",
+              "alt-pop",
+              "doo-wop",
+              "brill building",
+              "pop soul"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "All Of The Girls You Loved Before"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:all_of_the_girls_you_loved_before",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
+        }
+      ]
+    },
+    {
+      "album": "Lover",
+      "section": "soundtracks",
+      "track_count": 1,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Only The Young - Featured in Miss Americana",
+          "url": "https://open.spotify.com/intl-fr/track/2slqvGLwzZZYsT4K4Y1GBC",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 6,
+          "base_title": "Only The Young - Featured in Miss Americana",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Only The Young - Featured in Miss Americana",
+          "song_family": "only_the_young_featured_in_miss_americana",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2734aa13f6de271d8403a82e4a8",
+          "display_era": "Lover",
+          "historical_track_ids": [],
+          "release_date": "2020-01-31T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:only_the_young_featured_in_miss_americana",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
+        }
+      ]
+    },
+    {
       "section": "remixes",
       "track_count": 11,
       "chart_extra": true,
@@ -1870,133 +1997,6 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "live": "high:type_title_or_section"
-          }
-        }
-      ]
-    },
-    {
-      "album": "Lover",
-      "section": "standalone",
-      "chart_extra": true,
-      "track_count": 1,
-      "tracks": [
-        {
-          "title": "All Of The Girls You Loved Before",
-          "url": "https://open.spotify.com/intl-fr/track/4P9Q0GojKVXpRTJCaL3kyy",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 1,
-          "base_title": "All Of The Girls You Loved Before",
-          "album": "Lover",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "All Of The Girls You Loved Before",
-          "song_family": "all_of_the_girls_you_loved_before",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2738481d8f15859aa5bae75ee17",
-          "display_era": "Lover",
-          "historical_track_ids": [
-            "17yraMKqmZIKAv3iaGcoLX"
-          ],
-          "release_date": "2019-08-23T00:00:00Z",
-          "genres": [
-            "pop",
-            "dream pop",
-            "synth-pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "dream pop": 2.0,
-            "synth-pop": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "dream pop",
-              "synth-pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "lover",
-              "pop",
-              "dream pop",
-              "synthpop",
-              "rnb",
-              "female vocalists",
-              "alt-pop",
-              "doo-wop",
-              "brill building",
-              "pop soul"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "All Of The Girls You Loved Before"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:all_of_the_girls_you_loved_before",
-          "filter_tags": [
-            "solo",
-            "standalone"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type"
-          }
-        }
-      ]
-    },
-    {
-      "album": "Lover",
-      "section": "soundtracks",
-      "track_count": 1,
-      "chart_extra": true,
-      "tracks": [
-        {
-          "title": "Only The Young - Featured in Miss Americana",
-          "url": "https://open.spotify.com/intl-fr/track/2slqvGLwzZZYsT4K4Y1GBC",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 6,
-          "base_title": "Only The Young - Featured in Miss Americana",
-          "album": "Lover",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Only The Young - Featured in Miss Americana",
-          "song_family": "only_the_young_featured_in_miss_americana",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2734aa13f6de271d8403a82e4a8",
-          "display_era": "Lover",
-          "historical_track_ids": [],
-          "release_date": "2020-01-31T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:only_the_young_featured_in_miss_americana",
-          "filter_tags": [
-            "solo",
-            "standalone"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type"
           }
         }
       ]

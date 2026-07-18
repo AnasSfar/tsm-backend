@@ -3,9 +3,11 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 import sys
 from collections import defaultdict
 from copy import deepcopy
+from datetime import date as _date, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -34,6 +36,14 @@ GENRE_CSV = DB_DIR / "apple_music_genre_charts.csv"
 
 OUT_DATA = OUT_DIR / "applemusic.json"
 OUT_HISTORY = OUT_DIR / "applemusic_history.json"
+
+# applemusic_history.json is loaded whole by the API: keep it to a rolling
+# window AND collapse past days to their last snapshot (the scheduler scrapes
+# several times a day; the published chart day is its last snapshot). Older
+# dates stay served by the per-date R2 snapshots (apple-music/snapshots/) and
+# the full CSV history on disk.
+HISTORY_DAYS = int(os.getenv("APPLE_MUSIC_HISTORY_DAYS", "30") or "30")
+HISTORY_CUTOFF = (_date.today() - timedelta(days=HISTORY_DAYS)).isoformat()
 
 
 def log(msg: str) -> None:
@@ -489,6 +499,29 @@ def build_country_albums(rows: list[dict[str, Any]]) -> tuple[dict[str, Any] | N
     return current, by_date, dates
 
 
+def build_last_charted(rows: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
+    """Best entry of the last day each country charted — over the FULL history,
+    so the API does not need the giant history JSON for /apple-music-last-charted."""
+    best: dict[str, tuple[str, dict[str, Any]]] = {}
+    for row in rows:
+        d = normalize_date(row)
+        country = clean_str(row.get("country")).lower()
+        if not d or not country:
+            continue
+        current = best.get(country)
+        if current is None or d > current[0]:
+            best[country] = (d, row)
+        elif d == current[0]:
+            new_rank = to_int(row.get("rank"))
+            old_rank = to_int(current[1].get("rank"))
+            if new_rank is not None and (old_rank is None or new_rank < old_rank):
+                best[country] = (d, row)
+    return {
+        country: {"date": d, "entry": normalize_song_entry(row)}
+        for country, (d, row) in best.items()
+    }
+
+
 def main() -> None:
     ensure_out_dir()
 
@@ -498,28 +531,52 @@ def main() -> None:
     if prev_data:
         log("snapshot précédent chargé pour backfill previous_rank")
 
-    global_rows = read_csv_rows(GLOBAL_CSV)
-    top_rows = read_csv_rows(TOP_SONGS_CSV)
-    top_video_rows = read_csv_rows(TOP_VIDEOS_CSV)
-    country_rows = read_csv_rows(COUNTRY_CSV)
-    country_album_rows = read_csv_rows(COUNTRY_ALBUMS_CSV)
-    genre_album_rows = read_csv_rows(GENRE_ALBUMS_CSV)
-    music_video_chart_rows = read_csv_rows(MUSIC_VIDEO_CHARTS_CSV)
-    genre_rows = read_csv_rows(GENRE_CSV)
+    all_dates_set: set[str] = set()
+    today_day = _date.today().isoformat()
 
-    global_current, global_history, global_dates = build_global(global_rows)
-    top_current, top_history, top_dates = build_top_songs(top_rows)
-    top_video_current, top_video_history, top_video_dates = build_ranked_video_series(top_video_rows)
-    country_current, country_history, country_dates = build_country(country_rows)
-    country_album_current, country_album_history, country_album_dates = build_country_albums(country_album_rows)
-    genre_album_current, genre_album_history, genre_album_dates = build_genre_albums(genre_album_rows)
-    music_video_chart_current, music_video_chart_history, music_video_chart_dates = build_country(music_video_chart_rows)
-    genre_current, genre_history, genre_dates = build_genre(genre_rows)
+    def window_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        """Register every snapshot date, then keep only windowed rows with past
+        days collapsed onto their last snapshot (today keeps all reruns)."""
+        keyed: list[tuple[str, dict[str, Any]]] = []
+        for row in rows:
+            d = normalize_date(row)
+            if not d:
+                continue
+            all_dates_set.add(d)
+            if d[:10] >= HISTORY_CUTOFF:
+                keyed.append((d, row))
+        last_by_day: dict[str, str] = {}
+        for d, _row in keyed:
+            day = d[:10]
+            if d > last_by_day.get(day, ""):
+                last_by_day[day] = d
+        return [row for d, row in keyed if d[:10] == today_day or d == last_by_day[d[:10]]]
 
-    all_dates = sorted(set(
-        global_dates + top_dates + top_video_dates +
-        country_dates + country_album_dates + genre_album_dates + music_video_chart_dates + genre_dates
-    ))
+    def read_windowed(path: Path) -> list[dict[str, Any]]:
+        return window_rows(read_csv_rows(path))
+
+    global_rows = read_windowed(GLOBAL_CSV)
+    top_rows = read_windowed(TOP_SONGS_CSV)
+    top_video_rows = read_windowed(TOP_VIDEOS_CSV)
+    country_rows_full = read_csv_rows(COUNTRY_CSV)
+    last_charted = build_last_charted(country_rows_full)
+    country_rows = window_rows(country_rows_full)
+    del country_rows_full
+    country_album_rows = read_windowed(COUNTRY_ALBUMS_CSV)
+    genre_album_rows = read_windowed(GENRE_ALBUMS_CSV)
+    music_video_chart_rows = read_windowed(MUSIC_VIDEO_CHARTS_CSV)
+    genre_rows = read_windowed(GENRE_CSV)
+
+    global_current, global_history, _ = build_global(global_rows)
+    top_current, top_history, _ = build_top_songs(top_rows)
+    top_video_current, top_video_history, _ = build_ranked_video_series(top_video_rows)
+    country_current, country_history, _ = build_country(country_rows)
+    country_album_current, country_album_history, _ = build_country_albums(country_album_rows)
+    genre_album_current, genre_album_history, _ = build_genre_albums(genre_album_rows)
+    music_video_chart_current, music_video_chart_history, _ = build_country(music_video_chart_rows)
+    genre_current, genre_history, _ = build_genre(genre_rows)
+
+    all_dates = sorted(all_dates_set)
     latest_any = all_dates[-1] if all_dates else None
 
     # Some collectors skip writing a new same-day snapshot when the chart is unchanged.
@@ -537,6 +594,7 @@ def main() -> None:
     applemusic_data = {
         "scraped_at": latest_any,
         "dates": all_dates,
+        "last_charted": last_charted,
         "global_chart": global_current,
         "ts_top_songs": top_current,
         "ts_top_videos": top_video_current,
@@ -547,8 +605,13 @@ def main() -> None:
         "genre_charts": genre_current,
     }
 
+    history_dates = sorted(
+        set(global_history) | set(top_history) | set(top_video_history) | set(country_history)
+        | set(country_album_history) | set(genre_album_history) | set(music_video_chart_history)
+        | set(genre_history)
+    )
     applemusic_history = {
-        "dates": all_dates,
+        "dates": history_dates,
         "global": global_history,
         "top_songs": top_history,
         "top_videos": top_video_history,
@@ -571,11 +634,15 @@ def main() -> None:
         _backfill_by_country(music_video_chart_current, prev_data.get("music_video_charts"))
 
     OUT_DATA.write_text(json.dumps(applemusic_data, ensure_ascii=False, indent=2), encoding="utf-8")
-    OUT_HISTORY.write_text(json.dumps(applemusic_history, ensure_ascii=False, indent=2), encoding="utf-8")
+    # Compact on purpose: this file is shipped to R2 and loaded whole by the API.
+    OUT_HISTORY.write_text(
+        json.dumps(applemusic_history, ensure_ascii=False, separators=(",", ":")),
+        encoding="utf-8",
+    )
 
     log(f"écrit: {OUT_DATA}")
     log(f"écrit: {OUT_HISTORY}")
-    log(f"dates détectées: {len(all_dates)}")
+    log(f"dates detectees: {len(all_dates)} (history fenetre: {len(history_dates)} dates >= {HISTORY_CUTOFF})")
 
 
 if __name__ == "__main__":

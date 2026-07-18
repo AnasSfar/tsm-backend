@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import re
 from datetime import datetime, timezone
+from threading import Lock
 from typing import Optional
 
 from requests import Session
@@ -90,3 +91,37 @@ def build_auth_headers(token: str) -> dict[str, str]:
         "Authorization": f"Bearer {token}",
         "Origin": "https://music.apple.com",
     }
+
+
+class TokenManager:
+    """Thread-safe MusicKit token holder with coordinated refresh.
+
+    In worker pools, many threads can hit 401 with the same stale token at
+    once; only the first caller actually refreshes, the others get the new
+    token immediately. Workers should pass headers per request (not bake them
+    into a session) so a refresh takes effect on the next call.
+    """
+
+    def __init__(self, session: Session):
+        self._session = session
+        self._lock = Lock()
+        self._token: Optional[str] = None
+
+    def get(self) -> str:
+        with self._lock:
+            if not self._token:
+                token = fetch_musickit_token(self._session) or fetch_musickit_token(self._session, refresh=True)
+                if not token:
+                    raise RuntimeError("Could not extract Apple Music developer token")
+                self._token = token
+            return self._token
+
+    def refresh(self, stale_token: str) -> str:
+        with self._lock:
+            if self._token and self._token != stale_token:
+                return self._token
+            token = fetch_musickit_token(self._session, refresh=True)
+            if not token:
+                raise RuntimeError("Apple Music developer token refresh failed")
+            self._token = token
+            return token

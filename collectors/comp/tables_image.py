@@ -630,6 +630,7 @@ def render_html_to_png(
     width: int = 800,
     *,
     keep_html: bool = False,
+    export_frame: bool = False,
 ) -> Path:
     """Write html_text to tmp_path, screenshot with Playwright, delete tmp_path."""
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -649,10 +650,10 @@ def render_html_to_png(
             except Exception:
                 pass
             page.locator("body").screenshot(path=str(out_path))
-            add_export_frame(out_path, device_scale_factor=2)
+            if export_frame:
+                add_export_frame(out_path, device_scale_factor=2)
             browser.close()
     finally:
         if tmp_path.exists() and not keep_html:
             tmp_path.unlink()
     return out_path
-

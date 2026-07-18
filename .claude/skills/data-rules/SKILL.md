@@ -23,7 +23,7 @@ Ces règles ont été édictées puis re-corrigées plusieurs fois — les viole
 ## Posting Twitter
 
 - **Jamais poster si un album/tableau a un track manquant ou à 0** (albums, top 45, biggest daily/weekly gainers…). Complétude d'abord.
-- **Locks `*_posted.lock`** pour tout ce qui poste (anti-double-post) ; `--force` les ignore consciemment.
+- **Locks `*_posted.lock`** pour tout ce qui poste (anti-double-post) ; `--force` les ignore consciemment. Depuis le 17/07/2026 : un `daily.py` régional appelé avec une date explicite (dont `--post-only`) respecte le lock (skip), et `post_with_image` re-vérifie le lock via `skip_if` APRÈS l'acquisition du slot de compte — tout nouveau chemin de post doit passer ce `skip_if`, sinon deux process concurrents peuvent poster en double (incident global/us 17/07/2026).
 - **Espacement entre posts : 60 s** (pas 180).
 - **Commentaires Spotify Charts** : quand un tweet chart ajoute un commentaire sous le header, laisser une ligne vide entre le header et le commentaire, finir le commentaire par une ponctuation, et inclure les streams exacts pour les NEW/RE quand le champ chart les fournit.
 - **Spotify Charts Global** : si une priority chart_card Global existe (NEW/RE, ex. re-entry Global), elle doit partir avant le tweet chart Global principal.

@@ -620,7 +620,7 @@ def generate_cards(chart_date: str, *, force_songs: set[str] | None = None) -> l
         html_text, slug, prefix = _build_html([row], chart_date)
         out_path = out_dir / f"{prefix}_{slug}.png"
         tmp_path = out_dir / f"_{prefix}_{slug}_tmp.html"
-        write_chart_card_png(html_text, out_path, tmp_path)
+        write_chart_card_png(html_text, out_path, tmp_path, export_frame=True)
         print(f"[global-priority] Card generated: {out_path}")
         paths.append(out_path)
     return paths

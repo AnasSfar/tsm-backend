@@ -804,787 +804,6 @@
       ]
     },
     {
-      "section": "track_by_track",
-      "track_count": 12,
-      "chart_extra": true,
-      "tracks": [
-        {
-          "title": "Elizabeth Taylor - Track by Track",
-          "url": "https://open.spotify.com/intl-fr/track/3r9fAceWmaDFvbNiTnFiLr",
-          "type": "alternate_version",
-          "edition": "extras",
-          "display_section": "Track By Track",
-          "display_order": 1,
-          "base_title": "Elizabeth Taylor",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Elizabeth Taylor - Track by Track",
-          "song_family": "elizabeth_taylor",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "historical_track_ids": [],
-          "release_date": "2026-03-31T00:00:00Z",
-          "genres": [
-            "pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "baroque pop",
-              "Who put Katy Perry?",
-              "soty",
-              "Sabrina Carpenter",
-              "halsey",
-              "Olivia Rodrigo",
-              "Ed Sheeran",
-              "katseye",
-              "Jorge Rivera-Herrans"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Elizabeth Taylor"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:elizabeth_taylor",
-          "filter_tags": [
-            "solo",
-            "track_by_track",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "track_by_track": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "Father Figure - Track by Track",
-          "url": "https://open.spotify.com/intl-fr/track/2NGGvVcfb2m2NbVaXHC3gb",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Track By Track",
-          "display_order": 2,
-          "base_title": "Father Figure",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Father Figure - Track by Track",
-          "song_family": "father_figure",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "soty",
-              "best of 2025",
-              "pop",
-              "synthpop",
-              "gaypop",
-              "female vocalist",
-              "jazz",
-              "docinho",
-              "taylor swift",
-              "larissa"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Father Figure"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:father_figure",
-          "filter_tags": [
-            "solo",
-            "standalone",
-            "track_by_track"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type",
-            "track_by_track": "high:title_or_section"
-          }
-        },
-        {
-          "title": "Opalite - Track by Track",
-          "url": "https://open.spotify.com/intl-fr/track/5SkuikJwvwfEvNyCepGkq3",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Track By Track",
-          "display_order": 3,
-          "base_title": "Opalite",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Opalite - Track by Track",
-          "song_family": "opalite",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop",
-            "soft rock"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "soft rock": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop",
-              "soft rock"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "synthpop",
-              "rnb",
-              "soft rock",
-              "soty",
-              "christmas",
-              "holiday",
-              "synth pop",
-              "american",
-              "pop rock"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Opalite"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:opalite",
-          "filter_tags": [
-            "solo",
-            "standalone",
-            "track_by_track"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type",
-            "track_by_track": "high:title_or_section"
-          }
-        },
-        {
-          "title": "The Fate of Ophelia - Track by Track",
-          "url": "https://open.spotify.com/intl-fr/track/5k9RjjuYyOMCLL81U8FaHT",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Track By Track",
-          "display_order": 4,
-          "base_title": "The Fate of Ophelia",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "The Fate of Ophelia - Track by Track",
-          "song_family": "the_fate_of_ophelia",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z",
-          "genres": [
-            "pop",
-            "dance-pop",
-            "synth-pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "dance-pop": 2.0,
-            "synth-pop": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "dance-pop",
-              "synth-pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "best of 2025",
-              "dance-pop",
-              "synthpop",
-              "2025",
-              "baroque pop",
-              "love at first listen",
-              "soty",
-              "2020s",
-              "AOTY"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "The Fate of Ophelia"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:the_fate_of_ophelia",
-          "filter_tags": [
-            "solo",
-            "standalone",
-            "track_by_track"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type",
-            "track_by_track": "high:title_or_section"
-          }
-        },
-        {
-          "title": "The Life of a Showgirl - Track by Track",
-          "url": "https://open.spotify.com/intl-fr/track/42TAweWJJ9YlQ47T5nesu5",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Track By Track",
-          "display_order": 5,
-          "base_title": "The Life of a Showgirl",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "The Life of a Showgirl - Track by Track",
-          "song_family": "the_life_of_a_showgirl",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:the_life_of_a_showgirl",
-          "filter_tags": [
-            "solo",
-            "standalone",
-            "track_by_track"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type",
-            "track_by_track": "high:title_or_section"
-          }
-        },
-        {
-          "title": "Actually Romantic - Track by Track",
-          "url": "https://open.spotify.com/intl-fr/track/6FJemhBlVTGTCgrrrLam3D",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Track By Track",
-          "display_order": 9999,
-          "base_title": "Actually Romantic",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Actually Romantic - Track by Track",
-          "song_family": "actually_romantic",
-          "version_tag": null,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "display_era": "The Life of a Showgirl",
-          "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z",
-          "genres": [
-            "pop rock",
-            "pop",
-            "rock"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop rock": 3.0,
-            "pop": 2.0,
-            "rock": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop rock",
-              "pop",
-              "rock"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop rock",
-              "power pop",
-              "ended flopli xcx",
-              "best of 2025",
-              "rnb",
-              "rock",
-              "Disco",
-              "soty",
-              "Acid Rock",
-              "charli xcx"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Actually Romantic"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:actually_romantic",
-          "filter_tags": [
-            "solo",
-            "standalone",
-            "track_by_track"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type",
-            "track_by_track": "high:title_or_section"
-          }
-        },
-        {
-          "title": "CANCELLED! - Track by Track",
-          "url": "https://open.spotify.com/intl-fr/track/6JNM6pLKbXMGG2opeExCb2",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Track By Track",
-          "display_order": 9999,
-          "base_title": "CANCELLED!",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "CANCELLED! - Track by Track",
-          "song_family": "cancelled",
-          "version_tag": null,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "display_era": "The Life of a Showgirl",
-          "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z",
-          "genres": [
-            "pop",
-            "rock",
-            "singer-songwriter"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "rock": 2.0,
-            "singer-songwriter": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "rock",
-              "singer-songwriter"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "soty",
-              "rock",
-              "female vocalist",
-              "singer-songwriter",
-              "electropop",
-              "rap",
-              "rnb",
-              "dance pop",
-              "synthpop"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "CANCELLED!"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:cancelled",
-          "filter_tags": [
-            "solo",
-            "standalone",
-            "track_by_track"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type",
-            "track_by_track": "high:title_or_section"
-          }
-        },
-        {
-          "title": "Eldest Daughter - Track by Track",
-          "url": "https://open.spotify.com/intl-fr/track/0wAvTNz81YTUhLFWuWJSAV",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Track By Track",
-          "display_order": 9999,
-          "base_title": "Eldest Daughter",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Eldest Daughter - Track by Track",
-          "song_family": "eldest_daughter",
-          "version_tag": null,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "display_era": "The Life of a Showgirl",
-          "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z",
-          "genres": [
-            "pop",
-            "rock"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "rock": 2.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "rock"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "2020s",
-              "sad",
-              "experimental",
-              "show tunes",
-              "Acid Rock",
-              "Ballad",
-              "soty",
-              "gay pop",
-              "Iconic"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Eldest Daughter"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:eldest_daughter",
-          "filter_tags": [
-            "solo",
-            "standalone",
-            "track_by_track"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type",
-            "track_by_track": "high:title_or_section"
-          }
-        },
-        {
-          "title": "Honey - Track by Track",
-          "url": "https://open.spotify.com/intl-fr/track/5EwypOO9NEI7MvjPOYZtWk",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Track By Track",
-          "display_order": 9999,
-          "base_title": "Honey",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Honey - Track by Track",
-          "song_family": "honey",
-          "version_tag": null,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "display_era": "The Life of a Showgirl",
-          "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z",
-          "genres": [
-            "pop",
-            "soft rock"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "soft rock": 2.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "soft rock"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "rnb",
-              "soft rock",
-              "metal",
-              "soul",
-              "Love",
-              "power pop",
-              "female vocalist",
-              "female",
-              "Contemporary pop"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Honey"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:honey",
-          "filter_tags": [
-            "solo",
-            "standalone",
-            "track_by_track"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type",
-            "track_by_track": "high:title_or_section"
-          }
-        },
-        {
-          "title": "Ruin The Friendship - Track by Track",
-          "url": "https://open.spotify.com/intl-fr/track/6NUy8xajng5zMSGJRKniAG",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Track By Track",
-          "display_order": 9999,
-          "base_title": "Ruin The Friendship",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Ruin The Friendship - Track by Track",
-          "song_family": "ruin_the_friendship",
-          "version_tag": null,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "display_era": "The Life of a Showgirl",
-          "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z",
-          "genres": [
-            "pop",
-            "country pop",
-            "soft rock"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "country pop": 2.0,
-            "soft rock": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "country pop",
-              "soft rock"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "country pop",
-              "peter",
-              "soft rock",
-              "folk",
-              "female vocalist",
-              "country",
-              "singer-songwriter",
-              "sad",
-              "synthpop"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Ruin The Friendship"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:ruin_the_friendship",
-          "filter_tags": [
-            "solo",
-            "standalone",
-            "track_by_track"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type",
-            "track_by_track": "high:title_or_section"
-          }
-        },
-        {
-          "title": "Wi$h Li$t - Track by Track",
-          "url": "https://open.spotify.com/intl-fr/track/5yrrh7VYFMCNjUOIMzGNp5",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Track By Track",
-          "display_order": 9999,
-          "base_title": "Wi$h Li$t",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Wi$h Li$t - Track by Track",
-          "song_family": "wiSh_liSt",
-          "version_tag": null,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "display_era": "The Life of a Showgirl",
-          "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "2025",
-              "female vocalist",
-              "synthpop",
-              "solo",
-              "synth pop",
-              "female",
-              "Dream",
-              "dreampop",
-              "fav"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Wi$h Li$t"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:wiSh_liSt",
-          "filter_tags": [
-            "solo",
-            "standalone",
-            "track_by_track"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type",
-            "track_by_track": "high:title_or_section"
-          }
-        },
-        {
-          "title": "Wood - Track by Track",
-          "url": "https://open.spotify.com/intl-fr/track/20QSU9vg05qYSDVgOTAwPp",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Track By Track",
-          "display_order": 9999,
-          "base_title": "Wood",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Wood - Track by Track",
-          "song_family": "wood",
-          "version_tag": null,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "display_era": "The Life of a Showgirl",
-          "historical_track_ids": [],
-          "release_date": "2025-10-02T00:00:00Z",
-          "genres": [
-            "pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "funk",
-              "Disco",
-              "sexy",
-              "soul",
-              "70s",
-              "power pop",
-              "60s",
-              "eurodisco",
-              "female vocalist"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Wood"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:wood",
-          "filter_tags": [
-            "solo",
-            "standalone",
-            "track_by_track"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type",
-            "track_by_track": "high:title_or_section"
-          }
-        }
-      ]
-    },
-    {
       "section": "acoustic_edition",
       "track_count": 7,
       "chart_extra": true,
@@ -2644,6 +1863,787 @@
           ],
           "catalog_category": "standard",
           "music_track": true
+        }
+      ]
+    },
+    {
+      "section": "track_by_track",
+      "track_count": 12,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Elizabeth Taylor - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/3r9fAceWmaDFvbNiTnFiLr",
+          "type": "alternate_version",
+          "edition": "extras",
+          "display_section": "Track By Track",
+          "display_order": 1,
+          "base_title": "Elizabeth Taylor",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Elizabeth Taylor - Track by Track",
+          "song_family": "elizabeth_taylor",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "historical_track_ids": [],
+          "release_date": "2026-03-31T00:00:00Z",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "baroque pop",
+              "Who put Katy Perry?",
+              "soty",
+              "Sabrina Carpenter",
+              "halsey",
+              "Olivia Rodrigo",
+              "Ed Sheeran",
+              "katseye",
+              "Jorge Rivera-Herrans"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Elizabeth Taylor"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:elizabeth_taylor",
+          "filter_tags": [
+            "solo",
+            "track_by_track",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "track_by_track": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Father Figure - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/2NGGvVcfb2m2NbVaXHC3gb",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Track By Track",
+          "display_order": 2,
+          "base_title": "Father Figure",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Father Figure - Track by Track",
+          "song_family": "father_figure",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "historical_track_ids": [],
+          "release_date": "2025-10-02T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "soty",
+              "best of 2025",
+              "pop",
+              "synthpop",
+              "gaypop",
+              "female vocalist",
+              "jazz",
+              "docinho",
+              "taylor swift",
+              "larissa"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Father Figure"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:father_figure",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "track_by_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "track_by_track": "high:title_or_section"
+          }
+        },
+        {
+          "title": "Opalite - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/5SkuikJwvwfEvNyCepGkq3",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Track By Track",
+          "display_order": 3,
+          "base_title": "Opalite",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Opalite - Track by Track",
+          "song_family": "opalite",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "historical_track_ids": [],
+          "release_date": "2025-10-02T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "soft rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "rnb",
+              "soft rock",
+              "soty",
+              "christmas",
+              "holiday",
+              "synth pop",
+              "american",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Opalite"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:opalite",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "track_by_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "track_by_track": "high:title_or_section"
+          }
+        },
+        {
+          "title": "The Fate of Ophelia - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/5k9RjjuYyOMCLL81U8FaHT",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Track By Track",
+          "display_order": 4,
+          "base_title": "The Fate of Ophelia",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Fate of Ophelia - Track by Track",
+          "song_family": "the_fate_of_ophelia",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "historical_track_ids": [],
+          "release_date": "2025-10-02T00:00:00Z",
+          "genres": [
+            "pop",
+            "dance-pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "dance-pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dance-pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "best of 2025",
+              "dance-pop",
+              "synthpop",
+              "2025",
+              "baroque pop",
+              "love at first listen",
+              "soty",
+              "2020s",
+              "AOTY"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Fate of Ophelia"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_fate_of_ophelia",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "track_by_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "track_by_track": "high:title_or_section"
+          }
+        },
+        {
+          "title": "The Life of a Showgirl - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/42TAweWJJ9YlQ47T5nesu5",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Track By Track",
+          "display_order": 5,
+          "base_title": "The Life of a Showgirl",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Life of a Showgirl - Track by Track",
+          "song_family": "the_life_of_a_showgirl",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "historical_track_ids": [],
+          "release_date": "2025-10-02T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_life_of_a_showgirl",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "track_by_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "track_by_track": "high:title_or_section"
+          }
+        },
+        {
+          "title": "Actually Romantic - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/6FJemhBlVTGTCgrrrLam3D",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Track By Track",
+          "display_order": 9999,
+          "base_title": "Actually Romantic",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Actually Romantic - Track by Track",
+          "song_family": "actually_romantic",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "display_era": "The Life of a Showgirl",
+          "historical_track_ids": [],
+          "release_date": "2025-10-02T00:00:00Z",
+          "genres": [
+            "pop rock",
+            "pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop rock": 3.0,
+            "pop": 2.0,
+            "rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop rock",
+              "pop",
+              "rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop rock",
+              "power pop",
+              "ended flopli xcx",
+              "best of 2025",
+              "rnb",
+              "rock",
+              "Disco",
+              "soty",
+              "Acid Rock",
+              "charli xcx"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Actually Romantic"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:actually_romantic",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "track_by_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "track_by_track": "high:title_or_section"
+          }
+        },
+        {
+          "title": "CANCELLED! - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/6JNM6pLKbXMGG2opeExCb2",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Track By Track",
+          "display_order": 9999,
+          "base_title": "CANCELLED!",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "CANCELLED! - Track by Track",
+          "song_family": "cancelled",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "display_era": "The Life of a Showgirl",
+          "historical_track_ids": [],
+          "release_date": "2025-10-02T00:00:00Z",
+          "genres": [
+            "pop",
+            "rock",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "rock": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "rock",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "soty",
+              "rock",
+              "female vocalist",
+              "singer-songwriter",
+              "electropop",
+              "rap",
+              "rnb",
+              "dance pop",
+              "synthpop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "CANCELLED!"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cancelled",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "track_by_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "track_by_track": "high:title_or_section"
+          }
+        },
+        {
+          "title": "Eldest Daughter - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/0wAvTNz81YTUhLFWuWJSAV",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Track By Track",
+          "display_order": 9999,
+          "base_title": "Eldest Daughter",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Eldest Daughter - Track by Track",
+          "song_family": "eldest_daughter",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "display_era": "The Life of a Showgirl",
+          "historical_track_ids": [],
+          "release_date": "2025-10-02T00:00:00Z",
+          "genres": [
+            "pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "rock": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "2020s",
+              "sad",
+              "experimental",
+              "show tunes",
+              "Acid Rock",
+              "Ballad",
+              "soty",
+              "gay pop",
+              "Iconic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Eldest Daughter"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:eldest_daughter",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "track_by_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "track_by_track": "high:title_or_section"
+          }
+        },
+        {
+          "title": "Honey - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/5EwypOO9NEI7MvjPOYZtWk",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Track By Track",
+          "display_order": 9999,
+          "base_title": "Honey",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Honey - Track by Track",
+          "song_family": "honey",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "display_era": "The Life of a Showgirl",
+          "historical_track_ids": [],
+          "release_date": "2025-10-02T00:00:00Z",
+          "genres": [
+            "pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "soft rock": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "rnb",
+              "soft rock",
+              "metal",
+              "soul",
+              "Love",
+              "power pop",
+              "female vocalist",
+              "female",
+              "Contemporary pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Honey"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:honey",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "track_by_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "track_by_track": "high:title_or_section"
+          }
+        },
+        {
+          "title": "Ruin The Friendship - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/6NUy8xajng5zMSGJRKniAG",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Track By Track",
+          "display_order": 9999,
+          "base_title": "Ruin The Friendship",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Ruin The Friendship - Track by Track",
+          "song_family": "ruin_the_friendship",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "display_era": "The Life of a Showgirl",
+          "historical_track_ids": [],
+          "release_date": "2025-10-02T00:00:00Z",
+          "genres": [
+            "pop",
+            "country pop",
+            "soft rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "country pop": 2.0,
+            "soft rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country pop",
+              "soft rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country pop",
+              "peter",
+              "soft rock",
+              "folk",
+              "female vocalist",
+              "country",
+              "singer-songwriter",
+              "sad",
+              "synthpop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Ruin The Friendship"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:ruin_the_friendship",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "track_by_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "track_by_track": "high:title_or_section"
+          }
+        },
+        {
+          "title": "Wi$h Li$t - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/5yrrh7VYFMCNjUOIMzGNp5",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Track By Track",
+          "display_order": 9999,
+          "base_title": "Wi$h Li$t",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Wi$h Li$t - Track by Track",
+          "song_family": "wiSh_liSt",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "display_era": "The Life of a Showgirl",
+          "historical_track_ids": [],
+          "release_date": "2025-10-02T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "2025",
+              "female vocalist",
+              "synthpop",
+              "solo",
+              "synth pop",
+              "female",
+              "Dream",
+              "dreampop",
+              "fav"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Wi$h Li$t"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:wiSh_liSt",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "track_by_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "track_by_track": "high:title_or_section"
+          }
+        },
+        {
+          "title": "Wood - Track by Track",
+          "url": "https://open.spotify.com/intl-fr/track/20QSU9vg05qYSDVgOTAwPp",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Track By Track",
+          "display_order": 9999,
+          "base_title": "Wood",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Wood - Track by Track",
+          "song_family": "wood",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "display_era": "The Life of a Showgirl",
+          "historical_track_ids": [],
+          "release_date": "2025-10-02T00:00:00Z",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "funk",
+              "Disco",
+              "sexy",
+              "soul",
+              "70s",
+              "power pop",
+              "60s",
+              "eurodisco",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Wood"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:wood",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "track_by_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "track_by_track": "high:title_or_section"
+          }
         }
       ]
     }

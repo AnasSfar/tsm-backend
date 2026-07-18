@@ -176,7 +176,6 @@ class SharedWebExportGate:
         signature = self._source_signature()
         with self._lock:
             if signature == self._last_signature:
-                print(f"Early web export skipped for {stats_date}: source data unchanged since last export.")
                 return
             self.export_web_data(stats_date=stats_date, allow_r2=False, **kwargs)
             self._last_signature = signature
@@ -554,7 +553,6 @@ class ReadyBestDaySincePoster:
                 self._checked.add(track_id)
 
             print(f"Best-day-since check ready during streams run: {track_id}")
-            print("Exporting current web data before early best-day post...")
             self.export_web_data(stats_date=self.stats_date)
 
             best_day_script = self.script_dir / "tools" / "scripts" / "post_best_day_since_twitter.py"

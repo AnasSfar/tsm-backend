@@ -473,49 +473,6 @@
           }
         },
         {
-          "title": "Forever & Always (Piano Version) (Taylor's Version)",
-          "url": "https://open.spotify.com/intl-fr/track/01QdEx6kFr78ZejhQtWR5m",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Standard Edition Tv",
-          "display_order": 10,
-          "base_title": "Forever & Always (Piano Version)",
-          "album": "Fearless (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Forever & Always (Piano Version)",
-          "song_family": "forever_always_piano_version",
-          "version_tag": "taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
-          "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:forever_always_piano_version",
-          "filter_tags": [
-            "solo",
-            "standalone",
-            "taylor_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type",
-            "taylor_version": "high:title_or_section"
-          }
-        },
-        {
           "title": "The Way I Loved You (Taylor's Version)",
           "url": "https://open.spotify.com/intl-fr/track/22bPsP2jCgbLUvh82U0Z3M",
           "type": "alternate_version",
@@ -786,12 +743,55 @@
           }
         },
         {
+          "title": "Forever & Always (Piano Version) (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/01QdEx6kFr78ZejhQtWR5m",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Standard Edition Tv",
+          "display_order": 16,
+          "base_title": "Forever & Always (Piano Version)",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Forever & Always (Piano Version)",
+          "song_family": "forever_always_piano_version",
+          "version_tag": "taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:forever_always_piano_version",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "taylor_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section"
+          }
+        },
+        {
           "title": "Come In With The Rain (Taylor's Version)",
           "url": "https://open.spotify.com/intl-fr/track/1n2wszmJyVkw6FHqyLnQsY",
           "type": "alternate_version",
           "edition": "standard",
           "display_section": "Standard Edition Tv",
-          "display_order": 16,
+          "display_order": 17,
           "base_title": "Come In With The Rain",
           "album": "Fearless (Taylor's Version)",
           "primary_artist": "Taylor Swift",
@@ -836,7 +836,7 @@
           "type": "alternate_version",
           "edition": "standard",
           "display_section": "Standard Edition Tv",
-          "display_order": 17,
+          "display_order": 18,
           "base_title": "Superstar",
           "album": "Fearless (Taylor's Version)",
           "primary_artist": "Taylor Swift",
@@ -881,7 +881,7 @@
           "type": "alternate_version",
           "edition": "standard",
           "display_section": "Standard Edition Tv",
-          "display_order": 18,
+          "display_order": 19,
           "base_title": "The Other Side Of The Door",
           "album": "Fearless (Taylor's Version)",
           "primary_artist": "Taylor Swift",
@@ -926,7 +926,7 @@
           "type": "alternate_version",
           "edition": "standard",
           "display_section": "Standard Edition Tv",
-          "display_order": 19,
+          "display_order": 20,
           "base_title": "Today Was A Fairytale",
           "album": "Fearless (Taylor's Version)",
           "primary_artist": "Taylor Swift",
@@ -971,7 +971,7 @@
           "type": "feature",
           "edition": "standard",
           "display_section": "Standard Edition Tv",
-          "display_order": 20,
+          "display_order": 21,
           "base_title": "You All Over Me (feat. Maren Morris) (Taylor's Version) (From The Vault)",
           "album": "Fearless (Taylor's Version)",
           "primary_artist": "Taylor Swift",
@@ -1020,7 +1020,7 @@
           "type": "standalone",
           "edition": "standard",
           "display_section": "Standard Edition Tv",
-          "display_order": 21,
+          "display_order": 22,
           "base_title": "Mr. Perfectly Fine (Taylor's Version) (From The Vault)",
           "album": "Fearless (Taylor's Version)",
           "primary_artist": "Taylor Swift",
@@ -1065,7 +1065,7 @@
           "type": "standalone",
           "edition": "standard",
           "display_section": "Standard Edition Tv",
-          "display_order": 22,
+          "display_order": 23,
           "base_title": "We Were Happy (Taylor's Version) (From The Vault)",
           "album": "Fearless (Taylor's Version)",
           "primary_artist": "Taylor Swift",
@@ -1110,7 +1110,7 @@
           "type": "feature",
           "edition": "standard",
           "display_section": "Standard Edition Tv",
-          "display_order": 23,
+          "display_order": 24,
           "base_title": "That's When (feat. Keith Urban) (Taylor's Version) (From The Vault)",
           "album": "Fearless (Taylor's Version)",
           "primary_artist": "Taylor Swift",
@@ -1156,7 +1156,7 @@
           "type": "standalone",
           "edition": "standard",
           "display_section": "Standard Edition Tv",
-          "display_order": 24,
+          "display_order": 25,
           "base_title": "Don't You (Taylor's Version) (From The Vault)",
           "album": "Fearless (Taylor's Version)",
           "primary_artist": "Taylor Swift",
@@ -1201,7 +1201,7 @@
           "type": "standalone",
           "edition": "standard",
           "display_section": "Standard Edition Tv",
-          "display_order": 25,
+          "display_order": 26,
           "base_title": "Bye Bye Baby (Taylor's Version) (From The Vault)",
           "album": "Fearless (Taylor's Version)",
           "primary_artist": "Taylor Swift",

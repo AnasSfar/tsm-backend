@@ -1653,6 +1653,85 @@
       ]
     },
     {
+      "album": "Midnights",
+      "section": "streaming_extras",
+      "track_count": 1,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Lavender Haze - Acoustic Version",
+          "url": "https://open.spotify.com/intl-fr/track/05kJkr80XEaZeN8kxyQoFp",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9999,
+          "base_title": "Lavender Haze - Acoustic Version",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Lavender Haze - Acoustic Version",
+          "song_family": "lavender_haze_acoustic_version",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f233c37dddd971caf61515cf",
+          "display_era": "Midnights",
+          "historical_track_ids": [],
+          "release_date": "2023-03-31T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "overrated",
+              "alt-pop",
+              "rnb",
+              "electropop",
+              "best of 2022",
+              "electronic",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Lavender Haze"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:lavender_haze_acoustic_version",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        }
+      ]
+    },
+    {
       "section": "remixes",
       "track_count": 10,
       "chart_extra": true,
@@ -2337,85 +2416,6 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
-        }
-      ]
-    },
-    {
-      "album": "Midnights",
-      "section": "streaming_extras",
-      "track_count": 1,
-      "chart_extra": true,
-      "tracks": [
-        {
-          "title": "Lavender Haze - Acoustic Version",
-          "url": "https://open.spotify.com/intl-fr/track/05kJkr80XEaZeN8kxyQoFp",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 9999,
-          "base_title": "Lavender Haze - Acoustic Version",
-          "album": "Midnights",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Lavender Haze - Acoustic Version",
-          "song_family": "lavender_haze_acoustic_version",
-          "version_tag": null,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273f233c37dddd971caf61515cf",
-          "display_era": "Midnights",
-          "historical_track_ids": [],
-          "release_date": "2023-03-31T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop",
-            "dream pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "dream pop": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop",
-              "dream pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "synthpop",
-              "dream pop",
-              "overrated",
-              "alt-pop",
-              "rnb",
-              "electropop",
-              "best of 2022",
-              "electronic",
-              "soty"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Lavender Haze"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:lavender_haze_acoustic_version",
-          "filter_tags": [
-            "solo",
-            "standalone",
-            "acoustic",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type",
-            "acoustic": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
           }
         }
       ]

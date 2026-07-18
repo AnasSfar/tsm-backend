@@ -6,11 +6,13 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 try:
+    from .export_frame import add_export_frame
     from .song_card import SPOTIFY_SVG, _tsm_logo_data_uri, image_data_uri, slugify
 except ImportError:
     import sys
 
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    from comp.export_frame import add_export_frame  # type: ignore
     from comp.song_card import SPOTIFY_SVG, _tsm_logo_data_uri, image_data_uri, slugify  # type: ignore
 
 try:
@@ -464,6 +466,7 @@ def write_chart_card_png(
     keep_html: bool = False,
     width: int = 920,
     height: int = 344,
+    export_frame: bool = False,
 ) -> Path:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     tmp_path.write_text(html_text, encoding="utf-8")
@@ -473,6 +476,8 @@ def write_chart_card_png(
             page = browser.new_page(viewport={"width": width, "height": height}, device_scale_factor=2)
             page.goto(f"file:///{tmp_path.as_posix()}", wait_until="load")
             page.locator("body").screenshot(path=str(output_path))
+            if export_frame:
+                add_export_frame(output_path, device_scale_factor=2)
             browser.close()
     finally:
         if not keep_html:
