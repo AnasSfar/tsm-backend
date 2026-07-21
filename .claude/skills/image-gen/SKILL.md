@@ -41,6 +41,7 @@ Politique décidée : **API Spotify en principal, images Apple Music en fallback
 
 - **RE en bleu** ; NEW réservé aux vraies nouveautés. Apple Music : jamais de NEW rétroactif (→ skill `data-rules`).
 - Gold = #1, vert hausse / rouge baisse (mêmes conventions que le site).
+- **Piège corrigé (2026-07-21)** : `charts_history_global/fr/us/uk.csv` contient des vieilles lignes migrées (avant l'ajout de la colonne `movement`) où **le tout premier jour de chart d'une chanson est marqué `movement=RE`** au lieu de `NEW` (ex. les titres de folklore le 24/07/2020, jour de sortie surprise — `total_days=1`, `peak_rank` vide, mais `movement=RE` en dur). Le calcul du chg pour Spotify Charts (tab Image Studio du tsm-frontend, `api/routes/charts.py::_is_re_entry_chart_row`) faisait confiance à ce `movement` archivé en priorité, donc affichait RE-ENTRY sur des debuts réels. Fix : si `total_days<=1` (et `peak_rank` absent ou = rang courant), c'est forcément NEW, peu importe ce que dit le `movement` archivé — ce check passe maintenant AVANT la lecture du `movement`. `tables_image.py::rank_change` (Python, utilisé par les générateurs PNG des collectors) n'avait pas ce bug — il ne lit jamais de champ `movement`, seulement `previous_rank`/`total_days`/`peak_rank`.
 
 ## Sortie & posting
 
