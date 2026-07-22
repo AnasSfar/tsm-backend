@@ -873,6 +873,8 @@ async def _fetch_region(
                     if resp.status == 429:
                         wait = int(resp.headers.get("Retry-After", 20))
                         print(f"  [{region:>6}] 429 — pause globale {wait}s (tentative {attempt})")
+                        if FETCH_MAX_ATTEMPTS > 0 and attempt >= FETCH_MAX_ATTEMPTS:
+                            raise RuntimeError(f"{region}: still 429 after {attempt} attempts")
                         await pause.trigger(wait)
                         continue
                     if resp.status == 401:
@@ -1276,6 +1278,9 @@ def _post_multi_song_regions(
 
 
 def _build_id_to_name() -> dict[str, str]:
+    cached = getattr(_build_id_to_name, "_cache", None)
+    if cached is not None:
+        return cached
     id_to_name: dict[str, str] = {}
     for item in _iter_website_songs():
         tid = _get_track_id_from_item(item)
@@ -1291,7 +1296,29 @@ def _build_id_to_name() -> dict[str, str]:
         name = (item.get("title") or item.get("name") or "").strip()
         if name:
             id_to_name.setdefault(tid, name)
+    _build_id_to_name._cache = id_to_name
     return id_to_name
+
+
+def _build_id_to_album() -> dict[str, str]:
+    cached = getattr(_build_id_to_album, "_cache", None)
+    if cached is not None:
+        return cached
+    id_to_album: dict[str, str] = {}
+    for item in _iter_website_songs():
+        tid = _get_track_id_from_item(item)
+        if tid:
+            album = (item.get("album") or "").strip()
+            if album:
+                id_to_album.setdefault(tid, album)
+    for item in _iter_disco_tracks():
+        tid = _get_track_id_from_item(item)
+        if tid:
+            album = (item.get("album") or "").strip()
+            if album:
+                id_to_album.setdefault(tid, album)
+    _build_id_to_album._cache = id_to_album
+    return id_to_album
 
 
 def _load_snapshot_by_region(chart_date: str) -> tuple[dict[str, list[dict]], dict[str, str]]:
@@ -1490,6 +1517,7 @@ def main() -> int:
         original_argv = sys.argv[:]
         original_run_all = os.environ.get("CHARTS_RUN_ALL")
         started = time.perf_counter()
+        failed_dates: list[str] = []
         try:
             os.environ["CHARTS_RUN_ALL"] = "1"
             for idx, chart_date in enumerate(chart_dates, 1):
@@ -1499,18 +1527,30 @@ def main() -> int:
                     sys.argv.append("--no-post")
                 if args.force:
                     sys.argv.append("--force")
-                rc = main()
+                if args.backfill_mode:
+                    sys.argv.append("--backfill-mode")
+                try:
+                    rc = main()
+                except Exception as exc:
+                    print(f"[BACKFILL] {chart_date} raised {exc!r}; continuing with remaining dates.", flush=True)
+                    rc = 1
                 if rc != 0:
-                    return rc
+                    failed_dates.append(chart_date)
+                    print(f"[BACKFILL] {chart_date} failed (code {rc}); continuing with remaining dates.", flush=True)
         finally:
             sys.argv = original_argv
             if original_run_all is None:
                 os.environ.pop("CHARTS_RUN_ALL", None)
             else:
                 os.environ["CHARTS_RUN_ALL"] = original_run_all
-        print(f"[ OK ] worldwide backfill {len(chart_dates)} date(s) en {time.perf_counter() - started:.1f}s")
-        git_commit_and_push(ROOT, f"charts worldwide backfill {chart_dates[0]} -> {chart_dates[-1]}")
-        return 0
+        elapsed = time.perf_counter() - started
+        ok_count = len(chart_dates) - len(failed_dates)
+        print(f"[ OK ] worldwide backfill {ok_count}/{len(chart_dates)} date(s) en {elapsed:.1f}s")
+        if failed_dates:
+            print(f"[BACKFILL] {len(failed_dates)} date(s) failed: {', '.join(failed_dates)}")
+        if not args.backfill_mode:
+            git_commit_and_push(ROOT, f"charts worldwide backfill {chart_dates[0]} -> {chart_dates[-1]}")
+        return 1 if failed_dates else 0
 
     raw_date = args.date or args.date_pos or str(date.today() - timedelta(days=1))
     try:
@@ -1569,19 +1609,7 @@ def main() -> int:
     manual_lookup = build_manual_mapping()
 
     id_to_name = _build_id_to_name()
-    id_to_album: dict[str, str] = {}
-    for _item in _iter_website_songs():
-        _tid = _get_track_id_from_item(_item)
-        if _tid:
-            _album = (_item.get("album") or "").strip()
-            if _album:
-                id_to_album.setdefault(_tid, _album)
-    for _item in _iter_disco_tracks():
-        _tid = _get_track_id_from_item(_item)
-        if _tid:
-            _album = (_item.get("album") or "").strip()
-            if _album:
-                id_to_album.setdefault(_tid, _album)
+    id_to_album = _build_id_to_album()
 
     regions_to_fetch = {k: v for k, v in regions.items() if k not in already_done}
 

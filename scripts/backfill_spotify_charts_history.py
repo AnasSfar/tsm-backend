@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """Backfill Spotify Charts snapshots safely, with a resumable done-state file.
 
-This wrapper runs the worldwide collector one date at a time with --no-post.
-After each successful date, it verifies that the worldwide snapshot exists and
-records the date in a JSON state file. Re-running the command skips completed
-dates unless --refetch-done is passed.
+This wrapper splits the pending date range into `--workers` contiguous chunks
+and runs the worldwide collector once per chunk (via --dates-file), with
+--no-post. Each worker is a single long-running subprocess that loops over its
+whole batch of dates internally, so the Python/import/Playwright/bearer-token
+startup cost is paid once per worker instead of once per date. After each
+worker finishes, every date in its chunk is checked against the worldwide
+snapshot on disk and recorded in a JSON state file. Re-running the command
+skips completed dates unless --refetch-done is passed.
 """
 from __future__ import annotations
 
@@ -14,6 +18,7 @@ import json
 import os
 import subprocess
 import sys
+import tempfile
 import time
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -98,20 +103,64 @@ def _session_files() -> list[Path]:
     return sorted(DEFAULT_SESSION_DIR.glob("spotify_session*.json"))
 
 
-def _run_date(chart_date: str, *, session_file: Path, force: bool, dry_run: bool) -> tuple[str, int, float, bool, str]:
-    cmd = [sys.executable, str(WORLDWIDE_DAILY), chart_date, "--no-post", "--backfill-mode"]
-    if force:
-        cmd.append("--force")
+def _chunks(items: list[str], n: int) -> list[list[str]]:
+    """Split items into n contiguous chunks (as even as possible), dropping empty ones."""
+    if n <= 0:
+        return [items] if items else []
+    size, extra = divmod(len(items), n)
+    out: list[list[str]] = []
+    start = 0
+    for i in range(n):
+        this_size = size + (1 if i < extra else 0)
+        if this_size == 0:
+            continue
+        out.append(items[start : start + this_size])
+        start += this_size
+    return out
+
+
+def _run_chunk(
+    chart_dates: list[str], *, session_file: Path, force: bool, dry_run: bool
+) -> tuple[list[str], int, float, str]:
+    """Fetch a whole batch of dates in a single subprocess (one process per worker,
+    not one per date), so Python/import/Playwright/bearer-token/region-discovery
+    startup cost is paid once per worker instead of once per date."""
     env = os.environ.copy()
     env["SPOTIFY_CHARTS_SESSION_FILE"] = str(session_file)
     env["SPOTIFY_CHARTS_SINGLE_SESSION"] = "1"
     env["SPOTIFY_CHARTS_BEARER_CACHE_FILE"] = str(session_file.with_name(f"bearer_cache_{session_file.stem}.json"))
     env["SPOTIFY_SKIP_LATEST_FALLBACK_ON_404"] = "1"
-    started = time.perf_counter()
-    rc = _run(cmd, dry_run=dry_run, env=env)
-    elapsed = time.perf_counter() - started
-    snapshot_exists = _snapshot_path(chart_date).exists()
-    return chart_date, rc, elapsed, snapshot_exists, session_file.name
+    # Live/daily runs default to unlimited retries (never skip real chart data).
+    # Backfill can afford to give up on a stuck region after a bounded number of
+    # attempts and retry that one date on a later run, instead of one bad region
+    # (flaky WARP exit, geo-blocked token, ...) hanging the whole date batch forever.
+    env.setdefault("SPOTIFY_WORLDWIDE_FETCH_MAX_ATTEMPTS", "8")
+
+    dates_file = Path(
+        tempfile.mkstemp(prefix=f"spotify_backfill_{session_file.stem}_", suffix=".txt")[1]
+    )
+    try:
+        dates_file.write_text("\n".join(chart_dates) + "\n", encoding="utf-8")
+        cmd = [
+            sys.executable,
+            str(WORLDWIDE_DAILY),
+            "--dates-file",
+            str(dates_file),
+            "--no-post",
+            "--backfill-mode",
+        ]
+        if force:
+            cmd.append("--force")
+        started = time.perf_counter()
+        rc = _run(cmd, dry_run=dry_run, env=env)
+        elapsed = time.perf_counter() - started
+    finally:
+        try:
+            dates_file.unlink(missing_ok=True)
+        except OSError:
+            pass
+
+    return chart_dates, rc, elapsed, session_file.name
 
 
 def main() -> int:
@@ -124,8 +173,16 @@ def main() -> int:
     parser.add_argument("--refetch-done", action="store_true", help="Re-fetch dates even if they are marked done")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--limit", type=int, default=0, help="Maximum number of dates to fetch this run")
-    parser.add_argument("--workers", type=int, default=2, help="Number of dates to fetch in parallel")
-    parser.add_argument("--sleep", type=float, default=0.0, help="Seconds to sleep between dates")
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=2,
+        help=(
+            "Number of parallel worker processes (each worker fetches its whole date batch "
+            "in a single long-running subprocess via --dates-file, not one process per date)"
+        ),
+    )
+    parser.add_argument("--sleep", type=float, default=0.0, help="Seconds to stagger between worker chunk launches")
     parser.add_argument("--skip-existing-snapshot", action="store_true", default=True)
     parser.add_argument("--no-sync", action="store_true", help="Do not sync charts_history CSVs after collection")
     args = parser.parse_args()
@@ -156,45 +213,64 @@ def main() -> int:
     workers = max(1, int(args.workers or 1))
     workers = min(workers, len(sessions), len(pending) or 1)
 
+    chunks = _chunks(pending, workers)
     print(
         f"[PLAN] range={all_dates[0]} -> {all_dates[-1]} total={len(all_dates)} "
-        f"pending={len(pending)} workers={workers} sessions={', '.join(p.name for p in sessions[:workers])}"
+        f"pending={len(pending)} workers={len(chunks)} chunk_sizes={[len(c) for c in chunks]} "
+        f"sessions={', '.join(p.name for p in sessions[: len(chunks)])}"
     )
     failures: dict[str, str] = dict(state.get("failed_dates") or {})
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
-        future_to_date = {}
-        for idx, chart_date in enumerate(pending, 1):
-            session_file = sessions[(idx - 1) % workers]
-            print(f"[QUEUE] {idx}/{len(pending)} {chart_date} via {session_file.name}", flush=True)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=len(chunks) or 1) as executor:
+        future_to_chunk = {}
+        for idx, chunk in enumerate(chunks, 1):
+            session_file = sessions[(idx - 1) % len(chunks)]
+            print(
+                f"[QUEUE] worker {idx}/{len(chunks)}: {len(chunk)} date(s) "
+                f"({chunk[0]} -> {chunk[-1]}) via {session_file.name}",
+                flush=True,
+            )
             future = executor.submit(
-                _run_date,
-                chart_date,
+                _run_chunk,
+                chunk,
                 session_file=session_file,
                 force=bool(args.force),
                 dry_run=bool(args.dry_run),
             )
-            future_to_date[future] = chart_date
+            future_to_chunk[future] = chunk
             if args.sleep > 0:
                 time.sleep(args.sleep)
 
-        completed = 0
-        for future in concurrent.futures.as_completed(future_to_date):
-            completed += 1
-            chart_date = future_to_date[future]
+        completed_workers = 0
+        for future in concurrent.futures.as_completed(future_to_chunk):
+            completed_workers += 1
+            chunk = future_to_chunk[future]
             try:
-                chart_date, rc, elapsed, snapshot_exists, session_name = future.result()
+                chunk, rc, elapsed, session_name = future.result()
             except Exception as exc:
-                failures[chart_date] = f"exception={exc}"
-                print(f"[FAIL] {chart_date}: {failures[chart_date]}", flush=True)
+                for chart_date in chunk:
+                    failures[chart_date] = f"exception={exc}"
+                print(f"[FAIL] worker {completed_workers}/{len(chunks)} ({len(chunk)} date(s)): exception={exc}", flush=True)
             else:
-                if rc == 0 and (args.dry_run or snapshot_exists):
+                ok_dates: list[str] = []
+                bad_dates: list[tuple[str, bool]] = []
+                for chart_date in chunk:
+                    snapshot_exists = args.dry_run or _snapshot_path(chart_date).exists()
+                    if rc == 0 and snapshot_exists:
+                        ok_dates.append(chart_date)
+                    else:
+                        bad_dates.append((chart_date, snapshot_exists))
+                for chart_date in ok_dates:
                     done.add(chart_date)
                     failures.pop(chart_date, None)
-                    print(f"[ OK ] {completed}/{len(pending)} {chart_date} via {session_name} in {elapsed:.1f}s", flush=True)
-                else:
+                for chart_date, snapshot_exists in bad_dates:
                     failures[chart_date] = f"rc={rc}; snapshot_exists={snapshot_exists}; session={session_name}"
-                    print(f"[FAIL] {chart_date}: {failures[chart_date]}", flush=True)
+                print(
+                    f"[ OK ] worker {completed_workers}/{len(chunks)} via {session_name}: "
+                    f"{len(ok_dates)}/{len(chunk)} date(s) in {elapsed:.1f}s"
+                    + (f" — {len(bad_dates)} failed" if bad_dates else ""),
+                    flush=True,
+                )
 
             state["done_dates"] = sorted(done)
             state["failed_dates"] = failures
