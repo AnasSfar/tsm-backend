@@ -1679,10 +1679,13 @@ def main() -> int:
     # Détermine quelles parties postent sur Twitter
     if args.no_post:
         post_parts: set[str] = set()
+        collect_parts = set(args.post) if args.post is not None else set(_DEFAULT_POST_PARTS)
     elif args.post is not None:
         post_parts = set(args.post)
+        collect_parts = set(post_parts)
     else:
         post_parts = set(_DEFAULT_POST_PARTS)
+        collect_parts = set(post_parts)
 
     started = time.perf_counter()
     env = _build_env()
@@ -1712,7 +1715,7 @@ def main() -> int:
 
     # Si on ne poste que les cards / best-day-since, pas besoin de collecter.
     # Les cards lisent le snapshot worldwide existant; best-day-since lit streams_history.csv.
-    needs_collect = bool(post_parts - {"cards", "best-day-since"})
+    needs_collect = bool(collect_parts - {"cards", "best-day-since"})
 
     failures: list[tuple[str, int]] = []
     ran_collect = False
@@ -2039,7 +2042,7 @@ def main() -> int:
         print(f"[ OK ] tout termine — {total} (posts a retenter: {', '.join(n for n, _ in regional_post_failures)})")
     else:
         print(f"[ OK ] tout termine — {total}")
-    if not args.dry_run:
+    if not args.dry_run and ran_collect:
         cleanup_generated_artifacts()
         git_commit_and_push(REPO_ROOT, f"charts run all {target_date.isoformat()}")
         if _run_swift_top_charts_if_ready(target_date, env=env, verbose=args.verbose):
