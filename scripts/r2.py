@@ -142,6 +142,109 @@ def load_json(path: Path) -> Any:
         return json.load(f)
 
 
+_TRACK_ID_RE = re.compile(r"/track/([A-Za-z0-9]+)")
+
+
+def _track_id_from_item(item: dict[str, Any]) -> str | None:
+    for key in ("track_id", "id"):
+        value = item.get(key)
+        if value:
+            return str(value)
+    for key in ("spotify_url", "url", "track_url"):
+        value = item.get(key)
+        if isinstance(value, str):
+            match = _TRACK_ID_RE.search(value)
+            if match:
+                return match.group(1)
+    return None
+
+
+def _iter_discography_tracks() -> list[dict[str, Any]]:
+    tracks: list[dict[str, Any]] = []
+    disco_root = DB_DIR / "discography"
+    songs_path = disco_root / "songs.json"
+    if songs_path.exists():
+        data = load_json(songs_path)
+        if isinstance(data, list):
+            tracks.extend(item for item in data if isinstance(item, dict))
+    albums_dir = disco_root / "albums"
+    if albums_dir.exists():
+        for path in sorted(albums_dir.glob("*.json")):
+            payload = load_json(path)
+            if not isinstance(payload, dict):
+                continue
+            for section in payload.get("sections", []):
+                if not isinstance(section, dict):
+                    continue
+                tracks.extend(item for item in section.get("tracks", []) if isinstance(item, dict))
+    return tracks
+
+
+def _historical_track_id_lookup() -> dict[str, str]:
+    lookup: dict[str, str] = {}
+    for track in _iter_discography_tracks():
+        kept_id = _track_id_from_item(track)
+        if not kept_id:
+            continue
+        lookup.setdefault(kept_id, kept_id)
+        historical_ids = track.get("historical_track_ids") or []
+        if not isinstance(historical_ids, list):
+            continue
+        for historical_id in historical_ids:
+            if isinstance(historical_id, str) and historical_id and historical_id != kept_id:
+                lookup[historical_id] = kept_id
+    return lookup
+
+
+def canonicalize_worldwide_chart_snapshot(obj: Any) -> Any:
+    if not isinstance(obj, dict) or not isinstance(obj.get("by_track"), dict):
+        return obj
+    historical_lookup = _historical_track_id_lookup()
+    if not historical_lookup:
+        return obj
+
+    canonical_by_track: dict[str, list[dict]] = {}
+    remapped = 0
+    for raw_track_id, raw_entries in obj["by_track"].items():
+        track_id = historical_lookup.get(str(raw_track_id), str(raw_track_id))
+        if track_id != str(raw_track_id):
+            remapped += 1
+        if not isinstance(raw_entries, list):
+            canonical_by_track[track_id] = raw_entries
+            continue
+        target_entries = canonical_by_track.setdefault(track_id, [])
+        seen_by_country = {
+            entry.get("country"): entry
+            for entry in target_entries
+            if isinstance(entry, dict) and entry.get("country")
+        }
+        for raw_entry in raw_entries:
+            if not isinstance(raw_entry, dict):
+                target_entries.append(raw_entry)
+                continue
+            entry = dict(raw_entry)
+            if entry.get("track_id") and entry.get("track_id") != track_id:
+                entry["track_id"] = track_id
+            country = entry.get("country")
+            if not country:
+                target_entries.append(entry)
+                continue
+            existing = seen_by_country.get(country)
+            if existing is None:
+                seen_by_country[country] = entry
+                target_entries.append(entry)
+            elif existing != entry:
+                chart_date = obj.get("date") or "unknown"
+                raise RuntimeError(
+                    "Conflicting worldwide chart entries after historical ID remap: "
+                    f"date={chart_date} track_id={track_id} country={country}"
+                )
+    if remapped:
+        obj = dict(obj)
+        obj["by_track"] = canonical_by_track
+    return obj
+
+
 def iter_worldwide_chart_snapshots(new_date: str | None = None) -> list[Path]:
     snapshots: dict[str, Path] = {}
 
@@ -422,6 +525,7 @@ def upload_static_data(
     slugs: list[str] | None = None,
     streams_daily: bool = False,
     charts_only: bool = False,
+    worldwide_snapshot_only: bool = False,
 ) -> tuple[int, int]:
     """Upload generated JSON/CSV/static history files used by the frontend.
 
@@ -451,7 +555,7 @@ def upload_static_data(
         print(f"  static     : {uploaded} uploaded, {unchanged} unchanged (slugs: {', '.join(slugs)})")
         return uploaded, unchanged
 
-    json_mappings = [
+    json_mappings = [] if worldwide_snapshot_only else [
         ("songs.json",               "data/songs.json"),
         ("albums.json",              "data/albums.json"),
         ("artist.json",              "data/artist.json"),
@@ -486,12 +590,12 @@ def upload_static_data(
         tasks.append((full_key, data, "application/json; charset=utf-8"))
 
     # Upload worldwide total_days store (produced by backfill_total_days.py / daily.py)
-    if WORLDWIDE_TOTAL_DAYS_PATH.exists():
+    if not worldwide_snapshot_only and WORLDWIDE_TOTAL_DAYS_PATH.exists():
         obj = load_json(WORLDWIDE_TOTAL_DAYS_PATH)
         full_key = f"{data_prefix}/charts_worldwide_total_days.json"
         payload = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
         tasks.append((full_key, payload, "application/json; charset=utf-8"))
-    else:
+    elif not worldwide_snapshot_only:
         print(f"[SKIP] absent: {WORLDWIDE_TOTAL_DAYS_PATH}")
 
     if not streams_daily and not charts_only:
@@ -514,7 +618,7 @@ def upload_static_data(
     # Charts CSVs: store in db/ as charts_history_<region>.csv.
     # Frontend API loader may try both `charts_history_<region>.csv` and `charts_<region>.csv`.
     # Upload both keys so R2-only production does not 404 on the first attempt.
-    csv_mappings = [
+    csv_mappings = [] if worldwide_snapshot_only else [
         ("charts_history_global.csv",       ["data/charts_global.csv",      "data/charts_history_global.csv"]),
         ("charts_history_fr.csv",           ["data/charts_fr.csv",          "data/charts_history_fr.csv"]),
         ("charts_history_us.csv",           ["data/charts_us.csv",          "data/charts_history_us.csv"]),
@@ -538,20 +642,20 @@ def upload_static_data(
             tasks.append((full_key, data, "text/csv; charset=utf-8"))
 
     index_path = HISTORY_DIR / "index.json"
-    if index_path.exists() and not charts_only:
+    if index_path.exists() and not charts_only and not worldwide_snapshot_only:
         full_key = f"{history_prefix}/index.json"
         obj = load_json(index_path)
         data = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
         tasks.append((full_key, data, "application/json; charset=utf-8"))
 
-    if new_date and not charts_only:
+    if new_date and not charts_only and not worldwide_snapshot_only:
         # Only upload the one new date file — skip re-checking all 500+ existing files.
         single_path = HISTORY_DIR / f"{new_date}.json"
         if single_path.exists():
             obj = load_json(single_path)
             data = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
             tasks.append((f"{history_prefix}/{new_date}.json", data, "application/json; charset=utf-8"))
-    else:
+    elif not charts_only and not worldwide_snapshot_only:
         daily_files = sorted(
             p for p in HISTORY_DIR.glob("*.json")
             if p.name != "index.json"
@@ -582,6 +686,7 @@ def upload_static_data(
                 # Keep upload robust even if one file is malformed.
                 print(f"[SKIP] invalid worldwide snapshot: {path}")
                 continue
+            obj = canonicalize_worldwide_chart_snapshot(obj)
             data = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
             tasks.append((full_key, data, "application/json; charset=utf-8"))
     elif not charts_only:
@@ -626,6 +731,11 @@ def parse_args() -> argparse.Namespace:
         "--charts-only",
         action="store_true",
         help="Upload only Spotify chart data files that may change after run_all_charts.",
+    )
+    parser.add_argument(
+        "--worldwide-snapshot-only",
+        action="store_true",
+        help="With --new-date, upload only history/charts_worldwide/YYYY-MM-DD.json.",
     )
     parser.add_argument("--dry-run", action="store_true")
     return parser.parse_args()
@@ -754,6 +864,7 @@ def main() -> int:
                 slugs=slugs,
                 streams_daily=args.streams_daily,
                 charts_only=args.charts_only,
+                worldwide_snapshot_only=args.worldwide_snapshot_only,
             )
         if not args.skip_db_upload:
             section_futures["db"] = executor.submit(

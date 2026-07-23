@@ -842,6 +842,7 @@ def _wait_for_charts_available(
     *,
     target: date | None,
     dry_run: bool,
+    allow_latest_resolution: bool = True,
     watch_release: bool = False,
     watch_max_seconds: int = WATCH_MAX_SECONDS,
     watch_base_seconds: int = WATCH_BASE_SECONDS,
@@ -962,6 +963,16 @@ def _wait_for_charts_available(
         ok, detail, retry_after, resolved_target = _chart_available(probe_chart, target, token)
         print(f"[CHECK] tentative #{attempt}: {probe}={detail}")
         if ok:
+            if (
+                target is not None
+                and resolved_target is not None
+                and resolved_target != target
+                and not allow_latest_resolution
+            ):
+                raise TimeoutError(
+                    f"Spotify chart indisponible pour la date explicite {target}; "
+                    f"latest pointe vers {resolved_target}."
+                )
             _reset_check_token_cycle()
             print(f"[CHECK] charts disponibles pour {resolved_target or target_label}")
             return warp_active, resolved_target or target
@@ -1712,10 +1723,15 @@ def main() -> int:
         collect_runners.append((name, script, fixed + extra))
 
     target_date, _explicit_target_date = _extract_target_date(forwarded)
+    if args.no_post and _explicit_target_date:
+        before = len(collect_runners)
+        collect_runners = [runner for runner in collect_runners if runner[0] != "artists_global"]
+        if len(collect_runners) != before:
+            print(f"[SKIP] artists_global ignore pour run historique no-post explicite ({target_date})")
 
     # Si on ne poste que les cards / best-day-since, pas besoin de collecter.
     # Les cards lisent le snapshot worldwide existant; best-day-since lit streams_history.csv.
-    needs_collect = bool(collect_parts - {"cards", "best-day-since"})
+    needs_collect = bool(collect_parts - {"cards", "best-day-since"}) and bool(collect_runners)
 
     failures: list[tuple[str, int]] = []
     ran_collect = False
@@ -1753,6 +1769,7 @@ def main() -> int:
                     collect_runners,
                     target=target_date,
                     dry_run=args.dry_run,
+                    allow_latest_resolution=not _explicit_target_date,
                     watch_release=args.watch_release,
                     watch_max_seconds=args.watch_max_seconds,
                     watch_base_seconds=args.watch_base_seconds,
@@ -1875,6 +1892,7 @@ def main() -> int:
                     "--skip-db-upload",
                     "--skip-images-upload",
                     "--charts-only",
+                    *(["--worldwide-snapshot-only"] if _explicit_target_date else []),
                     "--new-date",
                     str(target_date),
                 ],

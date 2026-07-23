@@ -277,6 +277,32 @@ def build_track_lookup() -> Dict[str, str]:
     return lookup
 
 
+def build_historical_track_id_lookup() -> Dict[str, str]:
+    cached = getattr(build_historical_track_id_lookup, "_cache", None)
+    if cached is not None:
+        return cached
+    lookup: Dict[str, str] = {}
+    for item in _iter_disco_tracks():
+        kept_id = _get_track_id_from_item(item)
+        if not kept_id:
+            continue
+        lookup.setdefault(kept_id, kept_id)
+        historical_ids = item.get("historical_track_ids") or []
+        if not isinstance(historical_ids, list):
+            continue
+        for historical_id in historical_ids:
+            if isinstance(historical_id, str) and historical_id and historical_id != kept_id:
+                lookup[historical_id] = kept_id
+    build_historical_track_id_lookup._cache = lookup
+    return lookup
+
+
+def canonical_chart_track_id(track_id: Optional[str], historical_lookup: Dict[str, str]) -> Optional[str]:
+    if not track_id:
+        return None
+    return historical_lookup.get(track_id, track_id)
+
+
 def build_manual_mapping() -> Dict[str, str]:
     cached = getattr(build_manual_mapping, "_cache", None)
     if cached is not None:
@@ -861,9 +887,11 @@ async def _fetch_region(
                                     rows = _parse_ts_entries(latest_data)
                                     print(f"  [{region:>6}] {len(rows)} TS entries ({chart_date}, via latest)")
                                     return region, rows
-                                raise RuntimeError(
-                                    f"{region}: dated chart 404 and latest points to {latest_date!r}, expected {chart_date}"
+                                print(
+                                    f"  [{region:>6}] 404 date, latest={latest_date or 'unknown'} "
+                                    f"- no chart for {chart_date}"
                                 )
+                                return region, []
                             if latest_resp.status == 404:
                                 print(f"  [{region:>6}] 404 date+latest - no chart")
                                 return region, []
@@ -873,9 +901,6 @@ async def _fetch_region(
                     if resp.status == 429:
                         wait = int(resp.headers.get("Retry-After", 20))
                         print(f"  [{region:>6}] 429 — pause globale {wait}s (tentative {attempt})")
-                        if FETCH_MAX_ATTEMPTS > 0 and attempt >= FETCH_MAX_ATTEMPTS:
-                            print(f"  [{region:>6}] SKIP — still 429 after {attempt} attempts, giving up on this region for {chart_date}")
-                            return region, None
                         await pause.trigger(wait)
                         continue
                     if resp.status == 401:
@@ -1611,6 +1636,7 @@ def main() -> int:
     print("[INFO] Resolving track IDs…")
     track_lookup  = build_track_lookup()
     manual_lookup = build_manual_mapping()
+    historical_lookup = build_historical_track_id_lookup()
 
     id_to_name = _build_id_to_name()
     id_to_album = _build_id_to_album()
@@ -1749,6 +1775,7 @@ def main() -> int:
             track_id: Optional[str] = row.get("_track_id_uri")
             if not track_id:
                 track_id = resolve_track_id(row["track_name"], manual_lookup, track_lookup)
+            track_id = canonical_chart_track_id(track_id, historical_lookup)
             if not track_id:
                 unresolved.append({"region": region, "track_name": row["track_name"]})
                 continue
@@ -1777,7 +1804,10 @@ def main() -> int:
     # Merge back already-skipped entries from the previous run of the same date.
     # Without this, re-runs would silently discard countries collected in earlier runs.
     if existing_by_track and already_done:
-        for track_id, old_entries in existing_by_track.items():
+        for raw_track_id, old_entries in existing_by_track.items():
+            track_id = canonical_chart_track_id(str(raw_track_id), historical_lookup)
+            if not track_id:
+                continue
             kept = [e for e in old_entries if e.get("country") in already_done]
             if not kept:
                 continue

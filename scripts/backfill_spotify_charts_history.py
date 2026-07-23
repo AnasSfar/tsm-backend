@@ -131,12 +131,6 @@ def _run_chunk(
     env["SPOTIFY_CHARTS_SINGLE_SESSION"] = "1"
     env["SPOTIFY_CHARTS_BEARER_CACHE_FILE"] = str(session_file.with_name(f"bearer_cache_{session_file.stem}.json"))
     env["SPOTIFY_SKIP_LATEST_FALLBACK_ON_404"] = "1"
-    # Live/daily runs default to unlimited retries (never skip real chart data).
-    # Backfill can afford to give up on a stuck region after a bounded number of
-    # attempts and retry that one date on a later run, instead of one bad region
-    # (flaky WARP exit, geo-blocked token, ...) hanging the whole date batch forever.
-    env.setdefault("SPOTIFY_WORLDWIDE_FETCH_MAX_ATTEMPTS", "8")
-
     dates_file = Path(
         tempfile.mkstemp(prefix=f"spotify_backfill_{session_file.stem}_", suffix=".txt")[1]
     )
@@ -191,7 +185,7 @@ def main() -> int:
         action="store_true",
         help=(
             "After sync, upload the touched chart data to R2 (scripts/r2.py --charts-only) "
-            "so production reflects the backfill, not just the local snapshot files. "
+            "one worldwide dated snapshot at a time, matching explicit --date runs. "
             "Ignored if --no-sync is set (nothing new to upload). Networked/production write: "
             "off by default, opt in explicitly."
         ),
@@ -234,6 +228,7 @@ def main() -> int:
         f"sessions={', '.join(p.name for p in sessions[: len(chunks)])}"
     )
     failures: dict[str, str] = dict(state.get("failed_dates") or {})
+    touched_dates: set[str] = set()
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=len(chunks) or 1) as executor:
         future_to_chunk = {}
@@ -280,6 +275,7 @@ def main() -> int:
                         bad_dates.append((chart_date, snapshot_exists))
                 for chart_date in ok_dates:
                     done.add(chart_date)
+                    touched_dates.add(chart_date)
                     failures.pop(chart_date, None)
                 for chart_date, snapshot_exists in bad_dates:
                     failures[chart_date] = f"rc={rc}; snapshot_exists={snapshot_exists}; session={session_name}"
@@ -310,18 +306,22 @@ def main() -> int:
             return rc
 
         if args.upload_r2:
-            rc = _run(
-                [
-                    sys.executable, str(UPLOAD_R2),
-                    "--charts-only",
-                    "--skip-history-upload",
-                    "--skip-db-upload",
-                    "--skip-images-upload",
-                ],
-                dry_run=args.dry_run,
-            )
-            if rc != 0:
-                return rc
+            for chart_date in sorted(touched_dates):
+                rc = _run(
+                    [
+                        sys.executable, str(UPLOAD_R2),
+                        "--charts-only",
+                        "--worldwide-snapshot-only",
+                        "--skip-history-upload",
+                        "--skip-db-upload",
+                        "--skip-images-upload",
+                        "--new-date",
+                        chart_date,
+                    ],
+                    dry_run=args.dry_run,
+                )
+                if rc != 0:
+                    return rc
 
     print(f"[DONE] done={len(done)} failed={len(failures)} state={state_path}")
     return 0 if not failures else 1
