@@ -704,6 +704,10 @@ class TokenPool:
         print(f"  [token ] rotation → token {self._idx + 1}/{len(self._tokens)}", flush=True)
         return True
 
+    def advance(self) -> None:
+        if len(self._tokens) > 1:
+            self._idx = (self._idx + 1) % len(self._tokens)
+
     def reset(self) -> None:
         self._exhausted = 0
 
@@ -890,11 +894,13 @@ async def _fetch_region(
                     if resp.status == 200:
                         data = await resp.json(content_type=None)
                         rows = _parse_ts_entries(data)
+                        pool.advance()
                         await pause.mark_success()
                         print(f"  [{region:>6}] {len(rows)} TS entries ({chart_date})")
                         return region, rows
                     if resp.status == 404:
                         if SKIP_LATEST_FALLBACK_ON_404:
+                            pool.advance()
                             print(f"  [{region:>6}] 404 date - no chart")
                             return region, []
                         async with session.get(

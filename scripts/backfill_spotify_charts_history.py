@@ -133,7 +133,7 @@ def _run_chunk(
     startup cost is paid once per worker instead of once per date."""
     env = os.environ.copy()
     env["SPOTIFY_CHARTS_SESSION_FILE"] = str(session_file)
-    env["SPOTIFY_CHARTS_SINGLE_SESSION"] = "1"
+    env["SPOTIFY_CHARTS_SINGLE_SESSION"] = "0"
     env["SPOTIFY_CHARTS_BEARER_CACHE_FILE"] = str(session_file.with_name(f"bearer_cache_{session_file.stem}.json"))
     env["SPOTIFY_SKIP_LATEST_FALLBACK_ON_404"] = "1"
     env["SPOTIFY_WORLDWIDE_SEMAPHORE"] = str(per_worker_semaphore)
