@@ -109,8 +109,9 @@ _UA        = (
     "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
 )
 TS_NAME         = "Taylor Swift"
-SEMAPHORE       = int(os.getenv("SPOTIFY_WORLDWIDE_SEMAPHORE", "6"))
+SEMAPHORE       = int(os.getenv("SPOTIFY_WORLDWIDE_SEMAPHORE", "2"))
 FETCH_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_WORLDWIDE_FETCH_MAX_ATTEMPTS", "0"))
+RATE_LIMIT_MIN_SECONDS = int(os.getenv("SPOTIFY_WORLDWIDE_RATE_LIMIT_MIN_SECONDS", "60"))
 SKIP_LATEST_FALLBACK_ON_404 = os.getenv("SPOTIFY_SKIP_LATEST_FALLBACK_ON_404", "").strip().lower() in {"1", "true", "yes", "on"}
 _OVERVIEW_URL   = "https://charts-spotify-com-service.spotify.com/auth/v1/overview/GLOBAL"
 MULTI_SONG_REGIONAL_POST_MIN_SONGS = 3
@@ -519,7 +520,7 @@ def _get_bearer_token_and_regions(*, force_refresh: bool = False) -> tuple[str, 
                     print(f"[WARN] Overview 429 — rotation token {_ov_idx + 1}/{len(_overview_tokens)}")
                     continue
                 _ov_exhausted = 0
-                wait = int(resp.headers.get("Retry-After", 20))
+                wait = max(int(resp.headers.get("Retry-After", 20)), RATE_LIMIT_MIN_SECONDS)
                 print(f"[WARN] Overview 429 tous tokens — retry dans {wait}s (tentative {_attempt})")
                 time.sleep(wait)
                 continue
@@ -899,7 +900,7 @@ async def _fetch_region(
                                 f"{region}: dated chart 404 and latest HTTP {latest_resp.status}"
                             )
                     if resp.status == 429:
-                        wait = int(resp.headers.get("Retry-After", 20))
+                        wait = max(int(resp.headers.get("Retry-After", 20)), RATE_LIMIT_MIN_SECONDS)
                         print(f"  [{region:>6}] 429 — pause globale {wait}s (tentative {attempt})")
                         await pause.trigger(wait)
                         continue

@@ -403,7 +403,8 @@ def _build_env() -> dict[str, str]:
 
 def _build_backfill_env(env: dict[str, str]) -> dict[str, str]:
     backfill_env = env.copy()
-    backfill_env.setdefault("SPOTIFY_WORLDWIDE_TOTAL_CONCURRENCY", "6")
+    backfill_env.setdefault("SPOTIFY_WORLDWIDE_TOTAL_CONCURRENCY", "2")
+    backfill_env.setdefault("SPOTIFY_WORLDWIDE_RATE_LIMIT_MIN_SECONDS", "60")
     backfill_env.setdefault("SPOTIFY_WORLDWIDE_ADAPTIVE_MIN", "5")
     backfill_env.setdefault("SPOTIFY_WORLDWIDE_ADAPTIVE_MAX", "25")
     backfill_env.setdefault("SPOTIFY_WORLDWIDE_ADAPTIVE_STEP_SUCCESSES", "20")

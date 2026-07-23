@@ -226,7 +226,7 @@ def main() -> int:
         raise SystemExit(f"No Spotify session files found in {DEFAULT_SESSION_DIR}")
     workers = max(1, int(args.workers or 1))
     workers = min(workers, len(sessions), len(pending) or 1)
-    total_worldwide_concurrency = max(1, int(os.getenv("SPOTIFY_WORLDWIDE_TOTAL_CONCURRENCY", "6")))
+    total_worldwide_concurrency = max(1, int(os.getenv("SPOTIFY_WORLDWIDE_TOTAL_CONCURRENCY", "2")))
     per_worker_semaphore = max(1, total_worldwide_concurrency // workers)
 
     chunks = _chunks(pending, workers)
