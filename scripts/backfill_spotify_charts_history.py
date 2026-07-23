@@ -218,7 +218,12 @@ def main() -> int:
                 _save_state(state_path, state)
 
     done = set(state.get("done_dates") or [])
-    pending = [d for d in all_dates if args.refetch_done or d not in done]
+    # Backfill newest first so long historical runs publish useful recent gaps
+    # before spending hours on old archive dates.
+    pending = sorted(
+        (d for d in all_dates if args.refetch_done or d not in done),
+        reverse=True,
+    )
     if args.limit and args.limit > 0:
         pending = pending[: args.limit]
 
@@ -232,7 +237,7 @@ def main() -> int:
 
     chunks = _chunks(pending, workers)
     print(
-        f"[PLAN] range={all_dates[0]} -> {all_dates[-1]} total={len(all_dates)} "
+        f"[PLAN] range={all_dates[0]} -> {all_dates[-1]} order=newest-first total={len(all_dates)} "
         f"pending={len(pending)} workers={len(chunks)} chunk_sizes={[len(c) for c in chunks]} "
         f"worldwide_workers_per_process={per_worker_semaphore} "
         f"sessions={', '.join(p.name for p in sessions[: len(chunks)])}"
