@@ -137,7 +137,7 @@ def _run_chunk(
     env["SPOTIFY_CHARTS_BEARER_CACHE_FILE"] = str(session_file.with_name(f"bearer_cache_{session_file.stem}.json"))
     env["SPOTIFY_SKIP_LATEST_FALLBACK_ON_404"] = "1"
     env["SPOTIFY_WORLDWIDE_SEMAPHORE"] = str(per_worker_semaphore)
-    env.setdefault("SPOTIFY_WORLDWIDE_REQUEST_INTERVAL_SECONDS", "1.7")
+    env.setdefault("SPOTIFY_WORLDWIDE_REQUEST_INTERVAL_SECONDS", "2.0")
     dates_file = Path(
         tempfile.mkstemp(prefix=f"spotify_backfill_{session_file.stem}_", suffix=".txt")[1]
     )
