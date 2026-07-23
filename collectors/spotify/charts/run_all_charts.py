@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# ruff: noqa: E402
 from __future__ import annotations
 
 import argparse
@@ -9,7 +10,6 @@ import os
 import re
 import subprocess
 import sys
-import tempfile
 import threading
 import time
 from datetime import date, datetime, timedelta
@@ -1477,152 +1477,6 @@ def _run_backfill(args, env: dict[str, str]) -> int:
     print(f"[BACKFILL] historique Spotify Charts no-post: {start} -> {end}")
     return subprocess.run(cmd, cwd=REPO_ROOT, env=env).returncode
 
-    # Backfill : seulement worldwide (global/fr ne sont plus nécessaires sans posting)
-    collect_runners = [
-        (name, script, fixed + ["--no-post"])
-        for name, script, fixed in COLLECT_RUNNERS
-        if name == "worldwide"
-    ]
-
-    def _backfill_snapshot_exists(target: date) -> bool:
-        return _worldwide_snapshot_path(target).exists() or (
-            legacy_spotify_chart_dir("worldwide", target) / f"ts_worldwide_{target}.json"
-        ).exists()
-
-    # Backfill data-only during the loop: no posts, no card/images generation.
-    # Only absent snapshots are collected, so multi-day runs stay fast.
-    missing: list[date] = []
-    cur = backfill_from
-    while cur <= backfill_to:
-        if not _backfill_snapshot_exists(cur):
-            missing.append(cur)
-        cur += timedelta(days=1)
-
-    if not missing:
-        print(f"[ OK ] aucune date manquante entre {backfill_from} et {backfill_to}")
-        return 0
-
-    total_missing = len(missing)
-    print(f"[BACKFILL] {total_missing} date(s) manquante(s) : {missing[0]} → {missing[-1]}")
-    print(f"[BACKFILL] runners : {', '.join(n for n, _, _ in collect_runners)}")
-    print("[BACKFILL] mode rapide: no-post, pas de cards/images, export web+R2 une seule fois a la fin")
-
-    overall_failures: list[tuple[str, int]] = []
-    done_dates: list[date] = []
-    started = time.perf_counter()
-    durations: list[float] = []
-
-    name, script, fixed = collect_runners[0]
-    print(f"\n[BACKFILL] collecte worldwide en un seul process: {total_missing} date(s)")
-    dates_file = None
-    try:
-        with tempfile.NamedTemporaryFile(
-            "w",
-            encoding="utf-8",
-            suffix=".txt",
-            prefix="spotify_worldwide_backfill_",
-            delete=False,
-        ) as fh:
-            dates_file = Path(fh.name)
-            fh.write("\n".join(str(day) for day in missing))
-            fh.write("\n")
-
-        rc = _run(
-            name,
-            script,
-            [*fixed, "--dates-file", str(dates_file)],
-            dry_run=args.dry_run,
-            env=env,
-            verbose=True,
-        )
-    finally:
-        if dates_file is not None:
-            try:
-                dates_file.unlink(missing_ok=True)
-            except OSError as exc:
-                print(f"[WARN] impossible de supprimer {dates_file}: {exc}")
-    if rc != 0:
-        overall_failures.append((name, rc))
-    else:
-        done_dates = list(missing)
-    missing = []
-
-    for idx, target in enumerate(missing, 1):
-        if _backfill_snapshot_exists(target):
-            done_dates.append(target)
-            continue
-
-        pending = collect_runners
-        names_str = ", ".join(n for n, _, _ in pending)
-
-        eta_str = ""
-        if durations:
-            avg = sum(durations) / len(durations)
-            eta_secs = avg * (total_missing - idx + 1)
-            eta_str = f" | ETA ~{_fmt(eta_secs)}"
-
-        print(f"\n[{idx:>{len(str(total_missing))}}/{total_missing}] {target} — {names_str}{eta_str}")
-        t_date = time.perf_counter()
-
-        failures = _run_parallel(
-            pending,
-            forwarded=[str(target)],
-            target_date=target,
-            explicit_target_date=True,
-            dry_run=args.dry_run,
-            env=env,
-            verbose=False,
-        )
-
-        elapsed_date = time.perf_counter() - t_date
-        durations.append(elapsed_date)
-        avg = sum(durations) / len(durations)
-        remaining_after = total_missing - idx
-
-        if failures:
-            failed_names = ", ".join(n for n, _ in failures)
-            print(f"[FAIL] [{idx}/{total_missing}] {target} — {_fmt(elapsed_date)} | {failed_names}")
-            overall_failures.extend((f"{target}/{n}", rc) for n, rc in failures)
-        else:
-            done_dates.append(target)
-            eta_after = f" | ETA ~{_fmt(avg * remaining_after)}" if remaining_after else ""
-            print(f"[ OK ] [{idx}/{total_missing}] {target} — {_fmt(elapsed_date)} | moy {_fmt(avg)}{eta_after}")
-
-    total = _fmt(time.perf_counter() - started)
-    if overall_failures:
-        failed_str = ", ".join(n for n, _ in overall_failures)
-        print(f"[FAIL] {len(overall_failures)} erreur(s) ({failed_str}) — {total}")
-        if NTFY_TOPIC_CHARTS:
-            _notify(
-                NTFY_TOPIC_CHARTS,
-                f"{len(overall_failures)} erreur(s) backfill: {failed_str}",
-                title=f"Backfill {backfill_from} → {backfill_to} — ECHEC",
-                tags="x,charts",
-                priority="high",
-            )
-        return 1
-    if not args.dry_run and done_dates:
-        latest_done = max(done_dates)
-        if _r2_export_done(latest_done) and not args.force:
-            print(f"\n[BACKFILL] export web + upload R2 deja fait pour {latest_done} (r2_exported.lock), skip")
-        else:
-            print(f"\n[BACKFILL] export web + upload R2 ({latest_done})...")
-            rc_export = _run(
-                "export",
-                REPO_ROOT / "scripts" / "export_for_web.py",
-                ["--new-date", str(latest_done)],
-                dry_run=False,
-                env={**env, "UPLOAD_TO_R2": "1"},
-                verbose=False,
-            )
-            if rc_export != 0:
-                return rc_export
-            _mark_r2_exported(latest_done)
-
-    print(f"[ OK ] backfill terminé — {total}")
-    if not args.dry_run:
-        git_commit_and_push(REPO_ROOT, f"charts backfill {backfill_from} → {backfill_to}")
-    return 0
 
 
 def main() -> int:
