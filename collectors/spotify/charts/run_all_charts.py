@@ -1456,9 +1456,6 @@ def _run_best_day_since_post(
 
 def _run_backfill(args, env: dict[str, str]) -> int:
     env = _build_backfill_env(env)
-    if not args.backfill_all and (not args.backfill_from or not args.backfill_to):
-        print("[ERROR] --backfill requires --backfill-from and --backfill-to. Use --backfill-all only for the full historical job.")
-        return 2
     start = args.backfill_from or "2017-01-01"
     end = args.backfill_to or str(date.today() - timedelta(days=1))
     cmd = [
@@ -1669,12 +1666,12 @@ def main() -> int:
     parser.add_argument(
         "--backfill",
         action="store_true",
-        help="Mode rattrapage historique: depuis 2017-01-01 par defaut, sans poster, avec reprise JSON.",
+        help="Mode rattrapage historique newest-first: hier -> 2017-01-01 par defaut, sans poster, avec reprise JSON.",
     )
     parser.add_argument(
         "--backfill-all",
         action="store_true",
-        help="Autorise explicitement le backfill historique complet (tres long).",
+        help="Alias tolere: le backfill complet est deja le comportement par defaut en newest-first.",
     )
     parser.add_argument("--backfill-from", metavar="DATE", help="Date de debut du rattrapage (YYYY-MM-DD, defaut: 2017-01-01).")
     parser.add_argument("--backfill-to", metavar="DATE", help="Date de fin du rattrapage (YYYY-MM-DD, defaut: hier).")
