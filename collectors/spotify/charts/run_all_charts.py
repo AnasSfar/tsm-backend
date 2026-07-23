@@ -403,7 +403,7 @@ def _build_env() -> dict[str, str]:
 
 def _build_backfill_env(env: dict[str, str]) -> dict[str, str]:
     backfill_env = env.copy()
-    backfill_env.setdefault("SPOTIFY_WORLDWIDE_SEMAPHORE", "12")
+    backfill_env.setdefault("SPOTIFY_WORLDWIDE_SEMAPHORE", "6")
     backfill_env.setdefault("SPOTIFY_WORLDWIDE_ADAPTIVE_MIN", "5")
     backfill_env.setdefault("SPOTIFY_WORLDWIDE_ADAPTIVE_MAX", "25")
     backfill_env.setdefault("SPOTIFY_WORLDWIDE_ADAPTIVE_STEP_SUCCESSES", "20")
