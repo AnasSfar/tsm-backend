@@ -109,7 +109,7 @@ _UA        = (
     "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
 )
 TS_NAME         = "Taylor Swift"
-SEMAPHORE       = int(os.getenv("SPOTIFY_WORLDWIDE_SEMAPHORE", "2"))
+SEMAPHORE       = int(os.getenv("SPOTIFY_WORLDWIDE_SEMAPHORE", "1"))
 FETCH_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_WORLDWIDE_FETCH_MAX_ATTEMPTS", "0"))
 RATE_LIMIT_MIN_SECONDS = int(os.getenv("SPOTIFY_WORLDWIDE_RATE_LIMIT_MIN_SECONDS", "60"))
 REQUEST_INTERVAL_SECONDS = float(os.getenv("SPOTIFY_WORLDWIDE_REQUEST_INTERVAL_SECONDS", "2.0"))
@@ -877,9 +877,9 @@ async def _fetch_region(
     attempt = 0
     while True:
         attempt += 1
-        await pause.wait()
         headers = {**base_headers, "Authorization": f"Bearer {pool.current}"}
         async with sem:
+            await pause.wait()
             try:
                 await pacer.wait()
                 async with session.get(
