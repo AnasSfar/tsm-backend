@@ -403,7 +403,7 @@ def _build_env() -> dict[str, str]:
 
 def _build_backfill_env(env: dict[str, str]) -> dict[str, str]:
     backfill_env = env.copy()
-    backfill_env.setdefault("SPOTIFY_WORLDWIDE_SEMAPHORE", "6")
+    backfill_env.setdefault("SPOTIFY_WORLDWIDE_TOTAL_CONCURRENCY", "6")
     backfill_env.setdefault("SPOTIFY_WORLDWIDE_ADAPTIVE_MIN", "5")
     backfill_env.setdefault("SPOTIFY_WORLDWIDE_ADAPTIVE_MAX", "25")
     backfill_env.setdefault("SPOTIFY_WORLDWIDE_ADAPTIVE_STEP_SUCCESSES", "20")
@@ -1668,7 +1668,7 @@ def main() -> int:
     )
     parser.add_argument("--backfill-from", metavar="DATE", help="Date de debut du rattrapage (YYYY-MM-DD, defaut: 2017-01-01).")
     parser.add_argument("--backfill-to", metavar="DATE", help="Date de fin du rattrapage (YYYY-MM-DD, defaut: hier).")
-    parser.add_argument("--backfill-workers", type=int, default=2, help="Nombre de dates Spotify Charts a collecter en parallele (defaut: 2).")
+    parser.add_argument("--backfill-workers", type=int, default=1, help="Nombre de dates Spotify Charts a collecter en parallele (defaut: 1).")
     parser.add_argument(
         "--backfill-upload-r2",
         action="store_true",

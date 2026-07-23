@@ -121,7 +121,12 @@ def _chunks(items: list[str], n: int) -> list[list[str]]:
 
 
 def _run_chunk(
-    chart_dates: list[str], *, session_file: Path, force: bool, dry_run: bool
+    chart_dates: list[str],
+    *,
+    session_file: Path,
+    force: bool,
+    dry_run: bool,
+    per_worker_semaphore: int,
 ) -> tuple[list[str], int, float, str]:
     """Fetch a whole batch of dates in a single subprocess (one process per worker,
     not one per date), so Python/import/Playwright/bearer-token/region-discovery
@@ -131,6 +136,7 @@ def _run_chunk(
     env["SPOTIFY_CHARTS_SINGLE_SESSION"] = "1"
     env["SPOTIFY_CHARTS_BEARER_CACHE_FILE"] = str(session_file.with_name(f"bearer_cache_{session_file.stem}.json"))
     env["SPOTIFY_SKIP_LATEST_FALLBACK_ON_404"] = "1"
+    env["SPOTIFY_WORLDWIDE_SEMAPHORE"] = str(per_worker_semaphore)
     dates_file = Path(
         tempfile.mkstemp(prefix=f"spotify_backfill_{session_file.stem}_", suffix=".txt")[1]
     )
@@ -171,10 +177,10 @@ def main() -> int:
     parser.add_argument(
         "--workers",
         type=int,
-        default=2,
+        default=1,
         help=(
-            "Number of parallel worker processes (each worker fetches its whole date batch "
-            "in a single long-running subprocess via --dates-file, not one process per date)"
+            "Number of parallel worker processes (default: 1). Each worker fetches its "
+            "whole date batch in a single long-running subprocess via --dates-file."
         ),
     )
     parser.add_argument("--sleep", type=float, default=0.0, help="Seconds to stagger between worker chunk launches")
@@ -220,11 +226,14 @@ def main() -> int:
         raise SystemExit(f"No Spotify session files found in {DEFAULT_SESSION_DIR}")
     workers = max(1, int(args.workers or 1))
     workers = min(workers, len(sessions), len(pending) or 1)
+    total_worldwide_concurrency = max(1, int(os.getenv("SPOTIFY_WORLDWIDE_TOTAL_CONCURRENCY", "6")))
+    per_worker_semaphore = max(1, total_worldwide_concurrency // workers)
 
     chunks = _chunks(pending, workers)
     print(
         f"[PLAN] range={all_dates[0]} -> {all_dates[-1]} total={len(all_dates)} "
         f"pending={len(pending)} workers={len(chunks)} chunk_sizes={[len(c) for c in chunks]} "
+        f"worldwide_workers_per_process={per_worker_semaphore} "
         f"sessions={', '.join(p.name for p in sessions[: len(chunks)])}"
     )
     failures: dict[str, str] = dict(state.get("failed_dates") or {})
@@ -245,6 +254,7 @@ def main() -> int:
                 session_file=session_file,
                 force=bool(args.force),
                 dry_run=bool(args.dry_run),
+                per_worker_semaphore=per_worker_semaphore,
             )
             future_to_chunk[future] = chunk
             if args.sleep > 0:
