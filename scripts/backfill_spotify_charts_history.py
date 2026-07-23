@@ -30,6 +30,7 @@ SYNC_COUNTRY_CSVS = ROOT / "scripts" / "sync_spotify_country_charts_from_worldwi
 BACKFILL_TRACK_IDS = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "backfill_charts_history_track_ids.py"
 BACKFILL_TOTAL_DAYS = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "backfill_total_days.py"
 ENRICH_WORLDWIDE_SNAPSHOTS = ROOT / "scripts" / "enrich_spotify_worldwide_snapshots.py"
+UPLOAD_R2 = ROOT / "scripts" / "r2.py"
 DEFAULT_STATE = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "json" / "run_all_backfill_done.json"
 DEFAULT_SESSION_DIR = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json"
 
@@ -185,7 +186,20 @@ def main() -> int:
     parser.add_argument("--sleep", type=float, default=0.0, help="Seconds to stagger between worker chunk launches")
     parser.add_argument("--skip-existing-snapshot", action="store_true", default=True)
     parser.add_argument("--no-sync", action="store_true", help="Do not sync charts_history CSVs after collection")
+    parser.add_argument(
+        "--upload-r2",
+        action="store_true",
+        help=(
+            "After sync, upload the touched chart data to R2 (scripts/r2.py --charts-only) "
+            "so production reflects the backfill, not just the local snapshot files. "
+            "Ignored if --no-sync is set (nothing new to upload). Networked/production write: "
+            "off by default, opt in explicitly."
+        ),
+    )
     args = parser.parse_args()
+    if args.upload_r2 and args.no_sync:
+        print("[WARN] --upload-r2 ignored because --no-sync is set (snapshots were not enriched this run)")
+        args.upload_r2 = False
 
     start = _parse_date(args.start)
     end = _parse_date(args.end) if args.end else (date.today() - timedelta(days=1))
@@ -252,11 +266,15 @@ def main() -> int:
                     failures[chart_date] = f"exception={exc}"
                 print(f"[FAIL] worker {completed_workers}/{len(chunks)} ({len(chunk)} date(s)): exception={exc}", flush=True)
             else:
+                # Evaluate each date on its own snapshot, not the chunk's aggregate rc:
+                # daily.py's multi-date loop continues past a failed date instead of
+                # aborting the batch, so one bad date in a chunk must not make the
+                # wrapper discard every other (successfully written) date in it.
                 ok_dates: list[str] = []
                 bad_dates: list[tuple[str, bool]] = []
                 for chart_date in chunk:
                     snapshot_exists = args.dry_run or _snapshot_path(chart_date).exists()
-                    if rc == 0 and snapshot_exists:
+                    if snapshot_exists:
                         ok_dates.append(chart_date)
                     else:
                         bad_dates.append((chart_date, snapshot_exists))
@@ -290,6 +308,20 @@ def main() -> int:
         rc = _run([sys.executable, str(BACKFILL_TOTAL_DAYS)], dry_run=args.dry_run)
         if rc != 0:
             return rc
+
+        if args.upload_r2:
+            rc = _run(
+                [
+                    sys.executable, str(UPLOAD_R2),
+                    "--charts-only",
+                    "--skip-history-upload",
+                    "--skip-db-upload",
+                    "--skip-images-upload",
+                ],
+                dry_run=args.dry_run,
+            )
+            if rc != 0:
+                return rc
 
     print(f"[DONE] done={len(done)} failed={len(failures)} state={state_path}")
     return 0 if not failures else 1

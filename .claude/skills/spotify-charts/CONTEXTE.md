@@ -126,6 +126,55 @@ garde `0` = illimite, coherent avec la regle "jamais sauter de la vraie
 donnee"). Une date qui echoue ainsi en backfill reste marquee failed dans le
 state JSON et peut etre retentee plus tard.
 
+**Suite (2026-07-22):** le cap ci-dessus faisait echouer TOUTE la date des
+qu'UNE region atteignait `FETCH_MAX_ATTEMPTS` (observe sur `co`/Colombie,
+persistant sur plusieurs dates alors que les ~74 autres regions reussissaient).
+Decision produit: quand une region atteint le cap (429, timeout, erreur, ou
+4xx non-429/401/404), elle est desormais **omise** du snapshot au lieu de
+faire echouer toute la date — pas de streams inventes, mais les autres
+regions reelles sont gardees. La liste des regions omises est loguee
+(`[WARN] N region(s) skipped...`) et persistee dans le JSON de sortie sous la
+cle `skipped_regions` (absente si rien n'a ete saute), pour pouvoir cibler un
+retry plus tard. Seul `TokenExpired` (401) reste fatal pour toute la date
+(token casse globalement, pas un probleme d'une seule region).
+
+Correlativement, le wrapper de backfill evalue maintenant chaque date de son
+chunk sur l'existence reelle de son snapshot, pas sur le code de retour
+agrege du chunk — avant ce fix, UNE date en echec dans un chunk faisait
+marquer TOUTES les dates du chunk comme failed dans le state JSON, meme
+celles reellement ecrites avec succes.
+
+**Snapshots backfill sans metadata (song_name/image_url absents) — cause et
+fix:** les snapshots `ts_worldwide_*.json` collectes ne contiennent que
+rank/streams/movement ; c'est `scripts/enrich_spotify_worldwide_snapshots.py`
+qui y ajoute `song_name`/`image_url`/`artist_name`/`album_name`/`spotify_url`
+(via `historical_track_ids` de `songs.json` notamment). Si un backfill est
+interrompu avant la passe de sync finale (429/hang, Ctrl+C), les dates deja
+collectees restent avec des entrees "nues" — le frontend (`SongBlock.jsx`)
+affiche alors une cover cassee et un titre vide pour ces dates-la. Reparer
+apres coup: `python scripts\enrich_spotify_worldwide_snapshots.py --start
+<D1> --end <D2>` sur la plage concernee (idempotent, `--dry-run` dispo).
+
+En local/dev, le frontend lit en fallback directement le snapshot backend
+(`_load_first_existing_worldwide_snapshot` dans `tsm-frontend/api/data/loader.py`)
+quand la cle R2 datee est absente — donc reparer le fichier local suffit pour
+voir le fix en dev (redemarrer le serveur API : `load_charts_worldwide` est
+`@lru_cache`, une date deja consultee reste en cache memoire jusqu'au
+restart). En prod, il faut en plus pousser vers R2 (bucket **`taylor-data`**,
+prod — cf skill `tsm-map`) via `scripts/r2.py --charts-only
+--skip-history-upload --skip-db-upload --skip-images-upload` (uploade
+`charts_worldwide.json`, les snapshots worldwide par date vers
+`history/charts_worldwide/{date}.json`, et les CSV `charts_history_*`; hash-check,
+donc idempotent).
+
+Pour ne plus avoir a faire ce enrich+upload a la main apres un backfill:
+`scripts/backfill_spotify_charts_history.py --upload-r2` (ignore si
+`--no-sync`) lance ce `r2.py --charts-only` juste apres les etapes de sync
+existantes. Passthrough depuis l'entrypoint principal:
+`run_all_charts.py --backfill ... --backfill-upload-r2`. Reste **off par
+defaut** dans les deux cas — c'est une ecriture reseau/prod, opt-in
+volontaire.
+
 Etat par defaut:
 
 ```text
@@ -456,7 +505,9 @@ Scripts importants dans `worldwide/`:
 Apres backfill massif, preferer:
 
 1. collecter les snapshots avec `--no-sync`;
-2. lancer une seule passe finale sans `--no-sync`;
+2. lancer une seule passe finale sans `--no-sync` (et `--upload-r2` si la prod
+   doit refleter ce backfill, sinon les dates restent invisibles hors
+   fallback local dev tant que personne ne pousse R2 a la main);
 3. verifier les CSV modifiees et les snapshots enrichis avant publication.
 
 ## Verification rapide

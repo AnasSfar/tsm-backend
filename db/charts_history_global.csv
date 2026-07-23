@@ -614,336 +614,134 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2017-12-01,,I Don't Wanna Live Forever (Fifty Shades Darker),161,637136,141,2,333,131,-20
 2017-12-01,,Don't Blame Me,168,628825,-1,168,1,1,RE
 2017-12-01,,Delicate,175,609436,-1,175,1,1,RE
-2017-12-02,,Look What You Made Me Do,64,1069768,62,1,100,100,-2
-2017-12-02,,...Ready For It?,96,846340,88,3,91,91,-8
-2017-12-02,,Gorgeous,123,727624,108,7,40,2,-15
-2017-12-02,,End Game,137,682893,127,127,2,2,-10
-2017-12-02,,I Did Something Bad,159,619311,146,146,2,2,-13
 2017-12-02,,I Don't Wanna Live Forever (Fifty Shades Darker),169,594008,161,2,334,132,-8
-2017-12-02,,Don't Blame Me,176,577715,168,168,2,2,-8
-2017-12-02,,Delicate,183,557417,175,175,2,2,-8
-2017-12-02,,Call It What You Want,184,556940,159,37,18,2,-25
-2017-12-03,,Look What You Made Me Do,62,977268,64,1,101,101,+2
-2017-12-03,,...Ready For It?,105,772379,96,3,92,92,-9
-2017-12-03,,Gorgeous,121,668566,123,7,41,3,+2
-2017-12-03,,End Game,132,640888,137,127,3,3,+5
-2017-12-03,,I Did Something Bad,157,571076,159,146,3,3,+2
 2017-12-03,,I Don't Wanna Live Forever (Fifty Shades Darker),161,561604,169,2,335,133,+8
-2017-12-03,,Don't Blame Me,179,534024,176,168,3,3,-3
-2017-12-03,,Delicate,189,516925,183,175,3,3,-6
-2017-12-03,,Call It What You Want,191,511200,184,37,19,3,-7
-2017-12-04,,Look What You Made Me Do,56,1054978,62,1,102,102,+6
-2017-12-04,,...Ready For It?,90,854356,105,3,93,93,+15
-2017-12-04,,Gorgeous,104,762740,121,7,42,4,+17
-2017-12-04,,End Game,107,753049,132,107,4,4,+25
-2017-12-04,,I Did Something Bad,130,672532,157,130,4,4,+27
-2017-12-04,,Don't Blame Me,139,639612,179,139,4,4,+40
-2017-12-04,,Delicate,147,622580,189,147,4,4,+42
 2017-12-04,,I Don't Wanna Live Forever (Fifty Shades Darker),161,606551,161,2,336,134,0
-2017-12-04,,Call It What You Want,164,595806,191,37,20,4,+27
-2017-12-04,,Getaway Car,197,512884,-1,197,1,1,RE
-2017-12-05,,Look What You Made Me Do,57,1075201,56,1,103,103,-1
-2017-12-05,,...Ready For It?,95,848440,90,3,94,94,-5
-2017-12-05,,Gorgeous,115,746264,104,7,43,5,-11
-2017-12-05,,End Game,123,724070,107,107,5,5,-16
 2017-12-05,,I Don't Wanna Live Forever (Fifty Shades Darker),140,672550,161,2,337,135,+21
-2017-12-05,,I Did Something Bad,153,632975,130,130,5,5,-23
-2017-12-05,,Don't Blame Me,168,603287,139,139,5,5,-29
-2017-12-05,,Delicate,174,590998,147,147,5,5,-27
-2017-12-05,,Call It What You Want,180,581580,164,37,21,5,-16
-2017-12-06,,Look What You Made Me Do,59,1067948,57,1,104,104,-2
-2017-12-06,,...Ready For It?,102,820939,95,3,95,95,-7
 2017-12-06,,I Don't Wanna Live Forever (Fifty Shades Darker),117,752386,140,2,338,136,+23
-2017-12-06,,Gorgeous,134,702673,115,7,44,6,-19
-2017-12-06,,End Game,146,670523,123,107,6,6,-23
-2017-12-06,,I Did Something Bad,180,569547,153,130,6,6,-27
-2017-12-06,,Don't Blame Me,190,544327,168,139,6,6,-22
-2017-12-06,,Call It What You Want,194,537684,180,37,22,6,-14
-2017-12-06,,Delicate,196,532769,174,147,6,6,-22
-2017-12-07,,Look What You Made Me Do,58,1070682,59,1,105,105,+1
 2017-12-07,,I Don't Wanna Live Forever (Fifty Shades Darker),106,817488,117,2,339,137,+11
-2017-12-07,,...Ready For It?,110,797129,102,3,96,96,-8
-2017-12-07,,Gorgeous,154,664503,134,7,45,7,-20
-2017-12-07,,End Game,165,626440,146,107,7,7,-19
-2017-12-08,,Look What You Made Me Do,69,1038870,58,1,106,106,-11
 2017-12-08,,I Don't Wanna Live Forever (Fifty Shades Darker),122,774928,106,2,340,138,-16
-2017-12-08,,...Ready For It?,124,771621,110,3,97,97,-14
-2017-12-08,,Gorgeous,168,647856,154,7,46,8,-14
-2017-12-08,,End Game,187,597583,165,107,8,8,-22
-2017-12-09,,Look What You Made Me Do,80,965055,69,1,107,107,-11
 2017-12-09,,I Don't Wanna Live Forever (Fifty Shades Darker),131,716651,122,2,341,139,-9
-2017-12-09,,...Ready For It?,140,704519,124,3,98,98,-16
-2017-12-09,,Gorgeous,192,582094,168,7,47,9,-24
-2017-12-10,,Look What You Made Me Do,83,848816,80,1,108,108,-3
 2017-12-10,,I Don't Wanna Live Forever (Fifty Shades Darker),134,651455,131,2,342,140,-3
-2017-12-10,,...Ready For It?,143,627869,140,3,99,99,-3
-2017-12-10,,Gorgeous,189,523959,192,7,48,10,+3
-2017-12-11,,Look What You Made Me Do,74,911933,83,1,109,109,+9
-2017-12-11,,...Ready For It?,119,704721,143,3,100,100,+24
 2017-12-11,,I Don't Wanna Live Forever (Fifty Shades Darker),122,702656,134,2,343,141,+12
-2017-12-11,,Gorgeous,164,598994,189,7,49,11,+25
-2017-12-11,,End Game,177,555545,-1,107,9,1,RE
-2017-12-12,,Look What You Made Me Do,76,925912,74,1,110,110,-2
 2017-12-12,,I Don't Wanna Live Forever (Fifty Shades Darker),123,718002,122,2,344,142,-1
-2017-12-12,,...Ready For It?,125,709294,119,3,101,101,-6
-2017-12-12,,Gorgeous,164,606066,164,7,50,12,0
-2017-12-12,,End Game,180,563000,177,107,10,2,-3
-2017-12-13,,Look What You Made Me Do,78,926082,76,1,111,111,-2
 2017-12-13,,I Don't Wanna Live Forever (Fifty Shades Darker),123,723482,123,2,345,143,0
-2017-12-13,,...Ready For It?,128,710438,125,3,102,102,-3
-2017-12-13,,End Game,167,607068,180,107,11,3,+13
-2017-12-13,,Gorgeous,171,599320,164,7,51,13,-7
-2017-12-14,,Look What You Made Me Do,79,926933,78,1,112,112,-1
-2017-12-14,,End Game,108,782364,167,107,12,4,+59
-2017-12-14,,...Ready For It?,129,713427,128,3,103,103,-1
 2017-12-14,,I Don't Wanna Live Forever (Fifty Shades Darker),133,711562,123,2,346,144,-10
-2017-12-14,,Gorgeous,174,594160,171,7,52,14,-3
-2017-12-15,,Look What You Made Me Do,101,917354,79,1,113,113,-22
-2017-12-15,,End Game,117,858074,108,107,13,5,-9
-2017-12-15,,...Ready For It?,156,706983,129,3,104,104,-27
 2017-12-15,,I Don't Wanna Live Forever (Fifty Shades Darker),162,693080,133,2,347,145,-29
-2017-12-16,,Look What You Made Me Do,102,885184,101,1,114,114,-1
-2017-12-16,,End Game,103,881730,117,103,14,6,+14
 2017-12-16,,I Don't Wanna Live Forever (Fifty Shades Darker),168,664128,162,2,348,146,-6
-2017-12-16,,...Ready For It?,171,653472,156,3,105,105,-15
-2017-12-17,,End Game,97,806208,103,97,15,7,+6
-2017-12-17,,Look What You Made Me Do,102,785252,102,1,115,115,0
 2017-12-17,,I Don't Wanna Live Forever (Fifty Shades Darker),162,607234,168,2,349,147,+6
-2017-12-17,,...Ready For It?,184,572729,171,3,106,106,-13
-2017-12-18,,End Game,75,955849,97,75,16,8,+22
-2017-12-18,,Look What You Made Me Do,102,841094,102,1,116,116,0
 2017-12-18,,I Don't Wanna Live Forever (Fifty Shades Darker),153,659791,162,2,350,148,+9
-2017-12-18,,...Ready For It?,170,625674,184,3,107,107,+14
-2017-12-19,,End Game,73,986109,75,73,17,9,+2
-2017-12-19,,Look What You Made Me Do,102,856567,102,1,117,117,0
 2017-12-19,,I Don't Wanna Live Forever (Fifty Shades Darker),145,690114,153,2,351,149,+8
-2017-12-19,,...Ready For It?,170,634762,170,3,108,108,0
-2017-12-20,,End Game,80,970168,73,73,18,10,-7
-2017-12-20,,Look What You Made Me Do,99,870537,102,1,118,118,+3
 2017-12-20,,I Don't Wanna Live Forever (Fifty Shades Darker),149,697641,145,2,352,150,-4
-2017-12-20,,...Ready For It?,173,633699,170,3,109,109,-3
-2017-12-21,,End Game,88,944403,80,73,19,11,-8
-2017-12-21,,Look What You Made Me Do,106,862516,99,1,119,119,-7
 2017-12-21,,I Don't Wanna Live Forever (Fifty Shades Darker),151,693281,149,2,353,151,-2
-2017-12-21,,...Ready For It?,180,628630,173,3,110,110,-7
-2017-12-22,,End Game,109,962492,88,73,20,12,-21
-2017-12-22,,Look What You Made Me Do,126,848268,106,1,120,120,-20
 2017-12-22,,I Don't Wanna Live Forever (Fifty Shades Darker),179,682566,151,2,354,152,-28
-2017-12-23,,End Game,116,889114,109,73,21,13,-7
-2017-12-23,,Look What You Made Me Do,143,784650,126,1,121,121,-17
 2017-12-23,,I Don't Wanna Live Forever (Fifty Shades Darker),193,635331,179,2,355,153,-14
-2017-12-24,,End Game,164,781504,116,73,22,14,-48
-2017-12-24,,Look What You Made Me Do,190,711065,143,1,122,122,-47
-2017-12-26,,End Game,83,783764,-1,73,23,1,RE
-2017-12-26,,Look What You Made Me Do,95,746916,-1,1,123,1,RE
 2017-12-26,,I Don't Wanna Live Forever (Fifty Shades Darker),131,637769,-1,2,356,1,RE
-2017-12-26,,...Ready For It?,179,516994,-1,3,111,1,RE
-2017-12-27,,End Game,81,847929,83,73,24,2,+2
-2017-12-27,,Look What You Made Me Do,86,827098,95,1,124,2,+9
 2017-12-27,,I Don't Wanna Live Forever (Fifty Shades Darker),114,710282,131,2,357,2,+17
-2017-12-27,,...Ready For It?,161,567706,179,3,112,2,+18
-2017-12-27,,Delicate,176,512975,-1,147,7,1,RE
-2017-12-28,,End Game,82,853319,81,73,25,3,-1
-2017-12-28,,Look What You Made Me Do,92,821680,86,1,125,3,-6
 2017-12-28,,I Don't Wanna Live Forever (Fifty Shades Darker),116,705157,114,2,358,3,-2
-2017-12-28,,...Ready For It?,159,570856,161,3,113,3,+2
-2017-12-28,,Delicate,171,525905,176,147,8,2,+5
-2017-12-29,,End Game,93,831922,82,73,26,4,-11
-2017-12-29,,Look What You Made Me Do,99,809710,92,1,126,4,-7
 2017-12-29,,I Don't Wanna Live Forever (Fifty Shades Darker),120,704538,116,2,359,4,-4
-2017-12-29,,...Ready For It?,163,569692,159,3,114,4,-4
-2017-12-29,,Delicate,171,530571,171,147,9,3,0
-2017-12-30,,Look What You Made Me Do,102,779540,99,1,127,5,-3
-2017-12-30,,End Game,103,764239,93,73,27,5,-10
 2017-12-30,,I Don't Wanna Live Forever (Fifty Shades Darker),120,694469,120,2,360,5,0
-2017-12-30,,...Ready For It?,168,537975,163,3,115,5,-5
-2017-12-30,,Delicate,191,486908,171,147,10,4,-20
 2017-12-31,,I Don't Wanna Live Forever (Fifty Shades Darker),131,809051,120,2,361,6,-11
 2017-12-31,,Look What You Made Me Do,135,803348,102,1,128,6,-33
-2017-12-31,,End Game,147,753530,103,73,28,6,-44
 2018-01-01,,Look What You Made Me Do,120,640995,135,1,129,7,+15
-2018-01-01,,End Game,122,625020,147,73,29,7,+25
 2018-01-01,,I Don't Wanna Live Forever (Fifty Shades Darker),143,552735,131,2,362,7,-12
-2018-01-01,,...Ready For It?,200,442015,-1,3,116,1,RE
-2018-01-02,,End Game,95,780612,122,73,30,8,+27
 2018-01-02,,Look What You Made Me Do,100,757516,120,1,130,8,+20
 2018-01-02,,I Don't Wanna Live Forever (Fifty Shades Darker),126,649416,143,2,363,8,+17
-2018-01-02,,...Ready For It?,168,526891,200,3,117,2,+32
-2018-01-02,,Delicate,169,525902,-1,147,11,1,RE
-2018-01-03,,End Game,97,809886,95,73,31,9,-2
 2018-01-03,,Look What You Made Me Do,102,775398,100,1,131,9,-2
 2018-01-03,,I Don't Wanna Live Forever (Fifty Shades Darker),129,669155,126,2,364,9,-3
-2018-01-03,,...Ready For It?,169,543216,168,3,118,3,-1
-2018-01-03,,Delicate,173,537493,169,147,12,2,-4
-2018-01-04,,End Game,91,832506,97,73,32,10,+6
 2018-01-04,,Look What You Made Me Do,106,761105,102,1,132,10,-4
 2018-01-04,,I Don't Wanna Live Forever (Fifty Shades Darker),130,665463,129,2,365,10,-1
-2018-01-04,,...Ready For It?,170,535482,169,3,119,4,-1
-2018-01-04,,Delicate,171,531594,173,147,13,3,+2
-2018-01-05,,End Game,99,839763,91,73,33,11,-8
 2018-01-05,,Look What You Made Me Do,114,770357,106,1,133,11,-8
 2018-01-05,,I Don't Wanna Live Forever (Fifty Shades Darker),136,676142,130,2,366,11,-6
-2018-01-05,,...Ready For It?,178,550351,170,3,120,5,-8
-2018-01-05,,Delicate,188,530807,171,147,14,4,-17
-2018-01-06,,End Game,105,786320,99,73,34,12,-6
 2018-01-06,,Look What You Made Me Do,115,731865,114,1,134,12,-1
 2018-01-06,,I Don't Wanna Live Forever (Fifty Shades Darker),134,642863,136,2,367,12,+2
-2018-01-06,,...Ready For It?,184,511406,178,3,121,6,-6
-2018-01-07,,End Game,101,736726,105,73,35,13,+4
 2018-01-07,,Look What You Made Me Do,117,667730,115,1,135,13,-2
 2018-01-07,,I Don't Wanna Live Forever (Fifty Shades Darker),131,609028,134,2,368,13,+3
-2018-01-07,,...Ready For It?,185,470731,184,3,122,7,-1
-2018-01-07,,Delicate,198,450537,-1,147,15,1,RE
-2018-01-08,,End Game,91,839722,101,73,36,14,+10
 2018-01-08,,Look What You Made Me Do,118,724294,117,1,136,14,-1
 2018-01-08,,I Don't Wanna Live Forever (Fifty Shades Darker),138,637810,131,2,369,14,-7
-2018-01-08,,...Ready For It?,187,513826,185,3,123,8,-2
-2018-01-08,,Delicate,196,493056,198,147,16,2,+2
-2018-01-09,,End Game,88,875753,91,73,37,15,+3
 2018-01-09,,Look What You Made Me Do,113,752478,118,1,137,15,+5
 2018-01-09,,I Don't Wanna Live Forever (Fifty Shades Darker),135,663795,138,2,370,15,+3
-2018-01-09,,...Ready For It?,186,531493,187,3,124,9,+1
-2018-01-09,,Delicate,196,507893,196,147,17,3,0
-2018-01-10,,End Game,90,880369,88,73,38,16,-2
 2018-01-10,,Look What You Made Me Do,113,765877,113,1,138,16,0
 2018-01-10,,I Don't Wanna Live Forever (Fifty Shades Darker),136,679526,135,2,371,16,-1
-2018-01-10,,...Ready For It?,187,533868,186,3,125,10,-1
-2018-01-11,,End Game,87,913746,90,73,39,17,+3
 2018-01-11,,Look What You Made Me Do,115,766232,113,1,139,17,-2
 2018-01-11,,I Don't Wanna Live Forever (Fifty Shades Darker),138,685700,136,2,372,17,-2
-2018-01-11,,...Ready For It?,188,539993,187,3,126,11,-1
-2018-01-12,,End Game,67,1141385,87,67,40,18,+20
 2018-01-12,,Look What You Made Me Do,120,794271,115,1,140,18,-5
 2018-01-12,,I Don't Wanna Live Forever (Fifty Shades Darker),145,702169,138,2,373,18,-7
-2018-01-12,,...Ready For It?,191,567194,188,3,127,12,-3
-2018-01-13,,End Game,54,1241860,67,54,41,19,+13
 2018-01-13,,Look What You Made Me Do,121,764966,120,1,141,19,-1
 2018-01-13,,I Don't Wanna Live Forever (Fifty Shades Darker),142,676665,145,2,374,19,+3
-2018-01-13,,...Ready For It?,195,537761,191,3,128,13,-4
-2018-01-14,,End Game,49,1173612,54,49,42,20,+5
 2018-01-14,,Look What You Made Me Do,119,676227,121,1,142,20,+2
 2018-01-14,,I Don't Wanna Live Forever (Fifty Shades Darker),139,614653,142,2,375,20,+3
-2018-01-14,,...Ready For It?,191,476149,195,3,129,14,+4
-2018-01-15,,End Game,46,1282123,49,46,43,21,+3
 2018-01-15,,Look What You Made Me Do,118,720271,119,1,143,21,+1
 2018-01-15,,I Don't Wanna Live Forever (Fifty Shades Darker),139,647365,139,2,376,21,0
-2018-01-15,,...Ready For It?,193,518780,191,3,130,15,-2
-2018-01-16,,End Game,46,1356719,46,46,44,22,0
 2018-01-16,,Look What You Made Me Do,124,720257,118,1,144,22,-6
 2018-01-16,,I Don't Wanna Live Forever (Fifty Shades Darker),147,651262,139,2,377,22,-8
-2018-01-16,,...Ready For It?,200,518548,193,3,131,16,-7
-2018-01-17,,End Game,47,1357162,46,46,45,23,-1
 2018-01-17,,Look What You Made Me Do,124,737335,124,1,145,23,0
 2018-01-17,,I Don't Wanna Live Forever (Fifty Shades Darker),142,665719,147,2,378,23,+5
-2018-01-17,,...Ready For It?,198,524213,200,3,132,17,+2
-2018-01-18,,End Game,48,1348200,47,46,46,24,-1
 2018-01-18,,Look What You Made Me Do,127,725908,124,1,146,24,-3
 2018-01-18,,I Don't Wanna Live Forever (Fifty Shades Darker),139,688037,142,2,379,24,+3
-2018-01-19,,End Game,51,1308880,48,46,47,25,-3
 2018-01-19,,Look What You Made Me Do,140,724629,127,1,147,25,-13
 2018-01-19,,I Don't Wanna Live Forever (Fifty Shades Darker),148,694659,139,2,380,25,-9
-2018-01-20,,End Game,59,1165028,51,46,48,26,-8
 2018-01-20,,Look What You Made Me Do,143,696841,140,1,148,26,-3
 2018-01-20,,I Don't Wanna Live Forever (Fifty Shades Darker),152,668563,148,2,381,26,-4
-2018-01-21,,End Game,61,1002924,59,46,49,27,-2
 2018-01-21,,I Don't Wanna Live Forever (Fifty Shades Darker),137,619509,152,2,382,27,+15
 2018-01-21,,Look What You Made Me Do,138,619173,143,1,149,27,+5
-2018-01-22,,End Game,58,1068404,61,46,50,28,+3
 2018-01-22,,I Don't Wanna Live Forever (Fifty Shades Darker),141,656402,137,2,383,28,-4
 2018-01-22,,Look What You Made Me Do,142,654718,138,1,150,28,-4
-2018-01-23,,End Game,61,1069988,58,46,51,29,-3
 2018-01-23,,I Don't Wanna Live Forever (Fifty Shades Darker),141,677594,141,2,384,29,0
 2018-01-23,,Look What You Made Me Do,144,669990,142,1,151,29,-2
-2018-01-24,,End Game,71,1029424,61,46,52,30,-10
 2018-01-24,,I Don't Wanna Live Forever (Fifty Shades Darker),144,680694,141,2,385,30,-3
 2018-01-24,,Look What You Made Me Do,149,671285,144,1,152,30,-5
-2018-01-25,,End Game,75,1010129,71,46,53,31,-4
 2018-01-25,,I Don't Wanna Live Forever (Fifty Shades Darker),142,684988,144,2,386,31,+2
 2018-01-25,,Look What You Made Me Do,155,664772,149,1,153,31,-6
-2018-01-26,,End Game,98,976001,75,46,54,32,-23
 2018-01-26,,I Don't Wanna Live Forever (Fifty Shades Darker),174,689829,142,2,387,32,-32
 2018-01-26,,Look What You Made Me Do,182,672915,155,1,154,32,-27
-2018-01-27,,End Game,96,924170,98,46,55,33,+2
 2018-01-27,,I Don't Wanna Live Forever (Fifty Shades Darker),171,655783,174,2,388,33,+3
 2018-01-27,,Look What You Made Me Do,174,646852,182,1,155,33,+8
-2018-01-28,,End Game,89,849994,96,46,56,34,+7
 2018-01-28,,I Don't Wanna Live Forever (Fifty Shades Darker),151,607733,171,2,389,34,+20
 2018-01-28,,Look What You Made Me Do,163,578032,174,1,156,34,+11
-2018-01-29,,End Game,90,910480,89,46,57,35,-1
 2018-01-29,,I Don't Wanna Live Forever (Fifty Shades Darker),154,641870,151,2,390,35,-3
 2018-01-29,,Look What You Made Me Do,173,600573,163,1,157,35,-10
-2018-01-30,,End Game,89,940815,90,46,58,36,+1
 2018-01-30,,I Don't Wanna Live Forever (Fifty Shades Darker),151,666277,154,2,391,36,+3
 2018-01-30,,Look What You Made Me Do,170,619355,173,1,158,36,+3
-2018-01-31,,End Game,91,919656,89,46,59,37,-2
 2018-01-31,,I Don't Wanna Live Forever (Fifty Shades Darker),148,673595,151,2,392,37,+3
 2018-01-31,,Look What You Made Me Do,169,618765,170,1,159,37,+1
-2018-02-01,,End Game,93,896138,91,46,60,38,-2
 2018-02-01,,I Don't Wanna Live Forever (Fifty Shades Darker),150,677148,148,2,393,38,-2
 2018-02-01,,Look What You Made Me Do,176,603624,169,1,160,38,-7
-2018-02-02,,End Game,107,858353,93,46,61,39,-14
 2018-02-02,,I Don't Wanna Live Forever (Fifty Shades Darker),162,683951,150,2,394,39,-12
 2018-02-02,,Look What You Made Me Do,188,609744,176,1,161,39,-12
-2018-02-03,,End Game,114,807079,107,46,62,40,-7
 2018-02-03,,I Don't Wanna Live Forever (Fifty Shades Darker),157,655447,162,2,395,40,+5
 2018-02-03,,Look What You Made Me Do,174,586895,188,1,162,40,+14
-2018-02-04,,End Game,106,738939,114,46,63,41,+8
 2018-02-04,,I Don't Wanna Live Forever (Fifty Shades Darker),143,606845,157,2,396,41,+14
 2018-02-04,,Look What You Made Me Do,180,523608,174,1,163,41,-6
-2018-02-05,,End Game,109,742781,106,46,64,42,-3
 2018-02-05,,I Don't Wanna Live Forever (Fifty Shades Darker),146,618504,143,2,397,42,-3
 2018-02-05,,Look What You Made Me Do,181,526582,180,1,164,42,-1
-2018-02-06,,End Game,100,823466,109,46,65,43,+9
 2018-02-06,,I Don't Wanna Live Forever (Fifty Shades Darker),145,661107,146,2,398,43,+1
 2018-02-06,,Look What You Made Me Do,175,575434,181,1,165,43,+6
-2018-02-07,,End Game,99,833213,100,46,66,44,+1
 2018-02-07,,I Don't Wanna Live Forever (Fifty Shades Darker),140,678823,145,2,399,44,+5
 2018-02-07,,Look What You Made Me Do,181,571208,175,1,166,44,-6
-2018-02-08,,End Game,105,811722,99,46,67,45,-6
 2018-02-08,,I Don't Wanna Live Forever (Fifty Shades Darker),135,691025,140,2,400,45,+5
 2018-02-08,,Look What You Made Me Do,189,549945,181,1,167,45,-8
-2018-02-09,,End Game,132,781904,105,46,68,46,-27
 2018-02-09,,I Don't Wanna Live Forever (Fifty Shades Darker),155,705037,135,2,401,46,-20
-2018-02-10,,End Game,124,758202,132,46,69,47,+8
 2018-02-10,,I Don't Wanna Live Forever (Fifty Shades Darker),157,661594,155,2,402,47,-2
-2018-02-11,,End Game,118,695393,124,46,70,48,+6
 2018-02-11,,I Don't Wanna Live Forever (Fifty Shades Darker),144,608417,157,2,403,48,+13
-2018-02-12,,End Game,114,750813,118,46,71,49,+4
 2018-02-12,,I Don't Wanna Live Forever (Fifty Shades Darker),144,650688,144,2,404,49,0
-2018-02-13,,End Game,110,763940,114,46,72,50,+4
 2018-02-13,,I Don't Wanna Live Forever (Fifty Shades Darker),137,682939,144,2,405,50,+7
 2018-02-14,,I Don't Wanna Live Forever (Fifty Shades Darker),111,790620,137,2,406,51,+26
-2018-02-14,,End Game,122,743262,110,46,73,51,-12
 2018-02-15,,I Don't Wanna Live Forever (Fifty Shades Darker),129,716418,111,2,407,52,-18
-2018-02-15,,End Game,143,672824,122,46,74,52,-21
 2018-02-16,,I Don't Wanna Live Forever (Fifty Shades Darker),150,683437,129,2,408,53,-21
-2018-02-16,,End Game,158,659419,143,46,75,53,-15
 2018-02-17,,I Don't Wanna Live Forever (Fifty Shades Darker),153,635253,150,2,409,54,-3
-2018-02-17,,End Game,173,593012,158,46,76,54,-15
 2018-02-18,,I Don't Wanna Live Forever (Fifty Shades Darker),146,590457,153,2,410,55,+7
-2018-02-18,,End Game,171,531401,173,46,77,55,+2
 2018-02-19,,I Don't Wanna Live Forever (Fifty Shades Darker),145,621340,146,2,411,56,+1
-2018-02-19,,End Game,164,570011,171,46,78,56,+7
 2018-02-20,,I Don't Wanna Live Forever (Fifty Shades Darker),146,634889,145,2,412,57,-1
-2018-02-20,,End Game,170,581954,164,46,79,57,-6
 2018-02-21,,I Don't Wanna Live Forever (Fifty Shades Darker),138,668156,146,2,413,58,+8
-2018-02-21,,End Game,170,587707,170,46,80,58,0
 2018-02-22,,I Don't Wanna Live Forever (Fifty Shades Darker),142,662141,138,2,414,59,-4
-2018-02-22,,End Game,170,594135,170,46,81,59,0
 2018-02-23,,I Don't Wanna Live Forever (Fifty Shades Darker),161,643126,142,2,415,60,-19
-2018-02-23,,End Game,197,574628,170,46,82,60,-27
 2018-02-24,,I Don't Wanna Live Forever (Fifty Shades Darker),162,611643,161,2,416,61,-1
-2018-02-24,,End Game,197,531939,197,46,83,61,0
 2018-02-25,,I Don't Wanna Live Forever (Fifty Shades Darker),156,558153,162,2,417,62,+6
-2018-02-25,,End Game,197,478347,197,46,84,62,0
 2018-02-26,,I Don't Wanna Live Forever (Fifty Shades Darker),163,587781,156,2,418,63,-7
-2018-02-26,,End Game,196,515225,197,46,85,63,+1
 2018-02-27,,I Don't Wanna Live Forever (Fifty Shades Darker),158,605893,163,2,419,64,+5
-2018-02-27,,End Game,193,532452,196,46,86,64,+3
 2018-02-28,,I Don't Wanna Live Forever (Fifty Shades Darker),155,616254,158,2,420,65,+3
-2018-02-28,,End Game,191,537826,193,46,87,65,+2
 2018-03-01,,I Don't Wanna Live Forever (Fifty Shades Darker),156,609255,155,2,421,66,-1
-2018-03-01,,End Game,200,519171,191,46,88,66,-9
 2018-03-02,,I Don't Wanna Live Forever (Fifty Shades Darker),175,612704,156,2,422,67,-19
 2018-03-03,,I Don't Wanna Live Forever (Fifty Shades Darker),171,591146,175,2,423,68,+4
 2018-03-04,,I Don't Wanna Live Forever (Fifty Shades Darker),167,543381,171,2,424,69,+4
@@ -959,93 +757,24 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2018-03-14,,I Don't Wanna Live Forever (Fifty Shades Darker),168,586618,171,2,434,79,+3
 2018-03-15,,I Don't Wanna Live Forever (Fifty Shades Darker),170,584331,168,2,435,80,-2
 2018-03-16,,I Don't Wanna Live Forever (Fifty Shades Darker),198,583417,170,2,436,81,-28
-2018-03-17,,Delicate,101,844782,-1,101,18,1,RE
 2018-03-17,,I Don't Wanna Live Forever (Fifty Shades Darker),197,556947,198,2,437,82,+1
-2018-03-18,,Delicate,84,819287,101,84,19,2,+17
 2018-03-18,,I Don't Wanna Live Forever (Fifty Shades Darker),181,512672,197,2,438,83,+16
-2018-03-19,,Delicate,72,980849,84,72,20,3,+12
 2018-03-19,,I Don't Wanna Live Forever (Fifty Shades Darker),189,541005,181,2,439,84,-8
-2018-03-20,,Delicate,66,1101996,72,66,21,4,+6
 2018-03-20,,I Don't Wanna Live Forever (Fifty Shades Darker),186,554772,189,2,440,85,+3
-2018-03-21,,Delicate,59,1165582,66,59,22,5,+7
 2018-03-21,,I Don't Wanna Live Forever (Fifty Shades Darker),187,556034,186,2,441,86,-1
-2018-03-22,,Delicate,67,1106021,59,59,23,6,-8
 2018-03-22,,I Don't Wanna Live Forever (Fifty Shades Darker),188,553731,187,2,442,87,-1
-2018-03-23,,Delicate,68,1123951,67,59,24,7,-1
-2018-03-24,,Delicate,67,1050411,68,59,25,8,+1
-2018-03-25,,Delicate,62,972731,67,59,26,9,+5
 2018-03-25,,I Don't Wanna Live Forever (Fifty Shades Darker),193,480918,-1,2,443,1,NEW
-2018-03-26,,Delicate,60,1113678,62,59,27,10,+2
 2018-03-26,,I Don't Wanna Live Forever (Fifty Shades Darker),194,522496,193,2,444,2,-1
-2018-03-27,,Delicate,57,1180169,60,57,28,11,+3
 2018-03-27,,I Don't Wanna Live Forever (Fifty Shades Darker),194,534338,194,2,445,3,0
-2018-03-28,,Delicate,49,1317991,57,49,29,12,+8
-2018-03-29,,Delicate,47,1338727,49,47,30,13,+2
-2018-03-30,,Delicate,27,1854655,47,27,31,14,+20
 2018-03-30,,I Don't Wanna Live Forever (Fifty Shades Darker),197,547066,-1,2,446,1,NEW
-2018-03-31,,Delicate,34,1542524,27,27,32,15,-7
 2018-03-31,,I Don't Wanna Live Forever (Fifty Shades Darker),181,533181,197,2,447,2,+16
-2018-04-01,,Delicate,31,1446352,34,27,33,16,+3
 2018-04-01,,I Don't Wanna Live Forever (Fifty Shades Darker),196,459796,181,2,448,3,-15
-2018-04-02,,Delicate,25,1831233,31,25,34,17,+6
 2018-04-02,,I Don't Wanna Live Forever (Fifty Shades Darker),191,507562,196,2,449,4,+5
-2018-04-03,,Delicate,24,2012477,25,24,35,18,+1
 2018-04-03,,I Don't Wanna Live Forever (Fifty Shades Darker),188,533697,191,2,450,5,+3
-2018-04-04,,Delicate,24,1984248,24,24,36,19,0
 2018-04-04,,I Don't Wanna Live Forever (Fifty Shades Darker),192,535694,188,2,451,6,-4
-2018-04-05,,Delicate,24,1865975,24,24,37,20,0
 2018-04-05,,I Don't Wanna Live Forever (Fifty Shades Darker),199,527309,192,2,452,7,-7
-2018-04-06,,Delicate,28,1754912,24,24,38,21,-4
-2018-04-07,,Delicate,31,1599412,28,24,39,22,-3
-2018-04-08,,Delicate,29,1440841,31,24,40,23,+2
-2018-04-09,,Delicate,30,1638736,29,24,41,24,-1
-2018-04-10,,Delicate,29,1645527,30,24,42,25,+1
-2018-04-11,,Delicate,27,1663743,29,24,43,26,+2
-2018-04-12,,Delicate,28,1651916,27,24,44,27,-1
 2018-04-12,,I Don't Wanna Live Forever (Fifty Shades Darker),190,552738,-1,2,453,1,NEW
-2018-04-13,,Delicate,32,1674545,28,24,45,28,-4
-2018-04-13,,September - Recorded at The Tracking Room Nashville,125,785310,-1,125,1,1,NEW
 2018-04-13,,I Don't Wanna Live Forever (Fifty Shades Darker),194,585755,190,2,454,2,-4
-2018-04-14,,Delicate,33,1566121,32,24,46,29,-1
-2018-04-15,,Delicate,33,1357081,33,24,47,30,0
-2018-04-16,,Delicate,32,1503724,33,24,48,31,+1
-2018-04-17,,Delicate,33,1596304,32,24,49,32,-1
-2018-04-18,,Delicate,35,1602163,33,24,50,33,-2
-2018-04-19,,Delicate,37,1541863,35,24,51,34,-2
-2018-04-20,,Delicate,65,1521018,37,24,52,35,-28
-2018-04-21,,Delicate,73,1363829,65,24,53,36,-8
-2018-04-22,,Delicate,64,1214726,73,24,54,37,+9
-2018-04-23,,Delicate,56,1426700,64,24,55,38,+8
-2018-04-24,,Delicate,53,1475672,56,24,56,39,+3
-2018-04-25,,Delicate,49,1444661,53,24,57,40,+4
-2018-04-26,,Delicate,50,1398006,49,24,58,41,-1
-2018-04-27,,Delicate,73,1302881,50,24,59,42,-23
-2018-04-28,,Delicate,74,1218918,73,24,60,43,-1
-2018-04-29,,Delicate,72,1062505,74,24,61,44,+2
-2018-04-30,,Delicate,71,1144413,72,24,62,45,+1
-2018-05-01,,Delicate,71,1091648,71,24,63,46,0
-2018-05-02,,Delicate,69,1126824,71,24,64,47,+2
-2018-05-03,,Delicate,71,1090040,69,24,65,48,-2
-2018-05-04,,Delicate,83,1037384,71,24,66,49,-12
-2018-05-05,,Delicate,94,914445,83,24,67,50,-11
-2018-05-06,,Delicate,89,829457,94,24,68,51,+5
-2018-05-07,,Delicate,82,965483,89,24,69,52,+7
-2018-05-08,,Delicate,80,977657,82,24,70,53,+2
-2018-05-09,,Delicate,78,1010959,80,24,71,54,+2
-2018-05-10,,Delicate,80,977407,78,24,72,55,-2
-2018-05-11,,Delicate,100,966125,80,24,73,56,-20
-2018-05-12,,Delicate,90,917130,100,24,74,57,+10
-2018-05-13,,Delicate,84,823964,90,24,75,58,+6
-2018-05-14,,Delicate,79,937367,84,24,76,59,+5
-2018-05-15,,Delicate,77,962283,79,24,77,60,+2
-2018-05-16,,Delicate,78,949901,77,24,78,61,-1
-2018-05-17,,Delicate,86,915721,78,24,79,62,-8
-2018-05-18,,Delicate,110,876034,86,24,80,63,-24
-2018-05-19,,Delicate,122,742392,110,24,81,64,-12
-2018-05-20,,Delicate,120,688242,122,24,82,65,+2
-2018-05-21,,Delicate,103,784163,120,24,83,66,+17
-2018-05-22,,Delicate,105,814879,103,24,84,67,-2
-2018-05-23,,Delicate,107,828401,105,24,85,68,-2
 2018-05-24,,Delicate,112,799440,107,24,86,69,-5
 2018-05-25,,Delicate,158,774305,112,24,87,70,-46
 2018-05-26,,Delicate,149,693895,158,24,88,71,+9
@@ -1082,7 +811,6 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2018-06-26,,Delicate,166,599876,176,24,119,102,+10
 2018-06-27,,Delicate,172,579083,166,24,120,103,-6
 2018-06-28,,Delicate,186,574845,172,24,121,104,-14
-2018-07-04,,Shake It Off,199,578086,,124,14,1,NEW
 2019-04-26,,ME! (feat. Brendon Urie of Panic! At The Disco),1,7945784,,,1,1,RE
 2019-04-27,,ME! (feat. Brendon Urie of Panic! At The Disco),2,5226868,1,1,2,2,-1
 2019-04-28,,ME! (feat. Brendon Urie of Panic! At The Disco),2,4358852,2,1,3,3,0
@@ -1976,22 +1704,6 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2020-03-24,,You Need To Calm Down,199,627006,,3,234,1,NEW
 2020-03-25,,You Need To Calm Down,197,636419,199,3,235,2,+2
 2020-03-26,,You Need To Calm Down,193,645294,197,3,236,3,+4
-2020-07-24,,cardigan,1,7742178,,,1,1,RE
-2020-07-24,,the 1,2,7420303,,,1,1,RE
-2020-07-24,,exile (feat. Bon Iver),3,6977835,,,1,1,RE
-2020-07-24,,the last great american dynasty,4,5961910,,,1,1,RE
-2020-07-24,,my tears ricochet,5,5721464,,,1,1,RE
-2020-07-24,,mirrorball,8,5028753,,,1,1,RE
-2020-07-24,,august,9,5022656,,,1,1,RE
-2020-07-24,,seven,10,4751526,,,1,1,RE
-2020-07-24,,this is me trying,12,4499491,,,1,1,RE
-2020-07-24,,illicit affairs,13,4278116,,,1,1,RE
-2020-07-24,,invisible string,14,4243086,,,1,1,RE
-2020-07-24,,mad woman,16,3902267,,,1,1,RE
-2020-07-24,,betty,17,3835696,,,1,1,RE
-2020-07-24,,epiphany,19,3614451,,,1,1,RE
-2020-07-24,,peace,20,3381893,,,1,1,RE
-2020-07-24,,hoax,23,3061511,,,1,1,RE
 2020-07-25,,cardigan,1,5621828,1,,2,2,0
 2020-07-25,,exile (feat. Bon Iver),4,4872836,3,,2,2,-1
 2020-07-25,,the 1,5,4701104,2,,2,2,-3
@@ -2243,43 +1955,6 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2020-08-09,,betty,151,688913,153,17,17,17,+2
 2020-08-09,,this is me trying,153,679383,156,12,17,17,+3
 2020-08-09,,illicit affairs,156,670679,164,13,17,17,+8
-2020-08-10,,cardigan,15,2153740,17,1,18,18,+2
-2020-08-10,,exile (feat. Bon Iver),26,1912896,29,3,18,18,+3
-2020-08-10,,the 1,53,1317907,54,2,18,18,+1
-2020-08-10,,august,88,1001338,98,9,18,18,+10
-2020-08-10,,the last great american dynasty,91,996707,93,4,18,18,+2
-2020-08-10,,my tears ricochet,95,960081,103,5,18,18,+8
-2020-08-10,,invisible string,125,819032,138,14,18,18,+13
-2020-08-10,,mirrorball,130,809719,139,8,18,18,+9
-2020-08-10,,seven,135,795452,143,10,18,18,+8
-2020-08-10,,this is me trying,148,751899,153,12,18,18,+5
-2020-08-10,,betty,149,748725,151,17,18,18,+2
-2020-08-10,,illicit affairs,151,742049,156,13,18,18,+5
-2020-08-10,,mad woman,184,637836,,16,16,1,NEW
-2020-08-11,,cardigan,17,2123880,15,1,19,19,-2
-2020-08-11,,exile (feat. Bon Iver),31,1887138,26,3,19,19,-5
-2020-08-11,,the 1,57,1271066,53,2,19,19,-4
-2020-08-11,,august,95,963136,88,9,19,19,-7
-2020-08-11,,the last great american dynasty,97,957783,91,4,19,19,-6
-2020-08-11,,my tears ricochet,103,924740,95,5,19,19,-8
-2020-08-11,,invisible string,139,786879,125,14,19,19,-14
-2020-08-11,,mirrorball,143,773438,130,8,19,19,-13
-2020-08-11,,seven,149,759116,135,10,19,19,-14
-2020-08-11,,this is me trying,156,718131,148,12,19,19,-8
-2020-08-11,,betty,158,712252,149,17,19,19,-9
-2020-08-11,,illicit affairs,160,705909,151,13,19,19,-9
-2020-08-12,,cardigan,18,2110346,17,1,20,20,-1
-2020-08-12,,exile (feat. Bon Iver),34,1839953,31,3,20,20,-3
-2020-08-12,,the 1,63,1220256,57,2,20,20,-6
-2020-08-12,,august,107,925094,95,9,20,20,-12
-2020-08-12,,the last great american dynasty,108,917973,97,4,20,20,-11
-2020-08-12,,my tears ricochet,114,884536,103,5,20,20,-11
-2020-08-12,,invisible string,149,751192,139,14,20,20,-10
-2020-08-12,,mirrorball,151,738793,143,8,20,20,-8
-2020-08-12,,seven,157,723081,149,10,20,20,-8
-2020-08-12,,this is me trying,165,681381,156,12,20,20,-9
-2020-08-12,,betty,168,676283,158,17,20,20,-10
-2020-08-12,,illicit affairs,173,671843,160,13,20,20,-13
 2020-08-13,,cardigan,23,2016781,18,,21,21,-5
 2020-08-13,,exile (feat. Bon Iver),34,1787548,34,,21,21,0
 2020-08-13,,the 1,67,1182081,63,,21,21,-4
@@ -10773,33 +10448,12 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2024-05-31,,But Daddy I Love Him,117,1610104,113,,43,43,-4
 2024-05-31,,My Boy Only Breaks His Favorite Toys,120,1599272,114,,43,43,-6
 2024-05-31,,The Smallest Man Who Ever Lived,193,1344625,173,,43,43,-20
-2024-06-01,,Fortnight (feat. Post Malone),16,4360671,15,,44,44,-1
-2024-06-01,,Cruel Summer,22,3282699,24,,482,442,+2
 2024-06-01,,I Can Do It With a Broken Heart,27,2955045,25,,44,44,-2
-2024-06-01,,Down Bad,58,1988341,55,,44,44,-3
-2024-06-01,,Guilty as Sin?,78,1809238,61,,44,44,-17
 2024-06-01,,Who's Afraid of Little Old Me?,86,1699182,75,,44,44,-11
-2024-06-01,,"So Long, London",131,1532142,93,,44,44,-38
-2024-06-01,,But Daddy I Love Him,146,1448655,117,,44,44,-29
-2024-06-01,,My Boy Only Breaks His Favorite Toys,158,1427838,120,,44,44,-38
-2024-06-02,,Fortnight (feat. Post Malone),17,3941571,16,,45,45,-1
-2024-06-02,,Cruel Summer,23,2896710,22,,483,443,-1
 2024-06-02,,I Can Do It With a Broken Heart,28,2641370,27,,45,45,-1
-2024-06-02,,Down Bad,62,1822152,58,,45,45,-4
-2024-06-02,,Guilty as Sin?,72,1691580,78,,45,45,+6
 2024-06-02,,Who's Afraid of Little Old Me?,86,1557002,86,,45,45,0
-2024-06-02,,"So Long, London",119,1395565,131,,45,45,+12
-2024-06-02,,My Boy Only Breaks His Favorite Toys,154,1307630,158,,45,45,+4
-2024-06-02,,But Daddy I Love Him,155,1303719,146,,45,45,-9
-2024-06-03,,Fortnight (feat. Post Malone),17,4250239,17,,46,46,0
-2024-06-03,,Cruel Summer,24,3097286,23,,484,444,-1
 2024-06-03,,I Can Do It With a Broken Heart,31,2770004,28,,46,46,-3
-2024-06-03,,Down Bad,62,1975219,62,,46,46,0
-2024-06-03,,Guilty as Sin?,66,1931143,72,,46,46,+6
 2024-06-03,,Who's Afraid of Little Old Me?,82,1707049,86,,46,46,+4
-2024-06-03,,"So Long, London",111,1553248,119,,46,46,+8
-2024-06-03,,My Boy Only Breaks His Favorite Toys,125,1493374,154,,46,46,+29
-2024-06-03,,But Daddy I Love Him,137,1447498,155,,46,46,+18
 2024-06-03,,The Smallest Man Who Ever Lived,193,1238468,,,44,1,RE
 2024-06-04,,Fortnight (feat. Post Malone),16,4318307,17,,47,47,+1
 2024-06-04,,Cruel Summer,24,3161359,24,,485,445,0
@@ -11592,94 +11246,6 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2024-12-30,,Cruel Summer,53,1948032,63,,693,5,+10
 2024-12-30,,Fortnight (feat. Post Malone),172,1211445,188,,226,4,+16
 2024-12-31,,Cruel Summer,50,2256690,53,,694,6,+3
-2025-01-01,,Cruel Summer,64,1632680,50,,695,7,-14
-2025-01-02,,Cruel Summer,51,1936731,64,,696,8,+13
-2025-01-02,,Fortnight (feat. Post Malone),159,1210334,,,227,1,RE
-2025-01-03,,Cruel Summer,59,1921194,51,,697,9,-8
-2025-01-03,,Fortnight (feat. Post Malone),166,1246243,159,,228,2,-7
-2025-01-04,,Cruel Summer,64,1804556,59,,698,10,-5
-2025-01-04,,Fortnight (feat. Post Malone),186,1166080,166,,229,3,-20
-2025-01-05,,Cruel Summer,68,1755924,64,,699,11,-4
-2025-01-06,,Cruel Summer,74,1864911,68,,700,12,-6
-2025-01-06,,Fortnight (feat. Post Malone),195,1173285,,,230,1,RE
-2025-01-07,,Cruel Summer,82,1873192,74,,701,13,-8
-2025-01-07,,Fortnight (feat. Post Malone),189,1234049,195,,231,2,+6
-2025-01-08,,Cruel Summer,82,1831167,82,,702,14,0
-2025-01-08,,Fortnight (feat. Post Malone),192,1236139,189,,232,3,-3
-2025-01-09,,Cruel Summer,89,1851405,82,,703,15,-7
-2025-01-09,,Fortnight (feat. Post Malone),195,1239706,192,,233,4,-3
-2025-01-10,,Cruel Summer,85,1878635,89,,704,16,+4
-2025-01-11,,Cruel Summer,82,1857670,85,,705,17,+3
-2025-01-12,,Cruel Summer,85,1658454,82,,706,18,-3
-2025-01-13,,Cruel Summer,96,1729978,85,,707,19,-11
-2025-01-14,,Cruel Summer,93,1766320,96,,708,20,+3
-2025-01-15,,Cruel Summer,90,1757526,93,,709,21,+3
-2025-01-16,,Cruel Summer,87,1786350,90,,710,22,+3
-2025-01-17,,Cruel Summer,95,1835044,87,,711,23,-8
-2025-01-18,,Cruel Summer,88,1785534,95,,712,24,+7
-2025-01-19,,Cruel Summer,93,1602378,88,,713,25,-5
-2025-01-20,,Cruel Summer,86,1795418,93,,714,26,+7
-2025-01-21,,Cruel Summer,85,1826171,86,,715,27,+1
-2025-01-22,,Cruel Summer,91,1743209,85,,716,28,-6
-2025-01-23,,Cruel Summer,94,1750570,91,,717,29,-3
-2025-01-24,,Cruel Summer,94,1816547,94,,718,30,0
-2025-01-25,,Cruel Summer,90,1806127,94,,719,31,+4
-2025-01-26,,Cruel Summer,95,1567449,90,,720,32,-5
-2025-01-27,,Cruel Summer,97,1671833,95,,721,33,-2
-2025-01-28,,Cruel Summer,104,1616796,97,,722,34,-7
-2025-01-29,,Cruel Summer,96,1549081,104,,723,35,+8
-2025-01-30,,Cruel Summer,99,1549793,96,,724,36,-3
-2025-01-31,,Cruel Summer,123,1569991,99,,725,37,-24
-2025-02-01,,Cruel Summer,123,1610204,123,,726,38,0
-2025-02-02,,Cruel Summer,117,1469712,123,,727,39,+6
-2025-02-03,,Cruel Summer,123,1567809,117,,728,40,-6
-2025-02-03,,Fortnight (feat. Post Malone),163,1362742,,,234,1,RE
-2025-02-04,,Cruel Summer,119,1620987,123,,729,41,+4
-2025-02-04,,Fortnight (feat. Post Malone),197,1299126,163,,235,2,-34
-2025-02-05,,Cruel Summer,118,1626503,119,,730,42,+1
-2025-02-06,,Cruel Summer,116,1643417,118,,731,43,+2
-2025-02-07,,Cruel Summer,120,1650269,116,,732,44,-4
-2025-02-08,,Cruel Summer,101,1691955,120,,733,45,+19
-2025-02-09,,Cruel Summer,98,1587655,101,,734,46,+3
-2025-02-10,,Cruel Summer,114,1574111,98,,735,47,-16
-2025-02-11,,Cruel Summer,111,1635108,114,,736,48,+3
-2025-02-12,,Cruel Summer,126,1564643,111,,737,49,-15
-2025-02-13,,Cruel Summer,127,1492283,126,,738,50,-1
-2025-02-14,,Lover,147,1611103,,,498,1,RE
-2025-02-14,,Cruel Summer,159,1523054,127,,739,51,-32
-2025-02-15,,Cruel Summer,135,1504659,159,,740,52,+24
-2025-02-16,,Cruel Summer,139,1329819,135,,741,53,-4
-2025-02-17,,Cruel Summer,142,1374112,139,,742,54,-3
-2025-02-18,,Cruel Summer,144,1403313,142,,743,55,-2
-2025-02-19,,Cruel Summer,115,1514472,144,,744,56,+29
-2025-02-20,,Cruel Summer,123,1491459,115,,745,57,-8
-2025-02-21,,Cruel Summer,139,1492967,123,,746,58,-16
-2025-02-22,,Cruel Summer,119,1527661,139,,747,59,+20
-2025-02-23,,Cruel Summer,122,1374658,119,,748,60,-3
-2025-02-24,,Cruel Summer,121,1479191,122,,749,61,+1
-2025-02-25,,Cruel Summer,124,1491371,121,,750,62,-3
-2025-02-26,,Cruel Summer,140,1396390,124,,751,63,-16
-2025-02-27,,Cruel Summer,139,1452352,140,,752,64,+1
-2025-02-28,,Cruel Summer,136,1505603,139,,753,65,+3
-2025-03-01,,Cruel Summer,120,1490608,136,,754,66,+16
-2025-03-02,,Cruel Summer,136,1290360,120,,755,67,-16
-2025-03-03,,Cruel Summer,140,1320579,136,,756,68,-4
-2025-03-04,,Cruel Summer,135,1373529,140,,757,69,+5
-2025-03-05,,Cruel Summer,132,1400010,135,,758,70,+3
-2025-03-06,,Cruel Summer,117,1458992,132,,759,71,+15
-2025-03-07,,Cruel Summer,150,1453923,117,,760,72,-33
-2025-03-08,,Cruel Summer,115,1545648,150,,761,73,+35
-2025-03-09,,Cruel Summer,117,1371499,115,,762,74,-2
-2025-03-10,,Cruel Summer,151,1316503,117,,763,75,-34
-2025-03-11,,Cruel Summer,136,1420664,151,,764,76,+15
-2025-03-12,,Cruel Summer,140,1402629,136,,765,77,-4
-2025-03-13,,Cruel Summer,137,1405217,140,,766,78,+3
-2025-03-14,,Cruel Summer,167,1477688,137,,767,79,-30
-2025-03-15,,Cruel Summer,157,1441087,167,,768,80,+10
-2025-03-16,,Cruel Summer,162,1288011,157,,769,81,-5
-2025-03-17,,Cruel Summer,166,1353129,162,,770,82,-4
-2025-03-18,,Cruel Summer,165,1338736,166,,771,83,+1
-2025-03-19,,Cruel Summer,157,1373334,165,,772,84,+8
 2025-03-20,,Cruel Summer,151,1397794,157,,773,85,+6
 2025-03-21,,Cruel Summer,145,1428726,151,,774,86,+6
 2025-03-22,,Cruel Summer,110,1466924,145,,775,87,+35
@@ -11752,7 +11318,6 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2025-05-28,,Cruel Summer,146,1340498,126,,842,154,-20
 2025-05-29,,Cruel Summer,135,1371995,146,,843,155,+11
 2025-05-30,,Cruel Summer,121,1497117,135,,844,156,+14
-2025-05-31,,Cruel Summer,96,1517783,121,,845,157,+25
 2025-06-01,,Cruel Summer,131,1261971,96,,846,158,-35
 2025-06-02,,Cruel Summer,120,1381729,131,,847,159,+11
 2025-06-03,,Cruel Summer,101,1483211,120,,848,160,+19
@@ -11899,9 +11464,6 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2025-08-24,,Cruel Summer,98,1370440,102,,930,242,+4
 2025-08-25,,august,85,1589223,84,,514,26,-1
 2025-08-25,,Cruel Summer,99,1482187,98,,931,243,-1
-2025-08-26,,august,76,1671914,85,,515,27,+9
-2025-08-26,,Cruel Summer,86,1597139,99,,932,244,+13
-2025-08-26,,cardigan,179,1195917,,,512,1,RE
 2025-08-27,,august,45,1997966,76,,516,28,+31
 2025-08-27,,Cruel Summer,63,1795080,86,,933,245,+23
 2025-08-27,,cardigan,81,1618562,179,,513,2,+98
@@ -12677,183 +12239,7 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2025-12-31,,The Fate of Ophelia,1,8064496,1,,90,90,0
 2025-12-31,,Opalite,18,3245713,19,,90,90,+1
 2025-12-31,,Cruel Summer,191,1410501,177,,981,5,-14
-2026-01-05,,The Fate of Ophelia,2,6379559,2,,95,95,0
-2026-01-05,,Opalite,21,2511096,23,,95,95,+2
-2026-01-05,,Cruel Summer,136,1327309,157,,985,4,+21
-2026-01-08,,The Fate of Ophelia,2,6490585,2,,98,98,0
-2026-01-08,,Opalite,23,2506872,21,,98,98,-2
-2026-01-08,,Cruel Summer,172,1255371,185,,988,7,+13
-2026-01-09,,The Fate of Ophelia,2,6926987,2,,99,99,0
-2026-01-09,,Opalite,22,2610431,23,,99,99,+1
-2026-01-09,,Cruel Summer,161,1326282,172,,989,8,+11
-2026-01-11,,The Fate of Ophelia,2,5953844,2,,101,101,0
-2026-01-11,,Opalite,28,2231905,25,,101,101,-3
-2026-01-11,,Cruel Summer,174,1140849,161,,991,10,-13
-2026-01-13,,The Fate of Ophelia,2,6405291,2,,103,103,0
-2026-01-13,,Opalite,27,2412682,27,,103,103,0
-2026-01-13,,Cruel Summer,162,1322315,153,,993,12,-9
-2026-01-26,,The Fate of Ophelia,2,5188886,2,,116,116,0
-2026-01-26,,Opalite,38,2041866,39,,116,116,+1
-2026-01-26,,Style,156,1252247,,,298,1,RE
-2026-01-28,,The Fate of Ophelia,2,5534968,2,,118,118,0
-2026-01-28,,Opalite,34,2243010,34,,118,118,0
-2026-01-28,,Style,166,1328804,176,,300,3,+10
-2026-01-31,,The Fate of Ophelia,2,5415315,2,,121,121,0
-2026-01-31,,Opalite,32,2190961,39,,121,121,+7
-2026-01-31,,Style,171,1307292,165,,303,6,-6
-2026-01-31,,Cruel Summer,176,1289510,,,1001,1,RE
-2026-02-01,,The Fate of Ophelia,2,4700303,2,,122,122,0
-2026-02-01,,Opalite,39,1931299,32,,122,122,-7
-2026-02-01,,Style,127,1350717,171,,304,7,+44
-2026-02-01,,Cruel Summer,197,1163790,176,,1002,2,-21
-2026-02-02,,The Fate of Ophelia,3,5017507,2,,123,123,-1
-2026-02-02,,Opalite,45,2042788,39,,123,123,-6
-2026-02-02,,Style,157,1314862,127,,305,8,-30
-2026-02-03,,The Fate of Ophelia,4,5068904,3,,124,124,-1
-2026-02-03,,Opalite,43,2096364,45,,124,124,+2
-2026-02-03,,Style,192,1247869,157,,306,9,-35
-2026-02-03,,Cruel Summer,199,1230392,,,1003,1,RE
-2026-02-05,,The Fate of Ophelia,4,5162379,4,,126,126,0
-2026-02-05,,Opalite,39,2211405,51,,126,126,+12
-2026-02-05,,Style,199,1252808,191,,308,11,-8
-2026-02-06,,Opalite,2,6214902,39,,127,127,+37
-2026-02-06,,The Fate of Ophelia,5,5618405,4,,127,127,-1
-2026-02-06,,Style,169,1410039,199,,309,12,+30
-2026-02-14,,The Fate of Ophelia,8,4895910,7,,135,135,-1
-2026-02-14,,Opalite,26,2841726,25,,135,135,-1
-2026-02-14,,Style,178,1331831,196,,317,20,+18
-2026-02-14,,Cruel Summer,190,1307807,,,1008,1,RE
-2026-02-16,,The Fate of Ophelia,8,4493915,8,,137,137,0
-2026-02-16,,Opalite,31,2482533,30,,137,137,-1
-2026-02-16,,Style,171,1250288,168,,319,22,-3
-2026-02-16,,Cruel Summer,180,1230052,196,,1010,3,+16
-2026-03-03,,The Fate of Ophelia,7,4203769,7,,152,152,0
-2026-03-03,,Opalite,35,2281207,35,,152,152,0
-2026-03-03,,Style,157,1334074,182,,330,2,+25
-2026-03-07,,The Fate of Ophelia,9,4254851,17,,156,156,+8
-2026-03-07,,Opalite,47,2199789,48,,156,156,+1
-2026-03-07,,Style,193,1253230,,,333,1,RE
-2026-03-09,,The Fate of Ophelia,10,4037302,10,1,158,158,0
-2026-03-09,,Opalite,47,2136611,44,2,158,158,-3
-2026-03-09,,Style,188,1243379,188,12,335,3,0
-2026-03-10,,The Fate of Ophelia,10,4113612,10,,159,159,0
-2026-03-10,,Opalite,47,2130307,47,,159,159,0
-2026-03-10,,Style,171,1303889,188,,336,4,+17
-2026-03-11,,The Fate of Ophelia,9,4002444,10,,160,160,+1
-2026-03-11,,Opalite,47,2108420,47,,160,160,0
-2026-03-11,,Style,187,1242987,171,,337,5,-16
-2026-03-12,,The Fate of Ophelia,8,3962747,9,1,161,161,+1
-2026-03-12,,Opalite,44,2111658,47,2,161,161,+3
-2026-03-12,,Style,166,1264107,187,12,338,6,+21
-2026-03-13,,The Fate of Ophelia,8,4090240,8,,162,162,0
-2026-03-13,,Opalite,45,2159794,44,,162,162,-1
-2026-03-13,,Style,171,1325039,166,,339,7,-5
-2026-03-14,,The Fate of Ophelia,8,4008093,8,1,163,163,0
-2026-03-14,,Opalite,42,2107805,45,2,163,163,+3
-2026-03-14,,Style,178,1307835,171,12,340,8,-7
-2026-03-14,,Cruel Summer,181,1290227,,2,1012,1,RE
-2026-03-15,,The Fate of Ophelia,8,3461508,8,1,164,164,0
-2026-03-15,,Opalite,39,1888148,42,2,164,164,+3
-2026-03-15,,Style,172,1157317,178,12,341,9,+6
-2026-03-16,,The Fate of Ophelia,10,3621288,8,1,165,165,-2
-2026-03-16,,Opalite,42,1978645,39,2,165,165,-3
-2026-03-16,,Style,169,1218767,172,12,342,10,+3
-2026-03-17,,The Fate of Ophelia,8,3758824,10.0,1,166,166,+2
-2026-03-17,,Opalite,40,2052239,42.0,2,166,166,+2
-2026-03-17,,Style,153,1303408,169.0,12,343,11,+16
-2026-03-18,,The Fate of Ophelia,9,3815976,8.0,1,167,167,-1
-2026-03-18,,Opalite,42,2060744,40.0,2,167,167,-2
-2026-03-18,,Style,153,1316932,153.0,12,344,12,0
-2026-03-19,,The Fate of Ophelia,8,3810629,9.0,1,168,168,+1
-2026-03-19,,Opalite,40,2058916,42.0,2,168,168,+2
-2026-03-19,,Style,163,1242147,153.0,12,345,13,-10
-2026-03-20,,The Fate of Ophelia,23,3885572,8.0,1,169,169,-15
-2026-03-20,,Opalite,59,2062557,40.0,2,169,169,-19
-2026-03-20,,Style,147,1385050,163.0,12,346,14,+16
-2026-03-20,,Cruel Summer,193,1259343,,2,1013,1,RE
-2026-03-21,,The Fate of Ophelia,23,3721332,23.0,1,170,170,0
-2026-03-21,,Opalite,60,1992549,59.0,2,170,170,-1
-2026-03-21,,Style,152,1311077,147.0,12,347,15,-5
-2026-03-21,,Cruel Summer,172,1268541,193.0,2,1014,2,+21
-2026-03-22,,The Fate of Ophelia,23,3363782,23,1,171,171,0
-2026-03-22,,Opalite,59,1793525,60,2,171,171,+1
-2026-03-22,,Style,170,1171024,152,12,348,16,-18
-2026-03-23,,The Fate of Ophelia,23,3591083,23,1,172,172,0
-2026-03-23,,Opalite,64,1904002,59,2,172,172,-5
-2026-03-23,,Style,197,1196560,170,12,349,17,-27
-2026-03-24,,The Fate of Ophelia,22,3532966,23,1,173,173,+1
-2026-03-24,,Opalite,67,1901649,64,2,173,173,-3
-2026-03-24,,Cruel Summer,179,1271814,-1,2,1015,1,RE
-2026-03-24,,Style,185,1250250,197,12,350,18,+12
-2026-03-25,,The Fate of Ophelia,22,3560501,22,1,174,174,0
-2026-03-25,,Opalite,68,1869626,67,2,174,174,-1
-2026-03-25,,Style,146,1334867,185,12,351,19,+39
-2026-03-26,,The Fate of Ophelia,20,3569489,22,1,175,175,+2
-2026-03-26,,Opalite,68,1880816,68,2,175,175,0
-2026-03-26,,Style,177,1298500,146,12,352,20,-31
-2026-03-27,,The Fate of Ophelia,16,3776740,20,1,176,176,+4
-2026-03-27,,Opalite,62,1972615,68,2,176,176,+6
-2026-03-27,,Style,186,1285993,177,12,353,21,-9
-2026-03-28,,The Fate of Ophelia,12,3803252,16.0,1,177,177,+4
-2026-03-28,,Opalite,63,1990117,62.0,2,177,177,-1
-2026-03-28,,Style,188,1288626,186.0,12,354,22,-2
-2026-03-29,,The Fate of Ophelia,15,3326487,12.0,1,178,178,
-2026-03-29,,Opalite,80,1669607,63.0,2,178,178,
-2026-03-29,,Style,148,1280869,188.0,12,355,23,
-2026-03-30,,The Fate of Ophelia,16,3577326,15.0,1,179,179,
-2026-03-30,,Opalite,74,1851408,80.0,2,179,179,
-2026-03-30,,Style,178,1275257,148.0,12,356,24,
-2026-03-31,,The Fate of Ophelia,15,3583344,16.0,1,180,180,
-2026-03-31,,Opalite,65,1933868,74.0,2,180,180,
 2026-03-31,,Elizabeth Taylor,115,1479902,,2,63,1,
-2026-03-31,,Style,177,1299792,178.0,12,353,25,
-2026-04-01,,The Fate of Ophelia,12,3683758,15.0,1,181,181,
-2026-04-01,,Opalite,66,1933637,65.0,2,181,181,
-2026-04-01,,Style,151,1341494,177.0,12,354,26,
-2026-04-02,,The Fate of Ophelia,13,3684822,12.0,1,182,182,
-2026-04-02,,Opalite,68,1906715,66.0,2,182,182,
-2026-04-02,,Style,165,1327082,151.0,12,355,27,
-2026-04-03,,The Fate of Ophelia,11,3443354,13.0,1,183,183,
-2026-04-03,,Opalite,74,1779682,68.0,2,183,183,
-2026-04-03,,Style,165,1278608,165.0,12,356,28,
-2026-04-04,,The Fate of Ophelia,12,3502007,11.0,1,184,184,
-2026-04-04,,Opalite,69,1795820,74.0,2,184,184,
-2026-04-04,,Style,158,1282730,165.0,12,357,29,
-2026-04-04,,Cruel Summer,181,1219704,,2,1009,1,
-2026-04-05,,The Fate of Ophelia,13,3098059,12.0,1,185,185,
-2026-04-05,,Opalite,76,1587050,69.0,2,185,185,
-2026-04-05,,Style,185,1124021,158.0,12,358,30,
-2026-04-06,,The Fate of Ophelia,14,3361899,13.0,1,186,186,
-2026-04-06,,Opalite,76,1753190,76.0,2,186,186,
-2026-04-06,,Style,178,1235506,185.0,12,359,31,
-2026-04-07,,The Fate of Ophelia,12,3466735,14.0,1,187,187,
-2026-04-07,,Opalite,77,1803580,76.0,2,187,187,
-2026-04-07,,Style,156,1312632,178.0,12,360,32,
-2026-04-08,,The Fate of Ophelia,13,3448748,12.0,1,188,188,
-2026-04-08,,Opalite,71,1800965,77.0,2,188,188,
-2026-04-08,,Style,134,1390875,156.0,12,361,33,
-2026-04-09,,The Fate of Ophelia,13,3387813,13.0,1,189,189,
-2026-04-09,,Opalite,72,1811947,71.0,2,189,189,
-2026-04-09,,Cruel Summer,195,1230481,,2,1010,1,
-2026-04-09,,Style,196,1223240,134.0,12,362,34,
-2026-04-10,,The Fate of Ophelia,14,3588995,13.0,1,190,190,
-2026-04-10,,Opalite,81,1831243,72.0,2,190,190,
-2026-04-11,,The Fate of Ophelia,11,3499126,14.0,1,191,191,
-2026-04-11,,Opalite,79,1781522,81.0,2,191,191,
-2026-04-11,,Style,191,1279920,,12,363,1,
-2026-04-12,,The Fate of Ophelia,14,3005260,11.0,1,192,192,
-2026-04-12,,Opalite,89,1558374,79.0,2,192,192,
-2026-04-12,,Style,163,1229606,191.0,12,364,2,
-2026-04-13,,The Fate of Ophelia,20,3183413,14.0,1,193,193,
-2026-04-13,,Opalite,97,1714906,89.0,2,193,193,
-2026-04-14,,The Fate of Ophelia,19,3340294,20.0,1,194,194,
-2026-04-14,,Opalite,98,1761365,97.0,2,194,194,
-2026-04-15,,The Fate of Ophelia,19,3320685,19.0,1,195,195,
-2026-04-15,,Opalite,96,1742498,98.0,2,195,195,
-2026-04-16,,The Fate of Ophelia,19,3323049,19.0,1,196,196,
-2026-04-16,,Opalite,106,1738594,96.0,2,196,196,
-2026-04-17,,The Fate of Ophelia,19,3502348,19.0,1,197,197,
-2026-04-17,,Opalite,102,1813644,106.0,2,197,197,
 2024-04-19,2OzhQlSqBEmt7hmkYxfT6m,Fortnight (feat. Post Malone),1,25204472,,1,1,1,
 2024-04-19,3NMrVbIVWT3fPXBj0rNDKG,The Tortured Poets Department,2,19089937,,2,1,1,
 2024-04-19,2F3N9tdombb64aW6VtZOdo,Down Bad,3,17431926,,3,1,1,
@@ -12890,259 +12276,9 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2024-04-19,1dGr1c8CrMLDpV6mPbImSI,Lover,102,1832176,95.0,2,429,116,
 2024-04-19,0V3wPSX9ygBnCm8psDIegu,Anti-Hero,105,1824792,84.0,1,545,116,
 2024-04-19,4R2kfaDFhslZEMJqAFNpdd,cardigan,138,1574433,115.0,1,487,116,
-2025-10-03,,The Fate of Ophelia,1,30987370,,1,1,1,
 2025-10-03,,Elizabeth Taylor,2,23974787,,2,1,1,
-2025-10-03,,Opalite,3,23716087,,3,1,1,
-2025-10-03,,Father Figure,4,21802376,,4,1,1,
-2025-10-03,,Eldest Daughter,5,19963843,,5,1,1,
-2025-10-03,,Actually Romantic,6,19391100,,6,1,1,
-2025-10-03,,Wood,7,19016766,,7,1,1,
-2025-10-03,,CANCELLED!,8,18835270,,8,1,1,
-2025-10-03,,Wi$h Li$t,9,18804814,,9,1,1,
-2025-10-03,,Ruin The Friendship,10,18756365,,10,1,1,
-2025-10-03,,The Life of a Showgirl (feat. Sabrina Carpenter),11,18734428,,11,1,1,
-2025-10-03,,Honey,12,15995465,,12,1,1,
-2025-10-03,,august,31,2615761,184.0,4,545,2,
-2025-10-03,,cardigan,69,1989903,156.0,1,538,39,
-2025-10-03,,Cruel Summer,119,1503912,142.0,2,963,282,
-2025-10-03,,Lover,195,1254940,,2,498,1,
-2026-04-18,,The Fate of Ophelia,19,3426755,19.0,1,198,198,
-2026-04-18,,Opalite,98,1752419,102.0,2,198,198,
-2026-04-19,,The Fate of Ophelia,20,3005095,19.0,1,199,199,
-2026-04-19,,Opalite,107,1543748,98.0,2,199,199,
-2026-04-20,,The Fate of Ophelia,19,3252322,20.0,1,200,200,
-2026-04-20,,Opalite,106,1709819,107.0,2,200,200,
-2026-04-21,,The Fate of Ophelia,18,3296625,19.0,1,201,201,
-2026-04-21,,Opalite,105,1687743,106.0,2,201,201,
-2026-04-22,,The Fate of Ophelia,18,3210814,18.0,1,202,202,
-2026-04-22,,Opalite,107,1642547,105.0,2,202,202,
-2026-04-23,,The Fate of Ophelia,15,3313063,18.0,1,203,203,
-2026-04-23,,Opalite,98,1720756,107.0,2,203,203,
-2026-04-24,,The Fate of Ophelia,17,3438841,15.0,1,204,204,
-2026-04-24,,Opalite,105,1818642,98.0,2,204,204,
-2026-04-25,,The Fate of Ophelia,17,3284435,17.0,1,205,205,
-2026-04-25,,Opalite,102,1752572,105.0,2,205,205,
-2026-04-26,,The Fate of Ophelia,16,2866745,17.0,1,206,206,
-2026-04-26,,Opalite,115,1493274,102.0,2,206,206,
-2026-04-27,,The Fate of Ophelia,17,3037845,16.0,1,207,207,
-2026-04-27,,Opalite,127,1546896,115.0,2,207,207,
-2026-04-28,,The Fate of Ophelia,15,3091709,17.0,1,208,208,
-2026-04-28,,Opalite,109,1627710,127.0,2,208,208,
-2026-04-29,,The Fate of Ophelia,16,3184812,15.0,1,209,209,
-2026-04-29,,Opalite,103,1683984,109.0,2,209,209,
-2026-04-30,,The Fate of Ophelia,15,3310981,16.0,1,210,210,
-2026-04-30,,Opalite,106,1717234,103.0,2,210,210,
-2026-05-01,,The Fate of Ophelia,13,3223047,15.0,1,211,211,
-2026-05-01,,Opalite,112,1630955,106.0,2,211,211,
-2026-05-02,,The Fate of Ophelia,14,3054204,13.0,1,212,212,
-2026-05-02,,Opalite,101,1625354,112.0,2,212,212,
-2026-05-03,,The Fate of Ophelia,15,2762953,14.0,1,213,213,
-2026-05-03,,Opalite,117,1437094,101.0,2,213,213,
-2026-05-04,,The Fate of Ophelia,18,2900868,15.0,1,214,214,
-2026-05-04,,Opalite,101,1575157,117.0,2,214,214,
-2026-05-05,,The Fate of Ophelia,17,2958693,18.0,1,215,215,
-2026-05-05,,Opalite,103,1575595,101.0,2,215,215,
-2026-05-07,,The Fate of Ophelia,9,3503877,8.0,1,217,217,
-2026-05-07,,Opalite,94,1711525,83.0,2,217,217,
-2026-05-08,,The Fate of Ophelia,10,3451402,9.0,1,218,218,
-2026-05-08,,Opalite,91,1780144,94.0,2,218,218,
-2026-05-06,,The Fate of Ophelia,8,3432522,17.0,1,216,216,
-2026-05-06,,Opalite,83,1760595,103.0,2,216,216,
-2026-05-09,,The Fate of Ophelia,12,3316576,10.0,1,219,219,
-2026-05-09,,Opalite,86,1773904,91.0,2,219,219,
-2026-05-10,,The Fate of Ophelia,16,2911664,12.0,1,220,220,
-2026-05-10,,Opalite,90,1516971,86.0,2,220,220,
-2026-05-11,,The Fate of Ophelia,16,3065814,16.0,1,221,221,
-2026-05-11,,Opalite,91,1601580,90.0,2,221,221,
-2026-05-13,,The Fate of Ophelia,14,3122178,16.0,1,223,223,
-2026-05-13,,Opalite,96,1649174,98.0,2,223,223,
-2026-05-12,,The Fate of Ophelia,16,3000202,16.0,1,222,222,
-2026-05-12,,Opalite,98,1598018,91.0,2,222,222,
-2026-05-14,,The Fate of Ophelia,12,3090649,14.0,1,224,224,
-2026-05-14,,Opalite,86,1681432,96.0,2,224,224,
-2026-05-15,,The Fate of Ophelia,32,3231131,12.0,1,225,225,
-2026-05-15,,Opalite,130,1695109,86.0,2,225,225,
-2026-05-16,,The Fate of Ophelia,27,3019477,32.0,1,226,226,
-2026-05-16,,Opalite,122,1608705,130.0,2,226,226,
-2026-05-17,,The Fate of Ophelia,26,2737974,27.0,1,227,227,
-2026-05-17,,Opalite,121,1439368,122.0,2,227,227,
-2026-05-18,,The Fate of Ophelia,24,2881622,26.0,1,228,228,
-2026-05-18,,Opalite,119,1534071,121.0,2,228,228,
-2026-05-19,,The Fate of Ophelia,22,2885121,24.0,1,229,229,
-2026-05-19,,Opalite,118,1558271,119.0,2,229,229,
-2026-05-20,,The Fate of Ophelia,21,2879485,22.0,1,230,230,
-2026-05-20,,Opalite,130,1513880,118.0,2,230,230,
-2026-05-21,,The Fate of Ophelia,21,2927205,21.0,1,231,231,
-2026-05-21,,Opalite,137,1498474,130.0,2,231,231,
-2026-05-22,,The Fate of Ophelia,22,2981959,21.0,1,232,232,
-2026-05-22,,Opalite,131,1571307,137.0,2,232,232,
-2026-05-23,,The Fate of Ophelia,21,2848111,22.0,1,233,233,
-2026-05-23,,Opalite,120,1517829,131.0,2,233,233,
-2026-05-24,,The Fate of Ophelia,24,2577273,21.0,1,234,234,
-2026-05-24,,Opalite,142,1332366,120.0,2,234,234,
-2026-05-25,,The Fate of Ophelia,25,2726380,24.0,1,235,235,
-2026-05-25,,Opalite,142,1399462,142.0,2,235,235,
-2026-05-26,,The Fate of Ophelia,29,2631179,25.0,1,236,236,
-2026-05-26,,Opalite,141,1422797,142.0,2,236,236,
-2026-05-27,,The Fate of Ophelia,26,2620622,29.0,1,237,237,
-2026-05-27,,Opalite,129,1421183,141.0,2,237,237,
-2026-05-28,,The Fate of Ophelia,24,2766127,26.0,1,238,238,
-2026-05-28,,Opalite,117,1512954,129.0,2,238,238,
-2026-05-29,,The Fate of Ophelia,25,2923016,24.0,1,239,239,
-2026-05-29,,Opalite,125,1526495,117.0,2,239,239,
-2026-01-01,,The Fate of Ophelia,1,5311378,1.0,1,91,91,
-2026-01-01,,Opalite,27,2091854,18.0,2,91,91,
-2026-01-02,,The Fate of Ophelia,2,6215909,1.0,1,92,92,
-2026-01-02,,Opalite,22,2400217,27.0,2,92,92,
-2026-01-02,,Cruel Summer,187,1168247,,2,975,1,
-2026-01-03,,The Fate of Ophelia,2,6150385,2.0,1,93,93,
-2026-01-03,,Opalite,22,2375740,22.0,2,93,93,
-2026-01-03,,Cruel Summer,165,1200652,187.0,2,976,2,
-2026-01-04,,The Fate of Ophelia,2,5670486,2.0,1,94,94,
-2026-01-04,,Opalite,23,2213399,22.0,2,94,94,
-2026-01-04,,Cruel Summer,157,1161329,165.0,2,977,3,
-2026-01-06,,The Fate of Ophelia,2,6378681,2.0,1,96,96,
-2026-01-06,,Opalite,19,2478815,21.0,2,96,96,
-2026-01-06,,Cruel Summer,147,1283241,136.0,2,979,5,
-2026-01-07,,The Fate of Ophelia,2,6478019,2.0,1,97,97,
-2026-01-07,,Opalite,21,2500608,19.0,2,97,97,
-2026-01-07,,Cruel Summer,185,1212938,147.0,2,980,6,
-2026-01-10,,The Fate of Ophelia,2,6734950,2.0,1,100,100,
-2026-01-10,,Opalite,25,2509483,22.0,2,100,100,
-2026-01-10,,Cruel Summer,161,1283333,161.0,2,983,9,
-2026-01-12,,The Fate of Ophelia,2,6402696,2.0,1,102,102,
-2026-01-12,,Opalite,27,2420539,28.0,2,102,102,
-2026-01-12,,Cruel Summer,153,1300474,174.0,2,985,11,
-2026-01-14,,The Fate of Ophelia,2,6324513,2.0,1,104,104,
-2026-01-14,,Opalite,27,2380926,27.0,2,104,104,
-2026-01-14,,Cruel Summer,187,1244044,162.0,2,987,13,
-2026-01-15,,The Fate of Ophelia,2,6242593,2.0,1,105,105,
-2026-01-15,,Opalite,27,2349287,27.0,2,105,105,
-2026-01-15,,Cruel Summer,188,1251542,187.0,2,988,14,
-2026-01-16,,The Fate of Ophelia,2,6262118,2.0,1,106,106,
-2026-01-16,,Opalite,32,2437602,27.0,2,106,106,
-2026-01-17,,The Fate of Ophelia,2,6153062,2.0,1,107,107,
-2026-01-17,,Opalite,27,2412000,32.0,2,107,107,
-2026-01-18,,The Fate of Ophelia,2,5061184,2.0,1,108,108,
-2026-01-18,,Opalite,31,2084722,27.0,2,108,108,
-2026-01-19,,The Fate of Ophelia,2,5706662,2.0,1,109,109,
-2026-01-19,,Opalite,30,2268336,31.0,2,109,109,
-2026-01-19,,Style,185,1222663,,12,290,1,
-2026-01-19,,Cruel Summer,194,1210097,,2,989,1,
-2026-01-20,,The Fate of Ophelia,2,5852058,2.0,1,110,110,
-2026-01-20,,Opalite,31,2291273,30.0,2,110,110,
-2026-01-20,,Cruel Summer,180,1239973,194.0,2,990,2,
-2026-01-20,,Style,182,1236818,185.0,12,291,2,
-2026-01-21,,The Fate of Ophelia,2,5877035,2.0,1,111,111,
-2026-01-21,,Opalite,28,2302844,31.0,2,111,111,
-2026-01-21,,Cruel Summer,161,1276348,180.0,2,991,3,
-2026-01-21,,Style,193,1209646,182.0,12,292,3,
-2026-01-22,,The Fate of Ophelia,2,5815940,2.0,1,112,112,
-2026-01-22,,Opalite,25,2339955,28.0,2,112,112,
-2026-01-22,,Style,177,1252698,193.0,12,293,4,
-2026-01-22,,Cruel Summer,200,1216748,161.0,2,992,4,
-2026-01-23,,The Fate of Ophelia,3,5904613,2.0,1,113,113,
-2026-01-23,,Opalite,29,2346497,25.0,2,113,113,
-2026-01-24,,The Fate of Ophelia,2,5645930,3.0,1,114,114,
-2026-01-24,,Opalite,32,2282661,29.0,2,114,114,
-2026-01-24,,Cruel Summer,183,1254880,,2,993,1,
-2026-01-25,,The Fate of Ophelia,2,4888934,2.0,1,115,115,
-2026-01-25,,Opalite,39,1926724,32.0,2,115,115,
-2026-01-27,,The Fate of Ophelia,2,5429821,2.0,1,117,117,
-2026-01-27,,Opalite,34,2183207,38.0,2,117,117,
-2026-01-27,,Style,176,1283232,156.0,12,295,2,
-2026-01-29,,The Fate of Ophelia,2,5505440,2.0,1,119,119,
-2026-01-29,,Opalite,36,2240345,34.0,2,119,119,
-2026-01-29,,Style,168,1335044,166.0,12,297,4,
-2026-01-30,,The Fate of Ophelia,2,5526118,2.0,1,120,120,
-2026-01-30,,Opalite,39,2229649,36.0,2,120,120,
-2026-01-30,,Style,165,1366112,168.0,12,298,5,
-2026-02-04,,The Fate of Ophelia,4,5274496,4.0,1,125,125,
-2026-02-04,,Opalite,51,2131431,43.0,2,125,125,
-2026-02-04,,Style,191,1274116,192.0,12,303,10,
-2026-02-07,,The Fate of Ophelia,3,5595505,5.0,1,128,128,
-2026-02-07,,Opalite,6,5305020,2.0,2,128,128,
-2026-02-07,,Style,143,1425564,169.0,12,306,13,
-2026-02-07,,Cruel Summer,190,1301470,,2,997,1,
-2026-02-08,,The Fate of Ophelia,6,4754476,3.0,1,129,129,
-2026-02-08,,Opalite,10,3732751,6.0,2,129,129,
-2026-02-08,,Style,162,1270719,143.0,12,307,14,
-2026-02-08,,Cruel Summer,198,1186948,190.0,2,998,2,
-2026-02-09,,The Fate of Ophelia,9,4934687,6.0,1,130,130,
-2026-02-09,,Opalite,20,3276882,10.0,2,130,130,
-2026-02-09,,Cruel Summer,186,1305114,198.0,2,999,3,
-2026-02-09,,Style,192,1284888,162.0,12,308,15,
-2026-02-10,,The Fate of Ophelia,9,4973156,9.0,1,131,131,
-2026-02-10,,Opalite,22,3173824,20.0,2,131,131,
-2026-02-10,,Style,183,1336694,192.0,12,309,16,
-2026-02-11,,The Fate of Ophelia,8,5067026,9.0,1,132,132,
-2026-02-11,,Opalite,23,2978545,22.0,2,132,132,
-2026-02-11,,Style,189,1320513,183.0,12,310,17,
-2026-02-12,,The Fate of Ophelia,7,4859024,8.0,1,133,133,
-2026-02-12,,Opalite,27,2835220,23.0,2,133,133,
-2026-02-12,,Style,177,1353452,189.0,12,311,18,
-2026-02-12,,Cruel Summer,192,1306957,,2,1000,1,
-2026-02-13,,The Fate of Ophelia,7,5167159,7.0,1,134,134,
-2026-02-13,,Opalite,25,3033046,27.0,2,134,134,
-2026-02-13,,Style,196,1332240,177.0,12,312,19,
-2026-02-15,,The Fate of Ophelia,8,4243297,8.0,1,136,136,
-2026-02-15,,Opalite,30,2332479,26.0,2,136,136,
-2026-02-15,,Style,168,1198412,178.0,12,314,21,
-2026-02-15,,Cruel Summer,196,1143375,190.0,2,1002,2,
-2026-02-17,,The Fate of Ophelia,6,4594743,8.0,1,138,138,
-2026-02-17,,Opalite,30,2494113,31.0,2,138,138,
-2026-02-17,,Style,167,1261276,171.0,12,316,23,
-2026-02-17,,Cruel Summer,200,1206988,180.0,2,1004,4,
-2026-02-18,,The Fate of Ophelia,6,4563030,6.0,1,139,139,
-2026-02-18,,Opalite,30,2435035,30.0,2,139,139,
-2026-02-18,,Style,186,1241805,167.0,12,317,24,
-2026-02-19,,The Fate of Ophelia,6,4441393,6.0,1,140,140,
-2026-02-19,,Opalite,30,2380688,30.0,2,140,140,
-2026-02-19,,Style,161,1256808,186.0,12,318,25,
-2026-02-20,,The Fate of Ophelia,7,4685784,6.0,1,141,141,
-2026-02-20,,Opalite,29,2475755,30.0,2,141,141,
-2026-02-21,,The Fate of Ophelia,7,4561065,7.0,1,142,142,
-2026-02-21,,Opalite,29,2424792,29.0,2,142,142,
-2026-02-22,,The Fate of Ophelia,6,3900572,7.0,1,143,143,
-2026-02-22,,Opalite,30,2106088,29.0,2,143,143,
-2026-02-23,,The Fate of Ophelia,5,4178047,6.0,1,144,144,
-2026-02-23,,Opalite,31,2222040,30.0,2,144,144,
-2026-02-23,,Style,198,1101672,,12,319,1,
-2026-02-24,,The Fate of Ophelia,6,4361724,5.0,1,145,145,
-2026-02-24,,Opalite,30,2363828,31.0,2,145,145,
-2026-02-24,,Style,182,1180239,198.0,12,320,2,
-2026-02-25,,The Fate of Ophelia,5,4524734,6.0,1,146,146,
-2026-02-25,,Opalite,30,2402079,30.0,2,146,146,
-2026-02-25,,Style,188,1245534,182.0,12,321,3,
-2026-02-26,,The Fate of Ophelia,4,4545484,5.0,1,147,147,
-2026-02-26,,Opalite,31,2388690,30.0,2,147,147,
-2026-02-26,,Style,153,1327544,188.0,12,322,4,
-2026-02-27,,The Fate of Ophelia,7,4697646,4.0,1,148,148,
-2026-02-27,,Opalite,36,2495219,31.0,2,148,148,
-2026-02-27,,Style,177,1343212,153.0,12,323,5,
-2026-02-28,,The Fate of Ophelia,8,4551559,7.0,1,149,149,
-2026-02-28,,Opalite,31,2430583,36.0,2,149,149,
-2026-02-28,,Style,192,1238993,177.0,12,324,6,
-2026-03-01,,The Fate of Ophelia,8,3889349,8.0,1,150,150,
-2026-03-01,,Opalite,33,2141301,31.0,2,150,150,
-2026-03-02,,The Fate of Ophelia,7,4195732,8.0,1,151,151,
-2026-03-02,,Opalite,35,2273428,33.0,2,151,151,
-2026-03-02,,Style,182,1237677,,12,325,1,
-2026-03-04,,The Fate of Ophelia,7,4200464,7.0,1,153,153,
-2026-03-04,,Opalite,33,2306373,35.0,2,153,153,
-2026-03-04,,Style,155,1343906,157.0,12,327,3,
-2026-03-05,,The Fate of Ophelia,8,4149686,7.0,1,154,154,
-2026-03-05,,Opalite,34,2293258,33.0,2,154,154,
-2026-03-05,,Style,169,1298342,155.0,12,328,4,
-2026-03-06,,The Fate of Ophelia,17,4308488,8.0,1,155,155,
-2026-03-06,,Opalite,48,2216184,34.0,2,155,155,
-2026-03-08,,The Fate of Ophelia,10,3603947,9.0,1,157,157,
-2026-03-08,,Opalite,44,1961538,47.0,2,157,157,
-2026-03-08,,Style,188,1157434,193.0,12,330,2,
 2026-06-03,53iuhJlwXhSER5J2IYYv1W,The Fate of Ophelia,27,2703391,25.0,1,240,1,
 2026-06-03,3yWuTOYDztXjZxdE2cIRUa,Opalite,127,1480162,128.0,2,240,1,
-2026-06-02,,The Fate of Ophelia,25,2709376,24.0,1,240,1,
-2026-06-02,,Opalite,128,1440406,131.0,2,240,1,
 2017-01-01,3NdDpSvN911VPGivFlV5d0,I Don’t Wanna Live Forever (Fifty Shades Darker),12,1857252,-1,12,1,,
 2017-01-02,3NdDpSvN911VPGivFlV5d0,I Don’t Wanna Live Forever (Fifty Shades Darker),6,2329762,12,6,2,,
 2017-01-03,3NdDpSvN911VPGivFlV5d0,I Don’t Wanna Live Forever (Fifty Shades Darker),4,2710150,6,4,3,,
@@ -13687,12 +12823,6 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2021-03-05,,willow,106,1022059,79,1,,85,
 2021-03-06,,willow,112,968547,106,1,,86,
 2021-03-07,,willow,108,895399,112,1,,87,
-2026-05-30,,The Fate of Ophelia,23,2800180,25,1,240,240,
-2026-05-30,,Opalite,114,1493555,125,2,240,240,
-2026-05-31,,The Fate of Ophelia,24,2525405,23,1,241,241,
-2026-05-31,,Opalite,120,1336499,114,2,241,241,
-2026-06-01,,The Fate of Ophelia,24,2652937,24,1,242,242,
-2026-06-01,,Opalite,131,1404759,120,2,242,242,
 2026-06-04,53iuhJlwXhSER5J2IYYv1W,The Fate of Ophelia,21,2769568,27,1,245,245,
 2026-06-04,3yWuTOYDztXjZxdE2cIRUa,Opalite,128,1453570,127,2,245,245,
 2017-01-01,3NdDpSvN911VPGivFlV5d0,3NdDpSvN911VPGivFlV5d0,12,1857252,,12,1,,
@@ -14684,31 +13814,6 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2026-07-09,5uPaqMMt59KGrdKIitDRqa,"I Knew It, I Knew You - From ""Toy Story 5""",63,1758795,65,1,35,35,
 2026-07-09,3yWuTOYDztXjZxdE2cIRUa,Opalite,179,1276949,,2,279,1,RE
 2026-07-09,1BxfuPKGuaTgP7aM0Bbdwr,Cruel Summer,186,1265004,182,2,1026,6,
-2017-06-09,1u8c2t2Cy7UBoG4ArRcF5g,Blank Space,122,671695,,122,1,,
-2017-06-09,0cqRj7pUJDkTCEsJkx8snD,Shake It Off,135,643541,,135,1,,
-2017-06-09,0ug5NqcwcFR2xrfTkc7k8e,Style,162,544806,,162,77,,
-2017-06-10,0cqRj7pUJDkTCEsJkx8snD,Shake It Off,124,625889,135,124,2,,
-2017-06-10,1u8c2t2Cy7UBoG4ArRcF5g,Blank Space,127,620432,122,122,2,,
-2017-06-10,0ug5NqcwcFR2xrfTkc7k8e,Style,169,510402,162,162,78,,
-2017-06-11,1u8c2t2Cy7UBoG4ArRcF5g,Blank Space,142,501255,127,122,3,,
-2017-06-11,0cqRj7pUJDkTCEsJkx8snD,Shake It Off,150,485329,124,124,3,,
-2017-06-11,0ug5NqcwcFR2xrfTkc7k8e,Style,195,402375,169,162,79,,
-2017-06-12,0cqRj7pUJDkTCEsJkx8snD,Shake It Off,124,602841,150,124,4,,
-2017-06-12,1u8c2t2Cy7UBoG4ArRcF5g,Blank Space,138,550850,142,122,4,,
-2017-06-12,0ug5NqcwcFR2xrfTkc7k8e,Style,196,437979,195,162,80,,
-2017-06-13,0cqRj7pUJDkTCEsJkx8snD,Shake It Off,138,564281,124,124,5,,
-2017-06-13,1u8c2t2Cy7UBoG4ArRcF5g,Blank Space,152,530569,138,122,5,,
-2017-06-14,0cqRj7pUJDkTCEsJkx8snD,Shake It Off,164,508473,138,124,6,,
-2017-06-14,1u8c2t2Cy7UBoG4ArRcF5g,Blank Space,183,474055,152,122,6,,
-2017-06-15,0cqRj7pUJDkTCEsJkx8snD,Shake It Off,189,459890,164,124,7,,
-2017-07-04,0cqRj7pUJDkTCEsJkx8snD,Shake It Off,163,479896,,124,8,,
-2017-08-25,1u8c2t2Cy7UBoG4ArRcF5g,Blank Space,198,530862,,122,7,,
-2017-08-28,0cqRj7pUJDkTCEsJkx8snD,Shake It Off,198,446198,,124,9,,
-2017-09-03,0cqRj7pUJDkTCEsJkx8snD,Shake It Off,200,400243,,124,10,,
-2017-09-04,0cqRj7pUJDkTCEsJkx8snD,Shake It Off,184,458701,200,124,11,,
-2017-09-04,1u8c2t2Cy7UBoG4ArRcF5g,Blank Space,189,438936,,122,8,,
-2017-09-05,0cqRj7pUJDkTCEsJkx8snD,Shake It Off,199,434851,184,124,12,,
-2017-09-05,1u8c2t2Cy7UBoG4ArRcF5g,Blank Space,200,432737,189,122,9,,
 2017-12-02,1P17dC1amhFzptugyAO7Il,Look What You Made Me Do,64,1069768,62,1,1,,
 2017-12-02,2yLa0QULdQr0qAIvVwN6B5,...Ready For It?,96,846340,88,3,1,,
 2017-12-02,1ZY1PqizIl78geGM4xWlEA,Gorgeous,123,727624,108,7,1,,
@@ -14981,42 +14086,6 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2018-05-22,6NFyWDv5CjfwuzoCkw47Xf,Delicate,105,814879,103,24,83,,
 2018-05-23,6NFyWDv5CjfwuzoCkw47Xf,Delicate,107,828401,105,24,84,,
 2018-07-04,0cqRj7pUJDkTCEsJkx8snD,Shake It Off,199,578086,,124,13,,
-2024-04-19,2OzhQlSqBEmt7hmkYxfT6m,Fortnight (feat. Post Malone),1,25204472,,1,1,1,
-2024-04-19,3NMrVbIVWT3fPXBj0rNDKG,The Tortured Poets Department,2,19089937,,2,1,1,
-2024-04-19,2F3N9tdombb64aW6VtZOdo,Down Bad,3,17431926,,3,1,1,
-2024-04-19,0mWVScJbxO3tbXuiZOxYZE,"So Long, London",4,17176465,,4,1,1,
-2024-04-19,05msZuGKP3OCUGQnvLBOf4,My Boy Only Breaks His Favorite Toys,5,17101904,,5,1,1,
-2024-04-19,5og4Qzt92jJzVDkOtSEilb,But Daddy I Love Him,6,15542560,,6,1,1,
-2024-04-19,3ZVFcD8Wlw9T9klGqmJf9F,Florida!!! (feat. Florence + The Machine),7,14459975,,7,1,1,
-2024-04-19,4q5YezDOIPcoLr8R81x9qy,I Can Do It With a Broken Heart,8,13650325,,8,1,1,
-2024-04-19,36t6frENUtCYKuZus6aYDO,Who’s Afraid of Little Old Me?,9,12966995,,9,1,1,
-2024-04-19,3fO566xJgwxIa3qGCGBvIC,Fresh Out The Slammer,10,12758182,,10,1,1,
-2024-04-19,0W0iAC1VGlB82PI6elxFYf,Guilty as Sin?,11,12651611,,11,1,1,
-2024-04-19,6RSG1dKPV5gEvILwJb4QtS,loml,12,12080644,,12,1,1,
-2024-04-19,2h3MDMf8sd9s4XIzpTBIjX,I Can Fix Him (No Really I Can),13,11127606,,13,1,1,
-2024-04-19,2v1ivOOsgn64g5OywuH55L,The Smallest Man Who Ever Lived,14,10815874,,14,1,1,
-2024-04-19,1dhMTsEZz6ZEquGvmzVoHn,The Alchemy,15,10637831,,15,1,1,
-2024-04-19,1UlhrRvYzbHEyugEDspXUB,Clara Bow,16,9564186,,16,1,1,
-2024-04-19,62E2nR0od0M5HYxuYLaDz7,The Black Dog,20,7011116,,20,1,1,
-2024-04-19,1kcwpPDQnqEqmezzXdJTCP,imgonnagetyouback,21,6755030,,21,1,1,
-2024-04-19,7ogK4lJDVDMU6A6vYR5rvD,thanK you aIMee,22,6649752,,22,1,1,
-2024-04-19,1GP8VW5Wk2w2obkWjGCGXd,So High School,25,6247408,,25,1,1,
-2024-04-19,4EF6IyONolQy0bIQXm2EmX,The Albatross,26,6152594,,26,1,1,
-2024-04-19,1m7Fep6Dm8SG58ns8NLZhm,Chloe or Sam or Sophia or Marcus,28,5856927,,28,1,1,
-2024-04-19,2AS8i1xuWmeWGBBwI69vfn,How Did It End?,29,5768821,,29,1,1,
-2024-04-19,3hlGuz3loYoLfI3bpwieWq,I Hate It Here,31,5387443,,31,1,1,
-2024-04-19,18WFFUIsewmA8g31KAeo3e,The Prophecy,32,5154617,,32,1,1,
-2024-04-19,1Zai5UJ2di3qEuR2HeT2s8,I Look in People's Windows,33,5077082,,33,1,1,
-2024-04-19,0g4fMVo4JjwnIpTfFfLdxS,Cassandra,35,4674074,,35,1,1,
-2024-04-19,3zMDGj4D8ogaYgAIZPeU7S,Peter,36,4503638,,36,1,1,
-2024-04-19,1BxfuPKGuaTgP7aM0Bbdwr,Cruel Summer,38,4420067,13,2,432,399,
-2024-04-19,2913xXOVAIDAqxzV2g4VcU,The Bolter,39,4254088,,39,1,1,
-2024-04-19,1DTRUYVd8rYpla9hhVVwjo,The Manuscript,41,4144642,,41,1,1,
-2024-04-19,2CnjDMdpRjlWv04Xk3s6MW,Robin,42,3849453,,42,1,1,
-2024-04-19,3hUxzQpSfdDqwM3ZTFQY0K,august,89,1999830,129,4,421,14,
-2024-04-19,1dGr1c8CrMLDpV6mPbImSI,Lover,102,1832176,95,2,429,116,
-2024-04-19,0V3wPSX9ygBnCm8psDIegu,Anti-Hero,105,1824792,84,1,545,116,
-2024-04-19,4R2kfaDFhslZEMJqAFNpdd,cardigan,138,1574433,115,1,487,116,
 2024-06-01,2OzhQlSqBEmt7hmkYxfT6m,Fortnight (feat. Post Malone),16,4360671,15,1,12,,
 2024-06-01,1BxfuPKGuaTgP7aM0Bbdwr,Cruel Summer,22,3282699,24,2,79,,
 2024-06-01,2F3N9tdombb64aW6VtZOdo,Down Bad,58,1988341,55,2,3,,
@@ -15562,8 +14631,6 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2026-06-01,3yWuTOYDztXjZxdE2cIRUa,Opalite,131,1404759,120,2,168,,
 2026-06-02,53iuhJlwXhSER5J2IYYv1W,The Fate of Ophelia,25,2709376,24,1,169,,
 2026-06-02,3yWuTOYDztXjZxdE2cIRUa,Opalite,128,1440406,131,2,169,,
-2026-06-03,53iuhJlwXhSER5J2IYYv1W,The Fate of Ophelia,27,2703391,25,1,240,1,
-2026-06-03,3yWuTOYDztXjZxdE2cIRUa,Opalite,127,1480162,128,2,240,1,
 2026-07-10,53iuhJlwXhSER5J2IYYv1W,The Fate of Ophelia,19,2656129,17,1,281,281,
 2026-07-10,5uPaqMMt59KGrdKIitDRqa,"I Knew It, I Knew You - From ""Toy Story 5""",76,1704402,63,1,36,36,
 2026-07-10,1u8c2t2Cy7UBoG4ArRcF5g,Blank Space,167,1327777,,14,795,1,RE
@@ -15574,514 +14641,6 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2026-07-11,1u8c2t2Cy7UBoG4ArRcF5g,Blank Space,174,1235870,167,14,796,2,
 2026-07-11,3yWuTOYDztXjZxdE2cIRUa,Opalite,175,1232744,176,2,281,3,
 2026-07-11,0ug5NqcwcFR2xrfTkc7k8e,Style,197,1199260,185,12,370,2,
-2017-01-01,,I Don’t Wanna Live Forever (Fifty Shades Darker),12,1857252,-1,12,1,,
-2017-01-02,,I Don’t Wanna Live Forever (Fifty Shades Darker),6,2329762,12,6,2,,
-2017-01-03,,I Don’t Wanna Live Forever (Fifty Shades Darker),4,2710150,6,4,3,,
-2017-01-04,,I Don’t Wanna Live Forever (Fifty Shades Darker),4,2878313,4,4,4,,
-2017-01-05,,I Don’t Wanna Live Forever (Fifty Shades Darker),4,2898180,4,4,5,,
-2017-01-06,,I Don’t Wanna Live Forever (Fifty Shades Darker),6,2897927,4,4,6,,
-2017-01-07,,I Don’t Wanna Live Forever (Fifty Shades Darker),6,2795586,6,4,7,,
-2017-01-08,,I Don’t Wanna Live Forever (Fifty Shades Darker),6,2658820,6,4,8,,
-2017-01-09,,I Don’t Wanna Live Forever (Fifty Shades Darker),5,3042565,6,4,9,,
-2017-01-10,,I Don’t Wanna Live Forever (Fifty Shades Darker),4,3157514,5,4,10,,
-2017-01-11,,I Don’t Wanna Live Forever (Fifty Shades Darker),4,3247065,4,4,11,,
-2017-01-12,,I Don’t Wanna Live Forever (Fifty Shades Darker),4,3296224,4,4,12,,
-2017-01-13,,I Don’t Wanna Live Forever (Fifty Shades Darker),4,3468827,4,4,13,,
-2017-01-14,,I Don’t Wanna Live Forever (Fifty Shades Darker),5,3417668,4,4,14,,
-2017-01-15,,I Don’t Wanna Live Forever (Fifty Shades Darker),4,3087541,5,4,15,,
-2017-01-16,,I Don’t Wanna Live Forever (Fifty Shades Darker),5,3324763,4,4,16,,
-2017-01-17,,I Don’t Wanna Live Forever (Fifty Shades Darker),5,3410496,5,4,17,,
-2017-01-18,,I Don’t Wanna Live Forever (Fifty Shades Darker),5,3417561,5,4,18,,
-2017-01-19,,I Don’t Wanna Live Forever (Fifty Shades Darker),5,3416023,5,4,19,,
-2017-01-20,,I Don’t Wanna Live Forever (Fifty Shades Darker),5,3435556,5,4,20,,
-2017-01-21,,I Don’t Wanna Live Forever (Fifty Shades Darker),6,3299577,5,4,21,,
-2017-01-22,,I Don’t Wanna Live Forever (Fifty Shades Darker),5,2976059,6,4,22,,
-2017-01-23,,I Don’t Wanna Live Forever (Fifty Shades Darker),4,3220708,5,4,23,,
-2017-01-24,,I Don’t Wanna Live Forever (Fifty Shades Darker),4,3322706,4,4,24,,
-2017-01-25,,I Don’t Wanna Live Forever (Fifty Shades Darker),4,3374636,4,4,25,,
-2017-01-26,,I Don’t Wanna Live Forever (Fifty Shades Darker),4,3520010,4,4,26,,
-2017-01-27,,I Don’t Wanna Live Forever (Fifty Shades Darker),3,3813687,4,3,27,,
-2017-01-28,,I Don’t Wanna Live Forever (Fifty Shades Darker),3,3800351,3,3,28,,
-2017-01-29,,I Don’t Wanna Live Forever (Fifty Shades Darker),3,3383307,3,3,29,,
-2017-01-30,,I Don’t Wanna Live Forever (Fifty Shades Darker),3,3641608,3,3,30,,
-2017-01-31,,I Don’t Wanna Live Forever (Fifty Shades Darker),3,3792324,3,3,31,,
-2017-02-01,,I Don’t Wanna Live Forever (Fifty Shades Darker),3,3838281,3,3,32,,
-2017-02-02,,I Don’t Wanna Live Forever (Fifty Shades Darker),3,3864527,3,3,33,,
-2017-02-03,,I Don’t Wanna Live Forever (Fifty Shades Darker),3,4034520,3,3,34,,
-2017-02-04,,I Don’t Wanna Live Forever (Fifty Shades Darker),4,3928796,3,3,35,,
-2017-02-05,,I Don’t Wanna Live Forever (Fifty Shades Darker),3,3563966,4,3,36,,
-2017-02-06,,I Don’t Wanna Live Forever (Fifty Shades Darker),3,3634652,3,3,37,,
-2017-02-07,,I Don’t Wanna Live Forever (Fifty Shades Darker),3,3826728,3,3,38,,
-2017-02-08,,I Don’t Wanna Live Forever (Fifty Shades Darker),3,3911713,3,3,39,,
-2017-02-09,,I Don’t Wanna Live Forever (Fifty Shades Darker),3,3939004,3,3,40,,
-2017-02-10,,I Don’t Wanna Live Forever (Fifty Shades Darker),2,4277593,3,2,41,,
-2017-02-11,,I Don’t Wanna Live Forever (Fifty Shades Darker),2,4331920,2,2,42,,
-2017-02-12,,I Don’t Wanna Live Forever (Fifty Shades Darker),2,3965956,2,2,43,,
-2017-02-13,,I Don’t Wanna Live Forever (Fifty Shades Darker),2,4271266,2,2,44,,
-2017-02-14,,I Don’t Wanna Live Forever (Fifty Shades Darker),2,4375267,2,2,45,,
-2017-02-15,,I Don’t Wanna Live Forever (Fifty Shades Darker),2,4464989,2,2,46,,
-2017-02-16,,I Don’t Wanna Live Forever (Fifty Shades Darker),2,4484617,2,2,47,,
-2017-02-17,,I Don’t Wanna Live Forever (Fifty Shades Darker),2,4595854,2,2,48,,
-2017-02-18,,I Don’t Wanna Live Forever (Fifty Shades Darker),2,4459314,2,2,49,,
-2017-02-19,,I Don’t Wanna Live Forever (Fifty Shades Darker),2,3955354,2,2,50,,
-2017-02-20,,I Don’t Wanna Live Forever (Fifty Shades Darker),2,4164333,2,2,51,,
-2017-02-21,,I Don’t Wanna Live Forever (Fifty Shades Darker),3,4213507,2,2,52,,
-2017-02-22,,I Don’t Wanna Live Forever (Fifty Shades Darker),3,4200056,3,2,53,,
-2017-02-23,,I Don’t Wanna Live Forever (Fifty Shades Darker),3,4181793,3,2,54,,
-2017-02-24,,I Don’t Wanna Live Forever (Fifty Shades Darker),4,4271609,3,2,55,,
-2017-02-25,,I Don’t Wanna Live Forever (Fifty Shades Darker),4,4069844,4,2,56,,
-2017-02-26,,I Don’t Wanna Live Forever (Fifty Shades Darker),4,3565795,4,2,57,,
-2017-02-27,,I Don’t Wanna Live Forever (Fifty Shades Darker),4,3760395,4,2,58,,
-2017-02-28,,I Don’t Wanna Live Forever (Fifty Shades Darker),4,3852601,4,2,59,,
-2017-03-01,,I Don’t Wanna Live Forever (Fifty Shades Darker),4,3898610,4,2,60,,
-2017-03-02,,I Don’t Wanna Live Forever (Fifty Shades Darker),4,3896382,4,2,61,,
-2017-03-03,,I Don’t Wanna Live Forever (Fifty Shades Darker),5,3886422,4,2,62,,
-2017-03-04,,I Don’t Wanna Live Forever (Fifty Shades Darker),7,3709558,5,2,63,,
-2017-03-05,,I Don’t Wanna Live Forever (Fifty Shades Darker),6,3295754,7,2,64,,
-2017-03-06,,I Don’t Wanna Live Forever (Fifty Shades Darker),8,3501666,6,2,65,,
-2017-03-07,,I Don’t Wanna Live Forever (Fifty Shades Darker),7,3525550,8,2,66,,
-2017-03-08,,I Don’t Wanna Live Forever (Fifty Shades Darker),6,3555972,7,2,67,,
-2017-03-09,,I Don’t Wanna Live Forever (Fifty Shades Darker),6,3622811,6,2,68,,
-2017-03-10,,I Don’t Wanna Live Forever (Fifty Shades Darker),6,3682760,6,2,69,,
-2017-03-11,,I Don’t Wanna Live Forever (Fifty Shades Darker),7,3597187,6,2,70,,
-2017-03-12,,I Don’t Wanna Live Forever (Fifty Shades Darker),7,3178280,7,2,71,,
-2017-03-13,,I Don’t Wanna Live Forever (Fifty Shades Darker),6,3311938,7,2,72,,
-2017-03-14,,I Don’t Wanna Live Forever (Fifty Shades Darker),6,3298190,6,2,73,,
-2017-03-15,,I Don’t Wanna Live Forever (Fifty Shades Darker),5,3355894,6,2,74,,
-2017-03-16,,I Don’t Wanna Live Forever (Fifty Shades Darker),6,3373566,5,2,75,,
-2017-03-17,,I Don’t Wanna Live Forever (Fifty Shades Darker),6,3394281,6,2,76,,
-2017-03-18,,I Don’t Wanna Live Forever (Fifty Shades Darker),6,3278268,6,2,77,,
-2017-03-19,,I Don’t Wanna Live Forever (Fifty Shades Darker),13,2914386,6,2,78,,
-2017-03-20,,I Don’t Wanna Live Forever (Fifty Shades Darker),16,2945830,13,2,79,,
-2017-03-21,,I Don’t Wanna Live Forever (Fifty Shades Darker),14,2923839,16,2,80,,
-2017-03-22,,I Don’t Wanna Live Forever (Fifty Shades Darker),11,2928872,14,2,81,,
-2017-03-23,,I Don’t Wanna Live Forever (Fifty Shades Darker),10,2889672,11,2,82,,
-2017-03-24,,I Don’t Wanna Live Forever (Fifty Shades Darker),11,2945639,10,2,83,,
-2017-03-25,,I Don’t Wanna Live Forever (Fifty Shades Darker),10,2873160,11,2,84,,
-2017-03-26,,I Don’t Wanna Live Forever (Fifty Shades Darker),11,2511816,10,2,85,,
-2017-03-27,,I Don’t Wanna Live Forever (Fifty Shades Darker),11,2632660,11,2,86,,
-2017-03-28,,I Don’t Wanna Live Forever (Fifty Shades Darker),11,2668961,11,2,87,,
-2017-03-29,,I Don’t Wanna Live Forever (Fifty Shades Darker),11,2702477,11,2,88,,
-2017-03-30,,I Don’t Wanna Live Forever (Fifty Shades Darker),11,2678745,11,2,89,,
-2017-03-31,,I Don’t Wanna Live Forever (Fifty Shades Darker),15,2715807,11,2,90,,
-2017-04-01,,I Don’t Wanna Live Forever (Fifty Shades Darker),15,2577384,15,2,91,,
-2017-04-02,,I Don’t Wanna Live Forever (Fifty Shades Darker),15,2287565,15,2,92,,
-2017-04-03,,I Don’t Wanna Live Forever (Fifty Shades Darker),15,2406045,15,2,93,,
-2017-04-04,,I Don’t Wanna Live Forever (Fifty Shades Darker),16,2309649,15,2,94,,
-2017-04-05,,I Don’t Wanna Live Forever (Fifty Shades Darker),16,2272892,16,2,95,,
-2017-04-06,,I Don’t Wanna Live Forever (Fifty Shades Darker),16,2242811,16,2,96,,
-2017-04-07,,I Don’t Wanna Live Forever (Fifty Shades Darker),19,2281633,16,2,97,,
-2017-04-08,,I Don’t Wanna Live Forever (Fifty Shades Darker),20,2165010,19,2,98,,
-2017-04-09,,I Don’t Wanna Live Forever (Fifty Shades Darker),20,1915788,20,2,99,,
-2017-04-10,,I Don’t Wanna Live Forever (Fifty Shades Darker),20,2061612,20,2,100,,
-2017-04-11,,I Don’t Wanna Live Forever (Fifty Shades Darker),19,2059282,20,2,101,,
-2017-04-12,,I Don’t Wanna Live Forever (Fifty Shades Darker),18,2080946,19,2,102,,
-2017-04-13,,I Don’t Wanna Live Forever (Fifty Shades Darker),19,2071136,18,2,103,,
-2017-04-14,,I Don’t Wanna Live Forever (Fifty Shades Darker),34,1926774,19,2,104,,
-2017-04-15,,I Don’t Wanna Live Forever (Fifty Shades Darker),35,1766329,34,2,105,,
-2017-04-16,,I Don’t Wanna Live Forever (Fifty Shades Darker),29,1604503,35,2,106,,
-2017-04-17,,I Don’t Wanna Live Forever (Fifty Shades Darker),32,1771773,29,2,107,,
-2017-04-18,,I Don’t Wanna Live Forever (Fifty Shades Darker),33,1822440,32,2,108,,
-2017-04-19,,I Don’t Wanna Live Forever (Fifty Shades Darker),32,1812450,33,2,109,,
-2017-04-20,,I Don’t Wanna Live Forever (Fifty Shades Darker),30,1826560,32,2,110,,
-2017-04-21,,I Don’t Wanna Live Forever (Fifty Shades Darker),31,1860054,30,2,111,,
-2017-04-22,,I Don’t Wanna Live Forever (Fifty Shades Darker),29,1787563,31,2,112,,
-2017-04-23,,I Don’t Wanna Live Forever (Fifty Shades Darker),29,1579803,29,2,113,,
-2017-04-24,,I Don’t Wanna Live Forever (Fifty Shades Darker),29,1707351,29,2,114,,
-2017-04-25,,I Don’t Wanna Live Forever (Fifty Shades Darker),29,1747952,29,2,115,,
-2017-04-26,,I Don’t Wanna Live Forever (Fifty Shades Darker),28,1763662,29,2,116,,
-2017-04-27,,I Don’t Wanna Live Forever (Fifty Shades Darker),28,1746104,28,2,117,,
-2017-04-28,,I Don’t Wanna Live Forever (Fifty Shades Darker),32,1775943,28,2,118,,
-2017-04-29,,I Don’t Wanna Live Forever (Fifty Shades Darker),33,1703297,32,2,119,,
-2017-04-30,,I Don’t Wanna Live Forever (Fifty Shades Darker),31,1544382,33,2,120,,
-2017-05-01,,I Don’t Wanna Live Forever (Fifty Shades Darker),32,1557009,31,2,121,,
-2017-05-02,,I Don’t Wanna Live Forever (Fifty Shades Darker),35,1603594,32,2,122,,
-2017-05-03,,I Don’t Wanna Live Forever (Fifty Shades Darker),34,1626896,35,2,123,,
-2017-05-04,,I Don’t Wanna Live Forever (Fifty Shades Darker),34,1630669,34,2,124,,
-2017-05-05,,I Don’t Wanna Live Forever (Fifty Shades Darker),37,1648743,34,2,125,,
-2017-05-06,,I Don’t Wanna Live Forever (Fifty Shades Darker),38,1548622,37,2,126,,
-2017-05-07,,I Don’t Wanna Live Forever (Fifty Shades Darker),37,1381561,38,2,127,,
-2017-05-08,,I Don’t Wanna Live Forever (Fifty Shades Darker),40,1477399,37,2,128,,
-2017-05-09,,I Don’t Wanna Live Forever (Fifty Shades Darker),42,1524364,40,2,129,,
-2017-05-10,,I Don’t Wanna Live Forever (Fifty Shades Darker),42,1505940,42,2,130,,
-2017-05-11,,I Don’t Wanna Live Forever (Fifty Shades Darker),43,1496916,42,2,131,,
-2017-05-12,,I Don’t Wanna Live Forever (Fifty Shades Darker),46,1523305,43,2,132,,
-2017-05-13,,I Don’t Wanna Live Forever (Fifty Shades Darker),45,1438377,46,2,133,,
-2017-05-14,,I Don’t Wanna Live Forever (Fifty Shades Darker),44,1256398,45,2,134,,
-2017-05-15,,I Don’t Wanna Live Forever (Fifty Shades Darker),44,1360561,44,2,135,,
-2017-05-16,,I Don’t Wanna Live Forever (Fifty Shades Darker),44,1387346,44,2,136,,
-2017-05-17,,I Don’t Wanna Live Forever (Fifty Shades Darker),44,1401327,44,2,137,,
-2017-05-18,,I Don’t Wanna Live Forever (Fifty Shades Darker),45,1369711,44,2,138,,
-2017-05-19,,I Don’t Wanna Live Forever (Fifty Shades Darker),51,1380868,45,2,139,,
-2017-05-20,,I Don’t Wanna Live Forever (Fifty Shades Darker),50,1317315,51,2,140,,
-2017-05-21,,I Don’t Wanna Live Forever (Fifty Shades Darker),50,1186513,50,2,141,,
-2017-05-22,,I Don’t Wanna Live Forever (Fifty Shades Darker),50,1260005,50,2,142,,
-2017-05-23,,I Don’t Wanna Live Forever (Fifty Shades Darker),50,1289676,50,2,143,,
-2017-05-24,,I Don’t Wanna Live Forever (Fifty Shades Darker),50,1327879,50,2,144,,
-2017-05-25,,I Don’t Wanna Live Forever (Fifty Shades Darker),50,1336519,50,2,145,,
-2017-05-26,,I Don’t Wanna Live Forever (Fifty Shades Darker),50,1406614,50,2,146,,
-2017-05-27,,I Don’t Wanna Live Forever (Fifty Shades Darker),52,1302035,50,2,147,,
-2017-05-28,,I Don’t Wanna Live Forever (Fifty Shades Darker),52,1109125,52,2,148,,
-2017-05-29,,I Don’t Wanna Live Forever (Fifty Shades Darker),53,1139644,52,2,149,,
-2017-05-30,,I Don’t Wanna Live Forever (Fifty Shades Darker),54,1174170,53,2,150,,
-2017-05-31,,I Don’t Wanna Live Forever (Fifty Shades Darker),53,1194651,54,2,151,,
-2017-06-01,,I Don’t Wanna Live Forever (Fifty Shades Darker),55,1178784,53,2,152,,
-2017-06-02,,I Don’t Wanna Live Forever (Fifty Shades Darker),59,1181770,55,2,153,,
-2017-06-03,,I Don’t Wanna Live Forever (Fifty Shades Darker),60,1089994,59,2,154,,
-2017-06-04,,I Don’t Wanna Live Forever (Fifty Shades Darker),56,984787,60,2,155,,
-2017-06-05,,I Don’t Wanna Live Forever (Fifty Shades Darker),55,1059064,56,2,156,,
-2017-06-06,,I Don’t Wanna Live Forever (Fifty Shades Darker),57,1083249,55,2,157,,
-2017-06-07,,I Don’t Wanna Live Forever (Fifty Shades Darker),57,1098828,57,2,158,,
-2017-06-08,,I Don’t Wanna Live Forever (Fifty Shades Darker),59,1079306,57,2,159,,
-2017-06-09,,I Don’t Wanna Live Forever (Fifty Shades Darker),54,1223130,59,2,160,,
-2017-06-09,,Blank Space,122,671695,-1,122,1,,
-2017-06-09,,Shake It Off,135,643541,-1,135,1,,
-2017-06-09,,Style,162,544806,-1,162,1,,
-2017-06-09,,Bad Blood,165,539047,-1,165,1,,
-2017-06-09,,Wildest Dreams,175,528023,-1,175,1,,
-2017-06-10,,I Don’t Wanna Live Forever (Fifty Shades Darker),58,1108899,54,2,161,,
-2017-06-10,,Shake It Off,124,625889,135,124,2,,
-2017-06-10,,Blank Space,127,620432,122,122,2,,
-2017-06-10,,Bad Blood,166,516865,165,165,2,,
-2017-06-10,,Style,169,510402,162,162,2,,
-2017-06-10,,Wildest Dreams,173,504162,175,173,2,,
-2017-06-11,,I Don’t Wanna Live Forever (Fifty Shades Darker),57,984230,58,2,162,,
-2017-06-11,,Blank Space,142,501255,127,122,3,,
-2017-06-11,,Shake It Off,150,485329,124,124,3,,
-2017-06-11,,Wildest Dreams,183,420807,173,173,3,,
-2017-06-11,,Style,195,402375,169,162,3,,
-2017-06-11,,Bad Blood,200,398664,166,165,3,,
-2017-06-12,,I Don’t Wanna Live Forever (Fifty Shades Darker),56,1060788,57,2,163,,
-2017-06-12,,Shake It Off,124,602841,150,124,4,,
-2017-06-12,,Blank Space,138,550850,142,122,4,,
-2017-06-12,,Bad Blood,185,449591,200,165,4,,
-2017-06-12,,Wildest Dreams,188,445740,183,173,4,,
-2017-06-12,,Style,196,437979,195,162,4,,
-2017-06-13,,I Don’t Wanna Live Forever (Fifty Shades Darker),58,1074308,56,2,164,,
-2017-06-13,,Shake It Off,138,564281,124,124,5,,
-2017-06-13,,Blank Space,152,530569,138,122,5,,
-2017-06-14,,I Don’t Wanna Live Forever (Fifty Shades Darker),59,1087047,58,2,165,,
-2017-06-14,,Shake It Off,164,508473,138,124,6,,
-2017-06-14,,Blank Space,183,474055,152,122,6,,
-2017-06-15,,I Don’t Wanna Live Forever (Fifty Shades Darker),60,1072454,59,2,166,,
-2017-06-15,,Shake It Off,189,459890,164,124,7,,
-2017-06-16,,I Don’t Wanna Live Forever (Fifty Shades Darker),64,1076554,60,2,167,,
-2017-06-17,,I Don’t Wanna Live Forever (Fifty Shades Darker),68,995066,64,2,168,,
-2017-06-18,,I Don’t Wanna Live Forever (Fifty Shades Darker),66,897094,68,2,169,,
-2017-06-19,,I Don’t Wanna Live Forever (Fifty Shades Darker),65,985434,66,2,170,,
-2017-06-20,,I Don’t Wanna Live Forever (Fifty Shades Darker),64,998807,65,2,171,,
-2017-06-21,,I Don’t Wanna Live Forever (Fifty Shades Darker),66,994395,64,2,172,,
-2017-06-22,,I Don’t Wanna Live Forever (Fifty Shades Darker),66,989062,66,2,173,,
-2017-06-23,,I Don’t Wanna Live Forever (Fifty Shades Darker),74,966299,66,2,174,,
-2017-06-24,,I Don’t Wanna Live Forever (Fifty Shades Darker),78,877158,74,2,175,,
-2017-06-25,,I Don’t Wanna Live Forever (Fifty Shades Darker),73,795054,78,2,176,,
-2017-06-26,,I Don’t Wanna Live Forever (Fifty Shades Darker),73,877807,73,2,177,,
-2017-06-27,,I Don’t Wanna Live Forever (Fifty Shades Darker),73,904193,73,2,178,,
-2017-06-28,,I Don’t Wanna Live Forever (Fifty Shades Darker),71,908698,73,2,179,,
-2017-06-29,,I Don’t Wanna Live Forever (Fifty Shades Darker),72,902367,71,2,180,,
-2017-06-30,,I Don’t Wanna Live Forever (Fifty Shades Darker),80,923631,72,2,181,,
-2017-07-01,,I Don’t Wanna Live Forever (Fifty Shades Darker),83,844946,80,2,182,,
-2017-07-02,,I Don’t Wanna Live Forever (Fifty Shades Darker),78,757384,83,2,183,,
-2017-07-03,,I Don’t Wanna Live Forever (Fifty Shades Darker),74,830734,78,2,184,,
-2017-07-04,,I Don’t Wanna Live Forever (Fifty Shades Darker),78,822316,74,2,185,,
-2017-07-04,,Shake It Off,163,479896,-1,124,1,,
-2017-07-05,,I Don’t Wanna Live Forever (Fifty Shades Darker),74,853028,78,2,186,,
-2017-07-06,,I Don’t Wanna Live Forever (Fifty Shades Darker),73,865503,74,2,187,,
-2017-07-07,,I Don’t Wanna Live Forever (Fifty Shades Darker),83,873710,73,2,188,,
-2017-07-08,,I Don’t Wanna Live Forever (Fifty Shades Darker),89,795772,83,2,189,,
-2017-07-09,,I Don’t Wanna Live Forever (Fifty Shades Darker),82,735273,89,2,190,,
-2017-07-10,,I Don’t Wanna Live Forever (Fifty Shades Darker),78,813417,82,2,191,,
-2017-07-11,,I Don’t Wanna Live Forever (Fifty Shades Darker),80,826640,78,2,192,,
-2017-07-12,,I Don’t Wanna Live Forever (Fifty Shades Darker),78,840814,80,2,193,,
-2017-07-13,,I Don’t Wanna Live Forever (Fifty Shades Darker),82,837184,78,2,194,,
-2017-07-14,,I Don’t Wanna Live Forever (Fifty Shades Darker),92,844174,82,2,195,,
-2017-07-15,,I Don’t Wanna Live Forever (Fifty Shades Darker),92,775406,92,2,196,,
-2017-07-16,,I Don’t Wanna Live Forever (Fifty Shades Darker),84,713764,92,2,197,,
-2017-07-17,,I Don’t Wanna Live Forever (Fifty Shades Darker),81,780983,84,2,198,,
-2017-07-18,,I Don’t Wanna Live Forever (Fifty Shades Darker),82,796775,81,2,199,,
-2017-07-19,,I Don’t Wanna Live Forever (Fifty Shades Darker),80,809804,82,2,200,,
-2017-07-20,,I Don’t Wanna Live Forever (Fifty Shades Darker),87,807266,80,2,201,,
-2017-07-21,,I Don’t Wanna Live Forever (Fifty Shades Darker),112,816006,87,2,202,,
-2017-07-24,,I Don’t Wanna Live Forever (Fifty Shades Darker),108,666600,89,2,205,,
-2017-07-25,,I Don’t Wanna Live Forever (Fifty Shades Darker),108,679413,108,2,206,,
-2017-07-26,,I Don’t Wanna Live Forever (Fifty Shades Darker),88,783497,108,2,207,,
-2017-07-27,,I Don’t Wanna Live Forever (Fifty Shades Darker),88,795907,88,2,208,,
-2017-07-28,,I Don’t Wanna Live Forever (Fifty Shades Darker),93,806113,88,2,209,,
-2017-07-29,,I Don’t Wanna Live Forever (Fifty Shades Darker),99,736652,93,2,210,,
-2017-07-30,,I Don’t Wanna Live Forever (Fifty Shades Darker),90,677049,99,2,211,,
-2017-07-31,,I Don’t Wanna Live Forever (Fifty Shades Darker),86,761560,90,2,212,,
-2017-08-01,,I Don’t Wanna Live Forever (Fifty Shades Darker),87,773003,86,2,213,,
-2017-08-02,,I Don’t Wanna Live Forever (Fifty Shades Darker),85,783327,87,2,214,,
-2017-08-03,,I Don’t Wanna Live Forever (Fifty Shades Darker),86,777027,85,2,215,,
-2017-08-04,,I Don’t Wanna Live Forever (Fifty Shades Darker),90,778957,86,2,216,,
-2017-08-05,,I Don’t Wanna Live Forever (Fifty Shades Darker),99,712477,90,2,217,,
-2017-08-06,,I Don’t Wanna Live Forever (Fifty Shades Darker),93,655160,99,2,218,,
-2017-08-07,,I Don’t Wanna Live Forever (Fifty Shades Darker),89,711297,93,2,219,,
-2017-08-08,,I Don’t Wanna Live Forever (Fifty Shades Darker),89,732095,89,2,220,,
-2017-08-09,,I Don’t Wanna Live Forever (Fifty Shades Darker),89,750786,89,2,221,,
-2017-08-10,,I Don’t Wanna Live Forever (Fifty Shades Darker),89,752269,89,2,222,,
-2017-08-11,,I Don’t Wanna Live Forever (Fifty Shades Darker),96,764531,89,2,223,,
-2017-08-12,,I Don’t Wanna Live Forever (Fifty Shades Darker),102,701950,96,2,224,,
-2017-08-13,,I Don’t Wanna Live Forever (Fifty Shades Darker),93,651395,102,2,225,,
-2017-08-14,,I Don’t Wanna Live Forever (Fifty Shades Darker),96,702378,93,2,226,,
-2017-08-15,,I Don’t Wanna Live Forever (Fifty Shades Darker),95,711849,96,2,227,,
-2017-08-16,,I Don’t Wanna Live Forever (Fifty Shades Darker),92,735200,95,2,228,,
-2017-08-17,,I Don’t Wanna Live Forever (Fifty Shades Darker),92,743429,92,2,229,,
-2017-08-18,,I Don’t Wanna Live Forever (Fifty Shades Darker),97,758011,92,2,230,,
-2017-08-19,,I Don’t Wanna Live Forever (Fifty Shades Darker),103,704337,97,2,231,,
-2017-08-20,,I Don’t Wanna Live Forever (Fifty Shades Darker),94,646395,103,2,232,,
-2017-08-21,,I Don’t Wanna Live Forever (Fifty Shades Darker),96,684659,94,2,233,,
-2017-08-22,,I Don’t Wanna Live Forever (Fifty Shades Darker),96,715432,96,2,234,,
-2017-08-23,,I Don’t Wanna Live Forever (Fifty Shades Darker),94,739760,96,2,235,,
-2017-08-24,,I Don’t Wanna Live Forever (Fifty Shades Darker),93,758681,94,2,236,,
-2017-08-25,,Look What You Made Me Do,1,7908492,-1,1,1,,
-2017-08-25,,I Don’t Wanna Live Forever (Fifty Shades Darker),109,835708,93,2,237,,
-2017-08-25,,Blank Space,198,530862,-1,122,1,,
-2017-08-26,,Look What You Made Me Do,1,5429680,1,1,2,,
-2017-08-26,,I Don’t Wanna Live Forever (Fifty Shades Darker),108,764608,109,2,238,,
-2017-08-27,,Look What You Made Me Do,1,4494438,1,1,3,,
-2017-08-27,,I Don’t Wanna Live Forever (Fifty Shades Darker),102,679677,108,2,239,,
-2017-08-28,,Look What You Made Me Do,1,5489086,1,1,4,,
-2017-08-28,,I Don’t Wanna Live Forever (Fifty Shades Darker),100,777018,102,2,240,,
-2017-08-28,,Shake It Off,198,446198,-1,124,1,,
-2017-08-29,,Look What You Made Me Do,1,5923188,1,1,5,,
-2017-08-29,,I Don’t Wanna Live Forever (Fifty Shades Darker),100,782462,100,2,241,,
-2017-08-30,,Look What You Made Me Do,1,5903329,1,1,6,,
-2017-08-30,,I Don’t Wanna Live Forever (Fifty Shades Darker),90,831120,100,2,242,,
-2017-08-31,,Look What You Made Me Do,1,5716583,1,1,7,,
-2017-08-31,,I Don’t Wanna Live Forever (Fifty Shades Darker),92,821407,90,2,243,,
-2017-09-01,,Look What You Made Me Do,1,5547962,1,1,8,,
-2017-09-01,,I Don’t Wanna Live Forever (Fifty Shades Darker),95,822984,92,2,244,,
-2017-09-02,,Look What You Made Me Do,1,5041672,1,1,9,,
-2017-09-02,,I Don’t Wanna Live Forever (Fifty Shades Darker),98,754627,95,2,245,,
-2017-09-03,,Look What You Made Me Do,1,4554060,1,1,10,,
-2017-09-03,,...Ready For It?,10,2408401,-1,10,1,,
-2017-09-03,,I Don’t Wanna Live Forever (Fifty Shades Darker),89,729892,98,2,246,,
-2017-09-03,,Shake It Off,200,400243,-1,124,1,,
-2017-09-04,,Look What You Made Me Do,1,4806984,1,1,11,,
-2017-09-04,,...Ready For It?,3,3506717,10,3,2,,
-2017-09-04,,I Don’t Wanna Live Forever (Fifty Shades Darker),86,793977,89,2,247,,
-2017-09-04,,Shake It Off,184,458701,200,124,2,,
-2017-09-04,,Blank Space,189,438936,-1,122,1,,
-2017-09-05,,Look What You Made Me Do,1,4863753,1,1,12,,
-2017-09-05,,...Ready For It?,4,3581725,3,3,3,,
-2017-09-05,,I Don’t Wanna Live Forever (Fifty Shades Darker),89,799686,86,2,248,,
-2017-09-05,,Shake It Off,199,434851,184,124,3,,
-2017-09-05,,Blank Space,200,432737,189,122,2,,
-2017-09-06,,Look What You Made Me Do,1,4709712,1,1,13,,
-2017-09-06,,...Ready For It?,4,3400510,4,3,4,,
-2017-09-06,,I Don’t Wanna Live Forever (Fifty Shades Darker),86,812957,89,2,249,,
-2017-09-07,,Look What You Made Me Do,1,4534776,1,1,14,,
-2017-09-07,,...Ready For It?,5,3146759,4,3,5,,
-2017-09-07,,I Don’t Wanna Live Forever (Fifty Shades Darker),87,822176,86,2,250,,
-2017-09-08,,Look What You Made Me Do,2,4465932,1,1,15,,
-2017-09-08,,...Ready For It?,7,3114867,5,3,6,,
-2017-09-08,,I Don’t Wanna Live Forever (Fifty Shades Darker),89,848210,87,2,251,,
-2017-09-09,,Look What You Made Me Do,2,4271610,2,1,16,,
-2017-09-09,,...Ready For It?,10,2637001,7,3,7,,
-2017-09-09,,I Don’t Wanna Live Forever (Fifty Shades Darker),88,794252,89,2,252,,
-2017-09-10,,Look What You Made Me Do,1,3779609,2,1,17,,
-2017-09-10,,...Ready For It?,13,2252587,10,3,8,,
-2017-09-10,,I Don’t Wanna Live Forever (Fifty Shades Darker),85,723771,88,2,253,,
-2017-09-11,,Look What You Made Me Do,2,3970065,1,1,18,,
-2017-09-11,,...Ready For It?,13,2370979,13,3,9,,
-2017-09-11,,I Don’t Wanna Live Forever (Fifty Shades Darker),87,767282,85,2,254,,
-2017-09-12,,Look What You Made Me Do,2,4022839,2,1,19,,
-2017-09-12,,...Ready For It?,13,2354491,13,3,10,,
-2017-09-12,,I Don’t Wanna Live Forever (Fifty Shades Darker),87,793150,87,2,255,,
-2017-09-13,,Look What You Made Me Do,2,4020774,2,1,20,,
-2017-09-13,,...Ready For It?,16,2335014,13,3,11,,
-2017-09-13,,I Don’t Wanna Live Forever (Fifty Shades Darker),85,818342,87,2,256,,
-2017-09-14,,Look What You Made Me Do,3,3976966,2,1,21,,
-2017-09-14,,...Ready For It?,17,2241189,16,3,12,,
-2017-09-14,,I Don’t Wanna Live Forever (Fifty Shades Darker),87,823247,85,2,257,,
-2017-09-15,,Look What You Made Me Do,3,4020237,3,1,22,,
-2017-09-15,,...Ready For It?,25,2201880,17,3,13,,
-2017-09-15,,I Don’t Wanna Live Forever (Fifty Shades Darker),95,827458,87,2,258,,
-2017-09-16,,Look What You Made Me Do,3,3867756,3,1,23,,
-2017-09-16,,...Ready For It?,30,1992636,25,3,14,,
-2017-09-16,,I Don’t Wanna Live Forever (Fifty Shades Darker),95,766122,95,2,259,,
-2017-09-17,,Look What You Made Me Do,4,3387718,3,1,24,,
-2017-09-17,,...Ready For It?,31,1676334,30,3,15,,
-2017-09-17,,I Don’t Wanna Live Forever (Fifty Shades Darker),94,701456,95,2,260,,
-2017-09-18,,Look What You Made Me Do,5,3504862,4,1,25,,
-2017-09-18,,...Ready For It?,31,1805967,31,3,16,,
-2017-09-18,,I Don’t Wanna Live Forever (Fifty Shades Darker),103,748333,94,2,261,,
-2017-09-19,,Look What You Made Me Do,5,3451265,5,1,26,,
-2017-09-19,,...Ready For It?,32,1796783,31,3,17,,
-2017-09-19,,I Don’t Wanna Live Forever (Fifty Shades Darker),101,761310,103,2,262,,
-2017-09-20,,Look What You Made Me Do,5,3419695,5,1,27,,
-2017-09-20,,...Ready For It?,32,1756641,32,3,18,,
-2017-09-20,,I Don’t Wanna Live Forever (Fifty Shades Darker),98,768116,101,2,263,,
-2017-09-21,,Look What You Made Me Do,6,3425845,5,1,28,,
-2017-09-21,,...Ready For It?,32,1746774,32,3,19,,
-2017-09-21,,I Don’t Wanna Live Forever (Fifty Shades Darker),98,771881,98,2,264,,
-2017-09-22,,Look What You Made Me Do,6,3401094,6,1,29,,
-2017-09-22,,...Ready For It?,37,1720840,32,3,20,,
-2017-09-22,,I Don’t Wanna Live Forever (Fifty Shades Darker),102,781769,98,2,265,,
-2017-09-23,,Look What You Made Me Do,5,3273466,6,1,30,,
-2017-09-23,,...Ready For It?,38,1563183,37,3,21,,
-2017-09-23,,I Don’t Wanna Live Forever (Fifty Shades Darker),103,729965,102,2,266,,
-2017-09-24,,Look What You Made Me Do,6,2871992,5,1,31,,
-2017-09-24,,...Ready For It?,40,1360631,38,3,22,,
-2017-09-24,,I Don’t Wanna Live Forever (Fifty Shades Darker),96,671695,103,2,267,,
-2017-09-25,,Look What You Made Me Do,7,2950535,6,1,32,,
-2017-09-25,,...Ready For It?,41,1440961,40,3,23,,
-2017-09-25,,I Don’t Wanna Live Forever (Fifty Shades Darker),103,711303,96,2,268,,
-2017-09-26,,Look What You Made Me Do,8,2958259,7,1,33,,
-2017-09-26,,...Ready For It?,41,1414996,41,3,24,,
-2017-09-26,,I Don’t Wanna Live Forever (Fifty Shades Darker),103,735407,103,2,269,,
-2017-09-27,,Look What You Made Me Do,8,2975015,8,1,34,,
-2017-09-27,,...Ready For It?,42,1396997,41,3,25,,
-2017-09-27,,I Don’t Wanna Live Forever (Fifty Shades Darker),101,758041,103,2,270,,
-2017-09-28,,Look What You Made Me Do,9,2931159,8,1,35,,
-2017-09-28,,...Ready For It?,45,1363586,42,3,26,,
-2017-09-28,,I Don’t Wanna Live Forever (Fifty Shades Darker),101,760108,101,2,271,,
-2017-09-29,,Look What You Made Me Do,9,2971096,9,1,36,,
-2017-09-29,,...Ready For It?,50,1354662,45,3,27,,
-2017-09-29,,I Don’t Wanna Live Forever (Fifty Shades Darker),106,765197,101,2,272,,
-2017-09-30,,Look What You Made Me Do,8,2875615,9,1,37,,
-2017-09-30,,...Ready For It?,51,1239745,50,3,28,,
-2017-09-30,,I Don’t Wanna Live Forever (Fifty Shades Darker),109,716158,106,2,273,,
-2017-10-01,,Look What You Made Me Do,9,2457343,8,1,38,,
-2017-10-01,,...Ready For It?,50,1114690,51,3,29,,
-2017-10-01,,I Don’t Wanna Live Forever (Fifty Shades Darker),104,651807,109,2,274,,
-2017-10-02,,Look What You Made Me Do,9,2567697,9,1,39,,
-2017-10-02,,...Ready For It?,54,1173547,50,3,30,,
-2017-10-02,,I Don’t Wanna Live Forever (Fifty Shades Darker),107,689276,104,2,275,,
-2017-10-03,,Look What You Made Me Do,9,2598450,9,1,40,,
-2017-10-03,,...Ready For It?,55,1108477,54,3,31,,
-2017-10-03,,I Don’t Wanna Live Forever (Fifty Shades Darker),114,709922,107,2,276,,
-2017-10-04,,Look What You Made Me Do,9,2632948,9,1,41,,
-2017-10-04,,...Ready For It?,59,1043497,55,3,32,,
-2017-10-04,,I Don’t Wanna Live Forever (Fifty Shades Darker),106,723891,114,2,277,,
-2017-10-05,,Look What You Made Me Do,10,2573862,9,1,42,,
-2017-10-05,,...Ready For It?,68,962520,59,3,33,,
-2017-10-05,,I Don’t Wanna Live Forever (Fifty Shades Darker),108,721851,106,2,278,,
-2017-10-06,,Look What You Made Me Do,10,2626077,10,1,43,,
-2017-10-06,,...Ready For It?,75,951449,68,3,34,,
-2017-10-06,,I Don’t Wanna Live Forever (Fifty Shades Darker),114,734419,108,2,279,,
-2017-10-07,,Look What You Made Me Do,10,2550953,10,1,44,,
-2017-10-07,,...Ready For It?,76,887172,75,3,35,,
-2017-10-07,,I Don’t Wanna Live Forever (Fifty Shades Darker),117,689874,114,2,280,,
-2017-10-08,,Look What You Made Me Do,11,2233074,10,1,45,,
-2017-10-08,,...Ready For It?,76,818827,76,3,36,,
-2017-10-08,,I Don’t Wanna Live Forever (Fifty Shades Darker),110,634313,117,2,281,,
-2017-10-09,,Look What You Made Me Do,11,2325350,11,1,46,,
-2017-10-09,,...Ready For It?,80,848319,76,3,37,,
-2017-10-09,,I Don’t Wanna Live Forever (Fifty Shades Darker),108,679002,110,2,282,,
-2017-10-10,,Look What You Made Me Do,11,2327329,11,1,47,,
-2017-10-10,,...Ready For It?,83,860676,80,3,38,,
-2017-10-10,,I Don’t Wanna Live Forever (Fifty Shades Darker),110,695337,108,2,283,,
-2017-10-11,,Look What You Made Me Do,11,2355618,11,1,48,,
-2017-10-11,,...Ready For It?,82,858917,83,3,39,,
-2017-10-11,,I Don’t Wanna Live Forever (Fifty Shades Darker),108,710233,110,2,284,,
-2017-10-12,,Look What You Made Me Do,13,2295612,11,1,49,,
-2017-10-12,,...Ready For It?,84,829676,82,3,40,,
-2017-10-12,,I Don’t Wanna Live Forever (Fifty Shades Darker),110,707548,108,2,285,,
-2017-10-13,,Look What You Made Me Do,12,2357353,13,1,50,,
-2017-10-13,,...Ready For It?,95,823335,84,3,41,,
-2017-10-13,,I Don’t Wanna Live Forever (Fifty Shades Darker),119,716890,110,2,286,,
-2017-10-14,,Look What You Made Me Do,12,2314812,12,1,51,,
-2017-10-14,,...Ready For It?,96,782483,95,3,42,,
-2017-10-14,,I Don’t Wanna Live Forever (Fifty Shades Darker),119,655634,119,2,287,,
-2017-10-15,,Look What You Made Me Do,11,2034303,12,1,52,,
-2017-10-15,,...Ready For It?,95,695888,96,3,43,,
-2017-10-15,,I Don’t Wanna Live Forever (Fifty Shades Darker),114,605678,119,2,288,,
-2017-10-16,,Look What You Made Me Do,15,2114159,11,1,53,,
-2017-10-16,,...Ready For It?,92,761664,95,3,44,,
-2017-10-16,,I Don’t Wanna Live Forever (Fifty Shades Darker),115,645475,114,2,289,,
-2017-10-17,,Look What You Made Me Do,14,2135929,15,1,54,,
-2017-10-17,,...Ready For It?,91,775391,92,3,45,,
-2017-10-17,,I Don’t Wanna Live Forever (Fifty Shades Darker),112,666504,115,2,290,,
-2017-10-18,,Look What You Made Me Do,18,2109274,14,1,55,,
-2017-10-18,,...Ready For It?,93,767009,91,3,46,,
-2017-10-18,,I Don’t Wanna Live Forever (Fifty Shades Darker),111,674151,112,2,291,,
-2017-10-19,,Look What You Made Me Do,19,2098070,18,1,56,,
-2017-10-19,,...Ready For It?,94,771450,93,3,47,,
-2017-10-19,,I Don’t Wanna Live Forever (Fifty Shades Darker),111,685795,111,2,292,,
-2017-10-20,,Gorgeous,7,3030858,-1,7,1,,
-2017-10-20,,Look What You Made Me Do,17,2207550,19,1,57,,
-2017-10-20,,...Ready For It?,101,810399,94,3,48,,
-2017-10-20,,I Don’t Wanna Live Forever (Fifty Shades Darker),122,725515,111,2,293,,
-2017-10-21,,Gorgeous,11,2397970,7,7,2,,
-2017-10-21,,Look What You Made Me Do,19,2095557,17,1,58,,
-2017-10-21,,...Ready For It?,119,671498,101,3,49,,
-2017-10-21,,I Don’t Wanna Live Forever (Fifty Shades Darker),123,658623,122,2,294,,
-2017-10-22,,Gorgeous,12,2005202,11,7,3,,
-2017-10-22,,Look What You Made Me Do,18,1815611,19,1,59,,
-2017-10-22,,I Don’t Wanna Live Forever (Fifty Shades Darker),119,601453,123,2,295,,
-2017-10-22,,...Ready For It?,127,574254,119,3,50,,
-2017-10-23,,Gorgeous,11,2239015,12,7,4,,
-2017-10-23,,Look What You Made Me Do,20,1910788,18,1,60,,
-2017-10-23,,...Ready For It?,116,661542,127,3,51,,
-2017-10-23,,I Don’t Wanna Live Forever (Fifty Shades Darker),117,654536,119,2,296,,
-2017-10-24,,Gorgeous,15,2117015,11,7,5,,
-2017-10-24,,Look What You Made Me Do,21,1922497,20,1,61,,
-2017-10-24,,...Ready For It?,113,679547,116,3,52,,
-2017-10-24,,I Don’t Wanna Live Forever (Fifty Shades Darker),115,672143,117,2,297,,
-2017-10-25,,Gorgeous,17,2054240,15,7,6,,
-2017-10-25,,Look What You Made Me Do,21,1911759,21,1,62,,
-2017-10-25,,I Don’t Wanna Live Forever (Fifty Shades Darker),114,687981,115,2,298,,
-2017-10-25,,...Ready For It?,117,669920,113,3,53,,
-2017-10-26,,Gorgeous,20,2040310,17,7,7,,
-2017-10-26,,Look What You Made Me Do,29,1794428,21,1,63,,
-2017-10-26,,I Don’t Wanna Live Forever (Fifty Shades Darker),115,686484,114,2,299,,
-2017-10-26,,...Ready For It?,124,656006,117,3,54,,
-2017-10-27,,Gorgeous,23,1971608,20,7,8,,
-2017-10-27,,Look What You Made Me Do,32,1808578,29,1,64,,
-2017-10-27,,...Ready For It?,102,806391,124,3,55,,
-2017-10-27,,I Don’t Wanna Live Forever (Fifty Shades Darker),125,701578,115,2,300,,
-2017-10-29,,Look What You Made Me Do,35,1401873,36,1,66,,
-2017-10-29,,Gorgeous,47,1164116,37,7,10,,
-2017-10-29,,...Ready For It?,90,709281,90,3,57,,
-2017-10-29,,I Don’t Wanna Live Forever (Fifty Shades Darker),117,595572,121,2,302,,
-2017-10-30,,Look What You Made Me Do,34,1464007,35,1,67,,
-2017-10-30,,Gorgeous,47,1195867,47,7,11,,
-2017-10-30,,...Ready For It?,91,780776,90,3,58,,
-2017-10-30,,I Don’t Wanna Live Forever (Fifty Shades Darker),119,650195,117,2,303,,
-2017-10-31,,Look What You Made Me Do,42,1442825,34,1,68,,
-2017-10-31,,Gorgeous,61,1079797,47,7,12,,
-2017-10-31,,...Ready For It?,109,763689,91,3,59,,
-2017-10-31,,I Don’t Wanna Live Forever (Fifty Shades Darker),134,652279,119,2,304,,
-2024-04-19,,Fortnight (feat. Post Malone),1,25204472,,1,1,1,
-2024-04-19,,The Tortured Poets Department,2,19089937,,2,1,1,
-2024-04-19,,Down Bad,3,17431926,,3,1,1,
-2024-04-19,,"So Long, London",4,17176465,,4,1,1,
-2024-04-19,,My Boy Only Breaks His Favorite Toys,5,17101904,,5,1,1,
-2024-04-19,,But Daddy I Love Him,6,15542560,,6,1,1,
-2024-04-19,,Florida!!! (feat. Florence + The Machine),7,14459975,,7,1,1,
-2024-04-19,,I Can Do It With a Broken Heart,8,13650325,,8,1,1,
-2024-04-19,,Who’s Afraid of Little Old Me?,9,12966995,,9,1,1,
-2024-04-19,,Fresh Out The Slammer,10,12758182,,10,1,1,
-2024-04-19,,Guilty as Sin?,11,12651611,,11,1,1,
-2024-04-19,,loml,12,12080644,,12,1,1,
-2024-04-19,,I Can Fix Him (No Really I Can),13,11127606,,13,1,1,
-2024-04-19,,The Smallest Man Who Ever Lived,14,10815874,,14,1,1,
-2024-04-19,,The Alchemy,15,10637831,,15,1,1,
-2024-04-19,,Clara Bow,16,9564186,,16,1,1,
-2024-04-19,,The Black Dog,20,7011116,,20,1,1,
-2024-04-19,,imgonnagetyouback,21,6755030,,21,1,1,
-2024-04-19,,thanK you aIMee,22,6649752,,22,1,1,
-2024-04-19,,So High School,25,6247408,,25,1,1,
-2024-04-19,,The Albatross,26,6152594,,26,1,1,
-2024-04-19,,Chloe or Sam or Sophia or Marcus,28,5856927,,28,1,1,
-2024-04-19,,How Did It End?,29,5768821,,29,1,1,
-2024-04-19,,I Hate It Here,31,5387443,,31,1,1,
-2024-04-19,,The Prophecy,32,5154617,,32,1,1,
-2024-04-19,,I Look in People's Windows,33,5077082,,33,1,1,
-2024-04-19,,Cassandra,35,4674074,,35,1,1,
-2024-04-19,,Peter,36,4503638,,36,1,1,
-2024-04-19,,Cruel Summer,38,4420067,13,2,432,399,
-2024-04-19,,The Bolter,39,4254088,,39,1,1,
-2024-04-19,,The Manuscript,41,4144642,,41,1,1,
-2024-04-19,,Robin,42,3849453,,42,1,1,
-2024-04-19,,august,89,1999830,129,4,421,14,
-2024-04-19,,Lover,102,1832176,95,2,429,116,
-2024-04-19,,Anti-Hero,105,1824792,84,1,545,116,
-2024-04-19,,cardigan,138,1574433,115,1,487,116,
-2026-06-03,,The Fate of Ophelia,27,2703391,25,1,240,1,
-2026-06-03,,Opalite,127,1480162,128,2,240,1,
 2026-07-12,53iuhJlwXhSER5J2IYYv1W,The Fate of Ophelia,24,2185906,21,1,283,283,
 2026-07-12,5uPaqMMt59KGrdKIitDRqa,"I Knew It, I Knew You - From ""Toy Story 5""",76,1469580,76,1,38,38,
 2026-07-12,1u8c2t2Cy7UBoG4ArRcF5g,Blank Space,160,1153798,174,14,797,3,

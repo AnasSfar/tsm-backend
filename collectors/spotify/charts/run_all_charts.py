@@ -631,6 +631,13 @@ def _extract_target_date(forwarded: list[str]) -> tuple[date, bool]:
     return _default_target_date(), False
 
 
+def _parse_cli_date(value: str) -> date:
+    try:
+        return datetime.strptime(value, "%Y-%m-%d").date()
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError(f"date invalide {value!r}, attendu YYYY-MM-DD") from exc
+
+
 def _find_first_date(value) -> str | None:
     if isinstance(value, str):
         match = re.search(r"\b\d{4}-\d{2}-\d{2}\b", value)
@@ -1452,6 +1459,8 @@ def _run_backfill(args, env: dict[str, str]) -> int:
         cmd.append("--refetch-done")
     if args.dry_run:
         cmd.append("--dry-run")
+    if args.backfill_upload_r2:
+        cmd.append("--upload-r2")
     print(f"[BACKFILL] historique Spotify Charts no-post: {start} -> {end}")
     return subprocess.run(cmd, cwd=REPO_ROOT, env=env).returncode
 
@@ -1605,6 +1614,7 @@ def _run_backfill(args, env: dict[str, str]) -> int:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run all Spotify chart daily scripts.")
+    parser.add_argument("--date", type=_parse_cli_date, metavar="YYYY-MM-DD", help="Date Spotify Charts a traiter.")
     parser.add_argument("--stop-on-error", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument(
@@ -1648,9 +1658,20 @@ def main() -> int:
     parser.add_argument("--backfill-from", metavar="DATE", help="Date de debut du rattrapage (YYYY-MM-DD, defaut: 2017-01-01).")
     parser.add_argument("--backfill-to", metavar="DATE", help="Date de fin du rattrapage (YYYY-MM-DD, defaut: hier).")
     parser.add_argument("--backfill-workers", type=int, default=2, help="Nombre de dates Spotify Charts a collecter en parallele (defaut: 2).")
+    parser.add_argument(
+        "--backfill-upload-r2",
+        action="store_true",
+        help=(
+            "Apres le backfill et le sync local, uploader les donnees charts vers R2 "
+            "(scripts/r2.py --charts-only) pour que la prod reflete le rattrapage. "
+            "Off par defaut: ecriture reseau/prod, opt-in explicite."
+        ),
+    )
     args, passthrough = parser.parse_known_args()
 
     forwarded = list(passthrough)
+    if args.date is not None:
+        forwarded = ["--date", args.date.isoformat(), *forwarded]
 
     if args.backfill:
         return _run_backfill(args, _build_env())

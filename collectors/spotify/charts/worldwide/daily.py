@@ -874,28 +874,32 @@ async def _fetch_region(
                         wait = int(resp.headers.get("Retry-After", 20))
                         print(f"  [{region:>6}] 429 — pause globale {wait}s (tentative {attempt})")
                         if FETCH_MAX_ATTEMPTS > 0 and attempt >= FETCH_MAX_ATTEMPTS:
-                            raise RuntimeError(f"{region}: still 429 after {attempt} attempts")
+                            print(f"  [{region:>6}] SKIP — still 429 after {attempt} attempts, giving up on this region for {chart_date}")
+                            return region, None
                         await pause.trigger(wait)
                         continue
                     if resp.status == 401:
                         raise TokenExpired(f"{region}: HTTP 401")
                     if 400 <= resp.status < 500:
-                        raise RuntimeError(f"{region}: HTTP {resp.status}")
+                        print(f"  [{region:>6}] SKIP — HTTP {resp.status}, giving up on this region for {chart_date}")
+                        return region, None
                     print(f"  [{region:>6}] HTTP {resp.status} — retry dans 10s (tentative {attempt})")
             except asyncio.TimeoutError:
                 if FETCH_MAX_ATTEMPTS > 0 and attempt >= FETCH_MAX_ATTEMPTS:
-                    raise RuntimeError(f"{region}: timeout after {attempt} attempts")
+                    print(f"  [{region:>6}] SKIP — timeout after {attempt} attempts, giving up on this region for {chart_date}")
+                    return region, None
                 print(f"  [{region:>6}] timeout — retry dans 10s (tentative {attempt})")
             except Exception as exc:
                 if isinstance(exc, TokenExpired):
                     raise
                 if FETCH_MAX_ATTEMPTS > 0 and attempt >= FETCH_MAX_ATTEMPTS:
-                    raise
+                    print(f"  [{region:>6}] SKIP — {exc!r} after {attempt} attempts, giving up on this region for {chart_date}")
+                    return region, None
                 print(f"  [{region:>6}] erreur ({exc}) — retry dans 10s (tentative {attempt})")
         await asyncio.sleep(min(10 * attempt, 60))
 
 
-async def _run_async(chart_date: str, tokens: list[str], regions: dict[str, str]) -> dict[str, list[dict]]:
+async def _run_async(chart_date: str, tokens: list[str], regions: dict[str, str]) -> dict[str, list[dict] | None]:
     base_headers = {
         "Accept":     "application/json",
         "Referer":    "https://charts.spotify.com/",
@@ -1694,6 +1698,14 @@ def main() -> int:
         other_results = {}
 
     by_region = {**priority_results, **other_results}
+    skipped_regions = sorted(region for region, rows in by_region.items() if rows is None)
+    if skipped_regions:
+        print(
+            f"[WARN] {len(skipped_regions)} region(s) skipped after max fetch attempts for {chart_date} "
+            f"(not written, not counted as zero): {', '.join(skipped_regions)}",
+            flush=True,
+        )
+        by_region = {region: rows for region, rows in by_region.items() if rows is not None}
     _apply_track_id_history(chart_date, by_region)
     for region in PRIORITY_POST_REGIONS:
         if region in by_region and by_region[region]:
@@ -1845,6 +1857,8 @@ def main() -> int:
               + ", ".join(sorted(names)[:5]) + ("…" if len(names) > 5 else ""))
 
     output = {"date": chart_date, "by_track": by_track}
+    if skipped_regions:
+        output["skipped_regions"] = skipped_regions
 
     per_date_path = _worldwide_history_path(chart_date)
     per_date_path.parent.mkdir(parents=True, exist_ok=True)

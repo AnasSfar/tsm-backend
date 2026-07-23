@@ -1,38 +1,4 @@
 date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,movement
-2026-03-21,,The Fate of Ophelia,29,173196,36.0,2,170,170,+7
-2026-03-21,,Opalite,178,76606,200.0,8,170,170,+22
-2026-03-20,,The Fate of Ophelia,36,161280,32.0,2,169,169,-4
-2026-03-20,,Opalite,200,72257,173.0,8,169,169,-27
-2026-03-19,,The Fate of Ophelia,32,155224,36.0,2,168,168,+4
-2026-03-19,,Opalite,173,66291,195.0,8,168,168,+22
-2026-03-18,,The Fate of Ophelia,36,159060,32.0,2,167,167,-4
-2026-03-18,,Opalite,195,66525,181.0,8,167,167,-14
-2026-03-17,,The Fate of Ophelia,32,151592,37.0,2,166,166,+5
-2026-03-17,,Opalite,181,65314,194.0,8,166,166,+13
-2026-03-16,,The Fate of Ophelia,37,141310,36,2,165,165,-1
-2026-03-16,,Opalite,194,59210,,8,165,165,RE
-2026-03-15,,The Fate of Ophelia,36,140497,35,2,164,164,-1
-2026-03-14,,The Fate of Ophelia,35,174461,44,2,163,163,+9
-2026-03-14,,Opalite,186,69952,,8,163,163,RE
-2026-03-13,,The Fate of Ophelia,44,166500,22,2,162,162,-22
-2026-03-12,,The Fate of Ophelia,22,155693,25,2,161,161,+3
-2026-03-12,,Opalite,165,62587,180,8,161,161,+15
-2026-03-11,,The Fate of Ophelia,25,161902,23,2,160,160,-2
-2026-03-11,,Opalite,180,62284,173,8,160,160,-7
-2026-03-10,,The Fate of Ophelia,23,157197,24,2,159,159,+1
-2026-03-10,,Opalite,173,61407,175,8,159,159,+2
-2026-03-09,,The Fate of Ophelia,24,154677,26,2,158,158,+2
-2026-03-09,,Opalite,175,59905,,8,158,158,RE
-2026-02-16,,The Fate of Ophelia,26,174124,24,,137,137,-2
-2026-02-16,,Opalite,153,69289,176,,137,137,+23
-2026-02-14,,The Fate of Ophelia,23,199578,23,,135,135,0
-2026-02-14,,Opalite,138,83374,141,,135,135,+3
-2026-02-06,,The Fate of Ophelia,18,209814,16,,127,127,-2
-2026-02-06,,Opalite,59,123266,196,,127,127,+137
-2026-02-03,,The Fate of Ophelia,16,189767,16,,124,124,0
-2026-01-26,,The Fate of Ophelia,15,196609,15,,116,116,0
-2026-01-09,,The Fate of Ophelia,25,262444,10,,99,99,-15
-2026-01-05,,The Fate of Ophelia,9,224778,9,,95,95,0
 2025-12-31,,The Fate of Ophelia,8,374317,7,,90,90,-1
 2025-12-30,,The Fate of Ophelia,7,251580,6,,89,89,-1
 2025-12-29,,The Fate of Ophelia,6,243087,9,,88,88,+3
@@ -346,12 +312,6 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2024-06-05,,Cruel Summer,111,92948,103,,486,446,-8
 2024-06-04,,Fortnight (feat. Post Malone),74,117072,79,,47,47,+5
 2024-06-04,,Cruel Summer,103,91703,102,,485,445,-1
-2024-06-03,,Fortnight (feat. Post Malone),79,113488,73,,46,46,-6
-2024-06-03,,Cruel Summer,102,90869,105,,484,444,+3
-2024-06-02,,Fortnight (feat. Post Malone),73,101757,76,,45,45,+3
-2024-06-02,,Cruel Summer,105,80762,129,,483,443,+24
-2024-06-01,,Fortnight (feat. Post Malone),76,119210,87,,44,44,+11
-2024-06-01,,Cruel Summer,129,89109,147,,482,442,+18
 2024-05-31,,Fortnight (feat. Post Malone),87,122634,62,,43,43,-25
 2024-05-31,,Cruel Summer,147,85783,110,,481,441,-37
 2024-05-30,,Fortnight (feat. Post Malone),62,112780,67,,42,42,+5
@@ -891,7 +851,6 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2020-07-27,,cardigan,165,44638,159,,4,4,-6
 2020-07-26,,cardigan,159,41904,158,,3,3,-1
 2020-07-25,,cardigan,158,47892,119,,2,2,-39
-2020-07-24,,cardigan,119,60242,,,1,1,RE
 2019-09-12,,You Need To Calm Down,198,35545,170,,91,91,-28
 2019-09-11,,You Need To Calm Down,170,42119,159,100,90,90,-11
 2019-09-10,,You Need To Calm Down,159,41022,177,100,89,89,+18
@@ -973,7 +932,6 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2019-04-28,,ME! (feat. Brendon Urie of Panic! At The Disco),31,89670,32,,3,3,+1
 2019-04-27,,ME! (feat. Brendon Urie of Panic! At The Disco),32,102460,21,21,2,2,-11
 2019-04-26,,ME! (feat. Brendon Urie of Panic! At The Disco),21,129018,-1,21,1,1,RE
-2017-12-31,,Shake It Off,191,38587,-1,191,13,1,RE
 2017-10-31,3QdYxkiZu3ilLRHU6lXYvn,Bad Blood,177,25764,-1,177,5,1,RE
 2017-10-31,6uFsE1JgZ20EXyU0JQZbUR,Look What You Made Me Do,191,23693,186,12,68,68,-5
 2017-10-30,6uFsE1JgZ20EXyU0JQZbUR,Look What You Made Me Do,186,22849,185,,67,67,-1
@@ -1299,47 +1257,7 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2017-01-03,3NdDpSvN911VPGivFlV5d0,I Don't Wanna Live Forever (Fifty Shades Darker),82,27615,86,,3,3,+4
 2017-01-02,3NdDpSvN911VPGivFlV5d0,I Don't Wanna Live Forever (Fifty Shades Darker),86,28754,140,,2,2,+54
 2017-01-01,3NdDpSvN911VPGivFlV5d0,I Don't Wanna Live Forever (Fifty Shades Darker),140,18368,,,1,1,RE
-2026-03-22,,The Fate of Ophelia,30,136108,29,2,171,171,-1
-2026-03-23,,The Fate of Ophelia,35,138545,30,2,172,172,-5
-2026-03-23,,Opalite,199,61647,-1,8,172,172,RE
-2026-03-24,,The Fate of Ophelia,33,139609,35,2,173,173,+2
-2026-03-24,,Opalite,184,64151,199,8,173,173,+15
-2026-03-25,,The Fate of Ophelia,33,142188,33,2,174,174,0
 2026-03-26,,The Fate of Ophelia,33,142188,33,2,175,175,0
-2026-03-27,,The Fate of Ophelia,42,148365,29,2,176,176,-13
-2026-03-28,,The Fate of Ophelia,33,159303,42.0,2,177,177,+9
-2026-03-28,,Opalite,181,73483,,8,177,177,RE
-2026-03-29,,The Fate of Ophelia,38,126073,33.0,2,178,178,
-2026-03-30,,The Fate of Ophelia,37,132761,38.0,2,179,179,
-2026-03-30,,Opalite,195,60476,,8,179,179,
-2026-03-31,,The Fate of Ophelia,38,134847,37.0,2,176,54,
-2026-03-31,,Opalite,186,64317,195.0,8,72,2,
-2026-04-01,,The Fate of Ophelia,41,141922,38.0,2,177,55,
-2026-04-01,,Opalite,190,65376,186.0,8,73,3,
-2026-04-02,,The Fate of Ophelia,35,141497,41.0,2,178,56,
-2026-04-02,,Opalite,174,65933,190.0,8,74,4,
-2026-04-03,,The Fate of Ophelia,40,154309,35.0,2,179,57,
-2026-04-03,,Opalite,195,70163,174.0,8,75,5,
-2026-04-04,,The Fate of Ophelia,34,165536,40.0,2,180,58,
-2026-04-04,,Opalite,172,76632,195.0,8,76,6,
-2026-04-05,,The Fate of Ophelia,37,133295,34.0,2,181,59,
-2026-04-05,,Opalite,193,60269,172.0,8,77,7,
-2026-04-06,,The Fate of Ophelia,36,142614,370,2,182,60,+334
-2026-04-06,,Opalite,184,65437,1930,8,78,8,+1746
-2026-04-07,,The Fate of Ophelia,38,139805,360,2,183,61,+322
-2026-04-07,,Opalite,182,66100,1840,8,79,9,+1658
-2026-04-08,,The Fate of Ophelia,40,143313,380,2,184,62,+340
-2026-04-08,,Opalite,193,67087,1820,8,80,10,+1627
-2026-04-09,,The Fate of Ophelia,41,136664,400,2,185,63,+359
-2026-04-09,,Opalite,184,65105,1930,8,81,11,+1746
-2026-04-10,,The Fate of Ophelia,44,143805,410,2,186,64,+366
-2026-04-11,,The Fate of Ophelia,38,149696,440,2,187,65,+402
-2026-04-12,,The Fate of Ophelia,40,114881,380,2,188,66,+340
-2026-04-13,,The Fate of Ophelia,45,125029,400,2,189,67,+355
-2026-04-14,,The Fate of Ophelia,42,133487,450,2,190,68,+408
-2026-04-15,,The Fate of Ophelia,44,132226,420,2,191,69,+376
-2026-04-16,,The Fate of Ophelia,46,128646,440,2,192,70,+394
-2026-04-17,,The Fate of Ophelia,51,140540,460,2,193,71,+409
 2024-04-19,2OzhQlSqBEmt7hmkYxfT6m,Fortnight (feat. Post Malone),11,257361,,11,1,1,NEW
 2024-04-19,3NMrVbIVWT3fPXBj0rNDKG,The Tortured Poets Department,28,187526,,28,1,1,NEW
 2024-04-19,05msZuGKP3OCUGQnvLBOf4,My Boy Only Breaks His Favorite Toys,33,179294,,33,1,1,NEW
@@ -1357,158 +1275,8 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2024-04-19,2v1ivOOsgn64g5OywuH55L,The Smallest Man Who Ever Lived,92,102621,,92,1,1,NEW
 2024-04-19,1dhMTsEZz6ZEquGvmzVoHn,The Alchemy,101,97480,,101,1,1,NEW
 2024-04-19,1UlhrRvYzbHEyugEDspXUB,Clara Bow,115,90733,,115,1,1,NEW
-2025-10-03,,The Fate of Ophelia,2,476365,,2,1,1,NEW
 2025-10-03,,Elizabeth Taylor,5,323455,,5,1,1,NEW
-2025-10-03,,Opalite,8,310631,,8,1,1,NEW
-2025-10-03,,Father Figure,14,273554,,14,1,1,NEW
-2025-10-03,,Eldest Daughter,18,253378,,18,1,1,NEW
-2025-10-03,,CANCELLED!,20,249570,,20,1,1,NEW
-2025-10-03,,Actually Romantic,21,243248,,21,1,1,NEW
-2025-10-03,,The Life of a Showgirl (feat. Sabrina Carpenter),22,241988,,22,1,1,NEW
-2025-10-03,,Ruin The Friendship,23,237680,,23,1,1,NEW
-2025-10-03,,Wi$h Li$t,27,230260,,27,1,1,NEW
-2025-10-03,,Wood,28,226036,,28,1,1,NEW
-2025-10-03,,Honey,36,198422,,36,1,1,NEW
-2026-04-18,,The Fate of Ophelia,45,143192,510,2,194,72,+465
-2026-04-18,,Opalite,186,73040,,8,82,1,RE
-2026-04-19,,The Fate of Ophelia,49,117809,450,2,195,73,+401
-2026-04-19,,Opalite,199,58156,1860,8,83,2,+1661
-2026-04-20,,The Fate of Ophelia,54,123238,490,2,196,74,+436
-2026-04-20,,Opalite,194,62051,1990,8,84,3,+1796
-2026-04-21,,The Fate of Ophelia,51,126815,540,2,197,75,+489
-2026-04-21,,Opalite,192,63371,1940,8,85,4,+1748
-2026-04-22,,The Fate of Ophelia,52,118956,510,2,198,76,+458
-2026-04-23,,The Fate of Ophelia,52,123734,520,2,199,77,+468
-2026-04-23,,Opalite,194,63909,,8,86,1,RE
-2026-04-24,,The Fate of Ophelia,53,138057,520,2,200,78,+467
-2026-04-24,,Opalite,187,71048,1940,8,87,2,+1753
-2026-04-25,,The Fate of Ophelia,49,138718,530,2,201,79,+481
-2026-04-25,,Opalite,174,71693,1870,8,88,3,+1696
 2026-04-26,,The Fate of Ophelia,51,113261,490,2,202,80,+439
-2026-04-27,,The Fate of Ophelia,51,115316,510,2,203,81,+459
-2026-04-28,,The Fate of Ophelia,51,118349,510,2,204,82,+459
-2026-04-28,,Opalite,180,61718,,8,89,1,RE
-2026-04-29,,The Fate of Ophelia,50,124491,510,2,205,83,+460
-2026-04-29,,Opalite,200,63009,1800,8,90,2,+1600
-2026-04-30,,The Fate of Ophelia,49,135919,500,2,206,84,+451
-2026-05-01,,The Fate of Ophelia,44,133759,490,2,207,85,+446
-2026-05-02,,The Fate of Ophelia,50,128410,440,2,208,86,+390
-2026-05-03,,The Fate of Ophelia,53,106568,500,2,209,87,+447
-2026-05-04,,The Fate of Ophelia,53,106036,530,2,210,88,+477
-2026-05-05,,The Fate of Ophelia,50,110197,530,2,211,89,+480
-2026-05-06,,The Fate of Ophelia,47,126120,500,2,212,90,+453
-2026-05-07,,The Fate of Ophelia,46,132433,470,2,213,91,+424
-2026-05-08,,The Fate of Ophelia,71,113598,460,2,214,92,+389
-2026-05-09,,The Fate of Ophelia,75,106874,710,2,215,93,+635
-2026-05-10,,The Fate of Ophelia,74,88208,750,2,216,94,+676
-2026-05-11,,The Fate of Ophelia,77,90366,740,2,217,95,+663
-2026-05-12,,The Fate of Ophelia,75,89091,770,2,218,96,+695
-2026-05-13,,The Fate of Ophelia,91,103341,750,2,219,97,+659
-2026-05-14,,The Fate of Ophelia,82,92126,910,2,220,98,+828
-2026-05-15,,The Fate of Ophelia,99,95923,820,2,221,99,+721
-2026-05-16,,The Fate of Ophelia,95,91207,990,2,222,100,+895
-2026-05-17,,The Fate of Ophelia,91,83537,950,2,223,101,+859
-2026-05-18,,The Fate of Ophelia,98,81784,910,2,224,102,+812
-2026-05-19,,The Fate of Ophelia,91,85296,980,2,225,103,+889
-2026-05-20,,The Fate of Ophelia,102,90340,910,2,226,104,+808
-2026-05-21,,The Fate of Ophelia,88,92062,1020,2,227,105,+932
-2026-05-22,,The Fate of Ophelia,98,100821,880,2,228,106,+782
-2026-05-23,,The Fate of Ophelia,98,99662,980,2,229,107,+882
-2026-05-24,,The Fate of Ophelia,98,84294,980,2,230,108,+882
-2026-05-25,,The Fate of Ophelia,101,84326,980,2,231,109,+879
-2026-05-26,,The Fate of Ophelia,106,81410,1010,2,232,110,+904
-2026-05-27,,The Fate of Ophelia,124,81732,1060,2,233,111,+936
-2026-05-28,,The Fate of Ophelia,103,82512,1240,2,234,112,+1137
-2026-05-29,,The Fate of Ophelia,127,88753,1030,2,235,113,+903
-2026-01-01,,The Fate of Ophelia,9,188568,80,2,89,59,+71
-2026-01-02,,The Fate of Ophelia,9,237973,90,2,90,60,+81
-2026-01-03,,The Fate of Ophelia,8,241078,90,2,91,61,+82
-2026-01-04,,The Fate of Ophelia,9,204383,80,2,92,62,+71
-2026-01-06,,The Fate of Ophelia,10,218576,90,2,94,64,+80
-2026-01-07,,The Fate of Ophelia,10,219736,100,2,95,65,+90
-2026-01-08,,The Fate of Ophelia,10,230386,100,2,96,66,+90
-2026-01-10,,The Fate of Ophelia,12,270003,250,2,98,68,+238
-2026-01-11,,The Fate of Ophelia,12,216994,120,2,99,69,+108
-2026-01-12,,The Fate of Ophelia,14,232056,120,2,100,70,+106
-2026-01-13,,The Fate of Ophelia,12,234297,140,2,101,71,+128
-2026-01-14,,The Fate of Ophelia,12,239592,120,2,102,72,+108
-2026-01-15,,The Fate of Ophelia,12,227018,120,2,103,73,+108
-2026-01-16,,The Fate of Ophelia,14,235643,120,2,104,74,+106
-2026-01-17,,The Fate of Ophelia,14,250696,140,2,105,75,+126
-2026-01-18,,The Fate of Ophelia,15,186944,140,2,106,76,+125
-2026-01-19,,The Fate of Ophelia,13,204716,150,2,107,77,+137
-2026-01-20,,The Fate of Ophelia,14,208306,130,2,108,78,+116
-2026-01-21,,The Fate of Ophelia,14,219115,140,2,109,79,+126
-2026-01-22,,The Fate of Ophelia,14,209321,140,2,110,80,+126
-2026-01-23,,The Fate of Ophelia,15,223761,140,2,111,81,+125
-2026-01-24,,The Fate of Ophelia,14,235606,150,2,112,82,+136
-2026-01-25,,The Fate of Ophelia,15,187980,140,2,113,83,+125
-2026-01-27,,The Fate of Ophelia,15,204256,150,2,115,85,+135
-2026-01-27,,Opalite,196,56863,,8,24,1,RE
-2026-01-28,,The Fate of Ophelia,15,213795,150,2,116,86,+135
-2026-01-29,,The Fate of Ophelia,15,203064,150,2,117,87,+135
-2026-01-30,,The Fate of Ophelia,15,217023,150,2,118,88,+135
-2026-01-31,,The Fate of Ophelia,16,230023,150,2,119,89,+134
-2026-02-01,,The Fate of Ophelia,17,179556,160,2,120,90,+143
-2026-02-02,,The Fate of Ophelia,16,188157,170,2,121,91,+154
-2026-02-04,,The Fate of Ophelia,16,202975,160,2,123,93,+144
-2026-02-05,,The Fate of Ophelia,16,190398,160,2,124,94,+144
-2026-02-05,,Opalite,196,58023,,8,25,1,RE
-2026-02-07,,The Fate of Ophelia,15,228174,180,2,126,96,+165
-2026-02-07,,Opalite,75,109217,590,8,27,3,+515
-2026-02-08,,The Fate of Ophelia,17,175271,150,2,127,97,+133
-2026-02-08,,Opalite,104,75847,750,8,28,4,+646
-2026-02-09,,The Fate of Ophelia,23,180283,170,2,128,98,+147
-2026-02-09,,Opalite,124,75848,1040,8,29,5,+916
-2026-02-10,,The Fate of Ophelia,24,179003,230,2,129,99,+206
-2026-02-10,,Opalite,124,74030,1240,8,30,6,+1116
-2026-02-11,,The Fate of Ophelia,23,187158,240,2,130,100,+217
-2026-02-11,,Opalite,136,74373,1240,8,31,7,+1104
-2026-02-12,,The Fate of Ophelia,23,175517,230,2,131,101,+207
-2026-02-12,,Opalite,136,72152,1360,8,32,8,+1224
-2026-02-13,,The Fate of Ophelia,23,197769,230,2,132,102,+207
-2026-02-13,,Opalite,141,80546,1360,8,33,9,+1219
-2026-02-15,,The Fate of Ophelia,24,153412,230,2,134,104,+206
-2026-02-15,,Opalite,176,57764,1380,8,35,11,+1204
-2026-02-17,,The Fate of Ophelia,24,178780,260,2,136,106,+236
-2026-02-17,,Opalite,151,71715,1530,8,37,13,+1379
-2026-02-18,,The Fate of Ophelia,23,172239,240,2,137,107,+217
-2026-02-18,,Opalite,150,68270,1510,8,38,14,+1360
-2026-02-19,,The Fate of Ophelia,23,168846,230,2,138,108,+207
-2026-02-19,,Opalite,145,67233,1500,8,39,15,+1355
-2026-02-20,,The Fate of Ophelia,23,186724,230,2,139,109,+207
-2026-02-20,,Opalite,152,72423,1450,8,40,16,+1298
-2026-02-21,,The Fate of Ophelia,21,192562,230,2,140,110,+209
-2026-02-21,,Opalite,141,73631,1520,8,41,17,+1379
-2026-02-22,,The Fate of Ophelia,19,151942,210,2,141,111,+191
-2026-02-22,,Opalite,164,55878,1410,8,42,18,+1246
-2026-02-23,,The Fate of Ophelia,20,168619,190,2,142,112,+170
-2026-02-23,,Opalite,144,66331,1640,8,43,19,+1496
-2026-02-24,,The Fate of Ophelia,21,175304,200,2,143,113,+179
-2026-02-24,,Opalite,140,68773,1440,8,44,20,+1300
-2026-02-25,,The Fate of Ophelia,22,178671,210,2,144,114,+188
-2026-02-25,,Opalite,154,68744,1400,8,45,21,+1246
-2026-02-26,,The Fate of Ophelia,22,177479,220,2,145,115,+198
-2026-02-26,,Opalite,151,68235,1540,8,46,22,+1389
-2026-02-27,,The Fate of Ophelia,21,192080,220,2,146,116,+199
-2026-02-27,,Opalite,143,74606,1510,8,47,23,+1367
-2026-02-28,,The Fate of Ophelia,19,198607,210,2,147,117,+191
-2026-02-28,,Opalite,137,75960,1430,8,48,24,+1293
-2026-03-01,,The Fate of Ophelia,23,156668,190,2,148,118,+167
-2026-03-01,,Opalite,162,59916,1370,8,49,25,+1208
-2026-03-02,,The Fate of Ophelia,21,162572,230,2,149,119,+209
-2026-03-02,,Opalite,149,63999,1620,8,50,26,+1471
-2026-03-03,,The Fate of Ophelia,21,165553,210,2,150,120,+189
-2026-03-03,,Opalite,143,66262,1490,8,51,27,+1347
-2026-03-04,,The Fate of Ophelia,19,172227,210,2,151,121,+191
-2026-03-04,,Opalite,158,68090,1430,8,52,28,+1272
-2026-03-05,,The Fate of Ophelia,22,161811,190,2,152,122,+168
-2026-03-05,,Opalite,154,65805,1580,8,53,29,+1426
-2026-03-06,,The Fate of Ophelia,23,172922,220,2,153,123,+197
-2026-03-06,,Opalite,185,65992,1540,8,54,30,+1355
-2026-03-07,,The Fate of Ophelia,21,187208,230,2,154,124,+209
-2026-03-07,,Opalite,171,69419,1850,8,55,31,+1679
-2026-03-08,,The Fate of Ophelia,26,149126,210,2,155,125,+184
 2017-01-01,3NdDpSvN911VPGivFlV5d0,3NdDpSvN911VPGivFlV5d0,140,18368,,140,1,,
 2017-01-02,3NdDpSvN911VPGivFlV5d0,3NdDpSvN911VPGivFlV5d0,86,28754,140,86,2,,
 2017-01-03,3NdDpSvN911VPGivFlV5d0,3NdDpSvN911VPGivFlV5d0,82,27615,86,82,3,,
@@ -1902,11 +1670,6 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2024-04-19,1dhMTsEZz6ZEquGvmzVoHn,1dhMTsEZz6ZEquGvmzVoHn,101,97480,,101,1,,
 2024-04-19,1UlhrRvYzbHEyugEDspXUB,1UlhrRvYzbHEyugEDspXUB,115,90733,,115,1,,
 2025-10-03,,1jgTiNob5cVyXeJ3WgX5bL,5,323455,,5,1,,
-2026-03-26,,Opalite,191,61618,,8,1,1,
-2026-05-30,,The Fate of Ophelia,118,85128,127,2,240,240,
-2026-05-31,,The Fate of Ophelia,110,75612,118,2,241,241,
-2026-06-01,,The Fate of Ophelia,124,76125,110,2,242,242,
-2026-06-02,,The Fate of Ophelia,127,76924,124,2,243,243,
 2026-06-03,53iuhJlwXhSER5J2IYYv1W,The Fate of Ophelia,140,78709,127,2,244,244,
 2026-06-04,53iuhJlwXhSER5J2IYYv1W,The Fate of Ophelia,122,77800,140,2,245,245,
 2024-04-20,4q5YezDOIPcoLr8R81x9qy,4q5YezDOIPcoLr8R81x9qy,103,90202,56,56,3,,
@@ -1963,23 +1726,6 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2026-07-08,53iuhJlwXhSER5J2IYYv1W,The Fate of Ophelia,143,70119,138,2,279,279,
 2026-07-09,53iuhJlwXhSER5J2IYYv1W,The Fate of Ophelia,137,72620,143,2,280,280,
 2017-12-31,0cqRj7pUJDkTCEsJkx8snD,Shake It Off,191,38587,,191,1,,
-2024-04-19,2OzhQlSqBEmt7hmkYxfT6m,Fortnight (feat. Post Malone),11,257361,,11,1,1,
-2024-04-19,3NMrVbIVWT3fPXBj0rNDKG,The Tortured Poets Department,28,187526,,28,1,1,
-2024-04-19,05msZuGKP3OCUGQnvLBOf4,My Boy Only Breaks His Favorite Toys,33,179294,,33,1,1,
-2024-04-19,0mWVScJbxO3tbXuiZOxYZE,"So Long, London",35,172851,,35,1,1,
-2024-04-19,2F3N9tdombb64aW6VtZOdo,Down Bad,38,168470,,38,1,1,
-2024-04-19,5og4Qzt92jJzVDkOtSEilb,But Daddy I Love Him,49,150377,,49,1,1,
-2024-04-19,3ZVFcD8Wlw9T9klGqmJf9F,Florida!!! (feat. Florence + The Machine),52,143830,,52,1,1,
-2024-04-19,4q5YezDOIPcoLr8R81x9qy,I Can Do It With a Broken Heart,56,131611,,56,1,1,
-2024-04-19,36t6frENUtCYKuZus6aYDO,Who’s Afraid of Little Old Me?,57,129800,,57,1,1,
-2024-04-19,3fO566xJgwxIa3qGCGBvIC,Fresh Out The Slammer,60,126413,,60,1,1,
-2024-04-19,0W0iAC1VGlB82PI6elxFYf,Guilty as Sin?,62,124466,,62,1,1,
-2024-04-19,1BxfuPKGuaTgP7aM0Bbdwr,Cruel Summer,71,115176,60,36,198,116,
-2024-04-19,6RSG1dKPV5gEvILwJb4QtS,loml,74,114526,,74,1,1,
-2024-04-19,2h3MDMf8sd9s4XIzpTBIjX,I Can Fix Him (No Really I Can),80,107997,,80,1,1,
-2024-04-19,2v1ivOOsgn64g5OywuH55L,The Smallest Man Who Ever Lived,92,102621,,92,1,1,
-2024-04-19,1dhMTsEZz6ZEquGvmzVoHn,The Alchemy,101,97480,,101,1,1,
-2024-04-19,1UlhrRvYzbHEyugEDspXUB,Clara Bow,115,90733,,115,1,1,
 2024-06-01,2OzhQlSqBEmt7hmkYxfT6m,Fortnight (feat. Post Malone),76,119210,87,11,3,,
 2024-06-01,1BxfuPKGuaTgP7aM0Bbdwr,Cruel Summer,129,89109,147,36,3,,
 2024-06-02,2OzhQlSqBEmt7hmkYxfT6m,Fortnight (feat. Post Malone),73,101757,76,11,2,,
@@ -2216,95 +1962,8 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2026-05-31,53iuhJlwXhSER5J2IYYv1W,The Fate of Ophelia,110,75612,118,2,166,,
 2026-06-01,53iuhJlwXhSER5J2IYYv1W,The Fate of Ophelia,124,76125,110,2,167,,
 2026-06-02,53iuhJlwXhSER5J2IYYv1W,The Fate of Ophelia,127,76924,124,2,168,,
-2026-06-03,53iuhJlwXhSER5J2IYYv1W,The Fate of Ophelia,140,78709,127,2,244,244,
 2026-07-10,53iuhJlwXhSER5J2IYYv1W,The Fate of Ophelia,146,73665,137,2,281,281,
 2026-07-11,53iuhJlwXhSER5J2IYYv1W,The Fate of Ophelia,156,71464,146,2,282,282,
-2017-01-17,,I Don’t Wanna Live Forever (Fifty Shades Darker),22,56416,26,22,17,,
-2017-01-18,,I Don’t Wanna Live Forever (Fifty Shades Darker),24,61542,22,22,18,,
-2017-01-19,,I Don’t Wanna Live Forever (Fifty Shades Darker),21,60511,24,21,19,,
-2017-01-20,,I Don’t Wanna Live Forever (Fifty Shades Darker),23,62109,21,21,20,,
-2017-02-06,,I Don’t Wanna Live Forever (Fifty Shades Darker),9,84969,14,9,37,,
-2017-02-07,,I Don’t Wanna Live Forever (Fifty Shades Darker),9,86887,9,9,38,,
-2017-02-08,,I Don’t Wanna Live Forever (Fifty Shades Darker),7,97943,9,7,39,,
-2017-02-09,,I Don’t Wanna Live Forever (Fifty Shades Darker),7,102481,7,7,40,,
-2017-02-25,,I Don’t Wanna Live Forever (Fifty Shades Darker),2,130130,2,2,56,,
-2017-02-26,,I Don’t Wanna Live Forever (Fifty Shades Darker),2,107205,2,2,57,,
-2017-02-27,,I Don’t Wanna Live Forever (Fifty Shades Darker),3,109254,2,2,58,,
-2017-02-28,,I Don’t Wanna Live Forever (Fifty Shades Darker),2,109816,3,2,59,,
-2017-03-15,,I Don’t Wanna Live Forever (Fifty Shades Darker),4,102172,3,2,74,,
-2017-03-16,,I Don’t Wanna Live Forever (Fifty Shades Darker),4,104005,4,2,75,,
-2017-03-17,,I Don’t Wanna Live Forever (Fifty Shades Darker),3,102396,4,2,76,,
-2017-03-18,,I Don’t Wanna Live Forever (Fifty Shades Darker),3,114450,3,2,77,,
-2017-04-02,,I Don’t Wanna Live Forever (Fifty Shades Darker),18,75041,20,2,92,,
-2017-04-03,,I Don’t Wanna Live Forever (Fifty Shades Darker),17,75022,18,2,93,,
-2017-04-04,,I Don’t Wanna Live Forever (Fifty Shades Darker),15,75682,17,2,94,,
-2017-04-05,,I Don’t Wanna Live Forever (Fifty Shades Darker),12,80926,15,2,95,,
-2017-04-20,,I Don’t Wanna Live Forever (Fifty Shades Darker),19,65210,22,2,110,,
-2017-04-21,,I Don’t Wanna Live Forever (Fifty Shades Darker),12,74647,19,2,111,,
-2017-04-22,,I Don’t Wanna Live Forever (Fifty Shades Darker),12,83229,12,2,112,,
-2017-04-23,,I Don’t Wanna Live Forever (Fifty Shades Darker),16,63398,12,2,113,,
-2017-05-08,,I Don’t Wanna Live Forever (Fifty Shades Darker),34,59969,38,2,128,,
-2017-05-09,,I Don’t Wanna Live Forever (Fifty Shades Darker),39,56194,34,2,129,,
-2017-05-10,,I Don’t Wanna Live Forever (Fifty Shades Darker),58,47722,39,2,130,,
-2017-05-11,,I Don’t Wanna Live Forever (Fifty Shades Darker),67,42935,58,2,131,,
-2017-05-30,,I Don’t Wanna Live Forever (Fifty Shades Darker),88,29835,88,2,150,,
-2017-05-31,,I Don’t Wanna Live Forever (Fifty Shades Darker),88,32126,88,2,151,,
-2017-06-01,,I Don’t Wanna Live Forever (Fifty Shades Darker),97,29411,88,2,152,,
-2017-06-02,,I Don’t Wanna Live Forever (Fifty Shades Darker),89,32492,97,2,153,,
-2017-06-20,,I Don’t Wanna Live Forever (Fifty Shades Darker),116,24052,118,2,171,,
-2017-06-21,,I Don’t Wanna Live Forever (Fifty Shades Darker),133,23042,116,2,172,,
-2017-06-22,,I Don’t Wanna Live Forever (Fifty Shades Darker),134,22196,133,2,173,,
-2017-06-23,,I Don’t Wanna Live Forever (Fifty Shades Darker),151,24188,134,2,174,,
-2017-07-10,,I Don’t Wanna Live Forever (Fifty Shades Darker),193,19762,-1,2,1,,
-2017-07-11,,I Don’t Wanna Live Forever (Fifty Shades Darker),185,20447,193,2,2,,
-2017-07-12,,I Don’t Wanna Live Forever (Fifty Shades Darker),154,22320,185,2,3,,
-2017-07-28,,I Don’t Wanna Live Forever (Fifty Shades Darker),153,21842,168,2,19,,
-2017-07-29,,I Don’t Wanna Live Forever (Fifty Shades Darker),178,18874,153,2,20,,
-2017-07-30,,I Don’t Wanna Live Forever (Fifty Shades Darker),183,16434,178,2,21,,
-2017-07-31,,I Don’t Wanna Live Forever (Fifty Shades Darker),162,18838,183,2,22,,
-2017-08-16,,I Don’t Wanna Live Forever (Fifty Shades Darker),167,17669,189,2,38,,
-2017-08-17,,I Don’t Wanna Live Forever (Fifty Shades Darker),177,17256,167,2,39,,
-2017-08-18,,I Don’t Wanna Live Forever (Fifty Shades Darker),180,18677,177,2,40,,
-2017-09-03,,Look What You Made Me Do,17,71021,19,12,10,,
-2017-09-03,,I Don’t Wanna Live Forever (Fifty Shades Darker),200,16346,-1,2,1,,
-2017-09-04,,Look What You Made Me Do,18,70546,17,12,11,,
-2017-09-04,,...Ready For It?,101,29049,-1,101,1,,
-2017-09-04,,I Don’t Wanna Live Forever (Fifty Shades Darker),178,18534,200,2,2,,
-2017-09-05,,Look What You Made Me Do,12,80140,18,12,12,,
-2017-09-05,,...Ready For It?,105,27732,101,101,2,,
-2017-09-05,,I Don’t Wanna Live Forever (Fifty Shades Darker),180,17958,178,2,3,,
-2017-09-06,,Look What You Made Me Do,18,70937,12,12,13,,
-2017-09-06,,...Ready For It?,104,29797,105,101,3,,
-2017-09-06,,I Don’t Wanna Live Forever (Fifty Shades Darker),173,19830,180,2,4,,
-2017-09-21,,Look What You Made Me Do,50,53685,50,12,28,,
-2017-09-21,,I Don’t Wanna Live Forever (Fifty Shades Darker),200,19084,-1,2,1,,
-2017-09-22,,Look What You Made Me Do,69,53354,50,12,29,,
-2017-09-23,,Look What You Made Me Do,64,55616,69,12,30,,
-2017-09-24,,Look What You Made Me Do,64,48875,64,12,31,,
-2017-10-09,,Look What You Made Me Do,78,39959,66,12,46,,
-2017-10-10,,Look What You Made Me Do,76,41778,78,12,47,,
-2017-10-11,,Look What You Made Me Do,73,42288,76,12,48,,
-2017-10-12,,Look What You Made Me Do,80,39484,73,12,49,,
-2017-10-31,,Bad Blood,177,25764,-1,177,1,,
-2017-10-31,,Look What You Made Me Do,191,23693,186,12,68,,
-2024-04-19,,Fortnight (feat. Post Malone),11,257361,,11,1,1,
-2024-04-19,,The Tortured Poets Department,28,187526,,28,1,1,
-2024-04-19,,My Boy Only Breaks His Favorite Toys,33,179294,,33,1,1,
-2024-04-19,,"So Long, London",35,172851,,35,1,1,
-2024-04-19,,Down Bad,38,168470,,38,1,1,
-2024-04-19,,But Daddy I Love Him,49,150377,,49,1,1,
-2024-04-19,,Florida!!! (feat. Florence + The Machine),52,143830,,52,1,1,
-2024-04-19,,I Can Do It With a Broken Heart,56,131611,,56,1,1,
-2024-04-19,,Who’s Afraid of Little Old Me?,57,129800,,57,1,1,
-2024-04-19,,Fresh Out The Slammer,60,126413,,60,1,1,
-2024-04-19,,Guilty as Sin?,62,124466,,62,1,1,
-2024-04-19,,Cruel Summer,71,115176,60,36,198,116,
-2024-04-19,,loml,74,114526,,74,1,1,
-2024-04-19,,I Can Fix Him (No Really I Can),80,107997,,80,1,1,
-2024-04-19,,The Smallest Man Who Ever Lived,92,102621,,92,1,1,
-2024-04-19,,The Alchemy,101,97480,,101,1,1,
-2024-04-19,,Clara Bow,115,90733,,115,1,1,
-2026-06-03,,The Fate of Ophelia,140,78709,127,2,244,244,
 2026-07-12,53iuhJlwXhSER5J2IYYv1W,The Fate of Ophelia,180,57115,156,2,283,283,
 2026-07-13,53iuhJlwXhSER5J2IYYv1W,The Fate of Ophelia,166,65668,180,2,284,284,
 2026-07-14,53iuhJlwXhSER5J2IYYv1W,The Fate of Ophelia,165,56640,166,2,285,285,
