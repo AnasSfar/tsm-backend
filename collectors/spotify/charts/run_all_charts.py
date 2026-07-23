@@ -404,7 +404,7 @@ def _build_env() -> dict[str, str]:
 def _build_backfill_env(env: dict[str, str]) -> dict[str, str]:
     backfill_env = env.copy()
     backfill_env.setdefault("SPOTIFY_WORLDWIDE_TOTAL_CONCURRENCY", "1")
-    backfill_env.setdefault("SPOTIFY_WORLDWIDE_RATE_LIMIT_MIN_SECONDS", "60")
+    backfill_env.setdefault("SPOTIFY_WORLDWIDE_RATE_LIMIT_MIN_SECONDS", "20")
     backfill_env.setdefault("SPOTIFY_WORLDWIDE_REQUEST_INTERVAL_SECONDS", "2.0")
     backfill_env.setdefault("SPOTIFY_WORLDWIDE_ADAPTIVE_MIN", "5")
     backfill_env.setdefault("SPOTIFY_WORLDWIDE_ADAPTIVE_MAX", "25")
