@@ -1673,8 +1673,8 @@ def main() -> int:
         action="store_true",
         help="Alias tolere: le backfill complet est deja le comportement par defaut en newest-first.",
     )
-    parser.add_argument("--backfill-from", metavar="DATE", help="Date de debut du rattrapage (YYYY-MM-DD, defaut: 2017-01-01).")
-    parser.add_argument("--backfill-to", metavar="DATE", help="Date de fin du rattrapage (YYYY-MM-DD, defaut: hier).")
+    parser.add_argument("--backfill-from", "--from-date", dest="backfill_from", metavar="DATE", help="Date de debut du rattrapage (YYYY-MM-DD, defaut: 2017-01-01).")
+    parser.add_argument("--backfill-to", "--to-date", dest="backfill_to", metavar="DATE", help="Date de fin du rattrapage (YYYY-MM-DD, defaut: hier).")
     parser.add_argument("--backfill-workers", type=int, default=1, help="Nombre de dates Spotify Charts a collecter en parallele (defaut: 1).")
     parser.add_argument(
         "--backfill-upload-r2",
