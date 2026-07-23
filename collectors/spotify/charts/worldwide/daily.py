@@ -112,6 +112,7 @@ TS_NAME         = "Taylor Swift"
 SEMAPHORE       = int(os.getenv("SPOTIFY_WORLDWIDE_SEMAPHORE", "2"))
 FETCH_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_WORLDWIDE_FETCH_MAX_ATTEMPTS", "0"))
 RATE_LIMIT_MIN_SECONDS = int(os.getenv("SPOTIFY_WORLDWIDE_RATE_LIMIT_MIN_SECONDS", "60"))
+REQUEST_INTERVAL_SECONDS = float(os.getenv("SPOTIFY_WORLDWIDE_REQUEST_INTERVAL_SECONDS", "0"))
 SKIP_LATEST_FALLBACK_ON_404 = os.getenv("SPOTIFY_SKIP_LATEST_FALLBACK_ON_404", "").strip().lower() in {"1", "true", "yes", "on"}
 _OVERVIEW_URL   = "https://charts-spotify-com-service.spotify.com/auth/v1/overview/GLOBAL"
 MULTI_SONG_REGIONAL_POST_MIN_SONGS = 3
@@ -842,10 +843,29 @@ class GlobalPause:
                 self._cond.notify_all()
 
 
+class RequestPacer:
+    def __init__(self, interval_seconds: float) -> None:
+        self._interval = max(0.0, float(interval_seconds or 0.0))
+        self._lock = asyncio.Lock()
+        self._next_at = 0.0
+
+    async def wait(self) -> None:
+        if self._interval <= 0:
+            return
+        async with self._lock:
+            loop = asyncio.get_running_loop()
+            now = loop.time()
+            if now < self._next_at:
+                await asyncio.sleep(self._next_at - now)
+                now = loop.time()
+            self._next_at = now + self._interval
+
+
 async def _fetch_region(
     session: aiohttp.ClientSession,
     sem: asyncio.Semaphore,
     pause: GlobalPause,
+    pacer: RequestPacer,
     pool: TokenPool,
     region: str,
     chart_date: str,
@@ -861,6 +881,7 @@ async def _fetch_region(
         headers = {**base_headers, "Authorization": f"Bearer {pool.current}"}
         async with sem:
             try:
+                await pacer.wait()
                 async with session.get(
                     url,
                     headers=headers,
@@ -934,10 +955,12 @@ async def _run_async(chart_date: str, tokens: list[str], regions: dict[str, str]
     pool = TokenPool(tokens)
     sem = asyncio.Semaphore(SEMAPHORE)
     pause = GlobalPause(pool)
-    print(f"[INFO] Concurrence fixe: {SEMAPHORE} workers, {len(tokens)} token(s)", flush=True)
+    pacer = RequestPacer(REQUEST_INTERVAL_SECONDS)
+    pacing_label = f", pacing={REQUEST_INTERVAL_SECONDS:.2f}s" if REQUEST_INTERVAL_SECONDS > 0 else ""
+    print(f"[INFO] Concurrence fixe: {SEMAPHORE} workers, {len(tokens)} token(s){pacing_label}", flush=True)
     async with aiohttp.ClientSession() as session:
         tasks = [
-            _fetch_region(session, sem, pause, pool, region, chart_date, base_headers)
+            _fetch_region(session, sem, pause, pacer, pool, region, chart_date, base_headers)
             for region in regions
         ]
         results = await asyncio.gather(*tasks)
