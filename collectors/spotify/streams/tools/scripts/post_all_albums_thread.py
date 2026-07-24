@@ -48,7 +48,7 @@ def all_album_names() -> list[str]:
 
 
 def _album_daily_total(album: str, target_date: str) -> int:
-    sections, _canonical_name = generate_album_update_image.load_album_sections(album)
+    sections, _canonical_name = generate_album_update_image.load_album_sections(album, target_date)
     if not sections:
         return 0
     hist = generate_album_update_image.load_history_for_album(sections, target_date)

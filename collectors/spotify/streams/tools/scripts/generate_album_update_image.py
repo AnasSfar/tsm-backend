@@ -380,12 +380,16 @@ def fmt_optional_num(n) -> str:
 
 # ── Data loading ───────────────────────────────────────────────────────────────
 
-def load_album_sections(album_name: str) -> list[dict]:
+def load_album_sections(album_name: str, target_date: str | None = None) -> list[dict]:
     """
     Returns list of sections for the given album, each with:
       {name, tracks: [{track_id, title_clean, version_tag, display_order, image_url}]}
     Includes every track whose section/track is not marked chart_extra.
     Tracks sorted by display_order.
+
+    If target_date is given, sections not yet released as of that date
+    (release_date after target_date) are excluded — an edition/section
+    must not appear before it actually existed.
     """
     if not ALBUMS_DIR.exists():
         return []
@@ -512,6 +516,12 @@ def load_album_sections(album_name: str) -> list[dict]:
         return (sec.get("release_date") or "9999-12-31", sec.get("source_order", 9999))
     sections.sort(key=sort_key)
 
+    if target_date:
+        sections = [
+            sec for sec in sections
+            if not sec.get("release_date") or sec["release_date"] <= target_date
+        ]
+
     return sections, canonical_name
 
 
@@ -526,11 +536,14 @@ def load_history_for_album(
     yesterday = str(date_cls.fromisoformat(target_date) - timedelta(days=1))
     day_before = str(date_cls.fromisoformat(target_date) - timedelta(days=2))
     all_ids = {t["track_id"] for sec in sections for t in sec["tracks"]}
+    release_dates = {
+        t["track_id"]: (t.get("release_date") or "")[:10]
+        for sec in sections for t in sec["tracks"]
+    }
 
     today_data: dict[str, dict] = {}
     yest_data: dict[str, dict] = {}
     before_data: dict[str, dict] = {}
-    ever_seen: set[str] = set()
 
     def _parse_optional_int(raw: str | None) -> int | None:
         s = (raw or "").strip()
@@ -546,8 +559,6 @@ def load_history_for_album(
             tid = row.get("track_id") or ""
             if tid not in all_ids:
                 continue
-
-            ever_seen.add(tid)
 
             d = row.get("date") or ""
             if d not in (target_date, yesterday, day_before):
@@ -578,6 +589,13 @@ def load_history_for_album(
     _fill_missing_daily(today_data, yest_data)
     _fill_missing_daily(yest_data, before_data)
 
+    def _is_release_day(tid: str) -> bool:
+        # The catalogue release_date is the ground truth for "NEW" (shown on
+        # the exact release day), not CSV history: a track's first CSV row
+        # can predate or postdate its real release (backfill baseline rows,
+        # or a track added to collection scope later than it was released).
+        return release_dates.get(tid) == target_date
+
     result = {}
     for tid in all_ids:
         t = today_data.get(tid)
@@ -587,7 +605,7 @@ def load_history_for_album(
                 "daily": None,
                 "change": None,
                 "pct": None,
-                "ever_seen": tid in ever_seen,
+                "ever_seen": not _is_release_day(tid),
             }
             continue
         y = yest_data.get(tid)
@@ -601,7 +619,7 @@ def load_history_for_album(
             "daily":   daily,
             "change":  change,
             "pct":     pct,
-            "ever_seen": tid in ever_seen,
+            "ever_seen": not _is_release_day(tid),
         }
     return result
 
@@ -918,6 +936,7 @@ body{
 .pos{color:#067647}
 .neg{color:#b42318}
 .neutral{color:#667085}
+.new{color:#5bbde4}
 /* ── section total ── */
 .sec-total{
   display:grid;
@@ -957,6 +976,7 @@ body{
 .tot-chip-val.chip-pos{color:#067647}
 .tot-chip-val.chip-neg{color:#b42318}
 .tot-chip-val.chip-neutral{color:#667085}
+.tot-chip-val.chip-new{color:#5bbde4}
 .sec-filter-wrap{grid-column:3/5}
 .sec-main-wrap{grid-column:5/9}
 .sec-total.no-filter .sec-main-wrap{grid-column:3/7}
@@ -992,6 +1012,7 @@ body{
 .era-total .tot-chip-val.chip-pos{color:#7ce9a4}
 .era-total .tot-chip-val.chip-neg{color:#ffb0a8}
 .era-total .tot-chip-val.chip-neutral{color:rgba(255,255,255,.82)}
+.era-total .tot-chip-val.chip-new{color:#5bbde4}
 /* ── footer ── */
 .ftr{
   background:var(--tint-bg);
@@ -1118,6 +1139,8 @@ def _chip_cls(state: str) -> str:
         return "chip-neg"
     if state == "neutral":
         return "chip-neutral"
+    if state == "new":
+        return "chip-new"
     return ""
 
 
@@ -1158,8 +1181,8 @@ def build_song_row_html(
     chg_s, pct_s, chg_cls = fmt_chg(change, pct)
     if not hdata.get("ever_seen", True):
         chg_s = "NEW"
-        pct_s = ""
-        chg_cls = "neutral"
+        pct_s = "NEW"
+        chg_cls = "new"
 
     alt_cls = " alt" if alt else ""
 
@@ -1202,6 +1225,8 @@ def build_section_total_html(sec_name: str, tracks: list[dict],
     sec_pct    = (sec_change / sec_yest * 100) if sec_yest != 0 else None
 
     chg_s, pct_s, chg_cls = fmt_chg(sec_change, sec_pct)
+    if tracks and all(not hist.get(t["track_id"], {}).get("ever_seen", True) for t in tracks):
+        chg_s, pct_s, chg_cls = "NEW", "NEW", "new"
     pct_disp = pct_s or "—"
     chg_chip_cls = _chip_cls(chg_cls)
 
@@ -1363,6 +1388,11 @@ def build_html(
         total_yest = total_daily - total_change
         total_pct = (total_change / total_yest * 100) if total_yest != 0 else None
         tot_chg_s, tot_pct_s, chg_cls = fmt_chg(total_change, total_pct)
+        if all(
+            not hist.get(t["track_id"], {}).get("ever_seen", True)
+            for sec2 in sections for t in sec2["tracks"]
+        ):
+            tot_chg_s, tot_pct_s, chg_cls = "NEW", "NEW", "new"
 
         if show_filter_cols:
             total_flt_disp = total_filtered if total_filtered_count > 0 else None
@@ -1574,7 +1604,7 @@ def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_
         target_date = get_latest_date()
     print(f"[album_update] Album: {album_name}  Date: {target_date}")
 
-    sections, album_name = load_album_sections(album_name)
+    sections, album_name = load_album_sections(album_name, target_date)
     if not sections:
         raise ValueError(f"Aucune section trouvée pour l'album: {album_name!r}")
     print(f"[album_update] {sum(len(s['tracks']) for s in sections)} tracks dans {len(sections)} section(s)")
@@ -1684,7 +1714,7 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
     """Builds the album post text with daily total and biggest gainer/most stable track."""
     from datetime import datetime
 
-    sections, canonical_name = load_album_sections(album_name)
+    sections, canonical_name = load_album_sections(album_name, target_date)
     if not sections:
         raise ValueError(f"Aucune section trouvée pour l'album: {album_name!r}")
 
@@ -1818,7 +1848,7 @@ def _best_day_post_label(row: dict) -> str:
 
 def _build_album_post_text(album_name: str, target_date: str) -> str:
     tweet = _build_album_post_text_base(album_name, target_date)
-    sections, _canonical_name = load_album_sections(album_name)
+    sections, _canonical_name = load_album_sections(album_name, target_date)
     if not sections:
         return tweet
 

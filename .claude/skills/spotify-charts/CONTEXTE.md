@@ -31,6 +31,7 @@ comparaison requise.
 - `spotify-charts/`: skill Codex local pour ce pipeline.
 - `contexte.md`: ce fichier.
 - `artists_global/`: chart artiste global Taylor Swift.
+- `music_videos_global/`: Music Video Charts Global (top 50 videos quotidien).
 - `worldwide/`: collecteur central des charts par pays et snapshot mondial.
 - `global/`, `fr/`, `us/`, `uk/`: pipelines regionaux historiques, tweets,
   filtres et images.
@@ -61,6 +62,7 @@ python .\collectors\spotify\charts\run_all_charts.py --watch-release
 `run_all_charts.py` collecte par defaut:
 
 - `artists_global/artist_global_daily.py`
+- `music_videos_global/daily.py --no-post --no-wait --allow-unavailable`
 - `worldwide/daily.py --force`
 
 Les posts regionaux global/fr/us et les cards sont orchestres autour du
@@ -377,6 +379,39 @@ La card artiste worldwide lit/ecrit:
 - `runtime/exports/web/site/data/charts_artists_global_worldwide.json`
 - `artist_worldwide_card.png`
 - `artist_worldwide_card_posted.lock`
+
+## music_videos_global/
+
+Fichier principal:
+
+```text
+music_videos_global/daily.py
+```
+
+Role:
+
+- recuperer Music Video Charts Global via l'API Spotify Charts;
+- ecrire le top complet quand Spotify le fournit + une sous-liste
+  `taylor_videos`;
+- ecrire snapshots JSON/CSV sous `snapshots/spotify_charts/...`;
+- ecrire le latest web `charts_music_videos_global.json`;
+- creer `updated.lock`.
+
+Options:
+
+- date positionnelle ou `--date YYYY-MM-DD|latest`
+- `--no-wait`
+- `--retry-seconds`
+- `--no-csv`
+- `--no-post` (accepte pour run_all; aucun tweet automatique cable pour
+  l'instant)
+- `--allow-unavailable` (run_all uniquement: ecrit `pending.json` et laisse les
+  autres charts continuer si Spotify ne publie pas encore cette chart via API)
+
+Le slug interne Spotify etant nouveau, le script essaie explicitement plusieurs
+candidats (`SPOTIFY_MUSIC_VIDEO_CHART_IDS` permet de les remplacer). Si aucun
+ne marche, la collecte stricte reste en erreur; via run_all, elle reste
+`pending` sans inventer de rows ni bloquer songs/artists.
 
 ## Cards et images
 

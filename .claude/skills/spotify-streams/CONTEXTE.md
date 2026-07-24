@@ -173,3 +173,11 @@ python .\collectors\spotify\streams\tools\scripts\reconcile_gap_catchup.py 2026-
   ne sont pas respectes.
 - Toute nouvelle etape de post avec image doit echouer si l'image n'est pas
   attachee, pas degrader en texte seul.
+- `generate_album_update_image.py` (throwback/album update) filtre les
+  sections par `release_date` catalogue et base le badge NEW sur
+  `release_date == target_date`, jamais sur `streams_history.csv` (voir
+  `data-rules` regle 11). Certains tracks anciens ont des trous de collecte
+  reels dans le CSV (ex. remix "Bad Blood" collecte seulement depuis 2024,
+  quelques tracks reputation/Lover sans ligne a des dates anciennes) : ca
+  s'affiche en tirets `-`, pas en NEW ni en donnee inventee — c'est attendu
+  tant que l'historique n'est pas backfille pour ces track_id.

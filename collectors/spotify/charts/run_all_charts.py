@@ -149,6 +149,11 @@ SPOTIFY_UA = (
 # us/uk sont geres par worldwide.
 COLLECT_RUNNERS: list[tuple[str, Path, list[str]]] = [
     ("artists_global", CHARTS_ROOT / "artists_global" / "artist_global_daily.py", []),
+    (
+        "music_videos_global",
+        CHARTS_ROOT / "music_videos_global" / "daily.py",
+        ["--no-post", "--no-wait", "--allow-unavailable"],
+    ),
     ("worldwide",      CHARTS_ROOT / "worldwide"      / "daily.py",         ["--force"]),
 ]
 
@@ -198,6 +203,7 @@ def _r2_export_is_fresh(target: date) -> bool:
         REPO_ROOT / "db" / "charts_history_uk.csv",
         WEB_EXPORT_DATA_DIR / "charts_worldwide.json",
         WEB_EXPORT_DATA_DIR / "charts_artists_global_worldwide.json",
+        WEB_EXPORT_DATA_DIR / "charts_music_videos_global.json",
     ]
     for path in watched_paths:
         try:
@@ -220,6 +226,9 @@ def _region_data_exists(name: str, target: date) -> bool:
     for day_dir in day_dirs:
         if name == "artists_global":
             if (day_dir / "artist_global_daily.json").exists() or (day_dir / "artist_global_daily.csv").exists():
+                return True
+        elif name == "music_videos_global":
+            if (day_dir / "music_videos_global_daily.json").exists() or (day_dir / "music_videos_global_daily.csv").exists():
                 return True
         elif name == "worldwide":
             if (day_dir / f"ts_worldwide_{target}.json").exists():

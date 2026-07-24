@@ -235,9 +235,11 @@ Modules importés par les générateurs d'images (pas des scripts, sauf preview)
 
 ## 8. `scripts/` — outils one-shot & maintenance
 
+Avant tout travail ici : charger le skill `scripts-maintenance` (ordre du workflow d'enrichissement discographie, piège dry-run de `r2.py`, scripts destructifs).
+
 | Fichier | Rôle / lancement |
 |---|---|
-| `r2.py` (34 Ko) | **Upload R2 principal** (data/history/db/images). `--bucket`, `--new-date D` (une seule date), `--slugs a,b`, `--streams-daily`, `--charts-only`, `--skip-{history,static,db,images}-upload`, `--dry-run` |
+| `r2.py` (34 Ko) | **Upload R2 principal** (data/history/db/images). `--bucket`, `--new-date D` (une seule date), `--slugs a,b`, `--streams-daily`, `--charts-only`, `--worldwide-snapshot-only` (avec `--new-date`), `--skip-{history,static,db,images}-upload`, `--dry-run` (⚠️ opt-in ici, contrairement au reste de `scripts/` — sans ce flag, upload réel) |
 | `export_for_web.py` | Wrapper → `streams/extras/export_for_web.py`. `--new-date`, `--dry-run` |
 | `check_r2_storage.py` | Alerte ntfy si le stockage R2 dépasse les seuils. `--dry-run`, `--bucket-limits b=size,…`, `--warning-percent`, `--topic` |
 | `migrate_app_r2.py` | Copie bucket public → bucket app. `--dry-run`, `--overwrite`, `--key`, `--prefix` |

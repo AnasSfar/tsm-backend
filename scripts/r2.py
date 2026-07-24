@@ -274,6 +274,40 @@ def iter_worldwide_chart_snapshots(new_date: str | None = None) -> list[Path]:
     return [snapshots[d] for d in sorted(snapshots)]
 
 
+def iter_music_video_chart_snapshots(new_date: str | None = None) -> list[Path]:
+    snapshots: dict[str, Path] = {}
+
+    def add(path: Path) -> None:
+        match = DATE_RE.search(path.name) or DATE_RE.search(str(path.parent))
+        if match:
+            snapshots[match.group(1)] = path
+
+    if new_date:
+        filename = "music_videos_global_daily.json"
+        for path in (
+            spotify_chart_dir("music_videos_global", new_date) / filename,
+            legacy_spotify_chart_dir("music_videos_global", new_date) / filename,
+            legacy_run_all_charts_dir("music_videos_global", new_date) / filename,
+        ):
+            if path.exists():
+                add(path)
+    else:
+        snapshots_root = ROOT / "snapshots" / "spotify_charts"
+        if snapshots_root.exists():
+            for path in sorted(snapshots_root.rglob("music_videos_global/music_videos_global_daily.json")):
+                add(path)
+        history_root = ROOT / "collectors" / "spotify" / "charts" / "music_videos_global" / "history"
+        if history_root.exists():
+            for path in sorted(history_root.rglob("music_videos_global_daily.json")):
+                add(path)
+        for path in sorted(
+            DATA_ROOT.glob("20??/??/????-??-??/run_all_charts/spotify/music_videos_global/music_videos_global_daily.json")
+        ):
+            add(path)
+
+    return [snapshots[d] for d in sorted(snapshots)]
+
+
 def head_object_safe(client, bucket: str, key: str) -> dict[str, Any] | None:
     try:
         return client.head_object(Bucket=bucket, Key=key)
@@ -566,6 +600,7 @@ def upload_static_data(
         ("applemusic_history.json",  "data/applemusic_history.json"),
         ("songs-appearances.json",   "data/songs-appearances.json"),
         ("charts_worldwide.json",    "data/charts_worldwide.json"),
+        ("charts_music_videos_global.json", "data/charts_music_videos_global.json"),
     ]
     if streams_daily:
         # The daily Spotify streams export should not re-check Apple Music
@@ -577,7 +612,7 @@ def upload_static_data(
     if charts_only:
         json_mappings = [
             item for item in json_mappings
-            if item[0] in {"charts_worldwide.json"}
+            if item[0] in {"charts_worldwide.json", "charts_music_videos_global.json"}
         ]
     for filename, r2_key in json_mappings:
         src = SITE_DATA_DIR / filename
@@ -691,6 +726,25 @@ def upload_static_data(
             tasks.append((full_key, data, "application/json; charset=utf-8"))
     elif not charts_only:
         print("[SKIP] absent: worldwide chart snapshots")
+
+    # Spotify Music Video Charts Global per-date snapshots
+    music_video_files = iter_music_video_chart_snapshots(new_date)
+    if music_video_files:
+        for path in music_video_files:
+            m = DATE_RE.search(path.name) or DATE_RE.search(str(path.parent))
+            if not m:
+                continue
+            chart_date = m.group(1)
+            full_key = f"{history_prefix}/charts_music_videos_global/{chart_date}.json"
+            try:
+                obj = load_json(path)
+            except Exception:
+                print(f"[SKIP] invalid music video chart snapshot: {path}")
+                continue
+            data = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+            tasks.append((full_key, data, "application/json; charset=utf-8"))
+    elif not charts_only:
+        print("[SKIP] absent: music video chart snapshots")
 
     uploaded = 0
     unchanged = 0
