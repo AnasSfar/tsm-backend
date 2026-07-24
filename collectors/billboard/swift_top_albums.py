@@ -513,8 +513,10 @@ def _build_album_week(
     album_units_spotify: dict[str, int] = {}
     album_units_charts: dict[str, int] = {}
     album_units_surplus: dict[str, int] = {}
-    album_total_units: dict[str, int] = {}
     album_track_ids: dict[str, set[str]] = {}
+    album_am_units_by_song: dict[str, dict[str, int]] = {}
+    album_am_ts_units_by_song: dict[str, dict[str, int]] = {}
+    album_am_overall_units_by_song: dict[str, dict[str, int]] = {}
 
     def _to_int(v: str | None) -> int:
         try:
@@ -528,6 +530,17 @@ def _build_album_week(
         except Exception:
             return 0
 
+    def _am_song_key(row: dict) -> str:
+        keys = _song_match_keys({
+            "song_family": row.get("song_family"),
+            "title_clean": row.get("title_clean"),
+            "base_title": row.get("base_title"),
+            "title": row.get("title"),
+        })
+        if not keys:
+            return _normalize_album_id(row.get("title") or "")
+        return sorted(keys, key=lambda key: (len(key), key))[0]
+
     unmatched_track_ids: set[str] = set()
     for row in week_rows:
         tid = (row.get("track_id") or "").strip()
@@ -538,20 +551,33 @@ def _build_album_week(
             unmatched_track_ids.add(tid)
             continue
         album_weekly_streams[album.album_id] = album_weekly_streams.get(album.album_id, 0) + _to_int(row.get("weekly_streams"))
-        album_units_am[album.album_id] = album_units_am.get(album.album_id, 0) + _to_int(row.get("units_am"))
-        album_units_am_ts[album.album_id] = album_units_am_ts.get(album.album_id, 0) + _score_to_units(row.get("am_ts_score"))
-        album_units_am_overall[album.album_id] = (
-            album_units_am_overall.get(album.album_id, 0)
-            + _score_to_units(row.get("am_overall_score"))
-        )
+        am_song_key = _am_song_key(row)
+        row_units_am = _to_int(row.get("units_am"))
+        row_units_am_ts = _score_to_units(row.get("am_ts_score"))
+        row_units_am_overall = _score_to_units(row.get("am_overall_score"))
+        album_am_units = album_am_units_by_song.setdefault(album.album_id, {})
+        album_am_ts_units = album_am_ts_units_by_song.setdefault(album.album_id, {})
+        album_am_overall_units = album_am_overall_units_by_song.setdefault(album.album_id, {})
+        album_am_units[am_song_key] = max(album_am_units.get(am_song_key, 0), row_units_am)
+        album_am_ts_units[am_song_key] = max(album_am_ts_units.get(am_song_key, 0), row_units_am_ts)
+        album_am_overall_units[am_song_key] = max(album_am_overall_units.get(am_song_key, 0), row_units_am_overall)
         album_units_spotify[album.album_id] = album_units_spotify.get(album.album_id, 0) + _to_int(row.get("units_spotify"))
         album_units_charts[album.album_id] = album_units_charts.get(album.album_id, 0) + _to_int(row.get("units_charts"))
         album_units_surplus[album.album_id] = album_units_surplus.get(album.album_id, 0) + _to_int(row.get("units_surplus"))
-        album_total_units[album.album_id] = album_total_units.get(album.album_id, 0) + _to_int(row.get("total_units"))
         album_track_ids.setdefault(album.album_id, set()).add(tid)
 
     if unmatched_track_ids:
         logger.log(f"  unmatched      : {len(unmatched_track_ids)} tracks not linked to any album")
+
+    for aid in set(album_units_spotify) | set(album_am_units_by_song):
+        album_units_am[aid] = sum(album_am_units_by_song.get(aid, {}).values())
+        album_units_am_ts[aid] = sum(album_am_ts_units_by_song.get(aid, {}).values())
+        album_units_am_overall[aid] = sum(album_am_overall_units_by_song.get(aid, {}).values())
+
+    album_total_units = {
+        aid: album_units_spotify.get(aid, 0) + album_units_am.get(aid, 0)
+        for aid in set(album_units_spotify) | set(album_units_am)
+    }
 
     scored = sorted(album_total_units.items(), key=lambda kv: kv[1], reverse=True)
     points_by_album = {}

@@ -102,6 +102,20 @@ def _dominant_color(img_path: Path) -> str:
         return "#1db954"
 
 
+# Albums with an established black-and-white / monochrome brand identity.
+# Photo-based dominant-color extraction always finds *some* hue (compression
+# noise, a warm-lit patch, skin tone) even in a near-grayscale header/cover,
+# and the extraction helpers below deliberately boost saturation to stay
+# "vivid" — so these albums would otherwise render with an arbitrary pink/tan
+# tint instead of the neutral gray their branding actually uses (matches the
+# gray accent the frontend hardcodes for these same themes, see
+# tsm-frontend anniversaries.js / themes.css theme-folklore & theme-reputation).
+MONOCHROME_ALBUM_ACCENTS = {
+    "folklore": "#6b6b6b",
+    "reputation": "#6b6b6b",
+}
+
+
 def _dominant_color_from_url(url: str) -> str:
     if not _PIL or not url:
         return "#1db954"
@@ -1631,9 +1645,12 @@ def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_
 
     cover_url  = load_cover_url(album_name)
     header_img = pick_header_image(album_name)
+    mono_accent = MONOCHROME_ALBUM_ACCENTS.get(album_name.strip().casefold())
 
     # Accent color comes from the selected header first; fall back to cover, then default.
-    if header_img:
+    if mono_accent:
+        dominant_hex = mono_accent
+    elif header_img:
         dominant_hex = _header_accent_color(header_img)
     elif cover_url:
         dominant_hex = _dominant_color_from_url(cover_url)
@@ -1649,7 +1666,10 @@ def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_
     hdr_target_h = HEADER_HEIGHT_CSS * RENDER_DPR
     header_uri = _prepare_header_for_render(header_img, hdr_target_w, hdr_target_h) if header_img else ""
 
-    section_palette = _section_palette_colors(header_img, max_colors=max(3, len(sections))) if header_img else []
+    if mono_accent:
+        section_palette = [mono_accent]
+    else:
+        section_palette = _section_palette_colors(header_img, max_colors=max(3, len(sections))) if header_img else []
 
     # Nouveau : icône du handle
     handle_icon_uri = _file_to_data_uri(HANDLE_ICON_PATH)
