@@ -27,6 +27,7 @@ import json
 import os
 import re
 import shutil
+import subprocess
 import sys
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
@@ -601,6 +602,36 @@ def _build_album_week(
     return points_by_album, rank_by_album
 
 
+def _atomic_write_text(path: Path, content: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    try:
+        tmp.write_text(content, encoding="utf-8")
+        os.replace(tmp, path)
+    finally:
+        if tmp.exists():
+            try:
+                tmp.unlink()
+            except OSError:
+                pass
+
+
+def _atomic_write_csv(path: Path, fieldnames: list[str], rows: list[dict]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    try:
+        with tmp.open("w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
+            writer.writeheader()
+            writer.writerows(rows)
+        os.replace(tmp, path)
+    finally:
+        if tmp.exists():
+            try:
+                tmp.unlink()
+            except OSError:
+                pass
+
 # ---------------------------------------------------------------------------
 # Album history CSV
 # ---------------------------------------------------------------------------
@@ -676,10 +707,7 @@ def _write_history_csv(rows: list[dict], logger: Logger) -> None:
         "peak_position",
         "times_at_peak",
     ]
-    with SWIFT_TOP_ALBUMS_HISTORY_CSV.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
-        writer.writeheader()
-        writer.writerows(rows)
+    _atomic_write_csv(SWIFT_TOP_ALBUMS_HISTORY_CSV, fieldnames, rows)
     logger.log(f"✔ CSV  → {SWIFT_TOP_ALBUMS_HISTORY_CSV.name} ({len(rows)} rows)")
 
 
@@ -691,7 +719,7 @@ def _rebuild_snapshot_index(logger: Logger) -> None:
     dates = [p.stem[len(CHART_SLUG) + 1:] for p in _SITE_DATA_DIR.glob(f"{CHART_SLUG}_????-??-??.json")]
     dates.sort(reverse=True)
     index_path = _SITE_DATA_DIR / f"{CHART_SLUG}_index.json"
-    index_path.write_text(json.dumps(dates, ensure_ascii=False), encoding="utf-8")
+    _atomic_write_text(index_path, json.dumps(dates, ensure_ascii=False))
     logger.log(f"✔ IDX  → {index_path.name} ({len(dates)} dates)")
 
 
@@ -701,9 +729,9 @@ def _write_snapshot_json(payload: dict, logger: Logger) -> None:
     chart_date = payload.get("chart_date")
     if chart_date:
         dated = _SITE_DATA_DIR / f"{CHART_SLUG}_{chart_date}.json"
-        dated.write_text(content, encoding="utf-8")
+        _atomic_write_text(dated, content)
         logger.log(f"✔ JSON → {dated.name}")
-    OUTPUT_JSON.write_text(content, encoding="utf-8")
+    _atomic_write_text(OUTPUT_JSON, content)
     logger.log(f"✔ JSON → {OUTPUT_JSON.name} (latest)")
     _rebuild_snapshot_index(logger)
 
@@ -729,13 +757,31 @@ def _maybe_upload_to_r2(*, logger: Logger, skip_r2: bool = False) -> None:
             logger.log("  r2             : skipped (credentials / config)")
     except Exception as exc:
         logger.log(f"⚠ r2             : upload failed — {exc}")
+    _regenerate_home_highlights_cache(logger=logger)
+
+
+def _regenerate_home_highlights_cache(*, logger: Logger) -> None:
+    """Best-effort refresh of the Charts Gallery highlights/version R2 cache.
+
+    Never blocks the chart run: on failure, tsm-frontend/api's own
+    cache-on-miss fallback recomputes it live instead.
+    """
+    try:
+        script = _REPO_ROOT / "scripts" / "generate_home_highlights.py"
+        result = subprocess.run(
+            [sys.executable, str(script), "--quiet"], cwd=str(_REPO_ROOT), check=False
+        )
+        if result.returncode != 0:
+            logger.log(f"  highlights     : cache refresh exited with code {result.returncode}")
+    except Exception as exc:
+        logger.log(f"⚠ highlights     : cache refresh failed — {exc}")
 
 
 # ---------------------------------------------------------------------------
 # Main run
 # ---------------------------------------------------------------------------
 
-def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool, skip_r2: bool = False) -> int:
+def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool, skip_r2: bool = False, skip_images: bool = False) -> int:
     logger = Logger()
 
     if chart_date is None:
@@ -970,25 +1016,27 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool, skip_r
         }
         _write_snapshot_json(payload, logger)
 
-        try:
-            from swift_top_100_image import render_png
-            out_path = _SITE_DATA_DIR / f"{CHART_SLUG}.png"
-            render_png(
-                payload=payload,
-                output_path=out_path,
-                columns=1,
-                limit=len(snapshot_entries),
-                offset=0,
-                width=1400,
-                scale=2,
-            )
-            logger.log(f"✔ PNG  → {out_path.name}")
-            history_dir = billboard_snapshot_dir(chart_date_str)
-            history_dir.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(out_path, history_dir / f"{CHART_SLUG}.png")
-        except Exception as exc:
-            logger.log(f"⚠ image          : generation failed — {exc}")
-
+        if skip_images:
+            logger.log("  images         : skipped (backfill)")
+        else:
+            try:
+                from swift_top_100_image import render_png
+                out_path = _SITE_DATA_DIR / f"{CHART_SLUG}.png"
+                render_png(
+                    payload=payload,
+                    output_path=out_path,
+                    columns=1,
+                    limit=len(snapshot_entries),
+                    offset=0,
+                    width=1400,
+                    scale=2,
+                )
+                logger.log(f"✔ PNG  → {out_path.name}")
+                history_dir = billboard_snapshot_dir(chart_date_str)
+                history_dir.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(out_path, history_dir / f"{CHART_SLUG}.png")
+            except Exception as exc:
+                logger.log(f"⚠ image          : generation failed — {exc}")
         _maybe_upload_to_r2(logger=logger, skip_r2=skip_r2)
 
         logs_dir = _SCRIPT_DIR / "logs"
@@ -1015,6 +1063,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                    help="Rebuild swift_top_albums_index.json from existing snapshot files")
     p.add_argument("--skip-r2", dest="skip_r2", action="store_true",
                    help="Do not upload generated files to R2")
+    p.add_argument("--skip-images", dest="skip_images", action="store_true",
+                   help="Do not generate PNG chart images")
     p.add_argument("--variant", dest="variant", choices=["albums", "eras", "all"], default="albums",
                    help="Generate album chart, eras chart, or both")
     return p.parse_args(argv)
@@ -1058,20 +1108,34 @@ def main_from_args(args: argparse.Namespace) -> None:
             raise SystemExit(1)
         print(f"[swift_top_albums] Backfill: {len(all_dates)} weeks found "
               f"({_format_date(all_dates[0])} -> {_format_date(all_dates[-1])})")
+        last_chart_date = all_dates[-1]
+        last_chart_date = all_dates[-1]
         for chart_date in all_dates:
             snapshot_path = _SITE_DATA_DIR / f"{CHART_SLUG}_{_format_date(chart_date)}.json"
             if snapshot_path.exists() and not args.force:
                 print(f"[swift_top_albums] Skip {_format_date(chart_date)} (already exists, use --force)")
                 continue
             print(f"[swift_top_albums] Generating {_format_date(chart_date)} ...")
-            run(chart_date=chart_date, song_rows=song_rows, dry_run=bool(args.dry_run), skip_r2=True)
+            run(
+                chart_date=chart_date,
+                song_rows=song_rows,
+                dry_run=bool(args.dry_run),
+                skip_r2=True,
+                skip_images=bool(getattr(args, "skip_images", False)) or chart_date != last_chart_date,
+            )
         print("[swift_top_albums] Backfill complete.")
         if not args.dry_run:
             _maybe_upload_to_r2(logger=Logger(), skip_r2=bool(args.skip_r2))
         raise SystemExit(0)
 
     chart_date = _parse_iso_date(args.date) if args.date else None
-    code = run(chart_date=chart_date, song_rows=song_rows, dry_run=bool(args.dry_run), skip_r2=bool(args.skip_r2))
+    code = run(
+        chart_date=chart_date,
+        song_rows=song_rows,
+        dry_run=bool(args.dry_run),
+        skip_r2=bool(args.skip_r2),
+        skip_images=bool(getattr(args, "skip_images", False)),
+    )
     raise SystemExit(code)
 
 

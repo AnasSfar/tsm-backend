@@ -174,8 +174,9 @@ PROBE_REQUIRED_UPDATED = 10  # non-extra (chart_extra=False) Spotify probe track
 CHARTSNAPSHOT_REQUIRED_VALIDATED = 20  # non-extra tracks with total - daily == our previous-day total
 CHARTSNAPSHOT_ARTIST_URI = "06HL4z0CvFAxyc27GXpf02"
 CHARTSNAPSHOT_TOP_SONGS_URL = "https://www.chartsnapshot.com/get_top_songs"
-EARLY_BEST_DAY_MIN_DAILY_STREAMS = 900_000
+EARLY_BEST_DAY_MIN_DAILY_STREAMS = 500_000
 EARLY_BEST_DAY_TRACK_LIMIT = 80
+EARLY_BEST_DAY_MIN_PCT_CHANGE = 10.0
 PENDING_RETRY_SLEEP_SECONDS = 20
 EXTRA_PENDING_RETRY_ROUNDS_BEFORE_ZERO = 5
 INFINITE_RETRY_PREVIOUS_DAY_TOP_N = 70
@@ -2828,7 +2829,7 @@ def main():
         no_post_mode=no_post_mode,
         min_days=21,
         min_daily_streams=EARLY_BEST_DAY_MIN_DAILY_STREAMS,
-        min_pct_change=0.0,
+        min_pct_change=EARLY_BEST_DAY_MIN_PCT_CHANGE,
         priority_ready=debut_release_poster.is_done,
     )
     best_day_since_poster.start()

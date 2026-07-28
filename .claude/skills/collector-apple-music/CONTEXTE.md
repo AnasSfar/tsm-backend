@@ -142,6 +142,13 @@ python .\scripts\export_apple_music.py
 python .\scripts\upload_ap_r2.py --dry-run
 ```
 
+## Highlights Charts Gallery
+
+Depuis 2026-07-28, `run_apple_music.py` appelle en best-effort (jamais
+bloquant) `scripts/generate_home_highlights.py --quiet` juste apres
+`maybe_upload_to_r2()`. Regenere `cache/home_highlights.json` et
+`cache/version.json` sur R2 (lus par `tsm-frontend/api`).
+
 ## Pieges
 
 - Les imports `from core...` dependent du `PYTHONPATH` injecte.

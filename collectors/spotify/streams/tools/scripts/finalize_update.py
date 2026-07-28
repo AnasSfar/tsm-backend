@@ -1272,6 +1272,29 @@ def _run_swift_top_charts_if_needed(ctx: FinalizeContext) -> None:
         print(f"Swift Top charts trigger failed - {exc}")
 
 
+def _regenerate_home_highlights_cache(ctx: FinalizeContext) -> None:
+    """Best-effort refresh of the Charts Gallery highlights/version R2 cache.
+
+    Recomputes cache/home_highlights.json and cache/version.json (read by
+    tsm-frontend/api) from the freshly exported local data. Must never affect
+    the streams pipeline: on failure, the frontend's own cache-on-miss
+    fallback (api/data/precompute_cache.py) recomputes it live instead.
+    """
+    if ctx.local_test_mode or ctx.test_mode:
+        return
+    try:
+        script = ctx.repo_root / "scripts" / "generate_home_highlights.py"
+        result = _run_subprocess(
+            [sys.executable, str(script), "--quiet"],
+            cwd=str(ctx.repo_root),
+            check=False,
+        )
+        if result.returncode != 0:
+            print(f"Home highlights cache refresh exited with code {result.returncode}.")
+    except Exception as exc:
+        print(f"Home highlights cache refresh failed - {exc}")
+
+
 # Étapes de post invocables individuellement via `update_streams.py --post-only`.
 POST_ONLY_STEPS = {
     "top-eras": _post_albums_daily,
@@ -1325,6 +1348,9 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
         print("Skipping Spotify API release-date refresh during finalization.")
         with timer.step("web export"):
             _export_web_data_once(ctx, force=artist_metadata_updated)
+
+        with timer.step("home highlights cache"):
+            _regenerate_home_highlights_cache(ctx)
 
         forecast_thread = None
         if not ctx.debug_daily_mode and not ctx.local_test_mode:

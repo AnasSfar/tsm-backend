@@ -13,8 +13,9 @@ Output:
 from __future__ import annotations
 
 import html
+import json
 import sys
-from datetime import datetime
+from datetime import date as date_cls, datetime, timedelta
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
@@ -73,6 +74,29 @@ def rank_change(rank: int, previous_rank) -> tuple[str, str]:
     if delta < 0:
         return f"-{abs(delta)}", "chg-dn"
     return "=", "chg-eq"
+
+
+def load_public_history_rows(target_date: str) -> list[dict]:
+    """Load the exact per-track history exported for the public site."""
+    path = generate_streams_image.update_streams_dir(target_date) / "site_history.json"
+    if not path.exists():
+        raise FileNotFoundError(
+            f"Public site history is missing for {target_date}: {path}. "
+            "Run export_for_web before generating the weekend card."
+        )
+    payload = json.loads(path.read_text(encoding="utf-8-sig"))
+    if not isinstance(payload, dict):
+        raise ValueError(f"Invalid public site history payload for {target_date}: {path}")
+    rows: list[dict] = []
+    for track_id, value in payload.items():
+        if not isinstance(value, dict):
+            continue
+        rows.append({
+            "track_id": track_id,
+            "streams": int(value.get("s") or value.get("streams") or 0),
+            "daily_streams": int(value.get("d") or value.get("daily_streams") or 0),
+        })
+    return rows
 
 
 def build_totals(today_rows: list[dict], yesterday_rows: list[dict], week_rows: list[dict]) -> dict:
@@ -416,7 +440,11 @@ def generate(target_date: str | None = None, *, top_n: int = TOP_N) -> Path:
         album_covers,
     )[:top_n]
 
-    totals = build_totals(song_today, song_yest, song_week)
+    target_day = date_cls.fromisoformat(target_date)
+    public_today = load_public_history_rows(target_date)
+    public_yest = load_public_history_rows(str(target_day - timedelta(days=1)))
+    public_week = load_public_history_rows(str(target_day - timedelta(days=7)))
+    totals = build_totals(public_today, public_yest, public_week)
 
     print("[weekend_streams_image] Downloading covers...")
     album_cache = generate_albums_image.prefetch_covers(album_rows)

@@ -145,15 +145,9 @@ SPOTIFY_UA = (
     "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
 )
 
-# artists_global, global et fr postent dès leur collecte terminée (pas d'attente de worldwide)
-# us/uk sont geres par worldwide.
+# artists_global collecte a part; les charts regionaux sont geres via worldwide.
 COLLECT_RUNNERS: list[tuple[str, Path, list[str]]] = [
     ("artists_global", CHARTS_ROOT / "artists_global" / "artist_global_daily.py", []),
-    (
-        "music_videos_global",
-        CHARTS_ROOT / "music_videos_global" / "daily.py",
-        ["--no-post", "--no-wait", "--allow-unavailable"],
-    ),
     ("worldwide",      CHARTS_ROOT / "worldwide"      / "daily.py",         ["--force"]),
 ]
 
@@ -203,7 +197,6 @@ def _r2_export_is_fresh(target: date) -> bool:
         REPO_ROOT / "db" / "charts_history_uk.csv",
         WEB_EXPORT_DATA_DIR / "charts_worldwide.json",
         WEB_EXPORT_DATA_DIR / "charts_artists_global_worldwide.json",
-        WEB_EXPORT_DATA_DIR / "charts_music_videos_global.json",
     ]
     for path in watched_paths:
         try:
@@ -226,9 +219,6 @@ def _region_data_exists(name: str, target: date) -> bool:
     for day_dir in day_dirs:
         if name == "artists_global":
             if (day_dir / "artist_global_daily.json").exists() or (day_dir / "artist_global_daily.csv").exists():
-                return True
-        elif name == "music_videos_global":
-            if (day_dir / "music_videos_global_daily.json").exists() or (day_dir / "music_videos_global_daily.csv").exists():
                 return True
         elif name == "worldwide":
             if (day_dir / f"ts_worldwide_{target}.json").exists():
@@ -1340,6 +1330,42 @@ def _verify_regional_posts(
     return failures
 
 
+def _missing_regional_chart_jsons(names: set[str], target: date) -> list[str]:
+    return sorted(name for name in names if not _regional_chart_json_exists(name, target))
+
+
+def _ensure_card_regional_data(target_date: date, *, env: dict[str, str], verbose: bool) -> bool:
+    required_regions = {"global", "us"}
+    missing = _missing_regional_chart_jsons(required_regions, target_date)
+    if not missing:
+        return True
+
+    print(
+        f"[CHECK] donnees regionales requises pour cards absentes ({', '.join(missing)}) "
+        f"pour {target_date}; regeneration data-only via worldwide..."
+    )
+    rc_worldwide = _run(
+        "worldwide-regional-data",
+        CHARTS_ROOT / "worldwide" / "daily.py",
+        ["--force", "--no-post", str(target_date)],
+        dry_run=False,
+        env=env,
+        verbose=verbose,
+    )
+    if rc_worldwide != 0:
+        print(f"[FAIL] worldwide data-only requis avant cards a echoue ({rc_worldwide})")
+        return False
+
+    missing = _missing_regional_chart_jsons(required_regions, target_date)
+    if missing:
+        print(
+            f"[FAIL] cards bloquees: ts_chart_{target_date}.json absent pour "
+            f"{', '.join(missing)} apres regeneration worldwide"
+        )
+        return False
+    return True
+
+
 def _post_priority_global_cards(
     target_date: date,
     *,
@@ -1408,7 +1434,8 @@ def _ensure_worldwide_valid(
 
 
 _ALL_POST_PARTS = {"artists", "global", "fr", "us", "cards"}
-_DEFAULT_POST_PARTS = set(_ALL_POST_PARTS)
+_PAUSED_POST_PARTS = {"fr"}
+_DEFAULT_POST_PARTS = _ALL_POST_PARTS - _PAUSED_POST_PARTS
 _EXTRA_POST_PARTS = {"best-day-since", "regions"}  # non inclus dans le défaut, à passer explicitement via --post
 
 
@@ -1500,7 +1527,7 @@ def main() -> int:
         metavar="PART",
         default=None,
         help=(
-            "Parties à poster sur Twitter: artists, cards, fr, global, us (défaut: toutes). "
+            "Parties à poster sur Twitter: artists, cards, fr, global, us (défaut: toutes sauf fr, en pause). "
             "Extras non inclus par défaut (à passer explicitement): best-day-since, regions. "
             "Exemple: --post global fr"
         ),
@@ -1568,6 +1595,13 @@ def main() -> int:
         post_parts = set(_DEFAULT_POST_PARTS)
         collect_parts = set(post_parts)
 
+    paused_post_parts = post_parts & _PAUSED_POST_PARTS
+    if paused_post_parts:
+        paused = ", ".join(sorted(paused_post_parts))
+        print(f"[SKIP] posts en pause dans run_all_charts: {paused}")
+        post_parts -= paused_post_parts
+        collect_parts -= paused_post_parts
+
     started = time.perf_counter()
     env = _build_env()
 
@@ -1576,18 +1610,9 @@ def main() -> int:
         if name == "artists_global":
             extra = ["--no-post"] if "artists" not in post_parts else []
         elif name == "worldwide":
-            # run_all orchestre les posts apres la collecte pour garder l'ordre:
-            # regional images, cards worldwide, puis extras. worldwide reste data-only.
+            # run_all garde la collecte et le posting separes pour eviter les doublons:
+            # worldwide ecrit les donnees, puis les phases ci-dessous postent une seule fois.
             extra = ["--no-post"]
-            for region in ("global", "fr", "us"):
-                if region in post_parts:
-                    extra.extend(["--post-priority-region", region])
-            if "regions" in post_parts:
-                extra.append("--post-multi-song-regions")
-            if "cards" in post_parts:
-                extra.append("--post-priority-global-new")
-                if args.force_cards or args.force:
-                    extra.append("--force-priority-global-new")
         else:
             extra = []
         collect_runners.append((name, script, fixed + extra))
@@ -1780,6 +1805,12 @@ def main() -> int:
     regional_post_failures: list[tuple[str, int]] = []
     priority_global_cards_done = False
 
+    if not args.dry_run and should_generate_cards and not failures:
+        if not _worldwide_data_ready(target_date):
+            failures.append(("cards-data", 1))
+        elif not _ensure_card_regional_data(target_date, env=env, verbose=args.verbose):
+            failures.append(("cards-regional-data", 1))
+
     # Les priority cards Global (NEW/RE) doivent partir AVANT le tweet chart Global principal.
     if not args.dry_run and not args.no_post and should_post_cards and "global" in post_parts and not failures:
         priority_failure = _post_priority_global_cards(
@@ -1854,9 +1885,6 @@ def main() -> int:
                 failures.append(("artists-worldwide-card", rc_artist_worldwide))
         else:
             print(f"[SKIP] card artists worldwide: donnees artists_global absentes pour {target_date}")
-
-    if not args.dry_run and should_generate_cards and not _worldwide_data_ready(target_date):
-        failures.append(("cards-data", 1))
 
     if not args.dry_run and should_generate_cards and not failures:
         if should_post_cards:
@@ -1935,6 +1963,17 @@ def main() -> int:
         git_commit_and_push(REPO_ROOT, f"charts run all {target_date.isoformat()}")
         if _run_swift_top_charts_if_ready(target_date, env=env, verbose=args.verbose):
             git_commit_and_push(REPO_ROOT, f"charts swift top 100 and albums {target_date.isoformat()}")
+        # Best-effort: refresh the Charts Gallery highlights/version R2 cache
+        # from the freshly exported chart data. Never blocks the pipeline —
+        # on failure the frontend's own cache-on-miss fallback recomputes it.
+        _run(
+            "home-highlights-cache",
+            REPO_ROOT / "scripts" / "generate_home_highlights.py",
+            ["--quiet"],
+            dry_run=False,
+            env=env,
+            verbose=args.verbose,
+        )
     return 0
 
 

@@ -164,6 +164,20 @@ python .\collectors\spotify\streams\tools\scripts\reconcile_gap_catchup.py 2026-
 python .\collectors\spotify\streams\tools\scripts\reconcile_gap_catchup.py 2026-07-03 --all-pending --apply
 ```
 
+## Highlights Charts Gallery
+
+Depuis 2026-07-28, `finalize_update.py::run_final_update_tasks` appelle en
+best-effort (jamais bloquant) `scripts/generate_home_highlights.py --quiet`
+juste apres le web export, sauf en `--local-test`/`--test`. Regenere
+`cache/home_highlights.json` et `cache/version.json` sur R2 (lus par
+`tsm-frontend/api`). Un echec ne doit jamais faire echouer la finalisation.
+
+Ce script reutilise directement `best_day_since.py` (load_tracks,
+load_history, compute_best_day_since_combined, passes_filters, sort_key) pour
+produire le highlight `best_day_since` — meme logique de regroupement par
+`song_family` et memes filtres que ce qui serait poste sur Twitter, pas de
+duplication.
+
 ## Pieges
 
 - Un run manuel sans le `.bat` peut ne pas laisser le meme log scheduler.

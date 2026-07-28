@@ -563,6 +563,15 @@ Pour une modification de logique:
 - comparer les sorties modifiees contre snapshots/CSV source;
 - ne pas lancer Twitter/R2/git push sans intention claire.
 
+## Highlights Charts Gallery
+
+Depuis 2026-07-28, `run_all_charts.py` appelle en best-effort (jamais
+bloquant) `scripts/generate_home_highlights.py --quiet` a la toute fin du run
+(apres les commits git), seulement si `not args.dry_run and ran_collect`.
+Regenere `cache/home_highlights.json` et `cache/version.json` sur R2 (lus par
+`tsm-frontend/api`) — lit `db/charts_history_global.csv` directement (pas de
+matching flou a dupliquer, track_id/movement deja resolus par le collector).
+
 ## Pieges connus
 
 - `--backfill-workers` est limite par les sessions Spotify disponibles.

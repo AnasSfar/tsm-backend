@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Post the top "best day since" songs to @swiftiescharts with spotlight images.
+Post the top "best day since" songs to @swiftiescharts with song card images.
 
 Usage:
   python post_best_day_since_twitter.py 2026-05-07
@@ -10,10 +10,13 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import csv
+import json
 import html
 import re
 import sys
 import time
+import unicodedata
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -22,6 +25,11 @@ ROOT = SCRIPT_DIR.parents[1]                          # streams/
 REPO_ROOT = SCRIPT_DIR.parents[4]                     # repo root
 COLLECTORS_ROOT = REPO_ROOT / "collectors"
 TWITTER_SESSION = ROOT.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json"
+DB_ROOT = REPO_ROOT / "db"
+DISCOGRAPHY_DIR = DB_ROOT / "discography"
+ALBUMS_DIR = DISCOGRAPHY_DIR / "albums"
+SONGS_JSON = DISCOGRAPHY_DIR / "songs.json"
+COVERS_PATH = DISCOGRAPHY_DIR / "covers.json"
 POST_COLLECTION_BEST_DAY_MIN_DAYS = 30
 ALBUM_BEST_DAY_MIN_DAYS = 30
 RECAP_BEST_DAY_MIN_DAYS = 30
@@ -29,6 +37,7 @@ MAX_BEST_DAY_SONG_POSTS_PER_ALBUM = 3
 POST_COLLECTION_MIN_SONG_DAILY_STREAMS = 300_000
 POST_COLLECTION_MAX_SONG_POSTS = 10
 MIN_SONG_DAILY_STREAMS_TO_POST = 80_000
+POST_COLLECTION_MIN_SONG_PCT_CHANGE = 10.0
 
 sys.path.insert(0, str(COLLECTORS_ROOT))              # collectors/
 sys.path.insert(0, str(ROOT))                         # collectors/spotify/streams/
@@ -42,7 +51,6 @@ from core.album_emoji import album_emoji  # noqa: E402
 from core.data_paths import update_streams_dir  # noqa: E402
 import best_day_since  # noqa: E402
 import generate_album_update_image  # noqa: E402
-import spotlight  # noqa: E402
 
 
 def _fmt_int(value: int | None) -> str:
@@ -63,6 +71,165 @@ def _fmt_pct(current: int | None, previous: int | None) -> str:
     pct = (current - previous) / previous * 100
     return f"{pct:+.1f}%"
 
+
+
+
+def _norm(value: str) -> str:
+    text = unicodedata.normalize("NFKD", value or "")
+    text = "".join(char for char in text if not unicodedata.combining(char))
+    return re.sub(r"[^a-z0-9]+", "_", text.lower()).strip("_")
+
+
+def _load_discography_sections() -> list[dict]:
+    sections: list[dict] = []
+    if ALBUMS_DIR.exists():
+        for album_file in sorted(ALBUMS_DIR.glob("*.json"), key=lambda path: path.name.casefold()):
+            try:
+                payload = json.loads(album_file.read_text(encoding="utf-8-sig"))
+            except Exception:
+                continue
+            if not isinstance(payload, dict):
+                continue
+            album_name = payload.get("album", "")
+            for section in payload.get("sections", []):
+                if not isinstance(section, dict):
+                    continue
+                item = dict(section)
+                if not item.get("album"):
+                    item["album"] = album_name
+                sections.append(item)
+
+    if SONGS_JSON.exists():
+        try:
+            payload = json.loads(SONGS_JSON.read_text(encoding="utf-8-sig"))
+            if isinstance(payload, list):
+                sections.extend(payload)
+        except Exception:
+            pass
+
+    return sections
+
+
+def load_all_tracks() -> list[dict]:
+    tracks: list[dict] = []
+    seen: set[str] = set()
+    for section in _load_discography_sections():
+        if not isinstance(section, dict):
+            continue
+        for item in section.get("tracks", []):
+            if not isinstance(item, dict):
+                continue
+            url = (item.get("url") or item.get("spotify_url") or "").strip()
+            track_id = best_day_since.extract_track_id(url)
+            if not track_id or track_id in seen:
+                continue
+            seen.add(track_id)
+            artists = item.get("artists") or []
+            tracks.append({
+                "track_id": track_id,
+                "title": (item.get("title") or "").strip(),
+                "artist": item.get("primary_artist") or (artists[0] if artists else "Taylor Swift"),
+                "spotify_url": f"https://open.spotify.com/track/{track_id}",
+                "image_url": (item.get("image_url") or "").strip(),
+                "type": item.get("type", "album"),
+                "single_image": (item.get("single_image") or "").strip(),
+                "song_family": item.get("song_family", ""),
+                "album": section.get("album", ""),
+            })
+    return tracks
+
+
+def _song_family_single_image_map() -> dict[str, str]:
+    family_map: dict[str, str] = {}
+    for section in _load_discography_sections():
+        if not isinstance(section, dict):
+            continue
+        for item in section.get("tracks", []):
+            if not isinstance(item, dict):
+                continue
+            song_family = str(item.get("song_family") or "").strip()
+            single_image = str(item.get("single_image") or "").strip()
+            if song_family and single_image.startswith("http"):
+                family_map[song_family] = single_image
+    return family_map
+
+
+def load_covers() -> dict[str, str]:
+    if not COVERS_PATH.exists():
+        return {}
+    try:
+        covers = json.loads(COVERS_PATH.read_text(encoding="utf-8-sig"))
+    except Exception:
+        return {}
+    if not isinstance(covers, dict):
+        return {}
+    return {
+        _norm(value.get("title", "")): value["cover_url"]
+        for value in covers.values()
+        if isinstance(value, dict) and value.get("title") and value.get("cover_url")
+    }
+
+
+def get_cover_url(track: dict, covers: dict[str, str]) -> str:
+    track_type = track.get("type", "album")
+    track_image = str(track.get("image_url") or "").strip()
+    single_image = str(track.get("single_image") or "").strip()
+    song_family = str(track.get("song_family") or "").strip()
+    album = str(track.get("album") or "").strip()
+
+    if track_type in {"standalone", "alternate_version"}:
+        family_image = _song_family_single_image_map().get(song_family, "") if song_family else ""
+        if family_image.startswith("http"):
+            return family_image
+        if single_image.startswith("http"):
+            return single_image
+        if track_image.startswith("http"):
+            return track_image
+        return ""
+
+    if track_image.startswith("http"):
+        return track_image
+    if album:
+        cover = covers.get(_norm(album), "")
+        if cover.startswith("http"):
+            return cover
+    return ""
+
+
+def load_history_for_tracks(track_ids: list[str], stats_date: str) -> tuple[int | None, int | None, int | None, int | None, int | None]:
+    target = date.fromisoformat(stats_date)
+    dates = {
+        target.isoformat(): "today",
+        (target - timedelta(days=1)).isoformat(): "y1",
+        (target - timedelta(days=7)).isoformat(): "w1",
+    }
+    totals: dict[str, int] = {}
+    dailies: dict[str, int] = {}
+    wanted = set(track_ids)
+
+    if not best_day_since.HISTORY_PATH.exists():
+        return None, None, None, None, None
+
+    with best_day_since.HISTORY_PATH.open(newline="", encoding="utf-8-sig") as file:
+        for row in csv.DictReader(file):
+            if row.get("track_id") not in wanted:
+                continue
+            day = (row.get("date") or "").strip()
+            if day not in dates:
+                continue
+            key = dates[day]
+            try:
+                totals[key] = totals.get(key, 0) + int(row.get("streams") or 0)
+            except ValueError:
+                pass
+            try:
+                daily_raw = (row.get("daily_streams") or "").strip()
+                if daily_raw:
+                    dailies[key] = dailies.get(key, 0) + int(daily_raw)
+            except ValueError:
+                pass
+
+    return totals.get("today"), totals.get("y1"), dailies.get("today"), dailies.get("y1"), dailies.get("w1")
 
 def _find_all_rows(target_date: str, *, min_days: int) -> list[dict]:
     tracks = best_day_since.load_tracks(include_extras=False)
@@ -147,6 +314,7 @@ def _pick_rows(
     limit: int,
     min_days: int,
     min_daily_streams: int | None = None,
+    min_pct_change: float | None = None,
     exclude_ids: set[str] | None = None,
     album_post_counts: dict[str, int] | None = None,
     max_per_album: int = MAX_BEST_DAY_SONG_POSTS_PER_ALBUM,
@@ -154,8 +322,15 @@ def _pick_rows(
     rows = _find_all_rows(target_date, min_days=min_days)
     if exclude_ids:
         rows = [row for row in rows if row["track_id"] not in exclude_ids]
-    if min_daily_streams is not None:
-        rows = [row for row in rows if int(row.get("daily_streams") or 0) > min_daily_streams]
+    if min_daily_streams is not None or min_pct_change is not None:
+        rows = [
+            row for row in rows
+            if _passes_song_post_gate(
+                row,
+                min_daily_streams=min_daily_streams,
+                min_pct_change=min_pct_change,
+            )
+        ]
     rows.sort(key=best_day_since.sort_key, reverse=True)
 
     picked: list[dict] = []
@@ -174,6 +349,25 @@ def _pick_rows(
         if len(picked) >= limit:
             break
     return picked
+
+
+def _passes_song_post_gate(
+    row: dict,
+    *,
+    min_daily_streams: int | None,
+    min_pct_change: float | None,
+) -> bool:
+    daily = int(row.get("daily_streams") or 0)
+    if min_daily_streams is not None and daily >= min_daily_streams:
+        return True
+
+    previous_day_daily = row.get("previous_day_daily")
+    if min_pct_change is not None and previous_day_daily and previous_day_daily > 0:
+        pct_change = (daily - previous_day_daily) / previous_day_daily * 100
+        if pct_change > min_pct_change:
+            return True
+
+    return min_daily_streams is None and min_pct_change is None
 
 
 def _track_posted_lock_path(track_id: str, target_date: str) -> Path:
@@ -200,7 +394,7 @@ def _post_single_track_early(
         print(f"[best_day_since_early] Already posted for {track_id} on {target_date}, skipping.")
         return "skipped"
 
-    tracks_by_id = {track["track_id"]: track for track in spotlight.load_all_tracks()}
+    tracks_by_id = {track["track_id"]: track for track in load_all_tracks()}
     track = tracks_by_id.get(track_id)
     if not track:
         return "skipped"
@@ -220,7 +414,6 @@ def _post_single_track_early(
         track_id,
         target_date,
         min_days=min_days,
-        min_pct_change=min_pct_change,
         combined=True,
     )
     if not row:
@@ -228,19 +421,21 @@ def _post_single_track_early(
 
     track_ids = row.get("combined_track_ids") or [track_id]
     total_today, total_yesterday, daily_today, daily_yesterday, _daily_last_week = (
-        spotlight.load_history_for_tracks(track_ids, target_date)
+        load_history_for_tracks(track_ids, target_date)
     )
     if total_today is None or total_yesterday is None or daily_today is None or daily_yesterday is None or daily_yesterday <= 0:
         return "skipped"
-    if daily_today <= min_daily_streams:
+    if not _passes_song_post_gate(row, min_daily_streams=min_daily_streams, min_pct_change=min_pct_change):
+        pct = (daily_today - daily_yesterday) / daily_yesterday * 100
         print(
             f"[best_day_since_early] Skipping {track_id}: "
-            f"{daily_today:,} daily streams is not above {min_daily_streams:,}."
+            f"{daily_today:,} daily streams and {pct:+.1f}% vs previous day "
+            f"do not pass the early gate."
         )
         return "skipped"
 
-    covers = spotlight.load_covers()
-    cover_url = spotlight.get_cover_url(track, covers)
+    covers = load_covers()
+    cover_url = get_cover_url(track, covers)
     image_path = _generate_best_day_since_image(
         row=row,
         track=track,
@@ -339,12 +534,12 @@ def _validated_song_rows_for_post(
     for row in candidate_rows:
         track = tracks_by_id.get(row["track_id"])
         if not track:
-            print(f"[best_day_since_post] Candidate skipped: track missing in spotlight DB: {row['title']} [{row['track_id']}].")
+            print(f"[best_day_since_post] Candidate skipped: track missing in discography: {row['title']} [{row['track_id']}].")
             continue
 
         track_ids = row.get("combined_track_ids") or [row["track_id"]]
         total_today, total_yesterday, daily_today, daily_yesterday, daily_last_week = (
-            spotlight.load_history_for_tracks(track_ids, target_date)
+            load_history_for_tracks(track_ids, target_date)
         )
         if total_today is None:
             print(f"[best_day_since_post] Candidate skipped: missing total streams for {row['title']} on {target_date}.")
@@ -402,11 +597,11 @@ def _generate_recap_image(
             continue
         track_ids = row.get("combined_track_ids") or [row["track_id"]]
         _total_today, _total_yesterday, daily_today, daily_yesterday, daily_last_week = (
-            spotlight.load_history_for_tracks(track_ids, target_date)
+            load_history_for_tracks(track_ids, target_date)
         )
         if daily_today is None:
             continue
-        cover_url = url_to_data_uri(spotlight.get_cover_url(track, covers))
+        cover_url = url_to_data_uri(get_cover_url(track, covers))
         daily_pct = get_pct(daily_today, daily_yesterday)
         weekly_pct = get_pct(daily_today, daily_last_week)
         rows_html.append(_recap_row_html(index, row, track, cover_url, daily_today, daily_pct, weekly_pct))
@@ -531,7 +726,7 @@ def _post_album_best_day_rows(args, target_date: str, album_lock: Path, *, only_
         if only_album:
             track_ids = row.get("track_ids") or []
             total_today, total_yesterday, daily_today, daily_yesterday, _daily_last_week = (
-                spotlight.load_history_for_tracks(track_ids, target_date)
+                load_history_for_tracks(track_ids, target_date)
             )
             if total_today is None or total_yesterday is None or daily_today is None or daily_yesterday is None or daily_yesterday <= 0:
                 print(f"[best_day_since_post] Incomplete comparison history for album {row['album']} on {target_date}; skipping.")
@@ -698,7 +893,7 @@ def main() -> None:
     # they use the full album update image and should go out before song cards.
     _post_album_best_day_rows(args, target_date, album_lock)
 
-    tracks_by_id = {track["track_id"]: track for track in spotlight.load_all_tracks()}
+    tracks_by_id = {track["track_id"]: track for track in load_all_tracks()}
     exclude_ids = {t.strip() for t in args.exclude_tracks.split(",") if t.strip()}
     track_locks_dir = day_dir / "best_day_since_track_locks"
     if track_locks_dir.exists():
@@ -713,6 +908,7 @@ def main() -> None:
             limit=max(remaining_song_limit * 5, remaining_song_limit + 20),
             min_days=args.min_days,
             min_daily_streams=max(POST_COLLECTION_MIN_SONG_DAILY_STREAMS, MIN_SONG_DAILY_STREAMS_TO_POST),
+            min_pct_change=POST_COLLECTION_MIN_SONG_PCT_CHANGE,
             exclude_ids=exclude_ids,
             album_post_counts=album_post_counts,
         )
@@ -726,7 +922,7 @@ def main() -> None:
     if not rows:
         print(f"[best_day_since_post] No best-day-since songs found for {target_date}.")
 
-    covers = spotlight.load_covers()
+    covers = load_covers()
 
     posted_count = 0
     for index, row in enumerate(rows, 1):
@@ -734,7 +930,7 @@ def main() -> None:
         total_today = row["_post_total_today"]
         daily_yesterday = row["_post_daily_yesterday"]
 
-        cover_url = spotlight.get_cover_url(track, covers)
+        cover_url = get_cover_url(track, covers)
         image_path = _generate_best_day_since_image(
             row=row,
             track=track,

@@ -25,6 +25,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                    help="Rebuild swift_top_albums_index.json from existing snapshot files")
     p.add_argument("--skip-r2", dest="skip_r2", action="store_true",
                    help="Do not upload generated files to R2")
+    p.add_argument("--skip-images", dest="skip_images", action="store_true",
+                   help="Do not generate PNG chart images")
     return p.parse_args(argv)
 
 

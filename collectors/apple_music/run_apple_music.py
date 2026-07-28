@@ -61,6 +61,25 @@ def maybe_upload_to_r2() -> None:
     subprocess.run([sys.executable, str(upload_script)], cwd=REPO_ROOT, env=child_env(), check=False)
 
 
+def regenerate_home_highlights_cache() -> None:
+    """Best-effort refresh of the Charts Gallery highlights/version R2 cache.
+
+    Never blocks the run: on failure, tsm-frontend/api's own cache-on-miss
+    fallback recomputes it live instead.
+    """
+    script = REPO_ROOT / "scripts" / "generate_home_highlights.py"
+    if not script.exists():
+        print(f"[Apple Music] Home highlights cache script missing: {script}")
+        return
+
+    print("[Apple Music] Refreshing home highlights/version R2 cache...")
+    result = subprocess.run(
+        [sys.executable, str(script), "--quiet"], cwd=REPO_ROOT, env=child_env(), check=False
+    )
+    if result.returncode != 0:
+        print(f"[Apple Music] Home highlights cache refresh exited with code {result.returncode}")
+
+
 def generate_country_cards(scraped_at: str, force: bool = False) -> int:
     script = HERE / "generate_country_card_images.py"
     if not script.exists():
@@ -161,6 +180,7 @@ def main() -> None:
                 sys.exit(1)
 
         maybe_upload_to_r2()
+        regenerate_home_highlights_cache()
         print(f"{'=' * 80}")
 
 

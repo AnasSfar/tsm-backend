@@ -110,6 +110,14 @@ snapshots/billboard/YYYY/MM/YYYY-MM-DD/
 Les scripts utilisent les helpers `scripts/r2.py` ou fonctions d'upload selon le
 chart. `--skip-r2` doit etre prefere pendant debug/backfill local.
 
+## Highlights Charts Gallery
+
+Depuis 2026-07-28, `swift_top_100.py` et `swift_top_albums.py` appellent en
+best-effort (jamais bloquant) `scripts/generate_home_highlights.py --quiet`
+a la fin de leur propre `_maybe_upload_to_r2` (donc sautee si `--skip-r2`).
+Regenere `cache/home_highlights.json` et `cache/version.json` sur R2 (lus par
+`tsm-frontend/api`).
+
 ## Pieges
 
 - `swift_top_seperate.py` garde une faute dans le nom de fichier; ne pas le

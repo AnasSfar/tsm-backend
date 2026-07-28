@@ -44,8 +44,10 @@ HISTORY_CSV_PATH = (
 DISCOGRAPHY_DIR  = _DB_ROOT / "discography"
 ALBUMS_DIR_SRC   = DISCOGRAPHY_DIR / "albums"
 MISC_JSON_SRC    = DISCOGRAPHY_DIR / "songs.json"
+FEATURES_JSON_SRC = DISCOGRAPHY_DIR / "features.json"
 MISC_EXTRA_JSON_SRC = DISCOGRAPHY_DIR / "misc.json"
 COVERS_JSON_PATH = DISCOGRAPHY_DIR / "covers.json"
+EXTRA_SECTION_SOURCES = (MISC_JSON_SRC, FEATURES_JSON_SRC, MISC_EXTRA_JSON_SRC)
 
 SITE_DATA_DIR    = WEB_EXPORT_DATA_DIR
 SITE_HISTORY_DIR = WEB_EXPORT_HISTORY_DIR
@@ -222,7 +224,7 @@ def load_tracks_from_discography() -> list[dict]:
     seen: dict[str, dict] = {}
 
     all_sections = load_album_sections_flat()
-    for misc_src in (MISC_JSON_SRC, MISC_EXTRA_JSON_SRC):
+    for misc_src in EXTRA_SECTION_SOURCES:
         if misc_src.exists():
             try:
                 all_sections.extend(json.loads(misc_src.read_text(encoding="utf-8-sig")))
@@ -822,7 +824,7 @@ def build_discography_index() -> tuple[dict, list[dict]]:
     misc_all_track_ids: list[str] = []
 
     raw_misc: list[dict] = []
-    for misc_src in (MISC_JSON_SRC, MISC_EXTRA_JSON_SRC):
+    for misc_src in EXTRA_SECTION_SOURCES:
         if misc_src.exists():
                 raw_misc.extend(json.loads(misc_src.read_text(encoding="utf-8-sig")))
 

@@ -24,6 +24,7 @@ import csv
 import json
 import os
 import re
+import subprocess
 import sys
 from dataclasses import dataclass, replace
 from datetime import date, datetime, timedelta, timezone
@@ -69,10 +70,12 @@ CHART_SLUG = "swift_top_100"
 CHART_TITLE = "TayBoard TOP 100"
 COMBINE_VERSIONS = True
 MAX_ESTIMATED_MISSING_STREAM_DAYS = 2
+_STREAM_DAILY_CACHE: tuple[tuple[str, ...], dict[str, dict[str, int]], dict[str, int]] | None = None
 
 DISCOGRAPHY_DIR = _DB_DIR / "discography"
 ALBUMS_DIR = DISCOGRAPHY_DIR / "albums"
 MISC_JSON = DISCOGRAPHY_DIR / "songs.json"
+FEATURES_JSON = DISCOGRAPHY_DIR / "features.json"
 
 OUTPUT_JSON = _SITE_DATA_DIR / "swift_top_100.json"
 OUTPUT_PNG = _SITE_DATA_DIR / "swift_top_100.png"
@@ -238,7 +241,7 @@ class TrackMeta:
     primary_album: str | None
     base_title: str | None = None
     historical_track_ids: tuple[str, ...] = ()
-    chart_extra: bool = False
+    chart_extra: bool | None = None
     music_track: bool = True
     excluded_from_public_stats: bool = False
 
@@ -246,7 +249,7 @@ class TrackMeta:
     def apple_music_floor_eligible(self) -> bool:
         return (
             self.music_track
-            and not self.chart_extra
+            and self.chart_extra is not True
             and not self.excluded_from_public_stats
             and not _is_non_song_tayboard_track(self.title)
         )
@@ -255,7 +258,14 @@ class TrackMeta:
 def _iter_discography_tracks() -> list[TrackMeta]:
     items: dict[str, TrackMeta] = {}
 
-    def _ingest_track(track: dict, album_name: str | None) -> None:
+    def _merge_chart_extra(existing: bool | None, incoming: bool | None) -> bool | None:
+        if existing is False or incoming is False:
+            return False
+        if existing is True or incoming is True:
+            return True
+        return None
+
+    def _ingest_track(track: dict, album_name: str | None, section_chart_extra: bool | None = None) -> None:
         url = (track.get("url") or track.get("spotify_url") or "").strip()
         track_id = _extract_track_id(url)
         if not track_id:
@@ -263,14 +273,16 @@ def _iter_discography_tracks() -> list[TrackMeta]:
         title = (track.get("title") or "").strip()
         if not title:
             return
-        chart_extra = _as_bool(track.get("chart_extra")) is True
+        chart_extra = _as_bool(track.get("chart_extra"))
+        if chart_extra is None:
+            chart_extra = section_chart_extra
         music_track = _as_bool(track.get("music_track")) is not False
         excluded_from_public_stats = _as_bool(track.get("excluded_from_public_stats")) is True
         if track_id in items:
             existing = items[track_id]
             items[track_id] = replace(
                 existing,
-                chart_extra=existing.chart_extra or chart_extra,
+                chart_extra=_merge_chart_extra(existing.chart_extra, chart_extra),
                 music_track=existing.music_track and music_track,
                 excluded_from_public_stats=existing.excluded_from_public_stats or excluded_from_public_stats,
             )
@@ -309,7 +321,7 @@ def _iter_discography_tracks() -> list[TrackMeta]:
                     continue
                 for track in section.get("tracks", []) or []:
                     if isinstance(track, dict):
-                        _ingest_track(track, album_name)
+                        _ingest_track(track, album_name, _as_bool(section.get("chart_extra")))
 
     # Misc songs.json (sections list)
     if MISC_JSON.exists():
@@ -324,7 +336,26 @@ def _iter_discography_tracks() -> list[TrackMeta]:
                 album_name = (section.get("album") or "").strip() or None
                 for track in section.get("tracks", []) or []:
                     if isinstance(track, dict):
-                        _ingest_track(track, album_name)
+                        _ingest_track(track, album_name, _as_bool(section.get("chart_extra")))
+
+
+    # Features / collabs metadata (known extras; do not require stream completeness).
+    if FEATURES_JSON.exists():
+        try:
+            payload = json.loads(FEATURES_JSON.read_text(encoding="utf-8-sig"))
+        except Exception:
+            payload = None
+        if isinstance(payload, list):
+            for section in payload:
+                if not isinstance(section, dict):
+                    continue
+                album_name = (section.get("album") or "").strip() or None
+                for track in section.get("tracks", []) or []:
+                    if not isinstance(track, dict):
+                        continue
+                    metadata_track = dict(track)
+                    metadata_track["chart_extra"] = True
+                    _ingest_track(metadata_track, album_name, _as_bool(section.get("chart_extra")))
 
     return list(items.values())
 
@@ -368,19 +399,94 @@ def _active_apple_music_csvs(csv_path: Path) -> list[Path]:
     return result
 
 
+
+def _load_stream_daily_cache() -> tuple[dict[str, dict[str, int]], dict[str, int]]:
+    """Return deduplicated Spotify stream rows as track -> day -> daily_streams."""
+    global _STREAM_DAILY_CACHE
+    active_paths = [path for path in _active_streams_csvs() if path.exists()]
+    cache_key = tuple(str(path.resolve()) for path in active_paths)
+    if _STREAM_DAILY_CACHE and _STREAM_DAILY_CACHE[0] == cache_key:
+        return _STREAM_DAILY_CACHE[1], _STREAM_DAILY_CACHE[2]
+
+    daily_by_track: dict[str, dict[str, int]] = {}
+    counts_by_date: dict[str, int] = {}
+    seen: set[tuple[str, str]] = set()
+
+    def _to_int(v: str | None) -> int:
+        try:
+            return int((v or "").strip())
+        except Exception:
+            return 0
+
+    for csv_path in active_paths:
+        with csv_path.open("r", newline="", encoding="utf-8-sig") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                day = (row.get("date") or "").strip()
+                track_id = (row.get("track_id") or "").strip()
+                if not day or not track_id:
+                    continue
+                key = (day, track_id)
+                if key in seen:
+                    continue
+                seen.add(key)
+                daily_by_track.setdefault(track_id, {})[day] = _to_int(row.get("daily_streams"))
+                counts_by_date[day] = counts_by_date.get(day, 0) + 1
+
+    _STREAM_DAILY_CACHE = (cache_key, daily_by_track, counts_by_date)
+    return daily_by_track, counts_by_date
+
+
+def _track_counts_for_stream_completeness(track: TrackMeta) -> bool:
+    return (
+        track.music_track
+        and track.chart_extra is False
+        and not track.excluded_from_public_stats
+        and not _is_non_song_tayboard_track(track.title)
+    )
+
+
+def _missing_required_stream_rows(
+    *,
+    week_dates: list[str],
+    tracks: dict[str, TrackMeta],
+    daily_by_track: dict[str, dict[str, int]],
+) -> dict[str, list[TrackMeta]]:
+    missing: dict[str, list[TrackMeta]] = {}
+    for track in tracks.values():
+        if not _track_counts_for_stream_completeness(track):
+            continue
+        candidate_ids = (track.track_id, *track.historical_track_ids)
+        seen_dates = sorted({day for tid in candidate_ids for day in daily_by_track.get(tid, {})})
+        if not seen_dates:
+            continue
+        first_seen = seen_dates[0]
+        for day in week_dates:
+            if day < first_seen:
+                continue
+            if not any(day in daily_by_track.get(tid, {}) for tid in candidate_ids):
+                missing.setdefault(day, []).append(track)
+    return missing
+
+
+def _log_missing_required_stream_rows(missing: dict[str, list[TrackMeta]], logger: Logger) -> None:
+    total = sum(len(items) for items in missing.values())
+    logger.log(f"⚠ skip streams  : {total} required non-extra stream rows missing")
+    for day in sorted(missing)[:7]:
+        items = sorted(missing[day], key=lambda track: (track.title.casefold(), track.track_id))
+        sample = ", ".join(f"{track.title} [{track.track_id}]" for track in items[:5])
+        suffix = "..." if len(items) > 5 else ""
+        logger.log(f"  missing {day}: {len(items)} track(s) {sample}{suffix}")
+
 def _all_stream_dates() -> list[date]:
     """Return sorted stream dates from the active streams CSV source(s)."""
-    dates: set[date] = set()
-    for csv_path in _active_streams_csvs():
-        if not csv_path.exists():
-            continue
-        with csv_path.open("r", newline="", encoding="utf-8-sig") as f:
-            for row in csv.DictReader(f):
-                d = _parse_iso_date(row.get("date") or "")
-                if d:
-                    dates.add(d)
-    return sorted(dates)
-
+    _daily_by_track, counts_by_date = _load_stream_daily_cache()
+    dates: list[date] = []
+    for day in counts_by_date:
+        parsed = _parse_iso_date(day)
+        if parsed:
+            dates.append(parsed)
+    return sorted(set(dates))
 
 def _latest_complete_week_end() -> date | None:
     """Return the most recent Thursday-ended week that can be scored.
@@ -425,40 +531,19 @@ def _aggregate_weekly_streams(
     counts: dict[str, int] = {d: 0 for d in week_dates}
     daily: dict[str, dict[str, int]] = {}
 
-    active_paths = _active_streams_csvs()
-    if not any(p.exists() for p in active_paths):
+    all_daily, counts_by_date = _load_stream_daily_cache()
+    if not all_daily:
         logger.log("⚠ missing        : no streams CSV found")
         return weekly, counts, daily
 
-    def _to_int(v: str | None) -> int:
-        try:
-            return int((v or "").strip())
-        except Exception:
-            return 0
-
-    all_daily: dict[str, dict[str, int]] = {}
-    seen: set[tuple[str, str]] = set()  # (date, track_id) — deduplicate across CSVs
-    for csv_path in active_paths:
-        if not csv_path.exists():
-            continue
-        with csv_path.open("r", newline="", encoding="utf-8-sig") as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                day = (row.get("date") or "").strip()
-                track_id = (row.get("track_id") or "").strip()
-                if not track_id:
-                    continue
-                key = (day, track_id)
-                if key in seen:
-                    continue
-                seen.add(key)
-                streams = _to_int(row.get("daily_streams"))
-                all_daily.setdefault(track_id, {})[day] = streams
-                if day not in week_dates:
-                    continue
-                counts[day] = counts.get(day, 0) + 1
-                weekly[track_id] = weekly.get(track_id, 0) + streams
-                daily.setdefault(track_id, {})[day] = streams
+    for track_id, points in all_daily.items():
+        for day in week_dates:
+            streams = points.get(day)
+            if streams is None:
+                continue
+            counts[day] = counts_by_date.get(day, counts.get(day, 0))
+            weekly[track_id] = weekly.get(track_id, 0) + streams
+            daily.setdefault(track_id, {})[day] = streams
 
     missing_days = sorted(day for day in week_dates if counts.get(day, 0) <= 0)
     if missing_days and len(missing_days) <= MAX_ESTIMATED_MISSING_STREAM_DAYS:
@@ -1083,6 +1168,36 @@ def _history_stats(rows: list[dict]) -> tuple[dict[str, int], dict[str, int], di
     return weeks_on_chart, peaks, times_at_peak
 
 
+def _atomic_write_text(path: Path, content: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    try:
+        tmp.write_text(content, encoding="utf-8")
+        os.replace(tmp, path)
+    finally:
+        if tmp.exists():
+            try:
+                tmp.unlink()
+            except OSError:
+                pass
+
+
+def _atomic_write_csv(path: Path, fieldnames: list[str], rows: list[dict]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    try:
+        with tmp.open("w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
+            writer.writeheader()
+            writer.writerows(rows)
+        os.replace(tmp, path)
+    finally:
+        if tmp.exists():
+            try:
+                tmp.unlink()
+            except OSError:
+                pass
+
 def _write_history_csv(rows: list[dict], logger: Logger) -> None:
     SWIFT_TOP_100_HISTORY_CSV.parent.mkdir(parents=True, exist_ok=True)
     fieldnames = [
@@ -1117,10 +1232,7 @@ def _write_history_csv(rows: list[dict], logger: Logger) -> None:
         "times_at_peak",
     ]
 
-    with SWIFT_TOP_100_HISTORY_CSV.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
-        writer.writeheader()
-        writer.writerows(rows)
+    _atomic_write_csv(SWIFT_TOP_100_HISTORY_CSV, fieldnames, rows)
 
     logger.log(f"✔ CSV  → {SWIFT_TOP_100_HISTORY_CSV.name} ({len(rows)} rows)")
 
@@ -1161,10 +1273,7 @@ def _write_songs_history_csv(rows: list[dict], logger: Logger) -> None:
         "am_overall_score", "prev_rank", "prev_points", "change", "rank_change",
         "percentage_change", "weeks_on_chart", "peak_position", "times_at_peak",
     ]
-    with SWIFT_TOP_SONGS_HISTORY_CSV.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
-        writer.writeheader()
-        writer.writerows(rows)
+    _atomic_write_csv(SWIFT_TOP_SONGS_HISTORY_CSV, fieldnames, rows)
     logger.log(f"✔ CSV  → {SWIFT_TOP_SONGS_HISTORY_CSV.name} ({len(rows)} rows)")
 
 
@@ -1276,7 +1385,7 @@ def _rebuild_snapshot_index(logger: Logger) -> None:
         dates.append(date_str)
     dates.sort(reverse=True)
     index_path = _SITE_DATA_DIR / f"{CHART_SLUG}_index.json"
-    index_path.write_text(json.dumps(dates, ensure_ascii=False), encoding="utf-8")
+    _atomic_write_text(index_path, json.dumps(dates, ensure_ascii=False))
     logger.log(f"✔ IDX  → {index_path.name} ({len(dates)} dates)")
 
 
@@ -1286,10 +1395,10 @@ def _write_snapshot_json(payload: dict, logger: Logger) -> None:
     chart_date = payload.get("chart_date")
     if chart_date:
         dated_json = _SITE_DATA_DIR / f"{CHART_SLUG}_{chart_date}.json"
-        dated_json.write_text(content, encoding="utf-8")
+        _atomic_write_text(dated_json, content)
         logger.log(f"✔ JSON → {dated_json.name}")
     # Always update the "latest" file so R2 stays current
-    OUTPUT_JSON.write_text(content, encoding="utf-8")
+    _atomic_write_text(OUTPUT_JSON, content)
     logger.log(f"✔ JSON → {OUTPUT_JSON.name} (latest)")
     _rebuild_snapshot_index(logger)
 
@@ -1308,6 +1417,24 @@ def _maybe_upload_to_r2(*, logger: Logger, slugs: list[str] | None = None) -> No
             logger.log("  r2             : skipped (credentials / config)")
     except Exception as exc:
         logger.log(f"⚠ r2             : upload failed — {exc}")
+    _regenerate_home_highlights_cache(logger=logger)
+
+
+def _regenerate_home_highlights_cache(*, logger: Logger) -> None:
+    """Best-effort refresh of the Charts Gallery highlights/version R2 cache.
+
+    Never blocks the chart run: on failure, tsm-frontend/api's own
+    cache-on-miss fallback recomputes it live instead.
+    """
+    try:
+        script = _REPO_ROOT / "scripts" / "generate_home_highlights.py"
+        result = subprocess.run(
+            [sys.executable, str(script), "--quiet"], cwd=str(_REPO_ROOT), check=False
+        )
+        if result.returncode != 0:
+            logger.log(f"  highlights     : cache refresh exited with code {result.returncode}")
+    except Exception as exc:
+        logger.log(f"⚠ highlights     : cache refresh failed — {exc}")
 
 
 def _build_week_chart(
@@ -1453,6 +1580,7 @@ def run(
     dry_run: bool,
     skip_r2: bool = False,
     skip_images: bool = False,
+    skip_song_files: bool = False,
     allow_legacy_weekday: bool = False,
 ) -> int:
     logger = Logger()
@@ -1507,6 +1635,16 @@ def run(
     tracks_list = _iter_discography_tracks()
     tracks = {t.track_id: t for t in tracks_list}
     logger.log(f"  discography    : {len(tracks)} tracks indexed")
+
+    daily_by_track, _counts_by_date = _load_stream_daily_cache()
+    missing_required_streams = _missing_required_stream_rows(
+        week_dates=day_list,
+        tracks=tracks,
+        daily_by_track=daily_by_track,
+    )
+    if missing_required_streams:
+        _log_missing_required_stream_rows(missing_required_streams, logger)
+        return 0
 
     curr_points, curr_ranks = _build_week_chart(
         week_end=chart_date,
@@ -1849,7 +1987,10 @@ def run(
             "entries": top_snapshot_entries,
         }
         _write_snapshot_json(payload, logger)
-        _generate_song_files(logger)
+        if skip_song_files:
+            logger.log("  songs          : skipped (backfill)")
+        else:
+            _generate_song_files(logger)
 
         # Génération automatique de 4 images de 25 chansons
         if skip_images:
@@ -2034,6 +2175,7 @@ def main_from_args(args: argparse.Namespace) -> None:
                 dry_run=bool(args.dry_run),
                 skip_r2=True,
                 skip_images=bool(args.skip_images) or not is_last,
+                skip_song_files=not is_last,
             )
         print("[swift_top_100] Backfill complete.")
         if not args.dry_run and not args.skip_r2:
@@ -2053,3 +2195,4 @@ def main_from_args(args: argparse.Namespace) -> None:
 
 if __name__ == "__main__":
     main()
+
