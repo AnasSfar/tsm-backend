@@ -49,7 +49,14 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "christmas": "high:title_album_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [
+            "christmas"
+          ],
+          "chart_extra": false
         },
         {
           "title": "Christmases When You Were Mine",
@@ -92,7 +99,14 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "christmas": "high:title_album_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [
+            "christmas"
+          ],
+          "chart_extra": false
         },
         {
           "title": "Santa Baby",
@@ -135,7 +149,14 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "christmas": "high:title_album_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [
+            "christmas"
+          ],
+          "chart_extra": false
         },
         {
           "title": "Silent Night",
@@ -178,7 +199,14 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "christmas": "high:title_album_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [
+            "christmas"
+          ],
+          "chart_extra": false
         },
         {
           "title": "Christmas Must Be Something More",
@@ -221,7 +249,14 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "christmas": "high:title_album_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [
+            "christmas"
+          ],
+          "chart_extra": false
         },
         {
           "title": "White Christmas",
@@ -264,7 +299,14 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "christmas": "high:title_album_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [
+            "christmas"
+          ],
+          "chart_extra": false
         }
       ]
     },
@@ -318,7 +360,14 @@
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type",
             "christmas": "high:title_album_or_section"
-          }
+          },
+          "on_album": false,
+          "category": "other",
+          "tags": [
+            "christmas"
+          ],
+          "role": "single",
+          "chart_extra": false
         },
         {
           "title": "Christmas Tree Farm - Old Timey Version",
@@ -365,7 +414,12 @@
             "standalone": "medium:section_or_type",
             "alternate_version": "medium:type_or_title",
             "christmas": "high:title_album_or_section"
-          }
+          },
+          "on_album": false,
+          "category": "other",
+          "tags": [
+            "christmas"
+          ]
         },
         {
           "title": "Christmas Tree Farm - Recorded Live at the 2019 iHeartRadio Jingle Ball",
@@ -412,7 +466,12 @@
             "standalone": "medium:section_or_type",
             "live": "high:type_title_or_section",
             "christmas": "high:title_album_or_section"
-          }
+          },
+          "on_album": false,
+          "category": "other",
+          "tags": [
+            "christmas"
+          ]
         }
       ]
     }

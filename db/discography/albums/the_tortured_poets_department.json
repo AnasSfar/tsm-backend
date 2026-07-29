@@ -1,6 +1,6 @@
 {
   "album": "THE TORTURED POETS DEPARTMENT",
-  "section_count": 3,
+  "section_count": 4,
   "track_count": 36,
   "sections": [
     {
@@ -78,7 +78,11 @@
           "filter_tag_sources": {
             "feature": "high:type_or_primary_artist",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "The Tortured Poets Department",
@@ -146,7 +150,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "My Boy Only Breaks His Favorite Toys",
@@ -215,7 +223,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Down Bad",
@@ -283,7 +295,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "So Long, London",
@@ -352,7 +368,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "But Daddy I Love Him",
@@ -422,7 +442,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Fresh Out The Slammer",
@@ -490,7 +514,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Florida!!! (feat. Florence + The Machine)",
@@ -561,7 +589,11 @@
           "filter_tag_sources": {
             "feature": "high:type_or_primary_artist",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Guilty as Sin?",
@@ -629,7 +661,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Who's Afraid of Little Old Me?",
@@ -673,7 +709,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "I Can Fix Him (No Really I Can)",
@@ -741,7 +781,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "loml",
@@ -810,7 +854,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "I Can Do It With a Broken Heart",
@@ -880,7 +928,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "The Smallest Man Who Ever Lived",
@@ -950,7 +1002,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "The Alchemy",
@@ -1018,7 +1074,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Clara Bow",
@@ -1083,7 +1143,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         }
       ]
     },
@@ -1154,7 +1218,11 @@
           ],
           "filter_tag_sources": {
             "solo": "high:artist_credit"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "anthology",
+          "tags": []
         },
         {
           "title": "imgonnagetyouback",
@@ -1218,7 +1286,11 @@
           ],
           "filter_tag_sources": {
             "solo": "high:artist_credit"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "anthology",
+          "tags": []
         },
         {
           "title": "The Albatross",
@@ -1282,7 +1354,11 @@
           ],
           "filter_tag_sources": {
             "solo": "high:artist_credit"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "anthology",
+          "tags": []
         },
         {
           "title": "Chloe or Sam or Sophia or Marcus",
@@ -1348,7 +1424,11 @@
           ],
           "filter_tag_sources": {
             "solo": "high:artist_credit"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "anthology",
+          "tags": []
         },
         {
           "title": "How Did It End?",
@@ -1414,7 +1494,11 @@
           ],
           "filter_tag_sources": {
             "solo": "high:artist_credit"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "anthology",
+          "tags": []
         },
         {
           "title": "So High School",
@@ -1481,7 +1565,11 @@
           ],
           "filter_tag_sources": {
             "solo": "high:artist_credit"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "anthology",
+          "tags": []
         },
         {
           "title": "I Hate It Here",
@@ -1545,7 +1633,11 @@
           ],
           "filter_tag_sources": {
             "solo": "high:artist_credit"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "anthology",
+          "tags": []
         },
         {
           "title": "thanK you aIMee",
@@ -1611,7 +1703,11 @@
           ],
           "filter_tag_sources": {
             "solo": "high:artist_credit"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "anthology",
+          "tags": []
         },
         {
           "title": "I Look in People's Windows",
@@ -1675,7 +1771,11 @@
           ],
           "filter_tag_sources": {
             "solo": "high:artist_credit"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "anthology",
+          "tags": []
         },
         {
           "title": "The Prophecy",
@@ -1739,7 +1839,11 @@
           ],
           "filter_tag_sources": {
             "solo": "high:artist_credit"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "anthology",
+          "tags": []
         },
         {
           "title": "Cassandra",
@@ -1803,7 +1907,11 @@
           ],
           "filter_tag_sources": {
             "solo": "high:artist_credit"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "anthology",
+          "tags": []
         },
         {
           "title": "Peter",
@@ -1869,7 +1977,11 @@
           ],
           "filter_tag_sources": {
             "solo": "high:artist_credit"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "anthology",
+          "tags": []
         },
         {
           "title": "The Bolter",
@@ -1935,7 +2047,11 @@
           ],
           "filter_tag_sources": {
             "solo": "high:artist_credit"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "anthology",
+          "tags": []
         },
         {
           "title": "Robin",
@@ -1999,7 +2115,11 @@
           ],
           "filter_tag_sources": {
             "solo": "high:artist_credit"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "anthology",
+          "tags": []
         },
         {
           "title": "The Manuscript",
@@ -2063,7 +2183,11 @@
           ],
           "filter_tag_sources": {
             "solo": "high:artist_credit"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "anthology",
+          "tags": []
         }
       ]
     },
@@ -2140,7 +2264,12 @@
           "filter_tag_sources": {
             "collab": "high:artists_or_featured_artists",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "release_edition": "deluxe",
+          "tags": []
         },
         {
           "title": "I Can Do It With a Broken Heart - Dombresky Remix",
@@ -2206,7 +2335,12 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "release_edition": "deluxe",
+          "tags": []
         },
         {
           "title": "I Can Do It With a Broken Heart - Instrumental",
@@ -2274,7 +2408,12 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "release_edition": "deluxe",
+          "tags": []
         },
         {
           "title": "Fortnight (feat. Post Malone) - Acoustic Version",
@@ -2345,7 +2484,12 @@
             "collab": "high:artists_or_featured_artists",
             "acoustic": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "acoustic",
+          "release_edition": "deluxe",
+          "tags": []
         },
         {
           "title": "Fortnight (feat. Post Malone) - Cults Remix",
@@ -2414,9 +2558,21 @@
           "filter_tag_sources": {
             "collab": "high:artists_or_featured_artists",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "release_edition": "deluxe",
+          "tags": []
         }
       ]
+    },
+    {
+      "section": "acoustic",
+      "track_count": 0,
+      "chart_extra": false,
+      "tracks": [],
+      "album": "THE TORTURED POETS DEPARTMENT"
     }
   ]
 }

@@ -1,0 +1,2480 @@
+{
+  "album": "Lover",
+  "section_count": 6,
+  "track_count": 37,
+  "sections": [
+    {
+      "section": "standard_edition",
+      "track_count": 18,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "I Forgot That You Existed",
+          "url": "https://open.spotify.com/intl-fr/track/43rA71bccXFGD4C8GOpIlN",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 1,
+          "base_title": "I Forgot That You Existed",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Forgot That You Existed",
+          "song_family": "i_forgot_that_you_existed",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
+          "historical_track_ids": [],
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "2010s",
+              "taylor swift",
+              "female vocalists",
+              "electropop",
+              "singer-songwriter",
+              "female vocalist",
+              "dance pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "I Forgot That You Existed"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_forgot_that_you_existed",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Cruel Summer",
+          "url": "https://open.spotify.com/intl-fr/track/1BxfuPKGuaTgP7aM0Bbdwr",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 2,
+          "base_title": "Cruel Summer",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Cruel Summer",
+          "song_family": "cruel_summer",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
+          "historical_track_ids": [
+            "0NQOXTDg2p7hFYlFq6tZKW"
+          ],
+          "release_date": "2023-10-19T00:00:00Z",
+          "genres": [
+            "electropop",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "synthpop",
+              "industrial pop",
+              "pop perfection",
+              "synthwave",
+              "2019",
+              "the best of 2019",
+              "love at first listen",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Cruel Summer"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cruel_summer",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Lover",
+          "url": "https://open.spotify.com/intl-fr/track/1dGr1c8CrMLDpV6mPbImSI",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 3,
+          "base_title": "Lover",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Lover",
+          "song_family": "lover",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
+          "historical_track_ids": [],
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "country",
+            "indie folk"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "country": 2.0,
+            "indie folk": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "indie folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "indie folk",
+              "Love",
+              "country pop",
+              "2010s",
+              "singer-songwriter",
+              "folk pop",
+              "2019",
+              "Ballad"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Lover"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:lover",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "The Man",
+          "url": "https://open.spotify.com/intl-fr/track/3RauEVgRgj1IuWdJ9fDs70",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 4,
+          "base_title": "The Man",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Man",
+          "song_family": "the_man",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
+          "historical_track_ids": [],
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "feminism",
+              "2019",
+              "overrated",
+              "synth-pop",
+              "synthpop",
+              "taylor swift",
+              "dance-pop",
+              "2010s"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Man"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_man",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "The Archer",
+          "url": "https://open.spotify.com/intl-fr/track/3pHkh7d0lzM2AldUtz2x37",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 5,
+          "base_title": "The Archer",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Archer",
+          "song_family": "the_archer",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
+          "historical_track_ids": [],
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "ambient pop",
+              "synthwave",
+              "taylor swift",
+              "ambient",
+              "lover",
+              "electropop",
+              "2019"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Archer"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_archer",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "I Think He Knows",
+          "url": "https://open.spotify.com/intl-fr/track/2YWtcWi3a83pdEg3Gif4Pd",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 6,
+          "base_title": "I Think He Knows",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Think He Knows",
+          "song_family": "i_think_he_knows",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
+          "historical_track_ids": [],
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synthpop",
+              "dance-pop",
+              "taylor swift",
+              "rnb",
+              "singer-songwriter",
+              "bubblegum pop",
+              "contemporary rnb",
+              "upbeat"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "I Think He Knows"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_think_he_knows",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Miss Americana & The Heartbreak Prince",
+          "url": "https://open.spotify.com/intl-fr/track/214nt20w5wOxJnY462klLw",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 7,
+          "base_title": "Miss Americana & The Heartbreak Prince",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Miss Americana & The Heartbreak Prince",
+          "song_family": "miss_americana_the_heartbreak_prince",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
+          "historical_track_ids": [],
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dream pop",
+              "synthpop",
+              "alt-pop",
+              "alternative rnb",
+              "synth-pop",
+              "taylor swift",
+              "2010s",
+              "rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Miss Americana & The Heartbreak Prince"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:miss_americana_the_heartbreak_prince",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Paper Rings",
+          "url": "https://open.spotify.com/intl-fr/track/4y5bvROuBDPr5fuwXbIBZR",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 8,
+          "base_title": "Paper Rings",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Paper Rings",
+          "song_family": "paper_rings",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
+          "historical_track_ids": [],
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "pop rock",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "pop rock": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "pop rock",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "pop rock",
+              "electropop",
+              "new wave",
+              "2010s",
+              "rockabilly",
+              "synthpop",
+              "taylor swift",
+              "indie pop",
+              "singer songwriter"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Paper Rings"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:paper_rings",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Cornelia Street",
+          "url": "https://open.spotify.com/intl-fr/track/12M5uqx0ZuwkpLp5rJim1a",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 9,
+          "base_title": "Cornelia Street",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Cornelia Street",
+          "song_family": "cornelia_street",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
+          "historical_track_ids": [],
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "synth-pop",
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "synth-pop": 3.0,
+            "pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "synth-pop",
+              "pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "synthpop",
+              "pop",
+              "electropop",
+              "alt-pop",
+              "singer-songwriter",
+              "taylor swift",
+              "dance-pop",
+              "2010s",
+              "rosa",
+              "electronic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Cornelia Street"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cornelia_street",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Death By A Thousand Cuts",
+          "url": "https://open.spotify.com/intl-fr/track/2dgFqt3w9xIQRjhPtwNk3D",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 10,
+          "base_title": "Death By A Thousand Cuts",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Death By A Thousand Cuts",
+          "song_family": "death_by_a_thousand_cuts",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
+          "historical_track_ids": [],
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "electropop",
+              "dream pop",
+              "alt-pop",
+              "singer-songwriter",
+              "indie pop",
+              "taylor swift",
+              "folk pop",
+              "lover"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Death By A Thousand Cuts"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:death_by_a_thousand_cuts",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "London Boy",
+          "url": "https://open.spotify.com/intl-fr/track/1LLXZFeAHK9R4xUramtUKw",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 11,
+          "base_title": "London Boy",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "London Boy",
+          "song_family": "london_boy",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
+          "historical_track_ids": [],
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "britpop",
+              "bubblegum pop",
+              "synthpop",
+              "singer-songwriter",
+              "electropop",
+              "electronic",
+              "taylor swift",
+              "2010s",
+              "alt-pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "London Boy"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:london_boy",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Soon You'll Get Better (feat. The Chicks)",
+          "url": "https://open.spotify.com/intl-fr/track/4AYtqFyFbX0Xkc2wtcygTr",
+          "type": "feature",
+          "edition": "standard",
+          "display_section": "standard edition",
+          "display_order": 12,
+          "base_title": "Soon You'll Get Better (feat. The Chicks)",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "The Chicks"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "The Chicks"
+          ],
+          "title_clean": "Soon You'll Get Better",
+          "song_family": "soon_you_ll_get_better",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
+          "historical_track_ids": [],
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:soon_you_ll_get_better",
+          "filter_tags": [
+            "feature",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "False God",
+          "url": "https://open.spotify.com/intl-fr/track/5hQSXkFgbxjZo9uCwd11so",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 13,
+          "base_title": "False God",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "False God",
+          "song_family": "false_god",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
+          "historical_track_ids": [],
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "alternative": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "Sophisti-Pop",
+              "rnb",
+              "alt-pop",
+              "saxophone",
+              "sexy",
+              "taylor swift",
+              "dream pop",
+              "alternative rnb"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "False God"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:false_god",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "You Need To Calm Down",
+          "url": "https://open.spotify.com/intl-fr/track/6RRNNciQGZEXnqk8SQ9yv5",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 14,
+          "base_title": "You Need To Calm Down",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You Need To Calm Down",
+          "song_family": "you_need_to_calm_down",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
+          "historical_track_ids": [],
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "taylor swift",
+              "lgbtq",
+              "2010s",
+              "electropop",
+              "2019",
+              "lgbt",
+              "soty",
+              "You Need to Calm Down"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "You Need To Calm Down"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_need_to_calm_down",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Afterglow",
+          "url": "https://open.spotify.com/intl-fr/track/1SymEzIT3H8UZfibCs3TYi",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 15,
+          "base_title": "Afterglow",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Afterglow",
+          "song_family": "afterglow",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
+          "historical_track_ids": [],
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "alt-pop",
+              "love at first listen",
+              "electropop",
+              "pop rock",
+              "taylor swift",
+              "bubblegum pop",
+              "lover"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Afterglow"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:afterglow",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "ME! (feat. Brendon Urie of Panic! At The Disco)",
+          "url": "https://open.spotify.com/intl-fr/track/2Rk4JlNc2TPmZe2af99d45",
+          "type": "feature",
+          "edition": "standard",
+          "display_section": "standard edition",
+          "display_order": 16,
+          "base_title": "ME! (feat. Brendon Urie of Panic! At The Disco)",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Brendon Urie of Panic! At The Disco"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Brendon Urie of Panic! At The Disco"
+          ],
+          "title_clean": "ME!",
+          "song_family": "me",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
+          "historical_track_ids": [],
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "bubblegum pop",
+              "taylor swift",
+              "2019",
+              "synthpop",
+              "brendon urie",
+              "teen pop",
+              "lover",
+              "duet",
+              "A literal masterpiece STREAM"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "ME! (feat. Brendon Urie of Panic! At The Disco)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:me",
+          "filter_tags": [
+            "feature",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "It's Nice To Have A Friend",
+          "url": "https://open.spotify.com/intl-fr/track/1SmiQ65iSAbPto6gPFlBYm",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 17,
+          "base_title": "It's Nice To Have A Friend",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "It's Nice To Have A Friend",
+          "song_family": "it_s_nice_to_have_a_friend",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
+          "historical_track_ids": [],
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:it_s_nice_to_have_a_friend",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Daylight",
+          "url": "https://open.spotify.com/intl-fr/track/1fzAuUVbzlhZ1lJAx9PtY6",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 18,
+          "base_title": "Daylight",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Daylight",
+          "song_family": "daylight",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
+          "historical_track_ids": [],
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "alternative": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "Love",
+              "Ballad",
+              "alt-pop",
+              "golden",
+              "love at first listen",
+              "best of 2019",
+              "synth-pop",
+              "taylor swift"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Daylight"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:daylight",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "album": "Lover",
+      "section": "standalone",
+      "chart_extra": true,
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "All Of The Girls You Loved Before",
+          "url": "https://open.spotify.com/intl-fr/track/4P9Q0GojKVXpRTJCaL3kyy",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "All Of The Girls You Loved Before",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "All Of The Girls You Loved Before",
+          "song_family": "all_of_the_girls_you_loved_before",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738481d8f15859aa5bae75ee17",
+          "display_era": "Lover",
+          "historical_track_ids": [
+            "17yraMKqmZIKAv3iaGcoLX"
+          ],
+          "release_date": "2019-08-23T00:00:00Z",
+          "genres": [
+            "pop",
+            "dream pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "dream pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dream pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "lover",
+              "pop",
+              "dream pop",
+              "synthpop",
+              "rnb",
+              "female vocalists",
+              "alt-pop",
+              "doo-wop",
+              "brill building",
+              "pop soul"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "All Of The Girls You Loved Before"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:all_of_the_girls_you_loved_before",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": false,
+          "category": "other",
+          "display_album": "Lover",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "album": "Lover",
+      "section": "soundtracks",
+      "track_count": 1,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Only The Young - Featured in Miss Americana",
+          "url": "https://open.spotify.com/intl-fr/track/2slqvGLwzZZYsT4K4Y1GBC",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 6,
+          "base_title": "Only The Young - Featured in Miss Americana",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Only The Young - Featured in Miss Americana",
+          "song_family": "only_the_young_featured_in_miss_americana",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2734aa13f6de271d8403a82e4a8",
+          "display_era": "Lover",
+          "historical_track_ids": [],
+          "release_date": "2020-01-31T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:only_the_young_featured_in_miss_americana",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": false,
+          "category": "soundtrack",
+          "display_album": "Lover",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "section": "remixes",
+      "track_count": 11,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Lover (Remix) [feat. Shawn Mendes]",
+          "url": "https://open.spotify.com/intl-fr/track/3i9UVldZOE0aD0JnyfAZZ0",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "Lover (Remix) [feat. Shawn Mendes]",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Lover [feat. Shawn Mendes]",
+          "song_family": "lover_feat_shawn_mendes",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27359457bdb1edb5c6417f3baa2",
+          "historical_track_ids": [],
+          "release_date": "2019-11-13T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:lover_feat_shawn_mendes",
+          "filter_tags": [
+            "collab",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "collab": "high:artists_or_featured_artists",
+            "remix": "high:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
+        },
+        {
+          "title": "Lover - First Dance Remix",
+          "url": "https://open.spotify.com/intl-fr/track/2msvOEbkK50foYf9BMXr2X",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "Lover",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Lover - First Dance Remix",
+          "song_family": "lover",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273affd87a5167957a7adbf8e37",
+          "historical_track_ids": [],
+          "release_date": "2019-11-26T00:00:00Z",
+          "genres": [
+            "pop",
+            "country",
+            "indie folk"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "country": 2.0,
+            "indie folk": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "indie folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "indie folk",
+              "Love",
+              "country pop",
+              "2010s",
+              "singer-songwriter",
+              "folk pop",
+              "2019",
+              "Ballad"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Lover"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:lover",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
+        },
+        {
+          "title": "Lover - Live From Paris",
+          "url": "https://open.spotify.com/intl-fr/track/4lD3RXyvHpJsM3BhIEC4aA",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Live From Paris",
+          "display_order": 3,
+          "base_title": "Lover",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Lover - Live From Paris",
+          "song_family": "lover",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d29b148f84d0cd04ebdbe919",
+          "historical_track_ids": [],
+          "release_date": "2020-05-17T00:00:00Z",
+          "genres": [
+            "pop",
+            "country",
+            "indie folk"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "country": 2.0,
+            "indie folk": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "indie folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "indie folk",
+              "Love",
+              "country pop",
+              "2010s",
+              "singer-songwriter",
+              "folk pop",
+              "2019",
+              "Ballad"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Lover"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:lover",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
+        },
+        {
+          "title": "You Need To Calm Down - Clean Bandit Remix",
+          "url": "https://open.spotify.com/intl-fr/track/7Bjf96uNizpvXLvNyOJpst",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 4,
+          "base_title": "You Need To Calm Down",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You Need To Calm Down - Clean Bandit Remix",
+          "song_family": "you_need_to_calm_down",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2739911942b4845c29ad3ad1224",
+          "historical_track_ids": [],
+          "release_date": "2019-08-20T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "taylor swift",
+              "lgbtq",
+              "2010s",
+              "electropop",
+              "2019",
+              "lgbt",
+              "soty",
+              "You Need to Calm Down"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "You Need To Calm Down"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_need_to_calm_down",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
+        },
+        {
+          "title": "You Need To Calm Down - Live From Paris",
+          "url": "https://open.spotify.com/intl-fr/track/36a08nLG1xazGaaVKK0vv7",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Live From Paris",
+          "display_order": 5,
+          "base_title": "You Need To Calm Down",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You Need To Calm Down - Live From Paris",
+          "song_family": "you_need_to_calm_down",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738546aa90c89127a13f02c73d",
+          "historical_track_ids": [],
+          "release_date": "2020-05-17T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "taylor swift",
+              "lgbtq",
+              "2010s",
+              "electropop",
+              "2019",
+              "lgbt",
+              "soty",
+              "You Need to Calm Down"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "You Need To Calm Down"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_need_to_calm_down",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
+        },
+        {
+          "title": "Cornelia Street - Live From Paris",
+          "url": "https://open.spotify.com/intl-fr/track/3fGnrtrtL1IHSX9t4DKOYf",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Live From Paris",
+          "display_order": 6,
+          "base_title": "Cornelia Street",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Cornelia Street - Live From Paris",
+          "song_family": "cornelia_street",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273eec5bf14fcf7c92ec8166027",
+          "historical_track_ids": [],
+          "release_date": "2020-05-18T00:00:00Z",
+          "genres": [
+            "synth-pop",
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "synth-pop": 3.0,
+            "pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "synth-pop",
+              "pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "synthpop",
+              "pop",
+              "electropop",
+              "alt-pop",
+              "singer-songwriter",
+              "taylor swift",
+              "dance-pop",
+              "2010s",
+              "rosa",
+              "electronic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Cornelia Street"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cornelia_street",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
+        },
+        {
+          "title": "Daylight - Live From Paris",
+          "url": "https://open.spotify.com/intl-fr/track/7ryS0xBZNYjQqql34GCkDp",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Live From Paris",
+          "display_order": 7,
+          "base_title": "Daylight",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Daylight - Live From Paris",
+          "song_family": "daylight",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2739638abe9135aed2817baf686",
+          "historical_track_ids": [],
+          "release_date": "2020-05-17T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "alternative": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "Love",
+              "Ballad",
+              "alt-pop",
+              "golden",
+              "love at first listen",
+              "best of 2019",
+              "synth-pop",
+              "taylor swift"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Daylight"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:daylight",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
+        },
+        {
+          "title": "Death By A Thousand Cuts - Live From Paris",
+          "url": "https://open.spotify.com/intl-fr/track/3oF7Or7T35yhQbGxbCGvRX",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Live From Paris",
+          "display_order": 8,
+          "base_title": "Death By A Thousand Cuts",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Death By A Thousand Cuts - Live From Paris",
+          "song_family": "death_by_a_thousand_cuts",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737864c044d3fa4ac3814ca667",
+          "historical_track_ids": [],
+          "release_date": "2020-05-17T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "electropop",
+              "dream pop",
+              "alt-pop",
+              "singer-songwriter",
+              "indie pop",
+              "taylor swift",
+              "folk pop",
+              "lover"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Death By A Thousand Cuts"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:death_by_a_thousand_cuts",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
+        },
+        {
+          "title": "The Archer - Live From Paris",
+          "url": "https://open.spotify.com/intl-fr/track/2fgiBCtbWo8pijF6M7pN1i",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Live From Paris",
+          "display_order": 9,
+          "base_title": "The Archer",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Archer - Live From Paris",
+          "song_family": "the_archer",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273cde19bd5377f06eb0bca3256",
+          "historical_track_ids": [],
+          "release_date": "2020-05-17T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "ambient pop",
+              "synthwave",
+              "taylor swift",
+              "ambient",
+              "lover",
+              "electropop",
+              "2019"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Archer"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_archer",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
+        },
+        {
+          "title": "The Man - Live From Paris",
+          "url": "https://open.spotify.com/intl-fr/track/7FKbTRXXIWVFQmPH8zGfU0",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Live From Paris",
+          "display_order": 10,
+          "base_title": "The Man",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Man - Live From Paris",
+          "song_family": "the_man",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2739a6d517fc78fb707bed067c2",
+          "historical_track_ids": [],
+          "release_date": "2020-02-18T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "feminism",
+              "2019",
+              "overrated",
+              "synth-pop",
+              "synthpop",
+              "taylor swift",
+              "dance-pop",
+              "2010s"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Man"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_man",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
+        },
+        {
+          "title": "ME! - Live From Paris",
+          "url": "https://open.spotify.com/intl-fr/track/5fOV54t6mMYv3H9CsnvU81",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Live From Paris",
+          "display_order": 11,
+          "base_title": "ME!",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "ME! - Live From Paris",
+          "song_family": "me",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d8f29c3584e77996dd2f9950",
+          "historical_track_ids": [],
+          "release_date": "2020-05-17T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "bubblegum pop",
+              "taylor swift",
+              "2019",
+              "synthpop",
+              "brendon urie",
+              "teen pop",
+              "lover",
+              "duet",
+              "A literal masterpiece STREAM"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "ME! (feat. Brendon Urie of Panic! At The Disco)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:me",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "section": "cruel_summer_single",
+      "track_count": 3,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Cruel Summer - Live from TS",
+          "url": "The Eras Tour",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "Cruel Summer",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Cruel Summer - Live from TS",
+          "song_family": "cruel_summer",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
+          "historical_track_ids": [],
+          "genres": [
+            "electropop",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "synthpop",
+              "industrial pop",
+              "pop perfection",
+              "synthwave",
+              "2019",
+              "the best of 2019",
+              "love at first listen",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Cruel Summer"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cruel_summer",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
+        },
+        {
+          "title": "Cruel Summer - LP Giobbi Remix",
+          "url": "https://open.spotify.com/intl-fr/track/37jfioVu3Bd2Du9bteXNDU",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 3,
+          "base_title": "Cruel Summer",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Cruel Summer - LP Giobbi Remix",
+          "song_family": "cruel_summer",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273905c0872bdf4e1787a6bb5da",
+          "historical_track_ids": [
+            "0pjBqAz8GlxGlpaU4W0DxS"
+          ],
+          "release_date": "2023-10-19T00:00:00Z",
+          "genres": [
+            "electropop",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "synthpop",
+              "industrial pop",
+              "pop perfection",
+              "synthwave",
+              "2019",
+              "the best of 2019",
+              "love at first listen",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Cruel Summer"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cruel_summer",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
+        },
+        {
+          "title": "Cruel Summer - LP Giobbi Remix - Extended Version",
+          "url": "https://open.spotify.com/intl-fr/track/0ISHfeb30gj4CSWUZYuesj",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 4,
+          "base_title": "Cruel Summer",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Cruel Summer - LP Giobbi Remix - Extended Version",
+          "song_family": "cruel_summer",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273905c0872bdf4e1787a6bb5da",
+          "historical_track_ids": [],
+          "release_date": "2023-10-19T00:00:00Z",
+          "genres": [
+            "electropop",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "synthpop",
+              "industrial pop",
+              "pop perfection",
+              "synthwave",
+              "2019",
+              "the best of 2019",
+              "love at first listen",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Cruel Summer"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cruel_summer",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "section": "streaming_extras",
+      "track_count": 3,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "Cruel Summer - Live from TS | The Eras Tour",
+          "url": "https://open.spotify.com/intl-fr/track/6ClYMObS7f3Nn4AiZHYQt3",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10000,
+          "base_title": "Cruel Summer",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Cruel Summer - Live from TS | The Eras Tour",
+          "song_family": "cruel_summer",
+          "version_tag": "live",
+          "release_date": "2023-10-19T00:00:00Z",
+          "historical_track_ids": [
+            "6EXHGKZ79AUTzCe9BMZjhT"
+          ],
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273f669b4e7f0327c92909bc762",
+          "genres": [
+            "electropop",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "synthpop",
+              "industrial pop",
+              "pop perfection",
+              "synthwave",
+              "2019",
+              "the best of 2019",
+              "love at first listen",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Cruel Summer"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cruel_summer",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
+        },
+        {
+          "title": "Soon You’ll Get Better - One World: Together At Home",
+          "url": "https://open.spotify.com/intl-fr/track/4b3wGyyabId64t9rjMFdfY",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9999,
+          "base_title": "Soon You’ll Get Better - One World: Together At Home",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Soon You’ll Get Better - One World: Together At Home",
+          "song_family": "soon_youll_get_better",
+          "version_tag": null,
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273d43806cf68e3984ed158f1a7",
+          "release_date": null,
+          "historical_track_ids": [],
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "other",
+          "tags": [],
+          "chart_extra": true
+        },
+        {
+          "title": "Me! - Cover",
+          "url": "https://open.spotify.com/track/5BHa3hmDOiT6s7QQc0TT37",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10064,
+          "base_title": "Me!",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Me! - Cover",
+          "song_family": "me_chartsnapshot_external_5BHa3hmD",
+          "version_tag": "cover",
+          "version_tags": [
+            "cover"
+          ],
+          "catalog_category": "cover",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "cover",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Women's version of muscle training BGM -Latest Western music-",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2730b9c7b4ca368ae2213a5722b",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "other",
+          "tags": []
+        }
+      ],
+      "album": "Lover"
+    }
+  ]
+}

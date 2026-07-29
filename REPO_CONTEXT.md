@@ -32,7 +32,8 @@ tsm-backend/
 ├── .github/workflows/      ← workflows GitHub (peu utilisés : tout tourne en local)
 ├── .claude/skills/         ← skills Claude Code (tsm-map, pipeline-ops, data-rules, image-gen, deploy, admin-work, style-rules, collector-apple-music)
 ├── run_daily.bat           ← launcher : python -m tsm daily
-└── run_all_charts.bat      ← launcher : python -m tsm collect charts
+├── run_all_charts.bat      ← launcher : python -m tsm collect charts
+└── run_discography_editor.bat ← launcher : GUI locale d'édition de db/discography/ (scripts/discography_editor/)
 ```
 
 ---
@@ -254,7 +255,9 @@ Avant tout travail ici : charger le skill `scripts-maintenance` (ordre du workfl
 | `backfill_global_charts.py` | Backfill `charts_history_global/fr.csv`. `--charts`, `--start`, `--end`, `--dl-workers`, `--filter-workers`, `--headless`, `--dry-run` |
 | `backfill_track_cover_cache.py` | Pré-chauffe `track_cover_cache.json` |
 | `enrich_genres.py` | Genres par chanson. `--apply`, `--track`, `--set-genres`, `--sources`, `--refresh-cache`, `--limit`, `--skip-existing` |
-| `infer_track_flags.py` | Déduit les `filter_tags` de la discographie. `--apply`, `--track`, `--limit`, `--csv`, `--json` |
+| `infer_track_flags.py` | Déduit les `filter_tags` (ancien schéma) de la discographie. `--apply`, `--track`, `--limit`, `--csv`, `--json`. ⚠️ Probablement obsolète depuis `migrate_discography_schema.py` (son rôle — déduire des tags depuis des champs flous — disparaît puisque `role`/`extra_type`/`category` sont désormais explicites) ; pas encore supprimé, à confirmer avant de le faire |
+| `migrate_discography_schema.py` | **Phase 1 de la refonte du schéma discographie** (voir § 9 "Schéma de discographie"). Dry-run par défaut (écrit `data/schema_migration_review.csv`, liste des tracks au mapping ambigu à revalider), `--apply` pour écrire (backup `.schema-migration-<horodatage>.bak`), `--no-backup`. Additif uniquement : n'écrit que les nouveaux champs (`on_album`/`role`/`extra_type`/`category`/`release_edition`/`display_album`/`tags`), ne touche/supprime jamais `type`/`edition`/`section`/`filter_tags`/`display_era` — donc zéro impact sur les scripts qui les lisent encore (Phase 2, chantier séparé). Corrige aussi `song_family` pour les extras mal reliés (ex. karaoké/voice memo qui pointaient vers leur propre famille au lieu de la chanson de base), via un index des titres "ancres" (tracks non suffixés) — jamais par vote/majorité entre extras, qui s'est révélé peu fiable sur cette DB (incohérences préexistantes de nommage) |
+| `discography_editor/` | **GUI locale d'édition de `db/discography/`** (voir aussi § 9). `python scripts/discography_editor/server.py [--port 8765] [--no-browser]`, ou `run_discography_editor.bat` à la racine. `catalog.py` = logique pure (charge/aplati/déplace/sauvegarde, testable sans serveur) ; `server.py` = `http.server` stdlib (zéro dépendance) qui sert `static/` (SPA vanilla JS) + `GET /api/state` + `POST /api/save` + `POST /api/mark-done`. Édite le **nouveau schéma** (`on_album`, `role`, `extra_type`, `category`, `release_edition`, `display_album`, `tags`) — pas les anciens `type`/`edition`/`filter_tags`, laissés intacts sur disque pour ne rien casser côté Phase 2. Sauvegarde `/api/save` : copie en mémoire → garde-fou (compte total de tracks conservé avant/après, sinon tout est annulé) → re-parse JSON de validation → backup `.discoedit-<horodatage>.bak` → écriture atomique (fichier temp + `os.replace`) → rechargement disque. V1 = édite/déplace des tracks existants uniquement (pas de création/suppression de track, pas de nouveau fichier d'album). Case « Fait » (chanson déjà vérifiée) : bookkeeping pur, appliquée immédiatement via `/api/mark-done`, stockée dans `discography_editor/review_state.json` (identité = track_id) — **hors `db/discography`**, jamais lu par un collector |
 | `enrich.py` / `add_display.py` / `fix_songs_json.py` / `fix_song_images.py` / `fill_images.py` / `split_albums.py` / `list_songs.py` | Maintenance discographie/données |
 | `fill_streams_from_archive.py` | Backfill `streams_history.csv` depuis les Daily Archive |
 | `sync_spotify_country_charts_from_worldwide.py` | Resynchronise les charts pays depuis worldwide. `--charts`, `--dry-run` |
@@ -276,11 +279,28 @@ Avant tout travail ici : charger le skill `scripts-maintenance` (ordre du workfl
 
 | Dossier | Contenu | Règle |
 |---|---|---|
-| `db/` | Source de vérité : `discography/artist.json` (catalogue maître), `discography/albums/`, `track_cover_cache.json`, `charts_history_*.csv`, `streams_history.csv`, headers d'albums | Modifier via les scripts, pas à la main |
+| `db/` | Source de vérité : `discography/artist.json` (catalogue maître), `discography/albums/`, `track_cover_cache.json`, `charts_history_*.csv`, `streams_history.csv`, headers d'albums | Modifier via les scripts, ou via `scripts/discography_editor/` (GUI locale) pour de l'édition manuelle ciblée — jamais à la main dans l'éditeur de texte |
 | `data/` | Archives datées (`data/2024/…`) + `_archive/` (migrations) + `_tmp/` (scénarios de test) | Lecture seule en pratique |
 | `snapshots/` | Snapshots datés : `spotify_charts/`, `spotify_streams/`, `apple_music_charts/`, `billboard/`, `tayboard/`, `recap/` | Écrits par les collectors |
 | `runtime/` | `exports/web/` (payloads générés avant upload R2), `tmp/`, `spotify_streams/` | Non versionné, régénérable |
 | `website/` | ⚠️ **Site statique LEGACY** — ne JAMAIS y écrire sauf demande explicite (`website/site/data`, `website/site/history` = anciens exports) | Interdit (règle CLAUDE.md) |
+
+### Schéma de discographie (`db/discography/`) — en cours de refonte
+
+Chaque track a maintenant, EN PLUS des anciens champs (`type`, `edition`, `section`, `filter_tags`, `display_era` — encore lus par pas mal de scripts, cf. `migrate_discography_schema.py` ci-dessus) :
+
+| Champ | Valeurs | Sens |
+|---|---|---|
+| `on_album` | bool | fait officiellement partie du tracklist d'un album ? |
+| `role` | `single` \| `album_track` \| `extra` | si `on_album=true` (⚠️ `single` n'est jamais déduit automatiquement — aucun champ source ne le distingue de `album_track`, c'est à taguer à la main via l'éditeur) |
+| `extra_type` | `live` \| `remix` \| `commentary` \| `karaoke` \| `voice_memo` \| `acoustic` \| `demo` \| `instrumental` \| `other` | si `role=extra` ; sert aussi de regroupement d'affichage/génération d'image |
+| `category` | `soundtrack` \| `feature` \| `collab` \| `other` | si `on_album=false`. **feature** = Taylor `primary_artist` (autre artiste en featured) ; **collab** = un autre artiste est `primary_artist`, Taylor en featured |
+| `release_edition` | `standard` \| `deluxe` \| `platinum` \| `anthology` \| `from_the_vault` \| `til_dawn` \| `3am` \| `taylors_version` \| ... | si `on_album=true` — enum ouvert, pas figé |
+| `display_album` | string \| null | ex-`display_era`, renommé, même usage (afficher sous un album sans compter dans son tracklist) |
+| `tags` | liste réduite (ex. `christmas`) | ex-`filter_tags` — uniquement les thèmes qui ne rentrent dans aucun champ ci-dessus |
+| `song_family` | string | inchangé mais **fiabilisé** par la migration (relie maintenant correctement karaoké/voice memo/etc. à leur chanson de base) |
+
+Statut : migration Phase 1 appliquée le 2026-07-29 (voir `data/schema_migration_review.csv` pour les ~131 tracks au mapping incertain à revalider via l'éditeur). **Phase 2 (pas encore faite)** : migrer chaque consommateur des anciens champs vers les nouveaux, puis retirer les anciens — gros chantier séparé touchant `best_day_since.py`, `history_store.py`, `generate_album_update_image.py`, `enrich_genres.py`, `export_for_web.py` (doit continuer à produire les mêmes champs de sortie `type`/`edition`/`display_section` pour ne rien casser côté `tsm-frontend`/`api/routes/period_recaps.py`), `swift_top_albums.py`, `swift_top_100.py`, `backfill_discography_from_spotify.py`.
 
 ---
 

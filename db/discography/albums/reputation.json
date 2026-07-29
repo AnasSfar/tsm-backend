@@ -1,7 +1,7 @@
 {
   "album": "reputation",
   "section_count": 6,
-  "track_count": 37,
+  "track_count": 48,
   "sections": [
     {
       "section": "standard_edition",
@@ -69,7 +69,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "End Game",
@@ -132,7 +136,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "I Did Something Bad",
@@ -200,7 +208,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Don't Blame Me",
@@ -241,7 +253,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Delicate",
@@ -309,7 +325,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Look What You Made Me Do",
@@ -377,7 +397,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "So It Goes...",
@@ -442,7 +466,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Gorgeous",
@@ -510,7 +538,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Getaway Car",
@@ -576,7 +608,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "King Of My Heart",
@@ -644,7 +680,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Dancing With Our Hands Tied",
@@ -709,7 +749,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Dress",
@@ -777,7 +821,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "This Is Why We Can't Have Nice Things",
@@ -843,7 +891,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Call It What You Want",
@@ -909,7 +961,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "New Year's Day",
@@ -950,7 +1006,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         }
       ]
     },
@@ -1004,7 +1064,11 @@
             "collab": "high:artists_or_featured_artists",
             "soundtrack": "high:title_album_or_section",
             "live": "high:type_title_or_section"
-          }
+          },
+          "on_album": false,
+          "category": "soundtrack",
+          "tags": [],
+          "chart_extra": false
         }
       ]
     },
@@ -1052,7 +1116,12 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": false,
+          "role": "extra",
+          "release_edition": "",
+          "tags": [],
+          "extra_type": "live"
         }
       ]
     },
@@ -1060,7 +1129,7 @@
       "album": "reputation",
       "section": "streaming_extras",
       "chart_extra": true,
-      "track_count": 1,
+      "track_count": 12,
       "tracks": [
         {
           "title": "...Ready For It? - BloodPopÃ‚Â® Remix",
@@ -1126,7 +1195,375 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "display_album": "",
+          "tags": []
+        },
+        {
+          "title": "End Game - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/5v5s9gE1UVpPaPdOxkbBwP",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 34,
+          "base_title": "End Game",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "End Game - Commentary",
+          "song_family": "end_game",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2017-11-10T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Getaway Car - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/2dAXNjG5vwMAlgHzAC7vZC",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 42,
+          "base_title": "Getaway Car",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Getaway Car - Commentary",
+          "song_family": "getaway_car",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2017-11-10T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Gorgeous - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/7enXOiKyiRhg84vgU8N8VS",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 43,
+          "base_title": "Gorgeous",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Gorgeous - Commentary",
+          "song_family": "gorgeous",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2017-11-10T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "I Did Something Bad - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/5fUE3r8hdIUQug2028aA8F",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 51,
+          "base_title": "I Did Something Bad",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Did Something Bad - Commentary",
+          "song_family": "i_did_something_bad",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2017-11-10T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "King Of My Heart - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/2d9Ud0fwm5Oq73F5vPSoQB",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 63,
+          "base_title": "King Of My Heart",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "King Of My Heart - Commentary",
+          "song_family": "king_of_my_heart",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2017-11-10T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Look What You Made Me Do - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/3ilBqQXWOO6FWaPyNsVUbw",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 68,
+          "base_title": "Look What You Made Me Do",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Look What You Made Me Do - Commentary",
+          "song_family": "look_what_you_made_me_do",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2017-11-10T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "New Year's Day - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/518FPNbDfkkxamoeR6lGo3",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 79,
+          "base_title": "New Year's Day",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "New Year's Day - Commentary",
+          "song_family": "new_year_s_day",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2017-11-10T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "So It Goes… - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/4kxj7TJF4A88P4LPeLrsoZ",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 92,
+          "base_title": "So It Goes…",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "So It Goes… - Commentary",
+          "song_family": "so_it_goes",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2017-11-10T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "This Is Why We Can't Have Nice Things - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/0Fa1vab9Ssp9ah12rhfeRz",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 119,
+          "base_title": "This Is Why We Can't Have Nice Things",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "This Is Why We Can't Have Nice Things - Commentary",
+          "song_family": "this_is_why_we_can_t_have_nice_things",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2017-11-10T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "…Ready For It? - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/61zIoCTqx0OY5pCj26Ve9W",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 140,
+          "base_title": "…Ready For It?",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "…Ready For It? - Commentary",
+          "song_family": "ready_for_it",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2017-11-10T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Delicate - Acoustic Cover",
+          "url": "https://open.spotify.com/track/58q1k1dMUO6WM34yKspSD2",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10068,
+          "base_title": "Delicate",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Delicate - Acoustic Cover",
+          "song_family": "delicate",
+          "version_tag": "cover",
+          "version_tags": [
+            "cover"
+          ],
+          "catalog_category": "cover",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "cover",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Music for the Moment: Bonjour with Classical Music",
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27375402543f49698cec4d8210e",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "acoustic",
+          "tags": []
         }
       ]
     },
@@ -1198,7 +1635,11 @@
             "solo": "high:artist_credit",
             "karaoke": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "karaoke",
+          "tags": []
         },
         {
           "title": "Call It What You Want - Karaoke Version",
@@ -1266,7 +1707,11 @@
             "solo": "high:artist_credit",
             "karaoke": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "karaoke",
+          "tags": []
         },
         {
           "title": "Dancing With Our Hands Tied - Karaoke Version",
@@ -1331,7 +1776,11 @@
             "solo": "high:artist_credit",
             "karaoke": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "karaoke",
+          "tags": []
         },
         {
           "title": "Delicate - Karaoke Version",
@@ -1399,7 +1848,11 @@
             "solo": "high:artist_credit",
             "karaoke": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "karaoke",
+          "tags": []
         },
         {
           "title": "Don't Blame Me - Karaoke Version",
@@ -1442,7 +1895,11 @@
             "solo": "high:artist_credit",
             "karaoke": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "karaoke",
+          "tags": []
         },
         {
           "title": "Dress - Karaoke Version",
@@ -1510,7 +1967,11 @@
             "solo": "high:artist_credit",
             "karaoke": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "karaoke",
+          "tags": []
         },
         {
           "title": "End Game - Karaoke Version",
@@ -1575,7 +2036,11 @@
             "solo": "high:artist_credit",
             "karaoke": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "karaoke",
+          "tags": []
         },
         {
           "title": "Getaway Car - Karaoke Version",
@@ -1643,7 +2108,11 @@
             "solo": "high:artist_credit",
             "karaoke": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "karaoke",
+          "tags": []
         },
         {
           "title": "Gorgeous - Karaoke Version",
@@ -1711,7 +2180,11 @@
             "solo": "high:artist_credit",
             "karaoke": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "karaoke",
+          "tags": []
         },
         {
           "title": "I Did Something Bad - Karaoke Version",
@@ -1779,7 +2252,11 @@
             "solo": "high:artist_credit",
             "karaoke": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "karaoke",
+          "tags": []
         },
         {
           "title": "King Of My Heart - Karaoke Version",
@@ -1847,7 +2324,11 @@
             "solo": "high:artist_credit",
             "karaoke": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "karaoke",
+          "tags": []
         },
         {
           "title": "Look What You Made Me Do - Karaoke Version",
@@ -1915,7 +2396,11 @@
             "solo": "high:artist_credit",
             "karaoke": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "karaoke",
+          "tags": []
         },
         {
           "title": "New Year's Day - Karaoke Version",
@@ -1958,7 +2443,11 @@
             "solo": "high:artist_credit",
             "karaoke": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "karaoke",
+          "tags": []
         },
         {
           "title": "So It Goes... - Karaoke Version",
@@ -2023,7 +2512,11 @@
             "solo": "high:artist_credit",
             "karaoke": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "karaoke",
+          "tags": []
         },
         {
           "title": "This Is Why We Can't Have Nice Things - Karaoke Version",
@@ -2091,7 +2584,11 @@
             "solo": "high:artist_credit",
             "karaoke": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "karaoke",
+          "tags": []
         }
       ]
     },
@@ -2163,7 +2660,11 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "Delicate - Seeb Remix",
@@ -2229,7 +2730,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "Delicate - Recorded at The Tracking Room Nashville",
@@ -2270,7 +2775,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "Delicate - Sawyr And Ryan Tedder Mix",
@@ -2313,7 +2822,11 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         }
       ]
     }

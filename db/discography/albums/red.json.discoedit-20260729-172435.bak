@@ -1,0 +1,2075 @@
+{
+  "album": "Red",
+  "section_count": 7,
+  "track_count": 45,
+  "sections": [
+    {
+      "section": "standard_edition",
+      "track_count": 33,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "State Of Grace",
+          "url": "https://open.spotify.com/intl-fr/track/786NsUYn4GGUf8AOt0SQhP",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 1,
+          "base_title": "State Of Grace",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "State Of Grace",
+          "song_family": "state_of_grace",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "historical_track_ids": [
+            "0b16LTzby1YRVd2nq2Z0fw",
+            "5zyCYmiaVE5y26EZuwZbsw"
+          ],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:state_of_grace",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Red",
+          "url": "https://open.spotify.com/intl-fr/track/0cITLOYn1Sv4q27zZPqlNK",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 2,
+          "base_title": "Red",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Red",
+          "song_family": "red",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "historical_track_ids": [
+            "1RvQQGwaPipiNgz8RXAKA8"
+          ],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:red",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Treacherous",
+          "url": "https://open.spotify.com/intl-fr/track/5kYFVSQoPu7yRpfiHBwMUk",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 3,
+          "base_title": "Treacherous",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Treacherous",
+          "song_family": "treacherous",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "historical_track_ids": [
+            "0XfOV7qY3834QpFVwOb6CC"
+          ],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:treacherous",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "I Knew You Were Trouble.",
+          "url": "https://open.spotify.com/intl-fr/track/72jCZdH0Lhg93z6Z4hBjgj",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 4,
+          "base_title": "I Knew You Were Trouble.",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Knew You Were Trouble.",
+          "song_family": "i_knew_you_were_trouble",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "historical_track_ids": [
+            "3lKZf71jeNi14udIFPJ29V",
+            "6FB3v4YcR57y4tXFcdxI1E",
+            "0ciHz919LVKoH4zgxyMPZ9"
+          ],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [
+            "pop",
+            "dance-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "dance-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dance-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "dance-pop",
+              "electropop",
+              "pop rock",
+              "dubstep",
+              "teen pop",
+              "melodic dubstep",
+              "rock",
+              "heartland rock",
+              "contemporary folk"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "I Knew You Were Trouble (Taylor's Version)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_knew_you_were_trouble",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "All Too Well",
+          "url": "https://open.spotify.com/intl-fr/track/4XMP3zVxrnr58T0tjIHvpR",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 5,
+          "base_title": "All Too Well",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "All Too Well",
+          "song_family": "all_too_well",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "historical_track_ids": [
+            "1q3RiD1tIWUpGsNFADMlvl"
+          ],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:all_too_well",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "22",
+          "url": "https://open.spotify.com/intl-fr/track/2ULNeSomDxVNmdDy8VxEBU",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 6,
+          "base_title": "22",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "22",
+          "song_family": "22",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "historical_track_ids": [
+            "6ce41JVa6KFaryfmC2bu2W",
+            "3bIxTsfeNMO7Nt2J3EUKrA"
+          ],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [
+            "pop",
+            "country",
+            "dance-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "country": 2.0,
+            "dance-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "dance-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "taylor swift",
+              "love at first listen",
+              "female vocalists",
+              "dance-pop",
+              "catchy",
+              "shameless fun",
+              "bubblegum pop",
+              "country pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "22"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:22",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "I Almost Do",
+          "url": "https://open.spotify.com/intl-fr/track/5VwFkx7JOimOGTYfha5rs1",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 7,
+          "base_title": "I Almost Do",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Almost Do",
+          "song_family": "i_almost_do",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "historical_track_ids": [
+            "1eyqSYBCTane4rl4vc6PWJ",
+            "31pEV5lPJi7btskZoUr2yu"
+          ],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_almost_do",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "We Are Never Ever Getting Back Together",
+          "url": "https://open.spotify.com/intl-fr/track/7AEAGTc8cReDqcbPoY9gwo",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 8,
+          "base_title": "We Are Never Ever Getting Back Together",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "We Are Never Ever Getting Back Together",
+          "song_family": "we_are_never_ever_getting_back_together",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "historical_track_ids": [
+            "0VwNdo84DaVYLIkbVO86ND",
+            "1OYARuagDrpgNNQ4loO1Cs"
+          ],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [
+            "pop",
+            "country",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "country": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "country pop",
+              "taylor swift",
+              "female vocalists",
+              "red",
+              "2012",
+              "best of 2012",
+              "Love",
+              "catchy"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "We Are Never Ever Getting Back Together"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:we_are_never_ever_getting_back_together",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Stay Stay Stay",
+          "url": "https://open.spotify.com/intl-fr/track/1qLeEu4iXEclkLwoBlMiou",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 9,
+          "base_title": "Stay Stay Stay",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Stay Stay Stay",
+          "song_family": "stay_stay_stay",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "historical_track_ids": [
+            "0F2S1QlnMaOfmNHIgmES3k",
+            "1x0J8LFX23d5h1zzuzZorc"
+          ],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:stay_stay_stay",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "The Last Time",
+          "url": "https://open.spotify.com/intl-fr/track/7vvIpJZye5cRR6De1LKM0m",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 10,
+          "base_title": "The Last Time",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Last Time",
+          "song_family": "the_last_time",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": [
+            "2Tz4JnXZOcjcp8fWfMjBBk",
+            "3n9mzjgAzjyKawvbHzciXF"
+          ],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_last_time",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Holy Ground",
+          "url": "https://open.spotify.com/intl-fr/track/5d2Kn9oAAh9S2EbyCo1i52",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 11,
+          "base_title": "Holy Ground",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Holy Ground",
+          "song_family": "holy_ground",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": [
+            "1fGsZsIkQkOspfsT24nQP6"
+          ],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:holy_ground",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Sad Beautiful Tragic",
+          "url": "https://open.spotify.com/intl-fr/track/5QKhg4r4Ibt0LVTmWEXTEg",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 12,
+          "base_title": "Sad Beautiful Tragic",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Sad Beautiful Tragic",
+          "song_family": "sad_beautiful_tragic",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": [
+            "5qD1xj5lXOaX1ZDpVKZeF3",
+            "6LKjHhOW1az75pCQ9XJJtF"
+          ],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:sad_beautiful_tragic",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "The Lucky One",
+          "url": "https://open.spotify.com/intl-fr/track/2wtHlpYSgC7xEdD3DrSHNL",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 13,
+          "base_title": "The Lucky One",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Lucky One",
+          "song_family": "the_lucky_one",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": [
+            "2X2J0BhxaLTmnxO4pPUhSd"
+          ],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_lucky_one",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Everything Has Changed",
+          "url": "https://open.spotify.com/intl-fr/track/7gdwoOmi258QJq0hmQ4hto",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 14,
+          "base_title": "Everything Has Changed",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Everything Has Changed",
+          "song_family": "everything_has_changed",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": [
+            "3Z1kZKYfRC8iRXnYeC5sCJ",
+            "4NAmRvqSITAAzKWnC8yRq3",
+            "3an4u3iZSy63ygYcWslJ5f"
+          ],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:everything_has_changed",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Starlight",
+          "url": "https://open.spotify.com/intl-fr/track/0vqI4ZIMuifeKeItGiWbPj",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 15,
+          "base_title": "Starlight",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Starlight",
+          "song_family": "starlight",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": [
+            "1gL4vMhDV3RgJQmDuY5HK1",
+            "7MecVsMj22MneZt7kVFaCr"
+          ],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:starlight",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Begin Again",
+          "url": "https://open.spotify.com/intl-fr/track/48A0aShHlovDfTMucMrE66",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 16,
+          "base_title": "Begin Again",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Begin Again",
+          "song_family": "begin_again",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": [
+            "0L4YCNRfXAoTvdpWeH2RGj"
+          ],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:begin_again",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Come Back...Be Here",
+          "url": "https://open.spotify.com/intl-fr/track/4qyalTRMRH5YuEntvvMvq0",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 18,
+          "base_title": "Come Back...Be Here",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Come Back...Be Here",
+          "song_family": "come_back_be_here",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": [
+            "1n8rB9AhxiAvVP1E2c3yOd"
+          ],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:come_back_be_here",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Girl At Home",
+          "url": "https://open.spotify.com/intl-fr/track/6cf6rLb8qcklvJv90W6HCW",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 19,
+          "base_title": "Girl At Home",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Girl At Home",
+          "song_family": "girl_at_home",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": [
+            "6VFpuI0DDmbC5UyWZQ4IRY"
+          ],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:girl_at_home",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "22 - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/0LBW7lkY7L8cQUXXB16bXO",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 20,
+          "base_title": "22",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "22 - Karaoke Version",
+          "song_family": "22",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "5BIHTqXmBBdfdScTVyzUts"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "All Too Well - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/3dWmDfq6hyHsJQG7BdGaWS",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 21,
+          "base_title": "All Too Well",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "All Too Well - Karaoke Version",
+          "song_family": "all_too_well",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "3To1MBLD7WqFoWEeiLDBzq"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Begin Again - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/2I2RxGMfoXihaLV68CJzm7",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 22,
+          "base_title": "Begin Again",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Begin Again - Karaoke Version",
+          "song_family": "begin_again",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "6W7G1EvtEMkSJkQFnWnpu1"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Everything Has Changed - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/2XD0r1dj4JinxYTSYx71fe",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 23,
+          "base_title": "Everything Has Changed",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Ed Sheeran"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Ed Sheeran"
+          ],
+          "title_clean": "Everything Has Changed - Karaoke Version",
+          "song_family": "everything_has_changed",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "536W1zo5ngO1mOTRG8cg6G"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Holy Ground - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/1RHdL2SIWNrv5uChsGuHWP",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 24,
+          "base_title": "Holy Ground",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Holy Ground - Karaoke Version",
+          "song_family": "holy_ground",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "6Bey6yUpkCDaIWotHLhbQm"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "I Almost Do - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/2L3QJeJer1VeCLM7Belldq",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 25,
+          "base_title": "I Almost Do",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Almost Do - Karaoke Version",
+          "song_family": "i_almost_do",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "47D2v5qxq9BFVQV1cH5P8w"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "I Knew You Were Trouble. - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/0gbBxe4PLriS6H3QijPsUq",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 26,
+          "base_title": "I Knew You Were Trouble.",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Knew You Were Trouble. - Karaoke Version",
+          "song_family": "i_knew_you_were_trouble",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "4EwrLjUsIF0PINB6sLZj3l"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Red - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/2tYdjm4wmx4LaxihipeFXC",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 27,
+          "base_title": "Red",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Red - Karaoke Version",
+          "song_family": "red",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "1AjXK5Gi1kkMRYGBjALDMr"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Sad Beautiful Tragic - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/7xZbFLqqa1dbwDNMFZryE7",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 28,
+          "base_title": "Sad Beautiful Tragic",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Sad Beautiful Tragic - Karaoke Version",
+          "song_family": "sad_beautiful_tragic",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "5yq6Ecb9LQvFS5rJCtPKLO"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Starlight - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/7DsgoKz3zlCb2zvMU062oo",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 29,
+          "base_title": "Starlight",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Starlight - Karaoke Version",
+          "song_family": "starlight",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "5v18oNV2JRQwbnCHTWILdH"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "State Of Grace - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/2CUK34XwIWbs6J4ZJ5cFdU",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 30,
+          "base_title": "State Of Grace",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "State Of Grace - Karaoke Version",
+          "song_family": "state_of_grace",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "7r7RyzNBFfTRH9NRVBrFhJ"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Stay Stay Stay - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/6c38bS1QsXCuqxycGAgoRH",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 31,
+          "base_title": "Stay Stay Stay",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Stay Stay Stay - Karaoke Version",
+          "song_family": "stay_stay_stay",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "6qOF7qaj6vWfBIDyaUfFvP"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "The Lucky One - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/6UndbaRk1yOrD5NGR9tDWb",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 32,
+          "base_title": "The Lucky One",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Lucky One - Karaoke Version",
+          "song_family": "the_lucky_one",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "7L0RPhAgKzWRLSxdtkrXFT"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Treacherous - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/28d5SkpM2XwX3iDrOJE9JZ",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 33,
+          "base_title": "Treacherous",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Treacherous - Karaoke Version",
+          "song_family": "treacherous",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "4wZTdfvAQRf3azGSLhNY9H"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "We Are Never Ever Getting Back Together - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/1DSPw5AERmvyd9peYG3D48",
+          "type": "album_track",
+          "display_section": "Standard Edition",
+          "display_order": 34,
+          "base_title": "We Are Never Ever Getting Back Together",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "We Are Never Ever Getting Back Together - Karaoke Version",
+          "song_family": "we_are_never_ever_getting_back_together",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [
+            "6t9JL24FVFzXtpLlp6x5tZ"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "album": "Red",
+      "section": "misc_standalone",
+      "track_count": 1,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "Ronan",
+          "url": "https://open.spotify.com/intl-fr/track/0Nw8hv79MLJa1yjtsEgz08",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "Ronan",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Ronan",
+          "song_family": "ronan",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273dbe6e4dd1b2a61e375a12c63",
+          "display_era": "Red",
+          "historical_track_ids": [],
+          "release_date": "2012-09-08T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:ronan",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "other",
+          "display_album": "Red",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "album": "Red",
+      "section": "taylor_versions_standalone",
+      "track_count": 2,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "All Too Well (10 Minute Version) (The Short Film)",
+          "url": "https://open.spotify.com/intl-fr/track/1u4HUiREUR6vX1W1RYG2Tm",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 3,
+          "base_title": "All Too Well (10 Minute Version) (The Short Film)",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "All Too Well (10 Minute Version) (The Short Film)",
+          "song_family": "all_too_well",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2738e16c6e20dbed531a9006d58",
+          "display_era": "Red",
+          "historical_track_ids": [],
+          "release_date": "2022-06-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:all_too_well",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "display_album": "Red",
+          "tags": []
+        },
+        {
+          "title": "All Too Well (Sad Girl Autumn Version) - Recorded at Long Pond Studios",
+          "url": "https://open.spotify.com/intl-fr/track/1n3b9Eekoy3S9ZSZ5DmTW1",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 4,
+          "base_title": "All Too Well (Sad Girl Autumn Version) - Recorded at Long Pond Studios",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "All Too Well (Sad Girl Autumn Version) - Recorded at Long Pond Studios",
+          "song_family": "all_too_well",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27370f88b5ee2da16d3f3929fea",
+          "display_era": "Red",
+          "historical_track_ids": [],
+          "release_date": "2021-11-18T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:all_too_well",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "display_album": "Red",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "album": "Red",
+      "section": "soundtracks",
+      "chart_extra": true,
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "Safe & Sound - from The Hunger Games Soundtrack",
+          "url": "https://open.spotify.com/track/0z9UVN8VBHJ9HdfYsOuuNf",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 7,
+          "base_title": "Safe & Sound - from The Hunger Games Soundtrack",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Safe & Sound - from The Hunger Games Soundtrack",
+          "song_family": "safe_sound_from_the_hunger_games_soundtrack",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d29a5d713277b0b3d517507b",
+          "display_era": "Red",
+          "historical_track_ids": [
+            "4HGaRnv2HuMKaZMLTJQZqV",
+            "4yTqjWF2EoFJM5BbSCe4YW"
+          ],
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:safe_sound_from_the_hunger_games_soundtrack",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "soundtrack"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "soundtrack": "high:title_album_or_section"
+          },
+          "on_album": false,
+          "category": "soundtrack",
+          "display_album": "Red",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "album": "Red",
+      "section": "collabs_and_features",
+      "track_count": 1,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Babe (feat. Taylor Swift)",
+          "url": "https://open.spotify.com/track/40PXEOFLJc7UIpLMrhSfW1",
+          "type": "feature",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 8,
+          "base_title": "Babe (feat. Taylor Swift)",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Taylor Swift"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Taylor Swift"
+          ],
+          "title_clean": "Babe",
+          "song_family": "babe",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27363d77f99117b28af9f656918",
+          "display_era": "Red",
+          "historical_track_ids": [
+            "7FFfYM4JE1vj5n4rhHxg8q"
+          ],
+          "release_date": "2017-11-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:babe",
+          "filter_tags": [
+            "feature",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": false,
+          "category": "feature",
+          "display_album": "Red",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "section": "demos_and_acoustic",
+      "track_count": 3,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Red - Original Demo Recording",
+          "url": "https://open.spotify.com/intl-fr/track/4mqgn90sCeVSYqcoftTQTd",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Other Editions",
+          "display_order": 1,
+          "base_title": "Red",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Red - Original Demo Recording",
+          "song_family": "red",
+          "version_tag": "demo__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": [],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:red",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "acoustic",
+            "demo",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "acoustic": "high:title_or_section",
+            "demo": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "demo",
+          "release_edition": "deluxe",
+          "tags": []
+        },
+        {
+          "title": "Treacherous - Original Demo Recording",
+          "url": "https://open.spotify.com/intl-fr/track/7BT9K9BDqq6HI2oWH5UMZQ",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Other Editions",
+          "display_order": 2,
+          "base_title": "Treacherous",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Treacherous - Original Demo Recording",
+          "song_family": "treacherous",
+          "version_tag": "demo__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": [],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:treacherous",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "acoustic",
+            "demo",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "acoustic": "high:title_or_section",
+            "demo": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "demo",
+          "release_edition": "deluxe",
+          "tags": []
+        },
+        {
+          "title": "State Of Grace - Acoustic",
+          "url": "https://open.spotify.com/intl-fr/track/5G9AVKld9q7DCrmoY42raf",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Other Editions",
+          "display_order": 3,
+          "base_title": "State Of Grace",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "State Of Grace - Acoustic",
+          "song_family": "state_of_grace",
+          "version_tag": "acoustic__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "historical_track_ids": [
+            "5mfDBWY7ncZFm7ykmFTG4i"
+          ],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:state_of_grace",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "acoustic",
+          "release_edition": "deluxe",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "album": "Red",
+      "section": "streaming_extras",
+      "track_count": 4,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "The Moment I Knew",
+          "url": "https://open.spotify.com/intl-fr/track/5AsmAjBSSQjRPWgAYIp8tm",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 17,
+          "base_title": "The Moment I Knew",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Moment I Knew",
+          "song_family": "the_moment_i_knew",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "display_era": "Red",
+          "historical_track_ids": [
+            "4qTAwKJQ68gmnrnfPD3vlO"
+          ],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_moment_i_knew",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "other",
+          "display_album": "Red",
+          "tags": []
+        },
+        {
+          "title": "The Last Time - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/3vM04liQIPwzatRCDvWvba",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9999,
+          "base_title": "The Last Time - Karaoke Version",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Last Time - Karaoke Version",
+          "song_family": "the_last_time",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273220563fb6c59f7e470ba3272",
+          "display_era": "Red",
+          "historical_track_ids": [
+            "2mz69DJOIt4b1xxfxiJbBy"
+          ],
+          "release_date": "2012-10-22T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_last_time_karaoke_version",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "karaoke"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "karaoke": "high:title_or_section"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "karaoke",
+          "display_album": "Red",
+          "tags": []
+        },
+        {
+          "title": "22 - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/1wePVBS4L6xhCvVUItPAZQ",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "22",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "22 - Commentary",
+          "song_family": "22",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "A Perfectly Good Heart - Instrumental w/ BG vocals",
+          "url": "https://open.spotify.com/intl-fr/track/5NEP34PtTtFQaZpeeDPWeU",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 3,
+          "base_title": "A Perfectly Good Heart",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "A Perfectly Good Heart - Instrumental w/ BG vocals",
+          "song_family": "a_perfectly_good_heart",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2006-10-24T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        }
+      ]
+    }
+  ]
+}

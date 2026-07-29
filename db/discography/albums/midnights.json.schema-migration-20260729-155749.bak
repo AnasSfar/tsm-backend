@@ -1,0 +1,2424 @@
+{
+  "album": "Midnights",
+  "section_count": 6,
+  "track_count": 35,
+  "sections": [
+    {
+      "section": "standard_edition",
+      "track_count": 13,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "Lavender Haze",
+          "url": "https://open.spotify.com/intl-fr/track/5jQI2r1RdgtuT8S3iG8zFC",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 1,
+          "base_title": "Lavender Haze",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Lavender Haze",
+          "song_family": "lavender_haze",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+          "historical_track_ids": [
+            "0u1YuY5CjyhlCXV3wN9yYJ",
+            "24emu3sabKISjRkrys28jq"
+          ],
+          "release_date": "2023-03-03T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "overrated",
+              "alt-pop",
+              "rnb",
+              "electropop",
+              "best of 2022",
+              "electronic",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Lavender Haze"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:lavender_haze",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "Maroon",
+          "url": "https://open.spotify.com/intl-fr/track/3eX0NZfLtGzoLUxPNvRfqm",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 2,
+          "base_title": "Maroon",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Maroon",
+          "song_family": "maroon",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
+          "historical_track_ids": [
+            "09T4f2HgIJY1Ia6FRjzTk3",
+            "6qxvy9Pe4RJIq5JBVbbwbS"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "synth-pop",
+            "pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "synth-pop": 3.0,
+            "pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "synth-pop",
+              "pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "synthpop",
+              "pop",
+              "singer-songwriter",
+              "shoegaze",
+              "chillwave",
+              "alt-pop",
+              "AOTY",
+              "soty",
+              "midnights",
+              "amazing"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Maroon"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:maroon",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "Anti-Hero",
+          "url": "https://open.spotify.com/intl-fr/track/0V3wPSX9ygBnCm8psDIegu",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 3,
+          "base_title": "Anti-Hero",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Anti-Hero",
+          "song_family": "anti_hero",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+          "historical_track_ids": [
+            "1BdZWUTQyvuBYbp3Sl2Cc0",
+            "5qIHFdkW6phMsTZlN2g8Lc"
+          ],
+          "release_date": "2022-11-08T00:00:00Z",
+          "genres": [
+            "rock",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "rock": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "rock",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "rock",
+              "Grunge",
+              "90s",
+              "test-tag",
+              "batch-test",
+              "automated",
+              "integration-test",
+              "pop",
+              "synthpop",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Anti-Hero"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:anti_hero",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "Snow On The Beach (feat. Lana Del Rey)",
+          "url": "https://open.spotify.com/intl-fr/track/1wtOxkiel43cVs0Yux5Q4h",
+          "type": "feature",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 4,
+          "base_title": "Snow On The Beach (feat. Lana Del Rey)",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Lana Del Rey"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Lana Del Rey"
+          ],
+          "title_clean": "Snow On The Beach",
+          "song_family": "snow_on_the_beach",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
+          "historical_track_ids": [
+            "7GA86Uo2jYbj8vIXe2nyWd"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "dream pop",
+            "pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "dream pop": 3.0,
+            "pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "dream pop",
+              "pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "dream pop",
+              "pop",
+              "chill",
+              "Ballad",
+              "singer-songwriter",
+              "Mellow",
+              "synthpop",
+              "relaxing",
+              "beautiful",
+              "amazing"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Snow On The Beach (feat. Lana Del Rey)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:snow_on_the_beach",
+          "filter_tags": [
+            "feature",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "You're On Your Own, Kid",
+          "url": "https://open.spotify.com/intl-fr/track/4D7BCuvgdJlYvlX5WlN54t",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 5,
+          "base_title": "You're On Your Own, Kid",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You're On Your Own, Kid",
+          "song_family": "you_re_on_your_own_kid",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
+          "historical_track_ids": [
+            "6PQOU00xWNrGwCZzboriXy"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "sad",
+              "overrated",
+              "synth pop",
+              "singer songwriter",
+              "AOTY",
+              "alternative rock",
+              "kid"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "You're On Your Own, Kid"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_re_on_your_own_kid",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "Midnight Rain",
+          "url": "https://open.spotify.com/intl-fr/track/3rWDp9tBPQR9z6U5YyRSK4",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 6,
+          "base_title": "Midnight Rain",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Midnight Rain",
+          "song_family": "midnight_rain",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
+          "historical_track_ids": [
+            "1DAHLigfUqSLrU3RLG1EKR",
+            "4eKMqf9ZMSclDX7V9Ptg7x"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "electropop",
+              "chillout",
+              "overrated",
+              "AOTY",
+              "singer-songwriter",
+              "dream pop",
+              "travis kelce has skidmarks",
+              "electronic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Midnight Rain"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:midnight_rain",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "Question...?",
+          "url": "https://open.spotify.com/intl-fr/track/0heeNYlwOGuUSe7TgUD27B",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 7,
+          "base_title": "Question...?",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Question...?",
+          "song_family": "question",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
+          "historical_track_ids": [
+            "7oomkQSYf1ia2VnVEWfFIU"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "pop",
+            "singer-songwriter",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "singer-songwriter": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "synthpop",
+              "electronic",
+              "dream pop",
+              "overrated",
+              "awful",
+              "Colleen Hoover",
+              "travis kelce has skidmarks",
+              "death metal"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Question...?"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:question",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "Vigilante Shit",
+          "url": "https://open.spotify.com/intl-fr/track/1xwAWUI6Dj0WGC3KiUPN0O",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 8,
+          "base_title": "Vigilante Shit",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Vigilante Shit",
+          "song_family": "vigilante_shit",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
+          "historical_track_ids": [
+            "0GKDhq6ZbmSbRHd3eyGlB7"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "dark pop",
+              "synthpop",
+              "overrated",
+              "Colleen Hoover",
+              "singer-songwriter",
+              "electropop",
+              "revenge",
+              "synth pop",
+              "electronic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Vigilante Shit"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:vigilante_shit",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "Bejeweled",
+          "url": "https://open.spotify.com/intl-fr/track/3qoftcUZaUOncvIYjFSPdE",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 9,
+          "base_title": "Bejeweled",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Bejeweled",
+          "song_family": "bejeweled",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
+          "historical_track_ids": [
+            "0VpF6RLdCfPIeYRwMu4tZK"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "bubblegum pop",
+              "2022",
+              "synthpop",
+              "female vocalists",
+              "Colleen Hoover",
+              "overrated",
+              "2020s",
+              "best of 2022",
+              "shimmer"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Bejeweled"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:bejeweled",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "Labyrinth",
+          "url": "https://open.spotify.com/intl-fr/track/4bBDkw2KBMX0tcgAaXC83Q",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 10,
+          "base_title": "Labyrinth",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Labyrinth",
+          "song_family": "labyrinth",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+          "historical_track_ids": [
+            "0A1JLUlkZkp2EFrosoNQi0"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "pop",
+            "dream pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "dream pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dream pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "dream pop",
+              "beautiful",
+              "synthpop",
+              "female vocalists",
+              "singer-songwriter",
+              "ambient pop",
+              "Colleen Hoover",
+              "chillwave",
+              "alt-pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Labyrinth"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:labyrinth",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "Karma",
+          "url": "https://open.spotify.com/intl-fr/track/45R112Jz5hQeKgITXgSXzs",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 11,
+          "base_title": "Karma",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Karma",
+          "song_family": "karma",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+          "historical_track_ids": [
+            "5GjkD2Xujig8TPty57wfsS",
+            "7KokYm8cMIXCsGVmUvKtqf"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "screamo",
+              "Brutal Death Metal",
+              "metal",
+              "overrated",
+              "death metal",
+              "synthpop",
+              "deathcore",
+              "nsbm",
+              "Donald Trump"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Karma"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:karma",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "Sweet Nothing",
+          "url": "https://open.spotify.com/intl-fr/track/2L09RYwH5Pjzca6PmbUAw3",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 12,
+          "base_title": "Sweet Nothing",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Sweet Nothing",
+          "song_family": "sweet_nothing",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+          "historical_track_ids": [
+            "0wavGRldH0AWyu2zvTz8zb"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "pop",
+            "singer-songwriter",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "singer-songwriter": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "female vocalists",
+              "beautiful",
+              "Ballad",
+              "overrated",
+              "synthpop",
+              "Colleen Hoover",
+              "travis kelce has skidmarks",
+              "best of 2022"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Sweet Nothing"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:sweet_nothing",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "Mastermind",
+          "url": "https://open.spotify.com/intl-fr/track/1QQii3pa5m8MEda0nbkjfw",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 13,
+          "base_title": "Mastermind",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Mastermind",
+          "song_family": "mastermind",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+          "historical_track_ids": [
+            "6pXGAXMfoi7q7sek9uCFSL",
+            "7FmYn9e7KHMXcxqGSj9LjH"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "female vocalists",
+              "electropop",
+              "singer-songwriter",
+              "overrated",
+              "electronic",
+              "Colleen Hoover",
+              "travis kelce has skidmarks",
+              "singer songwriter"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Mastermind"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:mastermind",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        }
+      ]
+    },
+    {
+      "section": "3am_edition",
+      "track_count": 7,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "The Great War",
+          "url": "https://open.spotify.com/intl-fr/track/2VuqMjgoKaOHNM8HpxtXKx",
+          "type": "standalone",
+          "edition": "3am",
+          "display_section": "3am Edition",
+          "display_order": 14,
+          "base_title": "The Great War",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Great War",
+          "song_family": "the_great_war",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+          "historical_track_ids": [
+            "5BYl3SodS3rGmafWXRWmB7"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "singer-songwriter",
+              "dream pop",
+              "midnights",
+              "The Eras Tour",
+              "Maria Jose Cardoso",
+              "folk pop",
+              "Masterpiece",
+              "electronic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "The Great War"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_great_war",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
+        },
+        {
+          "title": "Bigger Than The Whole Sky",
+          "url": "https://open.spotify.com/intl-fr/track/71CBDRKmF2VeRKYMG1DFBh",
+          "type": "standalone",
+          "edition": "3am",
+          "display_section": "3am Edition",
+          "display_order": 15,
+          "base_title": "Bigger Than The Whole Sky",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Bigger Than The Whole Sky",
+          "song_family": "bigger_than_the_whole_sky",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+          "historical_track_ids": [
+            "3jzbpOzoYa22FvzBkNkLvC"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "Ballad",
+              "singer-songwriter",
+              "dream pop",
+              "sad",
+              "midnights",
+              "best of 2022",
+              "melancholic",
+              "ambient"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Bigger Than The Whole Sky"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:bigger_than_the_whole_sky",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
+        },
+        {
+          "title": "Paris",
+          "url": "https://open.spotify.com/intl-fr/track/5tWxKWq1DSP1s9WQ5PWuqu",
+          "type": "standalone",
+          "edition": "3am",
+          "display_section": "3am Edition",
+          "display_order": 16,
+          "base_title": "Paris",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Paris",
+          "song_family": "paris",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+          "historical_track_ids": [
+            "6J834IBcZJMH38ksrgAqwF"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "pop",
+            "singer-songwriter",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "singer-songwriter": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter",
+              "synthpop",
+              "electropop",
+              "Colleen Hoover",
+              "female vocalist",
+              "electronic",
+              "death metal",
+              "bubblegum pop",
+              "american"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Paris"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:paris",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
+        },
+        {
+          "title": "High Infidelity",
+          "url": "https://open.spotify.com/intl-fr/track/1SztNGCwEHJEVFx90E5g7D",
+          "type": "standalone",
+          "edition": "3am",
+          "display_section": "3am Edition",
+          "display_order": 17,
+          "base_title": "High Infidelity",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "High Infidelity",
+          "song_family": "high_infidelity",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+          "historical_track_ids": [
+            "4356PL6jkERzJouVfQQkZo"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "synth-pop",
+            "pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "synth-pop": 3.0,
+            "pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "synth-pop",
+              "pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "synthpop",
+              "pop",
+              "singer-songwriter",
+              "electronic",
+              "Colleen Hoover",
+              "best of 2022",
+              "electropop",
+              "racist",
+              "awful",
+              "artpop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "High Infidelity"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:high_infidelity",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
+        },
+        {
+          "title": "Glitch",
+          "url": "https://open.spotify.com/intl-fr/track/7C0w28EsX0Um2FrZs9gso2",
+          "type": "standalone",
+          "edition": "3am",
+          "display_section": "3am Edition",
+          "display_order": 18,
+          "base_title": "Glitch",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Glitch",
+          "song_family": "glitch",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+          "historical_track_ids": [
+            "6RJBrG3VHz2hPITjv88chh"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "singer-songwriter",
+            "synth-pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "singer-songwriter": 3.0,
+            "synth-pop": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "synth-pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "synthpop",
+              "pop",
+              "electronic",
+              "Colleen Hoover",
+              "female vocalists",
+              "electronica",
+              "slayAM edition",
+              "female vocalist",
+              "synth pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Glitch"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:glitch",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
+        },
+        {
+          "title": "Would've, Could've, Should've",
+          "url": "https://open.spotify.com/intl-fr/track/4txojlesMFQZGWxwz2EeqB",
+          "type": "standalone",
+          "edition": "3am",
+          "display_section": "3am Edition",
+          "display_order": 19,
+          "base_title": "Would've, Could've, Should've",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Would've, Could've, Should've",
+          "song_family": "would_ve_could_ve_should_ve",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+          "historical_track_ids": [
+            "3pUa0ZxdSeaJXm0EIydD3F"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "pop",
+            "soft rock",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "soft rock": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "soft rock",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "soft rock",
+              "singer-songwriter",
+              "pop rock",
+              "dream pop",
+              "Post-punk revival",
+              "best of 2022",
+              "Midnights (The Til Dawn Edition)",
+              "ðŸ˜­",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Would've, Could've, Should've"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:would_ve_could_ve_should_ve",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
+        },
+        {
+          "title": "Dear Reader",
+          "url": "https://open.spotify.com/intl-fr/track/10GRRCR5fctuOF4GFmATJI",
+          "type": "standalone",
+          "edition": "3am",
+          "display_section": "3am Edition",
+          "display_order": 20,
+          "base_title": "Dear Reader",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Dear Reader",
+          "song_family": "dear_reader",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+          "historical_track_ids": [
+            "7lFNXsbcbds699xCWO3pSe"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
+          "genres": [
+            "singer-songwriter",
+            "synth-pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "singer-songwriter": 3.0,
+            "synth-pop": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "synth-pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "synthpop",
+              "pop",
+              "female vocalists",
+              "why on earth is this just a bonus track",
+              "dream pop",
+              "electropop",
+              "chill",
+              "synth pop",
+              "amazing"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Dear Reader"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:dear_reader",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          }
+        }
+      ]
+    },
+    {
+      "section": "til_dawn_edition",
+      "track_count": 3,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "Hits Different",
+          "url": "https://open.spotify.com/intl-fr/track/3xYJScVfxByb61dYHTwiby",
+          "type": "standalone",
+          "edition": "til_dawn",
+          "display_section": "Til Dawn Edition",
+          "display_order": 21,
+          "base_title": "Hits Different",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Hits Different",
+          "song_family": "hits_different",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+          "historical_track_ids": [
+            "2BPLFluGLtHPN9EF6oK5w8"
+          ],
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "pop",
+            "pop rock",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "pop rock": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "pop rock",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "love at first listen",
+              "bonus track",
+              "pop rock",
+              "best of 2023",
+              "beautiful",
+              "female vocalist",
+              "female vocalists",
+              "synth pop",
+              "Disco"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Hits Different"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:hits_different",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
+        },
+        {
+          "title": "Snow On The Beach (feat. More Lana Del Rey)",
+          "url": "https://open.spotify.com/intl-fr/track/4zmKGsrXjLmljb5fTaBTot",
+          "type": "feature",
+          "edition": "til_dawn",
+          "display_section": "Til Dawn Edition",
+          "display_order": 22,
+          "base_title": "Snow On The Beach (feat. More Lana Del Rey)",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "More Lana Del Rey"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "More Lana Del Rey"
+          ],
+          "title_clean": "Snow On The Beach",
+          "song_family": "snow_on_the_beach",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+          "historical_track_ids": [],
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "dream pop",
+            "pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "dream pop": 3.0,
+            "pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "dream pop",
+              "pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "dream pop",
+              "pop",
+              "chill",
+              "Ballad",
+              "singer-songwriter",
+              "Mellow",
+              "synthpop",
+              "relaxing",
+              "beautiful",
+              "amazing"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Snow On The Beach (feat. Lana Del Rey)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:snow_on_the_beach",
+          "filter_tags": [
+            "feature"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist"
+          }
+        },
+        {
+          "title": "Karma (feat. Ice Spice)",
+          "url": "https://open.spotify.com/intl-fr/track/4i6cwNY6oIUU2XZxPIw82Y",
+          "type": "feature",
+          "edition": "til_dawn",
+          "display_section": "Til Dawn Edition",
+          "display_order": 23,
+          "base_title": "Karma (feat. Ice Spice)",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Ice Spice"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Ice Spice"
+          ],
+          "title_clean": "Karma",
+          "song_family": "karma",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
+          "historical_track_ids": [],
+          "release_date": "2023-05-26T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "screamo",
+              "Brutal Death Metal",
+              "metal",
+              "overrated",
+              "death metal",
+              "synthpop",
+              "deathcore",
+              "nsbm",
+              "Donald Trump"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Karma"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:karma",
+          "filter_tags": [
+            "feature"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist"
+          }
+        }
+      ]
+    },
+    {
+      "section": "from_the_vault",
+      "track_count": 1,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "You're Losing Me (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/3CWq0pAKKTWb0K4yiglDc4",
+          "type": "standalone",
+          "edition": "From The Vault",
+          "display_section": "From The Vault",
+          "display_order": 24,
+          "base_title": "You're Losing Me (From The Vault)",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You're Losing Me",
+          "song_family": "you_re_losing_me",
+          "version_tag": "vault__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2734fe1868aa6838eb595f3673a",
+          "historical_track_ids": [],
+          "release_date": "2023-11-29T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_re_losing_me",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "from_the_vault": "high:title_section_or_edition"
+          }
+        }
+      ]
+    },
+    {
+      "album": "Midnights",
+      "section": "streaming_extras",
+      "track_count": 1,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Lavender Haze - Acoustic Version",
+          "url": "https://open.spotify.com/intl-fr/track/05kJkr80XEaZeN8kxyQoFp",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9999,
+          "base_title": "Lavender Haze - Acoustic Version",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Lavender Haze - Acoustic Version",
+          "song_family": "lavender_haze_acoustic_version",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f233c37dddd971caf61515cf",
+          "display_era": "Midnights",
+          "historical_track_ids": [],
+          "release_date": "2023-03-31T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "overrated",
+              "alt-pop",
+              "rnb",
+              "electropop",
+              "best of 2022",
+              "electronic",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Lavender Haze"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:lavender_haze_acoustic_version",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        }
+      ]
+    },
+    {
+      "section": "remixes",
+      "track_count": 10,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Anti-Hero (feat. Bleachers)",
+          "url": "https://open.spotify.com/intl-fr/track/16M9Rxid0nXhVmme7lzVwN",
+          "type": "feature",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "Anti-Hero (feat. Bleachers)",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Bleachers"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Bleachers"
+          ],
+          "title_clean": "Anti-Hero",
+          "song_family": "anti_hero",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2739954fa9f0ba8534c3897b59d",
+          "historical_track_ids": [
+            "7mz1Dj0C0sa8tG3ykgtLpD"
+          ],
+          "release_date": "2022-11-08T00:00:00Z",
+          "genres": [
+            "rock",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "rock": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "rock",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "rock",
+              "Grunge",
+              "90s",
+              "test-tag",
+              "batch-test",
+              "automated",
+              "integration-test",
+              "pop",
+              "synthpop",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Anti-Hero"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:anti_hero",
+          "filter_tags": [
+            "feature"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist"
+          }
+        },
+        {
+          "title": "Anti-Hero - ILLENIUM Remix",
+          "url": "https://open.spotify.com/intl-fr/track/6C0H8ts9M6deezz0yYR6LK",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 3,
+          "base_title": "Anti-Hero",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Anti-Hero - ILLENIUM Remix",
+          "song_family": "anti_hero",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273eb7289d463cd524a93b722c9",
+          "historical_track_ids": [],
+          "release_date": "2022-11-18T00:00:00Z",
+          "genres": [
+            "rock",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "rock": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "rock",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "rock",
+              "Grunge",
+              "90s",
+              "test-tag",
+              "batch-test",
+              "automated",
+              "integration-test",
+              "pop",
+              "synthpop",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Anti-Hero"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:anti_hero",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
+        },
+        {
+          "title": "Anti-Hero - Jayda G Remix",
+          "url": "https://open.spotify.com/intl-fr/track/4YrpqEBNuz7IMsZtUP6bNQ",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 4,
+          "base_title": "Anti-Hero",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Anti-Hero - Jayda G Remix",
+          "song_family": "anti_hero",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2739954fa9f0ba8534c3897b59d",
+          "historical_track_ids": [
+            "22t8PQeP5klRoguomM4wZp"
+          ],
+          "release_date": "2022-11-11T00:00:00Z",
+          "genres": [
+            "rock",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "rock": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "rock",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "rock",
+              "Grunge",
+              "90s",
+              "test-tag",
+              "batch-test",
+              "automated",
+              "integration-test",
+              "pop",
+              "synthpop",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Anti-Hero"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:anti_hero",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
+        },
+        {
+          "title": "Anti-Hero - Kungs Remix",
+          "url": "https://open.spotify.com/intl-fr/track/2oWpe2L8ypC080BxpDVuTY",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 5,
+          "base_title": "Anti-Hero",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Anti-Hero - Kungs Remix",
+          "song_family": "anti_hero",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2739954fa9f0ba8534c3897b59d",
+          "historical_track_ids": [
+            "1h0GRtSo5NeVVb1vqb5Uh1"
+          ],
+          "release_date": "2022-11-11T00:00:00Z",
+          "genres": [
+            "rock",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "rock": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "rock",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "rock",
+              "Grunge",
+              "90s",
+              "test-tag",
+              "batch-test",
+              "automated",
+              "integration-test",
+              "pop",
+              "synthpop",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Anti-Hero"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:anti_hero",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
+        },
+        {
+          "title": "Anti-Hero - Roosevelt Remix",
+          "url": "https://open.spotify.com/intl-fr/track/4XiypEn8iKbeP1TbTqdfk5",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 6,
+          "base_title": "Anti-Hero",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Anti-Hero - Roosevelt Remix",
+          "song_family": "anti_hero",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2739954fa9f0ba8534c3897b59d",
+          "historical_track_ids": [
+            "2G19YDBzl32ASNiRJ1sT9s"
+          ],
+          "release_date": "2022-11-11T00:00:00Z",
+          "genres": [
+            "rock",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "rock": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "rock",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "rock",
+              "Grunge",
+              "90s",
+              "test-tag",
+              "batch-test",
+              "automated",
+              "integration-test",
+              "pop",
+              "synthpop",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Anti-Hero"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:anti_hero",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
+        },
+        {
+          "title": "Anti-Hero - Acoustic Version",
+          "url": "https://open.spotify.com/intl-fr/track/2d3d9xZutJjmUpntiyHt3F",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 7,
+          "base_title": "Anti-Hero",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Anti-Hero - Acoustic Version",
+          "song_family": "anti_hero",
+          "version_tag": "acoustic__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2730fc559ebbed8b0b100ad206c",
+          "historical_track_ids": [],
+          "release_date": "2022-11-25T00:00:00Z",
+          "genres": [
+            "rock",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "rock": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "rock",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "rock",
+              "Grunge",
+              "90s",
+              "test-tag",
+              "batch-test",
+              "automated",
+              "integration-test",
+              "pop",
+              "synthpop",
+              "pop rock"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Anti-Hero"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:anti_hero",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Lavender Haze - Felix Jaehn Remix",
+          "url": "https://open.spotify.com/intl-fr/track/2M4tVhRXucLE9M3STv21Yi",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10,
+          "base_title": "Lavender Haze",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Lavender Haze - Felix Jaehn Remix",
+          "song_family": "lavender_haze",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27390212229c9230e320fe0ecd3",
+          "historical_track_ids": [
+            "5KxZfCXXmVvKhPo8hQz2pS",
+            "47Q0MEywj692L1RQn6mC7S"
+          ],
+          "release_date": "2023-02-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "overrated",
+              "alt-pop",
+              "rnb",
+              "electropop",
+              "best of 2022",
+              "electronic",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Lavender Haze"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:lavender_haze",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
+        },
+        {
+          "title": "Lavender Haze - Jungle Remix",
+          "url": "https://open.spotify.com/intl-fr/track/0ThxqUZ9PwS6n0UT5i1XH6",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 11,
+          "base_title": "Lavender Haze",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Lavender Haze - Jungle Remix",
+          "song_family": "lavender_haze",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f7c84273e5c8ecb7594b4357",
+          "historical_track_ids": [
+            "1cY0NDSosVXD6Am57Ylbuy"
+          ],
+          "release_date": "2023-03-03T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "overrated",
+              "alt-pop",
+              "rnb",
+              "electropop",
+              "best of 2022",
+              "electronic",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Lavender Haze"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:lavender_haze",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
+        },
+        {
+          "title": "Lavender Haze - Snakehips Remix",
+          "url": "https://open.spotify.com/intl-fr/track/6F67FNdOBNMFzxdj1CQ5pL",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 12,
+          "base_title": "Lavender Haze",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Lavender Haze - Snakehips Remix",
+          "song_family": "lavender_haze",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f7c84273e5c8ecb7594b4357",
+          "historical_track_ids": [
+            "2PnWf3DoX5Ha3UL8VdpVrs"
+          ],
+          "release_date": "2023-03-03T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "overrated",
+              "alt-pop",
+              "rnb",
+              "electropop",
+              "best of 2022",
+              "electronic",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Lavender Haze"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:lavender_haze",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
+        },
+        {
+          "title": "Lavender Haze - Tensnake Remix",
+          "url": "https://open.spotify.com/intl-fr/track/7kjSmkSo15pHlkb0mOQtfj",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 13,
+          "base_title": "Lavender Haze",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Lavender Haze - Tensnake Remix",
+          "song_family": "lavender_haze",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f7c84273e5c8ecb7594b4357",
+          "historical_track_ids": [
+            "6dokmh5E6obEI11G9VaWSB"
+          ],
+          "release_date": "2023-03-03T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "overrated",
+              "alt-pop",
+              "rnb",
+              "electropop",
+              "best of 2022",
+              "electronic",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Lavender Haze"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:lavender_haze",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
+        }
+      ]
+    }
+  ]
+}

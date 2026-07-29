@@ -1,7 +1,7 @@
 {
   "album": "Red",
   "section_count": 7,
-  "track_count": 43,
+  "track_count": 79,
   "sections": [
     {
       "section": "standard_edition",
@@ -50,7 +50,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Red",
@@ -93,7 +97,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Treacherous",
@@ -136,7 +144,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "I Knew You Were Trouble.",
@@ -206,7 +218,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "All Too Well",
@@ -249,7 +265,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "22",
@@ -318,7 +338,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "I Almost Do",
@@ -362,7 +386,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "We Are Never Ever Getting Back Together",
@@ -431,7 +459,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Stay Stay Stay",
@@ -475,7 +507,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "The Last Time",
@@ -519,7 +555,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Holy Ground",
@@ -562,7 +602,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Sad Beautiful Tragic",
@@ -606,7 +650,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "The Lucky One",
@@ -649,7 +697,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Everything Has Changed",
@@ -694,7 +746,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Starlight",
@@ -738,7 +794,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Begin Again",
@@ -781,7 +841,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Come Back...Be Here",
@@ -824,7 +888,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Girl At Home",
@@ -867,7 +935,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "22 - Karaoke Version",
@@ -897,7 +969,11 @@
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "All Too Well - Karaoke Version",
@@ -927,7 +1003,11 @@
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Begin Again - Karaoke Version",
@@ -957,7 +1037,11 @@
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Everything Has Changed - Karaoke Version",
@@ -990,7 +1074,11 @@
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Holy Ground - Karaoke Version",
@@ -1020,7 +1108,11 @@
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "I Almost Do - Karaoke Version",
@@ -1050,7 +1142,11 @@
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "I Knew You Were Trouble. - Karaoke Version",
@@ -1080,7 +1176,11 @@
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Red - Karaoke Version",
@@ -1110,7 +1210,11 @@
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Sad Beautiful Tragic - Karaoke Version",
@@ -1140,7 +1244,11 @@
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Starlight - Karaoke Version",
@@ -1170,7 +1278,11 @@
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "State Of Grace - Karaoke Version",
@@ -1200,7 +1312,11 @@
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Stay Stay Stay - Karaoke Version",
@@ -1230,7 +1346,11 @@
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "The Lucky One - Karaoke Version",
@@ -1260,7 +1380,11 @@
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Treacherous - Karaoke Version",
@@ -1290,7 +1414,11 @@
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "We Are Never Ever Getting Back Together - Karaoke Version",
@@ -1320,7 +1448,11 @@
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         }
       ]
     },
@@ -1370,7 +1502,12 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "other",
+          "display_album": "Red",
+          "tags": []
         }
       ]
     },
@@ -1422,7 +1559,12 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "display_album": "Red",
+          "tags": []
         },
         {
           "title": "All Too Well (Sad Girl Autumn Version) - Recorded at Long Pond Studios",
@@ -1466,7 +1608,12 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "display_album": "Red",
+          "tags": []
         }
       ]
     },
@@ -1520,7 +1667,11 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "soundtrack": "high:title_album_or_section"
-          }
+          },
+          "on_album": false,
+          "category": "soundtrack",
+          "display_album": "Red",
+          "tags": []
         }
       ]
     },
@@ -1575,7 +1726,11 @@
           "filter_tag_sources": {
             "feature": "high:type_or_primary_artist",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": false,
+          "category": "feature",
+          "display_album": "Red",
+          "tags": []
         }
       ]
     },
@@ -1629,7 +1784,12 @@
             "acoustic": "high:title_or_section",
             "demo": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "demo",
+          "release_edition": "deluxe",
+          "tags": []
         },
         {
           "title": "Treacherous - Original Demo Recording",
@@ -1676,7 +1836,12 @@
             "acoustic": "high:title_or_section",
             "demo": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "demo",
+          "release_edition": "deluxe",
+          "tags": []
         },
         {
           "title": "State Of Grace - Acoustic",
@@ -1723,14 +1888,19 @@
             "album_track": "high:section_or_display_section",
             "acoustic": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "acoustic",
+          "release_edition": "deluxe",
+          "tags": []
         }
       ]
     },
     {
       "album": "Red",
       "section": "streaming_extras",
-      "track_count": 2,
+      "track_count": 38,
       "chart_extra": true,
       "tracks": [
         {
@@ -1775,7 +1945,12 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "other",
+          "display_album": "Red",
+          "tags": []
         },
         {
           "title": "The Last Time - Karaoke Version",
@@ -1792,7 +1967,7 @@
             "Taylor Swift"
           ],
           "title_clean": "The Last Time - Karaoke Version",
-          "song_family": "the_last_time_karaoke_version",
+          "song_family": "the_last_time",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273220563fb6c59f7e470ba3272",
           "display_era": "Red",
@@ -1821,7 +1996,1226 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "karaoke": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "karaoke",
+          "display_album": "Red",
+          "tags": []
+        },
+        {
+          "title": "22 - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/1wePVBS4L6xhCvVUItPAZQ",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "22",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "22 - Commentary",
+          "song_family": "22",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "A Perfectly Good Heart - Instrumental w/ BG vocals",
+          "url": "https://open.spotify.com/intl-fr/track/5NEP34PtTtFQaZpeeDPWeU",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 3,
+          "base_title": "A Perfectly Good Heart",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "A Perfectly Good Heart - Instrumental w/ BG vocals",
+          "song_family": "a_perfectly_good_heart",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2006-10-24T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "All You Had To Do Was Stay - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/1Z79tpetXTqujnp0UYOV7V",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 7,
+          "base_title": "All You Had To Do Was Stay",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "All You Had To Do Was Stay - Commentary",
+          "song_family": "all_you_had_to_do_was_stay",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2014-10-27T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Change - Instrumental with BGV",
+          "url": "https://open.spotify.com/intl-fr/track/6D0MZbrShD5AK8P2Ig6bow",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 21,
+          "base_title": "Change",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Change - Instrumental with BGV",
+          "song_family": "change",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "All Too Well - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/1yVVoBDzSkFkZRWtq9x3u1",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 6,
+          "base_title": "All Too Well",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "All Too Well - Commentary",
+          "song_family": "all_too_well",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Everything Has Changed - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/633FwmKmrHWn6sLTL3db72",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 35,
+          "base_title": "Everything Has Changed",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Everything Has Changed - Commentary",
+          "song_family": "everything_has_changed",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Holy Ground - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/0HTZpLa2SjBmuJ6zJ7OqMm",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 47,
+          "base_title": "Holy Ground",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Holy Ground - Commentary",
+          "song_family": "holy_ground",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "I Almost Do - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/2rLYkfJSgTPtOTLjYEdozL",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 50,
+          "base_title": "I Almost Do",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Almost Do - Commentary",
+          "song_family": "i_almost_do",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "I Knew You Were Trouble. - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/2vTjAIZbfW7W8NGBOZ5rK5",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 52,
+          "base_title": "I Knew You Were Trouble.",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Knew You Were Trouble. - Commentary",
+          "song_family": "i_knew_you_were_trouble",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Red - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/1VW4AEDihVs3BQB6KnTYIY",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 87,
+          "base_title": "Red",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Red - Commentary",
+          "song_family": "red",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Sad Beautiful Tragic - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/3rMskQgCc54bAQUfE0U4Fw",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 88,
+          "base_title": "Sad Beautiful Tragic",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Sad Beautiful Tragic - Commentary",
+          "song_family": "sad_beautiful_tragic",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Starlight - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/2ag2oLCwlFIA88hQrLMHzv",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 97,
+          "base_title": "Starlight",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Starlight - Commentary",
+          "song_family": "starlight",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "State Of Grace - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/7HbZuazpPbDDMkb8Tmvxq0",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 98,
+          "base_title": "State Of Grace",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "State Of Grace - Commentary",
+          "song_family": "state_of_grace",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Stay Stay Stay - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/4sFwzqXqNcNV3cTyTybq0M",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 101,
+          "base_title": "Stay Stay Stay",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Stay Stay Stay - Commentary",
+          "song_family": "stay_stay_stay",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "The Last Time - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/22Zg9JjEgM0JV5HvLXNJAh",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 110,
+          "base_title": "The Last Time",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Last Time - Commentary",
+          "song_family": "the_last_time",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "The Lucky One - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/1J22bFnVC6Rmjxby941PDf",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 112,
+          "base_title": "The Lucky One",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Lucky One - Commentary",
+          "song_family": "the_lucky_one",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Treacherous - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/3lD0QBGaxvoc9WBDnGHFUi",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 126,
+          "base_title": "Treacherous",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Treacherous - Commentary",
+          "song_family": "treacherous",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Message In A Bottle (Feat Max G Remix) (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/3tGq7hWDCtrnL83y5OGual",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9999,
+          "base_title": "Message In A Bottle (Fat Max G Remix) (Taylor's Version)",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Message In A Bottle (Fat Max G Remix) (Taylor's Version)",
+          "song_family": "message_in_a_bottle_fat_max_g_remix_taylors_version",
+          "version_tag": null,
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273e53252ce47982a3d555a6b3b",
+          "historical_track_ids": [],
+          "release_date": "2022-01-21T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:message_in_a_bottle_fat_max_g_remix_taylors_version",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "remix",
+            "taylor_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "remix": "high:type_or_title",
+            "taylor_version": "high:title_or_section"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": [],
+          "chart_extra": true
+        },
+        {
+          "title": "Red - 2013 CMA Awards Performance",
+          "url": "https://open.spotify.com/intl-fr/track/58eq1csoygPppaeE6QnWlZ",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9999,
+          "base_title": "Red - 2013 CMA Awards Performance",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Red - 2013 CMA Awards Performance",
+          "song_family": "red",
+          "version_tag": null,
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2730a829001d3c30e844bc0a202",
+          "release_date": null,
+          "historical_track_ids": [],
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": [],
+          "chart_extra": true
+        },
+        {
+          "title": "We Are Never Ever Getting Back Together - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/0kfTOGpi5eZCBxcRF5LFIh",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 127,
+          "base_title": "We Are Never Ever Getting Back Together",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "We Are Never Ever Getting Back Together - Commentary",
+          "song_family": "we_are_never_ever_getting_back_together_chartsnapshot_external_6U1sV6To",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27396384c98ac4f3e7c2440f5b5",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "I Knew You Were Trouble. - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/1MDcFu6z8XNDGFyh5FIHee",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10027,
+          "base_title": "I Knew You Were Trouble.",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Knew You Were Trouble. - Instrumental With Background Vocals",
+          "song_family": "i_knew_you_were_trouble_chartsnapshot_external_1MDcFu6z",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Red (Karaoke Version)",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273220563fb6c59f7e470ba3272",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "All Too Well - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/4foqCyc68cBj3D0yFxsI3j",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10030,
+          "base_title": "All Too Well",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "All Too Well - Instrumental With Background Vocals",
+          "song_family": "all_too_well_chartsnapshot_external_4foqCyc6",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Red (Karaoke Version)",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273220563fb6c59f7e470ba3272",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "We Are Never Ever Getting Back Together - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/46GNHUdBuPGnbyTlyv73px",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10040,
+          "base_title": "We Are Never Ever Getting Back Together",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "We Are Never Ever Getting Back Together - Instrumental With Background Vocals",
+          "song_family": "we_are_never_ever_getting_back_together_chartsnapshot_external_46GNHUdB",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Red (Karaoke Version)",
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273220563fb6c59f7e470ba3272",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Red - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/3lHGtCM2wOkqxBdn6pihJs",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10041,
+          "base_title": "Red",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Red - Instrumental With Background Vocals",
+          "song_family": "red_chartsnapshot_external_3lHGtCM2",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Red (Karaoke Version)",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273220563fb6c59f7e470ba3272",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "22 - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/2CyfahsenMvjhR99j1x6X2",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10042,
+          "base_title": "22",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "22 - Instrumental With Background Vocals",
+          "song_family": "22_chartsnapshot_external_2Cyfahse",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Red (Karaoke Version)",
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273220563fb6c59f7e470ba3272",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Holy Ground - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/6jHHWbARBOwQUqtAnNKMN6",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10048,
+          "base_title": "Holy Ground",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Holy Ground - Instrumental With Background Vocals",
+          "song_family": "holy_ground_chartsnapshot_external_6jHHWbAR",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Red (Karaoke Version)",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273220563fb6c59f7e470ba3272",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "The Lucky One - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/0PPT0FWjjipsLfdNo0jqfx",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10054,
+          "base_title": "The Lucky One",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Lucky One - Instrumental With Background Vocals",
+          "song_family": "the_lucky_one_chartsnapshot_external_0PPT0FWj",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Red (Karaoke Version)",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273220563fb6c59f7e470ba3272",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Sad Beautiful Tragic - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/5XSPL0XMNxpeVV99iQQ7IX",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10056,
+          "base_title": "Sad Beautiful Tragic",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Sad Beautiful Tragic - Instrumental With Background Vocals",
+          "song_family": "sad_beautiful_tragic_chartsnapshot_external_5XSPL0XM",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Red (Karaoke Version)",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273220563fb6c59f7e470ba3272",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "We Are Never Ever Getting Back Together (BestWork Edition)",
+          "url": "https://open.spotify.com/track/6U1sV6To5PiDattw67fHYF",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10062,
+          "base_title": "We Are Never Ever Getting Back Together",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "We Are Never Ever Getting Back Together",
+          "song_family": "we_are_never_ever_getting_back_together_chartsnapshot_external_6U1sV6To",
+          "version_tag": "chartsnapshot_external_extra",
+          "version_tags": [
+            "chartsnapshot_external_extra"
+          ],
+          "catalog_category": "chartsnapshot_external_extra",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "chartsnapshot external extra",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "BestWORK",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273d974bcd5b8489eb5577560af",
+          "on_album": true,
+          "role": "extra",
+          "release_edition": "",
+          "tags": [],
+          "extra_type": "instrumental"
+        },
+        {
+          "title": "Everything Has Changed - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/5cXTESo2BLCYwmUKF2uE8A",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10075,
+          "base_title": "Everything Has Changed",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Everything Has Changed - Instrumental With Background Vocals",
+          "song_family": "everything_has_changed_chartsnapshot_external_5cXTESo2",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Red (Karaoke Version)",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273220563fb6c59f7e470ba3272",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "State Of Grace - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/4pvmbMjyRH4tKJiw1CjWic",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10076,
+          "base_title": "State Of Grace",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "State Of Grace - Instrumental With Background Vocals",
+          "song_family": "state_of_grace_chartsnapshot_external_4pvmbMjy",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Red (Karaoke Version)",
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273220563fb6c59f7e470ba3272",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Begin Again - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/4qYZFWPHpNEZDICGCwqgrv",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10078,
+          "base_title": "Begin Again",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Begin Again - Instrumental With Background Vocals",
+          "song_family": "begin_again_chartsnapshot_external_4qYZFWPH",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Red (Karaoke Version)",
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273220563fb6c59f7e470ba3272",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "I Almost Do - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/1B6UHn92SZSGOwXheAKAb9",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10081,
+          "base_title": "I Almost Do",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Almost Do - Instrumental With Background Vocals",
+          "song_family": "i_almost_do_chartsnapshot_external_1B6UHn92",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Red (Karaoke Version)",
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273220563fb6c59f7e470ba3272",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Stay Stay Stay - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/6HCWHsGF3YM6BPnow9MkIR",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10082,
+          "base_title": "Stay Stay Stay",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Stay Stay Stay - Instrumental With Background Vocals",
+          "song_family": "stay_stay_stay_chartsnapshot_external_6HCWHsGF",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Red (Karaoke Version)",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273220563fb6c59f7e470ba3272",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Treacherous - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/1TSPz0XU6Xu62x06eBtcyA",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10086,
+          "base_title": "Treacherous",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Treacherous - Instrumental With Background Vocals",
+          "song_family": "treacherous_chartsnapshot_external_1TSPz0XU",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Red (Karaoke Version)",
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273220563fb6c59f7e470ba3272",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Babe (from reputation Stadium Tour Surprise Song Playlist)",
+          "url": "https://open.spotify.com/intl-fr/track/40PXEOFLJc7UIpLMrhSfW1",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9999,
+          "base_title": "Babe",
+          "album": "Red",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Babe",
+          "song_family": "babe",
+          "version_tag": null,
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27363d77f99117b28af9f656918",
+          "historical_track_ids": [
+            "7fRruZ12gXGwBs0zXQ6e5V"
+          ],
+          "release_date": "2017-11-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:babe",
+          "filter_tags": [
+            "feature",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "standalone": "medium:section_or_type"
+          },
+          "chart_extra": true,
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "other",
+          "tags": []
         }
       ]
     }

@@ -1,0 +1,2059 @@
+{
+  "album": "Speak Now",
+  "section_count": 4,
+  "track_count": 41,
+  "sections": [
+    {
+      "section": "standard_edition",
+      "track_count": 17,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "Mine",
+          "url": "https://open.spotify.com/intl-fr/track/6LZaxlycSWrJZ4Volb25qx",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 1,
+          "base_title": "Mine",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Mine",
+          "song_family": "mine",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
+          "historical_track_ids": [
+            "67Io3gxHwfbUreBf114c0u",
+            "0dBW6ZsW8skfvoRfgeerBF"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:mine",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Sparks Fly",
+          "url": "https://open.spotify.com/intl-fr/track/46NGAvL695VnbcSeTmQWmM",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 2,
+          "base_title": "Sparks Fly",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Sparks Fly",
+          "song_family": "sparks_fly",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "historical_track_ids": [
+            "09cM9BjyNFizKUOXh6j9rT",
+            "6d9IiDcFxtFVIvt9pCqyGH"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:sparks_fly",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Back To December",
+          "url": "https://open.spotify.com/intl-fr/track/5l6GqSxplqnZbLg0LTPQeG",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 3,
+          "base_title": "Back To December",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Back To December",
+          "song_family": "back_to_december",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "historical_track_ids": [
+            "0tr6XR58KBdDYd8qvHVTs8",
+            "5aNkiOMxQXkpoEY5bTYoCh",
+            "3DrjZArsPsoqbLzUZZV1Id"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop",
+              "female vocalists",
+              "taylor swift",
+              "Love",
+              "love at first listen",
+              "<3",
+              "2010",
+              "sweet"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Back To December"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:back_to_december",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Speak Now",
+          "url": "https://open.spotify.com/intl-fr/track/7dXKdjpOaH2iwfFKmUj7aq",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 4,
+          "base_title": "Speak Now",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Speak Now",
+          "song_family": "speak_now",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "historical_track_ids": [
+            "2PBghI9zJkQEWBzMSMo2Ki",
+            "24DefNCFiWTP8OjYWiXuYe"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:speak_now",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Dear John",
+          "url": "https://open.spotify.com/intl-fr/track/3K2es3gElMRJ3qvmPW442g",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 5,
+          "base_title": "Dear John",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Dear John",
+          "song_family": "dear_john",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "historical_track_ids": [
+            "1GeLxMgpeCnMJntwyW6rLw",
+            "7hZuICN5eaCuQyp443RCt6"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:dear_john",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Mean",
+          "url": "https://open.spotify.com/intl-fr/track/0KztjtD3ytzgYjUKIVfBnW",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 6,
+          "base_title": "Mean",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Mean",
+          "song_family": "mean",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "historical_track_ids": [
+            "6yM6QsnTCTVOkKEvg3hGlo",
+            "5yEPktRqvIhko5QFF3aBhQ"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:mean",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "The Story Of Us",
+          "url": "https://open.spotify.com/track/2jt90bYlYDg1lXYWES34LJ",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 7,
+          "base_title": "The Story Of Us",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Story Of Us",
+          "song_family": "the_story_of_us",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "historical_track_ids": [
+            "7vBlnGdfOLzVEqiOQQxeU8",
+            "3RBluWmSoG2pGA1OePzGJI"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_story_of_us",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Never Grow Up",
+          "url": "https://open.spotify.com/intl-fr/track/3JilapcaOXzjR9gtvCY8FO",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 8,
+          "base_title": "Never Grow Up",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Never Grow Up",
+          "song_family": "never_grow_up",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "historical_track_ids": [
+            "57w0Uyk2jJAkO2hMJ36xJZ",
+            "1wJL1A0QUHJPf2cm7tsrdw"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:never_grow_up",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Enchanted",
+          "url": "https://open.spotify.com/intl-fr/track/04S1pkp1VaIqjg8zZqknR5",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 9,
+          "base_title": "Enchanted",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Enchanted",
+          "song_family": "enchanted",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "historical_track_ids": [
+            "3sqrvkNC6IPTIXvvbx9Arw",
+            "10eBRyImhfqVvkiVEGf0N0"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "taylor swift",
+              "Love",
+              "country pop",
+              "female vocalists",
+              "flawless",
+              "singer-songwriter",
+              "beautiful",
+              "sweet"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Enchanted"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:enchanted",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Better Than Revenge",
+          "url": "https://open.spotify.com/intl-fr/track/1By2VQkUN0Frd8mKNV5NYC",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 10,
+          "base_title": "Better Than Revenge",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Better Than Revenge",
+          "song_family": "better_than_revenge",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
+          "historical_track_ids": [
+            "55mh9j2aB7xZ1Oh463gK8k",
+            "2ythurkTtSiyfK7GprJoFW"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "taylor swift",
+              "rock",
+              "female vocalists",
+              "pop rock",
+              "pop punk",
+              "country pop",
+              "2010",
+              "catchy"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Better Than Revenge"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:better_than_revenge",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Innocent",
+          "url": "https://open.spotify.com/intl-fr/track/3kfgJql90tzgoxByioAMXR",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 11,
+          "base_title": "Innocent",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Innocent",
+          "song_family": "innocent",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
+          "historical_track_ids": [
+            "4LraIz87diVQdDK0rhi0S4",
+            "5GPwN5iZ9ZMSXAkppj4Uvv"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:innocent",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Haunted",
+          "url": "https://open.spotify.com/intl-fr/track/11UaQaEp2LvdspTyyuE3ur",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 12,
+          "base_title": "Haunted",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Haunted",
+          "song_family": "haunted",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
+          "historical_track_ids": [
+            "72idZxdEHLbi2YI486c3sE",
+            "28M2gifMU282QBM3fKajIS"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:haunted",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Last Kiss",
+          "url": "https://open.spotify.com/intl-fr/track/1D27z8xNzjW0Mwwt1NCWhJ",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 13,
+          "base_title": "Last Kiss",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Last Kiss",
+          "song_family": "last_kiss",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
+          "historical_track_ids": [
+            "1VCJ7vk3Y2DoJIAEOXe3V8",
+            "4h0EXpatqJImv4VRgvX6po"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:last_kiss",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Long Live",
+          "url": "https://open.spotify.com/track/6XDBA3QWX51lDJ0oZbaJJN",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Other Editions",
+          "display_order": 14,
+          "base_title": "Long Live",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Long Live",
+          "song_family": "long_live",
+          "version_tag": "live__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e11a75a2f2ff39cec788a015",
+          "historical_track_ids": [
+            "7BFc7ffruhZ4Hecnqf5xju"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:long_live",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "live",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "live": "high:type_title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Ours",
+          "url": "https://open.spotify.com/intl-fr/track/1EQn3Uc5AyUXoiPLeyCrrg",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 15,
+          "base_title": "Ours",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Ours",
+          "song_family": "ours",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
+          "historical_track_ids": [
+            "0hK93KD6Y0j9giUGh4Valj"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:ours",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "If This Was A Movie",
+          "url": "https://open.spotify.com/intl-fr/track/0vvt4IZOMkRug195S4MUq0",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 16,
+          "base_title": "If This Was A Movie",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "If This Was A Movie",
+          "song_family": "if_this_was_a_movie",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
+          "historical_track_ids": [
+            "5tSmAABuoOfR59lrtXdDqm"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:if_this_was_a_movie",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Superman",
+          "url": "https://open.spotify.com/intl-fr/track/2R7C9dDqv1UPycvepBFziA",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 17,
+          "base_title": "Superman",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Superman",
+          "song_family": "superman",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
+          "historical_track_ids": [
+            "6aJ0ipi4EPmu1aTbFeXZnw"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:superman",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "album": "Speak Now",
+      "section": "misc_standalone",
+      "track_count": 1,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Back To December/Apologize/You're Not Sorry - Live/2011/Medley",
+          "url": "https://open.spotify.com/intl-fr/track/1IsquhJFJ0qcFZI7FeAEuN",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 4,
+          "base_title": "Back To December/Apologize/You're Not Sorry",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Back To December/Apologize/You're Not Sorry - Live/2011/Medley",
+          "song_family": "back_to_december_apologize_you_re_not_sorry",
+          "version_tag": "live__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
+          "display_era": "Speak Now",
+          "historical_track_ids": [],
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:back_to_december_apologize_you_re_not_sorry",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "display_album": "Speak Now",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "section": "extras_and_live",
+      "track_count": 11,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Mine - POP Mix",
+          "url": "https://open.spotify.com/intl-fr/track/0GxW5K0qzrq7L1jwSY5OmY",
+          "type": "alternate_version",
+          "edition": "live",
+          "display_section": "Other Editions",
+          "display_order": 1,
+          "base_title": "Mine - POP Mix",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Mine - POP Mix",
+          "song_family": "mine_pop_mix",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "historical_track_ids": [
+            "0fAbfDiuQiUwV7FUcFfRGY",
+            "0OAHsZ8vrS2NKom3cvfJQD"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:mine_pop_mix",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "remix",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "remix": "high:type_or_title",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
+        },
+        {
+          "title": "Back To December - Acoustic",
+          "url": "https://open.spotify.com/intl-fr/track/6IH2Z54gYPLqgJtxZjX80i",
+          "type": "alternate_version",
+          "edition": "live",
+          "display_section": "Other Editions",
+          "display_order": 2,
+          "base_title": "Back To December",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Back To December - Acoustic",
+          "song_family": "back_to_december",
+          "version_tag": "acoustic__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
+          "historical_track_ids": [
+            "7k7BOXE4u6luKTwcLEAyrd"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop",
+              "female vocalists",
+              "taylor swift",
+              "Love",
+              "love at first listen",
+              "<3",
+              "2010",
+              "sweet"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Back To December"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:back_to_december",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "acoustic",
+          "tags": []
+        },
+        {
+          "title": "Haunted - Acoustic Version",
+          "url": "https://open.spotify.com/intl-fr/track/62rlxI6g2PNaWsHoiRryto",
+          "type": "alternate_version",
+          "edition": "live",
+          "display_section": "Other Editions",
+          "display_order": 3,
+          "base_title": "Haunted",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Haunted - Acoustic Version",
+          "song_family": "haunted",
+          "version_tag": "acoustic__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
+          "historical_track_ids": [
+            "6SdBf0ZsJZoKaH5zcDaz9X"
+          ],
+          "release_date": "2010-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:haunted",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "acoustic",
+          "tags": []
+        },
+        {
+          "title": "Better Than Revenge - Live/2011",
+          "url": "https://open.spotify.com/intl-fr/track/6505MLhnqTDDg4tjoUz2Wp",
+          "type": "alternate_version",
+          "edition": "live",
+          "display_section": "Other Editions",
+          "display_order": 4,
+          "base_title": "Better Than Revenge",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Better Than Revenge - Live/2011",
+          "song_family": "better_than_revenge",
+          "version_tag": "live__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
+          "historical_track_ids": [],
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "taylor swift",
+              "rock",
+              "female vocalists",
+              "pop rock",
+              "pop punk",
+              "country pop",
+              "2010",
+              "catchy"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Better Than Revenge"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:better_than_revenge",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "live",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "live": "high:type_title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
+        },
+        {
+          "title": "Last Kiss - Live/2011",
+          "url": "https://open.spotify.com/intl-fr/track/6hH37tyeRdyan1mAppmVor",
+          "type": "alternate_version",
+          "edition": "live",
+          "display_section": "Other Editions",
+          "display_order": 5,
+          "base_title": "Last Kiss",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Last Kiss - Live/2011",
+          "song_family": "last_kiss",
+          "version_tag": "live__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
+          "historical_track_ids": [],
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:last_kiss",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "live",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "live": "high:type_title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
+        },
+        {
+          "title": "Mean - Live/2011",
+          "url": "https://open.spotify.com/intl-fr/track/7mFiEij8AXPUZB7aKLbUlQ",
+          "type": "alternate_version",
+          "edition": "live",
+          "display_section": "Other Editions",
+          "display_order": 6,
+          "base_title": "Mean",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Mean - Live/2011",
+          "song_family": "mean",
+          "version_tag": "live__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
+          "historical_track_ids": [],
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:mean",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "live",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "live": "high:type_title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
+        },
+        {
+          "title": "Mine - Live/2011",
+          "url": "https://open.spotify.com/intl-fr/track/7yndkPYP6YQQLBpPsizDfh",
+          "type": "alternate_version",
+          "edition": "live",
+          "display_section": "Other Editions",
+          "display_order": 7,
+          "base_title": "Mine",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Mine - Live/2011",
+          "song_family": "mine",
+          "version_tag": "live__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
+          "historical_track_ids": [],
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:mine",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "live",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "live": "high:type_title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
+        },
+        {
+          "title": "Ours - Live/2011",
+          "url": "https://open.spotify.com/intl-fr/track/68QyrSzpnoU04AAhE5z8lj",
+          "type": "alternate_version",
+          "edition": "live",
+          "display_section": "Other Editions",
+          "display_order": 8,
+          "base_title": "Ours",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Ours - Live/2011",
+          "song_family": "ours",
+          "version_tag": "live__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
+          "historical_track_ids": [],
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:ours",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "live",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "live": "high:type_title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
+        },
+        {
+          "title": "Sparks Fly - Live/2011",
+          "url": "https://open.spotify.com/intl-fr/track/1aBJNc2thaKyh5THWzIqHX",
+          "type": "alternate_version",
+          "edition": "live",
+          "display_section": "Other Editions",
+          "display_order": 9,
+          "base_title": "Sparks Fly",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Sparks Fly - Live/2011",
+          "song_family": "sparks_fly",
+          "version_tag": "live__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
+          "historical_track_ids": [],
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:sparks_fly",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "live",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "live": "high:type_title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
+        },
+        {
+          "title": "Speak Now - Live/2011",
+          "url": "https://open.spotify.com/intl-fr/track/3QFB14MOUf3imlyISNmrbT",
+          "type": "alternate_version",
+          "edition": "live",
+          "display_section": "Other Editions",
+          "display_order": 10,
+          "base_title": "Speak Now",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Speak Now - Live/2011",
+          "song_family": "speak_now",
+          "version_tag": "live__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
+          "historical_track_ids": [],
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:speak_now",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "live",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "live": "high:type_title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
+        },
+        {
+          "title": "The Story Of Us - Live",
+          "url": "https://open.spotify.com/intl-fr/track/72GIZuUXo14oyrS0si3Rgc",
+          "type": "alternate_version",
+          "edition": "live",
+          "display_section": "Other Editions",
+          "display_order": 11,
+          "base_title": "The Story Of Us",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Story Of Us - Live",
+          "song_family": "the_story_of_us",
+          "version_tag": "live__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
+          "historical_track_ids": [],
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_story_of_us",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "live",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "live": "high:type_title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "album": "Speak Now",
+      "section": "streaming_extras",
+      "track_count": 12,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Dear John - Live/2011",
+          "url": "https://open.spotify.com/intl-fr/track/4DbI1rr4IQ2bc8nejy9ttd",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9999,
+          "base_title": "Dear John - Live/2011",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Dear John - Live/2011",
+          "song_family": "dear_john",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
+          "display_era": "Speak Now",
+          "historical_track_ids": [],
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:dear_john_live2011",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "display_album": "Speak Now",
+          "tags": []
+        },
+        {
+          "title": "Enchanted - Live/2011",
+          "url": "https://open.spotify.com/intl-fr/track/3lm4L3pPL32PFy74dR17OR",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9999,
+          "base_title": "Enchanted - Live/2011",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Enchanted - Live/2011",
+          "song_family": "enchanted",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
+          "display_era": "Speak Now",
+          "historical_track_ids": [],
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "taylor swift",
+              "Love",
+              "country pop",
+              "female vocalists",
+              "flawless",
+              "singer-songwriter",
+              "beautiful",
+              "sweet"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Enchanted"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:enchanted_live2011",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "display_album": "Speak Now",
+          "tags": []
+        },
+        {
+          "title": "Haunted - Live/2011",
+          "url": "https://open.spotify.com/intl-fr/track/6znB7YZhMJT2B83zfbiyLq",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9999,
+          "base_title": "Haunted - Live/2011",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Haunted - Live/2011",
+          "song_family": "haunted",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
+          "display_era": "Speak Now",
+          "historical_track_ids": [],
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:haunted_live2011",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "display_album": "Speak Now",
+          "tags": []
+        },
+        {
+          "title": "Long Live - Live/2011",
+          "url": "https://open.spotify.com/intl-fr/track/5QkzyLUb4ggojNDp8G2OxX",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9999,
+          "base_title": "Long Live - Live/2011",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Long Live - Live/2011",
+          "song_family": "long_live",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
+          "display_era": "Speak Now",
+          "historical_track_ids": [],
+          "release_date": "2010-10-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:long_live_live2011",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "display_album": "Speak Now",
+          "tags": []
+        },
+        {
+          "title": "Begin Again - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/3JayaISg308IVZhUY0XUXe",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 13,
+          "base_title": "Begin Again",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Begin Again - Commentary",
+          "song_family": "begin_again",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Better Than Revenge - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/intl-fr/track/0UK4QL2zQWgWzj47V6qgsz",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 15,
+          "base_title": "Better Than Revenge",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Better Than Revenge - Instrumental With Background Vocals",
+          "song_family": "better_than_revenge",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Clean - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/7AiIXVMIrTqHlGn7bS3f31",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 23,
+          "base_title": "Clean",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Clean - Karaoke Version",
+          "song_family": "clean",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2015-02-01T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "karaoke",
+          "tags": []
+        },
+        {
+          "title": "Cold As You - Instrumental w/ BG vocals",
+          "url": "https://open.spotify.com/intl-fr/track/0SwaNP777wQtTy9cEm886m",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 25,
+          "base_title": "Cold As You",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Cold As You - Instrumental w/ BG vocals",
+          "song_family": "cold_as_you",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2006-10-24T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Bad Blood - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/6bzWVosI1yQkHUrN22cMWE",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 12,
+          "base_title": "Bad Blood",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Bad Blood - Karaoke Version",
+          "song_family": "bad_blood",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2015-02-01T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "karaoke",
+          "tags": []
+        },
+        {
+          "title": "Change - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/1NTxT72xu3GkYq5wIq0RG5",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 20,
+          "base_title": "Change",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Change - Commentary",
+          "song_family": "change",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Back To December - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/intl-fr/track/5fWNEKU1JTe07KsrJ7stft",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10,
+          "base_title": "Back To December",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Back To December - Instrumental With Background Vocals",
+          "song_family": "back_to_december",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Breathe - Instrumental only, no BV",
+          "url": "https://open.spotify.com/intl-fr/track/795ZVsHOr5ky9yrY6FDA6Q",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 18,
+          "base_title": "Breathe",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Breathe - Instrumental only, no BV",
+          "song_family": "breathe",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        }
+      ]
+    }
+  ]
+}

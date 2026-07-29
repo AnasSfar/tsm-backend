@@ -1,6 +1,6 @@
 {
   "album": "Red (Taylor's Version)",
-  "section_count": 2,
+  "section_count": 3,
   "track_count": 32,
   "sections": [
     {
@@ -53,7 +53,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Red (Taylor's Version)",
@@ -98,7 +102,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Treacherous (Taylor's Version)",
@@ -145,7 +153,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "I Knew You Were Trouble (Taylor's Version)",
@@ -217,7 +229,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "All Too Well (Taylor's Version)",
@@ -264,7 +280,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "22 (Taylor's Version)",
@@ -336,7 +356,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "I Almost Do (Taylor's Version)",
@@ -381,7 +405,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "We Are Never Ever Getting Back Together (Taylor's Version)",
@@ -453,7 +481,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Stay Stay Stay (Taylor's Version)",
@@ -500,7 +532,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "The Last Time (feat. Gary Lightbody of Snow Patrol) (Taylor's Version)",
@@ -546,7 +582,11 @@
             "feature": "high:type_or_primary_artist",
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Holy Ground (Taylor's Version)",
@@ -593,7 +633,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Sad Beautiful Tragic (Taylor's Version)",
@@ -640,7 +684,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "The Lucky One (Taylor's Version)",
@@ -685,7 +733,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Everything Has Changed (feat. Ed Sheeran) (Taylor's Version)",
@@ -731,7 +783,11 @@
             "feature": "high:type_or_primary_artist",
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Starlight (Taylor's Version)",
@@ -778,7 +834,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Begin Again (Taylor's Version)",
@@ -823,7 +883,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "The Moment I Knew (Taylor's Version)",
@@ -868,7 +932,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Come Back...Be Here (Taylor's Version)",
@@ -913,7 +981,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Girl At Home (Taylor's Version)",
@@ -958,7 +1030,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "State Of Grace (Acoustic Version) (Taylor's Version)",
@@ -1007,7 +1083,11 @@
             "acoustic": "high:title_or_section",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Ronan (Taylor's Version)",
@@ -1054,7 +1134,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Better Man (Taylor's Version) (From The Vault)",
@@ -1126,7 +1210,11 @@
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
         },
         {
           "title": "Nothing New (feat. Phoebe Bridgers) (Taylor's Version) (From The Vault)",
@@ -1174,7 +1262,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
         },
         {
           "title": "Babe (Taylor's Version) (From The Vault)",
@@ -1221,7 +1313,11 @@
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
         },
         {
           "title": "Message In A Bottle (Taylor's Version) (From The Vault)",
@@ -1293,7 +1389,11 @@
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
         },
         {
           "title": "I Bet You Think About Me (feat. Chris Stapleton) (Taylor's Version) (From The Vault)",
@@ -1341,7 +1441,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
         },
         {
           "title": "Forever Winter (Taylor's Version) (From The Vault)",
@@ -1388,7 +1492,11 @@
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
         },
         {
           "title": "Run (feat. Ed Sheeran) (Taylor's Version) (From The Vault)",
@@ -1436,7 +1544,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
         },
         {
           "title": "The Very First Night (Taylor's Version) (From The Vault)",
@@ -1508,7 +1620,11 @@
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
         },
         {
           "title": "All Too Well (10 Minute Version) (Taylor's Version) (From The Vault)",
@@ -1555,7 +1671,11 @@
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
         }
       ]
     },
@@ -1609,7 +1729,11 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "category": "soundtrack",
+          "display_album": "Red",
+          "tags": []
         },
         {
           "title": "Safe & Sound (feat. Joy Williams and John Paul White) (Taylor's Version)",
@@ -1658,9 +1782,20 @@
           "filter_tag_sources": {
             "feature": "high:type_or_primary_artist",
             "taylor_version": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "category": "soundtrack",
+          "display_album": "Red",
+          "tags": []
         }
       ]
+    },
+    {
+      "section": "streaming_extras",
+      "track_count": 0,
+      "chart_extra": false,
+      "tracks": [],
+      "album": "Red (Taylor's Version)"
     }
   ]
 }

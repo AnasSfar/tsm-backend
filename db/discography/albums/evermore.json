@@ -76,7 +76,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "champagne problems",
@@ -145,7 +149,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "gold rush",
@@ -214,7 +222,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "'tis the damn season",
@@ -258,7 +270,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "tolerate it",
@@ -327,7 +343,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "no body, no crime (feat. HAIM)",
@@ -398,7 +418,11 @@
           "filter_tag_sources": {
             "feature": "high:type_or_primary_artist",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "happiness",
@@ -467,7 +491,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "dorothea",
@@ -536,7 +564,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "coney island (feat. The National)",
@@ -608,7 +640,11 @@
           "filter_tag_sources": {
             "feature": "high:type_or_primary_artist",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "ivy",
@@ -677,7 +713,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "cowboy like me",
@@ -746,7 +786,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "long story short",
@@ -815,7 +859,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "marjorie",
@@ -884,7 +932,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "closure",
@@ -953,7 +1005,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "evermore (feat. Bon Iver)",
@@ -1024,7 +1080,11 @@
           "filter_tag_sources": {
             "feature": "high:type_or_primary_artist",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         }
       ]
     },
@@ -1097,7 +1157,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "deluxe",
+          "tags": []
         },
         {
           "title": "it's time to go - bonus track",
@@ -1138,7 +1202,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "deluxe",
+          "tags": []
         }
       ]
     },
@@ -1211,7 +1279,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "willow - dancing witch version (Elvira remix)",
@@ -1279,7 +1351,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         }
       ]
     },
@@ -1356,7 +1432,11 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "willow - moonlit witch version",
@@ -1426,7 +1506,11 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         }
       ]
     }

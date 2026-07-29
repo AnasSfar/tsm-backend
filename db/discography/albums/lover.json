@@ -1,7 +1,7 @@
 {
   "album": "Lover",
-  "section_count": 5,
-  "track_count": 34,
+  "section_count": 6,
+  "track_count": 36,
   "sections": [
     {
       "section": "standard_edition",
@@ -72,7 +72,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Cruel Summer",
@@ -140,7 +144,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Lover",
@@ -206,7 +214,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "The Man",
@@ -272,7 +284,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "The Archer",
@@ -338,7 +354,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "I Think He Knows",
@@ -404,7 +424,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Miss Americana & The Heartbreak Prince",
@@ -470,7 +494,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Paper Rings",
@@ -536,7 +564,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Cornelia Street",
@@ -602,7 +634,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Death By A Thousand Cuts",
@@ -668,7 +704,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "London Boy",
@@ -734,7 +774,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Soon You'll Get Better (feat. The Chicks)",
@@ -778,7 +822,11 @@
           "filter_tag_sources": {
             "feature": "high:type_or_primary_artist",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "False God",
@@ -844,7 +892,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "You Need To Calm Down",
@@ -910,7 +962,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Afterglow",
@@ -976,7 +1032,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "ME! (feat. Brendon Urie of Panic! At The Disco)",
@@ -1042,7 +1102,11 @@
           "filter_tag_sources": {
             "feature": "high:type_or_primary_artist",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "It's Nice To Have A Friend",
@@ -1083,7 +1147,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Daylight",
@@ -1149,7 +1217,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         }
       ]
     },
@@ -1226,7 +1298,12 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": false,
+          "category": "other",
+          "display_album": "Lover",
+          "tags": [],
+          "chart_extra": false
         }
       ]
     },
@@ -1276,7 +1353,12 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": false,
+          "category": "soundtrack",
+          "display_album": "Lover",
+          "tags": [],
+          "chart_extra": false
         }
       ]
     },
@@ -1324,7 +1406,11 @@
           "filter_tag_sources": {
             "collab": "high:artists_or_featured_artists",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "Lover - First Dance Remix",
@@ -1390,7 +1476,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "Lover - Live From Paris",
@@ -1458,7 +1548,11 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "live": "high:type_title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
         },
         {
           "title": "You Need To Calm Down - Clean Bandit Remix",
@@ -1524,7 +1618,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "You Need To Calm Down - Live From Paris",
@@ -1592,7 +1690,11 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "live": "high:type_title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
         },
         {
           "title": "Cornelia Street - Live From Paris",
@@ -1660,7 +1762,11 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "live": "high:type_title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
         },
         {
           "title": "Daylight - Live From Paris",
@@ -1728,7 +1834,11 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "live": "high:type_title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
         },
         {
           "title": "Death By A Thousand Cuts - Live From Paris",
@@ -1796,7 +1906,11 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "live": "high:type_title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
         },
         {
           "title": "The Archer - Live From Paris",
@@ -1864,7 +1978,11 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "live": "high:type_title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
         },
         {
           "title": "The Man - Live From Paris",
@@ -1932,7 +2050,11 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "live": "high:type_title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
         },
         {
           "title": "ME! - Live From Paris",
@@ -1997,72 +2119,19 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "live": "high:type_title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
         }
       ]
     },
     {
       "section": "cruel_summer_single",
-      "track_count": 3,
+      "track_count": 2,
       "chart_extra": true,
       "tracks": [
-        {
-          "title": "Cruel Summer - Live from TS",
-          "url": "The Eras Tour",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 2,
-          "base_title": "Cruel Summer",
-          "album": "Lover",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Cruel Summer - Live from TS",
-          "song_family": "cruel_summer",
-          "version_tag": "live__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
-          "historical_track_ids": [],
-          "genres": [
-            "electropop",
-            "pop",
-            "synth-pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "electropop": 3.0,
-            "pop": 2.0,
-            "synth-pop": 1.0
-          },
-          "genre_sources": {
-            "lastfm": [
-              "electropop",
-              "pop",
-              "synth-pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "electropop",
-              "pop",
-              "synthpop",
-              "industrial pop",
-              "pop perfection",
-              "synthwave",
-              "2019",
-              "the best of 2019",
-              "love at first listen",
-              "soty"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Cruel Summer"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:cruel_summer"
-        },
         {
           "title": "Cruel Summer - LP Giobbi Remix",
           "url": "https://open.spotify.com/intl-fr/track/37jfioVu3Bd2Du9bteXNDU",
@@ -2129,7 +2198,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "Cruel Summer - LP Giobbi Remix - Extended Version",
@@ -2195,9 +2268,155 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         }
       ]
+    },
+    {
+      "section": "streaming_extras",
+      "track_count": 3,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "Cruel Summer - Live from TS | The Eras Tour",
+          "url": "https://open.spotify.com/intl-fr/track/6ClYMObS7f3Nn4AiZHYQt3",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10000,
+          "base_title": "Cruel Summer",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Cruel Summer - Live from TS | The Eras Tour",
+          "song_family": "cruel_summer",
+          "version_tag": "live",
+          "release_date": "2023-10-19T00:00:00Z",
+          "historical_track_ids": [
+            "6EXHGKZ79AUTzCe9BMZjhT"
+          ],
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273f669b4e7f0327c92909bc762",
+          "genres": [
+            "electropop",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "synthpop",
+              "industrial pop",
+              "pop perfection",
+              "synthwave",
+              "2019",
+              "the best of 2019",
+              "love at first listen",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Cruel Summer"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cruel_summer",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "live": "high:type_title_or_section"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": [],
+          "chart_extra": true
+        },
+        {
+          "title": "Soon You’ll Get Better - One World: Together At Home",
+          "url": "https://open.spotify.com/intl-fr/track/4b3wGyyabId64t9rjMFdfY",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9999,
+          "base_title": "Soon You’ll Get Better - One World: Together At Home",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Soon You’ll Get Better - One World: Together At Home",
+          "song_family": "soon_youll_get_better",
+          "version_tag": null,
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273d43806cf68e3984ed158f1a7",
+          "release_date": null,
+          "historical_track_ids": [],
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "other",
+          "tags": [],
+          "chart_extra": true
+        },
+        {
+          "title": "Me! - Cover",
+          "url": "https://open.spotify.com/track/5BHa3hmDOiT6s7QQc0TT37",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10064,
+          "base_title": "Me!",
+          "album": "Lover",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Me! - Cover",
+          "song_family": "me_chartsnapshot_external_5BHa3hmD",
+          "version_tag": "cover",
+          "version_tags": [
+            "cover"
+          ],
+          "catalog_category": "cover",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "cover",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Women's version of muscle training BGM -Latest Western music-",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2730b9c7b4ca368ae2213a5722b",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "other",
+          "tags": []
+        }
+      ],
+      "album": "Lover"
     }
   ]
 }

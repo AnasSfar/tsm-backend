@@ -1,0 +1,2670 @@
+{
+  "album": "folklore",
+  "section_count": 7,
+  "track_count": 39,
+  "sections": [
+    {
+      "section": "standard_edition",
+      "track_count": 16,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "the 1",
+          "url": "https://open.spotify.com/intl-fr/track/0P9wLFurlgumLXuqFEpw52",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 1,
+          "base_title": "the 1",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "the 1",
+          "song_family": "the_1",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": [
+            "0Jlcvv8IykzHaSmj49uNW8"
+          ],
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "folk",
+            "soft rock",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "soft rock": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "soft rock",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "soft rock",
+              "pop",
+              "indie pop",
+              "chamber pop",
+              "singer-songwriter",
+              "indie",
+              "folk pop",
+              "indie folk",
+              "overrated"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "the 1"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_1",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "cardigan",
+          "url": "https://open.spotify.com/intl-fr/track/4R2kfaDFhslZEMJqAFNpdd",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 2,
+          "base_title": "cardigan",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "cardigan",
+          "song_family": "cardigan",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": [
+            "7zcnlq38eqNWyUF6eNaB5Z",
+            "4LEK9rD7TWIG4FCL1s27XC"
+          ],
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "folk pop",
+            "folk",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {},
+          "genre_raw_sources": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:cardigan",
+          "genre_query_titles": {
+            "lastfm": "cardigan"
+          },
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "the last great american dynasty",
+          "url": "https://open.spotify.com/intl-fr/track/4ojxSyrEraN7d46BMBPThZ",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 3,
+          "base_title": "the last great american dynasty",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "the last great american dynasty",
+          "song_family": "the_last_great_american_dynasty",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": [
+            "2Eeur20xVqfUoM3Q7EFPFt"
+          ],
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "indie pop",
+            "pop",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "indie pop": 3.0,
+            "pop": 2.0,
+            "alternative": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "indie pop",
+              "pop",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "indie pop",
+              "pop",
+              "alternative",
+              "folk",
+              "singer-songwriter",
+              "indie",
+              "folk pop",
+              "chamber pop",
+              "overrated",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "the last great american dynasty"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_last_great_american_dynasty",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "exile (feat. Bon Iver)",
+          "url": "https://open.spotify.com/intl-fr/track/4pvb0WLRcMtbPGmtejJJ6y",
+          "type": "feature",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 4,
+          "base_title": "exile (feat. Bon Iver)",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Bon Iver"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Bon Iver"
+          ],
+          "title_clean": "exile",
+          "song_family": "exile",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": [
+            "6kz2hkq1xQvDqPcUyBkw8f"
+          ],
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "folk",
+            "indie folk",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "indie folk": 2.0,
+            "alternative": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "indie folk",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "indie folk",
+              "alternative",
+              "pop",
+              "2020",
+              "chamber pop",
+              "Ballad",
+              "peter",
+              "singer-songwriter",
+              "folk pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "exile (feat. Bon Iver)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:exile",
+          "filter_tags": [
+            "feature",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "my tears ricochet",
+          "url": "https://open.spotify.com/intl-fr/track/1MgV7FIyNxIG7WzMRJV5HC",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 5,
+          "base_title": "my tears ricochet",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "my tears ricochet",
+          "song_family": "my_tears_ricochet",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": [
+            "0Oju1YcbPCJuUQQWoZNdJK",
+            "1DnpjwTbSwV2V6O4PABMjW"
+          ],
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "folk",
+            "indie pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "indie pop": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "pop",
+              "sad",
+              "chamber pop",
+              "gospel",
+              "Ballad",
+              "arena-goth",
+              "indie",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "my tears ricochet"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:my_tears_ricochet",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "mirrorball",
+          "url": "https://open.spotify.com/intl-fr/track/5jQyGzcwqAxwT5QUIMivoX",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 6,
+          "base_title": "mirrorball",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "mirrorball",
+          "song_family": "mirrorball",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": [
+            "0ZNU020wNYvgW84iljPkPP"
+          ],
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "dream pop",
+            "folk",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "dream pop": 3.0,
+            "folk": 2.0,
+            "alternative": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "dream pop",
+              "folk",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "dream pop",
+              "folk",
+              "alternative",
+              "pop",
+              "indie folk",
+              "overrated",
+              "jangle pop",
+              "indie",
+              "chamber pop",
+              "folk pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "mirrorball"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:mirrorball",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "seven",
+          "url": "https://open.spotify.com/intl-fr/track/6KJqZcs9XDgVck7Lg9QOTC",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 7,
+          "base_title": "seven",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "seven",
+          "song_family": "seven",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": [
+            "2vJ7QvyCiR4DaHxwO58izA"
+          ],
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "folk",
+            "indie pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "indie pop": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "pop",
+              "chamber pop",
+              "indie folk",
+              "heartstopper",
+              "indie",
+              "singer-songwriter",
+              "dream pop",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "seven"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:seven",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "august",
+          "url": "https://open.spotify.com/intl-fr/track/3hUxzQpSfdDqwM3ZTFQY0K",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 8,
+          "base_title": "august",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "august",
+          "song_family": "august",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": [
+            "1UHoF9p75IVsvUt6WdTYhn",
+            "1X2cYhcDMfDtiRIYHZCpQu"
+          ],
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "folk"
+          ],
+          "genre_status": "manual",
+          "genre_scores": {
+            "folk": 999.0
+          },
+          "genre_sources": {},
+          "genre_raw_sources": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:august",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "this is me trying",
+          "url": "https://open.spotify.com/intl-fr/track/7kt9e9LFSpN1zQtYEl19o1",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 9,
+          "base_title": "this is me trying",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "this is me trying",
+          "song_family": "this_is_me_trying",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": [
+            "0j5renyfv1ChCoe1ca7bDP",
+            "5DnDBYrfGoxdnomqEAkFIv"
+          ],
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "dream pop",
+            "folk",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "dream pop": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "dream pop",
+              "folk",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "dream pop",
+              "folk",
+              "chamber pop",
+              "pop",
+              "indie folk",
+              "overrated",
+              "orchestral pop",
+              "oto",
+              "indie",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "this is me trying"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:this_is_me_trying",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "illicit affairs",
+          "url": "https://open.spotify.com/intl-fr/track/2NmsngXHeC1GQ9wWrzhOMf",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 10,
+          "base_title": "illicit affairs",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "illicit affairs",
+          "song_family": "illicit_affairs",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": [
+            "7CVTowKpGPA2MsIbkTl2oc"
+          ],
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "indie folk",
+            "folk",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "indie folk": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "indie folk",
+              "folk",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "indie folk",
+              "folk",
+              "pop",
+              "indie",
+              "singer-songwriter",
+              "folk pop",
+              "female vocalists",
+              "overrated",
+              "contemporary folk",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "illicit affairs"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:illicit_affairs",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "invisible string",
+          "url": "https://open.spotify.com/intl-fr/track/6VsvKPJ4xjVNKpI8VVZ3SV",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 11,
+          "base_title": "invisible string",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "invisible string",
+          "song_family": "invisible_string",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": [
+            "3yz88FVJQhwG2EqYHw3pkx",
+            "4WHIqhrbdva5vQSrCuet3l"
+          ],
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "folk",
+            "indie pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "indie pop": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "Nashville",
+              "indie",
+              "Love",
+              "pop",
+              "singer-songwriter",
+              "chamber pop",
+              "indie folk",
+              "folk pop",
+              "overrated"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "invisible string"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:invisible_string",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "mad woman",
+          "url": "https://open.spotify.com/intl-fr/track/2QDyYdZyhlP2fp79KZX8Bi",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 12,
+          "base_title": "mad woman",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "mad woman",
+          "song_family": "mad_woman",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": [
+            "7klXN6RCN5Rj0VeYO5gBzU"
+          ],
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "folk",
+            "indie pop",
+            "indie folk"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "indie pop": 2.0,
+            "indie folk": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "indie folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "indie",
+              "indie folk",
+              "singer-songwriter",
+              "pop",
+              "indie pop",
+              "alternative",
+              "folk pop",
+              "indietronica",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "mad woman"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:mad_woman",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "epiphany",
+          "url": "https://open.spotify.com/intl-fr/track/08fa9LFcFBTcilB3iq2e2A",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 13,
+          "base_title": "epiphany",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "epiphany",
+          "song_family": "epiphany",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": [
+            "5MFjHn1qfR9AsWuyzJLk1z"
+          ],
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "pop",
+            "folk",
+            "indie pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "folk": 2.0,
+            "indie pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "folk",
+              "indie pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "chamber pop",
+              "ambient",
+              "folk",
+              "indie",
+              "pop",
+              "Soundtrack Of My Life",
+              "indie pop",
+              "singer-songwriter",
+              "americana",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "epiphany"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:epiphany",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "betty",
+          "url": "https://open.spotify.com/intl-fr/track/5kI4eCXXzyuIUXjQra0Cxi",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 14,
+          "base_title": "betty",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "betty",
+          "song_family": "betty",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": [
+            "0x3CUvkL4jUPYVONrYUubR",
+            "2jhfs6moEAK13eLM6xim4l"
+          ],
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "folk",
+            "country",
+            "folk pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "country": 2.0,
+            "folk pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "country",
+              "folk pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "country",
+              "folk rock",
+              "folk pop",
+              "2020",
+              "singer-songwriter",
+              "americana",
+              "2020s",
+              "guitar pop",
+              "pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "betty"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:betty",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "peace",
+          "url": "https://open.spotify.com/intl-fr/track/7MbT4I8qGntX4fMdqMQgke",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 15,
+          "base_title": "peace",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "peace",
+          "song_family": "peace",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": [
+            "6rTUr8OpU5kcSqLGL2TmyR",
+            "0O9i6jhscByEJs1ipy5hu4"
+          ],
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "folk",
+            "pop",
+            "indie pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "pop": 2.0,
+            "indie pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "pop",
+              "indie pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "Lo-Fi",
+              "pop",
+              "indie",
+              "rnb",
+              "indie pop",
+              "ambient",
+              "indie folk",
+              "indie-pop",
+              "chill out"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "peace"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:peace",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "hoax",
+          "url": "https://open.spotify.com/intl-fr/track/6MWoRt97mnSTXZhu3ggi9C",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 16,
+          "base_title": "hoax",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "hoax",
+          "song_family": "hoax",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27395f754318336a07e85ec59bc",
+          "historical_track_ids": [
+            "6G61EqJgoEJhWaBT34jMyW",
+            "4XCYmu7QLySdIahgBALKJK"
+          ],
+          "release_date": "2020-07-24T00:00:00Z",
+          "genres": [
+            "indie pop",
+            "folk",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "indie pop": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "indie pop",
+              "folk",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "indie pop",
+              "folk",
+              "pop",
+              "indie",
+              "IndieFolk",
+              "alternative",
+              "Ballad",
+              "indietronica",
+              "indie folk",
+              "poetry"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "hoax"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:hoax",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "section": "deluxe_edition",
+      "track_count": 1,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "the lakes - bonus track",
+          "url": "https://open.spotify.com/intl-fr/track/0eFQWVz0qIxDOvhLpZ40P7",
+          "type": "alternate_version",
+          "edition": "deluxe",
+          "display_section": "deluxe edition",
+          "display_order": 1,
+          "base_title": "the lakes - bonus track",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "the lakes - bonus track",
+          "song_family": "the_lakes_bonus_track",
+          "version_tag": "deluxe__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273c288028c2592f400dd0b9233",
+          "historical_track_ids": [
+            "5dwQhzeE8LXpl9sbZJZmQS",
+            "0zEprKYeuGOIZoHyu6O1E2",
+            "4LghBuFPMgETxG6NcfoDp4"
+          ],
+          "release_date": "2020-08-17T00:00:00Z",
+          "genres": [
+            "folk",
+            "indie pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "indie pop": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "indie",
+              "orchestral",
+              "baroque pop",
+              "indie folk",
+              "poetry",
+              "female vocalist",
+              "folklore",
+              "contemporary folk",
+              "heaven"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "the lakes - bonus track"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_lakes_bonus_track",
+          "filter_tags": [
+            "solo",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "deluxe",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "section": "long_pond_studio_sessions",
+      "track_count": 13,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "my tears ricochet - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/5mdNyCS7ttVcAyVYOIFEjs",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 5,
+          "base_title": "my tears ricochet - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "my tears ricochet - the long pond studio sessions",
+          "song_family": "my_tears_ricochet",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": [
+            "5JWgJQPrAD6LJbS8ILpy8i"
+          ],
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "folk",
+            "indie pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "indie pop": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "pop",
+              "sad",
+              "chamber pop",
+              "gospel",
+              "Ballad",
+              "arena-goth",
+              "indie",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "my tears ricochet"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:my_tears_ricochet",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "deluxe",
+          "tags": []
+        },
+        {
+          "title": "mirrorball - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/2yceD2hx5HhOLgkm1CITCi",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 6,
+          "base_title": "mirrorball - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "mirrorball - the long pond studio sessions",
+          "song_family": "mirrorball",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": [
+            "3Z76GkyDvIAewkgwWvixpc"
+          ],
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "dream pop",
+            "folk",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "dream pop": 3.0,
+            "folk": 2.0,
+            "alternative": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "dream pop",
+              "folk",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "dream pop",
+              "folk",
+              "alternative",
+              "pop",
+              "indie folk",
+              "overrated",
+              "jangle pop",
+              "indie",
+              "chamber pop",
+              "folk pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "mirrorball"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:mirrorball",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "deluxe",
+          "tags": []
+        },
+        {
+          "title": "seven - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/4cOWq0cVsKjxaQpRMbDoH1",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 7,
+          "base_title": "seven - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "seven - the long pond studio sessions",
+          "song_family": "seven",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": [
+            "7cPrz6ZMELLtuV8739mvE3"
+          ],
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "folk",
+            "indie pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "indie pop": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "pop",
+              "chamber pop",
+              "indie folk",
+              "heartstopper",
+              "indie",
+              "singer-songwriter",
+              "dream pop",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "seven"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:seven",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "deluxe",
+          "tags": []
+        },
+        {
+          "title": "august - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/4MGexoZc12lqE0hYkq9YYx",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 8,
+          "base_title": "august - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "august - the long pond studio sessions",
+          "song_family": "august",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": [
+            "4Sj0m6AOQRgczw8Q4Q6jb0"
+          ],
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "folk"
+          ],
+          "genre_status": "manual",
+          "genre_scores": {
+            "folk": 999.0
+          },
+          "genre_sources": {},
+          "genre_raw_sources": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:august",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "deluxe",
+          "tags": []
+        },
+        {
+          "title": "this is me trying - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/1gaLZjPrDnHQWJds2Jg4KT",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 9,
+          "base_title": "this is me trying - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "this is me trying - the long pond studio sessions",
+          "song_family": "this_is_me_trying",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": [
+            "3np6rogpYUEmSeXPYy7gq4"
+          ],
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "dream pop",
+            "folk",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "dream pop": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "dream pop",
+              "folk",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "dream pop",
+              "folk",
+              "chamber pop",
+              "pop",
+              "indie folk",
+              "overrated",
+              "orchestral pop",
+              "oto",
+              "indie",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "this is me trying"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:this_is_me_trying",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "deluxe",
+          "tags": []
+        },
+        {
+          "title": "illicit affairs - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/560uQyz3p5G9WdnMX39xc6",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 10,
+          "base_title": "illicit affairs - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "illicit affairs - the long pond studio sessions",
+          "song_family": "illicit_affairs",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": [
+            "3Qc5EXc8KGy8Z0f8yGKYDW"
+          ],
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "indie folk",
+            "folk",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "indie folk": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "indie folk",
+              "folk",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "indie folk",
+              "folk",
+              "pop",
+              "indie",
+              "singer-songwriter",
+              "folk pop",
+              "female vocalists",
+              "overrated",
+              "contemporary folk",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "illicit affairs"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:illicit_affairs",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "deluxe",
+          "tags": []
+        },
+        {
+          "title": "invisible string - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/5KByGq0JijSSDcy0qzuINs",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 11,
+          "base_title": "invisible string - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "invisible string - the long pond studio sessions",
+          "song_family": "invisible_string",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": [
+            "1FRF7olkTDWPwHf5JwYudq"
+          ],
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "folk",
+            "indie pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "indie pop": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "Nashville",
+              "indie",
+              "Love",
+              "pop",
+              "singer-songwriter",
+              "chamber pop",
+              "indie folk",
+              "folk pop",
+              "overrated"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "invisible string"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:invisible_string",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "deluxe",
+          "tags": []
+        },
+        {
+          "title": "mad woman - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/04xrhDrQ2WOW8GLwu7kbc0",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 12,
+          "base_title": "mad woman - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "mad woman - the long pond studio sessions",
+          "song_family": "mad_woman",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": [
+            "1Io0cp5dOYJWCKpCBDopdM"
+          ],
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "folk",
+            "indie pop",
+            "indie folk"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "indie pop": 2.0,
+            "indie folk": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "indie pop",
+              "indie folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "indie",
+              "indie folk",
+              "singer-songwriter",
+              "pop",
+              "indie pop",
+              "alternative",
+              "folk pop",
+              "indietronica",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "mad woman"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:mad_woman",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "deluxe",
+          "tags": []
+        },
+        {
+          "title": "epiphany - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/4yyKppX85ZkmlGOC2toBZA",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 13,
+          "base_title": "epiphany - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "epiphany - the long pond studio sessions",
+          "song_family": "epiphany",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": [
+            "0Zm4whQzxgdgh5kNW1budX"
+          ],
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "pop",
+            "folk",
+            "indie pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "folk": 2.0,
+            "indie pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "folk",
+              "indie pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "chamber pop",
+              "ambient",
+              "folk",
+              "indie",
+              "pop",
+              "Soundtrack Of My Life",
+              "indie pop",
+              "singer-songwriter",
+              "americana",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "epiphany"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:epiphany",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "deluxe",
+          "tags": []
+        },
+        {
+          "title": "betty - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/1mh5dObNoOvCfHmXnhvDEK",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 14,
+          "base_title": "betty - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "betty - the long pond studio sessions",
+          "song_family": "betty",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": [
+            "7ojfyws0WASED96XBzRbd6"
+          ],
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "folk",
+            "country",
+            "folk pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "country": 2.0,
+            "folk pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "country",
+              "folk pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "country",
+              "folk rock",
+              "folk pop",
+              "2020",
+              "singer-songwriter",
+              "americana",
+              "2020s",
+              "guitar pop",
+              "pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "betty"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:betty",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "deluxe",
+          "tags": []
+        },
+        {
+          "title": "peace - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/4YHHz3VIXgNDGdoL9xC1tx",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 15,
+          "base_title": "peace - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "peace - the long pond studio sessions",
+          "song_family": "peace",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": [
+            "38aA4mjtRF8ZNXWoCg1XOa"
+          ],
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "folk",
+            "pop",
+            "indie pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "pop": 2.0,
+            "indie pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "pop",
+              "indie pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "Lo-Fi",
+              "pop",
+              "indie",
+              "rnb",
+              "indie pop",
+              "ambient",
+              "indie folk",
+              "indie-pop",
+              "chill out"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "peace"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:peace",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "deluxe",
+          "tags": []
+        },
+        {
+          "title": "hoax - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/0QTBsdoJhamY3Aid3fOsOd",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 16,
+          "base_title": "hoax - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "hoax - the long pond studio sessions",
+          "song_family": "hoax",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": [
+            "39z0Ktcc9Zvnim7C3YXvpC"
+          ],
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "indie pop",
+            "folk",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "indie pop": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "indie pop",
+              "folk",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "indie pop",
+              "folk",
+              "pop",
+              "indie",
+              "IndieFolk",
+              "alternative",
+              "Ballad",
+              "indietronica",
+              "indie folk",
+              "poetry"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "hoax"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:hoax",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "deluxe",
+          "tags": []
+        },
+        {
+          "title": "the lakes - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/6mqyTq948oap5AkyTsd6XF",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 17,
+          "base_title": "the lakes - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "the lakes - the long pond studio sessions",
+          "song_family": "the_lakes",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "historical_track_ids": [
+            "2BDBBNaWZf2ueZwp4h52b2"
+          ],
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_lakes",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "deluxe",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "album": "folklore",
+      "section": "soundtracks",
+      "track_count": 2,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Carolina - \"Where The Crawdads Sing\" - Video Edition",
+          "url": "https://open.spotify.com/intl-fr/track/12xIjI9A9UlB6zEc7kyZ06",
+          "type": "soundtrack",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "Carolina - \"Where The Crawdads Sing\" - Video Edition",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Carolina - \"Where The Crawdads Sing\" - Video Edition",
+          "song_family": "carolina_where_the_crawdads_sing_video_edition",
+          "version_tag": "soundtrack",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732c683c1b9fa1b711499408f7",
+          "display_era": "folklore",
+          "historical_track_ids": [],
+          "release_date": "2022-06-24T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:carolina_where_the_crawdads_sing_video_edition",
+          "filter_tags": [
+            "solo",
+            "soundtrack"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "soundtrack": "high:title_album_or_section"
+          },
+          "on_album": false,
+          "category": "soundtrack",
+          "display_album": "folklore",
+          "tags": []
+        },
+        {
+          "title": "Carolina - From The Motion Picture “Where The Crawdads Sing”",
+          "url": "https://open.spotify.com/intl-fr/track/4axSuOg3BqsowKjRpj59RU",
+          "type": "soundtrack",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "Carolina - From The Motion Picture “Where The Crawdads Sing”",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Carolina - From The Motion Picture “Where The Crawdads Sing”",
+          "song_family": "carolina_from_the_motion_picture_where_the_crawdads_sing",
+          "version_tag": "soundtrack",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732c683c1b9fa1b711499408f7",
+          "display_era": "folklore",
+          "historical_track_ids": [
+            "2SVQOjsBI42bbaEeBFk5Uy"
+          ],
+          "release_date": "2022-06-24T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:carolina_from_the_motion_picture_where_the_crawdads_sing",
+          "filter_tags": [
+            "solo",
+            "soundtrack"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "soundtrack": "high:title_album_or_section"
+          },
+          "on_album": false,
+          "category": "soundtrack",
+          "display_album": "folklore",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "section": "extras",
+      "track_count": 1,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "the lakes - original version",
+          "url": "https://open.spotify.com/track/0UAdDYrkCvVQftaKpL6q5f",
+          "type": "standalone",
+          "edition": "other editions",
+          "display_section": "deluxe edition",
+          "display_order": 1,
+          "base_title": "the lakes",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "the lakes - original version",
+          "song_family": "the_lakes",
+          "version_tag": "deluxe__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737d60bda8f85d66599c3fe851",
+          "historical_track_ids": [],
+          "release_date": "2021-07-24T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_lakes",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "deluxe",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "album": "folklore",
+      "section": "streaming_extras",
+      "track_count": 4,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "the 1 - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/08J4bMHbILkwSIhbtrcvjN",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 1,
+          "base_title": "the 1 - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "the 1 - the long pond studio sessions",
+          "song_family": "the_1",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "display_era": "folklore",
+          "historical_track_ids": [
+            "5deqOCwIaLPld1dCj4FqRM"
+          ],
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "folk",
+            "soft rock",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "soft rock": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "soft rock",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "soft rock",
+              "pop",
+              "indie pop",
+              "chamber pop",
+              "singer-songwriter",
+              "indie",
+              "folk pop",
+              "indie folk",
+              "overrated"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "the 1"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_1",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "display_album": "folklore",
+          "tags": []
+        },
+        {
+          "title": "cardigan - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/3EPgWM1zfTSzEc0z4AwWTM",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 2,
+          "base_title": "cardigan - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "cardigan - the long pond studio sessions",
+          "song_family": "cardigan",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "display_era": "folklore",
+          "historical_track_ids": [
+            "1bdZ8KOFXEqI4nPR2mErtl"
+          ],
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "folk pop",
+            "folk",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {},
+          "genre_raw_sources": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:cardigan",
+          "genre_query_titles": {
+            "lastfm": "cardigan"
+          },
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "display_album": "folklore",
+          "tags": []
+        },
+        {
+          "title": "the last great american dynasty - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/28tIMaewZuGR8urkvFhQyA",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 3,
+          "base_title": "the last great american dynasty - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "the last great american dynasty - the long pond studio sessions",
+          "song_family": "the_last_great_american_dynasty",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "display_era": "folklore",
+          "historical_track_ids": [
+            "09Ez3CZ2kXszZwYoyKpYH9"
+          ],
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [
+            "indie pop",
+            "pop",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "indie pop": 3.0,
+            "pop": 2.0,
+            "alternative": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "indie pop",
+              "pop",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "indie pop",
+              "pop",
+              "alternative",
+              "folk",
+              "singer-songwriter",
+              "indie",
+              "folk pop",
+              "chamber pop",
+              "overrated",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "the last great american dynasty"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_last_great_american_dynasty",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "display_album": "folklore",
+          "tags": []
+        },
+        {
+          "title": "exile (feat. Bon Iver) - the long pond studio sessions",
+          "url": "https://open.spotify.com/intl-fr/track/7N015NTIWGjQDddHUdHPoO",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "long pond studio sessions",
+          "display_order": 4,
+          "base_title": "exile (feat. Bon Iver) - the long pond studio sessions",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "exile (feat. Bon Iver) - the long pond studio sessions",
+          "song_family": "exile_feat_bon_iver",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
+          "display_era": "folklore",
+          "historical_track_ids": [
+            "7bFqfMKnKsZJH9FytUXg3E"
+          ],
+          "release_date": "2020-11-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:exile_feat_bon_iver",
+          "filter_tags": [
+            "collab",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "collab": "high:artists_or_featured_artists",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "display_album": "folklore",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "section": "remixes_and_live",
+      "track_count": 2,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "betty - Live from the 2020 Academy of Country Music Awards",
+          "url": "https://open.spotify.com/intl-fr/track/4GS68CE8nKLIKjjapiSm2I",
+          "type": "alternate_version",
+          "edition": "live",
+          "display_section": "Other Editions",
+          "display_order": 1,
+          "base_title": "betty",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "betty - Live from the 2020 Academy of Country Music Awards",
+          "song_family": "betty",
+          "version_tag": "live__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2736761ef4b8f9e8b2007f4d8c3",
+          "historical_track_ids": [
+            "1hm4V38egkiHOgxTUpu0zg"
+          ],
+          "release_date": "2020-09-18T00:00:00Z",
+          "genres": [
+            "folk",
+            "country",
+            "folk pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "country": 2.0,
+            "folk pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "country",
+              "folk pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "country",
+              "folk rock",
+              "folk pop",
+              "2020",
+              "singer-songwriter",
+              "americana",
+              "2020s",
+              "guitar pop",
+              "pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "betty"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:betty",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "live",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "live": "high:type_title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
+        },
+        {
+          "title": "cardigan - cabin in candlelight version",
+          "url": "https://open.spotify.com/intl-fr/track/2hmafYGj1CXYKIYcMnX4lj",
+          "type": "alternate_version",
+          "edition": "live",
+          "display_section": "Other Editions",
+          "display_order": 2,
+          "base_title": "cardigan",
+          "album": "folklore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "cardigan - cabin in candlelight version",
+          "song_family": "cardigan",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27326ade10c17424417bd06f1d6",
+          "historical_track_ids": [],
+          "release_date": "2020-07-30T00:00:00Z",
+          "genres": [
+            "folk pop",
+            "folk",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {},
+          "genre_raw_sources": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:cardigan",
+          "genre_query_titles": {
+            "lastfm": "cardigan"
+          },
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2321 @@
+{
+  "album": "reputation",
+  "section_count": 6,
+  "track_count": 37,
+  "sections": [
+    {
+      "section": "standard_edition",
+      "track_count": 15,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "...Ready For It?",
+          "url": "https://open.spotify.com/intl-fr/track/2yLa0QULdQr0qAIvVwN6B5",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 1,
+          "base_title": "...Ready For It?",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "...Ready For It?",
+          "song_family": "ready_for_it",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "historical_track_ids": [],
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "2017",
+              "industrial",
+              "pop rap",
+              "EDM",
+              "industrial pop",
+              "reputation",
+              "electronic",
+              "Hip-Hop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "...Ready For It?"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:ready_for_it",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "End Game",
+          "url": "https://open.spotify.com/intl-fr/track/2x0WlnmfG39ZuDmstl9xfX",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 2,
+          "base_title": "End Game",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "End Game",
+          "song_family": "end_game",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "historical_track_ids": [],
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "rnb",
+              "pop rap",
+              "future",
+              "Ed Sheeran",
+              "rap",
+              "power pop",
+              "Hip-Hop",
+              "female vocalist",
+              "electropop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "End Game"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:end_game",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "I Did Something Bad",
+          "url": "https://open.spotify.com/intl-fr/track/4svZDCRz4cJoneBpjpx8DJ",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 3,
+          "base_title": "I Did Something Bad",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Did Something Bad",
+          "song_family": "i_did_something_bad",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "historical_track_ids": [
+            "2nOeoic483mcNOx5TFpc3L"
+          ],
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "dance-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "dance-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "dubstep",
+              "EDM",
+              "electropop",
+              "taylor swift",
+              "Grunge",
+              "electro-trap",
+              "dance-pop",
+              "love at first listen",
+              "electronic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "I Did Something Bad"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_did_something_bad",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "Don't Blame Me",
+          "url": "https://open.spotify.com/intl-fr/track/1R0a2iXumgCiFb7HEZ7gUE",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 4,
+          "base_title": "Don't Blame Me",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Don't Blame Me",
+          "song_family": "don_t_blame_me",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "historical_track_ids": [],
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:don_t_blame_me",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "Delicate",
+          "url": "https://open.spotify.com/intl-fr/track/6NFyWDv5CjfwuzoCkw47Xf",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 5,
+          "base_title": "Delicate",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Delicate",
+          "song_family": "delicate",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "historical_track_ids": [
+            "5sOch9Cf4uxcMtwFzMtNqQ"
+          ],
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "taylor swift",
+              "tropical house",
+              "reputation",
+              "synthpop",
+              "synth-pop",
+              "delicate",
+              "female vocalists",
+              "slow"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Delicate"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:delicate",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "Look What You Made Me Do",
+          "url": "https://open.spotify.com/intl-fr/track/1P17dC1amhFzptugyAO7Il",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 6,
+          "base_title": "Look What You Made Me Do",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Look What You Made Me Do",
+          "song_family": "look_what_you_made_me_do",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "historical_track_ids": [
+            "1JbR9RDP3ogVNEWFgNXAjh"
+          ],
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "dance-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "dance-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance",
+              "Electroclash",
+              "reputation",
+              "2017",
+              "taylor swift",
+              "best of 2017",
+              "dance-pop",
+              "shade"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Look What You Made Me Do"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:look_what_you_made_me_do",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "So It Goes...",
+          "url": "https://open.spotify.com/intl-fr/track/5PxFv9yJEg9dxvbZggykro",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 7,
+          "base_title": "So It Goes...",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "So It Goes...",
+          "song_family": "so_it_goes",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "historical_track_ids": [
+            "41T04yafZVrjNq2FqvLtId"
+          ],
+          "release_date": "2017-11-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "trap",
+              "sexy",
+              "rnb",
+              "female vocalist",
+              "electronic",
+              "taylor swift",
+              "female vocalists",
+              "max martin"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "So It Goes..."
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:so_it_goes",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "Gorgeous",
+          "url": "https://open.spotify.com/intl-fr/track/1ZY1PqizIl78geGM4xWlEA",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 8,
+          "base_title": "Gorgeous",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Gorgeous",
+          "song_family": "gorgeous",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "historical_track_ids": [
+            "12WvaS3V4dPRBU2o37vX69"
+          ],
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "taylor swift",
+              "electropop",
+              "reputation",
+              "best of 2017",
+              "female vocalists",
+              "singer-songwriter",
+              "Joshua Bassett",
+              "synthpop",
+              "electronic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Gorgeous"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:gorgeous",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "Getaway Car",
+          "url": "https://open.spotify.com/intl-fr/track/0VE4kBnHJUgtMf0dy6DRmW",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 9,
+          "base_title": "Getaway Car",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Getaway Car",
+          "song_family": "getaway_car",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "historical_track_ids": [],
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "electropop",
+              "female vocalist",
+              "taylor swift",
+              "synth-pop",
+              "love at first listen",
+              "female vocalists",
+              "dance pop",
+              "2017"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Getaway Car"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:getaway_car",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "King Of My Heart",
+          "url": "https://open.spotify.com/intl-fr/track/7HuBDWi18s4aJM8UFnNheH",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 10,
+          "base_title": "King Of My Heart",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "King Of My Heart",
+          "song_family": "king_of_my_heart",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "historical_track_ids": [
+            "4d7JmiyEia47bpC1HhxUzY"
+          ],
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance",
+              "Love",
+              "female vocalist",
+              "synthpop",
+              "electronic",
+              "trap",
+              "female vocalists",
+              "puta"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "King Of My Heart"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:king_of_my_heart",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "Dancing With Our Hands Tied",
+          "url": "https://open.spotify.com/intl-fr/track/7I7JbDv63ZJJsSi24DyJrz",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 11,
+          "base_title": "Dancing With Our Hands Tied",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Dancing With Our Hands Tied",
+          "song_family": "dancing_with_our_hands_tied",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "historical_track_ids": [
+            "6P8j2SqbXOeaCvXh1ZXwWT"
+          ],
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "electropop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 3.0,
+            "pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "electropop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "future bass",
+              "dance",
+              "Drum and bass",
+              "taylor swift",
+              "electronic",
+              "female vocalist",
+              "contemporary rnb",
+              "love at first listen"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Dancing With Our Hands Tied"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:dancing_with_our_hands_tied",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "Dress",
+          "url": "https://open.spotify.com/intl-fr/track/6oVxXO5oQ4pTpO8RSnkzvv",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 12,
+          "base_title": "Dress",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Dress",
+          "song_family": "dress",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "historical_track_ids": [
+            "50GXx9eZeiVWB3bgMop7Ti"
+          ],
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "alternative": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "rnb",
+              "sexy",
+              "female vocalist",
+              "female vocalists",
+              "synth-pop",
+              "alt-pop",
+              "taylor swift",
+              "electro-rnb",
+              "contemporary rnb"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Dress"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:dress",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "This Is Why We Can't Have Nice Things",
+          "url": "https://open.spotify.com/intl-fr/track/07NxDD1iKCHbAldceD7QLP",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 13,
+          "base_title": "This Is Why We Can't Have Nice Things",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "This Is Why We Can't Have Nice Things",
+          "song_family": "this_is_why_we_can_t_have_nice_things",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "historical_track_ids": [],
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "dance-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "dance-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance",
+              "electronic",
+              "bubblegum pop",
+              "Kanye West",
+              "dance pop",
+              "shade",
+              "trap",
+              "contemporary rnb"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "This Is Why We Can't Have Nice Things"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:this_is_why_we_can_t_have_nice_things",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "Call It What You Want",
+          "url": "https://open.spotify.com/intl-fr/track/1GwMQaZz6Au3QLDbjbMdme",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 14,
+          "base_title": "Call It What You Want",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Call It What You Want",
+          "song_family": "call_it_what_you_want",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "historical_track_ids": [],
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "reputation",
+              "rnb",
+              "taylor swift",
+              "synth-pop",
+              "synthpop",
+              "dream pop",
+              "female vocalist",
+              "reputacao"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Call It What You Want"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:call_it_what_you_want",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "New Year's Day",
+          "url": "https://open.spotify.com/intl-fr/track/7F5oktn5YOsR9eR5YsFtqb",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 15,
+          "base_title": "New Year's Day",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "New Year's Day",
+          "song_family": "new_year_s_day",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "historical_track_ids": [],
+          "release_date": "2017-11-10T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:new_year_s_day",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        }
+      ]
+    },
+    {
+      "section": "standalone",
+      "track_count": 1,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "I Don't Wanna Live Forever (Fifty Shades Darker)",
+          "url": "https://open.spotify.com/intl-fr/track/2y5aJvzXhHPA94U5GFAcXe",
+          "type": "soundtrack",
+          "edition": "extras",
+          "display_section": "Soundtrack Feature",
+          "display_order": 1,
+          "base_title": "I Don't Wanna Live Forever (Fifty Shades Darker)",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": "Zayn",
+          "artists": [
+            "Taylor Swift",
+            "Zayn"
+          ],
+          "title_clean": "I Don't Wanna Live Forever (Fifty Shades Darker)",
+          "song_family": "i_don_t_wanna_live_forever_fifty_shades_darker",
+          "version_tag": "soundtrack",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2735997605214d568d73fd365c2",
+          "historical_track_ids": [
+            "55n9yjI6qqXh5F2mYvUc2y",
+            "3NdDpSvN911VPGivFlV5d0"
+          ],
+          "release_date": "2017-11-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_don_t_wanna_live_forever_fifty_shades_darker",
+          "filter_tags": [
+            "collab",
+            "soundtrack",
+            "live"
+          ],
+          "filter_tag_sources": {
+            "collab": "high:artists_or_featured_artists",
+            "soundtrack": "high:title_album_or_section",
+            "live": "high:type_title_or_section"
+          }
+        }
+      ]
+    },
+    {
+      "section": "extras",
+      "track_count": 1,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "September - Recorded at The Tracking Room Nashville",
+          "url": "https://open.spotify.com/track/5eGX87IiKsGuzS3iw4CfCX",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "September - Recorded at The Tracking Room Nashville",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "September - Recorded at The Tracking Room Nashville",
+          "song_family": "september_recorded_at_the_tracking_room_nashville",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bae8f095c58e137855f6d230",
+          "historical_track_ids": [],
+          "release_date": "2018-04-13T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:september_recorded_at_the_tracking_room_nashville",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
+        }
+      ]
+    },
+    {
+      "album": "reputation",
+      "section": "streaming_extras",
+      "chart_extra": true,
+      "track_count": 1,
+      "tracks": [
+        {
+          "title": "...Ready For It? - BloodPopÃ‚Â® Remix",
+          "url": "https://open.spotify.com/intl-fr/track/1Ygm9KdH3wbzDekO8JgxcW",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9999,
+          "base_title": "...Ready For It? - BloodPopÃ‚Â® Remix",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "...Ready For It? - BloodPopÃ‚Â® Remix",
+          "song_family": "ready_for_it_bloodpopa_remix",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d41ccf8f43721c045a969300",
+          "display_era": "reputation",
+          "historical_track_ids": [],
+          "release_date": "2017-12-01T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "2017",
+              "industrial",
+              "pop rap",
+              "EDM",
+              "industrial pop",
+              "reputation",
+              "electronic",
+              "Hip-Hop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "...Ready For It?"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:ready_for_it_bloodpopa_remix",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "remix": "high:type_or_title"
+          }
+        }
+      ]
+    },
+    {
+      "section": "karaoke",
+      "track_count": 15,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "...Ready For It? - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/4twNUyTpLMPWokYmCdFDCH",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 1,
+          "base_title": "...Ready For It?",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "...Ready For It? - Karaoke Version",
+          "song_family": "ready_for_it",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
+          "historical_track_ids": [],
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "2017",
+              "industrial",
+              "pop rap",
+              "EDM",
+              "industrial pop",
+              "reputation",
+              "electronic",
+              "Hip-Hop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "...Ready For It?"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:ready_for_it",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Call It What You Want - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/1VPHQriwOsy5aGHLwwZyho",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 2,
+          "base_title": "Call It What You Want",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Call It What You Want - Karaoke Version",
+          "song_family": "call_it_what_you_want",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
+          "historical_track_ids": [],
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "reputation",
+              "rnb",
+              "taylor swift",
+              "synth-pop",
+              "synthpop",
+              "dream pop",
+              "female vocalist",
+              "reputacao"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Call It What You Want"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:call_it_what_you_want",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Dancing With Our Hands Tied - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/3ZfvKQxJp4zZshiJsRPoD1",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 3,
+          "base_title": "Dancing With Our Hands Tied",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Dancing With Our Hands Tied - Karaoke Version",
+          "song_family": "dancing_with_our_hands_tied",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
+          "historical_track_ids": [],
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "electropop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 3.0,
+            "pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "electropop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "future bass",
+              "dance",
+              "Drum and bass",
+              "taylor swift",
+              "electronic",
+              "female vocalist",
+              "contemporary rnb",
+              "love at first listen"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Dancing With Our Hands Tied"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:dancing_with_our_hands_tied",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Delicate - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/5Iadj8IBPrt634WW0yGPRI",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 4,
+          "base_title": "Delicate",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Delicate - Karaoke Version",
+          "song_family": "delicate",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
+          "historical_track_ids": [],
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "taylor swift",
+              "tropical house",
+              "reputation",
+              "synthpop",
+              "synth-pop",
+              "delicate",
+              "female vocalists",
+              "slow"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Delicate"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:delicate",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Don't Blame Me - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/5JtXBqKLdfzwedmlUjjqAm",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 5,
+          "base_title": "Don't Blame Me",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Don't Blame Me - Karaoke Version",
+          "song_family": "don_t_blame_me",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
+          "historical_track_ids": [],
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:don_t_blame_me",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Dress - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/2k0w1FGqvzVPgQ9VdTaJpe",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 6,
+          "base_title": "Dress",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Dress - Karaoke Version",
+          "song_family": "dress",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
+          "historical_track_ids": [],
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "alternative": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "rnb",
+              "sexy",
+              "female vocalist",
+              "female vocalists",
+              "synth-pop",
+              "alt-pop",
+              "taylor swift",
+              "electro-rnb",
+              "contemporary rnb"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Dress"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:dress",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "End Game - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/4cag67C3v9ToeFivUwDUsE",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 7,
+          "base_title": "End Game",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "End Game - Karaoke Version",
+          "song_family": "end_game",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
+          "historical_track_ids": [],
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "rnb",
+              "pop rap",
+              "future",
+              "Ed Sheeran",
+              "rap",
+              "power pop",
+              "Hip-Hop",
+              "female vocalist",
+              "electropop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "End Game"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:end_game",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Getaway Car - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/7bdyzcQ0onk60hfsxDCd2X",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 8,
+          "base_title": "Getaway Car",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Getaway Car - Karaoke Version",
+          "song_family": "getaway_car",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
+          "historical_track_ids": [],
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "electropop",
+              "female vocalist",
+              "taylor swift",
+              "synth-pop",
+              "love at first listen",
+              "female vocalists",
+              "dance pop",
+              "2017"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Getaway Car"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:getaway_car",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Gorgeous - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/3ZHTwJzCNDFvjLpVQiqpH6",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 9,
+          "base_title": "Gorgeous",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Gorgeous - Karaoke Version",
+          "song_family": "gorgeous",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
+          "historical_track_ids": [],
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "taylor swift",
+              "electropop",
+              "reputation",
+              "best of 2017",
+              "female vocalists",
+              "singer-songwriter",
+              "Joshua Bassett",
+              "synthpop",
+              "electronic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Gorgeous"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:gorgeous",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "I Did Something Bad - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/2hecdut2HWM5JMHqLTWThq",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 10,
+          "base_title": "I Did Something Bad",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "I Did Something Bad - Karaoke Version",
+          "song_family": "i_did_something_bad",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
+          "historical_track_ids": [],
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "dance-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "dance-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "dubstep",
+              "EDM",
+              "electropop",
+              "taylor swift",
+              "Grunge",
+              "electro-trap",
+              "dance-pop",
+              "love at first listen",
+              "electronic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "I Did Something Bad"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_did_something_bad",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "King Of My Heart - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/5EsfyTD26nlVQ0DtYo16uJ",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 11,
+          "base_title": "King Of My Heart",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "King Of My Heart - Karaoke Version",
+          "song_family": "king_of_my_heart",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
+          "historical_track_ids": [],
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance",
+              "Love",
+              "female vocalist",
+              "synthpop",
+              "electronic",
+              "trap",
+              "female vocalists",
+              "puta"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "King Of My Heart"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:king_of_my_heart",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "Look What You Made Me Do - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/1zz0XSmHCFd57ne04UAp38",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 12,
+          "base_title": "Look What You Made Me Do",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Look What You Made Me Do - Karaoke Version",
+          "song_family": "look_what_you_made_me_do",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
+          "historical_track_ids": [],
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "dance-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "dance-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance",
+              "Electroclash",
+              "reputation",
+              "2017",
+              "taylor swift",
+              "best of 2017",
+              "dance-pop",
+              "shade"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Look What You Made Me Do"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:look_what_you_made_me_do",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "New Year's Day - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/13tYZVTtzLUJTlM7m1ivbi",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 13,
+          "base_title": "New Year's Day",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "New Year's Day - Karaoke Version",
+          "song_family": "new_year_s_day",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
+          "historical_track_ids": [],
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:new_year_s_day",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "So It Goes... - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/5oJUjUsBZcqyEhOdpif37h",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 14,
+          "base_title": "So It Goes...",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "So It Goes... - Karaoke Version",
+          "song_family": "so_it_goes",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
+          "historical_track_ids": [],
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "trap",
+              "sexy",
+              "rnb",
+              "female vocalist",
+              "electronic",
+              "taylor swift",
+              "female vocalists",
+              "max martin"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "So It Goes..."
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:so_it_goes",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "This Is Why We Can't Have Nice Things - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/0MtU9ETYyVX8YPBDCYPdMb",
+          "type": "alternate_version",
+          "edition": "karaoke",
+          "display_section": "Karaoke Versions",
+          "display_order": 15,
+          "base_title": "This Is Why We Can't Have Nice Things",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "This Is Why We Can't Have Nice Things - Karaoke Version",
+          "song_family": "this_is_why_we_can_t_have_nice_things",
+          "version_tag": "alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
+          "historical_track_ids": [],
+          "release_date": "2018-03-09T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "dance-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "dance-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance",
+              "electronic",
+              "bubblegum pop",
+              "Kanye West",
+              "dance pop",
+              "shade",
+              "trap",
+              "contemporary rnb"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "This Is Why We Can't Have Nice Things"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:this_is_why_we_can_t_have_nice_things",
+          "filter_tags": [
+            "solo",
+            "karaoke",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "karaoke": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          }
+        }
+      ]
+    },
+    {
+      "section": "remixes",
+      "track_count": 4,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "...Ready For It? - BloodPopÂ® Remix",
+          "url": "https://open.spotify.com/intl-fr/track/1Ygm9KdH3wbzDekO8JgxcW",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "...Ready For It?",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "...Ready For It? - BloodPopÂ® Remix",
+          "song_family": "ready_for_it",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d41ccf8f43721c045a969300",
+          "historical_track_ids": [],
+          "release_date": "2017-12-01T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "2017",
+              "industrial",
+              "pop rap",
+              "EDM",
+              "industrial pop",
+              "reputation",
+              "electronic",
+              "Hip-Hop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "...Ready For It?"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:ready_for_it",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "remix": "high:type_or_title"
+          }
+        },
+        {
+          "title": "Delicate - Seeb Remix",
+          "url": "https://open.spotify.com/intl-fr/track/2Sy2oGjP5RYB4cLVoDU0Gz",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "Delicate",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Delicate - Seeb Remix",
+          "song_family": "delicate",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2737809d9723e21370fe5926a7c",
+          "historical_track_ids": [],
+          "release_date": "2018-06-08T00:00:00Z",
+          "genres": [
+            "pop",
+            "electropop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "taylor swift",
+              "tropical house",
+              "reputation",
+              "synthpop",
+              "synth-pop",
+              "delicate",
+              "female vocalists",
+              "slow"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Delicate"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:delicate",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
+        },
+        {
+          "title": "Delicate - Recorded at The Tracking Room Nashville",
+          "url": "https://open.spotify.com/intl-fr/track/1Fj0T1XKuhRu7EZzJ7NJIK",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 3,
+          "base_title": "Delicate - Recorded at The Tracking Room Nashville",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Delicate - Recorded at The Tracking Room Nashville",
+          "song_family": "delicate_recorded_at_the_tracking_room_nashville",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273bae8f095c58e137855f6d230",
+          "historical_track_ids": [],
+          "release_date": "2018-04-13T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:delicate_recorded_at_the_tracking_room_nashville",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          }
+        },
+        {
+          "title": "Delicate - Sawyr And Ryan Tedder Mix",
+          "url": "https://open.spotify.com/intl-fr/track/6SYwJcqaltK2WFRmD1unUV",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 4,
+          "base_title": "Delicate - Sawyr And Ryan Tedder Mix",
+          "album": "reputation",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Delicate - Sawyr And Ryan Tedder Mix",
+          "song_family": "delicate_sawyr_and_ryan_tedder_mix",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d8032a149cd86c879c9df63a",
+          "historical_track_ids": [],
+          "release_date": "2018-05-25T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:delicate_sawyr_and_ryan_tedder_mix",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "remix": "high:type_or_title"
+          }
+        }
+      ]
+    }
+  ]
+}

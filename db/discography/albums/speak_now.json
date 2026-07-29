@@ -1,7 +1,7 @@
 {
   "album": "Speak Now",
   "section_count": 4,
-  "track_count": 33,
+  "track_count": 81,
   "sections": [
     {
       "section": "standard_edition",
@@ -50,7 +50,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Sparks Fly",
@@ -94,7 +98,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Back To December",
@@ -164,7 +172,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Speak Now",
@@ -208,7 +220,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Dear John",
@@ -252,7 +268,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Mean",
@@ -296,7 +316,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "The Story Of Us",
@@ -340,7 +364,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Never Grow Up",
@@ -384,7 +412,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Enchanted",
@@ -453,7 +485,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Better Than Revenge",
@@ -522,7 +558,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Innocent",
@@ -566,7 +606,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Haunted",
@@ -610,7 +654,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Last Kiss",
@@ -654,7 +702,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Long Live",
@@ -701,7 +753,11 @@
             "album_track": "high:section_or_display_section",
             "live": "high:type_title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Ours",
@@ -744,7 +800,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "If This Was A Movie",
@@ -787,7 +847,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Superman",
@@ -830,7 +894,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         }
       ]
     },
@@ -882,7 +950,12 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "live": "high:type_title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "display_album": "Speak Now",
+          "tags": []
         }
       ]
     },
@@ -937,7 +1010,11 @@
             "album_track": "high:section_or_display_section",
             "remix": "high:type_or_title",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "Back To December - Acoustic",
@@ -1009,7 +1086,11 @@
             "album_track": "high:section_or_display_section",
             "acoustic": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "acoustic",
+          "tags": []
         },
         {
           "title": "Haunted - Acoustic Version",
@@ -1056,7 +1137,11 @@
             "album_track": "high:section_or_display_section",
             "acoustic": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "acoustic",
+          "tags": []
         },
         {
           "title": "Better Than Revenge - Live/2011",
@@ -1126,7 +1211,11 @@
             "album_track": "high:section_or_display_section",
             "live": "high:type_title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
         },
         {
           "title": "Last Kiss - Live/2011",
@@ -1171,7 +1260,11 @@
             "album_track": "high:section_or_display_section",
             "live": "high:type_title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
         },
         {
           "title": "Mean - Live/2011",
@@ -1216,7 +1309,11 @@
             "album_track": "high:section_or_display_section",
             "live": "high:type_title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
         },
         {
           "title": "Mine - Live/2011",
@@ -1261,7 +1358,11 @@
             "album_track": "high:section_or_display_section",
             "live": "high:type_title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
         },
         {
           "title": "Ours - Live/2011",
@@ -1306,7 +1407,11 @@
             "album_track": "high:section_or_display_section",
             "live": "high:type_title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
         },
         {
           "title": "Sparks Fly - Live/2011",
@@ -1351,7 +1456,11 @@
             "album_track": "high:section_or_display_section",
             "live": "high:type_title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
         },
         {
           "title": "Speak Now - Live/2011",
@@ -1396,7 +1505,11 @@
             "album_track": "high:section_or_display_section",
             "live": "high:type_title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
         },
         {
           "title": "The Story Of Us - Live",
@@ -1441,14 +1554,18 @@
             "album_track": "high:section_or_display_section",
             "live": "high:type_title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
         }
       ]
     },
     {
       "album": "Speak Now",
       "section": "streaming_extras",
-      "track_count": 4,
+      "track_count": 52,
       "chart_extra": true,
       "tracks": [
         {
@@ -1466,7 +1583,7 @@
             "Taylor Swift"
           ],
           "title_clean": "Dear John - Live/2011",
-          "song_family": "dear_john_live2011",
+          "song_family": "dear_john",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "display_era": "Speak Now",
@@ -1493,7 +1610,12 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "live": "high:type_title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "display_album": "Speak Now",
+          "tags": []
         },
         {
           "title": "Enchanted - Live/2011",
@@ -1510,7 +1632,7 @@
             "Taylor Swift"
           ],
           "title_clean": "Enchanted - Live/2011",
-          "song_family": "enchanted_live2011",
+          "song_family": "enchanted",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "display_era": "Speak Now",
@@ -1562,7 +1684,12 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "live": "high:type_title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "display_album": "Speak Now",
+          "tags": []
         },
         {
           "title": "Haunted - Live/2011",
@@ -1579,7 +1706,7 @@
             "Taylor Swift"
           ],
           "title_clean": "Haunted - Live/2011",
-          "song_family": "haunted_live2011",
+          "song_family": "haunted",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "display_era": "Speak Now",
@@ -1606,7 +1733,12 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "live": "high:type_title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "display_album": "Speak Now",
+          "tags": []
         },
         {
           "title": "Long Live - Live/2011",
@@ -1623,7 +1755,7 @@
             "Taylor Swift"
           ],
           "title_clean": "Long Live - Live/2011",
-          "song_family": "long_live_live2011",
+          "song_family": "long_live",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "display_era": "Speak Now",
@@ -1650,7 +1782,1592 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "live": "high:type_title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "display_album": "Speak Now",
+          "tags": []
+        },
+        {
+          "title": "Begin Again - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/3JayaISg308IVZhUY0XUXe",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 13,
+          "base_title": "Begin Again",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Begin Again - Commentary",
+          "song_family": "begin_again",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2012-10-22T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Better Than Revenge - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/intl-fr/track/0UK4QL2zQWgWzj47V6qgsz",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 15,
+          "base_title": "Better Than Revenge",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Better Than Revenge - Instrumental With Background Vocals",
+          "song_family": "better_than_revenge",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Clean - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/7AiIXVMIrTqHlGn7bS3f31",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 23,
+          "base_title": "Clean",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Clean - Karaoke Version",
+          "song_family": "clean",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2015-02-01T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "karaoke",
+          "tags": []
+        },
+        {
+          "title": "Cold As You - Instrumental w/ BG vocals",
+          "url": "https://open.spotify.com/intl-fr/track/0SwaNP777wQtTy9cEm886m",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 25,
+          "base_title": "Cold As You",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Cold As You - Instrumental w/ BG vocals",
+          "song_family": "cold_as_you",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2006-10-24T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Bad Blood - Karaoke Version",
+          "url": "https://open.spotify.com/intl-fr/track/6bzWVosI1yQkHUrN22cMWE",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 12,
+          "base_title": "Bad Blood",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Bad Blood - Karaoke Version",
+          "song_family": "bad_blood",
+          "version_tag": "karaoke",
+          "version_tags": [
+            "karaoke"
+          ],
+          "catalog_category": "karaoke",
+          "music_track": false,
+          "release_date": "2015-02-01T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "karaoke",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "karaoke",
+          "tags": []
+        },
+        {
+          "title": "Change - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/1NTxT72xu3GkYq5wIq0RG5",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 20,
+          "base_title": "Change",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Change - Commentary",
+          "song_family": "change",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Back To December - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/intl-fr/track/5fWNEKU1JTe07KsrJ7stft",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10,
+          "base_title": "Back To December",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Back To December - Instrumental With Background Vocals",
+          "song_family": "back_to_december",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Breathe - Instrumental only, no BV",
+          "url": "https://open.spotify.com/intl-fr/track/795ZVsHOr5ky9yrY6FDA6Q",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 18,
+          "base_title": "Breathe",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Breathe - Instrumental only, no BV",
+          "song_family": "breathe",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Better Than Revenge - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/7msaHKbkc94FKxIMsH4DAm",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 14,
+          "base_title": "Better Than Revenge",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Better Than Revenge - Commentary",
+          "song_family": "better_than_revenge",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Enchanted - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/1eGBTPSSrr9Lem1BVKzgia",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 32,
+          "base_title": "Enchanted",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Enchanted - Commentary",
+          "song_family": "enchanted",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Enchanted - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/intl-fr/track/0ruvufCIGCWaf67Tb8R64O",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 33,
+          "base_title": "Enchanted",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Enchanted - Instrumental With Background Vocals",
+          "song_family": "enchanted",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Haunted - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/6PnszbMFmzHaxT2ANFgRVQ",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 44,
+          "base_title": "Haunted",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Haunted - Commentary",
+          "song_family": "haunted",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Haunted - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/intl-fr/track/6PiiQa5q6FjhBfaPsCp4mJ",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 45,
+          "base_title": "Haunted",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Haunted - Instrumental With Background Vocals",
+          "song_family": "haunted",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Innocent - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/4JOZRF1Tp23yeLDkaJvYiC",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 58,
+          "base_title": "Innocent",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Innocent - Commentary",
+          "song_family": "innocent",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Innocent - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/intl-fr/track/5tcxJo6DZ1wjkC2Fv1xDiV",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 59,
+          "base_title": "Innocent",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Innocent - Instrumental With Background Vocals",
+          "song_family": "innocent",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Last Kiss - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/2YiBQKOQhgdSddgpCDZmYO",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 64,
+          "base_title": "Last Kiss",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Last Kiss - Commentary",
+          "song_family": "last_kiss",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Last Kiss - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/intl-fr/track/7fdXE3zL3J2AmQLXSDNM8b",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 65,
+          "base_title": "Last Kiss",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Last Kiss - Instrumental With Background Vocals",
+          "song_family": "last_kiss",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Long Live - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/6trbb1ao6xqh6FjKc0BRYF",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 66,
+          "base_title": "Long Live",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Long Live - Commentary",
+          "song_family": "long_live_chartsnapshot_historical_single",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e11a75a2f2ff39cec788a015",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Long Live - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/intl-fr/track/0yJ94T12iL5gGz5HDn1nos",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 67,
+          "base_title": "Long Live",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Long Live - Instrumental With Background Vocals",
+          "song_family": "long_live",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e11a75a2f2ff39cec788a015",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Mean - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/4JJz3bQDt922DzUNHsGtWk",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 72,
+          "base_title": "Mean",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Mean - Commentary",
+          "song_family": "mean",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Mean - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/intl-fr/track/2Aho0iiNBf6E4XYtlha9xY",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 73,
+          "base_title": "Mean",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Mean - Instrumental With Background Vocals",
+          "song_family": "mean",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Mine - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/6vmevdni3tJLxzRXSU7UVd",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 74,
+          "base_title": "Mine",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Mine - Commentary",
+          "song_family": "mine",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Mine - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/intl-fr/track/7J4cg1IeDWDY4oE19CaIra",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 75,
+          "base_title": "Mine",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Mine - Instrumental With Background Vocals",
+          "song_family": "mine",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732e4ec3175d848eca7b76b07f",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Never Grow Up - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/0eRpceXMfMVYhMVrVkgWxS",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 76,
+          "base_title": "Never Grow Up",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Never Grow Up - Commentary",
+          "song_family": "never_grow_up",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Never Grow Up - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/intl-fr/track/3d1fzbROHb17uYI40hbql7",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 77,
+          "base_title": "Never Grow Up",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Never Grow Up - Instrumental With Background Vocals",
+          "song_family": "never_grow_up",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "The Story Of Us - International Mix",
+          "url": "https://open.spotify.com/intl-fr/track/3lXekiVK1ZPZbKconsys73",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9999,
+          "base_title": "The Story Of Us - International Mix",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Story Of Us - International Mix",
+          "song_family": "the_story_of_us",
+          "version_tag": null,
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273e1bc852a04501952c765d5cd",
+          "release_date": null,
+          "historical_track_ids": [],
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
+        },
+        {
+          "title": "Sparks Fly - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/3nWqFKQTstzwvrLEW82dgE",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 93,
+          "base_title": "Sparks Fly",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Sparks Fly - Commentary",
+          "song_family": "sparks_fly",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Sparks Fly - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/intl-fr/track/4A7shC8pd0ddDSqrvETTsu",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 94,
+          "base_title": "Sparks Fly",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Sparks Fly - Instrumental With Background Vocals",
+          "song_family": "sparks_fly",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Speak Now - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/35XDhcPNgNczxX0aUmiuKH",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 95,
+          "base_title": "Speak Now",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Speak Now - Commentary",
+          "song_family": "speak_now",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Speak Now - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/intl-fr/track/6nHV1NXioyCPpewRMh2DxC",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 96,
+          "base_title": "Speak Now",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Speak Now - Instrumental With Background Vocals",
+          "song_family": "speak_now",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "The Story Of Us - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/44uwUM4YEfve5tDYEbVXQb",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 115,
+          "base_title": "The Story Of Us",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Story Of Us - Commentary",
+          "song_family": "the_story_of_us",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "The Story Of Us - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/intl-fr/track/6AK3WJz8eIJLePdy09nGR4",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 116,
+          "base_title": "The Story Of Us",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Story Of Us - Instrumental With Background Vocals",
+          "song_family": "the_story_of_us",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Long Live - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/3x4MisUs3dIkpDUcJMfFKA",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10037,
+          "base_title": "Long Live",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Long Live - Instrumental With Background Vocals",
+          "song_family": "long_live",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Speak Now (Karaoke Version)",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27366271168cb30f17767b1f410",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Back To December - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/73B2UZR8luWSOugqpNuAuV",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10038,
+          "base_title": "Back To December",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Back To December - Instrumental With Background Vocals",
+          "song_family": "back_to_december",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Speak Now (Karaoke Version)",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27366271168cb30f17767b1f410",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Better Than Revenge - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/27vZ8jMjNk6NGcIfFzePw9",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10043,
+          "base_title": "Better Than Revenge",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Better Than Revenge - Instrumental With Background Vocals",
+          "song_family": "better_than_revenge",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Speak Now (Karaoke Version)",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27366271168cb30f17767b1f410",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Speak Now - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/5KNF5SJKehiNxuvavYTc9j",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10044,
+          "base_title": "Speak Now",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Speak Now - Instrumental With Background Vocals",
+          "song_family": "speak_now",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Speak Now (Karaoke Version)",
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27366271168cb30f17767b1f410",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Mine - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/6kFgTVa0eIjO00Pc3OA0rF",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10045,
+          "base_title": "Mine",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Mine - Instrumental With Background Vocals",
+          "song_family": "mine",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Speak Now (Karaoke Version)",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27366271168cb30f17767b1f410",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Last Kiss - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/6RfWi0Jx3GvflsOtUfFpuT",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10046,
+          "base_title": "Last Kiss",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Last Kiss - Instrumental With Background Vocals",
+          "song_family": "last_kiss",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Speak Now (Karaoke Version)",
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27366271168cb30f17767b1f410",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Mean - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/0LB5gCYdVYtXyPKhvZaEgI",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10049,
+          "base_title": "Mean",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Mean - Instrumental With Background Vocals",
+          "song_family": "mean",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Speak Now (Karaoke Version)",
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27366271168cb30f17767b1f410",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Innocent - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/6ZUSLV2UZPxqNXDX6DHBQp",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10055,
+          "base_title": "Innocent",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Innocent - Instrumental With Background Vocals",
+          "song_family": "innocent",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Speak Now (Karaoke Version)",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27366271168cb30f17767b1f410",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Enchanted - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/2XkUgopshJmI1WqFTkury3",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10071,
+          "base_title": "Enchanted",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Enchanted - Instrumental With Background Vocals",
+          "song_family": "enchanted",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Speak Now (Karaoke Version)",
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27366271168cb30f17767b1f410",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Dear John - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/2biHaDJjwyvJAnvSqTBvk8",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10072,
+          "base_title": "Dear John",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Dear John - Instrumental With Background Vocals",
+          "song_family": "dear_john",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Speak Now (Karaoke Version)",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27366271168cb30f17767b1f410",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Never Grow Up - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/5v3FHVgMp8AKLxMT0X7zph",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10073,
+          "base_title": "Never Grow Up",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Never Grow Up - Instrumental With Background Vocals",
+          "song_family": "never_grow_up",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Speak Now (Karaoke Version)",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27366271168cb30f17767b1f410",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Sparks Fly - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/3eVl0bkOfARGgQLvYJ4jbi",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10074,
+          "base_title": "Sparks Fly",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Sparks Fly - Instrumental With Background Vocals",
+          "song_family": "sparks_fly",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Speak Now (Karaoke Version)",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27366271168cb30f17767b1f410",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "The Story Of Us - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/7eWWHv6LTMFcaj8QgTLcYf",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10079,
+          "base_title": "The Story Of Us",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Story Of Us - Instrumental With Background Vocals",
+          "song_family": "the_story_of_us",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Speak Now (Karaoke Version)",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27366271168cb30f17767b1f410",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Haunted - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/2kv8uTMNaaxpXFkmFdVjat",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10084,
+          "base_title": "Haunted",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Haunted - Instrumental With Background Vocals",
+          "song_family": "haunted",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Speak Now (Karaoke Version)",
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27366271168cb30f17767b1f410",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Long Live (feat. Paula Fernandes)",
+          "url": "https://open.spotify.com/intl-fr/track/5sbsEKN2PIwKe0l03qoeXn",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9999,
+          "base_title": "Long Live (feat. Paula Fernandes)",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Long Live (feat. Paula Fernandes)",
+          "song_family": "long_live",
+          "version_tag": null,
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2730a281b042bd417c5b66036a1",
+          "release_date": null,
+          "historical_track_ids": [],
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": [],
+          "chart_extra": true
+        },
+        {
+          "title": "Long Live (feat. Paula Fernandes)",
+          "url": "https://open.spotify.com/track/42pHJPLlDjfvdAUb7aeDXb",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9999,
+          "base_title": "Long Live",
+          "album": "Speak Now",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Long Live",
+          "song_family": "long_live",
+          "version_tag": "chartsnapshot_historical_extra",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27345a15cc3f3142d121b18bd9f",
+          "historical_track_ids": [],
+          "release_date": "2012-01-01T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:long_live_chartsnapshot_historical_single",
+          "filter_tags": [
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "standalone": "medium:section_or_type"
+          },
+          "chart_extra": true,
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
         }
       ]
     }

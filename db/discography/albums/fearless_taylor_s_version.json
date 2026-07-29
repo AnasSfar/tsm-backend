@@ -1,7 +1,7 @@
 {
   "album": "Fearless (Taylor's Version)",
   "section_count": 3,
-  "track_count": 28,
+  "track_count": 29,
   "sections": [
     {
       "section": "standard_edition_tv",
@@ -53,7 +53,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Fifteen (Taylor's Version)",
@@ -98,7 +102,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Love Story (Taylor's Version)",
@@ -170,7 +178,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Hey Stephen (Taylor's Version)",
@@ -215,7 +227,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "White Horse (Taylor's Version)",
@@ -262,7 +278,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "You Belong With Me (Taylor's Version)",
@@ -334,7 +354,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Breathe (feat. Colbie Caillat) (Taylor's Version)",
@@ -380,7 +404,11 @@
             "feature": "high:type_or_primary_artist",
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Tell Me Why (Taylor's Version)",
@@ -425,7 +453,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "You're Not Sorry (Taylor's Version)",
@@ -470,7 +502,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "The Way I Loved You (Taylor's Version)",
@@ -515,7 +551,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Forever & Always (Taylor's Version)",
@@ -560,7 +600,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "The Best Day (Taylor's Version)",
@@ -605,7 +649,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Change (Taylor's Version)",
@@ -650,7 +698,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Jump Then Fall (Taylor's Version)",
@@ -695,7 +747,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Untouchable (Taylor's Version)",
@@ -740,7 +796,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Forever & Always (Piano Version) (Taylor's Version)",
@@ -783,7 +843,11 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Come In With The Rain (Taylor's Version)",
@@ -828,7 +892,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Superstar (Taylor's Version)",
@@ -873,7 +941,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "The Other Side Of The Door (Taylor's Version)",
@@ -918,7 +990,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Today Was A Fairytale (Taylor's Version)",
@@ -963,7 +1039,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "You All Over Me (feat. Maren Morris) (Taylor's Version) (From The Vault)",
@@ -1012,7 +1092,12 @@
             "feature": "high:type_or_primary_artist",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "display_album": "Fearless",
+          "tags": []
         },
         {
           "title": "Mr. Perfectly Fine (Taylor's Version) (From The Vault)",
@@ -1057,7 +1142,11 @@
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
         },
         {
           "title": "We Were Happy (Taylor's Version) (From The Vault)",
@@ -1102,7 +1191,11 @@
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
         },
         {
           "title": "That's When (feat. Keith Urban) (Taylor's Version) (From The Vault)",
@@ -1148,7 +1241,11 @@
             "feature": "high:type_or_primary_artist",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
         },
         {
           "title": "Don't You (Taylor's Version) (From The Vault)",
@@ -1193,7 +1290,11 @@
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
         },
         {
           "title": "Bye Bye Baby (Taylor's Version) (From The Vault)",
@@ -1238,7 +1339,11 @@
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
         }
       ]
     },
@@ -1292,13 +1397,18 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "display_album": "Fearless",
+          "tags": []
         }
       ]
     },
     {
       "section": "remixes",
-      "track_count": 1,
+      "track_count": 2,
       "chart_extra": true,
       "tracks": [
         {
@@ -1367,7 +1477,34 @@
             "solo": "high:artist_credit",
             "remix": "high:type_or_title",
             "taylor_version": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
+        },
+        {
+          "title": "Love Story (Taylor's Version) [Elvira Remix]",
+          "url": "",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 999,
+          "base_title": "Love Story [Elvira Remix]",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Love Story [Elvira Remix]",
+          "song_family": "love_story",
+          "version_tag": "extras__taylors_version__remix",
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/a3/0b/f5/a30bf5ad-3ba7-ae84-0a79-b4591298c1de/21UMGIM23472.rgb.jpg/64x64bb.jpg",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         }
       ]
     }

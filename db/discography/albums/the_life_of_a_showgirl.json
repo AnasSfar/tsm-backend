@@ -1,8 +1,8 @@
 {
   "album": "The Life of a Showgirl",
   "release_date": "2025-10-03T00:00:00Z",
-  "section_count": 5,
-  "track_count": 39,
+  "section_count": 6,
+  "track_count": 40,
   "sections": [
     {
       "section": "standard_edition",
@@ -77,7 +77,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Elizabeth Taylor",
@@ -146,7 +150,11 @@
             "standalone"
           ],
           "catalog_category": "standard",
-          "music_track": true
+          "music_track": true,
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Opalite",
@@ -215,7 +223,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Father Figure",
@@ -281,7 +293,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Eldest Daughter",
@@ -348,7 +364,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Ruin The Friendship",
@@ -417,7 +437,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Actually Romantic",
@@ -486,7 +510,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Wi$h Li$t",
@@ -552,7 +580,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Wood",
@@ -616,7 +648,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "CANCELLED!",
@@ -685,7 +721,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Honey",
@@ -752,7 +792,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
@@ -799,7 +843,11 @@
           "filter_tag_sources": {
             "feature": "high:type_or_primary_artist",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         }
       ]
     },
@@ -881,7 +929,12 @@
             "acoustic"
           ],
           "catalog_category": "acoustic",
-          "music_track": true
+          "music_track": true,
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "acoustic",
+          "release_edition": "",
+          "tags": []
         },
         {
           "title": "Opalite - Life Is A Song Acoustic Version",
@@ -952,7 +1005,12 @@
             "solo": "high:artist_credit",
             "acoustic": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "acoustic",
+          "release_edition": "",
+          "tags": []
         },
         {
           "title": "Wi$h Li$t - Settled Down Acoustic Version",
@@ -1022,7 +1080,12 @@
             "acoustic"
           ],
           "catalog_category": "acoustic",
-          "music_track": true
+          "music_track": true,
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "acoustic",
+          "release_edition": "deluxe",
+          "tags": []
         },
         {
           "title": "Ruin The Friendship - My Advice Version",
@@ -1095,7 +1158,12 @@
             "standard"
           ],
           "catalog_category": "standard",
-          "music_track": true
+          "music_track": true,
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "acoustic",
+          "release_edition": "deluxe",
+          "tags": []
         },
         {
           "title": "Eldest Daughter - Now You're Home Acoustic Version",
@@ -1165,7 +1233,12 @@
             "acoustic"
           ],
           "catalog_category": "acoustic",
-          "music_track": true
+          "music_track": true,
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "acoustic",
+          "release_edition": "deluxe",
+          "tags": []
         },
         {
           "title": "Elizabeth Taylor - So Glamorous Cabaret Version",
@@ -1229,7 +1302,12 @@
             "solo": "high:artist_credit",
             "acoustic": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "acoustic",
+          "release_edition": "deluxe",
+          "tags": []
         },
         {
           "title": "The Life of a Showgirl (feat. Sabrina Carpenter) - Dressing Room Rehearsal Version",
@@ -1280,7 +1358,12 @@
             "featured"
           ],
           "catalog_category": "featured",
-          "music_track": true
+          "music_track": true,
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "acoustic",
+          "release_edition": "deluxe",
+          "tags": []
         }
       ]
     },
@@ -1358,7 +1441,11 @@
             "remix"
           ],
           "catalog_category": "remix",
-          "music_track": true
+          "music_track": true,
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "Opalite - Chris Lake Remix",
@@ -1429,7 +1516,11 @@
             "remix"
           ],
           "catalog_category": "remix",
-          "music_track": true
+          "music_track": true,
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "Opalite - Ely Oaks Remix",
@@ -1500,7 +1591,11 @@
             "remix"
           ],
           "catalog_category": "remix",
-          "music_track": true
+          "music_track": true,
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "Opalite - Skream Remix",
@@ -1571,7 +1666,11 @@
             "remix"
           ],
           "catalog_category": "remix",
-          "music_track": true
+          "music_track": true,
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "The Fate of Ophelia - Loud Luxury Remix",
@@ -1642,7 +1741,11 @@
             "remix"
           ],
           "catalog_category": "remix",
-          "music_track": true
+          "music_track": true,
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "The Fate of Ophelia - The Chainsmokers Remix",
@@ -1713,7 +1816,11 @@
             "remix"
           ],
           "catalog_category": "remix",
-          "music_track": true
+          "music_track": true,
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         }
       ]
     },
@@ -1791,7 +1898,11 @@
             "standalone"
           ],
           "catalog_category": "standard",
-          "music_track": true
+          "music_track": true,
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "Opalite - Official Music Video Extended Version Part 2",
@@ -1862,7 +1973,11 @@
             "standalone"
           ],
           "catalog_category": "standard",
-          "music_track": true
+          "music_track": true,
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         }
       ]
     },
@@ -1931,7 +2046,11 @@
             "solo": "high:artist_credit",
             "track_by_track": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
         },
         {
           "title": "Father Figure - Track by Track",
@@ -1996,7 +2115,11 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "track_by_track": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
         },
         {
           "title": "Opalite - Track by Track",
@@ -2064,7 +2187,11 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "track_by_track": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
         },
         {
           "title": "The Fate of Ophelia - Track by Track",
@@ -2132,7 +2259,11 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "track_by_track": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
         },
         {
           "title": "The Life of a Showgirl - Track by Track",
@@ -2175,7 +2306,11 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "track_by_track": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
         },
         {
           "title": "Actually Romantic - Track by Track",
@@ -2244,7 +2379,12 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "track_by_track": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "display_album": "The Life of a Showgirl",
+          "tags": []
         },
         {
           "title": "CANCELLED! - Track by Track",
@@ -2313,7 +2453,12 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "track_by_track": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "display_album": "The Life of a Showgirl",
+          "tags": []
         },
         {
           "title": "Eldest Daughter - Track by Track",
@@ -2379,7 +2524,12 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "track_by_track": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "display_album": "The Life of a Showgirl",
+          "tags": []
         },
         {
           "title": "Honey - Track by Track",
@@ -2445,7 +2595,12 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "track_by_track": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "display_album": "The Life of a Showgirl",
+          "tags": []
         },
         {
           "title": "Ruin The Friendship - Track by Track",
@@ -2514,7 +2669,12 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "track_by_track": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "display_album": "The Life of a Showgirl",
+          "tags": []
         },
         {
           "title": "Wi$h Li$t - Track by Track",
@@ -2531,7 +2691,7 @@
             "Taylor Swift"
           ],
           "title_clean": "Wi$h Li$t - Track by Track",
-          "song_family": "wiSh_liSt",
+          "song_family": "wi_h_li_t",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
           "display_era": "The Life of a Showgirl",
@@ -2580,7 +2740,12 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "track_by_track": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "display_album": "The Life of a Showgirl",
+          "tags": []
         },
         {
           "title": "Wood - Track by Track",
@@ -2643,9 +2808,66 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "track_by_track": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "display_album": "The Life of a Showgirl",
+          "tags": []
         }
       ]
+    },
+    {
+      "section": "streaming_extras",
+      "track_count": 1,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "The Life of a Showgirl Intro",
+          "url": "https://open.spotify.com/intl-fr/track/0yZPIEgco572UWiwoQtcYF",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10005,
+          "base_title": "The Life of a Showgirl Intro",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Life of a Showgirl Intro",
+          "song_family": "the_life_of_a_showgirl_intro",
+          "version_tag": null,
+          "release_date": "2025-10-02T00:00:00Z",
+          "historical_track_ids": [],
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2737e0698e1398b6473de43f901",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_life_of_a_showgirl_intro",
+          "filter_tags": [
+            "solo"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "other",
+          "tags": [],
+          "chart_extra": true
+        }
+      ],
+      "album": "The Life of a Showgirl"
     }
   ]
 }

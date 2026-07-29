@@ -75,7 +75,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Maroon",
@@ -144,7 +148,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Anti-Hero",
@@ -213,7 +221,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Snow On The Beach (feat. Lana Del Rey)",
@@ -284,7 +296,11 @@
           "filter_tag_sources": {
             "feature": "high:type_or_primary_artist",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "You're On Your Own, Kid",
@@ -352,7 +368,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Midnight Rain",
@@ -421,7 +441,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Question...?",
@@ -489,7 +513,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Vigilante Shit",
@@ -557,7 +585,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Bejeweled",
@@ -622,7 +654,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Labyrinth",
@@ -690,7 +726,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Karma",
@@ -756,7 +796,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Sweet Nothing",
@@ -824,7 +868,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Mastermind",
@@ -893,7 +941,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         }
       ]
     },
@@ -970,7 +1022,11 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "3am",
+          "tags": []
         },
         {
           "title": "Bigger Than The Whole Sky",
@@ -1040,7 +1096,11 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "3am",
+          "tags": []
         },
         {
           "title": "Paris",
@@ -1110,7 +1170,11 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "3am",
+          "tags": []
         },
         {
           "title": "High Infidelity",
@@ -1180,7 +1244,11 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "3am",
+          "tags": []
         },
         {
           "title": "Glitch",
@@ -1250,7 +1318,11 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "3am",
+          "tags": []
         },
         {
           "title": "Would've, Could've, Should've",
@@ -1320,7 +1392,11 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "3am",
+          "tags": []
         },
         {
           "title": "Dear Reader",
@@ -1390,7 +1466,11 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "3am",
+          "tags": []
         }
       ]
     },
@@ -1465,7 +1545,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "til_dawn",
+          "tags": []
         },
         {
           "title": "Snow On The Beach (feat. More Lana Del Rey)",
@@ -1532,7 +1616,11 @@
           ],
           "filter_tag_sources": {
             "feature": "high:type_or_primary_artist"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "til_dawn",
+          "tags": []
         },
         {
           "title": "Karma (feat. Ice Spice)",
@@ -1596,7 +1684,11 @@
           ],
           "filter_tag_sources": {
             "feature": "high:type_or_primary_artist"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "til_dawn",
+          "tags": []
         }
       ]
     },
@@ -1648,7 +1740,11 @@
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": false,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
         }
       ]
     },
@@ -1673,7 +1769,7 @@
             "Taylor Swift"
           ],
           "title_clean": "Lavender Haze - Acoustic Version",
-          "song_family": "lavender_haze_acoustic_version",
+          "song_family": "lavender_haze",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f233c37dddd971caf61515cf",
           "display_era": "Midnights",
@@ -1727,7 +1823,12 @@
             "standalone": "medium:section_or_type",
             "acoustic": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "acoustic",
+          "display_album": "Midnights",
+          "tags": []
         }
       ]
     },
@@ -1803,7 +1904,11 @@
           ],
           "filter_tag_sources": {
             "feature": "high:type_or_primary_artist"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "Anti-Hero - ILLENIUM Remix",
@@ -1869,7 +1974,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "Anti-Hero - Jayda G Remix",
@@ -1937,7 +2046,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "Anti-Hero - Kungs Remix",
@@ -2005,7 +2118,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "Anti-Hero - Roosevelt Remix",
@@ -2073,7 +2190,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "Anti-Hero - Acoustic Version",
@@ -2143,7 +2264,11 @@
             "standalone": "medium:section_or_type",
             "acoustic": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "acoustic",
+          "tags": []
         },
         {
           "title": "Lavender Haze - Felix Jaehn Remix",
@@ -2212,7 +2337,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "Lavender Haze - Jungle Remix",
@@ -2280,7 +2409,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "Lavender Haze - Snakehips Remix",
@@ -2348,7 +2481,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "Lavender Haze - Tensnake Remix",
@@ -2416,7 +2553,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         }
       ]
     }

@@ -74,7 +74,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "cardigan",
@@ -124,7 +128,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "the last great american dynasty",
@@ -192,7 +200,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "exile (feat. Bon Iver)",
@@ -263,7 +275,11 @@
           "filter_tag_sources": {
             "feature": "high:type_or_primary_artist",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "my tears ricochet",
@@ -332,7 +348,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "mirrorball",
@@ -400,7 +420,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "seven",
@@ -468,7 +492,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "august",
@@ -511,7 +539,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "this is me trying",
@@ -580,7 +612,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "illicit affairs",
@@ -648,7 +684,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "invisible string",
@@ -717,7 +757,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "mad woman",
@@ -785,7 +829,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "epiphany",
@@ -853,7 +901,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "betty",
@@ -922,7 +974,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "peace",
@@ -991,7 +1047,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "hoax",
@@ -1060,7 +1120,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         }
       ]
     },
@@ -1137,7 +1201,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "deluxe",
+          "tags": []
         }
       ]
     },
@@ -1212,7 +1280,12 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "the long pond studio sessions",
+          "tags": []
         },
         {
           "title": "mirrorball - the long pond studio sessions",
@@ -1280,7 +1353,12 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "the long pond studio sessions",
+          "tags": []
         },
         {
           "title": "seven - the long pond studio sessions",
@@ -1348,7 +1426,12 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "the long pond studio sessions",
+          "tags": []
         },
         {
           "title": "august - the long pond studio sessions",
@@ -1390,7 +1473,12 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "the long pond studio sessions",
+          "tags": []
         },
         {
           "title": "this is me trying - the long pond studio sessions",
@@ -1458,7 +1546,12 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "the long pond studio sessions",
+          "tags": []
         },
         {
           "title": "illicit affairs - the long pond studio sessions",
@@ -1526,7 +1619,12 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "the long pond studio sessions",
+          "tags": []
         },
         {
           "title": "invisible string - the long pond studio sessions",
@@ -1594,7 +1692,12 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "the long pond studio sessions",
+          "tags": []
         },
         {
           "title": "mad woman - the long pond studio sessions",
@@ -1662,7 +1765,12 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "the long pond studio sessions",
+          "tags": []
         },
         {
           "title": "epiphany - the long pond studio sessions",
@@ -1730,7 +1838,12 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "the long pond studio sessions",
+          "tags": []
         },
         {
           "title": "betty - the long pond studio sessions",
@@ -1798,7 +1911,12 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "the long pond studio sessions",
+          "tags": []
         },
         {
           "title": "peace - the long pond studio sessions",
@@ -1866,7 +1984,12 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "the long pond studio sessions",
+          "tags": []
         },
         {
           "title": "hoax - the long pond studio sessions",
@@ -1934,7 +2057,12 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "the long pond studio sessions",
+          "tags": []
         },
         {
           "title": "the lakes - the long pond studio sessions",
@@ -1977,7 +2105,12 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "release_edition": "the long pond studio sessions",
+          "tags": []
         }
       ]
     },
@@ -2027,7 +2160,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "soundtrack": "high:title_album_or_section"
-          }
+          },
+          "on_album": false,
+          "category": "soundtrack",
+          "display_album": "folklore",
+          "tags": []
         },
         {
           "title": "Carolina - From The Motion Picture “Where The Crawdads Sing”",
@@ -2071,7 +2208,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "soundtrack": "high:title_album_or_section"
-          }
+          },
+          "on_album": false,
+          "category": "soundtrack",
+          "display_album": "folklore",
+          "tags": []
         }
       ]
     },
@@ -2121,7 +2262,11 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "deluxe",
+          "tags": []
         }
       ]
     },
@@ -2198,7 +2343,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "display_album": "",
+          "tags": [],
+          "release_edition": "the long pond studio sessions"
         },
         {
           "title": "cardigan - the long pond studio sessions",
@@ -2248,7 +2399,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "display_album": "folklore",
+          "tags": [],
+          "release_edition": "the long pond studio sessions"
         },
         {
           "title": "the last great american dynasty - the long pond studio sessions",
@@ -2317,7 +2474,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "display_album": "folklore",
+          "tags": [],
+          "release_edition": "the long pond studio sessions"
         },
         {
           "title": "exile (feat. Bon Iver) - the long pond studio sessions",
@@ -2361,7 +2524,13 @@
           "filter_tag_sources": {
             "collab": "high:artists_or_featured_artists",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "display_album": "folklore",
+          "tags": [],
+          "release_edition": "the long pond studio sessions"
         }
       ]
     },
@@ -2440,7 +2609,11 @@
             "album_track": "high:section_or_display_section",
             "live": "high:type_title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
         },
         {
           "title": "cardigan - cabin in candlelight version",
@@ -2489,7 +2662,11 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "tags": []
         }
       ]
     }

@@ -1,0 +1,1434 @@
+{
+  "album": "evermore",
+  "section_count": 4,
+  "track_count": 21,
+  "sections": [
+    {
+      "section": "standard_edition",
+      "track_count": 15,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "willow",
+          "url": "https://open.spotify.com/intl-fr/track/0lx2cLdOt3piJbcaXIV74f",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 1,
+          "base_title": "willow",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "willow",
+          "song_family": "willow",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": [
+            "3yk94DUDanXyVhRLVjmI3w",
+            "3Uo7WG0vmLQ07WB4BDwy7D",
+            "2gVhfX2Gy1T9kDuS9azrF7"
+          ],
+          "release_date": "2020-12-16T00:00:00Z",
+          "genres": [
+            "folk pop",
+            "folk",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk pop",
+              "chamber folk",
+              "singer-songwriter",
+              "folk",
+              "indie folk",
+              "pop",
+              "overrated",
+              "indie",
+              "indie pop",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "willow"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:willow",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "champagne problems",
+          "url": "https://open.spotify.com/intl-fr/track/0sY6ZUTh4yoctD8VIXz339",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 2,
+          "base_title": "champagne problems",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "champagne problems",
+          "song_family": "champagne_problems",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": [
+            "6rap8NpGq8LDcVaJWkKFPn",
+            "1gcyHQpBQ1lfXGdhZmWrHP"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
+          "genres": [
+            "folk",
+            "rock",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "rock": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "rock",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "Ballad",
+              "folk",
+              "chamber rock",
+              "singer-songwriter",
+              "alternative rock",
+              "Lo-Fi",
+              "female vocalists",
+              "indie folk",
+              "chamber pop",
+              "overrated"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "champagne problems"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:champagne_problems",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "gold rush",
+          "url": "https://open.spotify.com/intl-fr/track/5BK0uqwY9DNfZ630STAEaq",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 3,
+          "base_title": "gold rush",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "gold rush",
+          "song_family": "gold_rush",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": [
+            "2ZTKWFG6OtHI3ewy9OGNOY",
+            "3Dby3p1m6IOZn2gIIqECgK"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
+          "genres": [
+            "folk",
+            "singer-songwriter",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "singer-songwriter": 2.0,
+            "rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "singer-songwriter",
+              "rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "singer-songwriter",
+              "chamber rock",
+              "pop",
+              "chamber pop",
+              "indie pop",
+              "female vocalist",
+              "current",
+              "alt pop",
+              "contemporary folk"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "gold rush"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:gold_rush",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "'tis the damn season",
+          "url": "https://open.spotify.com/track/6sQckd3Z8NPxVVKUnavY1F",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 4,
+          "base_title": "'tis the damn season",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "'tis the damn season",
+          "song_family": "tis_the_damn_season",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27390fd9741e1838115cd90b3b6",
+          "historical_track_ids": [
+            "4GBkffrtA51p17JH35irGA",
+            "7dW84mWkdWE5a6lFWxJCBG"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:tis_the_damn_season",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "tolerate it",
+          "url": "https://open.spotify.com/intl-fr/track/0PurA4JVJ8YQgSVopY8fn6",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 5,
+          "base_title": "tolerate it",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "tolerate it",
+          "song_family": "tolerate_it",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": [
+            "1t2M7UYoUpmhfZNMBsymJr",
+            "6lCvK2AR2uOKkVFCVlAzzm"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
+          "genres": [
+            "singer-songwriter",
+            "indie pop",
+            "folk"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "singer-songwriter": 3.0,
+            "indie pop": 2.0,
+            "folk": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "indie pop",
+              "folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "singer-songwriter",
+              "indie pop",
+              "Ballad",
+              "folk",
+              "pop",
+              "chamber rock",
+              "alternative rock",
+              "alt pop",
+              "female vocalist",
+              "singer songwriter"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "tolerate it"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:tolerate_it",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "no body, no crime (feat. HAIM)",
+          "url": "https://open.spotify.com/intl-fr/track/3RaT22zZsxVYxxKR7TAaYF",
+          "type": "feature",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 6,
+          "base_title": "no body, no crime (feat. HAIM)",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "HAIM"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "HAIM"
+          ],
+          "title_clean": "no body, no crime",
+          "song_family": "no_body_no_crime",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": [
+            "6uwfVkaOM1mcMkFmSn35ix"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
+          "genres": [
+            "country",
+            "pop rock",
+            "americana"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop rock": 2.0,
+            "americana": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop rock",
+              "americana"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country rock",
+              "country",
+              "pop rock",
+              "americana",
+              "country pop",
+              "2020s",
+              "soft rock",
+              "pop",
+              "singer-songwriter",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "no body, no crime (feat. HAIM)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:no_body_no_crime",
+          "filter_tags": [
+            "feature",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "happiness",
+          "url": "https://open.spotify.com/intl-fr/track/73YUReisjb3A9ActdLLjJQ",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 7,
+          "base_title": "happiness",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "happiness",
+          "song_family": "happiness",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": [
+            "0EFdoyXHpRHhEmsOlQhIXO",
+            "55Vf4bimc1Rtfg0PAQRAo2"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
+          "genres": [
+            "folk",
+            "pop",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "pop": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "ambient pop",
+              "singer-songwriter",
+              "alternative",
+              "chamber pop",
+              "alternative rock",
+              "rock",
+              "pop",
+              "indie",
+              "Ballad"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "happiness"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:happiness",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "dorothea",
+          "url": "https://open.spotify.com/intl-fr/track/670fUmXf4KQekzbEgaXyPA",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 8,
+          "base_title": "dorothea",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "dorothea",
+          "song_family": "dorothea",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": [
+            "3w9VRlKPvNxj40RdUGRweH",
+            "66tOfHVH3aUrscg8vExRV4"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "folk",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "folk": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "folk",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "folk",
+              "singer-songwriter",
+              "americana",
+              "chamber pop",
+              "folk pop",
+              "country",
+              "alternative rock",
+              "timeless",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "dorothea"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:dorothea",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "coney island (feat. The National)",
+          "url": "https://open.spotify.com/intl-fr/track/3k7ne7VmH43ZPWxPdvPUgR",
+          "type": "feature",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 9,
+          "base_title": "coney island (feat. The National)",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "The National"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "The National"
+          ],
+          "title_clean": "coney island",
+          "song_family": "coney_island",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": [
+            "4tyX1rw9X309WkEdh2As4B",
+            "2awNGIJHodfLZSClB3PYhz"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
+          "genres": [
+            "alternative rock",
+            "rock",
+            "folk"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "alternative rock": 3.0,
+            "rock": 2.0,
+            "folk": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "alternative rock",
+              "rock",
+              "folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "alternative rock",
+              "rock",
+              "folk",
+              "chamber pop",
+              "folk pop",
+              "pop",
+              "indie",
+              "indie folk",
+              "singer-songwriter",
+              "indie pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "coney island (feat. The National)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:coney_island",
+          "filter_tags": [
+            "feature",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "ivy",
+          "url": "https://open.spotify.com/intl-fr/track/19CSr8rwW05VJL2F91KFNK",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 10,
+          "base_title": "ivy",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "ivy",
+          "song_family": "ivy",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": [
+            "7tXMHAFEOzcUaUQqovRGho",
+            "43Ykum9T72UOPhBN31grpN"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
+          "genres": [
+            "folk pop",
+            "folk",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "singer-songwriter",
+              "alternative rock",
+              "chamber rock",
+              "folk-pop",
+              "pop",
+              "indie folk",
+              "current",
+              "indie"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "ivy"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:ivy",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "cowboy like me",
+          "url": "https://open.spotify.com/intl-fr/track/1XjHRolIXL2M1EEOUsGGR4",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 11,
+          "base_title": "cowboy like me",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "cowboy like me",
+          "song_family": "cowboy_like_me",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": [
+            "3qy4znWySY3rwzS2vHDOeg",
+            "52OkpDsU6MmPx1AwGOb6Ap"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
+          "genres": [
+            "country",
+            "folk",
+            "alternative rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "folk": 2.0,
+            "alternative rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "folk",
+              "alternative rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "folk",
+              "alternative rock",
+              "pop",
+              "singer-songwriter",
+              "folk rock",
+              "blues rock",
+              "chamber rock",
+              "indie",
+              "2020"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "cowboy like me"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cowboy_like_me",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "long story short",
+          "url": "https://open.spotify.com/intl-fr/track/2o2sgVJIgFXk8GQjWTgI6U",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 12,
+          "base_title": "long story short",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "long story short",
+          "song_family": "long_story_short",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": [
+            "0vVMlbdYx2080Oa9FndPZr",
+            "5VYWxXUpxuxEmCqMLDqICo"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
+          "genres": [
+            "rock",
+            "folk",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "rock": 3.0,
+            "folk": 2.0,
+            "pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "rock",
+              "folk",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "indie rock",
+              "folk",
+              "pop",
+              "electropop",
+              "indie pop",
+              "rock",
+              "alternative",
+              "folk-pop",
+              "synth-pop",
+              "synthpop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "long story short"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:long_story_short",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "marjorie",
+          "url": "https://open.spotify.com/intl-fr/track/12ntTeqEeTg7GAVpe8Mhpl",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 13,
+          "base_title": "marjorie",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "marjorie",
+          "song_family": "marjorie",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": [
+            "7vBNFh3NIZTj6tB5s1IBjE",
+            "5uICWmZTLkpEVbK22PBP6e"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
+          "genres": [
+            "rock",
+            "pop",
+            "folk"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "rock": 3.0,
+            "pop": 2.0,
+            "folk": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "rock",
+              "pop",
+              "folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "Ballad",
+              "rock",
+              "pop",
+              "folk",
+              "singer-songwriter",
+              "chamber pop",
+              "alternative rock",
+              "indie folk",
+              "chamber rock",
+              "owned by taylor swift"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "marjorie"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:marjorie",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "closure",
+          "url": "https://open.spotify.com/intl-fr/track/35rdVq36LMHQX0Suw9a6tK",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 14,
+          "base_title": "closure",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "closure",
+          "song_family": "closure",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": [
+            "3uayvzcbqFydIbgUeC6EJh",
+            "6a8aUhYbaQBUI8PcJ5ZmQ6"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
+          "genres": [
+            "pop",
+            "folk",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "folk": 2.0,
+            "rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "folk",
+              "rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "folk",
+              "indietronica",
+              "experimental",
+              "idm",
+              "best of 2020",
+              "hyperpop",
+              "rock",
+              "alternative rock",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "closure"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:closure",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          }
+        },
+        {
+          "title": "evermore (feat. Bon Iver)",
+          "url": "https://open.spotify.com/intl-fr/track/3O5osWf1rSoKMwe6E9ZaXP",
+          "type": "feature",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 15,
+          "base_title": "evermore (feat. Bon Iver)",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Bon Iver"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Bon Iver"
+          ],
+          "title_clean": "evermore",
+          "song_family": "evermore",
+          "version_tag": "featured__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": [
+            "6Wlq9rqkxrqj5Kls4Kw14H"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
+          "genres": [
+            "folk",
+            "rock",
+            "alternative rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk": 3.0,
+            "rock": 2.0,
+            "alternative rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk",
+              "rock",
+              "alternative rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk",
+              "rock",
+              "alternative rock",
+              "Ballad",
+              "chamber rock",
+              "pop",
+              "female vocalist",
+              "singer-songwriter",
+              "chamber pop",
+              "piano"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "evermore (feat. Bon Iver)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:evermore",
+          "filter_tags": [
+            "feature",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section"
+          }
+        }
+      ]
+    },
+    {
+      "section": "deluxe_edition",
+      "track_count": 2,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "right where you left me - bonus track",
+          "url": "https://open.spotify.com/intl-fr/track/3zwMVvkBe2qIKDObWgXw4N",
+          "type": "alternate_version",
+          "edition": "deluxe",
+          "display_section": "deluxe edition",
+          "display_order": 1,
+          "base_title": "right where you left me - bonus track",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "right where you left me - bonus track",
+          "song_family": "right_where_you_left_me_bonus_track",
+          "version_tag": "deluxe__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27390fd9741e1838115cd90b3b6",
+          "historical_track_ids": [],
+          "release_date": "2021-01-07T00:00:00Z",
+          "genres": [
+            "folk pop",
+            "country",
+            "folk"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk pop": 3.0,
+            "country": 2.0,
+            "folk": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk pop",
+              "country",
+              "folk"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk pop",
+              "country",
+              "folk-pop",
+              "folk",
+              "country pop",
+              "evermore",
+              "female vocalist",
+              "pop",
+              "singer-songwriter",
+              "alt pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "right where you left me - bonus track"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:right_where_you_left_me_bonus_track",
+          "filter_tags": [
+            "solo",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "it's time to go - bonus track",
+          "url": "https://open.spotify.com/intl-fr/track/1kdWw77ZpYOkhxeuhzU1j6",
+          "type": "alternate_version",
+          "edition": "deluxe",
+          "display_section": "deluxe edition",
+          "display_order": 2,
+          "base_title": "it's time to go - bonus track",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "it's time to go - bonus track",
+          "song_family": "it_s_time_to_go_bonus_track",
+          "version_tag": "deluxe__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27390fd9741e1838115cd90b3b6",
+          "historical_track_ids": [],
+          "release_date": "2021-01-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:it_s_time_to_go_bonus_track",
+          "filter_tags": [
+            "solo",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "alternate_version": "medium:type_or_title"
+          }
+        }
+      ]
+    },
+    {
+      "section": "remixes",
+      "track_count": 2,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "willow - 90's trend remix",
+          "url": "https://open.spotify.com/intl-fr/track/77p4fRpoeiZMtUy3P9kN21",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "willow",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "willow - 90's trend remix",
+          "song_family": "willow",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27348ea2c0fbc6682c6d10d91aa",
+          "historical_track_ids": [],
+          "release_date": "2021-06-14T00:00:00Z",
+          "genres": [
+            "folk pop",
+            "folk",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk pop",
+              "chamber folk",
+              "singer-songwriter",
+              "folk",
+              "indie folk",
+              "pop",
+              "overrated",
+              "indie",
+              "indie pop",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "willow"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:willow",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
+        },
+        {
+          "title": "willow - dancing witch version (Elvira remix)",
+          "url": "https://open.spotify.com/intl-fr/track/2NnrAdjE9cPdMklonMBuAv",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "willow",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "willow - dancing witch version (Elvira remix)",
+          "song_family": "willow",
+          "version_tag": "remix",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273e141efa4999ddb4b52512a7c",
+          "historical_track_ids": [
+            "2Ta5c5Z6DvM8GX0U1polSo"
+          ],
+          "release_date": "2020-12-13T00:00:00Z",
+          "genres": [
+            "folk pop",
+            "folk",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk pop",
+              "chamber folk",
+              "singer-songwriter",
+              "folk",
+              "indie folk",
+              "pop",
+              "overrated",
+              "indie",
+              "indie pop",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "willow"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:willow",
+          "filter_tags": [
+            "solo",
+            "remix"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title"
+          }
+        }
+      ]
+    },
+    {
+      "section": "remixes",
+      "chart_extra": true,
+      "track_count": 2,
+      "tracks": [
+        {
+          "title": "willow - lonely witch version",
+          "url": "https://open.spotify.com/intl-fr/track/0U0etHtpARihOUUY8Akc7y",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "willow",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "willow - lonely witch version",
+          "song_family": "willow",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
+          "historical_track_ids": [
+            "77d7q9TNbsIDmRTDPkPv3L"
+          ],
+          "release_date": "2020-12-15T00:00:00Z",
+          "genres": [
+            "folk pop",
+            "folk",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk pop",
+              "chamber folk",
+              "singer-songwriter",
+              "folk",
+              "indie folk",
+              "pop",
+              "overrated",
+              "indie",
+              "indie pop",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "willow"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:willow",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "alternate_version": "medium:type_or_title"
+          }
+        },
+        {
+          "title": "willow - moonlit witch version",
+          "url": "https://open.spotify.com/intl-fr/track/5XkJj6sV2XLMaURdmdXgNx",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 2,
+          "base_title": "willow",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "willow - moonlit witch version",
+          "song_family": "willow",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273ec07f0fc562d46804df394b4",
+          "historical_track_ids": [
+            "5F7hpFKLmWgMHGxQuwssuv"
+          ],
+          "release_date": "2020-12-16T00:00:00Z",
+          "genres": [
+            "folk pop",
+            "folk",
+            "singer-songwriter"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "folk pop": 3.0,
+            "folk": 2.0,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk pop",
+              "chamber folk",
+              "singer-songwriter",
+              "folk",
+              "indie folk",
+              "pop",
+              "overrated",
+              "indie",
+              "indie pop",
+              "alternative"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "willow"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:willow",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "alternate_version": "medium:type_or_title"
+          }
+        }
+      ]
+    }
+  ]
+}

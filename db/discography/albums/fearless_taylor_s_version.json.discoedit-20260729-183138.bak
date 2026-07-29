@@ -1,0 +1,1489 @@
+{
+  "album": "Fearless (Taylor's Version)",
+  "section_count": 3,
+  "track_count": 28,
+  "sections": [
+    {
+      "section": "standard_edition_tv",
+      "track_count": 26,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "Fearless (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/77sMIMlNaSURUAXq5coCxE",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 1,
+          "base_title": "Fearless",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Fearless",
+          "song_family": "fearless",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [
+            "5dwLFuYXsOikE1BMoBDMN6"
+          ],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:fearless",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
+        },
+        {
+          "title": "Fifteen (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/2nqio0SfWg6gh2eCtfuMa5",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 2,
+          "base_title": "Fifteen",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Fifteen",
+          "song_family": "fifteen",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:fifteen",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
+        },
+        {
+          "title": "Love Story (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/6YvqWjhGD8mB5QXcbcUKtx",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 3,
+          "base_title": "Love Story",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Love Story",
+          "song_family": "love_story",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [
+            "3CeCwYWvdfXbZLXFhBrbnf"
+          ],
+          "release_date": "2021-02-12T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "taylor swift",
+              "pop",
+              "Love",
+              "romantic",
+              "female vocalists",
+              "country pop",
+              "love story",
+              "love song",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Love Story"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:love_story",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
+        },
+        {
+          "title": "Hey Stephen (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/550erGcdD9n6PnwxrvYqZT",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 4,
+          "base_title": "Hey Stephen",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Hey Stephen",
+          "song_family": "hey_stephen",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:hey_stephen",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
+        },
+        {
+          "title": "White Horse (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/5YL553x8sHderRBDlm3NM3",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 5,
+          "base_title": "White Horse",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "White Horse",
+          "song_family": "white_horse",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [
+            "4ieGtGwqOpvIQhRngp5VvR"
+          ],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:white_horse",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
+        },
+        {
+          "title": "You Belong With Me (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/1qrpoAMXodY6895hGKoUpA",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 6,
+          "base_title": "You Belong With Me",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You Belong With Me",
+          "song_family": "you_belong_with_me",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [
+            "06qAK0pLx43pwzRi6MWV8g"
+          ],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "taylor swift",
+              "pop",
+              "country pop",
+              "Love",
+              "female vocalists",
+              "female vocalist",
+              "love at first listen",
+              "2009",
+              "singer-songwriter"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "You Belong With Me"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_belong_with_me",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
+        },
+        {
+          "title": "Breathe (feat. Colbie Caillat) (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/7HC7R2D8WjXVcUHJyEGjRs",
+          "type": "feature",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 7,
+          "base_title": "Breathe (feat. Colbie Caillat)",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Colbie Caillat"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Colbie Caillat"
+          ],
+          "title_clean": "Breathe",
+          "song_family": "breathe",
+          "version_tag": "featured__taylors_version__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:breathe",
+          "filter_tags": [
+            "feature",
+            "album_track",
+            "taylor_version"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
+        },
+        {
+          "title": "Tell Me Why (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/0k0vFacOHNuArLWMiH60p7",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 8,
+          "base_title": "Tell Me Why",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Tell Me Why",
+          "song_family": "tell_me_why",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:tell_me_why",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
+        },
+        {
+          "title": "You're Not Sorry (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/6iiAfo4wTA2CVC3Uwx9uh8",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 9,
+          "base_title": "You're Not Sorry",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You're Not Sorry",
+          "song_family": "you_re_not_sorry",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_re_not_sorry",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
+        },
+        {
+          "title": "The Way I Loved You (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/22bPsP2jCgbLUvh82U0Z3M",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 10,
+          "base_title": "The Way I Loved You",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Way I Loved You",
+          "song_family": "the_way_i_loved_you",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_way_i_loved_you",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
+        },
+        {
+          "title": "Forever & Always (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/1msEuwSBneBKpVCZQcFTsU",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 11,
+          "base_title": "Forever & Always",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Forever & Always",
+          "song_family": "forever_always",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:forever_always",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
+        },
+        {
+          "title": "The Best Day (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/6ON9UuIq49xXY9GPmHIYRp",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 12,
+          "base_title": "The Best Day",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Best Day",
+          "song_family": "the_best_day",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_best_day",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
+        },
+        {
+          "title": "Change (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/3ExweHKZF9B752DPQByRVT",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 13,
+          "base_title": "Change",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Change",
+          "song_family": "change",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:change",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
+        },
+        {
+          "title": "Jump Then Fall (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/2m3ObD945KvpE5y9A1eUWm",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 14,
+          "base_title": "Jump Then Fall",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Jump Then Fall",
+          "song_family": "jump_then_fall",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:jump_then_fall",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
+        },
+        {
+          "title": "Untouchable (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/0tQ9vBYpldCuikPsbgOVKA",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 15,
+          "base_title": "Untouchable",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Untouchable",
+          "song_family": "untouchable",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:untouchable",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
+        },
+        {
+          "title": "Forever & Always (Piano Version) (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/01QdEx6kFr78ZejhQtWR5m",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Standard Edition Tv",
+          "display_order": 16,
+          "base_title": "Forever & Always (Piano Version)",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Forever & Always (Piano Version)",
+          "song_family": "forever_always_piano_version",
+          "version_tag": "taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:forever_always_piano_version",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "taylor_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
+        },
+        {
+          "title": "Come In With The Rain (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/1n2wszmJyVkw6FHqyLnQsY",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 17,
+          "base_title": "Come In With The Rain",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Come In With The Rain",
+          "song_family": "come_in_with_the_rain",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:come_in_with_the_rain",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
+        },
+        {
+          "title": "Superstar (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/51A8eKvvZz9uydvIZ7xRSV",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 18,
+          "base_title": "Superstar",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Superstar",
+          "song_family": "superstar",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:superstar",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
+        },
+        {
+          "title": "The Other Side Of The Door (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/1cSFlSBdpT4F5vb1frQ231",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 19,
+          "base_title": "The Other Side Of The Door",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Other Side Of The Door",
+          "song_family": "the_other_side_of_the_door",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_other_side_of_the_door",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
+        },
+        {
+          "title": "Today Was A Fairytale (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/2JoJrsEV15OzbijS47lids",
+          "type": "alternate_version",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 20,
+          "base_title": "Today Was A Fairytale",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Today Was A Fairytale",
+          "song_family": "today_was_a_fairytale",
+          "version_tag": "taylors_version__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:today_was_a_fairytale",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "taylor_version",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "taylor_version": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
+        },
+        {
+          "title": "You All Over Me (feat. Maren Morris) (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/5pcjystBtalYeqaiXCcgEY",
+          "type": "feature",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 21,
+          "base_title": "You All Over Me (feat. Maren Morris) (Taylor's Version) (From The Vault)",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Maren Morris"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Maren Morris"
+          ],
+          "title_clean": "You All Over Me",
+          "song_family": "you_all_over_me",
+          "version_tag": "featured__vault__taylors_version__feature",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02b7afb31fe699dae7c34eea1b",
+          "display_era": "Fearless",
+          "historical_track_ids": [
+            "4CHpVfAhuxNJ3ibExe6kxO"
+          ],
+          "release_date": "2021-03-26T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_all_over_me",
+          "filter_tags": [
+            "feature",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "display_album": "Fearless",
+          "tags": []
+        },
+        {
+          "title": "Mr. Perfectly Fine (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/2CYVETnhM9aytqrazYYwrK",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 22,
+          "base_title": "Mr. Perfectly Fine (Taylor's Version) (From The Vault)",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Mr. Perfectly Fine",
+          "song_family": "mr_perfectly_fine",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [],
+          "release_date": "2021-04-07T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:mr_perfectly_fine",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
+        },
+        {
+          "title": "We Were Happy (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/34V9RiEPe8MNdU32qJsJa1",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 23,
+          "base_title": "We Were Happy (Taylor's Version) (From The Vault)",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "We Were Happy",
+          "song_family": "we_were_happy",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:we_were_happy",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
+        },
+        {
+          "title": "That's When (feat. Keith Urban) (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/7eResoqEJJAVTkQYSqvO3P",
+          "type": "feature",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 24,
+          "base_title": "That's When (feat. Keith Urban) (Taylor's Version) (From The Vault)",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [
+            "Keith Urban"
+          ],
+          "artists": [
+            "Taylor Swift",
+            "Keith Urban"
+          ],
+          "title_clean": "That's When",
+          "song_family": "that_s_when",
+          "version_tag": "featured__vault__taylors_version__feature",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:that_s_when",
+          "filter_tags": [
+            "feature",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "feature": "high:type_or_primary_artist",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
+        },
+        {
+          "title": "Don't You (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/4uuEGH5SVuzkkSFjo2DEiY",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 25,
+          "base_title": "Don't You (Taylor's Version) (From The Vault)",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Don't You",
+          "song_family": "don_t_you",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:don_t_you",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
+        },
+        {
+          "title": "Bye Bye Baby (Taylor's Version) (From The Vault)",
+          "url": "https://open.spotify.com/intl-fr/track/4qUijfYU8EoIWiY6oSyrgT",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition Tv",
+          "display_order": 26,
+          "base_title": "Bye Bye Baby (Taylor's Version) (From The Vault)",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Bye Bye Baby",
+          "song_family": "bye_bye_baby",
+          "version_tag": "vault__taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:bye_bye_baby",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "taylor_version",
+            "from_the_vault"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section",
+            "from_the_vault": "high:title_section_or_edition"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "album": "Fearless (Taylor's Version)",
+      "section": "taylor_versions_standalone",
+      "track_count": 1,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "If This Was A Movie (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/0kAZ3H6G9Zac4PMpmobMkj",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 1,
+          "base_title": "If This Was A Movie",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "If This Was A Movie",
+          "song_family": "if_this_was_a_movie",
+          "version_tag": "taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273afe932e498abc159219bd2f3",
+          "display_era": "Fearless",
+          "historical_track_ids": [
+            "0q6vsjvnCIWrtwRckCV7y0"
+          ],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:if_this_was_a_movie",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "taylor_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "display_album": "Fearless",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "section": "remixes",
+      "track_count": 1,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Love Story (Taylor's Version) - Elvira Remix",
+          "url": "https://open.spotify.com/intl-fr/track/5RaBeejGtdPEszYEKYECs2",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 26,
+          "base_title": "Love Story",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Love Story - Elvira Remix",
+          "song_family": "love_story",
+          "version_tag": "remix__taylors_version",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f2d3584898505ffee9cacfde",
+          "historical_track_ids": [],
+          "release_date": "2021-03-23T00:00:00Z",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "taylor swift",
+              "pop",
+              "Love",
+              "romantic",
+              "female vocalists",
+              "country pop",
+              "love story",
+              "love song",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Love Story"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:love_story",
+          "filter_tags": [
+            "solo",
+            "remix",
+            "taylor_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "remix": "high:type_or_title",
+            "taylor_version": "high:title_or_section"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
+        }
+      ]
+    }
+  ]
+}

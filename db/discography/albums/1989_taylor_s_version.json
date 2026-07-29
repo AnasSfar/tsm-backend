@@ -78,7 +78,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Blank Space (Taylor's Version)",
@@ -129,7 +133,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Style (Taylor's Version)",
@@ -201,7 +209,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Out Of The Woods (Taylor's Version)",
@@ -273,7 +285,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "All You Had To Do Was Stay (Taylor's Version)",
@@ -320,7 +336,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Shake It Off (Taylor's Version)",
@@ -386,7 +406,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "I Wish You Would (Taylor's Version)",
@@ -433,7 +457,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Bad Blood (Taylor's Version)",
@@ -505,7 +533,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Wildest Dreams (Taylor's Version)",
@@ -578,7 +610,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "How You Get The Girl (Taylor's Version)",
@@ -625,7 +661,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "This Love (Taylor's Version)",
@@ -673,7 +713,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "I Know Places (Taylor's Version)",
@@ -720,7 +764,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Clean (Taylor's Version)",
@@ -767,7 +815,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "Wonderland (Taylor's Version)",
@@ -814,7 +866,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "You Are In Love (Taylor's Version)",
@@ -861,7 +917,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "New Romantics (Taylor's Version)",
@@ -930,7 +990,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": []
         },
         {
           "title": "\"Slut!\" (Taylor's Version) (From The Vault)",
@@ -1002,7 +1066,11 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
         },
         {
           "title": "Say Don't Go (Taylor's Version) (From The Vault)",
@@ -1076,7 +1144,11 @@
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
         },
         {
           "title": "Now That We Don't Talk (Taylor's Version) (From The Vault)",
@@ -1150,7 +1222,11 @@
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
         },
         {
           "title": "Suburban Legends (Taylor's Version) (From The Vault)",
@@ -1221,7 +1297,11 @@
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
         },
         {
           "title": "Is It Over Now? (Taylor's Version) (From The Vault)",
@@ -1295,7 +1375,11 @@
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": []
         }
       ]
     },
@@ -1371,7 +1455,11 @@
           "filter_tag_sources": {
             "collab": "high:artists_or_featured_artists",
             "taylor_version": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version_deluxe",
+          "tags": []
         }
       ]
     }
