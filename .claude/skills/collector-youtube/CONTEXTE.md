@@ -27,10 +27,13 @@ python -m collectors.youtube.update_youtube
 
 Scheduler:
 
-- job Windows `TSM YouTube Videos Daily`;
-- run vers `06:05` Europe/Paris, environ `00:05` US Eastern.
+- Depuis le 2026-07-30 : prod tourne via `cron` sur un VPS OVH
+  (`~/tsm-backend/run_youtube_vps.sh`, timezone `Europe/Paris`), toujours
+  `06:05` Europe/Paris. Le job Windows `TSM YouTube Videos Daily` est
+  désactivé. Détail complet du déploiement : `REPO_CONTEXT.md` section
+  « Déploiement VPS OVH » et `OVH.md`.
 
-Le `.bat` local:
+Le `.bat` local (obsolète, gardé pour référence/rollback) :
 
 ```text
 collectors/youtube/run_youtube.bat

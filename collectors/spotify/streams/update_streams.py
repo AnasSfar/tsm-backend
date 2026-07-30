@@ -176,7 +176,10 @@ CHARTSNAPSHOT_ARTIST_URI = "06HL4z0CvFAxyc27GXpf02"
 CHARTSNAPSHOT_TOP_SONGS_URL = "https://www.chartsnapshot.com/get_top_songs"
 EARLY_BEST_DAY_MIN_DAILY_STREAMS = 500_000
 EARLY_BEST_DAY_TRACK_LIMIT = 80
+EARLY_BEST_DAY_MAX_POSTS = 10
 EARLY_BEST_DAY_MIN_PCT_CHANGE = 10.0
+EARLY_BEST_DAY_PRIORITY_AFTER_DAYS = 60
+EARLY_BEST_DAY_PRIORITY_RECENT_PEAK_RATIO = 0.90
 PENDING_RETRY_SLEEP_SECONDS = 20
 EXTRA_PENDING_RETRY_ROUNDS_BEFORE_ZERO = 5
 INFINITE_RETRY_PREVIOUS_DAY_TOP_N = 70
@@ -1192,6 +1195,80 @@ def load_daily_streams_by_track_for_date(target_date: str) -> dict[str, int]:
             continue
         daily_by_track[track_id] = daily
     return daily_by_track
+
+
+def build_priority_best_day_track_ids(
+    tracks: list[dict],
+    stats_date: str,
+    *,
+    min_days_since: int = EARLY_BEST_DAY_PRIORITY_AFTER_DAYS,
+    min_recent_peak_ratio: float = EARLY_BEST_DAY_PRIORITY_RECENT_PEAK_RATIO,
+) -> list[str]:
+    """Tracks that can plausibly hit the always-post long best-day rule.
+
+    This is only an early-post priority list: the post script still recomputes
+    the exact best-day-since row after today's daily is written.
+    """
+    try:
+        target_day = date.fromisoformat(stats_date)
+    except ValueError:
+        return []
+
+    active_ids = {
+        str(track.get("track_id") or "").strip()
+        for track in tracks
+        if track.get("track_id") and not track.get("chart_extra")
+    }
+    if not active_ids:
+        return []
+
+    cutoff_day = target_day - timedelta(days=min_days_since)
+    points_by_track: dict[str, list[tuple[date, int]]] = {}
+    for row in load_history_rows():
+        track_id = str(row.get("track_id") or "").strip()
+        row_date = str(row.get("date") or "").strip()
+        if track_id not in active_ids or not row_date or row_date >= stats_date:
+            continue
+        try:
+            row_day = date.fromisoformat(row_date)
+            daily = int(str(row.get("daily_streams") or "").strip())
+        except ValueError:
+            continue
+        if daily <= 0:
+            continue
+        points_by_track.setdefault(track_id, []).append((row_day, daily))
+
+    candidates: list[tuple[int, int, str]] = []
+    for track_id, points in points_by_track.items():
+        recent = [(day, daily) for day, daily in points if cutoff_day <= day < target_day]
+        older = [(day, daily) for day, daily in points if day < cutoff_day]
+        if not recent or not older:
+            continue
+
+        recent_peak = max(daily for _day, daily in recent)
+        previous_day_daily = next((daily for day, daily in points if day == target_day - timedelta(days=1)), None)
+        if previous_day_daily is None:
+            continue
+
+        older_peak = max(daily for _day, daily in older)
+        if older_peak <= recent_peak:
+            continue
+        if previous_day_daily < recent_peak * min_recent_peak_ratio:
+            continue
+
+        last_older_above_recent_peak = max(
+            day for day, daily in older if daily > recent_peak
+        )
+        potential_days_since = (target_day - last_older_above_recent_peak).days
+        if potential_days_since <= min_days_since:
+            continue
+
+        # Put near-record low-volume songs first, then the oldest potential records.
+        gap_to_recent_peak = max(0, recent_peak - previous_day_daily)
+        candidates.append((gap_to_recent_peak, -potential_days_since, track_id))
+
+    candidates.sort()
+    return [track_id for _gap, _days, track_id in candidates]
 
 
 def build_early_best_day_track_ids(
@@ -2807,6 +2884,12 @@ def main():
     )
     album_update_poster.start()
 
+    priority_best_day_track_ids = build_priority_best_day_track_ids(
+        tracks,
+        stats_date,
+        min_days_since=EARLY_BEST_DAY_PRIORITY_AFTER_DAYS,
+        min_recent_peak_ratio=EARLY_BEST_DAY_PRIORITY_RECENT_PEAK_RATIO,
+    )
     early_best_day_track_ids = build_early_best_day_track_ids(
         tracks,
         stats_date,
@@ -2814,19 +2897,22 @@ def main():
         limit=EARLY_BEST_DAY_TRACK_LIMIT,
     )
     print(
-        f"Early best-day-since watcher limited to {len(early_best_day_track_ids)} "
+        f"Early best-day-since watcher has {len(priority_best_day_track_ids)} "
+        f"priority long-gap candidate(s) and {len(early_best_day_track_ids)} "
         f"high-volume track(s) from {get_previous_stats_date_str(stats_date)}."
     )
     best_day_since_poster = ReadyBestDaySincePoster(
         script_dir=_SCRIPT_DIR,
         stats_date=stats_date,
         track_ids=early_best_day_track_ids,
+        priority_track_ids=priority_best_day_track_ids,
         export_web_data=early_web_export_gate.export_partial,
         load_history_track_ids_for_date=load_history_track_ids_for_date,
         spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
         log_mode=LOG_MODE,
         enabled=True,
         no_post_mode=no_post_mode,
+        max_posts=EARLY_BEST_DAY_MAX_POSTS,
         min_days=21,
         min_daily_streams=EARLY_BEST_DAY_MIN_DAILY_STREAMS,
         min_pct_change=EARLY_BEST_DAY_MIN_PCT_CHANGE,

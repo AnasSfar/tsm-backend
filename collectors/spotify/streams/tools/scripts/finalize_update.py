@@ -483,10 +483,13 @@ class ReadyBestDaySincePoster:
         min_daily_streams: int | None = None,
         min_pct_change: float | None = None,
         priority_ready: Callable[[], bool] | None = None,
+        priority_track_ids: list[str] | None = None,
     ) -> None:
         self.script_dir = script_dir
         self.stats_date = stats_date
-        self.track_ids = tuple(dict.fromkeys(track_ids))
+        self.priority_track_ids = tuple(dict.fromkeys(priority_track_ids or []))
+        self.track_ids = tuple(dict.fromkeys([*self.priority_track_ids, *track_ids]))
+        self._priority_track_id_set = set(self.priority_track_ids)
         self.export_web_data = export_web_data
         self.load_history_track_ids_for_date = load_history_track_ids_for_date
         self.spacing_seconds = spacing_seconds
@@ -547,7 +550,8 @@ class ReadyBestDaySincePoster:
                     continue
             if track_id not in done_ids:
                 continue
-            if not self.priority_ready():
+            is_priority_track = track_id in self._priority_track_id_set
+            if not is_priority_track and not self.priority_ready():
                 return False
             with self._lock:
                 self._checked.add(track_id)

@@ -12,7 +12,15 @@
 - export JSON puis upload R2.
 
 Le pipeline ne poste pas sur X. `--no-post` existe dans le runner mais n'est pas
-un controle de publication Twitter.
+un controle de publication Twitter. Ne fait jamais de commit/push git (seul
+l'upload R2 distribue la donnee).
+
+Scheduler : depuis le 2026-07-30, prod tourne via `cron` sur un VPS OVH
+(`~/tsm-backend/run_apple_music_vps.sh`, timezone `Europe/Paris`), toutes
+les 4h (`0 2,6,10,14,18,22 * * *`, equivalent a l'ancien cron UTC
+`0 */4 * * *` de `run-apple-music.yml`). Le job Windows local est
+desactive. Detail complet : `REPO_CONTEXT.md` section « Deploiement VPS
+OVH » et `OVH.md`.
 
 ## Entrypoint
 

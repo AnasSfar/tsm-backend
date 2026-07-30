@@ -1,106 +1,20 @@
 {
   "album": "Fearless",
   "section_count": 5,
-  "track_count": 31,
+  "track_count": 68,
   "sections": [
     {
       "section": "original_edition",
-      "track_count": 15,
+      "track_count": 13,
       "chart_extra": false,
       "tracks": [
-        {
-          "title": "Breathe",
-          "url": "https://open.spotify.com/intl-fr/track/0qsSmObOgBZfuMIwfAQDBP",
-          "type": "standalone",
-          "edition": "standard",
-          "display_section": "Standard Edition",
-          "display_order": 13,
-          "base_title": "Breathe",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Breathe",
-          "song_family": "breathe",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
-          "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:breathe",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type"
-          }
-        },
-        {
-          "title": "Come In With The Rain",
-          "url": "https://open.spotify.com/intl-fr/track/0cEG04R5cldkTLzK6phlcn",
-          "type": "standalone",
-          "edition": "standard",
-          "display_section": "Standard Edition",
-          "display_order": 4,
-          "base_title": "Come In With The Rain",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Come In With The Rain",
-          "song_family": "come_in_with_the_rain",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
-          "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:come_in_with_the_rain",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type"
-          }
-        },
         {
           "title": "Fearless",
           "url": "https://open.spotify.com/intl-fr/track/6zV8AVM9eVfdG7Qahwd64R",
           "type": "standalone",
           "edition": "standard",
           "display_section": "Standard Edition",
-          "display_order": 7,
+          "display_order": 1,
           "base_title": "Fearless",
           "album": "Fearless",
           "primary_artist": "Taylor Swift",
@@ -112,7 +26,11 @@
           "song_family": "fearless",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "15PRxID4aGtOncbffzgZXI",
+            "4lIbdZwGa2hgkxigHJumaV",
+            "6Eu31gddWw0gOGO506pJYA"
+          ],
           "release_date": "2008-11-11T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -135,7 +53,11 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Fifteen",
@@ -143,7 +65,7 @@
           "type": "standalone",
           "edition": "standard",
           "display_section": "Standard Edition",
-          "display_order": 8,
+          "display_order": 2,
           "base_title": "Fifteen",
           "album": "Fearless",
           "primary_artist": "Taylor Swift",
@@ -155,7 +77,10 @@
           "song_family": "fifteen",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "6ZeKYXZ6esPjpuHwCtUiZh",
+            "4t0OI7XrODjSkAu3bTPmWj"
+          ],
           "release_date": "2008-11-11T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -178,138 +103,11 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type"
-          }
-        },
-        {
-          "title": "Forever & Always - Piano Version",
-          "url": "https://open.spotify.com/intl-fr/track/13MAWVUSkbGMUi6I7RowRK",
-          "type": "standalone",
-          "edition": "standard",
-          "display_section": "Standard Edition",
-          "display_order": 3,
-          "base_title": "Forever & Always",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Forever & Always - Piano Version",
-          "song_family": "forever_always",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
-          "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
           },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:forever_always",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type",
-            "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "Hey Stephen",
-          "url": "https://open.spotify.com/intl-fr/track/4fWDgRZa0GKE5KZNhE9MQa",
-          "type": "standalone",
-          "edition": "standard",
-          "display_section": "Standard Edition",
-          "display_order": 10,
-          "base_title": "Hey Stephen",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Hey Stephen",
-          "song_family": "hey_stephen",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
-          "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:hey_stephen",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type"
-          }
-        },
-        {
-          "title": "Jump Then Fall",
-          "url": "https://open.spotify.com/intl-fr/track/6WWvcA62QlnRguluWAk6bv",
-          "type": "standalone",
-          "edition": "standard",
-          "display_section": "Standard Edition",
-          "display_order": 1,
-          "base_title": "Jump Then Fall",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Jump Then Fall",
-          "song_family": "jump_then_fall",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
-          "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:jump_then_fall",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type"
-          }
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "Love Story",
@@ -317,7 +115,7 @@
           "type": "standalone",
           "edition": "standard",
           "display_section": "Standard Edition",
-          "display_order": 9,
+          "display_order": 3,
           "base_title": "Love Story",
           "album": "Fearless",
           "primary_artist": "Taylor Swift",
@@ -329,7 +127,11 @@
           "song_family": "love_story",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1D4PL9B8gOg78jiHg3FvBb",
+            "6SgBWLgjMQdoVQytBgATGx",
+            "1vrd6UOGamcKNGnSHJQlSt"
+          ],
           "release_date": "2008-11-11T00:00:00Z",
           "genres": [
             "country",
@@ -377,27 +179,35 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
-          "title": "SuperStar",
-          "url": "https://open.spotify.com/intl-fr/track/0XfTh16YcKPzdxMPTeKTAq",
+          "title": "Hey Stephen",
+          "url": "https://open.spotify.com/intl-fr/track/4fWDgRZa0GKE5KZNhE9MQa",
           "type": "standalone",
           "edition": "standard",
           "display_section": "Standard Edition",
-          "display_order": 5,
-          "base_title": "SuperStar",
+          "display_order": 4,
+          "base_title": "Hey Stephen",
           "album": "Fearless",
           "primary_artist": "Taylor Swift",
           "featured_artists": [],
           "artists": [
             "Taylor Swift"
           ],
-          "title_clean": "SuperStar",
-          "song_family": "superstar",
+          "title_clean": "Hey Stephen",
+          "song_family": "hey_stephen",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "3CI1f4yLwdHzcUnH7o0Xyh",
+            "6wcFdMmiDscAhZJrcVFumx",
+            "4WXzzCof26KJLTK5kK53dS"
+          ],
           "release_date": "2008-11-11T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -410,7 +220,7 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:superstar",
+          "genre_canonical_key": "family:hey_stephen",
           "filter_tags": [
             "solo",
             "album_track",
@@ -420,136 +230,11 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type"
-          }
-        },
-        {
-          "title": "Tell Me Why",
-          "url": "https://open.spotify.com/intl-fr/track/6vLpy7UPYuOa75Bkqocrcw",
-          "type": "standalone",
-          "edition": "standard",
-          "display_section": "Standard Edition",
-          "display_order": 14,
-          "base_title": "Tell Me Why",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Tell Me Why",
-          "song_family": "tell_me_why",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da",
-          "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
           },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:tell_me_why",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type"
-          }
-        },
-        {
-          "title": "The Other Side Of The Door",
-          "url": "https://open.spotify.com/intl-fr/track/1yDJcXc549N6AabNBzFAku",
-          "type": "standalone",
-          "edition": "standard",
-          "display_section": "Standard Edition",
-          "display_order": 6,
-          "base_title": "The Other Side Of The Door",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "The Other Side Of The Door",
-          "song_family": "the_other_side_of_the_door",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
-          "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:the_other_side_of_the_door",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type"
-          }
-        },
-        {
-          "title": "Untouchable",
-          "url": "https://open.spotify.com/intl-fr/track/6ovFJkdau79DuXEvQjPaNH",
-          "type": "standalone",
-          "edition": "standard",
-          "display_section": "Standard Edition",
-          "display_order": 2,
-          "base_title": "Untouchable",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Untouchable",
-          "song_family": "untouchable",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
-          "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:untouchable",
-          "filter_tags": [
-            "solo",
-            "album_track",
-            "standalone"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "standalone": "medium:section_or_type"
-          }
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "White Horse",
@@ -557,7 +242,7 @@
           "type": "standalone",
           "edition": "standard",
           "display_section": "Standard Edition",
-          "display_order": 11,
+          "display_order": 5,
           "base_title": "White Horse",
           "album": "Fearless",
           "primary_artist": "Taylor Swift",
@@ -569,7 +254,10 @@
           "song_family": "white_horse",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "4jPtq9shRdUv8Zjr0a5xkD",
+            "6wn61Fzx9XMxQmieLpoIhW"
+          ],
           "release_date": "2008-11-11T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -592,7 +280,11 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "You Belong With Me",
@@ -600,7 +292,7 @@
           "type": "standalone",
           "edition": "standard",
           "display_section": "Standard Edition",
-          "display_order": 12,
+          "display_order": 6,
           "base_title": "You Belong With Me",
           "album": "Fearless",
           "primary_artist": "Taylor Swift",
@@ -612,7 +304,11 @@
           "song_family": "you_belong_with_me",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1GEBsLDvJGw7kviySRI6GX",
+            "7wbATZinTGleK7zhZJs4Yq",
+            "3GCL1PydwsLodcpv0Ll1ch"
+          ],
           "release_date": "2008-11-11T00:00:00Z",
           "genres": [
             "country",
@@ -660,7 +356,112 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Breathe",
+          "url": "https://open.spotify.com/intl-fr/track/0qsSmObOgBZfuMIwfAQDBP",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 7,
+          "base_title": "Breathe",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Breathe",
+          "song_family": "breathe",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
+          "historical_track_ids": [
+            "6S9G7J3EB1ZY0rrZPwsBg5",
+            "49mWEy5MgtNujgT7xU3emT"
+          ],
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:breathe",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Tell Me Why",
+          "url": "https://open.spotify.com/intl-fr/track/6vLpy7UPYuOa75Bkqocrcw",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 8,
+          "base_title": "Tell Me Why",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Tell Me Why",
+          "song_family": "tell_me_why",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da",
+          "historical_track_ids": [
+            "4x7Gxk2GfwZJcqpoVT1PbR",
+            "4XrP7vKBjKLEYlRZdb0Ygr",
+            "3rnI1UCyGJvUTVvT97VQr5"
+          ],
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:tell_me_why",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "You're Not Sorry",
@@ -668,7 +469,7 @@
           "type": "standalone",
           "edition": "standard",
           "display_section": "Standard Edition",
-          "display_order": 15,
+          "display_order": 9,
           "base_title": "You're Not Sorry",
           "album": "Fearless",
           "primary_artist": "Taylor Swift",
@@ -680,7 +481,11 @@
           "song_family": "you_re_not_sorry",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0ReNbPVMU7jUWqn1yHo9cE",
+            "6HWYtS215rxaaMjvpyG18W",
+            "0HmCuN0Z3OX1Qrz43FLOPL"
+          ],
           "release_date": "2008-11-11T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -703,145 +508,19 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type"
-          }
-        }
-      ]
-    },
-    {
-      "section": "platinum_edition",
-      "track_count": 4,
-      "chart_extra": false,
-      "tracks": [
-        {
-          "title": "Change",
-          "url": "https://open.spotify.com/intl-fr/track/0RdcBnAXyH2YZZvcBVu2k6",
-          "type": "standalone",
-          "edition": "deluxe",
-          "display_section": "Platinum Edition",
-          "display_order": 19,
-          "base_title": "Change",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Change",
-          "song_family": "change",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e",
-          "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
           },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:change",
-          "filter_tags": [
-            "solo",
-            "standalone"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type"
-          }
-        },
-        {
-          "title": "Forever & Always",
-          "url": "https://open.spotify.com/intl-fr/track/1zxrcAk6eiytfavqriMcKT",
-          "type": "standalone",
-          "edition": "deluxe",
-          "display_section": "Platinum Edition",
-          "display_order": 17,
-          "base_title": "Forever & Always",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Forever & Always",
-          "song_family": "forever_always",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e",
-          "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:forever_always",
-          "filter_tags": [
-            "solo",
-            "standalone"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type"
-          }
-        },
-        {
-          "title": "The Best Day",
-          "url": "https://open.spotify.com/intl-fr/track/5YbZZ2gYfvW1UvHHF4pVaD",
-          "type": "standalone",
-          "edition": "deluxe",
-          "display_section": "Platinum Edition",
-          "display_order": 18,
-          "base_title": "The Best Day",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "The Best Day",
-          "song_family": "the_best_day",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e",
-          "historical_track_ids": [],
-          "release_date": "2008-11-11T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
-          },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:the_best_day",
-          "filter_tags": [
-            "solo",
-            "standalone"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type"
-          }
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
         },
         {
           "title": "The Way I Loved You",
           "url": "https://open.spotify.com/intl-fr/track/77VotUUL79U10TAnYdqwvr",
           "type": "standalone",
-          "edition": "deluxe",
-          "display_section": "Platinum Edition",
-          "display_order": 16,
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 10,
           "base_title": "The Way I Loved You",
           "album": "Fearless",
           "primary_artist": "Taylor Swift",
@@ -853,7 +532,10 @@
           "song_family": "the_way_i_loved_you",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "04LDcz3RX1P5sIlzQGqgUN",
+            "5P4wWhUYWM0IaVYLuZxdar"
+          ],
           "release_date": "2008-11-11T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -874,7 +556,458 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Forever & Always",
+          "url": "https://open.spotify.com/intl-fr/track/1zxrcAk6eiytfavqriMcKT",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 11,
+          "base_title": "Forever & Always",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Forever & Always",
+          "song_family": "forever_always",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e",
+          "historical_track_ids": [
+            "47HtKpfzpAt8rQjjXWotFj"
+          ],
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:forever_always",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "The Best Day",
+          "url": "https://open.spotify.com/intl-fr/track/5YbZZ2gYfvW1UvHHF4pVaD",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 12,
+          "base_title": "The Best Day",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Best Day",
+          "song_family": "the_best_day",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e",
+          "historical_track_ids": [
+            "0ck1qErO76fM9xKxuSeqDk",
+            "3esA216TyLHEkNiBCeCmcg"
+          ],
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_best_day",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        },
+        {
+          "title": "Change",
+          "url": "https://open.spotify.com/intl-fr/track/0RdcBnAXyH2YZZvcBVu2k6",
+          "type": "standalone",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 13,
+          "base_title": "Change",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Change",
+          "song_family": "change",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e",
+          "historical_track_ids": [
+            "3gFaNwyiafgUoQhR0pHYA9",
+            "5nUPw1RvAkqDIdebpDy3JI",
+            "1yACRKAwlXWhXXFUSkvzhD"
+          ],
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:change",
+          "filter_tags": [
+            "solo",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "section": "platinum_edition",
+      "track_count": 6,
+      "chart_extra": false,
+      "tracks": [
+        {
+          "title": "Jump Then Fall",
+          "url": "https://open.spotify.com/intl-fr/track/6WWvcA62QlnRguluWAk6bv",
+          "type": "standalone",
+          "edition": "deluxe",
+          "display_section": "Platinum Edition",
+          "display_order": 14,
+          "base_title": "Jump Then Fall",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Jump Then Fall",
+          "song_family": "jump_then_fall",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
+          "historical_track_ids": [
+            "08gavXombT6KR0af88i9tA"
+          ],
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:jump_then_fall",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "platinum",
+          "tags": []
+        },
+        {
+          "title": "Untouchable",
+          "url": "https://open.spotify.com/intl-fr/track/6ovFJkdau79DuXEvQjPaNH",
+          "type": "standalone",
+          "edition": "deluxe",
+          "display_section": "Platinum Edition",
+          "display_order": 15,
+          "base_title": "Untouchable",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Untouchable",
+          "song_family": "untouchable",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
+          "historical_track_ids": [
+            "2IZ00ed83ygPIiacYScWUE"
+          ],
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:untouchable",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "platinum",
+          "tags": []
+        },
+        {
+          "title": "Forever & Always - Piano Version",
+          "url": "https://open.spotify.com/intl-fr/track/13MAWVUSkbGMUi6I7RowRK",
+          "type": "standalone",
+          "edition": "deluxe",
+          "display_section": "Platinum Edition",
+          "display_order": 16,
+          "base_title": "Forever & Always",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Forever & Always - Piano Version",
+          "song_family": "forever_always",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
+          "historical_track_ids": [
+            "46HGgtwmmuEB8mvDCyjyAc"
+          ],
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:forever_always",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "platinum",
+          "tags": []
+        },
+        {
+          "title": "Come In With The Rain",
+          "url": "https://open.spotify.com/intl-fr/track/0cEG04R5cldkTLzK6phlcn",
+          "type": "standalone",
+          "edition": "deluxe",
+          "display_section": "Platinum Edition",
+          "display_order": 17,
+          "base_title": "Come In With The Rain",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Come In With The Rain",
+          "song_family": "come_in_with_the_rain",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
+          "historical_track_ids": [
+            "4pl5zcqCv4vc3cB7M4MZ6f"
+          ],
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:come_in_with_the_rain",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "platinum",
+          "tags": []
+        },
+        {
+          "title": "SuperStar",
+          "url": "https://open.spotify.com/intl-fr/track/0XfTh16YcKPzdxMPTeKTAq",
+          "type": "standalone",
+          "edition": "deluxe",
+          "display_section": "Platinum Edition",
+          "display_order": 18,
+          "base_title": "SuperStar",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "SuperStar",
+          "song_family": "superstar",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
+          "historical_track_ids": [
+            "14Bljc3pOOG0xQX3wqhLN9"
+          ],
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:superstar",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "platinum",
+          "tags": []
+        },
+        {
+          "title": "The Other Side Of The Door",
+          "url": "https://open.spotify.com/intl-fr/track/1yDJcXc549N6AabNBzFAku",
+          "type": "standalone",
+          "edition": "deluxe",
+          "display_section": "Platinum Edition",
+          "display_order": 19,
+          "base_title": "The Other Side Of The Door",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Other Side Of The Door",
+          "song_family": "the_other_side_of_the_door",
+          "version_tag": "standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
+          "historical_track_ids": [
+            "0xvsgzM8AtBtRHZm5rav8A"
+          ],
+          "release_date": "2008-11-11T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_other_side_of_the_door",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "standalone"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "standalone": "medium:section_or_type"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "platinum",
+          "tags": []
         }
       ]
     },
@@ -903,7 +1036,9 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2738d3b185c6a110a479e01e3c4",
           "display_era": "Fearless",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1P5QpwOgXJuoVTm3CWbnLY"
+          ],
           "release_date": "2011-02-15T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -924,14 +1059,19 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "other",
+          "display_album": "Fearless",
+          "tags": []
         }
       ]
     },
     {
       "album": "Fearless",
       "section": "streaming_extras",
-      "track_count": 9,
+      "track_count": 46,
       "chart_extra": true,
       "tracks": [
         {
@@ -949,7 +1089,7 @@
             "Taylor Swift"
           ],
           "title_clean": "Change - Live From Clear Channel Stripped 2008",
-          "song_family": "change_live_from_clear_channel_stripped_2008",
+          "song_family": "change",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
           "display_era": "Fearless",
@@ -976,7 +1116,12 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "live": "high:type_title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "display_album": "Fearless",
+          "tags": []
         },
         {
           "title": "Fearless - Live From Clear Channel Stripped 2008",
@@ -993,7 +1138,7 @@
             "Taylor Swift"
           ],
           "title_clean": "Fearless - Live From Clear Channel Stripped 2008",
-          "song_family": "fearless_live_from_clear_channel_stripped_2008",
+          "song_family": "fearless",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
           "display_era": "Fearless",
@@ -1020,7 +1165,12 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "live": "high:type_title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "display_album": "Fearless",
+          "tags": []
         },
         {
           "title": "Hey Stephen - Commentary",
@@ -1037,7 +1187,7 @@
             "Taylor Swift"
           ],
           "title_clean": "Hey Stephen - Commentary",
-          "song_family": "hey_stephen_commentary",
+          "song_family": "hey_stephen",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b27360cb9332e8c8c7d8e50854b3",
           "display_era": "Fearless",
@@ -1062,7 +1212,12 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "display_album": "Fearless",
+          "tags": []
         },
         {
           "title": "Love Story - Instrumental with BGV",
@@ -1083,7 +1238,9 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b2733aaff042743bac0fdec793fc",
           "display_era": "Fearless",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "6S9ZMuyJ6spObHDcTJOYlI"
+          ],
           "release_date": "2008-11-11T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -1104,7 +1261,12 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "display_album": "Fearless",
+          "tags": []
         },
         {
           "title": "Love Story - J Stax Radio Mix",
@@ -1147,7 +1309,12 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "display_album": "Fearless",
+          "tags": []
         },
         {
           "title": "Love Story - Live From Clear Channel Stripped 2008",
@@ -1164,7 +1331,7 @@
             "Taylor Swift"
           ],
           "title_clean": "Love Story - Live From Clear Channel Stripped 2008",
-          "song_family": "love_story_live_from_clear_channel_stripped_2008",
+          "song_family": "love_story",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
           "display_era": "Fearless",
@@ -1216,7 +1383,12 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "live": "high:type_title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "display_album": "Fearless",
+          "tags": []
         },
         {
           "title": "Love Story - Pop Mix",
@@ -1237,7 +1409,10 @@
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d676631cbb331a320db57b64",
           "display_era": "Fearless",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "4pJ8xgaGB9VGkWwODCew8R",
+            "6CRAwMp6giXWedegUgxqLh"
+          ],
           "release_date": "2020-02-07T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -1260,50 +1435,12 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "remix": "high:type_or_title"
-          }
-        },
-        {
-          "title": "Today Was A Fairytale - US Version",
-          "url": "https://open.spotify.com/intl-fr/track/1P5QpwOgXJuoVTm3CWbnLY",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 9999,
-          "base_title": "Today Was A Fairytale - US Version",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Today Was A Fairytale - US Version",
-          "song_family": "today_was_a_fairytale_us_version",
-          "version_tag": null,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27393b047c75268dd2847187910",
-          "display_era": "Fearless",
-          "historical_track_ids": [],
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
           },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:today_was_a_fairytale_us_version",
-          "filter_tags": [
-            "solo",
-            "standalone",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type",
-            "alternate_version": "medium:type_or_title"
-          }
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "display_album": "Fearless",
+          "tags": []
         },
         {
           "title": "Untouchable - Live From Clear Channel Stripped 2008",
@@ -1320,7 +1457,7 @@
             "Taylor Swift"
           ],
           "title_clean": "Untouchable - Live From Clear Channel Stripped 2008",
-          "song_family": "untouchable_live_from_clear_channel_stripped_2008",
+          "song_family": "untouchable",
           "version_tag": null,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c031e8322b3e8684536ed6d0",
           "display_era": "Fearless",
@@ -1347,7 +1484,1252 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "live": "high:type_title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "live",
+          "display_album": "Fearless",
+          "tags": []
+        },
+        {
+          "title": "Dear John - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/1WxSuTO0X0HKb1dkQjVkVo",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 27,
+          "base_title": "Dear John",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Dear John - Commentary",
+          "song_family": "dear_john",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Delicate - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/2XmWRdsQlXna2gcAn1Dquv",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 29,
+          "base_title": "Delicate",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Delicate - Commentary",
+          "song_family": "delicate",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2017-11-10T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Dancing With Our Hands Tied - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/73AHP8EqSH8QXqqoFXKwdW",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 26,
+          "base_title": "Dancing With Our Hands Tied",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Dancing With Our Hands Tied - Commentary",
+          "song_family": "dancing_with_our_hands_tied",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2017-11-10T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Don't Blame Me - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/59ZmeIz57cGU5Gp9omjlYB",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 30,
+          "base_title": "Don't Blame Me",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Don't Blame Me - Commentary",
+          "song_family": "don_t_blame_me",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2017-11-10T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Fearless - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/7C7usPxKM74lA8HJbCqZnz",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 36,
+          "base_title": "Fearless",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Fearless - Commentary",
+          "song_family": "fearless",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Fearless - Instrumental with BGV",
+          "url": "https://open.spotify.com/intl-fr/track/5Gz9GFSwHObbmjSRHgTphe",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 37,
+          "base_title": "Fearless",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Fearless - Instrumental with BGV",
+          "song_family": "fearless",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [
+            "1ReKQQQEroKx3MMU0KaQoi"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Fifteen - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/3Aelp7PlkDvBvCPqvyIopZ",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 38,
+          "base_title": "Fifteen",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Fifteen - Commentary",
+          "song_family": "fifteen",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Fifteen - Instrumental with BGV",
+          "url": "https://open.spotify.com/intl-fr/track/2p2iPBELfsen9imWH0NkId",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 39,
+          "base_title": "Fifteen",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Fifteen - Instrumental with BGV",
+          "song_family": "fifteen",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Forever & Always - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/57USOybNwyjN8ZUZLm9hra",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 40,
+          "base_title": "Forever & Always",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Forever & Always - Commentary",
+          "song_family": "forever_always",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Forever & Always - Instrumental with BGV",
+          "url": "https://open.spotify.com/intl-fr/track/3T7zAF5sfNq0blGbz21TTa",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 41,
+          "base_title": "Forever & Always",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Forever & Always - Instrumental with BGV",
+          "song_family": "forever_and_always",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Hey Stephen - Instrumental with BGV",
+          "url": "https://open.spotify.com/intl-fr/track/0wN94hAOTCu4Vv4TCbhVZD",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 46,
+          "base_title": "Hey Stephen",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Hey Stephen - Instrumental with BGV",
+          "song_family": "hey_stephen",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Love Story - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/7D4bd801muwRfuo5F3KkGk",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 69,
+          "base_title": "Love Story",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Love Story - Commentary",
+          "song_family": "love_story",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Tell Me Why - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/1SARZTSJ1YeXgImYzpSxef",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 106,
+          "base_title": "Tell Me Why",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Tell Me Why - Commentary",
+          "song_family": "tell_me_why",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Tell Me Why - Instrumental with BGV",
+          "url": "https://open.spotify.com/intl-fr/track/42WE7fJI5dYoa10luMp3Na",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 107,
+          "base_title": "Tell Me Why",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Tell Me Why - Instrumental with BGV",
+          "song_family": "tell_me_why",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [
+            "7qZk0GASFHvIg5dB0nc6LI"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "The Best Day - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/2MzoTHyQgopGUL8ABcOAyr",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 108,
+          "base_title": "The Best Day",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Best Day - Commentary",
+          "song_family": "the_best_day",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "The Best Day - Instrumental with BGV",
+          "url": "https://open.spotify.com/intl-fr/track/0sxxlg7d2UZ60TdtcuKYZ0",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 109,
+          "base_title": "The Best Day",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Best Day - Instrumental with BGV",
+          "song_family": "the_best_day",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "The Way I Loved You - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/7lzMAvyDZyZm1hPMLpfIXy",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 117,
+          "base_title": "The Way I Loved You",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Way I Loved You - Commentary",
+          "song_family": "the_way_i_loved_you",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "The Way I Loved You - Instrumental with BGV",
+          "url": "https://open.spotify.com/intl-fr/track/1e380XUelS0g4AyrUfHKHL",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 118,
+          "base_title": "The Way I Loved You",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Way I Loved You - Instrumental with BGV",
+          "song_family": "the_way_i_loved_you",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27334e5885465afc8a497ac1b7e",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "White Horse - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/7F67ujlSkp8PT7uaDPuOjP",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 130,
+          "base_title": "White Horse",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "White Horse - Commentary",
+          "song_family": "white_horse",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "White Horse - Instrumental with BGV",
+          "url": "https://open.spotify.com/intl-fr/track/3t5kblMAefsRy9O9vOjkR4",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 131,
+          "base_title": "White Horse",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "White Horse - Instrumental with BGV",
+          "song_family": "white_horse",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "You Belong With Me - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/2BDqAaVKzQDnoVPZbdp68D",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 136,
+          "base_title": "You Belong With Me",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You Belong With Me - Commentary",
+          "song_family": "you_belong_with_me",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "You Belong With Me - Instrumental with BGV",
+          "url": "https://open.spotify.com/intl-fr/track/02DtaJ6ADr4uQJbKEdpxxj",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 137,
+          "base_title": "You Belong With Me",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You Belong With Me - Instrumental with BGV",
+          "song_family": "you_belong_with_me",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273516c279fe91ae3f6a79b23da",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "You're Not Sorry - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/1V7nao9bFNvjFrmrnSz19Y",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 138,
+          "base_title": "You're Not Sorry",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You're Not Sorry - Commentary",
+          "song_family": "you_re_not_sorry",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "You're Not Sorry - Instrumental with BGV",
+          "url": "https://open.spotify.com/intl-fr/track/6hABNvvhdtvcJNShuWhguU",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 139,
+          "base_title": "You're Not Sorry",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You're Not Sorry - Instrumental with BGV",
+          "song_family": "you_re_not_sorry",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Fifteen - Instrumental with BGV",
+          "url": "https://open.spotify.com/track/3h96cE8WodfMonauQOhltu",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10047,
+          "base_title": "Fifteen",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Fifteen - Instrumental with BGV",
+          "song_family": "fifteen",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "White Horse - Instrumental with BGV",
+          "url": "https://open.spotify.com/track/3L84WEUYuc6Vryfi4Fd85j",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10050,
+          "base_title": "White Horse",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "White Horse - Instrumental with BGV",
+          "song_family": "white_horse",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "The Best Day - Instrumental with BGV",
+          "url": "https://open.spotify.com/track/3qcGsGTSDQYdy9xoMFj0YM",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10051,
+          "base_title": "The Best Day",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Best Day - Instrumental with BGV",
+          "song_family": "the_best_day",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Hey Stephen - Instrumental with BGV",
+          "url": "https://open.spotify.com/track/3Uown9ZvhJcCBJBHOXRRhS",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10052,
+          "base_title": "Hey Stephen",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Hey Stephen - Instrumental with BGV",
+          "song_family": "hey_stephen",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "You're Not Sorry - Instrumental with BGV",
+          "url": "https://open.spotify.com/track/022VobQaEUvn0YWqYf97HA",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10053,
+          "base_title": "You're Not Sorry",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You're Not Sorry - Instrumental with BGV",
+          "song_family": "you_re_not_sorry",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Change - Instrumental with BGV",
+          "url": "https://open.spotify.com/track/3lNRE17Ba1Verccqe2h6td",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10057,
+          "base_title": "Change",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Change - Instrumental with BGV",
+          "song_family": "change",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "The Way I Loved You - Instrumental with BGV",
+          "url": "https://open.spotify.com/track/0j42731ciU2x6LW4PJRnEv",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10077,
+          "base_title": "The Way I Loved You",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "The Way I Loved You - Instrumental with BGV",
+          "song_family": "the_way_i_loved_you",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "You Belong With Me - Instrumental with BGV",
+          "url": "https://open.spotify.com/track/53PbrK3xHCahLA67KbR1Ck",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10083,
+          "base_title": "You Belong With Me",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "You Belong With Me - Instrumental with BGV",
+          "song_family": "you_belong_with_me",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Breathe - Instrumental only, no BV",
+          "url": "https://open.spotify.com/track/4Hk2aNSkhB6Y8jsJtrAjxa",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10088,
+          "base_title": "Breathe",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Breathe - Instrumental only, no BV",
+          "song_family": "breathe",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Love Story - J Stax Club Mix",
+          "url": "https://open.spotify.com/intl-fr/track/193OdjKrgxsPHPG8fTGotc",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9999,
+          "base_title": "Love Story - J Stax Club Mix",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Love Story - J Stax Club Mix",
+          "song_family": "love_story_j_stax_club_mix",
+          "version_tag": null,
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27322df0a89c40a1c47b684e86e",
+          "release_date": null,
+          "historical_track_ids": [
+            "0f4wi6bMMU5Pj6bb7Ga04R"
+          ],
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": [],
+          "chart_extra": true
+        },
+        {
+          "title": "Love Story - Digital Dog Radio Mix",
+          "url": "https://open.spotify.com/intl-fr/track/4OzHfc5rHDDTIh5wyR0gQ0",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9999,
+          "base_title": "Love Story - Digital Dog Radio Mix",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Love Story - Digital Dog Radio Mix",
+          "song_family": "love_story_digital_dog_radio_mix",
+          "version_tag": null,
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273c168bf5b666051b066dba0dc",
+          "release_date": null,
+          "historical_track_ids": [
+            "5UV1IMOt1oxIBj7FodKe9v"
+          ],
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": [],
+          "chart_extra": true
+        },
+        {
+          "title": "Fifteen - Pop Mix Edit",
+          "url": "https://open.spotify.com/intl-fr/track/7lkzMhR95JrgYAurGLEP6g",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9999,
+          "base_title": "Fifteen - Pop Mix Edit",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Fifteen - Pop Mix Edit",
+          "song_family": "fifteen_pop",
+          "version_tag": null,
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2739ce6499637d451ebff574e9a",
+          "release_date": null,
+          "historical_track_ids": [],
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
+        },
+        {
+          "title": "Starlight - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/track/6yulzkix69bLw7WP7TAUfU",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10080,
+          "base_title": "Starlight",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Starlight - Instrumental With Background Vocals",
+          "song_family": "starlight_chartsnapshot_external_6yulzkix",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Red (Karaoke Version)",
+          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273220563fb6c59f7e470ba3272",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
+        },
+        {
+          "title": "Forever & Always - Instrumental with BGV",
+          "url": "https://open.spotify.com/track/72PDdE0cAdmGxhMbrqG0PI",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 10085,
+          "base_title": "Forever & Always",
+          "album": "Fearless",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Forever & Always - Instrumental with BGV",
+          "song_family": "forever_and_always",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
+          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
+          "tags": []
         }
       ]
     },
@@ -1420,7 +2802,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         },
         {
           "title": "You're Not Sorry - CSI Remix",
@@ -1461,7 +2847,11 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": []
         }
       ]
     }

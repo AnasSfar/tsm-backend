@@ -1,7 +1,7 @@
 {
   "album": "Fearless",
   "section_count": 5,
-  "track_count": 68,
+  "track_count": 58,
   "sections": [
     {
       "section": "original_edition",
@@ -1071,7 +1071,7 @@
     {
       "album": "Fearless",
       "section": "streaming_extras",
-      "track_count": 46,
+      "track_count": 36,
       "chart_extra": true,
       "tracks": [
         {
@@ -1747,7 +1747,9 @@
           "catalog_category": "instrumental",
           "music_track": false,
           "release_date": "2008-11-11T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "3h96cE8WodfMonauQOhltu"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "instrumental/backing vocals",
           "chart_extra": true,
@@ -1813,7 +1815,9 @@
           "catalog_category": "instrumental",
           "music_track": false,
           "release_date": "2008-11-11T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "72PDdE0cAdmGxhMbrqG0PI"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "instrumental/backing vocals",
           "chart_extra": true,
@@ -1846,7 +1850,9 @@
           "catalog_category": "instrumental",
           "music_track": false,
           "release_date": "2008-11-11T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "3Uown9ZvhJcCBJBHOXRRhS"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "instrumental/backing vocals",
           "chart_extra": true,
@@ -2013,7 +2019,9 @@
           "catalog_category": "instrumental",
           "music_track": false,
           "release_date": "2008-11-11T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "3qcGsGTSDQYdy9xoMFj0YM"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "instrumental/backing vocals",
           "chart_extra": true,
@@ -2079,7 +2087,9 @@
           "catalog_category": "instrumental",
           "music_track": false,
           "release_date": "2008-11-11T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0j42731ciU2x6LW4PJRnEv"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "instrumental/backing vocals",
           "chart_extra": true,
@@ -2145,7 +2155,9 @@
           "catalog_category": "instrumental",
           "music_track": false,
           "release_date": "2008-11-11T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "3L84WEUYuc6Vryfi4Fd85j"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "instrumental/backing vocals",
           "chart_extra": true,
@@ -2211,7 +2223,9 @@
           "catalog_category": "instrumental",
           "music_track": false,
           "release_date": "2008-11-11T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "53PbrK3xHCahLA67KbR1Ck"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "instrumental/backing vocals",
           "chart_extra": true,
@@ -2277,308 +2291,13 @@
           "catalog_category": "instrumental",
           "music_track": false,
           "release_date": "2008-11-11T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "022VobQaEUvn0YWqYf97HA"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "instrumental/backing vocals",
           "chart_extra": true,
           "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "instrumental",
-          "tags": []
-        },
-        {
-          "title": "Fifteen - Instrumental with BGV",
-          "url": "https://open.spotify.com/track/3h96cE8WodfMonauQOhltu",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10047,
-          "base_title": "Fifteen",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Fifteen - Instrumental with BGV",
-          "song_family": "fifteen",
-          "version_tag": "instrumental",
-          "version_tags": [
-            "instrumental"
-          ],
-          "catalog_category": "instrumental",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "instrumental/backing vocals",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
-          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "instrumental",
-          "tags": []
-        },
-        {
-          "title": "White Horse - Instrumental with BGV",
-          "url": "https://open.spotify.com/track/3L84WEUYuc6Vryfi4Fd85j",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10050,
-          "base_title": "White Horse",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "White Horse - Instrumental with BGV",
-          "song_family": "white_horse",
-          "version_tag": "instrumental",
-          "version_tags": [
-            "instrumental"
-          ],
-          "catalog_category": "instrumental",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "instrumental/backing vocals",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "instrumental",
-          "tags": []
-        },
-        {
-          "title": "The Best Day - Instrumental with BGV",
-          "url": "https://open.spotify.com/track/3qcGsGTSDQYdy9xoMFj0YM",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10051,
-          "base_title": "The Best Day",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "The Best Day - Instrumental with BGV",
-          "song_family": "the_best_day",
-          "version_tag": "instrumental",
-          "version_tags": [
-            "instrumental"
-          ],
-          "catalog_category": "instrumental",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "instrumental/backing vocals",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "instrumental",
-          "tags": []
-        },
-        {
-          "title": "Hey Stephen - Instrumental with BGV",
-          "url": "https://open.spotify.com/track/3Uown9ZvhJcCBJBHOXRRhS",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10052,
-          "base_title": "Hey Stephen",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Hey Stephen - Instrumental with BGV",
-          "song_family": "hey_stephen",
-          "version_tag": "instrumental",
-          "version_tags": [
-            "instrumental"
-          ],
-          "catalog_category": "instrumental",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "instrumental/backing vocals",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
-          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "instrumental",
-          "tags": []
-        },
-        {
-          "title": "You're Not Sorry - Instrumental with BGV",
-          "url": "https://open.spotify.com/track/022VobQaEUvn0YWqYf97HA",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10053,
-          "base_title": "You're Not Sorry",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "You're Not Sorry - Instrumental with BGV",
-          "song_family": "you_re_not_sorry",
-          "version_tag": "instrumental",
-          "version_tags": [
-            "instrumental"
-          ],
-          "catalog_category": "instrumental",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "instrumental/backing vocals",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
-          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "instrumental",
-          "tags": []
-        },
-        {
-          "title": "Change - Instrumental with BGV",
-          "url": "https://open.spotify.com/track/3lNRE17Ba1Verccqe2h6td",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10057,
-          "base_title": "Change",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Change - Instrumental with BGV",
-          "song_family": "change",
-          "version_tag": "instrumental",
-          "version_tags": [
-            "instrumental"
-          ],
-          "catalog_category": "instrumental",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "instrumental/backing vocals",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "instrumental",
-          "tags": []
-        },
-        {
-          "title": "The Way I Loved You - Instrumental with BGV",
-          "url": "https://open.spotify.com/track/0j42731ciU2x6LW4PJRnEv",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10077,
-          "base_title": "The Way I Loved You",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "The Way I Loved You - Instrumental with BGV",
-          "song_family": "the_way_i_loved_you",
-          "version_tag": "instrumental",
-          "version_tags": [
-            "instrumental"
-          ],
-          "catalog_category": "instrumental",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "instrumental/backing vocals",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
-          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "instrumental",
-          "tags": []
-        },
-        {
-          "title": "You Belong With Me - Instrumental with BGV",
-          "url": "https://open.spotify.com/track/53PbrK3xHCahLA67KbR1Ck",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10083,
-          "base_title": "You Belong With Me",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "You Belong With Me - Instrumental with BGV",
-          "song_family": "you_belong_with_me",
-          "version_tag": "instrumental",
-          "version_tags": [
-            "instrumental"
-          ],
-          "catalog_category": "instrumental",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "instrumental/backing vocals",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "instrumental",
-          "tags": []
-        },
-        {
-          "title": "Breathe - Instrumental only, no BV",
-          "url": "https://open.spotify.com/track/4Hk2aNSkhB6Y8jsJtrAjxa",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10088,
-          "base_title": "Breathe",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Breathe - Instrumental only, no BV",
-          "song_family": "breathe",
-          "version_tag": "instrumental",
-          "version_tags": [
-            "instrumental"
-          ],
-          "catalog_category": "instrumental",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "instrumental/backing vocals",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
-          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
@@ -2693,39 +2412,6 @@
           "chart_extra": true,
           "chartsnapshot_source_album": "Red (Karaoke Version)",
           "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273220563fb6c59f7e470ba3272",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "instrumental",
-          "tags": []
-        },
-        {
-          "title": "Forever & Always - Instrumental with BGV",
-          "url": "https://open.spotify.com/track/72PDdE0cAdmGxhMbrqG0PI",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10085,
-          "base_title": "Forever & Always",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Forever & Always - Instrumental with BGV",
-          "song_family": "forever_and_always",
-          "version_tag": "instrumental",
-          "version_tags": [
-            "instrumental"
-          ],
-          "catalog_category": "instrumental",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "instrumental/backing vocals",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
-          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",

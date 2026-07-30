@@ -1,7 +1,7 @@
 {
   "album": "1989",
   "section_count": 7,
-  "track_count": 69,
+  "track_count": 59,
   "sections": [
     {
       "section": "standard_edition",
@@ -1097,7 +1097,7 @@
     },
     {
       "section": "streaming_extras",
-      "track_count": 47,
+      "track_count": 37,
       "chart_extra": true,
       "tracks": [
         {
@@ -1502,7 +1502,9 @@
           "catalog_category": "karaoke",
           "music_track": false,
           "release_date": "2015-02-01T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "6AQbsCRdpQ4U8YaH9ySvzP"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
@@ -1634,7 +1636,9 @@
           "catalog_category": "instrumental",
           "music_track": false,
           "release_date": "2010-10-25T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "2biHaDJjwyvJAnvSqTBvk8"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "instrumental/backing vocals",
           "chart_extra": true,
@@ -1733,7 +1737,9 @@
           "catalog_category": "karaoke",
           "music_track": false,
           "release_date": "2015-02-01T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1h4lAVDzDt8oQY2yHTEdRx"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
@@ -1799,7 +1805,9 @@
           "catalog_category": "karaoke",
           "music_track": false,
           "release_date": "2015-02-01T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "56dqIqcOU4iuDb8EXpgpv4"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
@@ -1865,7 +1873,9 @@
           "catalog_category": "karaoke",
           "music_track": false,
           "release_date": "2015-02-01T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "6Bq4W1CV7IqqZ4Dm2WVG5w"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
@@ -1964,7 +1974,9 @@
           "catalog_category": "karaoke",
           "music_track": false,
           "release_date": "2015-02-01T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "7x86Zn0YFrNyKQ9O7um0v2"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
@@ -2063,7 +2075,9 @@
           "catalog_category": "karaoke",
           "music_track": false,
           "release_date": "2015-02-01T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "7bbhFp3V4bZct8vpSCIrR8"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
@@ -2129,7 +2143,9 @@
           "catalog_category": "karaoke",
           "music_track": false,
           "release_date": "2015-02-01T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "2i54CJa3pEfUjTRhAU7y6R"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
@@ -2195,7 +2211,9 @@
           "catalog_category": "karaoke",
           "music_track": false,
           "release_date": "2015-02-01T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "66LjSOIkrnVlVbNaeJhyUF"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
@@ -2266,336 +2284,6 @@
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
           "image_url": "https://i.scdn.co/image/ab67616d0000b273332d85510aba3eb28312cfb2",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "karaoke",
-          "tags": []
-        },
-        {
-          "title": "Out Of The Woods - Karaoke Version",
-          "url": "https://open.spotify.com/track/7x86Zn0YFrNyKQ9O7um0v2",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10025,
-          "base_title": "Out Of The Woods",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Out Of The Woods - Karaoke Version",
-          "song_family": "out_of_the_woods",
-          "version_tag": "karaoke",
-          "version_tags": [
-            "karaoke"
-          ],
-          "catalog_category": "karaoke",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "karaoke",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989",
-          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2735d02b9583fd082aefca27c69",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "karaoke",
-          "tags": []
-        },
-        {
-          "title": "Wildest Dreams - Karaoke Version",
-          "url": "https://open.spotify.com/track/66LjSOIkrnVlVbNaeJhyUF",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10026,
-          "base_title": "Wildest Dreams",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Wildest Dreams - Karaoke Version",
-          "song_family": "wildest_dreams",
-          "version_tag": "karaoke",
-          "version_tags": [
-            "karaoke"
-          ],
-          "catalog_category": "karaoke",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "karaoke",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989",
-          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2735d02b9583fd082aefca27c69",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "karaoke",
-          "tags": []
-        },
-        {
-          "title": "Welcome To New York - Karaoke Version",
-          "url": "https://open.spotify.com/track/2i54CJa3pEfUjTRhAU7y6R",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10029,
-          "base_title": "Welcome To New York",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Welcome To New York - Karaoke Version",
-          "song_family": "welcome_to_new_york",
-          "version_tag": "karaoke",
-          "version_tags": [
-            "karaoke"
-          ],
-          "catalog_category": "karaoke",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "karaoke",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2735d02b9583fd082aefca27c69",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "karaoke",
-          "tags": []
-        },
-        {
-          "title": "Bad Blood - Karaoke Version",
-          "url": "https://open.spotify.com/track/2fkN3ago8ded5UG0LqHKB5",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10031,
-          "base_title": "Bad Blood",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Bad Blood - Karaoke Version",
-          "song_family": "bad_blood",
-          "version_tag": "karaoke",
-          "version_tags": [
-            "karaoke"
-          ],
-          "catalog_category": "karaoke",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "karaoke",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2735d02b9583fd082aefca27c69",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "karaoke",
-          "tags": []
-        },
-        {
-          "title": "This Love - Karaoke Version",
-          "url": "https://open.spotify.com/track/7bbhFp3V4bZct8vpSCIrR8",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10032,
-          "base_title": "This Love",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "This Love - Karaoke Version",
-          "song_family": "this_love",
-          "version_tag": "karaoke",
-          "version_tags": [
-            "karaoke"
-          ],
-          "catalog_category": "karaoke",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "karaoke",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2735d02b9583fd082aefca27c69",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "karaoke",
-          "tags": []
-        },
-        {
-          "title": "How You Get The Girl - Karaoke Version",
-          "url": "https://open.spotify.com/track/1h4lAVDzDt8oQY2yHTEdRx",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10033,
-          "base_title": "How You Get The Girl",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "How You Get The Girl - Karaoke Version",
-          "song_family": "how_you_get_the_girl",
-          "version_tag": "karaoke",
-          "version_tags": [
-            "karaoke"
-          ],
-          "catalog_category": "karaoke",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "karaoke",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2735d02b9583fd082aefca27c69",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "karaoke",
-          "tags": []
-        },
-        {
-          "title": "Clean - Karaoke Version",
-          "url": "https://open.spotify.com/track/5F2684mgHARE8q5QxYY8RJ",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10034,
-          "base_title": "Clean",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Clean - Karaoke Version",
-          "song_family": "clean",
-          "version_tag": "karaoke",
-          "version_tags": [
-            "karaoke"
-          ],
-          "catalog_category": "karaoke",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "karaoke",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2735d02b9583fd082aefca27c69",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "karaoke",
-          "tags": []
-        },
-        {
-          "title": "I Wish You Would - Karaoke Version",
-          "url": "https://open.spotify.com/track/6Bq4W1CV7IqqZ4Dm2WVG5w",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10035,
-          "base_title": "I Wish You Would",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "I Wish You Would - Karaoke Version",
-          "song_family": "i_wish_you_would",
-          "version_tag": "karaoke",
-          "version_tags": [
-            "karaoke"
-          ],
-          "catalog_category": "karaoke",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "karaoke",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2735d02b9583fd082aefca27c69",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "karaoke",
-          "tags": []
-        },
-        {
-          "title": "All You Had To Do Was Stay - Karaoke Version",
-          "url": "https://open.spotify.com/track/6AQbsCRdpQ4U8YaH9ySvzP",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10036,
-          "base_title": "All You Had To Do Was Stay",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "All You Had To Do Was Stay - Karaoke Version",
-          "song_family": "all_you_had_to_do_was_stay",
-          "version_tag": "karaoke",
-          "version_tags": [
-            "karaoke"
-          ],
-          "catalog_category": "karaoke",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "karaoke",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2735d02b9583fd082aefca27c69",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "karaoke",
-          "tags": []
-        },
-        {
-          "title": "I Know Places - Karaoke Version",
-          "url": "https://open.spotify.com/track/56dqIqcOU4iuDb8EXpgpv4",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10039,
-          "base_title": "I Know Places",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "I Know Places - Karaoke Version",
-          "song_family": "i_know_places",
-          "version_tag": "karaoke",
-          "version_tags": [
-            "karaoke"
-          ],
-          "catalog_category": "karaoke",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "karaoke",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2735d02b9583fd082aefca27c69",
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",

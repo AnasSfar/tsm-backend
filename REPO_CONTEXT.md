@@ -4,6 +4,11 @@
 > ⚠️ **Doc vivante — mise à jour OBLIGATOIRE** : toute IA qui ajoute/modifie/déplace un script ou change ses options doit mettre à jour ce fichier dans la même session.
 > Repo frère : `tsm-frontend` (site React + API FastAPI sur Vercel). Flux global :
 > **tsm-backend (collecte locale, Task Scheduler) → R2 (`taylor-data`) → API tsm-frontend → site React.**
+> Depuis le 2026-07-30, YouTube et Apple Music tournent en prod sur un VPS OVH
+> (cron), pas via le Task Scheduler local — voir `OVH.md` et la section
+> « Déploiement VPS OVH » plus bas. Spotify (streams/charts) et Billboard
+> restent en local (Spotify bloqué par le WAF depuis une IP OVH, testé avec
+> et sans WARP — voir `OVH.md`).
 
 ## Arbre général
 
@@ -327,6 +332,43 @@ Scripts de vérification/debug ponctuels, non maintenus : `adhoc/checks/` (véri
 - `adhoc/period_streams_recap.py` — thread récap de période. `--period`, `--date`, `--current`, `--start/--end`, `--top`, `--no-images`, `--post --yes`
 - `adhoc/post_test_tweet.py` / `adhoc/schedule_test_tweet.py` — smoke-tests Twitter (`--text`, `--at`, `--yes` requis pour poster)
 - `adhoc/render_album_ranking_cards.py`, `adhoc/update_album_rankings_r2.py` — cards Album Ranking figées + upload R2
+
+## 12. Déploiement VPS OVH (YouTube + Apple Music)
+
+Depuis le 2026-07-30, `collectors/youtube` et `collectors/apple_music`
+tournent en prod sur une instance OVH Public Cloud (Ubuntu, `cron`, plus le
+Planificateur de tâches Windows pour ces deux-là — désactivé). Contexte et
+essais complets dans `OVH.md` à la racine.
+
+- Repo cloné dans `~/tsm-backend` via une **Deploy Key GitHub dédiée**
+  (`~/.ssh/id_ed25519_github`, write access, scoping limité à ce repo — pas
+  la clé perso d'Anas).
+- venv Python (`~/tsm-backend/.venv`) avec seulement les deps nécessaires à
+  ces deux collectors (pas tout `requirements.txt` Spotify/Billboard) :
+  `requests urllib3 aiohttp boto3 python-dotenv Pillow pandas playwright`
+  (+ `playwright install --with-deps chromium`, requis par
+  `generate_country_card_images.py`).
+- `~/tsm-backend/.env` réduit aux clés utilisées par ces deux collectors :
+  `YOUTUBE_API_KEY`, `UPLOAD_TO_R2`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`,
+  `R2_SECRET_ACCESS_KEY`, `R2_BUCKET`.
+- Fuseau horaire VPS réglé sur `Europe/Paris` (`timedatectl`) pour que les
+  horaires cron matchent ceux du Planificateur de tâches Windows sans calcul
+  manuel de décalage UTC/DST.
+- Wrappers `~/tsm-backend/run_youtube_vps.sh` et `run_apple_music_vps.sh`
+  (`git pull` puis la même commande que le `.bat` Windows d'origine), logs
+  dans `~/logs/`.
+- Crontab (`Europe/Paris`) :
+  ```
+  5 6 * * * run_youtube_vps.sh        # identique à l'ancien job Windows
+  0 2,6,10,14,18,22 * * * run_apple_music_vps.sh   # equiv. 4h UTC (ancien run-apple-music.yml)
+  ```
+- Apple Music ne fait **aucun** commit/push git (jamais fait, même en local
+  — seul l'upload R2 distribue la donnée) ; YouTube fait `git commit --push`
+  réel depuis le VPS (`--commit --no-post`, identique au `.bat`).
+- Spotify (streams + charts, via WARP) et Billboard (scrape direct, pas une
+  API) **restent en local** — Spotify testé et bloqué (WAF 403) depuis une
+  IP OVH même à travers WARP ; Billboard pas testé mais jugé à risque
+  similaire (scrape direct de site, pas une API officielle).
 
 ---
 

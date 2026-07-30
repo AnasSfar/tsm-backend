@@ -35,6 +35,7 @@ Ces règles ont été édictées puis re-corrigées plusieurs fois — les viole
 - **Tout est posté sur @swiftiescharts, sauf le chart FR.** L'ancien compte tsmusem13 n'est plus utilisé pour l'automatique.
 - Charts régionaux : ne pas poster la même région deux jours de suite (système de score probabiliste) ; une **RE vaut beaucoup de points +, une OUT beaucoup de −**.
 - **Apple Music : jamais de NEW pour une chanson déjà sortie** (on n'a pas l'historique complet AM) → tout est RE (affiché **en bleu**) ; NEW est réservé aux chansons qui sortiront après le début du scraping.
+- Best-day-since songs: if `days_since` is strictly greater than 60 days (more than two months), post it even if it is below the normal stream or day-over-day change gate; try these as priority early posts during collection.
 - Les seuils précis (best-day-since : jours mini/% mini pendant la collecte vs récap) **vivent dans le code** (`post_best_day_since_twitter.py`, `best_day_since.py`) — les lire, ne pas les supposer, ils ont changé plusieurs fois.
 
 ## Réflexes

@@ -2125,7 +2125,9 @@
           "catalog_category": "instrumental",
           "music_track": false,
           "release_date": "2008-11-11T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "3lNRE17Ba1Verccqe2h6td"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "instrumental/backing vocals",
           "chart_extra": true,

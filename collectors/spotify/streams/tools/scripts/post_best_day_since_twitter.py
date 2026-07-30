@@ -38,6 +38,7 @@ POST_COLLECTION_MIN_SONG_DAILY_STREAMS = 300_000
 POST_COLLECTION_MAX_SONG_POSTS = 10
 MIN_SONG_DAILY_STREAMS_TO_POST = 80_000
 POST_COLLECTION_MIN_SONG_PCT_CHANGE = 10.0
+ALWAYS_POST_BEST_DAY_SINCE_AFTER_DAYS = 60
 
 sys.path.insert(0, str(COLLECTORS_ROOT))              # collectors/
 sys.path.insert(0, str(ROOT))                         # collectors/spotify/streams/
@@ -357,6 +358,9 @@ def _passes_song_post_gate(
     min_daily_streams: int | None,
     min_pct_change: float | None,
 ) -> bool:
+    if (row.get("days_since") or 0) > ALWAYS_POST_BEST_DAY_SINCE_AFTER_DAYS:
+        return True
+
     daily = int(row.get("daily_streams") or 0)
     if min_daily_streams is not None and daily >= min_daily_streams:
         return True
