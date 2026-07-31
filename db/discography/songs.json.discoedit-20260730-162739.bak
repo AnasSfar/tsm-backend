@@ -1,0 +1,77 @@
+[
+  {
+    "album": "Standalone & Extras",
+    "section": "streaming_extras",
+    "track_count": 0,
+    "tracks": []
+  },
+  {
+    "album": "Standalone & Extras",
+    "section": "streaming_extras",
+    "chart_extra": true,
+    "track_count": 0,
+    "tracks": []
+  },
+  {
+    "album": "Standalone & Extras",
+    "section": "kworb_extras",
+    "track_count": 2,
+    "tracks": [
+      {
+        "title": "Elizabeth Taylor - So Glamorous Cabaret Version",
+        "url": "https://open.spotify.com/intl-fr/track/01ZJZOftkQ2kSeyG34C7g6",
+        "type": "standalone",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 1,
+        "base_title": "Elizabeth Taylor",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [],
+        "artists": [
+          "Taylor Swift"
+        ],
+        "title_clean": "Elizabeth Taylor - So Glamorous Cabaret Version",
+        "song_family": "elizabeth_taylor",
+        "version_tag": "standalone",
+        "image_url": "https://i.scdn.co/image/ab67616d00001e02dc6e4c7774e0c77c210d3a31",
+        "release_date": "2026-03-31T00:00:00Z",
+        "historical_track_ids": [],
+        "version_tags": [
+          "standalone"
+        ],
+        "catalog_category": "standard",
+        "music_track": true
+      },
+      {
+        "title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
+        "url": "https://open.spotify.com/intl-fr/track/6EqHzZp61G5uQ12QEiibpT",
+        "type": "album_track",
+        "edition": "extras",
+        "display_section": "Extras",
+        "display_order": 2,
+        "base_title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
+        "album": "Standalone & Extras",
+        "primary_artist": "Taylor Swift",
+        "featured_artists": [
+          "Sabrina Carpenter"
+        ],
+        "artists": [
+          "Taylor Swift",
+          "Sabrina Carpenter"
+        ],
+        "title_clean": "The Life of a Showgirl (feat. Sabrina Carpenter)",
+        "song_family": "the_life_of_a_showgirl_feat_sabrina_carpenter",
+        "version_tag": "featured",
+        "image_url": "https://i.scdn.co/image/ab67616d00001e02f756bdc2c11a985dc0c06d94",
+        "release_date": "2025-11-07T00:00:00Z",
+        "historical_track_ids": [],
+        "version_tags": [
+          "featured"
+        ],
+        "catalog_category": "featured",
+        "music_track": true
+      }
+    ]
+  }
+]

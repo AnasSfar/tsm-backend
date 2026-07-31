@@ -136,6 +136,8 @@ WATCH_LATE_SECONDS = int(os.getenv("SPOTIFY_WATCH_LATE_SECONDS", "10"))
 WATCH_HOT_SECONDS = int(os.getenv("SPOTIFY_WATCH_HOT_SECONDS", "20"))
 WATCH_ERROR_SECONDS = int(os.getenv("SPOTIFY_WATCH_ERROR_SECONDS", "10"))
 RATE_LIMIT_RETRY_SECONDS = int(os.getenv("SPOTIFY_RATE_LIMIT_RETRY_SECONDS", "120"))
+CARDS_POST_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_CARDS_POST_MAX_ATTEMPTS", "3"))
+CARDS_POST_RETRY_SECONDS = int(os.getenv("SPOTIFY_CARDS_POST_RETRY_SECONDS", "30"))
 PLAYWRIGHT_LAUNCH_TIMEOUT_MS = int(os.getenv("SPOTIFY_PLAYWRIGHT_LAUNCH_TIMEOUT_MS", "15000"))
 PLAYWRIGHT_GOTO_TIMEOUT_MS = int(os.getenv("SPOTIFY_PLAYWRIGHT_GOTO_TIMEOUT_MS", "15000"))
 PLAYWRIGHT_TOKEN_WAIT_SECONDS = int(os.getenv("SPOTIFY_PLAYWRIGHT_TOKEN_WAIT_SECONDS", "10"))
@@ -1595,6 +1597,13 @@ def main() -> int:
         post_parts = set(_DEFAULT_POST_PARTS)
         collect_parts = set(post_parts)
 
+    if "cards" in post_parts:
+        # Poste la card highlight NEW/RE du chart Global (badge via comp/chart_card.py) en
+        # tache de fond des que worldwide/daily.py a fetch la region "global" — sans ce flag
+        # elle ne se declenche jamais dans un run quotidien normal (le filet "catchup" plus
+        # bas exige not ran_collect, jamais vrai un jour ou la collecte tourne).
+        forwarded.append("--post-priority-global-new")
+
     paused_post_parts = post_parts & _PAUSED_POST_PARTS
     if paused_post_parts:
         paused = ", ".join(sorted(paused_post_parts))
@@ -1928,14 +1937,15 @@ def main() -> int:
             cards_args.append("--post")
         if args.force_cards or args.force:
             cards_args.append("--force")
-        rc_cards = _run(
-            "cards",
-            CHARTS_ROOT / "worldwide" / "tools" / "scripts" / "generate_card_images.py",
-            cards_args,
-            dry_run=False,
-            env=env,
-            verbose=args.verbose,
-        )
+        cards_script = CHARTS_ROOT / "worldwide" / "tools" / "scripts" / "generate_card_images.py"
+        rc_cards = _run("cards", cards_script, cards_args, dry_run=False, env=env, verbose=args.verbose)
+        for attempt in range(2, CARDS_POST_MAX_ATTEMPTS + 1):
+            if rc_cards == 0:
+                break
+            print(f"[WARN] cards en echec, nouvelle tentative {attempt}/{CARDS_POST_MAX_ATTEMPTS} dans {CARDS_POST_RETRY_SECONDS}s...")
+            time.sleep(CARDS_POST_RETRY_SECONDS)
+            retry_args = cards_args if attempt < CARDS_POST_MAX_ATTEMPTS else [*cards_args, "--force"]
+            rc_cards = _run("cards", cards_script, retry_args, dry_run=False, env=env, verbose=args.verbose)
         if rc_cards != 0:
             failures.append(("cards", rc_cards))
 

@@ -3252,8 +3252,10 @@ def main():
     # Retry indefinitely until all non-extra tracks are collected.
     if not local_test_mode and not debug_daily_mode:
         completeness_round = 0
+        completeness_block_notified = False
         while True:
-            all_tracks_for_check = load_tracks_from_discography()
+            active_track_ids_for_check = load_active_track_ids_from_discography()
+            all_tracks_for_check = load_tracks_from_discography(active_track_ids_for_check)
             non_extra_ids = {t["track_id"] for t in all_tracks_for_check if not t.get("chart_extra")}
             done_ids_for_date = load_history_track_ids_with_daily_for_date(stats_date)
             missing_non_extra = non_extra_ids - done_ids_for_date - infinite_retry_track_ids
@@ -3269,12 +3271,14 @@ def main():
                 f"\n⛔ Completeness check round {completeness_round}: "
                 f"{len(missing_non_extra)} non-extra track(s) still missing for {stats_date}:\n{tracks_list}"
             )
-            notify(
-                NTFY_TOPIC,
-                f"⛔ Posting blocked (round {completeness_round}): {len(missing_non_extra)} non-extra track(s) missing ({stats_date}):\n{tracks_list}",
-                title="Taylor Swift - Completeness check failed",
-                tags="no_entry,chart_increasing",
-            )
+            if not completeness_block_notified:
+                notify(
+                    NTFY_TOPIC,
+                    f"⛔ Posting blocked (round {completeness_round}): {len(missing_non_extra)} non-extra track(s) missing ({stats_date}):\n{tracks_list}",
+                    title="Taylor Swift - Completeness check failed",
+                    tags="no_entry,chart_increasing",
+                )
+                completeness_block_notified = True
             if PENDING_RETRY_SLEEP_SECONDS > 0 and summary_had_http_status(summary, 409):
                 print(f"Retrying in {PENDING_RETRY_SLEEP_SECONDS}s after HTTP 409...")
                 time.sleep(PENDING_RETRY_SLEEP_SECONDS)

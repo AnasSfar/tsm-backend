@@ -882,7 +882,7 @@ def build_discography_index() -> tuple[dict, list[dict]]:
 
                     track_appearances_by_id[track_id].append({
                         "source_type":    "misc",
-                        "album":          "Misc",
+                        "album":          "Misc & Standalone",
                         "section":        section_name,
                         "group":          group_name,
                         "source_path":    source_path,
@@ -956,9 +956,87 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                 "track_count": len(list(dict.fromkeys(group_track_ids))),
             })
 
+    misc_group_by_name = {group.get("name"): group for group in misc_groups}
+
+    for album in albums_payload:
+        if album.get("kind") != "album":
+            continue
+
+        album_name = album.get("album") or ""
+        standalone_sections = [
+            section for section in album.get("sections", [])
+            if (section.get("name") or "").casefold() == "standalone"
+        ]
+        if not album_name or not standalone_sections:
+            continue
+
+        misc_group = misc_group_by_name.get(album_name)
+        if misc_group is None:
+            misc_group = {
+                "name":        album_name,
+                "sections":    [],
+                "track_ids":   [],
+                "track_count": 0,
+            }
+            misc_groups.append(misc_group)
+            misc_group_by_name[album_name] = misc_group
+
+        for section in standalone_sections:
+            section_name = section.get("name") or "standalone"
+            file_name = section.get("file") or f"{section_name}.json"
+            source_path = f"discography/albums/{album_name}/{file_name}"
+
+            misc_section = next(
+                (existing for existing in misc_group.get("sections", [])
+                 if existing.get("name") == section_name
+                 and existing.get("file") == file_name),
+                None,
+            )
+            if misc_section is None:
+                misc_section = {
+                    "name":        section_name,
+                    "file":        file_name,
+                    "tracks":      [],
+                    "track_ids":   [],
+                    "track_count": 0,
+                }
+                misc_group["sections"].append(misc_section)
+
+            for track in section.get("tracks", []):
+                track_id = track.get("track_id")
+                if not track_id or track_id in misc_section["track_ids"]:
+                    continue
+
+                track_entry = dict(track)
+                misc_section["tracks"].append(track_entry)
+                misc_section["track_ids"].append(track_id)
+                misc_section["track_count"] = len(misc_section["track_ids"])
+
+                if track_id not in misc_group["track_ids"]:
+                    misc_group["track_ids"].append(track_id)
+                    misc_group["track_count"] = len(misc_group["track_ids"])
+                if track_id not in misc_all_track_ids:
+                    misc_all_track_ids.append(track_id)
+
+                appearance = {
+                    "source_type":    "misc",
+                    "album":          "Misc & Standalone",
+                    "section":        section_name,
+                    "group":          album_name,
+                    "source_path":    source_path,
+                    "type":           track.get("type"),
+                    "edition":        track.get("edition"),
+                    "display_section": track.get("display_section"),
+                    "display_order":  track.get("display_order"),
+                    "base_title":     track.get("base_title"),
+                    "chart_extra":    track.get("chart_extra", section.get("chart_extra")),
+                }
+                if appearance not in track_appearances_by_id[track_id]:
+                    track_appearances_by_id[track_id].append(appearance)
+
     if misc_groups:
         albums_payload.append({
-            "album":       "Misc",
+            "album":       "Misc & Standalone",
             "kind":        "misc",
             "groups":      misc_groups,
             "track_ids":   list(dict.fromkeys(misc_all_track_ids)),
@@ -1057,7 +1135,7 @@ def enrich_albums_payload(albums_payload: list[dict], songs_by_id: dict[str, dic
         enriched["top_song_daily"] = top_song_daily
         enriched["release_date"] = album.get("release_date") or (min(release_dates) if release_dates else None)
 
-        if album.get("album") == "Misc":
+        if album.get("kind") == "misc":
             for group in enriched.get("groups", []):
                 group_tracks = [songs_by_id[tid] for tid in group.get("track_ids", []) if tid in songs_by_id]
                 group["image_url"] = next((t.get("image_url") for t in group_tracks if t.get("image_url")), None)
@@ -1541,7 +1619,7 @@ def export_for_web(stats_date: str | None = None, *, dry_run: bool = False) -> N
         )
         filtered["track_count"] = len(filtered["track_ids"])
 
-        if filtered.get("album") == "Misc":
+        if filtered.get("kind") == "misc":
             new_groups = []
             for group in filtered.get("groups", []):
                 new_group = dict(group)

@@ -188,13 +188,39 @@ répond normalement depuis l'IP OVH.
 
 ### Billboard
 
-Pas encore testé (nécessite Playwright + Chromium sur le VPS, plus lourd à
-mettre en place). `scrape_billboard.py` scrape des pages `billboard.com`
-directement (pas une API officielle), donc plus à risque d'un blocage
-anti-bot similaire à Spotify — à vérifier séparément si besoin.
+Pas testé — décision explicite de ne pas tester (`scrape_billboard.py`
+tourne juste après Spotify streams dans le pipeline local, pas prioritaire).
+
+### Spotify Charts (confirmation du blocage, 2026-07-30)
+
+Testé séparément de Streams, sur la même instance (`57.130.72.156`) :
+`collectors/spotify/charts/run_all_charts.py --date 2026-07-28 --no-warp
+--no-post --force`.
+
+- Premier essai : interrompu par une coupure SSH transitoire (process resté
+  orphelin côté serveur, tué manuellement).
+- Deuxième essai, en tâche détachée avec logs : **aucune sortie loggée
+  pendant 39 minutes** — piège de buffering stdout Python (bufferisé par
+  bloc quand la sortie va vers un fichier, pas un TTY), pas un vrai freeze.
+  `strace` sur le process a montré une vraie activité réseau répétée : DNS
+  + handshake TLS complet vers `open.spotify.com`, résolu sur une IP
+  **Fastly** (`151.101.207.42`) — le même CDN qui avait donné le 403 "URL
+  Blocked" sur le test Streams.
+- Troisième essai avec `python3 -u` (stdout non bufferisé) + suivi live via
+  `tail -F` : log clair, **`[CHECK] token indisponible (Bearer token
+  introuvable via HTTP direct)`, retry toutes les 10s, boucle infinie**
+  (17 tentatives observées avant arrêt manuel). Même mécanisme que Streams :
+  la récupération HTTP directe du bearer token via cookies échoue depuis
+  l'IP OVH.
+
+**Verdict : Spotify Charts est aussi bloqué depuis une IP OVH**, pas
+seulement Streams — cohérent avec un blocage au niveau du WAF/CDN Fastly
+sur les propriétés Spotify en général (`open.spotify.com` en tout cas),
+pas spécifique à un seul endpoint API.
 
 **Conclusion intermédiaire : YouTube et Apple Music fonctionnent sans souci
-depuis un VPS OVH. Seul Spotify (streams + charts, via WARP) est bloqué.**
+depuis un VPS OVH. Spotify (streams + charts) est bloqué, confirmé sur les
+deux collectors désormais.**
 Un VPS OVH est donc une option viable dès maintenant pour déporter les
 collectors YouTube et Apple Music du Planificateur de tâches local, même si
 Spotify doit rester en local (ou attendre une solution de proxy résidentiel).
@@ -258,3 +284,47 @@ Setup :
 OVH depuis le 2026-07-30, en remplacement du Planificateur de tâches
 Windows pour ces deux collectors.** Spotify (streams + charts) et Billboard
 restent en local.
+
+## Incident — Apple Music a publié des NEW faux le premier run VPS (2026-07-30)
+
+**Cause** : `.gitignore` exclut **tous** les `.csv` du repo (`*.csv`), et
+seul `db/**/*.json` est ré-inclus — pas `db/**/*.csv`. Résultat : `git clone`
+sur le VPS n'a récupéré ni `db/apple_music_*.csv` ni l'historique quotidien
+`snapshots/apple_music_charts/YYYY/MM/YYYY-MM-DD/*.csv` (tout gitignored,
+jamais commité — contrairement à YouTube, qui force `git add -f` sur ses CSV
+dans `git_ops.py`). Le premier run Apple Music sur le VPS n'avait donc
+**aucun historique de la veille** pour calculer `previous_rank` →
+`load_previous_ranks`/`rewrite_for_snapshot` ont traité tout le catalogue
+comme sans précédent, publiant des NEW faux sur ~728 fichiers R2
+(`history-by-song/`) + les exports globaux. Violation directe de la règle
+data-rules « Apple Music : jamais de NEW pour une chanson déjà sortie ».
+
+**Détection** : repérée par Anas directement sur le chart global affiché
+(NEW partout), pas par une alerte automatique — **aucun garde-fou dans le
+code n'empêche ce cas** (contrairement à Streams où un historique manquant
+bloque plutôt qu'il n'invente une donnée).
+
+**Correctif appliqué** :
+1. Cron Apple Music coupé immédiatement sur le VPS (éviter de répéter
+   l'erreur au créneau de 18h).
+2. Historique réel (`snapshots/apple_music_charts/2026/06` +
+   `2026/07`, sans les sous-dossiers images, + `db/apple_music_*.csv`)
+   packagé en tar.gz (28 Mo compressés) depuis la machine Windows, transféré
+   et extrait sur le VPS.
+3. Apple Music relancé pour de vrai sur le VPS avec l'historique en place →
+   `previous_rank` correctement rempli (vérifié sur
+   `apple_music_global.csv` : plus de vide/NEW, vrais rangs précédents).
+   Cette re-publication a écrasé les mauvaises données sur R2.
+4. Cron Apple Music réactivé.
+
+**Point d'attention structurel** : `snapshots/` (l'historique quotidien brut,
+utilisé par Streams ET Apple Music pour le contexte veille/gap) n'est
+**versionné nulle part** — ni dans git (gitignored), ni synchronisé
+automatiquement entre le Windows local et le VPS. C'était un backfill
+ponctuel, pas une synchro continue : comme Apple Music tourne désormais
+exclusivement sur le VPS, il va accumuler son propre historique correctement
+à partir de maintenant (chaque run devient le "previous day" du suivant).
+Le risque ne peut réapparaître que si le VPS est recréé/redéployé sans
+répéter ce backfill — **toute recréation de l'instance VPS doit repartir de
+ce même transfert d'historique avant le premier run réel**, pas juste un
+`git clone`.

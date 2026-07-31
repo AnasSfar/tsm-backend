@@ -1,8 +1,8 @@
 {
   "album": "The Life of a Showgirl",
   "release_date": "2025-10-03T00:00:00Z",
-  "section_count": 7,
-  "track_count": 42,
+  "section_count": 6,
+  "track_count": 40,
   "sections": [
     {
       "section": "standard_edition",
@@ -2865,73 +2865,6 @@
           "extra_type": "other",
           "tags": [],
           "chart_extra": true
-        }
-      ],
-      "album": "The Life of a Showgirl"
-    },
-    {
-      "section": "kworb_extras",
-      "track_count": 2,
-      "chart_extra": false,
-      "tracks": [
-        {
-          "title": "Elizabeth Taylor - So Glamorous Cabaret Version",
-          "url": "https://open.spotify.com/intl-fr/track/01ZJZOftkQ2kSeyG34C7g6",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 1,
-          "base_title": "Elizabeth Taylor",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Elizabeth Taylor - So Glamorous Cabaret Version",
-          "song_family": "elizabeth_taylor",
-          "version_tag": "standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d00001e02dc6e4c7774e0c77c210d3a31",
-          "release_date": "2026-03-31T00:00:00Z",
-          "historical_track_ids": [],
-          "version_tags": [
-            "standalone"
-          ],
-          "catalog_category": "standard",
-          "music_track": true,
-          "role": "extra",
-          "extra_type": "remix"
-        },
-        {
-          "title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
-          "url": "https://open.spotify.com/intl-fr/track/6EqHzZp61G5uQ12QEiibpT",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 2,
-          "base_title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
-          "album": "The Life of a Showgirl",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [
-            "Sabrina Carpenter"
-          ],
-          "artists": [
-            "Taylor Swift",
-            "Sabrina Carpenter"
-          ],
-          "title_clean": "The Life of a Showgirl (feat. Sabrina Carpenter)",
-          "song_family": "the_life_of_a_showgirl_feat_sabrina_carpenter",
-          "version_tag": "featured",
-          "image_url": "https://i.scdn.co/image/ab67616d00001e02f756bdc2c11a985dc0c06d94",
-          "release_date": "2025-11-07T00:00:00Z",
-          "historical_track_ids": [],
-          "version_tags": [
-            "featured"
-          ],
-          "catalog_category": "featured",
-          "music_track": true,
-          "role": "album_track",
-          "category": "feature"
         }
       ],
       "album": "The Life of a Showgirl"

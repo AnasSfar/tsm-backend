@@ -1,7 +1,7 @@
 {
   "album": "Fearless",
   "section_count": 5,
-  "track_count": 59,
+  "track_count": 58,
   "sections": [
     {
       "section": "original_edition",
@@ -1071,7 +1071,7 @@
     {
       "album": "Fearless",
       "section": "streaming_extras",
-      "track_count": 37,
+      "track_count": 36,
       "chart_extra": true,
       "tracks": [
         {
@@ -2415,39 +2415,6 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
-        },
-        {
-          "title": "Breathe - Commentary",
-          "url": "https://open.spotify.com/intl-fr/track/3cAHqw3B2deaHRXV9WrYAA",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 17,
-          "base_title": "Breathe",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Breathe - Commentary",
-          "song_family": "breathe",
-          "version_tag": "commentary",
-          "version_tags": [
-            "commentary"
-          ],
-          "catalog_category": "commentary",
-          "music_track": false,
-          "release_date": "2008-11-11T00:00:00Z",
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "commentary",
-          "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "commentary",
           "tags": []
         }
       ]

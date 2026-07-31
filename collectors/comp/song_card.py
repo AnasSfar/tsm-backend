@@ -321,7 +321,7 @@ def render_song_card(
 *{{margin:0;padding:0;box-sizing:border-box}}
 body{{
   font-family:Inter,-apple-system,'Helvetica Neue',Arial,sans-serif;
-  width:920px;height:344px;
+  width:920px;height:420px;
   background:{gradient};
   position:relative;overflow:hidden;color:#fff;
 }}
@@ -331,16 +331,16 @@ body:before{{
     linear-gradient(90deg,rgba(4,10,16,.62) 0%,rgba(4,10,16,.42) 49%,rgba(4,10,16,.08) 100%),
     radial-gradient(circle at 18% 85%,rgba(255,255,255,.20),rgba(255,255,255,0) 36%);
 }}
-.layout{{height:344px;position:relative;z-index:1}}
+.layout{{height:420px;position:relative;z-index:1}}
 .cover-col{{
-  position:absolute;right:12px;top:12px;width:321px;height:321px;
+  position:absolute;right:20px;top:30px;width:360px;height:360px;
   overflow:hidden;border-radius:30px;
   box-shadow:0 24px 50px rgba(0,0,0,.42),0 0 0 1px rgba(255,255,255,.18);
 }}
-.cover,.cover-ph{{width:321px;height:321px;object-fit:cover;display:block}}
+.cover,.cover-ph{{width:360px;height:360px;object-fit:cover;display:block}}
 .cover-ph{{background:#172421}}
 .info-col{{
-  position:absolute;left:32px;top:24px;bottom:22px;width:529px;
+  position:absolute;left:32px;top:32px;bottom:34px;width:500px;
   display:flex;flex-direction:column;
 }}
 .hdr-row{{display:flex;align-items:center;gap:12px;width:100%;flex-shrink:0}}
@@ -360,7 +360,7 @@ body:before{{
 .title{{
   color:#fff;font-size:{_best_since_title_font_size(title)}px;font-weight:950;
   line-height:1.14;letter-spacing:0;flex-shrink:0;
-  max-width:523px;display:-webkit-box;-webkit-line-clamp:2;
+  max-width:492px;display:-webkit-box;-webkit-line-clamp:2;
   -webkit-box-orient:vertical;overflow:hidden;
   text-shadow:0 3px 18px rgba(0,0,0,.28);
   margin-bottom:-5px;
@@ -374,7 +374,7 @@ body:before{{
   text-shadow:none;
 }}
 .subtitle{{
-  width:max-content;max-width:505px;
+  width:max-content;max-width:485px;
   color:{badge_fg};background:{badge_bg};
   font-size:15px;font-weight:900;border-radius:999px;
   padding:8px 15px;display:flex;align-items:center;gap:9px;
@@ -403,10 +403,10 @@ body:before{{
 .chg.flat{{color:rgba(255,255,255,.52)}}
 .extra{{
   color:rgba(255,255,255,.76);font-size:15px;font-weight:750;
-  max-width:495px;margin-top:0;margin-bottom:2px;
+  max-width:470px;margin-top:0;margin-bottom:2px;
 }}
 .ftr{{
-  position:absolute;bottom:12px;left:35px;right:35px;z-index:2;
+  position:absolute;bottom:16px;left:35px;right:35px;z-index:2;
   display:flex;justify-content:space-between;
 }}
 .ftr-l,.ftr-r{{font-size:12px;color:rgba(255,255,255,.52);font-weight:700}}
@@ -418,7 +418,7 @@ body:before{{
 *{{margin:0;padding:0;box-sizing:border-box}}
 body{{
   font-family:Inter,-apple-system,'Helvetica Neue',Arial,sans-serif;
-  width:920px;height:344px;
+  width:920px;height:420px;
   background:{gradient};
   position:relative;overflow:hidden;color:#fff;
 }}
@@ -428,16 +428,16 @@ body:before{{
     linear-gradient(90deg,rgba(4,10,16,.62) 0%,rgba(4,10,16,.42) 49%,rgba(4,10,16,.08) 100%),
     radial-gradient(circle at 18% 85%,rgba(255,255,255,.20),rgba(255,255,255,0) 36%);
 }}
-.layout{{height:344px;position:relative;z-index:1}}
+.layout{{height:420px;position:relative;z-index:1}}
 .cover-col{{
-  position:absolute;right:12px;top:12px;width:321px;height:321px;
+  position:absolute;right:20px;top:30px;width:360px;height:360px;
   overflow:hidden;border-radius:30px;
   box-shadow:0 24px 50px rgba(0,0,0,.42),0 0 0 1px rgba(255,255,255,.18);
 }}
-.cover,.cover-ph{{width:321px;height:321px;object-fit:cover;display:block}}
+.cover,.cover-ph{{width:360px;height:360px;object-fit:cover;display:block}}
 .cover-ph{{background:#172421}}
 .info-col{{
-  position:absolute;left:32px;top:24px;bottom:22px;width:529px;
+  position:absolute;left:32px;top:32px;bottom:34px;width:500px;
   display:flex;flex-direction:column;
 }}
 .hdr-row{{display:flex;align-items:center;gap:12px;width:100%;flex-shrink:0}}
@@ -457,7 +457,7 @@ body:before{{
 .title{{
   color:#fff;font-size:{_best_since_title_font_size(title)}px;font-weight:950;
   line-height:1.14;letter-spacing:0;flex-shrink:0;
-  max-width:523px;display:-webkit-box;-webkit-line-clamp:2;
+  max-width:492px;display:-webkit-box;-webkit-line-clamp:2;
   -webkit-box-orient:vertical;overflow:hidden;
   text-shadow:0 3px 18px rgba(0,0,0,.28);
   margin-bottom:-5px;
@@ -487,10 +487,10 @@ body:before{{
 .chg.flat{{color:rgba(255,255,255,.52)}}
 .extra{{
   color:rgba(255,255,255,.76);font-size:15px;font-weight:750;
-  max-width:495px;margin-top:0;margin-bottom:2px;
+  max-width:470px;margin-top:0;margin-bottom:2px;
 }}
 .ftr{{
-  position:absolute;bottom:12px;left:35px;right:35px;z-index:2;
+  position:absolute;bottom:16px;left:35px;right:35px;z-index:2;
   display:flex;justify-content:space-between;
 }}
 .ftr-l,.ftr-r{{font-size:12px;color:rgba(255,255,255,.52);font-weight:700}}
@@ -530,7 +530,7 @@ def write_song_card_png(html_text: str, output_path: Path, tmp_path: Path, *, ke
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
-            page = browser.new_page(viewport={"width": 920, "height": 344}, device_scale_factor=2)
+            page = browser.new_page(viewport={"width": 920, "height": 420}, device_scale_factor=2)
             page.goto(f"file:///{tmp_path.as_posix()}", wait_until="load")
             page.locator("body").screenshot(path=str(output_path))
             browser.close()

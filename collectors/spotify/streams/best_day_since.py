@@ -44,6 +44,7 @@ LIVE_COLLECTION_MIN_DAYS = 30
 LIVE_COLLECTION_MIN_PCT_CHANGE = 10.0
 YEAR_RECORD_IGNORE_DAYS = 15
 MONTH_RECORD_IGNORE_DAYS = 10
+MONTH_RECORD_MIN_DAILY_STREAMS = 200_000
 
 
 @dataclass(frozen=True)
@@ -415,11 +416,14 @@ def period_record_flags(points: list[Point], target_date: date, current_daily: i
             current_daily=current_daily,
             period_start=year_start,
         ),
-        "is_biggest_day_of_month": _is_biggest_daily_in_period(
-            points,
-            target_date=target_date,
-            current_daily=current_daily,
-            period_start=month_start,
+        "is_biggest_day_of_month": (
+            current_daily > MONTH_RECORD_MIN_DAILY_STREAMS
+            and _is_biggest_daily_in_period(
+                points,
+                target_date=target_date,
+                current_daily=current_daily,
+                period_start=month_start,
+            )
         ),
     }
 

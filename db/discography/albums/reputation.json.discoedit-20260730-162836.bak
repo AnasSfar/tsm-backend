@@ -1,7 +1,7 @@
 {
   "album": "reputation",
   "section_count": 6,
-  "track_count": 50,
+  "track_count": 48,
   "sections": [
     {
       "section": "standard_edition",
@@ -1129,7 +1129,7 @@
       "album": "reputation",
       "section": "streaming_extras",
       "chart_extra": true,
-      "track_count": 14,
+      "track_count": 12,
       "tracks": [
         {
           "title": "...Ready For It? - BloodPopÃ‚Â® Remix",
@@ -1563,72 +1563,6 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "acoustic",
-          "tags": []
-        },
-        {
-          "title": "Call It What You Want - Commentary",
-          "url": "https://open.spotify.com/intl-fr/track/4eRp4OhES42IiokxA59E60",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 19,
-          "base_title": "Call It What You Want",
-          "album": "reputation",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Call It What You Want - Commentary",
-          "song_family": "call_it_what_you_want",
-          "version_tag": "commentary",
-          "version_tags": [
-            "commentary"
-          ],
-          "catalog_category": "commentary",
-          "music_track": false,
-          "release_date": "2017-11-10T00:00:00Z",
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "commentary",
-          "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "commentary",
-          "tags": []
-        },
-        {
-          "title": "Dress - Commentary",
-          "url": "https://open.spotify.com/intl-fr/track/0FfnSwDzc5KuBCkhJzIL2c",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 31,
-          "base_title": "Dress",
-          "album": "reputation",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Dress - Commentary",
-          "song_family": "dress",
-          "version_tag": "commentary",
-          "version_tags": [
-            "commentary"
-          ],
-          "catalog_category": "commentary",
-          "music_track": false,
-          "release_date": "2017-11-10T00:00:00Z",
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "commentary",
-          "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "commentary",
           "tags": []
         }
       ]

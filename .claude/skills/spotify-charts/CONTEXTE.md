@@ -264,7 +264,13 @@ Variables d'environnement:
 - `SPOTIFY_WORLDWIDE_FETCH_MAX_ATTEMPTS`: tentatives max par region, `0` =
   infini.
 - `SPOTIFY_SKIP_LATEST_FALLBACK_ON_404`: en backfill, evite de lire `latest`
-  quand une date est absente.
+  quand une date est absente. Defaut `daily.py` (run quotidien): off — sur un
+  404 sur l'URL datee, on retente via `/latest` et on garde la donnee si
+  `/latest` pointe deja sur `chart_date` (rattrape le decalage de propagation
+  CDN cote Spotify entre `/latest` et l'URL datee explicite, observe le
+  2026-07-30 sur `global`). Le wrapper de backfill force `1` explicitement
+  (`run_all_charts.py`), donc le comportement backfill ne change pas meme si
+  le defaut interne de `daily.py` change.
 - `SPOTIFY_CHARTS_SESSION_FILE`: session Spotify a utiliser.
 - `SPOTIFY_CHARTS_SINGLE_SESSION`: force l'utilisation d'une seule session dans
   le process.
@@ -447,6 +453,18 @@ Fichiers typiques:
 - `cards_index.json`;
 - `posted_cards.json`.
 
+**Retry de la publication (depuis 2026-07-30) :** aucun chemin de post X
+(single ou thread, `post_with_image`/`post_image_thread` dans
+`collectors/spotify/core/twitter.py`) ne retente en interne — une erreur X
+("something went wrong") fait echouer l'appel une seule fois. Pour l'etape
+`cards` specifiquement, `run_all_charts.py` retente desormais l'appel
+complet a `generate_card_images.py` jusqu'a `SPOTIFY_CARDS_POST_MAX_ATTEMPTS`
+fois (defaut `3`, pause `SPOTIFY_CARDS_POST_RETRY_SECONDS` = `30s` entre
+tentatives), et passe `--force` sur la derniere tentative (regenere les PNG
+avant de reposter). Les autres etapes de post (`global-post`, `us-post`,
+`priority-global-highlights-*`) n'ont toujours pas de retry — un echec y
+reste fatal pour la date.
+
 Priority Global NEW/RE cards:
 
 ```text
@@ -455,6 +473,24 @@ worldwide/tools/scripts/post_global_new_releases.py
 
 Utilise le JSON global `ts_chart_YYYY-MM-DD.json`, la discographie et
 `db/charts_history_global.csv` pour determiner les entrees prioritaires.
+
+**Piege confirme (2026-07-30) :** la vraie card highlight NEW/RE du chart
+Global (`post_global_new_releases.py <date> --post`, badge "RE" via
+`comp/chart_card.py`) n'est declenchee automatiquement par `worldwide/daily.py`
+qu'en thread de fond quand `--post-priority-global-new` est passe ET que la
+region `global` vient d'etre fetchee. Ce flag n'etait jamais positionne dans
+un run quotidien normal (`COLLECT_RUNNERS` dans `run_all_charts.py` ne
+passait que `--force`), et le filet de secours ("catchup") plus bas dans
+`run_all_charts.py` ne se declenche que si `not ran_collect` — jamais vrai
+un jour normal ou la collecte tourne. Resultat : une reelle re-entree du
+chart Global (ex. Blank Space le 2026-07-29) ne generait/postait jamais sa
+card RE. Fix : `run_all_charts.py` ajoute maintenant `--post-priority-global-new`
+aux args forwardees vers `worldwide/daily.py` des que `"cards" in post_parts`
+(donc pas en `--no-post`, coherent avec le reste du posting `cards`). Ne pas
+confondre avec la "priority
+worldwide card" (`--post-worldwide`, fichier `worldwide_new_card_*.png`,
+etape `priority-global-highlights-worldwide`) qui parle de nombre de pays et
+tourne dans tous les cas — c'est une feature separee et independante.
 
 ## Sessions, tokens, WARP
 

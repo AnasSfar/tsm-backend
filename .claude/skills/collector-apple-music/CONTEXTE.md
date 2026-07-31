@@ -159,6 +159,18 @@ bloquant) `scripts/generate_home_highlights.py --quiet` juste apres
 
 ## Pieges
 
+- **`.gitignore` exclut tous les `.csv` du repo, et `db/apple_music_*.csv`
+  n'est jamais force-ajoute** (contrairement a YouTube qui fait
+  `git add -f` dans `git_ops.py`). Un `git clone` frais (nouvelle machine,
+  VPS, CI) n'a donc AUCUN historique CSV/snapshot Apple Music. Consequence
+  observee le 2026-07-30 sur le VPS OVH : sans `snapshots/apple_music_charts/`
+  ni `db/apple_music_*.csv`, `previous_rank` ne trouve rien a comparer et le
+  catalogue entier part en NEW faux, publie sur R2 sans garde-fou (pas de
+  blocage automatique comme pour Streams). Avant tout premier run reel sur
+  une nouvelle machine : copier `snapshots/apple_music_charts/` (au moins
+  les ~35 derniers jours, `PREV_RANK_WINDOW_DAYS=30` dans `core/csv_utils.py`)
+  et `db/apple_music_*.csv` depuis une machine qui a l'historique. Detail :
+  `OVH.md` a la racine du repo.
 - Les imports `from core...` dependent du `PYTHONPATH` injecte.
 - `TSM_DATA_DATE` et chemins de config peuvent etre evalues a l'import.
 - Un subset de pays sur la vraie date peut produire un snapshot partiel.

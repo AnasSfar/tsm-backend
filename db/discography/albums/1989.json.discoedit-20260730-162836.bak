@@ -1,7 +1,7 @@
 {
   "album": "1989",
   "section_count": 7,
-  "track_count": 53,
+  "track_count": 59,
   "sections": [
     {
       "section": "standard_edition",
@@ -1097,7 +1097,7 @@
     },
     {
       "section": "streaming_extras",
-      "track_count": 31,
+      "track_count": 37,
       "chart_extra": true,
       "tracks": [
         {
@@ -1348,6 +1348,39 @@
           "tags": []
         },
         {
+          "title": "Back To December - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/3MqHevAhUErYJoC1ceESEe",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9,
+          "base_title": "Back To December",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Back To December - Commentary",
+          "song_family": "back_to_december",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
           "title": "Bad Blood - Commentary",
           "url": "https://open.spotify.com/intl-fr/track/0Xtgj2RuEo5FInZ0b4KYuY",
           "type": "album_track",
@@ -1375,6 +1408,72 @@
           "catalog_exclusion_reason": "commentary",
           "chart_extra": true,
           "image_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Breathe - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/3cAHqw3B2deaHRXV9WrYAA",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 17,
+          "base_title": "Breathe",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Breathe - Commentary",
+          "song_family": "breathe",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Call It What You Want - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/4eRp4OhES42IiokxA59E60",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 19,
+          "base_title": "Call It What You Want",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Call It What You Want - Commentary",
+          "song_family": "call_it_what_you_want",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2017-11-10T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
@@ -1446,6 +1545,107 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Cold As You - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/5f22cJ5bgEqYYpbAJn0D6D",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 24,
+          "base_title": "Cold As You",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Cold As You - Commentary",
+          "song_family": "cold_as_you",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2006-10-24T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Dress - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/0FfnSwDzc5KuBCkhJzIL2c",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 31,
+          "base_title": "Dress",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Dress - Commentary",
+          "song_family": "dress",
+          "version_tag": "commentary",
+          "version_tags": [
+            "commentary"
+          ],
+          "catalog_category": "commentary",
+          "music_track": false,
+          "release_date": "2017-11-10T00:00:00Z",
+          "historical_track_ids": [],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "commentary",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "commentary",
+          "tags": []
+        },
+        {
+          "title": "Dear John - Instrumental With Background Vocals",
+          "url": "https://open.spotify.com/intl-fr/track/4jqsWkHTmhBdTKHtsaw2gL",
+          "type": "album_track",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 28,
+          "base_title": "Dear John",
+          "album": "1989",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Dear John - Instrumental With Background Vocals",
+          "song_family": "dear_john",
+          "version_tag": "instrumental",
+          "version_tags": [
+            "instrumental"
+          ],
+          "catalog_category": "instrumental",
+          "music_track": false,
+          "release_date": "2010-10-25T00:00:00Z",
+          "historical_track_ids": [
+            "2biHaDJjwyvJAnvSqTBvk8"
+          ],
+          "excluded_from_public_stats": true,
+          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "chart_extra": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "instrumental",
           "tags": []
         },
         {
@@ -2156,7 +2356,7 @@
           "tags": []
         },
         {
-          "title": "Shake it Off (Noteservice Wind Ensemble)",
+          "title": "Shake it Off",
           "url": "https://open.spotify.com/track/0bj1bAhoHpHRSl4IIyFvfU",
           "type": "album_track",
           "edition": "extras",
