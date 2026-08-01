@@ -1668,12 +1668,14 @@ def main() -> int:
 
     regions_to_fetch = {k: v for k, v in regions.items() if k not in already_done}
 
-    # Phase 1 : fetch global et fr en priorité pour poster pendant la phase 2
+    # Phase 1 : fetch global (toujours, meme --no-post) et fr/us en priorité pour poster
+    # pendant la phase 2. "global" doit etre confirme (retry selon FETCH_MAX_ATTEMPTS) avant
+    # de lancer le fetch des autres regions worldwide en phase 2 — jamais en parallele.
     post_priority_global_new = args.post_priority_global_new and not args.dates and not args.dates_file
     priority_post_regions = set(args.post_priority_region or [])
     if post_priority_global_new:
         priority_post_regions.add("global")
-    _PRIORITY = (set(PRIORITY_POST_REGIONS) if not args.no_post else set()) | priority_post_regions
+    _PRIORITY = {"global"} | (set(PRIORITY_POST_REGIONS) if not args.no_post else set()) | priority_post_regions
     priority_to_fetch = {k: v for k, v in regions_to_fetch.items() if k in _PRIORITY}
     other_to_fetch    = {k: v for k, v in regions_to_fetch.items() if k not in _PRIORITY}
 

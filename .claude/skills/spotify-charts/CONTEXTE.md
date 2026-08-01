@@ -257,6 +257,20 @@ Options importantes:
 - `--post-multi-song-regions`
 - `--post-multi-song-regions-only`
 
+**Ordre de fetch — `global` toujours en premier, bloquant (depuis 2026-08-01) :**
+la region `global` est desormais systematiquement dans le lot "Phase 1" (fetch
+prioritaire), meme en `--no-post` (ex: appel `worldwide-regional-data` de
+`run_all_charts.py` pour regenerer les JSON regionaux avant les cards). La
+Phase 1 est `await`ee entierement (donc `global` est retente selon
+`FETCH_MAX_ATTEMPTS`/`SPOTIFY_WORLDWIDE_FETCH_MAX_ATTEMPTS` jusqu'a
+confirmation ou skip apres cap) avant que la Phase 2 (fetch des ~74 autres
+regions worldwide) ne demarre. Avant ce fix, en `--no-post`, `global` etait
+mélangé dans le meme lot asyncio que toutes les autres regions — un `global`
+lent/rate-limite ne bloquait rien et pouvait finir apres (ou etre skip en
+meme temps que) les autres regions, sans garantie d'ordre. Regle produit:
+ne jamais lancer le fetch des autres regions worldwide avant que `global`
+soit confirme (ou explicitement skip apres le cap de tentatives).
+
 Variables d'environnement:
 
 - `SPOTIFY_WORLDWIDE_SEMAPHORE`: concurrence regions, defaut `10`, backfill

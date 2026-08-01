@@ -337,7 +337,8 @@ def normalize_daily_streams_from_totals(by_date: dict[str, dict[str, dict]]) -> 
         previous_date = (current_date - timedelta(days=1)).isoformat()
         previous_day = by_date.get(previous_date) or {}
         for track_id, values in by_date.get(date_value, {}).items():
-            if values.get("estimated_reason") == "manual_trusted":
+            reason = values.get("estimated_reason") or ""
+            if reason == "manual_trusted" or reason.startswith("collection_incident_"):
                 continue
             previous_values = previous_day.get(track_id)
             if not previous_values:

@@ -134,6 +134,36 @@ Racine:
 - Les extras peuvent etre pending/estimated seulement selon les regles du code
   et de `data-rules`.
 - Pour toute correction historique, comparer DB, snapshots et exports affectes.
+- Convention `collection_incident_*` (ajoutee 2026-08-01) : quand le total
+  scrape lui-meme est fige/faux sur une fenetre connue pour un non-extra
+  (donc daily faux mais total "reellement scrape", pas un simple gap sans
+  ligne), on ne touche JAMAIS aux totaux deja ecrits (ancien ET nouveau bord
+  de la fenetre restent intouches, y compris les totaux du jour meme —
+  regle du proprietaire, cf. incident folklore ci-dessous). On vide
+  uniquement `daily_streams` sur la fenetre affectee avec
+  `estimated_reason` prefixe `collection_incident_` (ex.
+  `collection_incident_folklore_2026-03-09_to_2026-04-18`).
+  `export_for_web.normalize_daily_streams_from_totals` doit sauter tout
+  reason qui commence par `collection_incident_` (comme `manual_trusted`),
+  sinon il recalcule le daily depuis les totaux consecutifs (inchanges,
+  donc toujours faux) et ecrase le blank a l'export. Les streams reels non
+  comptabilises restent un trou permanent dans le total a vie (aucune
+  recuperation possible sans casser soit "jamais toucher un total deja
+  scrape" soit "jamais estimer un non-extra").
+- Incident connu : folklore (13 titres standard edition : cardigan, my
+  tears ricochet, seven, august, this is me trying, illicit affairs,
+  invisible string, mad woman, epiphany, betty, peace, hoax, exile) —
+  total quasi fige (daily ~1-2% de la normale) du 2026-03-09 au 2026-04-18
+  (2026-03-10 pour exile, 2026-03-09 deja vide chez lui). Confirme via
+  `db/2026 & 2025 - Daily Archive 2026.csv` (archive pivot par titre,
+  correle a 100% avec le live sur toute la periode 2025-01-01→2026-04-18
+  sauf exactement cette fenetre) : ~117M streams non comptabilises au
+  total, jamais rattrapes par le scraping normal repris le 2026-04-19.
+  "the 1", "the last great american dynasty", "mirrorball", "the lakes"
+  (meme album) ne sont PAS touches — verifier au cas par cas, ne pas
+  supposer un album entier atteint sans comparer a l'archive titre par
+  titre. Fixe le 2026-08-01 (`db/streams_history.csv` + normalize dans
+  `export_for_web.py`).
 
 ## Commandes de travail
 
