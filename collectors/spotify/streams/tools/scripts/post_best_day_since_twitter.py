@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """
 Post the top "best day since" songs to @swiftiescharts with song card images.
 
@@ -35,7 +35,7 @@ ALBUM_BEST_DAY_MIN_DAYS = 30
 RECAP_BEST_DAY_MIN_DAYS = 30
 MAX_BEST_DAY_SONG_POSTS_PER_ALBUM = 3
 POST_COLLECTION_MIN_SONG_DAILY_STREAMS = 300_000
-POST_COLLECTION_MAX_SONG_POSTS = 10
+POST_COLLECTION_MAX_SONG_POSTS = 5
 MIN_SONG_DAILY_STREAMS_TO_POST = 80_000
 POST_COLLECTION_MIN_SONG_PCT_CHANGE = 10.0
 ALWAYS_POST_BEST_DAY_SINCE_AFTER_DAYS = 60
@@ -285,7 +285,7 @@ def _album_key(album: str | None) -> str:
         flags=re.IGNORECASE,
     )
     text = re.sub(
-        r"\s*[-–—]\s*(?:deluxe|standard|expanded|bonus|anniversary|karaoke|acoustic|live|tour|edition).*$",
+        r"\s*[-â€“â€”]\s*(?:deluxe|standard|expanded|bonus|anniversary|karaoke|acoustic|live|tour|edition).*$",
         "",
         text,
         flags=re.IGNORECASE,
@@ -378,6 +378,13 @@ def _track_posted_lock_path(track_id: str, target_date: str) -> Path:
     return _day_dir(target_date) / "best_day_since_track_locks" / f"{track_id}.lock"
 
 
+def _posted_track_ids_for_date(target_date: str) -> set[str]:
+    track_locks_dir = _day_dir(target_date) / "best_day_since_track_locks"
+    if not track_locks_dir.exists():
+        return set()
+    return {p.stem for p in track_locks_dir.glob("*.lock")}
+
+
 def _post_single_track_early(
     track_id: str,
     target_date: str,
@@ -403,8 +410,14 @@ def _post_single_track_early(
     if not track:
         return "skipped"
 
-    track_locks_dir = _day_dir(target_date) / "best_day_since_track_locks"
-    locked_track_ids = {p.stem for p in track_locks_dir.glob("*.lock")} if track_locks_dir.exists() else set()
+    locked_track_ids = _posted_track_ids_for_date(target_date)
+    if len(locked_track_ids) >= POST_COLLECTION_MAX_SONG_POSTS and not no_post:
+        print(
+            f"[best_day_since_early] Skipping {track_id}: already "
+            f"{POST_COLLECTION_MAX_SONG_POSTS} best-day song post(s) for {target_date}."
+        )
+        return "skipped"
+
     album_counts = _track_album_counts(locked_track_ids, tracks_by_id)
     album = _album_key(track.get("album"))
     if album and album_counts.get(album, 0) >= MAX_BEST_DAY_SONG_POSTS_PER_ALBUM:
@@ -611,7 +624,7 @@ def _generate_recap_image(
         rows_html.append(_recap_row_html(index, row, track, cover_url, daily_today, daily_pct, weekly_pct))
 
     html_text = build_table_html(
-        title="Best Day Since — Full Recap",
+        title="Best Day Since â€” Full Recap",
         subtitle=f"Every song that hit a best-day-since record - {date_text}",
         col_heads=[
             ("Pos", False),
@@ -641,7 +654,7 @@ def _build_recap_tweet(rows: list[dict], target_date: str) -> str:
     date_text = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
     count = len(rows)
     plural = "s" if count != 1 else ""
-    return f"📊 {count} song{plural} hit a best day since record on {date_text}. Full recap below."
+    return f"ðŸ“Š {count} song{plural} hit a best day since record on {date_text}. Full recap below."
 
 
 def _best_since_badge_text(row: dict) -> str:
@@ -872,8 +885,7 @@ def main() -> None:
 
     limit = min(POST_COLLECTION_MAX_SONG_POSTS, max(0, int(args.limit)))
     if limit == 0:
-        print("[best_day_since_post] Limit is 0, nothing to do.")
-        return
+        print("[best_day_since_post] Limit is 0, skipping individual song posts.")
 
     lock = day_dir / "best_day_since_posted.lock"
     recap_lock = day_dir / "best_day_since_recap_posted.lock"
@@ -899,9 +911,7 @@ def main() -> None:
 
     tracks_by_id = {track["track_id"]: track for track in load_all_tracks()}
     exclude_ids = {t.strip() for t in args.exclude_tracks.split(",") if t.strip()}
-    track_locks_dir = day_dir / "best_day_since_track_locks"
-    if track_locks_dir.exists():
-        exclude_ids.update(p.stem for p in track_locks_dir.glob("*.lock"))
+    exclude_ids.update(_posted_track_ids_for_date(target_date))
     album_post_counts = _track_album_counts(exclude_ids, tracks_by_id)
     remaining_song_limit = max(0, limit - len(exclude_ids))
     candidate_rows = (
@@ -1002,3 +1012,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

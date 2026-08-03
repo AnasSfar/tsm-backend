@@ -544,15 +544,30 @@ def merge_history_by_kept_track(
             buckets[kept_track_id].append(values)
 
         for kept_track_id, entries in buckets.items():
-            best = max(
-                entries,
-                key=lambda v: (
-                    v.get("streams") is not None,
-                    v.get("streams") or 0,
-                    v.get("daily_streams") is not None,
-                    v.get("daily_streams") or 0,
-                ),
-            )
+            # A deliberate correction (manual_trusted, collection_incident_*)
+            # must never be outvoted by a raw scrape from a duplicate/merged
+            # track_id, even if that duplicate has "bigger" streams/daily —
+            # otherwise a stray historical_track_ids row can silently
+            # resurrect a value we intentionally blanked (incident 2026-08-01,
+            # folklore: an old pre-merge track_id kept collecting normally and
+            # its row for the boundary day out-scored the intentional blank).
+            protected = [
+                v for v in entries
+                if (v.get("estimated_reason") or "") == "manual_trusted"
+                or (v.get("estimated_reason") or "").startswith("collection_incident_")
+            ]
+            if protected:
+                best = protected[0]
+            else:
+                best = max(
+                    entries,
+                    key=lambda v: (
+                        v.get("streams") is not None,
+                        v.get("streams") or 0,
+                        v.get("daily_streams") is not None,
+                        v.get("daily_streams") or 0,
+                    ),
+                )
             merged[date_value][kept_track_id] = {
                 "streams": best.get("streams"),
                 "daily_streams": best.get("daily_streams"),

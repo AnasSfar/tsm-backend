@@ -1336,6 +1336,127 @@ def _missing_regional_chart_jsons(names: set[str], target: date) -> list[str]:
     return sorted(name for name in names if not _regional_chart_json_exists(name, target))
 
 
+def _global_chart_json_path(target_date: date) -> Path | None:
+    for day_dir in (spotify_chart_dir("global", target_date), legacy_spotify_chart_dir("global", target_date)):
+        path = day_dir / f"ts_chart_{target_date}.json"
+        if path.exists():
+            return path
+    return None
+
+
+def _require_global_chart_data_before_cards(target_date: date) -> bool:
+    if _global_chart_json_path(target_date) is not None:
+        return True
+    print(f"[SKIP] cards bloquees: Global chart pas encore collecte pour {target_date} (global/ts_chart_{target_date}.json absent)")
+    return False
+
+
+def _load_json_file(path: Path) -> dict | list | None:
+    try:
+        return json.loads(path.read_text(encoding="utf-8-sig"))
+    except Exception as exc:
+        print(f"[WARN] JSON illisible {path}: {exc}")
+        return None
+
+
+def _global_rows_for_cards(target_date: date) -> list[dict]:
+    path = _global_chart_json_path(target_date)
+    if path is None:
+        return []
+    data = _load_json_file(path)
+    if isinstance(data, list):
+        rows = data
+    elif isinstance(data, dict):
+        rows = data.get("entries") or data.get("tracks") or []
+    else:
+        rows = []
+    return [row for row in rows if isinstance(row, dict)]
+
+
+def _global_worldwide_entry(row: dict) -> dict | None:
+    track_id = str(row.get("track_id") or row.get("_track_id_uri") or "").strip()
+    if not track_id:
+        return None
+    return {
+        "country": "global",
+        "country_name": "Global",
+        "rank": row.get("rank"),
+        "previous_rank": row.get("previous_rank"),
+        "rank_change": row.get("rank_change"),
+        "streams": row.get("streams"),
+        "peak_rank": row.get("peak_rank"),
+        "total_days": row.get("total_days"),
+        "streak": row.get("streak"),
+        "is_new": bool(row.get("is_new")),
+        "is_re_entry": bool(row.get("is_re_entry")),
+        "movement": row.get("movement"),
+        "stream_change": row.get("stream_change"),
+        "stream_change_pct": row.get("stream_change_pct"),
+        "weekly_stream_change": row.get("weekly_stream_change"),
+        "weekly_stream_change_pct": row.get("weekly_stream_change_pct"),
+    }
+
+
+def _worldwide_source_for_global_enrichment(target_date: date) -> tuple[Path, dict] | None:
+    candidates = [
+        _worldwide_snapshot_path(target_date),
+        legacy_spotify_chart_dir("worldwide", target_date) / f"ts_worldwide_{target_date}.json",
+        WEB_EXPORT_DATA_DIR / "charts_worldwide.json",
+        LEGACY_WEBSITE_DATA_DIR / "charts_worldwide.json",
+    ]
+    for path in candidates:
+        if not path.exists():
+            continue
+        data = _load_json_file(path)
+        if isinstance(data, dict) and str(data.get("date") or "") == str(target_date) and isinstance(data.get("by_track"), dict):
+            return path, data
+    return None
+
+
+def _ensure_global_entries_in_worldwide_snapshot(target_date: date) -> bool:
+    source = _worldwide_source_for_global_enrichment(target_date)
+    if source is None:
+        print(f"[FAIL] snapshot worldwide invalide/absent pour enrichissement Global: {target_date}")
+        return False
+    source_path, data = source
+
+    changed = 0
+    by_track = data["by_track"]
+    for row in _global_rows_for_cards(target_date):
+        track_id = str(row.get("track_id") or row.get("_track_id_uri") or "").strip()
+        entry = _global_worldwide_entry(row)
+        if not track_id or entry is None:
+            continue
+        entries = by_track.setdefault(track_id, [])
+        if not isinstance(entries, list):
+            print(f"[FAIL] snapshot worldwide invalide pour track {track_id}: entries non-liste")
+            return False
+        previous_global = [
+            item for item in entries
+            if isinstance(item, dict) and str(item.get("country") or "").lower() in {"global", "glob"}
+        ]
+        entries[:] = [
+            item for item in entries
+            if not (isinstance(item, dict) and str(item.get("country") or "").lower() in {"global", "glob"})
+        ]
+        entries.insert(0, entry)
+        if previous_global != [entry]:
+            changed += 1
+
+    if changed:
+        snapshot_path = _worldwide_snapshot_path(target_date)
+        snapshot_path.parent.mkdir(parents=True, exist_ok=True)
+        snapshot_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+        latest_path = WEB_EXPORT_DATA_DIR / "charts_worldwide.json"
+        latest_path.parent.mkdir(parents=True, exist_ok=True)
+        latest_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(
+            f"[INFO] snapshot worldwide enrichi avec Global pour {target_date}: "
+            f"{changed} track(s) depuis {source_path.name}"
+        )
+    return True
+
+
 def _ensure_card_regional_data(target_date: date, *, env: dict[str, str], verbose: bool) -> bool:
     required_regions = {"global", "us"}
     missing = _missing_regional_chart_jsons(required_regions, target_date)
@@ -1815,12 +1936,18 @@ def main() -> int:
     priority_global_cards_done = False
 
     if not args.dry_run and should_generate_cards and not failures:
-        if not _worldwide_data_ready(target_date):
+        if not _require_global_chart_data_before_cards(target_date):
+            should_generate_cards = False
+            should_post_cards = False
+        elif not _worldwide_data_ready(target_date):
             failures.append(("cards-data", 1))
         elif not _ensure_card_regional_data(target_date, env=env, verbose=args.verbose):
             failures.append(("cards-regional-data", 1))
+        elif not _ensure_global_entries_in_worldwide_snapshot(target_date):
+            failures.append(("cards-global-data", 1))
 
-    # Les priority cards Global (NEW/RE) doivent partir AVANT le tweet chart Global principal.
+    # Les priority cards Global (NEW/RE) restent prioritaires pour le post,
+    # mais seulement apres collecte effective du chart Global.
     if not args.dry_run and not args.no_post and should_post_cards and "global" in post_parts and not failures:
         priority_failure = _post_priority_global_cards(
             target_date,

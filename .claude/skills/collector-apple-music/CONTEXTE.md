@@ -176,3 +176,17 @@ bloquant) `scripts/generate_home_highlights.py --quiet` juste apres
 - Un subset de pays sur la vraie date peut produire un snapshot partiel.
 - Un changement de schema CSV doit etre reporte dans export, upload R2, images
   et frontend si necessaire.
+- **Bug corrige (2026-08-02) : notif ntfy global marquait NEW au lieu de RE**
+  (`generate_snapshot_images.py`). La fonction cherchait le titre dans
+  `runtime/exports/web/site/data/songs.json` / `website/site/data/songs.json`
+  (exports runtime gitignores, jamais alimentes sur le VPS Apple Music car ils
+  viennent de l'export Spotify qui n'y tourne pas), avec un fallback vers
+  `db/discography/songs.json` qui est quasi vide (le vrai catalogue vit dans
+  `db/discography/albums/*.json`). Resultat : catalogue "connu" vide sur le
+  VPS -> toute reentree (`previous_rank` absent) etiquetee NEW dans la notif
+  seulement (CSV/JSON restaient corrects via `previous_rank`). Corrige en
+  lisant `release_date` depuis `db/discography/albums/*.json` +
+  `songs.json`/`features.json`/`misc.json` (committes, toujours presents apres
+  clone) et en appliquant la meme fenetre de 21 jours que
+  `tsm-frontend/api/routes/apple_music.py` (`_is_recent_release`) au lieu
+  d'un simple test d'appartenance au catalogue.

@@ -196,6 +196,23 @@ def gained_rank_spot(artist: dict) -> bool:
         return False
 
 
+def _int_value(value) -> int | None:
+    if value is None or value == "":
+        return None
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def rank_unchanged(artist: dict) -> int | None:
+    rank = _int_value(artist.get("rank"))
+    previous_rank = _int_value(artist.get("previous_rank"))
+    if rank is None or previous_rank is None:
+        return None
+    return rank if rank == previous_rank else None
+
+
 def fmt_streak(days) -> str:
     if days is None:
         return "—"
@@ -581,6 +598,11 @@ def main() -> None:
 
     ts_rank = ts_artist["rank"]
     print(f"Taylor Swift: rank #{ts_rank}")
+
+    unchanged_rank = rank_unchanged(ts_artist)
+    if unchanged_rank is not None and not args.no_post:
+        print(f"[SKIP] Artist global post skipped: Taylor Swift rank unchanged (#{unchanged_rank}).")
+        return
 
     header_img = pick_header_image()
     if ts_rank <= 5:

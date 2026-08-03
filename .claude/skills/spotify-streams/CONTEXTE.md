@@ -164,6 +164,23 @@ Racine:
   supposer un album entier atteint sans comparer a l'archive titre par
   titre. Fixe le 2026-08-01 (`db/streams_history.csv` + normalize dans
   `export_for_web.py`).
+- Piege decouvert en corrigeant l'incident folklore : 4 des 13 titres
+  (cardigan, my tears ricochet, seven, august) ont un ancien track_id liste
+  dans `historical_track_ids` qui a continue a etre collecte normalement
+  (donnees reelles, jamais buggees) en parallele du track_id actif pendant
+  toute la fenetre de l'incident — pas juste 1-2 lignes isolees, un
+  historique parallele complet. `merge_history_by_kept_track` choisissait
+  jusqu'ici le "meilleur" candidat par jour via un max() sur
+  streams/daily bruts ; le jour ou les deux totaux convergent exactement
+  (04-18 ici), ce max() repechait la ligne de l'ancien id et ecrasait le
+  blank volontaire du track_id actif. Fix : `merge_history_by_kept_track`
+  donne desormais priorite absolue a toute entree portant un
+  `estimated_reason` protege (`manual_trusted` ou `collection_incident_*`),
+  peu importe les valeurs brutes en concurrence. Reflexe a garder : apres
+  toute correction manuelle touchant un track ayant des
+  `historical_track_ids`, verifier si l'ancien id a aussi des lignes sur la
+  meme fenetre avant de considerer le fix termine — sinon l'export peut
+  silencieusement ressusciter l'ancienne valeur.
 
 ## Commandes de travail
 

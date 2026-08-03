@@ -42,7 +42,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from collectors.spotify.core.data_paths import (  # noqa: E402
-    LEGACY_WEBSITE_DATA_DIR, WEB_EXPORT_DATA_DIR, apple_music_charts_dir, first_existing,
+    apple_music_charts_dir,
 )
 from collectors.spotify.core.notify import send as notify_send  # noqa: E402
 from collectors.comp.tables_image import (  # noqa: E402
@@ -50,11 +50,7 @@ from collectors.comp.tables_image import (  # noqa: E402
 )
 from core.config import GENRES  # noqa: E402
 
-SONGS_JSON = first_existing(
-    WEB_EXPORT_DATA_DIR / "songs.json",
-    LEGACY_WEBSITE_DATA_DIR / "songs.json",
-    REPO_ROOT / "db" / "discography" / "songs.json",
-)
+DISCOGRAPHY_DIR = REPO_ROOT / "db" / "discography"
 
 HANDLE = "@swiftiescharts"
 HEADER_BG = "linear-gradient(135deg,#fa243c 0%,#bf1d47 100%)"
@@ -124,39 +120,89 @@ def _song_key_candidates(value: object) -> list[str]:
     return candidates
 
 
-def _load_known_song_keys() -> set[str]:
-    """Titles already in our catalog (songs.json) -> missing previous_rank
-    means a re-entry. Titles NOT in the catalog -> a genuinely new release,
-    charting for the first time -> NEW."""
-    if not SONGS_JSON.exists():
-        return set()
-    try:
-        payload = json.loads(SONGS_JSON.read_text(encoding="utf-8-sig"))
-    except Exception:
-        return set()
-    songs = payload.get("songs") if isinstance(payload, dict) else payload
-    if not isinstance(songs, list):
-        return set()
-    keys: set[str] = set()
-    for row in songs:
-        if not isinstance(row, dict):
+def _iter_catalog_tracks() -> list[dict]:
+    """Every track dict from the discography source-of-truth files
+    (db/discography/, committed to git — unlike the runtime web export,
+    which only exists on hosts that also ran the Spotify streams export,
+    not the case on the Apple Music-only VPS)."""
+    tracks: list[dict] = []
+
+    def _collect(sections: object) -> None:
+        if not isinstance(sections, list):
+            return
+        for section in sections:
+            if not isinstance(section, dict):
+                continue
+            section_tracks = section.get("tracks")
+            if isinstance(section_tracks, list):
+                tracks.extend(t for t in section_tracks if isinstance(t, dict))
+
+    albums_dir = DISCOGRAPHY_DIR / "albums"
+    if albums_dir.is_dir():
+        for path in sorted(albums_dir.glob("*.json")):
+            try:
+                payload = json.loads(path.read_text(encoding="utf-8-sig"))
+            except Exception:
+                continue
+            if isinstance(payload, dict):
+                _collect(payload.get("sections"))
+
+    for name in ("songs.json", "features.json", "misc.json"):
+        path = DISCOGRAPHY_DIR / name
+        if not path.exists():
             continue
-        for field in ("title", "base_title", "title_key"):
-            key = _song_name_key(row.get(field))
-            if key:
-                keys.add(key)
-    return keys
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8-sig"))
+        except Exception:
+            continue
+        if isinstance(payload, list):
+            _collect(payload)
+
+    return tracks
 
 
-KNOWN_SONG_KEYS = _load_known_song_keys()
+def _load_release_dates() -> dict[str, str]:
+    """Map every known song-title key -> its catalog release_date, so a
+    missing previous_rank can be told apart between a genuine new release
+    and a re-entry (data-rules: never infer NEW for an already-released
+    song)."""
+    dates: dict[str, str] = {}
+    for track in _iter_catalog_tracks():
+        release_date = str(track.get("release_date") or "").strip()
+        if not release_date:
+            continue
+        for field in ("title", "base_title"):
+            key = _song_name_key(track.get(field))
+            if key and key not in dates:
+                dates[key] = release_date
+    return dates
 
 
-def _rank_change(rank: int, previous_rank: int | None, is_known: bool) -> tuple[str, str]:
-    """A missing previous_rank means either a re-entry (song already in our
-    catalog, just off-chart before) or a genuinely new release (not yet
-    in our catalog)."""
+RELEASE_DATES = _load_release_dates()
+
+# Apple Music charts long after most Taylor Swift songs were released, so
+# without this check every song missing from yesterday's snapshot would
+# incorrectly show as "NEW" instead of "RE" (kept in sync with the same
+# constant in tsm-frontend/api/routes/apple_music.py).
+_NEW_RELEASE_WINDOW_DAYS = 21
+
+
+def _is_recent_release(release_date: str | None, reference_date: str | None) -> bool:
+    if not release_date or not reference_date:
+        return False
+    try:
+        released = datetime.strptime(str(release_date)[:10], "%Y-%m-%d").date()
+        reference = datetime.strptime(str(reference_date)[:10], "%Y-%m-%d").date()
+    except ValueError:
+        return False
+    return -1 <= (reference - released).days <= _NEW_RELEASE_WINDOW_DAYS
+
+
+def _rank_change(rank: int, previous_rank: int | None, is_new_release: bool) -> tuple[str, str]:
+    """A missing previous_rank means either a genuinely new release or a
+    re-entry (song already in our catalog, just off-chart before)."""
     if previous_rank is None:
-        return ("RE", "chg-re") if is_known else ("NEW", "chg-new")
+        return ("NEW", "chg-new") if is_new_release else ("RE", "chg-re")
     delta = previous_rank - rank
     if delta > 0:
         return f"▲{delta}", "chg-up"
@@ -213,7 +259,9 @@ def make_prev_rank_resolver(chart_date: str, region: str, genre: str | None) -> 
     return lambda row: _rank_int(row.get("previous_rank"))
 
 
-def _compute_entries(rows: list[dict], prev_rank_fn: Callable[[dict], int | None]) -> list[dict]:
+def _compute_entries(
+    rows: list[dict], prev_rank_fn: Callable[[dict], int | None], chart_date: str,
+) -> list[dict]:
     entries: list[dict] = []
     for row in rows:
         rank = _rank_int(row.get("rank"))
@@ -221,8 +269,12 @@ def _compute_entries(rows: list[dict], prev_rank_fn: Callable[[dict], int | None
             continue
         prev_rank = prev_rank_fn(row)
         song = str(row.get("song_name") or "").strip()
-        is_known = any(key in KNOWN_SONG_KEYS for key in _song_key_candidates(song))
-        chg_text, chg_css = _rank_change(rank, prev_rank, is_known)
+        release_date = next(
+            (RELEASE_DATES[key] for key in _song_key_candidates(song) if key in RELEASE_DATES),
+            None,
+        )
+        is_new_release = _is_recent_release(release_date, chart_date)
+        chg_text, chg_css = _rank_change(rank, prev_rank, is_new_release)
         artist = str(row.get("artist_name") or "Taylor Swift").strip()
         album = str(row.get("album_name") or "").strip()
         entries.append({
@@ -331,7 +383,7 @@ def _filename_for(region: str, genre: str | None) -> str:
 def generate(chart_date: str, region: str, genre: str | None, out_dir: Path) -> Path:
     rows = get_region_rows(chart_date, region, genre)
     prev_rank_fn = make_prev_rank_resolver(chart_date, region, genre)
-    entries = _compute_entries(rows, prev_rank_fn)
+    entries = _compute_entries(rows, prev_rank_fn, chart_date)
     label = _label_for(region, genre)
 
     date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")

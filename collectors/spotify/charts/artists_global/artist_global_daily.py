@@ -346,6 +346,24 @@ def _artist_key(row: dict[str, Any]) -> str:
     return f"name:{str(row.get('artist_name') or '').strip().lower()}"
 
 
+def _taylor_swift_row(rows: list[dict[str, Any]]) -> dict[str, Any] | None:
+    for row in rows:
+        if str(row.get("artist_name") or "").strip().lower() == "taylor swift":
+            return row
+    return None
+
+
+def _taylor_rank_unchanged(rows: list[dict[str, Any]]) -> int | None:
+    ts_row = _taylor_swift_row(rows)
+    if not ts_row:
+        return None
+    rank = _clean_int(ts_row.get("rank"))
+    previous_rank = _clean_int(ts_row.get("previous_rank"))
+    if rank is None or previous_rank is None:
+        return None
+    return rank if rank == previous_rank else None
+
+
 def _load_previous_rows(chart_date: date, period: str) -> list[dict[str, Any]] | None:
     filename = PERIOD_CONFIG[period]["json_name"]
     for path in spotify_chart_snapshot_candidates("artists_global", chart_date.isoformat(), filename):
@@ -541,7 +559,10 @@ def main() -> int:
     else:
         maybe_upload_to_r2(chart_date, period, force=args.force)
 
-    if period == "weekly" and already_collected and not args.force_post:
+    unchanged_rank = _taylor_rank_unchanged(rows)
+    if unchanged_rank is not None:
+        print(f"[INFO] Artist global post skipped: Taylor Swift rank unchanged (#{unchanged_rank}).")
+    elif period == "weekly" and already_collected and not args.force_post:
         print(f"[INFO] Weekly chart {chart_date} already collected; post skipped.")
     elif args.no_post:
         print("[INFO] Image generation and Twitter post skipped (--no-post)")

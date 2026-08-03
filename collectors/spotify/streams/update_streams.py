@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import csv
 import json
@@ -161,10 +161,10 @@ DEBUG_PAGE_PREVIEW = False
 LOG_MODE = "normal"  # "quiet" | "normal" | "verbose"
 
 # Hill climbing
-HILL_WINDOW        = 12     # completions par fenêtre d'évaluation (was 20 — react faster)
-HILL_429_THRESHOLD = 0.15   # taux de 429 au-delà duquel on retire 1 worker
+HILL_WINDOW        = 12     # completions par fenÃªtre d'Ã©valuation (was 20 â€” react faster)
+HILL_429_THRESHOLD = 0.15   # taux de 429 au-delÃ  duquel on retire 1 worker
 HILL_MIN_WORKERS   = 2
-HILL_INITIAL       = 9      # point de départ (was 6 — start near max immediately)
+HILL_INITIAL       = 9      # point de dÃ©part (was 6 â€” start near max immediately)
 
 PROBE_NON_EXTRA_SAMPLE_SIZE = 15
 PROBE_EXTRA_SAMPLE_SIZE = 15
@@ -176,7 +176,7 @@ CHARTSNAPSHOT_ARTIST_URI = "06HL4z0CvFAxyc27GXpf02"
 CHARTSNAPSHOT_TOP_SONGS_URL = "https://www.chartsnapshot.com/get_top_songs"
 EARLY_BEST_DAY_MIN_DAILY_STREAMS = 500_000
 EARLY_BEST_DAY_TRACK_LIMIT = 80
-EARLY_BEST_DAY_MAX_POSTS = 10
+EARLY_BEST_DAY_MAX_POSTS = 5
 EARLY_BEST_DAY_MIN_PCT_CHANGE = 10.0
 EARLY_BEST_DAY_PRIORITY_AFTER_DAYS = 60
 EARLY_BEST_DAY_PRIORITY_RECENT_PEAK_RATIO = 0.90
@@ -196,7 +196,7 @@ ESTIMATED_MISSING_DAY_REASON = "missing_daily_gap"
 NEW_RELEASE_RETRY_ATTEMPTS = int(os.getenv("NEW_RELEASE_RETRY_ATTEMPTS", "12"))
 NEW_RELEASE_RETRY_SLEEP_SECONDS = int(os.getenv("NEW_RELEASE_RETRY_SLEEP_SECONDS", "10"))
 
-# ── API GraphQL Spotify ───────────────────────────────────────────────────────
+# â”€â”€ API GraphQL Spotify â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 START_TIME = None
 
 
@@ -375,10 +375,10 @@ def configure_daily_data_paths(stats_date: str) -> None:
     NOT_FOUND_STREAK_PATH = DATA_DIR / "not_found_streak.json"
     _run_logs.configure_daily_data_paths(stats_date)
 
-# ── Live update signal ────────────────────────────────────────────────────────
+# â”€â”€ Live update signal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 _UPDATE_SIGNAL_SENT = threading.Event()
 
-# ── Per-track incremental R2 upload ──────────────────────────────────────────
+# â”€â”€ Per-track incremental R2 upload â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 
 def _upload_update_signal(stats_date: str) -> None:
@@ -566,13 +566,13 @@ def try_apply_track_update(
     )
     daily = compute_daily(previous_day_total, total)
     missing_previous_day_total = previous_day_total is None and last_total is not None
-    # Baseline (total écrit, daily VIDE) quand il n'y a pas de ligne J-1 et que
-    # le delta depuis la dernière ligne connue ne peut pas valoir un daily :
+    # Baseline (total Ã©crit, daily VIDE) quand il n'y a pas de ligne J-1 et que
+    # le delta depuis la derniÃ¨re ligne connue ne peut pas valoir un daily :
     # extras (comportement historique extra_baseline), ou gap > 4 jours / aucun
-    # historique (ex. track ajoutée en DB avec un backfill chartsnapshot ancien
-    # — incident du 12/07/2026 où les totaux lifetime sont partis en daily).
+    # historique (ex. track ajoutÃ©e en DB avec un backfill chartsnapshot ancien
+    # â€” incident du 12/07/2026 oÃ¹ les totaux lifetime sont partis en daily).
     # Les gaps courts (panne WARP 1-4 j) gardent la logique multi-day/canari
-    # plus bas, qui produit des posts « last N days » corrects.
+    # plus bas, qui produit des posts Â« last N days Â» corrects.
     gap_days_before_stats_date = (
         history_index.get_days_since_previous_row(track_id, stats_date)
         if history_index is not None
@@ -601,7 +601,7 @@ def try_apply_track_update(
     elif total < last_total:
         if missing_previous_day_total:
             # last_total comes from a date beyond the immediate previous day
-            # (a gap, e.g. a backfilled/injected later total) — our fetch just
+            # (a gap, e.g. a backfilled/injected later total) â€” our fetch just
             # hasn't caught up to that figure yet, this isn't a real regression.
             reason = "missing_previous_day_total"
             real_update = False
@@ -617,10 +617,10 @@ def try_apply_track_update(
         reason = f"anomaly_delta_gt_{MAX_DAILY_INCREASE}"
         real_update = False
     elif missing_previous_day_total:
-        # No row for the immediate previous day. Filet de sécurité : si la
-        # dernière ligne connue est plus vieille qu'un gap court WARP, le
-        # delta n'est pas un daily — baseline avec daily vide (cas normalement
-        # déjà couvert par missing_previous_day_baseline ci-dessus).
+        # No row for the immediate previous day. Filet de sÃ©curitÃ© : si la
+        # derniÃ¨re ligne connue est plus vieille qu'un gap court WARP, le
+        # delta n'est pas un daily â€” baseline avec daily vide (cas normalement
+        # dÃ©jÃ  couvert par missing_previous_day_baseline ci-dessus).
         gap_days = gap_days_before_stats_date
         if gap_days is not None and gap_days > MAX_ESTIMATED_STREAM_GAP_DAYS:
             reason = "baseline_after_long_gap"
@@ -630,7 +630,7 @@ def try_apply_track_update(
             # Use tracks that already have real data for stats_date as a
             # canary: if none of them have shown real growth for stats_date
             # yet, this fetch more likely just caught up to the missing
-            # previous day's number, not stats_date's — record it under that
+            # previous day's number, not stats_date's â€” record it under that
             # earlier date instead of mislabeling it. Once some track confirms
             # stats_date growth, treat further catch-ups as real stats_date
             # deltas (possibly spanning more than one day).
@@ -1560,7 +1560,7 @@ def _worker(
                     failed_results.append(dict(result))
 
             elif scrape_status == "not_found" or total is None:
-                # Retry API immédiat pour les tracks du top-50
+                # Retry API immÃ©diat pour les tracks du top-50
                 if (
                     not use_browser_scrape
                     and track["track_id"] in priority_top_50_ids
@@ -1730,8 +1730,8 @@ def run_update(
         if use_browser_scrape:
             print("Using browser page scrape for playcounts (API fallback mode).")
 
-        # Spawner max_workers threads dès maintenant.
-        # Les workers avec worker_id >= initial_workers attendent leur activation (pas de fenêtre ouverte).
+        # Spawner max_workers threads dÃ¨s maintenant.
+        # Les workers avec worker_id >= initial_workers attendent leur activation (pas de fenÃªtre ouverte).
         workers = [
             threading.Thread(
                 target=_worker,
@@ -1770,14 +1770,14 @@ def run_update(
             w.join(timeout=5)
         print("All worker threads joined.")
 
-        # ── Retry failures (2ème passe, 30s d'attente, 3 workers max) ──────
+        # â”€â”€ Retry failures (2Ã¨me passe, 30s d'attente, 3 workers max) â”€â”€â”€â”€â”€â”€
         retry_candidates = [
             r for r in failed_results
             if r.get("status") in {"not_found", "timeout", "error"}
         ]
         if retry_candidates:
             print(
-                f"\n  {len(retry_candidates)} failure(s) — retry immédiat avec {min(6, len(retry_candidates))} workers..."
+                f"\n  {len(retry_candidates)} failure(s) â€” retry immÃ©diat avec {min(6, len(retry_candidates))} workers..."
             )
 
             retry_queue: Queue = Queue()
@@ -1811,7 +1811,7 @@ def run_update(
             for w in retry_workers:
                 w.join(timeout=5)
 
-            # Fusionner dans failed_results : retirer les candidats résolus
+            # Fusionner dans failed_results : retirer les candidats rÃ©solus
             resolved_ids = {
                 r["track_id"]
                 for r in retry_results
@@ -1819,7 +1819,7 @@ def run_update(
             }
             failed_results[:] = [r for r in failed_results if r.get("track_id") not in resolved_ids]
             print(
-                f"  Retry terminé : {len(resolved_ids)} récupérés, {len(retry_candidates) - len(resolved_ids)} encore en échec"
+                f"  Retry terminÃ© : {len(resolved_ids)} rÃ©cupÃ©rÃ©s, {len(retry_candidates) - len(resolved_ids)} encore en Ã©chec"
             )
 
     if cover_updates:
@@ -2014,9 +2014,9 @@ def main():
         arg = remaining_args[i]
 
         if arg == "--post-only":
-            # Accepte les étapes séparées par virgules et/ou espaces (PowerShell
-            # éclate « a, b, c » en plusieurs arguments) ; une date ISO ou un
-            # flag arrête la consommation.
+            # Accepte les Ã©tapes sÃ©parÃ©es par virgules et/ou espaces (PowerShell
+            # Ã©clate Â« a, b, c Â» en plusieurs arguments) ; une date ISO ou un
+            # flag arrÃªte la consommation.
             j = i + 1
             value_parts: list[str] = []
             while j < len(remaining_args):
@@ -2127,7 +2127,7 @@ def main():
     elif local_test_mode:
         print("[LOCAL-TEST] Force re-scrape, no history writes, no R2, no Twitter, no git.")
     elif dry_run_mode:
-        print("[DRY-RUN] Scraping uniquement — aucune modification.")
+        print("[DRY-RUN] Scraping uniquement â€” aucune modification.")
     elif debug_daily_mode:
         print("[DEBUG-DAILY] Retry unfinished tracks, writes history, no Twitter/git/forecast/images/notify.")
     elif debug_total_mode:
@@ -2324,7 +2324,7 @@ def main():
         if token_mgr is None:
             token_mgr = TokenManager()
         if not token_mgr.capture():
-            print("TokenManager: Ã©chec â€” impossible d'obtenir les tokens Spotify. VÃ©rifiez la connexion.")
+            print("TokenManager: ÃƒÂ©chec Ã¢â‚¬â€ impossible d'obtenir les tokens Spotify. VÃƒÂ©rifiez la connexion.")
             sys.exit(1)
         new_release_track_ids = run_new_release_preflight(token_mgr, stats_date)
         active_track_ids = load_active_track_ids_from_discography()
@@ -2470,7 +2470,7 @@ def main():
         if token_mgr is None:
             token_mgr = TokenManager()
         if not token_mgr.capture():
-            print("TokenManager: échec — impossible d'obtenir les tokens Spotify. Vérifiez la connexion.")
+            print("TokenManager: Ã©chec â€” impossible d'obtenir les tokens Spotify. VÃ©rifiez la connexion.")
             sys.exit(1)
         new_release_track_ids = run_new_release_preflight(token_mgr, stats_date)
         active_track_ids = load_active_track_ids_from_discography()
@@ -2491,8 +2491,8 @@ def main():
             total_tracks = len(tracks)
             print(f"[discography] Reloaded {total_tracks} track(s) after new release preflight.")
 
-    # Si tous les tracks sont déjà done, ou si on backfille une date déjà dépassée,
-    # on saute Playwright/API entièrement
+    # Si tous les tracks sont dÃ©jÃ  done, ou si on backfille une date dÃ©jÃ  dÃ©passÃ©e,
+    # on saute Playwright/API entiÃ¨rement
     last_history_date = get_last_stats_date_in_history()
     is_backfill = last_history_date is not None and last_history_date > stats_date
 
@@ -2526,10 +2526,10 @@ def main():
         else:
             captured_tokens = True
         if not captured_tokens:
-            print("TokenManager: échec — impossible d'obtenir les tokens Spotify. Vérifiez la connexion.")
+            print("TokenManager: Ã©chec â€” impossible d'obtenir les tokens Spotify. VÃ©rifiez la connexion.")
             sys.exit(1)
     else:
-        print("Tous les tracks déjà mis à jour pour cette date — Playwright/scraping ignoré.")
+        print("Tous les tracks dÃ©jÃ  mis Ã  jour pour cette date â€” Playwright/scraping ignorÃ©.")
 
     if not scraping_needed:
         summary = _build_existing_history_summary(stats_date, total_tracks, len(active_track_ids))
@@ -2780,7 +2780,7 @@ def main():
                     probe_confirmed_full_run = True
                     confirmed_probe = api_probe
             else:
-                print("Probe via API unavailable (no token) — skipping probe, starting run.")
+                print("Probe via API unavailable (no token) â€” skipping probe, starting run.")
     elif debug_daily_mode:
         print("Skipping probe in debug-daily mode.")
     elif done_tracks_before_run < total_tracks:
@@ -2792,7 +2792,7 @@ def main():
 
     print()
     print("=" * 70)
-    print(f"Run — stats_date {stats_date}")
+    print(f"Run â€” stats_date {stats_date}")
     print("=" * 70)
 
     if probe_confirmed_full_run and confirmed_probe is not None:
@@ -2879,7 +2879,7 @@ def main():
         log_mode=LOG_MODE,
         no_post_mode=no_post_mode,
         target_albums=list(ALBUM_UPDATE_TARGETS),
-        # Pas de cards album le week-end (règle posting) : early poster inclus.
+        # Pas de cards album le week-end (rÃ¨gle posting) : early poster inclus.
         enabled=date.fromisoformat(stats_date).weekday() < 5,
     )
     album_update_poster.start()
@@ -3117,7 +3117,7 @@ def main():
 
         print()
         print("=" * 70)
-        print(f"Retry round {retry_round} — stats_date {stats_date}")
+        print(f"Retry round {retry_round} â€” stats_date {stats_date}")
         print("=" * 70)
 
         retry_progress = ProgressLogger(LOG_MODE)
@@ -3219,7 +3219,7 @@ def main():
         save_not_found_streak(streak)
 
     if dry_run_mode:
-        print("[DRY-RUN] Scraping terminé — aucune modification appliquée.")
+        print("[DRY-RUN] Scraping terminÃ© â€” aucune modification appliquÃ©e.")
         return
 
     if not blocking_pending_ids:
@@ -3265,16 +3265,16 @@ def main():
             missing_titles = sorted(
                 t["title"] for t in all_tracks_for_check if t["track_id"] in missing_non_extra
             )
-            tracks_list = "\n".join(f"• {title}" for title in missing_titles)
+            tracks_list = "\n".join(f"â€¢ {title}" for title in missing_titles)
             completeness_round += 1
             print(
-                f"\n⛔ Completeness check round {completeness_round}: "
+                f"\nâ›” Completeness check round {completeness_round}: "
                 f"{len(missing_non_extra)} non-extra track(s) still missing for {stats_date}:\n{tracks_list}"
             )
             if not completeness_block_notified:
                 notify(
                     NTFY_TOPIC,
-                    f"⛔ Posting blocked (round {completeness_round}): {len(missing_non_extra)} non-extra track(s) missing ({stats_date}):\n{tracks_list}",
+                    f"â›” Posting blocked (round {completeness_round}): {len(missing_non_extra)} non-extra track(s) missing ({stats_date}):\n{tracks_list}",
                     title="Taylor Swift - Completeness check failed",
                     tags="no_entry,chart_increasing",
                 )
@@ -3304,11 +3304,11 @@ def main():
             missing_titles = sorted(
                 t["title"] for t in all_tracks_for_check if t["track_id"] in missing_previous_non_extra
             )
-            tracks_list = "\n".join(f"• {title}" for title in missing_titles[:50])
+            tracks_list = "\n".join(f"â€¢ {title}" for title in missing_titles[:50])
             if len(missing_titles) > 50:
-                tracks_list += f"\n… and {len(missing_titles) - 50} more"
+                tracks_list += f"\nâ€¦ and {len(missing_titles) - 50} more"
             print(
-                f"\n⛔ Posting blocked: {len(missing_previous_non_extra)} non-extra track(s) "
+                f"\nâ›” Posting blocked: {len(missing_previous_non_extra)} non-extra track(s) "
                 f"are missing comparison history for {previous_stats_date}:\n{tracks_list}"
             )
             notify(
@@ -3443,7 +3443,7 @@ def main():
     elapsed = time.perf_counter() - START_TIME
     print()
     print("=" * 70)
-    print("✓ Execution complete")
+    print("âœ“ Execution complete")
     print("=" * 70)
     print(f"  Duration:          {int(elapsed // 60)}m {int(elapsed % 60)}s")
     print(f"  Updated:           {summary['updated_this_run']} track(s)")
@@ -3458,7 +3458,7 @@ def main():
     if not debug_daily_mode and not local_test_mode and not throwback_mode:
         notify(
             NTFY_TOPIC,
-            f"✓ {summary['updated_this_run']} track(s) updated ({summary['stats_date']})\n"
+            f"âœ“ {summary['updated_this_run']} track(s) updated ({summary['stats_date']})\n"
             f"Duration: {int(elapsed // 60)}m {int(elapsed % 60)}s",
             title="Taylor Swift - Streams updated",
             tags="white_check_mark,chart_increasing",
@@ -3485,3 +3485,4 @@ if __name__ == "__main__":
         except Exception:
             pass
         raise
+

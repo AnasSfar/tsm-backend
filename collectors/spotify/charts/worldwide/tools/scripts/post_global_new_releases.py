@@ -739,6 +739,11 @@ def post_worldwide_cards(
         if track_id not in by_track:
             print(f"[global-priority-worldwide] Skip {row.get('title')}: not in worldwide snapshot.")
             continue
+        entries = by_track.get(track_id) or []
+        has_global_entry = any(str(entry.get("country") or "").strip().lower() in {"global", "glob"} for entry in entries if isinstance(entry, dict))
+        if not has_global_entry:
+            print(f"[global-priority-worldwide] Block {row.get('title')}: Global entry missing from worldwide snapshot.")
+            return 1
         meta = song_meta.get(track_id, {"track_id": track_id, "title": row.get("title") or track_id})
         slug = generate_card_images._slugify(str(meta.get("title") or row.get("title") or track_id))
         base_image_path = out_dir / f"{slug}.png"
@@ -748,18 +753,22 @@ def post_worldwide_cards(
             continue
         if slug in already_posted:
             print(f"[global-priority-worldwide] Requeue {meta.get('title')}: posted lock exists but image is missing.")
-        if not base_image_path.exists() or force:
-            rc = generate_card_images.generate(chart_date, min_countries=1, force=force, post=False)
-            if rc != 0:
-                return rc
+        # Priority worldwide cards must reflect freshly collected Global data.
+        # Existing base images may have been generated before Global was present.
+        if base_image_path.exists():
+            base_image_path.unlink()
+        if image_path.exists():
+            image_path.unlink()
+        rc = generate_card_images.generate(chart_date, min_countries=1, force=True, post=False)
+        if rc != 0:
+            return rc
         if not base_image_path.exists():
             print(f"[global-priority-worldwide] Missing card image: {base_image_path}")
             return 1
-        if not image_path.exists() or force:
-            shutil.copyfile(base_image_path, image_path)
+        shutil.copyfile(base_image_path, image_path)
         tweet = generate_card_images._build_tweet(
             meta,
-            by_track.get(track_id) or [],
+            entries,
             chart_date,
             prev_counts.get(track_id),
         )
