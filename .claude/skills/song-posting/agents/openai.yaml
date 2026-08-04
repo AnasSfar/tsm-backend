@@ -1,0 +1,4 @@
+interface:
+  display_name: "TSM Song Posting"
+  short_description: "Rules for TSM song tweet/card captions."
+  default_prompt: "Use the TSM song posting rules."

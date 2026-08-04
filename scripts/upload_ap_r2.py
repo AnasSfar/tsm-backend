@@ -22,6 +22,7 @@ from dotenv import load_dotenv
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "collectors" / "spotify"))
 from core.data_paths import LEGACY_WEBSITE_DATA_DIR, WEB_EXPORT_DATA_DIR, apple_music_daily_csv_paths  # noqa: E402
+import r2_keys  # noqa: E402
 
 DB_DIR = ROOT / "db"
 DATA_ROOT = ROOT / "data"
@@ -37,9 +38,9 @@ GLOBAL_CSV = DB_DIR / "apple_music_global.csv"
 TS_TOP_CSV = DB_DIR / "apple_music_ts_top_songs.csv"
 MUSIC_VIDEO_CSV = DB_DIR / "apple_music_music_video_charts.csv"
 
-R2_PREFIX = "apple-music/history-by-song"
-CSV_R2_PREFIX = "apple-music/db"
-SNAPSHOT_R2_PREFIX = "apple-music/snapshots"
+R2_PREFIX = r2_keys.APPLE_MUSIC_HISTORY_BY_SONG_PREFIX
+CSV_R2_PREFIX = r2_keys.APPLE_MUSIC_DB_PREFIX
+SNAPSHOT_R2_PREFIX = r2_keys.APPLE_MUSIC_SNAPSHOTS_PREFIX
 NO_CACHE_CONTROL = "no-cache, no-store, must-revalidate"
 
 APPLE_MUSIC_CSV_NAMES = [

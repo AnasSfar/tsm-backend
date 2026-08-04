@@ -776,6 +776,70 @@ def _post_daily_recap_card(ctx: FinalizeContext, state: dict[str, float]) -> Non
     print("Daily recap card done.")
 
 
+def _post_weekend_song_gainers(ctx: FinalizeContext, state: dict[str, float]) -> None:
+    if ctx.debug_daily_mode:
+        print("[DEBUG-DAILY] Skip: weekend song gainers.")
+        return
+    if not _is_weekend_stats_date(ctx.summary["stats_date"]):
+        print("Weekend song gainers skipped: stats date is not Saturday or Sunday.")
+        return
+    if not _streams_post_ready(ctx):
+        print("Weekend song gainers skipped: blocking tracks are still pending.")
+        return
+
+    post_script = ctx.script_dir / "tools" / "scripts" / "post_weekend_song_gainers.py"
+    cmd = [
+        sys.executable,
+        str(post_script),
+        ctx.summary["stats_date"],
+        "--min-pct",
+        "5",
+        "--post-spacing-seconds",
+        str(ctx.post_spacing_seconds),
+    ]
+    if ctx.no_post_mode:
+        cmd.append("--no-post")
+
+    print("Posting weekend +5% song gainers...")
+    _run(
+        ctx,
+        cmd,
+        label="weekend song gainers",
+        should_post=not ctx.no_post_mode,
+        state=state,
+    )
+    print("Weekend song gainers done.")
+
+
+def _post_song_overtakes(ctx: FinalizeContext, state: dict[str, float]) -> None:
+    if ctx.debug_daily_mode:
+        print("[DEBUG-DAILY] Skip: song overtakes.")
+        return
+    if not _streams_post_ready(ctx):
+        print("Song overtakes skipped: blocking tracks are still pending.")
+        return
+
+    post_script = ctx.script_dir / "tools" / "scripts" / "post_song_overtakes.py"
+    cmd = [
+        sys.executable,
+        str(post_script),
+        ctx.summary["stats_date"],
+        "--post-spacing-seconds",
+        str(ctx.post_spacing_seconds),
+    ]
+    if ctx.no_post_mode:
+        cmd.append("--no-post")
+
+    print("Posting non-extra song overtakes...")
+    _run(
+        ctx,
+        cmd,
+        label="song overtakes",
+        should_post=not ctx.no_post_mode,
+        state=state,
+    )
+    print("Song overtakes done.")
+
 def _streams_post_ready(ctx: FinalizeContext) -> bool:
     """Only allow stream posts after the full target collection is complete."""
     if ctx.summary.get("all_done"):
@@ -1306,6 +1370,8 @@ POST_ONLY_STEPS = {
     "top20": _post_streams_image,
     "top45": _post_streams_image,
     "recap": _post_daily_recap_card,
+    "weekend-gainers": _post_weekend_song_gainers,
+    "overtakes": _post_song_overtakes,
     "best-day-since": _post_best_day_since,
     "debut": _post_debut_releases,
     "gainers": _post_spotlight_gainers,
@@ -1384,6 +1450,10 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
             _guarded_post_step("best-day-since posts", lambda: _post_best_day_since(ctx, post_state))
 
         _guarded_post_step("daily recap card", lambda: _post_daily_recap_card(ctx, post_state))
+
+        _guarded_post_step("weekend song gainers", lambda: _post_weekend_song_gainers(ctx, post_state))
+
+        _guarded_post_step("song overtakes", lambda: _post_song_overtakes(ctx, post_state))
 
         _guarded_post_step("top eras post", lambda: _post_albums_daily(ctx, post_state))
 

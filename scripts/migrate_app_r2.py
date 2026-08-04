@@ -11,6 +11,8 @@ import boto3
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 
+import r2_keys
+
 load_dotenv()
 
 APP_KEYS = (
@@ -28,7 +30,11 @@ APP_KEYS = (
     "track1-ranking-leaderboard-snapshot.json",
     "track1-ranking-next-poll.json",
 )
-APP_PREFIXES = ("hiring/", "report-", "report-img-")
+APP_PREFIXES = (
+    f"{r2_keys.HIRING_PREFIX}/",
+    r2_keys.REPORT_PREFIX,
+    r2_keys.REPORT_IMG_PREFIX,
+)
 COPY_FIELDS = (
     "CacheControl",
     "ContentDisposition",

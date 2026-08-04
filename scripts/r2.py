@@ -39,6 +39,7 @@ from core.data_paths import (  # noqa: E402
     legacy_spotify_chart_dir,
     spotify_chart_dir,
 )
+import r2_keys  # noqa: E402
 
 HISTORY_DIR = WEB_EXPORT_HISTORY_DIR if WEB_EXPORT_HISTORY_DIR.exists() else LEGACY_WEBSITE_HISTORY_DIR
 SITE_DATA_DIR = WEB_EXPORT_DATA_DIR if WEB_EXPORT_DATA_DIR.exists() else LEGACY_WEBSITE_DATA_DIR
@@ -75,6 +76,8 @@ R2_REQUIRED_ENV_VARS = (
 )
 
 MAX_WORKERS = 32
+PROGRESS_INTERVAL_SECONDS = 5.0
+PROGRESS_EVERY = 100
 
 
 def wait_for_sections(
@@ -132,9 +135,51 @@ def get_s3_client():
         config=botocore.config.Config(
             connect_timeout=10,
             read_timeout=30,
+            max_pool_connections=max(MAX_WORKERS * 4, 64),
             retries={"max_attempts": 3, "mode": "standard"},
         ),
     )
+
+
+def _elapsed_seconds(started_at: float) -> str:
+    return f"{time.monotonic() - started_at:.1f}s"
+
+
+def _count_upload_results(
+    section: str,
+    futures: list[concurrent.futures.Future],
+) -> tuple[int, int]:
+    total = len(futures)
+    if not total:
+        print(f"[r2:{section}] no files to check")
+        return 0, 0
+
+    started_at = time.monotonic()
+    last_progress_at = started_at
+    uploaded = 0
+    unchanged = 0
+
+    print(f"[r2:{section}] checking {total} object(s)...")
+    for done, future in enumerate(concurrent.futures.as_completed(futures), 1):
+        if future.result():
+            uploaded += 1
+        else:
+            unchanged += 1
+
+        now = time.monotonic()
+        if (
+            done == total
+            or done % PROGRESS_EVERY == 0
+            or now - last_progress_at >= PROGRESS_INTERVAL_SECONDS
+        ):
+            print(
+                f"[r2:{section}] {done}/{total} done "
+                f"({uploaded} changed, {unchanged} unchanged, {_elapsed_seconds(started_at)})",
+                flush=True,
+            )
+            last_progress_at = now
+
+    return uploaded, unchanged
 
 
 def load_json(path: Path) -> Any:
@@ -334,13 +379,13 @@ def upload_bytes_if_changed(
     cache_control: str | None = None,
     retries: int = 3,
 ) -> bool:
+    if dry_run:
+        return True
+
     body_hash = hashlib.sha256(data).hexdigest()
 
     if object_has_same_hash(client, bucket, key, body_hash):
         return False
-
-    if dry_run:
-        return True
 
     for attempt in range(1, retries + 1):
         try:
@@ -419,18 +464,12 @@ def upload_db_files(
     """Upload all files under db/ to R2 while preserving relative paths."""
     db_files = sorted(p for p in DB_DIR.rglob("*") if p.is_file())
 
-    uploaded = 0
-    unchanged = 0
     with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = [
             executor.submit(_upload_db_file, client, bucket, path, db_prefix, dry_run)
             for path in db_files
         ]
-        for future in concurrent.futures.as_completed(futures):
-            if future.result():
-                uploaded += 1
-            else:
-                unchanged += 1
+        uploaded, unchanged = _count_upload_results("db", futures)
 
     # Always persist the archive streams_history.csv under a fixed R2 key so
     # the GitHub Actions runner can download it before each run.
@@ -479,18 +518,12 @@ def upload_apple_music_images(
     if not image_files:
         return 0, 0
 
-    uploaded = 0
-    unchanged = 0
     with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = [
             executor.submit(_upload_image_file, client, bucket, path, images_prefix, dry_run)
             for path in image_files
         ]
-        for future in concurrent.futures.as_completed(futures):
-            if future.result():
-                uploaded += 1
-            else:
-                unchanged += 1
+        uploaded, unchanged = _count_upload_results("images", futures)
 
     print(f"  images     : {uploaded} uploaded, {unchanged} unchanged ({len(image_files)} total)")
     return uploaded, unchanged
@@ -569,23 +602,20 @@ def upload_static_data(
     after a single chart is regenerated.
     """
     tasks: list[tuple[str, bytes, str]] = []  # (key, data, content_type)
+    prepare_started_at = time.monotonic()
+    print("[r2:static] preparing upload list...", flush=True)
 
     if slugs is not None:
         for slug in slugs:
             tasks.extend(_collect_slug_tasks(slug, data_prefix))
 
-        uploaded = 0
-        unchanged = 0
+        print(f"[r2:static] prepared {len(tasks)} object(s) in {_elapsed_seconds(prepare_started_at)}")
         with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
             futures = [
                 executor.submit(_upload_static_item, client, bucket, key, data, content_type, dry_run)
                 for key, data, content_type in tasks
             ]
-            for future in concurrent.futures.as_completed(futures):
-                if future.result():
-                    uploaded += 1
-                else:
-                    unchanged += 1
+            uploaded, unchanged = _count_upload_results("static", futures)
         print(f"  static     : {uploaded} uploaded, {unchanged} unchanged (slugs: {', '.join(slugs)})")
         return uploaded, unchanged
 
@@ -746,18 +776,13 @@ def upload_static_data(
     elif not charts_only:
         print("[SKIP] absent: music video chart snapshots")
 
-    uploaded = 0
-    unchanged = 0
+    print(f"[r2:static] prepared {len(tasks)} object(s) in {_elapsed_seconds(prepare_started_at)}")
     with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = [
             executor.submit(_upload_static_item, client, bucket, key, data, content_type, dry_run)
             for key, data, content_type in tasks
         ]
-        for future in concurrent.futures.as_completed(futures):
-            if future.result():
-                uploaded += 1
-            else:
-                unchanged += 1
+        uploaded, unchanged = _count_upload_results("static", futures)
 
     print(f"  static     : {uploaded} uploaded, {unchanged} unchanged")
     return uploaded, unchanged
@@ -766,10 +791,10 @@ def upload_static_data(
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Upload Spotify history, static data, and db files to R2.")
     parser.add_argument("--bucket", default=os.getenv("R2_BUCKET", "taylor-data"))
-    parser.add_argument("--track-prefix", default=os.getenv("SPOTIFY_R2_TRACK_PREFIX", "history-by-track"))
-    parser.add_argument("--data-prefix", default=os.getenv("R2_STATIC_DATA_PREFIX", "data"))
-    parser.add_argument("--history-prefix", default=os.getenv("R2_STATIC_HISTORY_PREFIX", "history"))
-    parser.add_argument("--db-prefix", default=os.getenv("R2_DB_PREFIX", "db"))
+    parser.add_argument("--track-prefix", default=r2_keys.TRACK_HISTORY_PREFIX)
+    parser.add_argument("--data-prefix", default=r2_keys.STATIC_DATA_PREFIX)
+    parser.add_argument("--history-prefix", default=r2_keys.STATIC_HISTORY_PREFIX)
+    parser.add_argument("--db-prefix", default=r2_keys.DB_PREFIX)
     parser.add_argument("--new-date", default=None, help="Only upload this date's history file (YYYY-MM-DD) instead of all history files.")
     parser.add_argument("--slugs", default=None, help="Comma-separated chart slugs to upload (e.g. swift_top_albums,swift_top_eras). Skips all other sections.")
     parser.add_argument("--skip-history-upload", action="store_true")
@@ -832,18 +857,12 @@ def _run_history_upload(client, bucket, track_prefix, daily_files, dry_run) -> t
             dry_run=dry_run,
         )
 
-    uploaded = 0
-    unchanged = 0
     with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = [
             executor.submit(_upload_track, track_id, points)
             for track_id, points in by_track.items()
         ]
-        for future in concurrent.futures.as_completed(futures):
-            if future.result():
-                uploaded += 1
-            else:
-                unchanged += 1
+        uploaded, unchanged = _count_upload_results("history", futures)
 
     print(f"  history    : {uploaded} uploaded, {unchanged} unchanged ({len(by_track)} tracks)")
     return uploaded, unchanged
@@ -878,6 +897,14 @@ def main() -> int:
         print("[INFO] Set UPLOAD_TO_R2=1 to enforce upload and fail fast on missing credentials.")
         return 0
 
+    slugs = [s.strip() for s in args.slugs.split(",") if s.strip()] if args.slugs else None
+    # --slugs implies skipping everything except static (chart files only).
+    # Apply this before any section is scheduled.
+    if slugs:
+        args.skip_history_upload = True
+        args.skip_db_upload = True
+        args.skip_images_upload = True
+
     client = get_s3_client()
     bucket = args.bucket
 
@@ -900,12 +927,6 @@ def main() -> int:
             section_futures["history"] = executor.submit(
                 _run_history_upload, client, bucket, args.track_prefix, daily_files, args.dry_run
             )
-        slugs = [s.strip() for s in args.slugs.split(",") if s.strip()] if args.slugs else None
-        # --slugs implies skipping everything except static (chart files only)
-        if slugs:
-            args.skip_history_upload = True
-            args.skip_db_upload = True
-            args.skip_images_upload = True
         if not args.skip_static_upload:
             section_futures["static"] = executor.submit(
                 upload_static_data,
@@ -933,7 +954,7 @@ def main() -> int:
                 upload_apple_music_images,
                 client=client,
                 bucket=bucket,
-                images_prefix=os.getenv("R2_IMAGES_PREFIX", "images/apple-music"),
+                images_prefix=r2_keys.IMAGES_APPLE_MUSIC_PREFIX,
                 dry_run=args.dry_run,
             )
         section_results = wait_for_sections(section_futures)
@@ -988,7 +1009,7 @@ def upload_slugs(
         return False
 
     _bucket = bucket or os.getenv("R2_BUCKET", "taylor-data")
-    _data_prefix = data_prefix or os.getenv("R2_STATIC_DATA_PREFIX", "data")
+    _data_prefix = data_prefix or r2_keys.STATIC_DATA_PREFIX
     client = get_s3_client()
     upload_static_data(
         client=client,
@@ -1019,8 +1040,8 @@ def upload_youtube(
         return False
 
     _bucket = bucket or os.getenv("R2_BUCKET", "taylor-data")
-    _data_prefix = data_prefix or os.getenv("R2_STATIC_DATA_PREFIX", "data")
-    _db_prefix = db_prefix or os.getenv("R2_DB_PREFIX", "db")
+    _data_prefix = data_prefix or r2_keys.STATIC_DATA_PREFIX
+    _db_prefix = db_prefix or r2_keys.DB_PREFIX
     client = get_s3_client()
     mappings = [
         (DB_DIR / "youtube_views_history.csv", [
@@ -1082,11 +1103,11 @@ def upload_all(
         return False
 
     _bucket = bucket or os.getenv("R2_BUCKET", "taylor-data")
-    _data_prefix = data_prefix or os.getenv("R2_STATIC_DATA_PREFIX", "data")
-    _history_prefix = history_prefix or os.getenv("R2_STATIC_HISTORY_PREFIX", "history")
-    _db_prefix = db_prefix or os.getenv("R2_DB_PREFIX", "db")
-    _track_prefix = os.getenv("SPOTIFY_R2_TRACK_PREFIX", "history-by-track")
-    _images_prefix = os.getenv("R2_IMAGES_PREFIX", "images/apple-music")
+    _data_prefix = data_prefix or r2_keys.STATIC_DATA_PREFIX
+    _history_prefix = history_prefix or r2_keys.STATIC_HISTORY_PREFIX
+    _db_prefix = db_prefix or r2_keys.DB_PREFIX
+    _track_prefix = r2_keys.TRACK_HISTORY_PREFIX
+    _images_prefix = r2_keys.IMAGES_APPLE_MUSIC_PREFIX
     client = get_s3_client()
 
     section_futures: dict[str, concurrent.futures.Future] = {}

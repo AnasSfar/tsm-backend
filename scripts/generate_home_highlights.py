@@ -52,13 +52,15 @@ from core.data_paths import (  # noqa: E402
 sys.path.insert(0, str(ROOT / "collectors" / "spotify" / "streams"))
 import best_day_since  # noqa: E402
 
+import r2_keys  # noqa: E402
+
 load_dotenv(str(ROOT / ".env"), override=True)
 
 SITE_DATA_DIR = WEB_EXPORT_DATA_DIR if WEB_EXPORT_DATA_DIR.exists() else LEGACY_WEBSITE_DATA_DIR
 HISTORY_DIR = WEB_EXPORT_HISTORY_DIR if WEB_EXPORT_HISTORY_DIR.exists() else LEGACY_WEBSITE_HISTORY_DIR
 
-CACHE_KEY_HIGHLIGHTS = "cache/home_highlights.json"
-CACHE_KEY_VERSION = "cache/version.json"
+CACHE_KEY_HIGHLIGHTS = r2_keys.CACHE_HOME_HIGHLIGHTS_KEY
+CACHE_KEY_VERSION = r2_keys.CACHE_VERSION_KEY
 
 # Round-number cumulative totals worth calling out when a song crosses one
 # between yesterday and today (a "milestone" highlight). Kept in sync with

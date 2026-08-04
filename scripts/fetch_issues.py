@@ -21,6 +21,8 @@ from urllib.parse import urlsplit
 import boto3
 from dotenv import load_dotenv
 
+import r2_keys
+
 load_dotenv()
 
 
@@ -76,7 +78,7 @@ def main() -> None:
     bucket = get_app_bucket_name()
 
     paginator = client.get_paginator("list_objects_v2")
-    pages = paginator.paginate(Bucket=bucket, Prefix="report-")
+    pages = paginator.paginate(Bucket=bucket, Prefix=r2_keys.REPORT_PREFIX)
     keys = [
         obj["Key"]
         for page in pages

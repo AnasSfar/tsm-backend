@@ -11,6 +11,7 @@ Read `CONTEXTE.md` before changing or running anything under
 Also use:
 
 - `data-rules` before any streams/history/export/posting change.
+- `song-posting` before any song-level tweet/card caption change.
 - `pipeline-ops` for scheduled run operations and recovery.
 - `image-gen` before changing generated stream/card images.
 

@@ -17,6 +17,8 @@ from datetime import datetime
 import boto3
 from dotenv import load_dotenv
 
+import r2_keys
+
 load_dotenv()
 
 R2_ACCOUNT_ID = os.environ.get("R2_APP_ACCOUNT_ID") or os.environ["R2_ACCOUNT_ID"]
@@ -24,7 +26,7 @@ R2_ACCESS_KEY_ID = os.environ["R2_APP_ACCESS_KEY_ID"]
 R2_SECRET_ACCESS_KEY = os.environ["R2_APP_SECRET_ACCESS_KEY"]
 R2_BUCKET = os.environ["R2_APP_BUCKET"]
 
-HIRING_PREFIX = "hiring/"
+HIRING_PREFIX = f"{r2_keys.HIRING_PREFIX}/"
 
 
 def get_client():

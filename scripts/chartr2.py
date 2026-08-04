@@ -21,11 +21,15 @@ load_dotenv()
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "collectors" / "spotify"))
 from core.data_paths import LEGACY_WEBSITE_DATA_DIR, WEB_EXPORT_DATA_DIR, first_existing  # noqa: E402
+import r2_keys  # noqa: E402
 
 # ===== CONFIG =====
 CSV_PATH = ROOT / "db" / "charts_history_global.csv"
 
-R2_PREFIX = "chart-history-global-by-track"
+# NOTE: named differently from r2_keys.TRACK_HISTORY_PREFIX ("history-by-track")
+# for a conceptually similar "per-track history points" idea -- known,
+# unfixed, live-prod naming inconsistency. See r2_keys.py docstring.
+R2_PREFIX = r2_keys.CHART_HISTORY_GLOBAL_BY_TRACK_PREFIX
 
 WEBSITE_SONGS_PATH = first_existing(WEB_EXPORT_DATA_DIR / "songs.json", LEGACY_WEBSITE_DATA_DIR / "songs.json")
 DISCO_SONGS_PATH = ROOT / "db" / "discography" / "songs.json"

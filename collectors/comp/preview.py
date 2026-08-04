@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 """
-Generate preview images for song_card.py, chart_card.py and tables_image.py, covering every
-visual case with real stream data:
+Generate preview galleries for Spotify collectors.
+
+Default mode builds collectors/comp/previews/spotify/{streams,charts}/<tool>/
+with copied PNGs, HTML inspection pages, command/stdout logs, and tweet.txt.
+
+Legacy component previews for song_card.py, chart_card.py and tables_image.py
+are still available with --components.
 
   song_card:
     - default_not_best_short / default_not_best_long
@@ -568,7 +573,7 @@ def _write_chart_card_case(
         layout=layout,
     )
     output_dir.mkdir(parents=True, exist_ok=True)
-    slug = slugify(title)
+    slug = (slugify(title)[:80].rstrip("_") or "chart")
     out_path = output_dir / f"chart_card_{case_slug}_{layout}_{chart_date}_{slug}.png"
     html_path = output_dir / f"chart_card_{case_slug}_{layout}_{chart_date}_{slug}.html"
     print(f"[preview] Writing HTML: {html_path}", flush=True)
@@ -817,7 +822,7 @@ def _clear_previous_previews(output_dir: Path) -> None:
         print(f"[preview] Deleted {removed} previous preview file(s).", flush=True)
 
 
-def main() -> None:
+def _component_main() -> None:
     parser = argparse.ArgumentParser(description="Generate previews for song_card.py, chart_card.py and tables_image.py.")
     parser.add_argument("--date", help="Stats date YYYY-MM-DD. Defaults to latest date in streams history.")
     parser.add_argument("--only", choices=["song-card", "chart-card", "tables"], help="Restrict to one family of previews.")
@@ -851,6 +856,488 @@ def main() -> None:
     for path in paths:
         print(f"Generated preview: {path}", flush=True)
 
+
+
+# ---------------------------------------------------------------------------
+# Spotify collector preview gallery
+# ---------------------------------------------------------------------------
+
+def _slug_text(value: str) -> str:
+    value = re.sub(r"[^a-z0-9]+", "_", (value or "").lower()).strip("_")
+    return value or "preview"
+
+
+def _latest_charts_date() -> str | None:
+    roots = [REPO_ROOT / "snapshots" / "spotify_charts", REPO_ROOT / "data"]
+    dates: list[str] = []
+    for root in roots:
+        if not root.exists():
+            continue
+        for path in root.rglob("ts_chart_*.json"):
+            match = re.search(r"ts_chart_(\d{4}-\d{2}-\d{2})\.json$", path.name)
+            if match:
+                dates.append(match.group(1))
+    return max(dates) if dates else None
+
+
+def _collector_preview_root(output_dir: Path) -> Path:
+    return output_dir / "spotify"
+
+
+def _clear_collector_previews(output_dir: Path) -> None:
+    root = _collector_preview_root(output_dir)
+    if root.exists():
+        import shutil
+        shutil.rmtree(root)
+    (root / "streams").mkdir(parents=True, exist_ok=True)
+    (root / "charts").mkdir(parents=True, exist_ok=True)
+
+
+
+
+def _history_dates() -> list[str]:
+    history_path = DB_ROOT / "streams_history.csv"
+    if not history_path.exists():
+        return []
+    dates: set[str] = set()
+    with history_path.open(newline="", encoding="utf-8-sig") as f:
+        for row in csv.DictReader(f):
+            raw = (row.get("date") or "").strip()
+            if re.match(r"^\d{4}-\d{2}-\d{2}$", raw):
+                dates.add(raw)
+    return sorted(dates)
+
+
+def _latest_streams_weekday_date() -> str | None:
+    for raw in reversed(_history_dates()):
+        try:
+            if datetime.strptime(raw, "%Y-%m-%d").weekday() < 5:
+                return raw
+        except ValueError:
+            continue
+    return None
+
+
+def _chart_image_path(chart_date: str, region: str) -> Path:
+    return REPO_ROOT / "snapshots" / "spotify_charts" / chart_date[:4] / chart_date[5:7] / chart_date / region / "chart_image.png"
+
+
+def _latest_existing_chart_image(region: str) -> Path | None:
+    root = REPO_ROOT / "snapshots" / "spotify_charts"
+    if not root.exists():
+        return None
+    candidates = [
+        path for path in root.rglob("chart_image.png")
+        if path.parent.name.lower() == region.lower()
+    ]
+    return max(candidates, key=lambda p: p.stat().st_mtime_ns) if candidates else None
+
+
+def _worldwide_cards_dirs(chart_date: str) -> list[Path]:
+    return [
+        REPO_ROOT / "snapshots" / "spotify_charts" / chart_date[:4] / chart_date[5:7] / chart_date / "worldwide" / "cards",
+        REPO_ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "history" / chart_date[:4] / chart_date[5:7] / chart_date / "cards",
+        REPO_ROOT / "data" / chart_date[:4] / chart_date[5:7] / chart_date / "run_all_charts" / "spotify" / "worldwide" / "cards",
+    ]
+
+
+def _latest_worldwide_cards_dir(pattern: str = "*.png") -> Path | None:
+    roots = [
+        REPO_ROOT / "snapshots" / "spotify_charts",
+        REPO_ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "history",
+        REPO_ROOT / "data",
+    ]
+    candidates: list[Path] = []
+    for root in roots:
+        if not root.exists():
+            continue
+        for path in root.rglob("cards"):
+            if path.is_dir() and any(path.glob(pattern)):
+                candidates.append(path)
+    return max(candidates, key=lambda p: p.stat().st_mtime_ns) if candidates else None
+
+
+def _worldwide_cards_globs(chart_date: str) -> list[str]:
+    globs = [str(path / "*.png") for path in _worldwide_cards_dirs(chart_date)]
+    latest_cards = _latest_worldwide_cards_dir("*.png")
+    if latest_cards:
+        globs.append(str(latest_cards / "*.png"))
+    latest_regional_cards = _latest_worldwide_cards_dir("*_chart_card.png")
+    if latest_regional_cards:
+        globs.append(str(latest_regional_cards / "*_chart_card.png"))
+    return globs
+def _find_chart_json(chart_date: str, region: str) -> Path | None:
+    candidates = [
+        REPO_ROOT / "snapshots" / "spotify_charts" / chart_date[:4] / chart_date[5:7] / chart_date / region / f"ts_chart_{chart_date}.json",
+        REPO_ROOT / "data" / chart_date[:4] / chart_date[5:7] / chart_date / "run_all_charts" / "spotify" / region / f"ts_chart_{chart_date}.json",
+    ]
+    for path in candidates:
+        if path.exists():
+            return path
+    return None
+
+
+def _chart_tweet_hint(chart_date: str | None, region: str, region_label: str) -> str:
+    if not chart_date:
+        return ""
+    json_path = _find_chart_json(chart_date, region)
+    if not json_path:
+        return f"Taylor Swift on Spotify {region_label} Charts on {chart_date}."
+    try:
+        import json
+        rows = json.loads(json_path.read_text(encoding="utf-8-sig"))
+    except Exception:
+        rows = []
+    try:
+        date_label = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    except Exception:
+        date_label = chart_date
+    lines = [f"Taylor Swift on Spotify {region_label} Charts on {date_label}:"]
+    for row in rows[:10] if isinstance(rows, list) else []:
+        title = row.get("song_name") or row.get("track_name") or row.get("title") or "Unknown"
+        rank = row.get("rank") or "-"
+        streams = row.get("streams")
+        streams_text = f" | {int(streams):,}" if str(streams or "").strip().isdigit() else ""
+        lines.append(f"- #{rank} {title}{streams_text}")
+    return "\n".join(lines)
+def _preview_specs(streams_date: str, charts_date: str | None) -> list[dict]:
+    py = sys.executable
+    s = SPOTIFY_STREAMS_SCRIPTS_DIR
+    chart_global = COLLECTORS_ROOT / "spotify" / "charts" / "global" / "tools" / "script" / "generate_chart_image.py"
+    chart_us = COLLECTORS_ROOT / "spotify" / "charts" / "us" / "tools" / "scripts" / "generate_chart_image.py"
+    chart_uk = COLLECTORS_ROOT / "spotify" / "charts" / "uk" / "tools" / "scripts" / "generate_chart_image.py"
+    chart_worldwide = COLLECTORS_ROOT / "spotify" / "charts" / "worldwide" / "tools" / "scripts" / "generate_card_images.py"
+    specs = [
+        {"kind": "streams", "name": "post_streams_twitter", "cmd": [py, str(s / "post_streams_twitter.py"), streams_date, "--no-post", "--top-n", "20"]},
+        {"kind": "streams", "name": "post_weekend_streams_twitter", "cmd": [py, str(s / "post_weekend_streams_twitter.py"), streams_date, "--no-post", "--force-weekday"]},
+        {"kind": "streams", "name": "post_albums_twitter", "cmd": [py, str(s / "post_albums_twitter.py"), streams_date, "--no-post"], "fallback_cmds": ([[py, str(s / "post_albums_twitter.py"), _latest_streams_weekday_date(), "--no-post"]] if _latest_streams_weekday_date() and _latest_streams_weekday_date() != streams_date else [])},
+        {"kind": "streams", "name": "post_best_day_since_twitter", "cmd": [py, str(s / "post_best_day_since_twitter.py"), streams_date, "--no-post", "--limit", "1", "--min-days", "1"]},
+        {"kind": "streams", "name": "post_gainer_thread_daily", "cmd": [py, str(s / "post_gainer_thread.py"), streams_date, "--period", "daily", "--limit", "1", "--no-post"]},
+        {"kind": "streams", "name": "post_gainer_thread_weekly", "cmd": [py, str(s / "post_gainer_thread.py"), streams_date, "--period", "weekly", "--limit", "1", "--no-post"]},
+        {"kind": "streams", "name": "post_stream_highlights_thread", "cmd": [py, str(s / "post_stream_highlights_thread.py"), streams_date, "--limit", "5", "--best-limit", "3", "--min-days", "1", "--no-post"]},
+        {"kind": "streams", "name": "post_weekend_song_gainers", "cmd": [py, str(s / "post_weekend_song_gainers.py"), streams_date, "--min-pct", "5", "--no-post"]},
+        {"kind": "streams", "name": "post_song_overtakes", "cmd": [py, str(s / "post_song_overtakes.py"), streams_date, "--no-post", "--limit", "1"]},
+        {"kind": "streams", "name": "generate_album_update_image_ttpd", "cmd": [py, str(s / "generate_album_update_image.py"), "THE TORTURED POETS DEPARTMENT", streams_date], "tweet_hint": "Album update preview generated only. Real tweet text is built inside generate_album_update_image.post()."},
+    ]
+    if charts_date:
+        specs.extend([
+            {"kind": "charts", "name": "global_generate_chart_image", "cmd": [py, str(chart_global), charts_date], "tweet_hint": _chart_tweet_hint(charts_date, "global", "Global"), "output_globs": [str(_chart_image_path(charts_date, "global"))]},
+            {"kind": "charts", "name": "us_generate_chart_image", "cmd": [py, str(chart_us), charts_date], "tweet_hint": _chart_tweet_hint(charts_date, "us", "US"), "output_globs": [str(_chart_image_path(charts_date, "us")), *([str(_latest_existing_chart_image("us"))] if _latest_existing_chart_image("us") else [])]},
+            {"kind": "charts", "name": "uk_generate_chart_image", "cmd": [py, str(chart_uk), charts_date], "tweet_hint": _chart_tweet_hint(charts_date, "uk", "UK"), "output_globs": [str(_chart_image_path(charts_date, "uk")), *([str(_latest_existing_chart_image("uk"))] if _latest_existing_chart_image("uk") else [])]},
+            {"kind": "charts", "name": "worldwide_generate_card_images", "cmd": [py, str(chart_worldwide), charts_date, "--force", "--min-countries", "1"], "output_globs": _worldwide_cards_globs(charts_date)},
+        ])
+        if not _chart_image_path(charts_date, "uk").exists() and _latest_existing_chart_image("uk") is None:
+            specs = [spec for spec in specs if spec.get("name") != "uk_generate_chart_image"]
+    return specs
+
+
+def _extract_png_paths(stdout: str) -> list[Path]:
+    found: list[Path] = []
+    for pattern in (r"[A-Za-z]:\\[^\r\n,]+?\.png", r"/[A-Za-z0-9_./\\ -]+?\.png"):
+        for match in re.finditer(pattern, stdout):
+            raw = match.group(0).strip().strip('"').strip("'")
+            path = Path(raw)
+            if path.exists() and path.is_file() and path not in found:
+                found.append(path)
+    return found
+
+
+
+def _paths_from_output_globs(spec: dict) -> list[Path]:
+    import glob
+    found: list[Path] = []
+    for pattern in spec.get("output_globs") or []:
+        if not pattern:
+            continue
+        for raw in glob.glob(str(pattern)):
+            path = Path(raw)
+            if path.exists() and path.is_file() and path.suffix.lower() == ".png" and path not in found:
+                found.append(path)
+    return found
+def _extract_tweets(stdout: str) -> list[str]:
+    tweets: list[str] = []
+    markers = ["Tweet", "Recap tweet", "Combined gainers table", "Post"]
+    lines = stdout.splitlines()
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        if not any(marker in line for marker in markers) or ":" not in line:
+            i += 1
+            continue
+        after = line.split(":", 1)[1].strip()
+        block: list[str] = []
+        if after:
+            block.append(after)
+        i += 1
+        while i < len(lines):
+            nxt = lines[i]
+            if "Image:" in nxt or "Images:" in nxt or "Twitter post skipped" in nxt or "OK image" in nxt:
+                break
+            if re.match(r"^\[[^\]]+\] [A-Z][A-Za-z_ -]+:", nxt) and block:
+                break
+            block.append(nxt)
+            i += 1
+        tweet = "\n".join(block).strip()
+        if tweet and tweet not in tweets:
+            tweets.append(tweet)
+    return tweets
+
+
+def _write_preview_html(*, html_path: Path, png_name: str | None, tweet_text: str, spec_name: str, command: list[str], returncode: int) -> None:
+    image_html = f'<img src="{html.escape(png_name or "")}" alt="preview" />' if png_name else '<div class="missing">No PNG generated for this date.</div>'
+    html_path.write_text(f"""<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>{html.escape(spec_name)} preview</title>
+<style>
+body{{font-family:Inter,Arial,sans-serif;margin:24px;background:#f6f8fa;color:#101828}}
+img{{max-width:100%;height:auto;display:block;border:1px solid #d0d5dd;background:white}}
+pre{{white-space:pre-wrap;background:white;border:1px solid #d0d5dd;padding:16px;border-radius:6px}}
+.meta{{color:#667085;font-size:13px;margin:12px 0}}
+.missing{{padding:24px;background:white;border:1px solid #d0d5dd;border-radius:6px}}
+</style></head><body>
+<h1>{html.escape(spec_name)}</h1>
+<div class="meta">exit {returncode} - {' '.join(html.escape(part) for part in command)}</div>
+{image_html}
+<h2>Tweet text</h2>
+<pre>{html.escape(tweet_text or 'No tweet text captured.')}</pre>
+</body></html>""", encoding="utf-8")
+
+
+def _copy_collector_outputs(spec: dict, stdout: str, stderr: str, returncode: int, output_dir: Path) -> list[Path]:
+    import shutil
+    dest = _collector_preview_root(output_dir) / spec["kind"] / spec["name"]
+    dest.mkdir(parents=True, exist_ok=True)
+    command = [str(part) for part in spec["cmd"]]
+    (dest / "command.txt").write_text(" ".join(command), encoding="utf-8")
+    (dest / "stdout.txt").write_text(stdout, encoding="utf-8")
+    if stderr.strip():
+        (dest / "stderr.txt").write_text(stderr, encoding="utf-8")
+
+    tweets = _extract_tweets(stdout)
+    if spec.get("tweet_hint") and not tweets:
+        tweets = [str(spec["tweet_hint"])]
+    (dest / "tweet.txt").write_text("\n\n---\n\n".join(tweets), encoding="utf-8")
+
+    copied: list[Path] = []
+    sources = []
+    for source in [*_extract_png_paths(stdout), *_paths_from_output_globs(spec)]:
+        if source not in sources:
+            sources.append(source)
+    for idx, source in enumerate(sources, 1):
+        target = dest / f"{idx:02d}_{_slug_text(source.stem)}.png"
+        try:
+            shutil.copy2(source, target)
+        except Exception as exc:
+            print(f"[preview] Could not copy {source}: {exc}", flush=True)
+            continue
+        copied.append(target)
+        tweet = tweets[min(idx - 1, len(tweets) - 1)] if tweets else ""
+        _write_preview_html(html_path=dest / f"{idx:02d}_{_slug_text(source.stem)}.html", png_name=target.name, tweet_text=tweet, spec_name=spec["name"], command=command, returncode=returncode)
+    if not copied:
+        _write_preview_html(html_path=dest / "preview.html", png_name=None, tweet_text=tweets[0] if tweets else "", spec_name=spec["name"], command=command, returncode=returncode)
+    return copied
+
+
+def _run_collector_spec(spec: dict, output_dir: Path) -> list[Path]:
+    import os
+    import subprocess
+    env = os.environ.copy()
+    env["PYTHONUTF8"] = "1"
+    env["PYTHONIOENCODING"] = "utf-8"
+    print(f"[preview] Running {spec['kind']}/{spec['name']}...", flush=True)
+    result = subprocess.run([str(part) for part in spec["cmd"]], cwd=str(REPO_ROOT), env=env, capture_output=True, text=True, encoding="utf-8", errors="replace", check=False)
+    if result.returncode != 0:
+        print(f"[preview] {spec['name']} exited {result.returncode}; keeping stdout/stderr preview.", flush=True)
+    copied = _copy_collector_outputs(spec, result.stdout, result.stderr, result.returncode, output_dir)
+    if not copied and spec.get("fallback_cmds"):
+        for fallback_cmd in spec.get("fallback_cmds") or []:
+            print(f"[preview] {spec['name']}: no PNG for primary date, trying latest available data...", flush=True)
+            fallback_spec = {**spec, "cmd": fallback_cmd, "fallback_cmds": []}
+            fallback_result = subprocess.run([str(part) for part in fallback_cmd], cwd=str(REPO_ROOT), env=env, capture_output=True, text=True, encoding="utf-8", errors="replace", check=False)
+            copied = _copy_collector_outputs(fallback_spec, fallback_result.stdout, fallback_result.stderr, fallback_result.returncode, output_dir)
+            if copied:
+                break
+    print(f"[preview] {spec['name']}: {len(copied)} PNG(s) copied.", flush=True)
+    return copied
+
+
+
+def _latest_worldwide_chart_card_paths(limit: int = 6) -> list[Path]:
+    roots = [
+        REPO_ROOT / "snapshots" / "spotify_charts",
+        REPO_ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "history",
+        REPO_ROOT / "data",
+    ]
+    found: list[Path] = []
+    for root in roots:
+        if root.exists():
+            found.extend(path for path in root.rglob("*_chart_card.png") if path.is_file())
+    found = sorted({path.resolve(): path for path in found}.values(), key=lambda p: p.stat().st_mtime_ns, reverse=True)
+    return found[:limit]
+
+
+def _copy_regional_chart_card_cases(folder: Path) -> list[Path]:
+    import shutil
+    folder.mkdir(parents=True, exist_ok=True)
+    copied: list[Path] = []
+    sources = _latest_worldwide_chart_card_paths()
+    tweet = (
+        "Regional Spotify chart-card visual states. These are exact PNGs generated by "
+        "worldwide_generate_card_images when a Taylor Swift song charts in a single region."
+    )
+    (folder / "tweet.txt").write_text(tweet, encoding="utf-8")
+    (folder / "command.txt").write_text("python collectors\\comp\\preview.py --components --only regional-chart-card", encoding="utf-8")
+    for idx, source in enumerate(sources, 1):
+        target = folder / f"{idx:02d}_{_slug_text(source.stem)}.png"
+        shutil.copy2(source, target)
+        copied.append(target)
+        _write_preview_html(
+            html_path=folder / f"{idx:02d}_{_slug_text(source.stem)}.html",
+            png_name=target.name,
+            tweet_text=tweet,
+            spec_name="component_regional_chart_card_cases",
+            command=["component", "regional-chart-card"],
+            returncode=0,
+        )
+    if not copied:
+        _write_preview_html(
+            html_path=folder / "preview.html",
+            png_name=None,
+            tweet_text=tweet,
+            spec_name="component_regional_chart_card_cases",
+            command=["component", "regional-chart-card"],
+            returncode=0,
+        )
+    return copied
+
+def _write_component_tweet_placeholder(folder: Path, label: str) -> None:
+    folder.mkdir(parents=True, exist_ok=True)
+    (folder / "tweet.txt").write_text(
+        f"{label} component visual states. These previews are template/state coverage, not one specific Twitter post.",
+        encoding="utf-8",
+    )
+
+
+def _run_component_previews_for_collectors(output_dir: Path, streams_date: str) -> list[Path]:
+    paths: list[Path] = []
+    streams_root = _collector_preview_root(output_dir) / "streams"
+    charts_root = _collector_preview_root(output_dir) / "charts"
+
+    song_dir = streams_root / "component_song_card_cases"
+    try:
+        song_paths = _song_card_gallery(song_dir, True, streams_date)
+        paths.extend(song_paths)
+        _write_component_tweet_placeholder(song_dir, "song_card")
+        (song_dir / "command.txt").write_text("python collectors\\comp\\preview.py --components --only song-card", encoding="utf-8")
+    except Exception as exc:
+        song_dir.mkdir(parents=True, exist_ok=True)
+        (song_dir / "stderr.txt").write_text(str(exc), encoding="utf-8")
+        _write_preview_html(html_path=song_dir / "preview.html", png_name=None, tweet_text="", spec_name="component_song_card_cases", command=["component", "song-card"], returncode=1)
+        print(f"[preview] component_song_card_cases failed: {exc}", flush=True)
+
+    tables_dir = streams_root / "component_tables_image_cases"
+    try:
+        streams_path = _streams_table_preview(tables_dir, streams_date, 10, True)
+        recap_path = _recap_table_preview(tables_dir, streams_date, True, 1)
+        for item in (streams_path, recap_path):
+            if item:
+                paths.append(item)
+        _write_component_tweet_placeholder(tables_dir, "tables_image")
+        (tables_dir / "command.txt").write_text("python collectors\\comp\\preview.py --components --only tables", encoding="utf-8")
+    except Exception as exc:
+        tables_dir.mkdir(parents=True, exist_ok=True)
+        (tables_dir / "stderr.txt").write_text(str(exc), encoding="utf-8")
+        _write_preview_html(html_path=tables_dir / "preview.html", png_name=None, tweet_text="", spec_name="component_tables_image_cases", command=["component", "tables"], returncode=1)
+        print(f"[preview] component_tables_image_cases failed: {exc}", flush=True)
+
+    chart_dir = charts_root / "component_chart_card_cases"
+    try:
+        chart_paths = _chart_card_preview(chart_dir, streams_date, True)
+        paths.extend(chart_paths)
+        _write_component_tweet_placeholder(chart_dir, "chart_card")
+        (chart_dir / "command.txt").write_text("python collectors\\comp\\preview.py --components --only chart-card", encoding="utf-8")
+    except Exception as exc:
+        chart_dir.mkdir(parents=True, exist_ok=True)
+        (chart_dir / "stderr.txt").write_text(str(exc), encoding="utf-8")
+        _write_preview_html(html_path=chart_dir / "preview.html", png_name=None, tweet_text="", spec_name="component_chart_card_cases", command=["component", "chart-card"], returncode=1)
+        print(f"[preview] component_chart_card_cases failed: {exc}", flush=True)
+
+    regional_chart_dir = charts_root / "component_regional_chart_card_cases"
+    try:
+        paths.extend(_copy_regional_chart_card_cases(regional_chart_dir))
+    except Exception as exc:
+        regional_chart_dir.mkdir(parents=True, exist_ok=True)
+        (regional_chart_dir / "stderr.txt").write_text(str(exc), encoding="utf-8")
+        _write_preview_html(html_path=regional_chart_dir / "preview.html", png_name=None, tweet_text="", spec_name="component_regional_chart_card_cases", command=["component", "regional-chart-card"], returncode=1)
+        print(f"[preview] component_regional_chart_card_cases failed: {exc}", flush=True)
+
+    return paths
+def _collector_main(args: argparse.Namespace) -> None:
+    output_dir = Path(args.output_dir)
+    only_wants_charts = args.only_collector and _slug_text(args.only_collector) == "charts"
+    streams_date = args.date or ("1970-01-01" if args.skip_streams or only_wants_charts else _latest_preview_date())
+    charts_date = args.charts_date or _latest_charts_date()
+    print(f"[preview] Output dir: {output_dir}", flush=True)
+    print(f"[preview] Streams date: {streams_date}", flush=True)
+    print(f"[preview] Charts date: {charts_date or 'none found'}", flush=True)
+    _clear_collector_previews(output_dir)
+
+    specs = _preview_specs(streams_date, charts_date)
+    if args.only_collector:
+        wanted = {_slug_text(item.strip()) for item in args.only_collector.split(",") if item.strip()}
+        specs = [spec for spec in specs if _slug_text(spec["name"]) in wanted or _slug_text(spec["kind"]) in wanted]
+    if args.skip_charts:
+        specs = [spec for spec in specs if spec["kind"] != "charts"]
+    if args.skip_streams:
+        specs = [spec for spec in specs if spec["kind"] != "streams"]
+
+    paths: list[Path] = []
+    for spec in specs:
+        paths.extend(_run_collector_spec(spec, output_dir))
+
+    if not args.no_component_cases and not args.only_collector:
+        paths.extend(_run_component_previews_for_collectors(output_dir, streams_date))
+
+    print(f"[preview] Collector gallery generated {len(paths)} PNG file(s).", flush=True)
+    for path in paths:
+        print(f"Generated preview: {path}", flush=True)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Generate Spotify collector preview galleries.")
+    parser.add_argument("--date", help="Streams stats date YYYY-MM-DD. Defaults to latest streams history date.")
+    parser.add_argument("--charts-date", help="Spotify charts date YYYY-MM-DD. Defaults to latest local chart JSON date.")
+    parser.add_argument("--output-dir", default=str(OUTPUT_DIR), help="Directory for generated previews.")
+    parser.add_argument("--components", action="store_true", help="Run the older component preview gallery instead.")
+    parser.add_argument("--skip-streams", action="store_true", help="Skip Spotify Streams collector previews.")
+    parser.add_argument("--skip-charts", action="store_true", help="Skip Spotify Charts collector previews.")
+    parser.add_argument("--only-collector", help="Comma-separated collector/tool names or kind: streams, charts.")
+    parser.add_argument("--no-component-cases", action="store_true", help="Skip nested component state previews.")
+    parser.add_argument("--only", choices=["song-card", "chart-card", "tables"], help=argparse.SUPPRESS)
+    parser.add_argument("--limit", type=int, default=10, help=argparse.SUPPRESS)
+    parser.add_argument("--min-days", type=int, default=1, help=argparse.SUPPRESS)
+    parser.add_argument("--keep-html", action="store_true", default=True, help=argparse.SUPPRESS)
+    parser.add_argument("--no-keep-html", action="store_false", dest="keep_html", help=argparse.SUPPRESS)
+    args = parser.parse_args()
+
+    if args.components:
+        component_args = [sys.argv[0]]
+        skip_next = False
+        for index, part in enumerate(sys.argv[1:]):
+            if skip_next:
+                skip_next = False
+                continue
+            if part == "--components" or part in {"--skip-streams", "--skip-charts"}:
+                continue
+            if part in {"--charts-date", "--only-collector"}:
+                skip_next = True
+                continue
+            if part.startswith("--charts-date=") or part.startswith("--only-collector="):
+                continue
+            component_args.append(part)
+        sys.argv = component_args
+        _component_main()
+        return
+    _collector_main(args)
 
 if __name__ == "__main__":
     main()

@@ -32,6 +32,7 @@ _SCRIPT_DIR = Path(__file__).resolve().parent
 _REPO_ROOT = _SCRIPT_DIR.parent
 sys.path.insert(0, str(_REPO_ROOT / "collectors" / "spotify"))
 from core.data_paths import LEGACY_WEBSITE_DATA_DIR, WEB_EXPORT_DATA_DIR, first_existing  # noqa: E402
+import r2_keys  # noqa: E402
 
 DB_DIR = _REPO_ROOT / "db"
 SITE_DATA_DIR = WEB_EXPORT_DATA_DIR
@@ -260,7 +261,7 @@ def main() -> None:
     print("[STEP] Downloading and uploading images to R2...")
     client = get_s3_client()
     bucket = os.getenv("R2_BUCKET", "taylor-data")
-    images_prefix = os.getenv("R2_IMAGES_PREFIX", "images/apple-music")
+    images_prefix = r2_keys.IMAGES_APPLE_MUSIC_PREFIX
     dry_run = os.getenv("DRY_RUN", "0").strip().lower() in ("1", "true", "yes")
 
     # Store mapping of URL -> R2 URL
