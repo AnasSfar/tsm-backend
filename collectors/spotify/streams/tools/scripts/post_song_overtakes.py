@@ -36,8 +36,8 @@ HANDLE = ACCOUNT_HANDLE
 HEADERS_DIR = ROOT / "tools" / "headers"
 COVERS_PATH = DB_DIR / "discography" / "covers.json"
 DISCOGRAPHY_ROOT = DB_DIR / "discography"
-DEFAULT_LIMIT = 5
-GROUP_RANK_PROXIMITY = 2
+DEFAULT_LIMIT = 8
+GROUP_RANK_PROXIMITY = 5
 
 EXTRA_CSS = """
 .hdr{padding:24px 28px}
