@@ -14,12 +14,36 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
+import boto3
 from dotenv import load_dotenv
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from collectors.spotify.core.notify import send as notify
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import r2_keys  # noqa: E402
+
 load_dotenv()
+
+# Prefixes reported by --breakdown. Sourced from r2_keys.py (backend source
+# of truth) plus a few app-bucket-only prefixes that only the frontend
+# writes (tsm-frontend/api/routes/site_settings.py, admin_upload.py) and so
+# have no backend-side constant to import.
+BREAKDOWN_PREFIXES = (
+    r2_keys.STATIC_HISTORY_PREFIX,
+    r2_keys.TRACK_HISTORY_PREFIX,
+    r2_keys.STATIC_DATA_PREFIX,
+    r2_keys.DB_PREFIX,
+    r2_keys.IMAGES_APPLE_MUSIC_PREFIX,
+    r2_keys.APPLE_MUSIC_HISTORY_BY_SONG_PREFIX,
+    r2_keys.APPLE_MUSIC_DB_PREFIX,
+    r2_keys.APPLE_MUSIC_SNAPSHOTS_PREFIX,
+    r2_keys.CHART_HISTORY_GLOBAL_BY_TRACK_PREFIX,
+    "cache",
+    r2_keys.HIRING_PREFIX,
+    "site-settings-backups",
+    "landing-media",
+)
 
 GRAPHQL_ENDPOINT = "https://api.cloudflare.com/client/v4/graphql"
 GRAPHQL_QUERY = """
@@ -82,6 +106,48 @@ def get_env(name: str) -> str:
     if not value:
         raise RuntimeError(f"Missing environment variable: {name}")
     return value
+
+
+def get_s3_client():
+    account_id = get_env("R2_ACCOUNT_ID")
+    return boto3.client(
+        "s3",
+        endpoint_url=f"https://{account_id}.r2.cloudflarestorage.com",
+        aws_access_key_id=get_env("R2_ACCESS_KEY_ID"),
+        aws_secret_access_key=get_env("R2_SECRET_ACCESS_KEY"),
+        region_name="auto",
+    )
+
+
+def breakdown_by_prefix(client, bucket: str, prefixes: tuple[str, ...]) -> dict[str, tuple[int, int]]:
+    """Return {prefix: (object_count, total_bytes)} via paginated list_objects_v2.
+
+    Visibility only -- Cloudflare's R2 GraphQL analytics groups by bucket,
+    not by key prefix, so this is the only way to see which prefix is
+    driving growth. Not part of the scheduled ntfy alert (see --breakdown).
+    """
+    paginator = client.get_paginator("list_objects_v2")
+    results: dict[str, tuple[int, int]] = {}
+    for prefix in prefixes:
+        count = 0
+        total_bytes = 0
+        for page in paginator.paginate(Bucket=bucket, Prefix=f"{prefix}/"):
+            for obj in page.get("Contents", []):
+                count += 1
+                total_bytes += int(obj.get("Size") or 0)
+        results[prefix] = (count, total_bytes)
+    return results
+
+
+def print_breakdown(bucket: str, breakdown: dict[str, tuple[int, int]]) -> None:
+    rows = sorted(breakdown.items(), key=lambda item: item[1][1], reverse=True)
+    accounted_bytes = sum(size for _, size in breakdown.values())
+    accounted_objects = sum(count for count, _ in breakdown.values())
+    print(f"\n[breakdown] bucket: {bucket}")
+    print(f"{'prefix':<40} {'objects':>10} {'size':>12}")
+    for prefix, (count, size) in rows:
+        print(f"{prefix:<40} {count:>10,} {format_size(size):>12}")
+    print(f"{'--- accounted for ---':<40} {accounted_objects:>10,} {format_size(accounted_bytes):>12}")
 
 
 def parse_size(raw: str) -> int:
@@ -242,11 +308,31 @@ def parse_args() -> argparse.Namespace:
         default=os.getenv("NTFY_TOPIC_R2_STORAGE", "").strip() or "taylormuseum-r2",
         help="ntfy topic for R2 storage alerts.",
     )
+    parser.add_argument(
+        "--breakdown",
+        action="store_true",
+        help=(
+            "Report object count/size per key prefix (via list_objects_v2) instead of "
+            "checking the ntfy threshold alert. Read-only, no deletion. Lists the whole "
+            "bucket -- run manually/weekly, not on the same schedule as the threshold check."
+        ),
+    )
     return parser.parse_args()
+
+
+def run_breakdown() -> int:
+    client = get_s3_client()
+    for bucket in default_bucket_names():
+        breakdown = breakdown_by_prefix(client, bucket, BREAKDOWN_PREFIXES)
+        print_breakdown(bucket, breakdown)
+    return 0
 
 
 def main() -> int:
     args = parse_args()
+    if args.breakdown:
+        return run_breakdown()
+
     account_id = get_env("R2_ACCOUNT_ID")
     token = get_env("CLOUDFLARE_ANALYTICS_API_TOKEN")
     bucket_limits = parse_bucket_limits(args.bucket_limits, args.default_bucket_limit)

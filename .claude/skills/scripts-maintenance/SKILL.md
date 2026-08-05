@@ -35,6 +35,29 @@ Flags utiles pour limiter la portée d'un upload :
 - `--worldwide-snapshot-only` (avec `--new-date`) : uniquement `history/charts_worldwide/YYYY-MM-DD.json`
 - `--skip-{history,static,db,images}-upload` : désactive une section
 
+Tous les préfixes/clés R2 (`history/`, `history-by-track/`, `data/`, `db/`, `images/apple-music/`, `apple-music/*`, `cache/*`, `hiring`, `report-*`...) sont centralisés dans `scripts/r2_keys.py` — importer ces constantes plutôt que redéfinir un `os.getenv("R2_..._PREFIX", "...")` local. Miroir côté frontend (valeurs tenues à la main, pas d'import cross-repo) : `tsm-frontend/api/data/r2_keys.py` — si une valeur change, mettre à jour les deux fichiers dans la même session.
+
+## R2 : données pérennes vs cache
+
+Avant de songer à "nettoyer" quoi que ce soit sur R2, vérifier cette liste — supprimer une vraie donnée historique est une régression au même titre qu'une donnée fausse (règle n°1 de la skill `data-rules`).
+
+**Jamais supprimer** (vraie donnée historique, servie aux utilisateurs) :
+- `history/`, `history-by-track/` — historique streams.
+- `apple-music/snapshots/`, `apple-music/history-by-song/` — lus par `tsm-frontend/api/data/loader.py` pour des dates/chansons arbitraires.
+- `data/{slug}_{date}.json` (TayBoard/Swift Top 100/albums/eras) — alimente le sélecteur de date de `frontend/src/pages/TayBoard.jsx`.
+- `chart-history-global-by-track/` — équivalent chart de `history-by-track/`. ⚠️ Nommage incohérent entre les deux (connu, non corrigé — renommer nécessiterait une migration/copie de clé prod, hors scope ; voir docstring de `r2_keys.py`).
+
+**Cache réellement supprimable** :
+- `images/apple-music/*.jpg` — adressé par `md5(url CDN Apple)`, dédupliqué contre le CSV Apple Music **courant**. Aucun objet historique ne référence jamais notre propre clé R2 (ils stockent l'URL `mzstatic.com` d'origine) → un objet non référencé par le scan courant est un vrai orphelin. Nettoyage : `python scripts/prune_apple_music_images.py` (dry-run par défaut, `--apply` pour supprimer, manifeste local des clés supprimées sauf `--no-archive`). **Premier `--apply` en prod : vérifier manuellement un échantillon d'orphelins détectés avant de lancer.**
+- `cache/*.json` (`home_highlights.json`, `version.json`) — 2 clés fixes, toujours écrasées, ne grossissent pas.
+- `site-settings-backups/` (frontend) — déjà auto-pruné aux 20 derniers par `api/routes/site_settings.py`.
+
+**Déjà gérable manuellement** : `hiring/`/`report-*`/`report-img-*` via `fetch_issues.py --save --delete` ; `db/` est un miroir écrasé en place, ne grossit pas.
+
+**Visibilité avant d'agir** : `python scripts/check_r2_storage.py --breakdown` liste la taille/nb d'objets par préfixe (via `list_objects_v2`, coûte des requêtes List — usage manuel/hebdo, pas sur le cron de l'alerte de seuil). Constat au 2026-08 : `apple-music/snapshots/` est de loin le plus gros poste (~2,3 Go sur ~3,4 Go comptabilisés sur `taylor-data`) — et c'est justement de la donnée jamais supprimable ; `images/apple-music/` est négligeable (<1 Mo).
+
+**Compression gzip** : option future non implémentée. Puisque la donnée historique ne peut pas être supprimée, la compression serait le seul autre levier pour limiter la taille stockée — mais nécessiterait de faire décompresser le chemin de lecture chaud du frontend (`tsm-frontend/api/data/loader.py::_read_r2_bytes`) en plus des writers backend (`r2.py`, `upload_ap_r2.py`, `chartr2.py`). Chantier dédié séparé si la croissance devient un problème malgré ce qui précède.
+
 ## Réparation d'historique cassé
 
 - `fill_streams_from_archive.py` : reconstruit `streams_history.csv` depuis les Daily Archive (title-only ; attention aux lignes album/total après le séparateur, déjà filtrées par le script).
@@ -66,11 +89,12 @@ Pour des corrections manuelles ponctuelles (album/rôle/artistes/tags faux ou ma
 - `reset_swift_top_100_history.py` : dry-run par défaut, `--yes` supprime l'historique Swift Top 100 (`--remove-bonuses`, `--skip-r2`).
 - `migrate_app_r2.py --overwrite` : écrase des objets du bucket app.
 - `migrate_daily_data_layout.py --apply --move` : migration de layout, déplace des fichiers.
+- `prune_apple_music_images.py --apply` : supprime des objets R2 (images orphelines uniquement, voir section "R2 : données pérennes vs cache" ci-dessous) — dry-run par défaut, vérifier un échantillon avant le premier `--apply` en prod.
 
 ## Convention
 
 - Quasiment tout `scripts/` est dry-run par défaut ou exige `--apply`/`--yes` — **sauf `r2.py`** (voir ci-dessus, seul cas où dry-run est opt-in).
-- `check_r2_storage.py --dry-run` : teste l'alerte de seuil de stockage sans envoyer de notif ntfy.
+- `check_r2_storage.py --dry-run` : teste l'alerte de seuil de stockage sans envoyer de notif ntfy. `check_r2_storage.py --breakdown` : mode séparé, visibilité taille/nb d'objets par préfixe (lecture seule, voir ci-dessous).
 
 ## Maintenance (obligatoire)
 

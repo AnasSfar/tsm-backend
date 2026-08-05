@@ -53,6 +53,9 @@ from playwright.sync_api import sync_playwright
 _CORE_DIR = Path(__file__).resolve().parents[4] / "collectors" / "spotify"
 if str(_CORE_DIR) not in sys.path:
     sys.path.insert(0, str(_CORE_DIR))
+_REPO_ROOT_FOR_TWITTER = Path(__file__).resolve().parents[4]
+if str(_REPO_ROOT_FOR_TWITTER) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT_FOR_TWITTER))
 from core.data_paths import (
     LEGACY_WEBSITE_DATA_DIR,
     WEB_EXPORT_DATA_DIR,
@@ -62,6 +65,9 @@ from core.data_paths import (
 )
 from core.git_ops import git_commit_and_push
 from core.twitter import post_thread, post_with_image, split_tweets
+from collectors.twitter.albums import album_emoji as _shared_album_emoji
+from collectors.twitter.text import full_charts_update_line  # noqa: E402
+from collectors.twitter.prefixes import SPOTIFY_CHART_PREFIX, with_prefix  # noqa: E402
 
 def _build_http_session() -> _requests.Session:
     retry = Retry(total=3, connect=3, read=3, backoff_factor=1.0,
@@ -112,6 +118,8 @@ TS_NAME         = "Taylor Swift"
 SEMAPHORE       = int(os.getenv("SPOTIFY_WORLDWIDE_SEMAPHORE", "1"))
 FETCH_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_WORLDWIDE_FETCH_MAX_ATTEMPTS", "0"))
 RATE_LIMIT_MIN_SECONDS = int(os.getenv("SPOTIFY_WORLDWIDE_RATE_LIMIT_MIN_SECONDS", "20"))
+PRIORITY_CARD_POST_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_PRIORITY_CARD_POST_MAX_ATTEMPTS", "3"))
+PRIORITY_CARD_POST_RETRY_SECONDS = int(os.getenv("SPOTIFY_PRIORITY_CARD_POST_RETRY_SECONDS", "30"))
 REQUEST_INTERVAL_SECONDS = float(os.getenv("SPOTIFY_WORLDWIDE_REQUEST_INTERVAL_SECONDS", "2.0"))
 SKIP_LATEST_FALLBACK_ON_404 = os.getenv("SPOTIFY_SKIP_LATEST_FALLBACK_ON_404", "").strip().lower() in {"1", "true", "yes", "on"}
 _OVERVIEW_URL   = "https://charts-spotify-com-service.spotify.com/auth/v1/overview/GLOBAL"
@@ -133,28 +141,8 @@ RE_ENTRY_RANK_FACTOR = 0.8
 DROPOUT_BASE = 70.0
 DROPOUT_RANK_FACTOR = 0.5
 
-_ALBUM_EMOJI: list[tuple[str, str]] = [
-    ("the life of a showgirl", "❤️‍🔥"),
-    ("the tortured poets department", "🤍"),
-    ("midnights", "💙"),
-    ("evermore", "🤎"),
-    ("folklore", "🩶"),
-    ("lover", "🩷"),
-    ("reputation", "🖤"),
-    ("1989", "🩵"),
-    ("red", "❤️"),
-    ("speak now", "💜"),
-    ("fearless", "💛"),
-    ("taylor swift", "💚"),
-]
-
-
 def _album_emoji(album: str) -> str:
-    al = album.lower().strip()
-    for key, emoji in _ALBUM_EMOJI:
-        if al.startswith(key) or key in al:
-            return emoji
-    return "📊"
+    return _shared_album_emoji(album, fallback="📊")
 
 
 # ── Text normalisation helpers (inlined from scripts/chartr2.py) ──────────────
@@ -922,6 +910,9 @@ async def _fetch_region(
                                 f"{region}: dated chart 404 and latest HTTP {latest_resp.status}"
                             )
                     if resp.status == 429:
+                        if FETCH_MAX_ATTEMPTS > 0 and attempt >= FETCH_MAX_ATTEMPTS:
+                            print(f"  [{region:>6}] SKIP — 429 after {attempt} attempts, giving up on this region for {chart_date}")
+                            return region, None
                         wait = max(int(resp.headers.get("Retry-After", 20)), RATE_LIMIT_MIN_SECONDS)
                         print(f"  [{region:>6}] 429 — pause globale {wait}s (tentative {attempt})")
                         await pause.trigger(wait)
@@ -1199,7 +1190,7 @@ def _regions_posted_recently(chart_date: str, days: int = MULTI_SONG_REGIONAL_NO
 def _build_multi_song_region_tweet(chart_date: str, region: str, region_name: str, rows: list[dict]) -> str:
     date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%A, %B %d, %Y")
     count = len(rows)
-    lines = [f"📈 | Taylor Swift on Spotify {region_name} Charts on {date_fmt} :"]
+    lines = [with_prefix(f"Taylor Swift on Spotify {region_name} Charts on {date_fmt} :", SPOTIFY_CHART_PREFIX)]
     if count >= 2:
         lines.extend([
             "",
@@ -1207,7 +1198,7 @@ def _build_multi_song_region_tweet(chart_date: str, region: str, region_name: st
         ])
     lines.extend([
         "",
-        f"See full update here : https://thetsmuseum.app/charts?region={region}&view=today",
+        full_charts_update_line(region=region),
     ])
     return "\n".join(lines)
 
@@ -1692,15 +1683,24 @@ def main() -> int:
         if (not args.no_post or post_priority_global_new) and priority_results.get("global") and GLOBAL_NEW_RELEASES_SCRIPT.exists():
             def _post_priority_global_new_card() -> None:
                 print("[INFO] Priority Global NEW card check...", flush=True)
-                cmd = [sys.executable, str(GLOBAL_NEW_RELEASES_SCRIPT), chart_date, "--post"]
-                if args.force_priority_global_new:
-                    cmd.append("--force")
-                result = subprocess.run(
-                    cmd,
-                    cwd=str(ROOT),
-                )
-                if result.returncode != 0:
-                    print(f"[WARN] Priority Global NEW card failed (code {result.returncode})", flush=True)
+                for attempt in range(1, PRIORITY_CARD_POST_MAX_ATTEMPTS + 1):
+                    cmd = [sys.executable, str(GLOBAL_NEW_RELEASES_SCRIPT), chart_date, "--post"]
+                    if args.force_priority_global_new or attempt == PRIORITY_CARD_POST_MAX_ATTEMPTS:
+                        cmd.append("--force")
+                    result = subprocess.run(
+                        cmd,
+                        cwd=str(ROOT),
+                    )
+                    if result.returncode == 0:
+                        return
+                    print(
+                        f"[WARN] Priority Global NEW card failed (code {result.returncode}, "
+                        f"tentative {attempt}/{PRIORITY_CARD_POST_MAX_ATTEMPTS})",
+                        flush=True,
+                    )
+                    if attempt < PRIORITY_CARD_POST_MAX_ATTEMPTS:
+                        time.sleep(PRIORITY_CARD_POST_RETRY_SECONDS)
+                print("[WARN] Priority Global NEW card: abandon apres plusieurs tentatives", flush=True)
             _priority_card_thread = threading.Thread(
                 target=_post_priority_global_new_card,
                 daemon=True,
@@ -1942,7 +1942,7 @@ def main() -> int:
         locks_dir = per_date_path.parent
         date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%A, %B %d, %Y")
         sorted_tracks = sorted(by_track.items(), key=lambda kv: len(kv[1]), reverse=True)
-        url = "🔗 See full update here : https://thetsmuseum.app/charts?region=overall&view=today"
+        url = full_charts_update_line(region="overall", label="🔗 See full update here")
         reentry_items: list[tuple[str, str]] = []
         regular_items: list[tuple[str, str]] = []
 

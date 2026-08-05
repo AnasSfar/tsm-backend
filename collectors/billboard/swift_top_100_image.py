@@ -200,10 +200,10 @@ def _delta_label(entry: dict[str, Any]) -> tuple[str, str]:
         return "—", "flat"
 
     if rc > 0:
-        return f"+{rc}", "up"
+        return f"▲ {rc}", "up"
     if rc < 0:
-        return str(rc), "down"
-    return "0", "flat"
+        return f"▼ {abs(rc)}", "down"
+    return "=", "flat"
 
 
 def _sorted_rows(payload: dict[str, Any], limit: int) -> list[dict[str, Any]]:
@@ -281,8 +281,8 @@ def build_html(
         if rc == 0:
             return "<span class='badge badge-eq'>=</span>"
         if rc > 0:
-            return f"<span class='badge badge-up'>+{rc}</span>"
-        return f"<span class='badge badge-down'>{rc}</span>"
+            return f"<span class='badge badge-up'>▲ {rc}</span>"
+        return f"<span class='badge badge-down'>▼ {abs(rc)}</span>"
 
     def _component_pct(e: dict[str, Any], previous: dict[str, Any] | None, keys: list[str]) -> float | None:
         return _percent_change(

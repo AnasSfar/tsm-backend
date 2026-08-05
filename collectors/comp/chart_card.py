@@ -46,13 +46,12 @@ def _format_rank_badge(value: str) -> str:
     if raw.upper() in {"NEW", "RE"}:
         return raw.upper()
     if raw in {"0", "=", "(=)"}:
-        return "(=)"
+        return "="
     if raw.startswith("+"):
-        return f"(▲ {raw[1:].replace(',', '')})"
+        return f"▲ {raw[1:].replace(',', '')}"
     if raw.startswith("-"):
-        return f"(▼ {raw[1:].replace(',', '')})"
+        return f"▼ {raw[1:].replace(',', '')}"
     return raw
-
 
 def _stat_by_label(stats: list[dict], label: str) -> dict:
     wanted = label.casefold()
@@ -242,7 +241,9 @@ body{{
   font-size:24px;border-radius:999px;padding:10px 15px;
   background:#e8f1ff;color:#2563eb;
 }}
-.rank-badge.up,.rank-badge.down{{color:{palette["accent"]}}}
+.rank-badge.up{{background:#dcfce7;color:#15803d;border-radius:999px;padding:7px 11px;font-size:24px;display:inline-flex;align-items:center;justify-content:center}}
+.rank-badge.down{{background:#fee2e2;color:#b91c1c;border-radius:999px;padding:7px 11px;font-size:24px;display:inline-flex;align-items:center;justify-content:center}}
+.rank-badge.flat{{background:#f1f5f9;color:#64748b;border-radius:999px;padding:7px 11px;font-size:24px;display:inline-flex;align-items:center;justify-content:center}}
 .title{{
   color:#101827;font-size:{min(_title_font_size(title) + 2, 46)}px;font-weight:950;
   line-height:1.04;letter-spacing:0;overflow:hidden;min-width:0;
@@ -377,8 +378,9 @@ body{{
   font-size:19px;border-radius:999px;padding:7px 10px;
   background:#e8f1ff;color:#2563eb;align-self:flex-start;margin-top:8px;
 }}
-.rank-badge.up{{color:{palette["accent"]}}}
-.rank-badge.down{{color:{palette["accent"]}}}
+.rank-badge.up{{background:#dcfce7;color:#15803d;border-radius:999px;padding:6px 10px;font-size:19px;display:inline-flex;align-items:center;justify-content:center}}
+.rank-badge.down{{background:#fee2e2;color:#b91c1c;border-radius:999px;padding:6px 10px;font-size:19px;display:inline-flex;align-items:center;justify-content:center}}
+.rank-badge.flat{{background:#f1f5f9;color:#64748b;border-radius:999px;padding:6px 10px;font-size:19px;display:inline-flex;align-items:center;justify-content:center}}
 .title{{
   color:#101827;font-size:{_title_font_size(title)}px;font-weight:950;
   line-height:1.02;letter-spacing:0;min-width:0;overflow:hidden;

@@ -22,11 +22,15 @@ for _stream in (sys.stdout, sys.stderr):
 
 SCRIPT_DIR = Path(__file__).resolve().parent          # streams/tools/scripts/
 ROOT = SCRIPT_DIR.parents[1]                          # streams/
-TWITTER_SESSION = SCRIPT_DIR.parents[2] / "charts" / "global" / "tools" / "json" / "twitter_session.json"
-
+REPO_ROOT = SCRIPT_DIR.parents[4]                     # repo root
+COLLECTORS_ROOT = REPO_ROOT / "collectors"
+sys.path.insert(0, str(COLLECTORS_ROOT))              # collectors/
 sys.path.insert(0, str(SCRIPT_DIR.parents[2]))        # collectors/spotify/
 sys.path.insert(0, str(ROOT))                         # collectors/spotify/streams/
-from core.album_emoji import album_emoji
+from twitter.albums import album_emoji
+from twitter.sessions import default_twitter_session  # noqa: E402
+TWITTER_SESSION = default_twitter_session(REPO_ROOT)
+from twitter.links import albums_latest_url
 from core.data_paths import update_streams_dir
 from core.twitter import post_with_image
 
@@ -218,7 +222,7 @@ def build_tweet(rows: list[dict], target_date: str, *, max_days: int = 1) -> str
     return (
         f"📊 | Taylor Swift's eras on Spotify {when}.\n\n"
         "See the combined version here :\n"
-        "🔗 : https://thetsmuseum.app/albums/date/latest"
+        f"🔗 : {albums_latest_url()}"
     )
 
 

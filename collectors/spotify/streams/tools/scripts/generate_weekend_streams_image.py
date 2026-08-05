@@ -70,9 +70,9 @@ def rank_change(rank: int, previous_rank) -> tuple[str, str]:
         return "NEW", "chg-new"
     delta = int(previous_rank) - rank
     if delta > 0:
-        return f"+{delta}", "chg-up"
+        return f"&#9650; {delta}", "chg-up"
     if delta < 0:
-        return f"-{abs(delta)}", "chg-dn"
+        return f"&#9660; {abs(delta)}", "chg-dn"
     return "=", "chg-eq"
 
 
@@ -191,8 +191,8 @@ body{
   border-left:3px solid #ebc44c;
 }
 .rank{font-size:18px;font-weight:900;color:#0b1f44;text-align:center;letter-spacing:0}
-.chg{font-size:11px;font-weight:900;text-align:center}
-.chg-up{color:#067647}.chg-dn{color:#b42318}.chg-eq,.neutral{color:#667085}.chg-new{color:#299fc5}
+.chg{display:inline-flex;align-items:center;justify-content:center;justify-self:center;min-width:38px;padding:4px 8px;border-radius:20px;font-size:12px;font-weight:900;line-height:1;letter-spacing:.01em;text-align:center}
+.chg-up{background:#dcfce7;color:#15803d}.chg-dn{background:#fee2e2;color:#b91c1c}.chg-eq{background:#f1f5f9;color:#64748b}.neutral{color:#667085}.chg-new{background:#dbeafe;color:#1d4ed8;font-size:11px}
 .entity{display:flex;align-items:center;gap:11px;min-width:0}
 .entity>div{min-width:0}
 .art{width:44px;height:44px;border-radius:7px;object-fit:cover;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.13)}
@@ -318,7 +318,7 @@ def _row_html(kind: str, rows: list[dict], image_cache: dict[str, str], cover_ma
 
         out.append(f"""<div class="{row_cls}">
   <div class="rank">#{rank}</div>
-  <div class="chg {chg_cls}">{html.escape(chg_text)}</div>
+  <div class="chg {chg_cls}">{chg_text}</div>
   <div class="entity">
     {_img_html(cover)}
     <div>

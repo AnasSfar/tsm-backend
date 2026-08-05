@@ -43,6 +43,8 @@ WORLDWIDE_JSON = None
 SONGS_JSON     = None
 LOGO_PATH        = Path(__file__).parents[7] / "tsm-frontend" / "frontend" / "public" / "icons" / "logo.gif"
 TWITTER_SESSION  = Path(__file__).resolve().parents[3] / "global" / "tools" / "json" / "twitter_session.json"
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 _SPOTIFY_ROOT = ROOT / "collectors" / "spotify"
 if str(_SPOTIFY_ROOT) not in sys.path:
@@ -64,12 +66,17 @@ WORLDWIDE_JSON = first_existing(WEB_EXPORT_DATA_DIR / "charts_worldwide.json", L
 SONGS_JSON = first_existing(WEB_EXPORT_DATA_DIR / "songs.json", LEGACY_WEBSITE_DATA_DIR / "songs.json")
 from comp.chart_card import render_chart_card  # noqa: E402
 from comp.export_frame import add_export_frame  # noqa: E402
+from collectors.twitter.albums import album_emoji as _shared_album_emoji  # noqa: E402
+from collectors.twitter.text import full_charts_update_line  # noqa: E402
 from twitter import post_image_thread as _post_image_thread  # noqa: E402
+from twitter import post_with_image as _post_with_image  # noqa: E402
 
 # Shared lock with core/twitter.py — prevents running Playwright while Twitter
 # posting scripts are also using a browser (same lock file, same semantics).
 _TWITTER_POST_LOCK = Path(tempfile.gettempdir()) / "tsm_twitter_post.lock"
 _LOCK_TIMEOUT = 15 * 60  # seconds
+FIRST_SINGLE_REGION_POST_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_FIRST_SINGLE_REGION_POST_MAX_ATTEMPTS", "3"))
+FIRST_SINGLE_REGION_POST_RETRY_SECONDS = int(os.getenv("SPOTIFY_FIRST_SINGLE_REGION_POST_RETRY_SECONDS", "30"))
 
 
 def _wait_for_twitter_lock() -> None:
@@ -428,8 +435,8 @@ def _fmt_streams(n: int | None) -> str:
 def _rank_delta_html(entry: dict) -> str:
     if entry.get("out"):
         prev = entry.get("previous_rank")
-        suffix = f" (prev #{prev})" if prev else ""
-        return f'<span class="oct-rank-delta rank-tag">{html.escape(suffix)}</span>'
+        suffix = f"prev #{prev}" if prev else "OUT"
+        return f' <span class="oct-rank-delta rank-tag">{html.escape(suffix)}</span>'
 
     rank_change = entry.get("rank_change")
     prev  = entry.get("previous_rank")
@@ -446,12 +453,12 @@ def _rank_delta_html(entry: dict) -> str:
 
     if delta is None:
         tag = "NEW" if (peak is None or peak == rank) else "RE"
-        return f'<span class="oct-rank-delta rank-tag"> ({html.escape(tag)})</span>'
+        return f' <span class="oct-rank-delta rank-tag">{html.escape(tag)}</span>'
     if delta > 0:
-        return f'<span class="oct-rank-delta rank-up"> (▲{delta})</span>'
+        return f' <span class="oct-rank-delta rank-up">&#9650; {delta}</span>'
     if delta < 0:
-        return f'<span class="oct-rank-delta rank-down"> (▼{abs(delta)})</span>'
-    return '<span class="oct-rank-delta rank-neutral"> (=)</span>'
+        return f' <span class="oct-rank-delta rank-down">&#9660; {abs(delta)}</span>'
+    return ' <span class="oct-rank-delta rank-neutral">=</span>'
 
 
 def _stream_pct_html(entry: dict) -> str:
@@ -660,11 +667,11 @@ def _build_card_html(song: dict, entries: list[dict], palette: dict[str, str], c
   .overall-country-table tbody tr:nth-child(even) {{ background: {p['even_row']}; }}
   .oct-country {{ font-weight: 600; color: {p['region']} !important; text-align: left !important; min-width: 64px; }}
   .oct-rank {{ font-weight: 700; color: {p['text']}; }}
-  .oct-rank-delta {{ font-size: 0.85em; font-weight: 400; }}
-  .oct-rank-delta.rank-up   {{ color: {p['rank_up']}; }}
-  .oct-rank-delta.rank-down {{ color: {p['rank_down']}; }}
-  .oct-rank-delta.rank-neutral {{ color: {p['muted']}; }}
-  .oct-rank-delta.rank-tag  {{ color: {p['muted']}; }}
+  .oct-rank-delta {{ display:inline-flex;align-items:center;justify-content:center;min-width:28px;margin-left:6px;padding:2px 6px;border-radius:999px;font-size:0.72em;font-weight:800;line-height:1; }}
+  .oct-rank-delta.rank-up   {{ background:#dcfce7;color:#15803d; }}
+  .oct-rank-delta.rank-down {{ background:#fee2e2;color:#b91c1c; }}
+  .oct-rank-delta.rank-neutral {{ background:#f1f5f9;color:#64748b; }}
+  .oct-rank-delta.rank-tag  {{ background:#dbeafe;color:#1d4ed8; }}
   .oct-streams {{ font-weight: 700; color: {p['text']}; font-variant-numeric: tabular-nums; }}
   .oct-stream-delta {{ font-size: 0.85em; font-weight: 400; font-variant-numeric: tabular-nums; }}
   .oct-stream-delta.positive {{ color: {p['stream_pos']}; }}
@@ -905,11 +912,11 @@ def _build_low_country_group_html(
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
   }}
-  .oct-rank-delta {{ font-size: 0.82em; font-weight: 400; }}
-  .oct-rank-delta.rank-up   {{ color: {p['rank_up']}; }}
-  .oct-rank-delta.rank-down {{ color: {p['rank_down']}; }}
-  .oct-rank-delta.rank-neutral {{ color: {p['muted']}; }}
-  .oct-rank-delta.rank-tag  {{ color: {p['muted']}; }}
+  .oct-rank-delta {{ display:inline-flex;align-items:center;justify-content:center;min-width:26px;margin-left:5px;padding:2px 5px;border-radius:999px;font-size:0.70em;font-weight:800;line-height:1; }}
+  .oct-rank-delta.rank-up   {{ background:#dcfce7;color:#15803d; }}
+  .oct-rank-delta.rank-down {{ background:#fee2e2;color:#b91c1c; }}
+  .oct-rank-delta.rank-neutral {{ background:#f1f5f9;color:#64748b; }}
+  .oct-rank-delta.rank-tag  {{ background:#dbeafe;color:#1d4ed8; }}
   .oct-stream-delta {{ font-size: 0.82em; font-weight: 400; font-variant-numeric: tabular-nums; }}
   .oct-stream-delta.positive {{ color: {p['stream_pos']}; }}
   .oct-stream-delta.negative {{ color: {p['stream_neg']}; }}
@@ -961,30 +968,11 @@ def _build_low_country_group_html(
 
 # ── Tweet builder ─────────────────────────────────────────────────────────────
 
-_ALBUM_EMOJI: list[tuple[str, str]] = [
-    ("the life of a showgirl", "❤️‍🔥"),
-    ("the tortured poets department", "🤍"),
-    ("midnights", "💙"),
-    ("evermore", "🤎"),
-    ("folklore", "🩶"),
-    ("lover", "🩷"),
-    ("reputation", "🖤"),
-    ("1989", "🩵"),
-    ("red", "❤️"),
-    ("speak now", "💜"),
-    ("fearless", "💛"),
-    ("taylor swift", "💚"),
-]
-
-_OVERALL_URL = "🔗 See full update here : https://thetsmuseum.app/charts?region=overall&view=today"
+_OVERALL_URL = full_charts_update_line(region="overall", label="🔗 See full update here")
 
 
 def _album_emoji(album: str) -> str:
-    al = album.lower().strip()
-    for key, emoji in _ALBUM_EMOJI:
-        if al.startswith(key) or key in al:
-            return emoji
-    return "📊"
+    return _shared_album_emoji(album, fallback="📊")
 
 
 def _worldwide_snapshot_path(chart_date: str) -> Path:
@@ -1124,12 +1112,27 @@ def _is_first_single_region_entry(
     return int(prev_country_counts.get(track_id, 0) or 0) == 0
 
 
+def _single_region_badge(entry: dict) -> tuple[str, str]:
+    """NEW vs RE pour la chart_card 'first single region entry'.
+
+    _is_first_single_region_entry garantit deja que la chanson n'etait dans
+    aucun pays la veille ; on utilise le movement/is_re_entry Spotify de cette
+    entree (meme logique que _build_tweet) pour distinguer un vrai premier
+    debut (NEW) d'un retour apres absence complete (RE), au lieu de figer RE.
+    """
+    movement = str(entry.get("movement") or "").strip().upper()
+    if movement == "RE" or entry.get("is_re_entry") is True:
+        return "RE", "re"
+    return "NEW", "new"
+
+
 def _render_single_region_chart_card_html(song: dict, entry: dict, chart_date: str) -> str:
     region_name = _country_label(str(entry.get("country") or ""), str(entry.get("country_name") or ""))
     rank = entry.get("rank")
     streams = entry.get("streams")
     album = _album_name(song)
     title = str(song.get("title") or "Unknown")
+    badge_text, badge_class = _single_region_badge(entry)
     return render_chart_card(
         title=title,
         eyebrow=f"Spotify {region_name} Charts",
@@ -1138,8 +1141,8 @@ def _render_single_region_chart_card_html(song: dict, entry: dict, chart_date: s
             {
                 "label": "Rank",
                 "value": f"#{rank}" if rank is not None else "#-",
-                "badge": "RE",
-                "badge_class": "re",
+                "badge": badge_text,
+                "badge_class": badge_class,
             },
             {
                 "label": "Streams",
@@ -1156,6 +1159,21 @@ def _render_single_region_chart_card_html(song: dict, entry: dict, chart_date: s
         extra=region_name,
         badge_text=_chart_card_date_pill(region_name, chart_date),
     )
+
+
+def _post_first_single_region_standalone(image_path: Path, tweet_text: str, label: str) -> bool:
+    """Poste la chart_card 'first single region entry' en priorite, en dehors du
+    thread cards worldwide. Retente sur echec X transitoire (voir SKILL spotify-charts)."""
+    for attempt in range(1, FIRST_SINGLE_REGION_POST_MAX_ATTEMPTS + 1):
+        if _post_with_image(tweet_text, image_path, TWITTER_SESSION):
+            return True
+        print(
+            f"    [WARN] post standalone {label} echoue "
+            f"(tentative {attempt}/{FIRST_SINGLE_REGION_POST_MAX_ATTEMPTS})"
+        )
+        if attempt < FIRST_SINGLE_REGION_POST_MAX_ATTEMPTS:
+            time.sleep(FIRST_SINGLE_REGION_POST_RETRY_SECONDS)
+    return False
 
 
 def _build_reentry_tweet(song: dict, entries: list[dict], chart_date: str) -> str:
@@ -1632,6 +1650,19 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
         elif index_path.exists():
             print("[INFO] cards_index.json existe mais posted_cards.json est absent; publication des cards non verrouillées")
 
+    # Lock separe pour les "first single region entry": postees standalone en
+    # priorite (hors thread cards worldwide), donc suivies independamment de
+    # posted_cards.json.
+    solo_posted_path = out_dir / "first_single_region_posted.json"
+    already_posted_solo: set[str] = set()
+    if post and solo_posted_path.exists():
+        try:
+            solo_data = json.loads(solo_posted_path.read_text(encoding="utf-8"))
+            already_posted_solo = set(solo_data.get("posted", []))
+        except Exception:
+            pass
+    newly_posted_solo: set[str] = set()
+
     _wait_for_twitter_lock()
     try:
         with sync_playwright() as p:
@@ -1697,38 +1728,43 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
                         has_prev_snapshot=has_prev_snapshot,
                     )
                     chart_card_slug = f"{slug}_chart_card"
-                    pending_key = chart_card_slug if first_single_region else slug
-                    if post and pending_key not in already_posted:
-                        post_image_path = out_path
-                        posted_key = slug
-                        if first_single_region:
-                            chart_out_path = out_dir / f"{slug}_chart_card.png"
-                            try:
-                                page.set_viewport_size({"width": 920, "height": 344})
-                                page.set_content(
-                                    _render_single_region_chart_card_html(meta, entries[0], chart_date),
-                                    wait_until="domcontentloaded",
-                                )
-                                chart_card = page.locator(".card")
-                                chart_card.wait_for(state="visible", timeout=5000)
-                                chart_card.screenshot(path=str(chart_out_path))
-                                add_export_frame(chart_out_path, device_scale_factor=3)
-                                generated.append(chart_out_path.name)
-                                priority_index[chart_out_path.name] = {
-                                    "level": 1,
-                                    "reason": "first_single_region_chart_card",
-                                    "track_id": track_id,
-                                    "region": entries[0].get("country"),
-                                    "source_card": out_path.name,
-                                    "theme": card_theme,
-                                }
-                                post_image_path = chart_out_path
-                                posted_key = chart_card_slug
-                                page.set_viewport_size({"width": 860, "height": 900})
-                            except Exception as e:
-                                print(f"  [WARN] echec chart_card regionale: {e}")
-                                page.set_viewport_size({"width": 860, "height": 900})
-                        to_post.append((post_image_path, _build_tweet(meta, entries, chart_date, prev_count), posted_key))
+                    if first_single_region:
+                        # Postee standalone en priorite (jamais dans le thread cards
+                        # worldwide) — voir _post_first_single_region_standalone.
+                        chart_out_path = out_dir / f"{slug}_chart_card.png"
+                        try:
+                            page.set_viewport_size({"width": 920, "height": 344})
+                            page.set_content(
+                                _render_single_region_chart_card_html(meta, entries[0], chart_date),
+                                wait_until="domcontentloaded",
+                            )
+                            chart_card = page.locator(".card")
+                            chart_card.wait_for(state="visible", timeout=5000)
+                            chart_card.screenshot(path=str(chart_out_path))
+                            add_export_frame(chart_out_path, device_scale_factor=3)
+                            generated.append(chart_out_path.name)
+                            priority_index[chart_out_path.name] = {
+                                "level": 1,
+                                "reason": "first_single_region_chart_card",
+                                "track_id": track_id,
+                                "region": entries[0].get("country"),
+                                "source_card": out_path.name,
+                                "theme": card_theme,
+                            }
+                            if post and chart_card_slug not in already_posted_solo:
+                                tweet_text = _build_tweet(meta, entries, chart_date, prev_count)
+                                if _post_first_single_region_standalone(chart_out_path, tweet_text, slug):
+                                    newly_posted_solo.add(chart_card_slug)
+                                else:
+                                    print(f"    [WARN] abandon post standalone pour {slug}")
+                            elif post:
+                                print("    [SKIP] deja poste (standalone)")
+                        except Exception as e:
+                            print(f"  [WARN] echec chart_card regionale: {e}")
+                        finally:
+                            page.set_viewport_size({"width": 860, "height": 900})
+                    elif post and slug not in already_posted:
+                        to_post.append((out_path, _build_tweet(meta, entries, chart_date, prev_count), slug))
                     elif post:
                         print(f"    [SKIP] déjà posté")
                 except Exception as e:
@@ -1786,6 +1822,14 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
         encoding="utf-8",
     )
     print(f"[DONE] {len(generated)} images → {out_dir}")
+
+    if newly_posted_solo:
+        all_posted_solo = sorted(already_posted_solo | newly_posted_solo)
+        solo_posted_path.write_text(
+            json.dumps({"date": chart_date, "posted": all_posted_solo}, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        print(f"[STEP] Twitter: {len(newly_posted_solo)} first-single-region card(s) postee(s) standalone")
 
     if post and to_post:
         print(f"[STEP] Publication d'un thread de {len(to_post)} card(s) sur Twitter...")

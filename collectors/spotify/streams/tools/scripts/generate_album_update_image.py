@@ -44,10 +44,13 @@ ROOT            = SCRIPT_DIR.parents[1]                    # streams/
 REPO_ROOT       = SCRIPT_DIR.parents[4]                    # repo root
 DB_DIR          = REPO_ROOT / "db"
 
+sys.path.insert(0, str(REPO_ROOT / "collectors"))
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT.parent))   # collectors/spotify/ for core.*
 
 from core.data_paths import first_existing_db_history, update_streams_dir
+from twitter.links import streams_latest_url
+from twitter.prefixes import DEFAULT_POST_PREFIX
 import history_store
 import best_day_since
 
@@ -397,7 +400,7 @@ def fmt_optional_num(n) -> str:
 def load_album_sections(album_name: str, target_date: str | None = None) -> list[dict]:
     """
     Returns list of sections for the given album, each with:
-      {name, tracks: [{track_id, title_clean, version_tag, display_order, image_url}]}
+      {name, tracks: [{track_id, title, title_clean, version_tag, display_order, image_url}]}
     Includes every track whose section/track is not marked chart_extra.
     Tracks sorted by display_order.
 
@@ -500,6 +503,7 @@ def load_album_sections(album_name: str, target_date: str | None = None) -> list
 
             tracks.append({
                 "track_id":     track_id,
+                "title":        (t.get("title") or t.get("title_clean") or "").strip(),
                 "title_clean":  (t.get("title_clean") or t.get("title") or "").strip(),
                 "release_date":  (t.get("release_date") or "").strip(),
                 "version_tag":  (t.get("version_tag") or "").strip(),
@@ -1167,7 +1171,7 @@ def _build_totals_chip(items: list[tuple[str, str]]) -> str:
 
 
 def _display_song_title(track: dict, best_day_label: str | None = None) -> str:
-    title = _shorten_title(track["title_clean"])
+    title = _shorten_title(track.get("title") or track.get("title_clean") or "")
     if best_day_label:
         prefix = "" if best_day_label.startswith("of ") else "since "
         return f"&#9733; {title} <span class=\"best-day-note\">&middot; {prefix}{html.escape(best_day_label)}</span>"
@@ -1760,7 +1764,7 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
             continue
         scored.append({
             "track_id": t.get("track_id"),
-            "title": t.get("title_clean") or "Unknown",
+            "title": t.get("title") or t.get("title_clean") or "Unknown",
             "pct": pct,
             "daily": h.get("daily") or 0,
         })
@@ -1814,7 +1818,7 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
     return (
         f"{first_line}\n\n"
         f'"{selected_song}" was the {label} with {track_daily_fmt} streams{track_pct_str}.\n\n'
-        f"See full update here : https://thetsmuseum.app/streams/latest ❤️‍🔥"
+        f"See full update here : {streams_latest_url()} ❤️‍🔥"
     )
 
 
@@ -1832,7 +1836,7 @@ def _selected_album_post_track(sections: list[dict], target_date: str) -> dict |
             continue
         scored.append({
             "track_id": t.get("track_id"),
-            "title": t.get("title_clean") or "Unknown",
+            "title": t.get("title") or t.get("title_clean") or "Unknown",
             "pct": pct,
         })
     if not scored:

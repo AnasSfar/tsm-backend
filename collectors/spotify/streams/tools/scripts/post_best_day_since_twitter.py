@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 Post the top "best day since" songs to @swiftiescharts with song card images.
 
@@ -40,6 +40,12 @@ MIN_SONG_DAILY_STREAMS_TO_POST = 80_000
 POST_COLLECTION_MIN_SONG_PCT_CHANGE = 10.0
 ALWAYS_POST_BEST_DAY_SINCE_AFTER_DAYS = 60
 
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 sys.path.insert(0, str(COLLECTORS_ROOT))              # collectors/
 sys.path.insert(0, str(ROOT))                         # collectors/spotify/streams/
 sys.path.insert(0, str(ROOT.parent))                  # collectors/spotify/
@@ -48,8 +54,8 @@ from comp.song_card import render_song_card, slugify, write_song_card_png  # noq
 from comp.tables_image import build_table_html, render_html_to_png, url_to_data_uri  # noqa: E402
 from comp.fmt import fmt_streams, fmt_pct, pct_cls, get_pct  # noqa: E402
 from core.twitter import post_with_image  # noqa: E402
-from core.album_emoji import album_emoji  # noqa: E402
 from core.data_paths import update_streams_dir  # noqa: E402
+from twitter.text import best_day_since_recap_tweet, best_day_since_tweet  # noqa: E402
 import best_day_since  # noqa: E402
 import generate_album_update_image  # noqa: E402
 
@@ -526,19 +532,19 @@ def _album_row(
 
 
 def _build_tweet(row: dict, daily_yesterday: int | None) -> str:
-    emoji = album_emoji(row.get("album"))
     title = row["title"]
     track_id = row["track_id"]
     label = best_day_since.row_label(row)
     label = label.replace("best day", "BEST DAY", 1).replace("biggest day", "BIGGEST DAY", 1)
     daily = int(row["daily_streams"])
     pct = _fmt_pct(daily, daily_yesterday)
-    song_url = f"https://thetsmuseum.app/songs/{track_id}"
-    return (
-        f'{emoji} "{title}" earned its {label} with {_fmt_int(daily)} streams [{pct}].\n\n'
-        f"See full track's history here : {song_url}"
+    return best_day_since_tweet(
+        title=title,
+        label=label,
+        daily_streams=daily,
+        pct=pct,
+        track_id=track_id,
     )
-
 
 def _validated_song_rows_for_post(
     candidate_rows: list[dict],
@@ -649,13 +655,7 @@ def _generate_recap_image(
 
 
 def _build_recap_tweet(rows: list[dict], target_date: str) -> str:
-    from datetime import datetime
-
-    date_text = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
-    count = len(rows)
-    plural = "s" if count != 1 else ""
-    return f"ðŸ“Š {count} song{plural} hit a best day since record on {date_text}. Full recap below."
-
+    return best_day_since_recap_tweet(count=len(rows), stats_date=target_date)
 
 def _best_since_badge_text(row: dict) -> str:
     return best_day_since.row_label(row)

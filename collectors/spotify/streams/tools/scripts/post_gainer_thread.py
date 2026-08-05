@@ -10,13 +10,17 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent          # streams/tools/scripts/
 ROOT = SCRIPT_DIR.parents[1]                          # streams/
-TWITTER_SESSION = ROOT.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json"
-
+REPO_ROOT = SCRIPT_DIR.parents[4]                     # repo root
+COLLECTORS_ROOT = REPO_ROOT / "collectors"
+sys.path.insert(0, str(COLLECTORS_ROOT))              # collectors/
 sys.path.insert(0, str(ROOT))                         # collectors/spotify/streams/
 sys.path.insert(0, str(ROOT.parent))                  # collectors/spotify/
 sys.path.insert(0, str(SCRIPT_DIR))                   # streams/tools/scripts/
 
-from core.album_emoji import album_emoji  # noqa: E402
+from twitter.albums import album_emoji  # noqa: E402
+from twitter.sessions import default_twitter_session  # noqa: E402
+TWITTER_SESSION = default_twitter_session(REPO_ROOT)
+from twitter.text import track_history_line  # noqa: E402
 from core.twitter import post_image_thread  # noqa: E402
 import history_store  # noqa: E402
 import spotlight  # noqa: E402
@@ -152,13 +156,12 @@ def _build_tweet(row: dict, *, rank: int, target_date: str, period: str) -> str:
     max_days = history_store.days_covered_by_row(row["track_id"], target_date) if period == "daily" else 1
     when = f"on {date_fmt}"
     compare_label = "the previous day" if period == "daily" else "last week"
-    song_url = f"https://thetsmuseum.app/songs/{row['track_id']}"
+    song_history = track_history_line(row['track_id'])
     return (
         f'{emoji} #{rank} "{title}" was one of Taylor Swift\'s biggest {period} gainers '
         f"by % {when} ({date_fmt}).\n\n"
         f"It rose {_fmt_pct(row['pct'])} vs {compare_label}, with {_fmt_int(row['daily_today'])} streams "
-        f"(+{_fmt_int(row['gain'])}).\n\n"
-        f"See full track's history here : {song_url}"
+        f"(+{_fmt_int(row['gain'])}).\\n\\n{song_history}"
     )
 
 

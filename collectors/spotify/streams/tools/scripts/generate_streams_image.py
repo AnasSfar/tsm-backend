@@ -78,9 +78,9 @@ def rank_change(rank: int, prev_rank) -> tuple[str, str]:
         return "NEW", "chg-new"
     delta = int(prev_rank) - rank
     if delta > 0:
-        return f"▲{delta}", "chg-up"
+        return f"&#9650; {delta}", "chg-up"
     elif delta < 0:
-        return f"▼{abs(delta)}", "chg-dn"
+        return f"&#9660; {abs(delta)}", "chg-dn"
     return "=", "chg-eq"
 
 

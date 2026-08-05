@@ -17,11 +17,14 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 ROOT = SCRIPT_DIR.parents[1]
-TWITTER_SESSION = SCRIPT_DIR.parents[2] / "charts" / "global" / "tools" / "json" / "twitter_session.json"
-
+REPO_ROOT = SCRIPT_DIR.parents[4]
+sys.path.insert(0, str(SCRIPT_DIR.parents[3]))
 sys.path.insert(0, str(SCRIPT_DIR.parents[2]))
 from core.data_paths import update_streams_dir  # noqa: E402
 from core.twitter import post_with_image  # noqa: E402
+from twitter.sessions import default_twitter_session  # noqa: E402
+TWITTER_SESSION = default_twitter_session(REPO_ROOT)
+from twitter.text import weekend_streams_tweet  # noqa: E402
 
 import generate_weekend_streams_image
 import history_store
@@ -35,12 +38,7 @@ def _ordinal(n: int) -> str:
 
 
 def build_tweet(target_date: str) -> str:
-    d = date.fromisoformat(target_date)
-    when = f"on {d.strftime('%A')}, {d.strftime('%B')} {_ordinal(d.day)}, {d.year}"
-    return (
-        f"📈 | Taylor Swift's albums and songs on the Spotify counter {when}.\n"
-        "See the full update here : https://thetsmuseum.app/streams/latest"
-    )
+    return weekend_streams_tweet(stats_date=target_date)
 
 
 def main() -> None:

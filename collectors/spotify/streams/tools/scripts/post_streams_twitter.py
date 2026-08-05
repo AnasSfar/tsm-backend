@@ -22,23 +22,15 @@ ROOT            = SCRIPT_DIR.parents[1]                    # streams/
 REPO_ROOT       = SCRIPT_DIR.parents[4]                    # repo root
 TWITTER_SESSION = SCRIPT_DIR.parents[2] / "charts" / "global" / "tools" / "json" / "twitter_session.json"
 
+sys.path.insert(0, str(REPO_ROOT / 'collectors'))             # collectors/
 sys.path.insert(0, str(SCRIPT_DIR.parents[2]))             # collectors/spotify/
 from core.twitter import post_image_thread
+from twitter.text import streams_update_tweet
 from core.data_paths import update_streams_dir
 
 import generate_streams_image
 from post_locks import mark_posted, should_skip_post
 
-
-def _ordinal(n: int) -> str:
-    if 11 <= (n % 100) <= 13:
-        return f"{n}th"
-    return f"{n}{['th','st','nd','rd','th','th','th','th','th','th'][n % 10]}"
-
-
-def _date_phrase(target_date: str) -> str:
-    d = date.fromisoformat(target_date)
-    return f"on {d.strftime('%A')}, {d.strftime('%B')} {_ordinal(d.day)}, {d.year}"
 
 
 def main():
@@ -87,11 +79,7 @@ def main():
     )
 
     # Build tweet text
-    period = _date_phrase(target_date)
-    tweet = (
-        f"🧵 Taylor Swift's most streamed {top_n} songs {period} :\n\n"
-        "See full update here : https://thetsmuseum.app/streams/latest ❤️‍🔥"
-    )
+    tweet = streams_update_tweet(top_n=top_n, stats_date=target_date)
     thread_posts = [
         (tweet, image_paths[0]),
     ]

@@ -15,7 +15,6 @@ ROOT = SCRIPT_DIR.parents[1]
 REPO_ROOT = SCRIPT_DIR.parents[4]
 DB_DIR = REPO_ROOT / "db"
 TWITTER_SESSION = ROOT.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json"
-HANDLE = "@swiftiescharts"
 
 sys.path.insert(0, str(ROOT.parent))
 sys.path.insert(0, str(ROOT.parent.parent))
@@ -26,9 +25,13 @@ from comp.discography import build_cover_map, build_track_album_map  # noqa: E40
 from comp.fmt import fmt_num  # noqa: E402
 from core.data_paths import update_streams_dir  # noqa: E402
 from core.twitter import post_with_image  # noqa: E402
+from twitter.prefixes import ACCOUNT_HANDLE, MOST_STREAMED_SONGS_TITLE  # noqa: E402
+from twitter.text import song_overtake_tweet  # noqa: E402
 import generate_streams_image  # noqa: E402
 import history_store  # noqa: E402
 from post_locks import mark_posted  # noqa: E402
+
+HANDLE = ACCOUNT_HANDLE
 
 HEADERS_DIR = ROOT / "tools" / "headers"
 COVERS_PATH = DB_DIR / "discography" / "covers.json"
@@ -40,27 +43,23 @@ EXTRA_CSS = """
 .hdr{padding:24px 28px}
 .hdr-title{font-size:25px}
 .hdr-sub{font-size:14px}
-.data-row.overtaker{
-  background:linear-gradient(90deg,#e9fbef 0%,#f8fffb 46%,rgba(255,255,255,.92) 100%);
-  border-left:4px solid #1db954;
-}
-.data-row.passed{
-  background:linear-gradient(90deg,#fff5f5 0%,#fffdfd 46%,rgba(255,255,255,.92) 100%);
-  border-left:4px solid #d92d20;
-}
-.rank-delta{font-size:15px;font-weight:900;letter-spacing:0}
-.rank-delta.pos{color:#067647}.rank-delta.neg{color:#b42318}.rank-delta.neutral{color:#667085}
-.gap{font-weight:900}.gap.pos{color:#067647}.gap.neutral{color:#667085}
+.rank-delta-cell{display:flex;align-items:center;justify-content:center}
+.rank-badge{display:inline-flex;align-items:center;justify-content:center;gap:4px;min-width:38px;padding:4px 8px;border-radius:20px;font-size:12px;font-weight:800;letter-spacing:.01em;line-height:1}
+.rank-badge.up{background:#dcfce7;color:#15803d}
+.rank-badge.down{background:#fee2e2;color:#b91c1c}
+.rank-badge.eq{background:#f1f5f9;color:#64748b}
+.rank-badge.missing{background:#f8fafc;color:#94a3b8}
+.rank-triangle{font-size:10px;line-height:1;transform:translateY(-.5px)}
+.gap{font-weight:900;color:#101828}
+.metric-change{display:flex;flex-direction:column;align-items:flex-end;gap:3px;line-height:1.05}
+.metric-change strong{font-size:14px;color:#24364f}
+.gap .metric-change strong{color:#101828}
 """
 
 
 def _date_label(stats_date: str) -> str:
     return datetime.strptime(stats_date, "%Y-%m-%d").strftime("%B %d, %Y")
 
-
-def _tweet_date_label(stats_date: str) -> str:
-    day = datetime.strptime(stats_date, "%Y-%m-%d").date()
-    return day.strftime("%B %#d, %Y") if sys.platform == "win32" else day.strftime("%B %-d, %Y")
 
 
 def _event_key(event: dict) -> str:
@@ -114,8 +113,14 @@ def _row_with_rank_context(current: list[dict], previous_by_id: dict[str, dict],
     row = dict(current[index])
     previous = previous_by_id.get(row["track_id"])
     row["previous_rank"] = previous.get("rank") if previous else None
+    row["previous_daily_streams"] = previous.get("daily_streams") if previous else None
     next_row = current[index + 1] if index + 1 < len(current) else None
     row["next_gap"] = int(row["streams"]) - int(next_row["streams"]) if next_row else None
+    previous_next = previous_by_id.get(next_row["track_id"]) if next_row else None
+    if previous and previous_next:
+        row["previous_next_gap"] = int(previous["streams"]) - int(previous_next["streams"])
+    else:
+        row["previous_next_gap"] = None
     return row
 
 
@@ -209,17 +214,52 @@ def group_close_overtakes(events: list[dict]) -> list[dict]:
     return groups
 
 
-def _rank_delta(row: dict) -> tuple[str, str]:
+def _rank_delta_badge(row: dict) -> str:
     previous_rank = row.get("previous_rank")
     if previous_rank is None:
-        return "-", "neutral"
+        return '<span class="rank-badge missing">-</span>'
     delta = int(previous_rank) - int(row["rank"])
     if delta > 0:
-        return f"+{delta}", "pos"
+        return f'<span class="rank-badge up"><span class="rank-triangle">&#9650;</span>{delta}</span>'
     if delta < 0:
-        return str(delta), "neg"
-    return "0", "neutral"
+        return f'<span class="rank-badge down"><span class="rank-triangle">&#9660;</span>{abs(delta)}</span>'
+    return '<span class="rank-badge eq">=</span>'
 
+def _fmt_change_block(value: int | None, previous: int | None, *, main_cls: str = "") -> str:
+    if value is None:
+        return fmt_num(None)
+    class_attr = f' class="{main_cls}"' if main_cls else ""
+    if previous is None:
+        return f'<div class="metric-change"><strong{class_attr}>{fmt_num(value)}</strong></div>'
+    delta = int(value) - int(previous)
+    if delta > 0:
+        delta_text = f"+{fmt_num(delta)}"
+        cls = "pos"
+    elif delta < 0:
+        delta_text = f"-{fmt_num(abs(delta))}"
+        cls = "neg"
+    else:
+        delta_text = "="
+        cls = "neutral"
+    pct_text = ""
+    if int(previous) != 0:
+        pct_text = f"{delta / int(previous) * 100:+.1f}%"
+        if pct_text == "-0.0%":
+            pct_text = "+0.0%"
+    pct_html = f'<span class="delta-pct {cls}">{pct_text}</span>' if pct_text else ""
+    return (
+        f'<div class="metric-change"><strong{class_attr}>{fmt_num(value)}</strong>'
+        f'<span class="delta-num {cls}">{delta_text}</span>'
+        f'{pct_html}</div>'
+    )
+
+
+def _fmt_daily_change(row: dict) -> str:
+    return _fmt_change_block(row.get("daily_streams"), row.get("previous_daily_streams"))
+
+
+def _fmt_gap_change(row: dict) -> str:
+    return _fmt_change_block(row.get("next_gap"), row.get("previous_next_gap"), main_cls="gap-main")
 
 def _row_role_class(row: dict, group: dict) -> str:
     overtaker_ids = {event["overtaker"]["track_id"] for event in group["events"]}
@@ -239,13 +279,12 @@ def _build_rows_html(group: dict, cover_map: dict, track_album_map: dict) -> str
         cover_url = generate_streams_image.get_cover_url(row, cover_map, track_album_map)
         cover = tables_image.url_to_data_uri(cover_url) if cover_url else ""
         art_html = f'<img class="art" src="{html.escape(cover, quote=True)}" />' if cover else '<div class="art-ph"></div>'
-        rank_delta, rank_delta_cls = _rank_delta(row)
-        next_gap = row.get("next_gap")
-        gap_text = fmt_num(next_gap) if next_gap is not None else "-"
-        gap_cls = "pos" if next_gap is not None and int(next_gap) > 0 else "neutral"
+        rank_delta_html = _rank_delta_badge(row)
+        gap_html = _fmt_gap_change(row)
+        gap_cls = "neutral"
         rows_html += f"""<div class="{card_cls}">
   <div class="col-rank">#{int(row["rank"])}</div>
-  <div class="col-rank rank-delta {rank_delta_cls}">{rank_delta}</div>
+  <div class="rank-delta-cell">{rank_delta_html}</div>
   <div class="col-entity">
     {art_html}
     <div class="entity-info">
@@ -253,9 +292,9 @@ def _build_rows_html(group: dict, cover_map: dict, track_album_map: dict) -> str
       <div class="entity-sub">{html.escape(str(row.get("primary_artist") or "Taylor Swift"))}</div>
     </div>
   </div>
-  <div class="col-num">{fmt_num(row.get("daily_streams"))}</div>
+  <div class="col-num">{_fmt_daily_change(row)}</div>
   <div class="col-num"><strong>{fmt_num(row.get("streams"))}</strong></div>
-  <div class="col-num gap {gap_cls}">{gap_text}</div>
+  <div class="col-num gap {gap_cls}">{gap_html}</div>
 </div>
 """
     return rows_html
@@ -291,9 +330,9 @@ def render_overtake_image(group: dict, stats_date: str) -> Path:
     tmp_path = out_dir / f"_overtake_{slug}.html"
 
     html_text = tables_image.build_table_html(
-        title="Taylor Swift Spotify Counter",
+        title=MOST_STREAMED_SONGS_TITLE,
         subtitle=_group_subtitle(group),
-        col_heads=[("Rank", False), ("Delta", False), ("Track", False), ("Daily", True), ("Total", True), ("Gap", True)],
+        col_heads=[("Rank", False), ("+/-", False), ("Track", False), ("Daily", True), ("Total", True), ("Gap", True)],
         grid_cols="58px 58px minmax(300px,1fr) 112px 142px 102px",
         rows_html=rows_html,
         handle=HANDLE,
@@ -310,18 +349,8 @@ def _fmt_tweet_num(value: int | str) -> str:
     return f"{int(value):,}"
 
 
-def build_tweet(event: dict, stats_date: str) -> str:
-    overtaker = event["overtaker"]
-    passed = event["passed"]
-    song_url = f"https://thetsmuseum.app/songs/{overtaker['track_id']}"
-    return (
-        f'"{overtaker["title"]}" has surpassed "{passed["title"]}" '
-        f"on Taylor Swift's Spotify Counter.\n\n"
-        f"{_fmt_tweet_num(overtaker['streams'])} streams\n"
-        f"+{_fmt_tweet_num(event['gap'])} ahead as of {_tweet_date_label(stats_date)}.\n\n"
-        f"See full track's history here : {song_url}"
-    )
-
+def build_tweet(group: dict, stats_date: str) -> str:
+    return song_overtake_tweet(group, stats_date)
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Post non-extra song total-stream overtakes.")
@@ -340,25 +369,26 @@ def main() -> int:
 
     posted_keys = _load_posted_keys(args.date)
     events = [event for event in find_overtakes(args.date, limit=limit) if args.force or _event_key(event) not in posted_keys]
-    if not events:
+    groups = group_close_overtakes(events)
+    if not groups:
         print(f"[song_overtakes] No new non-extra song overtakes found for {args.date}.")
         return 0
 
-    print(f"[song_overtakes] Found {len(events)} overtake(s) for {args.date}.")
+    print(f"[song_overtakes] Found {len(events)} overtake(s) in {len(groups)} post group(s) for {args.date}.")
     newly_posted: set[str] = set()
-    for index, event in enumerate(events, 1):
-        image_path = render_overtake_image(event, args.date)
-        tweet = build_tweet(event, args.date)
-        print(f"[song_overtakes] Tweet {index}/{len(events)} ({len(tweet)} chars):\n{tweet}")
+    for index, group in enumerate(groups, 1):
+        image_path = render_overtake_image(group, args.date)
+        tweet = build_tweet(group, args.date)
+        print(f"[song_overtakes] Tweet {index}/{len(groups)} ({len(tweet)} chars):\n{tweet}")
         print(f"[song_overtakes] Image: {image_path}")
         if args.no_post:
             continue
         if not TWITTER_SESSION.exists():
             raise SystemExit(f"Twitter session not found: {TWITTER_SESSION}")
         if not post_with_image(tweet, image_path, TWITTER_SESSION):
-            raise SystemExit(f"Failed to post overtake: {_event_key(event)}")
-        newly_posted.add(_event_key(event))
-        if index < len(events) and args.post_spacing_seconds > 0:
+            raise SystemExit(f"Failed to post overtake group: {', '.join(_event_key_list(group))}")
+        newly_posted.update(_event_key_list(group))
+        if index < len(groups) and args.post_spacing_seconds > 0:
             time.sleep(args.post_spacing_seconds)
 
     if args.no_post:

@@ -138,6 +138,8 @@ WATCH_ERROR_SECONDS = int(os.getenv("SPOTIFY_WATCH_ERROR_SECONDS", "10"))
 RATE_LIMIT_RETRY_SECONDS = int(os.getenv("SPOTIFY_RATE_LIMIT_RETRY_SECONDS", "120"))
 CARDS_POST_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_CARDS_POST_MAX_ATTEMPTS", "3"))
 CARDS_POST_RETRY_SECONDS = int(os.getenv("SPOTIFY_CARDS_POST_RETRY_SECONDS", "30"))
+WORLDWIDE_COLLECT_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_WORLDWIDE_COLLECT_MAX_ATTEMPTS", "3"))
+WORLDWIDE_COLLECT_RETRY_SECONDS = int(os.getenv("SPOTIFY_WORLDWIDE_COLLECT_RETRY_SECONDS", "60"))
 PLAYWRIGHT_LAUNCH_TIMEOUT_MS = int(os.getenv("SPOTIFY_PLAYWRIGHT_LAUNCH_TIMEOUT_MS", "15000"))
 PLAYWRIGHT_GOTO_TIMEOUT_MS = int(os.getenv("SPOTIFY_PLAYWRIGHT_GOTO_TIMEOUT_MS", "15000"))
 PLAYWRIGHT_TOKEN_WAIT_SECONDS = int(os.getenv("SPOTIFY_PLAYWRIGHT_TOKEN_WAIT_SECONDS", "10"))
@@ -1868,6 +1870,29 @@ def main() -> int:
             failures.extend(phase1_failures)
             ran_collect = True
             print(f"[PHASE1] collecte terminée ({_fmt(time.perf_counter() - t_phase1)})")
+
+            if not args.dry_run and "worldwide" in {n for n, _ in phase1_failures}:
+                worldwide_runner = [r for r in collect_runners if r[0] == "worldwide"]
+                for attempt in range(2, WORLDWIDE_COLLECT_MAX_ATTEMPTS + 1):
+                    print(
+                        f"[WARN] worldwide: collecte plantee, nouvelle tentative "
+                        f"{attempt}/{WORLDWIDE_COLLECT_MAX_ATTEMPTS} dans {WORLDWIDE_COLLECT_RETRY_SECONDS}s..."
+                    )
+                    time.sleep(WORLDWIDE_COLLECT_RETRY_SECONDS)
+                    retry_failures = _run_parallel(
+                        worldwide_runner,
+                        forwarded=forwarded,
+                        target_date=target_date,
+                        explicit_target_date=_explicit_target_date,
+                        dry_run=args.dry_run,
+                        env=env,
+                        verbose=args.verbose,
+                    )
+                    if not retry_failures:
+                        phase1_failures = [f for f in phase1_failures if f[0] != "worldwide"]
+                        failures = [f for f in failures if f[0] != "worldwide"]
+                        break
+                    print(f"[WARN] worldwide: toujours en echec (tentative {attempt})")
 
             if phase1_failures:
                 failed_names = {n for n, _ in phase1_failures}

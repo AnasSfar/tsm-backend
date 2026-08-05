@@ -1016,7 +1016,7 @@ def _preview_specs(streams_date: str, charts_date: str | None) -> list[dict]:
         {"kind": "streams", "name": "post_gainer_thread_weekly", "cmd": [py, str(s / "post_gainer_thread.py"), streams_date, "--period", "weekly", "--limit", "1", "--no-post"]},
         {"kind": "streams", "name": "post_stream_highlights_thread", "cmd": [py, str(s / "post_stream_highlights_thread.py"), streams_date, "--limit", "5", "--best-limit", "3", "--min-days", "1", "--no-post"]},
         {"kind": "streams", "name": "post_weekend_song_gainers", "cmd": [py, str(s / "post_weekend_song_gainers.py"), streams_date, "--min-pct", "5", "--no-post"]},
-        {"kind": "streams", "name": "post_song_overtakes", "cmd": [py, str(s / "post_song_overtakes.py"), streams_date, "--no-post", "--limit", "1"]},
+        {"kind": "streams", "name": "post_song_overtakes", "cmd": [py, str(s / "post_song_overtakes.py"), streams_date, "--no-post", "--limit", "5", "--force"]},
         {"kind": "streams", "name": "generate_album_update_image_ttpd", "cmd": [py, str(s / "generate_album_update_image.py"), "THE TORTURED POETS DEPARTMENT", streams_date], "tweet_hint": "Album update preview generated only. Real tweet text is built inside generate_album_update_image.post()."},
     ]
     if charts_date:

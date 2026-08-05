@@ -131,15 +131,15 @@ def get_dominant_color(img_path: Path) -> str:
 def rank_change(rank, previous_rank, total_days=None, peak_rank=None):
     if previous_rank is None:
         if peak_rank is not None and int(peak_rank) != int(rank):
-            return "RE-ENTRY", "chg-re"
+            return "RE", "chg-re"
         if total_days and int(total_days) > 1:
-            return "RE-ENTRY", "chg-re"
+            return "RE", "chg-re"
         return "NEW", "chg-new"
     delta = int(previous_rank) - int(rank)
     if delta > 0:
-        return f"▲{delta}", "chg-up"
+        return f"&#9650; {delta}", "chg-up"
     elif delta < 0:
-        return f"▼{abs(delta)}", "chg-dn"
+        return f"&#9660; {abs(delta)}", "chg-dn"
     return "=", "chg-eq"
 
 
@@ -208,14 +208,16 @@ body{
 }
 /* Change */
 .col-chg{
-  font-size:11px;font-weight:700;
   display:flex;align-items:center;justify-content:center;
+  justify-self:center;
+  min-width:36px;padding:3px 7px;border-radius:20px;
+  font-size:12px;font-weight:800;line-height:1;letter-spacing:.01em;
 }
-.chg-up{color:#067647}
-.chg-dn{color:#b42318}
-.chg-eq{color:#9ca3af}
-.chg-new{color:#5bbde4;font-size:10px;font-weight:800}
-.chg-re{color:#5bbde4;font-size:10px;font-weight:800}
+.col-chg.chg-up{background:#dcfce7;color:#15803d}
+.col-chg.chg-dn{background:#fee2e2;color:#b91c1c}
+.col-chg.chg-eq{background:#f1f5f9;color:#64748b}
+.col-chg.chg-new{background:#dbeafe;color:#1d4ed8;font-size:10px}
+.col-chg.chg-re{background:#ede9fe;color:#6d28d9;font-size:10px}
 /* Song */
 .col-song{display:flex;align-items:center;gap:10px;min-width:0}
 .art{
@@ -302,7 +304,7 @@ SPOTIFY_SVG = """<svg class="hdr-logo" viewBox="0 0 24 24" fill="white" xmlns="h
 
 COL_HEADS_HTML = """<div class="col-heads">
     <span>Pos</span>
-    <span>Chg</span>
+    <span>+/-</span>
     <span>Track</span>
     <span class="right">Streams</span>
     <span class="right">Daily</span>
@@ -506,13 +508,16 @@ body{
   display:flex;align-items:center;justify-content:center;
 }
 .col-chg{
-  font-size:13px;font-weight:700;
   display:flex;align-items:center;justify-content:center;
+  justify-self:center;
+  min-width:38px;padding:4px 8px;border-radius:20px;
+  font-size:12px;font-weight:800;line-height:1;letter-spacing:.01em;
 }
-.chg-up{color:#067647}.chg-dn{color:#b42318}
-.chg-eq{color:#9ca3af}
-.chg-new{color:#5bbde4;font-size:11px;font-weight:800}
-.chg-re{color:#5bbde4;font-size:11px;font-weight:800}
+.col-chg.chg-up{background:#dcfce7;color:#15803d}
+.col-chg.chg-dn{background:#fee2e2;color:#b91c1c}
+.col-chg.chg-eq{background:#f1f5f9;color:#64748b}
+.col-chg.chg-new{background:#dbeafe;color:#1d4ed8;font-size:11px}
+.col-chg.chg-re{background:#ede9fe;color:#6d28d9;font-size:11px}
 .col-entity{display:flex;align-items:center;gap:12px;min-width:0}
 .art{
   width:var(--art-size,54px);height:var(--art-size,54px);border-radius:7px;

@@ -2872,7 +2872,7 @@
     {
       "section": "kworb_extras",
       "track_count": 2,
-      "chart_extra": false,
+      "chart_extra": true,
       "tracks": [
         {
           "title": "Elizabeth Taylor - So Glamorous Cabaret Version",

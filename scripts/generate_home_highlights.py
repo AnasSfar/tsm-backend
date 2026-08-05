@@ -73,6 +73,15 @@ _MILESTONE_THRESHOLDS = [
     2_000_000_000, 2_500_000_000, 3_000_000_000, 4_000_000_000, 5_000_000_000,
 ]
 
+# TayBoard highlights (top_album/top_era/tayboard_1) are only surfaced while
+# the underlying chart is this fresh — otherwise a week-old #1 would keep
+# showing up in the pool until the next weekly chart is published.
+_TAYBOARD_MAX_AGE_DAYS = 2
+
+# Minimum same-region rank improvement (day over day) to call a chart
+# position "an exceptional climb" — includes the global/worldwide chart.
+_REGIONAL_CLIMB_THRESHOLD = 20
+
 
 # --------------------------------------------------------------------- R2 --
 
@@ -221,6 +230,22 @@ def _first_rank_one(entries: list[dict]) -> dict | None:
     return next((e for e in entries if _rank(e) == 1), entries[0])
 
 
+def _within_days(date_str: str | None, reference_str: str | None, max_age_days: int) -> bool:
+    """True if `date_str` is within `max_age_days` of `reference_str`.
+
+    Fails closed (False) on missing/unparseable dates — a highlight whose
+    freshness can't be verified shouldn't be shown as if it were current.
+    """
+    if not date_str or not reference_str:
+        return False
+    try:
+        d = _date.fromisoformat(str(date_str)[:10])
+        ref = _date.fromisoformat(str(reference_str)[:10])
+    except ValueError:
+        return False
+    return (ref - d).days <= max_age_days
+
+
 # --------------------------------------------------------------- version --
 
 def compute_version() -> dict:
@@ -257,27 +282,27 @@ def compute_version() -> dict:
 
 # ------------------------------------------------------------ highlights --
 
-def compute_best_day_since_highlight(song_map: dict, target_date_str: str | None) -> dict | None:
-    """The single strongest "best day since / ever / biggest of year|month" record for today.
+def compute_best_day_rows(target_date_str: str | None) -> list[dict]:
+    """All tracks' "best day since / ever" rows for today, filtered like the Twitter pipeline.
 
     Reuses best_day_since.py's own functions (same combined-track grouping,
     filters, and ranking it uses to decide what gets posted to Twitter) so
-    this highlight always matches what the pipeline would actually call a
+    these highlights always match what the pipeline would actually call a
     record day — it does not reimplement that logic.
     """
     if not target_date_str:
-        return None
+        return []
     try:
         target_date = _date.fromisoformat(target_date_str)
     except ValueError:
-        return None
+        return []
 
     try:
         tracks = best_day_since.load_tracks(include_extras=False)
         all_tracks = best_day_since.load_tracks(include_extras=True)
         history = best_day_since.load_history()
     except Exception:
-        return None
+        return []
 
     rows = []
     seen_families = set()
@@ -295,23 +320,106 @@ def compute_best_day_since_highlight(song_map: dict, target_date_str: str | None
         if row:
             rows.append(row)
 
-    rows = [r for r in rows if best_day_since.passes_filters(r, min_days=best_day_since.DEFAULT_MIN_DAYS)]
-    if not rows:
-        return None
-    rows.sort(key=best_day_since.sort_key, reverse=True)
-    best = rows[0]
+    return [r for r in rows if best_day_since.passes_filters(r, min_days=best_day_since.DEFAULT_MIN_DAYS)]
 
+
+def _best_day_item(row: dict, song_map: dict, item_type: str, target_date_str: str) -> dict:
     return {
-        "type": "best_day_since",
-        "title": best.get("title") or "—",
-        "value": best.get("daily_streams") or 0,
-        "image": (song_map.get(best.get("track_id")) or {}).get("image_url"),
-        "kind": best.get("kind"),
-        "days_since": best.get("days_since"),
-        "best_day_since": best.get("best_day_since"),
-        "is_biggest_day_of_year": bool(best.get("is_biggest_day_of_year")),
-        "is_biggest_day_of_month": bool(best.get("is_biggest_day_of_month")),
-        "date": best.get("date") or target_date_str,
+        "type": item_type,
+        "title": row.get("title") or "—",
+        "value": row.get("daily_streams") or 0,
+        "image": (song_map.get(row.get("track_id")) or {}).get("image_url"),
+        "kind": row.get("kind"),
+        "days_since": row.get("days_since"),
+        "best_day_since": row.get("best_day_since"),
+        "is_biggest_day_of_year": bool(row.get("is_biggest_day_of_year")),
+        "is_biggest_day_of_month": bool(row.get("is_biggest_day_of_month")),
+        "date": row.get("date") or target_date_str,
+    }
+
+
+def compute_best_day_highlights(song_map: dict, target_date_str: str | None) -> list[dict]:
+    """Up to two highlights: today's strongest record, plus its oldest-standing one.
+
+    `sort_key` ranks a same-day "best_ever" above everything else regardless
+    of `days_since`, so a fresh best-ever can bury a much older (more
+    impressive) "since <date>" record in the same pool. Surface that oldest
+    "since" row as a second, distinct highlight instead of losing it.
+    """
+    if not target_date_str:
+        return []
+    rows = compute_best_day_rows(target_date_str)
+    if not rows:
+        return []
+
+    items = []
+    top = max(rows, key=best_day_since.sort_key)
+    items.append(_best_day_item(top, song_map, "best_day_since", target_date_str))
+
+    since_rows = [r for r in rows if r.get("kind") == "since"]
+    if since_rows:
+        oldest = max(since_rows, key=lambda r: r.get("days_since") or 0)
+        if oldest.get("track_id") != top.get("track_id") and (oldest.get("days_since") or 0) > 0:
+            items.append(_best_day_item(oldest, song_map, "oldest_record", target_date_str))
+
+    return items
+
+
+def _region_rank_map(rows: list[dict]) -> dict[str, tuple[int, dict]]:
+    out = {}
+    for r in rows:
+        track_id = r.get("track_id")
+        rank = _rank(r)
+        if track_id and rank is not None:
+            out[track_id] = (rank, r)
+    return out
+
+
+def compute_regional_climb_highlight(song_map: dict) -> dict | None:
+    """Biggest same-region rank climb (day over day) across global/FR/US/UK charts.
+
+    Only a track present in both consecutive days for that region counts (a
+    brand-new chart entry is already covered by the chart_new highlight) —
+    picks the single largest climb across all four regions, so it only shows
+    up when the jump is actually exceptional.
+    """
+    def song_title(track_id):
+        return (song_map.get(track_id) or {}).get("title") or track_id
+
+    def song_image(track_id):
+        return (song_map.get(track_id) or {}).get("image_url")
+
+    best = None  # (jump, region, today_row, today_rank, prev_rank, today_date)
+    for region in _CHART_CSV_FILENAMES:
+        rows_all = load_chart_csv_rows(region)
+        dates = sorted({r.get("date") for r in rows_all if r.get("date")})
+        if len(dates) < 2:
+            continue
+        today_date, prev_date = dates[-1], dates[-2]
+        today_map = _region_rank_map([r for r in rows_all if r.get("date") == today_date])
+        prev_map = _region_rank_map([r for r in rows_all if r.get("date") == prev_date])
+        for track_id, (today_rank, today_row) in today_map.items():
+            prev_entry = prev_map.get(track_id)
+            if not prev_entry:
+                continue
+            prev_rank = prev_entry[0]
+            jump = prev_rank - today_rank
+            if jump >= _REGIONAL_CLIMB_THRESHOLD and (best is None or jump > best[0]):
+                best = (jump, region, today_row, today_rank, prev_rank, today_date)
+
+    if not best:
+        return None
+    jump, region, row, today_rank, prev_rank, today_date = best
+    track_id = row.get("track_id")
+    return {
+        "type": "regional_climb",
+        "title": row.get("song_name") or song_title(track_id) or "—",
+        "value": jump,
+        "image": song_image(track_id),
+        "region": region,
+        "rank": today_rank,
+        "previous_rank": prev_rank,
+        "date": today_date,
     }
 
 
@@ -333,10 +441,9 @@ def compute_highlights() -> list[dict]:
 
     items: list[dict] = []
 
-    # BEST DAY SINCE / EVER / BIGGEST OF YEAR-MONTH (today's strongest record, if any)
-    best_day_item = compute_best_day_since_highlight(song_map, latest_date)
-    if best_day_item:
-        items.append(best_day_item)
+    # BEST DAY SINCE / EVER / BIGGEST OF YEAR-MONTH (today's strongest record)
+    # + OLDEST RECORD (longest-standing "since" record, if distinct from it)
+    items.extend(compute_best_day_highlights(song_map, latest_date))
 
     # MOST STREAMED TODAY
     if today_data:
@@ -423,40 +530,43 @@ def compute_highlights() -> list[dict]:
                 "date": latest_date,
             })
 
-    # TOP ALBUM (TayBoard Albums #1)
+    # TOP ALBUM (TayBoard Albums #1) — only while the chart is <= 2 days old
     albums_payload = load_tayboard_snapshot("swift_top_albums")
     top_album = _first_rank_one(albums_payload.get("entries", []) if isinstance(albums_payload, dict) else [])
-    if top_album:
+    top_album_date = albums_payload.get("chart_date") or albums_payload.get("week_end")
+    if top_album and _within_days(top_album_date, latest_date, _TAYBOARD_MAX_AGE_DAYS):
         items.append({
             "type": "top_album",
             "title": top_album.get("title") or "—",
             "meta": top_album.get("points_display"),
             "image": top_album.get("image_url"),
-            "date": albums_payload.get("chart_date") or albums_payload.get("week_end"),
+            "date": top_album_date,
         })
 
-    # TOP ERA (TayBoard Eras #1)
+    # TOP ERA (TayBoard Eras #1) — only while the chart is <= 2 days old
     eras_payload = load_tayboard_snapshot("swift_top_eras")
     top_era = _first_rank_one(eras_payload.get("entries", []) if isinstance(eras_payload, dict) else [])
-    if top_era:
+    top_era_date = eras_payload.get("chart_date") or eras_payload.get("week_end")
+    if top_era and _within_days(top_era_date, latest_date, _TAYBOARD_MAX_AGE_DAYS):
         items.append({
             "type": "top_era",
             "title": top_era.get("title") or "—",
             "meta": top_era.get("points_display"),
             "image": top_era.get("image_url"),
-            "date": eras_payload.get("chart_date") or eras_payload.get("week_end"),
+            "date": top_era_date,
         })
 
-    # TAYBOARD #1 (weekly Swift Top 100)
+    # TAYBOARD #1 (weekly Swift Top 100) — only while the chart is <= 2 days old
     t100_payload = load_tayboard_snapshot("swift_top_100")
     t100_top = _first_rank_one(t100_payload.get("entries", []) if isinstance(t100_payload, dict) else [])
-    if t100_top:
+    t100_date = t100_payload.get("chart_date")
+    if t100_top and _within_days(t100_date, latest_date, _TAYBOARD_MAX_AGE_DAYS):
         items.append({
             "type": "tayboard_1",
             "title": t100_top.get("song_title") or t100_top.get("title") or "—",
             "meta": t100_top.get("points_display"),
             "image": t100_top.get("image_url"),
-            "date": t100_payload.get("chart_date"),
+            "date": t100_date,
         })
 
     # APPLE MUSIC GLOBAL #1
@@ -513,6 +623,11 @@ def compute_highlights() -> list[dict]:
                 "image": song_image(track_id),
                 "date": chart_latest,
             })
+
+    # REGIONAL CLIMB (biggest same-region rank jump across global/FR/US/UK)
+    regional_climb_item = compute_regional_climb_highlight(song_map)
+    if regional_climb_item:
+        items.append(regional_climb_item)
 
     return items
 

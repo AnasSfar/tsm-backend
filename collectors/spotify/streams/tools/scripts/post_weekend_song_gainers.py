@@ -16,7 +16,6 @@ SCRIPT_DIR = Path(__file__).resolve().parent          # streams/tools/scripts/
 ROOT = SCRIPT_DIR.parents[1]                          # streams/
 REPO_ROOT = SCRIPT_DIR.parents[4]                     # repo root
 COLLECTORS_ROOT = REPO_ROOT / "collectors"
-TWITTER_SESSION = ROOT.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json"
 COVERS_PATH = REPO_ROOT / "db" / "discography" / "covers.json"
 
 sys.path.insert(0, str(COLLECTORS_ROOT))              # collectors/
@@ -25,7 +24,10 @@ sys.path.insert(0, str(ROOT.parent))                  # collectors/spotify/
 sys.path.insert(0, str(SCRIPT_DIR))                   # streams/tools/scripts/
 
 from comp.song_card import render_song_card, slugify, write_song_card_png  # noqa: E402
-from core.album_emoji import album_emoji  # noqa: E402
+from twitter.albums import album_emoji  # noqa: E402
+from twitter.sessions import default_twitter_session  # noqa: E402
+TWITTER_SESSION = default_twitter_session(REPO_ROOT)
+from twitter.text import track_history_line  # noqa: E402
 from core.data_paths import update_streams_dir  # noqa: E402
 from core.twitter import post_with_image  # noqa: E402
 import history_store  # noqa: E402
@@ -251,7 +253,7 @@ def _build_tweet(row: dict, *, target_date: str) -> str:
     emoji = album_emoji(track.get("album"), fallback="")
     prefix = f"\U0001F4C8 | {emoji} " if emoji else "\U0001F4C8 | "
     title = track.get("title") or row["track_id"]
-    song_url = f"https://thetsmuseum.app/songs/{row['track_id']}"
+    song_history = track_history_line(row['track_id'])
     pct = float(row["pct"])
     date_phrase = _date_phrase(target_date)
     if random.choice(("bracket", "direction")) == "bracket":
@@ -259,7 +261,7 @@ def _build_tweet(row: dict, *, target_date: str) -> str:
     else:
         direction = "up" if pct >= 0 else "down"
         first_line = f'{prefix}"{title}" earned {_fmt_int(row["daily_today"])} streams, {direction} {_fmt_pct_abs(pct)}, {date_phrase}'
-    return f"{first_line}\n\nSee full track's history here : {song_url}"
+    return f"{first_line}\n\n{song_history}"
 
 
 def _pick_weekend_gainers(

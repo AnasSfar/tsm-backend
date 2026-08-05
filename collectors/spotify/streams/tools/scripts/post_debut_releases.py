@@ -29,18 +29,21 @@ REPO_ROOT = SCRIPT_DIR.parents[4]
 DB_DIR = REPO_ROOT / "db"
 ALBUMS_DIR = DB_DIR / "discography" / "albums"
 SONGS_PATH = DB_DIR / "discography" / "songs.json"
-TWITTER_SESSION = ROOT.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json"
 HANDLE = "@swiftiescharts"
 SITE_SETTINGS_KEY = "site_settings.json"
 DEFAULT_THEME_MODE = "theme-showgirl"
 FRONTEND_THEMES_CSS = REPO_ROOT.parent / "tsm-frontend" / "frontend" / "src" / "styles" / "themes.css"
 
+sys.path.insert(0, str(REPO_ROOT / "collectors"))
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT.parent))
 sys.path.insert(0, str(REPO_ROOT))
 from core.data_paths import first_existing_db_history, update_streams_dir  # noqa: E402
 from core.twitter import post_image_thread, post_with_image  # noqa: E402
 from collectors.comp import tables_image  # noqa: E402
+from twitter.links import streams_latest_url  # noqa: E402
+from twitter.sessions import default_twitter_session  # noqa: E402
+TWITTER_SESSION = default_twitter_session(REPO_ROOT)
 
 import generate_streams_image  # noqa: E402
 import generate_weekend_streams_image  # noqa: E402
@@ -1089,7 +1092,7 @@ def _build_post_threads(
             f"song:{group_key}:details" if show_version_details else f"song:{group_key}:total",
             (
                 f'"{title}" received {_fmt(daily_streams)} streams on the Spotify Counter{version_note}{movement} ({date_text}).\n\n'
-                "See full update here : https://thetsmuseum.app/streams/latest"
+                f"See full update here : {streams_latest_url()}"
             ),
             image_path,
         )]

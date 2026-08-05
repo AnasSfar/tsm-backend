@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import re
 import subprocess
 import sys
 import threading
@@ -934,6 +935,47 @@ def _album_gain_update_targets(stats_date: str, *, threshold_pct: float = ALBUM_
     return targets
 
 
+def _album_majority_positive_targets(stats_date: str) -> list[dict]:
+    """Albums where more than half the tracks had a positive day-over-day
+    daily-streams change, i.e. today's daily > yesterday's daily."""
+    try:
+        track_map = generate_albums_image.load_album_track_map()
+        today, yest, _week = generate_albums_image.load_history(stats_date)
+    except Exception as exc:
+        print(f"Album majority-positive scan skipped: {exc}")
+        return []
+
+    tracks_by_album: dict[str, list[str]] = {}
+    for track_id, info in track_map.items():
+        album = info.get("album") or ""
+        if not album:
+            continue
+        tracks_by_album.setdefault(album, []).append(track_id)
+
+    targets: list[dict] = []
+    for album, track_ids in tracks_by_album.items():
+        counted = 0
+        positive = 0
+        for track_id in track_ids:
+            today_daily = (today.get(track_id) or {}).get("daily_streams")
+            yest_daily = (yest.get(track_id) or {}).get("daily_streams")
+            if today_daily is None or yest_daily is None:
+                continue
+            counted += 1
+            if today_daily > yest_daily:
+                positive += 1
+        if counted == 0 or positive <= counted / 2:
+            continue
+        targets.append({
+            "album": album,
+            "positive_count": positive,
+            "track_count": counted,
+        })
+
+    targets.sort(key=lambda target: (target["positive_count"] / target["track_count"], target["positive_count"]), reverse=True)
+    return targets
+
+
 def _album_by_track_id(ctx: FinalizeContext) -> dict[str, str]:
     result: dict[str, str] = {}
     for section in ctx.load_album_sections_flat():
@@ -1016,11 +1058,74 @@ def _album_update_targets(ctx: FinalizeContext) -> list[str]:
     return list(ALBUM_UPDATE_TARGETS)
 
 
+def _post_one_album(
+    ctx: FinalizeContext,
+    state: dict[str, float],
+    album_img_script: Path,
+    album: str,
+) -> None:
+    """Generate + post a single album update card, honoring locks and completeness.
+
+    Shared by the targeted posts (ALBUM_UPDATE_TARGETS/gainers) and the
+    Monday/Friday all-albums sweep so both paths skip an album already
+    posted (by the other path or an earlier retry) instead of double-posting.
+    """
+    if album in ctx.posted_album_updates:
+        print(f"Album update already posted during streams run: {album}")
+        return
+    if not ctx.album_tracks_done_for(album, ctx.summary["stats_date"]):
+        try:
+            sections = ctx.load_album_sections_flat()
+            album_ids = {
+                ctx.extract_track_id(t.get("url") or t.get("spotify_url") or "")
+                for sec in sections if sec.get("album") == album
+                for t in sec.get("tracks", [])
+            } - {""}
+            done = ctx.load_history_track_ids_for_date(ctx.summary["stats_date"])
+            print(f"Album update skipped ({album}): {len(album_ids - done)}/{len(album_ids)} tracks manquants.")
+        except Exception:
+            print(f"Album update skipped ({album}): impossible de verifier les tracks.")
+        return
+
+    if (
+        not ctx.no_post_mode
+        and generate_album_update_image.album_update_already_posted(album, ctx.summary["stats_date"])
+    ):
+        lock_name = generate_album_update_image.album_update_lock_path(
+            album,
+            ctx.summary["stats_date"],
+        ).name
+        print(f"Album update already posted ({lock_name}): {album}")
+        return
+
+    print(f"Generating album update image: {album} ...")
+    album_cmd = [sys.executable, str(album_img_script), album, ctx.summary["stats_date"]]
+    if not ctx.no_post_mode:
+        album_cmd.append("--post")
+    try:
+        _run(
+            ctx,
+            album_cmd,
+            label=f"album update ({album})",
+            should_post=not ctx.no_post_mode,
+            state=state,
+        )
+    except SystemExit as exc:
+        print(f"Album update skipped after failure ({album}): {exc}")
+
+
 def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
+    """Targeted album posts (ALBUM_UPDATE_TARGETS + gain/gainer scans).
+
+    Runs first among the post steps so the flagship albums (Showgirl, TTPD)
+    go out before the rest of the daily posts."""
     album_img_script = ctx.script_dir / "tools" / "scripts" / "generate_album_update_image.py"
     if _is_weekend_stats_date(ctx.summary["stats_date"]):
         print("Album update posts skipped: no album cards on weekend stats dates.")
         return
+
+    weekday = date_cls.fromisoformat(ctx.summary["stats_date"]).weekday()
+
     gain_targets = _album_gain_update_targets(ctx.summary["stats_date"])
     if gain_targets:
         print(
@@ -1042,6 +1147,22 @@ def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
             )
         )
 
+    # Majority-positive scan (>50% of an album's tracks up day-over-day) only
+    # jumps the queue Tuesday-Thursday — the days the all-albums Mon/Fri sweep
+    # doesn't cover, so these albums would otherwise get no post at all that
+    # day. Decision 2026-08-05.
+    majority_targets = (
+        _album_majority_positive_targets(ctx.summary["stats_date"]) if weekday in (1, 2, 3) else []
+    )
+    if majority_targets:
+        print(
+            "Album update majority-positive scan: "
+            + ", ".join(
+                f"{target['album']} ({target['positive_count']}/{target['track_count']})"
+                for target in majority_targets
+            )
+        )
+
     albums_to_post: list[str] = _album_update_targets(ctx)
     for target in gain_targets:
         album = target["album"]
@@ -1051,49 +1172,13 @@ def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
         album = target["album"]
         if album not in albums_to_post:
             albums_to_post.append(album)
+    for target in majority_targets:
+        album = target["album"]
+        if album not in albums_to_post:
+            albums_to_post.append(album)
 
     for album in albums_to_post:
-        if album in ctx.posted_album_updates:
-            print(f"Album update already posted during streams run: {album}")
-            continue
-        if ctx.album_tracks_done_for(album, ctx.summary["stats_date"]):
-            if (
-                not ctx.no_post_mode
-                and generate_album_update_image.album_update_already_posted(album, ctx.summary["stats_date"])
-            ):
-                lock_name = generate_album_update_image.album_update_lock_path(
-                    album,
-                    ctx.summary["stats_date"],
-                ).name
-                print(f"Album update already posted ({lock_name}): {album}")
-                continue
-            print(f"Generating album update image: {album} ...")
-            album_cmd = [sys.executable, str(album_img_script), album, ctx.summary["stats_date"]]
-            if not ctx.no_post_mode:
-                album_cmd.append("--post")
-            try:
-                _run(
-                    ctx,
-                    album_cmd,
-                    label=f"album update ({album})",
-                    should_post=not ctx.no_post_mode,
-                    state=state,
-                )
-            except SystemExit as exc:
-                print(f"Album update skipped after failure ({album}): {exc}")
-            continue
-
-        try:
-            sections = ctx.load_album_sections_flat()
-            album_ids = {
-                ctx.extract_track_id(t.get("url") or t.get("spotify_url") or "")
-                for sec in sections if sec.get("album") == album
-                for t in sec.get("tracks", [])
-            } - {""}
-            done = ctx.load_history_track_ids_for_date(ctx.summary["stats_date"])
-            print(f"Album update skipped ({album}): {len(album_ids - done)}/{len(album_ids)} tracks manquants.")
-        except Exception:
-            print(f"Album update skipped ({album}): impossible de verifier les tracks.")
+        _post_one_album(ctx, state, album_img_script, album)
 
 
 def _post_albums_daily(ctx: FinalizeContext, state: dict[str, float]) -> None:
@@ -1118,27 +1203,61 @@ def _post_albums_daily(ctx: FinalizeContext, state: dict[str, float]) -> None:
     )
 
 
-def _post_all_albums_thread(ctx: FinalizeContext, state: dict[str, float]) -> None:
-    weekday = date_cls.fromisoformat(ctx.summary["stats_date"]).weekday()
+def _is_misc_album(name: str) -> bool:
+    norm = re.sub(r"[^a-z0-9]+", "_", (name or "").lower()).strip("_")
+    parts = set(norm.split("_"))
+    if "misc" in parts or "standalone" in parts:
+        return True
+    return norm in {"miscellaneous", "standalone_extras", "standalone_and_extras"}
+
+
+def _all_album_names(ctx: FinalizeContext) -> list[str]:
+    seen: list[str] = []
+    for section in ctx.load_album_sections_flat():
+        album = (section.get("album") or "").strip()
+        if not album or album in seen or _is_misc_album(album):
+            continue
+        seen.append(album)
+    return seen
+
+
+def _album_daily_total(album: str, stats_date: str) -> int:
+    sections, _canonical_name = generate_album_update_image.load_album_sections(album, stats_date)
+    if not sections:
+        return 0
+    hist = generate_album_update_image.load_history_for_album(sections, stats_date)
+    return sum(
+        int(hist.get(track["track_id"], {}).get("daily") or 0)
+        for section in sections
+        for track in section.get("tracks", [])
+    )
+
+
+def _post_all_albums(ctx: FinalizeContext, state: dict[str, float]) -> None:
+    """Every non-Misc album, posted independently (not as a thread), highest
+    daily gain first. Monday/Friday only, and always last among the post
+    steps (after recap/top eras/best-day-since/etc.) — decision 2026-08-05,
+    replacing the old grouped Monday/Friday thread."""
+    stats_date = ctx.summary["stats_date"]
+    weekday = date_cls.fromisoformat(stats_date).weekday()
     if weekday not in (0, 4):
-        print("All-albums thread skipped: posted on Monday/Friday stats dates only.")
+        print("All-albums posts skipped: posted on Monday/Friday stats dates only.")
         return
 
     if not ctx.no_post_mode and not ctx.summary.get("all_done"):
-        print("Skipping all-albums thread: not all tracks are done yet.")
+        print("Skipping all-albums posts: not all tracks are done yet.")
         return
 
-    thread_script = ctx.script_dir / "tools" / "scripts" / "post_all_albums_thread.py"
-    cmd = [sys.executable, str(thread_script), ctx.summary["stats_date"]]
-    if ctx.no_post_mode:
-        cmd.append("--no-post")
-    _run(
-        ctx,
-        cmd,
-        label="all-albums thread",
-        should_post=not ctx.no_post_mode,
-        state=state,
-    )
+    albums = _all_album_names(ctx)
+    if not albums:
+        print("[all-albums] No albums found.")
+        return
+
+    ranked = sorted(albums, key=lambda album: _album_daily_total(album, stats_date), reverse=True)
+
+    album_img_script = ctx.script_dir / "tools" / "scripts" / "generate_album_update_image.py"
+    for album in ranked:
+        _post_one_album(ctx, state, album_img_script, album)
 
 
 def _post_debut_releases(ctx: FinalizeContext, state: dict[str, float]) -> None:
@@ -1366,7 +1485,7 @@ def _regenerate_home_highlights_cache(ctx: FinalizeContext) -> None:
 # Étapes de post invocables individuellement via `update_streams.py --post-only`.
 POST_ONLY_STEPS = {
     "top-eras": _post_albums_daily,
-    "all-albums": _post_all_albums_thread,
+    "all-albums": _post_all_albums,
     "top20": _post_streams_image,
     "top45": _post_streams_image,
     "recap": _post_daily_recap_card,
@@ -1444,6 +1563,9 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                     post_step_failures.append(f"{step_label} ({exc})")
 
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
+            _guarded_post_step("targeted album updates", lambda: _post_album_updates(ctx, post_state))
+
+        if not ctx.debug_daily_mode and not ctx.local_test_mode:
             _guarded_post_step("debut posts", lambda: _post_debut_releases(ctx, post_state))
 
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
@@ -1457,8 +1579,6 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
 
         _guarded_post_step("top eras post", lambda: _post_albums_daily(ctx, post_state))
 
-        _guarded_post_step("all-albums thread", lambda: _post_all_albums_thread(ctx, post_state))
-
         _guarded_post_step("top 20 songs post", lambda: _post_streams_image(ctx, post_state))
 
         if ctx.debug_daily_mode or ctx.local_test_mode:
@@ -1466,8 +1586,6 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
 
         spotlight_thread = _start_spotlight_gainers(ctx)
 
-        with timer.step("album update posts"):
-            _post_album_updates(ctx, post_state)
         if spotlight_thread is not None:
             start = time.perf_counter()
             spotlight_thread.join()
@@ -1476,6 +1594,11 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
             if spotlight_errors:
                 print(f"stream highlights thread failed; continuing finalization: {spotlight_errors[0]}")
                 post_step_failures.append(f"stream highlights thread ({spotlight_errors[0]})")
+
+        # Always last: every non-Misc album, independently, highest gain first
+        # (Monday/Friday only) — see _post_all_albums.
+        _guarded_post_step("all-albums", lambda: _post_all_albums(ctx, post_state))
+
         _join_background_task(forecast_thread, "forecast/image refresh", timer)
 
         if ctx.test_mode:

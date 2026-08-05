@@ -1,25 +1,12 @@
 from __future__ import annotations
 
+import sys
+from pathlib import Path
 
-ALBUM_EMOJI = (
-    ("the life of a showgirl", "❤️‍🔥"),
-    ("the tortured poets department", "🤍"),
-    ("midnights", "💙"),
-    ("evermore", "🤎"),
-    ("folklore", "🩶"),
-    ("lover", "🩷"),
-    ("reputation", "🖤"),
-    ("1989", "🩵"),
-    ("red", "❤️"),
-    ("speak now", "💜"),
-    ("fearless", "💛"),
-    ("taylor swift", "💚"),
-)
+_COLLECTORS_ROOT = Path(__file__).resolve().parents[2]
+if str(_COLLECTORS_ROOT) not in sys.path:
+    sys.path.insert(0, str(_COLLECTORS_ROOT))
 
+from twitter.albums import ALBUM_HEARTS as ALBUM_EMOJI, album_emoji
 
-def album_emoji(album: str | None, *, fallback: str = "📈") -> str:
-    normalized = (album or "").casefold()
-    for key, emoji in ALBUM_EMOJI:
-        if key in normalized:
-            return emoji
-    return fallback
+__all__ = ["ALBUM_EMOJI", "album_emoji"]

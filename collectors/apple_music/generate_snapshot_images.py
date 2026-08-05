@@ -205,9 +205,9 @@ def _rank_change(rank: int, previous_rank: int | None, is_new_release: bool) -> 
         return ("NEW", "chg-new") if is_new_release else ("RE", "chg-re")
     delta = previous_rank - rank
     if delta > 0:
-        return f"▲{delta}", "chg-up"
+        return f"&#9650; {delta}", "chg-up"
     if delta < 0:
-        return f"▼{abs(delta)}", "chg-dn"
+        return f"&#9660; {abs(delta)}", "chg-dn"
     return "=", "chg-eq"
 
 
@@ -396,7 +396,7 @@ def generate(chart_date: str, region: str, genre: str | None, out_dir: Path) -> 
     html_doc = build_table_html(
         title=title,
         subtitle=f"Chart Snapshot · {date_fmt}",
-        col_heads=[("Pos", False), ("Chg", False), ("Track", False)],
+        col_heads=[("Pos", False), ("+/-", False), ("Track", False)],
         grid_cols="52px 64px minmax(240px,1fr)",
         rows_html=rows_html,
         handle=HANDLE,

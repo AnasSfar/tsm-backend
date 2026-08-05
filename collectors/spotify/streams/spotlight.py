@@ -58,11 +58,14 @@ ALBUMS_DIR      = DB_DIR / "discography" / "albums"
 COVERS_PATH     = DB_DIR / "discography" / "covers.json"
 
 sys.path.insert(0, str(REPO_ROOT))
+sys.path.insert(0, str(REPO_ROOT / "collectors"))  # collectors/ for shared twitter helpers
 sys.path.insert(0, str(SCRIPT_DIR.parent))  # collectors/spotify/ for core.*
 
 from collectors.comp import tables_image  # noqa: E402
 from core.data_paths import archived_db_file, update_streams_dir  # noqa: E402
-from core.album_emoji import album_emoji  # noqa: E402
+from twitter.albums import album_emoji  # noqa: E402
+from twitter.prefixes import spotlight_prefix, with_prefix  # noqa: E402
+from twitter.sessions import DEFAULT_ACCOUNT, twitter_account_config  # noqa: E402
 
 HISTORY_PATH    = (
     DB_DIR / "streams_history.csv"
@@ -70,17 +73,7 @@ HISTORY_PATH    = (
     else archived_db_file("streams_history.csv")
 )
 
-DEFAULT_ACCOUNT = "tsm"
-ACCOUNT_CONFIG = {
-    "flame": {
-        "handle": "@theflameofanas",
-        "session": SCRIPT_DIR.parent / "charts" / "fr" / "tools" / "json" / "twitter_session.json",
-    },
-    "tsm": {
-        "handle": "@swiftiescharts",
-        "session": SCRIPT_DIR.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json",
-    },
-}
+ACCOUNT_CONFIG = twitter_account_config(REPO_ROOT)
 PAGE_TIMEOUT_MS = 20_000
 
 # ── API GraphQL Spotify ───────────────────────────────────────────────────────
@@ -1416,9 +1409,8 @@ def main() -> None:
     tweet_lines = []
     combined_suffix = " across all versions" if args.combined else ""
     gainer_period = "weekly" if args.compare == "last-week" else "daily"
-    emoji = album_emoji(track.get("album"))
     tweet_lines.append(
-        f'{emoji} "{track["title"]}" was one of the biggest {gainer_period} gainers '
+        f'"{track["title"]}" was one of the biggest {gainer_period} gainers '
         f'on {date_fmt_long}{combined_suffix}. It received {daily_tweet} streams.'
     )
     if args.compare == "last-week":
@@ -1441,7 +1433,7 @@ def main() -> None:
             tweet_lines.append(f"The song earned its {row_label(best_day)}.")
     except Exception as e:
         print(f"Best-day-since note skipped: {e}")
-    tweet = "\n\n".join(tweet_lines)
+    tweet = with_prefix("\n\n".join(tweet_lines), spotlight_prefix(album_emoji(track.get("album"), fallback="🤍")))
     print(f"\nTweet : {tweet}")
     
     # Post to Twitter if requested

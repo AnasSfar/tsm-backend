@@ -12,15 +12,20 @@ from playwright.sync_api import sync_playwright
 
 SCRIPT_DIR = Path(__file__).resolve().parent          # streams/tools/scripts/
 ROOT = SCRIPT_DIR.parents[1]                          # streams/
-TWITTER_SESSION = ROOT.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json"
+REPO_ROOT = SCRIPT_DIR.parents[4]                     # repo root
+COLLECTORS_ROOT = REPO_ROOT / "collectors"
 BEST_DAY_THREAD_MIN_DAYS = 30
 BEST_DAY_THREAD_MAX_DAYS = 60
 
+sys.path.insert(0, str(COLLECTORS_ROOT))              # collectors/
 sys.path.insert(0, str(ROOT))                         # collectors/spotify/streams/
 sys.path.insert(0, str(ROOT.parent))                  # collectors/spotify/
 sys.path.insert(0, str(SCRIPT_DIR))                   # streams/tools/scripts/
 
-from core.album_emoji import album_emoji  # noqa: E402
+from twitter.albums import album_emoji  # noqa: E402
+from twitter.sessions import default_twitter_session  # noqa: E402
+TWITTER_SESSION = default_twitter_session(REPO_ROOT)
+from twitter.text import track_history_line  # noqa: E402
 from core.twitter import post_image_thread, post_with_image  # noqa: E402
 import best_day_since  # noqa: E402
 import generate_streams_image  # noqa: E402
@@ -603,7 +608,7 @@ def _build_tweet(item: dict, target_date: str) -> str:
         if best_label and not gainer_periods:
             lines[0] = f'{emoji} "{display_title}" earned its {best_label}.'
 
-        lines.append(f"See full track's history here : https://thetsmuseum.app/songs/{item['track_id']}")
+        lines.append(track_history_line(item['track_id']))
         return "\n\n".join(lines)
 
     tweet = compose(title)

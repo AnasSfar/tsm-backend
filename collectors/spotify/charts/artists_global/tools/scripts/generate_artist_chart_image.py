@@ -179,9 +179,9 @@ def rank_change_label(rank: int, previous_rank) -> tuple[str, str]:
         return "NEW", "chg-new"
     delta = int(previous_rank) - int(rank)
     if delta > 0:
-        return f"▲{delta}", "chg-up"
+        return f"&#9650; {delta}", "chg-up"
     elif delta < 0:
-        return f"▼{abs(delta)}", "chg-dn"
+        return f"&#9660; {abs(delta)}", "chg-dn"
     return "=", "chg-eq"
 
 
@@ -285,14 +285,15 @@ body{
   display:flex;align-items:center;justify-content:center;
 }
 /* Change */
-.col-chg{
-  font-size:11px;font-weight:700;
-  display:flex;align-items:center;justify-content:center;
+.col-chg,.solo-stat-val[class*="chg-"]{
+  display:inline-flex;align-items:center;justify-content:center;
+  justify-self:center;min-width:36px;padding:3px 7px;border-radius:20px;
+  font-size:12px;font-weight:800;line-height:1;letter-spacing:.01em;
 }
-.chg-up{color:#067647}
-.chg-dn{color:#b42318}
-.chg-eq{color:#9ca3af}
-.chg-new{color:#5bbde4;font-size:10px;font-weight:800}
+.col-chg.chg-up,.solo-stat-val.chg-up{background:#dcfce7;color:#15803d}
+.col-chg.chg-dn,.solo-stat-val.chg-dn{background:#fee2e2;color:#b91c1c}
+.col-chg.chg-eq,.solo-stat-val.chg-eq{background:#f1f5f9;color:#64748b}
+.col-chg.chg-new,.solo-stat-val.chg-new{background:#dbeafe;color:#1d4ed8;font-size:10px}
 /* Artist */
 .col-artist{display:flex;align-items:center;gap:10px;min-width:0}
 .avatar{
@@ -423,7 +424,7 @@ def build_top5_html(artists: list[dict], stats_date: str, header_img: Path | Non
   </div>
   <div class="col-heads">
     <span>Pos</span>
-    <span>Chg</span>
+    <span>+/-</span>
     <span>Artist</span>
     <span class="right">Peak</span>
     <span class="right">Streak</span>
@@ -454,7 +455,7 @@ def build_top10_html(artists: list[dict], stats_date: str, header_img: Path | No
   </div>
   <div class="col-heads">
     <span>Pos</span>
-    <span>Chg</span>
+    <span>+/-</span>
     <span>Artist</span>
     <span class="right">Peak</span>
     <span class="right">Streak</span>
@@ -500,7 +501,7 @@ def build_solo_html(ts_artist: dict, stats_date: str, header_img: Path | None, p
       <div class="solo-rank">Ranked #{rank} globally</div>
       <div class="solo-meta">
         <div class="solo-stat">
-          <span class="solo-stat-label">Change</span>
+          <span class="solo-stat-label">+/-</span>
           <span class="solo-stat-val {chg_cls}">{chg_label}</span>
         </div>
         <div class="solo-stat">
