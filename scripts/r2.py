@@ -683,7 +683,20 @@ def upload_static_data(
     # Charts CSVs: store in db/ as charts_history_<region>.csv.
     # Frontend API loader may try both `charts_history_<region>.csv` and `charts_<region>.csv`.
     # Upload both keys so R2-only production does not 404 on the first attempt.
-    csv_mappings = [] if worldwide_snapshot_only else [
+    # NOT gated by worldwide_snapshot_only: these CSVs are append-only history
+    # (unlike charts_worldwide.json/total_days.json, which are a "latest" pointer
+    # that a stale explicit-date rerun could regress). Prod's /api/charts has no
+    # local backend checkout to fall back to, so charts_history_<region>.csv is
+    # its *only* source for available_dates/rows on the global/fr/us/uk views —
+    # skipping it here left explicit-date catch-up runs (single date or
+    # --backfill --backfill-upload-r2) invisible on the live site even after a
+    # successful local collection (found 2026-08-05, missing 2026-08-03 global).
+    csv_mappings = [
+        ("charts_history_global.csv",       ["data/charts_global.csv",      "data/charts_history_global.csv"]),
+        ("charts_history_fr.csv",           ["data/charts_fr.csv",          "data/charts_history_fr.csv"]),
+        ("charts_history_us.csv",           ["data/charts_us.csv",          "data/charts_history_us.csv"]),
+        ("charts_history_uk.csv",           ["data/charts_uk.csv",          "data/charts_history_uk.csv"]),
+    ] if worldwide_snapshot_only else [
         ("charts_history_global.csv",       ["data/charts_global.csv",      "data/charts_history_global.csv"]),
         ("charts_history_fr.csv",           ["data/charts_fr.csv",          "data/charts_history_fr.csv"]),
         ("charts_history_us.csv",           ["data/charts_us.csv",          "data/charts_history_us.csv"]),

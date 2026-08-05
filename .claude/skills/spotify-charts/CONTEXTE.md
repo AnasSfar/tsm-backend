@@ -59,6 +59,17 @@ python .\collectors\spotify\charts\run_all_charts.py --post global fr cards
 python .\collectors\spotify\charts\run_all_charts.py --watch-release
 ```
 
+**Retry sur crash de la collecte worldwide (depuis 2026-08-05) :** si le
+runner `worldwide` (PHASE1) plante (code de retour non-zero — process crash,
+exception non geree, `TokenExpired`), `run_all_charts.py` retente desormais
+le subprocess `worldwide/daily.py` seul jusqu'a
+`SPOTIFY_WORLDWIDE_COLLECT_MAX_ATTEMPTS` fois (defaut `3`, pause
+`SPOTIFY_WORLDWIDE_COLLECT_RETRY_SECONDS` = `60s`) avant de marquer l'echec
+comme definitif pour la date. Avant ce fix, un crash isole (WARP/session qui
+lache en cours de fetch) rendait tout de suite `worldwide` fatal pour le run
+(pas de post cards/global/us ce jour-la), sans aucune nouvelle tentative. Ne
+couvre pas un blocage infini sans crash (ex: 429 illimite en live, voir
+"Pieges confirmes" plus haut) — seulement un process qui se termine en echec.
 `run_all_charts.py` collecte par defaut:
 
 - `artists_global/artist_global_daily.py`
@@ -146,6 +157,21 @@ agrege du chunk — avant ce fix, UNE date en echec dans un chunk faisait
 marquer TOUTES les dates du chunk comme failed dans le state JSON, meme
 celles reellement ecrites avec succes.
 
+**Regression du fix 2026-07-22 (trouvee et re-corrigee le 2026-08-05):** la
+branche 429 de `_fetch_region` avait perdu son check `FETCH_MAX_ATTEMPTS`
+(seules les branches timeout/erreur generique le respectaient encore) —
+probablement perdu lors d'un refactor ulterieur. En run quotidien live
+(`SPOTIFY_WORLDWIDE_FETCH_MAX_ATTEMPTS=0` = illimite par design), un 429
+persistant sur `global` — desormais toujours fetche en priorite et bloquant
+avant la Phase 2 (voir plus bas) — pouvait donc geler tout le run
+indefiniment sans jamais fetcher/poster le reste. Recorrige: la branche 429
+verifie de nouveau le cap avant de boucler. Le comportement par defaut du run
+quotidien live reste inchange (cap `0` = illimite, donc un vrai blocage 429
+prolonge peut toujours geler le run par design — c'est la regle "jamais
+sauter de la vraie donnee"); seul un cap explicite (backfill, ou
+`SPOTIFY_WORLDWIDE_FETCH_MAX_ATTEMPTS` positionne a la main) beneficie
+reellement de ce fix.
+
 **Snapshots backfill sans metadata (song_name/image_url absents) — cause et
 fix:** les snapshots `ts_worldwide_*.json` collectes ne contiennent que
 rank/streams/movement ; c'est `scripts/enrich_spotify_worldwide_snapshots.py`
@@ -168,6 +194,25 @@ prod — cf skill `tsm-map`) via `scripts/r2.py --charts-only
 `charts_worldwide.json`, les snapshots worldwide par date vers
 `history/charts_worldwide/{date}.json`, et les CSV `charts_history_*`; hash-check,
 donc idempotent).
+
+**Bug confirme et corrige (2026-08-05) : `--worldwide-snapshot-only` rendait
+les rattrapages invisibles sur le site prod.** Ce flag zeroait aussi
+`csv_mappings` dans `upload_static_data` (`scripts/r2.py`), donc
+`charts_history_<region>.csv` n'etait jamais reuploade lors d'un rattrapage
+explicite (single-date via `run_all_charts.py <date>`, ou backfill avec
+`--backfill-upload-r2`). Or en prod (Vercel serverless, pas de checkout
+backend local), `/api/charts?region=global|fr|us|uk` lit **exclusivement**
+`data/charts_history_<region>.csv` sur R2 pour `available_dates` et les
+`rows` — le fallback "snapshot worldwide local" (`load_spotify_chart_snapshot`)
+ne fonctionne qu'en dev. Resultat: une date rattrapee restait invisible sur le
+site indefiniment, meme apres collecte locale reussie et malgre
+`r2_exported.lock` cree (observe le 2026-08-05: le 3 aout collecte a 11h37
+restait absent de `thetsmuseum.app` jusqu'a correction). Corrige: les CSV
+`charts_history_*` sont desormais toujours uploades, meme en
+`--worldwide-snapshot-only` — seuls `charts_worldwide.json` et
+`charts_worldwide_total_days.json` restent proteges (ce sont de vrais
+pointeurs "latest" qu'un rattrapage sur une vieille date pourrait faire
+regresser ; les CSV, eux, sont un historique append-only sans ce risque).
 
 Pour ne plus avoir a faire ce enrich+upload a la main apres un backfill:
 `scripts/backfill_spotify_charts_history.py --upload-r2` (ignore si
@@ -289,6 +334,16 @@ Variables d'environnement:
 - `SPOTIFY_CHARTS_SINGLE_SESSION`: force l'utilisation d'une seule session dans
   le process.
 - `SPOTIFY_CHARTS_BEARER_CACHE_FILE`: cache bearer associe a une session.
+- `SPOTIFY_PRIORITY_CARD_POST_MAX_ATTEMPTS` / `SPOTIFY_PRIORITY_CARD_POST_RETRY_SECONDS`:
+  retry de la card standalone RE/NEW (`_post_priority_global_new_card`),
+  defaut `3` tentatives / `30s`.
+- `SPOTIFY_WORLDWIDE_COLLECT_MAX_ATTEMPTS` / `SPOTIFY_WORLDWIDE_COLLECT_RETRY_SECONDS`
+  (lus par `run_all_charts.py`, pas `daily.py`): retry du subprocess
+  `worldwide/daily.py` complet quand il plante (code retour non-zero),
+  defaut `3` tentatives / `60s`.
+- `SPOTIFY_FIRST_SINGLE_REGION_POST_MAX_ATTEMPTS` / `SPOTIFY_FIRST_SINGLE_REGION_POST_RETRY_SECONDS`
+  (lus par `generate_card_images.py`): retry du post standalone "first single
+  region entry", defaut `3` tentatives / `30s`.
 
 ## Snapshots worldwide
 
@@ -466,6 +521,34 @@ Fichiers typiques:
 - PNG de summary/card;
 - `cards_index.json`;
 - `posted_cards.json`.
+- `first_single_region_posted.json` (voir "First single region entry" ci-dessous).
+
+**First single region entry — postee standalone en priorite, hors thread
+(depuis 2026-08-05) :** quand une chanson charte pour la toute premiere fois
+(aucun pays avant, `has_prev_snapshot` requis) dans exactement UN pays
+(`_is_first_single_region_entry` dans `generate_card_images.py`), une
+chart_card dediee est generee (`{slug}_chart_card.png`, meme composant
+`comp/chart_card.py` que la card Global RE/NEW). Avant ce fix, cette image
+etait simplement inseree dans le gros thread multi-images `cards` (postee via
+`post_image_thread`, ordre selon `_card_priority` parmi ~80 autres cards) —
+donc noyee, pas vraiment "en priorite". Desormais elle est **retiree du
+thread** et postee individuellement en tweet standalone
+(`_post_first_single_region_standalone`, retry jusqu'a
+`SPOTIFY_FIRST_SINGLE_REGION_POST_MAX_ATTEMPTS` fois, defaut `3`, pause
+`SPOTIFY_FIRST_SINGLE_REGION_POST_RETRY_SECONDS` = `30s`), suivie par son
+propre lock `first_single_region_posted.json` (independant de
+`posted_cards.json`, cle `{slug}_chart_card`). L'image est generee que `--post`
+soit passe ou non (comme les autres cards), seule la publication est
+conditionnelle.
+
+**Badge NEW vs RE (corrige le 2026-08-05) :** `_render_single_region_chart_card_html`
+affichait toujours le badge `"RE"`, meme pour un vrai premier debut, car
+`_is_first_single_region_entry` ne distingue pas NEW vs RE (elle sait juste
+que la chanson n'etait dans aucun pays la veille). Corrige : nouveau helper
+`_single_region_badge(entry)` qui lit `movement`/`is_re_entry` de l'entree
+Spotify de ce pays (meme signal deja utilise par `_build_tweet` pour choisir
+entre "re-entered" et "charted on Spotify") — badge `"RE"` seulement si
+`movement == "RE"` ou `is_re_entry` est vrai, `"NEW"` sinon.
 
 **Retry de la publication (depuis 2026-07-30) :** aucun chemin de post X
 (single ou thread, `post_with_image`/`post_image_thread` dans
@@ -476,8 +559,26 @@ complet a `generate_card_images.py` jusqu'a `SPOTIFY_CARDS_POST_MAX_ATTEMPTS`
 fois (defaut `3`, pause `SPOTIFY_CARDS_POST_RETRY_SECONDS` = `30s` entre
 tentatives), et passe `--force` sur la derniere tentative (regenere les PNG
 avant de reposter). Les autres etapes de post (`global-post`, `us-post`,
-`priority-global-highlights-*`) n'ont toujours pas de retry — un echec y
+`priority-global-highlights-worldwide`) n'ont toujours pas de retry — un echec y
 reste fatal pour la date.
+
+**Retry de la card standalone RE/NEW (depuis 2026-08-05) :** le thread Python
+de fond `_post_priority_global_new_card` dans `worldwide/daily.py` (qui
+appelle `post_global_new_releases.py <date> --post`, PAS `--post-worldwide`)
+n'avait aucun retry — une erreur X transitoire faisait echouer l'appel une
+seule fois, silencieusement (juste un `[WARN]` dans les logs). Comme
+`generate_card_images.py` (etape `cards`, fil de tweets separe et sans
+rapport, deja retry par ailleurs) rend lui aussi un chart_card highlight
+via `comp/chart_card.py` pour toute "first single region entry" et le poste
+dans son propre thread multi-images (voir `_is_first_single_region_entry` /
+`to_post` dans `generate_card_images.py`), la chanson restait visible quelque
+part sur le compte — donnant l'impression que "c'est dans le thread" — alors
+que le VRAI tweet dedie standalone (`post_global_new_releases.py --post`,
+cense passer en priorite, seul, avant le reste) ne partait jamais. Corrige :
+`_post_priority_global_new_card` retente maintenant jusqu'a
+`SPOTIFY_PRIORITY_CARD_POST_MAX_ATTEMPTS` fois (defaut `3`, pause
+`SPOTIFY_PRIORITY_CARD_POST_RETRY_SECONDS` = `30s`), `--force` sur la
+derniere tentative.
 
 Priority Global NEW/RE cards:
 
