@@ -118,6 +118,11 @@ TS_NAME         = "Taylor Swift"
 SEMAPHORE       = int(os.getenv("SPOTIFY_WORLDWIDE_SEMAPHORE", "1"))
 FETCH_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_WORLDWIDE_FETCH_MAX_ATTEMPTS", "0"))
 RATE_LIMIT_MIN_SECONDS = int(os.getenv("SPOTIFY_WORLDWIDE_RATE_LIMIT_MIN_SECONDS", "20"))
+# Cas "chart pas encore propage" (URL datee 404, /latest 200 mais pointe encore sur la veille):
+# toujours borne, meme en run quotidien live (FETCH_MAX_ATTEMPTS=0/illimite ne s'applique pas
+# ici expres, pour eviter un hang si la region ne publie vraiment pas ce jour-la).
+NOT_FOUND_RETRY_ATTEMPTS = int(os.getenv("SPOTIFY_WORLDWIDE_NOT_FOUND_RETRY_ATTEMPTS", "3"))
+NOT_FOUND_RETRY_SECONDS = int(os.getenv("SPOTIFY_WORLDWIDE_NOT_FOUND_RETRY_SECONDS", "20"))
 PRIORITY_CARD_POST_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_PRIORITY_CARD_POST_MAX_ATTEMPTS", "3"))
 PRIORITY_CARD_POST_RETRY_SECONDS = int(os.getenv("SPOTIFY_PRIORITY_CARD_POST_RETRY_SECONDS", "30"))
 REQUEST_INTERVAL_SECONDS = float(os.getenv("SPOTIFY_WORLDWIDE_REQUEST_INTERVAL_SECONDS", "2.0"))
@@ -863,6 +868,7 @@ async def _fetch_region(
     url = f"{_API_BASE}/{chart_id}/{chart_date}"
     latest_url = f"{_API_BASE}/{chart_id}/latest"
     attempt = 0
+    not_found_attempts = 0
     while True:
         attempt += 1
         headers = {**base_headers, "Authorization": f"Bearer {pool.current}"}
@@ -898,9 +904,18 @@ async def _fetch_region(
                                     rows = _parse_ts_entries(latest_data)
                                     print(f"  [{region:>6}] {len(rows)} TS entries ({chart_date}, via latest)")
                                     return region, rows
+                                if not_found_attempts < NOT_FOUND_RETRY_ATTEMPTS:
+                                    not_found_attempts += 1
+                                    print(
+                                        f"  [{region:>6}] 404 date, latest={latest_date or 'unknown'} "
+                                        f"- pas encore propage, retry dans {NOT_FOUND_RETRY_SECONDS}s "
+                                        f"(tentative {not_found_attempts}/{NOT_FOUND_RETRY_ATTEMPTS})"
+                                    )
+                                    await asyncio.sleep(NOT_FOUND_RETRY_SECONDS)
+                                    continue
                                 print(
                                     f"  [{region:>6}] 404 date, latest={latest_date or 'unknown'} "
-                                    f"- no chart for {chart_date}"
+                                    f"- no chart for {chart_date} (apres {not_found_attempts} retry)"
                                 )
                                 return region, []
                             if latest_resp.status == 404:

@@ -133,6 +133,21 @@ Racine:
 - Les non-extra actifs doivent etre complets avant export/post final.
 - Les extras peuvent etre pending/estimated seulement selon les regles du code
   et de `data-rules`.
+- Baisse de total accepte pour les extras (ajoute 2026-08-06) : dans
+  `try_apply_track_update` (`update_streams.py`), quand `total < last_total`
+  pour un track `chart_extra=true` (hors cas `missing_previous_day_total`),
+  la baisse est acceptee directement (`reason="lower_than_previous_extra"`,
+  `real_update=True`, `daily` reste vide via `compute_daily` qui renvoie
+  `None` sur un diff negatif) au lieu de rester `pending` en attendant le
+  1er du mois comme un non-extra. Avant ce fix, une extra en baisse hors
+  1er du mois recevait `reason="lower_than_previous_not_month_start"` et
+  restait bloquee indefiniment: la porte de sortie automatique du retry loop
+  (`_complete_same_total_extra_as_zero`) ne gere que `reason=="same_total"`,
+  donc ce cas retentait a l'infini (observe: retry round 1105) sans jamais
+  fermer la collection ni debloquer le post final. Les non-extra gardent le
+  comportement inchange (baisse acceptee seulement le 1er du mois, notif
+  ntfy `chart_increasing` incluse — cette notif ne se declenche pas pour
+  `lower_than_previous_extra`).
 - Pour toute correction historique, comparer DB, snapshots et exports affectes.
 - Convention `collection_incident_*` (ajoutee 2026-08-01) : quand le total
   scrape lui-meme est fige/faux sur une fenetre connue pour un non-extra

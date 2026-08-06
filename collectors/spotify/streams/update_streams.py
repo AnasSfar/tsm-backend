@@ -605,6 +605,13 @@ def try_apply_track_update(
             # hasn't caught up to that figure yet, this isn't a real regression.
             reason = "missing_previous_day_total"
             real_update = False
+        elif track.get("chart_extra"):
+            # Extras (covers, wind ensemble versions, etc.) aren't posted and
+            # aren't subject to the "streams never decrease" guarantee we hold
+            # non-extra actives to â€” a real total drop here is accepted as-is
+            # instead of blocking the run forever waiting for month-start.
+            reason = "lower_than_previous_extra"
+            real_update = True
         else:
             reason = "lower_than_previous"
             try:

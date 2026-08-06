@@ -140,6 +140,8 @@ CARDS_POST_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_CARDS_POST_MAX_ATTEMPTS", "3"))
 CARDS_POST_RETRY_SECONDS = int(os.getenv("SPOTIFY_CARDS_POST_RETRY_SECONDS", "30"))
 WORLDWIDE_COLLECT_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_WORLDWIDE_COLLECT_MAX_ATTEMPTS", "3"))
 WORLDWIDE_COLLECT_RETRY_SECONDS = int(os.getenv("SPOTIFY_WORLDWIDE_COLLECT_RETRY_SECONDS", "60"))
+REGIONAL_POST_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_REGIONAL_POST_MAX_ATTEMPTS", "3"))
+REGIONAL_POST_RETRY_SECONDS = int(os.getenv("SPOTIFY_REGIONAL_POST_RETRY_SECONDS", "30"))
 PLAYWRIGHT_LAUNCH_TIMEOUT_MS = int(os.getenv("SPOTIFY_PLAYWRIGHT_LAUNCH_TIMEOUT_MS", "15000"))
 PLAYWRIGHT_GOTO_TIMEOUT_MS = int(os.getenv("SPOTIFY_PLAYWRIGHT_GOTO_TIMEOUT_MS", "15000"))
 PLAYWRIGHT_TOKEN_WAIT_SECONDS = int(os.getenv("SPOTIFY_PLAYWRIGHT_TOKEN_WAIT_SECONDS", "10"))
@@ -1329,6 +1331,22 @@ def _verify_regional_posts(
             env=env,
             verbose=verbose,
         )
+        for attempt in range(2, REGIONAL_POST_MAX_ATTEMPTS + 1):
+            if rc == 0:
+                break
+            print(
+                f"[WARN] {name}-post en echec, nouvelle tentative {attempt}/{REGIONAL_POST_MAX_ATTEMPTS} "
+                f"dans {REGIONAL_POST_RETRY_SECONDS}s..."
+            )
+            time.sleep(REGIONAL_POST_RETRY_SECONDS)
+            rc = _run(
+                f"{name}-post",
+                script,
+                args,
+                dry_run=False,
+                env=env,
+                verbose=verbose,
+            )
         if rc != 0:
             failures.append((f"{name}-post", rc))
     return failures

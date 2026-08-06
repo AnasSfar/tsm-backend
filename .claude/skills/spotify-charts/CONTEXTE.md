@@ -316,6 +316,22 @@ meme temps que) les autres regions, sans garantie d'ordre. Regle produit:
 ne jamais lancer le fetch des autres regions worldwide avant que `global`
 soit confirme (ou explicitement skip apres le cap de tentatives).
 
+**Retry sur chart pas encore propage (corrige le 2026-08-06) :** le cas 404
+sur l'URL datee + `/latest` 200 mais pointant encore sur la veille (ex.
+`global` 404 pour `2026-08-05`, `/latest` renvoie `2026-08-04`) ne retentait
+jamais malgre le commentaire existant qui le laissait penser — seules les
+branches 429/timeout/erreur generique du meme `_fetch_region` respectaient un
+cap de tentatives. Un seul essai concluait donc a tort "pas de chart pour
+cette date" en cas de simple decalage de propagation CDN Spotify, meme
+observe en prod alors qu'une autre region avait deja bascule sur la nouvelle
+date au meme moment (preuve que le chart existait deja cote Spotify). Corrige:
+cette branche precise retente desormais jusqu'a
+`SPOTIFY_WORLDWIDE_NOT_FOUND_RETRY_ATTEMPTS` fois (defaut `3`, pause
+`SPOTIFY_WORLDWIDE_NOT_FOUND_RETRY_SECONDS` = `20s`) avant d'abandonner. Cap
+volontairement independant de `FETCH_MAX_ATTEMPTS` (illimite par defaut en run
+live) pour ne pas risquer un hang si la region ne publie vraiment pas ce
+jour-la.
+
 Variables d'environnement:
 
 - `SPOTIFY_WORLDWIDE_SEMAPHORE`: concurrence regions, defaut `10`, backfill
@@ -330,6 +346,12 @@ Variables d'environnement:
   2026-07-30 sur `global`). Le wrapper de backfill force `1` explicitement
   (`run_all_charts.py`), donc le comportement backfill ne change pas meme si
   le defaut interne de `daily.py` change.
+- `SPOTIFY_WORLDWIDE_NOT_FOUND_RETRY_ATTEMPTS` / `SPOTIFY_WORLDWIDE_NOT_FOUND_RETRY_SECONDS`:
+  retry specifique au cas "URL datee 404, `/latest` 200 mais pointe encore sur
+  la veille" (voir "Retry sur chart pas encore propage" plus bas), defaut `3`
+  tentatives / `20s`. Toujours borne, meme en run quotidien live — contrairement
+  a `FETCH_MAX_ATTEMPTS` (defaut `0` = illimite en live), pour eviter un hang si
+  la region ne publie vraiment pas ce jour-la.
 - `SPOTIFY_CHARTS_SESSION_FILE`: session Spotify a utiliser.
 - `SPOTIFY_CHARTS_SINGLE_SESSION`: force l'utilisation d'une seule session dans
   le process.
@@ -344,6 +366,9 @@ Variables d'environnement:
 - `SPOTIFY_FIRST_SINGLE_REGION_POST_MAX_ATTEMPTS` / `SPOTIFY_FIRST_SINGLE_REGION_POST_RETRY_SECONDS`
   (lus par `generate_card_images.py`): retry du post standalone "first single
   region entry", defaut `3` tentatives / `30s`.
+- `SPOTIFY_REGIONAL_POST_MAX_ATTEMPTS` / `SPOTIFY_REGIONAL_POST_RETRY_SECONDS`
+  (lus par `run_all_charts.py`): retry de `global-post`/`fr-post`/`us-post`
+  (`_verify_regional_posts`), defaut `3` tentatives / `30s`.
 
 ## Snapshots worldwide
 
@@ -558,8 +583,19 @@ entre "re-entered" et "charted on Spotify") — badge `"RE"` seulement si
 complet a `generate_card_images.py` jusqu'a `SPOTIFY_CARDS_POST_MAX_ATTEMPTS`
 fois (defaut `3`, pause `SPOTIFY_CARDS_POST_RETRY_SECONDS` = `30s` entre
 tentatives), et passe `--force` sur la derniere tentative (regenere les PNG
-avant de reposter). Les autres etapes de post (`global-post`, `us-post`,
-`priority-global-highlights-worldwide`) n'ont toujours pas de retry — un echec y
+avant de reposter).
+
+**Retry `global-post`/`fr-post`/`us-post` (depuis 2026-08-05) :** meme
+`_verify_regional_posts` (le sous-appel `daily.py --post-only` par region)
+n'avait aucun retry — confirme en prod (echec X, puis succes seulement apres
+un rerun manuel/Task Scheduler). Safe a retenter tel quel: `posted.lock` n'est
+ecrit qu'apres succes cote `global/fr/us daily.py` (jamais sur echec), donc
+relancer `--post-only` sans `--force` ne peut pas double-poster. Retente
+maintenant jusqu'a `SPOTIFY_REGIONAL_POST_MAX_ATTEMPTS` fois (defaut `3`,
+pause `SPOTIFY_REGIONAL_POST_RETRY_SECONDS` = `30s`), memes args a chaque
+tentative (pas de `--force` ajoute automatiquement — `--force` ici supprime le
+lock et relance le pipeline complet, pas juste "regenere l'image"). Seul
+`priority-global-highlights-worldwide` n'a toujours pas de retry — un echec y
 reste fatal pour la date.
 
 **Retry de la card standalone RE/NEW (depuis 2026-08-05) :** le thread Python
