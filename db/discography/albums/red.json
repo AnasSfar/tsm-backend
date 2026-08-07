@@ -5,7 +5,7 @@
   "sections": [
     {
       "section": "standard_edition",
-      "track_count": 33,
+      "track_count": 34,
       "chart_extra": false,
       "tracks": [
         {
@@ -1453,22 +1453,14 @@
           "role": "album_track",
           "release_edition": "standard",
           "tags": []
-        }
-      ]
-    },
-    {
-      "album": "Red",
-      "section": "misc_standalone",
-      "track_count": 1,
-      "chart_extra": false,
-      "tracks": [
+        },
         {
           "title": "Ronan",
           "url": "https://open.spotify.com/intl-fr/track/0Nw8hv79MLJa1yjtsEgz08",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 2,
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 20,
           "base_title": "Ronan",
           "album": "Red",
           "primary_artist": "Taylor Swift",
@@ -1478,7 +1470,7 @@
           ],
           "title_clean": "Ronan",
           "song_family": "ronan",
-          "version_tag": "standalone",
+          "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dbe6e4dd1b2a61e375a12c63",
           "display_era": "Red",
           "historical_track_ids": [],
@@ -1497,19 +1489,25 @@
           "genre_canonical_key": "family:ronan",
           "filter_tags": [
             "solo",
-            "standalone"
+            "album_track"
           ],
           "filter_tag_sources": {
             "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type"
+            "album_track": "high:section_or_display_section"
           },
           "on_album": true,
-          "role": "extra",
-          "extra_type": "other",
-          "display_album": "Red",
-          "tags": []
+          "role": "album_track",
+          "tags": [],
+          "release_edition": "standard"
         }
       ]
+    },
+    {
+      "album": "Red",
+      "section": "misc_standalone",
+      "track_count": 0,
+      "chart_extra": false,
+      "tracks": []
     },
     {
       "album": "Red",

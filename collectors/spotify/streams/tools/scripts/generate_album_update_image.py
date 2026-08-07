@@ -1564,8 +1564,15 @@ def _best_day_labels_for_sections(
                 history,
                 target,
             )
+            # This table shows each row's own solo daily/CHG numbers, never a
+            # family-combined sum. A "combined" row's record can be set by a
+            # different version's streams (e.g. Red (Taylor's Version)) even
+            # while this row's own daily is down — showing the star here would
+            # contradict the CHG the row displays, so combined records are
+            # skipped on this per-album view.
             if (
                 row
+                and not row.get("combined")
                 and row.get("kind") == "since"
                 and best_day_since.passes_filters(row, min_days=min_days)
             ):
@@ -1864,10 +1871,17 @@ def _format_best_since_long(value: object) -> str:
 
 def _best_day_post_label(row: dict) -> str:
     if row.get("is_biggest_day_of_year"):
-        return "BIGGEST DAY of the year"
-    if row.get("is_biggest_day_of_month"):
-        return "BIGGEST DAY of the month"
-    return f"BEST DAY since {_format_best_since_long(row.get('best_day_since'))}"
+        label = "BIGGEST DAY of the year"
+    elif row.get("is_biggest_day_of_month"):
+        label = "BIGGEST DAY of the month"
+    else:
+        label = f"BEST DAY since {_format_best_since_long(row.get('best_day_since'))}"
+    # Same rule as best_day_since.row_label: a combined record is set by the
+    # summed family total (e.g. original + Taylor's Version), not this track's
+    # own streams, so the post text must flag it.
+    if row.get("combined"):
+        label = f"{label} (combined)"
+    return label
 
 
 def _build_album_post_text(album_name: str, target_date: str) -> str:

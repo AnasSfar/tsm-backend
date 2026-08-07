@@ -575,12 +575,19 @@ def format_long_date(value: str) -> str:
 
 def row_label(row: dict) -> str:
     if row["kind"] == "best_ever":
-        return "best day ever"
-    if row.get("is_biggest_day_of_year"):
-        return "biggest day of the year"
-    if row.get("is_biggest_day_of_month"):
-        return "biggest day of the month"
-    return f"best day since {format_long_date(row['best_day_since'])}"
+        label = "best day ever"
+    elif row.get("is_biggest_day_of_year"):
+        label = "biggest day of the year"
+    elif row.get("is_biggest_day_of_month"):
+        label = "biggest day of the month"
+    else:
+        label = f"best day since {format_long_date(row['best_day_since'])}"
+    # A "combined" row's record is set by the summed streams of every version
+    # in the song family (e.g. original + Taylor's Version), not this track
+    # alone — callers must say so wherever the label is posted publicly.
+    if row.get("combined"):
+        label = f"{label} (combined)"
+    return label
 
 
 def main() -> None:

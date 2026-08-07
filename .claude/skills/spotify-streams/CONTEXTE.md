@@ -257,3 +257,15 @@ duplication.
   quelques tracks reputation/Lover sans ligne a des dates anciennes) : ca
   s'affiche en tirets `-`, pas en NEW ni en donnee inventee — c'est attendu
   tant que l'historique n'est pas backfille pour ces track_id.
+- `compute_best_day_since_combined` retombe sur la somme `song_family` (toutes
+  versions, ex. "Red" original + "Red (Taylor's Version)") seulement quand le
+  record solo du track echoue. Le tableau `generate_album_update_image.py`
+  affiche des chiffres DAILY/CHG solo par ligne — jamais montrer l'etoile
+  `★ ... since ...` sur ce tableau quand `row["combined"]` est vrai (sinon
+  l'etoile contredit un CHG negatif affiche a cote, car le record vient d'une
+  autre version). `_best_day_labels_for_sections` filtre deja `not
+  row.get("combined")`. Partout ou un record combined est quand meme annonce
+  (post Twitter, song card, recap) le texte doit le dire : `row_label()` /
+  `_best_day_post_label()` ajoutent automatiquement le suffixe `(combined)`
+  quand `row["combined"]` est vrai — ne pas dupliquer cette logique ailleurs,
+  passer par ces fonctions.
