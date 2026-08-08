@@ -242,6 +242,25 @@ duplication.
 
 ## Pieges
 
+- Bug fixe le 2026-08-08 : `generate_streams_image.py::load_song_db()` (et
+  `_get_song_family_single_image_map()`, meme fichier) ne lisaient que
+  `albums/*.json` + `songs.json`, contrairement au chargeur canonique
+  `history_store.py::load_extra_sections_flat()` qui inclut aussi
+  `features.json` et `misc.json`. Consequence : tout track standalone/extra
+  ou feature (ex. "I Knew It, I Knew You", `misc.json`, edition `extras`)
+  etait bien collecte dans `streams_history.csv` (donnees reelles, daily
+  correct) mais disparaissait silencieusement du top N genere — `_dedup_by_title`
+  fait `song_db.get(tid)` puis `continue` si absent, donc la ligne est droppee
+  sans erreur ni log, meme si son daily aurait du la placer en haut du
+  classement (observe : #2 daily manquant, tout le monde decale d'un rang
+  sans que ce soit visible). Fix : `load_song_db()` et
+  `_get_song_family_single_image_map()` boucent maintenant sur
+  `("songs.json", "features.json", "misc.json")` comme `history_store.py`.
+  Reflexe a garder : tout nouveau chargeur de catalogue ecrit a la main dans
+  un script `generate_*`/`post_*` doit couvrir les 3 fichiers extras, pas
+  seulement `songs.json` — sinon un track qui streame fort mais qui n'est pas
+  sur un album (single hors-album, feature, bonus) peut manquer dans
+  n'importe quel classement/top N genere depuis ce chargeur.
 - Un run manuel sans le `.bat` peut ne pas laisser le meme log scheduler.
 - WARP ou Spotify peuvent bloquer longtemps; ne pas masquer par timeouts qui
   publient partiel.

@@ -139,12 +139,13 @@ def load_song_db() -> dict:
             except Exception as e:
                 print(f"Erreur {album_file.name}: {e}")
 
-    songs_json = DISCOGRAPHY_ROOT / "songs.json"
-    if songs_json.exists():
-        try:
-            _consume_sections(json.loads(songs_json.read_text(encoding="utf-8-sig")), "songs.json")
-        except Exception as e:
-            print(f"Erreur songs.json: {e}")
+    for extra_name in ("songs.json", "features.json", "misc.json"):
+        extra_json = DISCOGRAPHY_ROOT / extra_name
+        if extra_json.exists():
+            try:
+                _consume_sections(json.loads(extra_json.read_text(encoding="utf-8-sig")), extra_name)
+            except Exception as e:
+                print(f"Erreur {extra_name}: {e}")
     return result
 
 
@@ -272,18 +273,19 @@ def _get_song_family_single_image_map() -> dict:
                     if song_family and single_image and str(single_image).startswith("http"):
                         family_map[song_family] = single_image
 
-    songs_json = DISCOGRAPHY_ROOT / "songs.json"
-    if songs_json.exists():
-        try:
-            groups = json.loads(songs_json.read_text(encoding="utf-8-sig"))
-        except Exception:
-            groups = []
-        for group in groups:
-            for t in group.get("tracks", []):
-                song_family = t.get("song_family", "")
-                single_image = (t.get("single_image") or "").strip()
-                if song_family and single_image and str(single_image).startswith("http"):
-                    family_map[song_family] = single_image
+    for extra_name in ("songs.json", "features.json", "misc.json"):
+        extra_json = DISCOGRAPHY_ROOT / extra_name
+        if extra_json.exists():
+            try:
+                groups = json.loads(extra_json.read_text(encoding="utf-8-sig"))
+            except Exception:
+                groups = []
+            for group in groups:
+                for t in group.get("tracks", []):
+                    song_family = t.get("song_family", "")
+                    single_image = (t.get("single_image") or "").strip()
+                    if song_family and single_image and str(single_image).startswith("http"):
+                        family_map[song_family] = single_image
 
     return family_map
 
