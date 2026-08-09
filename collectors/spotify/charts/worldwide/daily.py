@@ -105,6 +105,8 @@ GLOBAL_NEW_RELEASES_SCRIPT = ROOT / "collectors" / "spotify" / "charts" / "world
 
 WEBSITE_SONGS_PATH = first_existing(WEB_EXPORT_DATA_DIR / "songs.json", LEGACY_WEBSITE_DATA_DIR / "songs.json")
 DISCO_SONGS_PATH   = ROOT / "db" / "discography" / "songs.json"
+DISCO_MISC_PATH     = ROOT / "db" / "discography" / "misc.json"
+DISCO_FEATURES_PATH = ROOT / "db" / "discography" / "features.json"
 DISCO_ALBUMS_DIR   = ROOT / "db" / "discography" / "albums"
 MANUAL_MAP_PATH    = ROOT / "scripts" / "chart_title_to_track_id.json"
 
@@ -230,10 +232,21 @@ def _iter_website_songs() -> Iterable[Dict[str, Any]]:
 
 
 def _iter_disco_tracks() -> Iterable[Dict[str, Any]]:
-    if DISCO_SONGS_PATH.exists():
-        data = _load_json(DISCO_SONGS_PATH)
-        if isinstance(data, list):
-            yield from (x for x in data if isinstance(x, dict))
+    for extra_path in (DISCO_SONGS_PATH, DISCO_FEATURES_PATH, DISCO_MISC_PATH):
+        if not extra_path.exists():
+            continue
+        data = _load_json(extra_path)
+        if not isinstance(data, list):
+            continue
+        for section in data:
+            if not isinstance(section, dict):
+                continue
+            album_name = section.get("album", "")
+            for track in (section.get("tracks") or []):
+                if isinstance(track, dict):
+                    merged = {**track}
+                    merged.setdefault("album", album_name)
+                    yield merged
     if DISCO_ALBUMS_DIR.exists():
         for album_file in sorted(DISCO_ALBUMS_DIR.glob("*.json"),
                                  key=lambda p: p.name.casefold()):

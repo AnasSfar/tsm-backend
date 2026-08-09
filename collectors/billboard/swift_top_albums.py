@@ -53,6 +53,8 @@ DISCOGRAPHY_DIR = _DB_DIR / "discography"
 ALBUMS_DIR = DISCOGRAPHY_DIR / "albums"
 COVERS_JSON = DISCOGRAPHY_DIR / "covers.json"
 SONGS_JSON = DISCOGRAPHY_DIR / "songs.json"
+MISC_JSON = DISCOGRAPHY_DIR / "misc.json"
+FEATURES_JSON = DISCOGRAPHY_DIR / "features.json"
 
 OUTPUT_JSON = _SITE_DATA_DIR / "swift_top_albums.json"
 
@@ -376,8 +378,11 @@ def _song_match_keys(track: dict) -> set[str]:
     return keys
 
 
+_EXTRA_SONG_SOURCES = (SONGS_JSON, MISC_JSON, FEATURES_JSON)
+
+
 def _augment_era_albums_with_matched_extras(albums: list[AlbumMeta]) -> list[AlbumMeta]:
-    if CHART_KIND != "eras" or not SONGS_JSON.exists():
+    if CHART_KIND != "eras" or not any(p.exists() for p in _EXTRA_SONG_SOURCES):
         return albums
 
     key_to_album_id: dict[str, str] = {}
@@ -413,32 +418,35 @@ def _augment_era_albums_with_matched_extras(albums: list[AlbumMeta]) -> list[Alb
         for album in albums
     }
 
-    try:
-        sections = json.loads(SONGS_JSON.read_text(encoding="utf-8-sig"))
-    except Exception:
-        return albums
-    if not isinstance(sections, list):
-        return albums
-
-    for section in sections:
-        if not isinstance(section, dict):
+    for extra_path in _EXTRA_SONG_SOURCES:
+        if not extra_path.exists():
             continue
-        for track in section.get("tracks", []) or []:
-            if not isinstance(track, dict) or not _track_has_taylor_as_primary(track):
+        try:
+            sections = json.loads(extra_path.read_text(encoding="utf-8-sig"))
+        except Exception:
+            continue
+        if not isinstance(sections, list):
+            continue
+
+        for section in sections:
+            if not isinstance(section, dict):
                 continue
-            tid = _extract_track_id((track.get("url") or track.get("spotify_url") or "").strip())
-            if not tid:
-                continue
-            matched_album_id = next(
-                (key_to_album_id[key] for key in _song_match_keys(track) if key in key_to_album_id),
-                None,
-            )
-            if not matched_album_id or matched_album_id not in albums_by_id:
-                continue
-            albums_by_id[matched_album_id]["track_ids"].add(tid)
-            for hist_id in track.get("historical_track_ids") or []:
-                if isinstance(hist_id, str) and hist_id.strip():
-                    albums_by_id[matched_album_id]["track_ids"].add(hist_id.strip())
+            for track in section.get("tracks", []) or []:
+                if not isinstance(track, dict) or not _track_has_taylor_as_primary(track):
+                    continue
+                tid = _extract_track_id((track.get("url") or track.get("spotify_url") or "").strip())
+                if not tid:
+                    continue
+                matched_album_id = next(
+                    (key_to_album_id[key] for key in _song_match_keys(track) if key in key_to_album_id),
+                    None,
+                )
+                if not matched_album_id or matched_album_id not in albums_by_id:
+                    continue
+                albums_by_id[matched_album_id]["track_ids"].add(tid)
+                for hist_id in track.get("historical_track_ids") or []:
+                    if isinstance(hist_id, str) and hist_id.strip():
+                        albums_by_id[matched_album_id]["track_ids"].add(hist_id.strip())
 
     return [
         AlbumMeta(
@@ -511,6 +519,7 @@ def _build_album_week(
     album_units_am: dict[str, int] = {}
     album_units_am_ts: dict[str, int] = {}
     album_units_am_overall: dict[str, int] = {}
+    album_units_deezer: dict[str, int] = {}
     album_units_spotify: dict[str, int] = {}
     album_units_charts: dict[str, int] = {}
     album_units_surplus: dict[str, int] = {}
@@ -518,6 +527,7 @@ def _build_album_week(
     album_am_units_by_song: dict[str, dict[str, int]] = {}
     album_am_ts_units_by_song: dict[str, dict[str, int]] = {}
     album_am_overall_units_by_song: dict[str, dict[str, int]] = {}
+    album_deezer_units_by_song: dict[str, dict[str, int]] = {}
 
     def _to_int(v: str | None) -> int:
         try:
@@ -562,6 +572,9 @@ def _build_album_week(
         album_am_units[am_song_key] = max(album_am_units.get(am_song_key, 0), row_units_am)
         album_am_ts_units[am_song_key] = max(album_am_ts_units.get(am_song_key, 0), row_units_am_ts)
         album_am_overall_units[am_song_key] = max(album_am_overall_units.get(am_song_key, 0), row_units_am_overall)
+        row_units_deezer = _to_int(row.get("units_deezer"))
+        album_deezer_units = album_deezer_units_by_song.setdefault(album.album_id, {})
+        album_deezer_units[am_song_key] = max(album_deezer_units.get(am_song_key, 0), row_units_deezer)
         album_units_spotify[album.album_id] = album_units_spotify.get(album.album_id, 0) + _to_int(row.get("units_spotify"))
         album_units_charts[album.album_id] = album_units_charts.get(album.album_id, 0) + _to_int(row.get("units_charts"))
         album_units_surplus[album.album_id] = album_units_surplus.get(album.album_id, 0) + _to_int(row.get("units_surplus"))
@@ -570,14 +583,15 @@ def _build_album_week(
     if unmatched_track_ids:
         logger.log(f"  unmatched      : {len(unmatched_track_ids)} tracks not linked to any album")
 
-    for aid in set(album_units_spotify) | set(album_am_units_by_song):
+    for aid in set(album_units_spotify) | set(album_am_units_by_song) | set(album_deezer_units_by_song):
         album_units_am[aid] = sum(album_am_units_by_song.get(aid, {}).values())
         album_units_am_ts[aid] = sum(album_am_ts_units_by_song.get(aid, {}).values())
         album_units_am_overall[aid] = sum(album_am_overall_units_by_song.get(aid, {}).values())
+        album_units_deezer[aid] = sum(album_deezer_units_by_song.get(aid, {}).values())
 
     album_total_units = {
-        aid: album_units_spotify.get(aid, 0) + album_units_am.get(aid, 0)
-        for aid in set(album_units_spotify) | set(album_units_am)
+        aid: album_units_spotify.get(aid, 0) + album_units_am.get(aid, 0) + album_units_deezer.get(aid, 0)
+        for aid in set(album_units_spotify) | set(album_units_am) | set(album_units_deezer)
     }
 
     scored = sorted(album_total_units.items(), key=lambda kv: kv[1], reverse=True)
@@ -590,6 +604,7 @@ def _build_album_week(
             "units_am": album_units_am.get(aid, 0),
             "units_am_ts": album_units_am_ts.get(aid, 0),
             "units_am_overall": album_units_am_overall.get(aid, 0),
+            "units_deezer": album_units_deezer.get(aid, 0),
             "units_spotify": album_units_spotify.get(aid, 0),
             "units_charts": album_units_charts.get(aid, 0),
             "units_surplus": album_units_surplus.get(aid, 0),
@@ -694,6 +709,7 @@ def _write_history_csv(rows: list[dict], logger: Logger) -> None:
         "units_am",
         "units_am_ts",
         "units_am_overall",
+        "units_deezer",
         "units_spotify",
         "units_charts",
         "units_surplus",
@@ -877,6 +893,7 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool, skip_r
         units_am = row["units_am"]
         units_am_ts = row.get("units_am_ts", 0)
         units_am_overall = row.get("units_am_overall", 0)
+        units_deezer = row.get("units_deezer", 0)
         units_spotify = row["units_spotify"]
         units_charts = row["units_charts"]
         units_surplus = row["units_surplus"]
@@ -908,6 +925,7 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool, skip_r
             "units_am": units_am,
             "units_am_ts": units_am_ts,
             "units_am_overall": units_am_overall,
+            "units_deezer": units_deezer,
             "units_spotify": units_spotify,
             "units_charts": units_charts,
             "units_surplus": units_surplus,
@@ -934,6 +952,7 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool, skip_r
             "units_am": units_am,
             "units_am_ts": units_am_ts,
             "units_am_overall": units_am_overall,
+            "units_deezer": units_deezer,
             "units_spotify": units_spotify,
             "units_charts": units_charts,
             "units_surplus": units_surplus,
@@ -946,6 +965,7 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool, skip_r
             "units_surplus_display": _format_number(units_surplus),
             "am_ts_units_display": _format_number(units_am_ts),
             "am_global_units_display": _format_number(units_am_overall),
+            "deezer_units_display": _format_number(units_deezer),
             "units_charts_display": _format_number(units_charts),
             "prev_rank": pr,
             "change": change,

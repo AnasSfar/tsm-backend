@@ -770,5 +770,19 @@ matching flou a dupliquer, track_id/movement deja resolus par le collector).
   de l'utiliser.
 - Les anciens dossiers `history/` et les nouveaux `snapshots/spotify_charts/`
   peuvent coexister; utiliser `core.data_paths` et les fallbacks existants.
+- Bug fixe le 2026-08-09 : `worldwide/daily.py::_iter_disco_tracks()`
+  traitait `db/discography/songs.json` comme une liste de tracks plate
+  (`yield from (x for x in data if isinstance(x, dict))`) alors que c'est une
+  liste de sections avec `tracks: [...]` — donc ses entrees ne matchaient
+  jamais `_get_track_id_from_item`/`_title_fields` et ne contribuaient rien a
+  `build_track_lookup()`/`build_historical_track_id_lookup()`. `features.json`
+  et `misc.json` n'etaient en plus jamais lus. Fix : boucle sur les 3 fichiers
+  extras (`songs.json`, `features.json`, `misc.json`) en depliant chaque
+  section comme le bloc albums le fait deja. Meme trou trouve et corrige le
+  meme jour dans `scripts/r2.py::_iter_discography_tracks()` et
+  `scripts/chartr2.py::iter_discography_tracks()` (utilises par le
+  canonicalization R2 des snapshots worldwide et l'export per-track Global) —
+  voir skill `spotify-streams` pour le detail complet de l'audit (14 fichiers
+  au total avec le meme pattern de bug).
 - Les cards peuvent lire les snapshots existants sans recollecter.
 - Les scripts de posting utilisent des locks pour eviter les doublons Twitter.

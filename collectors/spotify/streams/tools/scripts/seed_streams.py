@@ -30,12 +30,14 @@ from playwright.sync_api import sync_playwright
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
 _SCRIPT_DIR      = Path(__file__).resolve().parent
-_REPO_ROOT       = _SCRIPT_DIR.parents[2]
+_REPO_ROOT       = _SCRIPT_DIR.parents[4]
 _DB_ROOT         = _REPO_ROOT / "db"
 HISTORY_PATH     = _DB_ROOT / "streams_history.csv"
 _DISCOGRAPHY_DIR = _DB_ROOT / "discography"
 _ALBUMS_DIR      = _DISCOGRAPHY_DIR / "albums"
 _SONGS_JSON      = _DISCOGRAPHY_DIR / "songs.json"
+_MISC_JSON       = _DISCOGRAPHY_DIR / "misc.json"
+_FEATURES_JSON   = _DISCOGRAPHY_DIR / "features.json"
 
 # ── Config ─────────────────────────────────────────────────────────────────────
 HEADLESS             = True
@@ -360,8 +362,9 @@ def _load_all_tracks_from_json() -> list[dict]:
                     item["album"] = album_name
                 all_sections.append(item)
 
-    if _SONGS_JSON.exists():
-        all_sections.extend(json.loads(_SONGS_JSON.read_text(encoding="utf-8-sig")))
+    for extra_path in (_SONGS_JSON, _FEATURES_JSON, _MISC_JSON):
+        if extra_path.exists():
+            all_sections.extend(json.loads(extra_path.read_text(encoding="utf-8-sig")))
 
     for section in all_sections:
             for t in section.get("tracks", []):

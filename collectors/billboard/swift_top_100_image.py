@@ -329,6 +329,7 @@ def build_html(
             "<th rowspan='2' class='c-peak'>Peak</th>"
             "<th rowspan='2' class='c-woc'>WoC</th>"
             "<th colspan='2' class='c-group c-group-am'>Apple Music</th>"
+            "<th rowspan='2' class='c-dz'>Deezer</th>"
             "<th colspan='2' class='c-group c-group-spotify'>Spotify</th>"
             "<th rowspan='2' class='c-units'>Units</th>"
             "</tr>"
@@ -391,12 +392,14 @@ def build_html(
 
             am_s = html.escape(str(e.get("am_ts_units_display") or "—"))
             gl_s = html.escape(str(e.get("am_global_units_display") or "—"))
+            dz_s = html.escape(str(e.get("deezer_units_display") or "—"))
             charts_s = html.escape(str(e.get("units_charts_display") or "—"))
             streams_s = html.escape(str(e.get("units_surplus_display") or "—"))
             units_s = html.escape(str(e.get("units") or "—"))
 
             am_pct = _component_pct(e, previous, ["am_ts_units", "units_am_ts", "am_ts_units_display"])
             gl_pct = _component_pct(e, previous, ["am_global_units", "units_am_overall", "am_global_units_display"])
+            dz_pct = _component_pct(e, previous, ["units_deezer", "deezer_units_display"])
             charts_pct = _component_pct(e, previous, ["units_charts", "units_charts_display"])
             streams_pct = _component_pct(e, previous, ["units_surplus", "units_surplus_display"])
 
@@ -425,6 +428,7 @@ def build_html(
             out.append(f"<td class='td-num td-woc'>{woc_s}</td>")
             out.append(f"<td class='td-num td-am'>{_metric_cell(am_s, am_pct)}</td>")
             out.append(f"<td class='td-num td-gl'>{_metric_cell(gl_s, gl_pct)}</td>")
+            out.append(f"<td class='td-num td-dz'>{_metric_cell(dz_s, dz_pct)}</td>")
             out.append(f"<td class='td-num td-charts'>{_metric_cell(charts_s, charts_pct)}</td>")
             out.append(f"<td class='td-num td-streams'>{_metric_cell(streams_s, streams_pct)}</td>")
             out.append(f"<td class='td-num td-units'>{_metric_cell(units_s, pct_val, change)}</td>")
@@ -569,6 +573,8 @@ def build_html(
     .c-woc    {{ color: #d97706; font-weight: 700; }}
     .c-am     {{ background: rgba(225, 29, 72, 0.05); color: #e11d48; font-weight: 600; }}
     .c-gl     {{ background: rgba(225, 29, 72, 0.05); color: #e11d48; font-weight: 600; }}
+    .c-dz     {{ background: rgba(162, 56, 255, 0.08); color: #a238ff; font-weight: 700; }}
+    .td-dz    {{ background: rgba(162, 56, 255, 0.04); }}
     .c-charts  {{ background: rgba(16, 185, 129, 0.05); color: #10b981; font-weight: 600; }}
     .c-streams {{ background: rgba(16, 185, 129, 0.05); color: #10b981; font-weight: 600; }}
     .c-units   {{ background: rgba(139, 92, 246, 0.05); color: #8b5cf6; font-weight: 600; }}

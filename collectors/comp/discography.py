@@ -69,7 +69,7 @@ def build_cover_map(covers_path: Path) -> dict:
 
 
 def build_track_album_map(discography_root: Path) -> dict:
-    """Returns {normalized_track_title → album_title} from albums/*.json + songs.json."""
+    """Returns {normalized_track_title → album_title} from albums/*.json + songs.json + features.json + misc.json."""
     result = {}
     albums_dir = discography_root / "albums"
     if albums_dir.exists():
@@ -83,10 +83,12 @@ def build_track_album_map(discography_root: Path) -> dict:
                 for track in section.get("tracks", []):
                     for title in _track_title_fields(track):
                         result[_norm(title)] = album_name
-    songs_file = discography_root / "songs.json"
-    if songs_file.exists():
+    for extra_name in ("songs.json", "features.json", "misc.json"):
+        extra_file = discography_root / extra_name
+        if not extra_file.exists():
+            continue
         try:
-            sections = _iter_song_entries(json.loads(songs_file.read_text(encoding="utf-8-sig")))
+            sections = _iter_song_entries(json.loads(extra_file.read_text(encoding="utf-8-sig")))
         except Exception:
             sections = []
         for track in sections:
@@ -122,10 +124,12 @@ def build_track_image_map(
                                 result[_norm(title)] = img
             except Exception:
                 pass
-    songs_path = discography_root / "songs.json"
-    if songs_path.exists():
+    for extra_name in ("songs.json", "features.json", "misc.json"):
+        extra_path_builtin = discography_root / extra_name
+        if not extra_path_builtin.exists():
+            continue
         try:
-            for track in _iter_song_entries(json.loads(songs_path.read_text(encoding="utf-8-sig"))):
+            for track in _iter_song_entries(json.loads(extra_path_builtin.read_text(encoding="utf-8-sig"))):
                 titles = _track_title_fields(track)
                 img = (track.get("image_url") or "").strip()
                 if titles and img:

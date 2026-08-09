@@ -207,11 +207,17 @@ def _track_id_from_item(item: dict[str, Any]) -> str | None:
 def _iter_discography_tracks() -> list[dict[str, Any]]:
     tracks: list[dict[str, Any]] = []
     disco_root = DB_DIR / "discography"
-    songs_path = disco_root / "songs.json"
-    if songs_path.exists():
-        data = load_json(songs_path)
-        if isinstance(data, list):
-            tracks.extend(item for item in data if isinstance(item, dict))
+    for extra_name in ("songs.json", "features.json", "misc.json"):
+        extra_path = disco_root / extra_name
+        if not extra_path.exists():
+            continue
+        data = load_json(extra_path)
+        if not isinstance(data, list):
+            continue
+        for section in data:
+            if not isinstance(section, dict):
+                continue
+            tracks.extend(item for item in section.get("tracks", []) if isinstance(item, dict))
     albums_dir = disco_root / "albums"
     if albums_dir.exists():
         for path in sorted(albums_dir.glob("*.json")):

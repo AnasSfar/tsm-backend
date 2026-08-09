@@ -261,6 +261,31 @@ duplication.
   seulement `songs.json` — sinon un track qui streame fort mais qui n'est pas
   sur un album (single hors-album, feature, bonus) peut manquer dans
   n'importe quel classement/top N genere depuis ce chargeur.
+- Audit complet le 2026-08-09 (suite au bug ci-dessus + celui de
+  `swift_top_100.py` cote skill `collector-billboard`) : 12 autres chargeurs
+  de catalogue ecrits a la main dans `collectors/spotify/streams/` (et
+  `scripts/r2.py`, `scripts/chartr2.py`, `collectors/comp/discography.py`,
+  `collectors/spotify/charts/worldwide/daily.py` partages avec d'autres
+  collecteurs) avaient le meme trou (`features.json`/`misc.json` jamais lus,
+  parfois meme `songs.json` casse car traite comme une liste de tracks plate
+  au lieu d'une liste de sections). Tous fixes le meme jour : `spotlight.py`
+  (`load_all_tracks`, `_get_song_family_single_image_map`),
+  `best_day_since.py` (`load_song_sections`, mode `--include-extras`),
+  `fix_one.py`, `fix_streams.py`, `seed_streams.py` (qui avait EN PLUS un
+  `_REPO_ROOT = _SCRIPT_DIR.parents[2]` casse — pointait sur
+  `collectors/spotify/db/...` au lieu de `db/...`, donc **tout** le script,
+  y compris `HISTORY_PATH`, ne trouvait jamais rien, corrige en `parents[4]`),
+  `extras/import_daily_streams.py`, `tools/scripts/post_best_day_since_twitter.py`,
+  `tools/scripts/post_debut_releases.py` (`_load_misc_tracks` ne lisait en
+  fait que `songs.json`, meme piege de nommage que `swift_top_100.py`),
+  `scripts/fill_streams_from_archive.py`. Seul `history_store.py` et
+  `extras/export_for_web.py` (`EXTRA_SECTION_SOURCES`) etaient deja corrects
+  et servent de reference. Reflexe permanent : `db/discography` a exactement
+  4 sources de tracks (`albums/*.json`, `songs.json`, `misc.json`,
+  `features.json`) — avant d'ecrire ou de modifier un chargeur de catalogue
+  a la main, verifier qu'il couvre les 4, sinon prefer reutiliser
+  `history_store.load_extra_sections_flat()` / `comp.discography` plutot que
+  reimplementer.
 - Un run manuel sans le `.bat` peut ne pas laisser le meme log scheduler.
 - WARP ou Spotify peuvent bloquer longtemps; ne pas masquer par timeouts qui
   publient partiel.

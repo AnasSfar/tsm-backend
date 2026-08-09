@@ -42,6 +42,8 @@ HISTORY_CSV = REPO_ROOT / "db" / "streams_history.csv"
 OUTPUT_CSV  = REPO_ROOT / "db" / "streams_history.csv"
 ALBUMS_DIR  = REPO_ROOT / "db" / "discography" / "albums"
 SONGS_JSON  = REPO_ROOT / "db" / "discography" / "songs.json"
+MISC_JSON   = REPO_ROOT / "db" / "discography" / "misc.json"
+FEATURES_JSON = REPO_ROOT / "db" / "discography" / "features.json"
 
 
 # ---------------------------------------------------------------------------
@@ -168,10 +170,13 @@ def load_title_map() -> tuple[dict[str, str], dict[str, str], dict[str, str]]:
         for section in data.get("sections", []):
             index_tracks(section.get("tracks", []))
 
-    with open(SONGS_JSON, encoding="utf-8-sig") as f:
-        songs_data = json.load(f)
-    for section in songs_data:
-        index_tracks(section.get("tracks", []))
+    for extra_path in (SONGS_JSON, FEATURES_JSON, MISC_JSON):
+        if not extra_path.exists():
+            continue
+        with open(extra_path, encoding="utf-8-sig") as f:
+            songs_data = json.load(f)
+        for section in songs_data:
+            index_tracks(section.get("tracks", []))
 
     return exact_map, fuzzy_map, base_map
 

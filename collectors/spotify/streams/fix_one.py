@@ -63,6 +63,8 @@ from core.data_paths import WEB_EXPORT_HISTORY_DIR, first_existing, first_existi
 HISTORY_PATH  = first_existing_db_history("streams_history.csv")
 ALBUMS_DIR    = _REPO_ROOT / "db" / "discography" / "albums"
 SONGS_JSON    = _REPO_ROOT / "db" / "discography" / "songs.json"
+MISC_JSON     = _REPO_ROOT / "db" / "discography" / "misc.json"
+FEATURES_JSON = _REPO_ROOT / "db" / "discography" / "features.json"
 LEGACY_HISTORY_DIR = _REPO_ROOT / "website" / "site" / "history"
 
 # ---------------------------------------------------------------------------
@@ -115,8 +117,10 @@ def load_tracks() -> list[dict]:
                             "url": url or None,
                         }
 
-    if SONGS_JSON.exists():
-        for section in json.loads(SONGS_JSON.read_text(encoding="utf-8-sig")):
+    for extra_path in (SONGS_JSON, FEATURES_JSON, MISC_JSON):
+        if not extra_path.exists():
+            continue
+        for section in json.loads(extra_path.read_text(encoding="utf-8-sig")):
             album = section.get("album", "")
             for track in section.get("tracks", []):
                 url = (track.get("url") or track.get("spotify_url") or "").strip()

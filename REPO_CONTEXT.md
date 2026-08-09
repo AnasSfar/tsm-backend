@@ -22,6 +22,7 @@ tsm-backend/
 │   │   ├── core/           ← modules partagés Spotify (twitter.py, history, download, notify…)
 │   │   └── website/        ← ancien export site (legacy)
 │   ├── apple_music/        ← charts Apple Music (pays, genres, albums, vidéos)
+│   ├── deezer/              ← charts Deezer (global + top tracks TS) + fans
 │   ├── billboard/          ← scrape Billboard + TayBoard (Swift Top 100/albums/eras)
 │   ├── youtube/            ← vues YouTube
 │   ├── comp/               ← composants visuels partagés pour les images générées
@@ -35,7 +36,7 @@ tsm-backend/
 ├── docs/                   ← runbook.md + data-layout-audit.md + apple-music-script-context.md
 ├── website/                ← ⚠️ site statique LEGACY — INTERDIT sauf demande explicite
 ├── .github/workflows/      ← workflows GitHub (peu utilisés : tout tourne en local)
-├── .claude/skills/         ← skills Claude Code (tsm-map, pipeline-ops, data-rules, image-gen, deploy, admin-work, style-rules, collector-apple-music)
+├── .claude/skills/         ← skills Claude Code (tsm-map, pipeline-ops, data-rules, image-gen, deploy, admin-work, style-rules, collector-apple-music, collector-deezer)
 ├── run_daily.bat           ← launcher : python -m tsm daily
 ├── run_all_charts.bat      ← launcher : python -m tsm collect charts
 └── run_discography_editor.bat ← launcher : GUI locale d'édition de db/discography/ (scripts/discography_editor/)
@@ -57,6 +58,7 @@ python -m tsm daily [YYYY-MM-DD] [--no-post|--post]        # charts PUIS streams
 python -m tsm collect streams [YYYY-MM-DD] [--no-post|--post]   # → update_streams.py
 python -m tsm collect charts  [YYYY-MM-DD] [--no-post|--post]   # → run_all_charts.py
 python -m tsm collect apple-music [--no-post]                   # → run_apple_music.py
+python -m tsm collect deezer [--no-post]                        # → run_deezer.py
 python -m tsm collect youtube [YYYY-MM-DD] [--no-post] [--force] # → update_youtube.py
 python -m tsm export web [--date YYYY-MM-DD] [--dry-run]        # → scripts/export_for_web.py
 python -m tsm audit data [--write]        # audit du layout → docs/data-layout-audit.*
@@ -210,6 +212,53 @@ Orchestrateur : `run_apple_music.py` (appelé par `python -m tsm collect apple-m
 
 ---
 
+## 4bis. `collectors/deezer/` — charts Deezer
+
+**Avant tout travail ici : charger le skill `collector-deezer`.**
+
+API publique Deezer (`api.deezer.com`), sans auth, 50 req/5s par IP.
+Orchestrateur : `run_deezer.py` (appelé par `python -m tsm collect deezer`).
+Pas de posting X, aucun commit/push git (seul l'upload R2 distribue la
+donnée), comme Apple Music. Ordre du runner : `global.py` → `artist_top.py`
+→ `artist_stats.py`, abandon du run si un collecteur échoue.
+
+| Fichier | Rôle / lancement |
+|---|---|
+| `global.py` | **(runner)** Top 100 chart global Deezer (`/chart/0/tracks`), filtré aux pistes `artist.id == 12246` (Taylor Swift). `--date`, `--scraped-at` |
+| `artist_top.py` | **(runner)** Top tracks de l'artiste (`/artist/12246/top`, déjà scopé — pas de filtre nécessaire). `deezer_popularity` = score interne Deezer (`rank` API), distinct du `rank` = position dans la liste |
+| `artist_stats.py` | **(runner)** `nb_fan`/`nb_album` (`/artist/12246`), une ligne/jour, append-only (pas de logique de classement) |
+| `core/` | `config.py` (BASE_URL, ARTIST_ID, limites), `http.py` (session/retry générique, sans auth — réutilisable tel quel), `filters.py`, `csv_utils.py` (même logique idempotente-par-jour qu'Apple Music) |
+
+CSV dans `db/` (`deezer_global_chart.csv`, `deezer_artist_top_tracks.csv`,
+`deezer_artist_stats.csv`), snapshots sous
+`snapshots/deezer_charts/AAAA/MM/AAAA-MM-JJ/`. Exports :
+`runtime/exports/web/site/data/deezer.json` /
+`deezer_history.json` (`scripts/export_deezer.py`), upload R2 via
+`scripts/upload_deezer_r2.py` (préfixes `deezer/snapshots`, `deezer/db`,
+`deezer/history-by-song` dans `scripts/r2_keys.py`, mirrorés dans
+`tsm-frontend/api/data/r2_keys.py`).
+
+**Confirmé 2026-08-09 (Anas)** : `/chart/0/tracks` n'a pas de paramètre pays
+explicite — la réponse est géolocalisée par l'IP de la requête, et c'est en
+réalité le chart **France**, pas un chart mondial. Décision : renommage
+complet plutôt qu'un simple correctif de libellé (`global.py` ->
+`france.py`, `deezer_global_chart.csv` -> `deezer_france_chart.csv`,
+`DEEZER_GLOBAL_*` -> `DEEZER_FRANCE_*`, libellés UI "Global Chart" ->
+"France Chart") — **mis en pause volontairement**, pas encore fait. Tout le
+code garde le nom "global" pour l'instant, avec des commentaires TODO aux
+emplacements clés (`collectors/deezer/global.py`,
+`collectors/billboard/swift_top_100.py` près de `DEEZER_GLOBAL_WEIGHT`).
+Détail complet : `collector-deezer/CONTEXTE.md`.
+
+Alimente aussi le scoring TayBoard (`collectors/billboard/swift_top_100.py`,
+constantes `DEEZER_GLOBAL_WEIGHT`/`DEEZER_ARTIST_FLOOR_RANK`) — voir
+`collector-billboard/CONTEXTE.md` § "Deezer dans le scoring".
+
+Pas encore déployé sur le VPS OVH au 2026-08-09 (voir § 12 plus bas) — tourne
+en local pour l'instant, comme Spotify/Billboard.
+
+---
+
 ## 5. `collectors/billboard/` — Billboard & TayBoard
 
 | Fichier | Rôle / lancement |
@@ -257,6 +306,7 @@ Avant tout travail ici : charger le skill `scripts-maintenance` (ordre du workfl
 | `check_r2_storage.py` | Alerte ntfy si le stockage R2 dépasse les seuils. `--dry-run`, `--bucket-limits b=size,…`, `--warning-percent`, `--topic`. `--breakdown` : mode séparé, lecture seule — taille/nb d'objets par préfixe R2 (`list_objects_v2` sur les préfixes de `r2_keys.py`) pour objectiver ce qui grossit ; coûte des requêtes List, à lancer manuellement/hebdo, pas sur le cron de l'alerte de seuil |
 | `migrate_app_r2.py` | Copie bucket public → bucket app. `--dry-run`, `--overwrite`, `--key`, `--prefix` |
 | `upload_ap_r2.py` | Upload Apple Music vers R2 (JSON, snapshots par date, CSV du jour, history-by-song incl. vidéos). `--bucket`, `--prefix`, `--dry-run` |
+| `sync_apple_music_snapshots_from_r2.py` | **Sens inverse** de `upload_ap_r2.py` : reconstruit les CSV quotidiens locaux `snapshots/apple_music_charts/YYYY/MM/YYYY-MM-DD/apple_music_{global,country_charts,genre_charts,ts_top_songs}.csv` depuis `apple-music/snapshots/{timestamp}.json` sur R2 (jamais supprimé, historique complet). Nécessaire depuis le passage d'Apple Music au VPS OVH (2026-07-30, voir § 12) : la machine locale qui fait tourner `swift_top_100.py` n'a plus aucune écriture Apple Music locale, donc son historique diverge silencieusement de R2 (incident 2026-08-09, voir piège `collector-billboard/CONTEXTE.md`). Dry-run par défaut (liste ce qui serait écrit), `--apply` pour écrire ; `--start`/`--end` (défaut : lendemain du dernier jour local détecté → aujourd'hui) ; `--force` pour écraser un jour déjà présent localement |
 | `prune_apple_music_snapshots.py` | Rétention snapshots Apple Music : garde le dernier snapshot par jour passé, lignes retirées archivées en `.csv.gz` dans `_pruned_archive/` (dry-run par défaut). `--apply`, `--since`, `--no-archive` |
 | `prune_apple_music_images.py` | Supprime les objets R2 orphelins de `images/apple-music/` (adressés par `md5(url CDN Apple)`, non référencés par le CSV Apple Music courant — voir skill `scripts-maintenance` § "R2 : données pérennes vs cache"). Dry-run par défaut, `--apply` pour supprimer, manifeste local des clés supprimées sauf `--no-archive`, `--bucket` |
 | `chartr2.py` | Upload R2 des charts |

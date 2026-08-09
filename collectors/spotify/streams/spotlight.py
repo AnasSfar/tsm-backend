@@ -54,6 +54,8 @@ SCRIPT_DIR      = Path(__file__).resolve().parent          # streams/
 REPO_ROOT       = SCRIPT_DIR.parents[2]                    # repo root
 DB_DIR          = REPO_ROOT / "db"
 SONGS_JSON      = DB_DIR / "discography" / "songs.json"
+MISC_JSON       = DB_DIR / "discography" / "misc.json"
+FEATURES_JSON   = DB_DIR / "discography" / "features.json"
 ALBUMS_DIR      = DB_DIR / "discography" / "albums"
 COVERS_PATH     = DB_DIR / "discography" / "covers.json"
 
@@ -434,9 +436,11 @@ def load_all_tracks() -> list[dict]:
                     item["album"] = album_name
                 all_sections.append(item)
 
-    if SONGS_JSON.exists():
+    for extra_path in (SONGS_JSON, FEATURES_JSON, MISC_JSON):
+        if not extra_path.exists():
+            continue
         try:
-            all_sections.extend(json.loads(SONGS_JSON.read_text(encoding="utf-8-sig")))
+            all_sections.extend(json.loads(extra_path.read_text(encoding="utf-8-sig")))
         except Exception:
             pass
 
@@ -531,9 +535,11 @@ def _get_song_family_single_image_map() -> dict:
                     item["album"] = album_name
                 all_sections.append(item)
     
-    if SONGS_JSON.exists():
+    for extra_path in (SONGS_JSON, FEATURES_JSON, MISC_JSON):
+        if not extra_path.exists():
+            continue
         try:
-            all_sections.extend(json.loads(SONGS_JSON.read_text(encoding="utf-8-sig")))
+            all_sections.extend(json.loads(extra_path.read_text(encoding="utf-8-sig")))
         except Exception:
             pass
     

@@ -94,6 +94,12 @@ def collect_apple_music(args: argparse.Namespace, passthrough: list[str]) -> int
     return _run(script, forwarded)
 
 
+def collect_deezer(args: argparse.Namespace, passthrough: list[str]) -> int:
+    script = REPO_ROOT / "collectors" / "deezer" / "run_deezer.py"
+    forwarded = _ensure_no_conflicting_post_flags(passthrough, args.no_post, False)
+    return _run(script, forwarded)
+
+
 def collect_youtube(args: argparse.Namespace, passthrough: list[str]) -> int:
     script = REPO_ROOT / "collectors" / "youtube" / "update_youtube.py"
     forwarded = _ensure_no_conflicting_post_flags(passthrough, args.no_post, False)
@@ -344,6 +350,8 @@ def build_parser() -> argparse.ArgumentParser:
         p.add_argument("--post", action="store_true")
     p = collect_sub.add_parser("apple-music")
     p.add_argument("--no-post", action="store_true")
+    p = collect_sub.add_parser("deezer")
+    p.add_argument("--no-post", action="store_true")
     p = collect_sub.add_parser("youtube")
     p.add_argument("date", nargs="?")
     p.add_argument("--no-post", action="store_true")
@@ -391,6 +399,8 @@ def _dispatch(args: argparse.Namespace, passthrough: list[str], parser: argparse
             return collect_charts(args, passthrough)
         if args.collector == "apple-music":
             return collect_apple_music(args, passthrough)
+        if args.collector == "deezer":
+            return collect_deezer(args, passthrough)
         if args.collector == "youtube":
             forwarded = list(passthrough)
             if getattr(args, "force", False):

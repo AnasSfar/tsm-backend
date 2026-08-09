@@ -161,7 +161,12 @@ def is_normal_track(track: dict) -> bool:
 
 def build_track_map() -> dict[str, dict]:
     by_id = {}
-    for path in [BASE / "discography/songs.json", *sorted((BASE / "discography/albums").glob("*.json"))]:
+    extra_paths = [
+        BASE / "discography/songs.json",
+        BASE / "discography/features.json",
+        BASE / "discography/misc.json",
+    ]
+    for path in [*extra_paths, *sorted((BASE / "discography/albums").glob("*.json"))]:
         with path.open(encoding="utf-8-sig") as handle:
             data = json.load(handle)
         for track in extract_tracks(data):

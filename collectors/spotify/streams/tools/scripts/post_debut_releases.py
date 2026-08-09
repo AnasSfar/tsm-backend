@@ -29,6 +29,8 @@ REPO_ROOT = SCRIPT_DIR.parents[4]
 DB_DIR = REPO_ROOT / "db"
 ALBUMS_DIR = DB_DIR / "discography" / "albums"
 SONGS_PATH = DB_DIR / "discography" / "songs.json"
+MISC_PATH = DB_DIR / "discography" / "misc.json"
+FEATURES_PATH = DB_DIR / "discography" / "features.json"
 HANDLE = "@swiftiescharts"
 SITE_SETTINGS_KEY = "site_settings.json"
 DEFAULT_THEME_MODE = "theme-showgirl"
@@ -349,27 +351,28 @@ def _load_album_tracks() -> tuple[dict[str, list[str]], dict[str, dict]]:
 
 
 def _load_misc_tracks(meta: dict[str, dict]) -> None:
-    if not SONGS_PATH.exists():
-        return
-    try:
-        sections = json.loads(SONGS_PATH.read_text(encoding="utf-8-sig"))
-    except Exception:
-        return
-    for section in sections if isinstance(sections, list) else []:
-        album = (section.get("album") or section.get("section") or "").strip()
-        for track in section.get("tracks") or []:
-            tid = _track_id(track.get("url") or track.get("spotify_url"))
-            title = (track.get("title") or "").strip()
-            if tid and title:
-                _remember_track(
-                    meta,
-                    tid,
-                    title=title,
-                    album=album,
-                    release_date=track.get("release_date") or None,
-                    image_url=track.get("image_url") or None,
-                )
-                _remember_family(meta, tid, track)
+    for extra_path in (SONGS_PATH, FEATURES_PATH, MISC_PATH):
+        if not extra_path.exists():
+            continue
+        try:
+            sections = json.loads(extra_path.read_text(encoding="utf-8-sig"))
+        except Exception:
+            continue
+        for section in sections if isinstance(sections, list) else []:
+            album = (section.get("album") or section.get("section") or "").strip()
+            for track in section.get("tracks") or []:
+                tid = _track_id(track.get("url") or track.get("spotify_url"))
+                title = (track.get("title") or "").strip()
+                if tid and title:
+                    _remember_track(
+                        meta,
+                        tid,
+                        title=title,
+                        album=album,
+                        release_date=track.get("release_date") or None,
+                        image_url=track.get("image_url") or None,
+                    )
+                    _remember_family(meta, tid, track)
 
 
 def _load_rows_for_date(target_date: str) -> dict[str, dict]:

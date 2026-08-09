@@ -37,6 +37,8 @@ HISTORY_PATH = first_existing_db_history("streams_history.csv")
 DISCOGRAPHY_DIR = DB_ROOT / "discography"
 ALBUMS_DIR = DISCOGRAPHY_DIR / "albums"
 SONGS_JSON = DISCOGRAPHY_DIR / "songs.json"
+MISC_JSON = DISCOGRAPHY_DIR / "misc.json"
+FEATURES_JSON = DISCOGRAPHY_DIR / "features.json"
 DEFAULT_OUTPUT = WEB_EXPORT_DATA_DIR / "best_day_since.json"
 HISTORY_START_DATE = date(2025, 1, 1)
 DEFAULT_MIN_DAYS = 30
@@ -118,13 +120,17 @@ def load_album_sections() -> list[dict]:
 
 
 def load_song_sections() -> list[dict]:
-    if not SONGS_JSON.exists():
-        return []
-    try:
-        payload = json.loads(SONGS_JSON.read_text(encoding="utf-8-sig"))
-    except Exception:
-        return []
-    return payload if isinstance(payload, list) else []
+    sections: list[dict] = []
+    for extra_path in (SONGS_JSON, FEATURES_JSON, MISC_JSON):
+        if not extra_path.exists():
+            continue
+        try:
+            payload = json.loads(extra_path.read_text(encoding="utf-8-sig"))
+        except Exception:
+            continue
+        if isinstance(payload, list):
+            sections.extend(payload)
+    return sections
 
 
 def is_extra_track(section: dict, item: dict) -> bool:

@@ -29,6 +29,8 @@ DB_ROOT = REPO_ROOT / "db"
 DISCOGRAPHY_DIR = DB_ROOT / "discography"
 ALBUMS_DIR = DISCOGRAPHY_DIR / "albums"
 SONGS_JSON = DISCOGRAPHY_DIR / "songs.json"
+MISC_JSON = DISCOGRAPHY_DIR / "misc.json"
+FEATURES_JSON = DISCOGRAPHY_DIR / "features.json"
 COVERS_PATH = DISCOGRAPHY_DIR / "covers.json"
 POST_COLLECTION_BEST_DAY_MIN_DAYS = 30
 ALBUM_BEST_DAY_MIN_DAYS = 30
@@ -106,9 +108,11 @@ def _load_discography_sections() -> list[dict]:
                     item["album"] = album_name
                 sections.append(item)
 
-    if SONGS_JSON.exists():
+    for extra_path in (SONGS_JSON, FEATURES_JSON, MISC_JSON):
+        if not extra_path.exists():
+            continue
         try:
-            payload = json.loads(SONGS_JSON.read_text(encoding="utf-8-sig"))
+            payload = json.loads(extra_path.read_text(encoding="utf-8-sig"))
             if isinstance(payload, list):
                 sections.extend(payload)
         except Exception:

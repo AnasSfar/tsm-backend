@@ -26,6 +26,7 @@ LEGACY_WEBSITE_ARCHIVE_ROOT = DATA_ROOT / "_archive" / "legacy-website"
 SPOTIFY_STREAMS_SNAPSHOT_ROOT = SNAPSHOTS_ROOT / "spotify_streams"
 SPOTIFY_CHARTS_SNAPSHOT_ROOT = SNAPSHOTS_ROOT / "spotify_charts"
 APPLE_MUSIC_CHARTS_SNAPSHOT_ROOT = SNAPSHOTS_ROOT / "apple_music_charts"
+DEEZER_CHARTS_SNAPSHOT_ROOT = SNAPSHOTS_ROOT / "deezer_charts"
 TAYBOARD_SNAPSHOT_ROOT = SNAPSHOTS_ROOT / "tayboard"
 
 
@@ -110,6 +111,21 @@ def apple_music_daily_csv_paths(filename: str) -> list[Path]:
         if p.is_file()
     )
     return paths
+
+
+def deezer_charts_dir(value: date | datetime | str) -> Path:
+    return snapshot_day_root("deezer_charts", value)
+
+
+def deezer_daily_csv(value: date | datetime | str, filename: str) -> Path:
+    return deezer_charts_dir(value) / filename
+
+
+def deezer_daily_csv_paths(filename: str) -> list[Path]:
+    return [
+        p for p in sorted(DEEZER_CHARTS_SNAPSHOT_ROOT.glob(f"20??/??/????-??-??/{filename}"))
+        if p.is_file()
+    ]
 
 
 def spotify_chart_snapshot_candidates(chart_name: str, value: date | datetime | str, filename: str) -> list[Path]:

@@ -48,6 +48,8 @@ from git_ops import git_commit_and_push  # noqa: E402
 HISTORY_PATH = _DB_ROOT / "streams_history.csv"
 ALBUMS_DIR   = _DB_ROOT / "discography" / "albums"
 SONGS_JSON   = _DB_ROOT / "discography" / "songs.json"
+MISC_JSON    = _DB_ROOT / "discography" / "misc.json"
+FEATURES_JSON = _DB_ROOT / "discography" / "features.json"
 SESSION_PATH = _SCRIPT_DIR / "tools" / "json" / "spotify_session.json"
 CACHE_DIR    = _SCRIPT_DIR / "tools" / "browser_cache"
 
@@ -352,9 +354,11 @@ def load_tracks_from_discography() -> list[dict]:
                         "url":      f"https://open.spotify.com/track/{tid}",
                     }
 
-    if SONGS_JSON.exists():
+    for extra_path in (SONGS_JSON, FEATURES_JSON, MISC_JSON):
+        if not extra_path.exists():
+            continue
         try:
-            sections = json.loads(SONGS_JSON.read_text(encoding="utf-8-sig"))
+            sections = json.loads(extra_path.read_text(encoding="utf-8-sig"))
         except Exception:
             sections = []
         for section in sections:

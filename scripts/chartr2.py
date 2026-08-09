@@ -33,6 +33,8 @@ R2_PREFIX = r2_keys.CHART_HISTORY_GLOBAL_BY_TRACK_PREFIX
 
 WEBSITE_SONGS_PATH = first_existing(WEB_EXPORT_DATA_DIR / "songs.json", LEGACY_WEBSITE_DATA_DIR / "songs.json")
 DISCO_SONGS_PATH = ROOT / "db" / "discography" / "songs.json"
+DISCO_MISC_PATH = ROOT / "db" / "discography" / "misc.json"
+DISCO_FEATURES_PATH = ROOT / "db" / "discography" / "features.json"
 DISCO_ALBUMS_DIR = ROOT / "db" / "discography" / "albums"
 MANUAL_MAP_PATH = ROOT / "scripts" / "chart_title_to_track_id.json"
 
@@ -109,12 +111,23 @@ def possible_title_keys(title: str) -> set[str]:
 
 
 def iter_discography_tracks() -> Iterable[Dict[str, Any]]:
-    if DISCO_SONGS_PATH.exists():
-        songs = load_json(DISCO_SONGS_PATH)
-        if isinstance(songs, list):
-            for item in songs:
-                if isinstance(item, dict):
-                    yield item
+    for extra_path in (DISCO_SONGS_PATH, DISCO_FEATURES_PATH, DISCO_MISC_PATH):
+        if not extra_path.exists():
+            continue
+        sections = load_json(extra_path)
+        if not isinstance(sections, list):
+            continue
+        for section in sections:
+            if not isinstance(section, dict):
+                continue
+            album_name = section.get("album", "")
+            for track in section.get("tracks", []) or []:
+                if not isinstance(track, dict):
+                    continue
+                merged = dict(track)
+                if "album" not in merged:
+                    merged["album"] = album_name
+                yield merged
 
     if DISCO_ALBUMS_DIR.exists():
         for album_file in sorted(DISCO_ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
