@@ -47,6 +47,9 @@ TITLE_HISTORY_PATH = DB_DIR / "youtube_title_history.csv"
 VIDEO_DB_PATH = TOOLS_JSON_DIR / "video_db.json"
 HISTORY_PATH = TOOLS_JSON_DIR / "youtube_history.json"
 DISCOGRAPHY_SONGS_PATH = DB_DIR / "discography" / "songs.json"
+# Manual video->group overrides written by scripts/youtube_grouping_editor/.
+# Takes precedence over the songs.json catalog match in build_title_rows().
+VIDEO_GROUPS_PATH = TOOLS_JSON_DIR / "video_groups.json"
 
 BATCH_SIZE = 50  # max IDs par appel videos.list
 API_BASE = "https://www.googleapis.com/youtube/v3"

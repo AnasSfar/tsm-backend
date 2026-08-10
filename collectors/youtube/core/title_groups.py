@@ -135,6 +135,35 @@ def match_video_title(video_title: str, catalog: list[dict[str, str]]) -> dict[s
     return {"title_key": title_key(fallback), "title": fallback.title()}
 
 
+def load_manual_groups(path: Path) -> dict[str, dict[str, str]]:
+    """Load manual video->group overrides written by the grouping editor.
+
+    File shape: a list of {"title_key", "title", "video_ids": [...]}. Returns a
+    flat video_id -> {"title_key", "title"} lookup so callers can override the
+    catalog-matching result on a per-video basis without touching songs.json.
+    """
+    if not path.exists():
+        return {}
+    with path.open(encoding="utf-8") as f:
+        payload = json.load(f)
+    if not isinstance(payload, list):
+        return {}
+
+    lookup: dict[str, dict[str, str]] = {}
+    for group in payload:
+        if not isinstance(group, dict):
+            continue
+        title_key = str(group.get("title_key") or "").strip()
+        title = str(group.get("title") or "").strip()
+        if not title_key or not title:
+            continue
+        for video_id in group.get("video_ids") or []:
+            video_id = str(video_id or "").strip()
+            if video_id:
+                lookup[video_id] = {"title_key": title_key, "title": title}
+    return lookup
+
+
 def _sum_int(rows: list[dict], field: str) -> int:
     total = 0
     for row in rows:
@@ -179,12 +208,15 @@ def build_title_rows(
     date: str,
     video_rows: list[dict],
     songs_path: Path,
+    manual_groups_path: Path | None = None,
 ) -> list[dict]:
     catalog = load_song_catalog(songs_path)
+    manual_groups = load_manual_groups(manual_groups_path) if manual_groups_path else {}
     groups: dict[str, dict[str, Any]] = {}
 
     for row in video_rows:
-        matched = match_video_title(str(row.get("title") or ""), catalog)
+        video_id = str(row.get("video_id") or "")
+        matched = manual_groups.get(video_id) or match_video_title(str(row.get("title") or ""), catalog)
         group = groups.setdefault(
             matched["title_key"],
             {

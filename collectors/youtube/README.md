@@ -79,6 +79,7 @@ Files:
 - `db/youtube_title_history.csv`
 - `collectors/youtube/tools/json/video_db.json`
 - `collectors/youtube/tools/json/youtube_history.json`
+- `collectors/youtube/tools/json/video_groups.json` (manual title overrides, see below)
 
 `youtube_views_history.csv` keeps one row per video. `youtube_title_history.csv`
 groups those rows by matched song/title so official videos, lyric videos,
@@ -86,6 +87,18 @@ official audios, and visualizers can be compared as one title-level total.
 When a calendar day is missed, the exact delta is stored as `period_gain_views`
 with a label such as `2-day gain`; `daily_views` stays empty so it is not ranked
 or posted as a one-day value.
+
+### Combining videos manually
+
+`title_groups.py` groups videos automatically by fuzzy-matching each video
+title against `db/discography/songs.json`. When that matching misses or
+groups the wrong videos together, combine them by hand instead of editing the
+discography catalog: run `run_youtube_grouping_editor.bat` (repo root) or
+`python scripts/youtube_grouping_editor/server.py` to open a local board GUI
+(one column per title, drag videos into the same column, Save). It writes
+`collectors/youtube/tools/json/video_groups.json`, which takes precedence over
+the automatic matching on a per-video basis. That file is local state
+(gitignored like `video_db.json`), not part of the discography catalog.
 
 This collector is only for YouTube video uploads. YouTube Music charts should be
 implemented separately, for example under `collectors/youtube_music/`.

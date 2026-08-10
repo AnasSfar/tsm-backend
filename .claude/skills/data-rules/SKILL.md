@@ -47,6 +47,7 @@ Ces règles ont été édictées puis re-corrigées plusieurs fois — les viole
 - Best-day-since songs: if `days_since` is strictly greater than 60 days (more than two months), post it even if it is below the normal stream or day-over-day change gate; try these as priority early posts during collection.
 - Biggest day of the month in best-day-since labels requires strictly more than 200,000 daily streams; biggest day of the year is unchanged.
 - Les seuils précis (best-day-since : jours mini/% mini pendant la collecte vs récap) **vivent dans le code** (`post_best_day_since_twitter.py`, `best_day_since.py`) — les lire, ne pas les supposer, ils ont changé plusieurs fois.
+- **Weekend song gainers (décision 10/08/2026)** : on ne poste plus toute chanson en hausse le week-end. `post_weekend_song_gainers.py` ne qualifie une chanson que si elle gagne **≥ +10 %** (`--min-pct`, avant : +5 %), OU décroche un **best-day-since record** ce jour-là, OU **charte au Spotify Global Top 200** ce jour-là (le fait d'avoir charté n'est jamais mentionné dans le tweet — c'est un simple signal de qualification silencieux, le texte garde le format « earned X streams [pct%] »).
 
 ## Réflexes
 

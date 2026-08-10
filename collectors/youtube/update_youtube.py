@@ -41,6 +41,7 @@ from .core.config import (
     TITLE_CSV_FIELDNAMES,
     TITLE_HISTORY_PATH,
     VIDEO_DB_PATH,
+    VIDEO_GROUPS_PATH,
     YOUTUBE_API_KEY,
 )
 from .core.csv_utils import (
@@ -411,6 +412,7 @@ def main() -> int:
         date=today,
         video_rows=all_rows,
         songs_path=DISCOGRAPHY_SONGS_PATH,
+        manual_groups_path=VIDEO_GROUPS_PATH,
     )
     existing_title_rows = read_csv_rows(TITLE_HISTORY_PATH)
     title_rows = enrich_chart_rows(

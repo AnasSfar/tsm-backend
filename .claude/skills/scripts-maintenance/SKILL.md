@@ -84,6 +84,14 @@ Pour des corrections manuelles ponctuelles (album/rôle/artistes/tags faux ou ma
 - Case à cocher "Fait" (chanson déjà vérifiée) : appliquée immédiatement (pas besoin du bouton Enregistrer), stockée dans `discography_editor/review_state.json` — pur bookkeeping de session de relecture, hors `db/discography`, jamais lu par les collectors.
 - Détail complet (architecture, colonnes, algorithme de sauvegarde) : `REPO_CONTEXT.md` section 8.
 
+## Éditeur graphique de combinaison YouTube (`scripts/youtube_grouping_editor/`)
+
+Pour combiner manuellement plusieurs vidéos (officielle, lyric video, audio, remix…) sous un seul titre dans `youtube_title_history.csv`, quand le matching automatique de `title_groups.py` contre `db/discography/songs.json` échoue ou groupe mal : `run_youtube_grouping_editor.bat` (racine) ou `python scripts/youtube_grouping_editor/server.py [--port 8766] [--no-browser]` — serveur local stdlib, tableau/board dans le navigateur avec une colonne par groupe (glisser-déposer les vidéos, ou sélecteur par carte) + une colonne "Non groupées".
+
+- Écrit uniquement `collectors/youtube/tools/json/video_groups.json` (`video_id → title_key`, gitignoré comme `video_db.json`) — ne touche jamais `db/discography/songs.json`. Cet override est prioritaire sur le matching automatique dans `build_title_rows()`, vidéo par vidéo.
+- Sauvegarde en un seul bloc (tout le board envoyé à `/api/save`, pas un diff par ligne) : rejette si un `video_id` est assigné à deux colonnes ou si une colonne non vide n'a pas de titre ; backup `.ytgroup-<horodatage>.bak`, écriture atomique.
+- Ne PAS lancer en même temps qu'une collecte YouTube (`update_youtube.py`) — pas de verrou partagé, usage local mono-utilisateur.
+
 ## ⚠️ Scripts destructifs — confirmer avec l'utilisateur avant `--apply`/`--yes`
 
 - `reset_swift_top_100_history.py` : dry-run par défaut, `--yes` supprime l'historique Swift Top 100 (`--remove-bonuses`, `--skip-r2`).

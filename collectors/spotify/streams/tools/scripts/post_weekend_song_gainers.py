@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import random
 import re
@@ -31,15 +32,17 @@ from twitter.text import track_history_line  # noqa: E402
 from core.data_paths import update_streams_dir  # noqa: E402
 from core.twitter import post_with_image  # noqa: E402
 import history_store  # noqa: E402
+import best_day_since  # noqa: E402
 
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
 
-MIN_GAIN_PCT = 5.0
+MIN_GAIN_PCT = 10.0
 DEFAULT_LIMIT = 5
 DEFAULT_MIN_BASELINE = 1_000
+CHARTS_HISTORY_GLOBAL = REPO_ROOT / "db" / "charts_history_global.csv"
 
 _EXCLUDED_TITLE_MARKERS = (
     "commentary",
@@ -264,6 +267,46 @@ def _build_tweet(row: dict, *, target_date: str) -> str:
     return f"{first_line}\n\n{song_history}"
 
 
+def _global_charted_track_ids(target_date: str) -> set[str]:
+    """Track ids that appeared anywhere in the Spotify Global Top 200 on target_date."""
+    charted: set[str] = set()
+    if not CHARTS_HISTORY_GLOBAL.exists():
+        return charted
+    with CHARTS_HISTORY_GLOBAL.open(newline="", encoding="utf-8-sig") as f:
+        for row in csv.DictReader(f):
+            if (row.get("date") or "").strip() != target_date:
+                continue
+            track_id = (row.get("track_id") or "").strip()
+            if track_id:
+                charted.add(track_id)
+    return charted
+
+
+def _best_day_since_track_ids(target_date: str) -> set[str]:
+    """Track ids (including combined song-family members) with a best-day-since record on target_date."""
+    tracks = best_day_since.load_tracks(include_extras=False)
+    all_tracks = best_day_since.load_tracks(include_extras=True)
+    history = best_day_since.load_history()
+    target = date.fromisoformat(target_date)
+
+    track_ids: set[str] = set()
+    seen_families: set[str] = set()
+    for track_id, track in tracks.items():
+        family = (track.song_family or track_id).strip()
+        if family in seen_families:
+            continue
+        seen_families.add(family)
+        row = best_day_since.compute_best_day_since_combined(
+            track,
+            best_day_since.combined_tracks_for(all_tracks.get(track_id, track), all_tracks),
+            history,
+            target,
+        )
+        if row and best_day_since.passes_filters(row, min_days=best_day_since.DEFAULT_MIN_DAYS):
+            track_ids.update(row.get("combined_track_ids") or [track_id])
+    return track_ids
+
+
 def _pick_weekend_gainers(
     target_date: str,
     *,
@@ -273,6 +316,8 @@ def _pick_weekend_gainers(
 ) -> list[dict]:
     history = history_store.HistoryIndex.load()
     baseline_date = str(date.fromisoformat(target_date) - timedelta(days=1))
+    best_day_track_ids = _best_day_since_track_ids(target_date)
+    charted_track_ids = _global_charted_track_ids(target_date)
 
     rows: list[dict] = []
     for track in _load_album_tracks():
@@ -294,7 +339,13 @@ def _pick_weekend_gainers(
         if gain <= 0:
             continue
         pct = gain / daily_baseline * 100
-        if pct < min_pct:
+
+        # Below the pct bar, a song still qualifies if it hit a best-day-since
+        # record or charted on the Global Top 200 that day (chart placement
+        # is only used as a qualifying signal here — never mentioned in copy).
+        had_best_day = track_id in best_day_track_ids
+        had_chart_entry = track_id in charted_track_ids
+        if pct < min_pct and not had_best_day and not had_chart_entry:
             continue
 
         rows.append({
@@ -306,6 +357,8 @@ def _pick_weekend_gainers(
             "gain": gain,
             "pct": pct,
             "baseline_date": baseline_date,
+            "had_best_day": had_best_day,
+            "had_chart_entry": had_chart_entry,
         })
 
     rows.sort(key=lambda row: (row["pct"], row["gain"], row["daily_today"]), reverse=True)
@@ -313,7 +366,13 @@ def _pick_weekend_gainers(
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Post weekend +5% Spotify song gainers with song_card images.")
+    parser = argparse.ArgumentParser(
+        description=(
+            "Post weekend Spotify song gainers with song_card images. A song qualifies if it "
+            "gained at least --min-pct, or hit a best-day-since record, or charted on the "
+            "Global Top 200 that day."
+        )
+    )
     parser.add_argument("date", nargs="?", help="Stats date YYYY-MM-DD. Defaults to yesterday.")
     parser.add_argument("--limit", type=int, default=DEFAULT_LIMIT)
     parser.add_argument("--min-pct", type=float, default=MIN_GAIN_PCT)
@@ -353,7 +412,10 @@ def main() -> int:
         min_pct=float(args.min_pct),
     )
     if not rows:
-        print(f"[weekend_song_gainers] No song gained at least +{float(args.min_pct):.1f}% on {target_date}.")
+        print(
+            f"[weekend_song_gainers] No song gained at least +{float(args.min_pct):.1f}%, "
+            f"hit a best-day-since record, or charted on the Global Top 200 on {target_date}."
+        )
         return 0
 
     covers = _load_covers()
