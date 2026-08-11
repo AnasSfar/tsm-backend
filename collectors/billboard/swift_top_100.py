@@ -89,6 +89,52 @@ AM_GLOBAL_WEIGHT = float(os.getenv("TAYBOARD_AM_GLOBAL_WEIGHT", "0.1"))
 AM_COUNTRY_WEIGHT = float(os.getenv("TAYBOARD_AM_COUNTRY_WEIGHT", "0.08"))
 AM_GENRE_WEIGHT = float(os.getenv("TAYBOARD_AM_GENRE_WEIGHT", "0.05"))
 AM_TS_FLOOR_RANK = int(os.getenv("TAYBOARD_AM_TS_FLOOR_RANK", "100"))
+# Apple Music country/genre charts are storefront-local, so a placement in a
+# major market should not count the same as a placement in a tiny storefront.
+# These are scoring weights only; they are not stream/share estimates.
+AM_MARKET_WEIGHT_DEFAULT = float(os.getenv("TAYBOARD_AM_MARKET_WEIGHT_DEFAULT", "0.08"))
+AM_MARKET_WEIGHTS: dict[str, float] = {
+    # Tier 1
+    "us": 1.00,
+    "gb": 0.70,
+    # Tier 2
+    "jp": 0.55,
+    "de": 0.50,
+    "fr": 0.50,
+    "ca": 0.50,
+    "au": 0.45,
+    # Tier 3
+    "br": 0.35,
+    "mx": 0.35,
+    "it": 0.35,
+    "es": 0.35,
+    "nl": 0.30,
+    "se": 0.30,
+    "no": 0.30,
+    "dk": 0.25,
+    "ie": 0.25,
+    "nz": 0.25,
+    "in": 0.25,
+    "kr": 0.25,
+    # Tier 4
+    "za": 0.20,
+    "ph": 0.20,
+    "id": 0.20,
+    "th": 0.20,
+    "my": 0.20,
+    "sg": 0.20,
+    "tw": 0.20,
+    "hk": 0.20,
+    "pl": 0.20,
+    "be": 0.18,
+    "ch": 0.18,
+    "at": 0.18,
+    "pt": 0.18,
+    "tr": 0.18,
+    "ar": 0.18,
+    "cl": 0.18,
+    "co": 0.18,
+}
 # Deezer: same power-law scoring as Apple Music, added as a 3rd, smaller
 # source. Global chart weight is discounted vs. AM's (0.05 vs 0.10) because
 # Deezer's public /chart endpoint has no explicit country param and is
@@ -114,6 +160,13 @@ def _parse_iso_date(value: str) -> date | None:
 
 def _format_date(value: date) -> str:
     return value.isoformat()
+
+
+def _apple_music_market_weight(country: str | None) -> float:
+    country_key = (country or "").strip().lower()
+    if not country_key:
+        return AM_MARKET_WEIGHT_DEFAULT
+    return AM_MARKET_WEIGHTS.get(country_key, AM_MARKET_WEIGHT_DEFAULT)
 
 
 def _is_valid_chart_date(value: str | None) -> bool:
@@ -170,7 +223,7 @@ def _normalize_full_title(value: str) -> str:
     s = _clean_title_text(value)
     if not s:
         return ""
-    s = _PAREN_RE.sub(" ", s)
+    s = s.replace("(", " ").replace(")", " ").replace("[", " ").replace("]", " ")
     s = _NORMALIZE_RE.sub(" ", s)
     return " ".join(s.split())
 
@@ -193,8 +246,16 @@ def _normalize_title(value: str) -> str:
     return s
 
 
-def _chart_lookup_key(title: str, *, combined: bool = False, base_title: str | None = None) -> str:
+def _chart_lookup_key(
+    title: str,
+    *,
+    combined: bool = False,
+    base_title: str | None = None,
+    song_family: str | None = None,
+) -> str:
     """Return the key used to attach external chart units to a song row."""
+    if combined and song_family:
+        return _normalize_title(song_family)
     if combined and base_title:
         return _normalize_title(base_title)
     return _normalize_title(title) if combined else _normalize_full_title(title)
@@ -255,6 +316,7 @@ class TrackMeta:
     image_url: str | None
     primary_album: str | None
     base_title: str | None = None
+    song_family: str | None = None
     historical_track_ids: tuple[str, ...] = ()
     chart_extra: bool | None = None
     music_track: bool = True
@@ -293,16 +355,19 @@ def _iter_discography_tracks() -> list[TrackMeta]:
             chart_extra = section_chart_extra
         music_track = _as_bool(track.get("music_track")) is not False
         excluded_from_public_stats = _as_bool(track.get("excluded_from_public_stats")) is True
+        base_title = (track.get("base_title") or "").strip() or None
+        song_family = (track.get("song_family") or "").strip() or None
         if track_id in items:
             existing = items[track_id]
             items[track_id] = replace(
                 existing,
+                base_title=existing.base_title or base_title,
+                song_family=existing.song_family or song_family,
                 chart_extra=_merge_chart_extra(existing.chart_extra, chart_extra),
                 music_track=existing.music_track and music_track,
                 excluded_from_public_stats=existing.excluded_from_public_stats or excluded_from_public_stats,
             )
             return
-        base_title = (track.get("base_title") or "").strip() or None
         spotify_url = f"https://open.spotify.com/track/{track_id}"
         image_url = track.get("image_url") or None
         historical_track_ids = tuple(
@@ -315,6 +380,7 @@ def _iter_discography_tracks() -> list[TrackMeta]:
             image_url=image_url,
             primary_album=album_name,
             base_title=base_title,
+            song_family=song_family,
             historical_track_ids=historical_track_ids,
             chart_extra=chart_extra,
             music_track=music_track,
@@ -643,6 +709,7 @@ def _remove_duplicate_daily_series(
             meta.title,
             combined=True,
             base_title=meta.base_title,
+            song_family=meta.song_family,
         )
         if key:
             by_song_key.setdefault(key, []).append(track_id)
@@ -764,7 +831,12 @@ def _best_global_rank_by_title(
 
     track_keys: dict[str, str] = {}
     for track in tracks.values():
-        key = _chart_lookup_key(track.title, combined=COMBINE_VERSIONS, base_title=track.base_title)
+        key = _chart_lookup_key(
+            track.title,
+            combined=COMBINE_VERSIONS,
+            base_title=track.base_title,
+            song_family=track.song_family,
+        )
         if key:
             track_keys[track.track_id] = key
             for historical_id in track.historical_track_ids:
@@ -821,7 +893,12 @@ def _weekly_charts_streams_by_title(
 
     track_keys: dict[str, str] = {}
     for track in tracks.values():
-        key = _chart_lookup_key(track.title, combined=COMBINE_VERSIONS, base_title=track.base_title)
+        key = _chart_lookup_key(
+            track.title,
+            combined=COMBINE_VERSIONS,
+            base_title=track.base_title,
+            song_family=track.song_family,
+        )
         if key:
             track_keys[track.track_id] = key
             for historical_id in track.historical_track_ids:
@@ -1008,7 +1085,7 @@ def _weekly_apple_music_global_points(*, week_dates: set[str], logger: Logger) -
                 rank = _to_int(row.get("rank"))
                 if not title or not rank or rank < 1 or rank > 100:
                     continue
-                key = _normalize_title(title)
+                key = _chart_lookup_key(title, combined=COMBINE_VERSIONS)
                 if not key:
                     continue
                 cell = (key, day)
@@ -1026,7 +1103,8 @@ def _weekly_apple_music_global_points(*, week_dates: set[str], logger: Logger) -
 def _weekly_apple_music_country_points(*, week_dates: set[str], logger: Logger) -> dict[str, float]:
     """Return normalized_title -> weighted sum of daily AM country-chart scores.
 
-    Formula: (500 / rank^0.75) * AM_COUNTRY_WEIGHT for each country/day placement.
+    Formula: (500 / rank^0.75) * AM_COUNTRY_WEIGHT * market_weight
+    for each country/day placement.
     This is the general Top Songs chart inside each region, not the worldwide
     Apple Music global chart.
     Best rank per (title, country, day) is kept.
@@ -1060,7 +1138,7 @@ def _weekly_apple_music_country_points(*, week_dates: set[str], logger: Logger) 
                 rank = _to_int(row.get("rank"))
                 if not country or not title or not rank or rank < 1 or rank > 200:
                     continue
-                key = _normalize_title(title)
+                key = _chart_lookup_key(title, combined=COMBINE_VERSIONS)
                 if not key:
                     continue
                 cell = (key, country, day)
@@ -1068,17 +1146,23 @@ def _weekly_apple_music_country_points(*, week_dates: set[str], logger: Logger) 
                     best_per_country_day[cell] = rank
                 matched_rows += 1
 
-    for (key, _country, _day), rank in best_per_country_day.items():
-        scores[key] = scores.get(key, 0.0) + (_rank_to_am_units_score(rank) * AM_COUNTRY_WEIGHT)
+    for (key, country, _day), rank in best_per_country_day.items():
+        scores[key] = scores.get(key, 0.0) + (
+            _rank_to_am_units_score(rank) * AM_COUNTRY_WEIGHT * _apple_music_market_weight(country)
+        )
 
-    logger.log(f"  apple_country  : {matched_rows} rows ({len(active_paths)} file(s), weight={AM_COUNTRY_WEIGHT:g})")
+    logger.log(
+        "  apple_country  : "
+        f"{matched_rows} rows ({len(active_paths)} file(s), weight={AM_COUNTRY_WEIGHT:g}, market-weighted)"
+    )
     return scores
 
 
 def _weekly_apple_music_genre_points(*, week_dates: set[str], logger: Logger) -> dict[str, float]:
     """Return normalized_title -> weighted sum of daily AM country-genre scores.
 
-    Formula: (500 / rank^0.75) * AM_GENRE_WEIGHT for each country/day with a genre placement.
+    Formula: (500 / rank^0.75) * AM_GENRE_WEIGHT * market_weight
+    for each country/day with a genre placement.
     Best genre rank per (title, country, day) is kept so multiple genre charts do not stack.
     """
     scores: dict[str, float] = {}
@@ -1111,7 +1195,7 @@ def _weekly_apple_music_genre_points(*, week_dates: set[str], logger: Logger) ->
                 rank = _to_int(row.get("rank"))
                 if not country or not genre_id or not title or not rank or rank < 1 or rank > 200:
                     continue
-                key = _normalize_title(title)
+                key = _chart_lookup_key(title, combined=COMBINE_VERSIONS)
                 if not key:
                     continue
                 cell = (key, country, day)
@@ -1119,10 +1203,15 @@ def _weekly_apple_music_genre_points(*, week_dates: set[str], logger: Logger) ->
                     best_per_genre_day[cell] = rank
                 matched_rows += 1
 
-    for (key, _country, _day), rank in best_per_genre_day.items():
-        scores[key] = scores.get(key, 0.0) + (_rank_to_am_units_score(rank) * AM_GENRE_WEIGHT)
+    for (key, country, _day), rank in best_per_genre_day.items():
+        scores[key] = scores.get(key, 0.0) + (
+            _rank_to_am_units_score(rank) * AM_GENRE_WEIGHT * _apple_music_market_weight(country)
+        )
 
-    logger.log(f"  apple_genre    : {matched_rows} rows ({len(active_paths)} file(s), weight={AM_GENRE_WEIGHT:g})")
+    logger.log(
+        "  apple_genre    : "
+        f"{matched_rows} rows ({len(active_paths)} file(s), weight={AM_GENRE_WEIGHT:g}, market-weighted)"
+    )
     return scores
 
 
@@ -1157,7 +1246,7 @@ def _weekly_apple_music_ts_points(*, week_dates: set[str], logger: Logger) -> di
                 rank = _to_int(row.get("rank"))
                 if not title or not rank or rank < 1 or rank > 100:
                     continue
-                key = _normalize_title(title)
+                key = _chart_lookup_key(title, combined=COMBINE_VERSIONS)
                 if not key:
                     continue
                 cell = (key, day)
@@ -1214,7 +1303,7 @@ def _weekly_deezer_global_points(*, week_dates: set[str], logger: Logger) -> dic
                 rank = _to_int(row.get("rank"))
                 if not title or not rank or rank < 1 or rank > 100:
                     continue
-                key = _normalize_title(title)
+                key = _chart_lookup_key(title, combined=COMBINE_VERSIONS)
                 if not key:
                     continue
                 cell = (key, day)
@@ -1261,7 +1350,7 @@ def _weekly_deezer_artist_points(*, week_dates: set[str], logger: Logger) -> dic
                 rank = _to_int(row.get("rank"))
                 if not title or not rank or rank < 1 or rank > 100:
                     continue
-                key = _normalize_title(title)
+                key = _chart_lookup_key(title, combined=COMBINE_VERSIONS)
                 if not key:
                     continue
                 cell = (key, day)
@@ -1429,6 +1518,7 @@ def _write_songs_history_csv(rows: list[dict], logger: Logger) -> None:
     SWIFT_TOP_SONGS_HISTORY_CSV.parent.mkdir(parents=True, exist_ok=True)
     fieldnames = [
         "date", "week_start", "rank", "track_id", "title", "weekly_streams",
+        "base_title", "song_family",
         "units_am", "units_deezer", "units_spotify", "units_charts", "units_surplus", "total_units",
         "streams_pct", "airplay_pct", "deezer_pct", "sales_pct", "bonus_points", "points",
         "global_best_rank", "am_ts_score", "am_global_score", "am_country_score",
@@ -1650,7 +1740,13 @@ def _build_week_chart(
             continue
         title = meta.title
         base_title = meta.base_title
-        norm_title = _chart_lookup_key(title, combined=COMBINE_VERSIONS, base_title=base_title)
+        song_family = meta.song_family
+        norm_title = _chart_lookup_key(
+            title,
+            combined=COMBINE_VERSIONS,
+            base_title=base_title,
+            song_family=song_family,
+        )
         br = best_rank.get(norm_title)
         # Points calculated later after top-100 selection (need sum of top 100 streams)
         points = wk_streams
@@ -1659,6 +1755,7 @@ def _build_week_chart(
                 "track_id": tid,
                 "title": title,
                 "base_title": base_title,
+                "song_family": song_family,
                 "weekly_streams": wk_streams,
                 "bonus_points": 0,
                 "points": points,
@@ -1694,6 +1791,7 @@ def _build_week_chart(
                 r.get("title") or "",
                 combined=True,
                 base_title=r.get("base_title") or None,
+                song_family=r.get("song_family") or None,
             )
             if key not in merged_by_title:
                 merged_by_title[key] = dict(r)
@@ -1934,6 +2032,7 @@ def run(
             row["title"],
             combined=COMBINE_VERSIONS,
             base_title=row.get("base_title") or (meta.base_title if meta else None),
+            song_family=row.get("song_family") or (meta.song_family if meta else None),
         )
         weekly_streams = row["weekly_streams"]
 
@@ -1991,6 +2090,8 @@ def run(
                 "rank": rank,
                 "track_id": tid,
                 "title": row["title"],
+                "base_title": row.get("base_title"),
+                "song_family": row.get("song_family"),
                 "weekly_streams": weekly_streams,
                 "units_am": units_am,
                 "units_deezer": units_deezer,
@@ -2027,6 +2128,8 @@ def run(
                 "rank": rank,
                 "track_id": tid,
                 "title": row["title"],
+                "base_title": row.get("base_title"),
+                "song_family": row.get("song_family"),
                 "primary_album": meta.primary_album if meta else None,
                 "spotify_url": meta.spotify_url if meta else None,
                 "image_url": (meta.image_url if meta and meta.image_url else None),
@@ -2383,4 +2486,3 @@ def main_from_args(args: argparse.Namespace) -> None:
 
 if __name__ == "__main__":
     main()
-
