@@ -39,6 +39,10 @@ def title_lookup() -> dict[str, str]:
             title = str(song.get("title_clean") or song.get("title") or song.get("base_title") or "").strip()
             if track_id and title:
                 out.setdefault(track_id, title)
+                for historical_id in song.get("historical_track_ids") or []:
+                    historical_track_id = str(historical_id or "").strip()
+                    if historical_track_id:
+                        out.setdefault(historical_track_id, title)
     return out
 
 

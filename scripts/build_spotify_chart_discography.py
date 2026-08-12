@@ -81,7 +81,46 @@ def load_songs_by_track_id() -> dict[str, dict[str, Any]]:
             track_id = track_id_from_url(song.get("track_id") or song.get("id"))
             if track_id:
                 out.setdefault(track_id, song)
+                for historical_id in song.get("historical_track_ids") or []:
+                    historical_track_id = track_id_from_url(historical_id)
+                    if historical_track_id:
+                        out.setdefault(historical_track_id, song)
     return out
+
+
+def normalize_song_name(value: Any, strip_parentheses: bool = False) -> str:
+    text = str(value or "").lower().strip()
+    if strip_parentheses:
+        text = re.sub(r"\s*\([^)]*\)", "", text)
+    text = re.sub(r"[^a-z0-9]+", " ", text)
+    return " ".join(text.split())
+
+
+def load_songs_by_name(songs_by_track_id: dict[str, dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+    out: dict[str, list[dict[str, Any]]] = {}
+    for song in {id(song): song for song in songs_by_track_id.values()}.values():
+        for attr in ("title", "base_title", "title_clean"):
+            for key in {
+                normalize_song_name(song.get(attr)),
+                normalize_song_name(song.get(attr), strip_parentheses=True),
+            }:
+                if key:
+                    out.setdefault(key, []).append(song)
+    return out
+
+
+def pick_song_by_name(raw_song_name: Any, songs_by_name: dict[str, list[dict[str, Any]]]) -> dict[str, Any] | None:
+    if re.fullmatch(r"[A-Za-z0-9]{22}", str(raw_song_name or "").strip()):
+        return None
+    key = normalize_song_name(raw_song_name)
+    stripped = normalize_song_name(raw_song_name, strip_parentheses=True)
+    candidates = songs_by_name.get(key) or songs_by_name.get(stripped) or []
+    if not candidates:
+        return None
+    exact = [song for song in candidates if normalize_song_name(song.get("title")) == key]
+    if exact:
+        candidates = exact
+    return max(candidates, key=lambda song: to_int(song.get("streams")) or 0)
 
 
 def load_total_days() -> dict[str, int]:
@@ -111,11 +150,13 @@ def enrich_summary(summary: dict[str, Any], songs_by_track_id: dict[str, dict[st
     track_id = str(summary.get("track_id") or "").strip()
     song = songs_by_track_id.get(track_id) or {}
     if song:
-        summary["track_id"] = song.get("track_id") or track_id
+        summary["track_id"] = track_id_from_url(song.get("track_id")) or track_id
         summary["image_url"] = song.get("apple_music_image_url") or song.get("image_url")
         summary["album_name"] = song.get("primary_album", "")
         summary["artist_name"] = song.get("primary_artist", "")
-        if song.get("title") and not summary.get("song_name"):
+        if song.get("title") and (
+            not summary.get("song_name") or re.fullmatch(r"[A-Za-z0-9]{22}", str(summary.get("song_name") or "").strip())
+        ):
             summary["song_name"] = song["title"]
     else:
         summary.setdefault("image_url", None)
@@ -129,6 +170,7 @@ def add_entry(
     track_id: str,
     entry: dict[str, Any],
     songs_by_track_id: dict[str, dict[str, Any]],
+    songs_by_name: dict[str, list[dict[str, Any]]],
     total_days_store: dict[str, int],
 ) -> None:
     country = canonical_country(entry.get("country") or entry.get("country_name"))
@@ -136,6 +178,10 @@ def add_entry(
         return
 
     country_name = str(entry.get("country_name") or entry.get("country") or country.upper()).strip()
+    song = songs_by_track_id.get(track_id) or pick_song_by_name(song_name_for(track_id, entry, songs_by_track_id), songs_by_name)
+    canonical_track_id = track_id_from_url(song.get("track_id")) if song else track_id
+    if canonical_track_id:
+        track_id = canonical_track_id
     rank = to_int(entry.get("rank")) or 0
     streams = to_int(entry.get("streams")) or 0
     peak_rank = to_int(entry.get("peak_rank")) or rank
@@ -190,6 +236,7 @@ def add_entry(
 
 def build_discographies(limit_regions: set[str] | None = None) -> dict[str, dict[str, Any]]:
     songs_by_track_id = load_songs_by_track_id()
+    songs_by_name = load_songs_by_name(songs_by_track_id)
     total_days_store = load_total_days()
     by_country: dict[str, dict[str, dict[str, Any]]] = {}
 
@@ -209,7 +256,7 @@ def build_discographies(limit_regions: set[str] | None = None) -> dict[str, dict
                 country = canonical_country(entry.get("country") or entry.get("country_name"))
                 if limit_regions is not None and country not in limit_regions:
                     continue
-                add_entry(by_country, chart_date, track_id, entry, songs_by_track_id, total_days_store)
+                add_entry(by_country, chart_date, track_id, entry, songs_by_track_id, songs_by_name, total_days_store)
 
     out: dict[str, dict[str, Any]] = {}
     for country, rows_by_track in sorted(by_country.items()):
