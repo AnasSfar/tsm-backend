@@ -841,6 +841,37 @@ def _post_song_overtakes(ctx: FinalizeContext, state: dict[str, float]) -> None:
     )
     print("Song overtakes done.")
 
+
+def _post_stream_milestones(ctx: FinalizeContext, state: dict[str, float]) -> None:
+    if ctx.debug_daily_mode:
+        print("[DEBUG-DAILY] Skip: stream milestones.")
+        return
+    if not _streams_post_ready(ctx):
+        print("Stream milestones skipped: blocking tracks are still pending.")
+        return
+
+    post_script = ctx.script_dir / "tools" / "scripts" / "post_stream_milestones.py"
+    cmd = [
+        sys.executable,
+        str(post_script),
+        ctx.summary["stats_date"],
+        "--post-spacing-seconds",
+        str(ctx.post_spacing_seconds),
+    ]
+    if ctx.no_post_mode:
+        cmd.append("--no-post")
+
+    print("Posting song stream milestones...")
+    _run(
+        ctx,
+        cmd,
+        label="stream milestones",
+        should_post=not ctx.no_post_mode,
+        state=state,
+    )
+    print("Stream milestones done.")
+
+
 def _streams_post_ready(ctx: FinalizeContext) -> bool:
     """Only allow stream posts after the full target collection is complete."""
     if ctx.summary.get("all_done"):
@@ -1490,6 +1521,7 @@ POST_ONLY_STEPS = {
     "top45": _post_streams_image,
     "recap": _post_daily_recap_card,
     "weekend-gainers": _post_weekend_song_gainers,
+    "milestones": _post_stream_milestones,
     "overtakes": _post_song_overtakes,
     "best-day-since": _post_best_day_since,
     "debut": _post_debut_releases,
@@ -1576,6 +1608,8 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
         _guarded_post_step("weekend song gainers", lambda: _post_weekend_song_gainers(ctx, post_state))
 
         _guarded_post_step("song overtakes", lambda: _post_song_overtakes(ctx, post_state))
+
+        _guarded_post_step("stream milestones", lambda: _post_stream_milestones(ctx, post_state))
 
         _guarded_post_step("top eras post", lambda: _post_albums_daily(ctx, post_state))
 

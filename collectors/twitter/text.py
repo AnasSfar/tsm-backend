@@ -66,6 +66,54 @@ def best_day_since_recap_tweet(*, count: int, stats_date: str) -> str:
     body = f"{int(count)} song{plural} hit a best day since record on {date_label(stats_date)}. Full recap below."
     return with_prefix(body, BEST_DAY_PREFIX)
 
+
+def stream_milestone_tweet(
+    *,
+    title: str,
+    milestone_streams: int,
+    milestone_rank: int,
+    next_title: str,
+    next_expected_date: str,
+    prefix: str,
+    album_title: str | None = None,
+    album_milestone_rank: int | None = None,
+    album_first: bool = False,
+    next_album_title: str | None = None,
+    next_album_expected_date: str | None = None,
+    album_next: bool = False,
+) -> str:
+    has_album_context = bool(album_title and album_milestone_rank is not None)
+    if album_first and has_album_context:
+        milestone_line = (
+            f'"{title}" is now the {ordinal(int(album_milestone_rank))} song '
+            f"from {album_title} to surpass {int(milestone_streams):,} streams.\n\n"
+            f"It is Taylor Swift's {ordinal(int(milestone_rank))} song to do so."
+        )
+    else:
+        milestone_line = (
+            f'"{title}" has now surpassed {int(milestone_streams):,} streams.\n\n'
+            f"It is Taylor Swift's {ordinal(int(milestone_rank))} song to do so."
+        )
+        if has_album_context:
+            milestone_line += (
+                f" The song is also the {ordinal(int(album_milestone_rank))} "
+                f"song to do so from {album_title} album."
+            )
+
+    if album_next and album_title and next_album_title and next_album_expected_date:
+        next_line = (
+            f'The next song from {album_title} expected to surpass this milestone is '
+            f'"{next_album_title}" on {date_label(next_album_expected_date)}.'
+        )
+    else:
+        next_line = (
+            f'The next song expected to surpass this milestone is "{next_title}" '
+            f"on {date_label(next_expected_date)}."
+        )
+
+    body = f"{milestone_line}\n\n{next_line}"
+    return with_prefix(body, prefix)
+
 def track_history_line(track_id: str) -> str:
     return f"See full track's history here : {song_url(track_id)}"
 

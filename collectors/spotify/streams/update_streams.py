@@ -459,7 +459,7 @@ Usage:
       available date (or the provided date). No scraping, no web export, no git.
       Completeness guards, posting locks and weekday rules still apply.
       Steps (comma- or space-separated): top-eras, all-albums, top20, recap,
-      overtakes, best-day-since, debut, gainers, album-updates.
+      milestones, overtakes, best-day-since, debut, gainers, album-updates.
       Add --no-post to only generate the images without posting.
 
   python update_streams.py --no-post
