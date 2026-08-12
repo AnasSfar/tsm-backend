@@ -41,6 +41,7 @@ APPLE_MUSIC_DB_PREFIX = "apple-music/db"
 # Read by tsm-frontend/api/data/loader.py for arbitrary historical dates --
 # real historical data, never delete.
 APPLE_MUSIC_SNAPSHOTS_PREFIX = "apple-music/snapshots"
+APPLE_MUSIC_HISTORY_BY_DATE_PREFIX = "apple-music/history-by-date"
 
 # --- Deezer history/snapshots (scripts/upload_deezer_r2.py) ---
 DEEZER_HISTORY_BY_SONG_PREFIX = "deezer/history-by-song"

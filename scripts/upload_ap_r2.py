@@ -31,6 +31,7 @@ SITE_DATA_DIR = WEB_EXPORT_DATA_DIR if WEB_EXPORT_DATA_DIR.exists() else LEGACY_
 
 APPLEMUSIC_JSON = SITE_DATA_DIR / "applemusic.json"
 APPLEMUSIC_HISTORY_JSON = SITE_DATA_DIR / "applemusic_history.json"
+APPLEMUSIC_HISTORY_DATES_DIR = SITE_DATA_DIR / "applemusic_history_dates"
 
 COUNTRY_CSV = DB_DIR / "apple_music_country_charts.csv"
 GENRE_CSV = DB_DIR / "apple_music_genre_charts.csv"
@@ -41,6 +42,7 @@ MUSIC_VIDEO_CSV = DB_DIR / "apple_music_music_video_charts.csv"
 R2_PREFIX = r2_keys.APPLE_MUSIC_HISTORY_BY_SONG_PREFIX
 CSV_R2_PREFIX = r2_keys.APPLE_MUSIC_DB_PREFIX
 SNAPSHOT_R2_PREFIX = r2_keys.APPLE_MUSIC_SNAPSHOTS_PREFIX
+HISTORY_BY_DATE_R2_PREFIX = r2_keys.APPLE_MUSIC_HISTORY_BY_DATE_PREFIX
 NO_CACHE_CONTROL = "no-cache, no-store, must-revalidate"
 
 APPLE_MUSIC_CSV_NAMES = [
@@ -429,6 +431,38 @@ def upload_snapshot_jsons(client: BaseClient, bucket: str, dry_run: bool) -> int
     return uploaded
 
 
+def upload_history_by_date_jsons(client: BaseClient, bucket: str, dry_run: bool) -> int:
+    """Upload pre-split date payloads so the API avoids applemusic_history.json."""
+    if not APPLEMUSIC_HISTORY_DATES_DIR.exists():
+        print(f"[skip] {HISTORY_BY_DATE_R2_PREFIX} split history dir not found locally")
+        return 0
+
+    files = sorted(APPLEMUSIC_HISTORY_DATES_DIR.glob("*.json"))
+    if not files:
+        print(f"[skip] {HISTORY_BY_DATE_R2_PREFIX} no split files found")
+        return 0
+
+    uploaded = 0
+    unchanged = 0
+
+    def _upload(path: Path) -> tuple[str, bool]:
+        payload = json.loads(path.read_text(encoding="utf-8-sig"))
+        r2_key = f"{HISTORY_BY_DATE_R2_PREFIX}/{path.name}"
+        changed = upload_json_if_changed(client, bucket, r2_key, payload, dry_run=dry_run)
+        return r2_key, changed
+
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        for r2_key, changed in pool.map(_upload, files):
+            if changed:
+                print(f"[uploaded] {r2_key}")
+                uploaded += 1
+            else:
+                unchanged += 1
+
+    print(f"[done] {HISTORY_BY_DATE_R2_PREFIX}: uploaded={uploaded} unchanged={unchanged}")
+    return uploaded
+
+
 def main() -> None:
     load_dotenv()
     args = parse_args()
@@ -442,6 +476,9 @@ def main() -> None:
 
     print("\n=== Uploading Apple Music snapshot JSON files ===")
     upload_snapshot_jsons(client, bucket, args.dry_run)
+
+    print("\n=== Uploading Apple Music history-by-date JSON files ===")
+    upload_history_by_date_jsons(client, bucket, args.dry_run)
 
     # Upload daily CSVs so the next CI run can compute previous_rank
     print("\n=== Uploading Apple Music CSV history ===")

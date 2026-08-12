@@ -10,6 +10,7 @@ from copy import deepcopy
 from datetime import date as _date, timedelta
 from pathlib import Path
 from typing import Any
+from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "collectors" / "spotify"))
@@ -36,6 +37,7 @@ GENRE_CSV = DB_DIR / "apple_music_genre_charts.csv"
 
 OUT_DATA = OUT_DIR / "applemusic.json"
 OUT_HISTORY = OUT_DIR / "applemusic_history.json"
+OUT_HISTORY_DATES_DIR = OUT_DIR / "applemusic_history_dates"
 
 # applemusic_history.json is loaded whole by the API: keep it to a rolling
 # window AND collapse past days to their last snapshot (the scheduler scrapes
@@ -52,6 +54,7 @@ def log(msg: str) -> None:
 
 def ensure_out_dir() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
+    OUT_HISTORY_DATES_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def to_int(value: Any) -> int | None:
@@ -522,6 +525,81 @@ def build_last_charted(rows: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
     }
 
 
+HISTORY_DAY_BUCKETS: tuple[tuple[str, Any], ...] = (
+    ("global", []),
+    ("global_albums", []),
+    ("top_songs", []),
+    ("top_videos", []),
+    ("country", {}),
+    ("country_albums", {}),
+    ("genre_albums", {}),
+    ("music_video_charts", {}),
+    ("genre", {}),
+)
+
+
+def history_value_for_day(history: dict[str, Any], bucket: str, requested_key: str, default: Any) -> tuple[Any, str | None]:
+    source = history.get(bucket, {})
+    if not isinstance(source, dict):
+        return default, None
+
+    if requested_key in source:
+        return source.get(requested_key, default), requested_key
+
+    requested_day = requested_key[:10]
+    same_day_keys = sorted(
+        key for key in source.keys()
+        if isinstance(key, str) and key.startswith(requested_day)
+    )
+    if not same_day_keys:
+        return default, None
+
+    earlier_keys = [key for key in same_day_keys if key <= requested_key]
+    resolved_key = (earlier_keys or same_day_keys)[-1]
+    return source.get(resolved_key, default), resolved_key
+
+
+def build_history_day_payload(history: dict[str, Any], date_key: str) -> dict[str, Any]:
+    payload: dict[str, Any] = {
+        "date": date_key,
+        "bucket_keys": {},
+    }
+    bucket_keys = payload["bucket_keys"]
+    for bucket, default in HISTORY_DAY_BUCKETS:
+        value, resolved_key = history_value_for_day(history, bucket, date_key, default)
+        payload[bucket] = value
+        bucket_keys[bucket] = resolved_key
+    return payload
+
+
+def history_date_filename(date_key: str) -> str:
+    return f"{quote(date_key, safe='')}.json"
+
+
+def write_history_by_date(history: dict[str, Any]) -> int:
+    dates = [date for date in history.get("dates", []) if isinstance(date, str) and date]
+    OUT_HISTORY_DATES_DIR.mkdir(parents=True, exist_ok=True)
+    for stale in OUT_HISTORY_DATES_DIR.glob("*.json"):
+        stale.unlink()
+
+    index = {
+        "dates": dates,
+        "count": len(dates),
+        "latest": dates[-1] if dates else None,
+    }
+    (OUT_HISTORY_DATES_DIR / "index.json").write_text(
+        json.dumps(index, ensure_ascii=False, separators=(",", ":")),
+        encoding="utf-8",
+    )
+    for date_key in dates:
+        payload = build_history_day_payload(history, date_key)
+        (OUT_HISTORY_DATES_DIR / history_date_filename(date_key)).write_text(
+            json.dumps(payload, ensure_ascii=False, separators=(",", ":")),
+            encoding="utf-8",
+        )
+    return len(dates)
+
+
 def main() -> None:
     ensure_out_dir()
 
@@ -639,6 +717,7 @@ def main() -> None:
         json.dumps(applemusic_history, ensure_ascii=False, separators=(",", ":")),
         encoding="utf-8",
     )
+    split_count = write_history_by_date(applemusic_history)
 
     log(f"écrit: {OUT_DATA}")
     log(f"écrit: {OUT_HISTORY}")
