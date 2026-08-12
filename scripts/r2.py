@@ -725,6 +725,19 @@ def upload_static_data(
             full_key = f"{data_prefix}/{r2_key.split('/', 1)[1]}"
             tasks.append((full_key, data, "text/csv; charset=utf-8"))
 
+    discography_dir = SITE_DATA_DIR / "charts_discography"
+    if discography_dir.exists():
+        for path in sorted(discography_dir.glob("*.json")):
+            try:
+                obj = load_json(path)
+            except Exception:
+                print(f"[SKIP] invalid chart discography file: {path}")
+                continue
+            payload = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+            tasks.append((f"{data_prefix}/charts_discography/{path.name}", payload, "application/json; charset=utf-8"))
+    elif not worldwide_snapshot_only:
+        print(f"[SKIP] absent: {discography_dir}")
+
     index_path = HISTORY_DIR / "index.json"
     if index_path.exists() and not charts_only and not worldwide_snapshot_only:
         full_key = f"{history_prefix}/index.json"

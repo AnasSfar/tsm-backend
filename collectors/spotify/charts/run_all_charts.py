@@ -1944,6 +1944,17 @@ def main() -> int:
                     )
                     if rc_sync != 0:
                         failures.append(("sync-country-charts", rc_sync))
+                    else:
+                        rc_discography = _run(
+                            "build-country-discography",
+                            REPO_ROOT / "scripts" / "build_spotify_chart_discography.py",
+                            [],
+                            dry_run=False,
+                            env=env,
+                            verbose=args.verbose,
+                        )
+                        if rc_discography != 0:
+                            failures.append(("build-country-discography", rc_discography))
             if warp_active:
                 _warp_disconnect()
 
