@@ -18,6 +18,7 @@ logic here changes (thresholds, ignore days, combine guard…), update it too.
 from __future__ import annotations
 
 import argparse
+import calendar
 import csv
 import json
 import re
@@ -47,6 +48,7 @@ LIVE_COLLECTION_MIN_PCT_CHANGE = 10.0
 YEAR_RECORD_IGNORE_DAYS = 15
 MONTH_RECORD_IGNORE_DAYS = 10
 MONTH_RECORD_MIN_DAILY_STREAMS = 200_000
+MONTH_RECORD_LAST_DAYS = 5
 
 
 @dataclass(frozen=True)
@@ -412,6 +414,11 @@ def _is_biggest_daily_in_period(
     return current_daily >= max(int(point.daily or 0) for point in period_points)
 
 
+def _is_in_last_days_of_month(target_date: date, days: int) -> bool:
+    last_day = calendar.monthrange(target_date.year, target_date.month)[1]
+    return (last_day - target_date.day) < days
+
+
 def period_record_flags(points: list[Point], target_date: date, current_daily: int) -> dict[str, bool]:
     year_start = date(target_date.year, 1, 1) + timedelta(days=YEAR_RECORD_IGNORE_DAYS)
     month_start = date(target_date.year, target_date.month, 1) + timedelta(days=MONTH_RECORD_IGNORE_DAYS)
@@ -424,6 +431,7 @@ def period_record_flags(points: list[Point], target_date: date, current_daily: i
         ),
         "is_biggest_day_of_month": (
             current_daily > MONTH_RECORD_MIN_DAILY_STREAMS
+            and _is_in_last_days_of_month(target_date, MONTH_RECORD_LAST_DAYS)
             and _is_biggest_daily_in_period(
                 points,
                 target_date=target_date,
@@ -584,6 +592,8 @@ def row_label(row: dict) -> str:
         label = "best day ever"
     elif row.get("is_biggest_day_of_year"):
         label = "biggest day of the year"
+    elif row.get("kind") == "since":
+        label = f"best day since {format_long_date(row['best_day_since'])}"
     elif row.get("is_biggest_day_of_month"):
         label = "biggest day of the month"
     else:

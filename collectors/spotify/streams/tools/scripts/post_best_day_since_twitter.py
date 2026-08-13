@@ -34,12 +34,9 @@ FEATURES_JSON = DISCOGRAPHY_DIR / "features.json"
 COVERS_PATH = DISCOGRAPHY_DIR / "covers.json"
 POST_COLLECTION_BEST_DAY_MIN_DAYS = 30
 ALBUM_BEST_DAY_MIN_DAYS = 30
-RECAP_BEST_DAY_MIN_DAYS = 30
 MAX_BEST_DAY_SONG_POSTS_PER_ALBUM = 3
-POST_COLLECTION_MIN_SONG_DAILY_STREAMS = 300_000
 POST_COLLECTION_MAX_SONG_POSTS = 5
 MIN_SONG_DAILY_STREAMS_TO_POST = 80_000
-POST_COLLECTION_MIN_SONG_PCT_CHANGE = 10.0
 ALWAYS_POST_BEST_DAY_SINCE_AFTER_DAYS = 60
 
 for _stream in (sys.stdout, sys.stderr):
@@ -261,10 +258,47 @@ def _find_all_rows(target_date: str, *, min_days: int) -> list[dict]:
             history,
             target,
         )
-        if not row or row.get("kind") != "since" or not best_day_since.passes_filters(row, min_days=min_days):
+        if (
+            not row
+            or row.get("kind") != "since"
+            or not (row.get("is_biggest_day_of_year") or best_day_since.passes_filters(row, min_days=min_days))
+        ):
             continue
         rows.append(row)
     return rows
+
+
+def _find_recap_rows(target_date: str) -> list[dict]:
+    """Every exact best-day record for the day, independent of posting gates."""
+    tracks = best_day_since.load_tracks(include_extras=False)
+    all_tracks = best_day_since.load_tracks(include_extras=True)
+    history = best_day_since.load_history()
+    target = date.fromisoformat(target_date)
+
+    rows: list[dict] = []
+    seen_families: set[str] = set()
+    for track_id, track in tracks.items():
+        family = (track.song_family or track_id).strip()
+        if family in seen_families:
+            continue
+        seen_families.add(family)
+        row = best_day_since.compute_best_day_since_combined(
+            track,
+            best_day_since.combined_tracks_for(all_tracks.get(track_id, track), all_tracks),
+            history,
+            target,
+        )
+        if not row:
+            continue
+        if row.get("kind") == "best_ever" or best_day_since.passes_filters(row, min_days=1):
+            rows.append(row)
+    return rows
+
+
+def _recap_sort_key(row: dict) -> tuple[int, str]:
+    if row.get("kind") == "best_ever":
+        return (0, "")
+    return (1, str(row.get("best_day_since") or ""))
 
 
 def _album_key(album: str | None) -> str:
@@ -342,7 +376,7 @@ def _pick_rows(
                 min_pct_change=min_pct_change,
             )
         ]
-    rows.sort(key=best_day_since.sort_key, reverse=True)
+    rows.sort(key=_song_post_sort_key, reverse=True)
 
     picked: list[dict] = []
     counts = dict(album_post_counts or {})
@@ -362,12 +396,19 @@ def _pick_rows(
     return picked
 
 
+def _song_post_sort_key(row: dict) -> tuple[int, int, int, int]:
+    return (1 if row.get("is_biggest_day_of_year") else 0, *best_day_since.sort_key(row))
+
+
 def _passes_song_post_gate(
     row: dict,
     *,
     min_daily_streams: int | None,
     min_pct_change: float | None,
 ) -> bool:
+    if row.get("is_biggest_day_of_year"):
+        return True
+
     if (row.get("days_since") or 0) > ALWAYS_POST_BEST_DAY_SINCE_AFTER_DAYS:
         return True
 
@@ -501,7 +542,12 @@ def _pick_album_rows(target_date: str, *, limit: int, min_days: int) -> list[dic
         if len(track_ids) < 2:
             continue
         row = best_day_since.compute_album_best_day_since(album, track_ids, history, target)
-        if not row or row.get("kind") != "since" or not best_day_since.passes_filters(row, min_days=min_days):
+        if (
+            not row
+            or row.get("kind") != "since"
+            or row.get("is_biggest_day_of_year")
+            or not best_day_since.passes_filters(row, min_days=min_days)
+        ):
             continue
         rows.append(row)
 
@@ -529,17 +575,24 @@ def _album_row(
     if (
         not row
         or row.get("kind") != "since"
+        or row.get("is_biggest_day_of_year")
         or not best_day_since.passes_filters(row, min_days=min_days, min_pct_change=min_pct_change)
     ):
         return None
     return row
 
 
+def _best_day_post_label(row: dict) -> str:
+    if row.get("is_biggest_day_of_year") and row.get("kind") == "since":
+        return f"BIGGEST DAY of the year and BEST DAY since {best_day_since.format_long_date(row['best_day_since'])}"
+    label = best_day_since.row_label(row)
+    return label.replace("best day", "BEST DAY", 1).replace("biggest day", "BIGGEST DAY", 1)
+
+
 def _build_tweet(row: dict, daily_yesterday: int | None) -> str:
     title = row["title"]
     track_id = row["track_id"]
-    label = best_day_since.row_label(row)
-    label = label.replace("best day", "BEST DAY", 1).replace("biggest day", "BIGGEST DAY", 1)
+    label = _best_day_post_label(row)
     daily = int(row["daily_streams"])
     pct = _fmt_pct(daily, daily_yesterday)
     return best_day_since_tweet(
@@ -619,19 +672,32 @@ def _generate_recap_image(
     date_text = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
     rows_html = []
     for index, row in enumerate(rows, 1):
-        track = tracks_by_id.get(row["track_id"])
-        if not track:
-            continue
+        track = tracks_by_id.get(row["track_id"]) or {
+            "track_id": row["track_id"],
+            "title": row.get("title") or row["track_id"],
+            "album": row.get("album") or "",
+        }
         track_ids = row.get("combined_track_ids") or [row["track_id"]]
         _total_today, _total_yesterday, daily_today, daily_yesterday, daily_last_week = (
             load_history_for_tracks(track_ids, target_date)
         )
         if daily_today is None:
+            daily_today = row.get("daily_streams")
+        if daily_today is None:
+            print(
+                f"[best_day_since_post] Recap row skipped: missing daily streams for "
+                f"{row.get('title') or row['track_id']} on {target_date}."
+            )
             continue
         cover_url = url_to_data_uri(get_cover_url(track, covers))
         daily_pct = get_pct(daily_today, daily_yesterday)
         weekly_pct = get_pct(daily_today, daily_last_week)
         rows_html.append(_recap_row_html(index, row, track, cover_url, daily_today, daily_pct, weekly_pct))
+    if len(rows_html) != len(rows):
+        print(
+            f"[best_day_since_post] Recap image contains {len(rows_html)}/{len(rows)} "
+            f"validated best-day row(s)."
+        )
 
     html_text = build_table_html(
         title="Best Day Since â€” Full Recap",
@@ -662,6 +728,8 @@ def _build_recap_tweet(rows: list[dict], target_date: str) -> str:
     return best_day_since_recap_tweet(count=len(rows), stats_date=target_date)
 
 def _best_since_badge_text(row: dict) -> str:
+    if row.get("is_biggest_day_of_year") and row.get("kind") == "since":
+        return f"biggest day of the year and best day since {best_day_since.format_long_date(row['best_day_since'])}"
     return best_day_since.row_label(row)
 
 
@@ -917,7 +985,7 @@ def main() -> None:
     exclude_ids = {t.strip() for t in args.exclude_tracks.split(",") if t.strip()}
     exclude_ids.update(_posted_track_ids_for_date(target_date))
     album_post_counts = _track_album_counts(exclude_ids, tracks_by_id)
-    remaining_song_limit = max(0, limit - len(exclude_ids))
+    remaining_song_limit = limit
     candidate_rows = (
         []
         if track_locked or remaining_song_limit <= 0
@@ -925,8 +993,8 @@ def main() -> None:
             target_date,
             limit=max(remaining_song_limit * 5, remaining_song_limit + 20),
             min_days=args.min_days,
-            min_daily_streams=max(POST_COLLECTION_MIN_SONG_DAILY_STREAMS, MIN_SONG_DAILY_STREAMS_TO_POST),
-            min_pct_change=POST_COLLECTION_MIN_SONG_PCT_CHANGE,
+            min_daily_streams=None,
+            min_pct_change=None,
             exclude_ids=exclude_ids,
             album_post_counts=album_post_counts,
         )
@@ -988,8 +1056,8 @@ def main() -> None:
     elif args.no_recap:
         pass
     else:
-        recap_rows = _find_all_rows(target_date, min_days=RECAP_BEST_DAY_MIN_DAYS)
-        recap_rows.sort(key=lambda row: row["best_day_since"])
+        recap_rows = _find_recap_rows(target_date)
+        recap_rows.sort(key=_recap_sort_key)
         if not recap_rows:
             print(f"[best_day_since_post] No best-day-since songs found for recap on {target_date}.")
         else:
@@ -1016,4 +1084,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

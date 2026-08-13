@@ -1529,9 +1529,12 @@ def _format_best_day_since_label(value: object) -> str | None:
 def _format_best_day_marker_label(row: dict) -> str | None:
     if row.get("is_biggest_day_of_year"):
         return "of the year"
+    since_label = _format_best_day_since_label(row.get("best_day_since"))
+    if since_label:
+        return since_label
     if row.get("is_biggest_day_of_month"):
         return "of the month"
-    return _format_best_day_since_label(row.get("best_day_since"))
+    return None
 
 
 def _best_day_labels_for_sections(
@@ -1574,6 +1577,7 @@ def _best_day_labels_for_sections(
                 row
                 and not row.get("combined")
                 and row.get("kind") == "since"
+                and not row.get("is_biggest_day_of_year")
                 and best_day_since.passes_filters(row, min_days=min_days)
             ):
                 label = _format_best_day_marker_label(row)
@@ -1616,6 +1620,7 @@ def _best_day_rows_for_sections(
             if (
                 row
                 and row.get("kind") == "since"
+                and not row.get("is_biggest_day_of_year")
                 and best_day_since.passes_filters(row, min_days=min_days)
             ):
                 rows.append(row)
@@ -1872,6 +1877,8 @@ def _format_best_since_long(value: object) -> str:
 def _best_day_post_label(row: dict) -> str:
     if row.get("is_biggest_day_of_year"):
         label = "BIGGEST DAY of the year"
+    elif row.get("kind") == "since":
+        label = f"BEST DAY since {_format_best_since_long(row.get('best_day_since'))}"
     elif row.get("is_biggest_day_of_month"):
         label = "BIGGEST DAY of the month"
     else:

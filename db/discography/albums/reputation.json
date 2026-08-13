@@ -26,7 +26,11 @@
           "song_family": "ready_for_it",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "19WjVVgXjdKXfLXoaDPwTM",
+            "7zgqtptZvhf8GEmdsM2vp2",
+            "4vVb2D6RYL669h7tLYOKwx"
+          ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
             "pop",
@@ -93,7 +97,9 @@
           "song_family": "end_game",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "3JbSLr2OhsivV46whJyGeb"
+          ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
             "pop",
@@ -161,7 +167,8 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [
-            "2nOeoic483mcNOx5TFpc3L"
+            "2nOeoic483mcNOx5TFpc3L",
+            "3TcMyNevhQZ35yaA8jHSBq"
           ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
@@ -232,7 +239,9 @@
           "song_family": "don_t_blame_me",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0OnfGJsCc1m9utfUYqid6O"
+          ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -278,7 +287,8 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [
-            "5sOch9Cf4uxcMtwFzMtNqQ"
+            "5sOch9Cf4uxcMtwFzMtNqQ",
+            "7CneiDesUKFJO3Ix01dnfr"
           ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
@@ -350,7 +360,10 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [
-            "1JbR9RDP3ogVNEWFgNXAjh"
+            "1JbR9RDP3ogVNEWFgNXAjh",
+            "2VjtYe7gpfUi2OkGxR2O2z",
+            "6uFsE1JgZ20EXyU0JQZbUR",
+            "5troof8mcGO3AafoDbk1gc"
           ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
@@ -422,7 +435,8 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [
-            "41T04yafZVrjNq2FqvLtId"
+            "41T04yafZVrjNq2FqvLtId",
+            "0cdQJyb7pZJMw9obUd8lue"
           ],
           "release_date": "2017-11-09T00:00:00Z",
           "genres": [
@@ -491,7 +505,10 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [
-            "12WvaS3V4dPRBU2o37vX69"
+            "12WvaS3V4dPRBU2o37vX69",
+            "5Gd19NupVe5X8bAqxf9Iaz",
+            "0CLnkxpa3M4eA3HeGaERat",
+            "7ut4Y7gxOFe3d3rLJQ7i5w"
           ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
@@ -562,7 +579,9 @@
           "song_family": "getaway_car",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "5YPTYLMdNEgk7CPNPqqFyA"
+          ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
             "pop",
@@ -633,7 +652,8 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [
-            "4d7JmiyEia47bpC1HhxUzY"
+            "4d7JmiyEia47bpC1HhxUzY",
+            "0d9BBAvHC8DjidkKmKBNms"
           ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
@@ -705,7 +725,8 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [
-            "6P8j2SqbXOeaCvXh1ZXwWT"
+            "6P8j2SqbXOeaCvXh1ZXwWT",
+            "3A6wCRe6QoH7Ea5JMpnRB8"
           ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
@@ -774,7 +795,8 @@
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
           "historical_track_ids": [
-            "50GXx9eZeiVWB3bgMop7Ti"
+            "50GXx9eZeiVWB3bgMop7Ti",
+            "6X3YCswCQzX1gGZ5ji8P9x"
           ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
@@ -845,7 +867,9 @@
           "song_family": "this_is_why_we_can_t_have_nice_things",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0fF2vHE8TaB4XHExalmBP8"
+          ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
             "pop",
@@ -915,7 +939,10 @@
           "song_family": "call_it_what_you_want",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0tDfp0vFR95Gg6Mrhza3lX",
+            "2QD7DklEvkqncYacmhMukq"
+          ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
             "pop",
@@ -985,7 +1012,9 @@
           "song_family": "new_year_s_day",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "79bxjfUDHCwCe7JR4glr8r"
+          ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [],
           "genre_status": "missing",

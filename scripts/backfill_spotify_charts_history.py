@@ -61,6 +61,25 @@ def _snapshot_path(chart_date: str) -> Path:
     )
 
 
+def _snapshot_is_usable(chart_date: str) -> bool:
+    path = _snapshot_path(chart_date)
+    if not path.exists():
+        return False
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8-sig"))
+    except Exception:
+        return False
+    if not isinstance(payload, dict):
+        return False
+    by_track = payload.get("by_track")
+    skipped_regions = payload.get("skipped_regions") or []
+    # A no-Taylor day can be an exact empty snapshot. An empty snapshot where
+    # regions were skipped is incomplete and must not be treated as done.
+    if isinstance(by_track, dict) and not by_track and skipped_regions:
+        return False
+    return isinstance(by_track, dict)
+
+
 def _load_state(path: Path) -> dict:
     if not path.exists():
         return {"done_dates": [], "failed_dates": {}}
@@ -93,7 +112,7 @@ def _mark_existing_snapshots(state: dict, dates: list[str]) -> int:
     done = set(state.get("done_dates") or [])
     added = 0
     for chart_date in dates:
-        if chart_date not in done and _snapshot_path(chart_date).exists():
+        if chart_date not in done and _snapshot_is_usable(chart_date):
             done.add(chart_date)
             added += 1
     state["done_dates"] = sorted(done)
@@ -284,17 +303,17 @@ def main() -> int:
                 ok_dates: list[str] = []
                 bad_dates: list[tuple[str, bool]] = []
                 for chart_date in chunk:
-                    snapshot_exists = args.dry_run or _snapshot_path(chart_date).exists()
-                    if snapshot_exists:
+                    snapshot_usable = args.dry_run or _snapshot_is_usable(chart_date)
+                    if snapshot_usable:
                         ok_dates.append(chart_date)
                     else:
-                        bad_dates.append((chart_date, snapshot_exists))
+                        bad_dates.append((chart_date, snapshot_usable))
                 for chart_date in ok_dates:
                     done.add(chart_date)
                     touched_dates.add(chart_date)
                     failures.pop(chart_date, None)
-                for chart_date, snapshot_exists in bad_dates:
-                    failures[chart_date] = f"rc={rc}; snapshot_exists={snapshot_exists}; session={session_name}"
+                for chart_date, snapshot_usable in bad_dates:
+                    failures[chart_date] = f"rc={rc}; snapshot_usable={snapshot_usable}; session={session_name}"
                 print(
                     f"[ OK ] worker {completed_workers}/{len(chunks)} via {session_name}: "
                     f"{len(ok_dates)}/{len(chunk)} date(s) in {elapsed:.1f}s"

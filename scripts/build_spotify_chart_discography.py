@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import re
 from pathlib import Path
@@ -20,6 +21,12 @@ WORLDWIDE_TOTAL_DAYS_PATH = (
     / "json"
     / "total_days.json"
 )
+REGIONAL_CSVS = {
+    "global": ROOT / "db" / "charts_history_global.csv",
+    "fr": ROOT / "db" / "charts_history_fr.csv",
+    "us": ROOT / "db" / "charts_history_us.csv",
+    "uk": ROOT / "db" / "charts_history_uk.csv",
+}
 
 SPOTIFY_ID_RE = re.compile(r"(?:spotify:track:|/track/)([A-Za-z0-9]+)")
 
@@ -239,6 +246,31 @@ def build_discographies(limit_regions: set[str] | None = None) -> dict[str, dict
     songs_by_name = load_songs_by_name(songs_by_track_id)
     total_days_store = load_total_days()
     by_country: dict[str, dict[str, dict[str, Any]]] = {}
+
+    for country, csv_path in REGIONAL_CSVS.items():
+        if limit_regions is not None and country not in limit_regions:
+            continue
+        if not csv_path.exists():
+            continue
+        with csv_path.open(encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                song_name = row.get("song_name")
+                track_id = track_id_from_url(row.get("track_id"))
+                if not track_id:
+                    song = pick_song_by_name(song_name, songs_by_name)
+                    track_id = track_id_from_url(song.get("track_id")) if song else ""
+                if not track_id:
+                    continue
+                entry = dict(row)
+                entry["country"] = country
+                entry["country_name"] = {
+                    "global": "Global",
+                    "fr": "France",
+                    "us": "United States",
+                    "uk": "United Kingdom",
+                }.get(country, country.upper())
+                add_entry(by_country, str(row.get("date") or ""), track_id, entry, songs_by_track_id, songs_by_name, total_days_store)
 
     for path in worldwide_files():
         payload = load_json(path)

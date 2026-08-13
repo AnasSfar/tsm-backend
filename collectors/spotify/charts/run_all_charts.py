@@ -197,13 +197,11 @@ def _r2_export_is_fresh(target: date) -> bool:
         _worldwide_snapshot_path(target),
         spotify_chart_dir("global", target) / f"ts_chart_{target}.json",
         spotify_chart_dir("fr", target) / f"ts_chart_{target}.json",
-        REPO_ROOT / "db" / "charts_history_global.csv",
-        REPO_ROOT / "db" / "charts_history_fr.csv",
-        REPO_ROOT / "db" / "charts_history_us.csv",
-        REPO_ROOT / "db" / "charts_history_uk.csv",
         WEB_EXPORT_DATA_DIR / "charts_worldwide.json",
         WEB_EXPORT_DATA_DIR / "charts_artists_global_worldwide.json",
     ]
+    watched_paths.extend((REPO_ROOT / "db").glob("charts_history_*.csv"))
+    watched_paths.extend((WEB_EXPORT_DATA_DIR / "charts_discography").glob("*.json"))
     for path in watched_paths:
         try:
             if path.exists() and path.stat().st_mtime > lock_mtime:
@@ -1781,6 +1779,7 @@ def main() -> int:
     failures: list[tuple[str, int]] = []
     ran_collect = False
     deferred_artists_global: list[tuple[str, Path, list[str]]] = []
+    worldwide_ready_for_final_sync = False
 
     if needs_collect:
         original_collect_runners = collect_runners
@@ -1934,55 +1933,9 @@ def main() -> int:
                 if not worldwide_ok:
                     failures.append(("worldwide-validation", 1))
                 else:
-                    rc_sync = _run(
-                        "sync-country-charts",
-                        REPO_ROOT / "scripts" / "sync_spotify_country_charts_from_worldwide.py",
-                        [],
-                        dry_run=False,
-                        env=env,
-                        verbose=args.verbose,
-                    )
-                    if rc_sync != 0:
-                        failures.append(("sync-country-charts", rc_sync))
-                    else:
-                        rc_discography = _run(
-                            "build-country-discography",
-                            REPO_ROOT / "scripts" / "build_spotify_chart_discography.py",
-                            [],
-                            dry_run=False,
-                            env=env,
-                            verbose=args.verbose,
-                        )
-                        if rc_discography != 0:
-                            failures.append(("build-country-discography", rc_discography))
+                    worldwide_ready_for_final_sync = True
             if warp_active:
                 _warp_disconnect()
-
-    if not args.dry_run and needs_collect:
-        if _r2_export_is_fresh(target_date) and not args.force:
-            print(f"\n[PHASE2] export web + upload R2 deja fait pour {target_date} (r2_exported.lock), skip")
-        else:
-            print("\n[PHASE2] upload R2 charts-only...")
-            rc_export = _run(
-                "r2-charts",
-                REPO_ROOT / "scripts" / "r2.py",
-                [
-                    "--skip-history-upload",
-                    "--skip-db-upload",
-                    "--skip-images-upload",
-                    "--charts-only",
-                    *(["--worldwide-snapshot-only"] if _explicit_target_date else []),
-                    "--new-date",
-                    str(target_date),
-                ],
-                dry_run=False,
-                env={**env, "UPLOAD_TO_R2": "1"},
-                verbose=args.verbose,
-            )
-            if rc_export != 0:
-                failures.append(("export", rc_export))
-            else:
-                _mark_r2_exported(target_date)
 
     should_generate_cards = "cards" in post_parts or args.force_cards or (args.no_post and args.force)
     should_post_cards = "cards" in post_parts
@@ -2140,6 +2093,56 @@ def main() -> int:
         )
         if best_day_failure:
             failures.append(best_day_failure)
+
+    if not args.dry_run and needs_collect and worldwide_ready_for_final_sync:
+        print("\n[FINAL] sync Spotify country chart history for all worldwide regions...")
+        rc_sync = _run(
+            "sync-country-charts",
+            REPO_ROOT / "scripts" / "sync_spotify_country_charts_from_worldwide.py",
+            [],
+            dry_run=False,
+            env=env,
+            verbose=args.verbose,
+        )
+        if rc_sync != 0:
+            failures.append(("sync-country-charts", rc_sync))
+        else:
+            rc_discography = _run(
+                "build-country-discography",
+                REPO_ROOT / "scripts" / "build_spotify_chart_discography.py",
+                [],
+                dry_run=False,
+                env=env,
+                verbose=args.verbose,
+            )
+            if rc_discography != 0:
+                failures.append(("build-country-discography", rc_discography))
+
+        if not failures:
+            if _r2_export_is_fresh(target_date) and not args.force:
+                print(f"\n[FINAL] upload R2 charts-only deja fait pour {target_date} (r2_exported.lock), skip")
+            else:
+                print("\n[FINAL] upload R2 charts-only...")
+                rc_export = _run(
+                    "r2-charts",
+                    REPO_ROOT / "scripts" / "r2.py",
+                    [
+                        "--skip-history-upload",
+                        "--skip-db-upload",
+                        "--skip-images-upload",
+                        "--charts-only",
+                        *(["--worldwide-snapshot-only"] if _explicit_target_date else []),
+                        "--new-date",
+                        str(target_date),
+                    ],
+                    dry_run=False,
+                    env={**env, "UPLOAD_TO_R2": "1"},
+                    verbose=args.verbose,
+                )
+                if rc_export != 0:
+                    failures.append(("export", rc_export))
+                else:
+                    _mark_r2_exported(target_date)
 
     total = _fmt(time.perf_counter() - started)
     if failures:

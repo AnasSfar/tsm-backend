@@ -432,6 +432,15 @@ def _fmt_streams(n: int | None) -> str:
     return f"{n:,}".replace(",", " ")
 
 
+def _to_int(value: object) -> int | None:
+    if value in (None, ""):
+        return None
+    try:
+        return int(float(str(value).strip()))
+    except (TypeError, ValueError):
+        return None
+
+
 def _rank_delta_html(entry: dict) -> str:
     if entry.get("out"):
         prev = entry.get("previous_rank")
@@ -1029,6 +1038,37 @@ def _load_prev_by_track(chart_date: str) -> dict[str, list[dict]]:
     return {track_id: entries for track_id, entries in by_track.items() if isinstance(entries, list)}
 
 
+def _enrich_missing_stream_changes(
+    by_track: dict[str, list[dict]],
+    prev_by_track: dict[str, list[dict]],
+) -> int:
+    enriched = 0
+    for track_id, entries in by_track.items():
+        prev_entries = prev_by_track.get(track_id) or []
+        prev_by_country = {
+            str(entry.get("country") or "").lower(): entry
+            for entry in prev_entries
+            if isinstance(entry, dict)
+        }
+        for entry in entries:
+            if not isinstance(entry, dict):
+                continue
+            if entry.get("stream_change") not in (None, "") and entry.get("stream_change_pct") not in (None, ""):
+                continue
+            prev = prev_by_country.get(str(entry.get("country") or "").lower())
+            if not prev:
+                continue
+            curr_streams = _to_int(entry.get("streams"))
+            prev_streams = _to_int(prev.get("streams"))
+            if curr_streams is None or prev_streams is None or prev_streams <= 0:
+                continue
+            stream_change = curr_streams - prev_streams
+            entry["stream_change"] = stream_change
+            entry["stream_change_pct"] = round(stream_change / prev_streams * 100, 2)
+            enriched += 1
+    return enriched
+
+
 def _with_out_regions(entries: list[dict], prev_entries: list[dict]) -> list[dict]:
     current_countries = {str(entry.get("country") or "").lower() for entry in entries}
     enriched = list(entries)
@@ -1065,19 +1105,34 @@ def _build_tweet(song: dict, entries: list[dict], chart_date: str, prev_count: i
         date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%A, %B %d, %Y")
     except Exception:
         date_fmt = chart_date
+    global_entry = _global_entry(entries)
+    global_detail = ""
+    if global_entry:
+        pct = global_entry.get("stream_change_pct")
+        if pct not in (None, ""):
+            sign = "+" if float(pct) > 0 else ""
+            global_detail = (
+                f" Global: #{global_entry.get('rank', '?')} with "
+                f"{_fmt_streams(global_entry.get('streams'))} streams ({sign}{float(pct):.1f}%)."
+            )
     if count == 1:
         entry = entries[0]
         country = _country_label(str(entry.get("country") or ""), str(entry.get("country_name") or ""))
         rank = entry.get("rank", "?")
         streams = _fmt_streams(entry.get("streams"))
+        pct = entry.get("stream_change_pct")
+        stream_delta = ""
+        if pct not in (None, ""):
+            sign = "+" if float(pct) > 0 else ""
+            stream_delta = f" ({sign}{float(pct):.1f}%)"
         is_re_entry = bool(entry.get("is_re_entry")) or str(entry.get("movement") or "").strip().upper() == "RE"
         verb = "re-entered the Spotify Charts" if is_re_entry else "charted on Spotify"
         return (
             f'{emoji} | "{title}" {verb} in {country} at #{rank} '
-            f"with {streams} streams on {date_fmt}.\n\n{_OVERALL_URL}"
+            f"with {streams} streams{stream_delta} on {date_fmt}.\n\n{_OVERALL_URL}"
         )
     country_str = _country_count_text(count, prev_count)
-    return f'{emoji} | "{title}" charted in {country_str} on Spotify on {date_fmt}.\n\n{_OVERALL_URL}'
+    return f'{emoji} | "{title}" charted in {country_str} on Spotify on {date_fmt}.{global_detail}\n\n{_OVERALL_URL}'
 
 
 def _chart_card_date_pill(region_name: str, chart_date: str) -> str:
@@ -1594,6 +1649,9 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
     song_meta: dict[str, dict] = {s["track_id"]: s for s in songs_list if "track_id" in s}
     has_prev_snapshot = _previous_snapshot_path(chart_date) is not None
     prev_by_track = _load_prev_by_track(chart_date)
+    enriched_stream_changes = _enrich_missing_stream_changes(by_track, prev_by_track)
+    if enriched_stream_changes:
+        print(f"[INFO] Stream changes enriched from previous snapshot: {enriched_stream_changes}")
     prev_country_counts = _load_prev_country_counts(chart_date)
 
     d       = datetime.strptime(chart_date, "%Y-%m-%d").date()

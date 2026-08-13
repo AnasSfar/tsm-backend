@@ -708,16 +708,23 @@ def upload_static_data(
     # skipping it here left explicit-date catch-up runs (single date or
     # --backfill --backfill-upload-r2) invisible on the live site even after a
     # successful local collection (found 2026-08-05, missing 2026-08-03 global).
-    csv_mappings = [
-        ("charts_history_global.csv",       ["data/charts_global.csv",      "data/charts_history_global.csv"]),
-        ("charts_history_fr.csv",           ["data/charts_fr.csv",          "data/charts_history_fr.csv"]),
-        ("charts_history_us.csv",           ["data/charts_us.csv",          "data/charts_history_us.csv"]),
-        ("charts_history_uk.csv",           ["data/charts_uk.csv",          "data/charts_history_uk.csv"]),
-    ] if worldwide_snapshot_only else [
-        ("charts_history_global.csv",       ["data/charts_global.csv",      "data/charts_history_global.csv"]),
-        ("charts_history_fr.csv",           ["data/charts_fr.csv",          "data/charts_history_fr.csv"]),
-        ("charts_history_us.csv",           ["data/charts_us.csv",          "data/charts_history_us.csv"]),
-        ("charts_history_uk.csv",           ["data/charts_uk.csv",          "data/charts_history_uk.csv"]),
+    chart_csv_mappings = []
+    for path in sorted(DB_DIR.glob("charts_history_*.csv")):
+        match = re.fullmatch(r"charts_history_([a-z0-9_-]+)\.csv", path.name)
+        if not match:
+            continue
+        region = match.group(1)
+        chart_csv_mappings.append(
+            (
+                path.name,
+                [
+                    f"data/charts_{region}.csv",
+                    f"data/{path.name}",
+                ],
+            )
+        )
+    csv_mappings = chart_csv_mappings if worldwide_snapshot_only else [
+        *chart_csv_mappings,
         ("youtube_views_history.csv",       ["data/youtube_views.csv",      "data/youtube_views_history.csv"]),
         ("youtube_title_history.csv",       ["data/youtube_titles.csv",     "data/youtube_title_history.csv"]),
     ]

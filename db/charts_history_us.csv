@@ -463,10 +463,10 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2017-10-27,6uFsE1JgZ20EXyU0JQZbUR,Look What You Made Me Do,51,453610,49,1,64,64,-2
 2017-10-27,19WjVVgXjdKXfLXoaDPwTM,...Ready For It?,79,329253,95,1,55,55,+16
 2017-10-27,3NdDpSvN911VPGivFlV5d0,I Don’t Wanna Live Forever (Fifty Shades Darker),171,209631,165,3,298,96,-6
-2017-10-28,,Gorgeous,38,494786,22,2,9,9,-16
-2017-10-28,,Look What You Made Me Do,50,403690,51,1,65,65,+1
-2017-10-28,,...Ready For It?,77,304704,79,1,56,56,+2
-2017-10-28,,I Don’t Wanna Live Forever (Fifty Shades Darker),166,183274,171,3,299,97,+5
+2017-10-28,5Gd19NupVe5X8bAqxf9Iaz,Gorgeous,38,494786,22,2,9,9,-16
+2017-10-28,6uFsE1JgZ20EXyU0JQZbUR,Look What You Made Me Do,50,403690,51,1,65,65,+1
+2017-10-28,19WjVVgXjdKXfLXoaDPwTM,...Ready For It?,77,304704,79,1,56,56,+2
+2017-10-28,2y5aJvzXhHPA94U5GFAcXe,I Don’t Wanna Live Forever (Fifty Shades Darker),166,183274,171,3,299,97,+5
 2017-10-29,6uFsE1JgZ20EXyU0JQZbUR,Look What You Made Me Do,51,352490,50,1,66,66,-1
 2017-10-29,5Gd19NupVe5X8bAqxf9Iaz,Gorgeous,53,341361,38,2,10,10,-15
 2017-10-29,19WjVVgXjdKXfLXoaDPwTM,...Ready For It?,80,262513,77,1,57,57,-3
@@ -479,19 +479,19 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2017-10-31,5Gd19NupVe5X8bAqxf9Iaz,Gorgeous,88,314865,53,2,12,12,-35
 2017-10-31,19WjVVgXjdKXfLXoaDPwTM,...Ready For It?,103,287780,80,1,59,59,-23
 2017-10-31,3NdDpSvN911VPGivFlV5d0,I Don’t Wanna Live Forever (Fifty Shades Darker),195,186521,165,3,302,100,-30
-2017-11-01,,Look What You Made Me Do,60,372597,69,1,69,69,+9
-2017-11-01,,Gorgeous,94,285305,88,2,13,13,-6
-2017-11-01,,...Ready For It?,96,274798,103,1,60,60,+7
-2017-11-01,,I Don’t Wanna Live Forever (Fifty Shades Darker),177,186276,195,3,303,101,+18
-2017-11-02,,Look What You Made Me Do,66,357537,60,1,70,70,-6
-2017-11-02,,Gorgeous,89,305828,94,2,14,14,+5
-2017-11-02,,...Ready For It?,92,299756,96,1,61,61,+4
-2017-11-02,,I Don’t Wanna Live Forever (Fifty Shades Darker),170,199883,177,3,304,102,+7
-2017-11-03,,Call It What You Want,12,875328,,12,1,1,RE
-2017-11-03,,Look What You Made Me Do,64,389692,66,1,71,71,+2
-2017-11-03,,Gorgeous,72,365214,89,2,15,15,+17
-2017-11-03,,...Ready For It?,82,345397,92,1,62,62,+10
-2017-11-03,,I Don’t Wanna Live Forever (Fifty Shades Darker),163,224942,170,3,305,103,+7
+2017-11-01,6uFsE1JgZ20EXyU0JQZbUR,Look What You Made Me Do,60,372597,69,1,69,69,+9
+2017-11-01,5Gd19NupVe5X8bAqxf9Iaz,Gorgeous,94,285305,88,2,13,13,-6
+2017-11-01,19WjVVgXjdKXfLXoaDPwTM,...Ready For It?,96,274798,103,1,60,60,+7
+2017-11-01,2y5aJvzXhHPA94U5GFAcXe,I Don’t Wanna Live Forever (Fifty Shades Darker),177,186276,195,3,303,101,+18
+2017-11-02,6uFsE1JgZ20EXyU0JQZbUR,Look What You Made Me Do,66,357537,60,1,70,70,-6
+2017-11-02,5Gd19NupVe5X8bAqxf9Iaz,Gorgeous,89,305828,94,2,14,14,+5
+2017-11-02,19WjVVgXjdKXfLXoaDPwTM,...Ready For It?,92,299756,96,1,61,61,+4
+2017-11-02,2y5aJvzXhHPA94U5GFAcXe,I Don’t Wanna Live Forever (Fifty Shades Darker),170,199883,177,3,304,102,+7
+2017-11-03,0tDfp0vFR95Gg6Mrhza3lX,Call It What You Want,12,875328,,12,1,1,RE
+2017-11-03,6uFsE1JgZ20EXyU0JQZbUR,Look What You Made Me Do,64,389692,66,1,71,71,+2
+2017-11-03,5Gd19NupVe5X8bAqxf9Iaz,Gorgeous,72,365214,89,2,15,15,+17
+2017-11-03,19WjVVgXjdKXfLXoaDPwTM,...Ready For It?,82,345397,92,1,62,62,+10
+2017-11-03,2y5aJvzXhHPA94U5GFAcXe,I Don’t Wanna Live Forever (Fifty Shades Darker),163,224942,170,3,305,103,+7
 2017-11-04,,Call It What You Want,24,613727,12,12,2,2,-12
 2017-11-04,,Look What You Made Me Do,59,358861,64,1,72,72,+5
 2017-11-04,,...Ready For It?,84,304916,82,1,63,63,-2
@@ -1860,39 +1860,39 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2020-03-19,,You Need To Calm Down,199,215702,,1,246,1,RE
 2020-03-25,,You Need To Calm Down,195,213319,,1,247,1,RE
 2020-03-26,,You Need To Calm Down,188,218823,195,1,248,2,+7
-2020-07-23,,You Need To Calm Down,194,220589,,1,249,1,RE
-2020-07-25,,cardigan,1,2467977,2,1,2,2,+1
-2020-07-25,,the 1,2,2421236,1,1,2,2,-1
-2020-07-25,,exile (feat. Bon Iver),3,2377249,3,3,2,2,0
-2020-07-25,,the last great american dynasty,4,1933566,4,4,2,2,0
-2020-07-25,,my tears ricochet,5,1894597,5,5,2,2,0
-2020-07-25,,august,6,1764641,6,6,2,2,0
-2020-07-25,,mirrorball,7,1654918,7,7,2,2,0
-2020-07-25,,seven,8,1608478,8,8,2,2,0
-2020-07-25,,invisible string,9,1559976,10,9,2,2,+1
-2020-07-25,,this is me trying,10,1531625,9,9,2,2,-1
-2020-07-25,,illicit affairs,11,1474263,11,11,2,2,0
-2020-07-25,,betty,12,1418396,13,12,2,2,+1
-2020-07-25,,mad woman,14,1365087,12,12,2,2,-2
-2020-07-25,,epiphany,16,1254424,14,14,2,2,-2
-2020-07-25,,peace,17,1210725,15,15,2,2,-2
-2020-07-25,,hoax,20,1071300,16,16,2,2,-4
-2020-07-26,,cardigan,1,1911845,1,1,3,3,0
-2020-07-26,,the 1,2,1811288,2,1,3,3,0
-2020-07-26,,exile (feat. Bon Iver),3,1796535,3,3,3,3,0
-2020-07-26,,the last great american dynasty,4,1431588,4,4,3,3,0
-2020-07-26,,my tears ricochet,5,1414427,5,5,3,3,0
-2020-07-26,,august,6,1313882,6,6,3,3,0
-2020-07-26,,mirrorball,8,1212757,7,7,3,3,-1
-2020-07-26,,seven,9,1192756,8,8,3,3,-1
-2020-07-26,,invisible string,10,1183857,9,9,3,3,-1
-2020-07-26,,this is me trying,12,1126284,10,9,3,3,-2
-2020-07-26,,illicit affairs,14,1091193,11,11,3,3,-3
-2020-07-26,,betty,15,1061635,12,12,3,3,-3
-2020-07-26,,mad woman,17,1002384,14,12,3,3,-3
-2020-07-26,,epiphany,18,920148,16,14,3,3,-2
-2020-07-26,,peace,19,900173,17,15,3,3,-2
-2020-07-26,,hoax,23,795403,20,16,3,3,-3
+2020-07-23,6RRNNciQGZEXnqk8SQ9yv5,You Need To Calm Down,194,220589,,1,249,1,RE
+2020-07-25,4R2kfaDFhslZEMJqAFNpdd,cardigan,1,2467977,2,1,2,2,+1
+2020-07-25,0Jlcvv8IykzHaSmj49uNW8,the 1,2,2421236,1,1,2,2,-1
+2020-07-25,4pvb0WLRcMtbPGmtejJJ6y,exile (feat. Bon Iver),3,2377249,3,3,2,2,0
+2020-07-25,2Eeur20xVqfUoM3Q7EFPFt,the last great american dynasty,4,1933566,4,4,2,2,0
+2020-07-25,1MgV7FIyNxIG7WzMRJV5HC,my tears ricochet,5,1894597,5,5,2,2,0
+2020-07-25,3hUxzQpSfdDqwM3ZTFQY0K,august,6,1764641,6,6,2,2,0
+2020-07-25,0ZNU020wNYvgW84iljPkPP,mirrorball,7,1654918,7,7,2,2,0
+2020-07-25,6KJqZcs9XDgVck7Lg9QOTC,seven,8,1608478,8,8,2,2,0
+2020-07-25,6VsvKPJ4xjVNKpI8VVZ3SV,invisible string,9,1559976,10,9,2,2,+1
+2020-07-25,7kt9e9LFSpN1zQtYEl19o1,this is me trying,10,1531625,9,9,2,2,-1
+2020-07-25,2NmsngXHeC1GQ9wWrzhOMf,illicit affairs,11,1474263,11,11,2,2,0
+2020-07-25,5kI4eCXXzyuIUXjQra0Cxi,betty,12,1418396,13,12,2,2,+1
+2020-07-25,2QDyYdZyhlP2fp79KZX8Bi,mad woman,14,1365087,12,12,2,2,-2
+2020-07-25,08fa9LFcFBTcilB3iq2e2A,epiphany,16,1254424,14,14,2,2,-2
+2020-07-25,7MbT4I8qGntX4fMdqMQgke,peace,17,1210725,15,15,2,2,-2
+2020-07-25,6MWoRt97mnSTXZhu3ggi9C,hoax,20,1071300,16,16,2,2,-4
+2020-07-26,4R2kfaDFhslZEMJqAFNpdd,cardigan,1,1911845,1,1,3,3,0
+2020-07-26,0Jlcvv8IykzHaSmj49uNW8,the 1,2,1811288,2,1,3,3,0
+2020-07-26,4pvb0WLRcMtbPGmtejJJ6y,exile (feat. Bon Iver),3,1796535,3,3,3,3,0
+2020-07-26,2Eeur20xVqfUoM3Q7EFPFt,the last great american dynasty,4,1431588,4,4,3,3,0
+2020-07-26,1MgV7FIyNxIG7WzMRJV5HC,my tears ricochet,5,1414427,5,5,3,3,0
+2020-07-26,3hUxzQpSfdDqwM3ZTFQY0K,august,6,1313882,6,6,3,3,0
+2020-07-26,0ZNU020wNYvgW84iljPkPP,mirrorball,8,1212757,7,7,3,3,-1
+2020-07-26,6KJqZcs9XDgVck7Lg9QOTC,seven,9,1192756,8,8,3,3,-1
+2020-07-26,6VsvKPJ4xjVNKpI8VVZ3SV,invisible string,10,1183857,9,9,3,3,-1
+2020-07-26,7kt9e9LFSpN1zQtYEl19o1,this is me trying,12,1126284,10,9,3,3,-2
+2020-07-26,2NmsngXHeC1GQ9wWrzhOMf,illicit affairs,14,1091193,11,11,3,3,-3
+2020-07-26,5kI4eCXXzyuIUXjQra0Cxi,betty,15,1061635,12,12,3,3,-3
+2020-07-26,2QDyYdZyhlP2fp79KZX8Bi,mad woman,17,1002384,14,12,3,3,-3
+2020-07-26,08fa9LFcFBTcilB3iq2e2A,epiphany,18,920148,16,14,3,3,-2
+2020-07-26,7MbT4I8qGntX4fMdqMQgke,peace,19,900173,17,15,3,3,-2
+2020-07-26,6MWoRt97mnSTXZhu3ggi9C,hoax,23,795403,20,16,3,3,-3
 2020-07-27,,cardigan,1,2060016,1,1,4,4,0
 2020-07-27,,exile (feat. Bon Iver),2,1973883,3,2,4,4,+1
 2020-07-27,,the 1,3,1950522,2,1,4,4,-1
@@ -1909,70 +1909,70 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2020-07-27,,epiphany,18,1006389,18,14,4,4,0
 2020-07-27,,peace,19,985669,19,15,4,4,0
 2020-07-27,,hoax,20,877152,23,16,4,4,+3
-2020-07-28,,cardigan,1,1852727,1,1,5,5,0
-2020-07-28,,exile (feat. Bon Iver),2,1795556,2,2,5,5,0
-2020-07-28,,the 1,3,1735981,3,1,5,5,0
-2020-07-28,,the last great american dynasty,4,1376061,4,4,5,5,0
-2020-07-28,,my tears ricochet,5,1357615,5,5,5,5,0
-2020-07-28,,august,6,1273573,6,6,5,5,0
-2020-07-28,,mirrorball,9,1164404,7,7,5,5,-2
-2020-07-28,,invisible string,10,1155160,9,9,5,5,-1
-2020-07-28,,seven,12,1146387,8,8,5,5,-4
-2020-07-28,,this is me trying,13,1076108,10,9,5,5,-3
-2020-07-28,,illicit affairs,15,1056345,13,11,5,5,-2
-2020-07-28,,betty,16,1017521,15,12,5,5,-1
-2020-07-28,,mad woman,17,958529,16,12,5,5,-1
-2020-07-28,,epiphany,18,878125,18,14,5,5,0
-2020-07-28,,peace,19,869715,19,15,5,5,0
-2020-07-28,,hoax,25,766752,20,16,5,5,-5
-2020-07-29,,cardigan,1,1678542,1,1,6,6,0
-2020-07-29,,exile (feat. Bon Iver),2,1613922,2,2,6,6,0
-2020-07-29,,the 1,3,1545082,3,1,6,6,0
-2020-07-29,,the last great american dynasty,4,1236008,4,4,6,6,0
-2020-07-29,,my tears ricochet,6,1213608,5,5,6,6,-1
-2020-07-29,,august,8,1137655,6,6,6,6,-2
-2020-07-29,,invisible string,11,1038903,10,9,6,6,-1
-2020-07-29,,mirrorball,12,1035413,9,7,6,6,-3
-2020-07-29,,seven,13,1019130,12,8,6,6,-1
-2020-07-29,,this is me trying,14,956539,13,9,6,6,-1
-2020-07-29,,illicit affairs,15,938332,15,11,6,6,0
-2020-07-29,,betty,16,916417,16,12,6,6,0
-2020-07-29,,mad woman,17,846561,17,12,6,6,0
-2020-07-29,,epiphany,23,773867,18,14,6,6,-5
-2020-07-29,,peace,24,772822,19,15,6,6,-5
-2020-07-29,,hoax,29,680295,25,16,6,6,-4
-2020-07-30,,cardigan,1,1554351,1,1,7,7,0
-2020-07-30,,exile (feat. Bon Iver),2,1473333,2,2,7,7,0
-2020-07-30,,the 1,3,1407791,3,1,7,7,0
-2020-07-30,,the last great american dynasty,6,1133177,4,4,7,7,-2
-2020-07-30,,my tears ricochet,8,1100559,6,5,7,7,-2
-2020-07-30,,august,10,1028215,8,6,7,7,-2
-2020-07-30,,invisible string,11,943010,11,9,7,7,0
-2020-07-30,,mirrorball,12,932149,12,7,7,7,0
-2020-07-30,,seven,13,915775,13,8,7,7,0
-2020-07-30,,this is me trying,14,861925,14,9,7,7,0
-2020-07-30,,illicit affairs,15,846448,15,11,7,7,0
-2020-07-30,,betty,16,833920,16,12,7,7,0
-2020-07-30,,mad woman,22,759886,17,12,7,7,-5
-2020-07-30,,peace,26,694378,24,15,7,7,-2
-2020-07-30,,epiphany,27,692646,23,14,7,7,-4
-2020-07-30,,hoax,32,609459,29,16,7,7,-3
-2020-07-31,,cardigan,2,1418185,1,1,8,8,-1
-2020-07-31,,exile (feat. Bon Iver),3,1393110,2,2,8,8,-1
-2020-07-31,,the 1,5,1285641,3,1,8,8,-2
-2020-07-31,,the last great american dynasty,9,1017724,6,4,8,8,-3
-2020-07-31,,my tears ricochet,10,978706,8,5,8,8,-2
-2020-07-31,,august,11,936912,10,6,8,8,-1
-2020-07-31,,invisible string,14,843431,11,9,8,8,-3
-2020-07-31,,seven,17,830509,13,8,8,8,-4
-2020-07-31,,mirrorball,18,823734,12,7,8,8,-6
-2020-07-31,,this is me trying,20,765512,14,9,8,8,-6
-2020-07-31,,illicit affairs,21,750477,15,11,8,8,-6
-2020-07-31,,betty,22,744237,16,12,8,8,-6
-2020-07-31,,mad woman,28,678481,22,12,8,8,-6
-2020-07-31,,peace,33,612844,26,15,8,8,-7
-2020-07-31,,epiphany,34,611009,27,14,8,8,-7
-2020-07-31,,hoax,45,536142,32,16,8,8,-13
+2020-07-28,4R2kfaDFhslZEMJqAFNpdd,cardigan,1,1852727,1,1,5,5,0
+2020-07-28,4pvb0WLRcMtbPGmtejJJ6y,exile (feat. Bon Iver),2,1795556,2,2,5,5,0
+2020-07-28,0Jlcvv8IykzHaSmj49uNW8,the 1,3,1735981,3,1,5,5,0
+2020-07-28,2Eeur20xVqfUoM3Q7EFPFt,the last great american dynasty,4,1376061,4,4,5,5,0
+2020-07-28,1MgV7FIyNxIG7WzMRJV5HC,my tears ricochet,5,1357615,5,5,5,5,0
+2020-07-28,3hUxzQpSfdDqwM3ZTFQY0K,august,6,1273573,6,6,5,5,0
+2020-07-28,0ZNU020wNYvgW84iljPkPP,mirrorball,9,1164404,7,7,5,5,-2
+2020-07-28,6VsvKPJ4xjVNKpI8VVZ3SV,invisible string,10,1155160,9,9,5,5,-1
+2020-07-28,6KJqZcs9XDgVck7Lg9QOTC,seven,12,1146387,8,8,5,5,-4
+2020-07-28,7kt9e9LFSpN1zQtYEl19o1,this is me trying,13,1076108,10,9,5,5,-3
+2020-07-28,2NmsngXHeC1GQ9wWrzhOMf,illicit affairs,15,1056345,13,11,5,5,-2
+2020-07-28,5kI4eCXXzyuIUXjQra0Cxi,betty,16,1017521,15,12,5,5,-1
+2020-07-28,2QDyYdZyhlP2fp79KZX8Bi,mad woman,17,958529,16,12,5,5,-1
+2020-07-28,08fa9LFcFBTcilB3iq2e2A,epiphany,18,878125,18,14,5,5,0
+2020-07-28,7MbT4I8qGntX4fMdqMQgke,peace,19,869715,19,15,5,5,0
+2020-07-28,6MWoRt97mnSTXZhu3ggi9C,hoax,25,766752,20,16,5,5,-5
+2020-07-29,4R2kfaDFhslZEMJqAFNpdd,cardigan,1,1678542,1,1,6,6,0
+2020-07-29,4pvb0WLRcMtbPGmtejJJ6y,exile (feat. Bon Iver),2,1613922,2,2,6,6,0
+2020-07-29,0Jlcvv8IykzHaSmj49uNW8,the 1,3,1545082,3,1,6,6,0
+2020-07-29,2Eeur20xVqfUoM3Q7EFPFt,the last great american dynasty,4,1236008,4,4,6,6,0
+2020-07-29,1MgV7FIyNxIG7WzMRJV5HC,my tears ricochet,6,1213608,5,5,6,6,-1
+2020-07-29,3hUxzQpSfdDqwM3ZTFQY0K,august,8,1137655,6,6,6,6,-2
+2020-07-29,6VsvKPJ4xjVNKpI8VVZ3SV,invisible string,11,1038903,10,9,6,6,-1
+2020-07-29,0ZNU020wNYvgW84iljPkPP,mirrorball,12,1035413,9,7,6,6,-3
+2020-07-29,6KJqZcs9XDgVck7Lg9QOTC,seven,13,1019130,12,8,6,6,-1
+2020-07-29,7kt9e9LFSpN1zQtYEl19o1,this is me trying,14,956539,13,9,6,6,-1
+2020-07-29,2NmsngXHeC1GQ9wWrzhOMf,illicit affairs,15,938332,15,11,6,6,0
+2020-07-29,5kI4eCXXzyuIUXjQra0Cxi,betty,16,916417,16,12,6,6,0
+2020-07-29,2QDyYdZyhlP2fp79KZX8Bi,mad woman,17,846561,17,12,6,6,0
+2020-07-29,08fa9LFcFBTcilB3iq2e2A,epiphany,23,773867,18,14,6,6,-5
+2020-07-29,7MbT4I8qGntX4fMdqMQgke,peace,24,772822,19,15,6,6,-5
+2020-07-29,6MWoRt97mnSTXZhu3ggi9C,hoax,29,680295,25,16,6,6,-4
+2020-07-30,4R2kfaDFhslZEMJqAFNpdd,cardigan,1,1554351,1,1,7,7,0
+2020-07-30,4pvb0WLRcMtbPGmtejJJ6y,exile (feat. Bon Iver),2,1473333,2,2,7,7,0
+2020-07-30,0Jlcvv8IykzHaSmj49uNW8,the 1,3,1407791,3,1,7,7,0
+2020-07-30,2Eeur20xVqfUoM3Q7EFPFt,the last great american dynasty,6,1133177,4,4,7,7,-2
+2020-07-30,1MgV7FIyNxIG7WzMRJV5HC,my tears ricochet,8,1100559,6,5,7,7,-2
+2020-07-30,3hUxzQpSfdDqwM3ZTFQY0K,august,10,1028215,8,6,7,7,-2
+2020-07-30,6VsvKPJ4xjVNKpI8VVZ3SV,invisible string,11,943010,11,9,7,7,0
+2020-07-30,0ZNU020wNYvgW84iljPkPP,mirrorball,12,932149,12,7,7,7,0
+2020-07-30,6KJqZcs9XDgVck7Lg9QOTC,seven,13,915775,13,8,7,7,0
+2020-07-30,7kt9e9LFSpN1zQtYEl19o1,this is me trying,14,861925,14,9,7,7,0
+2020-07-30,2NmsngXHeC1GQ9wWrzhOMf,illicit affairs,15,846448,15,11,7,7,0
+2020-07-30,5kI4eCXXzyuIUXjQra0Cxi,betty,16,833920,16,12,7,7,0
+2020-07-30,2QDyYdZyhlP2fp79KZX8Bi,mad woman,22,759886,17,12,7,7,-5
+2020-07-30,7MbT4I8qGntX4fMdqMQgke,peace,26,694378,24,15,7,7,-2
+2020-07-30,08fa9LFcFBTcilB3iq2e2A,epiphany,27,692646,23,14,7,7,-4
+2020-07-30,6MWoRt97mnSTXZhu3ggi9C,hoax,32,609459,29,16,7,7,-3
+2020-07-31,4R2kfaDFhslZEMJqAFNpdd,cardigan,2,1418185,1,1,8,8,-1
+2020-07-31,4pvb0WLRcMtbPGmtejJJ6y,exile (feat. Bon Iver),3,1393110,2,2,8,8,-1
+2020-07-31,0Jlcvv8IykzHaSmj49uNW8,the 1,5,1285641,3,1,8,8,-2
+2020-07-31,2Eeur20xVqfUoM3Q7EFPFt,the last great american dynasty,9,1017724,6,4,8,8,-3
+2020-07-31,1MgV7FIyNxIG7WzMRJV5HC,my tears ricochet,10,978706,8,5,8,8,-2
+2020-07-31,3hUxzQpSfdDqwM3ZTFQY0K,august,11,936912,10,6,8,8,-1
+2020-07-31,6VsvKPJ4xjVNKpI8VVZ3SV,invisible string,14,843431,11,9,8,8,-3
+2020-07-31,6KJqZcs9XDgVck7Lg9QOTC,seven,17,830509,13,8,8,8,-4
+2020-07-31,0ZNU020wNYvgW84iljPkPP,mirrorball,18,823734,12,7,8,8,-6
+2020-07-31,7kt9e9LFSpN1zQtYEl19o1,this is me trying,20,765512,14,9,8,8,-6
+2020-07-31,2NmsngXHeC1GQ9wWrzhOMf,illicit affairs,21,750477,15,11,8,8,-6
+2020-07-31,5kI4eCXXzyuIUXjQra0Cxi,betty,22,744237,16,12,8,8,-6
+2020-07-31,2QDyYdZyhlP2fp79KZX8Bi,mad woman,28,678481,22,12,8,8,-6
+2020-07-31,7MbT4I8qGntX4fMdqMQgke,peace,33,612844,26,15,8,8,-7
+2020-07-31,08fa9LFcFBTcilB3iq2e2A,epiphany,34,611009,27,14,8,8,-7
+2020-07-31,6MWoRt97mnSTXZhu3ggi9C,hoax,45,536142,32,16,8,8,-13
 2020-08-01,,cardigan,4,1158001,2,1,9,9,-2
 2020-08-01,,exile (feat. Bon Iver),5,1145242,3,2,9,9,-2
 2020-08-01,,the 1,8,1034346,5,1,9,9,-3
@@ -4193,9 +4193,9 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2022-02-23,,All Too Well (10 Minute Version) (Taylor's Version) (From The Vault),114,277949,110,1,104,104,-4
 2022-02-24,,All Too Well (10 Minute Version) (Taylor's Version) (From The Vault),112,273592,114,1,105,105,+2
 2022-02-25,,All Too Well (10 Minute Version) (Taylor's Version) (From The Vault),126,274951,112,1,106,106,-14
-2022-02-26,,All Too Well (10 Minute Version) (Taylor's Version) (From The Vault),132,252564,126,1,107,107,-6
-2022-02-27,,All Too Well (10 Minute Version) (Taylor's Version) (From The Vault),126,239284,132,1,108,108,+6
-2022-02-28,,All Too Well (10 Minute Version) (Taylor's Version) (From The Vault),129,262754,126,1,109,109,-3
+2022-02-26,5enxwA8aAbwZbf5qCHORXi,All Too Well (10 Minute Version) (Taylor's Version) (From The Vault),132,252564,126,1,107,107,-6
+2022-02-27,5enxwA8aAbwZbf5qCHORXi,All Too Well (10 Minute Version) (Taylor's Version) (From The Vault),126,239284,132,1,108,108,+6
+2022-02-28,5enxwA8aAbwZbf5qCHORXi,All Too Well (10 Minute Version) (Taylor's Version) (From The Vault),129,262754,126,1,109,109,-3
 2022-03-01,,All Too Well (10 Minute Version) (Taylor's Version) (From The Vault),130,271044,129,1,110,110,-1
 2022-03-02,,All Too Well (10 Minute Version) (Taylor's Version) (From The Vault),127,270358,130,1,111,111,+3
 2022-03-03,,All Too Well (10 Minute Version) (Taylor's Version) (From The Vault),129,272071,127,1,112,112,-2
@@ -4216,7 +4216,7 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2022-03-18,,All Too Well (10 Minute Version) (Taylor's Version) (From The Vault),156,256404,150,1,127,127,-6
 2022-03-19,,All Too Well (10 Minute Version) (Taylor's Version) (From The Vault),162,234001,156,1,128,128,-6
 2022-03-20,,All Too Well (10 Minute Version) (Taylor's Version) (From The Vault),150,224461,162,1,129,129,+12
-2022-03-21,,All Too Well (10 Minute Version) (Taylor's Version) (From The Vault),151,242727,150,1,130,130,-1
+2022-03-21,5enxwA8aAbwZbf5qCHORXi,All Too Well (10 Minute Version) (Taylor's Version) (From The Vault),151,242727,150,1,130,130,-1
 2022-03-22,,All Too Well (10 Minute Version) (Taylor's Version) (From The Vault),151,247623,151,1,131,131,0
 2022-03-23,,All Too Well (10 Minute Version) (Taylor's Version) (From The Vault),146,251495,151,1,132,132,+5
 2022-03-24,,All Too Well (10 Minute Version) (Taylor's Version) (From The Vault),144,255467,146,1,133,133,+2
@@ -15110,10 +15110,10 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2017-10-27,6uFsE1JgZ20EXyU0JQZbUR,6uFsE1JgZ20EXyU0JQZbUR,51,453610,49,1,60,,
 2017-10-27,19WjVVgXjdKXfLXoaDPwTM,19WjVVgXjdKXfLXoaDPwTM,79,329253,95,1,50,,
 2017-10-27,3NdDpSvN911VPGivFlV5d0,3NdDpSvN911VPGivFlV5d0,171,209631,165,3,298,,
-2017-10-28,,5Gd19NupVe5X8bAqxf9Iaz,38,494786,22,2,4,,
-2017-10-28,,6uFsE1JgZ20EXyU0JQZbUR,50,403690,51,1,61,,
-2017-10-28,,19WjVVgXjdKXfLXoaDPwTM,77,304704,79,1,51,,
-2017-10-28,,3NdDpSvN911VPGivFlV5d0,166,183274,171,3,299,,
+2017-10-28,5Gd19NupVe5X8bAqxf9Iaz,5Gd19NupVe5X8bAqxf9Iaz,38,494786,22,2,4,,
+2017-10-28,6uFsE1JgZ20EXyU0JQZbUR,6uFsE1JgZ20EXyU0JQZbUR,50,403690,51,1,61,,
+2017-10-28,19WjVVgXjdKXfLXoaDPwTM,19WjVVgXjdKXfLXoaDPwTM,77,304704,79,1,51,,
+2017-10-28,2y5aJvzXhHPA94U5GFAcXe,3NdDpSvN911VPGivFlV5d0,166,183274,171,3,299,,
 2017-10-29,6uFsE1JgZ20EXyU0JQZbUR,6uFsE1JgZ20EXyU0JQZbUR,51,352490,50,1,62,,
 2017-10-29,5Gd19NupVe5X8bAqxf9Iaz,5Gd19NupVe5X8bAqxf9Iaz,53,341361,38,2,5,,
 2017-10-29,19WjVVgXjdKXfLXoaDPwTM,19WjVVgXjdKXfLXoaDPwTM,80,262513,77,1,52,,
@@ -15126,19 +15126,19 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2017-10-31,5Gd19NupVe5X8bAqxf9Iaz,5Gd19NupVe5X8bAqxf9Iaz,88,314865,53,2,7,,
 2017-10-31,19WjVVgXjdKXfLXoaDPwTM,19WjVVgXjdKXfLXoaDPwTM,103,287780,80,1,54,,
 2017-10-31,3NdDpSvN911VPGivFlV5d0,3NdDpSvN911VPGivFlV5d0,195,186521,165,3,302,,
-2017-11-01,,6uFsE1JgZ20EXyU0JQZbUR,60,372597,69,1,65,,
-2017-11-01,,5Gd19NupVe5X8bAqxf9Iaz,94,285305,88,2,8,,
-2017-11-01,,19WjVVgXjdKXfLXoaDPwTM,96,274798,103,1,55,,
-2017-11-01,,3NdDpSvN911VPGivFlV5d0,177,186276,195,3,303,,
-2017-11-02,,6uFsE1JgZ20EXyU0JQZbUR,66,357537,60,1,66,,
-2017-11-02,,5Gd19NupVe5X8bAqxf9Iaz,89,305828,94,2,9,,
-2017-11-02,,19WjVVgXjdKXfLXoaDPwTM,92,299756,96,1,56,,
-2017-11-02,,3NdDpSvN911VPGivFlV5d0,170,199883,177,3,304,,
-2017-11-03,,0tDfp0vFR95Gg6Mrhza3lX,12,875328,,12,1,,
-2017-11-03,,6uFsE1JgZ20EXyU0JQZbUR,64,389692,66,1,67,,
-2017-11-03,,5Gd19NupVe5X8bAqxf9Iaz,72,365214,89,2,10,,
-2017-11-03,,19WjVVgXjdKXfLXoaDPwTM,82,345397,92,1,57,,
-2017-11-03,,3NdDpSvN911VPGivFlV5d0,163,224942,170,3,305,,
+2017-11-01,6uFsE1JgZ20EXyU0JQZbUR,6uFsE1JgZ20EXyU0JQZbUR,60,372597,69,1,65,,
+2017-11-01,5Gd19NupVe5X8bAqxf9Iaz,5Gd19NupVe5X8bAqxf9Iaz,94,285305,88,2,8,,
+2017-11-01,19WjVVgXjdKXfLXoaDPwTM,19WjVVgXjdKXfLXoaDPwTM,96,274798,103,1,55,,
+2017-11-01,2y5aJvzXhHPA94U5GFAcXe,3NdDpSvN911VPGivFlV5d0,177,186276,195,3,303,,
+2017-11-02,6uFsE1JgZ20EXyU0JQZbUR,6uFsE1JgZ20EXyU0JQZbUR,66,357537,60,1,66,,
+2017-11-02,5Gd19NupVe5X8bAqxf9Iaz,5Gd19NupVe5X8bAqxf9Iaz,89,305828,94,2,9,,
+2017-11-02,19WjVVgXjdKXfLXoaDPwTM,19WjVVgXjdKXfLXoaDPwTM,92,299756,96,1,56,,
+2017-11-02,2y5aJvzXhHPA94U5GFAcXe,3NdDpSvN911VPGivFlV5d0,170,199883,177,3,304,,
+2017-11-03,0tDfp0vFR95Gg6Mrhza3lX,0tDfp0vFR95Gg6Mrhza3lX,12,875328,,12,1,,
+2017-11-03,6uFsE1JgZ20EXyU0JQZbUR,6uFsE1JgZ20EXyU0JQZbUR,64,389692,66,1,67,,
+2017-11-03,5Gd19NupVe5X8bAqxf9Iaz,5Gd19NupVe5X8bAqxf9Iaz,72,365214,89,2,10,,
+2017-11-03,19WjVVgXjdKXfLXoaDPwTM,19WjVVgXjdKXfLXoaDPwTM,82,345397,92,1,57,,
+2017-11-03,2y5aJvzXhHPA94U5GFAcXe,3NdDpSvN911VPGivFlV5d0,163,224942,170,3,305,,
 2017-11-04,,0tDfp0vFR95Gg6Mrhza3lX,24,613727,12,12,2,,
 2017-11-04,,6uFsE1JgZ20EXyU0JQZbUR,59,358861,64,1,68,,
 2017-11-04,,19WjVVgXjdKXfLXoaDPwTM,84,304916,82,1,58,,
@@ -16618,45 +16618,45 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2020-07-31,08fa9LFcFBTcilB3iq2e2A,epiphany,34,611009,27,14,8,8,
 2020-07-31,6MWoRt97mnSTXZhu3ggi9C,hoax,45,536142,32,16,8,8,
 2022-03-21,5enxwA8aAbwZbf5qCHORXi,All Too Well (10 Minute Version) (Taylor's Version) (From The Vault),151,242727,150,1,130,130,
-2024-04-19,,Fortnight (feat. Post Malone),1,10875045,,1,1,1,
-2024-04-19,,The Tortured Poets Department,2,8487090,,2,1,1,
-2024-04-19,,Down Bad,3,8087833,,3,1,1,
-2024-04-19,,"So Long, London",4,7713111,,4,1,1,
-2024-04-19,,My Boy Only Breaks His Favorite Toys,5,7696256,,5,1,1,
-2024-04-19,,But Daddy I Love Him,6,7176347,,6,1,1,
-2024-04-19,,Florida!!! (feat. Florence + The Machine),7,6767891,,7,1,1,
-2024-04-19,,I Can Do It With a Broken Heart,8,6386906,,8,1,1,
-2024-04-19,,Who’s Afraid of Little Old Me?,9,6114329,,9,1,1,
-2024-04-19,,Fresh Out The Slammer,10,6001623,,10,1,1,
-2024-04-19,,Guilty as Sin?,11,5945689,,11,1,1,
-2024-04-19,,loml,12,5648085,,12,1,1,
-2024-04-19,,The Alchemy,13,5307636,,13,1,1,
-2024-04-19,,I Can Fix Him (No Really I Can),14,5254784,,14,1,1,
-2024-04-19,,The Smallest Man Who Ever Lived,15,5214108,,15,1,1,
-2024-04-19,,Clara Bow,16,4655263,,16,1,1,
-2024-04-19,,thanK you aIMee,17,3663101,,17,1,1,
-2024-04-19,,The Black Dog,18,3591747,,18,1,1,
-2024-04-19,,imgonnagetyouback,19,3471113,,19,1,1,
-2024-04-19,,So High School,20,3333302,,20,1,1,
-2024-04-19,,The Albatross,21,3136079,,21,1,1,
-2024-04-19,,Chloe or Sam or Sophia or Marcus,22,3005442,,22,1,1,
-2024-04-19,,How Did It End?,23,2929778,,23,1,1,
-2024-04-19,,I Hate It Here,24,2819921,,24,1,1,
-2024-04-19,,I Look in People's Windows,26,2720391,,26,1,1,
-2024-04-19,,The Prophecy,27,2700640,,27,1,1,
-2024-04-19,,Cassandra,28,2451570,,28,1,1,
-2024-04-19,,Peter,29,2340509,,29,1,1,
-2024-04-19,,The Bolter,30,2227952,,30,1,1,
-2024-04-19,,The Manuscript,32,2132234,,32,1,1,
-2024-04-19,,Robin,34,2011074,,34,1,1,
-2024-04-19,,Cruel Summer,47,1182824,19,1,526,400,
-2024-04-19,,august,92,576463,142,6,416,3,
-2024-04-19,,Anti-Hero,93,574382,89,1,541,10,
-2024-04-19,,Is It Over Now? (Taylor's Version) (From The Vault),111,501263,116,1,167,7,
-2024-04-19,,Lover,112,500435,157,1,485,2,
-2024-04-19,,cardigan,152,424111,160,1,536,2,
-2024-04-19,,Don’t Blame Me,167,408435,164,45,603,2,
-2024-04-19,,Karma,177,395832,134,4,464,2,
+2024-04-19,2OzhQlSqBEmt7hmkYxfT6m,Fortnight (feat. Post Malone),1,10875045,,1,1,1,
+2024-04-19,3NMrVbIVWT3fPXBj0rNDKG,The Tortured Poets Department,2,8487090,,2,1,1,
+2024-04-19,2F3N9tdombb64aW6VtZOdo,Down Bad,3,8087833,,3,1,1,
+2024-04-19,0mWVScJbxO3tbXuiZOxYZE,"So Long, London",4,7713111,,4,1,1,
+2024-04-19,05msZuGKP3OCUGQnvLBOf4,My Boy Only Breaks His Favorite Toys,5,7696256,,5,1,1,
+2024-04-19,5og4Qzt92jJzVDkOtSEilb,But Daddy I Love Him,6,7176347,,6,1,1,
+2024-04-19,3ZVFcD8Wlw9T9klGqmJf9F,Florida!!! (feat. Florence + The Machine),7,6767891,,7,1,1,
+2024-04-19,4q5YezDOIPcoLr8R81x9qy,I Can Do It With a Broken Heart,8,6386906,,8,1,1,
+2024-04-19,36t6frENUtCYKuZus6aYDO,Who’s Afraid of Little Old Me?,9,6114329,,9,1,1,
+2024-04-19,3fO566xJgwxIa3qGCGBvIC,Fresh Out The Slammer,10,6001623,,10,1,1,
+2024-04-19,0W0iAC1VGlB82PI6elxFYf,Guilty as Sin?,11,5945689,,11,1,1,
+2024-04-19,6RSG1dKPV5gEvILwJb4QtS,loml,12,5648085,,12,1,1,
+2024-04-19,1dhMTsEZz6ZEquGvmzVoHn,The Alchemy,13,5307636,,13,1,1,
+2024-04-19,2h3MDMf8sd9s4XIzpTBIjX,I Can Fix Him (No Really I Can),14,5254784,,14,1,1,
+2024-04-19,2v1ivOOsgn64g5OywuH55L,The Smallest Man Who Ever Lived,15,5214108,,15,1,1,
+2024-04-19,1UlhrRvYzbHEyugEDspXUB,Clara Bow,16,4655263,,16,1,1,
+2024-04-19,7ogK4lJDVDMU6A6vYR5rvD,thanK you aIMee,17,3663101,,17,1,1,
+2024-04-19,62E2nR0od0M5HYxuYLaDz7,The Black Dog,18,3591747,,18,1,1,
+2024-04-19,1kcwpPDQnqEqmezzXdJTCP,imgonnagetyouback,19,3471113,,19,1,1,
+2024-04-19,1GP8VW5Wk2w2obkWjGCGXd,So High School,20,3333302,,20,1,1,
+2024-04-19,4EF6IyONolQy0bIQXm2EmX,The Albatross,21,3136079,,21,1,1,
+2024-04-19,1m7Fep6Dm8SG58ns8NLZhm,Chloe or Sam or Sophia or Marcus,22,3005442,,22,1,1,
+2024-04-19,2AS8i1xuWmeWGBBwI69vfn,How Did It End?,23,2929778,,23,1,1,
+2024-04-19,3hlGuz3loYoLfI3bpwieWq,I Hate It Here,24,2819921,,24,1,1,
+2024-04-19,1Zai5UJ2di3qEuR2HeT2s8,I Look in People's Windows,26,2720391,,26,1,1,
+2024-04-19,18WFFUIsewmA8g31KAeo3e,The Prophecy,27,2700640,,27,1,1,
+2024-04-19,0g4fMVo4JjwnIpTfFfLdxS,Cassandra,28,2451570,,28,1,1,
+2024-04-19,3zMDGj4D8ogaYgAIZPeU7S,Peter,29,2340509,,29,1,1,
+2024-04-19,2913xXOVAIDAqxzV2g4VcU,The Bolter,30,2227952,,30,1,1,
+2024-04-19,1DTRUYVd8rYpla9hhVVwjo,The Manuscript,32,2132234,,32,1,1,
+2024-04-19,2CnjDMdpRjlWv04Xk3s6MW,Robin,34,2011074,,34,1,1,
+2024-04-19,1BxfuPKGuaTgP7aM0Bbdwr,Cruel Summer,47,1182824,19,1,526,400,
+2024-04-19,3hUxzQpSfdDqwM3ZTFQY0K,august,92,576463,142,6,416,3,
+2024-04-19,0V3wPSX9ygBnCm8psDIegu,Anti-Hero,93,574382,89,1,541,10,
+2024-04-19,1Iq8oo9XkmmvCQiGOfORiz,Is It Over Now? (Taylor's Version) (From The Vault),111,501263,116,1,167,7,
+2024-04-19,1dGr1c8CrMLDpV6mPbImSI,Lover,112,500435,157,1,485,2,
+2024-04-19,4R2kfaDFhslZEMJqAFNpdd,cardigan,152,424111,160,1,536,2,
+2024-04-19,1R0a2iXumgCiFb7HEZ7gUE,Don’t Blame Me,167,408435,164,45,603,2,
+2024-04-19,7KokYm8cMIXCsGVmUvKtqf,Karma,177,395832,134,4,464,2,
 2025-10-03,,The Fate of Ophelia,1,13613375,,1,1,1,
 2025-10-03,,Opalite,2,11271431,,2,1,1,
 2025-10-03,,Father Figure,4,10568833,,4,1,1,
@@ -16841,3 +16841,48 @@ date,track_id,song_name,rank,streams,previous_rank,peak_rank,total_days,streak,m
 2026-08-10,5uPaqMMt59KGrdKIitDRqa,"I Knew It, I Knew You - From ""Toy Story 5""",75,404173,72,1,67,67,
 2026-08-11,53iuhJlwXhSER5J2IYYv1W,The Fate of Ophelia,65,422987,70,1,313,313,
 2026-08-11,5uPaqMMt59KGrdKIitDRqa,"I Knew It, I Knew You - From ""Toy Story 5""",70,413393,75,1,68,68,
+2017-10-28,3NdDpSvN911VPGivFlV5d0,I Don’t Wanna Live Forever (Fifty Shades Darker),166,183274,171,3,301,301,
+2017-11-01,3NdDpSvN911VPGivFlV5d0,I Don’t Wanna Live Forever (Fifty Shades Darker),177,186276,195,3,305,305,
+2017-11-02,3NdDpSvN911VPGivFlV5d0,I Don’t Wanna Live Forever (Fifty Shades Darker),170,199883,177,3,306,306,
+2017-11-03,3NdDpSvN911VPGivFlV5d0,I Don’t Wanna Live Forever (Fifty Shades Darker),163,224942,170,3,307,307,
+2024-04-19,,Fortnight (feat. Post Malone),1,10875045,,1,1,1,
+2024-04-19,,The Tortured Poets Department,2,8487090,,2,1,1,
+2024-04-19,,Down Bad,3,8087833,,3,1,1,
+2024-04-19,,"So Long, London",4,7713111,,4,1,1,
+2024-04-19,,My Boy Only Breaks His Favorite Toys,5,7696256,,5,1,1,
+2024-04-19,,But Daddy I Love Him,6,7176347,,6,1,1,
+2024-04-19,,Florida!!! (feat. Florence + The Machine),7,6767891,,7,1,1,
+2024-04-19,,I Can Do It With a Broken Heart,8,6386906,,8,1,1,
+2024-04-19,,Who’s Afraid of Little Old Me?,9,6114329,,9,1,1,
+2024-04-19,,Fresh Out The Slammer,10,6001623,,10,1,1,
+2024-04-19,,Guilty as Sin?,11,5945689,,11,1,1,
+2024-04-19,,loml,12,5648085,,12,1,1,
+2024-04-19,,The Alchemy,13,5307636,,13,1,1,
+2024-04-19,,I Can Fix Him (No Really I Can),14,5254784,,14,1,1,
+2024-04-19,,The Smallest Man Who Ever Lived,15,5214108,,15,1,1,
+2024-04-19,,Clara Bow,16,4655263,,16,1,1,
+2024-04-19,,thanK you aIMee,17,3663101,,17,1,1,
+2024-04-19,,The Black Dog,18,3591747,,18,1,1,
+2024-04-19,,imgonnagetyouback,19,3471113,,19,1,1,
+2024-04-19,,So High School,20,3333302,,20,1,1,
+2024-04-19,,The Albatross,21,3136079,,21,1,1,
+2024-04-19,,Chloe or Sam or Sophia or Marcus,22,3005442,,22,1,1,
+2024-04-19,,How Did It End?,23,2929778,,23,1,1,
+2024-04-19,,I Hate It Here,24,2819921,,24,1,1,
+2024-04-19,,I Look in People's Windows,26,2720391,,26,1,1,
+2024-04-19,,The Prophecy,27,2700640,,27,1,1,
+2024-04-19,,Cassandra,28,2451570,,28,1,1,
+2024-04-19,,Peter,29,2340509,,29,1,1,
+2024-04-19,,The Bolter,30,2227952,,30,1,1,
+2024-04-19,,The Manuscript,32,2132234,,32,1,1,
+2024-04-19,,Robin,34,2011074,,34,1,1,
+2024-04-19,,Cruel Summer,47,1182824,19,1,526,400,
+2024-04-19,,august,92,576463,142,6,416,3,
+2024-04-19,,Anti-Hero,93,574382,89,1,541,10,
+2024-04-19,,Is It Over Now? (Taylor's Version) (From The Vault),111,501263,116,1,167,7,
+2024-04-19,,Lover,112,500435,157,1,485,2,
+2024-04-19,,cardigan,152,424111,160,1,536,2,
+2024-04-19,,Don’t Blame Me,167,408435,164,45,603,2,
+2024-04-19,,Karma,177,395832,134,4,464,2,
+2026-08-12,5uPaqMMt59KGrdKIitDRqa,"I Knew It, I Knew You - From ""Toy Story 5""",59,440719,70,1,69,69,
+2026-08-12,53iuhJlwXhSER5J2IYYv1W,The Fate of Ophelia,70,412609,65,1,314,314,

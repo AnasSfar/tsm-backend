@@ -180,6 +180,9 @@ EARLY_BEST_DAY_MAX_POSTS = 5
 EARLY_BEST_DAY_MIN_PCT_CHANGE = 10.0
 EARLY_BEST_DAY_PRIORITY_AFTER_DAYS = 60
 EARLY_BEST_DAY_PRIORITY_RECENT_PEAK_RATIO = 0.90
+GROWER_NOTIFY_LIMIT = 3
+GROWER_NOTIFY_WINDOW_DAYS = 7
+GROWER_NOTIFY_MIN_BASELINE_DAILY = 1_000
 PENDING_RETRY_SLEEP_SECONDS = 20
 EXTRA_PENDING_RETRY_ROUNDS_BEFORE_ZERO = 5
 INFINITE_RETRY_PREVIOUS_DAY_TOP_N = 70
@@ -1304,6 +1307,153 @@ def build_early_best_day_track_ids(
     ]
     candidates.sort(key=lambda item: item[1], reverse=True)
     return [track_id for track_id, _daily in candidates[:limit]]
+
+
+def _format_pct_value(value: float | None) -> str:
+    if value is None:
+        return "n/a"
+    return f"{value:+.1f}%"
+
+
+def _format_grower_day(value: date) -> str:
+    return f"{value.month}/{value.day}"
+
+
+def _add_best_day_labels_to_grower_rows(rows: list[dict], stats_date: str) -> None:
+    if not rows:
+        return
+    try:
+        import best_day_since
+
+        target_day = date.fromisoformat(stats_date)
+        tracks = best_day_since.load_tracks(include_extras=False)
+        history = best_day_since.load_history()
+        for row in rows:
+            track_id = row["track_id"]
+            track = tracks.get(track_id)
+            if track is None:
+                continue
+            best_row = best_day_since.compute_best_day_since(
+                track,
+                history.get(track_id) or [],
+                target_day,
+            )
+            if best_row and best_day_since.passes_filters(
+                best_row,
+                min_days=best_day_since.DEFAULT_MIN_DAYS,
+            ):
+                row["best_day_label"] = best_day_since.row_label(best_row)
+    except Exception as exc:
+        print(f"[grower_notify] best-day checks failed: {exc}")
+
+
+def _collect_daily_growers_for_notify(
+    stats_date: str,
+    *,
+    limit: int = GROWER_NOTIFY_LIMIT,
+    window_days: int = GROWER_NOTIFY_WINDOW_DAYS,
+    min_baseline_daily: int = GROWER_NOTIFY_MIN_BASELINE_DAILY,
+) -> list[dict]:
+    """Top daily growers with a complete exact recent daily window."""
+    try:
+        target_day = date.fromisoformat(stats_date)
+    except ValueError:
+        return []
+
+    history = HistoryIndex.load()
+    album_ids = load_album_track_ids()
+    tracks = [
+        track
+        for track in load_tracks_from_discography(album_ids)
+        if track.get("track_id") in album_ids and not track.get("chart_extra")
+    ]
+
+    rows: list[dict] = []
+    for track in tracks:
+        track_id = str(track.get("track_id") or "").strip()
+        if not track_id:
+            continue
+
+        daily_today = _history_store._daily_for_spotlight(history, track_id, stats_date)
+        daily_yesterday = _history_store._daily_for_spotlight(
+            history,
+            track_id,
+            str(target_day - timedelta(days=1)),
+        )
+        if daily_today is None or daily_yesterday is None or daily_yesterday < min_baseline_daily:
+            continue
+        gain = daily_today - daily_yesterday
+        if gain <= 0:
+            continue
+
+        window: list[dict] = []
+        complete_window = True
+        for offset in range(window_days - 1, -1, -1):
+            day = target_day - timedelta(days=offset)
+            day_str = day.isoformat()
+            daily = _history_store._daily_for_spotlight(history, track_id, day_str)
+            if daily is None or daily <= 0:
+                complete_window = False
+                break
+            previous_daily = _history_store._daily_for_spotlight(
+                history,
+                track_id,
+                str(day - timedelta(days=1)),
+            )
+            pct = (
+                (daily - previous_daily) / previous_daily * 100
+                if previous_daily is not None and previous_daily > 0
+                else None
+            )
+            window.append({"date": day, "daily": daily, "pct": pct})
+        if not complete_window:
+            continue
+
+        pct_today = gain / daily_yesterday * 100
+        rows.append({
+            "track": track,
+            "track_id": track_id,
+            "daily_today": daily_today,
+            "daily_yesterday": daily_yesterday,
+            "gain": gain,
+            "pct": pct_today,
+            "window": window,
+        })
+
+    rows.sort(key=lambda row: (row["pct"], row["gain"], row["daily_today"]), reverse=True)
+    picked = rows[:limit]
+    _add_best_day_labels_to_grower_rows(picked, stats_date)
+    return picked
+
+
+def notify_daily_growers(stats_date: str) -> None:
+    rows = _collect_daily_growers_for_notify(stats_date)
+    if not rows:
+        print(f"[grower_notify] No complete grower candidates for {stats_date}.")
+        return
+
+    lines = [f"Top {len(rows)} growers for {stats_date}:"]
+    for index, row in enumerate(rows, 1):
+        track = row["track"]
+        title = track.get("title") or row["track_id"]
+        lines.append(
+            f"{index}. {title}: {format_int(row['daily_today'])} "
+            f"({_format_pct_value(row['pct'])}, +{format_int(row['gain'])})"
+        )
+        trend = " | ".join(
+            f"{_format_grower_day(day['date'])} {format_int(day['daily'])} [{_format_pct_value(day['pct'])}]"
+            for day in row["window"]
+        )
+        lines.append(f"   {trend}")
+        if row.get("best_day_label"):
+            lines.append(f"   Best-day: {row['best_day_label']}")
+
+    notify(
+        NTFY_TOPIC,
+        "\n".join(lines),
+        title=f"Taylor Swift - Top growers {stats_date}",
+        tags="chart_increasing,musical_note",
+    )
 
 
 def recent_release_track_ids_missing_daily(stats_date: str) -> set[str]:
@@ -3463,6 +3613,10 @@ def main():
         print("[LOCAL-TEST] Finished without history writes, R2, Twitter, git, or notify.")
 
     if not debug_daily_mode and not local_test_mode and not throwback_mode:
+        try:
+            notify_daily_growers(summary["stats_date"])
+        except Exception as exc:
+            print(f"[grower_notify] Failed to send grower notification: {exc}")
         notify(
             NTFY_TOPIC,
             f"âœ“ {summary['updated_this_run']} track(s) updated ({summary['stats_date']})\n"
@@ -3492,4 +3646,3 @@ if __name__ == "__main__":
         except Exception:
             pass
         raise
-

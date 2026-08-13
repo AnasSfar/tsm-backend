@@ -61,9 +61,17 @@ def _track_id_from_url(value: str) -> str | None:
     return None
 
 
-def _build_song_name_to_track_id() -> dict[str, str]:
-    """Map normalised song name → track_id from discography / website songs."""
-    mapping: dict[str, str] = {}
+def _normalize_song_name(value: str) -> str:
+    text = str(value or "").lower().strip()
+    text = text.replace("\u2018", "'").replace("\u2019", "'")
+    text = re.sub(r"[^a-z0-9]+", " ", text)
+    return " ".join(text.split())
+
+
+def _build_song_indexes() -> tuple[dict[str, str], dict[str, str]]:
+    """Map normalized song names and historical IDs to canonical track IDs."""
+    name_to_tid: dict[str, str] = {}
+    tid_to_canonical: dict[str, str] = {}
     for path in (DISCO_SONGS_PATH, WEBSITE_SONGS_PATH):
         if not path.exists():
             continue
@@ -78,29 +86,39 @@ def _build_song_name_to_track_id() -> dict[str, str]:
             tid = _track_id_from_url(song.get("track_id") or song.get("url") or "")
             if not tid:
                 continue
+            tid_to_canonical.setdefault(tid, tid)
+            for historical_id in song.get("historical_track_ids") or []:
+                hist_tid = _track_id_from_url(str(historical_id or ""))
+                if hist_tid:
+                    tid_to_canonical.setdefault(hist_tid, tid)
             for field in ("title", "base_title", "title_clean"):
-                name = str(song.get(field) or "").lower().strip()
+                name = _normalize_song_name(str(song.get(field) or ""))
                 if name:
-                    mapping.setdefault(name, tid)
-    return mapping
+                    name_to_tid.setdefault(name, tid)
+    return name_to_tid, tid_to_canonical
 
 
 def main() -> None:
     counts: dict[str, int] = {}
 
     # ── 1. Seed from regional CSVs (most reliable) ────────────────────────────
-    name_to_tid = _build_song_name_to_track_id()
+    name_to_tid, tid_to_canonical = _build_song_indexes()
     for region, csv_path in REGIONAL_CSVS.items():
         if not csv_path.exists():
             print(f"[SKIP] CSV not found: {csv_path}")
             continue
         with csv_path.open(encoding="utf-8") as f:
             reader = csv.DictReader(f)
-            # Find the latest total_days per song (last row for each song_name).
+            # Find the highest verified total_days per track. Prefer exact
+            # track_id from the regional archive, falling back to an explicit
+            # songs.json name match for older rows that predate track IDs.
             best: dict[str, int] = {}
             for row in reader:
-                song_name = (row.get("song_name") or "").lower().strip()
-                tid = name_to_tid.get(song_name)
+                raw_tid = _track_id_from_url(row.get("track_id") or "")
+                tid = tid_to_canonical.get(raw_tid or "", raw_tid)
+                if not tid:
+                    song_name = _normalize_song_name(row.get("song_name") or "")
+                    tid = name_to_tid.get(song_name)
                 if not tid:
                     continue
                 td = row.get("total_days") or ""
@@ -148,7 +166,7 @@ def main() -> None:
         json.dumps(counts, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
-    print(f"[DONE] {len(counts)} entries → {OUTPUT_PATH}")
+    print(f"[DONE] {len(counts)} entries -> {OUTPUT_PATH}")
     top = sorted(counts.items(), key=lambda x: -x[1])[:10]
     print("[INFO] Top 10:")
     for key, days in top:
