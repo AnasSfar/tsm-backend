@@ -241,23 +241,12 @@ def load_history_for_tracks(track_ids: list[str], stats_date: str) -> tuple[int 
 
 def _find_all_rows(target_date: str, *, min_days: int) -> list[dict]:
     tracks = best_day_since.load_tracks(include_extras=False)
-    all_tracks = best_day_since.load_tracks(include_extras=True)
     history = best_day_since.load_history()
     target = date.fromisoformat(target_date)
 
     rows: list[dict] = []
-    seen_families: set[str] = set()
     for track_id, track in tracks.items():
-        family = (track.song_family or track_id).strip()
-        if family in seen_families:
-            continue
-        seen_families.add(family)
-        row = best_day_since.compute_best_day_since_combined(
-            track,
-            best_day_since.combined_tracks_for(all_tracks.get(track_id, track), all_tracks),
-            history,
-            target,
-        )
+        row = best_day_since.compute_best_day_since(track, history.get(track_id) or [], target)
         if (
             not row
             or row.get("kind") != "since"
@@ -271,23 +260,12 @@ def _find_all_rows(target_date: str, *, min_days: int) -> list[dict]:
 def _find_recap_rows(target_date: str) -> list[dict]:
     """Every exact best-day record for the day, independent of posting gates."""
     tracks = best_day_since.load_tracks(include_extras=False)
-    all_tracks = best_day_since.load_tracks(include_extras=True)
     history = best_day_since.load_history()
     target = date.fromisoformat(target_date)
 
     rows: list[dict] = []
-    seen_families: set[str] = set()
     for track_id, track in tracks.items():
-        family = (track.song_family or track_id).strip()
-        if family in seen_families:
-            continue
-        seen_families.add(family)
-        row = best_day_since.compute_best_day_since_combined(
-            track,
-            best_day_since.combined_tracks_for(all_tracks.get(track_id, track), all_tracks),
-            history,
-            target,
-        )
+        row = best_day_since.compute_best_day_since(track, history.get(track_id) or [], target)
         if not row:
             continue
         if row.get("kind") == "best_ever" or best_day_since.passes_filters(row, min_days=1):
@@ -482,7 +460,7 @@ def _post_single_track_early(
         track_id,
         target_date,
         min_days=min_days,
-        combined=True,
+        combined=False,
     )
     if not row:
         return "skipped"

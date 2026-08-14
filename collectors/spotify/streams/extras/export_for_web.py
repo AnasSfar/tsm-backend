@@ -17,6 +17,7 @@ _DB_ROOT    = _REPO_ROOT / "db"
 _DATA_ROOT  = _REPO_ROOT / "data"
 _ARCHIVE_DB_ROOT = _DATA_ROOT / "_archive" / "original" / "db"
 sys.path.insert(0, str(_REPO_ROOT / "collectors" / "spotify"))
+sys.path.insert(0, str(_REPO_ROOT / "collectors" / "spotify" / "streams"))
 sys.path.insert(0, str(_REPO_ROOT / "collectors" / "spotify" / "streams" / "tools" / "scripts"))
 from core.data_paths import (  # noqa: E402
     LEGACY_WEBSITE_DATA_DIR,
@@ -34,6 +35,7 @@ from core.data_paths import (  # noqa: E402
 )
 from config import NTFY_TOPIC  # noqa: E402
 from core.notify import send as notify  # noqa: E402
+import best_day_since  # noqa: E402
 
 ROOT = WEB_EXPORT_ROOT
 
@@ -53,6 +55,7 @@ SITE_DATA_DIR    = WEB_EXPORT_DATA_DIR
 SITE_HISTORY_DIR = WEB_EXPORT_HISTORY_DIR
 SONGS_JSON_PATH  = SITE_DATA_DIR / "songs.json"
 ALBUMS_JSON_PATH = SITE_DATA_DIR / "albums.json"
+BEST_DAY_SINCE_JSON_PATH = SITE_DATA_DIR / "best_day_since.json"
 
 LAST_RUN_STATE_SRC   = first_existing(ROOT / "data" / "last_run_state.json", LEGACY_WEBSITE_RUNTIME_DIR / "last_run_state.json")
 NOT_FOUND_STREAK_SRC = first_existing(ROOT / "data" / "not_found_streak.json", LEGACY_WEBSITE_RUNTIME_DIR / "not_found_streak.json")
@@ -1515,6 +1518,40 @@ def export_swift_top_100_from_csv(*, songs_by_id: dict[str, dict] | None = None)
     print(f"  Swift Top 100 JSON written ({len(entries)} entries) -> {SWIFT_TOP_100_JSON_PATH}")
 
 
+def export_best_day_since(stats_date: str | None) -> None:
+    target_date = stats_date or best_day_since.latest_history_date(best_day_since.load_history())
+    if not target_date:
+        write_json(BEST_DAY_SINCE_JSON_PATH, {"items": [], "by_track": {}})
+        print(f"[best_day_since] No target date available -> {BEST_DAY_SINCE_JSON_PATH}")
+        return
+
+    if isinstance(target_date, date_cls):
+        target = target_date
+    else:
+        target = date_cls.fromisoformat(str(target_date))
+
+    tracks = best_day_since.load_tracks(include_extras=False)
+    history = best_day_since.load_history()
+    rows = []
+    for track_id, track in tracks.items():
+        row = best_day_since.compute_best_day_since(track, history.get(track_id) or [], target)
+        if row and best_day_since.passes_filters(row, min_days=best_day_since.DEFAULT_MIN_DAYS):
+            rows.append(row)
+
+    rows.sort(key=best_day_since.sort_key, reverse=True)
+    payload = {
+        "generated_at": datetime.now().isoformat(timespec="seconds"),
+        "date": target.isoformat(),
+        "include_extras": False,
+        "min_days": best_day_since.DEFAULT_MIN_DAYS,
+        "count": len(rows),
+        "items": rows,
+        "by_track": {row["track_id"]: row for row in rows},
+    }
+    write_json(BEST_DAY_SINCE_JSON_PATH, payload)
+    print(f"[best_day_since] Exported {len(rows)} row(s) for {target.isoformat()} -> {BEST_DAY_SINCE_JSON_PATH}")
+
+
 def export_for_web(stats_date: str | None = None, *, dry_run: bool = False) -> None:
     if dry_run:
         print("[DRY-RUN] export_for_web would generate web exports")
@@ -1732,6 +1769,7 @@ def export_for_web(stats_date: str | None = None, *, dry_run: bool = False) -> N
 
     write_json(SONGS_JSON_PATH, songs_payload)
     write_json(ALBUMS_JSON_PATH, albums_payload_out)
+    export_best_day_since(latest_date)
 
     for src, dst in [
         (LAST_RUN_STATE_SRC,          SITE_DATA_DIR / "last_run_state.json"),

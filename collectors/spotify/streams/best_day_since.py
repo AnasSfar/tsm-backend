@@ -542,9 +542,9 @@ def best_day_since_for_track(
     *,
     min_days: int = DEFAULT_MIN_DAYS,
     min_pct_change: float | None = None,
-    combined: bool = True,
+    combined: bool = False,
 ) -> dict | None:
-    """Return best-day-since data for one album track, with combined versions by default."""
+    """Return best-day-since data for one track."""
     base_tracks = load_tracks(include_extras=False)
     all_tracks = load_tracks(include_extras=True)
     track = base_tracks.get(track_id) or all_tracks.get(track_id)
@@ -590,6 +590,8 @@ def format_long_date(value: str) -> str:
 def row_label(row: dict) -> str:
     if row["kind"] == "best_ever":
         label = "best day ever"
+    elif row.get("is_biggest_day_of_year") and row.get("kind") == "since":
+        label = f"biggest day of the year and best day since {format_long_date(row['best_day_since'])}"
     elif row.get("is_biggest_day_of_year"):
         label = "biggest day of the year"
     elif row.get("kind") == "since":
@@ -622,7 +624,6 @@ def main() -> None:
     args = parser.parse_args()
 
     tracks = load_tracks(include_extras=args.include_extras)
-    all_tracks = load_tracks(include_extras=True)
     history = load_history()
     if not history:
         raise SystemExit(f"No history found: {HISTORY_PATH}")
@@ -636,18 +637,8 @@ def main() -> None:
         target_date = latest
 
     rows = []
-    seen_families: set[str] = set()
     for track_id, track in tracks.items():
-        family = (track.song_family or track_id).strip()
-        if family in seen_families:
-            continue
-        seen_families.add(family)
-        row = compute_best_day_since_combined(
-            track,
-            combined_tracks_for(all_tracks.get(track_id, track), all_tracks),
-            history,
-            target_date,
-        )
+        row = compute_best_day_since(track, history.get(track_id) or [], target_date)
         if row:
             rows.append(row)
 

@@ -1561,12 +1561,7 @@ def _best_day_labels_for_sections(
             if track is None:
                 continue
 
-            row = best_day_since.compute_best_day_since_combined(
-                track,
-                best_day_since.combined_tracks_for(all_tracks.get(track_id, track), all_tracks),
-                history,
-                target,
-            )
+            row = best_day_since.compute_best_day_since(track, history.get(track_id) or [], target)
             # This table shows each row's own solo daily/CHG numbers, never a
             # family-combined sum. A "combined" row's record can be set by a
             # different version's streams (e.g. Red (Taylor's Version)) even
@@ -1575,7 +1570,6 @@ def _best_day_labels_for_sections(
             # skipped on this per-album view.
             if (
                 row
-                and not row.get("combined")
                 and row.get("kind") == "since"
                 and not row.get("is_biggest_day_of_year")
                 and best_day_since.passes_filters(row, min_days=min_days)
@@ -1611,12 +1605,7 @@ def _best_day_rows_for_sections(
             if track is None:
                 continue
 
-            row = best_day_since.compute_best_day_since_combined(
-                track,
-                best_day_since.combined_tracks_for(all_tracks.get(track_id, track), all_tracks),
-                history,
-                target,
-            )
+            row = best_day_since.compute_best_day_since(track, history.get(track_id) or [], target)
             if (
                 row
                 and row.get("kind") == "since"

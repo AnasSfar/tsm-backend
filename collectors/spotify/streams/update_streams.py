@@ -2558,6 +2558,10 @@ def main():
             if estimated_track_ids:
                 summary["history_index"] = HistoryIndex.load()
                 push_updated_track_histories_to_r2(estimated_track_ids, summary["history_index"])
+            try:
+                notify_daily_growers(stats_date)
+            except Exception as exc:
+                print(f"[grower_notify] Failed to send grower notification: {exc}")
             run_final_update_tasks(FinalizeContext(
                 script_dir=_SCRIPT_DIR,
                 repo_root=_REPO_ROOT,
@@ -3476,6 +3480,12 @@ def main():
             )
             return
 
+        print("Streams collection complete for the day; sending grower notification before posting/finalize.")
+        try:
+            notify_daily_growers(stats_date)
+        except Exception as exc:
+            print(f"[grower_notify] Failed to send grower notification: {exc}")
+
     if local_test_mode:
         print("[LOCAL-TEST] Skip streams history CSV migration.")
     else:
@@ -3613,10 +3623,6 @@ def main():
         print("[LOCAL-TEST] Finished without history writes, R2, Twitter, git, or notify.")
 
     if not debug_daily_mode and not local_test_mode and not throwback_mode:
-        try:
-            notify_daily_growers(summary["stats_date"])
-        except Exception as exc:
-            print(f"[grower_notify] Failed to send grower notification: {exc}")
         notify(
             NTFY_TOPIC,
             f"âœ“ {summary['updated_this_run']} track(s) updated ({summary['stats_date']})\n"

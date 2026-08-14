@@ -472,23 +472,12 @@ def _render_combined_table_image(
 
 def _best_day_rows(target_date: str, *, limit: int, min_days: int) -> list[dict]:
     tracks = best_day_since.load_tracks(include_extras=False)
-    all_tracks = best_day_since.load_tracks(include_extras=True)
     history = best_day_since.load_history()
     target = date.fromisoformat(target_date)
 
     rows: list[dict] = []
-    seen_families: set[str] = set()
     for track_id, track in tracks.items():
-        family = (track.song_family or track_id).strip()
-        if family in seen_families:
-            continue
-        seen_families.add(family)
-        row = best_day_since.compute_best_day_since_combined(
-            track,
-            best_day_since.combined_tracks_for(all_tracks.get(track_id, track), all_tracks),
-            history,
-            target,
-        )
+        row = best_day_since.compute_best_day_since(track, history.get(track_id) or [], target)
         days_since = row.get("days_since") if row else None
         if (
             row

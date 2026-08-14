@@ -52,6 +52,11 @@ from core.data_paths import (  # noqa: E402
 sys.path.insert(0, str(ROOT / "collectors" / "spotify" / "streams"))
 import best_day_since  # noqa: E402
 
+from core.rank_since import RankPoint, compute_rank_since, passes_filters as rank_since_passes_filters, sort_key as rank_since_sort_key  # noqa: E402
+
+sys.path.insert(0, str(ROOT / "collectors" / "apple_music"))
+import best_rank_since as apple_music_best_rank_since  # noqa: E402
+
 import r2_keys  # noqa: E402
 
 load_dotenv(str(ROOT / ".env"), override=True)
@@ -81,6 +86,13 @@ _TAYBOARD_MAX_AGE_DAYS = 2
 # Minimum same-region rank improvement (day over day) to call a chart
 # position "an exceptional climb" — includes the global/worldwide chart.
 _REGIONAL_CLIMB_THRESHOLD = 20
+
+# "Best rank since" (Spotify Charts + Apple Music): minimum days_since for a
+# rank record to qualify at all, and how many days it stays in the highlights
+# pool once triggered (product decision, 2026-08-14: "afficher au moins deux
+# semaines"). Both default to 14 — see data-rules skill for the rationale.
+RANK_SINCE_MIN_DAYS = 14
+RANK_SINCE_DISPLAY_WINDOW_DAYS = 14
 
 
 # --------------------------------------------------------------------- R2 --
@@ -114,6 +126,16 @@ def upload_cache_json(client, bucket: str, key: str, payload: dict) -> None:
     body["_cache_generated_at"] = time.time()
     data = json.dumps(body, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
     client.put_object(Bucket=bucket, Key=key, Body=data, ContentType="application/json; charset=utf-8")
+
+
+def get_cache_json(client, bucket: str, key: str) -> dict | None:
+    """Best-effort read of an existing cache blob. Fails closed (None) on any
+    error — missing key, R2 error, bad JSON — same spirit as _within_days()."""
+    try:
+        obj = client.get_object(Bucket=bucket, Key=key)
+        return json.loads(obj["Body"].read())
+    except Exception:
+        return None
 
 
 # --------------------------------------------------------------- loaders --
@@ -423,6 +445,117 @@ def compute_regional_climb_highlight(song_map: dict) -> dict | None:
     }
 
 
+def _load_region_rank_points(region: str) -> tuple[dict[str, list[RankPoint]], dict[str, dict]]:
+    """Per-track rank history for one Spotify Charts region, filtered/deduped.
+
+    `track_id` is empty on a large fraction of pre-mid-2026 chart rows — only
+    rows with a resolved track_id are usable for a per-track walk-back.
+    Duplicate (date, track_id) rows also exist (repeated collector runs);
+    rank/streams are identical across dupes, so keeping either is safe.
+    """
+    rows = load_chart_csv_rows(region)
+    seen_keys: set[tuple[str, str]] = set()
+    points_by_track: dict[str, list[RankPoint]] = {}
+    meta_by_track: dict[str, dict] = {}
+    for row in rows:
+        track_id = (row.get("track_id") or "").strip()
+        date_raw = (row.get("date") or "").strip()
+        if not track_id or not date_raw:
+            continue
+        key = (date_raw, track_id)
+        if key in seen_keys:
+            continue
+        seen_keys.add(key)
+        rank = _rank(row)
+        if rank is None:
+            continue
+        try:
+            day = _date.fromisoformat(date_raw)
+        except ValueError:
+            continue
+        points_by_track.setdefault(track_id, []).append(RankPoint(day=day, rank=rank))
+        if date_raw >= (meta_by_track.get(track_id) or {}).get("date", ""):
+            meta_by_track[track_id] = {"song_name": row.get("song_name"), "date": date_raw}
+
+    for points in points_by_track.values():
+        points.sort(key=lambda p: p.day)
+    return points_by_track, meta_by_track
+
+
+def compute_spotify_rank_since_highlight(song_map: dict, tracks_by_id: dict) -> dict | None:
+    """Single strongest "best rank since" record across global/FR/US/UK.
+
+    Same "compute per-region, pick the single strongest result across
+    regions" shape as compute_regional_climb_highlight above.
+    """
+    def song_title(track_id):
+        return (song_map.get(track_id) or {}).get("title") or track_id
+
+    def song_image(track_id):
+        return (song_map.get(track_id) or {}).get("image_url")
+
+    best = None  # (row, region, track_id)
+    for region in _CHART_CSV_FILENAMES:
+        points_by_track, meta_by_track = _load_region_rank_points(region)
+        if not points_by_track:
+            continue
+        latest_date = max(points[-1].day for points in points_by_track.values() if points)
+        for track_id, points in points_by_track.items():
+            if points[-1].day != latest_date:
+                continue  # not on today's chart for this region
+            track = tracks_by_id.get(track_id)
+            row = compute_rank_since(
+                points,
+                latest_date,
+                release_date=track.release_date if track else None,
+                history_start_date=best_day_since.HISTORY_START_DATE,
+            )
+            if not row or not rank_since_passes_filters(row, min_days=RANK_SINCE_MIN_DAYS):
+                continue
+            row["track_id"] = track_id
+            row["song_name"] = (meta_by_track.get(track_id) or {}).get("song_name")
+            if best is None or rank_since_sort_key(row) > rank_since_sort_key(best[0]):
+                best = (row, region, track_id)
+
+    if not best:
+        return None
+    row, region, track_id = best
+    return {
+        "type": "best_rank_since",
+        "source": "spotify_charts",
+        "region": region,
+        "link_id": track_id,
+        "title": row.get("song_name") or song_title(track_id) or "—",
+        "image": song_image(track_id),
+        "rank": row["rank"],
+        "best_rank_since": row.get("best_rank_since"),
+        "days_since": row.get("days_since"),
+        "kind": row["kind"],
+        "date": row["date"],
+    }
+
+
+def compute_apple_music_rank_since_highlight(song_map: dict) -> dict | None:
+    """Single strongest "best rank since" record for Apple Music's Global
+    chart — never emits kind="best_ever" (see best_rank_since.py docstring)."""
+    row = apple_music_best_rank_since.compute_apple_music_rank_since(min_days=RANK_SINCE_MIN_DAYS)
+    if not row:
+        return None
+    am_id = row.get("apple_music_id")
+    return {
+        "type": "best_rank_since",
+        "source": "apple_music",
+        "link_id": row.get("song_name") or am_id,
+        "title": row.get("song_name") or "—",
+        "image": row.get("image_url") or (song_map.get(am_id) or {}).get("image_url"),
+        "rank": row["rank"],
+        "best_rank_since": row.get("best_rank_since"),
+        "days_since": row.get("days_since"),
+        "kind": row["kind"],
+        "date": row["date"],
+    }
+
+
 def compute_highlights() -> list[dict]:
     song_map = load_song_map()
 
@@ -629,10 +762,49 @@ def compute_highlights() -> list[dict]:
     if regional_climb_item:
         items.append(regional_climb_item)
 
+    # BEST RANK SINCE (Spotify Charts + Apple Music, one winner per source —
+    # carried forward across runs for RANK_SINCE_DISPLAY_WINDOW_DAYS by main())
+    try:
+        tracks_by_id = best_day_since.load_tracks(include_extras=True)
+    except Exception:
+        tracks_by_id = {}
+    spotify_rank_since_item = compute_spotify_rank_since_highlight(song_map, tracks_by_id)
+    if spotify_rank_since_item:
+        items.append(spotify_rank_since_item)
+    apple_music_rank_since_item = compute_apple_music_rank_since_highlight(song_map)
+    if apple_music_rank_since_item:
+        items.append(apple_music_rank_since_item)
+
     return items
 
 
 # --------------------------------------------------------------------- CLI --
+
+def merge_persisted_best_rank_since(
+    fresh_highlights: list[dict],
+    existing_highlights: list[dict],
+    latest_date: str | None,
+) -> list[dict]:
+    """Carry forward best_rank_since items from the previous cache so each one
+    stays in the pool for RANK_SINCE_DISPLAY_WINDOW_DAYS after it fires,
+    instead of vanishing the very next run like every other highlight type
+    (which recomputes fully fresh every time). Only best_rank_since items are
+    affected — everything else in `fresh_highlights` passes through untouched.
+    """
+    fresh_keys = {
+        (item.get("source"), item.get("link_id"), item.get("region"))
+        for item in fresh_highlights
+        if item.get("type") == "best_rank_since"
+    }
+    survivors = [
+        item
+        for item in existing_highlights
+        if item.get("type") == "best_rank_since"
+        and (item.get("source"), item.get("link_id"), item.get("region")) not in fresh_keys
+        and _within_days(item.get("date"), latest_date, RANK_SINCE_DISPLAY_WINDOW_DAYS - 1)
+    ]
+    return fresh_highlights + survivors
+
 
 def main() -> int:
     parser = argparse.ArgumentParser(
@@ -663,6 +835,12 @@ def main() -> int:
     try:
         client = get_r2_client()
         bucket = get_bucket_name()
+
+        existing_cache = get_cache_json(client, bucket, CACHE_KEY_HIGHLIGHTS)
+        existing_highlights = (existing_cache or {}).get("highlights", []) if isinstance(existing_cache, dict) else []
+        highlights = merge_persisted_best_rank_since(highlights, existing_highlights, version.get("latest_date"))
+        log(f"[generate_home_highlights] {len(highlights)} highlight(s) after best_rank_since carry-forward")
+
         upload_cache_json(client, bucket, CACHE_KEY_VERSION, version)
         upload_cache_json(client, bucket, CACHE_KEY_HIGHLIGHTS, {"version": version, "highlights": highlights})
         log(f"[generate_home_highlights] uploaded {CACHE_KEY_VERSION} and {CACHE_KEY_HIGHLIGHTS} to bucket '{bucket}'")
