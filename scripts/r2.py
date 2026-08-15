@@ -39,6 +39,10 @@ from core.data_paths import (  # noqa: E402
     legacy_spotify_chart_dir,
     spotify_chart_dir,
 )
+
+SCRIPTS_DIR = Path(__file__).resolve().parent
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
 import r2_keys  # noqa: E402
 
 HISTORY_DIR = WEB_EXPORT_HISTORY_DIR if WEB_EXPORT_HISTORY_DIR.exists() else LEGACY_WEBSITE_HISTORY_DIR
