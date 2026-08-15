@@ -49,6 +49,13 @@ Ces règles ont été édictées puis re-corrigées plusieurs fois — les viole
 - Les seuils précis (best-day-since : jours mini/% mini pendant la collecte vs récap) **vivent dans le code** (`post_best_day_since_twitter.py`, `best_day_since.py`) — les lire, ne pas les supposer, ils ont changé plusieurs fois.
 - **Weekend song gainers (décision 10/08/2026)** : on ne poste plus toute chanson en hausse le week-end. `post_weekend_song_gainers.py` ne qualifie une chanson que si elle gagne **≥ +10 %** (`--min-pct`, avant : +5 %), OU décroche un **best-day-since record** ce jour-là, OU **charte au Spotify Global Top 200** ce jour-là (le fait d'avoir charté n'est jamais mentionné dans le tweet — c'est un simple signal de qualification silencieux, le texte garde le format « earned X streams [pct%] »).
 
+## Home highlights (Charts Gallery)
+
+- **Best rank since (décision 14/08/2026)** : quand une chanson atteint son meilleur classement (Spotify Charts régional/global OU Apple Music Global) depuis au moins **14 jours** (`RANK_SINCE_MIN_DAYS`, `scripts/generate_home_highlights.py` / `collectors/apple_music/best_rank_since.py`), c'est un highlight `best_rank_since` **affiché au moins 14 jours** (`RANK_SINCE_DISPLAY_WINDOW_DAYS`) après avoir été déclenché — via un mécanisme read-merge-write dans `generate_home_highlights.py::main()` (`merge_persisted_best_rank_since`), le seul highlight du pipeline qui survit à plusieurs runs au lieu d'être recalculé from scratch à chaque fois.
+- **Apple Music ne déclenche jamais `kind="best_ever"`** pour ce highlight (l'historique local ne remonte qu'à quelques mois) — seul Spotify Charts peut, et seulement si le `release_date` catalogue du morceau est postérieur à `best_day_since.HISTORY_START_DATE` (2025-01-01), même garde-fou que pour best-day-since. Même principe que « jamais de NEW pour Apple Music » ci-dessus : ne jamais revendiquer un record qu'on ne peut pas vérifier avec l'historique dont on dispose.
+- **Pas de post Twitter pour ce highlight** — affichage site uniquement (Charts Gallery + badge `RecordStar` sur les pages détail chanson côté tsm-frontend). Ne pas créer de script de post sans nouvelle demande explicite.
+- Le fallback Python côté frontend (`tsm-frontend/api/routes/home_highlights.py`) n'a **pas** cette logique — écart assumé, même pattern que `regional_climb`/les variantes best-day année-mois déjà absentes de ce filet de sécurité.
+
 ## Réflexes
 
 - Modif du pipeline → demander : « est-ce que ça peut écrire/poster un chiffre faux ou incomplet ? » Si oui, bloquer sur la complétude, pas sur un timeout.

@@ -1,6 +1,21 @@
 # Contexte Collector Deezer
 
-## Role
+## Statut : abandonne (2026-08-14)
+
+Decision produit (Anas, 2026-08-14) : Deezer est abandonne. Retire du
+scoring TayBoard le meme jour (remplace par YouTube, voir
+`collector-billboard/CONTEXTE.md` § "Deezer retire du scoring") et deja
+gate cote public depuis plus tot (`DEEZER_PUBLIC = false` dans
+`tsm-frontend/frontend/src/utils/routePrefixes.js`, route `/deezer` ne
+rend rien). Aucun run planifie (Task Scheduler local, cron VPS) n'existait
+pour ce collecteur au moment de la decision — verifie le 2026-08-14, rien
+a desactiver cote ordonnancement. Le code reste dans le repo et reste
+executable manuellement (`python -m tsm collect deezer` / `run_deezer.bat`)
+mais n'alimente plus rien de consomme (scoring TayBoard retire, page
+publique deja masquee) — a considerer mort sauf nouvelle decision explicite
+de le reprendre.
+
+## Role (historique)
 
 `collectors/deezer` collecte, via l'API publique Deezer (`api.deezer.com`,
 sans auth, 50 req/5s par IP) :

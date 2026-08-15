@@ -214,9 +214,14 @@ Orchestrateur : `run_apple_music.py` (appelé par `python -m tsm collect apple-m
 
 ---
 
-## 4bis. `collectors/deezer/` — charts Deezer
+## 4bis. `collectors/deezer/` — charts Deezer (ABANDONNÉ 2026-08-14)
 
-**Avant tout travail ici : charger le skill `collector-deezer`.**
+**Avant tout travail ici : charger le skill `collector-deezer`.** Décision
+produit : Deezer est abandonné (retiré du scoring TayBoard, remplacé par
+YouTube — voir § 5 et `collector-billboard/CONTEXTE.md`). Aucun run
+planifié n'existait pour ce collecteur au moment de la décision. Code
+conservé, exécutable manuellement, mais mort tant qu'aucune nouvelle
+décision ne le relance.
 
 API publique Deezer (`api.deezer.com`), sans auth, 50 req/5s par IP.
 Orchestrateur : `run_deezer.py` (appelé par `python -m tsm collect deezer`).
@@ -246,18 +251,17 @@ réalité le chart **France**, pas un chart mondial. Décision : renommage
 complet plutôt qu'un simple correctif de libellé (`global.py` ->
 `france.py`, `deezer_global_chart.csv` -> `deezer_france_chart.csv`,
 `DEEZER_GLOBAL_*` -> `DEEZER_FRANCE_*`, libellés UI "Global Chart" ->
-"France Chart") — **mis en pause volontairement**, pas encore fait. Tout le
-code garde le nom "global" pour l'instant, avec des commentaires TODO aux
-emplacements clés (`collectors/deezer/global.py`,
-`collectors/billboard/swift_top_100.py` près de `DEEZER_GLOBAL_WEIGHT`).
-Détail complet : `collector-deezer/CONTEXTE.md`.
+"France Chart") — **mis en pause volontairement**, pas encore fait (et sans
+objet tant que le collecteur reste abandonné). Tout le code garde le nom
+"global" pour l'instant, avec un commentaire TODO dans
+`collectors/deezer/global.py` (le renommage correspondant côté
+`swift_top_100.py`/`DEEZER_GLOBAL_WEIGHT` a disparu avec le retrait complet
+de Deezer du scoring le 2026-08-14). Détail complet :
+`collector-deezer/CONTEXTE.md`.
 
-Alimente aussi le scoring TayBoard (`collectors/billboard/swift_top_100.py`,
-constantes `DEEZER_GLOBAL_WEIGHT`/`DEEZER_ARTIST_FLOOR_RANK`) — voir
-`collector-billboard/CONTEXTE.md` § "Deezer dans le scoring".
-
-Pas encore déployé sur le VPS OVH au 2026-08-09 (voir § 12 plus bas) — tourne
-en local pour l'instant, comme Spotify/Billboard.
+**N'alimente plus le scoring TayBoard depuis le 2026-08-14** (retiré,
+remplacé par YouTube — voir § 5 et `collector-billboard/CONTEXTE.md` §
+"Deezer retiré du scoring"). N'a jamais été déployé sur le VPS OVH.
 
 ---
 
@@ -288,6 +292,10 @@ en local pour l'instant, comme Spotify/Billboard.
 `title_groups.py::build_title_rows()` regroupe les vidéos par chanson pour `youtube_title_history.csv` (une vidéo officielle + son lyric video + son audio + ses remixes = une seule ligne titre). Deux sources, la manuelle prime :
 1. **Override manuel** — `collectors/youtube/tools/json/video_groups.json` (`video_id → title_key`), édité via `scripts/youtube_grouping_editor/` (voir § 8). Gitignoré comme `video_db.json`/`youtube_history.json` (état local, pas de la donnée de catalogue versionnée). L'éditeur pré-remplit le board avec le regroupement automatique déjà en place (même logique `match_video_title`, override manuel prioritaire s'il existe) plutôt que de partir d'un pool vide — l'usage attendu est de corriger les erreurs, pas de reconstruire les groupes à la main. « Enregistrer » réécrit tout le fichier avec l'état courant du board (sauvegarde intégrale, pas un diff) : ça fige en override manuel tous les groupes affichés, pas seulement ceux modifiés.
 2. **Fallback automatique** — matching flou du titre vidéo contre `db/discography/songs.json` (`song_family`/`title_clean`/`base_title`/aliases), sinon la vidéo devient son propre groupe.
+
+Depuis le 2026-08-14, `youtube_title_history.csv` (`daily_views` par titre
+groupé) alimente aussi le scoring TayBoard (`units_youtube`, § 5) —
+voir `collector-billboard/CONTEXTE.md`.
 
 ---
 

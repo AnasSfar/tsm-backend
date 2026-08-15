@@ -106,6 +106,14 @@ Colonnes importantes:
 - `YOUTUBE_API_KEY`: requis.
 - `NTFY_TOPIC_YOUTUBE`: topic ntfy, defaut `taylormuseum-youtube`.
 
+## Consommateurs
+
+- **TayBoard scoring** (ajoute 2026-08-14, `collectors/billboard/swift_top_100.py`) :
+  `db/youtube_title_history.csv` (`daily_views` par titre groupe) alimente
+  `units_youtube` (poids `YOUTUBE_WEIGHT`, defaut 0.3). Si le format de ce
+  CSV change (colonnes renommees, grouping modifie), verifier
+  `_weekly_youtube_views()` et le skill `collector-billboard`.
+
 ## Pieges
 
 - Ne pas utiliser un delta multi-jours comme record quotidien.

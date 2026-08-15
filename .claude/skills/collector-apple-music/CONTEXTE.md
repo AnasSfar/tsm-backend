@@ -157,6 +157,22 @@ bloquant) `scripts/generate_home_highlights.py --quiet` juste apres
 `maybe_upload_to_r2()`. Regenere `cache/home_highlights.json` et
 `cache/version.json` sur R2 (lus par `tsm-frontend/api`).
 
+**Best rank since (2026-08-14)** : `collectors/apple_music/best_rank_since.py`
+detecte le meilleur rang Global Top 100 d'une chanson depuis au moins 14 jours
+(reutilise `core.rank_since.compute_rank_since`, meme primitif que Spotify
+Charts). Lit l'union `db/apple_music_global.csv` + snapshots quotidiens via
+`apple_music_daily_csv_paths` (deja utilise ailleurs, ne pas reinventer),
+regroupe les scrapes multiples d'un meme jour en gardant le dernier
+`scraped_at` (meme regle que `export_apple_music.py::window_rows()`). **Ne
+declenche jamais `kind="best_ever"`** (toujours appele avec
+`release_date=None, history_start_date=None`) — l'historique local ne remonte
+qu'a quelques mois (2026-06-05 sur cette machine, VPS prod depuis
+2026-07-30), donc pas assez profond pour revendiquer un record "de tous les
+temps" en confiance ; meme principe que la regle NEW ci-dessus. Le highlight
+produit (`type="best_rank_since", source="apple_music"`) reste affiche 14
+jours apres declenchement — mecanisme dans `generate_home_highlights.py`, pas
+ici. Seuils/decisions produit → skill `data-rules` § "Home highlights".
+
 ## Pieges
 
 - **`.gitignore` exclut tous les `.csv` du repo, et `db/apple_music_*.csv`

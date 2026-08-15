@@ -759,6 +759,19 @@ Regenere `cache/home_highlights.json` et `cache/version.json` sur R2 (lus par
 `tsm-frontend/api`) — lit `db/charts_history_global.csv` directement (pas de
 matching flou a dupliquer, track_id/movement deja resolus par le collector).
 
+**Best rank since (2026-08-14)** : `compute_spotify_rank_since_highlight()` dans
+`generate_home_highlights.py` marche a rebours l'historique rank de chaque
+region (`_load_region_rank_points`, `charts_history_{global,fr,us,uk}.csv` via
+`load_chart_csv_rows`) pour detecter le meilleur rang depuis au moins
+`RANK_SINCE_MIN_DAYS` (14) jours, via le primitif partage
+`collectors/spotify/core/rank_since.py`. Piege data connu : `track_id` est vide
+sur une grosse partie des lignes anterieures a mi-2026 (filtrer les lignes
+sans track_id) et il existe des doublons `(date, track_id)` (rang/streams
+identiques, dedupe sans risque). Le highlight `best_rank_since` reste affiche
+14 jours apres son declenchement via un mecanisme read-merge-write dans
+`main()` (pas de recalcul from scratch a chaque run pour ce type-la) — voir
+skill `data-rules` § "Home highlights" pour les seuils produits.
+
 ## Pieges connus
 
 - `--backfill-workers` est limite par les sessions Spotify disponibles.

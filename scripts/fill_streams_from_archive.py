@@ -51,6 +51,7 @@ ARCHIVE_EXPANSIONS = (
 
 TRACK_EXPANSIONS = (
     (r"the long pond studio sessions", "tlpss"),
+    (r"10 minute version", "10 mv"),
     (r"taylor'?s version", "tv"),
     (r"from the vault", "ftv"),
 )
@@ -115,7 +116,9 @@ def matching_variants(value: str) -> list[str]:
 
 def track_archive_variants(track: dict) -> list[str]:
     variants = []
-    for key in ("title", "title_clean", "base_title", "song_family"):
+    # `song_family` is a grouping key, not a title identity. Falling back to it
+    # can map a specific version to the base song (e.g. ATW10 -> All Too Well).
+    for key in ("title", "title_clean", "base_title"):
         value = (track.get(key) or "").strip()
         if value:
             variants.extend(matching_variants(value))
@@ -185,7 +188,7 @@ def build_track_map() -> dict[str, dict]:
             track_id = (row.get("track_id") or "").strip()
             title = (row.get("title") or "").strip()
             if track_id and title and track_id in by_id:
-                by_id[track_id] = {**by_id[track_id], "title": title}
+                by_id[track_id].setdefault("swift_top_100_title", title)
 
     return by_id
 

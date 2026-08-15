@@ -51,7 +51,8 @@ def _example(payload: dict[str, Any]) -> dict[str, Any]:
         "am_ts": entry.get("am_ts_units_display") or "9.79M",
         "am_overall": entry.get("am_global_units_display") or "3.47M",
         "am_total": _format_units(entry.get("units_am") or 13264019),
-        "deezer_total": _format_units(entry.get("units_deezer") or 0),
+        "youtube_views": _format_units(entry.get("weekly_youtube_views") or 0),
+        "youtube_total": _format_units(entry.get("units_youtube") or 0),
         "rank": entry.get("rank") or 1,
         "peak": entry.get("peak_position") or 1,
         "woc": entry.get("weeks_on_chart") or 36,
@@ -120,7 +121,7 @@ def _card_html(payload: dict[str, Any], index: int, total: int, width: int, heig
 
     if index == 1:
         title = "Introducing TayBoard"
-        subtitle = "A weekly ranking system for Taylor songs, albums and eras, based on Spotify + Apple Music + Deezer activity."
+        subtitle = "A weekly ranking system for Taylor songs, albums and eras, based on Spotify + Apple Music + YouTube activity."
         body = (
             "<div class='tags'>"
             + _tag("Top Songs", "purple")
@@ -129,16 +130,16 @@ def _card_html(payload: dict[str, Any], index: int, total: int, width: int, heig
             + _tag("Combined / not combined", "purple")
             + "</div>"
             "<div class='grid two'>"
-            + _formula("Song-level scoring", "song units = Spotify units + Apple Music units + Deezer units", "Everything starts at track level.")
+            + _formula("Song-level scoring", "song units = Spotify units + Apple Music units + YouTube units", "Everything starts at track level.")
             + _formula("Then grouped by", "song / album / era / version", "The same units can power multiple TayBoard views.")
             + "</div>"
             + _example_row(ex)
         )
     elif index == 2:
         title = "Spotify units"
-        subtitle = "Spotify uses streams in two blocks: chart streams and extra streams outside those chart placements."
+        subtitle = "Spotify uses streams in two blocks: chart streams and extra streams outside those chart placements, then a platform weight."
         body = (
-            _formula("Spotify formula", "chart streams + extra streams x 0.7", "Chart streams count at full value. Extra streams are weighted lower.", "spotify")
+            _formula("Spotify formula", "(chart streams + extra streams x 0.7) x 0.6", "Chart streams count at full value, extra streams lower. The x0.6 keeps Spotify from dominating the mix.", "spotify")
             + "<div class='grid three'>"
             + _metric("Chart streams", str(ex["charts"]), "spotify", "Streams while songs appear on Spotify charts.")
             + _metric("Extra streams", str(ex["extra"]), "spotify", "Unfiltered streams minus chart streams.")
@@ -147,17 +148,17 @@ def _card_html(payload: dict[str, Any], index: int, total: int, width: int, heig
             + "<div class='callout'>Example uses the current #1 album to show the scale of each block.</div>"
         )
     elif index == 3:
-        title = "Apple Music + Deezer units"
-        subtitle = "Neither platform publishes stream totals, so TayBoard uses chart positions for both, on the same curve."
+        title = "Apple Music + YouTube units"
+        subtitle = "Apple Music doesn't publish stream totals, so TayBoard uses chart position. YouTube gives exact view counts, so it counts like Spotify's extra streams."
         body = (
             "<div class='grid three'>"
             + _metric("AM TS", str(ex["am_ts"]), "apple", "Apple Music Taylor Swift Top Songs chart score.")
             + _metric("AM Overall", str(ex["am_overall"]), "apple", "Apple Music global + country chart placements.")
-            + _metric("Deezer", str(ex["deezer_total"]), "deezer", "Deezer global chart + Taylor's own top-tracks ranking.")
+            + _metric("YouTube views", str(ex["youtube_views"]), "youtube", "Exact weekly views across official videos for the song.")
             + "</div>"
-            + _formula("Position curve", "higher placement = more units", "#1 carries much more weight than #50, and #50 more than #100. Same curve for both platforms.", "apple")
-            + _formula("Apple Music total", f"TS + Overall = {ex['am_total']}", "Converted into units and added to Spotify.", "apple")
-            + _formula("Deezer total", f"{ex['deezer_total']}", "Weighted lower than Apple Music's global chart — Deezer's chart has no explicit country scope.", "deezer")
+            + _formula("Position curve", "higher placement = more units", "#1 carries much more weight than #50, and #50 more than #100. Apple Music only.", "apple")
+            + _formula("Apple Music total", f"(TS + Overall) x 0.3 = {ex['am_total']}", "Platform weight applied after the position curve.", "apple")
+            + _formula("YouTube total", f"views x 0.3 = {ex['youtube_total']}", "Weighted down vs. Spotify — a view counts for less than a stream.", "youtube")
         )
     elif index == 4:
         title = "From songs to albums, eras and versions"
@@ -170,7 +171,7 @@ def _card_html(payload: dict[str, Any], index: int, total: int, width: int, heig
             + "</div>"
             + _formula(
                 "Example album total",
-                f"{ex['spotify_display']} Spotify + {ex['am_total']} Apple Music + {ex['deezer_total']} Deezer = {ex['units']}",
+                f"{ex['spotify_display']} Spotify + {ex['am_total']} Apple Music + {ex['youtube_total']} YouTube = {ex['units']}",
                 f"{ex['title']} earns {ex['points']} points this week.",
             )
         )
@@ -184,7 +185,7 @@ def _card_html(payload: dict[str, Any], index: int, total: int, width: int, heig
             + _metric("Peak", f"best #{ex['peak']}", "peak", "Best TayBoard position ever.")
             + _metric("WoC", f"{ex['woc']} weeks", "peak", "Weeks on Chart.")
             + _metric("Points", str(ex["points"]), "purple", "Units scaled down for readability.")
-            + _metric("Units", str(ex["units"]), "units", "Final Spotify + Apple Music + Deezer units.")
+            + _metric("Units", str(ex["units"]), "units", "Final Spotify + Apple Music + YouTube units.")
             + "</div>"
             + _example_row(ex)
         )
@@ -238,7 +239,7 @@ def _card_html(payload: dict[str, Any], index: int, total: int, width: int, heig
     }}
     .formula.spotify, .metric.spotify {{ background: rgba(16,185,129,0.08); }}
     .formula.apple, .metric.apple {{ background: rgba(225,29,72,0.08); }}
-    .formula.deezer, .metric.deezer {{ background: rgba(162,56,255,0.08); }}
+    .formula.youtube, .metric.youtube {{ background: rgba(255,0,51,0.08); }}
     .metric.units {{ background: rgba(139,92,246,0.08); }}
     .metric.peak {{ background: rgba(245,158,11,0.10); }}
     .metric.purple {{ background: rgba(139,92,246,0.08); }}

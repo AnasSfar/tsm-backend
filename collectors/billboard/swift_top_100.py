@@ -41,7 +41,6 @@ from core.data_paths import (  # noqa: E402
     WEB_EXPORT_DATA_DIR,
     apple_music_daily_csv_paths,
     billboard_snapshot_dir,
-    deezer_daily_csv_paths,
     first_existing_db_history,
     spotify_chart_snapshot_candidates,
 )
@@ -64,8 +63,7 @@ APPLE_MUSIC_GLOBAL_CSV = _DB_DIR / "apple_music_global.csv"
 APPLE_MUSIC_COUNTRY_CSV = _DB_DIR / "apple_music_country_charts.csv"
 APPLE_MUSIC_GENRE_CSV = _DB_DIR / "apple_music_genre_charts.csv"
 APPLE_MUSIC_TS_TOP_SONGS_CSV = _DB_DIR / "apple_music_ts_top_songs.csv"
-DEEZER_GLOBAL_CSV = _DB_DIR / "deezer_global_chart.csv"
-DEEZER_ARTIST_CSV = _DB_DIR / "deezer_artist_top_tracks.csv"
+YOUTUBE_TITLE_HISTORY_CSV = _DB_DIR / "youtube_title_history.csv"
 SWIFT_TOP_100_HISTORY_CSV = _DB_DIR / "swift_top_100_history.csv"
 SWIFT_TOP_SONGS_HISTORY_CSV = _DB_DIR / "swift_top_songs_history.csv"
 SWIFT_TOP_100_BONUSES_JSON = _DB_DIR / "swift_top_100_bonuses.json"
@@ -135,17 +133,30 @@ AM_MARKET_WEIGHTS: dict[str, float] = {
     "cl": 0.18,
     "co": 0.18,
 }
-# Deezer: same power-law scoring as Apple Music, added as a 3rd, smaller
-# source. Global chart weight is discounted vs. AM's (0.05 vs 0.10) because
-# Deezer's public /chart endpoint has no explicit country param and is
-# geolocated by request IP — CONFIRMED 2026-08-09 (per Anas) this is
-# actually the France chart, not worldwide. Left named "GLOBAL" for now,
-# paused mid-fix (see collectors/deezer/global.py's docstring for the full
-# TODO: rename to DEEZER_FRANCE_WEIGHT etc. when resumed). No Deezer history
-# exists before this collector started, so units_deezer is 0 for every past
-# week: this cannot change any already-published historical total_units.
-DEEZER_GLOBAL_WEIGHT = float(os.getenv("TAYBOARD_DEEZER_GLOBAL_WEIGHT", "0.05"))
-DEEZER_ARTIST_FLOOR_RANK = int(os.getenv("TAYBOARD_DEEZER_ARTIST_FLOOR_RANK", "50"))
+# YouTube: unlike Apple Music/Deezer, the collector gives an exact weekly
+# view count per song (db/youtube_title_history.csv), not a rank-limited
+# chart — so it's scored like Spotify (direct volume), not like AM's
+# power-law rank formula. Weight calibrated 2026-08-14 (per Anas) against
+# real weekly volumes so YouTube lands in the same order of magnitude as
+# units_am instead of being negligible: top catalog songs run at roughly
+# 25-40% of their Spotify daily-stream volume in raw YouTube daily views,
+# so 0.3 keeps YouTube a meaningful 3rd pillar without ever outweighing
+# Spotify. Deezer removed from scoring the same day (product decided to
+# abandon it — see collector-deezer/CONTEXTE.md); no history exists before
+# this weight was introduced, so units_youtube is 0 for every past week:
+# this cannot change any already-published historical total_units.
+YOUTUBE_WEIGHT = float(os.getenv("TAYBOARD_YOUTUBE_WEIGHT", "0.3"))
+
+# Platform mix weights: top-level multipliers applied on top of each
+# platform's own already-computed units (streams for Spotify, power-law
+# chart score x1000 for Apple Music), decided 2026-08-14 (Anas) to make
+# Spotify's raw stream volume less dominant relative to Apple Music/YouTube
+# engagement. YOUTUBE_WEIGHT above already plays this exact role for
+# YouTube (applied directly to raw views, no separate multiplier needed).
+SPOTIFY_WEIGHT = float(os.getenv("TAYBOARD_SPOTIFY_WEIGHT", "0.6"))
+AM_WEIGHT = float(os.getenv("TAYBOARD_AM_WEIGHT", "0.3"))
+
+_APPLE_MUSIC_R2_SYNC_DONE = False
 
 
 def _parse_iso_date(value: str) -> date | None:
@@ -209,13 +220,28 @@ def _extract_track_id(url: str | None) -> str | None:
 _NORMALIZE_RE = re.compile(r"[^a-z0-9]+")
 _PAREN_RE = re.compile(r"\([^)]*\)|\[[^\]]*\]")
 _DASH_SPLIT_RE = re.compile(r"\s+-\s+")
+# An apostrophe collapsed by _NORMALIZE_RE leaves a lone contraction
+# fragment behind ("who's" -> "who s", "don't" -> "don t", "you'll" ->
+# "you ll"), but some sources (YouTube's own title cleaning, notably) strip
+# the apostrophe outright instead ("who's" -> "whos", "don't" -> "dont").
+# Merge the fragment back onto the previous word so both conventions
+# converge on the same key — fixes real 2026-08-15 misses (e.g. "Who's
+# Afraid of Little Old Me?" and "I Don't Wanna Live Forever" scoring 0
+# YouTube views despite the video existing).
+_TRAILING_CONTRACTION_RE = re.compile(r"\b(\w+) (s|t|d|m|ll|re|ve)\b")
 
 
 def _clean_title_text(value: str) -> str:
     s = (value or "").strip().casefold()
     if not s:
         return ""
-    return s.replace("â€™", "'").replace("â€˜", "'").replace("â€œ", '"').replace("â€", '"')
+    s = s.replace("’", "'").replace("‘", "'").replace("“", '"').replace("�", '"')
+    # "&" -> "and": some sources spell it out ("... And The Heartbreak
+    # Prince") while the catalog keeps the literal ampersand -- _NORMALIZE_RE
+    # would otherwise just drop it as punctuation, losing the word entirely
+    # on one side. Fixes real 2026-08-15 miss on "Miss Americana & The
+    # Heartbreak Prince" (0 YouTube views despite the video existing).
+    return s.replace("&", " and ")
 
 
 def _normalize_full_title(value: str) -> str:
@@ -225,6 +251,7 @@ def _normalize_full_title(value: str) -> str:
         return ""
     s = s.replace("(", " ").replace(")", " ").replace("[", " ").replace("]", " ")
     s = _NORMALIZE_RE.sub(" ", s)
+    s = _TRAILING_S_RE.sub(r"\1s", s)
     return " ".join(s.split())
 
 
@@ -242,6 +269,7 @@ def _normalize_title(value: str) -> str:
     s = _DASH_SPLIT_RE.split(s, maxsplit=1)[0]
 
     s = _NORMALIZE_RE.sub(" ", s)
+    s = _TRAILING_S_RE.sub(r"\1s", s)
     s = " ".join(s.split())
     return s
 
@@ -496,27 +524,6 @@ def _active_apple_music_csvs(csv_path: Path) -> list[Path]:
     return result
 
 
-def _active_deezer_csvs(csv_path: Path) -> list[Path]:
-    """Return Deezer CSV paths, including archived daily snapshots."""
-    paths: list[Path] = []
-    if csv_path.exists():
-        paths.append(csv_path)
-
-    archived = _ARCHIVE_DB_DIR / csv_path.name
-    if archived.exists():
-        paths.append(archived)
-
-    paths.extend(deezer_daily_csv_paths(csv_path.name))
-
-    result: list[Path] = []
-    seen: set[Path] = set()
-    for path in paths:
-        resolved = path.resolve()
-        if resolved in seen:
-            continue
-        seen.add(resolved)
-        result.append(path)
-    return result
 
 
 
@@ -1261,108 +1268,70 @@ def _weekly_apple_music_ts_points(*, week_dates: set[str], logger: Logger) -> di
     return scores
 
 
-def _deezer_artist_floor_score(week_dates: set[str]) -> float:
-    """Minimum Deezer artist-top-tracks score when a track isn't in the
-    (limited-depth) daily top-tracks snapshot. Same rationale as
-    _apple_music_ts_floor_score."""
-    rank = max(1, DEEZER_ARTIST_FLOOR_RANK)
-    return _rank_to_am_units_score(rank) * max(1, len(week_dates))
+# Some YouTube video titles carry a redundant "ft. X" / "feat. X" suffix
+# outside any parentheses (e.g. "Taylor Swift - End Game ft. Ed Sheeran,
+# Future", or "ME! (feat. Brendon Urie...) ft. Brendon Urie" — the featured
+# artist appears twice in the real title). core/title_groups.py's clean
+# title inherits this, so some songs end up split across two groups: one
+# keyed on the plain title, one on "<title> Ft X" — undercounting (or
+# zeroing) the song since only one group matches the catalog's plain title.
+# Stripping this trailing suffix before building the lookup key merges both
+# groups' views under the catalog's key. Fixes real 2026-08-15 misses: "End
+# Game" (0 views, only matched under "End Game Ft Ed Sheeran Future"),
+# "Everything Has Changed" (same pattern), and ME! being undercounted (its
+# official video, 484M views, lived only under "Me Ft Brendon Urie" while
+# the plain "Me" group the catalog matched was just 3 live performances).
+_YOUTUBE_FEAT_SUFFIX_RE = re.compile(r"\s+(?:ft\.?|feat\.?|featuring)\s+.+$", re.IGNORECASE)
 
 
-def _weekly_deezer_global_points(*, week_dates: set[str], logger: Logger) -> dict[str, float]:
-    """Return normalized_title -> sum of daily Deezer global chart raw scores.
+def _weekly_youtube_views(*, week_dates: set[str], logger: Logger) -> dict[str, int]:
+    """Return normalized_title -> sum of exact daily YouTube views over the week.
 
-    Same power-law curve as Apple Music (_rank_to_am_units_score), weighted
-    down (DEEZER_GLOBAL_WEIGHT) since the chart's "global" scope is actually
-    France, not worldwide — CONFIRMED 2026-08-09, rename paused for now
-    (see collectors/deezer/global.py TODO). Best rank per (title, day) kept.
-    Multiply by 1000 externally.
+    Unlike Apple Music/Deezer (rank-limited charts), db/youtube_title_history.csv
+    gives an exact daily_views delta per grouped song title (core/title_groups.py
+    already merges official/lyric/audio/visualizer videos, and TV/original
+    versions, under one title) — so this is summed like Spotify's raw streams,
+    not scored via the AM power-law curve. Blank daily_views (gap days, per
+    collector-youtube's exact-delta rule) are skipped rather than treated as 0.
+    The trailing "ft X" suffix some grouped titles carry is stripped first
+    (see _YOUTUBE_FEAT_SUFFIX_RE) so those groups merge with their
+    plain-titled counterpart instead of scoring separately/missing entirely.
+    Multiply by YOUTUBE_WEIGHT externally.
     """
-    scores: dict[str, float] = {}
-    active_paths = _active_deezer_csvs(DEEZER_GLOBAL_CSV)
-    if not active_paths:
-        logger.log("  deezer_global  : missing — Deezer disabled")
-        return scores
+    totals: dict[str, int] = {}
+    if not YOUTUBE_TITLE_HISTORY_CSV.exists():
+        logger.log("  youtube        : missing — YouTube disabled")
+        return totals
 
     def _to_int(v: str | None) -> int | None:
+        v = (v or "").strip()
+        if not v:
+            return None
         try:
-            return int((v or "").strip())
+            return int(float(v))
         except Exception:
             return None
 
-    best_per_day: dict[tuple[str, str], int] = {}
     matched_rows = 0
-    for csv_path in active_paths:
-        with csv_path.open("r", newline="", encoding="utf-8-sig") as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                day = (row.get("date") or "").strip()
-                if day not in week_dates:
-                    continue
-                title = (row.get("title") or "").strip()
-                rank = _to_int(row.get("rank"))
-                if not title or not rank or rank < 1 or rank > 100:
-                    continue
-                key = _chart_lookup_key(title, combined=COMBINE_VERSIONS)
-                if not key:
-                    continue
-                cell = (key, day)
-                if cell not in best_per_day or rank < best_per_day[cell]:
-                    best_per_day[cell] = rank
-                matched_rows += 1
+    with YOUTUBE_TITLE_HISTORY_CSV.open("r", newline="", encoding="utf-8-sig") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            day = (row.get("date") or "").strip()
+            if day not in week_dates:
+                continue
+            title = (row.get("title") or "").strip()
+            views = _to_int(row.get("daily_views"))
+            if not title or views is None or views < 0:
+                continue
+            title = _YOUTUBE_FEAT_SUFFIX_RE.sub("", title).strip()
+            key = _chart_lookup_key(title, combined=COMBINE_VERSIONS)
+            if not key:
+                continue
+            totals[key] = totals.get(key, 0) + views
+            matched_rows += 1
 
-    for (key, _day), rank in best_per_day.items():
-        scores[key] = scores.get(key, 0.0) + (_rank_to_am_units_score(rank) * DEEZER_GLOBAL_WEIGHT)
-
-    logger.log(f"  deezer_global  : {matched_rows} rows ({len(active_paths)} file(s), weight={DEEZER_GLOBAL_WEIGHT:g})")
-    return scores
-
-
-def _weekly_deezer_artist_points(*, week_dates: set[str], logger: Logger) -> dict[str, float]:
-    """Return normalized_title -> sum of daily Deezer artist-top-tracks raw scores.
-
-    Formula: 500 / rank^0.75 per day (power law). Best rank per (title, day)
-    kept. Taylor-only source (like Apple Music's TS chart), so no discount
-    weight — added at full raw value. Multiply by 1000 externally.
-    """
-    scores: dict[str, float] = {}
-    active_paths = _active_deezer_csvs(DEEZER_ARTIST_CSV)
-    if not active_paths:
-        logger.log("  deezer_artist  : missing — Deezer TS disabled")
-        return scores
-
-    def _to_int(v: str | None) -> int | None:
-        try:
-            return int((v or "").strip())
-        except Exception:
-            return None
-
-    best_per_day: dict[tuple[str, str], int] = {}
-    matched_rows = 0
-    for csv_path in active_paths:
-        with csv_path.open("r", newline="", encoding="utf-8-sig") as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                day = (row.get("date") or "").strip()
-                if day not in week_dates:
-                    continue
-                title = (row.get("title") or "").strip()
-                rank = _to_int(row.get("rank"))
-                if not title or not rank or rank < 1 or rank > 100:
-                    continue
-                key = _chart_lookup_key(title, combined=COMBINE_VERSIONS)
-                if not key:
-                    continue
-                cell = (key, day)
-                if cell not in best_per_day or rank < best_per_day[cell]:
-                    best_per_day[cell] = rank
-                matched_rows += 1
-
-    for (key, _day), rank in best_per_day.items():
-        scores[key] = scores.get(key, 0.0) + _rank_to_am_units_score(rank)
-
-    logger.log(f"  deezer_artist  : {matched_rows} rows ({len(active_paths)} file(s))")
-    return scores
+    logger.log(f"  youtube        : {matched_rows} rows, weight={YOUTUBE_WEIGHT:g}")
+    return totals
 
 
 def _load_existing_history(logger: Logger) -> list[dict]:
@@ -1455,14 +1424,14 @@ def _write_history_csv(rows: list[dict], logger: Logger) -> None:
         "title",
         "weekly_streams",
         "units_am",
-        "units_deezer",
+        "units_youtube",
         "units_spotify",
         "units_charts",
         "units_surplus",
         "total_units",
         "streams_pct",
         "airplay_pct",
-        "deezer_pct",
+        "youtube_pct",
         "sales_pct",
         "bonus_points",
         "points",
@@ -1471,8 +1440,7 @@ def _write_history_csv(rows: list[dict], logger: Logger) -> None:
         "am_global_score",
         "am_country_score",
         "am_overall_score",
-        "deezer_artist_score",
-        "deezer_global_score",
+        "weekly_youtube_views",
         "prev_rank",
         "prev_points",
         "change",
@@ -1519,10 +1487,10 @@ def _write_songs_history_csv(rows: list[dict], logger: Logger) -> None:
     fieldnames = [
         "date", "week_start", "rank", "track_id", "title", "weekly_streams",
         "base_title", "song_family",
-        "units_am", "units_deezer", "units_spotify", "units_charts", "units_surplus", "total_units",
-        "streams_pct", "airplay_pct", "deezer_pct", "sales_pct", "bonus_points", "points",
+        "units_am", "units_youtube", "units_spotify", "units_charts", "units_surplus", "total_units",
+        "streams_pct", "airplay_pct", "youtube_pct", "sales_pct", "bonus_points", "points",
         "global_best_rank", "am_ts_score", "am_global_score", "am_country_score",
-        "am_overall_score", "deezer_artist_score", "deezer_global_score",
+        "am_overall_score", "weekly_youtube_views",
         "prev_rank", "prev_points", "change", "rank_change",
         "percentage_change", "weeks_on_chart", "peak_position", "times_at_peak",
     ]
@@ -1654,6 +1622,39 @@ def _write_snapshot_json(payload: dict, logger: Logger) -> None:
     _atomic_write_text(OUTPUT_JSON, content)
     logger.log(f"✔ JSON → {OUTPUT_JSON.name} (latest)")
     _rebuild_snapshot_index(logger)
+
+
+def _sync_apple_music_from_r2_best_effort(*, logger: Logger) -> None:
+    """Best-effort local backfill of Apple Music daily snapshots from R2.
+
+    Since 2026-07-30 collectors/apple_music runs only on the VPS and never
+    syncs back to this machine (see collector-billboard/CONTEXTE.md piege
+    "Apple Music Overall a 0"), so any day the VPS collected but this
+    machine never saw silently scores as 0/incomplete AM points. Runs once
+    per process (guarded by _APPLE_MUSIC_R2_SYNC_DONE) since --variant all
+    calls into main_from_args four times. Never blocks the chart run — on
+    failure (no R2 creds, no network) the run proceeds with whatever local
+    snapshots already exist, same as before this existed.
+    """
+    global _APPLE_MUSIC_R2_SYNC_DONE
+    if _APPLE_MUSIC_R2_SYNC_DONE:
+        return
+    _APPLE_MUSIC_R2_SYNC_DONE = True
+    try:
+        script = _REPO_ROOT / "scripts" / "sync_apple_music_snapshots_from_r2.py"
+        result = subprocess.run(
+            [sys.executable, str(script), "--apply"], cwd=str(_REPO_ROOT), check=False,
+            capture_output=True, text=True,
+        )
+        written = sum(1 for line in result.stdout.splitlines() if line.startswith("[wrote]"))
+        if result.returncode != 0:
+            logger.log(f"  am_sync        : exited with code {result.returncode} — {result.stderr.strip()[:200]}")
+        elif written:
+            logger.log(f"  am_sync        : {written} day(s) backfilled from R2")
+        else:
+            logger.log("  am_sync        : local snapshots already up to date")
+    except Exception as exc:
+        logger.log(f"⚠ am_sync        : failed — {exc}")
 
 
 def _maybe_upload_to_r2(*, logger: Logger, slugs: list[str] | None = None) -> None:
@@ -1919,10 +1920,7 @@ def run(
     am_ts_best_rank = _weekly_apple_music_ts_points(week_dates=week_set, logger=logger)
     am_ts_floor_raw = _apple_music_ts_floor_score(week_set)
     logger.log(f"  apple_ts_floor : rank #{max(1, AM_TS_FLOOR_RANK)} ({round(am_ts_floor_raw * 1000)} units)")
-    deezer_global_score_by_title = _weekly_deezer_global_points(week_dates=week_set, logger=logger)
-    deezer_artist_best_rank = _weekly_deezer_artist_points(week_dates=week_set, logger=logger)
-    deezer_artist_floor_raw = _deezer_artist_floor_score(week_set)
-    logger.log(f"  deezer_floor   : rank #{max(1, DEEZER_ARTIST_FLOOR_RANK)} ({round(deezer_artist_floor_raw * 1000)} units)")
+    youtube_views_by_title = _weekly_youtube_views(week_dates=week_set, logger=logger)
     charts_streams_by_title = _weekly_charts_streams_by_title(week_dates=week_set, tracks=tracks, logger=logger)
 
     chart_date_str = _format_date(chart_date)
@@ -2048,27 +2046,20 @@ def run(
             am_global_raw = 0.0
             am_country_raw = 0.0
         am_overall_raw = am_global_raw + am_country_raw
-        units_am = round((am_ts_raw + am_overall_raw) * 1000)
+        units_am = round((am_ts_raw + am_overall_raw) * 1000 * AM_WEIGHT)
 
-        # Deezer units (même loi de puissance × 1000, source distincte, plus petit poids)
-        if apple_music_floor_eligible:
-            deezer_artist_raw = deezer_artist_best_rank.get(key, 0.0)
-            if deezer_artist_raw <= 0:
-                deezer_artist_raw = deezer_artist_floor_raw
-            deezer_global_raw = deezer_global_score_by_title.get(key, 0.0)
-        else:
-            deezer_artist_raw = 0.0
-            deezer_global_raw = 0.0
-        units_deezer = round((deezer_artist_raw + deezer_global_raw) * 1000)
+        # YouTube units (vues exactes × poids — pas de loi de puissance, on a le volume réel)
+        weekly_youtube_views = youtube_views_by_title.get(key, 0)
+        units_youtube = round(weekly_youtube_views * YOUTUBE_WEIGHT)
 
-        # Spotify units (on-chart + surplus × 0.7)
+        # Spotify units (on-chart + surplus × 0.7, puis × poids plateforme)
         raw_units_charts = charts_streams_by_title.get(key, 0)
         units_charts = min(raw_units_charts, weekly_streams)
         units_surplus = max(0, weekly_streams - units_charts)
-        units_spotify = round(units_charts + units_surplus * 0.7)
+        units_spotify = round((units_charts + units_surplus * 0.7) * SPOTIFY_WEIGHT)
 
         # Total (pas de données iTunes)
-        total_units = units_spotify + units_am + units_deezer
+        total_units = units_spotify + units_am + units_youtube
 
         # % de variation des total_units semaine sur semaine
         pct_change = None
@@ -2081,7 +2072,7 @@ def run(
         # Répartition (points calculés après — placeholder 0)
         streams_pct = round(units_spotify / total_units * 100, 1) if total_units else 0.0
         airplay_pct = round(units_am / total_units * 100, 1) if total_units else 0.0
-        deezer_pct = round(units_deezer / total_units * 100, 1) if total_units else 0.0
+        youtube_pct = round(units_youtube / total_units * 100, 1) if total_units else 0.0
 
         out_entries.append(
             {
@@ -2094,14 +2085,14 @@ def run(
                 "song_family": row.get("song_family"),
                 "weekly_streams": weekly_streams,
                 "units_am": units_am,
-                "units_deezer": units_deezer,
+                "units_youtube": units_youtube,
                 "units_spotify": units_spotify,
                 "units_charts": units_charts,
                 "units_surplus": units_surplus,
                 "total_units": total_units,
                 "streams_pct": streams_pct,
                 "airplay_pct": airplay_pct,
-                "deezer_pct": deezer_pct,
+                "youtube_pct": youtube_pct,
                 "sales_pct": 0,
                 "bonus_points": row["bonus_points"],
                 "points": 0,  # calculé après normalisation
@@ -2110,8 +2101,7 @@ def run(
                 "am_global_score": round(am_global_raw, 2),
                 "am_country_score": round(am_country_raw, 2),
                 "am_overall_score": round(am_overall_raw, 2),
-                "deezer_artist_score": round(deezer_artist_raw, 2),
-                "deezer_global_score": round(deezer_global_raw, 2),
+                "weekly_youtube_views": weekly_youtube_views,
                 "prev_rank": pr,
                 "prev_points": prev_points_value,
                 "change": change,
@@ -2135,22 +2125,22 @@ def run(
                 "image_url": (meta.image_url if meta and meta.image_url else None),
                 "weekly_streams": weekly_streams,
                 "units_am": units_am,
-                "units_deezer": units_deezer,
+                "units_youtube": units_youtube,
                 "units_spotify": units_spotify,
                 "units_charts": units_charts,
                 "units_surplus": units_surplus,
                 "total_units": total_units,
                 "units": _format_number(total_units),
-                "am_ts_units_display": _format_number(round(am_ts_raw * 1000)),
-                "am_global_units_display": _format_number(round(am_overall_raw * 1000)),
-                "am_country_units_display": _format_number(round(am_country_raw * 1000)),
-                "am_overall_units_display": _format_number(round(am_overall_raw * 1000)),
-                "deezer_units_display": _format_number(units_deezer),
-                "units_charts_display": _format_number(units_charts),
-                "units_surplus_display": _format_number(units_surplus),
+                "am_ts_units_display": _format_number(round(am_ts_raw * 1000 * AM_WEIGHT)),
+                "am_global_units_display": _format_number(round(am_overall_raw * 1000 * AM_WEIGHT)),
+                "am_country_units_display": _format_number(round(am_country_raw * 1000 * AM_WEIGHT)),
+                "am_overall_units_display": _format_number(round(am_overall_raw * 1000 * AM_WEIGHT)),
+                "youtube_units_display": _format_number(units_youtube),
+                "units_charts_display": _format_number(round(units_charts * SPOTIFY_WEIGHT)),
+                "units_surplus_display": _format_number(round(units_surplus * SPOTIFY_WEIGHT)),
                 "streams_pct": streams_pct,
                 "airplay_pct": airplay_pct,
-                "deezer_pct": deezer_pct,
+                "youtube_pct": youtube_pct,
                 "sales_pct": 0,
                 "bonus_points": row["bonus_points"],
                 "points": 0,  # calculé après normalisation
@@ -2159,8 +2149,7 @@ def run(
                 "am_global_score": round(am_global_raw, 2),
                 "am_country_score": round(am_country_raw, 2),
                 "am_overall_score": round(am_overall_raw, 2),
-                "deezer_artist_score": round(deezer_artist_raw, 2),
-                "deezer_global_score": round(deezer_global_raw, 2),
+                "weekly_youtube_views": weekly_youtube_views,
                 "prev_rank": pr,
                 "change": change,
                 "rank_change": rank_change,
@@ -2423,6 +2412,9 @@ def main(argv: list[str] | None = None) -> None:
 
 
 def main_from_args(args: argparse.Namespace) -> None:
+
+    if not args.dry_run:
+        _sync_apple_music_from_r2_best_effort(logger=Logger())
 
     if args.streams_csv:
         global STREAMS_HISTORY_CSV
