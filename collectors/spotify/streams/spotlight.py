@@ -905,6 +905,8 @@ body{
   border:none;
 }
 .stat-card-gold.highlight{
+    background:linear-gradient(135deg,#7a5800,#c8920a,#f5c518,#c8920a,#7a5800);
+    border:none;
     box-shadow: 0 8px 32px rgba(255,215,0,.20), inset 0 1px 0 rgba(255,255,255,.60);
     outline:2px solid rgba(255,255,255,.28);
     outline-offset:0px;
@@ -912,6 +914,7 @@ body{
 .stat-card-gold .stat-label{color:rgba(255,255,255,.80);}
 .stat-card-gold .stat-val{color:#fff;}
 .stat-card-gold .stat-sub{color:rgba(255,255,255,.75);font-weight:700;}
+.stat-card-gold.highlight .stat-sub{color:rgba(255,255,255,.75);}
 """
 
 
