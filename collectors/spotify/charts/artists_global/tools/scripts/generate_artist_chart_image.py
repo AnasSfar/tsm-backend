@@ -213,6 +213,36 @@ def rank_unchanged(artist: dict) -> int | None:
     return rank if rank == previous_rank else None
 
 
+def _artist_identity(artist: dict) -> str:
+    artist_id = str(artist.get("artist_id") or "").strip().lower()
+    if artist_id:
+        return f"id:{artist_id}"
+    return f"name:{str(artist.get('artist_name') or '').strip().lower()}"
+
+
+def top_list_unchanged(artists: list[dict], limit: int) -> bool:
+    """True if the ranked top-`limit` list (composition + order) matches the
+    list reconstructed from each artist's own previous_rank field.
+
+    Spotify uses -1 (not None) as the sentinel for "no previous rank" on
+    new/re-entries — treat any non-positive value the same as missing.
+    """
+    current_top = sorted(
+        (a for a in artists if _int_value(a.get("rank")) is not None),
+        key=lambda a: _int_value(a.get("rank")),
+    )[:limit]
+    current_ids = [_artist_identity(a) for a in current_top]
+
+    prev_candidates = [
+        a for a in artists
+        if (_int_value(a.get("previous_rank")) or 0) > 0
+    ]
+    previous_top = sorted(prev_candidates, key=lambda a: _int_value(a.get("previous_rank")))[:limit]
+    previous_ids = [_artist_identity(a) for a in previous_top]
+
+    return current_ids == previous_ids
+
+
 def fmt_streak(days) -> str:
     if days is None:
         return "—"
@@ -406,7 +436,14 @@ def _period_label(period: str) -> str:
     return "Weekly" if period == "weekly" else "Daily"
 
 
-def build_top5_html(artists: list[dict], stats_date: str, header_img: Path | None, period: str) -> str:
+def build_top5_html(
+    artists: list[dict],
+    stats_date: str,
+    header_img: Path | None,
+    period: str,
+    *,
+    title: str = "Taylor Swift · Global Artist Chart",
+) -> str:
     date_fmt = datetime.strptime(stats_date, "%Y-%m-%d").strftime("%B %d, %Y")
     hdr_style, handle_color = _hdr_style(header_img)
     top5 = [a for a in artists if a["rank"] <= 5]
@@ -418,7 +455,7 @@ def build_top5_html(artists: list[dict], stats_date: str, header_img: Path | Non
   <div class="hdr" {hdr_style}>
     {SPOTIFY_SVG}
     <div>
-      <div class="hdr-title">Taylor Swift · Global Artist Chart</div>
+      <div class="hdr-title">{title}</div>
       <div class="hdr-sub">{period_label} Top 5 · {date_fmt}</div>
     </div>
   </div>
@@ -437,7 +474,14 @@ def build_top5_html(artists: list[dict], stats_date: str, header_img: Path | Non
   </div>
 </div></body></html>"""
 
-def build_top10_html(artists: list[dict], stats_date: str, header_img: Path | None, period: str) -> str:
+def build_top10_html(
+    artists: list[dict],
+    stats_date: str,
+    header_img: Path | None,
+    period: str,
+    *,
+    title: str = "Taylor Swift · Global Artist Chart",
+) -> str:
     date_fmt = datetime.strptime(stats_date, "%Y-%m-%d").strftime("%B %d, %Y")
     hdr_style, handle_color = _hdr_style(header_img)
     top10 = [a for a in artists if a["rank"] <= 10]
@@ -449,7 +493,7 @@ def build_top10_html(artists: list[dict], stats_date: str, header_img: Path | No
   <div class="hdr" {hdr_style}>
     {SPOTIFY_SVG}
     <div>
-      <div class="hdr-title">Taylor Swift · Global Artist Chart</div>
+      <div class="hdr-title">{title}</div>
       <div class="hdr-sub">{period_label} Top 10 · {date_fmt}</div>
     </div>
   </div>
@@ -469,7 +513,15 @@ def build_top10_html(artists: list[dict], stats_date: str, header_img: Path | No
 </div></body></html>"""
 
 
-def build_solo_html(ts_artist: dict, stats_date: str, header_img: Path | None, period: str) -> str:
+def build_solo_html(
+    ts_artist: dict,
+    stats_date: str,
+    header_img: Path | None,
+    period: str,
+    *,
+    title: str = "Taylor Swift · Global Artist Chart",
+    rank_scope: str = "globally",
+) -> str:
     date_fmt = datetime.strptime(stats_date, "%Y-%m-%d").strftime("%B %d, %Y")
     hdr_style, handle_color = _hdr_style(header_img)
     period_label = _period_label(period)
@@ -490,7 +542,7 @@ def build_solo_html(ts_artist: dict, stats_date: str, header_img: Path | None, p
   <div class="hdr" {hdr_style}>
     {SPOTIFY_SVG}
     <div>
-      <div class="hdr-title">Taylor Swift · Global Artist Chart</div>
+      <div class="hdr-title">{title}</div>
       <div class="hdr-sub">{period_label} Chart · {date_fmt}</div>
     </div>
   </div>
@@ -498,7 +550,7 @@ def build_solo_html(ts_artist: dict, stats_date: str, header_img: Path | None, p
     {img_tag}
     <div class="solo-info">
       <div class="solo-name">Taylor Swift</div>
-      <div class="solo-rank">Ranked #{rank} globally</div>
+      <div class="solo-rank">Ranked #{rank} {rank_scope}</div>
       <div class="solo-meta">
         <div class="solo-stat">
           <span class="solo-stat-label">+/-</span>
@@ -600,22 +652,36 @@ def main() -> None:
     ts_rank = ts_artist["rank"]
     print(f"Taylor Swift: rank #{ts_rank}")
 
+    if ts_rank <= 5:
+        mode = "top5"
+    elif ts_rank <= 10:
+        mode = "top10"
+    else:
+        mode = "solo"
+
     unchanged_rank = rank_unchanged(ts_artist)
-    if unchanged_rank is not None and not args.no_post:
-        print(f"[SKIP] Artist global post skipped: Taylor Swift rank unchanged (#{unchanged_rank}).")
+    if mode == "solo":
+        # Solo card only shows Taylor — nothing else in it can change.
+        skip = unchanged_rank is not None
+    else:
+        # Top5/top10 cards show the whole ranking, so a reshuffle among the
+        # other artists is newsworthy even if Taylor's own rank is stable.
+        limit = 5 if mode == "top5" else 10
+        skip = unchanged_rank is not None and top_list_unchanged(artists, limit)
+
+    if skip and not args.no_post:
+        detail = "" if mode == "solo" else f" and top {limit} list unchanged"
+        print(f"[SKIP] Artist global post skipped: Taylor Swift rank unchanged (#{unchanged_rank}){detail}.")
         return
 
     header_img = pick_header_image()
-    if ts_rank <= 5:
-        mode = "top5"
+    if mode == "top5":
         html = build_top5_html(artists, stats_date, header_img, args.period)
         print("Mode: Top 5")
-    elif ts_rank <= 10:
-        mode = "top10"
+    elif mode == "top10":
         html = build_top10_html(artists, stats_date, header_img, args.period)
         print("Mode: Top 10")
     else:
-        mode = "solo"
         html = build_solo_html(ts_artist, stats_date, header_img, args.period)
         print(f"Mode: Solo card (Taylor Swift is #{ts_rank})")
 

@@ -157,6 +157,11 @@ COLLECT_RUNNERS: list[tuple[str, Path, list[str]]] = [
     ("worldwide",      CHARTS_ROOT / "worldwide"      / "daily.py",         ["--force"]),
 ]
 
+# Filtered artist-chart variants (generate_filtered_artist_chart.py <key> <date>).
+# Add a filter key here to switch it on in the daily run; the filter's own
+# FilterConfig (in that script) controls its cadence (daily vs rank-up-only).
+ACTIVE_FILTERED_ARTIST_CHARTS: list[str] = ["female", "starts_with_t", "named_taylor"]
+
 SPOTIFY_HISTORY_BACKFILL = REPO_ROOT / "scripts" / "backfill_spotify_charts_history.py"
 
 CHART_AVAILABILITY: dict[str, str] = {
@@ -1259,12 +1264,16 @@ def _collect_data_only_dates(
     verbose: bool,
 ) -> list[tuple[str, int]]:
     failures: list[tuple[str, int]] = []
-    runners = [
-        (name, script, fixed + ["--no-post"])
-        for name, script, fixed in COLLECT_RUNNERS
-        if name == "worldwide"
-    ]
     for target in dates:
+        runners = [
+            (name, script, fixed + ["--no-post"])
+            for name, script, fixed in COLLECT_RUNNERS
+            if name == "worldwide"
+        ] + [
+            (name, script, fixed + ["--no-post", "--date", str(target)])
+            for name, script, fixed in COLLECT_RUNNERS
+            if name == "artists_global"
+        ]
         pending = runners if force or dry_run else _filter_pending_runners(runners, target, set())
         if not pending:
             print(f"[CATCHUP] {target}: deja collecte")
@@ -2012,8 +2021,8 @@ def main() -> int:
 
     if not args.dry_run and "artists" in post_parts and not failures:
         if _runner_done("artists_global", target_date, post_parts):
-            print("\n[PHASE3] generation de la card artists worldwide (no-post)...")
-            artist_worldwide_args = [str(target_date)]
+            print("\n[PHASE3] generation et publication de la card artists worldwide...")
+            artist_worldwide_args = [str(target_date), "--post"]
             if args.force:
                 artist_worldwide_args.append("--force")
             rc_artist_worldwide = _run(
@@ -2028,6 +2037,26 @@ def main() -> int:
                 failures.append(("artists-worldwide-card", rc_artist_worldwide))
         else:
             print(f"[SKIP] card artists worldwide: donnees artists_global absentes pour {target_date}")
+
+    if not args.dry_run and "artists" in post_parts and not failures:
+        if _runner_done("artists_global", target_date, post_parts):
+            for filter_key in ACTIVE_FILTERED_ARTIST_CHARTS:
+                print(f"\n[PHASE3] chart artiste filtre '{filter_key}'...")
+                filtered_args = [filter_key, str(target_date)]
+                if args.force:
+                    filtered_args.append("--force")
+                rc_filtered = _run(
+                    f"artists-filtered-{filter_key}",
+                    CHARTS_ROOT / "artists_global" / "tools" / "scripts" / "generate_filtered_artist_chart.py",
+                    filtered_args,
+                    dry_run=False,
+                    env=env,
+                    verbose=args.verbose,
+                )
+                if rc_filtered != 0:
+                    failures.append((f"artists-filtered-{filter_key}", rc_filtered))
+        else:
+            print(f"[SKIP] charts artistes filtres: donnees artists_global absentes pour {target_date}")
 
     if not args.dry_run and should_generate_cards and not failures:
         if should_post_cards:

@@ -222,6 +222,31 @@ existantes. Passthrough depuis l'entrypoint principal:
 defaut** dans les deux cas — c'est une ecriture reseau/prod, opt-in
 volontaire.
 
+**Bug confirme et corrige (2026-08-16) : le rattrapage (`_collect_data_only_dates`,
+appele quand Spotify a deja publie une date plus recente que la cible au
+moment du run) ne collectait jamais `artists_global` pour les dates
+sautees — seulement `worldwide`.** Observe concretement le 2026-08-12 :
+`run_all_charts.py` a tourne en retard (execute le 13/08 pour la date du 12),
+`worldwide`/`global`/`us` ont bien ete rattrapes en data-only, mais aucun
+dossier `snapshots/spotify_charts/2026/08/2026-08-12/artists_global/` n'a
+jamais existe. Or c'est precisement ce jour-la que le rang artiste Spotify de
+Taylor Swift est passe de #4 a #3 (confirme en comparant les snapshots locaux
+du 08-11 et du 08-13). Consequence : ce changement de rang n'a jamais eu de
+donnee locale a comparer, ni pour le post "Top Artists"
+(`generate_artist_chart_image.py`, garde-fou base sur `previous_rank`), ni
+pour la card worldwide par pays — pas un bug du garde-fou lui-meme (verifie
+sur tout l'historique local de juin a aout : chaque transition de rang
+calendaire consecutive a ete correctement detectee via le champ `previousRank`
+de Spotify), juste une chance ratee de collecter la donnee source. Racine :
+`_collect_data_only_dates` ne construisait ses `runners` qu'a partir de
+`COLLECT_RUNNERS` filtre sur `name == "worldwide"`, jamais `artists_global`.
+Corrige : pour chaque date de rattrapage, un runner `artists_global --no-post
+--date <date>` est desormais ajoute en parallele du runner `worldwide`
+(meme `_run_parallel`/`ThreadPoolExecutor`, donc toujours collecte en
+parallele comme le reste). Reste `--no-post` par design (le rattrapage ne
+tweete jamais de vieilles actus) — seule la donnee historique/`days_at_pos`
+est desormais preservee pour ces dates.
+
 Etat par defaut:
 
 ```text
@@ -369,6 +394,10 @@ Variables d'environnement:
 - `SPOTIFY_REGIONAL_POST_MAX_ATTEMPTS` / `SPOTIFY_REGIONAL_POST_RETRY_SECONDS`
   (lus par `run_all_charts.py`): retry de `global-post`/`fr-post`/`us-post`
   (`_verify_regional_posts`), defaut `3` tentatives / `30s`.
+- `SPOTIFY_IMMEDIATE_REENTRY_POST_MAX_ATTEMPTS` / `SPOTIFY_IMMEDIATE_REENTRY_POST_RETRY_SECONDS`
+  (lus par `worldwide/daily.py`): retry du post standalone "immediate
+  re-entry" (par pays, pendant la collecte, hors `global` — voir "Cards et
+  images" plus bas), defaut `3` tentatives / `30s`.
 
 ## Snapshots worldwide
 
@@ -473,12 +502,108 @@ Scripts image/cards:
 - `artists_global/tools/scripts/generate_artist_chart_image.py`
 - `artists_global/tools/scripts/generate_artist_worldwide_card.py`
 
+**Bug confirme et corrige (2026-08-16) : le post "top 5 / top 10 most streamed
+artists" ne se declenchait que sur un changement du rang PROPRE de Taylor,
+jamais sur un remaniement du classement autour d'elle.** `generate_artist_chart_image.py`
+choisit un mode (`top5`/`top10`/`solo`) selon le rang de Taylor Swift, mais son
+garde-fou anti-spam (ajoute le 2026-08-03, `rank_unchanged(ts_artist)`) ne
+regardait que le rang de Taylor, avant meme de savoir quel mode serait utilise
+— donc en mode `top5`/`top10`, un reclassement des AUTRES artistes du top
+(ex: Bad Bunny/Drake/Ariana Grande qui permutent #1/#2/#3) ne declenchait
+jamais de post tant que Taylor restait a la meme position. Confirme sur
+l'historique local : entre 2026-08-05 et 2026-08-08, le top 3 a change d'ordre
+alors que Taylor est restee #4 en continu — aucun tweet n'est parti. En plus,
+`artist_global_daily.py` avait sa PROPRE copie du meme garde-fou
+(`_taylor_rank_unchanged`) qui coupait l'appel a
+`generate_artist_chart_image.py` avant meme qu'il ne s'execute, rendant tout
+fix cote `generate_artist_chart_image.py` seul inutile. Corrige : nouveau
+helper `top_list_unchanged(artists, limit)` dans `generate_artist_chart_image.py`
+qui reconstruit le classement precedent via le champ `previous_rank` deja
+present sur chaque artiste (fourni par Spotify, meme source que
+`rank_change_label`) et compare l'identite+ordre du top 5/10 courant vs
+precedent (id Spotify si dispo, sinon nom normalise). Choix produit assume
+(2026-08-16) : en mode `top5`/`top10`, le post part si le rang de Taylor A
+CHANGE **ou** si le classement top 5/10 a change ; en mode `solo` (Taylor hors
+top 10), seul son propre rang compte, comme avant. Le garde-fou duplique dans
+`artist_global_daily.py` a ete supprime (avec `_taylor_rank_unchanged`/
+`_taylor_swift_row`, devenus morts) — la decision post/skip vit desormais
+uniquement dans `generate_artist_chart_image.py`, qui est le seul endroit a
+connaitre le mode.
+
 La card artiste worldwide lit/ecrit:
 
 - `artist_global_worldwide.json`
 - `runtime/exports/web/site/data/charts_artists_global_worldwide.json`
 - `artist_worldwide_card.png`
 - `artist_worldwide_card_posted.lock`
+
+**Bug confirme et corrige (2026-08-16) : la card worldwide se generait chaque
+jour mais ne postait plus jamais depuis le 2026-07-07.** L'appel PHASE3 dans
+`run_all_charts.py` (`generate_artist_worldwide_card.py <date> [--force]`)
+avait perdu son flag `--post` dans le commit `bc4a827f4b` (2026-07-07,
+message "generation de la card artists worldwide (no-post)..."), sans lien
+apparent avec le reste du commit (un changement d'emoji sur
+`generate_artist_chart_image.py`) — tres probablement une regression
+accidentelle, pas une decision produit documentee. Consequence : l'image
+`artist_worldwide_card.png` etait bien regeneree chaque jour avec les rangs a
+jour (visible via mtime), mais `run()` dans
+`generate_artist_worldwide_card.py` ne rentre jamais dans le bloc `if post:`
+sans `--post` — donc `artist_worldwide_card_posted.lock` n'etait plus jamais
+cree et aucun tweet ne partait, meme quand le rang Spotify artiste de Taylor
+Swift changeait plusieurs fois. Confirme sur `snapshots/spotify_charts/2026/08/`
+du 08-08 au 08-14 (dossier present, image recente, lock absent). Corrige :
+`--post` restaure dans `artist_worldwide_args`. Deja protege par
+`"artists" in post_parts` (vide des que `--no-post` global est passe) donc pas
+besoin de garde supplementaire.
+
+**Charts artiste filtres (depuis 2026-08-16) : `generate_filtered_artist_chart.py`.**
+Variante generique du chart artiste, centree sur Taylor Swift, mais restreinte
+a un sous-ensemble d'artistes (ex: uniquement les femmes). Reutilise a 100% le
+rendu du chart de base (`build_top5_html`/`build_top10_html`/`build_solo_html`
+dans `generate_artist_chart_image.py`, desormais parametres par `title=`/
+`rank_scope=`) — seule la liste d'artistes en entree change.
+
+- `artist_id`/`artist_name`/`gender` viennent de `Artists.csv`
+  (`artists_global/Artists.csv`, curation manuelle, exception explicite au
+  `.gitignore` `*.csv` sinon ce fichier ne serait jamais commit). Valeurs
+  `gender` : `F` / `M` / `Group` (un groupe/duo, mixte ou non, compte comme
+  `Group` — pas de sous-decoupage plus fin). Le script complete automatiquement
+  `Artists.csv` avec tout nouvel `artist_id` jamais vu (gender laisse vide a
+  remplir a la main) a chaque execution — pas besoin de reseeder le fichier.
+  Il logue aussi `[WARN] N artiste(s) du top 50 sans gender` pour signaler les
+  trous a combler.
+- `build_filtered_rows(artists, predicate, genders)` filtre puis **re-classe**
+  (`rank` 1..N dans le sous-ensemble, pas le rang global Spotify).
+  `attach_previous_ranks(...)` refait la meme operation sur le snapshot de la
+  veille (`_load_previous_chart`, `J-1` calendaire) et reinjecte un
+  `previous_rank` propre au sous-ensemble par `artist_id` — donc les badges
+  NEW/RE/▲/▼ affiches reflettent un mouvement DANS le sous-ensemble, pas dans
+  le chart global. **Peak/Streak/Days at Pos restent les valeurs globales**
+  (choix produit assume le 2026-08-16 : simplicite, pas de reconstruction
+  d'historique par sous-ensemble) — seuls Pos et +/- sont recalcules.
+- Deux cadences de post, definies par filtre dans `FilterConfig.cadence` :
+  - `"daily"` (ex: `female`) : meme regle que le chart de base — poste si le
+    rang de Taylor dans le sous-ensemble a change **ou** si le top5/10 du
+    sous-ensemble a change d'ordre/composition (reutilise directement
+    `rank_unchanged`/`top_list_unchanged` de `generate_artist_chart_image.py`,
+    qui operent deja sur n'importe quelle liste rank/previous_rank generique).
+  - `"rank_up"` (ex: `starts_with_t`, `named_taylor`) : poste **uniquement** si
+    le rang de Taylor dans le sous-ensemble s'est strictement ameliore vs la
+    veille (pas de post sur stagnation ni sur degradation, meme si le reste du
+    sous-ensemble bouge). Piege connu sur `named_taylor` : dans le top 200
+    actuel, Taylor Swift est la SEULE artiste dont le nom contient "taylor"
+    (`re.findall(r"[a-z]+", name)` contient `"taylor"`) — sous-ensemble de
+    taille 1, donc son rang y est toujours #1 et ne peut jamais "s'ameliorer".
+    Ce filtre ne postera donc quasiment jamais tant qu'aucune autre "Taylor"
+    ne charte. Garde volontairement (demande explicite), pas un bug.
+- Filtres actifs dans le run quotidien : `run_all_charts.py::ACTIVE_FILTERED_ARTIST_CHARTS`
+  (liste de cles `FILTERS`). Ajouter un filtre = ajouter une entree dans
+  `FILTERS` (`generate_filtered_artist_chart.py`) + sa cle dans cette liste —
+  pas de nouveau script necessaire. Appele en PHASE3 juste apres la card
+  worldwide, meme garde `"artists" in post_parts` + `_runner_done("artists_global", ...)`.
+- Sorties : image `artist_chart_{filter_key}_image.png`, lock
+  `artist_chart_{filter_key}_{mode}_posted.lock`, meme dossier
+  `spotify_chart_dir("artists_global", date)` que le chart de base.
 
 ## music_videos_global/
 
@@ -615,6 +740,74 @@ cense passer en priorite, seul, avant le reste) ne partait jamais. Corrige :
 `SPOTIFY_PRIORITY_CARD_POST_MAX_ATTEMPTS` fois (defaut `3`, pause
 `SPOTIFY_PRIORITY_CARD_POST_RETRY_SECONDS` = `30s`), `--force` sur la
 derniere tentative.
+
+**Bug confirme et corrige (2026-08-15) : `sync_playwright()` imbrique faisait
+disparaitre silencieusement une chanson "first single region entry" (ni
+standalone, ni dans le thread).** `generate_card_images.py` garde son propre
+navigateur Playwright ouvert (`with sync_playwright() as p:`) pendant toute la
+boucle de generation des cards. L'ancien code appelait
+`_post_first_single_region_standalone` (qui ouvre SA PROPRE
+`sync_playwright()` via `post_with_image` dans `core/twitter.py`) direction
+dans cette boucle, donc pendant que le navigateur exterieur etait encore
+ouvert — deux `sync_playwright()` imbriques dans le meme thread, non supporte
+par Playwright, qui leve "It looks like you are using Playwright Sync API
+inside the asyncio loop. Please use the Async API instead." (message trompeur:
+aucune boucle asyncio n'est en cause ici). Comme cet appel etait dans un
+`try/except` qui logge juste un `[WARN]`, la chanson etait affectee au chemin
+standalone (donc retiree du thread) mais son post standalone echouait aussi —
+observe le 2026-08-14 sur "All Too Well (10 Minute Version) (Taylor's
+Version)", jamais postee ce jour-la malgre `[ OK ] cards` en sortie de
+`run_all_charts.py`. Corrige : les posts standalone "first single region
+entry" sont desormais collectes dans `pending_standalone` pendant la boucle et
+postes seulement APRES la fermeture du navigateur (`browser.close()`), au meme
+endroit que le thread de cards classique qui faisait deja ca correctement.
+
+**Immediate re-entry posting — pendant la collecte, par pays, hors `global`
+(depuis 2026-08-15) :** une chanson absente de TOUS les pays la veille
+(`prev_country_counts[track_id] == 0`, via le dernier snapshot worldwide
+`ts_worldwide_<veille>.json`) qui re-apparait aujourd'hui dans une region
+(`movement == "RE"` ou `is_re_entry`, hors `global` — deja gere separement par
+`_post_priority_global_new_card`) declenche desormais un tweet standalone
+immediatement, des que CETTE region est collectee dans `worldwide/daily.py`
+(Phase 1 ou Phase 2), sans attendre la fin de toute la collecte worldwide ni
+l'etape `cards` separee de `run_all_charts.py`. Implemente dans
+`worldwide/daily.py` : `_maybe_trigger_immediate_reentries` (appelee depuis le
+wrapper `_fetch_and_notify` autour de chaque `_fetch_region`) lance un thread
+daemon `_post_immediate_reentry_card` qui rend la chart_card (`comp/chart_card
+.render_chart_card` + `write_chart_card_png`, meme composant que Phase 3) et
+poste via `post_with_image`, avec retry
+(`SPOTIFY_IMMEDIATE_REENTRY_POST_MAX_ATTEMPTS`/`_RETRY_SECONDS`, defaut `3`/
+`30s`). **Choix produit assume :** un titre qui re-entre dans plusieurs pays
+le meme jour poste un tweet standalone PAR pays (pas de deduplication
+inter-pays) — volume Twitter plus eleve que l'ancien comportement mais demande
+explicitement. Verrou partage avec Phase 3 : les deux mecanismes ecrivent/
+lisent le meme fichier `cards/first_single_region_posted.json` (cle
+`{slug}_chart_card`, meme `_slugify`), donc Phase 3
+(`_is_first_single_region_entry` dans `generate_card_images.py`, qui ne fire
+que si la chanson n'a EXACTEMENT qu'un seul pays sur toute la journee) ne
+re-poste jamais un (titre, pays) deja poste ici. Desactive en
+`--no-post`/`--backfill-mode`/`--dates`/`--dates-file`. Les threads sont
+joints (timeout 600s chacun) juste avant le commit git final de `daily.py`
+pour ne pas laisser le process sortir (threads daemon) avant qu'un post en
+cours ne se termine.
+
+**Sync CSV immediat par pays, pendant la collecte (depuis 2026-08-15) :**
+`db/charts_history_<region>.csv` est normalement ecrit une seule fois par
+`scripts/sync_spotify_country_charts_from_worldwide.py`, appele en toute fin
+de `run_all_charts.py` apres la collecte COMPLETE des ~75 regions worldwide.
+Ce script reste inchange et tourne toujours en filet de secours idempotent
+(dedupe par `(date, track_id)`, utile en backfill/catchup). En plus,
+`worldwide/daily.py` ecrit maintenant la meme ligne CSV directement des
+qu'une region vient d'etre collectee (`_sync_region_csv_immediately`, meme
+wrapper `_fetch_and_notify`), donc l'historique d'un pays est visible sans
+attendre la fin de toute la collecte du jour. Applique `_apply_track_id_history`
+sur la seule region concernee avant d'ecrire (meme fonction que la voie batch,
+par-ligne/par-region donc valide en subset, idempotente si rappelee plus tard
+sur les memes lignes) pour eviter d'ecrire un faux NEW/RE du a un changement
+de titre. Independant de `--no-post` (ecrire l'historique n'est pas un post)
+mais desactive en `--backfill-mode`/`--dates`/`--dates-file` (pipeline de sync
+dedie a la place). Variables : `SPOTIFY_IMMEDIATE_REENTRY_POST_MAX_ATTEMPTS`/
+`_RETRY_SECONDS` partagees avec le mecanisme de post immediat ci-dessus.
 
 Priority Global NEW/RE cards:
 
