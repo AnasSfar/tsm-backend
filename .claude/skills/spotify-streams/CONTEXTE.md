@@ -286,6 +286,21 @@ duplication.
   a la main, verifier qu'il couvre les 4, sinon prefer reutiliser
   `history_store.load_extra_sections_flat()` / `comp.discography` plutot que
   reimplementer.
+- Regression corrigee le 2026-08-16 : le commit `c2aff8e1f` (2026-08-13,
+  "charts run all 2026-08-12") a supprime la constante
+  `RECAP_BEST_DAY_MIN_DAYS = 30` de `post_best_day_since_twitter.py` et l'a
+  remplacee par `_find_recap_rows()` qui appelait
+  `best_day_since.passes_filters(row, min_days=1)`. Un seuil de 1 jour ne
+  filtre quasiment rien (des qu'un titre bat son propre daily de la veille,
+  ca compte comme "best day since"), donc l'image recap
+  (`best_day_since_recap_{date}.png`) s'est retrouvee avec des dizaines de
+  titres en trop et des dates "since" vieilles de quelques jours au lieu de
+  semaines (observe : 124 chansons le 2026-08-14, seuil attendu ~1 mois).
+  Fixe en restaurant `RECAP_BEST_DAY_MIN_DAYS = 30` et en l'utilisant dans
+  `_find_recap_rows`, memes seuil et comportement qu'avant le 2026-08-12.
+  Reflexe a garder : les seuils `min_days`/`min_pct_change` de ce fichier
+  sont des regles produit, pas des details d'implementation — ne jamais les
+  remplacer par une valeur en dur sans verifier l'intention d'origine.
 - Un run manuel sans le `.bat` peut ne pas laisser le meme log scheduler.
 - WARP ou Spotify peuvent bloquer longtemps; ne pas masquer par timeouts qui
   publient partiel.

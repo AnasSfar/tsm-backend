@@ -307,9 +307,10 @@ class TokenManager:
 
                 url = "https://open.spotify.com/track/0V3wPSX9ygBnCm8psDIegu"
 
-                p = sync_playwright().start()
+                p = None
                 browser = None
                 try:
+                    p = sync_playwright().start()
                     browser = p.chromium.launch(
                         headless=HEADLESS,
                         args=["--disable-blink-features=AutomationControlled", "--no-sandbox", "--no-proxy-server"],
@@ -340,14 +341,16 @@ class TokenManager:
                     if "goto échoué" not in str(e):
                         print(f"TokenManager: erreur capture (tentative {attempt}): {e}")
                 finally:
-                    try:
-                        browser.close()
-                    except Exception:
-                        pass
-                    try:
-                        p.stop()
-                    except Exception:
-                        pass
+                    if browser is not None:
+                        try:
+                            browser.close()
+                        except Exception:
+                            pass
+                    if p is not None:
+                        try:
+                            p.stop()
+                        except Exception:
+                            pass
 
                 if tokens.get("bearer"):
                     with self._lock:

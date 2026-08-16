@@ -205,7 +205,6 @@ def _r2_export_is_fresh(target: date) -> bool:
         spotify_chart_dir("global", target) / f"ts_chart_{target}.json",
         spotify_chart_dir("fr", target) / f"ts_chart_{target}.json",
         WEB_EXPORT_DATA_DIR / "charts_worldwide.json",
-        WEB_EXPORT_DATA_DIR / "charts_artists_global_worldwide.json",
     ]
     watched_paths.extend((REPO_ROOT / "db").glob("charts_history_*.csv"))
     watched_paths.extend((WEB_EXPORT_DATA_DIR / "charts_discography").glob("*.json"))
@@ -2020,25 +2019,6 @@ def main() -> int:
                 f"[SKIP] artists_global differe: latest={latest_artists or 'N/A'}, "
                 f"{target_date} toujours pas publie"
             )
-
-    if not args.dry_run and "artists" in post_parts and not failures:
-        if _runner_done("artists_global", target_date, post_parts):
-            print("\n[PHASE3] generation et publication de la card artists worldwide...")
-            artist_worldwide_args = [str(target_date), "--post"]
-            if args.force:
-                artist_worldwide_args.append("--force")
-            rc_artist_worldwide = _run(
-                "artists-worldwide-card",
-                CHARTS_ROOT / "artists_global" / "tools" / "scripts" / "generate_artist_worldwide_card.py",
-                artist_worldwide_args,
-                dry_run=False,
-                env=env,
-                verbose=args.verbose,
-            )
-            if rc_artist_worldwide != 0:
-                failures.append(("artists-worldwide-card", rc_artist_worldwide))
-        else:
-            print(f"[SKIP] card artists worldwide: donnees artists_global absentes pour {target_date}")
 
     if not args.dry_run and "artists" in post_parts and not failures:
         if _runner_done("artists_global", target_date, post_parts):

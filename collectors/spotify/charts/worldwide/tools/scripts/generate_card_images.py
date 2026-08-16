@@ -1690,6 +1690,7 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
     generated: list[str] = []
     priority_index: dict[str, dict] = {}
     to_post: list[tuple[Path, str, str]] = []  # (image_path, tweet_text, posted_key)
+    pending_standalone: list[tuple[Path, str, str, str]] = []  # (image_path, tweet_text, posted_key, label)
 
     # Load already-posted slugs to avoid re-posting on --force reruns
     posted_path = out_dir / "posted_cards.json"
@@ -1810,11 +1811,14 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
                                 "theme": card_theme,
                             }
                             if post and chart_card_slug not in already_posted_solo:
+                                # Post envoye APRES la fermeture du browser Playwright de cette
+                                # fonction (voir pending_standalone plus bas) : post_with_image
+                                # ouvre son propre sync_playwright(), et l'imbriquer dans celui-ci
+                                # (encore ouvert ici) declenche "Playwright Sync API inside the
+                                # asyncio loop" - la chanson etait alors silencieusement jamais
+                                # postee (ni standalone, ni dans le thread). Voir SKILL.
                                 tweet_text = _build_tweet(meta, entries, chart_date, prev_count)
-                                if _post_first_single_region_standalone(chart_out_path, tweet_text, slug):
-                                    newly_posted_solo.add(chart_card_slug)
-                                else:
-                                    print(f"    [WARN] abandon post standalone pour {slug}")
+                                pending_standalone.append((chart_out_path, tweet_text, chart_card_slug, slug))
                             elif post:
                                 print("    [SKIP] deja poste (standalone)")
                         except Exception as e:
@@ -1880,6 +1884,12 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
         encoding="utf-8",
     )
     print(f"[DONE] {len(generated)} images → {out_dir}")
+
+    for chart_out_path, tweet_text, chart_card_slug, slug in pending_standalone:
+        if _post_first_single_region_standalone(chart_out_path, tweet_text, slug):
+            newly_posted_solo.add(chart_card_slug)
+        else:
+            print(f"    [WARN] abandon post standalone pour {slug}")
 
     if newly_posted_solo:
         all_posted_solo = sorted(already_posted_solo | newly_posted_solo)

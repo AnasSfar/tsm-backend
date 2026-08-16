@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import csv
 import io
 import json
 import os
@@ -68,6 +69,7 @@ from core.twitter import post_thread, post_with_image, split_tweets
 from collectors.twitter.albums import album_emoji as _shared_album_emoji
 from collectors.twitter.text import full_charts_update_line  # noqa: E402
 from collectors.twitter.prefixes import SPOTIFY_CHART_PREFIX, with_prefix  # noqa: E402
+from collectors.comp.chart_card import render_chart_card, write_chart_card_png  # noqa: E402
 
 def _build_http_session() -> _requests.Session:
     retry = Retry(total=3, connect=3, read=3, backoff_factor=1.0,
@@ -129,6 +131,8 @@ PRIORITY_CARD_POST_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_PRIORITY_CARD_POST_MAX_
 PRIORITY_CARD_POST_RETRY_SECONDS = int(os.getenv("SPOTIFY_PRIORITY_CARD_POST_RETRY_SECONDS", "30"))
 REQUEST_INTERVAL_SECONDS = float(os.getenv("SPOTIFY_WORLDWIDE_REQUEST_INTERVAL_SECONDS", "2.0"))
 SKIP_LATEST_FALLBACK_ON_404 = os.getenv("SPOTIFY_SKIP_LATEST_FALLBACK_ON_404", "").strip().lower() in {"1", "true", "yes", "on"}
+IMMEDIATE_REENTRY_POST_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_IMMEDIATE_REENTRY_POST_MAX_ATTEMPTS", "3"))
+IMMEDIATE_REENTRY_POST_RETRY_SECONDS = int(os.getenv("SPOTIFY_IMMEDIATE_REENTRY_POST_RETRY_SECONDS", "30"))
 _OVERVIEW_URL   = "https://charts-spotify-com-service.spotify.com/auth/v1/overview/GLOBAL"
 MULTI_SONG_REGIONAL_POST_MIN_SONGS = 3
 MULTI_SONG_REGIONAL_POST_MAX_POSTS = 1
@@ -966,7 +970,14 @@ async def _fetch_region(
         await asyncio.sleep(min(10 * attempt, 60))
 
 
-async def _run_async(chart_date: str, tokens: list[str], regions: dict[str, str]) -> dict[str, list[dict] | None]:
+async def _run_async(
+    chart_date: str,
+    tokens: list[str],
+    regions: dict[str, str],
+    *,
+    immediate_reentry_ctx: dict | None = None,
+    csv_sync_ctx: dict | None = None,
+) -> dict[str, list[dict] | None]:
     base_headers = {
         "Accept":     "application/json",
         "Referer":    "https://charts.spotify.com/",
@@ -979,10 +990,39 @@ async def _run_async(chart_date: str, tokens: list[str], regions: dict[str, str]
     pacing_label = f", pacing={REQUEST_INTERVAL_SECONDS:.2f}s" if REQUEST_INTERVAL_SECONDS > 0 else ""
     print(f"[INFO] Concurrence fixe: {SEMAPHORE} workers, {len(tokens)} token(s){pacing_label}", flush=True)
     async with aiohttp.ClientSession() as session:
-        tasks = [
-            _fetch_region(session, sem, pause, pacer, pool, region, chart_date, base_headers)
-            for region in regions
-        ]
+        async def _fetch_and_notify(region: str) -> tuple[str, list[dict] | None]:
+            region_out, rows = await _fetch_region(session, sem, pause, pacer, pool, region, chart_date, base_headers)
+            if rows and csv_sync_ctx is not None:
+                try:
+                    _sync_region_csv_immediately(
+                        chart_date,
+                        region_out,
+                        rows,
+                        csv_sync_ctx["manual_lookup"],
+                        csv_sync_ctx["track_lookup"],
+                        csv_sync_ctx["historical_lookup"],
+                    )
+                except Exception as exc:
+                    print(f"[WARN] Immediate CSV sync failed for {region_out}: {exc}", flush=True)
+            if rows and immediate_reentry_ctx is not None:
+                try:
+                    _maybe_trigger_immediate_reentries(
+                        chart_date,
+                        region_out,
+                        regions.get(region_out, region_out),
+                        rows,
+                        immediate_reentry_ctx["manual_lookup"],
+                        immediate_reentry_ctx["track_lookup"],
+                        immediate_reentry_ctx["historical_lookup"],
+                        immediate_reentry_ctx["prev_country_counts"],
+                        immediate_reentry_ctx["has_prev_snapshot"],
+                        immediate_reentry_ctx["threads"],
+                    )
+                except Exception as exc:
+                    print(f"[WARN] Immediate re-entry check failed for {region_out}: {exc}", flush=True)
+            return region_out, rows
+
+        tasks = [_fetch_and_notify(region) for region in regions]
         results = await asyncio.gather(*tasks)
     return dict(results)
 
@@ -991,14 +1031,29 @@ def _run_async_with_token_refresh(
     chart_date: str,
     tokens: list[str],
     regions: dict[str, str],
+    *,
+    immediate_reentry_ctx: dict | None = None,
+    csv_sync_ctx: dict | None = None,
 ) -> tuple[list[str], dict[str, str], dict[str, list[dict]]]:
     try:
-        return tokens, regions, asyncio.run(_run_async(chart_date, tokens, regions))
+        return tokens, regions, asyncio.run(
+            _run_async(
+                chart_date, tokens, regions,
+                immediate_reentry_ctx=immediate_reentry_ctx,
+                csv_sync_ctx=csv_sync_ctx,
+            )
+        )
     except TokenExpired as exc:
         print(f"[WARN] Bearer token refuse par Spotify ({exc}); refresh et retry date {chart_date}.", flush=True)
         new_token, _all_regions = _get_bearer_token_and_regions(force_refresh=True)
         tokens = [new_token] + tokens[1:]
-        return tokens, regions, asyncio.run(_run_async(chart_date, tokens, regions))
+        return tokens, regions, asyncio.run(
+            _run_async(
+                chart_date, tokens, regions,
+                immediate_reentry_ctx=immediate_reentry_ctx,
+                csv_sync_ctx=csv_sync_ctx,
+            )
+        )
 
 
 # ── Entry point ────────────────────────────────────────────────────────────────
@@ -1350,6 +1405,331 @@ def _post_multi_song_regions(
             print(f"[WARN] Regional Spotify post failed: {region}", flush=True)
 
 
+# ── Immediate re-entry posting (per-country, during collection) ────────────────
+#
+# Un titre absent de TOUS les pays la veille qui reapparait aujourd'hui dans une
+# region est une vraie "re-entree dans les Spotify Charts" (pas juste un aller-
+# retour dans le classement d'un seul pays). Poste des que cette region est
+# collectee, sans attendre la fin de la collecte worldwide ni l'etape "cards"
+# separee de run_all_charts.py. Exclut "global" (deja gere par
+# _post_priority_global_new_card). Choix produit assume: un titre qui re-entre
+# dans plusieurs pays le meme jour poste un tweet par pays (voir SKILL
+# spotify-charts). Le NEW single-region (premier debut jamais charte) reste
+# gere par generate_card_images.py en Phase 3 — non couvert ici.
+_immediate_reentry_lock = threading.Lock()
+
+
+def _immediate_reentry_slugify(text: str) -> str:
+    text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
+    text = re.sub(r"[^\w\s-]", "", text.lower())
+    text = re.sub(r"[\s_-]+", "_", text).strip("_")
+    return text[:80] or "track"
+
+
+def _load_prev_country_counts(chart_date: str) -> tuple[dict[str, int], bool]:
+    prev_date = (datetime.strptime(chart_date, "%Y-%m-%d").date() - timedelta(days=1)).strftime("%Y-%m-%d")
+    prev_path = _worldwide_history_path(prev_date)
+    if not prev_path.exists():
+        prev_path = legacy_spotify_chart_dir("worldwide", prev_date) / f"ts_worldwide_{prev_date}.json"
+    if not prev_path.exists():
+        return {}, False
+    try:
+        prev_data = json.loads(prev_path.read_text(encoding="utf-8-sig"))
+    except Exception:
+        return {}, False
+    prev_by_track = prev_data.get("by_track", {})
+    if not isinstance(prev_by_track, dict):
+        return {}, False
+    counts = {tid: len(entries) for tid, entries in prev_by_track.items() if isinstance(entries, list)}
+    return counts, True
+
+
+def _build_song_meta() -> dict[str, dict]:
+    cached = getattr(_build_song_meta, "_cache", None)
+    if cached is not None:
+        return cached
+    meta: dict[str, dict] = {}
+    for item in _iter_website_songs():
+        tid = _get_track_id_from_item(item)
+        if tid:
+            meta.setdefault(tid, item)
+    _build_song_meta._cache = meta
+    return meta
+
+
+def _cover_url_from_meta(song: dict) -> str:
+    for key in ("image_url", "apple_music_image_url", "cover_url", "album_image_url"):
+        value = str(song.get(key) or "").strip()
+        if value.startswith("http"):
+            return value
+    return ""
+
+
+def _immediate_reentry_posted_path(chart_date: str) -> Path:
+    # Meme fichier/cle que generate_card_images.py (first_single_region_posted.json,
+    # cle "{slug}_chart_card") : la detection RE immediate ici et la card standalone
+    # "first single region entry" de Phase 3 partagent le meme verrou pour ne jamais
+    # poster deux fois la meme chanson (Phase 3 saute le post si deja present).
+    return spotify_chart_dir("worldwide", chart_date) / "cards" / "first_single_region_posted.json"
+
+
+def _immediate_reentry_already_posted(chart_date: str, lock_key: str) -> bool:
+    posted_path = _immediate_reentry_posted_path(chart_date)
+    if not posted_path.exists():
+        return False
+    try:
+        data = json.loads(posted_path.read_text(encoding="utf-8"))
+        return lock_key in set(data.get("posted", []))
+    except Exception:
+        return False
+
+
+def _mark_immediate_reentry_posted(chart_date: str, lock_key: str) -> None:
+    posted_path = _immediate_reentry_posted_path(chart_date)
+    with _immediate_reentry_lock:
+        already: set[str] = set()
+        if posted_path.exists():
+            try:
+                data = json.loads(posted_path.read_text(encoding="utf-8"))
+                already = set(data.get("posted", []))
+            except Exception:
+                pass
+        already.add(lock_key)
+        posted_path.parent.mkdir(parents=True, exist_ok=True)
+        posted_path.write_text(
+            json.dumps({"date": chart_date, "posted": sorted(already)}, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+
+
+def _build_immediate_reentry_tweet(title: str, album: str, region_name: str, row: dict, chart_date: str) -> str:
+    try:
+        date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%A, %B %d, %Y")
+    except Exception:
+        date_fmt = chart_date
+    emoji = _shared_album_emoji(album, fallback="📊")
+    rank = row.get("rank", "?")
+    streams = _fmt_streams(row.get("streams"))
+    overall_url = full_charts_update_line(region="overall", label="🔗 See full update here")
+    return (
+        f'{emoji} | "{title}" re-entered the Spotify Charts in {region_name} at #{rank} '
+        f"with {streams} streams on {date_fmt}.\n\n{overall_url}"
+    )
+
+
+def _post_immediate_reentry_card(
+    chart_date: str,
+    region: str,
+    region_name: str,
+    track_id: str,
+    title: str,
+    row: dict,
+) -> None:
+    slug = _immediate_reentry_slugify(title)
+    lock_key = f"{slug}_chart_card"
+    if _immediate_reentry_already_posted(chart_date, lock_key):
+        return
+
+    song_meta = _build_song_meta().get(track_id, {})
+    album = str(song_meta.get("primary_album") or song_meta.get("album") or "").strip()
+    cover_url = _cover_url_from_meta(song_meta)
+
+    try:
+        dt = datetime.strptime(chart_date, "%Y-%m-%d")
+        day = dt.day
+        suffix = "TH" if 10 <= day % 100 <= 20 else {1: "ST", 2: "ND", 3: "RD"}.get(day % 10, "TH")
+        date_pill = f"Spotify {region_name} Charts - {dt.strftime('%B').upper()} {day}{suffix} {dt.year}"
+        footer_date = dt.strftime("%B %d, %Y")
+    except Exception:
+        date_pill = f"Spotify {region_name} Charts - {chart_date}"
+        footer_date = chart_date
+
+    html_content = render_chart_card(
+        title=title,
+        eyebrow=f"Spotify {region_name} Charts",
+        subtitle=album or region_name,
+        stats=[
+            {
+                "label": "Rank",
+                "value": f"#{row.get('rank')}" if row.get("rank") is not None else "#-",
+                "badge": "RE",
+                "badge_class": "re",
+            },
+            {
+                "label": "Streams",
+                "value": f"{int(row['streams']):,}" if row.get("streams") is not None else "-",
+                "badge": "",
+                "badge_class": "flat",
+                "delta": "",
+                "delta_class": "flat",
+            },
+        ],
+        cover_url=cover_url,
+        footer_left="@swiftiescharts",
+        footer_right=footer_date,
+        extra=region_name,
+        badge_text=date_pill,
+    )
+
+    out_dir = spotify_chart_dir("worldwide", chart_date) / "cards"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir / f"{slug}_chart_card.png"
+    tmp_path = out_dir / f"{slug}_chart_card.html"
+    try:
+        write_chart_card_png(html_content, out_path, tmp_path, width=920, height=344, export_frame=True)
+    except Exception as exc:
+        print(f"[WARN] Immediate re-entry card render failed for {title!r} ({region}): {exc}", flush=True)
+        return
+
+    tweet_text = _build_immediate_reentry_tweet(title, album, region_name, row, chart_date)
+    print(f"[INFO] Immediate re-entry detected: {title!r} in {region_name} — posting standalone...", flush=True)
+    for attempt in range(1, IMMEDIATE_REENTRY_POST_MAX_ATTEMPTS + 1):
+        if post_with_image(
+            tweet_text,
+            out_path,
+            TWITTER_SESSION,
+            skip_if=lambda: _immediate_reentry_already_posted(chart_date, lock_key),
+        ):
+            _mark_immediate_reentry_posted(chart_date, lock_key)
+            print(f"[INFO] Posted immediate re-entry card: {title!r} ({region})", flush=True)
+            return
+        print(
+            f"[WARN] Immediate re-entry post failed for {title!r} ({region}), "
+            f"tentative {attempt}/{IMMEDIATE_REENTRY_POST_MAX_ATTEMPTS}",
+            flush=True,
+        )
+        if attempt < IMMEDIATE_REENTRY_POST_MAX_ATTEMPTS:
+            time.sleep(IMMEDIATE_REENTRY_POST_RETRY_SECONDS)
+    print(f"[WARN] Immediate re-entry post abandoned for {title!r} ({region})", flush=True)
+
+
+def _maybe_trigger_immediate_reentries(
+    chart_date: str,
+    region: str,
+    region_name: str,
+    rows: list[dict],
+    manual_lookup: dict[str, str],
+    track_lookup: dict[str, str],
+    historical_lookup: dict[str, str],
+    prev_country_counts: dict[str, int],
+    has_prev_snapshot: bool,
+    threads: list[threading.Thread],
+) -> None:
+    if region == "global" or not has_prev_snapshot or not rows:
+        return
+    for row in rows:
+        movement = str(row.get("movement") or "").strip().upper()
+        if movement != "RE" and not row.get("is_re_entry"):
+            continue
+        track_id = row.get("_track_id_uri") or resolve_track_id(row.get("track_name", ""), manual_lookup, track_lookup)
+        track_id = canonical_chart_track_id(track_id, historical_lookup)
+        if not track_id:
+            continue
+        if int(prev_country_counts.get(track_id, 0) or 0) != 0:
+            continue
+        title = row.get("track_name") or track_id
+        thread = threading.Thread(
+            target=_post_immediate_reentry_card,
+            args=(chart_date, region, region_name, track_id, title, dict(row)),
+            daemon=True,
+            name=f"immediate-reentry-{region}",
+        )
+        threads.append(thread)
+        thread.start()
+
+
+# ── Incremental per-country CSV sync (during collection) ───────────────────────
+#
+# db/charts_history_<region>.csv est normalement mis a jour par
+# scripts/sync_spotify_country_charts_from_worldwide.py, appele une seule fois en
+# fin de run_all_charts.py une fois TOUTE la collecte worldwide terminee (ce
+# script reste tel quel, en filet de secours idempotent — utile en backfill/
+# catchup ou si une region a ete synced ici avec un echec). Ici on ecrit la
+# meme ligne CSV des qu'une region vient d'etre collectee, pour ne pas attendre
+# la fin de la collecte des ~75 autres regions avant que cette region soit
+# visible dans son historique.
+_CSV_HISTORY_FIELDNAMES = [
+    "date", "track_id", "song_name", "rank", "streams",
+    "previous_rank", "peak_rank", "total_days", "streak", "movement",
+]
+_csv_sync_lock = threading.Lock()
+
+
+def _csv_history_row(chart_date: str, track_id: str, song_name: str, row: dict) -> dict[str, str]:
+    previous_rank = _to_int(row.get("previous_rank"))
+    return {
+        "date": chart_date,
+        "track_id": track_id,
+        "song_name": song_name,
+        "rank": str(_to_int(row.get("rank")) or ""),
+        "streams": str(_to_int(row.get("streams")) or 0),
+        "previous_rank": str(previous_rank) if previous_rank else "",
+        "peak_rank": str(_to_int(row.get("peak_rank")) or ""),
+        "total_days": str(_to_int(row.get("total_days")) or ""),
+        "streak": str(_to_int(row.get("streak")) or ""),
+        "movement": str(row.get("movement") or ""),
+    }
+
+
+def _sync_region_csv_immediately(
+    chart_date: str,
+    region: str,
+    rows: list[dict],
+    manual_lookup: dict[str, str],
+    track_lookup: dict[str, str],
+    historical_lookup: dict[str, str],
+) -> None:
+    if not rows:
+        return
+    # Meme correction que la voie batch (_apply_track_id_history sur by_region
+    # complet, appliquee plus tard dans main()) mais sur cette seule region tout
+    # de suite : la fonction est deja par-ligne/par-region, donc l'appliquer ici
+    # en avance donne le meme resultat, et evite d'ecrire en CSV un faux NEW/RE
+    # (changement de titre) que la correction batch aurait sinon supprime.
+    # Idempotente : la reappliquer plus tard sur les memes lignes ne fait rien.
+    _apply_track_id_history(chart_date, {region: rows})
+    id_to_name = _build_id_to_name()
+    csv_rows: list[dict[str, str]] = []
+    for row in rows:
+        track_id = row.get("_track_id_uri") or resolve_track_id(row.get("track_name", ""), manual_lookup, track_lookup)
+        track_id = canonical_chart_track_id(track_id, historical_lookup)
+        if not track_id:
+            continue
+        song_name = id_to_name.get(track_id) or row.get("track_name") or track_id
+        csv_rows.append(_csv_history_row(chart_date, track_id, song_name, row))
+    if not csv_rows:
+        return
+
+    # sync_spotify_country_charts_from_worldwide.py normalise "gb" (code Spotify)
+    # vers "uk" pour le nom de fichier CSV (BASE_COUNTRIES["uk"] = ("gb", "uk")) ;
+    # sans ce mapping on ecrirait un charts_history_gb.csv distinct et jamais lu.
+    csv_region = "uk" if region == "gb" else region
+    csv_path = ROOT / "db" / f"charts_history_{csv_region}.csv"
+    added = 0
+    with _csv_sync_lock:
+        existing_keys: set[tuple[str, str]] = set()
+        if csv_path.exists():
+            with csv_path.open("r", encoding="utf-8-sig", newline="") as handle:
+                for existing in csv.DictReader(handle):
+                    existing_keys.add((existing.get("date", ""), existing.get("track_id") or existing.get("song_name", "")))
+        new_rows = [r for r in csv_rows if (r["date"], r["track_id"]) not in existing_keys]
+        if new_rows:
+            csv_path.parent.mkdir(parents=True, exist_ok=True)
+            needs_newline = csv_path.exists() and csv_path.stat().st_size > 0
+            if needs_newline:
+                needs_newline = not csv_path.read_bytes().endswith((b"\n", b"\r"))
+            with csv_path.open("a", encoding="utf-8", newline="") as handle:
+                if needs_newline:
+                    handle.write("\n")
+                writer = csv.DictWriter(handle, fieldnames=_CSV_HISTORY_FIELDNAMES)
+                if csv_path.stat().st_size == 0:
+                    writer.writeheader()
+                writer.writerows(new_rows)
+            added = len(new_rows)
+    if added:
+        print(f"[INFO] Synced {added} row(s) → db/charts_history_{csv_region}.csv", flush=True)
+
+
 def _build_id_to_name() -> dict[str, str]:
     cached = getattr(_build_id_to_name, "_cache", None)
     if cached is not None:
@@ -1685,6 +2065,33 @@ def main() -> int:
     id_to_name = _build_id_to_name()
     id_to_album = _build_id_to_album()
 
+    # Contexte pour la detection RE immediate par pays (voir "Immediate re-entry
+    # posting" plus haut) : desactive en backfill/multi-dates/--no-post, comme les
+    # autres mecanismes de post live de ce script.
+    immediate_reentry_ctx: dict | None = None
+    if not args.no_post and not args.backfill_mode and not args.dates and not args.dates_file:
+        prev_country_counts, has_prev_snapshot = _load_prev_country_counts(chart_date)
+        immediate_reentry_ctx = {
+            "manual_lookup": manual_lookup,
+            "track_lookup": track_lookup,
+            "historical_lookup": historical_lookup,
+            "prev_country_counts": prev_country_counts,
+            "has_prev_snapshot": has_prev_snapshot,
+            "threads": [],
+        }
+
+    # Contexte pour le sync CSV immediat par pays (voir "Incremental per-country
+    # CSV sync" plus haut) : independant de --no-post (ecrire l'historique n'est
+    # pas un post), mais desactive en backfill/multi-dates ou son propre pipeline
+    # de sync dedie prend deja le relais.
+    csv_sync_ctx: dict | None = None
+    if not args.backfill_mode and not args.dates and not args.dates_file:
+        csv_sync_ctx = {
+            "manual_lookup": manual_lookup,
+            "track_lookup": track_lookup,
+            "historical_lookup": historical_lookup,
+        }
+
     regions_to_fetch = {k: v for k, v in regions.items() if k not in already_done}
 
     # Phase 1 : fetch global (toujours, meme --no-post) et fr/us en priorité pour poster
@@ -1702,7 +2109,10 @@ def main() -> int:
     _priority_card_thread: threading.Thread | None = None
     if priority_to_fetch:
         print(f"[INFO] Phase 1 : fetch prioritaire ({', '.join(sorted(priority_to_fetch))})…")
-        tokens, _, priority_results = _run_async_with_token_refresh(chart_date, tokens, priority_to_fetch)
+        tokens, _, priority_results = _run_async_with_token_refresh(
+            chart_date, tokens, priority_to_fetch,
+            immediate_reentry_ctx=immediate_reentry_ctx, csv_sync_ctx=csv_sync_ctx,
+        )
         _apply_track_id_history(chart_date, priority_results)
         print(f"[INFO] Phase 1 terminée en {time.perf_counter() - t0:.1f}s")
         for region in PRIORITY_POST_REGIONS:
@@ -1773,7 +2183,10 @@ def main() -> int:
     # Phase 2 : fetch toutes les autres régions
     if other_to_fetch:
         print(f"[INFO] Phase 2 : fetch {len(other_to_fetch)} regions (semaphore={SEMAPHORE})...")
-        tokens, _, other_results = _run_async_with_token_refresh(chart_date, tokens, other_to_fetch)
+        tokens, _, other_results = _run_async_with_token_refresh(
+            chart_date, tokens, other_to_fetch,
+            immediate_reentry_ctx=immediate_reentry_ctx, csv_sync_ctx=csv_sync_ctx,
+        )
         print(f"[INFO] Phase 2 terminée en {time.perf_counter() - t0:.1f}s total")
     else:
         other_results = {}
@@ -2039,6 +2452,18 @@ def main() -> int:
         _multi_song_post_thread.join(timeout=600)
         if _multi_song_post_thread.is_alive():
             print("[WARN] Posts regions multi-titres toujours en cours apres 10 minutes", flush=True)
+
+    if immediate_reentry_ctx is not None and immediate_reentry_ctx["threads"]:
+        # Threads daemon (voir _maybe_trigger_immediate_reentries) : sans ce join,
+        # le process peut sortir avant qu'un post immediat en cours ne se termine.
+        pending = [t for t in immediate_reentry_ctx["threads"] if t.is_alive()]
+        if pending:
+            print(f"[INFO] Attente fin de {len(pending)} post(s) RE immediat(s)...", flush=True)
+        for t in immediate_reentry_ctx["threads"]:
+            t.join(timeout=600)
+        still_alive = [t.name for t in immediate_reentry_ctx["threads"] if t.is_alive()]
+        if still_alive:
+            print(f"[WARN] {len(still_alive)} post(s) RE immediat(s) toujours en cours apres 10 minutes", flush=True)
 
     if not args.backfill_mode:
         git_commit_and_push(ROOT, f"charts worldwide {chart_date}")

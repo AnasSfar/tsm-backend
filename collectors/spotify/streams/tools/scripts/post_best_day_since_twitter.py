@@ -34,6 +34,7 @@ FEATURES_JSON = DISCOGRAPHY_DIR / "features.json"
 COVERS_PATH = DISCOGRAPHY_DIR / "covers.json"
 POST_COLLECTION_BEST_DAY_MIN_DAYS = 30
 ALBUM_BEST_DAY_MIN_DAYS = 30
+RECAP_BEST_DAY_MIN_DAYS = 30
 MAX_BEST_DAY_SONG_POSTS_PER_ALBUM = 3
 POST_COLLECTION_MAX_SONG_POSTS = 5
 MIN_SONG_DAILY_STREAMS_TO_POST = 80_000
@@ -268,7 +269,7 @@ def _find_recap_rows(target_date: str) -> list[dict]:
         row = best_day_since.compute_best_day_since(track, history.get(track_id) or [], target)
         if not row:
             continue
-        if row.get("kind") == "best_ever" or best_day_since.passes_filters(row, min_days=1):
+        if row.get("kind") == "best_ever" or best_day_since.passes_filters(row, min_days=RECAP_BEST_DAY_MIN_DAYS):
             rows.append(row)
     return rows
 
