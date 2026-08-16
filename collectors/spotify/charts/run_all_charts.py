@@ -151,23 +151,16 @@ SPOTIFY_UA = (
     "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
 )
 
-# artists_global collecte a part; les charts regionaux sont geres via worldwide.
+# artists_global tourne desormais entierement de son cote (task scheduler
+# dediee, collecte + posts de base + filtres female/T/Taylor/US/UK — voir
+# artist_global_daily.py) ; les charts regionaux sont geres via worldwide.
 COLLECT_RUNNERS: list[tuple[str, Path, list[str]]] = [
-    ("artists_global", CHARTS_ROOT / "artists_global" / "artist_global_daily.py", []),
-    ("worldwide",      CHARTS_ROOT / "worldwide"      / "daily.py",         ["--force"]),
-]
-
-# Filtered artist-chart variants (generate_filtered_artist_chart.py <key> <date>).
-# Add a filter key here to switch it on in the daily run; the filter's own
-# FilterConfig (in that script) controls its cadence (daily vs rank-up-only).
-ACTIVE_FILTERED_ARTIST_CHARTS: list[str] = [
-    "female", "starts_with_t", "named_taylor", "us_artist_chart", "uk_artist_chart",
+    ("worldwide", CHARTS_ROOT / "worldwide" / "daily.py", ["--force"]),
 ]
 
 SPOTIFY_HISTORY_BACKFILL = REPO_ROOT / "scripts" / "backfill_spotify_charts_history.py"
 
 CHART_AVAILABILITY: dict[str, str] = {
-    "artists_global": "artist-global-daily",
     "worldwide": "regional-global-daily",  # probe via le chart global
 }
 
@@ -227,10 +220,7 @@ def _mark_r2_exported(target: date) -> None:
 def _region_data_exists(name: str, target: date) -> bool:
     day_dirs = [spotify_chart_dir(name, target), legacy_spotify_chart_dir(name, target)]
     for day_dir in day_dirs:
-        if name == "artists_global":
-            if (day_dir / "artist_global_daily.json").exists() or (day_dir / "artist_global_daily.csv").exists():
-                return True
-        elif name == "worldwide":
+        if name == "worldwide":
             if (day_dir / f"ts_worldwide_{target}.json").exists():
                 return True
         elif (day_dir / "ts_all_songs.csv").exists() or (day_dir / f"ts_chart_{target}.json").exists():
@@ -310,15 +300,10 @@ def _validate_worldwide_snapshot(target: date) -> tuple[bool, str]:
 
 
 def _runner_args_for_run_all(name: str, fixed: list[str], forwarded: list[str], target_date: date, explicit_target_date: bool) -> list[str]:
-    if name != "artists_global":
-        args = [*fixed, *forwarded]
-        if not explicit_target_date:
-            args.append(str(target_date))
-        return args
-    artist_args = list(fixed)
-    if explicit_target_date:
-        artist_args.extend(["--date", str(target_date)])
-    return artist_args
+    args = [*fixed, *forwarded]
+    if not explicit_target_date:
+        args.append(str(target_date))
+    return args
 
 
 def _already_done(
@@ -332,8 +317,6 @@ def _already_done(
 def _runner_done(name: str, target: date, post_parts: set[str]) -> bool:
     updated = _region_lock_exists(name, target, "updated.lock")
     data_exists = _region_data_exists(name, target)
-    if name == "artists_global":
-        return data_exists
     if name in {"global", "fr"} and name in post_parts:
         posted = _region_lock_exists(name, target, "posted.lock")
         return posted and (updated or data_exists)
@@ -1222,31 +1205,6 @@ def _probe_latest_available_date(
     return resolved if ok else None
 
 
-def _skip_lagging_artists_global(
-    runners: list[tuple[str, Path, list[str]]],
-    target: date,
-    post_parts: set[str],
-    *,
-    allow_stale: bool,
-) -> list[tuple[str, Path, list[str]]]:
-    artist_runner = next((runner for runner in runners if runner[0] == "artists_global"), None)
-    if artist_runner is None:
-        return runners
-
-    latest = _probe_latest_available_date([artist_runner], allow_stale=allow_stale)
-    if latest is None or latest >= target:
-        return runners
-
-    if _runner_done("artists_global", latest, post_parts):
-        print(
-            f"[SKIP] artists_global: Spotify latest={latest}, deja collecte; "
-            f"{target} pas encore publie"
-        )
-        return [runner for runner in runners if runner[0] != "artists_global"]
-
-    return runners
-
-
 def _date_span(start: date, end: date) -> list[date]:
     days: list[date] = []
     cur = start
@@ -1265,16 +1223,12 @@ def _collect_data_only_dates(
     verbose: bool,
 ) -> list[tuple[str, int]]:
     failures: list[tuple[str, int]] = []
+    runners = [
+        (name, script, fixed + ["--no-post"])
+        for name, script, fixed in COLLECT_RUNNERS
+        if name == "worldwide"
+    ]
     for target in dates:
-        runners = [
-            (name, script, fixed + ["--no-post"])
-            for name, script, fixed in COLLECT_RUNNERS
-            if name == "worldwide"
-        ] + [
-            (name, script, fixed + ["--no-post", "--date", str(target)])
-            for name, script, fixed in COLLECT_RUNNERS
-            if name == "artists_global"
-        ]
         pending = runners if force or dry_run else _filter_pending_runners(runners, target, set())
         if not pending:
             print(f"[CATCHUP] {target}: deja collecte")
@@ -1584,7 +1538,7 @@ def _ensure_worldwide_valid(
     return ok, 0
 
 
-_ALL_POST_PARTS = {"artists", "global", "fr", "us", "cards"}
+_ALL_POST_PARTS = {"global", "fr", "us", "cards"}
 _PAUSED_POST_PARTS = {"fr"}
 _DEFAULT_POST_PARTS = _ALL_POST_PARTS - _PAUSED_POST_PARTS
 _EXTRA_POST_PARTS = {"best-day-since", "regions"}  # non inclus dans le défaut, à passer explicitement via --post
@@ -1678,7 +1632,7 @@ def main() -> int:
         metavar="PART",
         default=None,
         help=(
-            "Parties à poster sur Twitter: artists, cards, fr, global, us (défaut: toutes sauf fr, en pause). "
+            "Parties à poster sur Twitter: cards, fr, global, us (défaut: toutes sauf fr, en pause). "
             "Extras non inclus par défaut (à passer explicitement): best-day-since, regions. "
             "Exemple: --post global fr"
         ),
@@ -1765,9 +1719,7 @@ def main() -> int:
 
     collect_runners = []
     for name, script, fixed in COLLECT_RUNNERS:
-        if name == "artists_global":
-            extra = ["--no-post"] if "artists" not in post_parts else []
-        elif name == "worldwide":
+        if name == "worldwide":
             # run_all garde la collecte et le posting separes pour eviter les doublons:
             # worldwide ecrit les donnees, puis les phases ci-dessous postent une seule fois.
             extra = ["--no-post"]
@@ -1776,11 +1728,6 @@ def main() -> int:
         collect_runners.append((name, script, fixed + extra))
 
     target_date, _explicit_target_date = _extract_target_date(forwarded)
-    if args.no_post and _explicit_target_date:
-        before = len(collect_runners)
-        collect_runners = [runner for runner in collect_runners if runner[0] != "artists_global"]
-        if len(collect_runners) != before:
-            print(f"[SKIP] artists_global ignore pour run historique no-post explicite ({target_date})")
 
     # Si on ne poste que les cards / best-day-since, pas besoin de collecter.
     # Les cards lisent le snapshot worldwide existant; best-day-since lit streams_history.csv.
@@ -1788,7 +1735,6 @@ def main() -> int:
 
     failures: list[tuple[str, int]] = []
     ran_collect = False
-    deferred_artists_global: list[tuple[str, Path, list[str]]] = []
     worldwide_ready_for_final_sync = False
 
     if needs_collect:
@@ -1797,18 +1743,6 @@ def main() -> int:
             print(f"[FORCE] pre-skip ignore pour {target_date}: collecte relancee")
         elif not args.dry_run:
             collect_runners = _filter_pending_runners(collect_runners, target_date, post_parts)
-            if not _explicit_target_date:
-                before_artist_skip = collect_runners
-                collect_runners = _skip_lagging_artists_global(
-                    collect_runners,
-                    target_date,
-                    post_parts,
-                    allow_stale=args.watch_release,
-                )
-                if len(collect_runners) < len(before_artist_skip):
-                    deferred_artists_global = [
-                        runner for runner in before_artist_skip if runner[0] == "artists_global"
-                    ]
         if not collect_runners:
             _print_already_done(original_collect_runners, target_date, post_parts)
         else:
@@ -1994,51 +1928,6 @@ def main() -> int:
         if regional_post_failures:
             failed_names = ", ".join(n for n, _ in regional_post_failures)
             print(f"[WARN] posts regionaux echoues, suite du run maintenue: {failed_names}")
-
-    if not args.dry_run and deferred_artists_global and "artists" in post_parts and not failures:
-        latest_artists = _probe_latest_available_date(
-            deferred_artists_global,
-            allow_stale=args.watch_release,
-        )
-        if latest_artists is not None and latest_artists >= target_date:
-            print("\n[PHASE3] collecte differee artists_global...")
-            artist_failures = _run_parallel(
-                deferred_artists_global,
-                forwarded=forwarded,
-                target_date=target_date,
-                explicit_target_date=_explicit_target_date,
-                dry_run=False,
-                env=env,
-                verbose=args.verbose,
-            )
-            failures.extend(artist_failures)
-            if not artist_failures:
-                ran_collect = True
-        else:
-            print(
-                f"[SKIP] artists_global differe: latest={latest_artists or 'N/A'}, "
-                f"{target_date} toujours pas publie"
-            )
-
-    if not args.dry_run and "artists" in post_parts and not failures:
-        if _runner_done("artists_global", target_date, post_parts):
-            for filter_key in ACTIVE_FILTERED_ARTIST_CHARTS:
-                print(f"\n[PHASE3] chart artiste filtre '{filter_key}'...")
-                filtered_args = [filter_key, str(target_date)]
-                if args.force:
-                    filtered_args.append("--force")
-                rc_filtered = _run(
-                    f"artists-filtered-{filter_key}",
-                    CHARTS_ROOT / "artists_global" / "tools" / "scripts" / "generate_filtered_artist_chart.py",
-                    filtered_args,
-                    dry_run=False,
-                    env=env,
-                    verbose=args.verbose,
-                )
-                if rc_filtered != 0:
-                    failures.append((f"artists-filtered-{filter_key}", rc_filtered))
-        else:
-            print(f"[SKIP] charts artistes filtres: donnees artists_global absentes pour {target_date}")
 
     if not args.dry_run and should_generate_cards and not failures:
         if should_post_cards:

@@ -72,12 +72,38 @@ couvre pas un blocage infini sans crash (ex: 429 illimite en live, voir
 "Pieges confirmes" plus haut) — seulement un process qui se termine en echec.
 `run_all_charts.py` collecte par defaut:
 
-- `artists_global/artist_global_daily.py`
 - `music_videos_global/daily.py --no-post --no-wait --allow-unavailable`
 - `worldwide/daily.py --force`
 
 Les posts regionaux global/fr/us et les cards sont orchestres autour du
 snapshot worldwide pour garder l'ordre de publication.
+
+**`artists_global` n'est PAS orchestre par `run_all_charts.py` (depuis
+2026-08-16).** Task Scheduler local a deux taches distinctes qui declenchent
+toutes les deux a **15h** :
+
+- `TSM Spotify Charts Watch Release` -> `run_all_charts.py --watch-release`
+  (worldwide/global/fr/us/cards/music_videos, PAS artists_global).
+- `TSM - Spotify Artists Global Daily` -> `artist_global_daily.py` seul, sans
+  argument (`--date` par defaut `latest`, posting actif) — entierement
+  autonome : collecte le chart artiste global, poste le chart de base
+  (top5/top10/solo Taylor, voir plus bas), PUIS poste les charts artiste
+  filtres (`female`/`starts_with_t`/`named_taylor`/`us_artist_chart`/
+  `uk_artist_chart`, voir `artists_global/` plus bas).
+
+**Historique de ce choix :** ces deux taches tournaient deja en parallele
+avant meme que `artists_global` soit ajoute a `run_all_charts.py`
+(`COLLECT_RUNNERS`), ce qui creait un vrai risque de double-fetch/double-post
+sur le meme chart (protege seulement par le `posted.lock`, donc une race
+TOCTOU restait possible). Corrige le 2026-08-16 en retirant `artists_global`
+de `run_all_charts.py` entierement (plus dans `COLLECT_RUNNERS`,
+`CHART_AVAILABILITY`, `_runner_done`, `_region_data_exists`, `--post` choices)
+plutot que l'inverse — decision produit : la tache dediee reste la source
+unique de verite pour tout ce qui est artiste. Consequence assumee : si cette
+tache dediee echoue un jour (WARP, session), il n'y a plus de filet de
+rattrapage cote `run_all_charts.py` pour `artists_global` — le rattrapage
+doit se faire manuellement (`python artist_global_daily.py --date
+<date-manquee> --force`).
 
 ### Backfill historique
 
@@ -500,7 +526,16 @@ Options:
 Scripts image/cards:
 
 - `artists_global/tools/scripts/generate_artist_chart_image.py`
-- `artists_global/tools/scripts/generate_artist_worldwide_card.py`
+- `artists_global/tools/scripts/generate_filtered_artist_chart.py`
+
+**Autonome depuis 2026-08-16, plus orchestre par `run_all_charts.py`.**
+`artist_global_daily.py` collecte le chart, poste le chart de base (voir plus
+bas), PUIS declenche lui-meme les charts filtres via
+`_run_filtered_artist_charts()` (liste `_ACTIVE_FILTERED_ARTIST_CHARTS` en
+haut du fichier, meme cles que `FILTERS` dans
+`generate_filtered_artist_chart.py` — les deux listes doivent rester
+synchronisees a la main, pas d'import croise). Voir "Run quotidien" plus haut
+pour le detail des deux taches Task Scheduler et pourquoi ce decouplage.
 
 **Bug confirme et corrige (2026-08-16) : le post "top 5 / top 10 most streamed
 artists" ne se declenchait que sur un changement du rang PROPRE de Taylor,
@@ -530,31 +565,14 @@ top 10), seul son propre rang compte, comme avant. Le garde-fou duplique dans
 uniquement dans `generate_artist_chart_image.py`, qui est le seul endroit a
 connaitre le mode.
 
-La card artiste worldwide lit/ecrit:
-
-- `artist_global_worldwide.json`
-- `runtime/exports/web/site/data/charts_artists_global_worldwide.json`
-- `artist_worldwide_card.png`
-- `artist_worldwide_card_posted.lock`
-
-**Bug confirme et corrige (2026-08-16) : la card worldwide se generait chaque
-jour mais ne postait plus jamais depuis le 2026-07-07.** L'appel PHASE3 dans
-`run_all_charts.py` (`generate_artist_worldwide_card.py <date> [--force]`)
-avait perdu son flag `--post` dans le commit `bc4a827f4b` (2026-07-07,
-message "generation de la card artists worldwide (no-post)..."), sans lien
-apparent avec le reste du commit (un changement d'emoji sur
-`generate_artist_chart_image.py`) — tres probablement une regression
-accidentelle, pas une decision produit documentee. Consequence : l'image
-`artist_worldwide_card.png` etait bien regeneree chaque jour avec les rangs a
-jour (visible via mtime), mais `run()` dans
-`generate_artist_worldwide_card.py` ne rentre jamais dans le bloc `if post:`
-sans `--post` — donc `artist_worldwide_card_posted.lock` n'etait plus jamais
-cree et aucun tweet ne partait, meme quand le rang Spotify artiste de Taylor
-Swift changeait plusieurs fois. Confirme sur `snapshots/spotify_charts/2026/08/`
-du 08-08 au 08-14 (dossier present, image recente, lock absent). Corrige :
-`--post` restaure dans `artist_worldwide_args`. Deja protege par
-`"artists" in post_parts` (vide des que `--no-post` global est passe) donc pas
-besoin de garde supplementaire.
+**Card artiste worldwide : supprimee le 2026-08-16 (`generate_artist_worldwide_card.py`
+retire du repo).** Elle avait ete cassee un mois (juillet-aout) par une
+regression `--post` (deja corrigee dans une session precedente), puis rendue
+redondante par les charts filtres `us_artist_chart`/`uk_artist_chart`
+ci-dessous (donnees pays plus completes : top5/10 entier, pas juste le rang
+de Taylor). Decision produit explicite : retirer plutot que garder les deux.
+Aucun consommateur frontend trouve (`charts_artists_global_worldwide.json`
+n'etait lu nulle part dans `tsm-frontend`), suppression sans impact site.
 
 **Charts artiste filtres (depuis 2026-08-16) : `generate_filtered_artist_chart.py`.**
 Variante generique du chart artiste, centree sur Taylor Swift, mais restreinte
@@ -626,13 +644,17 @@ qu'il n'est pas #1 sur le global). Mecanique dans `FilterConfig.region` :
   Taylor sur le chart US/UK s'ameliore vs la veille). Pas de mode "daily" pour
   l'instant.
 - Echec de fetch (chart indisponible, 404, erreur reseau/token) = skip
-  silencieux (`sys.exit(0)`, pas une erreur fatale pour `run_all_charts.py`) —
-  ce sont des charts bonus, pas la collecte principale.
-- Filtres actifs dans le run quotidien : `run_all_charts.py::ACTIVE_FILTERED_ARTIST_CHARTS`
+  silencieux (`sys.exit(0)`, pas une erreur fatale) — ce sont des charts
+  bonus, pas la collecte principale ; `artist_global_daily.py` continue sur
+  le filtre suivant meme si un `generate_filtered_artist_chart.py` echoue
+  (juste un `[WARN]`, voir `_run_filtered_artist_charts`).
+- Filtres actifs : `artist_global_daily.py::_ACTIVE_FILTERED_ARTIST_CHARTS`
   (liste de cles `FILTERS`). Ajouter un filtre = ajouter une entree dans
   `FILTERS` (`generate_filtered_artist_chart.py`) + sa cle dans cette liste —
-  pas de nouveau script necessaire. Appele en PHASE3 juste apres la card
-  worldwide, meme garde `"artists" in post_parts` + `_runner_done("artists_global", ...)`.
+  pas de nouveau script necessaire, mais **synchroniser les deux a la main**
+  (pas d'import entre les deux fichiers, cf. note plus haut). Declenche a la
+  fin de `artist_global_daily.py::main()`, juste apres le post du chart de
+  base, uniquement si `period == "daily"` et pas `--no-post`.
 - Sorties : image `artist_chart_{filter_key}_image.png`, lock
   `artist_chart_{filter_key}_{mode}_posted.lock`, meme dossier
   `spotify_chart_dir("artists_global", date)` que le chart de base.
@@ -897,7 +919,8 @@ Locks courants:
 - `updated.lock`: donnees collectees/preparees pour une date.
 - `r2_exported.lock`: export/upload R2 charts-only effectue par run_all.
 - `exported_done.lock`: export R2 local du worldwide hors backfill.
-- `artist_worldwide_card_posted.lock`: card artiste worldwide postee.
+- `artist_chart_{filter_key}_{mode}_posted.lock`: chart artiste filtre poste
+  (`generate_filtered_artist_chart.py`).
 - `regional_posts/posted_<region>.lock`: post regional scored/priority.
 
 Verifier les locks avant de relancer avec `--force`. Ne pas supprimer un lock

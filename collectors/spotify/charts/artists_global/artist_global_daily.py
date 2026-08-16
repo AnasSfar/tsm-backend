@@ -446,6 +446,29 @@ def maybe_upload_to_r2(chart_date: str, period: str, *, force: bool = False) -> 
     print(f"[DONE] exported_done=true -> {lock}")
 
 
+# Filtered artist-chart variants (female/T/Taylor/US/UK) — see FILTERS in
+# generate_filtered_artist_chart.py for what each key does. Keep this list in
+# sync with that file's FILTERS registry; new filters = add the key here too.
+_ACTIVE_FILTERED_ARTIST_CHARTS = [
+    "female", "starts_with_t", "named_taylor", "us_artist_chart", "uk_artist_chart",
+]
+
+
+def _run_filtered_artist_charts(chart_date: str, *, force: bool) -> None:
+    script = COLLECTOR_ROOT / "tools" / "scripts" / "generate_filtered_artist_chart.py"
+    if not script.exists():
+        print(f"[WARN] Filtered chart script not found: {script}")
+        return
+    for filter_key in _ACTIVE_FILTERED_ARTIST_CHARTS:
+        cmd = [sys.executable, str(script), filter_key, chart_date]
+        if force:
+            cmd.append("--force")
+        print(f"[STEP] Filtered artist chart '{filter_key}'...")
+        result = subprocess.run(cmd, cwd=str(ROOT), check=False)
+        if result.returncode != 0:
+            print(f"[WARN] generate_filtered_artist_chart.py ({filter_key}) failed (code {result.returncode})")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Fetch Spotify global artist chart.")
     parser.add_argument(
@@ -555,6 +578,9 @@ def main() -> int:
                 print(f"[WARN] generate_artist_chart_image.py failed (code {result.returncode})")
         else:
             print(f"[WARN] Image generation script not found: {generate_script}")
+
+    if period == "daily" and not args.no_post:
+        _run_filtered_artist_charts(chart_date, force=args.force)
 
     print(f"[OK] {len(rows)} artists collected for {period} {chart_date}")
     return 0
