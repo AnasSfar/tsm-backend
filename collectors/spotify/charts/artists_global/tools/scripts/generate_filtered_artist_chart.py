@@ -2,16 +2,24 @@
 """
 generate_filtered_artist_chart.py — génère et poste une variante filtrée du
 Global Artist Chart Spotify (ex: Top Female Artists, artistes dont le nom
-commence par "T"), centrée sur Taylor Swift comme le chart de base.
+commence par "T", chart artiste propre aux US/UK), centrée sur Taylor Swift
+comme le chart de base.
+
+Deux familles de filtres :
+  - locaux : filtrent + re-classent la liste d'artistes du chart GLOBAL déjà
+    collectée (`config.predicate`), aucun appel réseau.
+  - régionaux : vont chercher en direct le chart artiste propre à un pays
+    Spotify (`config.region`, ex "us" -> `artist-us-daily`), un classement
+    totalement différent du chart global.
 
 Le chart de base (`generate_artist_chart_image.py`) est réutilisé tel quel
-pour le rendu HTML/CSS et la génération d'image — ce script ne fait que
-filtrer + re-classer la liste d'artistes du jour dans le sous-ensemble, puis
-appelle les mêmes builders avec un titre différent.
+pour le rendu HTML/CSS et la génération d'image dans les deux cas — seule la
+liste d'artistes en entrée change.
 
 Usage :
     python generate_filtered_artist_chart.py female 2026-08-16
     python generate_filtered_artist_chart.py starts_with_t 2026-08-16 --no-post
+    python generate_filtered_artist_chart.py us_artist_chart 2026-08-16
 """
 from __future__ import annotations
 
@@ -29,6 +37,14 @@ sys.path.insert(0, str(SCRIPT_DIR))
 
 import generate_artist_chart_image as base  # noqa: E402
 
+if str(base.REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(base.REPO_ROOT))
+
+from collectors.spotify.charts.artists_global.artist_global_daily import (  # noqa: E402
+    _fetch_chart,
+    _get_bearer_token,
+)
+
 ARTISTS_CSV = base.ARTISTS_GLOBAL / "Artists.csv"
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -39,14 +55,15 @@ if hasattr(sys.stdout, "reconfigure"):
 
 @dataclass(frozen=True)
 class FilterConfig:
-    label: str          # e.g. "female artists", used lowercase in tweet sentences
-    card_title: str      # e.g. "Taylor Swift · Female Artist Chart"
-    rank_scope: str       # e.g. "among female artists", used on the solo card
-    predicate: Callable[[dict, dict[str, str]], bool]
-    # "daily": post whenever Taylor's subset rank OR the subset top5/10 list changes.
-    # "rank_up": post only when Taylor's subset rank strictly improves.
-    cadence: str
+    label: str            # e.g. "female artists on Spotify Charts" — used in top5/10 tweets
+    card_title: str       # e.g. "Taylor Swift · Female Artist Chart"
+    rank_scope: str       # e.g. "among female artists on Spotify Charts" — card + solo tweet
+    cadence: str           # "daily": post on any subset rank/list change. "rank_up": only on improvement.
+    # Local filters (filter+re-rank the already-collected global chart):
+    predicate: Callable[[dict, dict[str, str]], bool] | None = None
     needs_gender: bool = False
+    # Regional filters (live fetch of a country-specific artist chart, e.g. "us" -> artist-us-daily):
+    region: str | None = None
 
 
 def _is_female(artist: dict, genders: dict[str, str]) -> bool:
@@ -64,28 +81,53 @@ def _named_taylor(artist: dict, genders: dict[str, str]) -> bool:
 
 FILTERS: dict[str, FilterConfig] = {
     "female": FilterConfig(
-        label="female artists",
+        label="female artists on Spotify Charts",
         card_title="Taylor Swift · Female Artist Chart",
-        rank_scope="among female artists",
+        rank_scope="among female artists on Spotify Charts",
         predicate=_is_female,
         cadence="daily",
         needs_gender=True,
     ),
     "starts_with_t": FilterConfig(
-        label='artists starting with "T"',
+        label='artists starting with "T" on Spotify Charts',
         card_title='Taylor Swift · "T" Artist Chart',
-        rank_scope='among artists starting with "T"',
+        rank_scope='among artists starting with "T" on Spotify Charts',
         predicate=_starts_with_t,
         cadence="rank_up",
     ),
     "named_taylor": FilterConfig(
-        label='artists named "Taylor"',
+        label='artists named "Taylor" on Spotify Charts',
         card_title='Taylor Swift · "Taylor" Artist Chart',
-        rank_scope='among artists named "Taylor"',
+        rank_scope='among artists named "Taylor" on Spotify Charts',
         predicate=_named_taylor,
         cadence="rank_up",
     ),
+    "us_artist_chart": FilterConfig(
+        label="artists on the US Artist Chart",
+        card_title="Taylor Swift · US Artist Chart",
+        rank_scope="on the US Artist Chart",
+        cadence="rank_up",
+        region="us",
+    ),
+    "uk_artist_chart": FilterConfig(
+        label="artists on the UK Artist Chart",
+        card_title="Taylor Swift · UK Artist Chart",
+        rank_scope="on the UK Artist Chart",
+        cadence="rank_up",
+        region="gb",  # Spotify's own region code for the UK (matches worldwide/daily.py)
+    ),
 }
+
+
+# ── Regional chart fetch (live, no local snapshot) ────────────────────────────
+
+def fetch_region_chart(region: str, stats_date: str) -> list[dict] | None:
+    token = _get_bearer_token()
+    rows, _detected_date, status = _fetch_chart(f"artist-{region}-daily", stats_date, token)
+    if status != "HTTP 200" or not rows:
+        print(f"[WARN] Regional artist chart '{region}' unavailable for {stats_date}: {status}")
+        return None
+    return rows
 
 
 # ── Artists.csv (gender lookup) ───────────────────────────────────────────────
@@ -185,7 +227,12 @@ def _load_previous_chart(stats_date: str, period: str) -> list[dict] | None:
 
 def _should_skip(mode: str, ts_row: dict, rows: list[dict], cadence: str) -> tuple[bool, str]:
     rank = ts_row["rank"]
+    # Spotify uses -1 (not None) as its own "no previous rank" sentinel on
+    # live-fetched regional charts — normalize it the same way as
+    # generate_artist_chart_image.top_list_unchanged does for the global chart.
     previous_rank = base._int_value(ts_row.get("previous_rank"))
+    if previous_rank is not None and previous_rank <= 0:
+        previous_rank = None
 
     if cadence == "rank_up":
         improved = previous_rank is not None and rank < previous_rank
@@ -208,10 +255,10 @@ def _should_skip(mode: str, ts_row: dict, rows: list[dict], cadence: str) -> tup
 def build_tweet(mode: str, stats_date: str, config: FilterConfig) -> str:
     day_fmt = datetime.strptime(stats_date, "%Y-%m-%d").strftime("%A, %B %d, %Y")
     if mode == "top10":
-        return f"📈 | The top 10 most streamed {config.label} on Spotify Charts on {day_fmt} :"
+        return f"📈 | The top 10 most streamed {config.label} on {day_fmt} :"
     if mode == "top5":
-        return f"📈 | The top 5 most streamed {config.label} on Spotify Charts on {day_fmt} :"
-    return f"📈 | Taylor Swift {config.rank_scope} on Spotify Charts on {day_fmt} :"
+        return f"📈 | The top 5 most streamed {config.label} on {day_fmt} :"
+    return f"📈 | Taylor Swift {config.rank_scope} on {day_fmt} :"
 
 
 # ── Main ───────────────────────────────────────────────────────────────────────
@@ -230,26 +277,40 @@ def main() -> None:
     stats_date = args.date or base.find_latest_date(period)
     print(f"Filter: {args.filter_key} | Date: {stats_date}")
 
-    data = base.load_chart(stats_date, period)
-    artists = data["artists"]
+    if config.region:
+        # Regional filter: Taylor's rank comes from that country's own artist
+        # chart (fetched live), not from a filter of the global chart — a
+        # different ranking entirely. previous_rank is already populated by
+        # Spotify itself on each row, no local day-over-day diff needed.
+        rows = fetch_region_chart(config.region, stats_date)
+        if not rows:
+            print(f"No '{args.filter_key}' chart data for {stats_date} — skipping.")
+            sys.exit(0)
+        ts_row = next((r for r in rows if r["artist_name"].lower() == base.TS_NAME.lower()), None)
+        if not ts_row:
+            print(f"Taylor Swift not found on the '{args.filter_key}' chart — skipping.")
+            sys.exit(0)
+    else:
+        data = base.load_chart(stats_date, period)
+        artists = data["artists"]
 
-    _append_missing_artists(artists)
-    genders = load_gender_map() if config.needs_gender else {}
-    if config.needs_gender:
-        _warn_unclassified(
-            [{"rank": base._int_value(a.get("rank")), "artist_id": a.get("artist_id"), "artist_name": a.get("artist_name")} for a in artists if base._int_value(a.get("rank")) is not None],
-            genders,
-        )
+        _append_missing_artists(artists)
+        genders = load_gender_map() if config.needs_gender else {}
+        if config.needs_gender:
+            _warn_unclassified(
+                [{"rank": base._int_value(a.get("rank")), "artist_id": a.get("artist_id"), "artist_name": a.get("artist_name")} for a in artists if base._int_value(a.get("rank")) is not None],
+                genders,
+            )
 
-    rows = build_filtered_rows(artists, config.predicate, genders)
-    ts_row = next((r for r in rows if r["artist_name"].lower() == base.TS_NAME.lower()), None)
-    if not ts_row:
-        print(f"Taylor Swift not found in the '{args.filter_key}' subset — skipping.")
-        sys.exit(0)
+        rows = build_filtered_rows(artists, config.predicate, genders)
+        ts_row = next((r for r in rows if r["artist_name"].lower() == base.TS_NAME.lower()), None)
+        if not ts_row:
+            print(f"Taylor Swift not found in the '{args.filter_key}' subset — skipping.")
+            sys.exit(0)
 
-    previous_full = _load_previous_chart(stats_date, period)
-    attach_previous_ranks(rows, previous_full, config.predicate, genders)
-    ts_row = next(r for r in rows if r["artist_name"].lower() == base.TS_NAME.lower())
+        previous_full = _load_previous_chart(stats_date, period)
+        attach_previous_ranks(rows, previous_full, config.predicate, genders)
+        ts_row = next(r for r in rows if r["artist_name"].lower() == base.TS_NAME.lower())
 
     ts_rank = ts_row["rank"]
     print(f"Taylor Swift: subset rank #{ts_rank} / {len(rows)} ({args.filter_key})")

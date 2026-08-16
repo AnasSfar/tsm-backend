@@ -596,6 +596,38 @@ dans `generate_artist_chart_image.py`, desormais parametres par `title=`/
     taille 1, donc son rang y est toujours #1 et ne peut jamais "s'ameliorer".
     Ce filtre ne postera donc quasiment jamais tant qu'aucune autre "Taylor"
     ne charte. Garde volontairement (demande explicite), pas un bug.
+
+**Filtres regionaux (depuis 2026-08-16) : `us_artist_chart` / `uk_artist_chart`.**
+Contrairement aux filtres ci-dessus (qui filtrent le chart GLOBAL deja
+collecte, zero appel reseau), ces deux-la vont chercher en LIVE le chart
+artiste propre a un pays Spotify — un classement totalement different du
+chart global (ex: le 2026-08-14, Drake est #1 sur le chart artiste US alors
+qu'il n'est pas #1 sur le global). Mecanique dans `FilterConfig.region` :
+- `region="us"` -> chart_id `artist-us-daily` ; `region="gb"` -> `artist-gb-daily`
+  (`gb` = code Spotify du Royaume-Uni, meme convention que `worldwide/daily.py`
+  — ne pas utiliser `"uk"` comme code region, la clé de filtre `uk_artist_chart`
+  reste `uk` mais son `region=` interne est `gb`).
+- `fetch_region_chart(region, stats_date)` reutilise directement
+  `_fetch_chart`/`_get_bearer_token` de `artist_global_daily.py` (import via
+  `collectors.spotify.charts.artists_global.artist_global_daily`, meme cache
+  disque de bearer token que la collecte globale — pas de double-Playwright si
+  les deux filtres tournent l'un apres l'autre dans le meme run).
+  `_parse_artist_entries` renvoie deja `previous_rank` (fourni par Spotify
+  lui-meme sur ce chart pays, meme mecanisme que le chart global) donc pas
+  besoin de recalculer une comparaison locale J-1 comme pour les filtres
+  locaux. Testee en direct le 2026-08-16 (`--no-post`) : donnees US et UK
+  bien distinctes et coherentes (rang Taylor #2 sur les deux ce jour-la,
+  classements autour d'elle differents).
+- `Days at Pos` n'est pas disponible sur ces cartes (`—` affiche) : ce champ
+  vient d'un historique local jour par jour que ces fetchs live ne
+  construisent pas — Peak/Streak restent eux les valeurs du chart GLOBAL de
+  l'artiste (meme simplification que les filtres locaux), pas du chart pays.
+- Cadence `rank_up` uniquement pour ces deux (poste seulement si le rang de
+  Taylor sur le chart US/UK s'ameliore vs la veille). Pas de mode "daily" pour
+  l'instant.
+- Echec de fetch (chart indisponible, 404, erreur reseau/token) = skip
+  silencieux (`sys.exit(0)`, pas une erreur fatale pour `run_all_charts.py`) —
+  ce sont des charts bonus, pas la collecte principale.
 - Filtres actifs dans le run quotidien : `run_all_charts.py::ACTIVE_FILTERED_ARTIST_CHARTS`
   (liste de cles `FILTERS`). Ajouter un filtre = ajouter une entree dans
   `FILTERS` (`generate_filtered_artist_chart.py`) + sa cle dans cette liste —

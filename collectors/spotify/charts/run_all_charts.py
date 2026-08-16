@@ -160,7 +160,9 @@ COLLECT_RUNNERS: list[tuple[str, Path, list[str]]] = [
 # Filtered artist-chart variants (generate_filtered_artist_chart.py <key> <date>).
 # Add a filter key here to switch it on in the daily run; the filter's own
 # FilterConfig (in that script) controls its cadence (daily vs rank-up-only).
-ACTIVE_FILTERED_ARTIST_CHARTS: list[str] = ["female", "starts_with_t", "named_taylor"]
+ACTIVE_FILTERED_ARTIST_CHARTS: list[str] = [
+    "female", "starts_with_t", "named_taylor", "us_artist_chart", "uk_artist_chart",
+]
 
 SPOTIFY_HISTORY_BACKFILL = REPO_ROOT / "scripts" / "backfill_spotify_charts_history.py"
 
