@@ -143,13 +143,24 @@ def print_summary_block(summary: dict) -> None:
     print()
 
 def update_json_logs_from_summary(summary: dict) -> None:
-    same_total_reasons = {"same_total_zero", "persistent_same_total_extra_zero"}
+    # Must stay in sync with the reason set load_previous_same_total_pending_track_ids
+    # (update_streams.py) accepts when seeding tomorrow's cross-day persistence check.
+    # Tracks still genuinely pending (reason "same_total"/"assumed_zero_low_traffic_extra")
+    # must be included here too, not just the ones already closed to zero — otherwise a
+    # stuck extra can never be recognized as "already stuck yesterday" and its
+    # EXTRA_PENDING_RETRY_ROUNDS_BEFORE_ZERO counter restarts from 0 every day.
+    same_total_reasons = {
+        "same_total",
+        "same_total_zero",
+        "assumed_zero_low_traffic_extra",
+        "persistent_same_total_extra_zero",
+    }
     same_total_results = [
         r
         for r in summary.get("results", [])
         if r
+        and r.get("track_id")
         and r.get("reason") in same_total_reasons
-        and r.get("daily_streams") == 0
     ]
     same_total_ids = {r.get("track_id") for r in same_total_results if r.get("track_id")}
     updated_results = [

@@ -95,7 +95,7 @@ def rows_from_payload(payload: dict[str, Any], day: str, scraped_at: str) -> dic
         "apple_music_global.csv": [],
         "apple_music_country_charts.csv": [],
         "apple_music_genre_charts.csv": [],
-        "apple_music_ts_top_songs.csv": [],
+        "apple_music_ts_top_songs_global.csv": [],
     }
 
     for entry in payload.get("global_chart") or []:
@@ -104,7 +104,7 @@ def rows_from_payload(payload: dict[str, Any], day: str, scraped_at: str) -> dic
         )
 
     for entry in payload.get("ts_top_songs") or []:
-        out["apple_music_ts_top_songs.csv"].append(
+        out["apple_music_ts_top_songs_global.csv"].append(
             _entry_row(entry, TS_FIELDS, {"date": day, "scraped_at": scraped_at, "storefront": ""})
         )
 
@@ -141,7 +141,7 @@ def write_day_csvs(day: str, rows_by_file: dict[str, list[dict[str, Any]]], appl
         "apple_music_global.csv": GLOBAL_FIELDS,
         "apple_music_country_charts.csv": COUNTRY_FIELDS,
         "apple_music_genre_charts.csv": GENRE_FIELDS,
-        "apple_music_ts_top_songs.csv": TS_FIELDS,
+        "apple_music_ts_top_songs_global.csv": TS_FIELDS,
     }
     out_dir = apple_music_charts_dir(day)
     written: list[str] = []
@@ -240,7 +240,7 @@ def main() -> None:
             "apple_music_global.csv": [],
             "apple_music_country_charts.csv": [],
             "apple_music_genre_charts.csv": [],
-            "apple_music_ts_top_songs.csv": [],
+            "apple_music_ts_top_songs_global.csv": [],
         }
         for key in keys:
             body = client.get_object(Bucket=bucket, Key=key)["Body"].read()

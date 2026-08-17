@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import argparse
 import html
-import json
 import sys
 import time
 from datetime import date, datetime, timedelta
@@ -50,10 +49,8 @@ EXTRA_CSS = """
 .rank-badge.eq{background:#f1f5f9;color:#64748b}
 .rank-badge.missing{background:#f8fafc;color:#94a3b8}
 .rank-triangle{font-size:10px;line-height:1;transform:translateY(-.5px)}
-.gap{font-weight:900;color:#101828}
 .metric-change{display:flex;flex-direction:column;align-items:flex-end;gap:3px;line-height:1.05}
 .metric-change strong{font-size:14px;color:#24364f}
-.gap .metric-change strong{color:#101828}
 """
 
 
@@ -66,33 +63,18 @@ def _event_key(event: dict) -> str:
     return f"{event['overtaker']['track_id']}__over__{event['passed']['track_id']}"
 
 
-def _lock_path(stats_date: str) -> Path:
-    return update_streams_dir(stats_date) / "song_overtakes_posted.json"
+def _event_slug(event: dict) -> str:
+    overtaker_slug = generate_streams_image._norm(event["overtaker"].get("title") or event["overtaker"]["track_id"])
+    passed_slug = generate_streams_image._norm(event["passed"].get("title") or event["passed"]["track_id"])
+    return f"{overtaker_slug}_over_{passed_slug}"
 
 
-def _load_posted_keys(stats_date: str) -> set[str]:
-    path = _lock_path(stats_date)
-    if not path.exists():
-        return set()
-    try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
-    except Exception:
-        return set()
-    keys = payload.get("posted") if isinstance(payload, dict) else payload
-    if not isinstance(keys, list):
-        return set()
-    return {str(key) for key in keys if str(key).strip()}
+def _event_lock_path(stats_date: str, event: dict) -> Path:
+    return update_streams_dir(stats_date) / "song_overtakes" / f"{_event_slug(event)}_posted.lock"
 
 
-def _save_posted_keys(stats_date: str, keys: set[str]) -> None:
-    path = _lock_path(stats_date)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    payload = {
-        "date": stats_date,
-        "posted": sorted(keys),
-        "updated_at": datetime.utcnow().isoformat(timespec="seconds") + "Z",
-    }
-    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+def _event_already_posted(stats_date: str, event: dict) -> bool:
+    return _event_lock_path(stats_date, event).exists()
 
 
 def _ranking_for_date(tracks: list[dict], history: history_store.HistoryIndex, stats_date: str) -> list[dict]:
@@ -114,13 +96,6 @@ def _row_with_rank_context(current: list[dict], previous_by_id: dict[str, dict],
     previous = previous_by_id.get(row["track_id"])
     row["previous_rank"] = previous.get("rank") if previous else None
     row["previous_daily_streams"] = previous.get("daily_streams") if previous else None
-    next_row = current[index + 1] if index + 1 < len(current) else None
-    row["next_gap"] = int(row["streams"]) - int(next_row["streams"]) if next_row else None
-    previous_next = previous_by_id.get(next_row["track_id"]) if next_row else None
-    if previous and previous_next:
-        row["previous_next_gap"] = int(previous["streams"]) - int(previous_next["streams"])
-    else:
-        row["previous_next_gap"] = None
     return row
 
 
@@ -258,9 +233,6 @@ def _fmt_daily_change(row: dict) -> str:
     return _fmt_change_block(row.get("daily_streams"), row.get("previous_daily_streams"))
 
 
-def _fmt_gap_change(row: dict) -> str:
-    return _fmt_change_block(row.get("next_gap"), row.get("previous_next_gap"), main_cls="gap-main")
-
 def _row_role_class(row: dict, group: dict) -> str:
     overtaker_ids = {event["overtaker"]["track_id"] for event in group["events"]}
     passed_ids = {event["passed"]["track_id"] for event in group["events"]}
@@ -280,8 +252,6 @@ def _build_rows_html(group: dict, cover_map: dict, track_album_map: dict) -> str
         cover = tables_image.url_to_data_uri(cover_url) if cover_url else ""
         art_html = f'<img class="art" src="{html.escape(cover, quote=True)}" />' if cover else '<div class="art-ph"></div>'
         rank_delta_html = _rank_delta_badge(row)
-        gap_html = _fmt_gap_change(row)
-        gap_cls = "neutral"
         rows_html += f"""<div class="{card_cls}">
   <div class="col-rank">#{int(row["rank"])}</div>
   <div class="rank-delta-cell">{rank_delta_html}</div>
@@ -294,7 +264,6 @@ def _build_rows_html(group: dict, cover_map: dict, track_album_map: dict) -> str
   </div>
   <div class="col-num">{_fmt_daily_change(row)}</div>
   <div class="col-num"><strong>{fmt_num(row.get("streams"))}</strong></div>
-  <div class="col-num gap {gap_cls}">{gap_html}</div>
 </div>
 """
     return rows_html
@@ -312,11 +281,8 @@ def _group_subtitle(group: dict) -> str:
 
 
 def _group_slug(group: dict) -> str:
-    event = group["events"][0]
-    overtaker_slug = generate_streams_image._norm(event["overtaker"].get("title") or event["overtaker"]["track_id"])
-    passed_slug = generate_streams_image._norm(event["passed"].get("title") or event["passed"]["track_id"])
     suffix = f"_and_{len(group['events']) - 1}_more" if len(group["events"]) > 1 else ""
-    return f"{overtaker_slug}_over_{passed_slug}{suffix}"
+    return f"{_event_slug(group['events'][0])}{suffix}"
 
 
 def render_overtake_image(group: dict, stats_date: str) -> Path:
@@ -332,8 +298,8 @@ def render_overtake_image(group: dict, stats_date: str) -> Path:
     html_text = tables_image.build_table_html(
         title=MOST_STREAMED_SONGS_TITLE,
         subtitle=_group_subtitle(group),
-        col_heads=[("Rank", False), ("+/-", False), ("Track", False), ("Daily", True), ("Total", True), ("Gap", True)],
-        grid_cols="58px 58px minmax(300px,1fr) 112px 142px 102px",
+        col_heads=[("Rank", False), ("+/-", False), ("Track", False), ("Daily", True), ("Total", True)],
+        grid_cols="58px 58px minmax(300px,1fr) 112px 142px",
         rows_html=rows_html,
         handle=HANDLE,
         date_str=_date_label(stats_date),
@@ -367,8 +333,10 @@ def main() -> int:
         print("[song_overtakes] Limit is 0, nothing to do.")
         return 0
 
-    posted_keys = _load_posted_keys(args.date)
-    events = [event for event in find_overtakes(args.date, limit=limit) if args.force or _event_key(event) not in posted_keys]
+    events = [
+        event for event in find_overtakes(args.date, limit=limit)
+        if args.force or not _event_already_posted(args.date, event)
+    ]
     groups = group_close_overtakes(events)
     if not groups:
         print(f"[song_overtakes] No new non-extra song overtakes found for {args.date}.")
@@ -388,15 +356,17 @@ def main() -> int:
         if not post_with_image(tweet, image_path, TWITTER_SESSION):
             raise SystemExit(f"Failed to post overtake group: {', '.join(_event_key_list(group))}")
         newly_posted.update(_event_key_list(group))
+        # Persist immediately, one lock per song overtake: a later group
+        # failing must not cause a retry of the whole script to repost an
+        # overtake that already went out successfully.
+        for event in group["events"]:
+            mark_posted(_event_lock_path(args.date, event))
         if index < len(groups) and args.post_spacing_seconds > 0:
             time.sleep(args.post_spacing_seconds)
 
     if args.no_post:
         print("[song_overtakes] Twitter posts skipped (--no-post).")
         return 0
-    if newly_posted:
-        _save_posted_keys(args.date, posted_keys | newly_posted)
-        mark_posted(update_streams_dir(args.date) / "song_overtakes_posted.lock")
     print(f"[song_overtakes] Posted {len(newly_posted)} overtake(s) for {args.date}.")
     return 0
 

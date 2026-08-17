@@ -27,7 +27,7 @@ ARCHIVE_DB_DIR = DATA_ROOT / "_archive" / "original" / "db"
 OUT_DIR = WEB_EXPORT_DATA_DIR
 
 GLOBAL_CSV = DB_DIR / "apple_music_global.csv"
-TOP_SONGS_CSV = DB_DIR / "apple_music_ts_top_songs.csv"
+TOP_SONGS_CSV = DB_DIR / "apple_music_ts_top_songs_global.csv"
 TOP_VIDEOS_CSV = DB_DIR / "apple_music_ts_top_videos.csv"
 COUNTRY_CSV = DB_DIR / "apple_music_country_charts.csv"
 COUNTRY_ALBUMS_CSV = DB_DIR / "apple_music_country_albums.csv"

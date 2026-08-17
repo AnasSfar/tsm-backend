@@ -311,10 +311,9 @@ def main() -> int:
         next_expected = _next_expected_for_milestone(event, forecasts)
         if not next_expected:
             print(
-                "[stream_milestones] Blocking post: no forecasted next song for "
-                f"{event['title']} at {int(event['milestone']):,}."
+                "[stream_milestones] No forecasted next song for "
+                f"{event['title']} at {int(event['milestone']):,}; posting without the next-song line."
             )
-            continue
 
         spot_track = _spotlight_track_for_event(event, spotlight_tracks)
         album = spot_track.get("album")
@@ -350,8 +349,14 @@ def main() -> int:
             title=str(event.get("title") or event["track_id"]),
             milestone_streams=int(event["milestone"]),
             milestone_rank=rank,
-            next_title=str(next_expected.get("title") or next_expected["track_id"]),
-            next_expected_date=str((next_expected.get("forecast") or {})["expected_date"]),
+            next_title=(
+                str(next_expected.get("title") or next_expected["track_id"])
+                if next_expected else None
+            ),
+            next_expected_date=(
+                str((next_expected.get("forecast") or {})["expected_date"])
+                if next_expected else None
+            ),
             album_title=str(album) if _is_album_name(album) and album_rank is not None else None,
             album_milestone_rank=album_rank,
             album_first=use_album_first,
@@ -375,15 +380,17 @@ def main() -> int:
         if not post_with_image(tweet, image_path, TWITTER_SESSION):
             raise SystemExit(f"Failed to post stream milestone: {_event_key(event)}")
         newly_posted.add(_event_key(event))
+        # Persist immediately: a later event failing must not cause a retry of
+        # the whole script to repost this already-successful milestone.
+        posted_keys |= {_event_key(event)}
+        _save_posted_keys(args.date, posted_keys)
+        mark_posted(update_streams_dir(args.date) / "stream_milestones_posted.lock")
         if index < len(events) and args.post_spacing_seconds > 0:
             time.sleep(args.post_spacing_seconds)
 
     if args.no_post:
         print("[stream_milestones] Twitter posts skipped (--no-post).")
         return 0
-    if newly_posted:
-        _save_posted_keys(args.date, posted_keys | newly_posted)
-        mark_posted(update_streams_dir(args.date) / "stream_milestones_posted.lock")
     print(f"[stream_milestones] Posted {len(newly_posted)} milestone post(s) for {args.date}.")
     return 0
 

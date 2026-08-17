@@ -328,3 +328,41 @@ Le risque ne peut réapparaître que si le VPS est recréé/redéployé sans
 répéter ce backfill — **toute recréation de l'instance VPS doit repartir de
 ce même transfert d'historique avant le premier run réel**, pas juste un
 `git clone`.
+
+## Décommissionnement du VPS (2026-08-17)
+
+**Le VPS OVH (instance `57.130.72.156`, projet "TSM TEST") a été supprimé et
+la résiliation demandée le 2026-08-17**, décision d'Anas après avoir constaté
+le coût réel (`b3-16` ≈ 0,1023 €/h ≈ 74 €/mois en continu, jugé disproportionné
+pour 2 crons légers qui tournent quelques minutes toutes les 4h/24h). Aucune
+tentative de downsize (`b3-8` ou plus petit) n'a été faite avant la
+suppression — l'instance est déjà détruite.
+
+**Retour à l'état pré-VPS** :
+
+- Les deux tâches Windows Task Scheduler (`TSM Apple Music Every 4 Hours`,
+  `TSM YouTube Videos Daily`) ont été réactivées (elles n'avaient jamais été
+  supprimées, juste désactivées le 2026-07-30).
+- YouTube : aucune perte — le VPS committait/pushait ses CSV sur `main` à
+  chaque run (contrairement à Apple Music), donc `git pull` en local a
+  suffi à rattraper tout l'historique du 30/07 au 17/08 (commits
+  `youtube views YYYY-MM-DD`).
+- Apple Music : les CSV ne sont jamais commités (gitignored, ni en local ni
+  sur le VPS). Historique du 30/07 au 17/08 reconstruit depuis R2
+  (`apple-music/snapshots/`, jamais supprimé) via
+  `scripts/sync_apple_music_snapshots_from_r2.py --start 2026-07-30 --end
+  2026-08-17 --force --apply`, pour que `previous_rank` ne reparte pas de
+  zéro au premier run local (même incident que le 30/07, sens inverse).
+- **Découverte en passant** : `.github/workflows/run-apple-music.yml` avait
+  gardé son trigger `schedule` actif tout du long malgré le commentaire du
+  crontab VPS ("équiv. ancien run-apple-music.yml") qui indiquait qu'il
+  était censé être remplacé — il tournait donc potentiellement en parallèle
+  du VPS depuis le 30/07, risque de race sur les mêmes clés R2. Désactivé
+  (schedule commenté, `workflow_dispatch` gardé pour lancement manuel) en
+  même temps que la réactivation du local.
+
+**Conclusion** : la piste VPS pour YouTube/Apple Music est abandonnée pour
+raison de coût (pas technique — les deux collectors fonctionnaient très bien
+depuis l'IP OVH, voir tests plus haut). Si l'idée revient un jour, viser un
+flavor plus petit (`b3-8` ou une ligne moins chère) dès le départ plutôt que
+`b3-16`.

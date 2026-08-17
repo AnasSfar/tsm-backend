@@ -25,6 +25,7 @@ APPLE_MUSIC_SOURCES = [
     DB_DIR / "apple_music_genre_charts.csv",
     DB_DIR / "apple_music_global.csv",
     DB_DIR / "apple_music_ts_top_songs.csv",
+    DB_DIR / "apple_music_ts_top_songs_global.csv",
 ]
 
 ALBUM_ERAS = {

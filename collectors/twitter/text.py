@@ -32,8 +32,10 @@ def streams_update_tweet(*, top_n: int, stats_date: str) -> str:
 
 def song_overtake_tweet(group: dict, stats_date: str) -> str:
     events = group["events"]
+    first_track_id = events[0]["overtaker"]["track_id"]
+    footer = f"\n\nFull history: {song_url(first_track_id)}"
 
-    def event_line(event: dict) -> str:
+    def full_line(event: dict) -> str:
         overtaker = event["overtaker"]
         passed = event["passed"]
         rank = int(overtaker["rank"])
@@ -42,16 +44,36 @@ def song_overtake_tweet(group: dict, stats_date: str) -> str:
             f"and is now Taylor Swift's {ordinal(rank)} most streamed song ever."
         )
 
-    if len(events) == 1:
-        event = events[0]
+    def compact_line(event: dict) -> str:
         overtaker = event["overtaker"]
-        body = f"{event_line(event)}\n\nFull history: {song_url(overtaker['track_id'])}"
-        return with_prefix(body, OVERTAKE_PREFIX)
+        passed = event["passed"]
+        rank = int(overtaker["rank"])
+        return f'"{overtaker["title"]}" passed "{passed["title"]}" — now #{ordinal(rank)} all-time.'
 
-    lines = [event_line(event) for event in events]
-    first_track_id = events[0]["overtaker"]["track_id"]
-    body = "\n".join(lines) + f"\n\nFull history: {song_url(first_track_id)}"
-    return with_prefix(body, OVERTAKE_PREFIX)
+    def build(lines: list[str]) -> str:
+        return with_prefix("\n".join(lines) + footer, OVERTAKE_PREFIX)
+
+    tweet = build([full_line(event) for event in events])
+    if len(tweet) <= 280:
+        return tweet
+
+    # A bundled group (several overtakes close in rank posted as one tweet)
+    # can blow past 280 chars with the full sentence per event — fall back to
+    # a compact line per event, then to dropping the tail of the list. The
+    # image always shows every overtake regardless of what the tweet text fits.
+    compact_lines = [compact_line(event) for event in events]
+    tweet = build(compact_lines)
+    if len(tweet) <= 280:
+        return tweet
+
+    while len(compact_lines) > 1:
+        compact_lines = compact_lines[:-1]
+        remaining = len(events) - len(compact_lines)
+        candidate = build(compact_lines + [f"+{remaining} more overtake(s) — see image."])
+        if len(candidate) <= 280:
+            return candidate
+
+    return build(compact_lines)
 
 def best_day_since_tweet(*, title: str, label: str, daily_streams: int, pct: str, track_id: str) -> str:
     body = (
@@ -72,8 +94,8 @@ def stream_milestone_tweet(
     title: str,
     milestone_streams: int,
     milestone_rank: int,
-    next_title: str,
-    next_expected_date: str,
+    next_title: str | None = None,
+    next_expected_date: str | None = None,
     prefix: str,
     album_title: str | None = None,
     album_milestone_rank: int | None = None,
@@ -105,13 +127,15 @@ def stream_milestone_tweet(
             f'The next song from {album_title} expected to surpass this milestone is '
             f'"{next_album_title}" on {date_label(next_album_expected_date)}.'
         )
-    else:
+    elif next_title and next_expected_date:
         next_line = (
             f'The next song expected to surpass this milestone is "{next_title}" '
             f"on {date_label(next_expected_date)}."
         )
+    else:
+        next_line = None
 
-    body = f"{milestone_line}\n\n{next_line}"
+    body = milestone_line if next_line is None else f"{milestone_line}\n\n{next_line}"
     return with_prefix(body, prefix)
 
 def track_history_line(track_id: str) -> str:

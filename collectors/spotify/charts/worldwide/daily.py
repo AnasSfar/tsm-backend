@@ -122,6 +122,13 @@ TS_NAME         = "Taylor Swift"
 SEMAPHORE       = int(os.getenv("SPOTIFY_WORLDWIDE_SEMAPHORE", "1"))
 FETCH_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_WORLDWIDE_FETCH_MAX_ATTEMPTS", "0"))
 RATE_LIMIT_MIN_SECONDS = int(os.getenv("SPOTIFY_WORLDWIDE_RATE_LIMIT_MIN_SECONDS", "20"))
+# Cap le backoff multiplicatif de GlobalPause (x1, x2, x3...) qui n'avait pas de plafond:
+# sous rate-limit soutenu (tous tokens 429 en boucle), la pause pouvait grimper sans fin
+# (ex: 76 min de silence total observe en prod le 2026-08-17, sans aucune activite reseau/CPU
+# ni log pendant toute la duree, indistinguable d'un vrai hang). On continue de retenter
+# indefiniment (jamais sauter de la vraie donnee), mais chaque cycle de pause reste borne et
+# reproduit un log a intervalle raisonnable au lieu de pouvoir depasser 1h en silence.
+RATE_LIMIT_MAX_SECONDS = int(os.getenv("SPOTIFY_WORLDWIDE_RATE_LIMIT_MAX_SECONDS", "300"))
 # Cas "chart pas encore propage" (URL datee 404, /latest 200 mais pointe encore sur la veille):
 # toujours borne, meme en run quotidien live (FETCH_MAX_ATTEMPTS=0/illimite ne s'applique pas
 # ici expres, pour eviter un hang si la region ne publie vraiment pas ce jour-la).
@@ -823,7 +830,7 @@ class GlobalPause:
                 return
             # All tokens exhausted — real pause
             self._consecutive += 1
-            effective = seconds * self._consecutive
+            effective = min(seconds * self._consecutive, RATE_LIMIT_MAX_SECONDS)
             loop = asyncio.get_running_loop()
             resume_at = loop.time() + effective
             if resume_at <= self._resume_at:

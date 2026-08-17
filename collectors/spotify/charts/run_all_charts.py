@@ -1707,6 +1707,16 @@ def main() -> int:
         # bas exige not ran_collect, jamais vrai un jour ou la collecte tourne).
         forwarded.append("--post-priority-global-new")
 
+    if "us" in post_parts:
+        # US poste des que sa collecte prioritaire est ecrite (Phase 1 de worldwide/daily.py),
+        # sans attendre la fin des ~75 autres regions worldwide (Phase 2) — meme mecanisme deja
+        # cable pour "global" ci-dessus, demande explicite (2026-08-17) pour ne plus faire
+        # attendre le post US derriere tout le reste de la collecte worldwide. daily.py accepte
+        # deja --post-priority-region {global,fr,us} pour ca (etait juste jamais forwarde ici).
+        # _verify_regional_posts plus bas reste le filet de secours (retry) si ce post anticipe
+        # echoue — protege par le meme posted.lock, donc pas de double-post possible.
+        forwarded.extend(["--post-priority-region", "us"])
+
     paused_post_parts = post_parts & _PAUSED_POST_PARTS
     if paused_post_parts:
         paused = ", ".join(sorted(paused_post_parts))

@@ -103,15 +103,19 @@ def _has_recent_zero_daily(
     return False
 
 
-def _pick_gainers(target_date: str, *, compare_days: int, limit: int, min_baseline: int) -> list[dict]:
-    history = history_store.HistoryIndex.load()
-    album_ids = history_store.load_album_track_ids()
+def _gainer_rows_for_ids(
+    track_ids: set[str],
+    *,
+    history: history_store.HistoryIndex,
+    target_date: str,
+    baseline_date: str,
+    zero_exclusion_days: int,
+    min_baseline: int,
+) -> list[dict]:
     tracks = [
-        track for track in history_store.load_tracks_from_discography(album_ids)
-        if track["track_id"] in album_ids
+        track for track in history_store.load_tracks_from_discography(track_ids)
+        if track["track_id"] in track_ids
     ]
-    baseline_date = str(date.fromisoformat(target_date) - timedelta(days=compare_days))
-    zero_exclusion_days = _zero_exclusion_days(compare_days)
 
     rows: list[dict] = []
     for track in tracks:
@@ -144,6 +148,40 @@ def _pick_gainers(target_date: str, *, compare_days: int, limit: int, min_baseli
         })
 
     rows.sort(key=lambda row: (row["pct"], row["gain"], row["daily_today"]), reverse=True)
+    return rows
+
+
+def _pick_gainers(target_date: str, *, compare_days: int, limit: int, min_baseline: int) -> list[dict]:
+    history = history_store.HistoryIndex.load()
+    non_extra_ids = history_store.load_album_track_ids()
+    baseline_date = str(date.fromisoformat(target_date) - timedelta(days=compare_days))
+    zero_exclusion_days = _zero_exclusion_days(compare_days)
+
+    rows = _gainer_rows_for_ids(
+        non_extra_ids,
+        history=history,
+        target_date=target_date,
+        baseline_date=baseline_date,
+        zero_exclusion_days=zero_exclusion_days,
+        min_baseline=min_baseline,
+    )
+
+    # The non-extra catalog alone doesn't always have enough qualifying
+    # gainers to fill the top N (e.g. most songs were flat that day) — fall
+    # back to chart_extra tracks only to fill the remaining slots, never to
+    # bump a non-extra gainer out of the ranking.
+    if len(rows) < limit:
+        extra_ids = history_store.load_active_track_ids_from_discography() - non_extra_ids
+        extra_rows = _gainer_rows_for_ids(
+            extra_ids,
+            history=history,
+            target_date=target_date,
+            baseline_date=baseline_date,
+            zero_exclusion_days=zero_exclusion_days,
+            min_baseline=min_baseline,
+        )
+        rows += extra_rows[: limit - len(rows)]
+
     return rows[:limit]
 
 

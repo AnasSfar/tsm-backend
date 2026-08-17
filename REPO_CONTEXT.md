@@ -4,11 +4,12 @@
 > ⚠️ **Doc vivante — mise à jour OBLIGATOIRE** : toute IA qui ajoute/modifie/déplace un script ou change ses options doit mettre à jour ce fichier dans la même session.
 > Repo frère : `tsm-frontend` (site React + API FastAPI sur Vercel). Flux global :
 > **tsm-backend (collecte locale, Task Scheduler) → R2 (`taylor-data`) → API tsm-frontend → site React.**
-> Depuis le 2026-07-30, YouTube et Apple Music tournent en prod sur un VPS OVH
-> (cron), pas via le Task Scheduler local — voir `OVH.md` et la section
-> « Déploiement VPS OVH » plus bas. Spotify (streams/charts) et Billboard
-> restent en local (Spotify bloqué par le WAF depuis une IP OVH, testé avec
-> et sans WARP — voir `OVH.md`).
+> Le VPS OVH qui a fait tourner YouTube + Apple Music du 2026-07-30 au
+> 2026-08-17 a été décommissionné (coût) — tout tourne de nouveau via le
+> Task Scheduler local, voir `OVH.md` et la section « Déploiement VPS OVH »
+> plus bas. Spotify (streams/charts) et Billboard restent en local de toute
+> façon (Spotify bloqué par le WAF depuis une IP OVH, testé avec et sans
+> WARP — voir `OVH.md`).
 
 ## Arbre général
 
@@ -128,7 +129,9 @@ python update_streams.py YYYY-MM-DD          # run normal pour une date précise
 | *(all-albums)* | Pas de script dédié : `finalize_update._post_all_albums` poste chaque album (hors Misc/standalone) indépendamment via `generate_album_update_image.py --post`, tri par gain (daily streams) décroissant, lundi/vendredi seulement, toujours en dernier parmi les étapes de post. Remplace l'ancien thread groupé (`post_all_albums_thread.py`, lock `all_albums_thread_posted.lock`) — supprimé le 2026-08-05. |
 | `post_best_day_since_twitter.py` | Posts « best day since » avec spotlights. `date`, `--limit 5`, `--min-days`, `--album-limit 1`, `--no-albums`, `--no-recap`, `--only-track ID`, `--exclude-tracks`, `--force`, `--post-spacing-seconds` |
 | `post_debut_releases.py` | Posts des nouvelles sorties. `date`, `--no-post`, `--snapshot-collected-date`, `--force-track-id`, `--force-song` |
-| `post_gainer_thread.py` | Thread top gainers en %. `date`, `--period`, `--limit`, `--min-baseline`, `--no-post` |
+| `post_song_overtakes.py` | Poste les overtakes de total streams entre chansons non-extra (image sans colonne Gap). Regroupe les overtakes proches en rang (`GROUP_RANK_PROXIMITY`) en un seul post/tweet. **Un lock par overtake individuel** : `song_overtakes/{overtaker}_over_{passed}_posted.lock` (pas un JSON/lock global) — écrit pour **chaque événement** d'un groupe **immédiatement après le post réussi** (pas seulement en fin de script), pour qu'un retry de `finalize_update` (3 tentatives) ne reposte jamais un overtake déjà posté, même si un groupe suivant échoue. `date`, `--limit 8`, `--force`, `--no-post`, `--post-spacing-seconds` |
+| `post_stream_milestones.py` | Poste les cartes de milestone (paliers de 100M streams). La ligne « next song expected » est **optionnelle** : si aucun autre morceau n'est prévu pour franchir exactement le même palier, le milestone se poste quand même, juste sans cette phrase (avant le 17/08/2026 : bloquait le post entier — le seul vrai gate restant est un same-day tie sur le même palier, ambigu par construction). Sauvegarde `stream_milestones_posted.json`/lock après chaque post individuel (même raison anti-repost que `post_song_overtakes.py`). `date`, `--limit 10`, `--force`, `--no-post`, `--post-spacing-seconds` |
+| `post_gainer_thread.py` | Thread top gainers en %. Le pool est d'abord les tracks non-extra (`load_album_track_ids`) ; si moins de `--limit` qualifient, les slots restants sont comblés par des tracks `chart_extra=true` (jamais l'inverse — un extra ne délogera jamais un non-extra du classement). `date`, `--period`, `--limit`, `--min-baseline`, `--no-post` |
 | `post_stream_highlights_thread.py` | Tweets highlights (daily+weekly+best-day). `date`, `--limit`, `--best-limit`, `--min-baseline`, `--min-days`, `--no-post` |
 | `post_throwback_thread.py` | Thread throwback. `date`, `--action`, `--event`, `--label`, `--top-n`, `--force`, `--no-post` |
 | `post_weekend_streams_twitter.py` | Poste le récap week-end. `date`, `--no-post`, `--force-weekday` |
@@ -197,14 +200,15 @@ Idempotence (fix 17/07/2026, après double post global/us) : les `daily.py` glob
 
 **Avant tout travail ici : charger le skill `collector-apple-music`** (briefing complet : `docs/apple-music-script-context.md`).
 
-Orchestrateur : `run_apple_music.py` (appelé par `python -m tsm collect apple-music`) — `--no-post` (flag mort, compat CLI : ce pipeline ne poste rien), `--no-images`, `--force-images`. Launcher : `run_apple_music.bat`. Un collecteur en échec = run abandonné (pas d'export/images/upload). Ordre du runner : `global.py` → `ts_page.py` → `country_all.py` → `genre_all.py`.
+Orchestrateur : `run_apple_music.py` (appelé par `python -m tsm collect apple-music`) — `--no-post` (flag mort, compat CLI : ce pipeline ne poste rien), `--no-images`, `--force-images`. Launcher : `run_apple_music.bat`. Un collecteur en échec = run abandonné (pas d'export/images/upload). Ordre du runner : `global.py` → `ts_page.py` → `ts_page_all.py` → `country_all.py` → `genre_all.py`.
 
 | Fichier | Rôle / lancement |
 |---|---|
 | `country_all.py` | **(runner)** Songs + albums + vidéos par pays en 1 requête combinée (`types=songs,albums,music-videos`) ; écrit les 3 CSV legacy. `--countries`, `--date`, `--scraped-at`. Fallback per-type sur 400 ; abort si >5% storefronts en échec |
 | `genre_all.py` | **(runner)** Songs + albums par (pays, genre) en 1 requête (`types=songs,albums&genre=`) ; écrit les 2 CSV legacy. idem |
 | `global.py` | **(runner)** Top 100 global (playlist publique). `--date`, `--scraped-at` |
-| `ts_page.py` | **(runner)** Top songs page artiste TS. `storefront`, `--date`, `--scraped-at` |
+| `ts_page.py` | **(runner)** Top songs page artiste TS, **un seul storefront** (`DEFAULT_STOREFRONT` = `us`). `storefront`, `--date`, `--scraped-at`. Écrit `apple_music_ts_top_songs.csv` — **seule** entrée lue par TayBoard (`collectors/billboard/swift_top_100.py::_weekly_apple_music_ts_points`), ne pas rebrancher sur autre chose sans mettre à jour ce scoring calibré |
+| `ts_page_all.py` | **(runner, 2026-08-17)** Même chart TS top songs mais agrégé sur **tous les storefronts découverts** (`core/storefronts.py::resolve_storefronts`, ~167 pays) en un classement composite (score `500/rank**0.75` par storefront, sommé, poids égal par pays). Écrit `apple_music_ts_top_songs_global.csv`, séparé exprès du fichier single-storefront ci-dessus pour ne pas polluer le scoring TayBoard. Pagination plafonnée à `APPLE_MUSIC_TS_GLOBAL_DEPTH` (défaut 200 = 2 pages/storefront ; le catalogue TS complet fait ~675 titres/storefront). Ne tourne réellement qu'une fois/jour (`APPLE_MUSIC_TS_GLOBAL_HOUR`, défaut `02`, les autres runs du cron 4h se skip, exit 0) — le site n'affiche que le dernier snapshot, pas besoin de rafraîchir 6×/jour vu le coût (~167 storefronts). `--force` bypasse le gate horaire. `--date`, `--scraped-at`. C'est ce fichier qu'`export_apple_music.py`/`upload_ap_r2.py` lisent désormais pour l'onglet site "TS Top Songs" |
 | `country_charts.py` / `country_albums.py` / `music_video_charts.py` | Legacy per-type (manuels ; remplacés par `country_all.py` dans le runner) |
 | `genre_charts.py` / `genre_album_charts.py` | Legacy per-type (manuels ; remplacés par `genre_all.py`) |
 | `global_albums.py` / `top_music_videos.py` | Legacy hors runner (`storefront` pour top_music_videos) |
@@ -405,12 +409,23 @@ Scripts de vérification/debug ponctuels, non maintenus : `adhoc/checks/` (véri
 - `adhoc/post_test_tweet.py` / `adhoc/schedule_test_tweet.py` — smoke-tests Twitter (`--text`, `--at`, `--yes` requis pour poster)
 - `adhoc/render_album_ranking_cards.py`, `adhoc/update_album_rankings_r2.py` — cards Album Ranking figées + upload R2
 
-## 12. Déploiement VPS OVH (YouTube + Apple Music)
+## 12. Déploiement VPS OVH (YouTube + Apple Music) — DÉCOMMISSIONNÉ 2026-08-17
 
-Depuis le 2026-07-30, `collectors/youtube` et `collectors/apple_music`
-tournent en prod sur une instance OVH Public Cloud (Ubuntu, `cron`, plus le
-Planificateur de tâches Windows pour ces deux-là — désactivé). Contexte et
-essais complets dans `OVH.md` à la racine.
+**Ce VPS a été supprimé le 2026-08-17** (coût jugé disproportionné, ~74€/mois
+pour 2 crons légers — voir `OVH.md` section « Décommissionnement »).
+`collectors/youtube` et `collectors/apple_music` tournent de nouveau via le
+**Planificateur de tâches Windows local** (`TSM Apple Music Every 4 Hours`,
+`TSM YouTube Videos Daily` — réactivées, jamais supprimées). Le workflow
+GitHub Actions `run-apple-music.yml` est repassé en déclenchement manuel
+uniquement (`workflow_dispatch`) pour éviter une race avec le job local.
+Section conservée ci-dessous pour l'historique du setup, au cas où l'option
+VPS reviendrait (viser un flavor plus petit que `b3-16` cette fois).
+
+Depuis le 2026-07-30 (et jusqu'au 2026-08-17), `collectors/youtube` et
+`collectors/apple_music` ont tourné en prod sur une instance OVH Public
+Cloud (Ubuntu, `cron`, plus le Planificateur de tâches Windows pour ces
+deux-là — désactivé pendant cette période). Contexte et essais complets
+dans `OVH.md` à la racine.
 
 - Repo cloné dans `~/tsm-backend` via une **Deploy Key GitHub dédiée**
   (`~/.ssh/id_ed25519_github`, write access, scoping limité à ce repo — pas

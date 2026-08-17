@@ -78,6 +78,24 @@ couvre pas un blocage infini sans crash (ex: 429 illimite en live, voir
 Les posts regionaux global/fr/us et les cards sont orchestres autour du
 snapshot worldwide pour garder l'ordre de publication.
 
+**US poste des la Phase 1 (depuis 2026-08-17), sans attendre la fin de la
+collecte worldwide.** `worldwide/daily.py` gere deja en interne
+`--post-priority-region {global,fr,us}` ("poste cette region des que sa
+collecte prioritaire est ecrite") mais `run_all_charts.py` ne le forwardait
+jamais avant ce fix — seul `--post-priority-global-new` etait ajoute, donc
+seul `global` beneficiait d'un post anticipe ; `fr`/`us` attendaient
+systematiquement la fin complete de la collecte des ~75 regions (Phase 2)
+avant que `_verify_regional_posts` ne les poste, en toute fin de run.
+Corrige : `run_all_charts.py` ajoute maintenant `--post-priority-region us`
+aux args forwardees vers `worldwide/daily.py` des que `"us" in post_parts`
+(defaut : actif, `fr` est en pause via `_PAUSED_POST_PARTS` donc pas concerne
+pour l'instant). Consequence : `us` rejoint desormais `global` dans la Phase 1
+bloquante (fetch prioritaire avant les ~74 autres regions), et son post part
+en tache de fond des que sa donnee est ecrite — plus besoin d'attendre la
+Phase 2 entiere. `_verify_regional_posts` reste le filet de secours en fin de
+run (retry si le post anticipe a echoue) ; protege par le meme `posted.lock`
+que le post anticipe, donc jamais de double-post.
+
 **`artists_global` n'est PAS orchestre par `run_all_charts.py` (depuis
 2026-08-16).** Task Scheduler local a deux taches distinctes qui declenchent
 toutes les deux a **15h** :
@@ -383,10 +401,36 @@ volontairement independant de `FETCH_MAX_ATTEMPTS` (illimite par defaut en run
 live) pour ne pas risquer un hang si la region ne publie vraiment pas ce
 jour-la.
 
+**Piege confirme et corrige (2026-08-17) : backoff `GlobalPause` sans plafond
+= pause silencieuse pouvant depasser 1h, indistinguable d'un vrai hang.**
+Quand les deux tokens Spotify se prennent un 429 dans le meme cycle
+(`GlobalPause.trigger` dans `worldwide/daily.py`), la pause suit un backoff
+multiplicatif `seconds * consecutive` (x1, x2, x3…) qui n'avait **aucun
+plafond**. Sous rate-limit soutenu (IP/WARP tape par Spotify sur plusieurs
+regions d'affilee — observe en meme temps qu'`update_streams.py` tournait en
+parallele sur la meme machine), `consecutive` grimpe sans fin et un seul cycle
+de pause peut durer des dizaines de minutes voire plus d'une heure — pendant
+toute cette duree, zero requete reseau, zero CPU, zero ligne de log (le print
+`[pause] tous tokens epuises` ne sort qu'une fois au debut du cycle). Observe
+en prod le 2026-08-17 sur le run `--watch-release` du 16/08 : `worldwide`
+figé 76 minutes apres la region `hu` sans qu'aucun timeout/retry visible ne se
+declenche, force un kill manuel + relance du process. Corrige : `effective`
+est desormais plafonne a `SPOTIFY_WORLDWIDE_RATE_LIMIT_MAX_SECONDS` (defaut
+`300` = 5 min). Le comportement "jamais sauter de la vraie donnee" est
+preserve (`consecutive` continue de grimper et le process retente
+indefiniment) — seule la duree d'un cycle de pause individuel est bornee, ce
+qui garantit un log toutes les <=5 min au lieu d'un silence potentiellement
+illimite. Si un run parait fige sans nouvelle ligne de log pendant plus de
+~5-6 min avec zero activite reseau/CPU sur le process, ce n'est plus ce
+mecanisme (deja borne) — chercher ailleurs (Playwright, deadlock semaphore).
+
 Variables d'environnement:
 
 - `SPOTIFY_WORLDWIDE_SEMAPHORE`: concurrence regions, defaut `10`, backfill
   via run_all met `12`.
+- `SPOTIFY_WORLDWIDE_RATE_LIMIT_MAX_SECONDS`: plafond d'un cycle de pause
+  `GlobalPause` (tous tokens 429 epuises), defaut `300` (5 min). Voir piege
+  ci-dessus.
 - `SPOTIFY_WORLDWIDE_FETCH_MAX_ATTEMPTS`: tentatives max par region, `0` =
   infini.
 - `SPOTIFY_SKIP_LATEST_FALLBACK_ON_404`: en backfill, evite de lire `latest`

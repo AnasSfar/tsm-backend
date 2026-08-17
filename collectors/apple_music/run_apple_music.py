@@ -20,6 +20,7 @@ REPO_ROOT = HERE.parents[1]
 SCRIPTS = [
     HERE / "global.py",
     HERE / "ts_page.py",
+    HERE / "ts_page_all.py",
     HERE / "country_all.py",
     HERE / "genre_all.py",
 ]

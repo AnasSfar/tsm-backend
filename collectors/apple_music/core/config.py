@@ -22,7 +22,7 @@ TOOLS_JSON_DIR.mkdir(parents=True, exist_ok=True)
 APPLE_MUSIC_HOME = "https://music.apple.com/fr/new"
 ARTIST_FILTER = "Taylor Swift"
 ARTIST_ID = "159260351"
-DEFAULT_STOREFRONT = "fr"
+DEFAULT_STOREFRONT = "us"
 
 
 def _int_from_env(name: str, default: int) -> int:

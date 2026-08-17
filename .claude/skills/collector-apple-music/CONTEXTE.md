@@ -15,12 +15,15 @@ Le pipeline ne poste pas sur X. `--no-post` existe dans le runner mais n'est pas
 un controle de publication Twitter. Ne fait jamais de commit/push git (seul
 l'upload R2 distribue la donnee).
 
-Scheduler : depuis le 2026-07-30, prod tourne via `cron` sur un VPS OVH
-(`~/tsm-backend/run_apple_music_vps.sh`, timezone `Europe/Paris`), toutes
-les 4h (`0 2,6,10,14,18,22 * * *`, equivalent a l'ancien cron UTC
-`0 */4 * * *` de `run-apple-music.yml`). Le job Windows local est
-desactive. Detail complet : `REPO_CONTEXT.md` section « Deploiement VPS
-OVH » et `OVH.md`.
+Scheduler : VPS OVH decommissionne le 2026-08-17 (cout juge disproportionne,
+~74€/mois pour 2 crons legers — voir `OVH.md` section "Decommissionnement").
+Retour au job **Windows Task Scheduler local** (`TSM Apple Music Every 4
+Hours`, reactive le 2026-08-17, jamais supprime — juste desactive du
+2026-07-30 au 2026-08-17). Le workflow GitHub Actions `run-apple-music.yml`
+existe toujours mais son trigger `schedule` est desactive (manuel via
+`workflow_dispatch` seulement) pour eviter une race avec le job local sur
+les memes cles R2. Detail complet : `REPO_CONTEXT.md` section « Deploiement
+VPS OVH » et `OVH.md`.
 
 ## Entrypoint
 
@@ -34,12 +37,13 @@ Le runner lance, avec le meme `--scraped-at`:
 
 1. `global.py`
 2. `ts_page.py`
-3. `country_all.py`
-4. `genre_all.py`
-5. `scripts/export_apple_music.py`
-6. `generate_country_card_images.py`
-7. `generate_snapshot_images.py`
-8. `scripts/upload_ap_r2.py`, sauf `UPLOAD_TO_R2=0`
+3. `ts_page_all.py`
+4. `country_all.py`
+5. `genre_all.py`
+6. `scripts/export_apple_music.py`
+7. `generate_country_card_images.py`
+8. `generate_snapshot_images.py`
+9. `scripts/upload_ap_r2.py`, sauf `UPLOAD_TO_R2=0`
 
 Options runner:
 
@@ -54,6 +58,27 @@ Scripts combines quotidiens:
 - `country_all.py`: songs + albums + music-videos par pays en un appel quand
   possible; fallback per-type si l'appel combine est rejete.
 - `genre_all.py`: songs + albums par genre.
+- `ts_page_all.py` (2026-08-17): variante composite de `ts_page.py`, agregee
+  sur tous les storefronts decouverts (`core/storefronts.resolve_storefronts`,
+  ~167 pays) au lieu d'un seul. Score par storefront = `500/rank**0.75` *
+  poids marche (meme courbe et meme table `AM_MARKET_WEIGHTS` que le scoring
+  Apple Music de TayBoard, `collectors/billboard/swift_top_100.py`, dupliquees
+  localement expres pour eviter un import cross-collector — us=1.00,
+  gb=0.70, jp=0.55, de/fr/ca=0.50, ... defaut 0.08 pour les marches non
+  listes), somme -> classement global. Sans cette ponderation un #1 dans un
+  marche ou TS est marginale compterait comme un #1 US ; garder les deux
+  tables synchronisees si TayBoard change la sienne. Ecrit un CSV **separe**
+  (`apple_music_ts_top_songs_global.csv`) : `ts_page.py` garde son fichier
+  single-storefront intact car c'est la seule source lue par le scoring
+  TayBoard (`_weekly_apple_music_ts_points`) — brancher ce dernier sur le
+  composite fausserait ce score deja calibre. Pagination plafonnee a
+  `APPLE_MUSIC_TS_GLOBAL_DEPTH` (defaut 200, soit 2 pages/storefront — le
+  catalogue TS complet fait ~675 titres/storefront, la queue au-dela du rang
+  200 pese <10 pts sur ~500 pour le rang 1, donc negligeable). Ne tourne pour
+  de vrai qu'une fois/jour (`APPLE_MUSIC_TS_GLOBAL_HOUR`, defaut `02`, les
+  autres passages du cron 4h se skippent avec exit 0 — `--force` bypasse) car
+  le site n'affiche que le dernier snapshot et ~167 storefronts x plusieurs
+  runs/jour serait un cout API inutile.
 
 Scripts legacy/manuels:
 
@@ -78,7 +103,8 @@ Outils partages:
 
 CSV principaux dans `db/`:
 
-- `apple_music_ts_top_songs.csv`
+- `apple_music_ts_top_songs.csv` (single-storefront `us`, input TayBoard uniquement)
+- `apple_music_ts_top_songs_global.csv` (composite tous storefronts, alimente l'onglet site "TS Top Songs" via `export_apple_music.py`/`upload_ap_r2.py`)
 - `apple_music_global.csv`
 - `apple_music_genre_charts.csv`
 - `apple_music_country_charts.csv`

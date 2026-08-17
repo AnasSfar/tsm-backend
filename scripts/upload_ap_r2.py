@@ -36,7 +36,7 @@ APPLEMUSIC_HISTORY_DATES_DIR = SITE_DATA_DIR / "applemusic_history_dates"
 COUNTRY_CSV = DB_DIR / "apple_music_country_charts.csv"
 GENRE_CSV = DB_DIR / "apple_music_genre_charts.csv"
 GLOBAL_CSV = DB_DIR / "apple_music_global.csv"
-TS_TOP_CSV = DB_DIR / "apple_music_ts_top_songs.csv"
+TS_TOP_CSV = DB_DIR / "apple_music_ts_top_songs_global.csv"
 MUSIC_VIDEO_CSV = DB_DIR / "apple_music_music_video_charts.csv"
 
 R2_PREFIX = r2_keys.APPLE_MUSIC_HISTORY_BY_SONG_PREFIX
@@ -49,7 +49,7 @@ APPLE_MUSIC_CSV_NAMES = [
     "apple_music_global.csv",
     "apple_music_country_charts.csv",
     "apple_music_genre_charts.csv",
-    "apple_music_ts_top_songs.csv",
+    "apple_music_ts_top_songs_global.csv",
     "apple_music_country_albums.csv",
     "apple_music_genre_album_charts.csv",
     "apple_music_music_video_charts.csv",
