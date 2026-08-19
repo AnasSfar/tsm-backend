@@ -78,6 +78,25 @@ MILESTONE_STEP = 100_000_000
 MILESTONES = list(range(MILESTONE_STEP, 5_000_000_000 + MILESTONE_STEP, MILESTONE_STEP))
 
 
+def sanitize_dead_local_proxy_env(env: dict[str, str] | None = None) -> dict[str, str]:
+    target = dict(env) if env is not None else dict(__import__("os").environ)
+    dead_proxy_values = {
+        "http://127.0.0.1:9",
+        "https://127.0.0.1:9",
+        "http://localhost:9",
+        "https://localhost:9",
+    }
+    removed = []
+    for name in ("HTTP_PROXY", "HTTPS_PROXY", "http_proxy", "https_proxy"):
+        value = (target.get(name) or "").strip().rstrip("/")
+        if value.lower() in dead_proxy_values:
+            target.pop(name, None)
+            removed.append(name)
+    if removed:
+        print("[WARN] Ignored dead local proxy env var(s): " + ", ".join(sorted(removed)))
+    return target
+
+
 def load_album_covers() -> dict:
     if not COVERS_JSON_PATH.exists():
         return {}
@@ -1895,7 +1914,7 @@ def export_for_web(stats_date: str | None = None, *, dry_run: bool = False) -> N
                 _new_date = stats_date or exported_worldwide_date or latest_date
                 if _new_date:
                     _cmd += ["--new-date", _new_date]
-                _subprocess.run(_cmd, check=True)
+                _subprocess.run(_cmd, check=True, env=sanitize_dead_local_proxy_env())
                 if r2_export_lock:
                     lock_path = Path(r2_export_lock)
                     lock_path.parent.mkdir(parents=True, exist_ok=True)

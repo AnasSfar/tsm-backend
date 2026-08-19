@@ -665,10 +665,16 @@ def _run(ctx: FinalizeContext, cmd: list[str], *, label: str, should_post: bool,
 def _export_web_data_once(ctx: FinalizeContext, *, force: bool = False) -> None:
     run_dir = update_streams_dir(ctx.stats_date)
     export_lock = run_dir / "exported.lock"
+    daily_site_history = run_dir / "site_history.json"
     r2_export_lock = run_dir / "r2_exported.lock"
     if export_lock.exists() and not force and not ctx.test_mode:
-        print(f"Web export already done for {ctx.stats_date} (exported.lock exists), skipping.")
-        return
+        if daily_site_history.exists():
+            print(f"Web export already done for {ctx.stats_date} (exported.lock exists), skipping.")
+            return
+        print(
+            f"Web export lock exists for {ctx.stats_date}, but {daily_site_history.name} "
+            "is missing; rebuilding export."
+        )
 
     print("Re-exporting web data...")
     allow_r2 = not ctx.local_test_mode and not ctx.test_mode
@@ -684,6 +690,14 @@ def _export_web_data_once(ctx: FinalizeContext, *, force: bool = False) -> None:
         run_dir.mkdir(parents=True, exist_ok=True)
         export_lock.touch()
     print("Web export done.")
+
+
+def _ensure_daily_site_history(ctx: FinalizeContext) -> None:
+    daily_site_history = update_streams_dir(ctx.stats_date) / "site_history.json"
+    if daily_site_history.exists():
+        return
+    print(f"Daily site history missing for {ctx.stats_date}; exporting web data before post.")
+    ctx.export_web_data(allow_r2=False, stats_date=ctx.stats_date)
 
 
 def _refresh_release_dates(ctx: FinalizeContext) -> bool:
@@ -765,6 +779,8 @@ def _post_daily_recap_card(ctx: FinalizeContext, state: dict[str, float]) -> Non
     if not _streams_post_ready(ctx):
         print("Skipping daily recap card: blocking tracks are still pending.")
         return
+
+    _ensure_daily_site_history(ctx)
 
     print("Posting daily recap card to Twitter...")
     _run(

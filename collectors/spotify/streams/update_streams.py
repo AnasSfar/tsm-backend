@@ -196,6 +196,11 @@ MAX_NOT_FOUND_DAYS = 7
 MAX_DAILY_INCREASE = 50_000_000
 MAX_ESTIMATED_STREAM_GAP_DAYS = 4
 ESTIMATED_MISSING_DAY_REASON = "missing_daily_gap"
+
+# --admin: accept whatever total Spotify shows as-is, writing the raw diff as
+# daily_streams even when negative (unlike --over, which still clamps a
+# negative diff to blank via compute_daily). Set once in main() from argv.
+ADMIN_OVERRIDE_MODE = False
 NEW_RELEASE_RETRY_ATTEMPTS = int(os.getenv("NEW_RELEASE_RETRY_ATTEMPTS", "12"))
 NEW_RELEASE_RETRY_SLEEP_SECONDS = int(os.getenv("NEW_RELEASE_RETRY_SLEEP_SECONDS", "10"))
 
@@ -448,8 +453,17 @@ Usage:
       Scrape only. No writes anywhere.
 
   python update_streams.py YYYY-MM-DD --over
-      Override stream safety guards for this run. Use only for verified Spotify-side
-      merges/relinks where the raw total and computed delta should be accepted as-is.
+      Override the reject-on-decrease guard for this run. Still clamps a negative
+      delta to a blank daily_streams (compute_daily) â€” use --admin instead if the
+      raw total decreased and that decrease itself should be recorded.
+
+  python update_streams.py YYYY-MM-DD --admin
+      Accept the raw Spotify total as-is with no clamp at all (implies --over):
+      writes daily_streams as the literal (possibly negative) diff, tagged
+      estimated_reason=admin_override so the completeness gate counts it as done
+      despite the negative/blank value. Use only for a verified Spotify-side
+      merge/relink/correction you're vouching for by hand â€” it bypasses the
+      "never publish a negative daily" guarantee.
 
   python update_streams.py --local-test YYYY-MM-DD
       Force re-scrape even if the date already exists, but skip history writes,
@@ -597,7 +611,20 @@ def try_apply_track_update(
         )
     )
 
-    if override_stream_guards:
+    if override_stream_guards and ADMIN_OVERRIDE_MODE:
+        # --admin: accept the raw diff as-is, negative included â€” no
+        # compute_daily() clamp. The human operator is explicitly vouching
+        # for this total, so don't second-guess it with the automatic
+        # "no negative daily" guarantee (see load_history_track_ids_with_daily_for_date).
+        reason = "admin_override"
+        real_update = True
+        if previous_day_total is not None:
+            daily = total - previous_day_total
+        elif last_total is not None:
+            daily = total - last_total
+        else:
+            daily = None
+    elif override_stream_guards:
         reason = "override_stream_guards"
         real_update = True
         if previous_day_total is None and last_total is not None:
@@ -714,11 +741,15 @@ def try_apply_track_update(
         status = "pending"
     elif real_update:
         if write_history:
+            row_estimated_reason = "admin_override" if reason == "admin_override" else ""
             with lock:
                 if history_index is not None:
-                    history_index.append(stats_date, track_id, total, daily)
+                    history_index.append(stats_date, track_id, total, daily, row_estimated_reason)
                 else:
-                    append_history_row([stats_date, track_id, total, daily if daily is not None else ""])
+                    append_history_row([
+                        stats_date, track_id, total, daily if daily is not None else "",
+                        "", row_estimated_reason,
+                    ])
         status = "updated"
 
         if reason == "lower_than_previous" and not dry_run_mode:
@@ -2137,17 +2168,28 @@ def main():
     test_mode = "--test" in sys.argv
     no_post_mode = "--no-post" in sys.argv
     override_stream_guards = "--over" in sys.argv or "--override-stream-guards" in sys.argv
+    admin_override_mode = "--admin" in sys.argv
     throwback_mode = "--throwback" in sys.argv
     throwback_force = "--force" in sys.argv or "--throwback-force" in sys.argv
     reset_last_date_mode = "--reset-last-date" in sys.argv
     write_history = not local_test_mode
     force_reprocess = local_test_mode or ("--force" in sys.argv and not throwback_mode)
 
+    if admin_override_mode:
+        override_stream_guards = True
+    global ADMIN_OVERRIDE_MODE
+    ADMIN_OVERRIDE_MODE = admin_override_mode
+
     if test_mode:
         no_post_mode = True
     if local_test_mode:
         no_post_mode = True
-    if override_stream_guards:
+    if admin_override_mode:
+        print(
+            "WARNING: --admin enabled; accepting Spotify's raw total as-is for targeted tracks, "
+            "including a negative daily_streams if the total dropped (marked estimated_reason=admin_override)."
+        )
+    elif override_stream_guards:
         print("WARNING: --over enabled; stream safety guards are disabled for accepted scrape totals.")
 
     if debug_daily_mode and debug_total_mode:
@@ -2171,6 +2213,7 @@ def main():
             "--no-post",
             "--over",
             "--override-stream-guards",
+            "--admin",
             "--throwback",
             "--throwback-force",
             "--force",
@@ -3476,6 +3519,7 @@ def main():
                 stats_date_override=stats_date_override,
                 only_track_ids=missing_non_extra,
                 token_mgr=token_mgr,
+                force_reprocess=True,
                 write_history=write_history,
                 use_browser_scrape=use_browser_scrape_for_run,
                 override_stream_guards=override_stream_guards,

@@ -27,6 +27,27 @@ except ImportError:
 
 load_dotenv(str(Path(__file__).resolve().parents[1] / ".env"), override=True)
 
+
+def sanitize_dead_local_proxy_env() -> None:
+    """Drop proxy env vars that point to the local deny-port used by sandboxes."""
+    dead_proxy_values = {
+        "http://127.0.0.1:9",
+        "https://127.0.0.1:9",
+        "http://localhost:9",
+        "https://localhost:9",
+    }
+    removed = []
+    for name in ("HTTP_PROXY", "HTTPS_PROXY", "http_proxy", "https_proxy"):
+        value = (os.getenv(name) or "").strip().rstrip("/")
+        if value.lower() in dead_proxy_values:
+            os.environ.pop(name, None)
+            removed.append(name)
+    if removed:
+        print("[WARN] Ignored dead local proxy env var(s): " + ", ".join(sorted(removed)))
+
+
+sanitize_dead_local_proxy_env()
+
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "collectors" / "spotify"))
 from core.data_paths import (  # noqa: E402
@@ -737,13 +758,13 @@ def upload_static_data(
             item for item in csv_mappings
             if item[0].startswith("charts_history_")
         ]
-    for filename, r2_keys in csv_mappings:
+    for filename, csv_r2_keys in csv_mappings:
         src = DB_DIR / filename
         if not src.exists():
             print(f"[SKIP] absent: {src}")
             continue
         data = src.read_bytes()
-        for r2_key in r2_keys:
+        for r2_key in csv_r2_keys:
             full_key = f"{data_prefix}/{r2_key.split('/', 1)[1]}"
             tasks.append((full_key, data, "text/csv; charset=utf-8"))
 

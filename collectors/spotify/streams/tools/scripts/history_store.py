@@ -745,15 +745,25 @@ class HistoryIndex:
         with self._lock:
             return bool(self.ids_with_daily_by_date.get(stats_date))
 
-    def append(self, stats_date: str, track_id: str, total: int, daily: int | None) -> None:
+    def append(
+        self,
+        stats_date: str,
+        track_id: str,
+        total: int,
+        daily: int | None,
+        estimated_reason: str = "",
+    ) -> None:
         row = {
             "date": stats_date,
             "track_id": track_id,
             "streams": str(total),
             "daily_streams": "" if daily is None else str(daily),
+            "estimated_reason": estimated_reason,
         }
         with self._lock:
-            append_history_row([stats_date, track_id, total, "" if daily is None else daily])
+            append_history_row([
+                stats_date, track_id, total, "" if daily is None else daily, "", estimated_reason,
+            ])
             self._consume_row(row)
 
     def points_for_track(self, track_id: str) -> list[dict]:
@@ -825,6 +835,12 @@ def load_history_track_ids_with_daily_for_date(stats_date: str) -> set[str]:
                 continue
             track_id = (row.get("track_id") or "").strip()
             if not track_id:
+                continue
+            if (row.get("estimated_reason") or "").strip() == "admin_override":
+                # --admin explicitly force-accepted this total as-is (negative
+                # daily included) — trust that human call, don't re-apply the
+                # automatic "no blank/negative daily" guard on top of it.
+                done.add(track_id)
                 continue
             daily_raw = (row.get("daily_streams") or "").strip()
             if not daily_raw:

@@ -35,6 +35,14 @@ commande ecrit ou poste.
 Modes visibles dans les logs/code:
 
 - `--dry-run`: scraping uniquement, aucune modification.
+- `--admin` (ajoute 2026-08-19, implique `--over`): accepte le total Spotify
+  brut tel quel, daily inclus s'il est negatif (pas de clamp `compute_daily`).
+  Ecrit `estimated_reason=admin_override`, ce qui fait aussi compter la ligne
+  comme "faite" dans le check de completude
+  (`load_history_track_ids_with_daily_for_date`) malgre un daily
+  negatif/vide. Reserve a un cas verifie a la main (fusion/split cote
+  Spotify, cf. incident Karma 2026-08-17 dans `pipeline-ops`) — ca contourne
+  la garantie "jamais de daily negatif publie".
 - `--debug-daily`: retry de tracks inacheves, ecrit l'history, pas de
   Twitter/git/forecast/images/notify.
 - `--debug-total YYYY-MM-DD`: remplace des totals sur une date existante.
