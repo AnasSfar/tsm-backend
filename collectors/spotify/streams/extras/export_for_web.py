@@ -256,6 +256,9 @@ def load_tracks_from_discography() -> list[dict]:
                 "track_id": track_id,
                 "title": title,
                 "title_key": normalize_title_for_site(title),
+                "title_clean": track.get("title_clean") or None,
+                "base_title": track.get("base_title") or None,
+                "song_family": track.get("song_family") or None,
                 "spotify_url": spotify_url,
                 "image_url": image_url,
                 "streams": None,
@@ -779,6 +782,8 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                     display_section = track.get("display_section")
                     display_order = track.get("display_order")
                     base_title    = track.get("base_title")
+                    title_clean   = track.get("title_clean")
+                    song_family   = track.get("song_family")
                     chart_extra   = track.get("chart_extra", section_chart_extra)
 
                     file_tracks.append({
@@ -790,6 +795,8 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                         "display_section": display_section,
                         "display_order":  display_order,
                         "base_title":     base_title,
+                        "title_clean":    title_clean,
+                        "song_family":    song_family,
                         "chart_extra":    chart_extra,
                         "section":        section_name,
                         "source_file":    file_name,
@@ -807,6 +814,8 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                         "display_section": display_section,
                         "display_order":  display_order,
                         "base_title":     base_title,
+                        "title_clean":    title_clean,
+                        "song_family":    song_family,
                         "chart_extra":    chart_extra,
                     })
 
@@ -880,6 +889,8 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                     display_section = track.get("display_section")
                     display_order = track.get("display_order")
                     base_title    = track.get("base_title")
+                    title_clean   = track.get("title_clean")
+                    song_family   = track.get("song_family")
                     chart_extra   = track.get("chart_extra", data.get("chart_extra"))
 
                     track_entry = {
@@ -890,6 +901,8 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                         "display_section": display_section,
                         "display_order":  display_order,
                         "base_title":     base_title,
+                        "title_clean":    title_clean,
+                        "song_family":    song_family,
                         "chart_extra":    chart_extra,
                         "section":        section_name,
                         "source_file":    file_name,
@@ -910,6 +923,8 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                         "display_section": display_section,
                         "display_order":  display_order,
                         "base_title":     base_title,
+                        "title_clean":    title_clean,
+                        "song_family":    song_family,
                         "chart_extra":    chart_extra,
                     })
 
@@ -958,6 +973,8 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                             "display_section": display_section,
                             "display_order":  display_order,
                             "base_title":     base_title,
+                            "title_clean":    title_clean,
+                            "song_family":    song_family,
                         })
 
                 group_sections.append({
@@ -1399,7 +1416,7 @@ def export_swift_top_100_from_csv(*, songs_by_id: dict[str, dict] | None = None)
 
         # Get canonical info from song_family if available
         song_family = (song or {}).get("song_family") if song else None
-        canonical_info = song_family_info.get(song_family) if song_family else {}
+        canonical_info = (song_family_info.get(song_family) if song_family else {}) or {}
 
         # Use canonical title and image if available, otherwise normalize the remix title
         if canonical_info.get("title"):
@@ -1602,7 +1619,9 @@ def export_for_web(stats_date: str | None = None, *, dry_run: bool = False) -> N
         song["edition"] = primary.get("edition") if primary else None
         song["display_section"] = primary.get("display_section") if primary else None
         song["display_order"] = primary.get("display_order") if primary else None
-        song["base_title"] = primary.get("base_title") if primary else None
+        song["base_title"] = (primary.get("base_title") if primary else None) or song.get("base_title")
+        song["title_clean"] = (primary.get("title_clean") if primary else None) or song.get("title_clean")
+        song["song_family"] = (primary.get("song_family") if primary else None) or song.get("song_family")
         song["chart_extra"] = primary.get("chart_extra") if primary else song.get("chart_extra")
 
     # Never publish a date to the site while its chart_extra=false ("main")
@@ -1750,6 +1769,18 @@ def export_for_web(stats_date: str | None = None, *, dry_run: bool = False) -> N
         {k: v for k, v in song.items() if k not in _DEFERRED_FIELDS}
         for song in deduped_songs
     ]
+    missing_song_family = [
+        f"{song.get('track_id')}: {song.get('title')}"
+        for song in songs_stripped
+        if not song.get("song_family")
+    ]
+    if missing_song_family:
+        sample = "\n".join(f"  - {item}" for item in missing_song_family[:20])
+        extra = "" if len(missing_song_family) <= 20 else f"\n  ... +{len(missing_song_family) - 20} more"
+        raise RuntimeError(
+            "Refusing to export songs.json with missing song_family values:\n"
+            f"{sample}{extra}"
+        )
 
     songs_payload = {
         "summary": {**summary, "dates": dates},

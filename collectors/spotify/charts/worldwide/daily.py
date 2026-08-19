@@ -1509,6 +1509,10 @@ def _mark_immediate_reentry_posted(chart_date: str, lock_key: str) -> None:
         )
 
 
+def _immediate_entry_is_re(row: dict) -> bool:
+    return str(row.get("movement") or "").strip().upper() == "RE" or bool(row.get("is_re_entry"))
+
+
 def _build_immediate_reentry_tweet(title: str, album: str, region_name: str, row: dict, chart_date: str) -> str:
     try:
         date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%A, %B %d, %Y")
@@ -1518,8 +1522,9 @@ def _build_immediate_reentry_tweet(title: str, album: str, region_name: str, row
     rank = row.get("rank", "?")
     streams = _fmt_streams(row.get("streams"))
     overall_url = full_charts_update_line(region="overall", label="🔗 See full update here")
+    verb = "re-entered the Spotify Charts" if _immediate_entry_is_re(row) else "charted on Spotify"
     return (
-        f'{emoji} | "{title}" re-entered the Spotify Charts in {region_name} at #{rank} '
+        f'{emoji} | "{title}" {verb} in {region_name} at #{rank} '
         f"with {streams} streams on {date_fmt}.\n\n{overall_url}"
     )
 
@@ -1540,6 +1545,7 @@ def _post_immediate_reentry_card(
     song_meta = _build_song_meta().get(track_id, {})
     album = str(song_meta.get("primary_album") or song_meta.get("album") or "").strip()
     cover_url = _cover_url_from_meta(song_meta)
+    badge_text, badge_class = ("RE", "re") if _immediate_entry_is_re(row) else ("NEW", "new")
 
     try:
         dt = datetime.strptime(chart_date, "%Y-%m-%d")
@@ -1559,8 +1565,8 @@ def _post_immediate_reentry_card(
             {
                 "label": "Rank",
                 "value": f"#{row.get('rank')}" if row.get("rank") is not None else "#-",
-                "badge": "RE",
-                "badge_class": "re",
+                "badge": badge_text,
+                "badge_class": badge_class,
             },
             {
                 "label": "Streams",
@@ -1585,11 +1591,11 @@ def _post_immediate_reentry_card(
     try:
         write_chart_card_png(html_content, out_path, tmp_path, width=920, height=344, export_frame=True)
     except Exception as exc:
-        print(f"[WARN] Immediate re-entry card render failed for {title!r} ({region}): {exc}", flush=True)
+        print(f"[WARN] Immediate {badge_text} card render failed for {title!r} ({region}): {exc}", flush=True)
         return
 
     tweet_text = _build_immediate_reentry_tweet(title, album, region_name, row, chart_date)
-    print(f"[INFO] Immediate re-entry detected: {title!r} in {region_name} — posting standalone...", flush=True)
+    print(f"[INFO] Immediate {badge_text} entry detected: {title!r} in {region_name} — posting standalone...", flush=True)
     for attempt in range(1, IMMEDIATE_REENTRY_POST_MAX_ATTEMPTS + 1):
         if post_with_image(
             tweet_text,
@@ -1598,16 +1604,16 @@ def _post_immediate_reentry_card(
             skip_if=lambda: _immediate_reentry_already_posted(chart_date, lock_key),
         ):
             _mark_immediate_reentry_posted(chart_date, lock_key)
-            print(f"[INFO] Posted immediate re-entry card: {title!r} ({region})", flush=True)
+            print(f"[INFO] Posted immediate {badge_text} card: {title!r} ({region})", flush=True)
             return
         print(
-            f"[WARN] Immediate re-entry post failed for {title!r} ({region}), "
+            f"[WARN] Immediate {badge_text} post failed for {title!r} ({region}), "
             f"tentative {attempt}/{IMMEDIATE_REENTRY_POST_MAX_ATTEMPTS}",
             flush=True,
         )
         if attempt < IMMEDIATE_REENTRY_POST_MAX_ATTEMPTS:
             time.sleep(IMMEDIATE_REENTRY_POST_RETRY_SECONDS)
-    print(f"[WARN] Immediate re-entry post abandoned for {title!r} ({region})", flush=True)
+    print(f"[WARN] Immediate {badge_text} post abandoned for {title!r} ({region})", flush=True)
 
 
 def _maybe_trigger_immediate_reentries(
@@ -1626,7 +1632,7 @@ def _maybe_trigger_immediate_reentries(
         return
     for row in rows:
         movement = str(row.get("movement") or "").strip().upper()
-        if movement != "RE" and not row.get("is_re_entry"):
+        if movement not in ("RE", "NEW") and not row.get("is_re_entry") and not row.get("is_new"):
             continue
         track_id = row.get("_track_id_uri") or resolve_track_id(row.get("track_name", ""), manual_lookup, track_lookup)
         track_id = canonical_chart_track_id(track_id, historical_lookup)

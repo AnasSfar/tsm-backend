@@ -447,6 +447,10 @@ Usage:
   python update_streams.py --dry-run
       Scrape only. No writes anywhere.
 
+  python update_streams.py YYYY-MM-DD --over
+      Override stream safety guards for this run. Use only for verified Spotify-side
+      merges/relinks where the raw total and computed delta should be accepted as-is.
+
   python update_streams.py --local-test YYYY-MM-DD
       Force re-scrape even if the date already exists, but skip history writes,
       R2, Twitter, git, forecast, and image metadata refresh.
@@ -551,6 +555,7 @@ def try_apply_track_update(
     dry_run_mode: bool = False,
     write_history: bool = True,
     compare_before_stats_date: bool = False,
+    override_stream_guards: bool = False,
 ) -> dict:
     track_id = track["track_id"]
     if compare_before_stats_date:
@@ -592,7 +597,12 @@ def try_apply_track_update(
         )
     )
 
-    if missing_previous_day_baseline:
+    if override_stream_guards:
+        reason = "override_stream_guards"
+        real_update = True
+        if previous_day_total is None and last_total is not None:
+            daily = compute_daily(last_total, total)
+    elif missing_previous_day_baseline:
         reason = "missing_previous_day_baseline"
         real_update = False
     elif last_total is None:
@@ -962,6 +972,7 @@ def retry_pending_tracks_until_collected(
     write_history: bool,
     collected_ids: set[str],
     use_browser_scrape: bool = False,
+    override_stream_guards: bool = False,
 ) -> None:
     pending_ids = set(track_ids)
     retry_round = 0
@@ -993,6 +1004,7 @@ def retry_pending_tracks_until_collected(
             force_reprocess=force_reprocess,
             write_history=write_history,
             use_browser_scrape=use_browser_scrape,
+            override_stream_guards=override_stream_guards,
         )
         print_summary_block(retry_summary)
         print_api_metrics(retry_summary)
@@ -1609,6 +1621,7 @@ def _worker(
     compare_before_stats_date: bool = False,
     use_browser_scrape: bool = False,
     cover_updates: dict | None = None,
+    override_stream_guards: bool = False,
 ):
     if adaptive is not None:
         while True:
@@ -1746,6 +1759,7 @@ def _worker(
                         dry_run_mode=dry_run_mode,
                         write_history=write_history,
                         compare_before_stats_date=compare_before_stats_date,
+                        override_stream_guards=override_stream_guards,
                     )
                     result["raw"] = raw
                 else:
@@ -1769,6 +1783,7 @@ def _worker(
                     dry_run_mode=dry_run_mode,
                     write_history=write_history,
                     compare_before_stats_date=compare_before_stats_date,
+                    override_stream_guards=override_stream_guards,
                 )
                 result["raw"] = raw
 
@@ -1809,6 +1824,7 @@ def run_update(
     force_reprocess: bool = False,
     write_history: bool = True,
     use_browser_scrape: bool = False,
+    override_stream_guards: bool = False,
 ):
     ensure_history_file()
     removed_duplicates = dedupe_history_rows_by_date_track()
@@ -1912,6 +1928,7 @@ def run_update(
                     force_reprocess,
                     use_browser_scrape,
                     cover_updates,
+                    override_stream_guards,
                 ),
                 daemon=True,
             )
@@ -1957,7 +1974,8 @@ def run_update(
                           None, retry_total, dry_run_mode, idx, retry_adaptive,
                           frozenset(), None, token_mgr, history_index,
                           api_run_metrics, write_history, force_reprocess,
-                          use_browser_scrape, cover_updates),
+                          use_browser_scrape, cover_updates,
+                          override_stream_guards),
                     daemon=True,
                 )
                 for idx in range(retry_worker_cap)
@@ -2118,6 +2136,7 @@ def main():
     local_test_mode = "--local-test" in sys.argv
     test_mode = "--test" in sys.argv
     no_post_mode = "--no-post" in sys.argv
+    override_stream_guards = "--over" in sys.argv or "--override-stream-guards" in sys.argv
     throwback_mode = "--throwback" in sys.argv
     throwback_force = "--force" in sys.argv or "--throwback-force" in sys.argv
     reset_last_date_mode = "--reset-last-date" in sys.argv
@@ -2128,6 +2147,8 @@ def main():
         no_post_mode = True
     if local_test_mode:
         no_post_mode = True
+    if override_stream_guards:
+        print("WARNING: --over enabled; stream safety guards are disabled for accepted scrape totals.")
 
     if debug_daily_mode and debug_total_mode:
         print("Use either --debug-daily or --debug-total, not both.")
@@ -2148,6 +2169,8 @@ def main():
             "--local-test",
             "--test",
             "--no-post",
+            "--over",
+            "--override-stream-guards",
             "--throwback",
             "--throwback-force",
             "--force",
@@ -2762,6 +2785,7 @@ def main():
                     token_mgr=token_mgr,
                     force_reprocess=True,
                     write_history=write_history,
+                    override_stream_guards=override_stream_guards,
                 )
                 print_summary_block(priority_summary)
                 print_api_metrics(priority_summary)
@@ -3140,6 +3164,7 @@ def main():
         force_reprocess=force_reprocess,
         write_history=write_history,
         use_browser_scrape=use_browser_scrape_for_run,
+        override_stream_guards=override_stream_guards,
     )
     all_updated_track_ids = set(summary.get("updated_track_ids") or set())
     print_summary_block(summary)
@@ -3292,6 +3317,7 @@ def main():
             force_reprocess=force_reprocess,
             write_history=write_history,
             use_browser_scrape=use_browser_scrape_for_run,
+            override_stream_guards=override_stream_guards,
         )
         all_updated_track_ids.update(summary.get("updated_track_ids") or set())
         not_found_ids.update(
@@ -3452,6 +3478,7 @@ def main():
                 token_mgr=token_mgr,
                 write_history=write_history,
                 use_browser_scrape=use_browser_scrape_for_run,
+                override_stream_guards=override_stream_guards,
             )
             all_updated_track_ids.update(completeness_summary.get("updated_track_ids") or set())
             print_summary_block(completeness_summary)
@@ -3577,6 +3604,7 @@ def main():
                 "write_history": write_history,
                 "collected_ids": infinite_retry_collected_ids,
                 "use_browser_scrape": use_browser_scrape_for_run,
+                "override_stream_guards": override_stream_guards,
             },
             daemon=True,
         )

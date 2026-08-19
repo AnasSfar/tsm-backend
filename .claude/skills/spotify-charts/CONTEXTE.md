@@ -860,12 +860,14 @@ entry" sont desormais collectes dans `pending_standalone` pendant la boucle et
 postes seulement APRES la fermeture du navigateur (`browser.close()`), au meme
 endroit que le thread de cards classique qui faisait deja ca correctement.
 
-**Immediate re-entry posting — pendant la collecte, par pays, hors `global`
-(depuis 2026-08-15) :** une chanson absente de TOUS les pays la veille
-(`prev_country_counts[track_id] == 0`, via le dernier snapshot worldwide
-`ts_worldwide_<veille>.json`) qui re-apparait aujourd'hui dans une region
-(`movement == "RE"` ou `is_re_entry`, hors `global` — deja gere separement par
-`_post_priority_global_new_card`) declenche desormais un tweet standalone
+**Immediate NEW/RE posting — pendant la collecte, par pays, hors `global`
+(depuis 2026-08-15, generalise a NEW le 2026-08-17) :** une chanson absente de
+TOUS les pays la veille (`prev_country_counts[track_id] == 0`, via le dernier
+snapshot worldwide `ts_worldwide_<veille>.json`) qui apparait aujourd'hui dans
+une region — que ce soit un vrai premier debut (`movement == "NEW"` /
+`is_new`) ou un retour apres absence complete (`movement == "RE"` /
+`is_re_entry`), hors `global` — deja gere separement par
+`_post_priority_global_new_card`) — declenche desormais un tweet standalone
 immediatement, des que CETTE region est collectee dans `worldwide/daily.py`
 (Phase 1 ou Phase 2), sans attendre la fin de toute la collecte worldwide ni
 l'etape `cards` separee de `run_all_charts.py`. Implemente dans
@@ -875,15 +877,34 @@ daemon `_post_immediate_reentry_card` qui rend la chart_card (`comp/chart_card
 .render_chart_card` + `write_chart_card_png`, meme composant que Phase 3) et
 poste via `post_with_image`, avec retry
 (`SPOTIFY_IMMEDIATE_REENTRY_POST_MAX_ATTEMPTS`/`_RETRY_SECONDS`, defaut `3`/
-`30s`). **Choix produit assume :** un titre qui re-entre dans plusieurs pays
-le meme jour poste un tweet standalone PAR pays (pas de deduplication
-inter-pays) — volume Twitter plus eleve que l'ancien comportement mais demande
-explicitement. Verrou partage avec Phase 3 : les deux mecanismes ecrivent/
-lisent le meme fichier `cards/first_single_region_posted.json` (cle
-`{slug}_chart_card`, meme `_slugify`), donc Phase 3
+`30s`). Badge/verbe NEW vs RE calcules dynamiquement (`_immediate_entry_is_re`)
+au lieu d'etre fige sur "RE" — meme logique que `_single_region_badge` /
+`_build_tweet` dans `generate_card_images.py`.
+
+**Correction (2026-08-17) : ce mecanisme etait limite a RE, jamais NEW,
+malgre son nom "immediate re-entry".** Observe en prod le meme jour : "All Too
+Well (10 Minute Version) (Taylor's Version)" (un premier debut single-region,
+pas un retour) est apparu dans la region `ph`, mais comme `_maybe_trigger_
+immediate_reentries` filtrait explicitement sur `movement == "RE"` /
+`is_re_entry` uniquement, aucun post immediat ne s'est declenche — la chanson
+n'a ete postee (standalone, badge correct) que ~5 minutes plus tard via
+Phase 3 de `generate_card_images.py` (`_is_first_single_region_entry`), une
+fois TOUTE la collecte worldwide terminee. Demande produit explicite : le NEW
+merite le meme traitement immediat que le RE, pas seulement le retour d'un
+titre du catalogue. Corrige : la condition de declenchement couvre desormais
+NEW et RE (`movement in ("RE", "NEW")` ou `is_re_entry`/`is_new`).
+
+**Choix produit assume :** un titre qui entre/re-entre dans plusieurs pays le
+meme jour ne poste ce tweet standalone immediat qu'une fois — le verrou
+`cards/first_single_region_posted.json` (cle `{slug}_chart_card`, meme
+`_slugify`) est indexe par TITRE seul, pas par (titre, pays), donc la 2e
+region a declencher la meme chanson le meme jour trouve le verrou deja pris et
+ne reposte pas. Meme fichier/cle que Phase 3
 (`_is_first_single_region_entry` dans `generate_card_images.py`, qui ne fire
-que si la chanson n'a EXACTEMENT qu'un seul pays sur toute la journee) ne
-re-poste jamais un (titre, pays) deja poste ici. Desactive en
+que si la chanson n'a EXACTEMENT qu'un seul pays sur toute la journee) — les
+deux mecanismes partagent ce verrou, donc Phase 3 ne re-poste jamais un titre
+deja poste ici, meme si le titre a fini par charter dans plusieurs pays (donc
+plus "single region" au sens strict de Phase 3). Desactive en
 `--no-post`/`--backfill-mode`/`--dates`/`--dates-file`. Les threads sont
 joints (timeout 600s chacun) juste avant le commit git final de `daily.py`
 pour ne pas laisser le process sortir (threads daemon) avant qu'un post en
