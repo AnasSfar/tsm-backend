@@ -669,6 +669,9 @@ def main() -> None:
         limit = 5 if mode == "top5" else 10
         skip = unchanged_rank is not None and top_list_unchanged(artists, limit)
 
+    # Global Artist Chart posts every day; the per-date lock still prevents duplicates.
+    skip = False
+
     if skip and not args.no_post:
         detail = "" if mode == "solo" else f" and top {limit} list unchanged"
         print(f"[SKIP] Artist global post skipped: Taylor Swift rank unchanged (#{unchanged_rank}){detail}.")

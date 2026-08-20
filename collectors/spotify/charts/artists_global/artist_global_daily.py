@@ -37,7 +37,12 @@ ROOT = Path(__file__).resolve().parents[4]
 CHARTS_ROOT = ROOT / "collectors" / "spotify" / "charts"
 COLLECTOR_ROOT = CHARTS_ROOT / "artists_global"
 sys.path.insert(0, str(ROOT / "collectors" / "spotify"))
-from core.data_paths import WEB_EXPORT_DATA_DIR, spotify_chart_dir, spotify_chart_snapshot_candidates
+from core.data_paths import (
+    WEB_EXPORT_DATA_DIR,
+    spotify_chart_dir,
+    spotify_chart_snapshot_candidates,
+    spotify_chart_snapshot_files,
+)
 
 PERIOD_CONFIG = {
     "daily": {
@@ -361,6 +366,69 @@ def _load_previous_rows(chart_date: date, period: str) -> list[dict[str, Any]] |
     return None
 
 
+def _snapshot_exists(chart_date: date, period: str) -> bool:
+    filename = PERIOD_CONFIG[period]["json_name"]
+    return any(path.exists() for path in spotify_chart_snapshot_candidates("artists_global", chart_date.isoformat(), filename))
+
+
+def _has_older_snapshot(chart_date: date, period: str) -> bool:
+    filename = PERIOD_CONFIG[period]["json_name"]
+    for path in spotify_chart_snapshot_files("artists_global", filename):
+        dates = re.findall(r"\b20\d{2}-\d{2}-\d{2}\b", str(path))
+        if not dates:
+            continue
+        try:
+            if datetime.strptime(dates[-1], "%Y-%m-%d").date() < chart_date:
+                return True
+        except ValueError:
+            continue
+    return False
+
+
+def _ensure_previous_snapshot(chart_date: str, period: str) -> bool:
+    try:
+        current = datetime.strptime(chart_date, "%Y-%m-%d").date()
+    except ValueError:
+        return True
+
+    step = 7 if period == "weekly" else 1
+    previous = current - timedelta(days=step)
+    if _snapshot_exists(previous, period):
+        return True
+    if not _has_older_snapshot(current, period):
+        print(f"[INFO] No previous {period} artist snapshot found before {chart_date}; treating as bootstrap.")
+        return True
+
+    depth = int(os.getenv("ARTIST_GLOBAL_BACKFILL_DEPTH", "14") or "14")
+    if depth <= 0:
+        print(f"[ERROR] Missing previous {period} artist snapshot for {previous}; backfill depth exhausted.")
+        return False
+
+    print(f"[STEP] Missing previous {period} artist snapshot ({previous}); backfilling without posting...")
+    env = os.environ.copy()
+    env["ARTIST_GLOBAL_BACKFILL_DEPTH"] = str(depth - 1)
+    cmd = [
+        sys.executable,
+        str(Path(__file__).resolve()),
+        "--period",
+        period,
+        "--date",
+        previous.isoformat(),
+        "--no-post",
+        "--no-upload",
+        "--no-warp",
+        "--no-wait",
+    ]
+    result = subprocess.run(cmd, cwd=str(ROOT), env=env, check=False)
+    if result.returncode != 0:
+        print(f"[ERROR] Previous artist snapshot backfill failed for {previous} (code {result.returncode}).")
+        return False
+    if not _snapshot_exists(previous, period):
+        print(f"[ERROR] Previous artist snapshot backfill completed but file is still missing for {previous}.")
+        return False
+    return True
+
+
 def _add_days_at_pos(rows: list[dict[str, Any]], chart_date: str, period: str) -> None:
     try:
         cursor = datetime.strptime(chart_date, "%Y-%m-%d").date()
@@ -532,6 +600,9 @@ def main() -> int:
         chart_date = route_value
     else:
         chart_date = expected_date
+
+    if not _ensure_previous_snapshot(chart_date, period):
+        return 1
 
     _add_days_at_pos(rows, chart_date, period)
 

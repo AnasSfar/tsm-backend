@@ -47,6 +47,20 @@ génère les previews de **tous les cas possibles** de song_card + tables_image 
 
 Politique décidée : **API Spotify en principal, images Apple Music en fallback** (elles ont les bonnes versions). Attention aux multi-versions : prendre la cover de la version principale de la chanson. Cache : `db/discography/track_cover_cache.json`.
 
+## Daily négatif (`--admin`, `estimated_reason=admin_override`)
+
+`generate_album_update_image.py` (ajout 2026-08-19) : un daily forcé négatif
+(via `update_streams.py --admin`, cf. skill `spotify-streams`) doit s'afficher
+avec un vrai signe moins et en rouge, jamais `+-{nombre}` (bug corrigé —
+l'ancien code préfixait `"+"` sans vérifier le signe). Helper partagé
+`fmt_signed(n) -> (texte, css_class)` dans ce fichier, utilisé pour la valeur
+DAILY par piste, le total de section et le total d'ère. Piège de spécificité
+CSS (même famille que l'incident spotlight `.stat-card.highlight` ci-dessous) :
+`.col-num.daily-val`, `.sec-num`, `.era-num` fixent chacun une couleur par
+défaut à spécificité égale ou supérieure à `.neg` seul — il faut une règle
+dédiée par contexte (`.col-num.daily-val.neg`, `.sec-num.neg`, `.era-num.neg`)
+placée après la règle de base, pas compter sur `.neg` seul.
+
 ## Deltas de rang
 
 - **RE en bleu** ; NEW réservé aux vraies nouveautés. Apple Music : jamais de NEW rétroactif (→ skill `data-rules`).

@@ -370,6 +370,19 @@ def fmt_num(n) -> str:
     return f"{int(n):,}".replace(",", "\u202f")
 
 
+def fmt_signed(n) -> tuple[str, str]:
+    """Returns (display_text, css_class) for a signed daily figure.
+
+    Mirrors fmt_chg's sign convention so a track/section/era with an
+    admin-forced negative daily (Spotify-side merge/split correction) shows
+    a real minus sign instead of a broken "+-" and renders in red."""
+    if n is None:
+        return "—", ""
+    if n < 0:
+        return "−" + fmt_num(abs(n)), "neg"
+    return "+" + fmt_num(n), ""
+
+
 def fmt_chg(change, pct) -> tuple[str, str, str]:
     """Returns (change_str, pct_str, css_class)."""
     if change is None:
@@ -949,6 +962,7 @@ body{
   display:flex;align-items:center;justify-content:flex-end;
 }
 .col-num.daily-val{color:#101828;font-size:13px;font-weight:700}
+.col-num.daily-val.neg{color:#b42318}
 .col-chg{font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:flex-end}
 .col-pct{font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:flex-end}
 .pos{color:#067647}
@@ -977,6 +991,7 @@ body{
   display:flex;align-items:center;justify-content:flex-end;color:#101828;
   font-weight:700;
 }
+.sec-num.neg{color:#b42318}
 .tot-chip-wrap{display:flex;align-items:center;justify-content:flex-end;width:100%}
 .tot-chip{
   display:inline-flex;
@@ -1019,6 +1034,7 @@ body{
   font-size:14px;font-weight:800;color:rgba(255,255,255,.95);
   display:flex;align-items:center;justify-content:flex-end;
 }
+.era-num.neg{color:#b42318}
 .era-filter-wrap{grid-column:3/5}
 .era-main-wrap{grid-column:5/9}
 .era-total.no-filter .era-main-wrap{grid-column:3/7}
@@ -1195,7 +1211,7 @@ def build_song_row_html(
     f_streams = hdata.get("filtered_streams")
     f_rate = hdata.get("filter_rate")
 
-    daily_s = ("+" + fmt_num(daily)) if daily is not None else "—"
+    daily_s, daily_cls = fmt_signed(daily)
     chg_s, pct_s, chg_cls = fmt_chg(change, pct)
     if not hdata.get("ever_seen", True):
         chg_s = "NEW"
@@ -1217,7 +1233,7 @@ def build_song_row_html(
         <div class="song-title">{title}</div>
     </div>
 {extra_cells}
-        <div class="col-num daily-val daily-col">{daily_s}</div>
+        <div class="col-num daily-val daily-col {daily_cls}">{daily_s}</div>
         <div class="col-chg {chg_cls} chg-col">{chg_s}</div>
         <div class="col-pct {chg_cls} pct-col">{pct_s}</div>
     <div class="col-num total-col">{fmt_num(streams)}</div>
@@ -1260,8 +1276,9 @@ def build_section_total_html(sec_name: str, tracks: list[dict],
     else:
         extra_cells = ""
 
+    sec_daily_s, sec_daily_cls = fmt_signed(sec_daily)
     main_chip = _build_totals_chip([
-        (f"+{fmt_num(sec_daily)}", ""),
+        (sec_daily_s, _chip_cls(sec_daily_cls)),
         (chg_s, chg_chip_cls),
         (pct_disp, chg_chip_cls),
         (fmt_num(sec_str), ""),
@@ -1271,7 +1288,7 @@ def build_section_total_html(sec_name: str, tracks: list[dict],
     if not show_filter_cols:
         return f"""<div class="sec-total{no_filter_cls}" style="--sec-accent:{accent};--sec-bg:{bg}">
     <div class="sec-label">{sec_name}&nbsp;&nbsp;—&nbsp;&nbsp;Total</div>
-    <div class="sec-num" style="grid-column:3">+{fmt_num(sec_daily)}</div>
+    <div class="sec-num {sec_daily_cls}" style="grid-column:3">{sec_daily_s}</div>
     <div class="sec-num {chg_cls}" style="grid-column:4">{chg_s}</div>
     <div class="sec-num {chg_cls}" style="grid-column:5">{pct_disp}</div>
     <div class="sec-num" style="grid-column:6">{fmt_num(sec_str)}</div>
@@ -1426,8 +1443,9 @@ def build_html(
                 (total_rate_text, "chip-neutral"),
             ])
 
+            total_daily_s, total_daily_cls = fmt_signed(total_daily)
             total_main_chip = _build_totals_chip([
-                (f"+{fmt_num(total_daily)}", ""),
+                (total_daily_s, _chip_cls(total_daily_cls)),
                 (tot_chg_s, _chip_cls(chg_cls)),
                 (tot_pct_s or "—", _chip_cls(chg_cls)),
                 (fmt_num(total_streams), ""),
@@ -1440,9 +1458,10 @@ def build_html(
 </div>
 """
         else:
+            total_daily_s, total_daily_cls = fmt_signed(total_daily)
             era_html = f"""<div class="era-total no-filter">
     <div class="era-label">Total</div>
-    <div class="era-num" style="grid-column:3">+{fmt_num(total_daily)}</div>
+    <div class="era-num {total_daily_cls}" style="grid-column:3">{total_daily_s}</div>
     <div class="era-num {chg_cls}" style="grid-column:4">{tot_chg_s}</div>
     <div class="era-num {chg_cls}" style="grid-column:5">{tot_pct_s or "—"}</div>
     <div class="era-num" style="grid-column:6">{fmt_num(total_streams)}</div>
@@ -1938,7 +1957,7 @@ def fit_album_post_text(tweet: str) -> str:
     lines = [
         line
         for line in tweet.splitlines()
-        if "had its best day since" not in line
+        if not re.search(r"had its (BEST|BIGGEST) DAY", line, re.IGNORECASE)
     ]
     return "\n".join(lines).strip()
 

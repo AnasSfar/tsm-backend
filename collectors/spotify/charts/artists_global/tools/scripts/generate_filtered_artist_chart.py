@@ -323,6 +323,10 @@ def main() -> None:
         mode = "solo"
 
     skip, detail = _should_skip(mode, ts_row, rows, config.cadence)
+    if args.filter_key == "female":
+        # Female Artist Chart posts every day; the per-date lock still prevents duplicates.
+        skip = False
+        detail = ""
     if skip and not args.no_post:
         print(f"[SKIP] Filtered artist post skipped ({args.filter_key}): {detail}.")
         return

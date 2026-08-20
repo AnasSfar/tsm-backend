@@ -458,12 +458,15 @@ Usage:
       raw total decreased and that decrease itself should be recorded.
 
   python update_streams.py YYYY-MM-DD --admin
-      Accept the raw Spotify total as-is with no clamp at all (implies --over):
+      Accept the raw Spotify total as-is with no clamp at all (implies --over
+      AND --force â€” a track already holding a blank/partial row for this date
+      is otherwise skipped as "already done" before the override ever runs):
       writes daily_streams as the literal (possibly negative) diff, tagged
       estimated_reason=admin_override so the completeness gate counts it as done
       despite the negative/blank value. Use only for a verified Spotify-side
       merge/relink/correction you're vouching for by hand â€” it bypasses the
-      "never publish a negative daily" guarantee.
+      "never publish a negative daily" guarantee. Forces a full re-scrape of
+      every track for that date (via --force), so expect the full run time.
 
   python update_streams.py --local-test YYYY-MM-DD
       Force re-scrape even if the date already exists, but skip history writes,
@@ -2177,6 +2180,7 @@ def main():
 
     if admin_override_mode:
         override_stream_guards = True
+        force_reprocess = True
     global ADMIN_OVERRIDE_MODE
     ADMIN_OVERRIDE_MODE = admin_override_mode
 
