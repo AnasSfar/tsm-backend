@@ -1588,7 +1588,13 @@ def export_best_day_since(stats_date: str | None) -> None:
     print(f"[best_day_since] Exported {len(rows)} row(s) for {target.isoformat()} -> {BEST_DAY_SINCE_JSON_PATH}")
 
 
-def export_for_web(stats_date: str | None = None, *, dry_run: bool = False) -> None:
+def export_for_web(
+    stats_date: str | None = None,
+    *,
+    dry_run: bool = False,
+    allow_r2: bool = True,
+    r2_export_lock_path: str | Path | None = None,
+) -> None:
     if dry_run:
         print("[DRY-RUN] export_for_web would generate web exports")
         print(f"  output data   : {SITE_DATA_DIR}")
@@ -1881,8 +1887,9 @@ def export_for_web(stats_date: str | None = None, *, dry_run: bool = False) -> N
         _load_dotenv(str(Path(__file__).resolve().parents[4] / ".env"), override=False)
     except Exception:
         pass
-    if _os.getenv("UPLOAD_TO_R2", "").strip().lower() not in ("0", "false", "no"):
-        r2_export_lock = _os.getenv("R2_EXPORT_LOCK_PATH", "").strip()
+    upload_disabled_by_env = _os.getenv("UPLOAD_TO_R2", "").strip().lower() in ("0", "false", "no")
+    if allow_r2 and not upload_disabled_by_env:
+        r2_export_lock = str(r2_export_lock_path or "").strip()
         if stats_date and latest_date != stats_date:
             print(
                 f"[R2] Upload skipped: requested date {stats_date} is not fully exported "

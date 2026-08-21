@@ -370,6 +370,12 @@ def fmt_num(n) -> str:
     return f"{int(n):,}".replace(",", "\u202f")
 
 
+def fmt_comma_num(n) -> str:
+    if n is None:
+        return "-"
+    return f"{int(n):,}"
+
+
 def fmt_signed(n) -> tuple[str, str]:
     """Returns (display_text, css_class) for a signed daily figure.
 
@@ -1501,6 +1507,82 @@ def build_html(
 
 # ── Main generate function ─────────────────────────────────────────────────────
 
+TABLE_DARK_CSS = """
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1106px;background:#151515;color:#f4f2f4;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif}
+.dark-card{position:relative;width:1106px;min-height:1106px;padding:0 8px 10px;overflow:hidden;background:radial-gradient(circle at 49% 10%,rgba(104,93,87,.28),transparent 19%),linear-gradient(180deg,#1c1d1d 0%,#151616 31%,#171717 100%)}
+.dark-card:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.19;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:3px 3px,5px 5px;mix-blend-mode:screen}
+.hero{position:relative;height:286px;display:flex;justify-content:center;align-items:flex-start;overflow:hidden}
+.hero-img{position:absolute;top:0;left:50%;width:620px;height:286px;transform:translateX(-50%);background-position:center top;background-size:cover;background-repeat:no-repeat;opacity:.86;filter:saturate(.75) contrast(1.04);-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 58%,transparent 100%);mask-image:linear-gradient(180deg,#000 0%,#000 58%,transparent 100%)}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#1a1b1b 0%,rgba(26,27,27,.16) 30%,rgba(26,27,27,.16) 70%,#1a1b1b 100%),linear-gradient(180deg,rgba(20,20,20,0) 0%,rgba(20,20,20,.32) 52%,#151515 100%)}
+.album-title{position:absolute;left:0;right:0;bottom:47px;z-index:2;text-align:center;font-family:Impact,'Arial Narrow',Inter,sans-serif;font-size:48px;line-height:.9;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:transparent;-webkit-text-stroke:2px rgba(245,245,247,.9);text-shadow:0 10px 18px rgba(0,0,0,.65)}
+.brand-mark{position:absolute;z-index:3;right:19px;top:19px;width:32px;height:32px;object-fit:contain;opacity:.7}
+.meta{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;margin:0 6px 5px;color:#7d83b6;font-size:19px;line-height:1;font-weight:800}
+.table{position:relative;z-index:2;display:grid;grid-template-columns:49px 421px 190px 170px 128px 138px;gap:4px}
+.th,.td{min-height:50px;display:flex;align-items:center;justify-content:center;background:#2b292c;box-shadow:inset 0 0 0 2px rgba(15,15,15,.54)}
+.th{min-height:39px;background:#111112;color:#7278aa;font-size:18px;font-weight:900}
+.th.change-head{grid-column:5/7}
+.td{color:#f5f4f5;font-size:20px;font-weight:500}
+.rank,.track,.daily,.pct,.delta{font-weight:900}
+.rank,.pct,.delta{color:#7780b6}
+.track{padding:0 15px;text-align:center;font-size:19px}
+.daily{color:#f7f7f7}.pos{color:#aeb7d6}.neg{color:#56607f}
+.td.total-row{min-height:52px;background:#111112;color:#767db0;font-weight:900}
+.total-label{grid-column:1/3}
+"""
+
+
+def build_table_dark_html(album_name: str, sections: list[dict], hist: dict, target_date: str, header_uri: str, handle_icon_uri: str = "") -> str:
+    from datetime import datetime
+
+    date_obj = datetime.strptime(target_date, "%Y-%m-%d")
+    left_date = f"{date_obj.strftime('%B')} {date_obj.day}, {date_obj.year}"
+    weekday = date_obj.strftime("%A")
+    hero_bg = f"background-image:url('{header_uri}');" if header_uri else ""
+    brand = f'<img class="brand-mark" src="{handle_icon_uri}" alt="">' if handle_icon_uri else ""
+    rows = []
+    total_streams = 0
+    total_daily = 0
+    total_change = 0
+    tracks = [track for sec in sections for track in sec.get("tracks", [])]
+    for idx, track in enumerate(tracks, start=1):
+        hdata = hist.get(track["track_id"], {})
+        streams = hdata.get("streams")
+        daily = hdata.get("daily")
+        change = hdata.get("change")
+        pct = hdata.get("pct")
+        total_streams += streams or 0
+        total_daily += daily or 0
+        total_change += change or 0
+        pct_text = "-" if pct is None else f"{pct:+.2f}%"
+        delta_text = "-" if change is None else f"{change:+,}"
+        state_cls = "pos" if (change or 0) >= 0 else "neg"
+        daily_text = "-" if daily is None else f"+{fmt_comma_num(daily)}"
+        title = html.escape(_shorten_title(track.get("title") or track.get("title_clean") or ""))
+        rows.append(f"""<div class="td rank">{idx}</div>
+    <div class="td track">{title}</div>
+    <div class="td total">{fmt_comma_num(streams)}</div>
+    <div class="td daily">{daily_text}</div>
+    <div class="td pct {state_cls}">{pct_text}</div>
+    <div class="td delta {state_cls}">{delta_text}</div>""")
+    total_yest = total_daily - total_change
+    total_pct = (total_change / total_yest * 100) if total_yest else None
+    total_pct_text = "-" if total_pct is None else f"{total_pct:+.2f}%"
+    total_state_cls = "pos" if total_change >= 0 else "neg"
+    return f"""<!DOCTYPE html>
+<html><head><meta charset="utf-8"><style>{TABLE_DARK_CSS}</style></head><body>
+<div class="dark-card">
+  <div class="hero"><div class="hero-img" style="{hero_bg}"></div>{brand}<div class="album-title">{html.escape(album_name)}</div></div>
+  <div class="meta"><span>{left_date}</span><span>{weekday}</span></div>
+  <div class="table">
+    <div class="th">#</div><div class="th">Track</div><div class="th">Total Streams</div><div class="th">Daily Streams</div><div class="th change-head">Change</div>
+    {"".join(rows)}
+    <div class="td total-row total-label">TOTAL</div><div class="td total-row">{fmt_comma_num(total_streams)}</div><div class="td total-row">+{fmt_comma_num(total_daily)}</div><div class="td total-row {total_state_cls}">{total_pct_text}</div><div class="td total-row {total_state_cls}">{total_change:+,}</div>
+  </div>
+</div>
+</body></html>"""
+
+
 def album_update_slug(album_name: str) -> str:
     return re.sub(r"[^a-z0-9]+", "_", album_name.lower()).strip("_")
 
@@ -1886,151 +1968,4 @@ def _best_day_post_label(row: dict) -> str:
     if row.get("is_biggest_day_of_year"):
         label = "BIGGEST DAY of the year"
     elif row.get("kind") == "since":
-        label = f"BEST DAY since {_format_best_since_long(row.get('best_day_since'))}"
-    elif row.get("is_biggest_day_of_month"):
-        label = "BIGGEST DAY of the month"
-    else:
-        label = f"BEST DAY since {_format_best_since_long(row.get('best_day_since'))}"
-    # Same rule as best_day_since.row_label: a combined record is set by the
-    # summed family total (e.g. original + Taylor's Version), not this track's
-    # own streams, so the post text must flag it.
-    if row.get("combined"):
-        label = f"{label} (combined)"
-    return label
-
-
-def _build_album_post_text(album_name: str, target_date: str) -> str:
-    tweet = _build_album_post_text_base(album_name, target_date)
-    sections, _canonical_name = load_album_sections(album_name, target_date)
-    if not sections:
-        return tweet
-
-    best_day_rows = _best_day_rows_for_sections(sections, target_date)
-    if not best_day_rows:
-        return tweet
-
-    def note_title(title: str) -> str:
-        return _shorten_title(title).replace("(Taylor's Version)", "(TV)")
-
-    def note_rank(row: dict) -> tuple[int, int]:
-        days_since = row.get("days_since")
-        if days_since is None:
-            best_since = row.get("best_day_since")
-            if isinstance(best_since, str) and re.match(r"\d{4}-\d{2}-\d{2}$", best_since):
-                days_since = (date_cls.fromisoformat(target_date) - date_cls.fromisoformat(best_since)).days + 1
-        return (int(days_since or 0), int(row.get("daily_streams") or 0))
-
-    best_row = max(best_day_rows, key=note_rank)
-    best_label = _best_day_post_label(best_row)
-    selected = _selected_album_post_track(sections, target_date)
-    selected_title = selected.get("title") if selected else ""
-    same_song = (
-        bool(selected)
-        and (
-            selected.get("track_id") == best_row.get("track_id")
-            or _same_note_song(selected_title, best_row.get("title") or "")
-        )
-    )
-
-    if same_song:
-        addition = f" It earned its {best_label}."
-        lines = tweet.splitlines()
-        for i, line in enumerate(lines):
-            if f'"{_shorten_title(selected_title)}" was the ' in line:
-                lines[i] = f"{line}{addition}"
-                return "\n".join(lines)
-
-    note = f'"{note_title(best_row["title"])}" had its {best_label}.'
-    marker = "\n\nSee full update here"
-    if marker in tweet:
-        return tweet.replace(marker, f"\n\n{note}{marker}", 1)
-    return f"{tweet}\n\n{note}"
-
-
-def fit_album_post_text(tweet: str) -> str:
-    if len(tweet) <= TWEET_CHAR_LIMIT:
-        return tweet
-    if "See full update here" in tweet:
-        tweet = tweet.split("See full update here", 1)[0].strip()
-    if len(tweet) <= TWEET_CHAR_LIMIT:
-        return tweet
-    lines = [
-        line
-        for line in tweet.splitlines()
-        if not re.search(r"had its (BEST|BIGGEST) DAY", line, re.IGNORECASE)
-    ]
-    return "\n".join(lines).strip()
-
-
-def post(album_name: str, image_path: Path, target_date: str) -> bool:
-    if not TWITTER_SESSION.exists():
-        print(f"[album_update] Session Twitter introuvable : {TWITTER_SESSION}")
-        return False
-
-    try:
-        from core.twitter import post_with_image
-    except ImportError as e:
-        print(f"[album_update] Impossible d'importer core.twitter: {e}")
-        return False
-
-    try:
-        tweet = _build_album_post_text(album_name, target_date)
-        fitted_tweet = fit_album_post_text(tweet)
-        if fitted_tweet != tweet:
-            print("[album_update] Tweet shortened to fit X limit.")
-        tweet = fitted_tweet
-    except Exception as e:
-        print(f"[album_update] Fallback tweet (erreur génération texte): {e}")
-        from datetime import datetime
-        date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
-        tweet = f"Taylor Swift · {album_name}\nDaily Streams Update — {date_fmt}"
-
-    print(f"[album_update] Publication Twitter : {tweet[:60]}...")
-    ok = post_with_image(tweet, image_path, TWITTER_SESSION)
-    if ok:
-        print("[album_update] Tweet publié avec succès.")
-    else:
-        print("[album_update] Échec de la publication Twitter.")
-    return ok
-
-
-# ── Entry point ────────────────────────────────────────────────────────────────
-
-def main() -> None:
-    args = sys.argv[1:]
-    if not args or args[0] in ("-h", "--help"):
-        print(__doc__)
-        sys.exit(0)
-
-    do_post = "--post" in args and "--no-post" not in args
-    clean_args = [a for a in args if a not in ("--post", "--no-post")]
-
-    album_name  = clean_args[0] if len(clean_args) > 0 else None
-    target_date = clean_args[1] if len(clean_args) > 1 else None
-
-    if not album_name:
-        print("Usage: generate_album_update_image.py <album_name> [date] [--post]")
-        sys.exit(1)
-
-    resolved_date = target_date or get_latest_date()
-
-    if do_post:
-        existing_lock_path = existing_album_update_lock_path(album_name, resolved_date)
-        if existing_lock_path is not None:
-            lock_path = existing_lock_path
-            print(f"[album_update] Déjà posté ({lock_path.name}). Rien à faire.")
-            return
-
-    image_path = generate(album_name, resolved_date)
-
-    if do_post:
-        lock_path = album_update_lock_path(album_name, resolved_date)
-        ok = post(album_name, image_path, resolved_date)
-        if ok:
-            lock_path.write_text(f"posted {resolved_date}\n", encoding="utf-8")
-        else:
-            sys.exit(1)
-
-
-if __name__ == "__main__":
-    main()
+        lab

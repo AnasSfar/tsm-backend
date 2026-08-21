@@ -543,23 +543,75 @@ def incremental_publish_update(
 
 
 def export_web_data(*, allow_r2: bool = True, stats_date: str | None = None) -> None:
-    previous_upload = os.environ.get("UPLOAD_TO_R2")
-    previous_lock = os.environ.get("R2_EXPORT_LOCK_PATH")
-    if allow_r2 and stats_date:
-        os.environ["R2_EXPORT_LOCK_PATH"] = str(update_streams_dir(stats_date) / "r2_exported.lock")
-    elif not allow_r2:
-        os.environ["UPLOAD_TO_R2"] = "0"
-    try:
-        export_for_web.export_for_web(stats_date=stats_date)
-    finally:
-        if previous_upload is None:
-            os.environ.pop("UPLOAD_TO_R2", None)
-        else:
-            os.environ["UPLOAD_TO_R2"] = previous_upload
-        if previous_lock is None:
-            os.environ.pop("R2_EXPORT_LOCK_PATH", None)
-        else:
-            os.environ["R2_EXPORT_LOCK_PATH"] = previous_lock
+    export_for_web.export_for_web(
+        stats_date=stats_date,
+        allow_r2=allow_r2,
+        r2_export_lock_path=(update_streams_dir(stats_date) / "r2_exported.lock") if allow_r2 and stats_date else None,
+    )
+
+
+class BackgroundFinalWebExport:
+    def __init__(
+        self,
+        *,
+        stats_date: str,
+        allow_r2: bool,
+        force: bool,
+    ) -> None:
+        self.stats_date = stats_date
+        self.allow_r2 = allow_r2
+        self.force = force
+        self._thread: threading.Thread | None = None
+        self._exc: BaseException | None = None
+        self._skipped = False
+
+    def start(self) -> None:
+        run_dir = update_streams_dir(self.stats_date)
+        export_lock = run_dir / "exported.lock"
+        daily_site_history = run_dir / "site_history.json"
+        if export_lock.exists() and daily_site_history.exists() and not self.force:
+            print(f"Web export already done for {self.stats_date} (exported.lock exists), skipping background export.")
+            self._skipped = True
+            return
+        if export_lock.exists() and self.force:
+            export_lock.unlink()
+
+        r2_export_lock = run_dir / "r2_exported.lock"
+        if self.allow_r2 and r2_export_lock.exists():
+            print(
+                f"R2 export lock exists for {self.stats_date}; "
+                "background final export will force a fresh complete upload."
+            )
+            r2_export_lock.unlink()
+
+        self._thread = threading.Thread(
+            target=self._run,
+            name="final-web-export",
+            daemon=True,
+        )
+        self._thread.start()
+
+    def _run(self) -> None:
+        try:
+            print(f"Starting final web export in background (stats_date={self.stats_date})...")
+            export_web_data(allow_r2=self.allow_r2, stats_date=self.stats_date)
+            print("Background final web export done.")
+        except BaseException as exc:
+            self._exc = exc
+            print(f"Background final web export failed: {exc}")
+
+    def wait(self) -> None:
+        if self._thread is not None:
+            self._thread.join()
+        if self._exc is not None:
+            raise self._exc
+
+    def export_web_data(self, *, allow_r2: bool = True, stats_date: str | None = None) -> None:
+        if stats_date == self.stats_date and allow_r2 == self.allow_r2:
+            self.wait()
+            return
+        self.wait()
+        export_web_data(allow_r2=allow_r2, stats_date=stats_date)
 
 
 def try_apply_track_update(
@@ -3588,6 +3640,23 @@ def main():
         ),
     }
 
+    final_web_export: BackgroundFinalWebExport | None = None
+    if not local_test_mode and not debug_daily_mode:
+        artist_metadata_updated_before_finalize = False
+        if artist_thread is not None:
+            print("Updating artist metadata before starting final web export...")
+            artist_thread.join(timeout=60)
+            update_artist_metadata(pre_scraped=_artist_result[0])
+            artist_thread = None
+            artist_metadata_updated_before_finalize = True
+
+        final_web_export = BackgroundFinalWebExport(
+            stats_date=stats_date,
+            allow_r2=True,
+            force=artist_metadata_updated_before_finalize,
+        )
+        final_web_export.start()
+
     def _album_tracks_done_for_finalize(album_name: str, check_date: str) -> bool:
         if check_date != stats_date or not infinite_retry_track_ids:
             return album_tracks_done_for(album_name, check_date)
@@ -3618,7 +3687,7 @@ def main():
         log_mode=LOG_MODE,
         artist_thread=artist_thread,
         artist_result=_artist_result,
-        export_web_data=export_web_data,
+        export_web_data=final_web_export.export_web_data if final_web_export is not None else export_web_data,
         update_artist_metadata=update_artist_metadata,
         album_tracks_done_for=_album_tracks_done_for_finalize,
         all_album_tracks_done=_all_album_tracks_done_finalize,
