@@ -13,7 +13,6 @@ def git_commit_and_push(repo_root: Path, message: str | None = None) -> None:
             [
                 "git", "add",
                 "snapshots/spotify_streams/",
-                "runtime/exports/web/",
                 "db/",
             ],
             cwd=str(repo_root),
