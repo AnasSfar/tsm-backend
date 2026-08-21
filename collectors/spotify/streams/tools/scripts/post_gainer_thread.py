@@ -157,6 +157,20 @@ def _pick_gainers(target_date: str, *, compare_days: int, limit: int, min_baseli
     baseline_date = str(date.fromisoformat(target_date) - timedelta(days=compare_days))
     zero_exclusion_days = _zero_exclusion_days(compare_days)
 
+    # When Spotify is actively merging two catalog track_ids (same reported
+    # total on both pages — e.g. the 2026-08-17 Karma / Shake It Off event),
+    # drop the duplicate side for this date only so it doesn't show up twice
+    # in the gainer ranking with two different % changes for the same song.
+    track_meta_by_id = {t["track_id"]: t for t in history_store.load_tracks_from_discography()}
+    merge_losers = history_store.pick_active_catalog_merge_losers(
+        {
+            tid: history.get_total_for_date(tid, target_date)
+            for tid in history.done_ids_for_date(target_date)
+        },
+        track_meta_by_id,
+    )
+    non_extra_ids -= merge_losers
+
     rows = _gainer_rows_for_ids(
         non_extra_ids,
         history=history,
@@ -171,7 +185,7 @@ def _pick_gainers(target_date: str, *, compare_days: int, limit: int, min_baseli
     # back to chart_extra tracks only to fill the remaining slots, never to
     # bump a non-extra gainer out of the ranking.
     if len(rows) < limit:
-        extra_ids = history_store.load_active_track_ids_from_discography() - non_extra_ids
+        extra_ids = history_store.load_active_track_ids_from_discography() - non_extra_ids - merge_losers
         extra_rows = _gainer_rows_for_ids(
             extra_ids,
             history=history,

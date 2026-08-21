@@ -36,6 +36,7 @@ from core.data_paths import (  # noqa: E402
 from config import NTFY_TOPIC  # noqa: E402
 from core.notify import send as notify  # noqa: E402
 import best_day_since  # noqa: E402
+import history_store  # noqa: E402
 
 ROOT = WEB_EXPORT_ROOT
 
@@ -651,16 +652,17 @@ def enrich_history_with_milestones(
     return enriched
 
 
-def add_ranks(songs: list[dict]) -> list[dict]:
+def add_ranks(songs: list[dict], *, exclude_from_rank: set[str] | None = None) -> list[dict]:
     songs_copy = [dict(song) for song in songs]
+    rankable = [s for s in songs_copy if s["track_id"] not in (exclude_from_rank or set())]
 
     total_sorted = sorted(
-        songs_copy,
+        rankable,
         key=lambda s: (s.get("streams") is not None, s.get("streams") or 0, s["title"].casefold()),
         reverse=True,
     )
     daily_sorted = sorted(
-        songs_copy,
+        rankable,
         key=lambda s: (s.get("daily_streams") is not None, s.get("daily_streams") or 0, s["title"].casefold()),
         reverse=True,
     )
@@ -1700,7 +1702,24 @@ def export_for_web(
             song["daily_streams"] = day.get("daily_streams")
             song["estimated"] = bool(day.get("estimated"))
 
-    deduped_songs = add_ranks(deduped_songs)
+    # Spotify sometimes actively merges two catalog track_ids into one page/
+    # total for a while (2026-08-17 incident: Karma / Shake It Off / Love
+    # Story / Our Song editions), then un-merges them again days later. When
+    # that's currently happening, exclude the duplicate side from rank_total/
+    # rank_daily so it doesn't occupy two spots in the site's "top N" lists
+    # with two different %/daily numbers for what is the same song right
+    # now — but keep the song's own row (still shown on its own page/album
+    # section with its real current total). Nothing is written back to
+    # history: if Spotify's totals diverge again the next day, both ids earn
+    # their own rank again automatically.
+    merge_losers = history_store.pick_active_catalog_merge_losers(
+        {song["track_id"]: song.get("streams") for song in deduped_songs},
+        {song["track_id"]: song for song in deduped_songs},
+    )
+    if merge_losers:
+        print(f"[export] Excluding {len(merge_losers)} track(s) from rank_total/rank_daily (currently merged by Spotify): {sorted(merge_losers)}")
+
+    deduped_songs = add_ranks(deduped_songs, exclude_from_rank=merge_losers)
     songs_by_id = {song["track_id"]: song for song in deduped_songs}
 
     albums_payload_filtered = []

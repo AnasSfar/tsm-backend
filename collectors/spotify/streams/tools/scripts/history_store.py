@@ -23,6 +23,7 @@ DB_SONGS_JSON = DISCOGRAPHY_DIR / "songs.json"
 DB_FEATURES_JSON = DISCOGRAPHY_DIR / "features.json"
 DB_MISC_JSON = DISCOGRAPHY_DIR / "misc.json"
 MAX_DAILY_INCREASE = 50_000_000
+MIN_TOTAL_FOR_MERGE_DETECTION = 1_000_000
 LOG_MODE = "normal"
 _R2_TRACK_PREFIX = os.getenv("SPOTIFY_R2_TRACK_PREFIX", "history-by-track")
 HISTORY_FIELDNAMES = ["date", "track_id", "streams", "daily_streams", "estimated", "estimated_reason"]
@@ -919,6 +920,52 @@ def get_all_last_history_totals() -> dict[str, int]:
             except Exception:
                 pass
     return result
+
+def pick_active_catalog_merge_losers(
+    totals_by_track_id: dict[str, int],
+    track_meta_by_id: dict[str, dict],
+) -> set[str]:
+    """Given {track_id: total_streams} for ONE date, return the track_ids to
+    suppress from that date's rankings/listings because another active
+    track_id reports the exact same total — Spotify actively merging two
+    catalog entries into one page/total (observed 2026-08-17: Karma / Karma
+    feat. Ice Spice, Shake It Off / Best Work Edition, etc.), independent of
+    `historical_track_ids`. Nothing is written back to history: this is a
+    same-day display filter only, so if Spotify's totals diverge again the
+    next day both track_ids reappear on their own — no manual re-fix needed.
+
+    Keeper preference among a tied group: non-extra beats extra, a real
+    catalog entry beats a chartsnapshot-only placeholder, else lower
+    track_id (stable tiebreak). `track_meta_by_id` values are expected to
+    have "chart_extra" / "chartsnapshot_only" keys (see
+    load_tracks_from_discography()).
+
+    A minimum-total floor guards against false positives: low-traffic bonus
+    tracks (karaoke/instrumental versions with ~20-40 streams/day) drift
+    close together and can coincidentally land on the exact same total by
+    pure chance (observed 2026-08-21 among several Red extras in the
+    100k-150k range) — nothing to do with an actual Spotify merge. Every
+    genuine merge observed so far involved totals in the millions to
+    billions, so require at least MIN_TOTAL_FOR_MERGE_DETECTION.
+    """
+    by_total: dict[int, list[str]] = {}
+    for track_id, total in totals_by_track_id.items():
+        if not total or total < MIN_TOTAL_FOR_MERGE_DETECTION:
+            continue
+        by_total.setdefault(total, []).append(track_id)
+
+    def _keeper_key(track_id: str) -> tuple:
+        meta = track_meta_by_id.get(track_id) or {}
+        return (bool(meta.get("chart_extra")), bool(meta.get("chartsnapshot_only")), track_id)
+
+    losers: set[str] = set()
+    for total, track_ids in by_total.items():
+        if len(track_ids) < 2:
+            continue
+        keeper = min(track_ids, key=_keeper_key)
+        losers.update(tid for tid in track_ids if tid != keeper)
+    return losers
+
 
 def get_history_total_for_date(track_id: str, stats_date: str) -> int | None:
     if not HISTORY_PATH.exists():

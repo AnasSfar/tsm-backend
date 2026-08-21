@@ -255,6 +255,41 @@ produire le highlight `best_day_since` — meme logique de regroupement par
 `song_family` et memes filtres que ce qui serait poste sur Twitter, pas de
 duplication.
 
+## Fusion catalogue Spotify active (dedup dynamique)
+
+Depuis 2026-08-21 : Spotify fusionne parfois deux track_id du catalogue en un
+seul total affiche (constate le 2026-08-17 sur ~20 track_id : Karma / Karma
+feat. Ice Spice, Shake It Off / Best Work Edition, Love Story / Pop Mix,
+Our Song / International Mix, Long Live / feat. Paula Fernandes, etc.), puis
+annule parfois cette fusion quelques jours plus tard — sans prevenir, et de
+facon instable (certaines paires restent fusionnees des jours durant,
+d'autres redivergent). Traiter ca comme un vrai evenement catalogue Spotify,
+jamais comme une donnee a "corriger" vers un chiffre invente (cf. memoire
+`spotify-streams-0817-corruption`).
+
+`history_store.pick_active_catalog_merge_losers(totals_by_track_id,
+track_meta_by_id)` detecte dynamiquement, pour UNE date donnee, les track_id
+dont le total exact est identique a un autre track_id actif (garde-fou
+`MIN_TOTAL_FOR_MERGE_DETECTION = 1_000_000` : en dessous, des extras a tres
+faible volume type karaoke/instrumental peuvent coincider par pur hasard —
+observe le 2026-08-21 sur plusieurs bonus tracks Red dans la fourchette
+100k-150k). Garde le track non-extra (ou le plus "reel"), marque l'autre
+comme "loser" pour cette date uniquement — rien n'est ecrit dans l'historique,
+donc si Spotify redivise les totaux le lendemain, les deux redeviennent
+normaux automatiquement, sans intervention manuelle.
+
+Cablage actuel :
+- `export_for_web.py` : les "losers" du jour sont exclus de `rank_total`/
+  `rank_daily` (`add_ranks(..., exclude_from_rank=...)`) — la chanson reste
+  visible sur sa propre page/section d'album avec son vrai total, elle
+  n'occupe juste pas une 2e place dans le classement du site.
+- `post_gainer_thread.py::_pick_gainers` : les "losers" du jour sont retires
+  du pool de candidats avant selection du top gainers (couvre aussi
+  `post_stream_highlights_thread.py`, qui reutilise `_pick_gainers`).
+
+Si un nouveau generateur de classement/top N est ecrit, l'appeler aussi sur
+les track_id candidats de ce generateur plutot que de dupliquer la logique.
+
 ## Pieges
 
 - Bug fixe le 2026-08-08 : `generate_streams_image.py::load_song_db()` (et
