@@ -1509,71 +1509,468 @@ def build_html(
 
 TABLE_DARK_CSS = """
 *{margin:0;padding:0;box-sizing:border-box}
-body{width:1106px;background:#151515;color:#f4f2f4;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif}
-.dark-card{position:relative;width:1106px;min-height:1106px;padding:0 8px 10px;overflow:hidden;background:radial-gradient(circle at 49% 10%,rgba(104,93,87,.28),transparent 19%),linear-gradient(180deg,#1c1d1d 0%,#151616 31%,#171717 100%)}
+body{width:1106px;background:var(--page-bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif}
+.dark-card{position:relative;width:1106px;padding:0 8px 10px;overflow:hidden;background:var(--card-bg)}
 .dark-card:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.19;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:3px 3px,5px 5px;mix-blend-mode:screen}
-.hero{position:relative;height:286px;display:flex;justify-content:center;align-items:flex-start;overflow:hidden}
-.hero-img{position:absolute;top:0;left:50%;width:620px;height:286px;transform:translateX(-50%);background-position:center top;background-size:cover;background-repeat:no-repeat;opacity:.86;filter:saturate(.75) contrast(1.04);-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 58%,transparent 100%);mask-image:linear-gradient(180deg,#000 0%,#000 58%,transparent 100%)}
-.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#1a1b1b 0%,rgba(26,27,27,.16) 30%,rgba(26,27,27,.16) 70%,#1a1b1b 100%),linear-gradient(180deg,rgba(20,20,20,0) 0%,rgba(20,20,20,.32) 52%,#151515 100%)}
-.album-title{position:absolute;left:0;right:0;bottom:47px;z-index:2;text-align:center;font-family:Impact,'Arial Narrow',Inter,sans-serif;font-size:48px;line-height:.9;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:transparent;-webkit-text-stroke:2px rgba(245,245,247,.9);text-shadow:0 10px 18px rgba(0,0,0,.65)}
-.brand-mark{position:absolute;z-index:3;right:19px;top:19px;width:32px;height:32px;object-fit:contain;opacity:.7}
-.meta{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;margin:0 6px 5px;color:#7d83b6;font-size:19px;line-height:1;font-weight:800}
+.hero{position:relative;height:304px;margin:0 -8px;display:flex;justify-content:center;align-items:flex-start;overflow:hidden;background:var(--hero-bg)}
+.hero-img{position:absolute;inset:0;width:100%;height:304px;background-position:var(--hero-pos);background-size:cover;background-repeat:no-repeat;opacity:var(--hero-opacity);filter:var(--hero-filter);-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 55%,rgba(0,0,0,.68) 72%,transparent 100%);mask-image:linear-gradient(180deg,#000 0%,#000 55%,rgba(0,0,0,.68) 72%,transparent 100%)}
+.hero:after{content:"";position:absolute;inset:0;background:var(--hero-overlay)}
+.hero-date{position:absolute;left:0;right:0;bottom:101px;z-index:2;text-align:center;color:var(--hero-text);font-size:22px;line-height:1;font-weight:900;text-transform:uppercase;text-shadow:0 8px 18px rgba(0,0,0,.78)}
+.album-title{position:absolute;left:0;right:0;bottom:var(--title-bottom);z-index:2;text-align:center;font-family:var(--title-font);font-size:var(--title-size);line-height:.9;font-weight:900;letter-spacing:var(--title-spacing);text-transform:var(--title-transform);color:var(--title-color);text-shadow:var(--title-shadow)}
+.brand-lock{position:absolute;z-index:3;right:22px;top:20px;display:flex;align-items:center;gap:9px;color:var(--accent);font-size:15px;font-weight:900;text-shadow:0 7px 16px rgba(0,0,0,.75)}
+.brand-mark{width:54px;height:54px;object-fit:contain;opacity:.9}
+.table{margin-top:-30px}
 .table{position:relative;z-index:2;display:grid;grid-template-columns:49px 421px 190px 170px 128px 138px;gap:4px}
-.th,.td{min-height:50px;display:flex;align-items:center;justify-content:center;background:#2b292c;box-shadow:inset 0 0 0 2px rgba(15,15,15,.54)}
-.th{min-height:39px;background:#111112;color:#7278aa;font-size:18px;font-weight:900}
+.th,.td{min-height:44px;display:flex;align-items:center;justify-content:center;background:var(--cell-bg);box-shadow:inset 0 0 0 2px var(--grid-line)}
+.td.alt{background:var(--cell-bg-alt)}
+.th{min-height:37px;background:var(--head-bg);color:var(--accent);font-size:18px;font-weight:900}
 .th.change-head{grid-column:5/7}
-.td{color:#f5f4f5;font-size:20px;font-weight:500}
+.td{color:var(--cell-text);font-size:20px;font-weight:500}
 .rank,.track,.daily,.pct,.delta{font-weight:900}
-.rank,.pct,.delta{color:#7780b6}
+.rank{color:var(--accent)}
 .track{padding:0 15px;text-align:center;font-size:19px}
-.daily{color:#f7f7f7}.pos{color:#aeb7d6}.neg{color:#56607f}
-.td.total-row{min-height:52px;background:#111112;color:#767db0;font-weight:900}
+.daily{color:var(--daily-text)}.pos{color:#1f9d55}.neg{color:#d64545}
+.td.total-row{min-height:48px;background:var(--head-bg);color:var(--accent);font-weight:900}
 .total-label{grid-column:1/3}
+.section-row{grid-column:1/7;min-height:34px;display:grid;grid-template-columns:470px 190px 170px 128px 138px;gap:4px;margin-top:4px}
+.section-cell{display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--accent) 16%,var(--head-bg));box-shadow:inset 0 0 0 2px var(--grid-line);color:var(--accent);font-size:15px;font-weight:950;text-transform:uppercase;letter-spacing:.08em}
+.section-name{justify-content:flex-start;padding-left:21px}
+.section-num{font-size:15px;letter-spacing:0;text-transform:none}
+.section-cell.pos{color:#1f9d55}
+.section-cell.neg{color:#d64545}
 """
+
+
+def _album_day_number(album_name: str, sections: list[dict], target_date: str) -> int | None:
+    if "tortured poets" in album_name.strip().casefold():
+        release_date = date_cls(2024, 4, 19)
+    else:
+        release_dates = [
+            date_cls.fromisoformat(str(track.get("release_date"))[:10])
+            for section in sections
+            for track in section.get("tracks", [])
+            if re.match(r"\d{4}-\d{2}-\d{2}", str(track.get("release_date") or ""))
+        ]
+        if not release_dates:
+            return None
+        release_date = min(release_dates)
+    return (date_cls.fromisoformat(target_date) - release_date).days + 1
+
+
+def _css_vars(vars_by_name: dict[str, str]) -> str:
+    return ";".join(f"--{name}:{value}" for name, value in vars_by_name.items())
+
+
+def _table_dark_theme(album_name: str) -> dict[str, str]:
+    key = album_name.strip().casefold()
+    base = {
+        "page-bg": "#171512",
+        "text": "#f4f2f0",
+        "card-bg": "linear-gradient(180deg,#1c1915 0%,#171512 30%,#151310 100%)",
+        "hero-bg": "#1c1915",
+        "hero-pos": "center 26%",
+        "hero-opacity": ".78",
+        "hero-filter": "saturate(.42) sepia(.16) contrast(1.02) brightness(.84)",
+        "hero-overlay": "linear-gradient(90deg,#1c1915 0%,rgba(28,25,21,.38) 16%,rgba(28,25,21,.16) 50%,rgba(28,25,21,.38) 84%,#1c1915 100%),linear-gradient(180deg,rgba(21,19,16,.05) 0%,rgba(21,19,16,.12) 52%,#171512 100%)",
+        "hero-text": "#eee6da",
+        "title-font": "'Times New Roman',Georgia,serif",
+        "title-size": "43px",
+        "title-spacing": "3px",
+        "title-transform": "uppercase",
+        "title-bottom": "48px",
+        "title-color": "#f4eee4",
+        "title-shadow": "0 2px 0 #11100e,0 8px 18px rgba(0,0,0,.72)",
+        "accent": "#c0aa8e",
+        "cell-text": "#f5f4f2",
+        "daily-text": "#f7f7f4",
+        "cell-bg": "#2d2925",
+        "cell-bg-alt": "#342f2a",
+        "head-bg": "#11100e",
+        "grid-line": "rgba(15,13,11,.62)",
+    }
+    if key == "taylor swift":
+        base.update({
+            "page-bg": "#eef8f1",
+            "text": "#103829",
+            "card-bg": "linear-gradient(180deg,#e7f5ea 0%,#f5fbf4 34%,#edf7f1 100%)",
+            "hero-bg": "#e7f5ea",
+            "hero-pos": "center 30%",
+            "hero-opacity": ".9",
+            "hero-filter": "saturate(.86) contrast(1.03) brightness(.98)",
+            "hero-overlay": "linear-gradient(90deg,#e7f5ea 0%,rgba(231,245,234,.28) 18%,rgba(231,245,234,.08) 50%,rgba(231,245,234,.28) 84%,#e7f5ea 100%),linear-gradient(180deg,rgba(231,245,234,0) 0%,rgba(231,245,234,.18) 55%,#eef8f1 100%)",
+            "hero-text": "#315f50",
+            "title-font": "Georgia,'Times New Roman',serif",
+            "title-size": "45px",
+            "title-spacing": "2px",
+            "title-color": "#2d6a54",
+            "title-shadow": "0 2px 0 rgba(255,255,255,.8),0 8px 18px rgba(35,82,65,.24)",
+            "accent": "#3f8065",
+            "cell-text": "#12382b",
+            "daily-text": "#0f2d23",
+            "cell-bg": "#dceee3",
+            "cell-bg-alt": "#d1e6da",
+            "head-bg": "#f7fbf7",
+            "grid-line": "rgba(63,128,101,.18)",
+        })
+    elif key.startswith("fearless"):
+        base.update({
+            "page-bg": "#fff6d8",
+            "text": "#4a3512",
+            "card-bg": "linear-gradient(180deg,#f6df99 0%,#fff8de 34%,#fff2c7 100%)",
+            "hero-bg": "#f6df99",
+            "hero-pos": "center 32%",
+            "hero-opacity": ".88",
+            "hero-filter": "saturate(.9) sepia(.14) contrast(1.02) brightness(.98)",
+            "hero-overlay": "linear-gradient(90deg,#f6df99 0%,rgba(246,223,153,.30) 18%,rgba(246,223,153,.08) 50%,rgba(246,223,153,.30) 84%,#f6df99 100%),linear-gradient(180deg,rgba(255,246,216,0) 0%,rgba(255,246,216,.18) 55%,#fff6d8 100%)",
+            "hero-text": "#6e4d16",
+            "title-font": "Georgia,'Times New Roman',serif",
+            "title-size": "48px",
+            "title-spacing": "3px",
+            "title-color": "#8a641e",
+            "title-shadow": "0 2px 0 rgba(255,255,255,.8),0 8px 18px rgba(138,100,30,.26)",
+            "accent": "#a47a25",
+            "cell-text": "#4a3512",
+            "daily-text": "#3b2a0f",
+            "cell-bg": "#f7e7b5",
+            "cell-bg-alt": "#efd99f",
+            "head-bg": "#fff8e2",
+            "grid-line": "rgba(164,122,37,.22)",
+        })
+    elif key.startswith("speak now"):
+        base.update({
+            "page-bg": "#f4e7ff",
+            "text": "#33144d",
+            "card-bg": "linear-gradient(180deg,#d8b4fe 0%,#f4e7ff 36%,#ead7ff 100%)",
+            "hero-bg": "#d8b4fe",
+            "hero-pos": "center 30%",
+            "hero-opacity": ".88",
+            "hero-filter": "saturate(.92) contrast(1.02) brightness(.94)",
+            "hero-overlay": "linear-gradient(90deg,#d8b4fe 0%,rgba(216,180,254,.30) 18%,rgba(216,180,254,.08) 50%,rgba(216,180,254,.30) 84%,#d8b4fe 100%),linear-gradient(180deg,rgba(244,231,255,0) 0%,rgba(244,231,255,.18) 55%,#f4e7ff 100%)",
+            "hero-text": "#5b2c83",
+            "title-font": "Georgia,'Times New Roman',serif",
+            "title-size": "47px",
+            "title-spacing": "2px",
+            "title-color": "#6d28a8",
+            "title-shadow": "0 2px 0 rgba(255,255,255,.75),0 8px 18px rgba(85,36,128,.28)",
+            "accent": "#7c3aed",
+            "cell-text": "#33144d",
+            "daily-text": "#2a103f",
+            "cell-bg": "#eadcff",
+            "cell-bg-alt": "#dfccf8",
+            "head-bg": "#fbf5ff",
+            "grid-line": "rgba(124,58,237,.2)",
+        })
+    elif key.startswith("red"):
+        base.update({
+            "page-bg": "#210c0c",
+            "text": "#fff4ef",
+            "card-bg": "linear-gradient(180deg,#3b1111 0%,#220b0b 35%,#160606 100%)",
+            "hero-bg": "#3b1111",
+            "hero-pos": "center 28%",
+            "hero-opacity": ".84",
+            "hero-filter": "saturate(.82) sepia(.08) contrast(1.06) brightness(.78)",
+            "hero-overlay": "linear-gradient(90deg,#210c0c 0%,rgba(33,12,12,.40) 18%,rgba(33,12,12,.12) 50%,rgba(33,12,12,.44) 84%,#210c0c 100%),linear-gradient(180deg,rgba(24,6,6,.04) 0%,rgba(24,6,6,.18) 55%,#210c0c 100%)",
+            "hero-text": "#ffd7ce",
+            "title-font": "Georgia,'Times New Roman',serif",
+            "title-size": "50px",
+            "title-spacing": "5px",
+            "title-color": "#f8d2c8",
+            "title-shadow": "0 2px 0 #090202,0 9px 19px rgba(0,0,0,.78)",
+            "accent": "#d68a7c",
+            "cell-text": "#fff4ef",
+            "daily-text": "#fff7f3",
+            "cell-bg": "#2d1717",
+            "cell-bg-alt": "#351d1d",
+            "head-bg": "#120505",
+            "grid-line": "rgba(8,2,2,.72)",
+        })
+    elif key.startswith("1989"):
+        base.update({
+            "page-bg": "#e7f3fb",
+            "text": "#17364c",
+            "card-bg": "linear-gradient(180deg,#bddcf0 0%,#e7f3fb 34%,#f4efe2 100%)",
+            "hero-bg": "#bddcf0",
+            "hero-pos": "center 32%",
+            "hero-opacity": ".9",
+            "hero-filter": "saturate(.82) contrast(1.02) brightness(.98)",
+            "hero-overlay": "linear-gradient(90deg,#bddcf0 0%,rgba(189,220,240,.28) 18%,rgba(189,220,240,.08) 50%,rgba(189,220,240,.28) 84%,#bddcf0 100%),linear-gradient(180deg,rgba(231,243,251,0) 0%,rgba(231,243,251,.20) 55%,#e7f3fb 100%)",
+            "hero-text": "#315a75",
+            "title-font": "'Arial Narrow','Helvetica Neue',Arial,sans-serif",
+            "title-size": "58px",
+            "title-spacing": "6px",
+            "title-color": "#315a75",
+            "title-shadow": "0 2px 0 rgba(255,255,255,.8),0 8px 18px rgba(49,90,117,.26)",
+            "accent": "#5e8cac",
+            "cell-text": "#17364c",
+            "daily-text": "#0f2b3f",
+            "cell-bg": "#d7eaf5",
+            "cell-bg-alt": "#cde2ee",
+            "head-bg": "#f7fbfd",
+            "grid-line": "rgba(94,140,172,.2)",
+        })
+    elif key == "lover":
+        base.update({
+            "page-bg": "#ffe8f3",
+            "text": "#5f2245",
+            "card-bg": "linear-gradient(180deg,#ffd0e6 0%,#ffe8f3 34%,#dbeafe 100%)",
+            "hero-bg": "#ffd0e6",
+            "hero-pos": "center 30%",
+            "hero-opacity": ".9",
+            "hero-filter": "saturate(.9) contrast(1.02) brightness(.98)",
+            "hero-overlay": "linear-gradient(90deg,#ffd0e6 0%,rgba(255,208,230,.30) 18%,rgba(255,208,230,.08) 50%,rgba(219,234,254,.34) 84%,#dbeafe 100%),linear-gradient(180deg,rgba(255,232,243,0) 0%,rgba(255,232,243,.20) 55%,#ffe8f3 100%)",
+            "hero-text": "#7e315d",
+            "title-font": "Georgia,'Times New Roman',serif",
+            "title-size": "54px",
+            "title-spacing": "3px",
+            "title-transform": "none",
+            "title-color": "#c0568a",
+            "title-shadow": "0 2px 0 rgba(255,255,255,.8),0 8px 18px rgba(192,86,138,.26)",
+            "accent": "#c0568a",
+            "cell-text": "#5f2245",
+            "daily-text": "#501c3a",
+            "cell-bg": "#f9dceb",
+            "cell-bg-alt": "#f3cfe2",
+            "head-bg": "#fff6fb",
+            "grid-line": "rgba(192,86,138,.18)",
+        })
+    elif key == "folklore":
+        base.update({
+            "page-bg": "#e6e6e2",
+            "text": "#272724",
+            "card-bg": "linear-gradient(180deg,#cfcfca 0%,#e6e6e2 36%,#d9d9d4 100%)",
+            "hero-bg": "#cfcfca",
+            "hero-pos": "center 30%",
+            "hero-opacity": ".88",
+            "hero-filter": "grayscale(1) contrast(1.04) brightness(.92)",
+            "hero-overlay": "linear-gradient(90deg,#cfcfca 0%,rgba(207,207,202,.30) 18%,rgba(207,207,202,.08) 50%,rgba(207,207,202,.30) 84%,#cfcfca 100%),linear-gradient(180deg,rgba(230,230,226,0) 0%,rgba(230,230,226,.22) 55%,#e6e6e2 100%)",
+            "hero-text": "#3f3f3b",
+            "title-font": "Georgia,'Times New Roman',serif",
+            "title-size": "52px",
+            "title-spacing": "3px",
+            "title-transform": "lowercase",
+            "title-color": "#2f2f2c",
+            "title-shadow": "0 2px 0 rgba(255,255,255,.65),0 8px 18px rgba(47,47,44,.24)",
+            "accent": "#5f625d",
+            "cell-text": "#272724",
+            "daily-text": "#20201d",
+            "cell-bg": "#d8d8d3",
+            "cell-bg-alt": "#cdcdc8",
+            "head-bg": "#f2f2ee",
+            "grid-line": "rgba(95,98,93,.2)",
+        })
+    elif key == "evermore":
+        base.update({
+            "page-bg": "#2a170d",
+            "text": "#fff1dc",
+            "card-bg": "linear-gradient(180deg,#4a2a15 0%,#2a170d 36%,#1c0f08 100%)",
+            "hero-bg": "#4a2a15",
+            "hero-pos": "center 28%",
+            "hero-opacity": ".84",
+            "hero-filter": "saturate(.78) sepia(.18) contrast(1.05) brightness(.8)",
+            "hero-overlay": "linear-gradient(90deg,#2a170d 0%,rgba(42,23,13,.42) 18%,rgba(42,23,13,.12) 50%,rgba(42,23,13,.44) 84%,#2a170d 100%),linear-gradient(180deg,rgba(28,15,8,.04) 0%,rgba(28,15,8,.18) 55%,#2a170d 100%)",
+            "hero-text": "#f0c994",
+            "title-font": "Georgia,'Times New Roman',serif",
+            "title-size": "52px",
+            "title-spacing": "2px",
+            "title-transform": "lowercase",
+            "title-color": "#e2b477",
+            "title-shadow": "0 2px 0 #120804,0 9px 19px rgba(0,0,0,.76)",
+            "accent": "#d49a5b",
+            "cell-text": "#fff1dc",
+            "daily-text": "#fff7ed",
+            "cell-bg": "#342014",
+            "cell-bg-alt": "#3d2618",
+            "head-bg": "#130904",
+            "grid-line": "rgba(10,4,2,.72)",
+        })
+    elif key == "reputation":
+        base.update({
+            "page-bg": "#080808",
+            "text": "#f2f2f2",
+            "card-bg": "linear-gradient(180deg,#121212 0%,#090909 34%,#050505 100%)",
+            "hero-bg": "#080808",
+            "hero-pos": "center 28%",
+            "hero-opacity": ".86",
+            "hero-filter": "grayscale(1) contrast(1.12) brightness(.78)",
+            "hero-overlay": "linear-gradient(90deg,#080808 0%,rgba(8,8,8,.44) 17%,rgba(8,8,8,.18) 52%,rgba(8,8,8,.48) 86%,#080808 100%),linear-gradient(180deg,rgba(0,0,0,.02) 0%,rgba(0,0,0,.18) 52%,#080808 100%)",
+            "hero-text": "#f0f0f0",
+            "title-font": "'Old English Text MT','UnifrakturCook','Cloister Black',Georgia,serif",
+            "title-size": "48px",
+            "title-spacing": "1px",
+            "title-transform": "lowercase",
+            "title-bottom": "48px",
+            "title-color": "#f4f4f4",
+            "title-shadow": "0 2px 0 #000,0 9px 19px rgba(0,0,0,.82)",
+            "accent": "#c9c9c9",
+            "cell-bg": "#242424",
+            "cell-bg-alt": "#2d2d2d",
+            "head-bg": "#080808",
+            "grid-line": "rgba(0,0,0,.72)",
+        })
+    elif key == "midnights":
+        base.update({
+            "page-bg": "#090817",
+            "text": "#f2f2ff",
+            "card-bg": "linear-gradient(180deg,#11102a 0%,#0b0a1d 35%,#080712 100%)",
+            "hero-bg": "#11102a",
+            "hero-pos": "center 30%",
+            "hero-opacity": ".82",
+            "hero-filter": "saturate(.72) hue-rotate(5deg) contrast(1.04) brightness(.8)",
+            "hero-overlay": "linear-gradient(90deg,#090817 0%,rgba(9,8,23,.42) 16%,rgba(9,8,23,.14) 50%,rgba(9,8,23,.44) 84%,#090817 100%),linear-gradient(180deg,rgba(7,7,18,.03) 0%,rgba(7,7,18,.16) 52%,#090817 100%)",
+            "hero-text": "#dcd9ff",
+            "title-font": "Georgia,'Times New Roman',serif",
+            "title-size": "48px",
+            "title-spacing": "4px",
+            "title-transform": "uppercase",
+            "title-bottom": "48px",
+            "title-color": "#d8ddff",
+            "title-shadow": "0 2px 0 #050511,0 9px 19px rgba(0,0,0,.78)",
+            "accent": "#a5b4fc",
+            "cell-bg": "#211d2e",
+            "cell-bg-alt": "#28233a",
+            "head-bg": "#080712",
+            "grid-line": "rgba(5,5,17,.72)",
+        })
+    elif key == "the life of a showgirl":
+        base.update({
+            "page-bg": "#2c1208",
+            "text": "#fff7df",
+            "card-bg": "linear-gradient(180deg,#6e2b0d 0%,#2c1208 35%,#170804 100%)",
+            "hero-bg": "#6e2b0d",
+            "hero-pos": "center 30%",
+            "hero-opacity": ".86",
+            "hero-filter": "saturate(.95) sepia(.12) contrast(1.07) brightness(.82)",
+            "hero-overlay": "linear-gradient(90deg,#2c1208 0%,rgba(44,18,8,.38) 18%,rgba(44,18,8,.10) 50%,rgba(44,18,8,.38) 84%,#2c1208 100%),linear-gradient(180deg,rgba(23,8,4,.02) 0%,rgba(23,8,4,.16) 55%,#2c1208 100%)",
+            "hero-text": "#ffd47b",
+            "title-font": "Georgia,'Times New Roman',serif",
+            "title-size": "44px",
+            "title-spacing": "3px",
+            "title-color": "#ffd47b",
+            "title-shadow": "0 2px 0 #160704,0 9px 19px rgba(0,0,0,.76)",
+            "accent": "#f59e0b",
+            "cell-text": "#fff7df",
+            "daily-text": "#fff9ea",
+            "cell-bg": "#3a1a0d",
+            "cell-bg-alt": "#44200f",
+            "head-bg": "#130603",
+            "grid-line": "rgba(10,3,1,.72)",
+        })
+    elif key == "the taylor swift holiday collection":
+        base.update({
+            "page-bg": "#f7fbf6",
+            "text": "#173b28",
+            "card-bg": "linear-gradient(180deg,#dbead8 0%,#f7fbf6 36%,#f7e4e0 100%)",
+            "hero-bg": "#dbead8",
+            "hero-pos": "center 30%",
+            "hero-opacity": ".9",
+            "hero-filter": "saturate(.82) contrast(1.02) brightness(.98)",
+            "hero-overlay": "linear-gradient(90deg,#dbead8 0%,rgba(219,234,216,.30) 18%,rgba(219,234,216,.08) 50%,rgba(247,228,224,.34) 84%,#f7e4e0 100%),linear-gradient(180deg,rgba(247,251,246,0) 0%,rgba(247,251,246,.22) 55%,#f7fbf6 100%)",
+            "hero-text": "#315f45",
+            "title-font": "Georgia,'Times New Roman',serif",
+            "title-size": "39px",
+            "title-spacing": "2px",
+            "title-color": "#9f2d2d",
+            "title-shadow": "0 2px 0 rgba(255,255,255,.85),0 8px 18px rgba(159,45,45,.22)",
+            "accent": "#2f7a4e",
+            "cell-text": "#173b28",
+            "daily-text": "#102d1e",
+            "cell-bg": "#e6f0e3",
+            "cell-bg-alt": "#dce9d9",
+            "head-bg": "#fffafa",
+            "grid-line": "rgba(47,122,78,.18)",
+        })
+    return base
+
+
+def _format_section_name(name: str) -> str:
+    cleaned = re.sub(r"\s+", " ", (name or "").replace("_", " ")).strip()
+    if not cleaned:
+        return "Section"
+    words = []
+    for word in cleaned.split(" "):
+        lower = word.lower()
+        if lower in {"3am", "til", "dawn"}:
+            words.append(word.upper() if lower == "3am" else word.title())
+        elif len(word) <= 3 and word.isupper():
+            words.append(word)
+        else:
+            words.append(word.capitalize())
+    return " ".join(words)
+
+
+def _table_dark_section_row(section: dict, hist: dict) -> str:
+    tracks = section.get("tracks", [])
+    sec_streams = sum(hist.get(track["track_id"], {}).get("streams") or 0 for track in tracks)
+    sec_daily = sum(hist.get(track["track_id"], {}).get("daily") or 0 for track in tracks)
+    sec_change = sum(hist.get(track["track_id"], {}).get("change") or 0 for track in tracks)
+    sec_yest = sec_daily - sec_change
+    sec_pct = (sec_change / sec_yest * 100) if sec_yest else None
+    pct_text = "-" if sec_pct is None else f"{sec_pct:+.2f}%"
+    state_cls = "pos" if sec_change >= 0 else "neg"
+    name = html.escape(_format_section_name(section.get("name") or "Section"))
+    return f"""<div class="section-row">
+    <div class="section-cell section-name">{name}</div>
+    <div class="section-cell section-num">{fmt_comma_num(sec_streams)}</div>
+    <div class="section-cell section-num">+{fmt_comma_num(sec_daily)}</div>
+    <div class="section-cell section-num {state_cls}">{pct_text}</div>
+    <div class="section-cell section-num {state_cls}">{sec_change:+,}</div>
+  </div>"""
 
 
 def build_table_dark_html(album_name: str, sections: list[dict], hist: dict, target_date: str, header_uri: str, handle_icon_uri: str = "") -> str:
     from datetime import datetime
 
     date_obj = datetime.strptime(target_date, "%Y-%m-%d")
-    left_date = f"{date_obj.strftime('%B')} {date_obj.day}, {date_obj.year}"
     weekday = date_obj.strftime("%A")
+    display_date = f"{weekday}, {date_obj.strftime('%B')} {date_obj.day}, {date_obj.year}"
+    day_number = _album_day_number(album_name, sections, target_date)
+    day_label = f" (DAY {day_number})" if day_number is not None else ""
+    theme_vars = _css_vars(_table_dark_theme(album_name))
     hero_bg = f"background-image:url('{header_uri}');" if header_uri else ""
-    brand = f'<img class="brand-mark" src="{handle_icon_uri}" alt="">' if handle_icon_uri else ""
+    brand_img = f'<img class="brand-mark" src="{handle_icon_uri}" alt="">' if handle_icon_uri else ""
+    brand = f'<div class="brand-lock">{brand_img}<span>{HANDLE}</span></div>'
     rows = []
     total_streams = 0
     total_daily = 0
     total_change = 0
-    tracks = [track for sec in sections for track in sec.get("tracks", [])]
-    for idx, track in enumerate(tracks, start=1):
-        hdata = hist.get(track["track_id"], {})
-        streams = hdata.get("streams")
-        daily = hdata.get("daily")
-        change = hdata.get("change")
-        pct = hdata.get("pct")
-        total_streams += streams or 0
-        total_daily += daily or 0
-        total_change += change or 0
-        pct_text = "-" if pct is None else f"{pct:+.2f}%"
-        delta_text = "-" if change is None else f"{change:+,}"
-        state_cls = "pos" if (change or 0) >= 0 else "neg"
-        daily_text = "-" if daily is None else f"+{fmt_comma_num(daily)}"
-        title = html.escape(_shorten_title(track.get("title") or track.get("title_clean") or ""))
-        rows.append(f"""<div class="td rank">{idx}</div>
-    <div class="td track">{title}</div>
-    <div class="td total">{fmt_comma_num(streams)}</div>
-    <div class="td daily">{daily_text}</div>
-    <div class="td pct {state_cls}">{pct_text}</div>
-    <div class="td delta {state_cls}">{delta_text}</div>""")
+    show_sections = len([sec for sec in sections if sec.get("tracks")]) > 1
+    idx = 0
+    for section in sections:
+        tracks = section.get("tracks", [])
+        if not tracks:
+            continue
+        if show_sections:
+            rows.append(_table_dark_section_row(section, hist))
+        for track in tracks:
+            idx += 1
+            hdata = hist.get(track["track_id"], {})
+            streams = hdata.get("streams")
+            daily = hdata.get("daily")
+            change = hdata.get("change")
+            pct = hdata.get("pct")
+            total_streams += streams or 0
+            total_daily += daily or 0
+            total_change += change or 0
+            pct_text = "-" if pct is None else f"{pct:+.2f}%"
+            delta_text = "-" if change is None else f"{change:+,}"
+            state_cls = "pos" if (change or 0) >= 0 else "neg"
+            daily_text = "-" if daily is None else f"+{fmt_comma_num(daily)}"
+            title = html.escape(_shorten_title(track.get("title") or track.get("title_clean") or ""))
+            alt_cls = " alt" if idx % 2 == 0 else ""
+            rows.append(f"""<div class="td rank{alt_cls}">{idx}</div>
+    <div class="td track{alt_cls}">{title}</div>
+    <div class="td total{alt_cls}">{fmt_comma_num(streams)}</div>
+    <div class="td daily{alt_cls}">{daily_text}</div>
+    <div class="td pct {state_cls}{alt_cls}">{pct_text}</div>
+    <div class="td delta {state_cls}{alt_cls}">{delta_text}</div>""")
     total_yest = total_daily - total_change
     total_pct = (total_change / total_yest * 100) if total_yest else None
     total_pct_text = "-" if total_pct is None else f"{total_pct:+.2f}%"
     total_state_cls = "pos" if total_change >= 0 else "neg"
     return f"""<!DOCTYPE html>
 <html><head><meta charset="utf-8"><style>{TABLE_DARK_CSS}</style></head><body>
-<div class="dark-card">
-  <div class="hero"><div class="hero-img" style="{hero_bg}"></div>{brand}<div class="album-title">{html.escape(album_name)}</div></div>
-  <div class="meta"><span>{left_date}</span><span>{weekday}</span></div>
+<div class="dark-card" style="{theme_vars}">
+  <div class="hero"><div class="hero-img" style="{hero_bg}"></div>{brand}<div class="hero-date">{display_date}{day_label}</div><div class="album-title">{html.escape(album_name)}</div></div>
   <div class="table">
     <div class="th">#</div><div class="th">Track</div><div class="th">Total Streams</div><div class="th">Daily Streams</div><div class="th change-head">Change</div>
     {"".join(rows)}
@@ -1719,7 +2116,7 @@ def _best_day_rows_for_sections(
     return rows
 
 
-def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_daily: bool = False) -> Path:
+def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_daily: bool = False, style: str = "default") -> Path:
     if target_date is None:
         target_date = get_latest_date()
     print(f"[album_update] Album: {album_name}  Date: {target_date}")
@@ -1767,9 +2164,14 @@ def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_
     print("[album_update] Téléchargement de la cover...")
     cover_uri = _url_to_data_uri(cover_url) if cover_url else ""
 
+    table_dark_style = style == "table-dark"
     layout = _compute_layout_metrics(sections, show_filter_cols, best_day_labels_by_track)
-    hdr_target_w = (layout["body_width_px"] - 2 * BODY_PADDING_CSS) * RENDER_DPR
-    hdr_target_h = HEADER_HEIGHT_CSS * RENDER_DPR
+    if table_dark_style:
+        hdr_target_w = 1106
+        hdr_target_h = 304
+    else:
+        hdr_target_w = (layout["body_width_px"] - 2 * BODY_PADDING_CSS) * RENDER_DPR
+        hdr_target_h = HEADER_HEIGHT_CSS * RENDER_DPR
     header_uri = _prepare_header_for_render(header_img, hdr_target_w, hdr_target_h) if header_img else ""
 
     if mono_accent:
@@ -1780,27 +2182,38 @@ def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_
     # Nouveau : icône du handle
     handle_icon_uri = _file_to_data_uri(HANDLE_ICON_PATH)
 
-    html = build_html(
-        album_name,
-        sections,
-        hist,
-        target_date,
-        cover_uri,
-        header_uri,
-        dominant_hex,
-        section_palette=section_palette,
-        show_filter_cols=show_filter_cols,
-        layout=layout,
-        handle_icon_uri=handle_icon_uri,
-        best_day_labels_by_track=best_day_labels_by_track,
-    )
+    if table_dark_style:
+        html = build_table_dark_html(
+            album_name,
+            sections,
+            hist,
+            target_date,
+            header_uri,
+            handle_icon_uri=handle_icon_uri,
+        )
+    else:
+        html = build_html(
+            album_name,
+            sections,
+            hist,
+            target_date,
+            cover_uri,
+            header_uri,
+            dominant_hex,
+            section_palette=section_palette,
+            show_filter_cols=show_filter_cols,
+            layout=layout,
+            handle_icon_uri=handle_icon_uri,
+            best_day_labels_by_track=best_day_labels_by_track,
+        )
 
     album_slug = album_update_slug(album_name)
     out_dir    = album_update_out_dir(target_date)
     out_dir.mkdir(parents=True, exist_ok=True)
-    out_path   = out_dir / f"{album_slug}_update.png"
-    raw_out_path = out_dir / f"_{album_slug}_update_hires.png"
-    tmp_html   = out_dir / f"_{album_slug}_tmp.html"
+    style_suffix = "_table_dark" if table_dark_style else ""
+    out_path   = out_dir / f"{album_slug}_update{style_suffix}.png"
+    raw_out_path = out_dir / f"_{album_slug}_update{style_suffix}_hires.png"
+    tmp_html   = out_dir / f"_{album_slug}_tmp{style_suffix}.html"
     tmp_html.write_text(html, encoding="utf-8")
 
     print("[album_update] Rendu Playwright...")
@@ -1808,7 +2221,8 @@ def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
             # High-density render for near-4K width output (880 * 4 = 3520 px).
-            page    = browser.new_page(viewport={"width": 1200, "height": 320}, device_scale_factor=RENDER_DPR)
+            render_dpr = 1 if table_dark_style else RENDER_DPR
+            page    = browser.new_page(viewport={"width": 1200, "height": 320}, device_scale_factor=render_dpr)
             page.goto(f"file:///{tmp_html.as_posix()}", wait_until="load")
             page.wait_for_timeout(450)
             page.locator("body").screenshot(path=str(raw_out_path), scale="device")
@@ -1817,7 +2231,9 @@ def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_
         if _PIL:
             try:
                 img = Image.open(raw_out_path)
-                # Keep native high-res render for maximum detail retention.
+                if table_dark_style and render_dpr != 1:
+                    img = img.resize((img.width // render_dpr, img.height // render_dpr), Image.LANCZOS)
+                # Keep native high-res render for maximum detail retention in the default style.
                 img.save(out_path, format="PNG", optimize=True)
             finally:
                 try:
@@ -1968,4 +2384,166 @@ def _best_day_post_label(row: dict) -> str:
     if row.get("is_biggest_day_of_year"):
         label = "BIGGEST DAY of the year"
     elif row.get("kind") == "since":
-        lab
+        label = f"BEST DAY since {_format_best_since_long(row.get('best_day_since'))}"
+    elif row.get("is_biggest_day_of_month"):
+        label = "BIGGEST DAY of the month"
+    else:
+        label = f"BEST DAY since {_format_best_since_long(row.get('best_day_since'))}"
+    # Same rule as best_day_since.row_label: a combined record is set by the
+    # summed family total (e.g. original + Taylor's Version), not this track's
+    # own streams, so the post text must flag it.
+    if row.get("combined"):
+        label = f"{label} (combined)"
+    return label
+
+
+def _build_album_post_text(album_name: str, target_date: str) -> str:
+    tweet = _build_album_post_text_base(album_name, target_date)
+    sections, _canonical_name = load_album_sections(album_name, target_date)
+    if not sections:
+        return tweet
+
+    best_day_rows = _best_day_rows_for_sections(sections, target_date)
+    if not best_day_rows:
+        return tweet
+
+    def note_title(title: str) -> str:
+        return _shorten_title(title).replace("(Taylor's Version)", "(TV)")
+
+    def note_rank(row: dict) -> tuple[int, int]:
+        days_since = row.get("days_since")
+        if days_since is None:
+            best_since = row.get("best_day_since")
+            if isinstance(best_since, str) and re.match(r"\d{4}-\d{2}-\d{2}$", best_since):
+                days_since = (date_cls.fromisoformat(target_date) - date_cls.fromisoformat(best_since)).days + 1
+        return (int(days_since or 0), int(row.get("daily_streams") or 0))
+
+    best_row = max(best_day_rows, key=note_rank)
+    best_label = _best_day_post_label(best_row)
+    selected = _selected_album_post_track(sections, target_date)
+    selected_title = selected.get("title") if selected else ""
+    same_song = (
+        bool(selected)
+        and (
+            selected.get("track_id") == best_row.get("track_id")
+            or _same_note_song(selected_title, best_row.get("title") or "")
+        )
+    )
+
+    if same_song:
+        addition = f" It earned its {best_label}."
+        lines = tweet.splitlines()
+        for i, line in enumerate(lines):
+            if f'"{_shorten_title(selected_title)}" was the ' in line:
+                lines[i] = f"{line}{addition}"
+                return "\n".join(lines)
+
+    note = f'"{note_title(best_row["title"])}" had its {best_label}.'
+    marker = "\n\nSee full update here"
+    if marker in tweet:
+        return tweet.replace(marker, f"\n\n{note}{marker}", 1)
+    return f"{tweet}\n\n{note}"
+
+
+def fit_album_post_text(tweet: str) -> str:
+    if len(tweet) <= TWEET_CHAR_LIMIT:
+        return tweet
+    if "See full update here" in tweet:
+        tweet = tweet.split("See full update here", 1)[0].strip()
+    if len(tweet) <= TWEET_CHAR_LIMIT:
+        return tweet
+    lines = [
+        line
+        for line in tweet.splitlines()
+        if not re.search(r"had its (BEST|BIGGEST) DAY", line, re.IGNORECASE)
+    ]
+    return "\n".join(lines).strip()
+
+
+def post(album_name: str, image_path: Path, target_date: str) -> bool:
+    if not TWITTER_SESSION.exists():
+        print(f"[album_update] Session Twitter introuvable : {TWITTER_SESSION}")
+        return False
+
+    try:
+        from core.twitter import post_with_image
+    except ImportError as e:
+        print(f"[album_update] Impossible d'importer core.twitter: {e}")
+        return False
+
+    try:
+        tweet = _build_album_post_text(album_name, target_date)
+        fitted_tweet = fit_album_post_text(tweet)
+        if fitted_tweet != tweet:
+            print("[album_update] Tweet shortened to fit X limit.")
+        tweet = fitted_tweet
+    except Exception as e:
+        print(f"[album_update] Fallback tweet (erreur génération texte): {e}")
+        from datetime import datetime
+        date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
+        tweet = f"Taylor Swift · {album_name}\nDaily Streams Update — {date_fmt}"
+
+    print(f"[album_update] Publication Twitter : {tweet[:60]}...")
+    ok = post_with_image(tweet, image_path, TWITTER_SESSION)
+    if ok:
+        print("[album_update] Tweet publié avec succès.")
+    else:
+        print("[album_update] Échec de la publication Twitter.")
+    return ok
+
+
+# ── Entry point ────────────────────────────────────────────────────────────────
+
+def main() -> None:
+    args = sys.argv[1:]
+    if not args or args[0] in ("-h", "--help"):
+        print(__doc__)
+        sys.exit(0)
+
+    do_post = "--post" in args and "--no-post" not in args
+    style = "default"
+    clean_args = []
+    for arg in args:
+        if arg in ("--post", "--no-post"):
+            continue
+        if arg.startswith("--style="):
+            style = arg.split("=", 1)[1].strip() or "default"
+            continue
+        clean_args.append(arg)
+
+    album_name  = clean_args[0] if len(clean_args) > 0 else None
+    target_date = clean_args[1] if len(clean_args) > 1 else None
+
+    if not album_name:
+        print("Usage: generate_album_update_image.py <album_name> [date] [--post]")
+        sys.exit(1)
+
+    resolved_date = target_date or get_latest_date()
+
+    if do_post:
+        existing_lock_path = existing_album_update_lock_path(album_name, resolved_date)
+        if existing_lock_path is not None:
+            lock_path = existing_lock_path
+            print(f"[album_update] Déjà posté ({lock_path.name}). Rien à faire.")
+            return
+
+    if style not in {"default", "table-dark"}:
+        print(f"Unknown style: {style!r}. Supported styles: default, table-dark")
+        sys.exit(1)
+
+    image_path = generate(album_name, resolved_date, style=style)
+
+    if do_post:
+        if style != "default":
+            print("[album_update] Experimental styles cannot be posted directly.")
+            sys.exit(1)
+        lock_path = album_update_lock_path(album_name, resolved_date)
+        ok = post(album_name, image_path, resolved_date)
+        if ok:
+            lock_path.write_text(f"posted {resolved_date}\n", encoding="utf-8")
+        else:
+            sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

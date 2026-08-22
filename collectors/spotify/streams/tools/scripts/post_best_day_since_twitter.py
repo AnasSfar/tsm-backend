@@ -254,6 +254,12 @@ def _find_all_rows(target_date: str, *, min_days: int) -> list[dict]:
             or not (row.get("is_biggest_day_of_year") or best_day_since.passes_filters(row, min_days=min_days))
         ):
             continue
+        if _is_repeat_of_previous_day(row, target_date):
+            print(
+                f"[best_day_since_post] Skipping {row['title']}: same best-day-since "
+                f"({row['best_day_since']}) already posted the day before."
+            )
+            continue
         rows.append(row)
     return rows
 
@@ -415,6 +421,34 @@ def _posted_track_ids_for_date(target_date: str) -> set[str]:
     return {p.stem for p in track_locks_dir.glob("*.lock")}
 
 
+def _write_track_lock(track_id: str, target_date: str, row: dict) -> None:
+    lock = _track_posted_lock_path(track_id, target_date)
+    lock.parent.mkdir(parents=True, exist_ok=True)
+    lock.write_text(
+        json.dumps({"best_day_since": row.get("best_day_since"), "kind": row.get("kind")}),
+        encoding="utf-8",
+    )
+
+
+def _is_repeat_of_previous_day(row: dict, target_date: str) -> bool:
+    """True if yesterday's post for this track already claimed the same
+    best-day-since reference (same "since" date, or "ever" twice running).
+
+    Posting "best day since <X>" (or "best day ever") again the very next
+    day for the same track reads as a duplicate even though it's technically
+    still true, so we suppress it and let the record stand until a new,
+    different reference date is reached."""
+    previous_date = (date.fromisoformat(target_date) - timedelta(days=1)).isoformat()
+    lock = _track_posted_lock_path(row["track_id"], previous_date)
+    if not lock.exists():
+        return False
+    try:
+        previous = json.loads(lock.read_text(encoding="utf-8"))
+    except Exception:
+        return False
+    return bool(previous.get("best_day_since")) and previous.get("best_day_since") == row.get("best_day_since")
+
+
 def _post_single_track_early(
     track_id: str,
     target_date: str,
@@ -465,6 +499,12 @@ def _post_single_track_early(
     )
     if not row:
         return "skipped"
+    if _is_repeat_of_previous_day(row, target_date):
+        print(
+            f"[best_day_since_early] Skipping {track_id}: same best-day-since "
+            f"({row['best_day_since']}) already posted the day before."
+        )
+        return "skipped"
 
     track_ids = row.get("combined_track_ids") or [track_id]
     total_today, total_yesterday, daily_today, daily_yesterday, _daily_last_week = (
@@ -505,8 +545,7 @@ def _post_single_track_early(
         print(f"[best_day_since_early] Failed to post {row['title']}.")
         return "error"
 
-    lock.parent.mkdir(parents=True, exist_ok=True)
-    lock.touch()
+    _write_track_lock(track_id, target_date, row)
     return "posted"
 
 
@@ -1016,9 +1055,7 @@ def main() -> None:
             print(f"[best_day_since_post] Failed to post {row['title']}.")
             sys.exit(1)
         posted_count += 1
-        track_lock = _track_posted_lock_path(row["track_id"], target_date)
-        track_lock.parent.mkdir(parents=True, exist_ok=True)
-        track_lock.touch()
+        _write_track_lock(row["track_id"], target_date, row)
         if index < len(rows) and args.post_spacing_seconds > 0:
             print(f"[best_day_since_post] Waiting {args.post_spacing_seconds}s before next post...")
             time.sleep(args.post_spacing_seconds)

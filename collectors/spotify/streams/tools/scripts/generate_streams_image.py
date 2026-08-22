@@ -73,6 +73,13 @@ def _norm(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "_", (s or "").lower()).strip("_")
 
 
+def _headers_dir_for_top_songs() -> Path:
+    specific = HEADERS_DIR / "top_songs"
+    if specific.exists() and any(p.suffix.lower() in {".jpg", ".jpeg", ".png", ".webp"} for p in specific.iterdir()):
+        return specific
+    return HEADERS_DIR
+
+
 def rank_change(rank: int, prev_rank) -> tuple[str, str]:
     if prev_rank is None:
         return "NEW", "chg-new"
@@ -94,7 +101,7 @@ def load_track_album_map() -> dict:
 
 
 def _pick_header_image() -> Path | None:
-    return pick_header_image(HEADERS_DIR)
+    return pick_header_image(_headers_dir_for_top_songs())
 
 
 def _dominant_color(img_path: Path) -> str:
@@ -536,7 +543,7 @@ def build_html(top_rows: list[dict], target_date: str, cover_map: dict, track_al
         rows_html=rows_html,
         handle=HANDLE,
         date_str=date_fmt,
-        headers_dir=HEADERS_DIR,
+        headers_dir=_headers_dir_for_top_songs(),
         body_width=body_width,
         art_size=44 if compact else 54,
         col_gap=7 if compact else 8,

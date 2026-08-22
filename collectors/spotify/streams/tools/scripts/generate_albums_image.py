@@ -86,6 +86,13 @@ def _norm(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "_", (s or "").lower()).strip("_")
 
 
+def _headers_dir_for_top_eras() -> Path:
+    specific = HEADERS_DIR / "top_eras"
+    if specific.exists() and any(p.suffix.lower() in {".jpg", ".jpeg", ".png", ".webp"} for p in specific.iterdir()):
+        return specific
+    return HEADERS_DIR
+
+
 def _is_unranked_era(name: str) -> bool:
     norm = _norm(name)
     parts = set(norm.split("_"))
@@ -443,7 +450,7 @@ def build_html(rows: list[dict], target_date: str, image_cache: dict[str, str]) 
         rows_html=rows_html,
         handle=HANDLE,
         date_str=date_fmt,
-        headers_dir=HEADERS_DIR,
+        headers_dir=_headers_dir_for_top_eras(),
         body_width=1000,
         art_size=38,
         col_gap=10,

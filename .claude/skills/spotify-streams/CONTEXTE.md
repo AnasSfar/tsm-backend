@@ -255,6 +255,22 @@ produire le highlight `best_day_since` — meme logique de regroupement par
 `song_family` et memes filtres que ce qui serait poste sur Twitter, pas de
 duplication.
 
+## Anti-doublon best-day-since (2026-08-22)
+
+`post_best_day_since_twitter.py` ne doit jamais poster la meme reference
+"best day since X" (ou "best day ever") sur deux jours consecutifs pour le
+meme morceau — meme si le record tient techniquement encore le lendemain
+(streams toujours au-dessus de tout ce qui precede X), c'est un doublon a
+l'affichage. `_track_posted_lock_path(...).lock` stocke desormais un JSON
+`{"best_day_since": ..., "kind": ...}` (au lieu d'un fichier vide) via
+`_write_track_lock`, et `_is_repeat_of_previous_day` compare la valeur du
+jour au lock de la veille avant de poster (dans `_find_all_rows` pour le
+flux batch, et dans `_post_single_track_early` pour `--only-track`). Si le
+lock de la veille n'existe pas ou est vide (anciens locks pre-fix), aucune
+suppression n'a lieu — comportement par defaut sur, pas de faux negatif.
+Cette regle ne s'applique qu'aux posts individuels par morceau ; le post
+recap (`_find_recap_rows`) et les posts album ne sont pas concernes.
+
 ## Fusion catalogue Spotify active (dedup dynamique)
 
 Depuis 2026-08-21 : Spotify fusionne parfois deux track_id du catalogue en un
