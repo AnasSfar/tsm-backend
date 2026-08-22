@@ -271,6 +271,39 @@ suppression n'a lieu — comportement par defaut sur, pas de faux negatif.
 Cette regle ne s'applique qu'aux posts individuels par morceau ; le post
 recap (`_find_recap_rows`) et les posts album ne sont pas concernes.
 
+## Priorite best-day-since > 3 mois (2026-08-22)
+
+Un "best day since" dont l'ecart (`days_since`) depasse
+`PRIORITY_BEST_DAY_SINCE_MIN_DAYS = 90` (kind="since" uniquement, pas
+"best_ever") est garanti d'etre poste : `_is_priority_best_day_since(row)`
+fait sauter, pour ces rows, le cap `MAX_BEST_DAY_SONG_POSTS_PER_ALBUM = 3`
+et le cap quotidien `POST_COLLECTION_MAX_SONG_POSTS = 5`, au lieu de
+concourir avec les autres candidats du jour pour une place limitee — dans
+`_pick_rows` (flux batch, priority_rows ajoutees avant le cap par album),
+`_validated_song_rows_for_post` (le cap quotidien final ne compte que les
+rows non-priority), et `_post_single_track_early` (`--only-track`, cap
+quotidien + cap par album sautes si `is_priority`). Elles comptent quand
+meme dans `album_post_counts`/`locked_track_ids` une fois postees, donc
+elles reduisent la marge des posts normaux suivants pour le meme album/jour
+— mais ne sont jamais elles-memes bloquees. `_passes_song_post_gate` n'a
+pas besoin de changement : son seuil `ALWAYS_POST_BEST_DAY_SINCE_AFTER_DAYS
+= 60` est deja plus permissif que 90 jours.
+
+## Bug fixe : badge "of the year" invisible dans l'update album (2026-08-22)
+
+`generate_album_update_image.py::_best_day_labels_for_sections` et
+`_best_day_rows_for_sections` excluaient les rows avec
+`is_biggest_day_of_year=True` (`and not row.get("is_biggest_day_of_year")`),
+alors que `_format_best_day_marker_label` / `_best_day_post_label` savent
+deja afficher "of the year" pour ce cas — code mort depuis son ajout
+(commit `c2aff8e1f`, 2026-08-12), donc aucun morceau ayant son "best day of
+the year" n'affichait jamais l'etoile/colonne ni la mention dans la caption
+de l'update album, meme quand ce record etait poste en card individuelle.
+Repere sur "I Knew You Were Trouble." (Red) le 2026-08-20 :
+`is_biggest_day_of_year=True`, `best_day_since=2025-08-30`, poste en card
+mais absent de la table Red. Exclusion supprimee dans les deux fonctions ;
+`passes_filters` (min_days=30 pour un kind="since") reste le seul gate.
+
 ## Fusion catalogue Spotify active (dedup dynamique)
 
 Depuis 2026-08-21 : Spotify fusionne parfois deux track_id du catalogue en un
@@ -302,6 +335,18 @@ Cablage actuel :
 - `post_gainer_thread.py::_pick_gainers` : les "losers" du jour sont retires
   du pool de candidats avant selection du top gainers (couvre aussi
   `post_stream_highlights_thread.py`, qui reutilise `_pick_gainers`).
+- `generate_streams_image.py::build_top_n` (l'image "Daily Streams #1-20"
+  postee sur Twitter, `streams_image_*.png`) : ajoute le 2026-08-22 apres que
+  le proprietaire ait remarque Shake It Off / Best Work Edition ET
+  Love Story / Pop Mix encore doublonnes dans l'image du 2026-08-21 — le
+  premier cablage (2026-08-21) ne couvrait que le site et les posts gainers,
+  pas cette image. `build_top_n` filtre desormais `today_rows` via
+  `_drop_active_catalog_merge_duplicates` avant dedup-par-titre/tri.
+  `generate_weekend_streams_image.py` reutilise `build_top_n`, donc deja
+  couvert. Reflexe : ce fichier avait deja eu un bug de chargeur de
+  catalogue incomplet en 2026-08-08 (voir Pieges ci-dessous) — verifier ses
+  fonctions en parallele de celles d'`export_for_web.py`/`history_store.py`
+  avant de considerer une regle de classement comme entierement cablee.
 
 Si un nouveau generateur de classement/top N est ecrit, l'appeler aussi sur
 les track_id candidats de ce generateur plutot que de dupliquer la logique.
