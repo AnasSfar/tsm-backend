@@ -39,6 +39,7 @@ from comp.tables_image import (  # noqa: E402
     download_as_data_uri, pick_header_image, get_dominant_color,
     SPOTIFY_SVG, build_table_html,
 )
+import history_store  # noqa: E402
 
 HISTORY_PATH = first_existing_db_history("streams_history.csv")
 COVERS_PATH  = DB_DIR / "discography" / "covers.json"
@@ -366,12 +367,29 @@ def _dedup_by_title(rows: list[dict], song_db: dict) -> list[dict]:
     return list(best.values())
 
 
+def _drop_active_catalog_merge_duplicates(rows: list[dict]) -> list[dict]:
+    """Drop the track_id(s) Spotify is currently merging into another active
+    track_id's total (exact same reported total — see
+    history_store.pick_active_catalog_merge_losers), so the same song doesn't
+    occupy two rows in the top-N image with two different daily numbers
+    (observed 2026-08-21: Shake It Off / Best Work Edition, Love Story / Pop
+    Mix, both still merged days after the 2026-08-17 incident). Nothing is
+    written back to history — self-heals once Spotify's totals diverge."""
+    totals = {r["track_id"]: r.get("streams") for r in rows}
+    meta = {t["track_id"]: t for t in history_store.load_tracks_from_discography()}
+    losers = history_store.pick_active_catalog_merge_losers(totals, meta)
+    if not losers:
+        return rows
+    return [r for r in rows if r["track_id"] not in losers]
+
+
 def build_top_n(today_rows: list[dict], yesterday_rows: list[dict], last_week_rows: list[dict],
                 song_db: dict, top_n: int, start_rank: int = 1) -> list[dict]:
     """
     Déduplique par titre, trie par daily_streams décroissant, retourne top N.
     Attache prev_rank et daily_streams_yesterday à chaque entrée.
     """
+    today_rows = _drop_active_catalog_merge_duplicates(today_rows)
     yest_deduped = _dedup_by_title(yesterday_rows, song_db)
     yest_sorted  = sorted(yest_deduped, key=lambda r: (r.get("daily_streams") or 0), reverse=True)
     yest_rank_by_key  = {_norm(r["title"]): i + 1 for i, r in enumerate(yest_sorted)}
