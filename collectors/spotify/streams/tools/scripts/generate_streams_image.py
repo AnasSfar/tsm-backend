@@ -217,6 +217,7 @@ def load_history(target_date: str) -> tuple[list[dict], list[dict], list[dict]]:
                 "track_id": track_id,
                 "streams": streams,
                 "daily_streams": _parse_optional_int(row.get("daily_streams")),
+                "estimated_reason": (row.get("estimated_reason") or "").strip(),
             }
             if d == target_date:
                 today_rows[track_id] = entry
@@ -229,9 +230,13 @@ def load_history(target_date: str) -> tuple[list[dict], list[dict], list[dict]]:
             else:
                 week_before_rows[track_id] = entry
 
+    def _is_protected(e: dict) -> bool:
+        reason = e.get("estimated_reason") or ""
+        return reason == "manual_trusted" or reason.startswith("collection_incident_")
+
     def _fill_missing_daily(cur: dict[str, dict], prev: dict[str, dict]) -> None:
         for tid, e in cur.items():
-            if e.get("daily_streams") is not None:
+            if e.get("daily_streams") is not None or _is_protected(e):
                 continue
             p = prev.get(tid)
             if not p:
@@ -247,7 +252,7 @@ def load_history(target_date: str) -> tuple[list[dict], list[dict], list[dict]]:
     def _fill_missing_daily_from_latest(cur: dict[str, dict], checkpoint_name: str) -> None:
         prior_totals = latest_before[checkpoint_name]
         for tid, e in cur.items():
-            if e.get("daily_streams") is not None:
+            if e.get("daily_streams") is not None or _is_protected(e):
                 continue
             prior = prior_totals.get(tid)
             if prior is None:

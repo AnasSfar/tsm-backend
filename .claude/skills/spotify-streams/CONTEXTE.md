@@ -391,6 +391,41 @@ directement (`boto3` via `scripts/r2.py::get_s3_client()`), pas seulement le
 fichier local — le dry-run de `r2.py` ne fait pas de vraie comparaison de
 hash (tout ressort "changed"), donc il ne prouve rien sur l'etat reel de R2.
 
+**Suite le 2026-08-23 (meme jour) — le fix "a la racine" ne couvrait pas 3
+generateurs d'image** : le proprietaire a demande de regenerer les images
+top-songs du 08-17 au 08-21 (`post_streams_twitter.py <date> --no-post
+--top-n 20`) pour verifier le fix visuellement. Premiere regeneration du
+08-17 : "Teardrops On My Guitar - Radio Single Remix" ressortait quand meme
+en #5 avec 14 742 858 streams/day, alors que la ligne CSV est bien vide
+(`daily_streams=''`, `estimated_reason=collection_incident_spotify_merge_...`).
+Cause : `generate_streams_image.py::load_history()`,
+`generate_album_update_image.py::load_history_for_album()` et
+`generate_albums_image.py::load_history()` ont chacun leur PROPRE fonction
+`_fill_missing_daily()` dupliquee (3 copies quasi-identiques), qui recalcule
+`daily_streams = total(J) - total(le plus proche J anterieur disponible)`
+des que la colonne CSV est vide — sans jamais lire `estimated_reason`. Ces 3
+generateurs ne passent PAS par `export_for_web.py::normalize_daily_streams_from_totals`
+(qui lui respecte deja `collection_incident_*`/`manual_trusted`) : ils lisent
+`db/streams_history.csv` directement avec leur propre loader. Donc un daily
+intentionnellement vide pour un incident etait recalcule a la volee a partir
+du total brut — exactement la valeur gonflee par la fusion qu'on venait de
+planquer. Fix : ajout de `estimated_reason` a l'entree parsee dans les 3
+loaders + garde `if reason == "manual_trusted" or reason.startswith("collection_incident_"): continue`
+dans chaque `_fill_missing_daily` (et `_fill_missing_daily_from_latest` pour
+`generate_streams_image.py`, qui a une 2e passe de fill via le row le plus
+proche anterieur). Verifie par regeneration des 5 images 08-17→08-21 : plus
+aucun track de l'incident dans le top 20, image du 08-17 confirmee visuellement
+propre (top clairement domine par The Fate of Ophelia, Blank Space, etc., plus
+aucune trace de Long Live/Our Song/Love Story/Teardrops fusionnes).
+**Lecon (renforce la lecon du 2026-08-22 ci-dessus)** : dans ce repo, un
+"fix a la racine" en base ne suffit QUE pour les consommateurs qui passent
+par le chargeur canonique (`history_store.py` + `normalize_daily_streams_from_totals`
+d'`export_for_web.py`). Tout script qui a son propre `csv.DictReader` +
+son propre calcul de daily (grep `_fill_missing_daily\|_parse_optional_int`
+sous `collectors/spotify/streams/`) doit etre audite/patche separement pour
+respecter `estimated_reason`. Pas de refactor pour unifier ces loaders fait
+ce jour-la (hors scope demande), juste le meme garde ajoute aux 3 copies.
+
 ## Pieges
 
 - Bug fixe le 2026-08-08 : `generate_streams_image.py::load_song_db()` (et

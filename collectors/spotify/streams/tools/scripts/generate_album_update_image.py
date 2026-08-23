@@ -58,6 +58,7 @@ HISTORY_PATH    = first_existing_db_history("streams_history.csv")
 ALBUMS_DIR      = DB_DIR / "discography" / "albums"
 COVERS_PATH     = DB_DIR / "discography" / "covers.json"
 HEADERS_DIR     = DB_DIR / "discography" / "headers"
+PREFERRED_HEADERS_PATH = HEADERS_DIR / "preferences.json"
 CHARTS_GLOBAL_HISTORY_DIR = ROOT.parent / "charts" / "global" / "history"
 TWITTER_SESSION = ROOT.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json"
 
@@ -116,6 +117,10 @@ def _dominant_color(img_path: Path) -> str:
 MONOCHROME_ALBUM_ACCENTS = {
     "folklore": "#6b6b6b",
     "reputation": "#6b6b6b",
+}
+
+TABLE_DARK_DEFAULT_ALBUMS = {
+    "the life of a showgirl",
 }
 
 
@@ -604,6 +609,7 @@ def load_history_for_album(
             entry = {
                 "streams": int(row.get("streams") or 0),
                 "daily_streams": _parse_optional_int(row.get("daily_streams")),
+                "estimated_reason": (row.get("estimated_reason") or "").strip(),
             }
             if d == target_date:
                 today_data[tid] = entry
@@ -615,6 +621,9 @@ def load_history_for_album(
     def _fill_missing_daily(cur: dict[str, dict], prev: dict[str, dict]) -> None:
         for tid, e in cur.items():
             if e.get("daily_streams") is not None:
+                continue
+            reason = e.get("estimated_reason") or ""
+            if reason == "manual_trusted" or reason.startswith("collection_incident_"):
                 continue
             p = prev.get(tid)
             if not p:
@@ -771,13 +780,14 @@ def load_cover_url(album_name: str) -> str:
     return ""
 
 
-def pick_header_image(album_name: str) -> Path | None:
+def header_images_for_album(album_name: str) -> list[Path]:
     if not HEADERS_DIR.exists():
-        return None
+        return []
 
     allowed_exts = {".png", ".jpg", ".jpeg", ".webp"}
     target_raw = (album_name or "").strip().casefold()
     target_norm = _norm(album_name)
+    result: list[Path] = []
 
     # New structure: db/discography/headers/<album_name>/*.png|jpg|jpeg|webp
     album_dirs = [p for p in HEADERS_DIR.iterdir() if p.is_dir()]
@@ -793,12 +803,10 @@ def pick_header_image(album_name: str) -> Path | None:
                 break
 
     if selected_dir is not None:
-        folder_images = [
+        result.extend(
             p for p in selected_dir.iterdir()
             if p.is_file() and p.suffix.lower() in allowed_exts
-        ]
-        if folder_images:
-            return _pick_random_best_quality(folder_images)
+        )
 
     # Legacy fallback: db/discography/headers/<album_name>.<ext>
     flat_candidates = [
@@ -807,12 +815,87 @@ def pick_header_image(album_name: str) -> Path | None:
     ]
     for p in sorted(flat_candidates, key=lambda x: x.name.casefold()):
         if p.stem.casefold() == target_raw:
-            return p
+            result.append(p)
     for p in sorted(flat_candidates, key=lambda x: x.name.casefold()):
         if _norm(p.stem) == target_norm:
-            return p
+            result.append(p)
 
+    seen = set()
+    deduped = []
+    for path in sorted(result, key=lambda x: (x.parent.name.casefold(), x.name.casefold())):
+        key = str(path.resolve()).casefold()
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(path)
+    return deduped
+
+
+def _preferred_header_for_album(album_name: str) -> Path | None:
+    if not PREFERRED_HEADERS_PATH.exists():
+        return None
+    try:
+        prefs = json.loads(PREFERRED_HEADERS_PATH.read_text(encoding="utf-8-sig"))
+    except Exception:
+        return None
+    if not isinstance(prefs, dict):
+        return None
+
+    keys = [album_name, album_name.strip().casefold(), _norm(album_name)]
+    pref = None
+    for key in keys:
+        value = prefs.get(key)
+        if isinstance(value, str) and value.strip():
+            pref = value.strip()
+            break
+    if not pref:
+        return None
+
+    candidates = []
+    pref_path = Path(pref)
+    if pref_path.is_absolute():
+        candidates.append(pref_path)
+    else:
+        candidates.append((HEADERS_DIR / pref_path).resolve())
+        candidates.extend(path for path in header_images_for_album(album_name) if path.name == pref or path.stem == pref)
+
+    allowed_exts = {".png", ".jpg", ".jpeg", ".webp"}
+    for path in candidates:
+        if path.exists() and path.is_file() and path.suffix.lower() in allowed_exts:
+            return path
     return None
+
+
+def pick_header_image(album_name: str) -> Path | None:
+    return _preferred_header_for_album(album_name) or _pick_random_best_quality(header_images_for_album(album_name))
+
+
+def resolve_header_arg(album_name: str, header_arg: str | None) -> Path | None:
+    if not header_arg:
+        return pick_header_image(album_name)
+
+    raw = Path(header_arg)
+    candidates: list[Path] = []
+    if raw.is_absolute():
+        candidates.append(raw)
+    else:
+        candidates.append((Path.cwd() / raw).resolve())
+        candidates.extend(
+            path
+            for path in header_images_for_album(album_name)
+            if path.name == header_arg or path.stem == header_arg
+        )
+
+    for path in candidates:
+        if path.exists() and path.is_file() and path.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"}:
+            return path
+    raise FileNotFoundError(f"Header introuvable pour {album_name!r}: {header_arg}")
+
+
+def effective_album_update_style(album_name: str, style: str) -> str:
+    if style == "default" and album_name.strip().casefold() in TABLE_DARK_DEFAULT_ALBUMS:
+        return "table-dark"
+    return style
 
 
 def get_latest_date() -> str:
@@ -1561,7 +1644,51 @@ def _css_vars(vars_by_name: dict[str, str]) -> str:
     return ";".join(f"--{name}:{value}" for name, value in vars_by_name.items())
 
 
-def _table_dark_theme(album_name: str) -> dict[str, str]:
+def _hex_to_rgb(value: str) -> tuple[int, int, int] | None:
+    m = re.fullmatch(r"#?([0-9a-fA-F]{6})", (value or "").strip())
+    if not m:
+        return None
+    raw = m.group(1)
+    return int(raw[0:2], 16), int(raw[2:4], 16), int(raw[4:6], 16)
+
+
+def _rgb_to_hex(rgb: tuple[int, int, int]) -> str:
+    return f"#{max(0, min(255, rgb[0])):02x}{max(0, min(255, rgb[1])):02x}{max(0, min(255, rgb[2])):02x}"
+
+
+def _mix_hex(a: str, b: str, b_weight: float) -> str:
+    ca = _hex_to_rgb(a)
+    cb = _hex_to_rgb(b)
+    if not ca or not cb:
+        return a
+    b_weight = max(0.0, min(1.0, b_weight))
+    a_weight = 1.0 - b_weight
+    return _rgb_to_hex(tuple(int(ca[i] * a_weight + cb[i] * b_weight) for i in range(3)))
+
+
+def _adjust_hex(value: str, amount: float) -> str:
+    rgb = _hex_to_rgb(value)
+    if not rgb:
+        return value
+    if amount >= 0:
+        return _rgb_to_hex(tuple(int(c + (255 - c) * amount) for c in rgb))
+    factor = 1.0 + amount
+    return _rgb_to_hex(tuple(int(c * factor) for c in rgb))
+
+
+def _apply_header_accent(theme: dict[str, str], header_accent: str | None, *, subtle: bool = False) -> dict[str, str]:
+    if not header_accent or not _hex_to_rgb(header_accent):
+        return theme
+    mixed = _mix_hex(theme.get("accent", "#c0aa8e"), header_accent, 0.24 if subtle else 0.42)
+    theme["accent"] = _adjust_hex(mixed, 0.18)
+    theme["head-bg"] = _mix_hex(theme.get("head-bg", "#11100e"), header_accent, 0.08 if subtle else 0.12)
+    theme["cell-bg"] = _mix_hex(theme.get("cell-bg", "#2d2925"), header_accent, 0.06 if subtle else 0.10)
+    theme["cell-bg-alt"] = _mix_hex(theme.get("cell-bg-alt", "#342f2a"), header_accent, 0.08 if subtle else 0.13)
+    theme["grid-line"] = _mix_hex(theme.get("grid-line", "#101010"), header_accent, 0.10 if subtle else 0.16)
+    return theme
+
+
+def _table_dark_theme(album_name: str, header_accent: str | None = None, variant: str = "dark") -> dict[str, str]:
     key = album_name.strip().casefold()
     base = {
         "page-bg": "#171512",
@@ -1879,7 +2006,32 @@ def _table_dark_theme(album_name: str) -> dict[str, str]:
             "head-bg": "#fffafa",
             "grid-line": "rgba(47,122,78,.18)",
         })
-    return base
+    if variant == "light" and "tortured poets" in key:
+        base.update({
+            "page-bg": "#eee9df",
+            "text": "#2a2824",
+            "card-bg": "linear-gradient(180deg,#d7d0c3 0%,#eee9df 35%,#e6dfd2 100%)",
+            "hero-bg": "#d7d0c3",
+            "hero-opacity": ".88",
+            "hero-filter": "saturate(.36) sepia(.12) contrast(1.02) brightness(.96)",
+            "hero-overlay": "linear-gradient(90deg,#d7d0c3 0%,rgba(215,208,195,.34) 18%,rgba(215,208,195,.10) 50%,rgba(215,208,195,.34) 84%,#d7d0c3 100%),linear-gradient(180deg,rgba(238,233,223,0) 0%,rgba(238,233,223,.28) 55%,#eee9df 100%)",
+            "hero-text": "#4f493f",
+            "title-font": "'Times New Roman',Georgia,serif",
+            "title-size": "43px",
+            "title-spacing": "3px",
+            "title-transform": "uppercase",
+            "title-bottom": "48px",
+            "title-color": "#35312b",
+            "title-shadow": "0 2px 0 rgba(255,255,255,.72),0 8px 18px rgba(64,58,49,.24)",
+            "accent": "#756a5a",
+            "cell-text": "#2d2924",
+            "daily-text": "#24211d",
+            "cell-bg": "#dfd8cb",
+            "cell-bg-alt": "#d4ccbd",
+            "head-bg": "#f7f3eb",
+            "grid-line": "rgba(104,94,78,.22)",
+        })
+    return _apply_header_accent(base, header_accent, subtle=key in MONOCHROME_ALBUM_ACCENTS)
 
 
 def _format_section_name(name: str) -> str:
@@ -1917,7 +2069,16 @@ def _table_dark_section_row(section: dict, hist: dict) -> str:
   </div>"""
 
 
-def build_table_dark_html(album_name: str, sections: list[dict], hist: dict, target_date: str, header_uri: str, handle_icon_uri: str = "") -> str:
+def build_table_dark_html(
+    album_name: str,
+    sections: list[dict],
+    hist: dict,
+    target_date: str,
+    header_uri: str,
+    handle_icon_uri: str = "",
+    header_accent: str | None = None,
+    theme_variant: str = "dark",
+) -> str:
     from datetime import datetime
 
     date_obj = datetime.strptime(target_date, "%Y-%m-%d")
@@ -1925,7 +2086,7 @@ def build_table_dark_html(album_name: str, sections: list[dict], hist: dict, tar
     display_date = f"{weekday}, {date_obj.strftime('%B')} {date_obj.day}, {date_obj.year}"
     day_number = _album_day_number(album_name, sections, target_date)
     day_label = f" (DAY {day_number})" if day_number is not None else ""
-    theme_vars = _css_vars(_table_dark_theme(album_name))
+    theme_vars = _css_vars(_table_dark_theme(album_name, header_accent, theme_variant))
     hero_bg = f"background-image:url('{header_uri}');" if header_uri else ""
     brand_img = f'<img class="brand-mark" src="{handle_icon_uri}" alt="">' if handle_icon_uri else ""
     brand = f'<div class="brand-lock">{brand_img}<span>{HANDLE}</span></div>'
@@ -1986,6 +2147,18 @@ def album_update_slug(album_name: str) -> str:
 
 def album_update_out_dir(target_date: str) -> Path:
     return update_streams_dir(target_date)
+
+
+def all_album_names() -> list[str]:
+    names = []
+    for path in sorted(ALBUMS_DIR.glob("*.json"), key=lambda p: p.name.casefold()):
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8-sig"))
+            if isinstance(payload, dict) and payload.get("album"):
+                names.append(str(payload["album"]))
+        except Exception:
+            continue
+    return names
 
 
 def album_update_lock_path(album_name: str, target_date: str) -> Path:
@@ -2069,7 +2242,6 @@ def _best_day_labels_for_sections(
             if (
                 row
                 and row.get("kind") == "since"
-                and not row.get("is_biggest_day_of_year")
                 and best_day_since.passes_filters(row, min_days=min_days)
             ):
                 label = _format_best_day_marker_label(row)
@@ -2107,7 +2279,6 @@ def _best_day_rows_for_sections(
             if (
                 row
                 and row.get("kind") == "since"
-                and not row.get("is_biggest_day_of_year")
                 and best_day_since.passes_filters(row, min_days=min_days)
             ):
                 rows.append(row)
@@ -2116,7 +2287,15 @@ def _best_day_rows_for_sections(
     return rows
 
 
-def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_daily: bool = False, style: str = "default") -> Path:
+def generate(
+    album_name: str,
+    target_date: str | None = None,
+    *,
+    sort_tracks_by_daily: bool = False,
+    style: str = "default",
+    header_path: Path | None = None,
+    output_suffix: str = "",
+) -> Path:
     if target_date is None:
         target_date = get_latest_date()
     print(f"[album_update] Album: {album_name}  Date: {target_date}")
@@ -2124,6 +2303,7 @@ def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_
     sections, album_name = load_album_sections(album_name, target_date)
     if not sections:
         raise ValueError(f"Aucune section trouvée pour l'album: {album_name!r}")
+    style = effective_album_update_style(album_name, style)
     print(f"[album_update] {sum(len(s['tracks']) for s in sections)} tracks dans {len(sections)} section(s)")
 
     hist = load_history_for_album(sections, target_date)
@@ -2147,7 +2327,7 @@ def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_
         )
 
     cover_url  = load_cover_url(album_name)
-    header_img = pick_header_image(album_name)
+    header_img = header_path or pick_header_image(album_name)
     mono_accent = MONOCHROME_ALBUM_ACCENTS.get(album_name.strip().casefold())
 
     # Accent color comes from the selected header first; fall back to cover, then default.
@@ -2164,11 +2344,12 @@ def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_
     print("[album_update] Téléchargement de la cover...")
     cover_uri = _url_to_data_uri(cover_url) if cover_url else ""
 
-    table_dark_style = style == "table-dark"
+    table_dark_style = style in {"table-dark", "table-light"}
+    table_light_style = style == "table-light"
     layout = _compute_layout_metrics(sections, show_filter_cols, best_day_labels_by_track)
     if table_dark_style:
-        hdr_target_w = 1106
-        hdr_target_h = 304
+        hdr_target_w = 2212
+        hdr_target_h = 608
     else:
         hdr_target_w = (layout["body_width_px"] - 2 * BODY_PADDING_CSS) * RENDER_DPR
         hdr_target_h = HEADER_HEIGHT_CSS * RENDER_DPR
@@ -2190,6 +2371,8 @@ def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_
             target_date,
             header_uri,
             handle_icon_uri=handle_icon_uri,
+            header_accent=dominant_hex,
+            theme_variant="light" if table_light_style else "dark",
         )
     else:
         html = build_html(
@@ -2210,10 +2393,11 @@ def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_
     album_slug = album_update_slug(album_name)
     out_dir    = album_update_out_dir(target_date)
     out_dir.mkdir(parents=True, exist_ok=True)
-    style_suffix = "_table_dark" if table_dark_style else ""
-    out_path   = out_dir / f"{album_slug}_update{style_suffix}.png"
-    raw_out_path = out_dir / f"_{album_slug}_update{style_suffix}_hires.png"
-    tmp_html   = out_dir / f"_{album_slug}_tmp{style_suffix}.html"
+    style_suffix = "_table_light" if table_light_style else ("_table_dark" if table_dark_style else "")
+    safe_output_suffix = f"_{_norm(output_suffix)}" if output_suffix else ""
+    out_path   = out_dir / f"{album_slug}_update{style_suffix}{safe_output_suffix}.png"
+    raw_out_path = out_dir / f"_{album_slug}_update{style_suffix}{safe_output_suffix}_hires.png"
+    tmp_html   = out_dir / f"_{album_slug}_tmp{style_suffix}{safe_output_suffix}.html"
     tmp_html.write_text(html, encoding="utf-8")
 
     print("[album_update] Rendu Playwright...")
@@ -2221,7 +2405,7 @@ def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
             # High-density render for near-4K width output (880 * 4 = 3520 px).
-            render_dpr = 1 if table_dark_style else RENDER_DPR
+            render_dpr = 2 if table_dark_style else RENDER_DPR
             page    = browser.new_page(viewport={"width": 1200, "height": 320}, device_scale_factor=render_dpr)
             page.goto(f"file:///{tmp_html.as_posix()}", wait_until="load")
             page.wait_for_timeout(450)
@@ -2231,8 +2415,6 @@ def generate(album_name: str, target_date: str | None = None, *, sort_tracks_by_
         if _PIL:
             try:
                 img = Image.open(raw_out_path)
-                if table_dark_style and render_dpr != 1:
-                    img = img.resize((img.width // render_dpr, img.height // render_dpr), Image.LANCZOS)
                 # Keep native high-res render for maximum detail retention in the default style.
                 img.save(out_path, format="PNG", optimize=True)
             finally:
@@ -2502,36 +2684,75 @@ def main() -> None:
 
     do_post = "--post" in args and "--no-post" not in args
     style = "default"
+    header_arg = None
+    all_headers = False
+    all_albums = False
     clean_args = []
     for arg in args:
         if arg in ("--post", "--no-post"):
             continue
+        if arg == "--all-headers":
+            all_headers = True
+            continue
+        if arg == "--all-albums":
+            all_albums = True
+            continue
         if arg.startswith("--style="):
             style = arg.split("=", 1)[1].strip() or "default"
             continue
+        if arg.startswith("--header="):
+            header_arg = arg.split("=", 1)[1].strip() or None
+            continue
         clean_args.append(arg)
 
-    album_name  = clean_args[0] if len(clean_args) > 0 else None
-    target_date = clean_args[1] if len(clean_args) > 1 else None
+    album_name  = None if all_albums else (clean_args[0] if len(clean_args) > 0 else None)
+    target_date = clean_args[0] if all_albums and clean_args else (clean_args[1] if len(clean_args) > 1 else None)
 
-    if not album_name:
-        print("Usage: generate_album_update_image.py <album_name> [date] [--post]")
+    if not album_name and not all_albums:
+        print("Usage: generate_album_update_image.py <album_name> [date] [--post] [--style=table-dark] [--header=<path-or-name>] [--all-headers]")
+        print("       generate_album_update_image.py --all-albums [date] --all-headers --style=table-dark")
         sys.exit(1)
 
     resolved_date = target_date or get_latest_date()
 
-    if do_post:
+    if do_post and album_name:
         existing_lock_path = existing_album_update_lock_path(album_name, resolved_date)
         if existing_lock_path is not None:
             lock_path = existing_lock_path
             print(f"[album_update] Déjà posté ({lock_path.name}). Rien à faire.")
             return
 
-    if style not in {"default", "table-dark"}:
-        print(f"Unknown style: {style!r}. Supported styles: default, table-dark")
+    if style not in {"default", "table-dark", "table-light"}:
+        print(f"Unknown style: {style!r}. Supported styles: default, table-dark, table-light")
         sys.exit(1)
 
-    image_path = generate(album_name, resolved_date, style=style)
+    if all_albums or all_headers:
+        if do_post:
+            print("[album_update] Batch header tests cannot be posted.")
+            sys.exit(1)
+        targets = all_album_names() if all_albums else [album_name]
+        generated: list[Path] = []
+        for target_album in targets:
+            headers = header_images_for_album(target_album) if all_headers else [resolve_header_arg(target_album, header_arg)]
+            if not headers:
+                print(f"[album_update] Skip {target_album}: aucun header.")
+                continue
+            for header in headers:
+                suffix = f"test_{header.stem}"
+                print(f"[album_update] Test header: {target_album} <- {header.name}")
+                generated.append(generate(target_album, resolved_date, style=style, header_path=header, output_suffix=suffix))
+        print(f"[album_update] {len(generated)} image(s) de test générée(s).")
+        for path in generated:
+            print(f"  {path}")
+        return
+
+    image_path = generate(
+        album_name,
+        resolved_date,
+        style=style,
+        header_path=resolve_header_arg(album_name, header_arg),
+        output_suffix=f"test_{Path(header_arg).stem}" if header_arg else "",
+    )
 
     if do_post:
         if style != "default":

@@ -30,6 +30,8 @@ const els = {
   status: document.querySelector("#status"),
   canvas: document.querySelector("#preview"),
   dropZone: document.querySelector(".preview-shell"),
+  dragHandle: document.querySelector("#dragHandle"),
+  dragHandleThumb: document.querySelector("#dragHandleThumb"),
   targetFilter: document.querySelector("#targetFilter"),
   targetGrid: document.querySelector("#targetGrid"),
 };
@@ -198,6 +200,17 @@ function renderShelf() {
   });
 }
 
+function updateDragHandle() {
+  const item = activeItem();
+  if (item) {
+    els.dragHandle.classList.remove("disabled");
+    els.dragHandleThumb.src = item.src;
+  } else {
+    els.dragHandle.classList.add("disabled");
+    els.dragHandleThumb.removeAttribute("src");
+  }
+}
+
 function removeShelfItem(id) {
   const idx = shelf.findIndex((item) => item.id === id);
   if (idx === -1) return;
@@ -210,6 +223,7 @@ function removeShelfItem(id) {
       selectShelfItem(shelf[Math.min(idx, shelf.length - 1)].id);
     } else {
       draw();
+      updateDragHandle();
       setStatus("Shelf empty. Import images or click a target to continue.");
     }
   }
@@ -224,8 +238,22 @@ els.clearShelfBtn.addEventListener("click", () => {
   img = null;
   renderShelf();
   draw();
+  updateDragHandle();
   setStatus("Shelf cleared.");
 });
+
+els.dragHandle.addEventListener("dragstart", (event) => {
+  const item = activeItem();
+  if (!item) {
+    event.preventDefault();
+    return;
+  }
+  persistActiveState();
+  event.dataTransfer.setData(DRAG_MIME, String(item.id));
+  event.dataTransfer.effectAllowed = "move";
+  els.dragHandle.classList.add("dragging");
+});
+els.dragHandle.addEventListener("dragend", () => els.dragHandle.classList.remove("dragging"));
 
 els.applyFiltersAll.addEventListener("click", () => {
   const source = activeItem();
@@ -325,6 +353,7 @@ async function selectShelfItem(id) {
   syncInputs();
   draw();
   renderShelf();
+  updateDragHandle();
   setStatus(`Editing ${item.fileName}.`);
 }
 
@@ -356,13 +385,26 @@ function renderGrid() {
       const variantsHtml =
         target.variants.length > 1
           ? `<div class="target-variants">${target.variants
-              .map((v) => `<img class="variant-chip" data-variant-id="${escapeHtml(v.id)}" src="${escapeHtml(v.url)}" title="${escapeHtml(v.name)}">`)
+              .map(
+                (v) => `
+              <div class="variant-chip-wrap">
+                <img class="variant-chip" data-variant-id="${escapeHtml(v.id)}" src="${escapeHtml(v.url)}" title="${escapeHtml(v.name)}">
+                <button type="button" class="variant-delete" data-variant-id="${escapeHtml(v.id)}" title="Delete ${escapeHtml(v.name)}" aria-label="Delete ${escapeHtml(v.name)}">&times;</button>
+              </div>`,
+              )
               .join("")}</div>`
           : "";
       const coverHtml = coverSrc ? `<img class="target-cover" src="${escapeHtml(coverSrc)}" alt="">` : `<div class="target-cover placeholder">${escapeHtml(target.name)}</div>`;
+      const singleDeleteHtml =
+        target.variants.length === 1
+          ? `<button type="button" class="target-delete" data-variant-id="${escapeHtml(target.variants[0].id)}" title="Delete header" aria-label="Delete header for ${escapeHtml(target.name)}">&times;</button>`
+          : "";
       return `
       <div class="target-card${target.kind === "global" ? " global" : ""}${matches ? "" : " hidden"}" data-target="${escapeHtml(target.name)}">
-        ${coverHtml}
+        <div class="target-cover-wrap">
+          ${coverHtml}
+          ${singleDeleteHtml}
+        </div>
         <div class="target-body">
           <span class="target-name">${escapeHtml(target.name)}</span>
           <span class="target-count">${countLabel}</span>
@@ -376,9 +418,18 @@ function renderGrid() {
   els.targetGrid.querySelectorAll(".target-card").forEach((node) => {
     const targetName = node.dataset.target;
     node.addEventListener("click", (event) => {
-      const chip = event.target.closest(".variant-chip");
       const target = albums.find((a) => a.name === targetName);
       if (!target) return;
+
+      const deleteBtn = event.target.closest(".target-delete,.variant-delete");
+      if (deleteBtn) {
+        event.stopPropagation();
+        const variant = target.variants.find((v) => v.id === deleteBtn.dataset.variantId);
+        if (variant) deleteVariant(targetName, variant);
+        return;
+      }
+
+      const chip = event.target.closest(".variant-chip");
       if (chip) {
         const variant = target.variants.find((v) => v.id === chip.dataset.variantId);
         if (variant) loadCardVariantIntoShelf(targetName, variant);
@@ -407,6 +458,26 @@ function renderGrid() {
       if (item) saveShelfItemToTarget(item, targetName);
     });
   });
+}
+
+async function deleteVariant(targetName, variant) {
+  const label = variant.legacy ? `${targetName} (legacy)` : `${targetName} - ${variant.name}`;
+  if (!confirm(`Delete "${label}"? It's moved to a timestamped .bak file on disk, not permanently erased.`)) return;
+  setStatus(`Deleting ${label}...`);
+  try {
+    const res = await fetch("/api/delete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ album: targetName, variantId: variant.id }),
+    });
+    const payload = await res.json();
+    if (!payload.ok) throw new Error(payload.error || "unknown error");
+    if (payload.albums) albums = payload.albums;
+    renderGrid();
+    setStatus(`Deleted ${label}. (backup: ${payload.backup})`);
+  } catch (err) {
+    setStatus(`Delete failed: ${err.message || err}`);
+  }
 }
 
 els.targetFilter.addEventListener("input", renderGrid);

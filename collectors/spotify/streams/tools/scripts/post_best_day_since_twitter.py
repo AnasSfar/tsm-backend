@@ -39,6 +39,7 @@ MAX_BEST_DAY_SONG_POSTS_PER_ALBUM = 3
 POST_COLLECTION_MAX_SONG_POSTS = 5
 MIN_SONG_DAILY_STREAMS_TO_POST = 80_000
 ALWAYS_POST_BEST_DAY_SINCE_AFTER_DAYS = 60
+PRIORITY_BEST_DAY_SINCE_MIN_DAYS = 90
 
 for _stream in (sys.stdout, sys.stderr):
     try:
@@ -362,10 +363,19 @@ def _pick_rows(
             )
         ]
     rows.sort(key=_song_post_sort_key, reverse=True)
+    priority_rows = [row for row in rows if _is_priority_best_day_since(row)]
+    normal_rows = [row for row in rows if not _is_priority_best_day_since(row)]
 
-    picked: list[dict] = []
     counts = dict(album_post_counts or {})
-    for row in rows:
+
+    # Priority rows always get a slot: skip the per-album cap entirely.
+    picked: list[dict] = list(priority_rows)
+    for row in priority_rows:
+        album = _album_key(row.get("album"))
+        if album:
+            counts[album] = counts.get(album, 0) + 1
+
+    for row in normal_rows:
         album = _album_key(row.get("album"))
         if album and counts.get(album, 0) >= max_per_album:
             print(
@@ -383,6 +393,14 @@ def _pick_rows(
 
 def _song_post_sort_key(row: dict) -> tuple[int, int, int, int]:
     return (1 if row.get("is_biggest_day_of_year") else 0, *best_day_since.sort_key(row))
+
+
+def _is_priority_best_day_since(row: dict) -> bool:
+    """A best-day-since gap over PRIORITY_BEST_DAY_SINCE_MIN_DAYS (3 months)
+    is rare and newsworthy enough that it must always get a post — it bypasses
+    the per-album cap and the daily song-post limit instead of competing with
+    same-day candidates for a capped spot."""
+    return row.get("kind") == "since" and (row.get("days_since") or 0) >= PRIORITY_BEST_DAY_SINCE_MIN_DAYS
 
 
 def _passes_song_post_gate(
@@ -474,23 +492,6 @@ def _post_single_track_early(
     if not track:
         return "skipped"
 
-    locked_track_ids = _posted_track_ids_for_date(target_date)
-    if len(locked_track_ids) >= POST_COLLECTION_MAX_SONG_POSTS and not no_post:
-        print(
-            f"[best_day_since_early] Skipping {track_id}: already "
-            f"{POST_COLLECTION_MAX_SONG_POSTS} best-day song post(s) for {target_date}."
-        )
-        return "skipped"
-
-    album_counts = _track_album_counts(locked_track_ids, tracks_by_id)
-    album = _album_key(track.get("album"))
-    if album and album_counts.get(album, 0) >= MAX_BEST_DAY_SONG_POSTS_PER_ALBUM:
-        print(
-            f"[best_day_since_early] Skipping {track_id}: already "
-            f"{MAX_BEST_DAY_SONG_POSTS_PER_ALBUM} best-day song post(s) for {track.get('album')}."
-        )
-        return "skipped"
-
     row = best_day_since.best_day_since_for_track(
         track_id,
         target_date,
@@ -503,6 +504,28 @@ def _post_single_track_early(
         print(
             f"[best_day_since_early] Skipping {track_id}: same best-day-since "
             f"({row['best_day_since']}) already posted the day before."
+        )
+        return "skipped"
+
+    # Priority rows (best-day-since gap > PRIORITY_BEST_DAY_SINCE_MIN_DAYS)
+    # always get a slot: they skip the daily and per-album caps below instead
+    # of losing it to same-day competition.
+    is_priority = _is_priority_best_day_since(row)
+
+    locked_track_ids = _posted_track_ids_for_date(target_date)
+    if not is_priority and len(locked_track_ids) >= POST_COLLECTION_MAX_SONG_POSTS and not no_post:
+        print(
+            f"[best_day_since_early] Skipping {track_id}: already "
+            f"{POST_COLLECTION_MAX_SONG_POSTS} best-day song post(s) for {target_date}."
+        )
+        return "skipped"
+
+    album_counts = _track_album_counts(locked_track_ids, tracks_by_id)
+    album = _album_key(track.get("album"))
+    if not is_priority and album and album_counts.get(album, 0) >= MAX_BEST_DAY_SONG_POSTS_PER_ALBUM:
+        print(
+            f"[best_day_since_early] Skipping {track_id}: already "
+            f"{MAX_BEST_DAY_SONG_POSTS_PER_ALBUM} best-day song post(s) for {track.get('album')}."
         )
         return "skipped"
 
@@ -629,6 +652,7 @@ def _validated_song_rows_for_post(
     limit: int,
 ) -> list[dict]:
     rows: list[dict] = []
+    normal_count = 0
     for row in candidate_rows:
         track = tracks_by_id.get(row["track_id"])
         if not track:
@@ -651,8 +675,14 @@ def _validated_song_rows_for_post(
         row["_post_daily_yesterday"] = daily_yesterday
         row["_post_daily_last_week"] = daily_last_week
         rows.append(row)
-        if len(rows) >= limit:
-            break
+        # Priority rows (best-day-since gap > PRIORITY_BEST_DAY_SINCE_MIN_DAYS)
+        # are guaranteed a post and don't count against the daily limit;
+        # _pick_rows already places them ahead of normal candidates, so once
+        # the normal quota is filled every row still to come is non-priority.
+        if not _is_priority_best_day_since(row):
+            normal_count += 1
+            if normal_count >= limit:
+                break
     return rows
 
 

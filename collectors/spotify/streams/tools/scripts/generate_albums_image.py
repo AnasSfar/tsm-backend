@@ -209,6 +209,7 @@ def load_history(target_date: str) -> tuple[dict, dict, dict]:
             entry = {
                 "streams":       int(row["streams"] or 0),
                 "daily_streams": _parse_optional_int(row.get("daily_streams")),
+                "estimated_reason": (row.get("estimated_reason") or "").strip(),
             }
             if d == target_date:
                 today[row["track_id"]] = entry
@@ -225,6 +226,9 @@ def load_history(target_date: str) -> tuple[dict, dict, dict]:
     def _fill_missing_daily(cur: dict[str, dict], prev: dict[str, dict]) -> None:
         for tid, e in cur.items():
             if e.get("daily_streams") is not None:
+                continue
+            reason = e.get("estimated_reason") or ""
+            if reason == "manual_trusted" or reason.startswith("collection_incident_"):
                 continue
             p = prev.get(tid)
             if not p:

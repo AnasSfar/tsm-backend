@@ -307,6 +307,9 @@ class Handler(BaseHTTPRequestHandler):
         self.send_error(404)
 
     def do_POST(self):  # noqa: N802
+        if self.path == "/api/delete":
+            self._handle_delete()
+            return
         if self.path != "/api/save":
             self.send_error(404)
             return
@@ -343,6 +346,45 @@ class Handler(BaseHTTPRequestHandler):
             "path": str(target),
             "backup": str(backup) if backup else "",
             "variant": variant,
+            "albums": _albums_payload()["albums"],
+        })
+
+    def _handle_delete(self) -> None:
+        try:
+            body = self._read_json_body()
+            album = str(body.get("album") or "").strip()
+            variant_id = str(body.get("variantId") or "").strip()
+            if not album:
+                raise ValueError("cible manquante")
+            target = _target_by_name(album)
+            if not target:
+                raise ValueError("cible inconnue")
+            if not variant_id:
+                raise ValueError("variante manquante")
+            if variant_id == "__flat__":
+                if target["kind"] != "album":
+                    raise ValueError("variante invalide")
+                path = _headers().get(target["slug"])
+                if not path:
+                    raise ValueError("fichier introuvable")
+            else:
+                folder = _target_folder(target).resolve()
+                candidate = (folder / variant_id).resolve()
+                if folder not in candidate.parents or not candidate.is_file():
+                    raise ValueError("fichier introuvable")
+                if candidate.suffix.lower() not in {".png", ".jpg", ".jpeg", ".webp"}:
+                    raise ValueError("fichier invalide")
+                path = candidate
+        except Exception as exc:
+            self._send_json({"ok": False, "error": str(exc)}, status=400)
+            return
+
+        with _lock:
+            backup = path.with_name(f"{path.name}.deleted.{time.strftime('%Y%m%d-%H%M%S')}.bak")
+            shutil.move(str(path), str(backup))
+        self._send_json({
+            "ok": True,
+            "backup": str(backup),
             "albums": _albums_payload()["albums"],
         })
 
