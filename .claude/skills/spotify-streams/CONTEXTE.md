@@ -351,6 +351,46 @@ Cablage actuel :
 Si un nouveau generateur de classement/top N est ecrit, l'appeler aussi sur
 les track_id candidats de ce generateur plutot que de dupliquer la logique.
 
+### Fix a la racine du 2026-08-17 (2026-08-23)
+
+Le dedup dynamique ci-dessus corrige les classements *courants* mais pas les
+agregats sur periode (recap "most streamed" cote `tsm-frontend`, qui somme
+les daily jour par jour) : le pic du 08-17 (reel, mais un transfert catalogue
+ponctuel, pas du streaming organique) dominait n'importe quelle somme
+periode/YoY contenant cette date — et ce pour les DEUX cotes de la paire, pas
+juste le "loser" (verifie : le delta du "gagnant" ce jour-la correspond
+grosso modo au total pre-fusion de l'autre cote, pas un vrai gain organique).
+Cote frontend, `tsm-frontend/api/routes/period_recaps.py::_merge_affected_ids_for_day`
+exclut desormais les deux cotes pour ce jour-la specifiquement (voir aussi
+`KNOWN_ORPHAN_MERGE_DAYS` pour le cas "The Joker And The Queen (feat. Taylor
+Swift)", fusionne avec l'original Ed Sheeran non tracke dans notre
+catalogue).
+
+Plutot que de continuer a patcher chaque consommateur un par un (classement,
+image top20, recap periode, best-day-since, milestones, home highlights...),
+fix a la racine dans `db/streams_history.csv` : pour les 20 track_id de
+l'incident, `daily_streams` vide a la date `2026-08-17`,
+`estimated_reason=collection_incident_spotify_merge_2026-08-17_to_2026-08-17`
+(meme convention que l'incident folklore, voir regle `collection_incident_*`
+plus haut) — **le total n'est jamais touche**. `export_for_web.py::normalize_daily_streams_from_totals`
+respecte deja le prefixe `collection_incident_`, donc ce fix se propage tout
+seul a tous les exports sans toucher chaque script individuellement.
+
+**Piege decouvert en deployant ce fix** : regenerer l'export local
+(`python collectors/spotify/streams/extras/export_for_web.py`) ne suffit PAS
+a corriger la prod. Ce script appelle `scripts/r2.py` avec
+`--skip-history-upload` par defaut (seul le "static"/`--streams-daily` est
+uploade ; `history/{date}.json` et `history-by-track/{track_id}.json` ne le
+sont JAMAIS via ce chemin). Pour republier une date historique corrigee, il
+faut lancer `scripts/r2.py` a la main SANS `--skip-history-upload`, avec
+`--new-date 2026-08-17` (ce flag ne restreint que l'upload static single-
+date ; le rebuild `history-by-track` reconstruit toujours depuis TOUS les
+fichiers locaux du dossier history, donc `--new-date` ne le limite pas — pas
+destructif, juste plus lent). Verifier apres coup en lisant l'objet R2
+directement (`boto3` via `scripts/r2.py::get_s3_client()`), pas seulement le
+fichier local — le dry-run de `r2.py` ne fait pas de vraie comparaison de
+hash (tout ressort "changed"), donc il ne prouve rien sur l'etat reel de R2.
+
 ## Pieges
 
 - Bug fixe le 2026-08-08 : `generate_streams_image.py::load_song_db()` (et
