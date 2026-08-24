@@ -426,6 +426,38 @@ sous `collectors/spotify/streams/`) doit etre audite/patche separement pour
 respecter `estimated_reason`. Pas de refactor pour unifier ces loaders fait
 ce jour-la (hors scope demande), juste le meme garde ajoute aux 3 copies.
 
+## Probe non-extra uniquement (2026-08-24)
+
+Le probe Spotify API en debut de run (`build_probe_tracks` /
+`_probe_via_api`, `update_streams.py`) ne selectionne plus que des tracks
+`chart_extra=False` (non-extra). Avant, l'echantillon melangeait 15
+non-extra + 15 extra (`PROBE_EXTRA_SAMPLE_SIZE`, supprime) meme si seul le
+compteur non-extra (`updated_non_extra_probes` >= `PROBE_REQUIRED_UPDATED`)
+faisait demarrer le run complet — les extras probes ne servaient donc a
+rien decisionnellement. `PROBE_SAMPLE_SIZE` vaut maintenant
+`PROBE_NON_EXTRA_SAMPLE_SIZE` (15). Le fallback ChartSnapshot
+(`probe_chartsnapshot_update`) n'est pas concerne : il ne selectionne pas de
+tracks, il filtre juste les lignes non-extra dans le flux externe qu'il
+recoit deja.
+
+## Top eras + top songs poste aussi le week-end (2026-08-24)
+
+Avant, le samedi/dimanche, `finalize_update.py` sautait les posts separes
+"top eras" (`_post_albums_daily` / `post_albums_twitter.py`) et "top 20
+songs" (`_post_streams_image` / `post_streams_twitter.py`), au motif que la
+combined recap card du week-end (`post_weekend_streams_twitter.py`,
+`_post_daily_recap_card`, toujours postee en premier) les couvrait deja.
+Decision produit : ces deux posts doivent maintenant sortir aussi le
+week-end, en plus de la recap combinee. Gardes weekend supprimees dans
+`finalize_update.py` (`_post_streams_image`, `_post_albums_daily`) et dans
+`post_albums_twitter.py::main` (meme garde dupliquee cote script). Les deux
+posts restent dans l'ordre d'etapes existant (`top eras post` avant `top 20
+songs post`, apres `daily recap card`/`weekend song gainers`), rien
+d'autre n'a change dans l'ordonnancement. Ne pas confondre avec la regle
+distincte "pas de cards album individuelles le week-end"
+(`_post_album_updates`, toujours sautee le week-end — non concernee par ce
+changement).
+
 ## Pieges
 
 - Bug fixe le 2026-08-08 : `generate_streams_image.py::load_song_db()` (et

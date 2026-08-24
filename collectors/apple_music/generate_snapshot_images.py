@@ -380,6 +380,14 @@ def _filename_for(region: str, genre: str | None) -> str:
     return name
 
 
+def notify_global_for_date(chart_date: str) -> None:
+    rows = get_region_rows(chart_date, "global", None)
+    prev_rank_fn = make_prev_rank_resolver(chart_date, "global", None)
+    entries = _compute_entries(rows, prev_rank_fn, chart_date)
+    date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    maybe_notify_global_update(entries, date_fmt)
+
+
 def generate(chart_date: str, region: str, genre: str | None, out_dir: Path) -> Path:
     rows = get_region_rows(chart_date, region, genre)
     prev_rank_fn = make_prev_rank_resolver(chart_date, region, genre)
@@ -389,9 +397,6 @@ def generate(chart_date: str, region: str, genre: str | None, out_dir: Path) -> 
     date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
     title = f"Taylor Swift · {label} Apple Music"
     rows_html = _rows_html(entries)
-
-    if region.lower().strip() == "global":
-        maybe_notify_global_update(entries, date_fmt)
 
     html_doc = build_table_html(
         title=title,
@@ -420,6 +425,11 @@ def main() -> int:
     parser.add_argument("--genre", default=None, help="Genre name (e.g. Pop, Country, Alternative); requires --region")
     parser.add_argument("--list-genres", action="store_true", help="List available genre names and exit")
     parser.add_argument("--out-dir", default=None, help="Override output directory")
+    parser.add_argument(
+        "--notify-global-only",
+        action="store_true",
+        help="Send the Global Apple Music update notification for the selected date without rendering images.",
+    )
     args = parser.parse_args()
 
     if args.list_genres:
@@ -433,6 +443,10 @@ def main() -> int:
     except ValueError:
         print(f"[ERROR] Invalid date: {raw_date!r}")
         return 1
+
+    if args.notify_global_only:
+        notify_global_for_date(chart_date)
+        return 0
 
     if args.genre and not args.region:
         print("[ERROR] --genre requires --region")

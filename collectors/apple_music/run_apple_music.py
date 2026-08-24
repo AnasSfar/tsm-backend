@@ -111,6 +111,20 @@ def generate_snapshot_images(scraped_at: str) -> int:
     return result.returncode
 
 
+def notify_global_update(scraped_at: str) -> int:
+    script = HERE / "generate_snapshot_images.py"
+    if not script.exists():
+        print(f"[Apple Music] Snapshot image script missing: {script}")
+        return 1
+
+    chart_date = scraped_at.split("T", 1)[0]
+    args = [sys.executable, str(script), "--date", chart_date, "--notify-global-only"]
+
+    print("[Apple Music] Sending Global Apple Music notification after data export...")
+    result = subprocess.run(args, cwd=REPO_ROOT, env=child_env(), check=False)
+    return result.returncode
+
+
 def run_script(script_path: Path, scraped_at: str) -> int:
     if not script_path.exists():
         print(f"[ERROR] Missing script: {script_path}")
@@ -167,6 +181,11 @@ def main() -> None:
         export_code = export_apple_music()
         if export_code != 0:
             print("[Apple Music] Export failed, skipping R2 upload")
+            sys.exit(1)
+
+        notify_code = notify_global_update(scraped_at)
+        if notify_code != 0:
+            print("[Apple Music] Global notification failed, skipping R2 upload")
             sys.exit(1)
 
         if not args.no_images:

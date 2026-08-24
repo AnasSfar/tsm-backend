@@ -167,8 +167,7 @@ HILL_MIN_WORKERS   = 2
 HILL_INITIAL       = 9      # point de dÃ©part (was 6 â€” start near max immediately)
 
 PROBE_NON_EXTRA_SAMPLE_SIZE = 15
-PROBE_EXTRA_SAMPLE_SIZE = 15
-PROBE_SAMPLE_SIZE = PROBE_NON_EXTRA_SAMPLE_SIZE + PROBE_EXTRA_SAMPLE_SIZE
+PROBE_SAMPLE_SIZE = PROBE_NON_EXTRA_SAMPLE_SIZE
 PROBE_RECENT_BATCH_MEMORY = 5
 PROBE_REQUIRED_UPDATED = 10  # non-extra (chart_extra=False) Spotify probe tracks that must show a real update
 CHARTSNAPSHOT_REQUIRED_VALIDATED = 20  # non-extra tracks with total - daily == our previous-day total
@@ -848,17 +847,12 @@ def build_probe_tracks(
     tracks: list[dict],
     *,
     non_extra_size: int = PROBE_NON_EXTRA_SAMPLE_SIZE,
-    extra_size: int = PROBE_EXTRA_SAMPLE_SIZE,
     recent_track_ids: set[str] | None = None,
 ) -> list[dict]:
-    """Return a 15 non-extra + 15 extra random probe sample when possible."""
+    """Return a random non-extra (chart_extra=False) probe sample when possible."""
     eligible_non_extra = [
         t for t in tracks
         if t.get("track_id") and t.get("spotify_url") and not t.get("chart_extra")
-    ]
-    eligible_extra = [
-        t for t in tracks
-        if t.get("track_id") and t.get("spotify_url") and t.get("chart_extra")
     ]
     recent_track_ids = recent_track_ids or set()
 
@@ -873,13 +867,7 @@ def build_probe_tracks(
             selected.extend(fallback[: size - len(selected)])
         return selected
 
-    selected_non_extra = pick(eligible_non_extra, non_extra_size, set())
-    selected_ids = {t["track_id"] for t in selected_non_extra}
-    selected_extra = pick(eligible_extra, extra_size, selected_ids)
-    selected = selected_non_extra + selected_extra
-    random.shuffle(selected)
-
-    return selected
+    return pick(eligible_non_extra, non_extra_size, set())
 
 
 def build_chartsnapshot_probe_id_map(tracks: list[dict]) -> tuple[dict[str, dict], dict[str, str]]:
@@ -2936,7 +2924,6 @@ def main():
             selected = build_probe_tracks(
                 tracks,
                 non_extra_size=PROBE_NON_EXTRA_SAMPLE_SIZE,
-                extra_size=PROBE_EXTRA_SAMPLE_SIZE,
                 recent_track_ids=_recent_probe_track_ids(),
             )
             if selected:

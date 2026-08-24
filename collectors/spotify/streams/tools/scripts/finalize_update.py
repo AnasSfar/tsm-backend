@@ -723,10 +723,6 @@ def _post_streams_image(ctx: FinalizeContext, state: dict[str, float]) -> None:
         print("[DEBUG-DAILY] Skip: Twitter, forecast, images, git, notify.")
         return
 
-    if _is_weekend_stats_date(ctx.summary["stats_date"]):
-        print("Weekend detected: combined recap card already handled as the first post.")
-        return
-
     post_script = ctx.script_dir / "tools" / "scripts" / "post_streams_twitter.py"
     if ctx.no_post_mode:
         print("Skipping Twitter post (--no-post).")
@@ -1229,10 +1225,6 @@ def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
 
 
 def _post_albums_daily(ctx: FinalizeContext, state: dict[str, float]) -> None:
-    if _is_weekend_stats_date(ctx.summary["stats_date"]):
-        print("Weekend detected: skipping separate top eras post (included in combined streams image).")
-        return
-
     if not ctx.no_post_mode and not ctx.summary.get("all_done"):
         print("Skipping top eras post: not all tracks are done yet.")
         return

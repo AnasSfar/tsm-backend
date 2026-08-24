@@ -260,11 +260,7 @@ def main():
     no_post = "--no-post" in sys.argv
     args = [a for a in sys.argv[1:] if not a.startswith("-")]
     target_date = args[0] if args else str(date.today() - timedelta(days=1))
-
     d = date.fromisoformat(target_date)
-    if d.weekday() in (5, 6):
-        print(f"[albums_post] {target_date} is a weekend stats date; top eras post is included in the combined recap, skipping.")
-        return
 
     day_dir = update_streams_dir(target_date)
     day_dir.mkdir(parents=True, exist_ok=True)
