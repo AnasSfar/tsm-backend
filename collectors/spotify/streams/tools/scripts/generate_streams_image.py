@@ -33,11 +33,11 @@ sys.path.insert(0, str(ROOT.parent))         # collectors/spotify/ for core.*
 sys.path.insert(0, str(ROOT.parent.parent))  # collectors/ for comp.*
 
 from core.data_paths import first_existing_db_history, update_streams_dir  # noqa: E402
-from comp.fmt import fmt_num, fmt_delta  # noqa: E402
+from comp.fmt import fmt_num, fmt_delta, fmt_signed  # noqa: E402
 from comp.discography import build_cover_map, build_track_album_map  # noqa: E402
 from comp.tables_image import (  # noqa: E402
     download_as_data_uri, pick_header_image, get_dominant_color,
-    SPOTIFY_SVG, build_table_html,
+    SPOTIFY_SVG, build_table_html, era_accent_color, dominant_color_from_data_uri,
 )
 import history_store  # noqa: E402
 
@@ -51,20 +51,18 @@ IMAGE_DATA_URI_CACHE_PATH = _TOOLS / ".image_data_uri_cache.json"
 TOP_N = 15
 
 TOP20_COMPACT_CSS = """
-.hdr{padding:18px 24px;gap:16px}
-.hdr-logo{width:56px;height:56px}
 .hdr-title{font-size:24px}
 .hdr-sub{font-size:13px;margin-top:4px}
-.col-heads{padding:7px 16px}
-.col-heads span{font-size:10px}
-.data-row{padding:5px 16px}
-.col-rank{font-size:18px}
-.col-chg{font-size:11px}
+.ledger-cols{padding:7px 16px}
+.ledger-cols span{font-size:10px}
+.ledger-row{padding:5px 16px}
+.ledger-rank{font-size:20px}
+.ledger-chg{font-size:11px}
 .chg-new,.chg-re{font-size:10px}
-.col-entity{gap:10px}
-.entity-name{font-size:13px}
-.entity-sub{font-size:11px;margin-top:2px}
-.col-num{font-size:12px}
+.ledger-entity{gap:10px}
+.ledger-name{font-size:13px}
+.ledger-sub{font-size:11px;margin-top:2px}
+.ledger-num{font-size:12px}
 .delta-num{font-size:12px}
 .delta-pct{font-size:10px}
 """
@@ -487,45 +485,44 @@ def build_rows_html(top_rows: list[dict], cover_map: dict, track_album_map: dict
             cover_url = image_cache.get(cover_url, cover_url)
 
         art_html = (
-            f'<img class="art" src="{cover_url}" />'
+            f'<img class="ledger-art" src="{cover_url}" />'
             if cover_url
-            else '<div class="art-ph"></div>'
+            else '<div class="ledger-art-ph"></div>'
         )
 
         delta_num, delta_pct, delta_cls = fmt_delta(daily, yest)
         week_delta_num, week_delta_pct, week_delta_cls = fmt_delta(daily, last_week)
         chg_text, chg_css = rank_change(rank, entry.get("prev_rank"))
+        daily_signed, _ = fmt_signed(daily)
 
-        card_cls = "data-row"
-        if rank == 1:
-            card_cls += " row-gold"
-        elif i % 2 != 0:
-            card_cls += " row-odd"
+        album_name = track_album_map.get(_norm(title), "")
+        rank_color = era_accent_color(album_name) or dominant_color_from_data_uri(cover_url)
+        rank_style = f' style="color:{rank_color}"' if rank_color else ""
 
-        html += f"""<div class="{card_cls}">
-  <div class="col-rank">#{rank}</div>
-  <div class="col-chg {chg_css}">{chg_text}</div>
-  <div class="col-entity">
+        html += f"""<div class="ledger-row">
+  <div class="ledger-rank"{rank_style}>{rank}</div>
+  <div class="ledger-chg {chg_css}">{chg_text}</div>
+  <div class="ledger-entity">
     {art_html}
-    <div class="entity-info">
-      <div class="entity-name">{title}</div>
-      <div class="entity-sub">{artist}</div>
+    <div class="ledger-info">
+      <div class="ledger-name">{title}</div>
+      <div class="ledger-sub">{artist}</div>
     </div>
   </div>
-  <div class="col-num"><strong>{fmt_num(daily)}</strong></div>
-  <div class="col-num {delta_cls}">
-    <div class="delta-wrap">
-      <span class="delta-num">{delta_num}</span>
-      {f'<span class="delta-pct">{delta_pct}</span>' if delta_pct else ''}
+  <div class="ledger-num"><span class="ledger-daily">{daily_signed}</span></div>
+  <div class="ledger-num">
+    <div class="ledger-delta {delta_cls}">
+      <span class="ledger-delta-num">{delta_num}</span>
+      {f'<span class="ledger-delta-pct">{delta_pct}</span>' if delta_pct else ''}
     </div>
   </div>
-  <div class="col-num {week_delta_cls}">
-    <div class="delta-wrap">
-      <span class="delta-num">{week_delta_num}</span>
-      {f'<span class="delta-pct">{week_delta_pct}</span>' if week_delta_pct else ''}
+  <div class="ledger-num">
+    <div class="ledger-delta {week_delta_cls}">
+      <span class="ledger-delta-num">{week_delta_num}</span>
+      {f'<span class="ledger-delta-pct">{week_delta_pct}</span>' if week_delta_pct else ''}
     </div>
   </div>
-  <div class="col-num">{fmt_num(total)}</div>
+  <div class="ledger-num"><span class="ledger-total">{fmt_num(total)}</span></div>
 </div>
 """
     return html
@@ -533,7 +530,8 @@ def build_rows_html(top_rows: list[dict], cover_map: dict, track_album_map: dict
 
 def build_html(top_rows: list[dict], target_date: str, cover_map: dict, track_album_map: dict,
                top_n: int,
-               image_cache: dict[str, str] | None = None) -> str:
+               image_cache: dict[str, str] | None = None,
+               masthead_theme: str = "dark") -> str:
     from datetime import datetime
     import history_store
     date_fmt   = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
@@ -571,6 +569,8 @@ def build_html(top_rows: list[dict], target_date: str, cover_map: dict, track_al
         art_size=44 if compact else 54,
         col_gap=7 if compact else 8,
         extra_css=TOP20_COMPACT_CSS if compact else "",
+        masthead_word="SONGS",
+        masthead_theme=masthead_theme,
     )
 
 
@@ -589,9 +589,16 @@ def _render_width(top_n: int) -> int:
 
 
 def _render_html(browser, html: str, out_path: Path, *, width: int) -> None:
+    # Chromium blocks file:// resources (the header banner photo) loaded from a
+    # page whose own origin isn't file:// — set_content() leaves the page on
+    # about:blank, so the CSS url('file:///...') silently fails and the header
+    # renders as a flat overlay with no photo. Writing to a temp file and
+    # navigating to it via file:// (same pattern as generate()) fixes that.
+    tmp_html = out_path.with_suffix(".tmp.html")
+    tmp_html.write_text(html, encoding="utf-8")
     page = browser.new_page(viewport={"width": width, "height": 200}, device_scale_factor=2)
     try:
-        page.set_content(html, wait_until="load")
+        page.goto(f"file:///{tmp_html.as_posix()}", wait_until="load")
         page.wait_for_timeout(300)
         try:
             full_h = page.evaluate("() => document.body.scrollHeight")
@@ -603,6 +610,8 @@ def _render_html(browser, html: str, out_path: Path, *, width: int) -> None:
         page.locator("body").screenshot(path=str(out_path))
     finally:
         page.close()
+        if tmp_html.exists():
+            tmp_html.unlink()
 
 
 def generate_thread_images(

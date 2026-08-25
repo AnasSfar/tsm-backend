@@ -7,6 +7,7 @@ import re
 import sys
 from collections.abc import Callable
 from datetime import datetime, timedelta
+from io import BytesIO
 from pathlib import Path
 from urllib.request import Request, urlopen
 
@@ -98,30 +99,50 @@ def pick_header_image(headers_dir: Path) -> Path | None:
     return random.choice(imgs) if imgs else None
 
 
+def _dominant_color_from_image(img) -> str:
+    pixels = list(img.getdata())
+    filtered = [
+        (r, g, b) for r, g, b in pixels
+        if not (r > 210 and g > 210 and b > 210)
+        and not (r < 40  and g < 40  and b < 40)
+    ]
+    if not filtered:
+        filtered = pixels
+    r = sum(p[0] for p in filtered) // len(filtered)
+    g = sum(p[1] for p in filtered) // len(filtered)
+    b = sum(p[2] for p in filtered) // len(filtered)
+    h, s, v = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
+    s = min(1.0, s * 1.8)
+    v = min(1.0, max(0.55, v))
+    r2, g2, b2 = colorsys.hsv_to_rgb(h, s, v)
+    return f"#{int(r2*255):02x}{int(g2*255):02x}{int(b2*255):02x}"
+
+
 def get_dominant_color(img_path: Path) -> str:
     """Returns a vibrant hex colour extracted from the image."""
     if not _PIL:
         return "#1db954"
     try:
         img = Image.open(img_path).convert("RGB").resize((60, 60), Image.LANCZOS)
-        pixels = list(img.getdata())
-        filtered = [
-            (r, g, b) for r, g, b in pixels
-            if not (r > 210 and g > 210 and b > 210)
-            and not (r < 40  and g < 40  and b < 40)
-        ]
-        if not filtered:
-            filtered = pixels
-        r = sum(p[0] for p in filtered) // len(filtered)
-        g = sum(p[1] for p in filtered) // len(filtered)
-        b = sum(p[2] for p in filtered) // len(filtered)
-        h, s, v = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
-        s = min(1.0, s * 1.8)
-        v = min(1.0, max(0.55, v))
-        r2, g2, b2 = colorsys.hsv_to_rgb(h, s, v)
-        return f"#{int(r2*255):02x}{int(g2*255):02x}{int(b2*255):02x}"
+        return _dominant_color_from_image(img)
     except Exception:
         return "#1db954"
+
+
+def dominant_color_from_data_uri(data_uri: str | None) -> str | None:
+    """Same extraction as get_dominant_color, but from an already-fetched
+    base64 data URI (e.g. a cover already in an image_cache) — no network
+    call. Returns None (not a fallback color) if extraction isn't possible,
+    so callers can fall back to their own default."""
+    if not _PIL or not data_uri or not data_uri.startswith("data:"):
+        return None
+    try:
+        _, b64 = data_uri.split(",", 1)
+        raw = base64.b64decode(b64)
+        img = Image.open(BytesIO(raw)).convert("RGB").resize((60, 60), Image.LANCZOS)
+        return _dominant_color_from_image(img)
+    except Exception:
+        return None
 
 
 # ---------------------------------------------------------------------------
@@ -552,7 +573,149 @@ body{
 }
 .ftr-handle{font-size:13px;color:#1db954;font-weight:700}
 .ftr-date{font-size:13px;color:#667085;font-weight:500}
+/* Editorial masthead header (opt-in via build_table_html(masthead_word=...)) */
+.hdr.masthead{
+  height:168px;
+  padding:24px 22px;
+  display:flex;align-items:center;justify-content:space-between;
+  overflow:hidden;
+  position:relative;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.hdr.masthead .hdr-title{color:var(--mast-title-color,#fff)}
+.hdr.masthead .hdr-sub{color:var(--mast-sub-color,rgba(255,255,255,.85))}
+.mast-left{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+.mast-logo-badge{
+  width:38px;height:38px;border-radius:50%;background:#fff;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.35);
+}
+.mast-logo-badge .hdr-logo{width:19px;height:19px}
+.mast-logo-badge .hdr-logo path{fill:#161616}
+.mast-word{
+  position:absolute;
+  right:-6px;top:50%;
+  transform:translateY(-50%);
+  font-family:"Big Shoulders Display",sans-serif;
+  font-weight:900;
+  font-size:168px;
+  letter-spacing:.01em;
+  line-height:1;
+  white-space:nowrap;
+  color:var(--mast-word-color,rgba(255,255,255,.5));
+  mix-blend-mode:overlay;
+  pointer-events:none;
+}
+.mast-rule{position:absolute;left:0;right:0;bottom:0;height:1px}
+
+/* Ledger table (opt-in, paired with the masthead header) */
+.ledger-cols{
+  display:grid;grid-template-columns:var(--grid-cols);column-gap:var(--col-gap,10px);
+  padding:10px 20px;background:var(--ledger-cols-bg);border-bottom:1px solid var(--ledger-row-border);
+}
+.ledger-cols span{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ledger-col-label);display:flex;align-items:center}
+.ledger-cols .right{justify-content:flex-end}
+.ledger-row{
+  display:grid;grid-template-columns:var(--grid-cols);column-gap:var(--col-gap,10px);
+  align-items:center;padding:10px 20px;background:var(--ledger-bg);
+  border-bottom:1px solid var(--ledger-row-border);
+}
+.ledger-rank{
+  font-family:"Big Shoulders Display",sans-serif;font-weight:900;font-size:26px;
+  letter-spacing:-.02em;color:var(--ledger-text);
+  display:flex;align-items:center;justify-content:center;text-align:center;
+}
+.ledger-chg{font-size:11px;font-weight:700;color:var(--ledger-faint);display:flex;align-items:center;justify-content:center;gap:2px}
+.ledger-chg.chg-up{color:var(--ledger-pos)}
+.ledger-chg.chg-dn{color:var(--ledger-neg)}
+.ledger-chg.chg-new{color:#5b8fd6}
+.ledger-chg.chg-re{color:#a06bd6}
+.ledger-entity{display:flex;align-items:center;gap:12px;min-width:0}
+.ledger-art,.ledger-art-ph{width:var(--art-size,44px);height:var(--art-size,44px);border-radius:7px;flex-shrink:0;object-fit:cover;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.ledger-art-ph{background:var(--ledger-row-border)}
+.ledger-info{min-width:0}
+.ledger-name{
+  font-size:14px;font-weight:700;color:var(--ledger-text);line-height:1.25;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:normal;
+}
+.ledger-sub{font-size:11px;color:var(--ledger-muted);margin-top:2px}
+.ledger-num{text-align:right;font-variant-numeric:tabular-nums}
+.ledger-daily{font-size:13.5px;font-weight:800;color:var(--ledger-text)}
+.ledger-total{font-size:12.5px;color:var(--ledger-muted);font-weight:600}
+.ledger-delta{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
+.ledger-delta-num{font-size:11.5px;font-weight:700}
+.ledger-delta-pct{font-size:10px;font-weight:500;opacity:.85}
+.ledger-delta.pos .ledger-delta-num,.ledger-delta.pos .ledger-delta-pct{color:var(--ledger-pos)}
+.ledger-delta.neg .ledger-delta-num,.ledger-delta.neg .ledger-delta-pct{color:var(--ledger-neg)}
+.ledger-delta.neutral .ledger-delta-num,.ledger-delta.neutral .ledger-delta-pct{color:var(--ledger-faint)}
+.ledger-ftr{display:flex;justify-content:space-between;align-items:center;padding:13px 20px;background:var(--ledger-ftr-bg)}
+.ledger-handle{font-size:13px;font-weight:700}
+.ledger-date{font-size:13px;color:var(--ledger-faint)}
 """
+
+ERA_ACCENT_COLORS: dict[str, str] = {
+    "taylor swift": "#5b8db8",
+    "fearless": "#c4a255",
+    "speak now": "#7c3aed",
+    "red": "#b91c1c",
+    "1989": "#4fb8e8",
+    "reputation": "#555555",
+    "lover": "#d978a0",
+    "folklore": "#8b9eb7",
+    "evermore": "#a07850",
+    "midnights": "#1a1a3e",
+    "the tortured poets department": "#d4c3a3",
+    "the life of a showgirl": "#e2712c",
+    # Taylor's Version re-records share their original era's color.
+    "fearless (taylor's version)": "#c4a255",
+    "speak now (taylor's version)": "#7c3aed",
+    "red (taylor's version)": "#b91c1c",
+    "1989 (taylor's version)": "#4fb8e8",
+}
+
+
+def era_accent_color(album_name: str | None) -> str | None:
+    """Canonical per-era brand color (mirrors tsm-frontend's anniversaries.js
+    theme accents), used to tint the ledger rank numeral by the row's album."""
+    if not album_name:
+        return None
+    return ERA_ACCENT_COLORS.get(album_name.strip().lower())
+
+
+_LEDGER_THEME_TOKENS = {
+    "dark": {
+        "ledger-bg": "#131417",
+        "ledger-cols-bg": "#0e0f11",
+        "ledger-ftr-bg": "#0e0f11",
+        "ledger-row-border": "#232428",
+        "ledger-text": "#eef0f2",
+        "ledger-muted": "#9aa0ab",
+        "ledger-faint": "#5a5e66",
+        "ledger-col-label": "#ffffff",
+        "ledger-pos": "#6fcf9a",
+        "ledger-neg": "#e08a7d",
+        "mast-title-color": "#fff",
+        "mast-sub-color": "rgba(255,255,255,.85)",
+        "mast-word-color": "rgba(255,255,255,.5)",
+        "mast-overlay-rgb": "6,8,7",
+    },
+    "light": {
+        "ledger-bg": "#f6f1ea",
+        "ledger-cols-bg": "#efe6d8",
+        "ledger-ftr-bg": "#efe6d8",
+        "ledger-row-border": "#e7ddd0",
+        "ledger-text": "#241d17",
+        "ledger-muted": "#8a7c68",
+        "ledger-faint": "#8a7c68",
+        "ledger-col-label": "#8a7c68",
+        "ledger-pos": "#3f7d57",
+        "ledger-neg": "#a4483a",
+        "mast-title-color": "#241d17",
+        "mast-sub-color": "rgba(36,29,23,.78)",
+        "mast-word-color": "rgba(20,14,8,.42)",
+        "mast-overlay-rgb": "244,240,234",
+    },
+}
 
 
 def build_table_html(
@@ -572,11 +735,21 @@ def build_table_html(
     header_background: str | None = None,
     handle_color_override: str | None = None,
     logo_svg: str = SPOTIFY_SVG,
+    masthead_word: str | None = None,
+    masthead_theme: str = "dark",
 ) -> str:
     """Build a complete glassmorphism table image HTML document.
 
     col_heads: list of (label, right_aligned) tuples.
+    masthead_word: if set (e.g. "SONGS", "ERAS"), renders the header as an
+    "editorial masthead" — a real header photo with a big ghost wordmark
+    overlaid on the right — instead of the classic centered logo/title header,
+    and switches the table body to the matching dark/light "ledger" style
+    instead of the classic glassmorphism table.
+    masthead_theme: "dark" (default) or "light" — only used when masthead_word
+    is set.
     """
+    theme = _LEDGER_THEME_TOKENS.get(masthead_theme, _LEDGER_THEME_TOKENS["dark"])
     header_img = None if header_background else pick_header_image(headers_dir)
     handle_color = handle_color_override or "#1db954"
     if header_background:
@@ -584,12 +757,69 @@ def build_table_html(
     elif header_img:
         handle_color = get_dominant_color(header_img)
         img_url = header_img.as_posix()
+        overlay = (
+            f"linear-gradient(100deg,rgba({theme['mast-overlay-rgb']},.82) 0%,"
+            f"rgba({theme['mast-overlay-rgb']},.48) 45%,rgba({theme['mast-overlay-rgb']},.6) 100%)"
+            if masthead_word
+            else "linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45))"
+        )
         hdr_style = (
-            f'style="background-image: linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)),'
+            f'style="background-image: {overlay},'
             f"url('file:///{img_url}'); background-size:cover; background-position:center;\""
         )
     else:
         hdr_style = 'style="background:linear-gradient(135deg,#1db954 0%,#17a34a 100%);"'
+
+    css_vars = (
+        f":root{{--body-w:{body_width}px;--grid-cols:{grid_cols};"
+        f"--art-size:{art_size}px;--col-gap:{col_gap}px}}"
+    )
+
+    if masthead_word:
+        font_link = (
+            '<link rel="preconnect" href="https://fonts.googleapis.com">'
+            '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
+            '<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@900&display=swap" rel="stylesheet">'
+        )
+        hdr_html = f"""  <div class="hdr masthead" {hdr_style}>
+    <div class="mast-left">
+      <div class="mast-logo-badge">{logo_svg}</div>
+      <div>
+        <div class="hdr-title">{title}</div>
+        <div class="hdr-sub">{subtitle}</div>
+      </div>
+    </div>
+    <div class="mast-word">{masthead_word}</div>
+    <div class="mast-rule" style="background:{handle_color}"></div>
+  </div>"""
+
+        col_heads_html = '<div class="ledger-cols">\n'
+        for label, right in col_heads:
+            cls = ' class="right"' if right else ""
+            col_heads_html += f"  <span{cls}>{label}</span>\n"
+        col_heads_html += "</div>"
+
+        ledger_tokens = "".join(f"--{k}:{v};" for k, v in theme.items() if k != "mast-overlay-rgb")
+        ledger_vars = f":root{{{ledger_tokens}}}"
+        ledger_body_bg = f"body{{background:{theme['ledger-bg']};}}"
+
+        footer_html = f"""  <div class="ledger-ftr">
+    <span class="ledger-handle" style="color:{handle_color}">{handle}</span>
+    <span class="ledger-date">{date_str}</span>
+  </div>"""
+
+        return f"""<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+{font_link}
+<style>{css_vars}{ledger_vars}{STREAMS_TABLE_CSS}{ledger_body_bg}{extra_css}</style></head>
+<body>
+<div class="container">
+{hdr_html}
+  {col_heads_html}
+  {rows_html}
+{footer_html}
+</div>
+</body></html>"""
 
     col_heads_html = '<div class="col-heads">\n'
     for label, right in col_heads:
@@ -597,23 +827,22 @@ def build_table_html(
         col_heads_html += f"  <span{cls}>{label}</span>\n"
     col_heads_html += "</div>"
 
-    css_vars = (
-        f":root{{--body-w:{body_width}px;--grid-cols:{grid_cols};"
-        f"--art-size:{art_size}px;--col-gap:{col_gap}px}}"
-    )
-
-    return f"""<!DOCTYPE html>
-<html><head><meta charset="utf-8">
-<style>{css_vars}{STREAMS_TABLE_CSS}{extra_css}</style></head>
-<body>
-<div class="container">
-  <div class="hdr" {hdr_style}>
+    font_link = ""
+    hdr_html = f"""  <div class="hdr" {hdr_style}>
     {logo_svg}
     <div>
       <div class="hdr-title">{title}</div>
       <div class="hdr-sub">{subtitle}</div>
     </div>
-  </div>
+  </div>"""
+
+    return f"""<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+{font_link}
+<style>{css_vars}{STREAMS_TABLE_CSS}{extra_css}</style></head>
+<body>
+<div class="container">
+{hdr_html}
   {col_heads_html}
   {rows_html}
   <div class="ftr">

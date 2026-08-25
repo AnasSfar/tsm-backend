@@ -54,3 +54,38 @@ Inspecter le PNG rendu. Pour gros changements, comparer avant/apres.
 - Les scripts Playwright screenshot attendent souvent un element `#card` ou
   `.card`; ne pas renommer sans adapter les appelants.
 - Les changements de CSS peuvent passer les tests CLI mais casser la lisibilite.
+
+## `build_table_html(masthead_word=...)` (2026-08-25)
+
+`tables_image.py::build_table_html` supporte un style de header alternatif
+opt-in : `masthead_word="SONGS"` / `"ERAS"` (utilise par
+`generate_streams_image.py` et `generate_albums_image.py`) remplace le header
+classique logo+titre par un bandeau plus haut avec un gros wordmark fantome
+en overlay sur la photo. Par defaut (`masthead_word=None`), tous les autres
+appelants (`generate_snapshot_images.py` Apple Music, `post_song_overtakes.py`)
+gardent le header classique inchange — ne jamais rendre `masthead_word`
+obligatoire ni changer son comportement par defaut sans verifier ces deux
+appelants. Charge une police Google Fonts ("Big Shoulders Display") via un
+`<link>` ajoute uniquement quand `masthead_word` est fourni — seul point du
+pipeline `comp/` qui depend d'une police externe ; degrade sans casser si le
+rendu tourne hors-ligne.
+
+Quand `masthead_word` est actif, `build_table_html` bascule aussi les lignes/
+colonnes/footer vers un style "ledger" (`.ledger-*`, dark ou light selon
+`masthead_theme`) au lieu du tableau classique — voir le detail cote produit
+dans la skill `spotify-streams` ("Table Ledger"). Cote composant partage,
+retenir :
+
+- `ERA_ACCENT_COLORS` / `era_accent_color(album)` : palette figee par ere
+  (calquee sur `tsm-frontend/frontend/src/utils/anniversaries.js`), pas
+  couplee au rang du jour. A tenir a jour si le frontend ajoute/renomme une
+  ere (pas d'entree pour "The Life of a Showgirl" cote frontend au moment de
+  l'ecriture — couleur choisie a la main depuis `showgirl-museum.css`).
+- `dominant_color_from_data_uri(data_uri)` : meme extraction que
+  `get_dominant_color` mais depuis des bytes deja en memoire (une data URI
+  d'un `image_cache` deja rempli) au lieu d'un chemin fichier — pas d'appel
+  reseau supplementaire. Les deux partagent maintenant `_dominant_color_from_image`;
+  toujours faire evoluer les deux ensemble si l'algo d'extraction change.
+- N'importer `era_accent_color`/`dominant_color_from_data_uri` que dans un
+  appelant qui utilise deja `masthead_word` — le style classique n'a pas de
+  case couleur par ligne pour le rang.

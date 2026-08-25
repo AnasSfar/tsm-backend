@@ -320,6 +320,41 @@ def load_previous_same_total_pending_track_ids(stats_date: str) -> set[str]:
     return persisted
 
 
+def load_admin_override_unchanged_zero_track_ids(stats_date: str) -> set[str]:
+    """Rows force-accepted by --admin with daily=0 and unchanged total.
+
+    These rows are useful evidence that a page had not advanced yet, but they
+    should not let a normal run take the "already complete" path.
+    """
+    previous_stats_date = get_previous_stats_date_str(stats_date)
+    rows_by_date_track: dict[tuple[str, str], dict] = {}
+    for row in load_history_rows():
+        row_date = str(row.get("date") or "").strip()
+        track_id = str(row.get("track_id") or "").strip()
+        if row_date in {stats_date, previous_stats_date} and track_id:
+            rows_by_date_track[(row_date, track_id)] = row
+
+    stale_ids: set[str] = set()
+    for (row_date, track_id), row in rows_by_date_track.items():
+        if row_date != stats_date:
+            continue
+        if (row.get("estimated_reason") or "").strip() != "admin_override":
+            continue
+        if (row.get("daily_streams") or "").strip() != "0":
+            continue
+        previous = rows_by_date_track.get((previous_stats_date, track_id))
+        if previous is None:
+            continue
+        try:
+            current_total = int(row.get("streams") or 0)
+            previous_total = int(previous.get("streams") or 0)
+        except (TypeError, ValueError):
+            continue
+        if current_total == previous_total:
+            stale_ids.add(track_id)
+    return stale_ids
+
+
 def _daily_lock_exists(stats_date: str, lock_name: str) -> bool:
     return _daily_lock_path(stats_date, lock_name).exists()
 
@@ -666,18 +701,24 @@ def try_apply_track_update(
     )
 
     if override_stream_guards and ADMIN_OVERRIDE_MODE:
-        # --admin: accept the raw diff as-is, negative included â€” no
-        # compute_daily() clamp. The human operator is explicitly vouching
-        # for this total, so don't second-guess it with the automatic
-        # "no negative daily" guarantee (see load_history_track_ids_with_daily_for_date).
-        reason = "admin_override"
-        real_update = True
-        if previous_day_total is not None:
-            daily = total - previous_day_total
-        elif last_total is not None:
-            daily = total - last_total
+        # --admin accepts Spotify's raw diff, but an unchanged total still has
+        # to prove persistence through the retry loop before we write daily=0.
+        reference_total = previous_day_total if previous_day_total is not None else last_total
+        if reference_total is not None and total == reference_total:
+            reason = "admin_same_total"
+            real_update = False
+            daily = 0
         else:
-            daily = None
+            # Negative included: the human operator is explicitly vouching for
+            # this total, so don't apply compute_daily()'s negative clamp.
+            reason = "admin_override"
+            real_update = True
+            if previous_day_total is not None:
+                daily = total - previous_day_total
+            elif last_total is not None:
+                daily = total - last_total
+            else:
+                daily = None
     elif override_stream_guards:
         reason = "override_stream_guards"
         real_update = True
@@ -2626,6 +2667,7 @@ def main():
         lock_path = _daily_lock_path(stats_date, STREAMS_UPDATE_COMPLETE_LOCK_NAME)
         missing_recent_positive = recent_release_track_ids_missing_positive_history(stats_date)
         missing_recent_daily = recent_release_track_ids_missing_daily(stats_date)
+        stale_admin_zero_ids = load_admin_override_unchanged_zero_track_ids(stats_date)
         if missing_recent_positive:
             print(
                 f"Streams update lock exists for {stats_date}, but "
@@ -2635,6 +2677,11 @@ def main():
             print(
                 f"Streams update lock exists for {stats_date}, but "
                 f"{len(missing_recent_daily)} recent release track(s) still need daily_streams; ignoring lock."
+            )
+        elif stale_admin_zero_ids:
+            print(
+                f"Streams update lock exists for {stats_date}, but "
+                f"{len(stale_admin_zero_ids)} admin_override zero row(s) still have unchanged totals; ignoring lock."
             )
         else:
             print(f"Streams update already complete for {stats_date} ({lock_path.name}); skipping.")
@@ -2645,6 +2692,7 @@ def main():
         summary = _build_existing_history_summary(stats_date, total_tracks, total_tracks)
         missing_recent_positive = recent_release_track_ids_missing_positive_history(stats_date)
         missing_recent_daily = recent_release_track_ids_missing_daily(stats_date)
+        stale_admin_zero_ids = load_admin_override_unchanged_zero_track_ids(stats_date)
         if missing_recent_positive:
             print(
                 f"Streams scraping lock exists for {stats_date}, but "
@@ -2654,6 +2702,11 @@ def main():
             print(
                 f"Streams scraping lock exists for {stats_date}, but "
                 f"{len(missing_recent_daily)} recent release track(s) still need daily_streams; ignoring lock."
+            )
+        elif stale_admin_zero_ids:
+            print(
+                f"Streams scraping lock exists for {stats_date}, but "
+                f"{len(stale_admin_zero_ids)} admin_override zero row(s) still have unchanged totals; ignoring lock."
             )
         elif not summary["all_done"]:
             print(
@@ -2766,6 +2819,11 @@ def main():
     # on saute Playwright/API entiÃ¨rement
     last_history_date = get_last_stats_date_in_history()
     is_backfill = last_history_date is not None and last_history_date > stats_date
+    stale_admin_zero_ids = (
+        set()
+        if dry_run_mode or local_test_mode or debug_daily_mode or debug_total_mode or post_only_mode or throwback_mode
+        else load_admin_override_unchanged_zero_track_ids(stats_date)
+    )
 
     # If stats_date has no data at all but history has a more recent date,
     # the computed date was never captured (e.g. old code mislabeled it). Advance
@@ -2788,6 +2846,22 @@ def main():
         or debug_daily_mode
         or force_reprocess
     )
+
+    if stale_admin_zero_ids and not scraping_needed and not is_backfill:
+        print(
+            f"{len(stale_admin_zero_ids)} admin_override zero row(s) still have unchanged totals; "
+            "retrying exact total replacement before finalization."
+        )
+        run_debug_total_replace(stats_date)
+        stale_admin_zero_ids = load_admin_override_unchanged_zero_track_ids(stats_date)
+        already_done_for_stats_date = load_history_track_ids_for_date(stats_date)
+        done_tracks_before_run = len(already_done_for_stats_date)
+        if stale_admin_zero_ids:
+            print(
+                f"ERROR: {len(stale_admin_zero_ids)} admin_override zero row(s) still have unchanged totals "
+                f"for {stats_date}; blocking finalization until Spotify returns exact updated totals."
+            )
+            sys.exit(1)
 
     if scraping_needed:
         # Capture des tokens API (une seule fois pour tout le run)
@@ -3240,6 +3314,40 @@ def main():
         all_updated_track_ids.add(track_id)
         return True
 
+    def _complete_admin_same_total_as_zero(track_id: str) -> bool:
+        result = next((r for r in summary.get("results", []) if r and r.get("track_id") == track_id), None)
+        if not result or result.get("status") != "pending" or result.get("reason") != "admin_same_total":
+            return False
+
+        total = result.get("streams")
+        previous_total = result.get("previous_streams")
+        if total is None or previous_total is None:
+            return False
+        try:
+            total_int = int(total)
+            previous_int = int(previous_total)
+        except (TypeError, ValueError):
+            return False
+        if total_int != previous_int:
+            return False
+
+        reason = "admin_override_same_total_after_retries"
+        if write_history and not dry_run_mode:
+            history_index = summary.get("history_index")
+            if history_index is not None:
+                history_index.append(stats_date, track_id, total_int, 0, reason)
+            else:
+                append_history_row([stats_date, track_id, total_int, 0, "", reason])
+
+        result["status"] = "updated"
+        result["daily_streams"] = 0
+        result["reason"] = reason
+        summary["updated_this_run"] = int(summary.get("updated_this_run", 0)) + 1
+        summary["pending_this_run"] = max(int(summary.get("pending_this_run", 0)) - 1, 0)
+        summary["done_tracks"] = int(summary.get("done_tracks", 0)) + 1
+        all_updated_track_ids.add(track_id)
+        return True
+
     progress = ProgressLogger(LOG_MODE)
     summary = run_update(
         on_progress=progress,
@@ -3309,6 +3417,42 @@ def main():
             tid for tid in all_pending_ids
             if tid in tracks_by_id and tracks_by_id[tid].get("chart_extra")
         }
+
+        if admin_override_mode:
+            admin_same_total_ids = {
+                r["track_id"]
+                for r in summary.get("results", [])
+                if r
+                and r.get("status") == "pending"
+                and r.get("reason") == "admin_same_total"
+                and r.get("track_id") in all_pending_ids
+            }
+            if admin_same_total_ids and retry_round >= EXTRA_PENDING_RETRY_ROUNDS_BEFORE_ZERO:
+                completed_admin_zero_ids = {
+                    tid for tid in admin_same_total_ids
+                    if _complete_admin_same_total_as_zero(tid)
+                }
+                if completed_admin_zero_ids:
+                    titles = sorted(
+                        tracks_by_id[tid]["title"] for tid in completed_admin_zero_ids if tid in tracks_by_id
+                    )
+                    print(
+                        f"{len(completed_admin_zero_ids)} admin same-total track(s) closed with daily=0 "
+                        f"after {EXTRA_PENDING_RETRY_ROUNDS_BEFORE_ZERO} retry round(s): {', '.join(titles)}"
+                    )
+                all_pending_ids -= completed_admin_zero_ids
+                non_extra_pending_ids_now -= completed_admin_zero_ids
+                extra_pending_ids_now -= completed_admin_zero_ids
+                summary["all_done"] = summary.get("pending_this_run", 0) == 0
+
+                if not all_pending_ids:
+                    print("All pending tracks are resolved.")
+                    break
+            elif admin_same_total_ids:
+                print(
+                    f"{len(admin_same_total_ids)} admin same-total track(s) still pending; "
+                    f"completed retry rounds {retry_round} / {EXTRA_PENDING_RETRY_ROUNDS_BEFORE_ZERO}."
+                )
 
         if not non_extra_pending_ids_now and extra_pending_ids_now:
             yesterday_persistent_ids = extra_pending_ids_now & previous_same_total_pending_ids
@@ -3497,6 +3641,17 @@ def main():
 
     if not blocking_pending_ids:
         print("All target tracks updated or explicitly closed.")
+        if not summary.get("all_done"):
+            # summary["all_done"] (from run_update) requires every track to have
+            # reached status updated/skipped, but a chart_extra track stuck as
+            # error/timeout (e.g. merged by Spotify into another track_id) never
+            # gets a "results" entry, so that formula can stay False forever even
+            # though blocking_pending_ids (the actual completeness gate above,
+            # which only counts real "pending" tracks) is already empty. Keep
+            # all_done in sync with the decision already made here, since
+            # finalize_update.run_final_update_tasks re-checks summary["all_done"]
+            # and would otherwise skip every posting step and the git commit.
+            summary["all_done"] = True
         if normal_lock_mode:
             _write_daily_lock(stats_date, STREAMS_SCRAPED_LOCK_NAME, {
                 "total_tracks": summary.get("total_tracks"),

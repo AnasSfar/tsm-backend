@@ -47,7 +47,11 @@ Modes visibles dans les logs/code:
   observe en prod : deux runs `--admin` de suite sans effet sur les tracks
   cibles tant que `--force` n'etait pas aussi passe. Consequence : `--admin`
   re-scrape tout le catalogue (temps de run complet), pas juste les tracks
-  cibles. Reserve a un cas verifie a la main (fusion/split cote Spotify, cf.
+  cibles. Depuis 2026-08-25, si le total Spotify est encore identique au total
+  de reference, `--admin` garde le track en pending et ne l'ecrit avec
+  `daily=0` qu'apres 5 rounds de retry
+  (`admin_override_same_total_after_retries`) ; l'override brut ne ferme plus
+  un same-total au premier passage. Reserve a un cas verifie a la main (fusion/split cote Spotify, cf.
   incident Karma 2026-08-17 dans `pipeline-ops`) — ca contourne la garantie
   "jamais de daily negatif publie".
 - `--debug-daily`: retry de tracks inacheves, ecrit l'history, pas de
@@ -457,6 +461,181 @@ d'autre n'a change dans l'ordonnancement. Ne pas confondre avec la regle
 distincte "pas de cards album individuelles le week-end"
 (`_post_album_updates`, toujours sautee le week-end — non concernee par ce
 changement).
+
+## Bug fixe : track chart_extra en erreur API bloquait tout le finalize (2026-08-24)
+
+Incident 2026-08-23/24 : "Love Story - Pop Mix" (`5lA0yK8S5tP3xoaRMCp4Ug`,
+`chart_extra=true`) a echoue en `status="error"` (`reason="api_error"`) a
+chaque round de retry — probablement le meme phenomene de fusion catalogue
+Spotify que la section "Fusion catalogue Spotify active" ci-dessus (le track
+apparait aussi dans les 3 "merge losers" du jour cote export), mais cette
+fois cote collecte : l'appel API echoue completement au lieu de renvoyer un
+total identique a un autre track_id.
+
+Consequence : les tracks `status="error"`/`"timeout"` sont ecrits dans
+`summary["failed_results"]`, jamais dans `summary["results"]` — donc leur
+slot dans `results[]` reste `None` et disparait de `filtered_results`
+(`run_update`, `update_streams.py:2078`). `summary["all_done"]`
+(`len(updated/skipped) >= total_tracks`, `update_streams.py:2092`) reste
+`False` pour toujours des que cela arrive, alors que ces tracks ne sont pas
+non plus comptes "pending" (donc invisibles dans `Pending (retry)` et dans
+`blocking_pending_ids` — la boucle `while` de retry ne les revoit jamais, et
+le message final affichait quand meme "All target tracks updated or
+explicitly closed."). Resultat observe : `finalize_update.run_final_update_tasks`
+imprime juste "Finalization stopped: streams collection is not complete."
+(`finalize_update.py:1569`) et **saute tous les posts ET le commit git** —
+export web sauf car lance en thread separe avant l'appel — sans aucun signal
+clair dans les logs sur quel track en est la cause (il faut lire
+`snapshots/spotify_streams/{date}/last_unfinished_updates.json` pour
+l'identifier).
+
+Fix (`update_streams.py`, juste apres "All target tracks updated or
+explicitly closed.") : `summary["all_done"]` est force a `True` des que
+`blocking_pending_ids` est vide, puisque ce dernier est deja le vrai
+garde-fou de completude (il ignore volontairement `error`/`not_found`/
+`timeout`, seul `pending` bloque). `all_done` doit rester synchronise avec
+cette decision au lieu de la re-verifier avec une formule plus stricte qui
+ne sait pas fermer un extra en erreur permanente. N'affecte pas la boucle de
+guard non-extra (`missing_non_extra`, plus bas dans la fonction) qui reste
+inchangee et continue de retenter indefiniment un non-extra manquant.
+
+Reflexe a garder : si un run se termine avec "All target tracks updated or
+explicitly closed." mais que rien n'est poste/commit, verifier
+`last_unfinished_updates.json` de la date concernee pour un track en
+`error`/`timeout` avant de suspecter autre chose.
+
+## Top Songs : le header photo ne s'affichait jamais (2026-08-24)
+
+`generate_streams_image.py::_render_html` (utilisee par `generate_thread_images`,
+donc par le flux reel `post_streams_twitter.py`) rendait le HTML via
+`page.set_content(html)` — la page reste alors sur `about:blank`. Chromium
+bloque le chargement d'une ressource `file://` (le header CSS
+`url('file:///...')` choisi par `pick_header_image`/`_headers_dir_for_top_songs`)
+depuis une page qui n'est pas elle-meme sur une origine `file://` : l'image de
+fond echouait silencieusement, ne laissant que l'overlay noir semi-transparent
+sur le fond clair du body — d'ou le bandeau "top songs" plat gris observe en
+prod, quelle que soit la photo presente dans `tools/headers/top_songs/`
+(`all eras.png` ou toute autre). Repere en comparant avec Top Eras
+(`generate_albums_image.py`), qui affichait bien sa photo car il ecrit deja le
+HTML dans un fichier temporaire puis `page.goto(f"file:///{tmp.as_posix()}")`
+avant de screenshot. Fix : meme pattern applique a `_render_html` (ecrit un
+`.tmp.html` a cote du PNG de sortie, `goto` dessus, supprime le tmp apres).
+Verifie par regeneration reelle de `post_streams_twitter.py --top-n 20`.
+Reflexe si un futur generateur affiche un bandeau plat/sans photo : verifier
+`set_content` vs `goto(file://...)`, pas la photo elle-meme — les autres
+generateurs a header photo local (`generate_weekend_streams_image.py`,
+`post_stream_highlights_thread.py`, les generateurs de charts) utilisaient
+deja le pattern sur, seul celui-ci avait la regression.
+
+## Header "Editorial Masthead" pour Top Songs / Top Eras (2026-08-25)
+
+`generate_streams_image.py::build_html` et `generate_albums_image.py::build_html`
+passent maintenant `masthead_word="SONGS"` / `"ERAS"` a
+`build_table_html` (`collectors/comp/tables_image.py`). Ca active un style de
+header alternatif (opt-in, n'affecte aucun autre appelant de
+`build_table_html` — Apple Music `generate_snapshot_images.py`,
+`post_song_overtakes.py` continuent avec le header classique par defaut) :
+la photo du pool `headers_dir` reste le fond, mais avec un gros wordmark
+fantome ("SONGS"/"ERAS", police Google Fonts "Big Shoulders Display",
+`mix-blend-mode:overlay`, `rgba(255,255,255,.5)`) plaque a droite du bandeau,
+et un filet de 1px en bas colore par `get_dominant_color(header_img)` (meme
+couleur que le handle @). Design valide via artifact (mockups "Chart Ribbon"
+/ "Cover Mosaic" / "Editorial Masthead"), iterations d'opacite/position
+faites en direct sur l'artifact avant portage ici. Verifie par regeneration
+reelle `generate_streams_image.generate('2026-08-23')` et
+`generate_albums_image.generate('2026-08-23')` — PNG inspectes visuellement.
+
+Reflexe : `build_table_html` charge la police via un `<link>` Google Fonts
+uniquement quand `masthead_word` est fourni (aucune autre card du pipeline ne
+depend d'une police externe) — si le rendu tourne sans reseau, le wordmark
+retombe sur `sans-serif` sans casser le reste de l'image (degrade gracieux,
+pas bloquant).
+
+Ajustement le meme jour : bandeau agrandi (`.hdr.masthead` 118px -> 168px,
+`.mast-word` font-size assorti) suite a retour "trop petit". Les 3 photos de
+header utilisees par ce style (`top_songs/all eras.png`,
+`top_albums/5cd68095cd9c82411ef8ecdeedae73e9.png`,
+`top_eras/5cd68095cd9c82411ef8ecdeedae73e9.png` — les deux dernieres sont des
+copies identiques du meme fichier) ont ete upscalees vers 3840px de large
+(Lanczos, `Image.LANCZOS`, ratio conserve) car sources natives a 2212x608 :
+une IA d'upscale (4KAgent / Real-ESRGAN) a ete evaluee mais jugee disproportionnee
+pour une simple photo de fond decorative (basicsr casse sous Python 3.13,
+poids de plusieurs GB, GPU/CUDA a installer) — Lanczos suffit largement a ce
+niveau d'opacite/blend. Reflexe : si une future photo de `tools/headers/**`
+parait floue apres agrandissement du bandeau, verifier sa resolution native
+(`PIL.Image.open(p).size`) avant de suspecter le CSS — `pick_header_image`
+ne fait aucun redimensionnement, la nettete depend entierement du fichier
+source.
+
+## Table "Ledger" (dark/light) pour Top Songs / Top Eras (2026-08-25)
+
+Suite au masthead, le corps du tableau (lignes) a aussi ete refait pour ne
+plus utiliser le style "glassmorphism" classique (`build_table_html(...)`
+sans `masthead_word`), toujours reserve a Apple Music
+(`generate_snapshot_images.py`) et `post_song_overtakes.py`. Quand
+`masthead_word` est fourni, `build_table_html` bascule aussi les lignes/
+colonnes/footer vers un nouveau style "ledger" (`comp/tables_image.py`,
+classes `.ledger-*`) :
+
+- **Theme** : `masthead_theme="dark"` (defaut, deploye) ou `"light"` — bascule
+  toutes les couleurs (fond, texte, bordures, +/- vert/rouge) ET l'overlay du
+  header (assombrissant en dark, eclaircissant vers un blanc casse en light)
+  ET la couleur de base du wordmark fantome (blanc en dark, sombre en light)
+  via `_LEDGER_THEME_TOKENS` — pas de media query, chaque PNG est genere une
+  fois pour un theme donne. Pas encore branche dans `generate()`/CLI, mais
+  `build_html(..., masthead_theme="light")` marche deja dans les deux
+  generateurs si un jour on veut poster une variante claire.
+- **Rang colore par ere** : `era_accent_color(album)` (dict fige
+  `ERA_ACCENT_COLORS`, initialement calque sur les accents de
+  `tsm-frontend/frontend/src/utils/anniversaries.js` puis corrige a la main
+  le 2026-08-25 sur 3 entrees — le proprietaire a juge `1989` trop grisatre
+  (repasse en vrai bleu ciel `#4fb8e8`), `The Life of a Showgirl` trop jaune
+  (repasse en orange `#e2712c`, la couleur "showgirl" du frontend est un
+  gold `#c9a227` qui ne convenait pas ici) et `THE TORTURED POETS DEPARTMENT`
+  pas assez beige (`#d4c3a3`) — **ces 3 valeurs divergent volontairement du
+  frontend, ne pas les re-synchroniser aveuglement s'il change** ; le reste
+  du dict suit toujours `anniversaries.js`) donne au gros chiffre de rang
+  (police "Big Shoulders Display", meme famille que le wordmark du header)
+  la couleur de l'album/ere de la ligne, **peu importe le rang du jour**
+  (ex: `1989` est toujours bleu ciel que ce soit #1 ou #7). Si l'album n'a
+  pas de couleur figee (single hors-catalogue type "I Knew It, I Knew You"
+  de Toy Story 5, Holiday Collection...), fallback sur
+  `dominant_color_from_data_uri(cover)` —
+  extraction de couleur dominante depuis la cover deja telechargee en cache
+  (pas de nouvel appel reseau, reutilise `_dominant_color_from_image`
+  partagee avec `get_dominant_color`). **Pas de traitement special pour le
+  rang #1** (l'ancien fond "gold" + `.row-gold` a ete retire sur demande —
+  la seule distinction visuelle du #1 est desormais sa couleur d'ere, comme
+  toutes les autres lignes).
+- **Piege corrige** : `.ledger-rank` doit avoir
+  `display:flex;align-items:center;justify-content:center` — sans ça le
+  chiffre de rang colle a gauche de sa colonne pendant que le badge +/- reste
+  centre a cote, ce qui cree un grand espace vide qui a l'air d'un bug de
+  layout alors que c'est juste un `text-align` par defaut jamais force.
+- **Titre sur 2 lignes** : `.ledger-name` utilise `-webkit-line-clamp:2` (pas
+  de troncature ellipsis 1 ligne comme l'ancien `.entity-name`) — un titre
+  long (ex. "All Too Well (10 Minute Version) (Taylor's Version) (From The
+  Vault)") passe sur 2 lignes et reste centre verticalement dans la ligne
+  puisque `.ledger-row` garde `align-items:center` sans hauteur fixe. Ne pas
+  redonner de `height` fixe a `.ledger-row` (l'ancien `_ALBUMS_EXTRA_CSS`
+  avait `height:48px`, retire) sinon un titre sur 2 lignes se fait tronquer.
+- **Daily signe** : la colonne DAILY affiche `+1 917 692` (jamais juste
+  `1 917 692`) via `comp/fmt.py::fmt_signed` (nouveau, calque sur le
+  `fmt_signed` deja existant dans `generate_album_update_image.py` mais copie
+  independante — ne pas dedupliquer avec ce fichier, il a son propre
+  `fmt_num` a espacement different et est sensible aux regressions de largeur
+  de colonne, cf. [[tsm-image-numeric-column-overflow]]).
+- **Titres de colonnes blancs (dark)** : `--ledger-col-label` (nouveau token,
+  distinct de `--ledger-faint` bien que meme valeur cote light) — dark =
+  `#ffffff`, light = `#8a7c68`. Ne pas re-fusionner avec `--ledger-faint` :
+  le proprietaire a explicitement demande le blanc pour les libelles de
+  colonnes (RANK/+/-/TRACK/...) en dark alors que `--ledger-faint` reste
+  sombre ailleurs (dates, "=" neutre).
+- **Logo header** : `.mast-logo-badge` — cercle blanc de 38px contenant le
+  logo Spotify a 19px (icone forcee en `fill:#161616` via
+  `.mast-logo-badge .hdr-logo path`), remplace le gros logo blanc plein
+  (64px) de l'ancien header classique. Uniquement actif quand
+  `masthead_word` est fourni.
 
 ## Pieges
 

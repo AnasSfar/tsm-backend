@@ -36,11 +36,11 @@ sys.path.insert(0, str(ROOT.parent))         # collectors/spotify/ for core.*
 sys.path.insert(0, str(ROOT.parent.parent))  # collectors/ for comp.*
 
 from core.data_paths import first_existing_db_history, update_streams_dir  # noqa: E402
-from comp.fmt import fmt_num, fmt_delta  # noqa: E402
+from comp.fmt import fmt_num, fmt_delta, fmt_signed  # noqa: E402
 from comp.discography import build_cover_map  # noqa: E402
 from comp.tables_image import (  # noqa: E402
     download_as_data_uri, pick_header_image, get_dominant_color,
-    rank_change, SPOTIFY_SVG, build_table_html,
+    rank_change, SPOTIFY_SVG, build_table_html, era_accent_color, dominant_color_from_data_uri,
 )
 import history_store  # noqa: E402
 
@@ -67,18 +67,16 @@ ERA_COVER_PRIORITY: dict[str, list[str]] = {
     "1989":      ["1989 (Taylor's Version)", "1989"],
 }
 
-# Albums-specific CSS overrides applied on top of STREAMS_TABLE_CSS.
+# Albums-specific CSS overrides applied on top of the ledger table style.
 _ALBUMS_EXTRA_CSS = """
-.art,.art-ph{width:38px;height:38px;border-radius:6px}
-.data-row{height:48px;padding:0 18px}
-.col-chg{font-size:11px;font-weight:800}
-.col-rank{font-size:17px}
-.entity-name{font-size:13.5px;line-height:1.15}
-.col-num{font-size:12.5px}
-.col-num.daily-val{color:#101828;font-weight:800}
-.delta-wrap{gap:1px}
-.delta-num{font-size:12px;font-weight:700}
-.delta-pct{font-size:10px}
+.ledger-art,.ledger-art-ph{width:38px;height:38px;border-radius:6px}
+.ledger-row{padding:6px 18px}
+.ledger-chg{font-size:11px;font-weight:800}
+.ledger-rank{font-size:22px}
+.ledger-name{font-size:13.5px;line-height:1.2}
+.ledger-num{font-size:12.5px}
+.ledger-delta-num{font-size:12px;font-weight:700}
+.ledger-delta-pct{font-size:10px}
 """
 
 
@@ -397,48 +395,49 @@ def build_rows_html(rows: list[dict], image_cache: dict[str, str]) -> str:
 
         cover_uri = image_cache.get(cover, cover) if cover else ""
         art_html = (
-            f'<img class="art" src="{cover_uri}" />'
-            if cover_uri else '<div class="art-ph"></div>'
+            f'<img class="ledger-art" src="{cover_uri}" />'
+            if cover_uri else '<div class="ledger-art-ph"></div>'
         )
 
         delta_num, delta_pct, delta_cls = fmt_delta(daily, yest)
         week_num, week_pct, week_cls = fmt_delta(daily, week)
-        rank_label = f"#{rank}" if rank else ""
+        rank_label = f"{rank}" if rank else ""
         chg_text, chg_css = rank_change(rank, row.get("prev_rank")) if rank else ("", "neutral")
+        daily_signed, _ = fmt_signed(daily)
 
-        card_cls = "data-row"
-        if rank == 1:
-            card_cls += " row-gold"
-        elif i % 2 != 0:
-            card_cls += " row-odd"
+        rank_color = era_accent_color(album) or dominant_color_from_data_uri(cover_uri)
+        rank_style = f' style="color:{rank_color}"' if rank_color else ""
 
-        html += f"""<div class="{card_cls}">
-  <div class="col-rank">{rank_label}</div>
-  <div class="col-chg {chg_css}">{chg_text}</div>
-  <div class="col-entity">
+        html += f"""<div class="ledger-row">
+  <div class="ledger-rank"{rank_style}>{rank_label}</div>
+  <div class="ledger-chg {chg_css}">{chg_text}</div>
+  <div class="ledger-entity">
     {art_html}
-    <div class="entity-name">{album}</div>
-  </div>
-  <div class="col-num daily-val">{fmt_num(daily)}</div>
-  <div class="col-num {delta_cls}">
-    <div class="delta-wrap">
-      <span class="delta-num">{delta_num}</span>
-      {f'<span class="delta-pct">{delta_pct}</span>' if delta_pct else ''}
+    <div class="ledger-info">
+      <div class="ledger-name">{album}</div>
     </div>
   </div>
-  <div class="col-num {week_cls}">
-    <div class="delta-wrap">
-      <span class="delta-num">{week_num}</span>
-      {f'<span class="delta-pct">{week_pct}</span>' if week_pct else ''}
+  <div class="ledger-num"><span class="ledger-daily">{daily_signed}</span></div>
+  <div class="ledger-num">
+    <div class="ledger-delta {delta_cls}">
+      <span class="ledger-delta-num">{delta_num}</span>
+      {f'<span class="ledger-delta-pct">{delta_pct}</span>' if delta_pct else ''}
     </div>
   </div>
-  <div class="col-num">{fmt_num(total)}</div>
+  <div class="ledger-num">
+    <div class="ledger-delta {week_cls}">
+      <span class="ledger-delta-num">{week_num}</span>
+      {f'<span class="ledger-delta-pct">{week_pct}</span>' if week_pct else ''}
+    </div>
+  </div>
+  <div class="ledger-num"><span class="ledger-total">{fmt_num(total)}</span></div>
 </div>
 """
     return html
 
 
-def build_html(rows: list[dict], target_date: str, image_cache: dict[str, str]) -> str:
+def build_html(rows: list[dict], target_date: str, image_cache: dict[str, str],
+               masthead_theme: str = "dark") -> str:
     from datetime import datetime
     date_fmt  = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
     rows_html = build_rows_html(rows, image_cache)
@@ -459,6 +458,8 @@ def build_html(rows: list[dict], target_date: str, image_cache: dict[str, str]) 
         art_size=38,
         col_gap=10,
         extra_css=_ALBUMS_EXTRA_CSS,
+        masthead_word="ERAS",
+        masthead_theme=masthead_theme,
     )
 
 

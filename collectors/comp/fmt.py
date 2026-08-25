@@ -53,6 +53,17 @@ def fmt_num(n) -> str:
     return f"{int(n):,}".replace(",", " ")
 
 
+def fmt_signed(n) -> tuple[str, str]:
+    """Returns (display_text, css_class) for a value that should always show
+    its sign (e.g. a ledger row's raw daily figure) — a real minus sign and
+    "neg" class if negative (admin-forced correction), "+" prefix otherwise."""
+    if n is None:
+        return "—", ""
+    if n < 0:
+        return "−" + fmt_num(abs(n)), "neg"
+    return "+" + fmt_num(n), ""
+
+
 def fmt_delta(today, yesterday) -> tuple[str, str, str]:
     """Returns (num_text, pct_text, css_class) for a delta between two values."""
     if today is None or yesterday is None or yesterday == 0:
