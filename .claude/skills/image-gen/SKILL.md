@@ -7,7 +7,7 @@ description: Conventions de génération d'images backend TSM (cards Twitter, ta
 
 ## Architecture : tout passe par `collectors/comp/`
 
-- Composants partagés : `song_card.py` (cards individuelles), `tables_image.py` (images à tableaux : gainers, top eras, màj albums, récaps…), `fmt.py`, `discography.py`, `track_cover_cache.py`.
+- Composants partagés : `song_card.py` (helpers partagés image/palette/logo — son propre style `render_song_card()` n'est plus posté nulle part depuis le 2026-08-26, legacy), `song_card_chart_sheet.py` (**la card chanson réellement postée** — voir section dédiée plus bas), `tables_image.py` (images à tableaux : gainers, top eras, màj albums, récaps…), `fmt.py`, `discography.py`, `track_cover_cache.py`.
 - **Ne jamais dupliquer du style dans un script régional** — c'est une refonte volontaire (les régions passent colonnes/en-têtes/contenu en paramètres). Si deux générateurs partagent un style, il va dans `comp/`.
 
 ## Workflow obligatoire après toute modif visuelle
@@ -19,13 +19,40 @@ génère les previews de **tous les cas possibles** de song_card + tables_image 
 
 ## Pièges de layout corrigés plusieurs fois (ne pas régresser)
 
-- **Titres longs** : la taille de police doit s'adapter au nombre de caractères — un titre ne déborde JAMAIS du cadre (ni le @handle en bas).
+- **Titres longs** : la taille de police doit s'adapter au nombre de caractères — un titre ne déborde JAMAIS du cadre (ni le @handle en bas). Ne jamais s'appuyer sur `white-space:nowrap;overflow:hidden` seul sans filet de sécurité — incident réel (2026-08-26, Chart Sheet) : un titre de 74 caractères a été tronqué en plein mot, sans ellipse ni indication, repéré uniquement en générant une vraie card (pas dans le mockup). Toujours combiner bucket de taille de police + `-webkit-line-clamp` (2 lignes) en filet de sécurité.
 - **Footer** (logo, handle, date) : doit avoir son propre espace — ne jamais le laisser chevaucher la section au-dessus ; hauteur de card suffisante, pas de rendu « condensé ».
-- Le background d'une card doit s'accorder aux couleurs de la cover de l'album.
-- **song_card** : `.hdr-row` (logo Spotify + eyebrow + badge date) est hors du bloc centré verticalement — elle est épinglée en haut de `.info-col` (top:22px, un peu sous le top de `.cover-col` qui est à 10px, pas alignée pile dessus). Le reste (titre, extra/album, sous-titre, stats) vit dans `.body-col` (flex:1, `justify-content:center`, gap fixe 10px) en dessous. Ne pas remettre `hdr-row` dans le flex de `.body-col`.
-- **Piège corrigé** : ne pas utiliser `justify-content:space-evenly` (ou tout ce qui étire les gaps selon l'espace restant) dans `.body-col` — pour un contenu court (titre très court type "22", pas de sous-titre), ça pousse le bloc stats presque jusqu'au footer et peut le chevaucher. `justify-content:center` avec un `gap` calculé est borné et sûr quelle que soit la longueur du contenu.
+- Le background d'une card doit s'accorder aux couleurs de la cover de l'album (ou, pour Chart Sheet, en être directement une version floutée — voir plus bas).
+
+### Legacy — ancien style `render_song_card()` (`song_card.py`, plus posté en prod)
+
+Ces notes documentent le style best_since/default retiré le 2026-08-26 (remplacé par Chart Sheet pour les posts Spotify) — gardées pour référence si ce gabarit est un jour réutilisé (ex. par un nouveau collector), pas pour du travail courant :
+
+- `.hdr-row` (logo Spotify + eyebrow + badge date) est hors du bloc centré verticalement — elle est épinglée en haut de `.info-col` (top:22px, un peu sous le top de `.cover-col` qui est à 10px, pas alignée pile dessus). Le reste (titre, extra/album, sous-titre, stats) vit dans `.body-col` (flex:1, `justify-content:center`, gap fixe 10px) en dessous. Ne pas remettre `hdr-row` dans le flex de `.body-col`.
+- Ne pas utiliser `justify-content:space-evenly` (ou tout ce qui étire les gaps selon l'espace restant) dans `.body-col` — pour un contenu court (titre très court type "22", pas de sous-titre), ça pousse le bloc stats presque jusqu'au footer et peut le chevaucher. `justify-content:center` avec un `gap` calculé est borné et sûr quelle que soit la longueur du contenu.
 - Le `gap` de `.body-col` est dynamique via `_body_gap(title, has_extra, has_subtitle)` (song_card.py) : plus le titre est long / plus il y a de lignes (extra=album, subtitle=badge best-since), plus le gap se resserre pour garder un bloc compact et équilibré, sans jamais grandir assez pour chevaucher le footer.
-- **song_card, cards album best-since** : le badge date en haut à droite doit dire `"Album - {date}"`, jamais `"{nom de l'album} - {date}"` — le titre de la card EST déjà le nom de l'album, répéter le nom dans le badge est confus ; l'utilisateur veut que le badge signale clairement « ceci concerne un album, pas une chanson ». Actuellement seul `collectors/comp/preview.py` (case `best_since_album`) construit ce badge — aucun poster de prod n'utilise encore render_song_card pour les albums (les mises à jour d'album en prod passent par `generate_album_update_image.py`, un card style tableau différent). Si un vrai poster song_card pour albums est ajouté un jour, réutiliser ce même `"Album - {date}"`.
+- Cards album best-since : le badge date en haut à droite doit dire `"Album - {date}"`, jamais `"{nom de l'album} - {date}"`. Personne n'a jamais posté d'album via ce style (`generate_album_update_image.py` fait ça différemment) ; règle gardée si ce cas revient un jour.
+
+## Chart Sheet (`song_card_chart_sheet.py`) — la card chanson réellement postée
+
+Design produit complet (background, bar chart, callback historique, couleur
+accent, titre) → skill `collector-comp`, section « Chart Sheet song card ».
+Pièges qui ont mordu une fois, à ne pas régresser :
+
+- **Titre** : voir l'incident de troncature ci-dessus — toujours bucket de
+  police + `-webkit-line-clamp:2`, jamais `overflow:hidden` seul.
+- **Barre de callback historique** (best_since uniquement) : sa hauteur peut
+  dépasser celle du jour courant — `previous_higher_or_equal_daily >=
+  daily_streams` par construction de `best_day_since.compute_best_day_since`.
+  Ne pas supposer que la barre "aujourd'hui" est toujours la plus haute du
+  graphe.
+- **Accent gold, pas vert** : ce card dévie volontairement de la convention
+  site-wide vert=hausse/rouge=baisse pour les valeurs positives (gold partout,
+  rouge conservé pour les baisses) — décision propriétaire explicite, ne pas
+  "corriger" vers le vert.
+- **Pas de police externe** : contrairement au masthead `tables_image.py`
+  (Big Shoulders Display), Chart Sheet n'ajoute aucune dépendance Google
+  Fonts — reste 100% hors-ligne-safe pour le pipeline planifié. Ne pas en
+  ajouter une sans peser le compromis fiabilité.
 
 ## Spotlight (`collectors/spotify/streams/spotlight.py`) — carte "Total Streams"
 
@@ -33,29 +60,35 @@ génère les previews de **tous les cas possibles** de song_card + tables_image 
 - Fix : ajouter des règles dédiées à spécificité égale mais placées **après** dans la feuille de style (`.stat-card-gold.highlight{background:...;border:none;...}` et `.stat-card-gold.highlight .stat-sub{color:rgba(255,255,255,.75)}`) — à spécificité égale, l'ordre de déclaration dans le CSS tranche. Réflexe pour toute nouvelle variante de carte combinée à `.highlight` : vérifier que le nombre de classes dans le sélecteur correspond, pas seulement l'ordre dans le fichier.
 - Vérifier visuellement en forçant `milestone=` dans un appel direct à `spotlight._build_html(...)` (pas de scénario milestone dans `preview.py`) puis screenshot Playwright — c'est ainsi que le bug a été repéré (carte "Total Streams" blanche/illisible sur `the_1__2026-08-13.png`, `Wih_Lit__2026-08-12.png`, `Is_It_Over_Now...__2026-08-12.png`).
 
-## Cadre d'export (`export_frame.py`, partagé song_card + tables_image)
+## Cadre d'export (`export_frame.py`)
+
+**Pas utilisé par les song cards** (ni l'ancien `render_song_card`/`write_song_card_png`,
+ni `song_card_chart_sheet.py`/`write_chart_sheet_card_png`) — seuls `chart_card.py`
+(Spotify Charts) et le générateur worldwide charts appellent `add_export_frame`.
+Vérifié 2026-08-26 par grep (une doc précédente affirmait à tort que song_card
+le partageait). `add_export_frame` lit les dimensions réelles du PNG passé en
+argument (`Image.open(path)`), donc dimension-agnostic — pas besoin d'y toucher
+si la taille d'une card change.
 
 - La marge autour de la card n'est plus un gris plat : `add_export_frame` échantillonne les bords de l'image rendue et teinte légèrement (`EXPORT_TINT_STRENGTH`) la couleur de fond (`EXPORT_BACKGROUND`) avec cette couleur — le cadre doit rester clairement neutre, juste « teinté » par l'accent de la card.
 - La card elle-même est découpée avec des coins arrondis (`EXPORT_CORNER_RADIUS_CSS_PX`, actuellement 18px CSS) avant d'être collée dans le cadre — ne pas dupliquer ce radius dans le CSS interne des cards, il s'applique au niveau du screenshot final.
-- **Si la marge blanche autour de la card paraît trop grande, ne pas réduire `EXPORT_MARGIN_CSS_PX`** (le propriétaire préfère la garder) — **augmenter la taille du contenaire (la card elle-même)** à la place, pour que la même marge fixe pèse proportionnellement moins. `song_card.py` fait 920×344px CSS (cover 321×321, offsets/paddings/font-sizes ~×1.15 par rapport à la base historique 800×299) suite à ce changement — si on retouche encore la taille de la card, garder ce même réflexe (grossir le contenaire, pas la marge) et repasser toutes les valeurs pixel (`.cover-col`, `.info-col`, tailles de police, `_best_since_title_font_size`, viewport Playwright dans `write_song_card_png`) au même facteur d'échelle pour ne rien casser.
+- **Si la marge blanche autour de la card paraît trop grande, ne pas réduire `EXPORT_MARGIN_CSS_PX`** (le propriétaire préfère la garder) — **augmenter la taille du contenaire (la card elle-même)** à la place, pour que la même marge fixe pèse proportionnellement moins.
 
 ## youtube_card.py : card dédiée pour les vidéos YouTube
 
 - Les titres de vidéos YouTube (`collector-youtube`) sont de vraies phrases
   longues, contrairement aux titres de chansons courts que `song_card.py`
-  est calibré pour. Plutôt que de détourner le style "default" (non
-  `best_since`) de `render_song_card` — jamais utilisé en prod par les
-  posts Spotify (best-day-since / weekend gainers utilisent tous les deux
-  `best_since=True`) — cette card vit dans son propre fichier
-  `collectors/comp/youtube_card.py` (`render_youtube_card`), avec ses
-  propres paliers de police (jusqu'à 3 lignes, `-webkit-line-clamp:3`) et
-  une seule case stat (pas de doublon "First 24h" / "Total" quasi
-  identiques sur une vidéo qui vient d'être publiée).
+  était calibré pour. Plutôt que de détourner son style "default" — jamais
+  posté en prod, même avant le passage à Chart Sheet — cette card vit dans
+  son propre fichier `collectors/comp/youtube_card.py` (`render_youtube_card`),
+  avec ses propres paliers de police (jusqu'à 3 lignes,
+  `-webkit-line-clamp:3`) et une seule case stat (pas de doublon "First 24h" /
+  "Total" quasi identiques sur une vidéo qui vient d'être publiée).
 - Réutilise les helpers génériques de `song_card.py` (`image_data_uri`,
   `cover_palette`, `slugify`, `write_song_card_png`, `_tsm_logo_data_uri`)
   plutôt que de les dupliquer — seul le gabarit HTML/CSS est spécifique.
-- `song_card.py` lui-même n'a plus été modifié pour ce cas d'usage : son
-  style `best_since` (seul utilisé en prod) est resté intact.
+  Ces mêmes helpers sont aussi réutilisés par `song_card_chart_sheet.py`.
+- `song_card.py` lui-même n'a plus été modifié pour ce cas d'usage.
 
 ## Albums au branding noir et blanc (folklore, reputation)
 

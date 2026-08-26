@@ -309,7 +309,7 @@ voir `collector-billboard/CONTEXTE.md`.
 ## 7. `collectors/comp/` — composants visuels partagés
 
 Modules importés par les générateurs d'images (pas des scripts, sauf preview) :
-`discography.py` (accès catalogue), `song_card.py`, `youtube_card.py` (card dédiée titres longs, ex. `collector-youtube` "first 24h views" — réutilise les helpers génériques de `song_card.py`), `tables_image.py`, `fmt.py`, `track_cover_cache.py`.
+`discography.py` (accès catalogue), `song_card.py` (helpers partagés image/palette/logo — son propre `render_song_card()` best_since/default n'est plus appelé par aucun script de prod depuis le 2026-08-26), `song_card_chart_sheet.py` (**la card chanson réellement postée** — `render_chart_sheet_card()`/`write_chart_sheet_card_png()`, 1080×594, cover art blurrée en fond, bar chart 14 jours avec callback historique dimmed pour best_since ; utilisée par `post_best_day_since_twitter.py` et `post_weekend_song_gainers.py` ; détail complet → skill `collector-comp`), `youtube_card.py` (card dédiée titres longs, ex. `collector-youtube` "first 24h views" — réutilise les helpers génériques de `song_card.py`), `tables_image.py`, `fmt.py`, `track_cover_cache.py`.
 `preview.py` = galerie de previews de tous les styles : `--date`, `--only FAMILLE`, `--output-dir`, `--limit`, `--min-days`, `--keep-html/--no-keep-html`.
 
 ---

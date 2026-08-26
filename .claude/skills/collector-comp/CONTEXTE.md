@@ -17,20 +17,21 @@ Modifier ce dossier peut affecter:
 ## Fichiers
 
 - `chart_card.py`: rendu HTML/PNG de cards chart.
-- `song_card.py`: cards chanson — **orchestrateur uniquement** (2026-08-25).
-  Contient les helpers partages (image/palette/logo/slugify/write PNG) et
-  `render_song_card()`, qui prepare toutes les donnees communes (stats,
-  titre, badge, footer, body_gap) puis delegue la generation du CSS a l'un
-  des deux fichiers de style ci-dessous selon `best_since`. Ne plus ajouter
-  de CSS directement dans `song_card.py` — ca va dans le fichier de style
-  concerne.
-- `song_card_default.py`: CSS du style "default" (`build_css(gradient,
-  title_font_size, body_gap)`) — utilise par
-  `post_weekend_song_gainers.py`.
-- `song_card_best_since.py`: CSS du style "best-since" (`build_css(gradient,
-  title_font_size, body_gap, badge_bg, badge_fg)`) — utilise par
-  `post_best_day_since_twitter.py`. Seul ce style a le badge/sous-titre
-  "Best day since...".
+- `song_card_chart_sheet.py`: **la card chanson réellement postée en prod**
+  depuis le 2026-08-26 (`render_chart_sheet_card()` +
+  `write_chart_sheet_card_png()`) — remplace l'ancien style best_since de
+  `song_card.py`/`song_card_best_since.py` pour les deux vrais appelants,
+  `post_best_day_since_twitter.py` et `post_weekend_song_gainers.py`. Détail
+  produit complet dans la section « Chart Sheet » plus bas.
+- `song_card.py`: garde les helpers partagés (image/palette/logo/slugify/
+  write PNG) réutilisés par `song_card_chart_sheet.py`, `chart_card.py` et
+  `youtube_card.py`. Son propre `render_song_card()` (styles `default` et
+  `best_since`) et les fichiers `song_card_default.py`/
+  `song_card_best_since.py` (CSS de ces deux styles) **ne sont plus appelés
+  par aucun script de prod** depuis le passage à Chart Sheet — laissés en
+  place comme référence/legacy, pas supprimés sans demande explicite. Ne pas
+  les faire évoluer pour un nouveau besoin ; construire plutôt sur
+  `song_card_chart_sheet.py` ou un nouveau fichier dédié.
 - `tables_image.py`: tableaux/images.
 - `export_frame.py`: frame d'export autour des PNG.
 - `discography.py`: helpers metadata discographie.
@@ -76,6 +77,84 @@ Inspecter le PNG rendu. Pour gros changements, comparer avant/apres.
   propre style de song card, suivre le meme schema qu'un nouveau fichier
   `song_card_<style>.py` avec un seul `build_css(...)`, plutot que de
   rajouter une branche dans `render_song_card()`.
+
+## Chart Sheet song card (`song_card_chart_sheet.py`, 2026-08-26)
+
+Designed with the owner as a Claude Artifact ("Chart Sheet Bloom") before being
+built for real — see that history if the design rationale is ever unclear.
+Real callers: `post_best_day_since_twitter.py` (kicker "Best day since
+{date}" / "Best day ever" / "Biggest day of the year...") and
+`post_weekend_song_gainers.py` (kicker "Weekend Gainer"). Both always show a
+kicker row — there is no shorter "no kicker" variant in production, so the
+card is a fixed `CARD_WIDTH=1080 × CARD_HEIGHT=594` CSS px always.
+
+- **Background**: the track's own cover art, scaled past the frame
+  (`inset:-90px`) and blurred with a plain CSS `filter:blur(52px)` — no
+  Pillow-side blur pass, the same cover data URI already used for the
+  thumbnail just gets reused with a blur filter inside the same Playwright
+  render (like Spotify's own Now Playing screen). No frosted panel — text
+  floats directly on the photo behind a dark scrim (`.sc-scrim`).
+- **Bar chart**: `best_day_since.build_chart_sheet_bars(points, target_date,
+  historical_date=..., historical_daily=...)` builds the 14-day column list.
+  Each bar shows its own value (K/M-abbreviated, e.g. "842K") and date label,
+  horizontal (not rotated — an earlier draft rotated them, changed after
+  owner feedback). `today` gets the gold accent color; other bars are muted.
+  Heights are proportional to the tallest value **in the window, including
+  the historical one when present** — a "best day since X" row means day X's
+  own total was *at or above* today's, not below it (`last_at_or_above.daily
+  >= current.daily` in `compute_best_day_since`), so the dimmed callback bar
+  can end up taller than today's. Don't assume today is always the visual
+  max.
+- **Historical callback bar**: only for `post_best_day_since_twitter.py`,
+  only when `row["kind"] == "since"` (never for `"best_ever"` — nothing to
+  reference) — pass `historical_date=date.fromisoformat(row["previous_higher_or_equal_date"])`
+  and `historical_daily=row["previous_higher_or_equal_daily"]`. Rendered at
+  50% opacity (`.sc-bar-col.historical`) with a "···" gap-marker column
+  (`{"type": "gap"}`) right after it, signaling the time skip before the
+  recent 14-day run. `post_weekend_song_gainers.py` never passes these — no
+  specific record being referenced, so no callback bar.
+- **Change field**: "Daily Streams" (signed count) + a combined "Change
+  Daily / Weekly" field (`song_card_chart_sheet.format_change_html(daily_pct,
+  daily_class, weekly_pct, weekly_class)`) + "Total Streams". Weekly is the
+  point 7 days before `target_date` in the same Points list used for the bar
+  chart — `None`/omitted gracefully if that day's data is missing, never a
+  guessed number.
+- **Accent color**: gold (`#F0B36A`) for positive values throughout
+  (kicker, today's bar, "up" deltas) — **not** the site-wide green-up/red-down
+  convention (`data-rules` skill) used elsewhere (chart ranks, etc.). This
+  was an explicit owner call for this card specifically; `down` deltas still
+  render red (`#fca5a5`), only `up` moved off green. Don't "fix" this back to
+  green without asking — it's a deliberate deviation, not an oversight.
+- **Title**: bucketed font size (`_title_font_size`, 44px down to 22px) plus
+  a permanent `-webkit-line-clamp:2` safety net (max-width 620px) — a title
+  can wrap to 2 lines but is never hard-clipped mid-word. Fixed real-data bug
+  (2026-08-26): an early version used `white-space:nowrap` + `overflow:hidden`
+  with no ellipsis, silently truncating long titles like "Safe & Sound (feat.
+  Joy Williams and John Paul White) (Taylor's Version)" — caught by generating
+  a real card, not from the mockup. The header row's height is fixed at the
+  104px cover-thumb height regardless of 1 vs 2 title lines (2-line title
+  block stays well under 104px even at the largest bucket), so this never
+  needs the card's overall height to change.
+- **Footer right**: `"Released {DD/MM/YYYY}"` from the track's catalog
+  `release_date` when known, else falls back to the card's own date badge
+  text — never "Since release" (the old song_card.py copy).
+- **No `write_song_card_png` reuse**: dimensions differ from the legacy
+  920×480 song card, so this has its own `write_chart_sheet_card_png`
+  (viewport `CARD_WIDTH`×`CARD_HEIGHT`, screenshots `.sheet-card` specifically
+  rather than `body`). `export_frame.py` is untouched/irrelevant here — it
+  reads the image's own dimensions and was never wired into song cards
+  anyway (only `chart_card.py` and the worldwide charts generator use it).
+- **Fonts**: deliberately no Google Fonts dependency (unlike
+  `tables_image.py`'s masthead) — system font stack only, so this stays fully
+  offline-safe for the scheduled posting pipeline. Don't add IBM Plex Mono/
+  Big Shoulders Display here without discussing the offline-reliability
+  tradeoff first.
+- `preview.py`'s song-card gallery (`--only song-card`) now generates
+  `weekend_gainer_{short,long}` and `best_since_{solo,combined}_{short,long}`
+  cases through this same renderer — the old `default_not_best_*` and
+  `best_since_album` cases were dropped (album best-day-since never used
+  `render_song_card`, see `generate_album_update_image.py` instead; plain
+  no-kicker "default" style isn't posted anywhere).
 
 ## `build_table_html(masthead_word=...)` (2026-08-25)
 
