@@ -24,7 +24,7 @@ sys.path.insert(0, str(ROOT))                         # collectors/spotify/strea
 sys.path.insert(0, str(ROOT.parent))                  # collectors/spotify/
 sys.path.insert(0, str(SCRIPT_DIR))                   # streams/tools/scripts/
 
-from comp.song_card import render_song_card, slugify, write_song_card_png  # noqa: E402
+from comp.song_card_chart_sheet import format_change_html, render_chart_sheet_card, slugify, write_chart_sheet_card_png  # noqa: E402
 from twitter.albums import album_emoji  # noqa: E402
 from twitter.sessions import default_twitter_session  # noqa: E402
 TWITTER_SESSION = default_twitter_session(REPO_ROOT)
@@ -210,6 +210,7 @@ def _cover_url(track: dict, covers: dict[str, str], family_images: dict[str, str
 
 def _image_for_row(row: dict, *, target_date: str, covers: dict, family_images: dict[str, str]) -> Path | None:
     track = row["track"]
+    track_id = row["track_id"]
     total_today = row.get("total_today")
     daily_today = row.get("daily_today")
     if total_today is None:
@@ -219,36 +220,43 @@ def _image_for_row(row: dict, *, target_date: str, covers: dict, family_images: 
         print(f"[weekend_song_gainers] Skipping {track['title']}: missing daily streams on {target_date}.")
         return None
 
+    target = date.fromisoformat(target_date)
     pct_text = _fmt_pct(row["pct"])
-    html = render_song_card(
-        title=track.get("title") or row["track_id"],
-        eyebrow="Spotify Streams",
-        subtitle="Weekend Gainer",
-        stats=[
-            {
-                "label": "Daily Streams",
-                "value": _fmt_int(daily_today),
-                "badge": pct_text,
-                "badge_class": _badge_class(pct_text),
-            },
-            {
-                "label": "Total Streams",
-                "value": _fmt_int(total_today),
-                "badge": "Since release",
-                "badge_class": "flat",
-            },
-        ],
+    daily_class = _badge_class(pct_text)
+
+    points = best_day_since.load_history().get(track_id) or []
+    weekly_point = next((p for p in points if p.day == target - timedelta(days=7)), None)
+    weekly_daily = weekly_point.daily if weekly_point else None
+    weekly_pct_text = _fmt_pct((daily_today - weekly_daily) / weekly_daily * 100) if weekly_daily else None
+    weekly_class = _badge_class(weekly_pct_text) if weekly_pct_text else "flat"
+    bars = best_day_since.build_chart_sheet_bars(points, target)
+
+    release_track = best_day_since.load_tracks(include_extras=True).get(track_id)
+    date_text = datetime.strptime(target_date, "%Y-%m-%d").strftime("%b %d, %Y").upper()
+    footer_right = (
+        f"Released {release_track.release_date.strftime('%d/%m/%Y')}"
+        if release_track and release_track.release_date
+        else date_text
+    )
+
+    html = render_chart_sheet_card(
+        title=track.get("title") or track_id,
+        album=track.get("album") or "",
+        date_text=date_text,
+        kicker_text="Weekend Gainer",
+        bars=bars,
+        daily_value_text=_fmt_int(daily_today),
+        daily_class=daily_class,
+        change_text=format_change_html(pct_text, daily_class, weekly_pct_text, weekly_class),
+        total_value_text=_fmt_int(total_today),
         cover_url=_cover_url(track, covers, family_images),
         footer_left="@swiftiescharts",
-        footer_right=_date_text(target_date),
-        extra=track.get("album") or "",
-        best_since=True,
-        badge_text="WEEKEND GAINER",
+        footer_right=footer_right,
     )
     out_dir = update_streams_dir(target_date) / "weekend_song_gainers"
-    out_path = out_dir / f"weekend_gainer_{slugify(track.get('title') or row['track_id'])}_{target_date}.png"
-    tmp_path = out_dir / f"_weekend_gainer_{row['track_id']}.html"
-    return write_song_card_png(html, out_path, tmp_path)
+    out_path = out_dir / f"weekend_gainer_{slugify(track.get('title') or track_id)}_{target_date}.png"
+    tmp_path = out_dir / f"_weekend_gainer_{track_id}.html"
+    return write_chart_sheet_card_png(html, out_path, tmp_path)
 
 
 def _build_tweet(row: dict, *, target_date: str) -> str:

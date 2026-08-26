@@ -111,6 +111,8 @@ python update_streams.py YYYY-MM-DD          # run normal pour une date précise
 
 ### `streams/tools/scripts/` — outillage du pipeline
 
+> **Thème « masthead » selon le jour (décision propriétaire 2026-08-26)** — les cards à en-tête masthead / corps ledger rendent le thème **light (blanc propre)** sur les posts de semaine (lun-ven) et **dark** le week-end (sam/dim). Helper unique `comp.tables_image.masthead_theme_for_date(date)`. Concerne : Top Songs (`generate_streams_image.py`), Top Eras (`generate_albums_image.py`), Spotlight Gainers (`post_stream_highlights_thread.py`), récap quotidien (`generate_weekend_streams_image.py`), recap Best Day Since (`post_best_day_since_twitter.py`). Overrides d'ère prioritaires : le recap Best Day Since « Holiday Collection » reste light toute l'année. Palette light partagée = `_LEDGER_THEME_TOKENS["light"]` (blanc `#ffffff`, plus le beige d'avant).
+
 | Fichier | Rôle / lancement |
 |---|---|
 | `history_store.py` | Lecture/écriture de `streams_history.csv` (module central) |
@@ -121,24 +123,24 @@ python update_streams.py YYYY-MM-DD          # run normal pour une date précise
 | `catalog_gap_report.py` | Rapport JSON des trous du catalogue. `--date` |
 | `seed_streams.py` | Seed initial des totaux depuis songs.json/albums. `--dry-run`, `--track-id`, `--new-only` |
 | `forecast_milestones.py` | Prévisions de milestones de streams |
-| `generate_streams_image.py` | PNG top daily streams (top configurable, déf. 10) |
-| `generate_albums_image.py` | PNG « Top Albums by Daily Streams » |
+| `generate_streams_image.py` | PNG top daily streams (top configurable, déf. 10). Masthead « SONGS », thème light/dark selon le jour (cf. note plus haut). |
+| `generate_albums_image.py` | PNG « Top Albums by Daily Streams ». Masthead « ERAS », thème light/dark selon le jour. |
 | `generate_album_update_image.py` | PNG « Album Daily Update » pour un album |
-| `generate_weekend_streams_image.py` | PNG récap week-end |
+| `generate_weekend_streams_image.py` | PNG récap streams **quotidien** (nom « weekend » historique — posté chaque jour). Design « Masthead » ledger, **thème selon le jour** : light (blanc) lun-ven, dark (`#131417`) sam/dim — palettes `_MH_THEME["light"/"dark"]` (dark calqué sur `_LEDGER_THEME_TOKENS["dark"]`), police Inter + Big Shoulders (rangs). Header = image du pool `headers/top_eras/` + badge logo Spotify + wordmark fantôme « STREAMS » + filet (dominante photo) ; bande haute = total daily + chg jour/semaine/all-time **à gauche**, monthly listeners (+ rang monde) et followers **à droite** (followers seulement si `db/discography/artist.json` les contient — jamais de placeholder) ; puis top 5 eras + top 5 songs. `date` + `--light`/`--dark` (force le thème pour tester). `_header_style`/`CSS`/`_row_html`/`_section_html` restés intacts pour `post_throwback_thread.py` + `post_debut_releases.py`. |
 | `post_streams_twitter.py` | Poste l'image top streams. `date`, `--no-post`, `--top-n 15` |
 | `post_albums_twitter.py` | Poste l'image « Albums on Spotify » / top eras, hors week-end |
 | *(all-albums)* | Pas de script dédié : `finalize_update._post_all_albums` poste chaque album (hors Misc/standalone) indépendamment via `generate_album_update_image.py --post`, tri par gain (daily streams) décroissant, lundi/vendredi seulement, toujours en dernier parmi les étapes de post. Remplace l'ancien thread groupé (`post_all_albums_thread.py`, lock `all_albums_thread_posted.lock`) — supprimé le 2026-08-05. |
-| `post_best_day_since_twitter.py` | Posts « best day since » avec spotlights. `date`, `--limit 5`, `--min-days`, `--album-limit 1`, `--no-albums`, `--no-recap`, `--only-track ID`, `--exclude-tracks`, `--force`, `--post-spacing-seconds` |
+| `post_best_day_since_twitter.py` | Posts « best day since » avec spotlights. Le recap masthead (`_generate_recap_image`) suit le thème du jour (light lun-ven / dark sam-dim) ; **override** : un recap ère « Holiday Collection » reste light toute l'année. `date`, `--limit 5`, `--min-days`, `--album-limit 1`, `--no-albums`, `--no-recap`, `--only-track ID`, `--exclude-tracks`, `--force`, `--post-spacing-seconds` |
 | `post_debut_releases.py` | Posts des nouvelles sorties. `date`, `--no-post`, `--snapshot-collected-date`, `--force-track-id`, `--force-song` |
 | `post_song_overtakes.py` | Poste les overtakes de total streams entre chansons non-extra (image sans colonne Gap). Regroupe les overtakes proches en rang (`GROUP_RANK_PROXIMITY`) en un seul post/tweet. **Un lock par overtake individuel** : `song_overtakes/{overtaker}_over_{passed}_posted.lock` (pas un JSON/lock global) — écrit pour **chaque événement** d'un groupe **immédiatement après le post réussi** (pas seulement en fin de script), pour qu'un retry de `finalize_update` (3 tentatives) ne reposte jamais un overtake déjà posté, même si un groupe suivant échoue. `date`, `--limit 8`, `--force`, `--no-post`, `--post-spacing-seconds` |
 | `post_stream_milestones.py` | Poste les cartes de milestone (paliers de 100M streams). La ligne « next song expected » est **optionnelle** : si aucun autre morceau n'est prévu pour franchir exactement le même palier, le milestone se poste quand même, juste sans cette phrase (avant le 17/08/2026 : bloquait le post entier — le seul vrai gate restant est un same-day tie sur le même palier, ambigu par construction). Sauvegarde `stream_milestones_posted.json`/lock après chaque post individuel (même raison anti-repost que `post_song_overtakes.py`). `date`, `--limit 10`, `--force`, `--no-post`, `--post-spacing-seconds` |
 | `post_gainer_thread.py` | Thread top gainers en %. Le pool est d'abord les tracks non-extra (`load_album_track_ids`) ; si moins de `--limit` qualifient, les slots restants sont comblés par des tracks `chart_extra=true` (jamais l'inverse — un extra ne délogera jamais un non-extra du classement). `date`, `--period`, `--limit`, `--min-baseline`, `--no-post` |
-| `post_stream_highlights_thread.py` | Tweets highlights (daily+weekly+best-day). `date`, `--limit`, `--best-limit`, `--min-baseline`, `--min-days`, `--no-post` |
+| `post_stream_highlights_thread.py` | Tweets highlights (daily+weekly+best-day). Card gainers masthead « GAINERS », thème light/dark selon le jour. `date`, `--limit`, `--best-limit`, `--min-baseline`, `--min-days`, `--no-post` |
 | `post_throwback_thread.py` | Thread throwback. `date`, `--action`, `--event`, `--label`, `--top-n`, `--force`, `--no-post` |
-| `post_weekend_streams_twitter.py` | Poste le récap week-end. `date`, `--no-post`, `--force-weekday` |
+| `post_weekend_streams_twitter.py` | Poste le récap streams « Masthead ». `date`, `--no-post`, `--force-weekday`. Appelé **chaque jour** par `finalize_update._post_daily_recap_card` (qui ajoute `--force-weekday` en semaine) ; lock `weekend_streams_posted.lock`. Le nom « weekend » est historique. |
 | `post_weekend_song_gainers.py` | Poste les weekend gainers (samedi/dimanche) en song_card. Qualifie si gain ≥ `--min-pct` (déf. 10%), OU best-day-since record, OU charté au Global Top 200 ce jour-là (jamais mentionné dans le tweet — signal de qualification silencieux). `date`, `--limit 5`, `--min-pct 10.0`, `--min-baseline 1000`, `--force-weekday`, `--force`, `--no-post`, `--post-spacing-seconds` |
 | `post_locks.py` | Gestion des locks `*_posted.lock` (anti-double-post) |
-| `artist_metadata.py` / `update_artist_metadata.py` | Métadonnées artiste (followers, listeners) |
+| `artist_metadata.py` / `update_artist_metadata.py` | Métadonnées artiste → `db/discography/artist.json`. `monthly_listeners`/`monthly_rank` par scraping du texte de la page artiste ; `followers` capturé depuis la réponse GraphQL `queryArtistOverview` de la page (le DOM ne l'affiche plus) — best-effort, jamais bloquant. `update_artist_metadata` écrit aussi `previous_*` (dont `previous_followers`) pour les deltas et upsert `artist_monthly_listeners_history.csv` (schéma listeners/rank inchangé). |
 | `update_release_dates.py` | Rafraîchit les release_date depuis l'API web-player |
 | `git_ops.py` | Commit/push du pipeline streams |
 | `run_logs.py` / `reporting.py` | Logs de run et reporting |
@@ -289,7 +291,7 @@ remplacé par YouTube — voir § 5 et `collector-billboard/CONTEXTE.md` §
 
 | Fichier | Rôle / lancement |
 |---|---|
-| `update_youtube.py` | Collecteur principal (appelé par `python -m tsm collect youtube`). `--date`, `--dry-run`, `--debug` (écrit mais pas de git/notif), `--no-post` (pas de ntfy), `--bootstrap` (découverte complète de la chaîne, une seule fois), `--commit` (git désactivé par défaut !), `--force` (remplace les lignes du jour) |
+| `update_youtube.py` | Collecteur principal (appelé par `python -m tsm collect youtube`). `--date`, `--dry-run`, `--debug` (écrit mais pas de git/notif), `--no-post` (pas de ntfy, ni du post/de la planification "first 24h views"), `--bootstrap` (découverte complète de la chaîne, une seule fois, jamais de planification "first 24h"), `--commit` (git désactivé par défaut !), `--force` (remplace les lignes du jour), `--preview` (aperçu à la demande de la card "first 24h views" avec un fetch live, sans écrire le CSV ni poster), `--post-first-day VIDEO_ID` (interne — exécuté par la tâche Planificateur Windows one-off créée à la découverte d'une vidéo, pas un usage manuel courant). À la découverte d'une vidéo, planifie une tâche Windows Task Scheduler one-off (`TSM_YouTube_FirstDay_<video_id>`) pour `published_at+24h` qui poste alors une card @swiftiescharts "views in its first 24 hours" via `--post-first-day` ; `post_first_day_views()` reste un filet de sécurité quotidien si cette tâche échoue (cf. skill `collector-youtube`) |
 | `videos/update_youtube.py` | Point d'entrée canonique (wrapper) |
 | `core/` | `api.py` (YouTube Data API v3, stdlib), `channel.py` (catalogue vidéos), `csv_utils.py` (deltas), `title_groups.py` (agrégation par chanson), `git_ops.py`, `config.py` |
 | `run_youtube.bat` | Launcher |
@@ -307,7 +309,7 @@ voir `collector-billboard/CONTEXTE.md`.
 ## 7. `collectors/comp/` — composants visuels partagés
 
 Modules importés par les générateurs d'images (pas des scripts, sauf preview) :
-`discography.py` (accès catalogue), `song_card.py`, `tables_image.py`, `fmt.py`, `track_cover_cache.py`.
+`discography.py` (accès catalogue), `song_card.py`, `youtube_card.py` (card dédiée titres longs, ex. `collector-youtube` "first 24h views" — réutilise les helpers génériques de `song_card.py`), `tables_image.py`, `fmt.py`, `track_cover_cache.py`.
 `preview.py` = galerie de previews de tous les styles : `--date`, `--only FAMILLE`, `--output-dir`, `--limit`, `--min-days`, `--keep-html/--no-keep-html`.
 
 ---
@@ -329,6 +331,7 @@ Avant tout travail ici : charger le skill `scripts-maintenance` (ordre du workfl
 | `prune_apple_music_snapshots.py` | Rétention snapshots Apple Music : garde le dernier snapshot par jour passé, lignes retirées archivées en `.csv.gz` dans `_pruned_archive/` (dry-run par défaut). `--apply`, `--since`, `--no-archive` |
 | `prune_apple_music_images.py` | Supprime les objets R2 orphelins de `images/apple-music/` (adressés par `md5(url CDN Apple)`, non référencés par le CSV Apple Music courant — voir skill `scripts-maintenance` § "R2 : données pérennes vs cache"). Dry-run par défaut, `--apply` pour supprimer, manifeste local des clés supprimées sauf `--no-archive`, `--bucket` |
 | `chartr2.py` | Upload R2 des charts |
+| `build_spotify_chart_discography.py` | Precalcule le payload "History view" de Spotify Charts (`runtime/exports/web/site/data/charts_discography/{region}.json`, un par region/pays deja vu — global/fr/us/uk + tout pays worldwide), lu par `tsm-frontend/api/routes/charts.py::load_charts_discography`. Agrege `db/charts_history_{global,fr,us,uk}.csv` + tous les snapshots `worldwide/.../ts_worldwide_*.json` par track_id : `last_*`, `peak_rank`, `peak_streams`, `total_days`, et depuis 2026-08-26 `longest_streak`/`longest_streak_active` (plus long streak consecutif jamais atteint sur ce chart, actif si le streak courant l'egale encore). Ecrit aussi `{region}_previous.json` (meme agregation en excluant la derniere date chartee de chaque region/pays) — sert de baseline stable pour que le frontend calcule le mouvement de rang du History view par rapport a hier, quelle que soit la colonne de tri active (voir aussi `tsm-map`). Appele automatiquement par `run_all_charts.py` (`--regions` pour limiter, defaut : tout) |
 | `fetch_issues.py` | Récupère les signalements du site depuis R2. `--save`, `--images`, `--delete` |
 | `fetch_hiring.py` | Récupère les candidatures (préfixe `hiring/`). `--json`, `--role` |
 | `backfill_discography_from_spotify.py` | Backfill de la discographie depuis Spotify. `--apply` (déf. dry-run), `--no-backup`, tracks musicales par défaut, `--include-non-songs` pour ajouter commentary/karaoke/instrumental en DB et les collecter comme `chart_extra`, `--exclude-non-songs` (défaut), `--skip-api`, `--recent-releases N`, `--target-release-date`, `--quiet` |

@@ -157,6 +157,64 @@ def extract_monthly_listeners_and_rank_from_text(text: str) -> tuple[int | None,
     return monthly_listeners, monthly_rank
 
 
+def extract_followers_from_text(text: str) -> int | None:
+    if not text:
+        return None
+
+    compact = re.sub(r"\s+", " ", text).strip()
+
+    patterns = [
+        r"([\d\s.,]+)\s+followers",
+        r"followers\s*[:\-]?\s*([\d\s.,]+)",
+        r"([\d\s.,]+)\s+abonn[\u00e9e]s",
+        r"abonn[\u00e9e]s\s*[:\-]?\s*([\d\s.,]+)",
+    ]
+
+    for pattern in patterns:
+        match = re.search(pattern, compact, re.IGNORECASE)
+        if match:
+            followers = parse_int_from_text(match.group(1))
+            if followers is not None and followers >= 1000:
+                return followers
+
+    return None
+
+
+def _dig_for_artist_stats(node, out: dict) -> None:
+    if isinstance(node, dict):
+        if "followers" in node and isinstance(node.get("followers"), (int, float)):
+            out.setdefault("followers", int(node["followers"]))
+
+        for value in node.values():
+            _dig_for_artist_stats(value, out)
+    elif isinstance(node, list):
+        for value in node:
+            _dig_for_artist_stats(value, out)
+
+
+def attach_artist_stats_capture(page) -> dict:
+    holder: dict = {}
+
+    def _on_response(response) -> None:
+        url = response.url
+        if "pathfinder" not in url and "queryArtistOverview" not in url:
+            return
+
+        try:
+            payload = response.json()
+        except Exception:
+            return
+
+        _dig_for_artist_stats(payload, holder)
+
+    try:
+        page.on("response", _on_response)
+    except Exception:
+        pass
+
+    return holder
+
+
 def scrape_artist_metadata() -> dict:
     result = {
         "name": "Taylor Swift",
@@ -164,6 +222,7 @@ def scrape_artist_metadata() -> dict:
         "image_url": None,
         "monthly_listeners": None,
         "monthly_rank": None,
+        "followers": None,
         "updated_at": get_scrape_date_str(),
     }
 
@@ -172,6 +231,7 @@ def scrape_artist_metadata() -> dict:
     context = browser.new_context()
     page = context.new_page()
     page.route("**/*", block_unneeded)
+    captured_stats = attach_artist_stats_capture(page)
 
     try:
         success = False
@@ -208,6 +268,7 @@ def scrape_artist_metadata() -> dict:
 
             image_url = extract_artist_image(page)
             monthly_listeners, monthly_rank = extract_monthly_listeners_and_rank_from_text(body_text)
+            followers = extract_followers_from_text(body_text) or captured_stats.get("followers")
 
             if image_url:
                 result["image_url"] = image_url
@@ -215,13 +276,18 @@ def scrape_artist_metadata() -> dict:
                 result["monthly_listeners"] = monthly_listeners
             if monthly_rank is not None:
                 result["monthly_rank"] = monthly_rank
+            if followers is not None:
+                result["followers"] = followers
 
-            if result["image_url"] and result["monthly_listeners"] is not None:
+            if result["image_url"] and result["monthly_listeners"] is not None and result["followers"] is not None:
                 break
 
     finally:
         browser.close()
         p.stop()
+
+    if result["followers"] is None and captured_stats.get("followers") is not None:
+        result["followers"] = captured_stats["followers"]
 
     return result
 
@@ -267,6 +333,11 @@ def update_artist_metadata() -> dict:
             if scraped.get("monthly_rank") is not None
             else existing.get("monthly_rank")
         ),
+        "followers": (
+            scraped.get("followers")
+            if scraped.get("followers") is not None
+            else existing.get("followers")
+        ),
         "updated_at": get_scrape_date_str(),
     }
 
@@ -275,7 +346,8 @@ def update_artist_metadata() -> dict:
     print(
         "Artist metadata updated | "
         f"monthly_listeners={format_int(merged.get('monthly_listeners'))} | "
-        f"rank={merged.get('monthly_rank') if merged.get('monthly_rank') is not None else 'N/A'}"
+        f"rank={merged.get('monthly_rank') if merged.get('monthly_rank') is not None else 'N/A'} | "
+        f"followers={format_int(merged.get('followers'))}"
     )
 
     return merged
@@ -288,6 +360,7 @@ def main():
     print(f"Name: {data.get('name')}")
     print(f"Image: {data.get('image_url') or 'N/A'}")
     print(f"Monthly listeners: {format_int(data.get('monthly_listeners'))}")
+    print(f"Followers: {format_int(data.get('followers'))}")
     print(
         "Rank: "
         + (f"#{data.get('monthly_rank')}" if data.get("monthly_rank") is not None else "N/A")

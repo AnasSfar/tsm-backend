@@ -5,10 +5,17 @@ from __future__ import annotations
 import argparse
 import html
 import sys
+import time
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
+
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
 
 SCRIPT_DIR = Path(__file__).resolve().parent          # streams/tools/scripts/
 ROOT = SCRIPT_DIR.parents[1]                          # streams/
@@ -25,8 +32,10 @@ sys.path.insert(0, str(SCRIPT_DIR))                   # streams/tools/scripts/
 from twitter.albums import album_emoji  # noqa: E402
 from twitter.sessions import default_twitter_session  # noqa: E402
 TWITTER_SESSION = default_twitter_session(REPO_ROOT)
-from twitter.text import track_history_line  # noqa: E402
+from twitter.text import stream_gainers_table_tweet, track_history_line  # noqa: E402
 from core.twitter import post_image_thread, post_with_image  # noqa: E402
+from comp.fmt import fmt_delta, fmt_num, fmt_signed  # noqa: E402
+from comp.tables_image import build_table_html, dominant_color_from_data_uri, era_accent_color, masthead_theme_for_date, render_html_to_png  # noqa: E402
 import best_day_since  # noqa: E402
 import generate_streams_image  # noqa: E402
 import post_gainer_thread  # noqa: E402
@@ -154,6 +163,136 @@ def _enrich_gainer_rows(rows: list[dict], *, target_date: str) -> list[dict]:
             str(date.fromisoformat(target_date) - timedelta(days=7)),
         )
     return rows
+
+
+GAINER_LEDGER_CSS = """
+.hdr-title{font-size:25px}
+.hdr-sub{font-size:14px;margin-top:4px}
+.ledger-cols{padding:9px 18px}
+.ledger-row{padding:8px 18px}
+.ledger-rank{font-size:24px}
+.ledger-chg{font-size:11px;font-weight:800}
+.ledger-name{font-size:13.5px}
+.ledger-sub{font-size:11px}
+.ledger-daily{font-size:13px}
+.ledger-total{font-size:12px}
+.ledger-delta-num{font-size:12px}
+.ledger-delta-pct{font-size:10px}
+.gainer-focus .ledger-delta-num,.gainer-focus .ledger-delta-pct{color:var(--ledger-pos)}
+"""
+
+
+def _build_gainer_ledger_rows_html(
+    rows: list[dict],
+    *,
+    period: str,
+    image_cache: dict[str, str],
+    cover_map: dict,
+    track_album_map: dict,
+) -> str:
+    row_html = []
+    for index, row in enumerate(rows, 1):
+        entry = _track_entry(row)
+        title = html.escape(str(entry.get("title") or row["track_id"]))
+        album = html.escape(str(entry.get("album") or row["track"].get("album") or "Taylor Swift"))
+        cover_url = generate_streams_image.get_cover_url(entry, cover_map, track_album_map)
+        cover = image_cache.get(cover_url, cover_url) if cover_url else ""
+        art_html = (
+            f'<img class="ledger-art" src="{html.escape(cover, quote=True)}" />'
+            if cover
+            else '<div class="ledger-art-ph"></div>'
+        )
+        daily = row.get("daily_today")
+        daily_delta, daily_pct, daily_cls = fmt_delta(daily, row.get("daily_yesterday"))
+        week_delta, week_pct, week_cls = fmt_delta(daily, row.get("daily_last_week"))
+        focus_cls = "daily" if period == "daily" else "weekly"
+        daily_signed, _daily_cls = fmt_signed(daily)
+        rank_color = era_accent_color(entry.get("album") or row["track"].get("album")) or dominant_color_from_data_uri(cover)
+        rank_style = f' style="color:{rank_color}"' if rank_color else ""
+        card_cls = "ledger-row"
+
+        row_html.append(
+            f"""<div class="{card_cls}">
+  <div class="ledger-rank"{rank_style}>{index}</div>
+  <div class="ledger-chg chg-up">{_fmt_pct(row['pct'])}</div>
+  <div class="ledger-entity">
+    {art_html}
+    <div class="ledger-info">
+      <div class="ledger-name">{title}</div>
+      <div class="ledger-sub">{album}</div>
+    </div>
+  </div>
+  <div class="ledger-num"><span class="ledger-daily">{daily_signed}</span></div>
+  <div class="ledger-num">
+    <div class="ledger-delta {daily_cls} {'gainer-focus' if focus_cls == 'daily' else ''}">
+      <span class="ledger-delta-num">{daily_delta}</span>
+      {f'<span class="ledger-delta-pct">{daily_pct}</span>' if daily_pct else ''}
+    </div>
+  </div>
+  <div class="ledger-num">
+    <div class="ledger-delta {week_cls} {'gainer-focus' if focus_cls == 'weekly' else ''}">
+      <span class="ledger-delta-num">{week_delta}</span>
+      {f'<span class="ledger-delta-pct">{week_pct}</span>' if week_pct else ''}
+    </div>
+  </div>
+  <div class="ledger-num"><span class="ledger-total">{fmt_num(row.get('total_today'))}</span></div>
+</div>"""
+        )
+    return "\n".join(row_html)
+
+
+def _render_gainer_table_image(
+    rows: list[dict],
+    *,
+    period: str,
+    target_date: str,
+    out_dir: Path,
+) -> Path:
+    rows = _enrich_gainer_rows(rows, target_date=target_date)
+    cover_map = generate_streams_image.load_covers()
+    track_album_map = generate_streams_image.load_track_album_map()
+    image_cache = generate_streams_image.prefetch_images(
+        [_track_entry(row) for row in rows],
+        cover_map,
+        track_album_map,
+    )
+    date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    title_period = "Daily" if period == "daily" else "Weekly"
+    subtitle_compare = "vs previous day" if period == "daily" else "vs last week"
+    rows_html = _build_gainer_ledger_rows_html(
+        rows,
+        period=period,
+        image_cache=image_cache,
+        cover_map=cover_map,
+        track_album_map=track_album_map,
+    )
+    html_text = build_table_html(
+        title=f"Taylor Swift - {title_period} Gainers",
+        subtitle=f"Biggest percentage gains - {subtitle_compare} - {date_fmt}",
+        col_heads=[
+            ("#", False),
+            ("Gain", False),
+            ("Track", False),
+            ("Daily", True),
+            ("vs Day", True),
+            ("vs Week", True),
+            ("Total", True),
+        ],
+        grid_cols="48px 58px minmax(220px,1fr) 118px 112px 112px 116px",
+        rows_html=rows_html,
+        handle="@swiftiescharts",
+        date_str=date_fmt,
+        headers_dir=generate_streams_image._headers_dir_for_top_songs(),
+        body_width=960,
+        art_size=42,
+        col_gap=9,
+        extra_css=GAINER_LEDGER_CSS,
+        masthead_word="GAINERS",
+        masthead_theme=masthead_theme_for_date(target_date),
+    )
+    out_path = out_dir / f"stream_highlights_{period}_gainers_{target_date}.png"
+    tmp_path = out_dir / f"_stream_highlights_{period}_gainers.html"
+    return render_html_to_png(html_text, out_path, tmp_path, width=960)
 
 
 def _build_gainer_rows_html(
@@ -652,6 +791,7 @@ def main() -> int:
     parser.add_argument("--min-baseline", type=int, default=1000)
     parser.add_argument("--min-days", type=int, default=BEST_DAY_THREAD_MIN_DAYS)
     parser.add_argument("--no-post", action="store_true")
+    parser.add_argument("--post-spacing-seconds", type=int, default=0)
     args = parser.parse_args()
 
     target_date = args.date or str(date.today() - timedelta(days=1))
@@ -675,29 +815,41 @@ def main() -> int:
         print(f"[stream_highlights] No highlights found for {target_date}.")
         return 0
 
-    lock = day_dir / "stream_highlights_posted.lock"
-    if lock.exists() and not args.no_post:
-        print(f"[stream_highlights] Gainers table already posted for {target_date}, skipping.")
-        return 0
+    posted_any = False
+    post_jobs = [
+        ("daily", daily_rows, day_dir / "stream_highlights_daily_gainers_posted.lock"),
+        ("weekly", weekly_rows, day_dir / "stream_highlights_weekly_gainers_posted.lock"),
+    ]
+    for period, rows, lock in post_jobs:
+        if not rows:
+            print(f"[stream_highlights] No {period} gainers found for {target_date}.")
+            continue
+        if lock.exists() and not args.no_post:
+            print(f"[stream_highlights] {period} gainers already posted for {target_date}, skipping.")
+            continue
 
-    tweet = _build_combined_tweet(target_date=target_date, daily_rows=daily_rows)
-    image_path = _render_combined_table_image(daily_rows, weekly_rows, target_date=target_date, out_dir=day_dir)
-    print(f"[stream_highlights] Combined gainers table ({len(tweet)} chars):\n{tweet}")
-    print(f"[stream_highlights] Image: {image_path}")
-    for rank, row in enumerate(daily_rows, 1):
-        print(f"[stream_highlights] daily gainers #{rank}: {row['track'].get('title')} {_fmt_pct(row['pct'])}")
-    for rank, row in enumerate(weekly_rows, 1):
-        print(f"[stream_highlights] weekly gainers #{rank}: {row['track'].get('title')} {_fmt_pct(row['pct'])}")
+        tweet = stream_gainers_table_tweet(period=period, count=len(rows), stats_date=target_date)
+        image_path = _render_gainer_table_image(rows, period=period, target_date=target_date, out_dir=day_dir)
+        print(f"[stream_highlights] {period.title()} gainers table ({len(tweet)} chars):\n{tweet}")
+        print(f"[stream_highlights] Image: {image_path}")
+        for rank, row in enumerate(rows, 1):
+            print(f"[stream_highlights] {period} gainers #{rank}: {row['track'].get('title')} {_fmt_pct(row['pct'])}")
 
-    if args.no_post:
-        print("[stream_highlights] Combined gainers table post skipped (--no-post).")
-        return 0
+        if args.no_post:
+            print(f"[stream_highlights] {period} gainers table post skipped (--no-post).")
+            continue
 
-    if not post_with_image(tweet, image_path, TWITTER_SESSION):
-        print("[stream_highlights] Failed to post combined gainers table.")
-        return 1
-    lock.touch()
-    print(f"[stream_highlights] Posted combined gainers table for {target_date}.")
+        if posted_any and args.post_spacing_seconds > 0:
+            print(f"[stream_highlights] Waiting {args.post_spacing_seconds}s before next gainers post...")
+            time.sleep(args.post_spacing_seconds)
+
+        if not post_with_image(tweet, image_path, TWITTER_SESSION):
+            print(f"[stream_highlights] Failed to post {period} gainers table.")
+            return 1
+        lock.touch()
+        posted_any = True
+        print(f"[stream_highlights] Posted {period} gainers table for {target_date}.")
+
     return 0
 
 

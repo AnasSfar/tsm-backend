@@ -20,7 +20,8 @@ ARTIST_MONTHLY_HISTORY_PATH = (
     if (DB_ROOT / "artist_monthly_listeners_history.csv").exists()
     else REPO_ROOT / "data" / "_archive" / "original" / "db" / "artist_monthly_listeners_history.csv"
 )
-ARTIST_URL = "https://open.spotify.com/artist/06HL4z0CvFAxyc27GXpf02"
+ARTIST_ID = "06HL4z0CvFAxyc27GXpf02"
+ARTIST_URL = f"https://open.spotify.com/artist/{ARTIST_ID}"
 PAGE_GOTO_TIMEOUT_MS = 20_000
 
 
@@ -100,6 +101,74 @@ def extract_monthly_listeners_and_rank_from_text(text: str) -> tuple[int | None,
     return monthly_listeners, monthly_rank
 
 
+def extract_followers_from_text(text: str) -> int | None:
+    """Follower count from page text, if Spotify happens to render it.
+
+    Best-effort only: the logged-out artist page usually omits the follower
+    count entirely (see scrape_artist_followers for the API fallback)."""
+    if not text:
+        return None
+    text_compact = re.sub(r"\s+", " ", text).strip()
+    patterns = [
+        r"([\d\s.,]+)\s+followers",
+        r"followers\s*[:\-]?\s*([\d\s.,]+)",
+        r"([\d\s.,]+)\s+abonn[ée]s",
+        r"abonn[ée]s\s*[:\-]?\s*([\d\s.,]+)",
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, text_compact, re.IGNORECASE)
+        if match:
+            value = parse_int_from_text(match.group(1))
+            if value is not None and value >= 1000:
+                return value
+    return None
+
+
+def _dig_for_stats(node, out: dict) -> None:
+    """Walk a decoded JSON blob and pull artist stats wherever they sit.
+
+    The web player's GraphQL `queryArtistOverview` response nests them under
+    data.artistUnion.stats; being shape-tolerant keeps this working if Spotify
+    renames a wrapper key."""
+    if isinstance(node, dict):
+        if "followers" in node and isinstance(node.get("followers"), (int, float)):
+            out.setdefault("followers", int(node["followers"]))
+        if "monthlyListeners" in node and isinstance(node.get("monthlyListeners"), (int, float)):
+            out.setdefault("monthly_listeners", int(node["monthlyListeners"]))
+        if "worldRank" in node and isinstance(node.get("worldRank"), (int, float)) and node["worldRank"]:
+            out.setdefault("monthly_rank", int(node["worldRank"]))
+        for value in node.values():
+            _dig_for_stats(value, out)
+    elif isinstance(node, list):
+        for value in node:
+            _dig_for_stats(value, out)
+
+
+def attach_artist_stats_capture(page) -> dict:
+    """Register a response listener that captures artist stats (incl. followers)
+    from the page's own GraphQL traffic. Returns a holder dict updated in place.
+
+    The logged-out artist page no longer renders the follower count in the DOM,
+    but it still fetches `queryArtistOverview`, which carries it."""
+    holder: dict = {}
+
+    def _on_response(response) -> None:
+        url = response.url
+        if "pathfinder" not in url and "queryArtistOverview" not in url:
+            return
+        try:
+            payload = response.json()
+        except Exception:
+            return
+        _dig_for_stats(payload, holder)
+
+    try:
+        page.on("response", _on_response)
+    except Exception:
+        pass
+    return holder
+
+
 def block_unneeded(route):
     request = route.request
     url = request.url.lower()
@@ -169,6 +238,7 @@ def scrape_artist_metadata() -> dict:
         "image_url": None,
         "monthly_listeners": None,
         "monthly_rank": None,
+        "followers": None,
         "updated_at": get_scrape_date_str(),
     }
 
@@ -177,6 +247,7 @@ def scrape_artist_metadata() -> dict:
     context = browser.new_context(locale="fr-FR")
     page = context.new_page()
     page.route("**/*", block_unneeded)
+    graphql_stats = attach_artist_stats_capture(page)
 
     try:
         success = False
@@ -208,6 +279,7 @@ def scrape_artist_metadata() -> dict:
 
             image_url = extract_artist_image(page)
             monthly_listeners, monthly_rank = extract_monthly_listeners_and_rank_from_text(body_text)
+            followers = extract_followers_from_text(body_text) or graphql_stats.get("followers")
 
             if image_url:
                 result["image_url"] = image_url
@@ -215,13 +287,18 @@ def scrape_artist_metadata() -> dict:
                 result["monthly_listeners"] = monthly_listeners
             if monthly_rank is not None:
                 result["monthly_rank"] = monthly_rank
+            if followers is not None:
+                result["followers"] = followers
 
-            if result["image_url"] and result["monthly_listeners"] is not None:
+            if result["image_url"] and result["monthly_listeners"] is not None and result["followers"] is not None:
                 break
 
     finally:
         browser.close()
         p.stop()
+
+    if result["followers"] is None and graphql_stats.get("followers") is not None:
+        result["followers"] = graphql_stats["followers"]
 
     return result
 
@@ -395,9 +472,11 @@ def update_artist_metadata(pre_scraped: dict | None = None) -> dict:
     if existing_updated_at and existing_updated_at != today:
         prev_monthly_listeners = existing.get("monthly_listeners")
         prev_monthly_rank = existing.get("monthly_rank")
+        prev_followers = existing.get("followers")
     else:
         prev_monthly_listeners = existing.get("previous_monthly_listeners")
         prev_monthly_rank = existing.get("previous_monthly_rank")
+        prev_followers = existing.get("previous_followers")
 
     merged = {
         "name": scraped.get("name") or existing.get("name") or "Taylor Swift",
@@ -413,8 +492,14 @@ def update_artist_metadata(pre_scraped: dict | None = None) -> dict:
             if scraped.get("monthly_rank") is not None
             else existing.get("monthly_rank")
         ),
+        "followers": (
+            scraped.get("followers")
+            if scraped.get("followers") is not None
+            else existing.get("followers")
+        ),
         "previous_monthly_listeners": prev_monthly_listeners,
         "previous_monthly_rank": prev_monthly_rank,
+        "previous_followers": prev_followers,
         "updated_at": today,
     }
 
@@ -429,7 +514,8 @@ def update_artist_metadata(pre_scraped: dict | None = None) -> dict:
     print(
         "Artist metadata updated | "
         f"monthly_listeners={format_int(merged.get('monthly_listeners'))} | "
-        f"rank={merged.get('monthly_rank') if merged.get('monthly_rank') is not None else 'N/A'}"
+        f"rank={merged.get('monthly_rank') if merged.get('monthly_rank') is not None else 'N/A'} | "
+        f"followers={format_int(merged.get('followers'))}"
     )
 
     return merged

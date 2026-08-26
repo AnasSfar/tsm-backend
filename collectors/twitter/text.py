@@ -89,6 +89,22 @@ def best_day_since_recap_tweet(*, count: int, stats_date: str) -> str:
     return with_prefix(body, BEST_DAY_PREFIX)
 
 
+def best_day_grower_tweet(
+    *,
+    title: str,
+    artist: str,
+    lines: list[str],
+    label: str,
+    prefix: str,
+) -> str:
+    body = (
+        f'"{title}" by {artist} on Spotify :\n\n'
+        + "\n".join(lines)
+        + f"\n\nThe song once again earned its {label}."
+    )
+    return with_prefix(body, prefix)
+
+
 def stream_milestone_tweet(
     *,
     title: str,
@@ -158,6 +174,16 @@ def weekend_streams_tweet(*, stats_date: str) -> str:
 
 def stream_highlights_combined_tweet(*, stats_date: str) -> str:
     body = f"Taylor Swift's biggest gainers on {date_label(stats_date, include_weekday=True)} - daily & weekly."
+    return with_prefix(body, STREAMS_PREFIX)
+
+
+def stream_gainers_table_tweet(*, period: str, count: int, stats_date: str) -> str:
+    period_label = "daily" if period == "daily" else "weekly"
+    compare_label = "vs the previous day" if period == "daily" else "vs last week"
+    body = (
+        f"Taylor Swift's top {int(count)} biggest {period_label} gainers by % "
+        f"on {date_label(stats_date, include_weekday=True)} ({compare_label})."
+    )
     return with_prefix(body, STREAMS_PREFIX)
 
 

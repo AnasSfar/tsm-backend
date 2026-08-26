@@ -12,15 +12,38 @@ Usage:
     python -m collectors.youtube.update_youtube --no-post
     python -m collectors.youtube.update_youtube --date 2026-04-25
     python -m collectors.youtube.update_youtube --bootstrap  # découverte complète initiale
+    python -m collectors.youtube.update_youtube --preview    # aperçu card "first 24h views"
+    python -m collectors.youtube.update_youtube --post-first-day VIDEO_ID  # interne, voir ci-dessous
+
+Quand une vidéo tout juste découverte est écrite pour la première fois dans
+le CSV, une tâche Planificateur de tâches Windows one-off est créée pour
+published_at+24h (voir _schedule_first_day_task) : à cette heure précise,
+elle relance ce script avec --post-first-day VIDEO_ID, qui fetch le live
+view count, poste la card "views in its first 24 hours" sur @swiftiescharts,
+puis se désinscrit elle-même. La collecte quotidienne normale
+(post_first_day_views) reste un filet de sécurité au cas où cette tâche
+n'aurait pas pu être créée ou ne se serait pas déclenchée. --no-post
+désactive la planification comme la notification ntfy. --bootstrap ne
+planifie jamais (découverte en masse, aucune vidéo n'est "tout juste"
+publiée). --preview génère un aperçu de la card à tout moment (fetch live,
+sans écrire le CSV ni poster) pour la vidéo actuellement en attente de son
+1er daily_views.
 """
 from __future__ import annotations
 
 import argparse
 import json
 import os
+import subprocess
 import sys
-from datetime import date, datetime
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
+
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
 
 from .core.api import chunked, fetch_video_stats
 from .core.channel import (
@@ -40,6 +63,7 @@ from .core.config import (
     REPO_ROOT,
     TITLE_CSV_FIELDNAMES,
     TITLE_HISTORY_PATH,
+    TOOLS_JSON_DIR,
     VIDEO_DB_PATH,
     VIDEO_GROUPS_PATH,
     YOUTUBE_API_KEY,
@@ -95,6 +119,25 @@ def parse_args() -> argparse.Namespace:
         "--force",
         action="store_true",
         help="Remplace les lignes CSV existantes pour la date collectée.",
+    )
+    p.add_argument(
+        "--preview",
+        action="store_true",
+        help=(
+            "Génère un aperçu de la card 'first 24h views' pour la vidéo actuellement en "
+            "attente de son 1er daily_views (fetch live, sans écrire le CSV ni poster)."
+        ),
+    )
+    p.add_argument(
+        "--post-first-day",
+        metavar="VIDEO_ID",
+        default=None,
+        help=(
+            "Poste la card 'first 24h views' pour cette vidéo (fetch live, poste, écrit le "
+            "lock, désinscrit sa propre tâche planifiée). Appelé par la tâche Windows "
+            "one-off créée à la découverte de la vidéo (published_at + 24h) — pas destiné à "
+            "un usage manuel courant."
+        ),
     )
     return p.parse_args()
 
@@ -241,9 +284,388 @@ def _notify(title: str, message: str) -> None:
         print(f"[NOTIFY] Échec: {e}", flush=True)
 
 
+FIRST_DAY_POSTED_DIR = TOOLS_JSON_DIR / "first_day_posted"
+
+
+FIRST_DAY_VIEWS_MAX_PUBLISH_LAG_DAYS = 4
+
+
+def _is_recent_publish(published_at: str, today: str, max_lag_days: int = FIRST_DAY_VIEWS_MAX_PUBLISH_LAG_DAYS) -> bool:
+    """True if published_at is within max_lag_days of today (both UTC dates).
+    Used to tell a genuinely new release (video didn't exist before today,
+    so its whole total_views belongs to today) apart from an old video that
+    just became publicly listed/discovered (its total_views already includes
+    years of prior views — attributing all of it to today would be fake
+    data, same reasoning as FIRST_DAY_VIEWS_MAX_PUBLISH_LAG_DAYS for the
+    first-24h tweet)."""
+    published_at = (published_at or "").strip()
+    try:
+        published = datetime.strptime(published_at, "%Y-%m-%dT%H:%M:%SZ").date()
+    except ValueError:
+        return False
+    return (date.fromisoformat(today) - published).days <= max_lag_days
+
+
+def _first_daily_video_ids(rows_with_daily: list[dict], existing_video_rows: list[dict], today: str) -> set[str]:
+    """Video ids whose daily_views today is their FIRST-EVER real daily delta.
+
+    A brand new video is first collected with daily_views blank (no previous
+    snapshot to diff against, per the collector's core exact-delta rule). The
+    very next daily run produces its first real delta, which is what "views
+    in its first 24h" means here — so a video qualifies when it has exactly
+    one earlier appearance in the CSV, and that appearance is before today.
+
+    Also requires published_at to be recent (within
+    FIRST_DAY_VIEWS_MAX_PUBLISH_LAG_DAYS of today): discover_new_videos can
+    surface a video that only just became public/listed but was actually
+    uploaded long ago, and that one already has a real view count baked in —
+    not "views in its first 24h"."""
+    prior_dates: dict[str, set[str]] = {}
+    for row in existing_video_rows:
+        vid = row.get("video_id")
+        day = row.get("date")
+        if vid and day and day < today:
+            prior_dates.setdefault(vid, set()).add(day)
+
+    target = date.fromisoformat(today)
+    ids: set[str] = set()
+    for row in rows_with_daily:
+        vid = row["video_id"]
+        if len(prior_dates.get(vid, set())) != 1:
+            continue
+        published_at = (row.get("published_at") or "").strip()
+        try:
+            published = datetime.strptime(published_at, "%Y-%m-%dT%H:%M:%SZ").date()
+        except ValueError:
+            continue
+        if (target - published).days > FIRST_DAY_VIEWS_MAX_PUBLISH_LAG_DAYS:
+            continue
+        ids.add(vid)
+    return ids
+
+
+def _generate_first_day_views_image(row: dict, today: str, *, keep_html: bool = False):
+    sys.path.insert(0, str(REPO_ROOT / "collectors"))
+    from comp.youtube_card import render_youtube_card, slugify, write_song_card_png
+
+    daily = int(row["daily_views"])
+    release_date_text = ""
+    published_at = (row.get("published_at") or "").strip()
+    if published_at:
+        try:
+            published_dt = datetime.strptime(published_at, "%Y-%m-%dT%H:%M:%SZ")
+            hour_12 = published_dt.strftime("%I").lstrip("0") or "12"
+            release_date_text = (
+                f"{published_dt.strftime('%B %d, %Y')} · {hour_12}:{published_dt.strftime('%M %p UTC')}"
+            )
+        except ValueError:
+            pass
+    html_text = render_youtube_card(
+        title=row.get("title") or row["video_id"],
+        stat_label="First 24 Hours",
+        stat_value=f"+{daily:,} views",
+        cover_url=row.get("thumbnail_url") or "",
+        footer_left="@swiftiescharts",
+        badge_text="NEW VIDEO",
+        release_date_text=release_date_text,
+    )
+    out_dir = REPO_ROOT / "snapshots" / "youtube" / "videos" / today[:4] / today[5:7] / today
+    slug = slugify(row.get("title") or row["video_id"])
+    out_path = out_dir / f"first_day_{slug}_{row['video_id']}.png"
+    tmp_path = out_dir / f"first_day_{slug}_{row['video_id']}.html"
+    return write_song_card_png(html_text, out_path, tmp_path, keep_html=keep_html)
+
+
+def post_first_day_views(rows_with_daily: list[dict], existing_video_rows: list[dict], today: str, *, no_post: bool) -> None:
+    """Fallback poster for "first 24h views", run at the end of every daily
+    collection. The primary path is the one-off Scheduled Task created by
+    _schedule_first_day_task() at discovery time (fires at published_at+24h
+    with a live-fetched total) — this daily check exists purely as a safety
+    net for videos whose scheduled task failed to create or to fire (e.g. PC
+    off at the exact target minute with the task settings not catching up).
+    Same lock file as the scheduled path, so whichever posts first wins and
+    the other is a no-op.
+
+    Uses total_views (cumulative since release), not the diffed daily_views:
+    daily_views here is only the delta between the discovery snapshot and the
+    next day's, which excludes any views the video already racked up before
+    the collector's daily run first saw it — same undercount bug as the
+    scheduled path used to have (see run_post_first_day)."""
+    qualifying_ids = _first_daily_video_ids(rows_with_daily, existing_video_rows, today)
+    if not qualifying_ids:
+        return
+
+    FIRST_DAY_POSTED_DIR.mkdir(parents=True, exist_ok=True)
+    session_file = (
+        REPO_ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "twitter_session.json"
+    )
+
+    for row in rows_with_daily:
+        video_id = row["video_id"]
+        if video_id not in qualifying_ids:
+            continue
+        lock = FIRST_DAY_POSTED_DIR / f"{video_id}.lock"
+        if lock.exists():
+            continue
+
+        total_views = int(row["total_views"])
+        title = row.get("title") or video_id
+        image_row = {**row, "daily_views": str(total_views)}
+        image_path = _generate_first_day_views_image(image_row, today)
+        tweet = f'\U0001f3a5 | "{title}" debuts with {total_views:,} views in its first 24 hours on YouTube.'
+        print(f"[first_day_views] Tweet: {tweet}")
+        print(f"[first_day_views] Image: {image_path}")
+
+        if no_post:
+            continue
+        if not session_file.exists():
+            print(f"[first_day_views] ERROR: Twitter session introuvable: {session_file}")
+            continue
+
+        sys.path.insert(0, str(REPO_ROOT / "collectors" / "spotify"))
+        from core.twitter import post_with_image
+
+        if post_with_image(tweet, image_path, session_file):
+            lock.write_text(f"posted {today}\n", encoding="utf-8")
+        else:
+            print(f"[first_day_views] Échec du post pour {title}.")
+
+
+def _first_day_task_name(video_id: str) -> str:
+    return f"TSM_YouTube_FirstDay_{video_id}"
+
+
+def _unschedule_first_day_task(video_id: str) -> None:
+    """Delete the one-off Scheduled Task for this video, if any. Safe to call
+    even if no task exists (e.g. it already fired and Task Scheduler cleaned
+    it up on its own, or it was posted via the daily fallback instead)."""
+    task_name = _first_day_task_name(video_id)
+    try:
+        subprocess.run(
+            [
+                "powershell", "-NoProfile", "-NonInteractive", "-Command",
+                f"Unregister-ScheduledTask -TaskName '{task_name}' -Confirm:$false -ErrorAction SilentlyContinue",
+            ],
+            capture_output=True, text=True, timeout=30,
+        )
+    except Exception:
+        pass
+
+
+def _schedule_first_day_task(video_id: str, published_at: str) -> None:
+    """Create a one-off Windows Scheduled Task that fires at published_at+24h
+    and runs `--post-first-day <video_id>` — the "exactly 24h after upload"
+    post, using a live view-count fetch at that moment rather than waiting
+    for the next daily collection. If that moment has already passed (video
+    discovered more than 24h after its own release — see
+    FIRST_DAY_VIEWS_MAX_PUBLISH_LAG_DAYS for how late discovery is still
+    tracked at all), skips the first-day post entirely: run_post_first_day
+    reports the live view count as-is (see its docstring), which is only
+    correct when fetched right at published_at+24h — fetching it later would
+    silently include extra days of views mislabeled as "first 24 hours",
+    the same kind of fake-exact-data this collector avoids for daily_views
+    when a calendar day is missing."""
+    published_at = (published_at or "").strip()
+    try:
+        published = datetime.strptime(published_at, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+    except ValueError:
+        print(f"[first_day_schedule] {video_id}: published_at invalide, pas de planification.")
+        return
+    if (datetime.now(timezone.utc) - published).days > FIRST_DAY_VIEWS_MAX_PUBLISH_LAG_DAYS:
+        return
+
+    target_utc = published + timedelta(hours=24)
+    now_utc = datetime.now(timezone.utc)
+    if target_utc <= now_utc + timedelta(minutes=2):
+        print(
+            f"[first_day_schedule] {video_id}: fenêtre des 24h déjà passée à la découverte "
+            "(video détectée trop tard) — pas de post first-day, donnée exacte impossible."
+        )
+        return
+
+    target_local = target_utc.astimezone()
+    at_str = target_local.strftime("%Y-%m-%dT%H:%M:%S")
+    task_name = _first_day_task_name(video_id)
+    python_exe = sys.executable
+    ps_script = (
+        f"$action = New-ScheduledTaskAction -Execute '{python_exe}' "
+        f"-Argument '-m collectors.youtube.update_youtube --post-first-day {video_id}' "
+        f"-WorkingDirectory '{REPO_ROOT}'; "
+        f"$trigger = New-ScheduledTaskTrigger -Once -At (Get-Date -Date '{at_str}'); "
+        f"$settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -DontStopOnIdleEnd "
+        f"-ExecutionTimeLimit (New-TimeSpan -Minutes 15); "
+        f"Register-ScheduledTask -TaskName '{task_name}' -Action $action -Trigger $trigger "
+        f"-Settings $settings -Force | Out-Null"
+    )
+    try:
+        subprocess.run(
+            ["powershell", "-NoProfile", "-NonInteractive", "-Command", ps_script],
+            check=True, capture_output=True, text=True, timeout=30,
+        )
+        print(f"[first_day_schedule] {video_id}: tâche planifiée pour {at_str} (heure locale).")
+    except Exception as e:
+        detail = e.stderr if isinstance(e, subprocess.CalledProcessError) else e
+        print(f"[first_day_schedule] ERROR planification {video_id}: {detail}")
+
+
+def run_post_first_day(video_id: str) -> int:
+    """--post-first-day <video_id>: entry point for the one-off Scheduled
+    Task created by _schedule_first_day_task(), which only fires this while
+    the task's target time (published_at+24h) is still in the future — see
+    that function for the late-discovery case. Live-fetches the current view
+    count and posts it AS-IS as the "first 24h views" figure: viewCount is
+    cumulative since release (starts at 0 at published_at), so a fetch done
+    right at published_at+24h already IS the exact first-24h total — no
+    baseline subtraction needed (a video's total_views at *discovery* time is
+    NOT a t=0 baseline; the collector runs once a day, so a video can already
+    have racked up a large chunk of its first-day views hours before the
+    daily run first sees it — subtracting that discovery snapshot previously
+    undercounted the true first-24h figure, sometimes drastically for videos
+    that go viral immediately). Writes the lock file and deletes its own
+    Scheduled Task regardless of outcome (a one-off task has nothing left to
+    do after it fires once)."""
+    if not YOUTUBE_API_KEY:
+        print("[post_first_day] YOUTUBE_API_KEY manquant.")
+        return 1
+
+    existing_rows = read_csv_rows(CSV_PATH)
+    recorded_row = next((r for r in existing_rows if r.get("video_id") == video_id), None)
+    if not recorded_row:
+        print(f"[post_first_day] {video_id}: introuvable dans le CSV.")
+        _unschedule_first_day_task(video_id)
+        return 1
+
+    lock = FIRST_DAY_POSTED_DIR / f"{video_id}.lock"
+    if lock.exists():
+        print(f"[post_first_day] {video_id}: déjà posté (lock présent).")
+        _unschedule_first_day_task(video_id)
+        return 0
+
+    stats = fetch_video_stats(YOUTUBE_API_KEY, [video_id])
+    stat = stats.get(video_id)
+    if not stat:
+        print(
+            f"[post_first_day] {video_id}: stats live indisponibles. La tâche one-off ne se "
+            "redéclenchera pas — le fallback quotidien (post_first_day_views) prendra le relais."
+        )
+        _unschedule_first_day_task(video_id)
+        return 1
+
+    live_total = int(stat.get("viewCount", 0))
+    title = stat.get("title") or recorded_row.get("title") or video_id
+    row = {
+        "video_id": video_id,
+        "title": title,
+        "daily_views": str(live_total),
+        "total_views": str(live_total),
+        "thumbnail_url": stat.get("thumbnailUrl") or recorded_row.get("thumbnail_url") or "",
+        "published_at": stat.get("publishedAt") or recorded_row.get("published_at") or "",
+    }
+    image_path = _generate_first_day_views_image(row, date.today().isoformat())
+    tweet = f'\U0001f3a5 | "{title}" debuts with {live_total:,} views in its first 24 hours on YouTube.'
+    print(f"[post_first_day] Tweet: {tweet}")
+    print(f"[post_first_day] Image: {image_path}")
+
+    FIRST_DAY_POSTED_DIR.mkdir(parents=True, exist_ok=True)
+    session_file = (
+        REPO_ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "twitter_session.json"
+    )
+    if not session_file.exists():
+        print(f"[post_first_day] ERROR: Twitter session introuvable: {session_file}")
+        _unschedule_first_day_task(video_id)
+        return 1
+
+    sys.path.insert(0, str(REPO_ROOT / "collectors" / "spotify"))
+    from core.twitter import post_with_image
+
+    if post_with_image(tweet, image_path, session_file):
+        lock.write_text(f"posted {date.today().isoformat()}\n", encoding="utf-8")
+        print("[post_first_day] Posté avec succès.")
+    else:
+        print("[post_first_day] Échec du post Twitter.")
+
+    _unschedule_first_day_task(video_id)
+    return 0
+
+
+def _preview_candidate_video_id(existing_rows: list[dict]) -> str | None:
+    """Video id currently awaiting its first real daily_views — i.e. the one
+    that will trigger post_first_day_views() on the *next* real collection.
+    Picks the most recently published one if several qualify."""
+    counts: dict[str, int] = {}
+    last_row: dict[str, dict] = {}
+    for row in existing_rows:
+        vid = row.get("video_id")
+        if not vid:
+            continue
+        counts[vid] = counts.get(vid, 0) + 1
+        last_row[vid] = row
+    candidates = [vid for vid, n in counts.items() if n == 1]
+    if not candidates:
+        return None
+    candidates.sort(key=lambda vid: last_row[vid].get("published_at") or "", reverse=True)
+    return candidates[0]
+
+
+def run_preview() -> int:
+    """--preview: render the 'first 24h views' card right now, using a live
+    fetch against the video currently awaiting its first real daily_views,
+    without writing the CSV or posting. The delta shown is views-so-far
+    since its first snapshot, NOT the final 24h number the real run will
+    compute tomorrow — it's a layout/copy preview, not a data preview."""
+    if not YOUTUBE_API_KEY:
+        print("[preview] YOUTUBE_API_KEY manquant.")
+        return 1
+
+    existing_rows = read_csv_rows(CSV_PATH)
+    video_id = _preview_candidate_video_id(existing_rows)
+    if not video_id:
+        print("[preview] Aucune vidéo en attente de son 1er daily_views (toutes ont déjà >= 2 collectes).")
+        return 1
+
+    recorded_row = next(row for row in reversed(existing_rows) if row.get("video_id") == video_id)
+    recorded_total = _int_or_none(recorded_row.get("total_views")) or 0
+    print(f"[preview] Vidéo candidate : {recorded_row.get('title')} ({video_id})")
+
+    stats = fetch_video_stats(YOUTUBE_API_KEY, [video_id])
+    stat = stats.get(video_id)
+    if not stat:
+        print(f"[preview] Impossible de récupérer les stats live pour {video_id}.")
+        return 1
+
+    live_total = int(stat.get("viewCount", 0))
+    delta = max(live_total - recorded_total, 0)
+    row = {
+        "video_id": video_id,
+        "title": stat.get("title") or recorded_row.get("title") or video_id,
+        "daily_views": str(delta),
+        "total_views": str(live_total),
+        "thumbnail_url": stat.get("thumbnailUrl") or recorded_row.get("thumbnail_url") or "",
+        "published_at": stat.get("publishedAt") or recorded_row.get("published_at") or "",
+    }
+
+    image_path = _generate_first_day_views_image(row, date.today().isoformat(), keep_html=True)
+    html_path = image_path.with_suffix(".html")
+    tweet = f'\U0001f3a5 | "{row["title"]}" debuts with {delta:,} views in its first 24 hours on YouTube.'
+
+    print(f"[preview] Total enregistré le {recorded_row.get('date')} : {recorded_total:,}")
+    print(f"[preview] Total live actuel : {live_total:,}")
+    print(f"[preview] Delta utilisé pour l'aperçu (PAS le daily_views final de demain) : +{delta:,}")
+    print(f"[preview] Tweet: {tweet}")
+    print(f"[preview] Image: {image_path}")
+    print(f"[preview] HTML: {html_path}")
+    return 0
+
+
 def main() -> int:
     args = parse_args()
     today = args.date or date.today().isoformat()
+
+    if args.preview:
+        return run_preview()
+
+    if args.post_first_day:
+        return run_post_first_day(args.post_first_day)
 
     print(f"\n{'='*60}")
     print(f"  YouTube Views Collector — {today}")
@@ -332,7 +754,15 @@ def main() -> int:
     for vid_id, stat in stats.items():
         total = stat.get("viewCount", 0)
         prev = prev_views.get(vid_id)
-        gain = (total - prev) if prev is not None else None
+        if prev is not None:
+            gain = total - prev
+        elif not args.bootstrap and _is_recent_publish(stat.get("publishedAt", ""), today):
+            # Genuinely new release, first time this video is ever collected:
+            # it didn't exist before today, so its whole total_views belongs
+            # to today's tracking day — 0 baseline, not a blank "no data yet".
+            gain = total
+        else:
+            gain = None
         daily = gain if is_daily_snapshot else None
         period_label = ""
         if gain is not None and period_days and period_days > 1:
@@ -408,6 +838,18 @@ def main() -> int:
     append_rows(CSV_PATH, all_rows, CSV_FIELDNAMES)
     print(f"[INFO] CSV mis à jour : {CSV_PATH}")
 
+    # Planifie le post "first 24h views" pile à published_at+24h pour chaque
+    # vidéo tout juste découverte (pas en --bootstrap : ce serait tout le
+    # catalogue existant, aucune n'est "tout juste" publiée).
+    new_video_ids = {v["video_id"] for v in new_videos}
+    if new_video_ids and not args.bootstrap and not args.no_post:
+        for r in rows:
+            if r["video_id"] in new_video_ids:
+                try:
+                    _schedule_first_day_task(r["video_id"], r.get("published_at", ""))
+                except Exception as e:
+                    print(f"[first_day_schedule] Échec (non bloquant) pour {r['video_id']}: {e}")
+
     title_rows = build_title_rows(
         date=today,
         video_rows=all_rows,
@@ -438,7 +880,15 @@ def main() -> int:
     maybe_upload_youtube_to_r2(today)
 
     # ------------------------------------------------------------------
-    # 8. Git commit/push (opt-in avec --commit)
+    # 8. Post "first 24h views" card for any brand new video
+    # ------------------------------------------------------------------
+    try:
+        post_first_day_views(rows_with_daily, existing_video_rows, today, no_post=args.no_post)
+    except Exception as e:
+        print(f"[first_day_views] Échec (non bloquant): {e}")
+
+    # ------------------------------------------------------------------
+    # 9. Git commit/push (opt-in avec --commit)
     # ------------------------------------------------------------------
     if args.commit:
         git_commit_and_push(REPO_ROOT, message=f"youtube views {today}")
@@ -446,7 +896,7 @@ def main() -> int:
         print("[INFO] Git skippé (passer --commit pour committer).")
 
     # ------------------------------------------------------------------
-    # 9. Notification ntfy
+    # 10. Notification ntfy
     # ------------------------------------------------------------------
     if not args.no_post:
         top5 = rows_with_daily[:5]

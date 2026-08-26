@@ -40,6 +40,7 @@ POST_COLLECTION_MAX_SONG_POSTS = 5
 MIN_SONG_DAILY_STREAMS_TO_POST = 80_000
 ALWAYS_POST_BEST_DAY_SINCE_AFTER_DAYS = 60
 PRIORITY_BEST_DAY_SINCE_MIN_DAYS = 90
+ALBUM_RECAP_THEME_THRESHOLD_RATIO = 0.25
 
 for _stream in (sys.stdout, sys.stderr):
     try:
@@ -51,12 +52,15 @@ sys.path.insert(0, str(COLLECTORS_ROOT))              # collectors/
 sys.path.insert(0, str(ROOT))                         # collectors/spotify/streams/
 sys.path.insert(0, str(ROOT.parent))                  # collectors/spotify/
 
-from comp.song_card import render_song_card, slugify, write_song_card_png  # noqa: E402
-from comp.tables_image import build_table_html, render_html_to_png, url_to_data_uri  # noqa: E402
+from comp.song_card import image_data_uri  # noqa: E402
+from comp.song_card_chart_sheet import format_change_html, render_chart_sheet_card, slugify, write_chart_sheet_card_png  # noqa: E402
+from comp.tables_image import build_table_html, masthead_theme_for_date, render_html_to_png, url_to_data_uri  # noqa: E402
 from comp.fmt import fmt_streams, fmt_pct, pct_cls, get_pct  # noqa: E402
 from core.twitter import post_with_image  # noqa: E402
 from core.data_paths import update_streams_dir  # noqa: E402
 from twitter.text import best_day_since_recap_tweet, best_day_since_tweet  # noqa: E402
+from twitter.albums import album_emoji  # noqa: E402
+from twitter.text import best_day_grower_tweet  # noqa: E402
 import best_day_since  # noqa: E402
 import generate_album_update_image  # noqa: E402
 
@@ -73,11 +77,43 @@ def _fmt_signed_int(value: int | None) -> str:
     return f"+{int(value):,}"
 
 
+def _fmt_release_date(raw: str | None) -> str | None:
+    """Track release_date (catalog "YYYY-MM-DD") -> "DD/MM/YYYY", or None if
+    missing/unparseable so the caller can fall back to something else."""
+    if not raw:
+        return None
+    try:
+        d = date.fromisoformat(str(raw)[:10])
+    except ValueError:
+        return None
+    return d.strftime("%d/%m/%Y")
+
+
 def _fmt_pct(current: int | None, previous: int | None) -> str:
     if current is None or previous is None or previous <= 0:
         return "n/a"
     pct = (current - previous) / previous * 100
     return f"{pct:+.1f}%"
+
+
+def _short_month_day(day: date) -> str:
+    return f"{day.month}/{day.day}"
+
+
+def _hex_to_rgb(value: str) -> tuple[int, int, int] | None:
+    raw = (value or "").strip().lstrip("#")
+    if len(raw) != 6:
+        return None
+    try:
+        return int(raw[:2], 16), int(raw[2:4], 16), int(raw[4:6], 16)
+    except ValueError:
+        return None
+
+
+def _luma_from_hex(value: str) -> float:
+    rgb = _hex_to_rgb(value) or (29, 185, 84)
+    r, g, b = rgb
+    return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255
 
 
 
@@ -255,12 +291,12 @@ def _find_all_rows(target_date: str, *, min_days: int) -> list[dict]:
             or not (row.get("is_biggest_day_of_year") or best_day_since.passes_filters(row, min_days=min_days))
         ):
             continue
-        if _is_repeat_of_previous_day(row, target_date):
+        if _is_repeat_of_previous_day(row, target_date, min_days=min_days):
             print(
-                f"[best_day_since_post] Skipping {row['title']}: same best-day-since "
-                f"({row['best_day_since']}) already posted the day before."
+                f"[best_day_since_post] {row['title']} repeated the same best-day-since "
+                f"({row['best_day_since']}); using grower tweet format."
             )
-            continue
+            row["_grower_repeat"] = True
         rows.append(row)
     return rows
 
@@ -337,6 +373,34 @@ def _track_album_counts(track_ids: set[str], tracks_by_id: dict[str, dict]) -> d
             continue
         counts[album] = counts.get(album, 0) + 1
     return counts
+
+
+def _album_recap_theme(rows: list[dict], tracks_by_id: dict[str, dict]) -> str | None:
+    if len(rows) <= 1:
+        return None
+
+    base_tracks = best_day_since.load_tracks(include_extras=False)
+    album_track_ids = best_day_since.load_album_track_ids(base_tracks)
+    album_totals = {_album_key(album): len(track_ids) for album, track_ids in album_track_ids.items()}
+    display_names = {_album_key(album): album for album in album_track_ids}
+
+    counts: dict[str, int] = {}
+    for row in rows:
+        track = tracks_by_id.get(row["track_id"]) or {}
+        album = _album_key(track.get("album") or row.get("album"))
+        if not album:
+            continue
+        counts[album] = counts.get(album, 0) + 1
+
+    qualifying = [
+        (album, count, album_totals.get(album, 0))
+        for album, count in counts.items()
+        if count > 1 and album_totals.get(album, 0) and count > album_totals[album] * ALBUM_RECAP_THEME_THRESHOLD_RATIO
+    ]
+    if not qualifying:
+        return None
+    qualifying.sort(key=lambda item: (item[1] / item[2], item[1], item[2]), reverse=True)
+    return display_names.get(qualifying[0][0])
 
 
 def _pick_rows(
@@ -448,14 +512,38 @@ def _write_track_lock(track_id: str, target_date: str, row: dict) -> None:
     )
 
 
-def _is_repeat_of_previous_day(row: dict, target_date: str) -> bool:
+def _is_repeat_of_previous_day(row: dict, target_date: str, *, min_days: int = RECAP_BEST_DAY_MIN_DAYS) -> bool:
     """True if yesterday's post for this track already claimed the same
-    best-day-since reference (same "since" date, or "ever" twice running).
+    best-day-since reference, or yesterday's exact data produced the same
+    best-day-since reference.
 
     Posting "best day since <X>" (or "best day ever") again the very next
     day for the same track reads as a duplicate even though it's technically
-    still true, so we suppress it and let the record stand until a new,
-    different reference date is reached."""
+    still true, so the second consecutive day switches to the grower format."""
+    previous_target = date.fromisoformat(target_date) - timedelta(days=1)
+    try:
+        tracks = best_day_since.load_tracks(include_extras=False)
+        history = best_day_since.load_history()
+        track = tracks.get(row["track_id"])
+        previous_row = (
+            best_day_since.compute_best_day_since(track, history.get(row["track_id"]) or [], previous_target)
+            if track
+            else None
+        )
+        if (
+            previous_row
+            and previous_row.get("kind") == row.get("kind")
+            and bool(previous_row.get("best_day_since"))
+            and previous_row.get("best_day_since") == row.get("best_day_since")
+            and (
+                previous_row.get("is_biggest_day_of_year")
+                or best_day_since.passes_filters(previous_row, min_days=min_days)
+            )
+        ):
+            return True
+    except Exception:
+        pass
+
     previous_date = (date.fromisoformat(target_date) - timedelta(days=1)).isoformat()
     lock = _track_posted_lock_path(row["track_id"], previous_date)
     if not lock.exists():
@@ -465,6 +553,166 @@ def _is_repeat_of_previous_day(row: dict, target_date: str) -> bool:
     except Exception:
         return False
     return bool(previous.get("best_day_since")) and previous.get("best_day_since") == row.get("best_day_since")
+
+
+def _daily_grower_points(track_ids: list[str], target_date: str, *, days: int = 4) -> list[dict] | None:
+    target = date.fromisoformat(target_date)
+    wanted_dates = [(target - timedelta(days=offset)).isoformat() for offset in range(days, -1, -1)]
+    wanted_ids = set(track_ids)
+    dailies: dict[str, int] = {}
+    if not best_day_since.HISTORY_PATH.exists():
+        return None
+
+    with best_day_since.HISTORY_PATH.open(newline="", encoding="utf-8-sig") as file:
+        for row in csv.DictReader(file):
+            if row.get("track_id") not in wanted_ids:
+                continue
+            day = (row.get("date") or "").strip()
+            if day not in wanted_dates:
+                continue
+            daily_raw = (row.get("daily_streams") or "").strip()
+            if not daily_raw:
+                continue
+            try:
+                dailies[day] = dailies.get(day, 0) + int(daily_raw)
+            except ValueError:
+                continue
+
+    points: list[dict] = []
+    for index, day in enumerate(wanted_dates[1:], 1):
+        previous_day = wanted_dates[index - 1]
+        if day not in dailies or previous_day not in dailies:
+            return None
+        previous_daily = dailies[previous_day]
+        if previous_daily <= 0:
+            return None
+        current_daily = dailies[day]
+        pct = (current_daily - previous_daily) / previous_daily * 100
+        points.append({
+            "date": date.fromisoformat(day),
+            "daily": current_daily,
+            "pct": pct,
+        })
+    return points
+
+
+def _grower_label(row: dict) -> str:
+    if row.get("is_biggest_day_of_year") and row.get("kind") == "since":
+        return f"biggest day of the year and its best day since {best_day_since.format_long_date(row['best_day_since'])}"
+    return best_day_since.row_label(row)
+
+
+def _grower_tweet(row: dict, track: dict, points: list[dict]) -> str:
+    lines = [
+        f"{_short_month_day(point['date'])} — {_fmt_int(point['daily'])} [{point['pct']:+.1f}%]"
+        for point in points
+    ]
+    return best_day_grower_tweet(
+        title=track.get("title") or row["title"],
+        artist=track.get("artist") or track.get("primary_artist") or "Taylor Swift",
+        lines=lines,
+        label=_grower_label(row),
+        prefix=album_emoji(track.get("album")),
+    )
+
+
+def _spotify_logo_svg(fill: str) -> str:
+    return f"""<svg class="spotify-logo" viewBox="0 0 24 24" fill="{fill}" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+</svg>"""
+
+
+def _generate_grower_image(*, track: dict, cover_url: str, target_date: str) -> Path:
+    cover_uri, cover_bytes = image_data_uri(cover_url)
+    if cover_url:
+        try:
+            bg_color = generate_album_update_image._dominant_color_from_url(cover_url)
+        except Exception:
+            bg_color = "#1db954"
+    else:
+        bg_color = "#1db954"
+    logo_fill = "#000000" if _luma_from_hex(bg_color) > 0.58 else "#ffffff"
+    art_html = f'<img class="cover" src="{html.escape(cover_uri, quote=True)}" />' if cover_uri else '<div class="cover-ph"></div>'
+    html_text = f"""<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+*{{box-sizing:border-box;margin:0;padding:0}}
+body{{
+  width:900px;height:900px;
+  font-family:Inter,-apple-system,'Helvetica Neue',Arial,sans-serif;
+  background:
+    radial-gradient(circle at 78% 18%,rgba(255,255,255,.22),rgba(255,255,255,0) 28%),
+    radial-gradient(circle at 10% 90%,rgba(0,0,0,.20),rgba(0,0,0,0) 34%),
+    {bg_color};
+  overflow:hidden;
+  position:relative;
+}}
+.wrap{{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+}}
+.cover-frame{{
+  width:620px;height:620px;border-radius:46px;overflow:hidden;
+  box-shadow:0 42px 90px rgba(0,0,0,.34),0 0 0 1px rgba(255,255,255,.18);
+}}
+.cover,.cover-ph{{width:100%;height:100%;object-fit:cover;display:block}}
+.cover-ph{{background:rgba(255,255,255,.18)}}
+.logo-badge{{
+  position:absolute;right:96px;bottom:92px;
+  width:170px;height:170px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.16);
+  backdrop-filter:blur(10px);
+  box-shadow:0 24px 60px rgba(0,0,0,.32), inset 0 0 0 1px rgba(255,255,255,.18);
+}}
+.spotify-logo{{width:102px;height:102px;display:block}}
+.grain{{
+  position:absolute;inset:0;opacity:.10;mix-blend-mode:overlay;
+  background-image:linear-gradient(45deg,rgba(255,255,255,.18) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.18) 50%,rgba(255,255,255,.18) 75%,transparent 75%);
+  background-size:9px 9px;
+}}
+</style>
+</head>
+<body>
+  <div class="grain"></div>
+  <div class="wrap">
+    <div class="cover-frame">{art_html}</div>
+    <div class="logo-badge">{_spotify_logo_svg(logo_fill)}</div>
+  </div>
+</body>
+</html>"""
+    out_dir = _day_dir(target_date) / "best_day_since"
+    out_path = out_dir / f"best_day_grower_{slugify(track.get('title') or track.get('track_id') or 'track')}_{target_date}.png"
+    tmp_path = out_dir / f"_best_day_grower_{track.get('track_id') or slugify(track.get('title') or 'track')}.html"
+    return render_html_to_png(html_text, out_path, tmp_path, width=900)
+
+
+def _post_grower_for_repeat(row: dict, track: dict, target_date: str, *, no_post: bool) -> str:
+    points = _daily_grower_points(row.get("combined_track_ids") or [row["track_id"]], target_date)
+    if not points:
+        print(f"[best_day_grower] Skipping {row['title']}: incomplete exact 4-day daily history.")
+        return "skipped"
+
+    cover_url = get_cover_url(track, load_covers())
+    image_path = _generate_grower_image(track=track, cover_url=cover_url, target_date=target_date)
+    tweet = _grower_tweet(row, track, points)
+    print(f"[best_day_grower] Tweet ({len(tweet)} chars):\n{tweet}")
+    print(f"[best_day_grower] Image: {image_path}")
+
+    if no_post:
+        return "posted"
+
+    if not TWITTER_SESSION.exists():
+        print(f"ERROR: Twitter session not found at {TWITTER_SESSION}")
+        return "error"
+    if not post_with_image(tweet, image_path, TWITTER_SESSION):
+        print(f"[best_day_grower] Failed to post {row['title']}.")
+        return "error"
+
+    _write_track_lock(row["track_id"], target_date, row)
+    return "posted"
 
 
 def _post_single_track_early(
@@ -500,12 +748,12 @@ def _post_single_track_early(
     )
     if not row:
         return "skipped"
-    if _is_repeat_of_previous_day(row, target_date):
+    if _is_repeat_of_previous_day(row, target_date, min_days=min_days):
         print(
-            f"[best_day_since_early] Skipping {track_id}: same best-day-since "
-            f"({row['best_day_since']}) already posted the day before."
+            f"[best_day_since_early] {track_id} repeated the same best-day-since "
+            f"({row['best_day_since']}); using grower tweet format."
         )
-        return "skipped"
+        return _post_grower_for_repeat(row, track, target_date, no_post=no_post)
 
     # Priority rows (best-day-since gap > PRIORITY_BEST_DAY_SINCE_MIN_DAYS)
     # always get a slot: they skip the daily and per-album caps below instead
@@ -530,11 +778,12 @@ def _post_single_track_early(
         return "skipped"
 
     track_ids = row.get("combined_track_ids") or [track_id]
-    total_today, total_yesterday, daily_today, daily_yesterday, _daily_last_week = (
+    total_today, total_yesterday, daily_today, daily_yesterday, daily_last_week = (
         load_history_for_tracks(track_ids, target_date)
     )
     if total_today is None or total_yesterday is None or daily_today is None or daily_yesterday is None or daily_yesterday <= 0:
         return "skipped"
+    row["_post_daily_last_week"] = daily_last_week
     if not _passes_song_post_gate(row, min_daily_streams=min_daily_streams, min_pct_change=min_pct_change):
         pct = (daily_today - daily_yesterday) / daily_yesterday * 100
         print(
@@ -714,6 +963,7 @@ def _generate_recap_image(
     target_date: str,
     tracks_by_id: dict,
     covers: dict,
+    theme_album: str | None = None,
 ) -> Path:
     from datetime import datetime
 
@@ -747,9 +997,34 @@ def _generate_recap_image(
             f"validated best-day row(s)."
         )
 
+    headers_dir = SCRIPT_DIR.parent / "headers"
+    masthead_word = None
+    # Weekday posts (Mon-Fri) -> light; weekend posts (Sat/Sun) -> dark.
+    masthead_theme = masthead_theme_for_date(target_date)
+    title = "Best Day Since - Full Recap"
+    subtitle = f"Every song that hit a best-day-since record - {date_text}"
+    if theme_album:
+        album_headers = generate_album_update_image.header_images_for_album(theme_album)
+        if album_headers:
+            headers_dir = album_headers[0].parent
+        themed_count = sum(
+            1
+            for row in rows
+            if _album_key((tracks_by_id.get(row["track_id"]) or {}).get("album") or row.get("album"))
+            == _album_key(theme_album)
+        )
+        title = f"{theme_album} - Best Day Recap"
+        subtitle = f"{themed_count} songs from the album hit a best-day-since record - {date_text}"
+        masthead_word = "BEST DAY"
+        # Era override wins year-round: the Holiday Collection recap stays light
+        # even on weekends (Christmas theming); every other album follows the
+        # weekday rule set above.
+        if "holiday collection" in theme_album.casefold():
+            masthead_theme = "light"
+
     html_text = build_table_html(
-        title="Best Day Since â€” Full Recap",
-        subtitle=f"Every song that hit a best-day-since record - {date_text}",
+        title=title,
+        subtitle=subtitle,
         col_heads=[
             ("Pos", False),
             ("Track", False),
@@ -762,13 +1037,16 @@ def _generate_recap_image(
         rows_html="\n".join(rows_html),
         handle="@swiftiescharts",
         date_str=date_text,
-        headers_dir=SCRIPT_DIR.parent / "headers",
+        headers_dir=headers_dir,
         body_width=960,
         art_size=48,
+        masthead_word=masthead_word,
+        masthead_theme=masthead_theme,
     )
     out_dir = _day_dir(target_date) / "best_day_since"
-    out_path = out_dir / f"best_day_since_recap_{target_date}.png"
-    tmp_path = out_dir / f"_best_day_since_recap_{target_date}.html"
+    suffix = f"_{slugify(theme_album)}" if theme_album else ""
+    out_path = out_dir / f"best_day_since_recap{suffix}_{target_date}.png"
+    tmp_path = out_dir / f"_best_day_since_recap{suffix}_{target_date}.html"
     return render_html_to_png(html_text, out_path, tmp_path, width=960)
 
 
@@ -806,29 +1084,54 @@ def _generate_best_day_since_image(
 ) -> Path:
     from datetime import datetime
 
-    date_text = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    target = date.fromisoformat(target_date)
+    date_text = datetime.strptime(target_date, "%Y-%m-%d").strftime("%b %d, %Y").upper()
     daily = int(row["daily_streams"])
     pct = _fmt_pct(daily, daily_yesterday)
-    label = _best_since_badge_text(row)
-    html = render_song_card(
+    daily_class = _badge_class(pct)
+
+    daily_last_week = row.get("_post_daily_last_week")
+    weekly_pct = _fmt_pct(daily, daily_last_week) if daily_last_week else None
+    weekly_class = _badge_class(weekly_pct) if weekly_pct else "flat"
+
+    historical_date = None
+    historical_daily = None
+    if row.get("kind") == "since" and row.get("previous_higher_or_equal_date"):
+        historical_date = date.fromisoformat(row["previous_higher_or_equal_date"])
+        historical_daily = row.get("previous_higher_or_equal_daily")
+
+    track_ids = row.get("combined_track_ids") or [row["track_id"]]
+    history = best_day_since.load_history()
+    points_by_track = [history.get(tid) or [] for tid in track_ids]
+    points = best_day_since.combine_points(points_by_track) if len(track_ids) > 1 else (points_by_track[0] or [])
+    bars = best_day_since.build_chart_sheet_bars(
+        points,
+        target,
+        historical_date=historical_date,
+        historical_daily=historical_daily,
+    )
+
+    release_text = _fmt_release_date(track.get("release_date"))
+    footer_right = f"Released {release_text}" if release_text else date_text
+
+    html = render_chart_sheet_card(
         title=track.get("title") or row["title"],
-        eyebrow="Spotify Streams",
-        subtitle=label,
-        stats=[
-            {"label": "Daily Streams", "value": _fmt_signed_int(daily), "badge": pct, "badge_class": _badge_class(pct)},
-            {"label": "Total Streams", "value": _fmt_int(total_today), "badge": "Since release", "badge_class": "flat"},
-        ],
+        album=track.get("album") or row.get("album") or "",
+        date_text=date_text,
+        kicker_text=_best_since_badge_text(row),
+        bars=bars,
+        daily_value_text=_fmt_signed_int(daily),
+        daily_class=daily_class,
+        change_text=format_change_html(pct, daily_class, weekly_pct, weekly_class),
+        total_value_text=_fmt_int(total_today),
         cover_url=cover_url,
         footer_left="@swiftiescharts",
-        footer_right=date_text,
-        extra=track.get("album") or row.get("album") or "",
-        best_since=True,
-        combined_versions=bool(row.get("combined")),
+        footer_right=footer_right,
     )
     out_dir = _day_dir(target_date) / "best_day_since"
     out_path = out_dir / f"best_day_since_{slugify(track.get('title') or row['title'])}_{target_date}.png"
     tmp_path = out_dir / f"_best_day_since_{row['track_id']}.html"
-    return write_song_card_png(html, out_path, tmp_path)
+    return write_chart_sheet_card_png(html, out_path, tmp_path)
 
 
 def _post_album_best_day_rows(args, target_date: str, album_lock: Path, *, only_album: str | None = None) -> int:
@@ -877,6 +1180,13 @@ def _post_album_best_day_rows(args, target_date: str, album_lock: Path, *, only_
                 f"[best_day_since_post] Album update already posted "
                 f"({existing_album_update_lock.name}); skipping best-day-since album post."
             )
+            continue
+        block_reason = generate_album_update_image.holiday_collection_post_block_reason(
+            row["album"],
+            target_date,
+        )
+        if block_reason:
+            print(f"[best_day_since_post] Album best-day-since skipped: {block_reason}")
             continue
 
         image_path = generate_album_update_image.generate(row["album"], target_date)
@@ -1064,6 +1374,17 @@ def main() -> None:
         total_today = row["_post_total_today"]
         daily_yesterday = row["_post_daily_yesterday"]
 
+        if row.get("_grower_repeat"):
+            result = _post_grower_for_repeat(row, track, target_date, no_post=args.no_post)
+            if result == "error":
+                sys.exit(1)
+            if result == "posted" and not args.no_post:
+                posted_count += 1
+            if index < len(rows) and args.post_spacing_seconds > 0:
+                print(f"[best_day_since_post] Waiting {args.post_spacing_seconds}s before next post...")
+                time.sleep(args.post_spacing_seconds)
+            continue
+
         cover_url = get_cover_url(track, covers)
         image_path = _generate_best_day_since_image(
             row=row,
@@ -1104,14 +1425,21 @@ def main() -> None:
     else:
         recap_rows = _find_recap_rows(target_date)
         recap_rows.sort(key=_recap_sort_key)
-        if not recap_rows:
-            print(f"[best_day_since_post] No best-day-since songs found for recap on {target_date}.")
+        if len(recap_rows) <= 1:
+            print(
+                f"[best_day_since_post] Recap skipped for {target_date}: "
+                f"{len(recap_rows)} best-day-since song(s)."
+            )
         else:
+            theme_album = _album_recap_theme(recap_rows, tracks_by_id)
+            if theme_album:
+                print(f"[best_day_since_post] Recap uses album theme: {theme_album}")
             image_path = _generate_recap_image(
                 rows=recap_rows,
                 target_date=target_date,
                 tracks_by_id=tracks_by_id,
                 covers=covers,
+                theme_album=theme_album,
             )
             tweet = _build_recap_tweet(recap_rows, target_date)
             print(f"[best_day_since_post] Recap tweet ({len(tweet)} chars):\n{tweet}")

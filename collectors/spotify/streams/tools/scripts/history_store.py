@@ -921,19 +921,20 @@ def get_all_last_history_totals() -> dict[str, int]:
                 pass
     return result
 
-def pick_active_catalog_merge_losers(
+def find_active_catalog_merge_groups(
     totals_by_track_id: dict[str, int],
     track_meta_by_id: dict[str, dict],
-) -> set[str]:
-    """Given {track_id: total_streams} for ONE date, return the track_ids to
-    suppress from that date's rankings/listings because another active
-    track_id reports the exact same total — Spotify actively merging two
-    catalog entries into one page/total (observed 2026-08-17: Karma / Karma
-    feat. Ice Spice, Shake It Off / Best Work Edition, etc.), independent of
-    `historical_track_ids`. Nothing is written back to history: this is a
-    same-day display filter only, so if Spotify's totals diverge again the
-    next day both track_ids reappear on their own — no manual re-fix needed.
+) -> list[dict]:
+    """Given {track_id: total_streams} for ONE date, return every group of
+    >=2 track_ids currently reporting the exact same total — Spotify actively
+    merging two catalog entries into one page/total (observed 2026-08-17:
+    Karma / Karma feat. Ice Spice, Shake It Off / Best Work Edition, etc.),
+    independent of `historical_track_ids`. Nothing is written back to
+    history: this is a same-day detection only, so if Spotify's totals
+    diverge again the next day both track_ids reappear on their own — no
+    manual re-fix needed.
 
+    Each group is {"total": int, "keeper": track_id, "losers": [track_id,...]}.
     Keeper preference among a tied group: non-extra beats extra, a real
     catalog entry beats a chartsnapshot-only placeholder, else lower
     track_id (stable tiebreak). `track_meta_by_id` values are expected to
@@ -947,6 +948,11 @@ def pick_active_catalog_merge_losers(
     100k-150k range) — nothing to do with an actual Spotify merge. Every
     genuine merge observed so far involved totals in the millions to
     billions, so require at least MIN_TOTAL_FOR_MERGE_DETECTION.
+
+    This is the shared source of truth other consumers (including
+    cross-repo ones like tsm-frontend's period_recaps.py, via the exported
+    active_catalog_merges.json — see export_for_web.py) should read instead
+    of reimplementing their own detection.
     """
     by_total: dict[int, list[str]] = {}
     for track_id, total in totals_by_track_id.items():
@@ -958,12 +964,27 @@ def pick_active_catalog_merge_losers(
         meta = track_meta_by_id.get(track_id) or {}
         return (bool(meta.get("chart_extra")), bool(meta.get("chartsnapshot_only")), track_id)
 
-    losers: set[str] = set()
+    groups: list[dict] = []
     for total, track_ids in by_total.items():
         if len(track_ids) < 2:
             continue
         keeper = min(track_ids, key=_keeper_key)
-        losers.update(tid for tid in track_ids if tid != keeper)
+        losers = sorted(tid for tid in track_ids if tid != keeper)
+        groups.append({"total": total, "keeper": keeper, "losers": losers})
+    return groups
+
+
+def pick_active_catalog_merge_losers(
+    totals_by_track_id: dict[str, int],
+    track_meta_by_id: dict[str, dict],
+) -> set[str]:
+    """Thin wrapper over find_active_catalog_merge_groups() for callers that
+    only need the set of track_ids to suppress from a date's rankings/
+    listings (the losing side of each tied group). See that function's
+    docstring for the full detection rules."""
+    losers: set[str] = set()
+    for group in find_active_catalog_merge_groups(totals_by_track_id, track_meta_by_id):
+        losers.update(group["losers"])
     return losers
 
 

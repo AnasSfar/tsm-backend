@@ -21,6 +21,7 @@ import colorsys
 import json
 import os
 import random
+import re
 import sys
 import tempfile
 import time
@@ -47,7 +48,7 @@ HEADERS_DIR     = REPO_ROOT / "collectors" / "spotify" / "charts" / "global" / "
 TWITTER_SESSION = REPO_ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "twitter_session.json"
 
 sys.path.insert(0, str(REPO_ROOT / "collectors" / "spotify"))
-from core.data_paths import legacy_spotify_chart_dir, spotify_chart_dir
+from core.data_paths import legacy_spotify_chart_dir, spotify_chart_dir, spotify_chart_snapshot_files
 
 HANDLE  = "@swiftiescharts"
 TS_NAME = "Taylor Swift"
@@ -149,19 +150,15 @@ def get_dominant_color(img_path: Path) -> str:
 
 def find_latest_date(period: str) -> str:
     filename = PERIOD_FILES[period]
-    latest = None
-    for root in (
-        REPO_ROOT / "data",
-        ARTISTS_GLOBAL / "history",
-    ):
-        if not root.exists():
-            continue
-        for day_dir in sorted(root.rglob("*")):
-            if day_dir.is_dir() and (day_dir / filename).exists():
-                latest = day_dir.name
-    if not latest:
+    files = spotify_chart_snapshot_files("artists_global", filename)
+    dates = []
+    for path in files:
+        match = re.search(r"\b20\d{2}-\d{2}-\d{2}\b", str(path))
+        if match:
+            dates.append(match.group(0))
+    if not dates:
         raise FileNotFoundError(f"No {filename} found in data/")
-    return latest
+    return max(dates)
 
 
 def load_chart(stats_date: str, period: str) -> dict:

@@ -327,9 +327,11 @@ dont le total exact est identique a un autre track_id actif (garde-fou
 faible volume type karaoke/instrumental peuvent coincider par pur hasard —
 observe le 2026-08-21 sur plusieurs bonus tracks Red dans la fourchette
 100k-150k). Garde le track non-extra (ou le plus "reel"), marque l'autre
-comme "loser" pour cette date uniquement — rien n'est ecrit dans l'historique,
-donc si Spotify redivise les totaux le lendemain, les deux redeviennent
-normaux automatiquement, sans intervention manuelle.
+comme "loser" pour cette date uniquement. Le CSV brut n'est pas modifie; en
+revanche l'export web compact `history/YYYY-MM-DD.json` marque ces points
+avec `m: true` pour que le frontend/API dedoublent les anciennes dates. Si
+Spotify redivise les totaux le lendemain, les deux redeviennent normaux
+automatiquement, sans intervention manuelle.
 
 Cablage actuel :
 - `export_for_web.py` : les "losers" du jour sont exclus de `rank_total`/
@@ -351,6 +353,17 @@ Cablage actuel :
   catalogue incomplet en 2026-08-08 (voir Pieges ci-dessous) — verifier ses
   fonctions en parallele de celles d'`export_for_web.py`/`history_store.py`
   avant de considerer une regle de classement comme entierement cablee.
+- `export_for_web.py::enrich_albums_payload` et
+  `generate_albums_image.py::build_album_rows` (2026-08-25) : les losers du
+  jour sont aussi exclus des sommes publiques `total_streams_sum`/
+  `daily_streams_sum` albums/eras et de l'image Top Eras. La row chanson
+  reste visible avec son total Spotify brut, mais elle ne gonfle plus l'album
+  ou l'era parent pendant une fusion active.
+- `export_for_web.py` (2026-08-25) : les fichiers
+  `runtime/exports/web/site/history/YYYY-MM-DD.json` portent aussi `m: true`
+  sur les losers detectes pour la date exportee. Les pages frontend Albums,
+  AlbumDetail, Streams/Top Songs, Image Studio et les APIs home/studio peuvent
+  donc dedoubler les jours historiques sans inventer ni modifier de total.
 
 Si un nouveau generateur de classement/top N est ecrit, l'appeler aussi sur
 les track_id candidats de ce generateur plutot que de dupliquer la logique.
@@ -577,14 +590,21 @@ sans `masthead_word`), toujours reserve a Apple Music
 colonnes/footer vers un nouveau style "ledger" (`comp/tables_image.py`,
 classes `.ledger-*`) :
 
-- **Theme** : `masthead_theme="dark"` (defaut, deploye) ou `"light"` — bascule
-  toutes les couleurs (fond, texte, bordures, +/- vert/rouge) ET l'overlay du
-  header (assombrissant en dark, eclaircissant vers un blanc casse en light)
-  ET la couleur de base du wordmark fantome (blanc en dark, sombre en light)
-  via `_LEDGER_THEME_TOKENS` — pas de media query, chaque PNG est genere une
-  fois pour un theme donne. Pas encore branche dans `generate()`/CLI, mais
-  `build_html(..., masthead_theme="light")` marche deja dans les deux
-  generateurs si un jour on veut poster une variante claire.
+- **Theme** : `masthead_theme="dark"` ou `"light"` — bascule toutes les
+  couleurs (fond, texte, bordures, +/- vert/rouge) ET l'overlay du header
+  (assombrissant en dark, eclaircissant vers blanc en light) ET la couleur de
+  base du wordmark fantome (blanc en dark, sombre en light) via
+  `_LEDGER_THEME_TOKENS` — pas de media query, chaque PNG est genere une fois
+  pour un theme donne. **Depuis 2026-08-26, branche selon le jour** :
+  `build_html(masthead_theme=None)` appelle
+  `comp.tables_image.masthead_theme_for_date(target_date)` -> `"light"`
+  lun-ven, `"dark"` sam/dim. Passer `masthead_theme=` explicitement force
+  encore un theme (tests, overrides d'ere). Voir la sous-section
+  "Thème selon le jour" plus bas.
+- **Palette light = blanc propre** (2026-08-26) : `_LEDGER_THEME_TOKENS["light"]`
+  est passe du beige `#f6f1ea` a un blanc `#ffffff` (panneaux `#f4f6f8`, texte
+  `#1a1d24`, vert/rouge `#067647`/`#b42318`) — demande proprietaire « blanc
+  light theme ». Le beige n'existe plus nulle part.
 - **Rang colore par ere** : `era_accent_color(album)` (dict fige
   `ERA_ACCENT_COLORS`, initialement calque sur les accents de
   `tsm-frontend/frontend/src/utils/anniversaries.js` puis corrige a la main
@@ -636,6 +656,135 @@ classes `.ledger-*`) :
   `.mast-logo-badge .hdr-logo path`), remplace le gros logo blanc plein
   (64px) de l'ancien header classique. Uniquement actif quand
   `masthead_word` est fourni.
+
+## Carte recap quotidienne "Masthead" + monthly listeners / followers (2026-08-26)
+
+`generate_weekend_streams_image.py` (nom historique) genere la carte
+one-card postee **chaque jour** par `post_weekend_streams_twitter.py`
+(appelee par `finalize_update._post_daily_recap_card`, `--force-weekday`
+ajoute en semaine, lock `weekend_streams_posted.lock`). Elle a ete refaite
+en design **"Masthead"** — le meme parti-pris editorial que le header Top
+Songs / Top Eras (cf. section ci-dessus) mais sur toute la carte :
+
+- **Header** : `_masthead_header_style()` (local, `_header_style` reste
+  inchange pour throwback/debut) utilise **la meme image que le post Top
+  Eras standalone** — le pool partage `headers/top_eras/` via
+  `generate_albums_image._headers_dir_for_top_eras()` + `pick_header_image`,
+  PAS une photo era-specifique (choix proprietaire 2026-08-26 : « dans le
+  header on met plutot l'image de top eras comme d'hab »). Overlay
+  directionnel **selon le theme** (`_MH_THEME[theme]["mh-head-overlay"]` :
+  quasi-noir `rgba(9,10,13,.88->.58->.74)` en dark, quasi-blanc
+  `rgba(250,250,251,.90->.60->.80)` en light), `_masthead_header_style(theme)`
+  ; `accent` = `get_dominant_color(header_img)`. Par-dessus : **badge logo
+  Spotify** (`.mh-logo`, cercle `--mh-logo-bg` 42px, glyphe `SPOTIFY_SVG`
+  force en `--mh-logo-fill` — blanc/logo-sombre en dark, sombre/logo-blanc en
+  light), wordmark fantome `STREAMS` (Google Fonts "Big Shoulders Display",
+  `--mh-ghost`) et filet 3px `var(--accent)` en bas du bandeau. Texte du
+  header (`--mh-head-text`) blanc en dark, quasi-noir en light.
+- **Corps** : theme "ledger" **selon le jour** (cf. sous-section plus bas) —
+  `_MH_THEME["dark"]` (`body{background:#131417}`, texte `#eef0f2`) le
+  week-end, `_MH_THEME["light"]` (`#ffffff` / texte `#1a1d24`) en semaine.
+  Chaque couleur de `MASTHEAD_CSS` est une `var(--mh-*)` avec la valeur dark
+  en fallback ; `build_html` injecte le jeu de tokens du theme dans
+  `<body style>` (via `_mh_theme_vars`). Police **Inter** partout,
+  "Big Shoulders Display" pour le wordmark + les gros chiffres de rang
+  (`.mh-pos`). Le set dark est calque sur
+  `comp.tables_image._LEDGER_THEME_TOKENS["dark"]`. Choix 2026-08-26 : passage
+  de la 1re maquette (papier creme + serif Fraunces) a ledger + Inter.
+  `--accent-ink` est assombri (mix vers `#101828`) en light — un mix vers
+  blanc serait invisible sur fond blanc ; `--accent-wash` (rang #1) est
+  aussi reduit (0.14 vs 0.24) pour ne pas ecraser le blanc.
+- **Bande stats (haut)** : flex `[.mh-band-main | .mh-band-side]`. Gauche
+  `.mh-band-main` = gros `+total daily` + chg jour / semaine / all-time
+  (aligne a gauche). Droite `.mh-band-side` (`flex:1`,
+  `justify-content:center`) = 1 ou 2 cellules `.mh-astat` **centrees**
+  (texte centre aussi), monthly listeners (valeur + delta + `#rang world`
+  avec fleche) et followers (valeur + `+delta today`) — quand followers
+  absent, la seule cellule reste centree, pas collee au bord droit.
+  Placement + centrage demandes par le proprietaire (2026-08-26). Titres de
+  section `Top Eras` / `Top Songs` (`.mh-sec-h`) centres aussi. Puis 2
+  tables (`.mh-thd` + `.mh-tr`), footer handle/date.
+- **Choix design (via artifact)** : 5 concepts proposes (Counter/Masthead/
+  Scoreboard/Ledger/Panorama), "Counter" choisi puis abandonne, "Masthead"
+  retenu pour rester dans la meme famille que Top Eras / Top Songs.
+  Iterations d'opacite/tailles sur l'artifact avant portage. Rang #1 : leger
+  wash + numeral en `--accent-ink` (`_mix(accent,#fff,.55)`, lisible sur le
+  fond sombre). Deltas vert/rouge fixes (semantiques).
+- **Piege specificite CSS (corrige 2026-08-26)** : `.pos`/`.neg` etaient
+  declares AVANT `.mh-n` et `.mh-chg .v` dans `MASTHEAD_CSS` — a specificite
+  egale ou inferieure, les regles de base gagnaient et les deltas
+  Delta Day / Delta Week + chg jour/semaine restaient gris au lieu de
+  vert/rouge (meme famille de bug que spotlight `.stat-card.highlight` et
+  `generate_album_update_image.py`, cf. skill `image-gen`). Fix : regles
+  dediees `.mh-n.pos, .mh-n.pos b, .mh-n.pos i{...}` et `.mh-chg .v.pos{...}`
+  placees APRES les regles de base. Reflexe : toute couleur semantique
+  (vert hausse / rouge baisse) doit etre verifiee sur un vrai rendu, pas
+  juste presente dans la feuille de style.
+- **Renderer additif** : tout le style Masthead vit dans ce fichier
+  (`MASTHEAD_CSS`, `MASTHEAD_FONTS`, `_mh_*`) ; `CSS`, `_row_html`,
+  `_section_html`, `_header_style`, `_theme_vars_from_color`, `SPOTIFY_SVG`
+  **restent intacts** car `post_throwback_thread.py` et
+  `post_debut_releases.py` les importent (`generate_weekend_streams_image.X`).
+  Ne pas les fusionner/supprimer.
+- **Monthly listeners + followers** : lus depuis `db/discography/artist.json`
+  par `_load_artist_stats()` (rafraichi chaque run avant la finalisation par
+  `update_artist_metadata`). "Monthly listeners" s'affiche des que
+  `monthly_listeners` est present (+ delta vs `previous_monthly_listeners`,
+  + `#rang world` avec fleche vs `previous_monthly_rank`). "Followers" ne
+  s'affiche **que si `followers` est present** dans `artist.json` — sinon la
+  bande n'a qu'une cellule. **Jamais de placeholder** (regle data #1). Tant
+  qu'aucun run pipeline n'a tourne depuis l'ajout, `artist.json` n'a pas de
+  cle `followers` et la carte affiche juste les listeners — c'est voulu.
+- **Collecte followers** (`artist_metadata.py`) : la page artiste
+  deconnectee n'affiche plus le nombre de followers dans le DOM.
+  `attach_artist_stats_capture(page)` pose un listener sur les reponses
+  `pathfinder`/`queryArtistOverview` et extrait `stats.followers`
+  (`_dig_for_stats`, tolerant a la forme). `extract_followers_from_text`
+  reste comme premier essai (au cas ou Spotify re-affiche le compteur).
+  Best-effort, jamais bloquant. `update_artist_metadata` ajoute `followers`
+  + `previous_followers` au JSON (meme logique de bascule que les monthly
+  via `updated_at`) ; le CSV `artist_monthly_listeners_history.csv` garde
+  son schema (listeners/rank) — le delta followers vient de `artist.json`.
+- Verifie par `generate('2026-08-24')` (PNG inspecte : listeners seuls +
+  followers synthetiques a 2 colonnes) et un scrape reel
+  `artist_metadata.scrape_artist_metadata()` (followers ~163M captures).
+
+## Thème masthead selon le jour (light semaine / dark week-end) — 2026-08-26
+
+Décision proprietaire : **toutes les cards a en-tete masthead / corps ledger
+rendent le theme light (blanc propre) sur les posts de semaine (lun-ven) et
+dark le week-end (sam/dim)**. Base sur la **date des donnees postees**
+(`target_date`), pas sur `datetime.now()`.
+
+- **Helper unique** : `comp.tables_image.masthead_theme_for_date(target_date)`
+  -> `"dark"` si `weekday() >= 5`, sinon `"light"` ; `None`/inparsable ->
+  `"dark"`. Ne jamais reimplementer la regle jour-de-semaine ailleurs.
+- **Cards concernees** (toutes passent `masthead_theme=masthead_theme_for_date(
+  target_date)`) :
+  - `generate_streams_image.py` (Top Songs, "SONGS") — `build_html(
+    masthead_theme=None)` calcule tout seul ; idem `generate_thread_images`.
+  - `generate_albums_image.py` (Top Eras, "ERAS") — pareil.
+  - `post_stream_highlights_thread.py` (Spotlight Gainers, "GAINERS") — l'appel
+    `build_table_html` passait `masthead_theme="dark"` en dur, remplace.
+  - `generate_weekend_streams_image.py` (recap quotidien) — `build_html` /
+    `generate` calculent ; CLI `--light` / `--dark` force pour tester.
+  - `post_best_day_since_twitter.py::_generate_recap_image` (recap Best Day
+    Since, "BEST DAY").
+- **Override d'ere prioritaire** : le recap Best Day Since d'une ere
+  « Holiday Collection » reste **light toute l'annee** (theming Noel) — le
+  code applique la regle du jour d'abord, puis force `"light"` si l'ere est
+  Holiday Collection. Aucun autre override d'ere sur ces cards (TTPD/Showgirl
+  n'existent que sur `generate_album_update_image.py`, systeme `theme_variant`
+  separe, hors de cette regle).
+- **Recap Best Day Since** : ses lignes utilisent les classes classiques
+  `.data-row`/`.col-*` (pas `.ledger-*`), qui ont un fond quasi-blanc et un
+  texte sombre code en dur. Donc son theme "dark" n'assombrit que le header +
+  les rails ledger (le corps reste clair) ; en "light" tout est coherent.
+  Ecart pre-existant, pas regle ici — a garder en tete si un jour on refait
+  ce recap sur des vraies `.ledger-row`.
+- **Verifie** : recap regénéré sur 2026-08-24 (lun, light) / 08-23 (dim, dark)
+  / 08-22 (sam, dark) / 08-20 (jeu, light) ; Top Eras + Top Songs regénérés
+  sur 08-24 (light) — PNG inspectes, vert/rouge OK, contrastes OK.
 
 ## Pieges
 

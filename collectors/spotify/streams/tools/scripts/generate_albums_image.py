@@ -41,6 +41,7 @@ from comp.discography import build_cover_map  # noqa: E402
 from comp.tables_image import (  # noqa: E402
     download_as_data_uri, pick_header_image, get_dominant_color,
     rank_change, SPOTIFY_SVG, build_table_html, era_accent_color, dominant_color_from_data_uri,
+    masthead_theme_for_date,
 )
 import history_store  # noqa: E402
 
@@ -275,6 +276,16 @@ def build_album_rows(
             continue
         tracks_by_album.setdefault(album, []).append((track_id, info))
 
+    merge_losers = history_store.pick_active_catalog_merge_losers(
+        {track_id: today_row.get("streams") for track_id, today_row in today.items() if track_id in track_map},
+        {track_id: track_map[track_id] for track_id in today if track_id in track_map},
+    )
+    if merge_losers:
+        print(
+            f"[albums_image] Excluding {len(merge_losers)} currently merged track(s) "
+            f"from album/era aggregates: {sorted(merge_losers)}"
+        )
+
     for album, album_tracks in tracks_by_album.items():
         cover_url = covers.get(_norm(album), "")
         if not cover_url:
@@ -293,6 +304,8 @@ def build_album_rows(
         }
 
         for track_id, info in album_tracks:
+            if track_id in merge_losers:
+                continue
             if not merge_eras and info.get("chart_extra"):
                 continue
             t = today.get(track_id)
@@ -437,8 +450,11 @@ def build_rows_html(rows: list[dict], image_cache: dict[str, str]) -> str:
 
 
 def build_html(rows: list[dict], target_date: str, image_cache: dict[str, str],
-               masthead_theme: str = "dark") -> str:
+               masthead_theme: str | None = None) -> str:
     from datetime import datetime
+    # Weekday posts (Mon-Fri) -> light theme; weekend posts (Sat/Sun) -> dark.
+    if masthead_theme is None:
+        masthead_theme = masthead_theme_for_date(target_date)
     date_fmt  = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
     rows_html = build_rows_html(rows, image_cache)
 

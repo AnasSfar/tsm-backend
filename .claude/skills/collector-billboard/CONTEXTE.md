@@ -357,3 +357,77 @@ Regenere `cache/home_highlights.json` et `cache/version.json` sur R2 (lus par
 - `scrape_billboard.py` est network/Playwright et peut etre fragile au DOM.
 - Les variants Swift Top partagent le moteur principal via import/module; verifier
   les arguments transmis avant de modifier un wrapper.
+- **Incident 2026-08-20/25 : la semaine du 2026-08-20 n'a jamais ete generee
+  (gate reste `waiting` indefiniment) a cause d'un `NameError` dans
+  `swift_top_100.py`** — `_TRAILING_S_RE` (introduit par le fix titre du
+  2026-08-15) referencait une constante jamais definie ; le vrai nom etait
+  `_TRAILING_CONTRACTION_RE`. Comme `_normalize_title`/`_normalize_full_title`
+  sont appelees des le debut du scoring, TOUTE invocation de `swift_top_100.py`
+  plantait (donc uniquement visible le jeudi, seul jour ou le moteur tourne) —
+  `finalize_update.py` (source="streams") crashait avant d'appeler
+  `check_swift_top_gate`, laissant `swift_you.lock` seul (source="charts") sans
+  jamais poser `swift_top_done.lock`. Deuxieme bug trouve en verifiant le fix :
+  `_TRAILING_CONTRACTION_RE.sub(r"\1s", s)` remplacait TOUJOURS par un `s`
+  litteral quel que soit le groupe matche (`s|t|d|m|ll|re|ve`) — correct pour
+  "who's"->"whos" mais cassait "don't"->"don t"->"dons" au lieu de "dont" (et
+  pareil pour tout titre avec 't/'d/'m/'ll/'re/'ve). Fixe en `r"\1\2"`. Reflexe
+  si un futur jeudi reste bloque en `waiting` : lancer
+  `swift_top_100.py --date <jeudi> --variant all --dry-run` a la main pour voir
+  le vrai traceback avant de soupconner un probleme de donnees/gate.
+- **Piege distinct (meme audit) : `song_family` peut contenir du texte
+  descriptif que les sources externes (YouTube) ne portent pas dans leur titre
+  groupe, cassant le matching en mode combined sans jamais planter.**
+  `_chart_lookup_key(combined=True)` priorise `song_family` ; si ce slug
+  encode un suffixe genre `(Fifty Shades Darker)`, `(feat. X)` ou un `&` non
+  converti en `and` (contrairement a `_clean_title_text` qui le fait), la cle
+  ne matche plus jamais la cle YouTube correspondante -> 0 vues silencieux,
+  sans lien avec les deux bugs regex ci-dessus. 4 cas trouves et corriges le
+  2026-08-25 (renommage direct du `song_family` dans le JSON discographie,
+  jamais de nouvelle regex globale — trop risque de sur-fusionner des vrais
+  remixes/versions distincts, ex. "Lover (Remix) [feat. Shawn Mendes]" doit
+  RESTER separe de "Lover") :
+  - reputation.json "I Don't Wanna Live Forever (Fifty Shades Darker)" :
+    `i_don_t_wanna_live_forever_fifty_shades_darker` -> `i_don_t_wanna_live_forever`
+  - the_life_of_a_showgirl.json "The Life of a Showgirl (feat. Sabrina
+    Carpenter)" (edition "extras", meme track_id que l'edition standard) :
+    `the_life_of_a_showgirl_feat_sabrina_carpenter` -> `the_life_of_a_showgirl`
+    (aligne sur les 3 autres entrees du meme titre qui utilisaient deja la
+    bonne cle — incoherence entre editions, pas un cas isole)
+  - lover.json "Miss Americana & The Heartbreak Prince" :
+    `miss_americana_the_heartbreak_prince` -> `miss_americana_and_the_heartbreak_prince`
+  - red.json "Safe & Sound - from The Hunger Games Soundtrack" ET
+    red_taylor_s_version.json "Safe & Sound (feat. Joy Williams and John Paul
+    White) (Taylor's Version)" : `safe_sound_from_the_hunger_games_soundtrack`
+    / `safe_sound` -> `safe_and_sound` (les deux alignes pour fusionner
+    correctement en mode combined, comme prevu par le design du chart)
+  Reflexe pour detecter d'autres cas : comparer, pour chaque track, la cle
+  utilisee (`_chart_lookup_key` avec `song_family`) a une cle de repli
+  (`_normalize_title(base_title or title)`) ; si differentes ET que la cle de
+  repli a un volume YouTube reel alors que la cle utilisee a 0, investiguer —
+  mais NE PAS fixer en masse, la plupart des ecarts sont des versions/remixes
+  legitimement separes (instrumentaux, commentary, mixes alternatifs) dont la
+  separation est voulue.
+- **Troisieme piege (meme audit 2026-08-25) : `swift_top_100.py` n'appliquait
+  jamais le dedup des fusions catalogue Spotify actives**, contrairement a
+  `generate_albums_image.py`/`export_for_web.py`/`post_gainer_thread.py`/
+  `generate_weekend_streams_image.py` qui appellent tous deja
+  `history_store.pick_active_catalog_merge_losers()`. Symptome : "Shake It
+  Off" et "Love Story - Pop Mix" sont apparus en `NEW` a des rangs bas
+  (#30/#61) sur le TayBoard du 2026-08-20 avec un total duplique de leur
+  version principale — les track_id "Best Work Edition"/"Pop Mix" sont dans
+  la liste de fusion active connue (memoire `spotify-streams-0817-corruption`,
+  meme paires que Karma/Karma feat. Ice Spice a l'epoque). Fix : nouvelle
+  fonction `_currently_merged_track_ids()` dans `swift_top_100.py` (lit
+  `STREAMS_HISTORY_CSV` pour la date du chart, importe `history_store` en
+  ajoutant `collectors/spotify/streams/tools/scripts` a `sys.path` — meme
+  pattern que l'import dynamique de `r2` dans `_maybe_upload_to_r2`), appelee
+  au debut de `_build_week_chart()` pour retirer ces track_id de
+  `weekly_streams`/`daily_streams` avant tout scoring. Confirme avec le rerun
+  du 08-20 : les deux entrees dupliquees ont disparu, le total du track
+  gagnant ne change pas (Spotify traite deja les deux track_id comme un seul
+  pool cote total, donc rien a additionner). Reflexe : toute nouvelle logique
+  de classement/top-N dans ce repo doit appeler ce dedup — il n'est PAS
+  partage automatiquement entre generateurs (meme lecon que l'incident
+  Shake It Off/Love Story du 2026-08-22 documente dans la memoire
+  `spotify-streams-0817-corruption`, juste jamais applique a `swift_top_100.py`
+  jusqu'ici).

@@ -15,6 +15,16 @@ try:
 except ImportError:
     _PIL = False
 
+try:
+    from .song_card_default import build_css as _default_css
+    from .song_card_best_since import build_css as _best_since_css
+except ImportError:
+    import sys
+
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    from comp.song_card_default import build_css as _default_css  # type: ignore
+    from comp.song_card_best_since import build_css as _best_since_css  # type: ignore
+
 
 SPOTIFY_SVG = """<svg class="logo" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>"""
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -222,21 +232,6 @@ def cover_palette(img_bytes: bytes) -> tuple[str, str]:
         return ("linear-gradient(135deg,#1db954 0%,#0f7f3d 100%)", "#1db954")
 
 
-def _title_font_size(title: str) -> int:
-    n = len(title)
-    if n <= 13:
-        return 52
-    if n <= 16:
-        return 44
-    if n <= 19:
-        return 38
-    if n <= 23:
-        return 32
-    if n <= 28:
-        return 26
-    return 22
-
-
 def _best_since_title_font_size(title: str) -> int:
     n = len(title)
     if n <= 13:
@@ -310,6 +305,7 @@ def render_song_card(
     title_html = f'<div class="title">{html.escape(title)}</div>'
     subtitle_html = f'<div class="subtitle">{html.escape(subtitle)}</div>' if best_since and subtitle else ""
     body_gap = _body_gap(title, has_extra=bool(extra_html), has_subtitle=bool(subtitle_html), best_since=best_since)
+    title_font_size = _best_since_title_font_size(title)
     mode_badge_text = badge_text if badge_text else ("COMBINED VERSIONS" if combined_versions else footer_right)
     mode_badge_html = f'<span class="mode-badge">{html.escape(mode_badge_text)}</span>' if mode_badge_text else ""
     tsm_logo_uri = _tsm_logo_data_uri()
@@ -321,175 +317,15 @@ def render_song_card(
         )
     body_class = "best-since" if best_since else "default"
     if best_since:
-        css = f"""
-*{{margin:0;padding:0;box-sizing:border-box}}
-body{{
-  font-family:Inter,-apple-system,'Helvetica Neue',Arial,sans-serif;
-  width:920px;height:480px;
-  background:{gradient};
-  position:relative;overflow:hidden;color:#fff;
-}}
-body:before{{
-  content:"";position:absolute;inset:0;
-  background:
-    linear-gradient(90deg,rgba(4,10,16,.62) 0%,rgba(4,10,16,.42) 49%,rgba(4,10,16,.08) 100%),
-    radial-gradient(circle at 18% 85%,rgba(255,255,255,.20),rgba(255,255,255,0) 36%);
-}}
-.layout{{height:480px;position:relative;z-index:1}}
-.cover-col{{
-  position:absolute;right:20px;top:40px;width:400px;height:400px;
-  overflow:hidden;border-radius:30px;
-  box-shadow:0 24px 50px rgba(0,0,0,.42),0 0 0 1px rgba(255,255,255,.18);
-}}
-.cover,.cover-ph{{width:400px;height:400px;object-fit:cover;display:block}}
-.cover-ph{{background:#172421}}
-.info-col{{
-  position:absolute;left:32px;top:36px;bottom:42px;width:450px;
-  display:flex;flex-direction:column;
-}}
-.hdr-row{{display:flex;align-items:center;gap:12px;width:100%;flex-shrink:0}}
-.body-col{{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:{body_gap}px;margin-top:13px}}
-.logo{{width:33px;height:33px;flex-shrink:0}}
-.hdr-label{{
-  color:rgba(255,255,255,.92);font-size:15px;font-weight:900;
-  letter-spacing:.12em;text-transform:uppercase;
-}}
-.mode-badge{{
-  margin-left:auto;color:rgba(255,255,255,.88);
-  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);
-  border-radius:999px;padding:8px 13px;
-  font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;
-  white-space:nowrap;
-}}
-.title{{
-  color:#fff;font-size:{_best_since_title_font_size(title)}px;font-weight:950;
-  line-height:1.14;letter-spacing:0;flex-shrink:0;
-  max-width:442px;display:-webkit-box;-webkit-line-clamp:2;
-  -webkit-box-orient:vertical;overflow:hidden;
-  text-shadow:0 3px 18px rgba(0,0,0,.28);
-}}
-.subtitle{{
-  width:max-content;max-width:430px;
-  color:{badge_fg};background:{badge_bg};
-  font-size:15px;font-weight:900;border-radius:999px;
-  padding:8px 15px;display:flex;align-items:center;gap:9px;
-  text-transform:uppercase;
-  box-shadow:0 12px 28px rgba(0,0,0,.20),0 0 0 1px rgba(255,255,255,.18);
-}}
-.subtitle:before{{
-  content:"\\2605";display:inline-flex;align-items:center;justify-content:center;
-  width:23px;height:23px;border-radius:999px;
-  color:{badge_bg};background:{badge_fg};font-size:14px;line-height:1;
-}}
-.stats{{display:flex;gap:14px;margin-top:4px;width:100%}}
-.stat{{
-  background:rgba(7,14,22,.58);border:1px solid rgba(255,255,255,.20);
-  border-radius:18px;padding:13px 16px 12px;flex:1;min-width:0;
-  box-shadow:0 12px 30px rgba(0,0,0,.18);
-}}
-.stat-lbl{{
-  font-size:10px;font-weight:900;letter-spacing:.1em;
-  text-transform:uppercase;color:rgba(255,255,255,.58);margin-bottom:4px;
-}}
-.stat-val{{font-size:28px;font-weight:950;color:#fff;line-height:1;white-space:nowrap}}
-.stat-val.medium{{font-size:25px}}
-.stat-val.long{{font-size:22px}}
-.chg{{font-size:12px;font-weight:900;margin-top:5px;letter-spacing:.02em}}
-.chg.new,.chg.re,.chg.up{{color:#7ee787}}
-.chg.down{{color:#fca5a5}}
-.chg.flat{{color:rgba(255,255,255,.52)}}
-.extra{{
-  color:rgba(255,255,255,.76);font-size:15px;font-weight:750;
-  max-width:430px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}}
-.ftr{{
-  position:absolute;bottom:16px;left:35px;right:35px;z-index:2;
-  display:flex;justify-content:space-between;
-}}
-.ftr-l{{font-size:12px;color:rgba(255,255,255,.52);font-weight:700}}
-.ftr-brand{{display:flex;align-items:center;gap:7px}}
-.tsm-logo{{width:21px;height:21px;object-fit:contain;border-radius:4px}}
-"""
+        css = _best_since_css(
+            gradient=gradient,
+            title_font_size=title_font_size,
+            body_gap=body_gap,
+            badge_bg=badge_bg,
+            badge_fg=badge_fg,
+        )
     else:
-        css = f"""
-*{{margin:0;padding:0;box-sizing:border-box}}
-body{{
-  font-family:Inter,-apple-system,'Helvetica Neue',Arial,sans-serif;
-  width:920px;height:480px;
-  background:{gradient};
-  position:relative;overflow:hidden;color:#fff;
-}}
-body:before{{
-  content:"";position:absolute;inset:0;
-  background:
-    linear-gradient(90deg,rgba(4,10,16,.62) 0%,rgba(4,10,16,.42) 49%,rgba(4,10,16,.08) 100%),
-    radial-gradient(circle at 18% 85%,rgba(255,255,255,.20),rgba(255,255,255,0) 36%);
-}}
-.layout{{height:480px;position:relative;z-index:1}}
-.cover-col{{
-  position:absolute;right:20px;top:40px;width:400px;height:400px;
-  overflow:hidden;border-radius:30px;
-  box-shadow:0 24px 50px rgba(0,0,0,.42),0 0 0 1px rgba(255,255,255,.18);
-}}
-.cover,.cover-ph{{width:400px;height:400px;object-fit:cover;display:block}}
-.cover-ph{{background:#172421}}
-.info-col{{
-  position:absolute;left:32px;top:36px;bottom:42px;width:450px;
-  display:flex;flex-direction:column;
-}}
-.hdr-row{{display:flex;align-items:center;gap:12px;width:100%;flex-shrink:0}}
-.body-col{{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:{body_gap}px;margin-top:7px}}
-.logo{{width:33px;height:33px;flex-shrink:0}}
-.hdr-label{{
-  color:rgba(255,255,255,.92);font-size:15px;font-weight:900;
-  letter-spacing:.12em;text-transform:uppercase;
-}}
-.mode-badge{{
-  margin-left:auto;color:rgba(255,255,255,.88);
-  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);
-  border-radius:999px;padding:8px 13px;
-  font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;
-  white-space:nowrap;
-}}
-.title{{
-  color:#fff;font-size:{_best_since_title_font_size(title)}px;font-weight:950;
-  line-height:1.14;letter-spacing:0;flex-shrink:0;
-  max-width:442px;display:-webkit-box;-webkit-line-clamp:2;
-  -webkit-box-orient:vertical;overflow:hidden;
-  text-shadow:0 3px 18px rgba(0,0,0,.28);
-  margin-bottom:-5px;
-}}
-.stats{{display:flex;gap:12px;margin-top:2px;width:100%}}
-.stat{{
-  background:rgba(7,14,22,.58);border:1px solid rgba(255,255,255,.20);
-  border-radius:18px;padding:11px 16px 10px;flex:1;min-width:0;
-  box-shadow:0 12px 30px rgba(0,0,0,.18);
-}}
-.stat-lbl{{
-  font-size:10px;font-weight:900;letter-spacing:.1em;
-  text-transform:uppercase;color:rgba(255,255,255,.58);margin-bottom:4px;
-}}
-.stat-val{{font-size:28px;font-weight:950;color:#fff;line-height:1;white-space:nowrap}}
-.stat-val.medium{{font-size:25px}}
-.stat-val.long{{font-size:22px}}
-.chg{{font-size:12px;font-weight:900;margin-top:5px;letter-spacing:.02em}}
-.chg.new,.chg.re,.chg.up{{color:#7ee787}}
-.chg.down{{color:#fca5a5}}
-.chg.flat{{color:rgba(255,255,255,.52)}}
-.extra{{
-  color:rgba(255,255,255,.76);font-size:15px;font-weight:750;
-  max-width:430px;margin-top:-2px;margin-bottom:1px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}}
-.ftr{{
-  position:absolute;bottom:16px;left:35px;right:35px;z-index:2;
-  display:flex;justify-content:space-between;
-}}
-.ftr-l{{font-size:12px;color:rgba(255,255,255,.52);font-weight:700}}
-.ftr-brand{{display:flex;align-items:center;gap:7px}}
-.tsm-logo{{width:21px;height:21px;object-fit:contain;border-radius:4px}}
-"""
+        css = _default_css(gradient=gradient, title_font_size=title_font_size, body_gap=body_gap)
     return f"""<!doctype html><html><head><meta charset="utf-8"><style>{css}</style></head>
 <body class="{body_class}">
 <div class="layout">

@@ -54,9 +54,9 @@ for _path in (COLLECTORS_ROOT, SPOTIFY_STREAMS_DIR, SPOTIFY_STREAMS_SCRIPTS_DIR)
         sys.path.insert(0, _path_str)
 
 from comp.chart_card import render_chart_card, write_chart_card_png  # noqa: E402
-from comp.song_card import render_song_card, slugify, write_song_card_png  # noqa: E402
+from comp.song_card_chart_sheet import format_change_html, render_chart_sheet_card, slugify, write_chart_sheet_card_png  # noqa: E402
 from comp.tables_image import build_table_html, render_html_to_png, url_to_data_uri  # noqa: E402
-from comp.discography import build_cover_map, _norm  # noqa: E402
+from comp.discography import _norm  # noqa: E402
 from comp.fmt import fmt_streams, fmt_pct, pct_cls, get_pct  # noqa: E402
 import best_day_since  # noqa: E402
 import spotlight  # noqa: E402
@@ -107,33 +107,36 @@ def _title_case(title: str) -> str:
     return "long" if len(title or "") >= 30 else "short"
 
 
-def _write_song_card(
+def _write_chart_sheet_card(
     *,
     output_dir: Path,
     keep_html: bool,
     case_slug: str,
     card_title: str,
+    album: str,
     date_text: str,
-    stats: list[dict],
+    kicker_text: str,
+    bars: list[dict],
+    daily_value_text: str,
+    daily_class: str,
+    change_text: str,
+    total_value_text: str,
     cover_url: str,
-    extra: str,
-    subtitle: str = "",
-    best_since: bool = False,
-    combined_versions: bool = False,
-    badge_text: str | None = None,
+    footer_right: str,
 ) -> Path:
-    html_text = render_song_card(
+    html_text = render_chart_sheet_card(
         title=card_title,
-        eyebrow="Spotify Streams",
-        subtitle=subtitle,
-        stats=stats,
+        album=album,
+        date_text=date_text,
+        kicker_text=kicker_text,
+        bars=bars,
+        daily_value_text=daily_value_text,
+        daily_class=daily_class,
+        change_text=change_text,
+        total_value_text=total_value_text,
         cover_url=cover_url,
         footer_left="@swiftiescharts",
-        footer_right=date_text,
-        extra=extra,
-        best_since=best_since,
-        combined_versions=combined_versions,
-        badge_text=badge_text,
+        footer_right=footer_right,
     )
     output_dir.mkdir(parents=True, exist_ok=True)
     slug = slugify(card_title)
@@ -141,7 +144,7 @@ def _write_song_card(
     html_path = output_dir / f"song_card_{case_slug}_{slug}.html"
     print(f"[preview] Writing HTML: {html_path}", flush=True)
     print(f"[preview] Rendering PNG: {out_path}", flush=True)
-    return write_song_card_png(html_text, out_path, html_path, keep_html=keep_html)
+    return write_chart_sheet_card_png(html_text, out_path, html_path, keep_html=keep_html)
 
 
 def _best_since_rows_for_date(stats_date: str) -> list[dict]:
@@ -163,22 +166,6 @@ def _best_since_rows_for_date(stats_date: str) -> list[dict]:
             history,
             target,
         )
-        if row and row.get("kind") == "since" and best_day_since.passes_filters(row, min_days=1):
-            rows.append(row)
-    return rows
-
-
-def _album_rows_for_date(stats_date: str) -> list[dict]:
-    tracks = best_day_since.load_tracks(include_extras=False)
-    history = best_day_since.load_history()
-    target = datetime.strptime(stats_date, "%Y-%m-%d").date()
-    by_album = best_day_since.load_album_track_ids(tracks)
-
-    rows = []
-    for album, track_ids in by_album.items():
-        if len(track_ids) < 2:
-            continue
-        row = best_day_since.compute_album_best_day_since(album, track_ids, history, target)
         if row and row.get("kind") == "since" and best_day_since.passes_filters(row, min_days=1):
             rows.append(row)
     return rows
@@ -217,19 +204,32 @@ def _pick_case(candidates: list[dict], *, title_case: str) -> dict | None:
     return random.choice(matching) if matching else None
 
 
+def _chart_sheet_footer_right(track_id: str, tracks_by_id: dict, date_text_short: str) -> str:
+    track = tracks_by_id.get(track_id)
+    if track and track.release_date:
+        return f"Released {track.release_date.strftime('%d/%m/%Y')}"
+    return date_text_short
+
+
 def _song_card_gallery(output_dir: Path, keep_html: bool, target_date: str) -> list[Path]:
-    print("[preview] Building song_card gallery...", flush=True)
-    date_text = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
+    print("[preview] Building song_card (Chart Sheet) gallery...", flush=True)
+    target = datetime.strptime(target_date, "%Y-%m-%d").date()
+    date_text_short = target.strftime("%b %d, %Y").upper()
     covers = spotlight.load_covers()
     spotlight_tracks = {track["track_id"]: track for track in spotlight.load_all_tracks()}
+    tracks_by_id = best_day_since.load_tracks(include_extras=True)
+    history = best_day_since.load_history()
     paths: list[Path] = []
 
     best_rows = _best_since_rows_for_date(target_date)
     best_track_ids = {row["track_id"] for row in best_rows}
     print(f"[preview] Found {len(best_rows)} best-day-since row(s).", flush=True)
 
+    # "Weekend Gainer" cases: real positive-movers that aren't a best-day-since
+    # record, matching post_weekend_song_gainers.py's kicker/no-historical-bar
+    # style (no plain no-kicker card ships anywhere today, see CONTEXTE.md).
     default_candidates = _default_candidates_for_date(target_date, best_track_ids)
-    print(f"[preview] Found {len(default_candidates)} default non-best candidate(s).", flush=True)
+    print(f"[preview] Found {len(default_candidates)} weekend-gainer-style candidate(s).", flush=True)
     default_items = [
         {**candidate, "title": candidate["track"].get("title") or ""}
         for candidate in default_candidates
@@ -237,23 +237,31 @@ def _song_card_gallery(output_dir: Path, keep_html: bool, target_date: str) -> l
     for case in ("short", "long"):
         selected = _pick_case(default_items, title_case=case)
         if not selected:
-            print(f"[preview] Skip default_not_best_{case}: no real candidate.", flush=True)
+            print(f"[preview] Skip weekend_gainer_{case}: no real candidate.", flush=True)
             continue
         track = selected["track"]
+        track_id = track["track_id"]
         daily = selected["daily_today"]
-        pct = _fmt_pct(daily, selected["daily_yesterday"])
-        paths.append(_write_song_card(
+        daily_pct = _fmt_pct(daily, selected["daily_yesterday"])
+        points = history.get(track_id) or []
+        weekly_point = next((p for p in points if p.day == target - timedelta(days=7)), None)
+        weekly_pct = _fmt_pct(daily, weekly_point.daily) if weekly_point and weekly_point.daily else None
+        bars = best_day_since.build_chart_sheet_bars(points, target)
+        paths.append(_write_chart_sheet_card(
             output_dir=output_dir,
             keep_html=keep_html,
-            case_slug=f"default_not_best_{case}",
+            case_slug=f"weekend_gainer_{case}",
             card_title=track["title"],
-            date_text=date_text,
-            stats=[
-                {"label": "Daily Streams", "value": _fmt_signed_int(daily), "badge": pct, "badge_class": _badge_class(pct)},
-                {"label": "Total Streams", "value": _fmt_int(selected["total_today"]), "badge": "Since release", "badge_class": "flat"},
-            ],
+            album=track.get("album") or track.get("artist") or "",
+            date_text=date_text_short,
+            kicker_text="Weekend Gainer",
+            bars=bars,
+            daily_value_text=_fmt_signed_int(daily),
+            daily_class=_badge_class(daily_pct),
+            change_text=format_change_html(daily_pct, _badge_class(daily_pct), weekly_pct, _badge_class(weekly_pct) if weekly_pct else "flat"),
+            total_value_text=_fmt_int(selected["total_today"]),
             cover_url=selected["cover_url"],
-            extra=track.get("album") or track.get("artist") or "",
+            footer_right=_chart_sheet_footer_right(track_id, tracks_by_id, date_text_short),
         ))
 
     best_items = []
@@ -283,65 +291,43 @@ def _song_card_gallery(output_dir: Path, keep_html: bool, target_date: str) -> l
             row = item["row"]
             track = item["track"]
             track_ids = row.get("combined_track_ids") or [row["track_id"]]
-            total_today, _total_yesterday, _daily_today, daily_yesterday, _daily_last_week = (
+            total_today, _total_yesterday, _daily_today, daily_yesterday, daily_last_week = (
                 spotlight.load_history_for_tracks(track_ids, target_date)
             )
             if total_today is None:
                 print(f"[preview] Skip best_since_{combined_label}_{case}: missing total streams.", flush=True)
                 continue
             daily = int(row["daily_streams"])
-            label = best_day_since.row_label(row)
-            pct = _fmt_pct(daily, daily_yesterday)
-            paths.append(_write_song_card(
+            daily_pct = _fmt_pct(daily, daily_yesterday)
+            weekly_pct = _fmt_pct(daily, daily_last_week) if daily_last_week else None
+
+            historical_date = None
+            historical_daily = None
+            if row.get("previous_higher_or_equal_date"):
+                historical_date = datetime.strptime(row["previous_higher_or_equal_date"], "%Y-%m-%d").date()
+                historical_daily = row.get("previous_higher_or_equal_daily")
+            points_by_track = [history.get(tid) or [] for tid in track_ids]
+            points = best_day_since.combine_points(points_by_track) if len(track_ids) > 1 else (points_by_track[0] or [])
+            bars = best_day_since.build_chart_sheet_bars(
+                points, target, historical_date=historical_date, historical_daily=historical_daily,
+            )
+
+            paths.append(_write_chart_sheet_card(
                 output_dir=output_dir,
                 keep_html=keep_html,
                 case_slug=f"best_since_{combined_label}_{case}",
                 card_title=item["title"],
-                date_text=date_text,
-                subtitle=label,
-                stats=[
-                    {"label": "Daily Streams", "value": _fmt_signed_int(daily), "badge": pct, "badge_class": _badge_class(pct)},
-                    {"label": "Total Streams", "value": _fmt_int(total_today), "badge": "Since release", "badge_class": "flat"},
-                ],
+                album=track.get("album") or row.get("album") or "",
+                date_text=date_text_short,
+                kicker_text=best_day_since.row_label(row),
+                bars=bars,
+                daily_value_text=_fmt_signed_int(daily),
+                daily_class=_badge_class(daily_pct),
+                change_text=format_change_html(daily_pct, _badge_class(daily_pct), weekly_pct, _badge_class(weekly_pct) if weekly_pct else "flat"),
+                total_value_text=_fmt_int(total_today),
                 cover_url=spotlight.get_cover_url(track, covers),
-                extra=track.get("album") or row.get("album") or "",
-                best_since=True,
-                combined_versions=combined,
+                footer_right=_chart_sheet_footer_right(row["track_id"], tracks_by_id, date_text_short),
             ))
-
-    album_rows = _album_rows_for_date(target_date)
-    print(f"[preview] Found {len(album_rows)} album best-day-since row(s).", flush=True)
-    if album_rows:
-        row = random.choice(album_rows)
-        total_today, _total_yesterday, _daily_today, daily_yesterday, _daily_last_week = (
-            spotlight.load_history_for_tracks(row["track_ids"], target_date)
-        )
-        if total_today is None:
-            print("[preview] Skip best_since_album: missing total streams.", flush=True)
-        else:
-            album_covers = build_cover_map(DB_ROOT / "discography" / "covers.json")
-            cover_url = album_covers.get(_norm(row["album"]), "")
-            daily = int(row["daily_streams"])
-            label = best_day_since.row_label(row)
-            pct = _fmt_pct(daily, daily_yesterday)
-            paths.append(_write_song_card(
-                output_dir=output_dir,
-                keep_html=keep_html,
-                case_slug="best_since_album",
-                card_title=row["album"],
-                date_text=date_text,
-                subtitle=label,
-                stats=[
-                    {"label": "Daily Streams", "value": _fmt_signed_int(daily), "badge": pct, "badge_class": _badge_class(pct)},
-                    {"label": "Total Streams", "value": _fmt_int(total_today), "badge": "Since release", "badge_class": "flat"},
-                ],
-                cover_url=cover_url,
-                extra="",
-                best_since=True,
-                badge_text=f"Album - {date_text}",
-            ))
-    else:
-        print("[preview] Skip best_since_album: no real candidate.", flush=True)
 
     return paths
 

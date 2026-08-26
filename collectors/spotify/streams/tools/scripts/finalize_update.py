@@ -249,6 +249,15 @@ class ReadyAlbumUpdatePoster:
                     continue
             if not self.album_tracks_done_for(album, self.stats_date):
                 continue
+            block_reason = generate_album_update_image.holiday_collection_post_block_reason(
+                album,
+                self.stats_date,
+            )
+            if block_reason:
+                print(f"Early album update skipped ({album}): {block_reason}")
+                with self._lock:
+                    self._posted.add(album)
+                return True
 
             print(f"Album update ready during streams run: {album}")
             print("Exporting current web data before early album post...")
@@ -1116,6 +1125,13 @@ def _post_one_album(
     if album in ctx.posted_album_updates:
         print(f"Album update already posted during streams run: {album}")
         return
+    block_reason = generate_album_update_image.holiday_collection_post_block_reason(
+        album,
+        ctx.summary["stats_date"],
+    )
+    if block_reason:
+        print(f"Album update skipped ({album}): {block_reason}")
+        return
     if not ctx.album_tracks_done_for(album, ctx.summary["stats_date"]):
         try:
             sections = ctx.load_album_sections_flat()
@@ -1348,20 +1364,22 @@ def _post_spotlight_gainers(ctx: FinalizeContext, state: dict[str, float]) -> No
         return
 
     highlights_script = ctx.script_dir / "tools" / "scripts" / "post_stream_highlights_thread.py"
-    print("Posting separate stream highlight threads (daily %, weekly %)...")
+    print("Posting separate stream highlight tables (daily %, weekly %)...")
     cmd = [
         sys.executable,
         str(highlights_script),
         ctx.summary["stats_date"],
         "--limit",
-        "5",
+        "10",
+        "--post-spacing-seconds",
+        str(ctx.post_spacing_seconds),
     ]
     if ctx.no_post_mode:
         cmd.append("--no-post")
     _run(
         ctx,
         cmd,
-        label="stream highlights thread",
+        label="stream highlights tables",
         should_post=not ctx.no_post_mode,
         state=state,
     )

@@ -700,22 +700,46 @@ _LEDGER_THEME_TOKENS = {
         "mast-overlay-rgb": "6,8,7",
     },
     "light": {
-        "ledger-bg": "#f6f1ea",
-        "ledger-cols-bg": "#efe6d8",
-        "ledger-ftr-bg": "#efe6d8",
-        "ledger-row-border": "#e7ddd0",
-        "ledger-text": "#241d17",
-        "ledger-muted": "#8a7c68",
-        "ledger-faint": "#8a7c68",
-        "ledger-col-label": "#8a7c68",
-        "ledger-pos": "#3f7d57",
-        "ledger-neg": "#a4483a",
-        "mast-title-color": "#241d17",
-        "mast-sub-color": "rgba(36,29,23,.78)",
-        "mast-word-color": "rgba(20,14,8,.42)",
-        "mast-overlay-rgb": "244,240,234",
+        "ledger-bg": "#ffffff",
+        "ledger-cols-bg": "#f4f6f8",
+        "ledger-ftr-bg": "#f4f6f8",
+        "ledger-row-border": "#e6e9ee",
+        "ledger-text": "#1a1d24",
+        "ledger-muted": "#667085",
+        "ledger-faint": "#98a2b3",
+        "ledger-col-label": "#667085",
+        "ledger-pos": "#067647",
+        "ledger-neg": "#b42318",
+        "mast-title-color": "#12141a",
+        "mast-sub-color": "rgba(18,20,26,.72)",
+        "mast-word-color": "rgba(18,20,26,.14)",
+        "mast-overlay-rgb": "250,250,251",
     },
 }
+
+
+def masthead_theme_for_date(target_date) -> str:
+    """Owner rule (2026-08-26): masthead / ledger cards render the **light**
+    theme on weekday posts (Mon-Fri) and the **dark** theme on weekend posts
+    (Sat/Sun). Per-era overrides (e.g. Best Day Since "Holiday Collection"
+    stays light year-round) are applied by the caller *after* this.
+
+    Accepts a ``date``/``datetime``, a ``YYYY-MM-DD`` string, or ``None``.
+    ``None`` / unparseable -> ``"dark"`` (the safe default)."""
+    if target_date is None:
+        return "dark"
+    if isinstance(target_date, datetime):
+        target_date = target_date.date()
+    if isinstance(target_date, str):
+        try:
+            target_date = datetime.strptime(target_date[:10], "%Y-%m-%d").date()
+        except ValueError:
+            return "dark"
+    try:
+        weekday = target_date.weekday()
+    except AttributeError:
+        return "dark"
+    return "dark" if weekday >= 5 else "light"
 
 
 def build_table_html(

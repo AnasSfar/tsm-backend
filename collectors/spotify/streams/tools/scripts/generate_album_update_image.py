@@ -64,6 +64,10 @@ TWITTER_SESSION = ROOT.parent / "charts" / "global" / "tools" / "json" / "twitte
 
 HANDLE          = "@swiftiescharts"
 TWEET_CHAR_LIMIT = 280
+HOLIDAY_COLLECTION_ALBUM = "The Taylor Swift Holiday Collection"
+HOLIDAY_COLLECTION_MIN_DAILY_STREAMS_TO_POST = 100_000
+HOLIDAY_COLLECTION_SEASON_START = (11, 25)
+HOLIDAY_COLLECTION_SEASON_END = (1, 7)
 
 # Nouveau : logo à gauche du handle
 HANDLE_ICON_PATH = Path(r"C:\Users\sfara\Documents\GitHub\tsm-frontend\icons\logo.gif")
@@ -79,6 +83,42 @@ RENDER_DPR = 4
 
 def _norm(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "_", (s or "").lower()).strip("_")
+
+
+def is_holiday_collection_album(album_name: str) -> bool:
+    return _norm(album_name) == _norm(HOLIDAY_COLLECTION_ALBUM)
+
+
+def _is_holiday_collection_season(target_date: str) -> bool:
+    day = date_cls.fromisoformat(target_date)
+    month_day = (day.month, day.day)
+    return month_day >= HOLIDAY_COLLECTION_SEASON_START or month_day <= HOLIDAY_COLLECTION_SEASON_END
+
+
+def holiday_collection_post_block_reason(album_name: str, target_date: str) -> str | None:
+    if not is_holiday_collection_album(album_name):
+        return None
+    if not _is_holiday_collection_season(target_date):
+        return (
+            f"{HOLIDAY_COLLECTION_ALBUM} is outside Christmas posting season "
+            f"(Nov 25-Jan 7)."
+        )
+
+    sections, _canonical_name = load_album_sections(album_name, target_date)
+    if not sections:
+        return f"{HOLIDAY_COLLECTION_ALBUM} sections unavailable."
+    hist = load_history_for_album(sections, target_date)
+    daily_total = sum(
+        int(hist.get(track["track_id"], {}).get("daily") or 0)
+        for section in sections
+        for track in section.get("tracks", [])
+    )
+    if daily_total < HOLIDAY_COLLECTION_MIN_DAILY_STREAMS_TO_POST:
+        return (
+            f"{HOLIDAY_COLLECTION_ALBUM} daily total is {daily_total:,}, below "
+            f"{HOLIDAY_COLLECTION_MIN_DAILY_STREAMS_TO_POST:,}."
+        )
+    return None
 
 
 def _shorten_title(t: str) -> str:
@@ -2643,6 +2683,11 @@ def fit_album_post_text(tweet: str) -> str:
 
 
 def post(album_name: str, image_path: Path, target_date: str) -> bool:
+    block_reason = holiday_collection_post_block_reason(album_name, target_date)
+    if block_reason:
+        print(f"[album_update] Post skipped: {block_reason}")
+        return True
+
     if not TWITTER_SESSION.exists():
         print(f"[album_update] Session Twitter introuvable : {TWITTER_SESSION}")
         return False
@@ -2720,6 +2765,12 @@ def main() -> None:
         if existing_lock_path is not None:
             lock_path = existing_lock_path
             print(f"[album_update] Déjà posté ({lock_path.name}). Rien à faire.")
+            return
+
+    if do_post and album_name:
+        block_reason = holiday_collection_post_block_reason(album_name, resolved_date)
+        if block_reason:
+            print(f"[album_update] Post skipped: {block_reason}")
             return
 
     if style not in {"default", "table-dark", "table-light"}:

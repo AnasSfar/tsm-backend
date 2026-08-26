@@ -12,6 +12,7 @@ import subprocess
 import sys
 import threading
 import time
+import traceback
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
@@ -36,6 +37,7 @@ for _stream in (sys.stdout, sys.stderr):
         pass
 
 NTFY_TOPIC_CHARTS = os.getenv("NTFY_TOPIC_CHARTS", "taylormuseum-charts")
+NTFY_TOPIC_SPCHARTS_DEFAULT = "tsm-spcharts"
 
 _WARP_CLI = Path(r"C:\Program Files\Cloudflare\Cloudflare WARP\warp-cli.exe")
 
@@ -378,6 +380,15 @@ def _kill_all() -> None:
 def _fmt(value: float) -> str:
     m, s = divmod(int(value), 60)
     return f"{m}m {s:02d}s"
+
+
+def _to_int(value) -> int | None:
+    if value in (None, ""):
+        return None
+    try:
+        return int(float(str(value).replace(",", "").strip()))
+    except (TypeError, ValueError, OverflowError):
+        return None
 
 
 def _build_env() -> dict[str, str]:
@@ -1341,6 +1352,302 @@ def _load_json_file(path: Path) -> dict | list | None:
         return None
 
 
+def _notify_spcharts_topic(env: dict[str, str]) -> str:
+    return env.get("NTFY_TOPIC_SPCHARTS", "").strip() or NTFY_TOPIC_SPCHARTS_DEFAULT
+
+
+def _song_key(row: dict) -> str:
+    track_id = str(row.get("track_id") or row.get("_raw_track_id") or "").strip()
+    if track_id:
+        return f"track:{track_id}"
+    title = re.sub(r"[^a-z0-9]+", " ", str(row.get("song_name") or "").lower()).strip()
+    return f"title:{title}" if title else ""
+
+
+def _song_title(row: dict) -> str:
+    return str(row.get("song_name") or row.get("title") or row.get("track_name") or "Unknown song").strip()
+
+
+def _load_discography_region(path: Path) -> dict | None:
+    data = _load_json_file(path)
+    if isinstance(data, dict) and isinstance(data.get("songs"), list):
+        return data
+    return None
+
+
+def _format_spcharts_alerts(alerts: list[str], *, limit: int = 12) -> str:
+    shown = alerts[:limit]
+    if len(alerts) > limit:
+        shown.append(f"... +{len(alerts) - limit} more")
+    return "\n".join(shown)
+
+
+def _notify_spcharts_log(
+    env: dict[str, str],
+    message: str,
+    *,
+    title: str,
+    tags: str = "spotify,information_source",
+    priority: str = "default",
+) -> None:
+    _notify(_notify_spcharts_topic(env), message, title=title, tags=tags, priority=priority)
+
+
+def _snapshot_chart_rows(path: Path) -> list[dict]:
+    data = _load_json_file(path)
+    if isinstance(data, list):
+        rows = data
+    elif isinstance(data, dict):
+        rows = data.get("entries") or data.get("tracks") or data.get("songs") or []
+    else:
+        rows = []
+    return [row for row in rows if isinstance(row, dict)]
+
+
+def _spcharts_snapshot_song_counts(target_date: date) -> tuple[int, int, int] | None:
+    worldwide = _load_worldwide_snapshot(target_date)
+    by_track = worldwide.get("by_track", {}) if isinstance(worldwide, dict) else {}
+    if isinstance(by_track, dict) and by_track:
+        region_song_rows = 0
+        regions = set()
+        for entries in by_track.values():
+            if not isinstance(entries, list):
+                continue
+            region_song_rows += len([entry for entry in entries if isinstance(entry, dict)])
+            for entry in entries:
+                if isinstance(entry, dict) and entry.get("country"):
+                    regions.add(str(entry.get("country")))
+        return len(by_track), region_song_rows, len(regions)
+
+    unique_song_keys: set[str] = set()
+    region_song_rows = 0
+    region_count = 0
+    root = run_all_charts_root(target_date)
+    if root.exists():
+        for region_dir in sorted(path for path in root.iterdir() if path.is_dir()):
+            if region_dir.name == "worldwide":
+                continue
+            chart_path = region_dir / f"ts_chart_{target_date}.json"
+            if not chart_path.exists():
+                continue
+            rows = _snapshot_chart_rows(chart_path)
+            if not rows:
+                continue
+            region_count += 1
+            for row in rows:
+                key = _song_key(row)
+                if key:
+                    unique_song_keys.add(key)
+                region_song_rows += 1
+
+    if region_count == 0:
+        return None
+    return len(unique_song_keys), region_song_rows, region_count
+
+
+def _spcharts_finished_message(target_date: date, total: str, failures: list[tuple[str, int]]) -> str:
+    lines = [
+        f"Date: {target_date.isoformat()}",
+        f"Duration: {total}",
+    ]
+    counts = _spcharts_snapshot_song_counts(target_date)
+    if counts is not None:
+        unique_songs, region_song_rows, region_count = counts
+        lines.append(f"Songs charted in snapshot: {unique_songs:,}")
+        lines.append(f"Region-song entries: {region_song_rows:,} across {region_count} regions")
+    if failures:
+        lines.append("Failures: " + ", ".join(f"{name} ({rc})" for name, rc in failures))
+    return "\n".join(lines)
+
+
+def _collect_spcharts_total_days_overtakes(current_rows: list[dict], previous_rows: list[dict]) -> list[str]:
+    previous_by_key = {
+        key: row
+        for row in previous_rows
+        if isinstance(row, dict)
+        for key in [_song_key(row)]
+        if key
+    }
+    current = []
+    for row in current_rows:
+        if not isinstance(row, dict):
+            continue
+        key = _song_key(row)
+        previous = previous_by_key.get(key)
+        current_days = _to_int(row.get("total_days"))
+        previous_days = _to_int(previous.get("total_days")) if previous else None
+        if not key or current_days is None or previous_days is None:
+            continue
+        current.append((key, row, current_days, previous_days))
+
+    alerts = []
+    for a_key, a_row, a_days, a_previous_days in current:
+        for b_key, b_row, b_days, b_previous_days in current:
+            if a_key == b_key:
+                continue
+            if a_previous_days <= b_previous_days and a_days > b_days:
+                alerts.append(
+                    f"{_song_title(a_row)} passed {_song_title(b_row)} in total chart days: "
+                    f"{a_days}d vs {b_days}d"
+                )
+    return sorted(set(alerts))
+
+
+def _collect_spcharts_streak_deactivations(current_rows: list[dict], previous_rows: list[dict]) -> list[str]:
+    current_by_key = {
+        key: row
+        for row in current_rows
+        if isinstance(row, dict)
+        for key in [_song_key(row)]
+        if key
+    }
+    alerts = []
+    for previous in previous_rows:
+        if not isinstance(previous, dict) or not previous.get("longest_streak_active"):
+            continue
+        key = _song_key(previous)
+        current = current_by_key.get(key)
+        if not current or current.get("longest_streak_active"):
+            continue
+        previous_streak = _to_int(previous.get("longest_streak")) or 0
+        current_streak = _to_int(current.get("longest_streak")) or previous_streak
+        if previous_streak <= 0:
+            continue
+        alerts.append(
+            f"{_song_title(current or previous)} streak became inactive "
+            f"(longest streak: {current_streak}d)"
+        )
+    return sorted(set(alerts))
+
+
+def _collect_spcharts_peak_rank_records(current_rows: list[dict], previous_rows: list[dict]) -> list[str]:
+    previous_by_key = {
+        key: row
+        for row in previous_rows
+        if isinstance(row, dict)
+        for key in [_song_key(row)]
+        if key
+    }
+    alerts = []
+    for row in current_rows:
+        if not isinstance(row, dict):
+            continue
+        previous = previous_by_key.get(_song_key(row))
+        if not previous:
+            continue
+        current_peak = _to_int(row.get("peak_rank"))
+        previous_peak = _to_int(previous.get("peak_rank"))
+        if current_peak is None or previous_peak is None or current_peak >= previous_peak:
+            continue
+        alerts.append(f"{_song_title(row)} reached a new peak rank: #{current_peak} (was #{previous_peak})")
+    return sorted(set(alerts))
+
+
+def _collect_spcharts_peak_stream_records(current_rows: list[dict], previous_rows: list[dict]) -> list[str]:
+    previous_by_key = {
+        key: row
+        for row in previous_rows
+        if isinstance(row, dict)
+        for key in [_song_key(row)]
+        if key
+    }
+    alerts = []
+    for row in current_rows:
+        if not isinstance(row, dict):
+            continue
+        previous = previous_by_key.get(_song_key(row))
+        if not previous:
+            continue
+        current_peak = _to_int(row.get("peak_streams"))
+        previous_peak = _to_int(previous.get("peak_streams"))
+        if current_peak is None or previous_peak is None or current_peak <= previous_peak:
+            continue
+        alerts.append(
+            f"{_song_title(row)} reached new peak streams: "
+            f"{current_peak:,} (was {previous_peak:,})"
+        )
+    return sorted(set(alerts))
+
+
+def _notify_spcharts_events(env: dict[str, str]) -> None:
+    discography_dir = WEB_EXPORT_DATA_DIR / "charts_discography"
+    if not discography_dir.exists():
+        print(f"[spcharts_notify] skip: {discography_dir} absent")
+        return
+
+    total_days_alerts: list[str] = []
+    streak_alerts: list[str] = []
+    peak_rank_alerts: list[str] = []
+    peak_stream_alerts: list[str] = []
+    for current_path in sorted(discography_dir.glob("*.json")):
+        region = current_path.stem
+        if region == "index" or region.endswith("_previous"):
+            continue
+        previous_path = current_path.with_name(f"{region}_previous.json")
+        if not previous_path.exists():
+            continue
+        current = _load_discography_region(current_path)
+        previous = _load_discography_region(previous_path)
+        if not current or not previous:
+            continue
+        current_rows = [row for row in current.get("songs", []) if isinstance(row, dict)]
+        previous_rows = [row for row in previous.get("songs", []) if isinstance(row, dict)]
+        region_label = region.upper()
+        total_days_alerts.extend(
+            f"[{region_label}] {line}"
+            for line in _collect_spcharts_total_days_overtakes(current_rows, previous_rows)
+        )
+        streak_alerts.extend(
+            f"[{region_label}] {line}"
+            for line in _collect_spcharts_streak_deactivations(current_rows, previous_rows)
+        )
+        peak_rank_alerts.extend(
+            f"[{region_label}] {line}"
+            for line in _collect_spcharts_peak_rank_records(current_rows, previous_rows)
+        )
+        peak_stream_alerts.extend(
+            f"[{region_label}] {line}"
+            for line in _collect_spcharts_peak_stream_records(current_rows, previous_rows)
+        )
+
+    topic = _notify_spcharts_topic(env)
+    if total_days_alerts:
+        _notify(
+            topic,
+            _format_spcharts_alerts(total_days_alerts),
+            title="Spotify Charts - total days passed",
+            tags="spotify,chart_with_upwards_trend",
+        )
+        print(f"[spcharts_notify] total-days alerts: {len(total_days_alerts)}")
+    if streak_alerts:
+        _notify(
+            topic,
+            _format_spcharts_alerts(streak_alerts),
+            title="Spotify Charts - streak inactive",
+            tags="spotify,warning",
+            priority="high",
+        )
+        print(f"[spcharts_notify] streak alerts: {len(streak_alerts)}")
+    if peak_rank_alerts:
+        _notify(
+            topic,
+            _format_spcharts_alerts(peak_rank_alerts),
+            title="Spotify Charts - new peak rank",
+            tags="spotify,trophy",
+        )
+        print(f"[spcharts_notify] peak-rank alerts: {len(peak_rank_alerts)}")
+    if peak_stream_alerts:
+        _notify(
+            topic,
+            _format_spcharts_alerts(peak_stream_alerts),
+            title="Spotify Charts - new peak streams",
+            tags="spotify,chart_with_upwards_trend",
+        )
+        print(f"[spcharts_notify] peak-stream alerts: {len(peak_stream_alerts)}")
+    if not total_days_alerts and not streak_alerts and not peak_rank_alerts and not peak_stream_alerts:
+        print("[spcharts_notify] no alerts")
+
+
 def _global_rows_for_cards(target_date: date) -> list[dict]:
     path = _global_chart_json_path(target_date)
     if path is None:
@@ -1452,7 +1759,7 @@ def _ensure_card_regional_data(target_date: date, *, env: dict[str, str], verbos
     rc_worldwide = _run(
         "worldwide-regional-data",
         CHARTS_ROOT / "worldwide" / "daily.py",
-        ["--force", "--no-post", str(target_date)],
+        ["--no-post", str(target_date)],
         dry_run=False,
         env=env,
         verbose=verbose,
@@ -1781,8 +2088,21 @@ def main() -> int:
                 if resolved_target_date is not None:
                     target_date = resolved_target_date
                 env["SPOTIFY_CHARTS_ALREADY_AVAILABLE"] = "1"
+                _notify_spcharts_log(
+                    env,
+                    f"Spotify Charts page available for {target_date.isoformat()}",
+                    title="Spotify Charts - page available",
+                    tags="spotify,white_check_mark",
+                )
             except TimeoutError as e:
                 print(f"[FAIL] {e}")
+                _notify_spcharts_log(
+                    env,
+                    f"Spotify Charts availability check failed for {target_date.isoformat()}:\n{e}",
+                    title="Spotify Charts - script error",
+                    tags="spotify,x",
+                    priority="high",
+                )
                 if warp_active:
                     _warp_disconnect()
                 return 1
@@ -1812,6 +2132,14 @@ def main() -> int:
                         failures.extend(catchup_failures)
                         if args.stop_on_error:
                             print(f"[FAIL] stop-on-error — {_fmt(time.perf_counter() - started)}")
+                            total = _fmt(time.perf_counter() - started)
+                            _notify_spcharts_log(
+                                env,
+                                _spcharts_finished_message(target_date, total, failures),
+                                title="Spotify Charts - script error",
+                                tags="spotify,x",
+                                priority="high",
+                            )
                             if warp_active:
                                 _warp_disconnect()
                             return 1
@@ -1870,6 +2198,14 @@ def main() -> int:
                 print(f"[WARN] Echecs collecte: {', '.join(failed_names)}")
                 if args.stop_on_error:
                     print(f"[FAIL] stop-on-error — {_fmt(time.perf_counter() - started)}")
+                    total = _fmt(time.perf_counter() - started)
+                    _notify_spcharts_log(
+                        env,
+                        _spcharts_finished_message(target_date, total, failures),
+                        title="Spotify Charts - script error",
+                        tags="spotify,x",
+                        priority="high",
+                    )
                     if warp_active:
                         _warp_disconnect()
                     return 1
@@ -1897,13 +2233,13 @@ def main() -> int:
     priority_global_cards_done = False
 
     if not args.dry_run and should_generate_cards and not failures:
-        if not _require_global_chart_data_before_cards(target_date):
-            should_generate_cards = False
-            should_post_cards = False
-        elif not _worldwide_data_ready(target_date):
+        if not _worldwide_data_ready(target_date):
             failures.append(("cards-data", 1))
         elif not _ensure_card_regional_data(target_date, env=env, verbose=args.verbose):
             failures.append(("cards-regional-data", 1))
+        elif not _require_global_chart_data_before_cards(target_date):
+            should_generate_cards = False
+            should_post_cards = False
         elif not _ensure_global_entries_in_worldwide_snapshot(target_date):
             failures.append(("cards-global-data", 1))
 
@@ -2027,6 +2363,11 @@ def main() -> int:
             )
             if rc_discography != 0:
                 failures.append(("build-country-discography", rc_discography))
+            else:
+                try:
+                    _notify_spcharts_events(env)
+                except Exception as exc:
+                    print(f"[spcharts_notify] failed: {exc}")
 
         if not failures:
             if _r2_export_is_fresh(target_date) and not args.force:
@@ -2057,6 +2398,13 @@ def main() -> int:
     total = _fmt(time.perf_counter() - started)
     if failures:
         print(f"[FAIL] {', '.join(n for n, _ in failures)} — {total}")
+        _notify_spcharts_log(
+            env,
+            _spcharts_finished_message(target_date, total, failures),
+            title="Spotify Charts - script error",
+            tags="spotify,x",
+            priority="high",
+        )
         return 1
     if regional_post_failures:
         print(f"[ OK ] tout termine — {total} (posts a retenter: {', '.join(n for n, _ in regional_post_failures)})")
@@ -2078,6 +2426,14 @@ def main() -> int:
             env=env,
             verbose=args.verbose,
         )
+    if not args.dry_run:
+        total = _fmt(time.perf_counter() - started)
+        _notify_spcharts_log(
+            env,
+            _spcharts_finished_message(target_date, total, []),
+            title="Spotify Charts - script finished",
+            tags="spotify,white_check_mark",
+        )
     return 0
 
 
@@ -2089,3 +2445,17 @@ if __name__ == "__main__":
         _stop_event.set()
         _kill_all()
         sys.exit(130)
+    except Exception as exc:
+        print(f"[FAIL] exception non geree: {exc}", flush=True)
+        try:
+            details = "".join(traceback.format_exception_only(type(exc), exc)).strip()
+            _notify_spcharts_log(
+                _build_env(),
+                f"Unhandled exception in Spotify Charts runner:\n{details}",
+                title="Spotify Charts - script error",
+                tags="spotify,x",
+                priority="high",
+            )
+        except Exception:
+            pass
+        raise

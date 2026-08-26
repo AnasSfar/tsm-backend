@@ -955,6 +955,42 @@ worldwide card" (`--post-worldwide`, fichier `worldwide_new_card_*.png`,
 etape `priority-global-highlights-worldwide`) qui parle de nombre de pays et
 tourne dans tous les cas — c'est une feature separee et independante.
 
+**Bug confirme et corrige (2026-08-25) : un `worldwide` marque "deja fait"
+mais partiel (ex. 33/~75 pays, `global`/`fr` absents) bloquait cards/global-post
+indefiniment, meme sur des reruns repetes de `run_all_charts.py`.** Racine :
+`_validate_worldwide_snapshot` ne verifie que "le snapshot n'est pas vide" (au
+moins une entree), jamais la presence des regions cles — donc une collecte
+`worldwide` interrompue en cours de route (WARP/session, meme panne "lecture
+infinie" documentee ailleurs) reste marquee valide/`updated.lock`, et
+`_runner_done`/`_filter_pending_runners` empechent alors tout rerun du
+subprocess `worldwide/daily.py` pour cette date (`[SKIP] deja fait: worldwide-data`).
+Observe le 2026-08-24 : `global/ts_chart_2026-08-24.json` n'a jamais existe,
+donc `_require_global_chart_data_before_cards` bloquait cards et
+`global-post` echouait (`ts_chart_{date}.json absent`) a chaque rerun, sans
+jamais tenter de reparer. Le mecanisme de reparation existait deja
+(`_ensure_card_regional_data`, qui rappelle `worldwide/daily.py --no-post
+<date>` pour combler les regions `global`/`us` manquantes) mais **n'etait
+jamais atteint** : dans le bloc cards de `main()`, `_require_global_chart_data_before_cards`
+tournait AVANT `_ensure_card_regional_data` et coupait court (`should_generate_cards
+= False`) des que `global/ts_chart_*.json` etait absent — exactement le cas
+que la reparation est censee couvrir. En plus, cet appel de reparation passait
+`--force` a `worldwide/daily.py`, ce qui desactive le skip incrementiel
+par-pays interne (`already_done`, base sur les pays deja presents dans
+`charts_worldwide.json` pour la meme date) et aurait donc reussi seulement en
+re-fetchant les ~75 pays au lieu des ~40 reellement manquants. Corrige : (1)
+`_ensure_card_regional_data` appelle desormais `worldwide/daily.py --no-post
+<date>` **sans** `--force` — le skip par-pays interne au script fait deja le
+tri correctement (pays deja presents ignores, seuls les pays manquants sont
+refetches, donnees existantes fusionnees, jamais ecrasees) ; (2) dans le bloc
+cards, `_ensure_card_regional_data` tourne desormais AVANT
+`_require_global_chart_data_before_cards` — ce dernier redevient un
+garde-fou final ("toujours absent apres tentative de reparation = vraiment
+pas encore publie, skip propre") au lieu d'un court-circuit qui empechait
+toute reparation. Reste vrai : la validation `_validate_worldwide_snapshot`
+elle-meme n'a pas ete durcie (toujours juste "non-vide") — un `worldwide`
+partiel continuera d'etre marque "deja fait" au niveau collecte, mais le
+palier cards se repare desormais correctement derriere.
+
 ## Sessions, tokens, WARP
 
 Sessions Spotify principales:

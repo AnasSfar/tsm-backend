@@ -89,14 +89,19 @@ FR_DAILY        = ROOT / "collectors" / "spotify" / "charts" / "fr" / "daily.py"
 GLOBAL_CHART_IMAGE_SCRIPT = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "script" / "generate_chart_image.py"
 _DEFAULT_SESSION_FILE = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "spotify_session.json"
 SESSION_FILE        = Path(os.getenv("SPOTIFY_CHARTS_SESSION_FILE", str(_DEFAULT_SESSION_FILE)))
-_BEARER_CACHE_FILE  = Path(
-    os.getenv(
-        "SPOTIFY_CHARTS_BEARER_CACHE_FILE",
-        str(SESSION_FILE.with_name(f"bearer_cache_{SESSION_FILE.stem}.json"))
-        if SESSION_FILE != _DEFAULT_SESSION_FILE
-        else str(ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "bearer_cache.json"),
+_WORLDWIDE_BEARER_CACHE_FILE = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "json" / "bearer_cache.json"
+_LEGACY_GLOBAL_BEARER_CACHE_FILE = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "bearer_cache.json"
+_SESSION_BEARER_CACHE_FILE = SESSION_FILE.with_name(f"bearer_cache_{SESSION_FILE.stem}.json")
+_BEARER_CACHE_FILES = [
+    Path(p)
+    for p in (
+        os.getenv("SPOTIFY_CHARTS_BEARER_CACHE_FILE", "").strip() or None,
+        _SESSION_BEARER_CACHE_FILE if SESSION_FILE != _DEFAULT_SESSION_FILE else None,
+        _WORLDWIDE_BEARER_CACHE_FILE,
+        _LEGACY_GLOBAL_BEARER_CACHE_FILE,
     )
-)
+    if p
+]
 SINGLE_SESSION_TOKEN_POOL = os.getenv("SPOTIFY_CHARTS_SINGLE_SESSION", "").strip().lower() in {"1", "true", "yes", "on"}
 _BEARER_TOKEN_TTL   = 50 * 60
 OUTPUT_PATH     = WEB_EXPORT_DATA_DIR / "charts_worldwide.json"
@@ -129,6 +134,10 @@ RATE_LIMIT_MIN_SECONDS = int(os.getenv("SPOTIFY_WORLDWIDE_RATE_LIMIT_MIN_SECONDS
 # indefiniment (jamais sauter de la vraie donnee), mais chaque cycle de pause reste borne et
 # reproduit un log a intervalle raisonnable au lieu de pouvoir depasser 1h en silence.
 RATE_LIMIT_MAX_SECONDS = int(os.getenv("SPOTIFY_WORLDWIDE_RATE_LIMIT_MAX_SECONDS", "300"))
+OVERVIEW_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_WORLDWIDE_OVERVIEW_MAX_ATTEMPTS", "5"))
+PLAYWRIGHT_LAUNCH_TIMEOUT_MS = int(os.getenv("SPOTIFY_PLAYWRIGHT_LAUNCH_TIMEOUT_MS", "15000"))
+PLAYWRIGHT_GOTO_TIMEOUT_MS = int(os.getenv("SPOTIFY_PLAYWRIGHT_GOTO_TIMEOUT_MS", "15000"))
+PLAYWRIGHT_TOKEN_WAIT_SECONDS = int(os.getenv("SPOTIFY_PLAYWRIGHT_TOKEN_WAIT_SECONDS", "10"))
 # Cas "chart pas encore propage" (URL datee 404, /latest 200 mais pointe encore sur la veille):
 # toujours borne, meme en run quotidien live (FETCH_MAX_ATTEMPTS=0/illimite ne s'applique pas
 # ici expres, pour eviter un hang si la region ne publie vraiment pas ce jour-la).
@@ -399,13 +408,20 @@ def _mark_exported_done(chart_date: str) -> None:
 
 
 def _load_cached_bearer() -> str | None:
-    try:
-        data = json.loads(_BEARER_CACHE_FILE.read_text(encoding="utf-8-sig"))
-        if time.time() - float(data.get("ts", 0)) < _BEARER_TOKEN_TTL:
-            token = str(data.get("token") or "").strip()
-            return token or None
-    except Exception:
-        pass
+    seen: set[Path] = set()
+    for path in _BEARER_CACHE_FILES:
+        if path in seen:
+            continue
+        seen.add(path)
+        try:
+            data = json.loads(path.read_text(encoding="utf-8-sig"))
+            if time.time() - float(data.get("ts", 0)) < _BEARER_TOKEN_TTL:
+                token = str(data.get("token") or "").strip()
+                if token:
+                    print(f"[INFO] Bearer cache utilise: {path}", flush=True)
+                    return token
+        except Exception:
+            pass
     return None
 
 
@@ -463,6 +479,7 @@ def _get_bearer_token_and_regions(*, force_refresh: bool = False) -> tuple[str, 
                 browser = p.chromium.launch(
                     headless=True,
                     args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
+                    timeout=PLAYWRIGHT_LAUNCH_TIMEOUT_MS,
                 )
                 ctx = browser.new_context(
                     storage_state=str(SESSION_FILE),
@@ -473,10 +490,10 @@ def _get_bearer_token_and_regions(*, force_refresh: bool = False) -> tuple[str, 
                 page.on("request", _on_request)
                 page.goto(
                     "https://charts.spotify.com/",
-                    wait_until="networkidle",
-                    timeout=45_000,
+                    wait_until="domcontentloaded",
+                    timeout=PLAYWRIGHT_GOTO_TIMEOUT_MS,
                 )
-                deadline = time.time() + 20
+                deadline = time.time() + PLAYWRIGHT_TOKEN_WAIT_SECONDS
                 while not token_holder and time.time() < deadline:
                     page.wait_for_timeout(300)
                 html_holder.append(page.content())
@@ -539,12 +556,18 @@ def _get_bearer_token_and_regions(*, force_refresh: bool = False) -> tuple[str, 
                     continue
                 _ov_exhausted = 0
                 wait = max(int(resp.headers.get("Retry-After", 20)), RATE_LIMIT_MIN_SECONDS)
+                if _attempt >= OVERVIEW_MAX_ATTEMPTS:
+                    raise RuntimeError(
+                        f"Overview 429 apres {_attempt} tentative(s); Retry-After={wait}s"
+                    )
                 print(f"[WARN] Overview 429 tous tokens — retry dans {wait}s (tentative {_attempt})")
                 time.sleep(wait)
                 continue
             resp.raise_for_status()
             break
         except Exception as exc:
+            if _attempt >= OVERVIEW_MAX_ATTEMPTS:
+                raise RuntimeError(f"Overview indisponible apres {_attempt} tentative(s): {exc}") from exc
             wait = min(30 * _attempt, 300)
             print(f"[WARN] Overview erreur ({exc}) — retry dans {wait}s (tentative {_attempt})")
             time.sleep(wait)
@@ -681,6 +704,7 @@ def _get_bearer_from_cookies(session_file: Path) -> str | None:
         browser = p.chromium.launch(
             headless=True,
             args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
+            timeout=PLAYWRIGHT_LAUNCH_TIMEOUT_MS,
         )
         ctx = browser.new_context(
             storage_state=str(session_file),
@@ -689,8 +713,8 @@ def _get_bearer_from_cookies(session_file: Path) -> str | None:
         )
         page = ctx.new_page()
         page.on("request", _on_request)
-        page.goto("https://charts.spotify.com/", wait_until="networkidle", timeout=45_000)
-        deadline = time.time() + 15
+        page.goto("https://charts.spotify.com/", wait_until="domcontentloaded", timeout=PLAYWRIGHT_GOTO_TIMEOUT_MS)
+        deadline = time.time() + PLAYWRIGHT_TOKEN_WAIT_SECONDS
         while not token_holder and time.time() < deadline:
             page.wait_for_timeout(300)
         browser.close()
@@ -1034,6 +1058,43 @@ async def _run_async(
     return dict(results)
 
 
+def _run_regions_sync(
+    chart_date: str,
+    tokens: list[str],
+    regions: dict[str, str],
+    *,
+    immediate_reentry_ctx: dict | None = None,
+    csv_sync_ctx: dict | None = None,
+) -> dict[str, list[dict]]:
+    def _make_coro():
+        return _run_async(
+            chart_date, tokens, regions,
+            immediate_reentry_ctx=immediate_reentry_ctx,
+            csv_sync_ctx=csv_sync_ctx,
+        )
+
+    try:
+        asyncio.get_running_loop()
+    except RuntimeError:
+        return asyncio.run(_make_coro())
+
+    result_holder: list[dict[str, list[dict]]] = []
+    error_holder: list[BaseException] = []
+
+    def _runner() -> None:
+        try:
+            result_holder.append(asyncio.run(_make_coro()))
+        except BaseException as exc:
+            error_holder.append(exc)
+
+    worker = threading.Thread(target=_runner, name="spotify-worldwide-async", daemon=True)
+    worker.start()
+    worker.join()
+    if error_holder:
+        raise error_holder[0]
+    return result_holder[0]
+
+
 def _run_async_with_token_refresh(
     chart_date: str,
     tokens: list[str],
@@ -1043,23 +1104,19 @@ def _run_async_with_token_refresh(
     csv_sync_ctx: dict | None = None,
 ) -> tuple[list[str], dict[str, str], dict[str, list[dict]]]:
     try:
-        return tokens, regions, asyncio.run(
-            _run_async(
-                chart_date, tokens, regions,
-                immediate_reentry_ctx=immediate_reentry_ctx,
-                csv_sync_ctx=csv_sync_ctx,
-            )
+        return tokens, regions, _run_regions_sync(
+            chart_date, tokens, regions,
+            immediate_reentry_ctx=immediate_reentry_ctx,
+            csv_sync_ctx=csv_sync_ctx,
         )
     except TokenExpired as exc:
         print(f"[WARN] Bearer token refuse par Spotify ({exc}); refresh et retry date {chart_date}.", flush=True)
         new_token, _all_regions = _get_bearer_token_and_regions(force_refresh=True)
         tokens = [new_token] + tokens[1:]
-        return tokens, regions, asyncio.run(
-            _run_async(
-                chart_date, tokens, regions,
-                immediate_reentry_ctx=immediate_reentry_ctx,
-                csv_sync_ctx=csv_sync_ctx,
-            )
+        return tokens, regions, _run_regions_sync(
+            chart_date, tokens, regions,
+            immediate_reentry_ctx=immediate_reentry_ctx,
+            csv_sync_ctx=csv_sync_ctx,
         )
 
 

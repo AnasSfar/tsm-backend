@@ -280,6 +280,92 @@ def combine_points(points_by_track: list[list[Point]]) -> list[Point]:
     return combined
 
 
+def recent_daily_points(points: list[Point], target_date: date, *, days: int = 14) -> list[Point]:
+    """Last ``days`` calendar days ending at ``target_date`` (inclusive), one
+    Point per day in ascending order — missing days get an empty Point rather
+    than being dropped, so callers (the Chart Sheet bar chart) can render a
+    fixed number of columns without reshuffling. Reuses fill_missing_dailies
+    so a short single-day gap between two known totals still gets a daily
+    figure instead of showing empty."""
+    filled = {point.day: point for point in fill_missing_dailies(points)}
+    start = target_date - timedelta(days=days - 1)
+    return [
+        filled.get(day) or Point(day=day, total=None, daily=None)
+        for day in (start + timedelta(days=offset) for offset in range(days))
+    ]
+
+
+def _chart_sheet_short_date(value: date) -> str:
+    return f"{value.month}/{value.day}"
+
+
+def _chart_sheet_k_label(value: int) -> str:
+    if value >= 1_000_000:
+        text = f"{value / 1_000_000:.1f}"
+        return f"{text[:-2] if text.endswith('.0') else text}M"
+    if value >= 1_000:
+        return f"{round(value / 1000)}K"
+    return str(value)
+
+
+def build_chart_sheet_bars(
+    points: list[Point],
+    target_date: date,
+    *,
+    days: int = 14,
+    historical_date: date | None = None,
+    historical_daily: int | None = None,
+) -> list[dict]:
+    """Bar-column dicts ready for song_card_chart_sheet.render_chart_sheet_card.
+
+    ``historical_date``/``historical_daily`` are the previous-record callback
+    (best_day_since row's previous_higher_or_equal_date/_daily) — pass both to
+    get a dimmed callback bar + gap marker before the recent run, or leave
+    both None for a plain run (Weekend Gainer, or a best_ever row with no
+    prior record to reference). Bar heights are scaled proportionally to the
+    tallest value in the window, including the historical one when present —
+    that callback bar can end up taller than today's, since a "best day
+    since X" row means X's own total was at or above today's, not below it."""
+    recent = recent_daily_points(points, target_date, days=days)
+    values = [point.daily for point in recent if point.daily is not None]
+    if historical_daily is not None:
+        values.append(historical_daily)
+    max_value = max(values) if values else 1
+
+    def _height_pct(value: int) -> float:
+        return max(4.0, min(100.0, (value / max_value) * 100))
+
+    bars: list[dict] = []
+    if historical_date is not None and historical_daily is not None:
+        bars.append({
+            "type": "bar",
+            "date_label": f"{historical_date.month}/{historical_date.day}/{historical_date.strftime('%y')}",
+            "value_label": _chart_sheet_k_label(historical_daily),
+            "height_pct": _height_pct(historical_daily),
+            "dimmed": True,
+        })
+        bars.append({"type": "gap"})
+
+    for point in recent:
+        if point.daily is None:
+            bars.append({
+                "type": "bar",
+                "date_label": _chart_sheet_short_date(point.day),
+                "value_label": "–",
+                "height_pct": 4.0,
+                "today": point.day == target_date,
+            })
+            continue
+        bars.append({
+            "type": "bar",
+            "date_label": _chart_sheet_short_date(point.day),
+            "value_label": _chart_sheet_k_label(point.daily),
+            "height_pct": _height_pct(point.daily),
+            "today": point.day == target_date,
+        })
+    return bars
+
+
 def combined_tracks_for(track: Track, tracks: dict[str, Track]) -> list[Track]:
     family = (track.song_family or "").strip()
     if not family:

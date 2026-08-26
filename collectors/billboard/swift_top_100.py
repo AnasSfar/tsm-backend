@@ -251,7 +251,7 @@ def _normalize_full_title(value: str) -> str:
         return ""
     s = s.replace("(", " ").replace(")", " ").replace("[", " ").replace("]", " ")
     s = _NORMALIZE_RE.sub(" ", s)
-    s = _TRAILING_S_RE.sub(r"\1s", s)
+    s = _TRAILING_CONTRACTION_RE.sub(r"\1\2", s)
     return " ".join(s.split())
 
 
@@ -269,7 +269,7 @@ def _normalize_title(value: str) -> str:
     s = _DASH_SPLIT_RE.split(s, maxsplit=1)[0]
 
     s = _NORMALIZE_RE.sub(" ", s)
-    s = _TRAILING_S_RE.sub(r"\1s", s)
+    s = _TRAILING_CONTRACTION_RE.sub(r"\1\2", s)
     s = " ".join(s.split())
     return s
 
@@ -1691,6 +1691,54 @@ def _regenerate_home_highlights_cache(*, logger: Logger) -> None:
         logger.log(f"⚠ highlights     : cache refresh failed — {exc}")
 
 
+def _currently_merged_track_ids(
+    *,
+    chart_date: date,
+    tracks: dict[str, TrackMeta],
+    logger: Logger,
+) -> set[str]:
+    """Track_ids to drop this week because Spotify is actively merging their
+    catalog page/total into another track_id as of chart_date (e.g. Shake It
+    Off / Best Work Edition, Love Story / Pop Mix — see history_store's
+    pick_active_catalog_merge_losers). Other generators (generate_albums_image,
+    export_for_web, post_gainer_thread, generate_weekend_streams_image) already
+    apply this same dedup; swift_top_100.py never did, so a merged track_id
+    could still surface as a bogus separate NEW entry on the weekly chart
+    (found 2026-08-25 via Shake It Off / Love Story - Pop Mix both charting
+    solo with duplicated totals)."""
+    date_str = _format_date(chart_date)
+    totals_by_track_id: dict[str, int] = {}
+    try:
+        with STREAMS_HISTORY_CSV.open("r", newline="", encoding="utf-8-sig") as f:
+            for row in csv.DictReader(f):
+                if row.get("date") != date_str:
+                    continue
+                tid = row.get("track_id") or ""
+                if tid not in tracks:
+                    continue
+                try:
+                    totals_by_track_id[tid] = int(row.get("streams") or 0)
+                except Exception:
+                    continue
+    except Exception as exc:
+        logger.log(f"⚠ merge_dedup    : failed to read {STREAMS_HISTORY_CSV.name} — {exc}")
+        return set()
+
+    scripts_dir = str(_REPO_ROOT / "collectors" / "spotify" / "streams" / "tools" / "scripts")
+    if scripts_dir not in sys.path:
+        sys.path.insert(0, scripts_dir)
+    import history_store as _history_store
+
+    track_meta_by_id = {
+        tid: {"chart_extra": meta.chart_extra, "chartsnapshot_only": False}
+        for tid, meta in tracks.items()
+    }
+    losers = _history_store.pick_active_catalog_merge_losers(totals_by_track_id, track_meta_by_id)
+    if losers:
+        logger.log(f"  merge_dedup    : excluding {len(losers)} currently merged track(s): {sorted(losers)}")
+    return losers
+
+
 def _build_week_chart(
     *,
     week_end: date,
@@ -1704,6 +1752,11 @@ def _build_week_chart(
     weekly_streams, row_counts, daily_streams = _aggregate_weekly_streams(week_dates=week_set, logger=logger)
     days_covered = sum(1 for c in row_counts.values() if c > 0)
     logger.log(f"  streams        : {len(weekly_streams)} songs · {days_covered}/{len(week_set)} days covered")
+
+    merged_losers = _currently_merged_track_ids(chart_date=week_end, tracks=tracks, logger=logger)
+    for tid in merged_losers:
+        weekly_streams.pop(tid, None)
+        daily_streams.pop(tid, None)
 
     # Merge historical track IDs streams into their primary track ID (cumulative sum).
     for meta in tracks.values():

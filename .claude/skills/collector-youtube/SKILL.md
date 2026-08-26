@@ -20,4 +20,5 @@ Safe checks:
 ```powershell
 python -m collectors.youtube.videos.update_youtube --dry-run
 python -m collectors.youtube.videos.update_youtube --debug
+python -m collectors.youtube.videos.update_youtube --preview  # aperçu card "first 24h views"
 ```

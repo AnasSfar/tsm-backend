@@ -38,6 +38,7 @@ from comp.discography import build_cover_map, build_track_album_map  # noqa: E40
 from comp.tables_image import (  # noqa: E402
     download_as_data_uri, pick_header_image, get_dominant_color,
     SPOTIFY_SVG, build_table_html, era_accent_color, dominant_color_from_data_uri,
+    masthead_theme_for_date,
 )
 import history_store  # noqa: E402
 
@@ -531,9 +532,13 @@ def build_rows_html(top_rows: list[dict], cover_map: dict, track_album_map: dict
 def build_html(top_rows: list[dict], target_date: str, cover_map: dict, track_album_map: dict,
                top_n: int,
                image_cache: dict[str, str] | None = None,
-               masthead_theme: str = "dark") -> str:
+               masthead_theme: str | None = None) -> str:
     from datetime import datetime
     import history_store
+
+    # Weekday posts (Mon-Fri) -> light theme; weekend posts (Sat/Sun) -> dark.
+    if masthead_theme is None:
+        masthead_theme = masthead_theme_for_date(target_date)
     date_fmt   = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
     rows_html  = build_rows_html(top_rows, cover_map, track_album_map, image_cache)
     first_rank = top_rows[0].get("rank", 1) if top_rows else 1

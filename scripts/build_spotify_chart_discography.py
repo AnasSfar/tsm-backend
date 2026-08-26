@@ -5,6 +5,7 @@ import argparse
 import csv
 import json
 import re
+from datetime import date as _date
 from pathlib import Path
 from typing import Any
 
@@ -196,6 +197,7 @@ def add_entry(
     store_days = total_days_store.get(f"{track_id}|{country}")
     if store_days is not None:
         total_days = max(total_days, store_days)
+    entry_streak = to_int(entry.get("streak")) or 0
 
     region_rows = by_country.setdefault(country, {})
     summary = region_rows.get(track_id)
@@ -218,17 +220,23 @@ def add_entry(
             "peak_streams_date": chart_date,
             "best_streams": streams,
             "total_days": total_days,
+            "longest_streak": entry_streak,
+            "_current_streak": entry_streak,
+            "_charted_dates": {chart_date} if chart_date else set(),
             "track_id": track_id,
         }
         region_rows[track_id] = summary
         return
 
+    if chart_date:
+        summary.setdefault("_charted_dates", set()).add(chart_date)
     if chart_date > str(summary.get("last_date") or ""):
         summary["last_date"] = chart_date
         summary["last_rank"] = rank
         summary["last_streams"] = streams
         summary["last_country"] = country
         summary["last_country_name"] = country_name
+        summary["_current_streak"] = entry_streak
     if streams > (to_int(summary.get("best_streams")) or 0):
         summary["best_streams"] = streams
         summary["peak_streams"] = streams
@@ -239,9 +247,38 @@ def add_entry(
         summary["peak_rank_country_name"] = country_name
     if total_days > (to_int(summary.get("total_days")) or 0):
         summary["total_days"] = total_days
+    if entry_streak > (to_int(summary.get("longest_streak")) or 0):
+        summary["longest_streak"] = entry_streak
 
 
-def build_discographies(limit_regions: set[str] | None = None) -> dict[str, dict[str, Any]]:
+def streak_lengths_from_dates(dates: set[str]) -> tuple[int, int]:
+    parsed = []
+    for value in dates:
+        try:
+            parsed.append(_date.fromisoformat(str(value)))
+        except (TypeError, ValueError):
+            continue
+    if not parsed:
+        return 0, 0
+
+    parsed = sorted(set(parsed))
+    longest = 0
+    current = 0
+    previous = None
+    for day in parsed:
+        if previous and (day - previous).days == 1:
+            current += 1
+        else:
+            current = 1
+        longest = max(longest, current)
+        previous = day
+    return longest, current
+
+
+def build_discographies(
+    limit_regions: set[str] | None = None,
+    exclude_latest_per_country: dict[str, str] | None = None,
+) -> dict[str, dict[str, Any]]:
     songs_by_track_id = load_songs_by_track_id()
     songs_by_name = load_songs_by_name(songs_by_track_id)
     total_days_store = load_total_days()
@@ -255,6 +292,9 @@ def build_discographies(limit_regions: set[str] | None = None) -> dict[str, dict
         with csv_path.open(encoding="utf-8") as f:
             reader = csv.DictReader(f)
             for row in reader:
+                chart_date = str(row.get("date") or "")
+                if exclude_latest_per_country and chart_date == exclude_latest_per_country.get(country):
+                    continue
                 song_name = row.get("song_name")
                 track_id = track_id_from_url(row.get("track_id"))
                 if not track_id:
@@ -270,7 +310,7 @@ def build_discographies(limit_regions: set[str] | None = None) -> dict[str, dict
                     "us": "United States",
                     "uk": "United Kingdom",
                 }.get(country, country.upper())
-                add_entry(by_country, str(row.get("date") or ""), track_id, entry, songs_by_track_id, songs_by_name, total_days_store)
+                add_entry(by_country, chart_date, track_id, entry, songs_by_track_id, songs_by_name, total_days_store)
 
     for path in worldwide_files():
         payload = load_json(path)
@@ -288,6 +328,8 @@ def build_discographies(limit_regions: set[str] | None = None) -> dict[str, dict
                 country = canonical_country(entry.get("country") or entry.get("country_name"))
                 if limit_regions is not None and country not in limit_regions:
                     continue
+                if exclude_latest_per_country and chart_date == exclude_latest_per_country.get(country):
+                    continue
                 add_entry(by_country, chart_date, track_id, entry, songs_by_track_id, songs_by_name, total_days_store)
 
     out: dict[str, dict[str, Any]] = {}
@@ -295,6 +337,23 @@ def build_discographies(limit_regions: set[str] | None = None) -> dict[str, dict
         songs = list(rows_by_track.values())
         for summary in songs:
             enrich_summary(summary, songs_by_track_id)
+        latest_date = max((str(song.get("last_date") or "") for song in songs), default="")
+        for summary in songs:
+            charted_dates = summary.pop("_charted_dates", set())
+            derived_longest, derived_current = streak_lengths_from_dates(
+                charted_dates if isinstance(charted_dates, set) else set()
+            )
+            if derived_longest > 0:
+                summary["longest_streak"] = derived_longest
+            row_current_streak = to_int(summary.pop("_current_streak", None)) or 0
+            current_streak = derived_current or row_current_streak
+            longest_streak = to_int(summary.get("longest_streak")) or 0
+            summary["longest_streak_active"] = bool(
+                longest_streak > 0
+                and current_streak == longest_streak
+                and latest_date
+                and str(summary.get("last_date") or "") == latest_date
+            )
         songs.sort(
             key=lambda x: (
                 str(x.get("last_date") or ""),
@@ -309,7 +368,7 @@ def build_discographies(limit_regions: set[str] | None = None) -> dict[str, dict
         )
         out[country] = {
             "region": country,
-            "latest_date": max((str(song.get("last_date") or "") for song in songs), default=""),
+            "latest_date": latest_date,
             "songs": songs,
         }
     return out
@@ -335,6 +394,14 @@ def main() -> int:
 
     for region, payload in payloads.items():
         write_payload(args.output_dir / f"{region}.json", payload)
+
+    # Snapshot excluding each region's own latest chart date, so the frontend
+    # can diff "today's" rank against a stable "yesterday" baseline regardless
+    # of which column it is currently sorted/ranked by.
+    latest_per_country = {region: payload.get("latest_date", "") for region, payload in payloads.items()}
+    previous_payloads = build_discographies(limit_regions, exclude_latest_per_country=latest_per_country)
+    for region, payload in previous_payloads.items():
+        write_payload(args.output_dir / f"{region}_previous.json", payload)
 
     index = {
         "regions": sorted(payloads),

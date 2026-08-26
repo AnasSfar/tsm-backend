@@ -7,7 +7,7 @@ import shutil
 import sys
 from bisect import bisect_left
 from collections import defaultdict
-from datetime import date as date_cls, datetime, timedelta
+from datetime import date as date_cls, datetime, timedelta, timezone
 from pathlib import Path
 
 
@@ -57,6 +57,8 @@ SITE_HISTORY_DIR = WEB_EXPORT_HISTORY_DIR
 SONGS_JSON_PATH  = SITE_DATA_DIR / "songs.json"
 ALBUMS_JSON_PATH = SITE_DATA_DIR / "albums.json"
 BEST_DAY_SINCE_JSON_PATH = SITE_DATA_DIR / "best_day_since.json"
+ACTIVE_CATALOG_MERGES_JSON_PATH = SITE_DATA_DIR / "active_catalog_merges.json"
+CATALOG_MERGE_HISTORY_CSV_PATH = _DB_ROOT / "catalog_merge_history.csv"
 
 LAST_RUN_STATE_SRC   = first_existing(ROOT / "data" / "last_run_state.json", LEGACY_WEBSITE_RUNTIME_DIR / "last_run_state.json")
 NOT_FOUND_STREAK_SRC = first_existing(ROOT / "data" / "not_found_streak.json", LEGACY_WEBSITE_RUNTIME_DIR / "not_found_streak.json")
@@ -160,6 +162,60 @@ def write_json(path: Path, payload) -> None:
         json.dumps(payload, ensure_ascii=False),
         encoding="utf-8",
     )
+
+
+def export_active_catalog_merges(stats_date: str, groups: list[dict]) -> None:
+    """Write the shared active-catalog-merge snapshot for today and append
+    any new group to the rolling audit log (db/catalog_merge_history.csv).
+
+    This is the single source of truth other consumers should read instead
+    of reimplementing their own merge detection — in particular cross-repo
+    ones (tsm-frontend's period_recaps.py) that can't import
+    history_store.find_active_catalog_merge_groups() directly. Nothing here
+    is ever guessed/estimated: it's a direct snapshot of what
+    find_active_catalog_merge_groups() already computed from today's real
+    totals (see history_store.py), same-day and self-correcting — the log
+    is purely an append-only audit trail of what's already been detected,
+    never a manually curated exclude list.
+    """
+    payload = {
+        "date": stats_date,
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "groups": groups,
+    }
+    write_json(ACTIVE_CATALOG_MERGES_JSON_PATH, payload)
+
+    if not groups:
+        return
+
+    existing_keys: set[tuple[str, str]] = set()
+    file_exists = CATALOG_MERGE_HISTORY_CSV_PATH.exists()
+    if file_exists:
+        with CATALOG_MERGE_HISTORY_CSV_PATH.open("r", newline="", encoding="utf-8-sig") as f:
+            for row in csv.DictReader(f):
+                existing_keys.add((row.get("date", ""), row.get("loser_track_id", "")))
+
+    new_rows = []
+    for group in groups:
+        for loser in group["loser_track_ids"]:
+            key = (stats_date, loser)
+            if key in existing_keys:
+                continue
+            new_rows.append({
+                "date": stats_date,
+                "loser_track_id": loser,
+                "keeper_track_id": group["keeper_track_id"],
+                "total": group["total"],
+            })
+
+    if not new_rows:
+        return
+
+    with CATALOG_MERGE_HISTORY_CSV_PATH.open("a", newline="", encoding="utf-8-sig") as f:
+        writer = csv.DictWriter(f, fieldnames=["date", "loser_track_id", "keeper_track_id", "total"])
+        if not file_exists:
+            writer.writeheader()
+        writer.writerows(new_rows)
 
 
 def _worldwide_snapshot_candidates(chart_date: str | None = None) -> list[Path]:
@@ -1162,13 +1218,24 @@ def group_album_tracks_for_display(album: dict, songs_by_id: dict[str, dict]) ->
     return album
 
 
-def enrich_albums_payload(albums_payload: list[dict], songs_by_id: dict[str, dict]) -> list[dict]:
+def enrich_albums_payload(
+    albums_payload: list[dict],
+    songs_by_id: dict[str, dict],
+    *,
+    exclude_from_aggregates: set[str] | None = None,
+) -> list[dict]:
     out = []
     album_covers = load_album_covers()
+    aggregate_exclude_ids = exclude_from_aggregates or set()
 
     for album in albums_payload:
         track_ids = album.get("track_ids", [])
         tracks = [songs_by_id[tid] for tid in track_ids if tid in songs_by_id]
+        aggregate_tracks = [
+            songs_by_id[tid]
+            for tid in track_ids
+            if tid in songs_by_id and tid not in aggregate_exclude_ids
+        ]
 
         album_name = album.get("album")
         cover_entry = album_covers.get(album_name, {})
@@ -1177,12 +1244,12 @@ def enrich_albums_payload(albums_payload: list[dict], songs_by_id: dict[str, dic
         if not cover_url:
             cover_url = next((t.get("image_url") for t in tracks if t.get("image_url")), None)
 
-        total_streams_sum = sum((t.get("streams") or 0) for t in tracks)
-        daily_streams_sum = sum((t.get("daily_streams") or 0) for t in tracks)
+        total_streams_sum = sum((t.get("streams") or 0) for t in aggregate_tracks)
+        daily_streams_sum = sum((t.get("daily_streams") or 0) for t in aggregate_tracks)
         release_dates = [t.get("release_date") for t in tracks if t.get("release_date")]
 
-        top_song_total = max(tracks, key=lambda t: t.get("streams") or 0)["track_id"] if tracks else None
-        top_song_daily = max(tracks, key=lambda t: t.get("daily_streams") or 0)["track_id"] if tracks else None
+        top_song_total = max(aggregate_tracks, key=lambda t: t.get("streams") or 0)["track_id"] if aggregate_tracks else None
+        top_song_daily = max(aggregate_tracks, key=lambda t: t.get("daily_streams") or 0)["track_id"] if aggregate_tracks else None
 
         enriched = dict(album)
         enriched["image_url"] = cover_url
@@ -1194,7 +1261,11 @@ def enrich_albums_payload(albums_payload: list[dict], songs_by_id: dict[str, dic
 
         if album.get("kind") == "misc":
             for group in enriched.get("groups", []):
-                group_tracks = [songs_by_id[tid] for tid in group.get("track_ids", []) if tid in songs_by_id]
+                group_tracks = [
+                    songs_by_id[tid]
+                    for tid in group.get("track_ids", [])
+                    if tid in songs_by_id and tid not in aggregate_exclude_ids
+                ]
                 group["image_url"] = next((t.get("image_url") for t in group_tracks if t.get("image_url")), None)
                 group["total_streams_sum"] = sum((t.get("streams") or 0) for t in group_tracks)
                 group["daily_streams_sum"] = sum((t.get("daily_streams") or 0) for t in group_tracks)
@@ -1712,12 +1783,33 @@ def export_for_web(
     # section with its real current total). Nothing is written back to
     # history: if Spotify's totals diverge again the next day, both ids earn
     # their own rank again automatically.
-    merge_losers = history_store.pick_active_catalog_merge_losers(
+    songs_by_track_id_pre_rank = {song["track_id"]: song for song in deduped_songs}
+    merge_groups = history_store.find_active_catalog_merge_groups(
         {song["track_id"]: song.get("streams") for song in deduped_songs},
-        {song["track_id"]: song for song in deduped_songs},
+        songs_by_track_id_pre_rank,
     )
+    merge_losers = {loser for group in merge_groups for loser in group["losers"]}
     if merge_losers:
-        print(f"[export] Excluding {len(merge_losers)} track(s) from rank_total/rank_daily (currently merged by Spotify): {sorted(merge_losers)}")
+        print(
+            f"[export] Excluding {len(merge_losers)} track(s) from rank_total/rank_daily "
+            f"and album/era aggregates (currently merged by Spotify): {sorted(merge_losers)}"
+        )
+
+    export_active_catalog_merges(
+        latest_date or "",
+        [
+            {
+                "total": group["total"],
+                "keeper_track_id": group["keeper"],
+                "keeper_title": songs_by_track_id_pre_rank.get(group["keeper"], {}).get("title"),
+                "loser_track_ids": group["losers"],
+                "loser_titles": [
+                    songs_by_track_id_pre_rank.get(tid, {}).get("title") for tid in group["losers"]
+                ],
+            }
+            for group in merge_groups
+        ],
+    )
 
     deduped_songs = add_ranks(deduped_songs, exclude_from_rank=merge_losers)
     songs_by_id = {song["track_id"]: song for song in deduped_songs}
@@ -1800,7 +1892,11 @@ def export_for_web(
 
         albums_payload_filtered.append(filtered)
 
-    albums_payload = enrich_albums_payload(albums_payload_filtered, songs_by_id)
+    albums_payload = enrich_albums_payload(
+        albums_payload_filtered,
+        songs_by_id,
+        exclude_from_aggregates=merge_losers,
+    )
     summary = build_summary(deduped_songs, albums_payload, dates, merged_history)
 
     # Split heavy fields out of songs.json into a separate lazy-loaded file
@@ -1862,11 +1958,17 @@ def export_for_web(
 
     for date_str in history_dates_to_write:
         day_data = merged_history[date_str]
+        date_merge_losers = history_store.pick_active_catalog_merge_losers(
+            {tid: values.get("streams") for tid, values in day_data.items()},
+            songs_by_id,
+        )
         compact = {}
         for tid, v in day_data.items():
             point = {"s": v["streams"], "d": v["daily_streams"]}
             if v.get("estimated"):
                 point["e"] = True
+            if tid in date_merge_losers:
+                point["m"] = True
             compact[tid] = point
         (SITE_HISTORY_DIR / f"{date_str}.json").write_text(
             json.dumps(compact, ensure_ascii=False), encoding="utf-8"

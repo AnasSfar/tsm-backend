@@ -44,6 +44,10 @@ from collectors.spotify.charts.artists_global.artist_global_daily import (  # no
     _fetch_chart,
     _get_bearer_token,
 )
+from collectors.spotify.charts.artists_global.artist_gender_llm import (  # noqa: E402
+    classify_artist_gender,
+    normalize_artist_classification,
+)
 
 ARTISTS_CSV = base.ARTISTS_GLOBAL / "Artists.csv"
 
@@ -139,27 +143,48 @@ def load_gender_map() -> dict[str, str]:
     with ARTISTS_CSV.open("r", newline="", encoding="utf-8-sig") as fh:
         for row in csv.DictReader(fh):
             artist_id = (row.get("artist_id") or "").strip()
-            gender = (row.get("gender") or "").strip()
+            gender, _artist_type = normalize_artist_classification(row.get("gender"), row.get("type"))
             if artist_id and gender:
                 genders[artist_id] = gender
     return genders
 
 
+def _normalize_artist_csv_row(row: dict[str, str]) -> bool:
+    original_gender = (row.get("gender") or "").strip()
+    original_type = (row.get("type") or "").strip()
+    gender, artist_type = normalize_artist_classification(original_gender, original_type)
+    changed = False
+    if gender and gender != original_gender:
+        row["gender"] = gender
+        changed = True
+    if artist_type and artist_type != original_type:
+        row["type"] = artist_type
+        changed = True
+    return changed
+
+
 def _append_missing_artists(artists: list[dict]) -> None:
-    """Keep Artists.csv complete: add any newly-charting artist with a blank
-    gender so it only needs to be filled in once, never re-seeded by hand."""
+    """Keep Artists.csv complete and fill current-chart blank classifications with LLM."""
     known_ids: set[str] = set()
-    rows: list[list[str]] = []
+    rows: list[dict[str, str]] = []
+    normalized_rows = 0
     if ARTISTS_CSV.exists():
         with ARTISTS_CSV.open("r", newline="", encoding="utf-8-sig") as fh:
-            reader = csv.reader(fh)
-            header = next(reader, ["artist_id", "artist_name", "gender"])
+            reader = csv.DictReader(fh)
+            header = list(reader.fieldnames or ["artist_id", "artist_name", "gender", "type"])
             for row in reader:
-                if row:
-                    known_ids.add(row[0])
-                rows.append(row)
+                artist_id = (row.get("artist_id") or "").strip()
+                if artist_id:
+                    known_ids.add(artist_id)
+                current = dict(row)
+                if _normalize_artist_csv_row(current):
+                    normalized_rows += 1
+                rows.append(current)
     else:
-        header = ["artist_id", "artist_name", "gender"]
+        header = ["artist_id", "artist_name", "gender", "type"]
+    for field in ("artist_id", "artist_name", "gender", "type"):
+        if field not in header:
+            header.append(field)
 
     new_rows = []
     for a in artists:
@@ -167,15 +192,43 @@ def _append_missing_artists(artists: list[dict]) -> None:
         name = a.get("artist_name") or ""
         if artist_id and artist_id not in known_ids:
             known_ids.add(artist_id)
-            new_rows.append([artist_id, name, ""])
-    if not new_rows:
+            new_rows.append({"artist_id": artist_id, "artist_name": name, "gender": "", "type": ""})
+    rows.extend(new_rows)
+
+    current_by_id = {
+        str(a.get("artist_id") or "").strip(): str(a.get("artist_name") or "").strip()
+        for a in artists
+        if str(a.get("artist_id") or "").strip()
+    }
+    llm_filled = 0
+    for row in rows:
+        artist_id = (row.get("artist_id") or "").strip()
+        if not artist_id or artist_id not in current_by_id:
+            continue
+        gender, artist_type = normalize_artist_classification(row.get("gender"), row.get("type"))
+        if gender and artist_type:
+            continue
+        artist_name = (row.get("artist_name") or "").strip() or current_by_id[artist_id]
+        gender, artist_type, provider = classify_artist_gender(artist_name)
+        if not gender or not artist_type:
+            continue
+        row["gender"] = gender
+        row["type"] = artist_type
+        llm_filled += 1
+        print(f"[INFO] Artists.csv: {artist_name} gender={gender} type={artist_type} ({provider} LLM)")
+
+    if not new_rows and not llm_filled and not normalized_rows:
         return
     with ARTISTS_CSV.open("w", newline="", encoding="utf-8") as fh:
-        writer = csv.writer(fh)
-        writer.writerow(header)
+        writer = csv.DictWriter(fh, fieldnames=header, extrasaction="ignore")
+        writer.writeheader()
         writer.writerows(rows)
-        writer.writerows(new_rows)
-    print(f"[INFO] Artists.csv: {len(new_rows)} nouvel(s) artiste(s) ajoute(s) (gender a completer).")
+    if new_rows:
+        print(f"[INFO] Artists.csv: {len(new_rows)} nouvel(s) artiste(s) ajoute(s).")
+    if normalized_rows:
+        print(f"[INFO] Artists.csv: {normalized_rows} ligne(s) migree(s) vers gender=F/NF + type=solo/GROUP.")
+    if llm_filled:
+        print(f"[INFO] Artists.csv: {llm_filled} classification(s) remplie(s) par LLM.")
 
 
 def _warn_unclassified(rows: list[dict], genders: dict[str, str], *, limit: int = 50) -> None:
