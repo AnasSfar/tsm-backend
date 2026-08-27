@@ -90,6 +90,25 @@ si la taille d'une card change.
   Ces mêmes helpers sont aussi réutilisés par `song_card_chart_sheet.py`.
 - `song_card.py` lui-même n'a plus été modifié pour ce cas d'usage.
 
+## Top Eras — ère « Non-Album » (generate_albums_image.py)
+
+`generate_albums_image.py` ajoute une ère `Non-Album` (constante
+`NON_ALBUM_ERA`, source `db/discography/misc.json`, `force_album_name=True`)
+qui regroupe les chansons hors album. `_is_unranked_era()` la reconnaît et
+`build_album_rows` la trie **toujours en dernier** (`key=(_is_unranked_era, ...)`),
+`rank=None` — elle ne prend jamais de place dans le classement. En dessous, la
+ligne `Total` (`load_public_total_row`, classe `.ledger-row-total`) : ses
+`daily`/`total` viennent de `site_history.json` (export web) et doivent
+coïncider avec la somme des Daily Streams.
+
+Sa cover est un **collage 2x2 de 4 covers hors-album tirées au hasard**
+(`pick_non_album_collage` + `_attach_non_album_collage`, `import random`) :
+priorité aux titres misc ayant des streams à la date courante, fallback sur
+tout misc.json ; sélection différente à chaque génération. Rendu via
+`.ledger-art-collage` (grid 2x2, `extra_css` local) dans `build_rows_html`
+quand `row["collage_covers"]` est présent. `prefetch_covers` télécharge aussi
+ces 4 URLs.
+
 ## Albums au branding noir et blanc (folklore, reputation)
 
 `generate_album_update_image.py` extrait normalement l'accent (couleur de la barre "Total" de section et du handle @) depuis l'image header/cover, mais ses helpers (`_header_accent_color`, `_section_palette_colors`) forcent un plancher de saturation et **excluent volontairement les tons gris** pour rester "vifs" — sur un header quasi monochrome (folklore, reputation), ça fait remonter une couleur chair/tache chaude résiduelle (rose/beige) au lieu du gris attendu (fix 24/07/2026). `MONOCHROME_ALBUM_ACCENTS` dans ce fichier force un accent gris neutre (`#6b6b6b`) pour ces albums, cohérent avec le gris déjà codé en dur côté frontend (`tsm-frontend/frontend/src/utils/anniversaries.js` + `themes.css`, thèmes `theme-folklore`/`theme-reputation`). Si un autre album au cover très désaturé fait remonter une teinte parasite, l'ajouter à ce dict plutôt que de retoucher l'algo d'extraction (qui doit rester vif pour les covers colorées).
@@ -131,6 +150,19 @@ light toute l'année (le code applique la règle du jour puis force). Détail
 produit → skill `spotify-streams` (« Thème masthead selon le jour »). Ne pas
 réimplémenter la règle jour-de-semaine ailleurs ; toute nouvelle card masthead
 doit passer `masthead_theme=masthead_theme_for_date(...)`.
+
+### Taille du corps de masthead (2026-08-27)
+
+Le header `.hdr.masthead` fait 168px de haut, mais le bloc gauche (badge
+Spotify + titre + sous-titre) était calibré petit et paraissait perdu dans le
+header. Valeurs partagées dans `tables_image.py` (touchent Top Songs, Top Eras,
+Gainers ensemble) : `.hdr.masthead .hdr-title` 34px/900, `.hdr-sub` 18px/650,
+`.mast-logo-badge` 56px (logo interne 28px). Les overrides `.hdr-title` /
+`.hdr-sub` des scripts (`generate_streams_image.py` compact, `GAINER_LEDGER_CSS`)
+sont des sélecteurs 1-classe : le sélecteur masthead 2-classes gagne toujours,
+inutile de les neutraliser. Le récap quotidien
+(`generate_weekend_streams_image.py`) a son **propre** masthead (`.mh-head`,
+`.mh-head-in h1`), non concerné par ce réglage.
 
 ## Sortie & posting
 

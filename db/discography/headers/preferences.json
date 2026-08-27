@@ -1,3 +1,7 @@
 {
-  "The Life of a Showgirl": "the life of a showgirl/5daec1c583e05ac7f1cf6470278dfc03.png"
+  "The Life of a Showgirl": "the life of a showgirl/5daec1c583e05ac7f1cf6470278dfc03.png",
+  "reputation": {
+    "dark": "reputation/71bed3bf656570a556d4618ff5ba86fb.png",
+    "light": "reputation/a4666c267d58072f134c4262a4fe0742.png"
+  }
 }

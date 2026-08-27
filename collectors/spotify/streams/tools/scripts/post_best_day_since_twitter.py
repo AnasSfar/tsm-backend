@@ -35,12 +35,18 @@ COVERS_PATH = DISCOGRAPHY_DIR / "covers.json"
 POST_COLLECTION_BEST_DAY_MIN_DAYS = 30
 ALBUM_BEST_DAY_MIN_DAYS = 30
 RECAP_BEST_DAY_MIN_DAYS = 30
+RECAP_ROWS_PER_IMAGE_TARGET = 20
+RECAP_MAX_IMAGES = 4
 MAX_BEST_DAY_SONG_POSTS_PER_ALBUM = 3
-POST_COLLECTION_MAX_SONG_POSTS = 5
+POST_COLLECTION_MAX_SONG_POSTS = 10
 MIN_SONG_DAILY_STREAMS_TO_POST = 80_000
+EARLY_BEST_DAY_MIN_SCORE = 58.0
+EARLY_BEST_DAY_MAX_POSTS_PER_ERA = 1
 ALWAYS_POST_BEST_DAY_SINCE_AFTER_DAYS = 60
 PRIORITY_BEST_DAY_SINCE_MIN_DAYS = 90
 ALBUM_RECAP_THEME_THRESHOLD_RATIO = 0.25
+BEST_DAY_POST_SPACING_SECONDS = 5 * 60
+ALBUM_UPDATE_POST_SPACING_SECONDS = 15 * 60
 
 for _stream in (sys.stdout, sys.stderr):
     try:
@@ -56,12 +62,15 @@ from comp.song_card import image_data_uri  # noqa: E402
 from comp.song_card_chart_sheet import format_change_html, render_chart_sheet_card, slugify, write_chart_sheet_card_png  # noqa: E402
 from comp.tables_image import build_table_html, masthead_theme_for_date, render_html_to_png, url_to_data_uri  # noqa: E402
 from comp.fmt import fmt_streams, fmt_pct, pct_cls, get_pct  # noqa: E402
-from core.twitter import post_with_image  # noqa: E402
+from core.twitter import post_image_thread, post_with_image  # noqa: E402
 from core.data_paths import update_streams_dir  # noqa: E402
+from twitter.links import streams_latest_url  # noqa: E402
+from twitter.prefixes import BEST_DAY_PREFIX, with_prefix  # noqa: E402
 from twitter.text import best_day_since_recap_tweet, best_day_since_tweet  # noqa: E402
 from twitter.albums import album_emoji  # noqa: E402
 from twitter.text import best_day_grower_tweet  # noqa: E402
 import best_day_since  # noqa: E402
+import score_best_day_since  # noqa: E402
 import generate_album_update_image  # noqa: E402
 
 
@@ -375,6 +384,10 @@ def _track_album_counts(track_ids: set[str], tracks_by_id: dict[str, dict]) -> d
     return counts
 
 
+def _track_era_label(track: dict) -> str:
+    return _album_key(track.get("album"))
+
+
 def _album_recap_theme(rows: list[dict], tracks_by_id: dict[str, dict]) -> str | None:
     if len(rows) <= 1:
         return None
@@ -427,21 +440,14 @@ def _pick_rows(
             )
         ]
     rows.sort(key=_song_post_sort_key, reverse=True)
-    priority_rows = [row for row in rows if _is_priority_best_day_since(row)]
-    normal_rows = [row for row in rows if not _is_priority_best_day_since(row)]
-
     counts = dict(album_post_counts or {})
 
-    # Priority rows always get a slot: skip the per-album cap entirely.
-    picked: list[dict] = list(priority_rows)
-    for row in priority_rows:
+    # Priority rows sort first, but the daily song-post limit remains absolute.
+    picked: list[dict] = []
+    for row in rows:
+        is_priority = _is_priority_best_day_since(row)
         album = _album_key(row.get("album"))
-        if album:
-            counts[album] = counts.get(album, 0) + 1
-
-    for row in normal_rows:
-        album = _album_key(row.get("album"))
-        if album and counts.get(album, 0) >= max_per_album:
+        if not is_priority and album and counts.get(album, 0) >= max_per_album:
             print(
                 f"[best_day_since_post] Skipping {row['title']}: "
                 f"already {max_per_album} best-day song post(s) for {row.get('album')}."
@@ -508,6 +514,23 @@ def _write_track_lock(track_id: str, target_date: str, row: dict) -> None:
     lock.parent.mkdir(parents=True, exist_ok=True)
     lock.write_text(
         json.dumps({"best_day_since": row.get("best_day_since"), "kind": row.get("kind")}),
+        encoding="utf-8",
+    )
+
+
+def _album_best_day_lock_path(album: str, target_date: str) -> Path:
+    return _day_dir(target_date) / "best_day_since_album_locks" / f"{slugify(album)}.lock"
+
+
+def _write_album_best_day_lock(album: str, target_date: str, row: dict) -> None:
+    lock = _album_best_day_lock_path(album, target_date)
+    lock.parent.mkdir(parents=True, exist_ok=True)
+    lock.write_text(
+        json.dumps({
+            "album": album,
+            "best_day_since": row.get("best_day_since"),
+            "kind": row.get("kind"),
+        }),
         encoding="utf-8",
     )
 
@@ -722,6 +745,7 @@ def _post_single_track_early(
     min_days: int,
     min_daily_streams: int,
     min_pct_change: float | None,
+    min_score: float | None,
     no_post: bool,
 ) -> str:
     """Compute and post one track's best-day-since record immediately, if it
@@ -748,20 +772,10 @@ def _post_single_track_early(
     )
     if not row:
         return "skipped"
-    if _is_repeat_of_previous_day(row, target_date, min_days=min_days):
-        print(
-            f"[best_day_since_early] {track_id} repeated the same best-day-since "
-            f"({row['best_day_since']}); using grower tweet format."
-        )
-        return _post_grower_for_repeat(row, track, target_date, no_post=no_post)
-
-    # Priority rows (best-day-since gap > PRIORITY_BEST_DAY_SINCE_MIN_DAYS)
-    # always get a slot: they skip the daily and per-album caps below instead
-    # of losing it to same-day competition.
     is_priority = _is_priority_best_day_since(row)
 
     locked_track_ids = _posted_track_ids_for_date(target_date)
-    if not is_priority and len(locked_track_ids) >= POST_COLLECTION_MAX_SONG_POSTS and not no_post:
+    if len(locked_track_ids) >= POST_COLLECTION_MAX_SONG_POSTS and not no_post:
         print(
             f"[best_day_since_early] Skipping {track_id}: already "
             f"{POST_COLLECTION_MAX_SONG_POSTS} best-day song post(s) for {target_date}."
@@ -769,13 +783,27 @@ def _post_single_track_early(
         return "skipped"
 
     album_counts = _track_album_counts(locked_track_ids, tracks_by_id)
-    album = _album_key(track.get("album"))
+    album = _track_era_label(track)
+    if album and album_counts.get(album, 0) >= EARLY_BEST_DAY_MAX_POSTS_PER_ERA:
+        print(
+            f"[best_day_since_early] Skipping {track_id}: already "
+            f"{EARLY_BEST_DAY_MAX_POSTS_PER_ERA} early best-day post(s) for this album/era "
+            f"({track.get('album')})."
+        )
+        return "skipped"
     if not is_priority and album and album_counts.get(album, 0) >= MAX_BEST_DAY_SONG_POSTS_PER_ALBUM:
         print(
             f"[best_day_since_early] Skipping {track_id}: already "
             f"{MAX_BEST_DAY_SONG_POSTS_PER_ALBUM} best-day song post(s) for {track.get('album')}."
         )
         return "skipped"
+
+    if _is_repeat_of_previous_day(row, target_date, min_days=min_days):
+        print(
+            f"[best_day_since_early] {track_id} repeated the same best-day-since "
+            f"({row['best_day_since']}); using grower tweet format."
+        )
+        return _post_grower_for_repeat(row, track, target_date, no_post=no_post)
 
     track_ids = row.get("combined_track_ids") or [track_id]
     total_today, total_yesterday, daily_today, daily_yesterday, daily_last_week = (
@@ -792,6 +820,39 @@ def _post_single_track_early(
             f"do not pass the early gate."
         )
         return "skipped"
+
+    if min_score is not None:
+        score = score_best_day_since.score_single_best_day_candidate(
+            track_id,
+            date.fromisoformat(target_date),
+            min_days=min_days,
+            min_daily_streams=min_daily_streams,
+            combined=False,
+        )
+        if score.get("status") != "scored":
+            print(
+                f"[best_day_since_early] Skipping {track_id}: "
+                f"score status={score.get('status')} reasons={','.join(score.get('reasons') or [])}."
+            )
+            return "skipped"
+        dynamic_min_score, threshold_adjustments = score_best_day_since.dynamic_early_min_score(score, min_score)
+        score["dynamic_early_min_score"] = dynamic_min_score
+        score["threshold_adjustments"] = {
+            key: round(value, 3)
+            for key, value in threshold_adjustments.items()
+        }
+        if float(score.get("score") or 0.0) < dynamic_min_score:
+            print(
+                f"[best_day_since_early] Skipping {track_id}: "
+                f"score {float(score.get('score') or 0.0):.2f} < dynamic threshold {dynamic_min_score:.2f} "
+                f"({score.get('title')})."
+            )
+            return "skipped"
+        row["_early_score"] = score
+        print(
+            f"[best_day_since_early] Score {float(score.get('score') or 0.0):.2f} "
+            f"passes dynamic threshold {dynamic_min_score:.2f} for {score.get('title')}."
+        )
 
     covers = load_covers()
     cover_url = get_cover_url(track, covers)
@@ -835,7 +896,6 @@ def _pick_album_rows(target_date: str, *, limit: int, min_days: int) -> list[dic
         if (
             not row
             or row.get("kind") != "since"
-            or row.get("is_biggest_day_of_year")
             or not best_day_since.passes_filters(row, min_days=min_days)
         ):
             continue
@@ -865,7 +925,6 @@ def _album_row(
     if (
         not row
         or row.get("kind") != "since"
-        or row.get("is_biggest_day_of_year")
         or not best_day_since.passes_filters(row, min_days=min_days, min_pct_change=min_pct_change)
     ):
         return None
@@ -893,6 +952,18 @@ def _build_tweet(row: dict, daily_yesterday: int | None) -> str:
         track_id=track_id,
     )
 
+
+def _build_album_best_day_tweet(row: dict, daily_yesterday: int | None) -> str:
+    label = _best_day_post_label(row)
+    daily = int(row["daily_streams"])
+    pct = _fmt_pct(daily, daily_yesterday)
+    body = (
+        f"{row['album']} earned its {label} with {daily:,} streams [{pct}].\n\n"
+        f"Full update: {streams_latest_url()}"
+    )
+    return with_prefix(body, BEST_DAY_PREFIX)
+
+
 def _validated_song_rows_for_post(
     candidate_rows: list[dict],
     *,
@@ -901,7 +972,6 @@ def _validated_song_rows_for_post(
     limit: int,
 ) -> list[dict]:
     rows: list[dict] = []
-    normal_count = 0
     for row in candidate_rows:
         track = tracks_by_id.get(row["track_id"])
         if not track:
@@ -924,14 +994,8 @@ def _validated_song_rows_for_post(
         row["_post_daily_yesterday"] = daily_yesterday
         row["_post_daily_last_week"] = daily_last_week
         rows.append(row)
-        # Priority rows (best-day-since gap > PRIORITY_BEST_DAY_SINCE_MIN_DAYS)
-        # are guaranteed a post and don't count against the daily limit;
-        # _pick_rows already places them ahead of normal candidates, so once
-        # the normal quota is filled every row still to come is non-priority.
-        if not _is_priority_best_day_since(row):
-            normal_count += 1
-            if normal_count >= limit:
-                break
+        if len(rows) >= limit:
+            break
     return rows
 
 
@@ -957,6 +1021,27 @@ def _recap_row_html(index: int, row: dict, track: dict, cover_url: str, daily: i
 </div>"""
 
 
+def _recap_image_count(row_count: int) -> int:
+    if row_count <= RECAP_ROWS_PER_IMAGE_TARGET:
+        return 1
+    return min(RECAP_MAX_IMAGES, (row_count + RECAP_ROWS_PER_IMAGE_TARGET - 1) // RECAP_ROWS_PER_IMAGE_TARGET)
+
+
+def _split_recap_rows(rows: list[dict]) -> list[list[dict]]:
+    image_count = _recap_image_count(len(rows))
+    if image_count <= 1:
+        return [rows]
+
+    base_size, extra = divmod(len(rows), image_count)
+    chunks: list[list[dict]] = []
+    start = 0
+    for index in range(image_count):
+        size = base_size + (1 if index < extra else 0)
+        chunks.append(rows[start:start + size])
+        start += size
+    return chunks
+
+
 def _generate_recap_image(
     *,
     rows: list[dict],
@@ -964,12 +1049,17 @@ def _generate_recap_image(
     tracks_by_id: dict,
     covers: dict,
     theme_album: str | None = None,
+    all_rows: list[dict] | None = None,
+    start_index: int = 1,
+    page_index: int = 1,
+    page_count: int = 1,
 ) -> Path:
     from datetime import datetime
 
+    all_rows = all_rows or rows
     date_text = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
     rows_html = []
-    for index, row in enumerate(rows, 1):
+    for index, row in enumerate(rows, start_index):
         track = tracks_by_id.get(row["track_id"]) or {
             "track_id": row["track_id"],
             "title": row.get("title") or row["track_id"],
@@ -1003,18 +1093,26 @@ def _generate_recap_image(
     masthead_theme = masthead_theme_for_date(target_date)
     title = "Best Day Since - Full Recap"
     subtitle = f"Every song that hit a best-day-since record - {date_text}"
+    if page_count > 1:
+        title = f"{title} ({page_index}/{page_count})"
+        end_index = start_index + len(rows) - 1
+        subtitle = f"Songs {start_index}-{end_index} of {len(all_rows)} - {date_text}"
     if theme_album:
         album_headers = generate_album_update_image.header_images_for_album(theme_album)
         if album_headers:
             headers_dir = album_headers[0].parent
         themed_count = sum(
             1
-            for row in rows
+            for row in all_rows
             if _album_key((tracks_by_id.get(row["track_id"]) or {}).get("album") or row.get("album"))
             == _album_key(theme_album)
         )
         title = f"{theme_album} - Best Day Recap"
         subtitle = f"{themed_count} songs from the album hit a best-day-since record - {date_text}"
+        if page_count > 1:
+            title = f"{title} ({page_index}/{page_count})"
+            end_index = start_index + len(rows) - 1
+            subtitle = f"Songs {start_index}-{end_index} of {len(all_rows)} - {date_text}"
         masthead_word = "BEST DAY"
         # Era override wins year-round: the Holiday Collection recap stays light
         # even on weekends (Christmas theming); every other album follows the
@@ -1045,9 +1143,38 @@ def _generate_recap_image(
     )
     out_dir = _day_dir(target_date) / "best_day_since"
     suffix = f"_{slugify(theme_album)}" if theme_album else ""
-    out_path = out_dir / f"best_day_since_recap{suffix}_{target_date}.png"
-    tmp_path = out_dir / f"_best_day_since_recap{suffix}_{target_date}.html"
+    part_suffix = f"_part{page_index}of{page_count}" if page_count > 1 else ""
+    out_path = out_dir / f"best_day_since_recap{suffix}{part_suffix}_{target_date}.png"
+    tmp_path = out_dir / f"_best_day_since_recap{suffix}{part_suffix}_{target_date}.html"
     return render_html_to_png(html_text, out_path, tmp_path, width=960)
+
+
+def _generate_recap_images(
+    *,
+    rows: list[dict],
+    target_date: str,
+    tracks_by_id: dict,
+    covers: dict,
+    theme_album: str | None = None,
+) -> list[Path]:
+    chunks = _split_recap_rows(rows)
+    page_count = len(chunks)
+    paths: list[Path] = []
+    start_index = 1
+    for page_index, chunk in enumerate(chunks, 1):
+        paths.append(_generate_recap_image(
+            rows=chunk,
+            target_date=target_date,
+            tracks_by_id=tracks_by_id,
+            covers=covers,
+            theme_album=theme_album,
+            all_rows=rows,
+            start_index=start_index,
+            page_index=page_index,
+            page_count=page_count,
+        ))
+        start_index += len(chunk)
+    return paths
 
 
 def _build_recap_tweet(rows: list[dict], target_date: str) -> str:
@@ -1130,8 +1257,37 @@ def _generate_best_day_since_image(
     )
     out_dir = _day_dir(target_date) / "best_day_since"
     out_path = out_dir / f"best_day_since_{slugify(track.get('title') or row['title'])}_{target_date}.png"
-    tmp_path = out_dir / f"_best_day_since_{row['track_id']}.html"
+    tmp_path = out_dir / f"_best_day_since_{slugify(str(row.get('track_id') or track.get('title') or row['title']))}.html"
     return write_chart_sheet_card_png(html, out_path, tmp_path)
+
+
+def _generate_album_best_day_since_image(row: dict, *, target_date: str) -> tuple[Path, int | None]:
+    track_ids = row.get("track_ids") or []
+    total_today, _total_yesterday, _daily_today, daily_yesterday, daily_last_week = load_history_for_tracks(
+        track_ids,
+        target_date,
+    )
+    if total_today is None:
+        total_today = 0
+    row["track_id"] = f"album_{slugify(row['album'])}"
+    row["combined_track_ids"] = track_ids
+    row["_post_daily_last_week"] = daily_last_week
+    track = {
+        "track_id": row["track_id"],
+        "title": row["album"],
+        "album": "Album total",
+        "spotify_url": "",
+    }
+    cover_url = generate_album_update_image.load_cover_url(row["album"])
+    image_path = _generate_best_day_since_image(
+        row=row,
+        track=track,
+        total_today=total_today,
+        daily_yesterday=daily_yesterday,
+        cover_url=cover_url,
+        target_date=target_date,
+    )
+    return image_path, daily_yesterday
 
 
 def _post_album_best_day_rows(args, target_date: str, album_lock: Path, *, only_album: str | None = None) -> int:
@@ -1171,15 +1327,9 @@ def _post_album_best_day_rows(args, target_date: str, album_lock: Path, *, only_
             if total_today is None or total_yesterday is None or daily_today is None or daily_yesterday is None or daily_yesterday <= 0:
                 print(f"[best_day_since_post] Incomplete comparison history for album {row['album']} on {target_date}; skipping.")
                 continue
-        existing_album_update_lock = generate_album_update_image.existing_album_update_lock_path(
-            row["album"],
-            target_date,
-        )
-        if existing_album_update_lock is not None and not args.no_post and not args.force:
-            print(
-                f"[best_day_since_post] Album update already posted "
-                f"({existing_album_update_lock.name}); skipping best-day-since album post."
-            )
+        album_best_day_lock = _album_best_day_lock_path(row["album"], target_date)
+        if album_best_day_lock.exists() and not args.no_post and not args.force:
+            print(f"[best_day_since_post] Album best-day card already posted for {row['album']}; skipping.")
             continue
         block_reason = generate_album_update_image.holiday_collection_post_block_reason(
             row["album"],
@@ -1189,24 +1339,27 @@ def _post_album_best_day_rows(args, target_date: str, album_lock: Path, *, only_
             print(f"[best_day_since_post] Album best-day-since skipped: {block_reason}")
             continue
 
-        image_path = generate_album_update_image.generate(row["album"], target_date)
-        print(f"[best_day_since_post] Album update {index}/{len(album_rows)}: {row['album']}")
+        image_path, daily_yesterday = _generate_album_best_day_since_image(row, target_date=target_date)
+        tweet = _build_album_best_day_tweet(row, daily_yesterday)
+        print(f"[best_day_since_post] Album best-day card {index}/{len(album_rows)}: {row['album']}")
+        print(f"[best_day_since_post] Tweet ({len(tweet)} chars):\n{tweet}")
         print(f"[best_day_since_post] Image: {image_path}")
 
         album_posted_count += 1
         if args.no_post:
             continue
 
-        if not generate_album_update_image.post(row["album"], image_path, target_date):
+        if not post_with_image(tweet, image_path, TWITTER_SESSION):
             print(f"[best_day_since_post] Failed to post album {row['album']}.")
             sys.exit(1)
-        generate_album_update_image.album_update_lock_path(row["album"], target_date).write_text(
-            f"posted {target_date}\n",
-            encoding="utf-8",
-        )
-        if index < len(album_rows) and args.post_spacing_seconds > 0:
-            print(f"[best_day_since_post] Waiting {args.post_spacing_seconds}s before next post...")
-            time.sleep(args.post_spacing_seconds)
+        _write_album_best_day_lock(row["album"], target_date, row)
+        album_best_day_post_spacing_seconds = max(args.post_spacing_seconds, BEST_DAY_POST_SPACING_SECONDS)
+        if index < len(album_rows) and album_best_day_post_spacing_seconds > 0:
+            print(
+                f"[best_day_since_post] Waiting {album_best_day_post_spacing_seconds}s "
+                "before next album best-day post..."
+            )
+            time.sleep(album_best_day_post_spacing_seconds)
 
     if album_posted_count and only_album and not args.no_post:
         album_lock.touch()
@@ -1248,6 +1401,12 @@ def main() -> None:
         ),
     )
     parser.add_argument(
+        "--early-min-score",
+        type=float,
+        default=EARLY_BEST_DAY_MIN_SCORE,
+        help=f"Minimum single-candidate score for --only-track early posts (default: {EARLY_BEST_DAY_MIN_SCORE}).",
+    )
+    parser.add_argument(
         "--post-spacing-seconds",
         type=int,
         default=0,
@@ -1286,6 +1445,7 @@ def main() -> None:
     args = parser.parse_args()
 
     target_date = args.date or str(date.today() - timedelta(days=1))
+    best_day_post_spacing_seconds = max(args.post_spacing_seconds, BEST_DAY_POST_SPACING_SECONDS)
 
     if args.only_track:
         result = _post_single_track_early(
@@ -1294,6 +1454,7 @@ def main() -> None:
             min_days=args.min_days,
             min_daily_streams=args.min_daily_streams,
             min_pct_change=args.min_pct_change,
+            min_score=args.early_min_score,
             no_post=args.no_post,
         )
         if result == "posted":
@@ -1343,6 +1504,9 @@ def main() -> None:
     exclude_ids = {t.strip() for t in args.exclude_tracks.split(",") if t.strip()}
     exclude_ids.update(_posted_track_ids_for_date(target_date))
     album_post_counts = _track_album_counts(exclude_ids, tracks_by_id)
+    # Early best-day posts are a separate lane (up to 3 during collection).
+    # Exclude those track IDs from the final batch to avoid duplicates, but do
+    # not spend the final batch's own 10 song slots.
     remaining_song_limit = limit
     candidate_rows = (
         []
@@ -1380,9 +1544,12 @@ def main() -> None:
                 sys.exit(1)
             if result == "posted" and not args.no_post:
                 posted_count += 1
-            if index < len(rows) and args.post_spacing_seconds > 0:
-                print(f"[best_day_since_post] Waiting {args.post_spacing_seconds}s before next post...")
-                time.sleep(args.post_spacing_seconds)
+            if index < len(rows) and best_day_post_spacing_seconds > 0:
+                print(
+                    f"[best_day_since_post] Waiting {best_day_post_spacing_seconds}s "
+                    "before next best-day post..."
+                )
+                time.sleep(best_day_post_spacing_seconds)
             continue
 
         cover_url = get_cover_url(track, covers)
@@ -1407,9 +1574,12 @@ def main() -> None:
             sys.exit(1)
         posted_count += 1
         _write_track_lock(row["track_id"], target_date, row)
-        if index < len(rows) and args.post_spacing_seconds > 0:
-            print(f"[best_day_since_post] Waiting {args.post_spacing_seconds}s before next post...")
-            time.sleep(args.post_spacing_seconds)
+        if index < len(rows) and best_day_post_spacing_seconds > 0:
+            print(
+                f"[best_day_since_post] Waiting {best_day_post_spacing_seconds}s "
+                "before next best-day post..."
+            )
+            time.sleep(best_day_post_spacing_seconds)
 
     if posted_count and not args.no_post:
         lock.touch()
@@ -1434,7 +1604,7 @@ def main() -> None:
             theme_album = _album_recap_theme(recap_rows, tracks_by_id)
             if theme_album:
                 print(f"[best_day_since_post] Recap uses album theme: {theme_album}")
-            image_path = _generate_recap_image(
+            image_paths = _generate_recap_images(
                 rows=recap_rows,
                 target_date=target_date,
                 tracks_by_id=tracks_by_id,
@@ -1443,10 +1613,16 @@ def main() -> None:
             )
             tweet = _build_recap_tweet(recap_rows, target_date)
             print(f"[best_day_since_post] Recap tweet ({len(tweet)} chars):\n{tweet}")
-            print(f"[best_day_since_post] Image: {image_path}")
+            print(f"[best_day_since_post] Recap images ({len(image_paths)}):")
+            for image_path in image_paths:
+                print(f"[best_day_since_post] - {image_path}")
 
             if not args.no_post:
-                if not post_with_image(tweet, image_path, TWITTER_SESSION):
+                if len(image_paths) == 1:
+                    posted = post_with_image(tweet, image_paths[0], TWITTER_SESSION)
+                else:
+                    posted = post_image_thread([(tweet, image_paths)], TWITTER_SESSION)
+                if not posted:
                     print("[best_day_since_post] Failed to post recap.")
                     sys.exit(1)
                 recap_lock.touch()

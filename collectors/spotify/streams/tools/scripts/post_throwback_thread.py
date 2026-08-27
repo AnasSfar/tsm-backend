@@ -230,6 +230,7 @@ def _build_images(target_date: str, *, songs_top_n: int, force: bool) -> dict[st
             album_week,
             album_track_map,
             album_covers,
+            target_date=target_date,
             merge_eras=False,
         )
         if _is_real_album_row(row)
@@ -241,6 +242,7 @@ def _build_images(target_date: str, *, songs_top_n: int, force: bool) -> dict[st
             album_week,
             album_track_map,
             album_covers,
+            target_date=target_date,
             merge_eras=True,
         )
         if _is_real_album_row(row)

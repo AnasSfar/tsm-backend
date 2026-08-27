@@ -24,6 +24,7 @@ from post_debut_releases import post_debut_releases as run_debut_release_posts
 
 ALBUM_UPDATE_TARGETS = (
     "The Life of a Showgirl",
+    "reputation",
     "THE TORTURED POETS DEPARTMENT",
 )
 ALBUM_UPDATE_GAIN_THRESHOLD_PCT = 10.0
@@ -32,6 +33,8 @@ GAINER_ALBUM_UPDATE_LIMIT = 5
 GAINER_ALBUM_UPDATE_MIN_BASELINE = 1000
 FINALIZE_POST_RETRY_ATTEMPTS = max(1, int(os.getenv("FINALIZE_POST_RETRY_ATTEMPTS", "3")))
 FINALIZE_POST_RETRY_SLEEP_SECONDS = max(0, int(os.getenv("FINALIZE_POST_RETRY_SLEEP_SECONDS", "60")))
+BEST_DAY_POST_SPACING_SECONDS = 5 * 60
+ALBUM_UPDATE_POST_SPACING_SECONDS = 15 * 60
 
 
 def _subprocess_env(extra: dict[str, str] | None = None) -> dict[str, str]:
@@ -270,6 +273,14 @@ class ReadyAlbumUpdatePoster:
             else:
                 cmd.append("--post")
             try:
+                _wait_before_category_post(
+                    label="album update post",
+                    should_post=not self.no_post_mode,
+                    state=self._post_state,
+                    state_key="last_album_update_post_at",
+                    spacing_seconds=ALBUM_UPDATE_POST_SPACING_SECONDS,
+                    log_mode=self.log_mode,
+                )
                 _run_streams_post(
                     cmd,
                     label=f"early album update ({album})",
@@ -283,6 +294,11 @@ class ReadyAlbumUpdatePoster:
                 with self._lock:
                     self._posted.add(album)
                 return True
+            _mark_category_post_done(
+                should_post=not self.no_post_mode,
+                state=self._post_state,
+                state_key="last_album_update_post_at",
+            )
             with self._lock:
                 self._posted.add(album)
             return True
@@ -377,13 +393,31 @@ class ReadyAlbumBestDaySincePoster:
                 label=f"early album best-day-since ({album})",
                 should_post=not self.no_post_mode,
                 state=self._post_state,
-                spacing_seconds=self.spacing_seconds,
+                spacing_seconds=max(self.spacing_seconds, BEST_DAY_POST_SPACING_SECONDS),
+                log_mode=self.log_mode,
+            )
+            _wait_before_category_post(
+                label="album update post",
+                should_post=not self.no_post_mode,
+                state=self._post_state,
+                state_key="last_album_update_post_at",
+                spacing_seconds=ALBUM_UPDATE_POST_SPACING_SECONDS,
                 log_mode=self.log_mode,
             )
             result = _run_subprocess(cmd, check=False)
             if result.returncode == 0:
                 print(f"Album best-day-since posted early during streams run: {album}")
                 _mark_post_done(should_post=not self.no_post_mode, state=self._post_state)
+                _mark_category_post_done(
+                    should_post=not self.no_post_mode,
+                    state=self._post_state,
+                    state_key="last_best_day_post_at",
+                )
+                _mark_category_post_done(
+                    should_post=not self.no_post_mode,
+                    state=self._post_state,
+                    state_key="last_album_update_post_at",
+                )
                 with self._lock:
                     self._posted.add(album)
                 return True
@@ -492,6 +526,7 @@ class ReadyBestDaySincePoster:
         min_days: int | None = None,
         min_daily_streams: int | None = None,
         min_pct_change: float | None = None,
+        min_score: float | None = None,
         priority_ready: Callable[[], bool] | None = None,
         priority_track_ids: list[str] | None = None,
     ) -> None:
@@ -510,6 +545,7 @@ class ReadyBestDaySincePoster:
         self.min_days = min_days
         self.min_daily_streams = min_daily_streams
         self.min_pct_change = min_pct_change
+        self.min_score = min_score
         self.priority_ready = priority_ready or (lambda: True)
         self._checked: set[str] = set()
         self._posted: set[str] = set()
@@ -577,6 +613,8 @@ class ReadyBestDaySincePoster:
                 cmd.extend(["--min-daily-streams", str(self.min_daily_streams)])
             if self.min_pct_change is not None:
                 cmd.extend(["--min-pct-change", str(self.min_pct_change)])
+            if self.min_score is not None:
+                cmd.extend(["--early-min-score", str(self.min_score)])
             if self.no_post_mode:
                 cmd.append("--no-post")
 
@@ -584,13 +622,18 @@ class ReadyBestDaySincePoster:
                 label=f"early best-day-since ({track_id})",
                 should_post=not self.no_post_mode,
                 state=self._post_state,
-                spacing_seconds=self.spacing_seconds,
+                spacing_seconds=max(self.spacing_seconds, BEST_DAY_POST_SPACING_SECONDS),
                 log_mode=self.log_mode,
             )
             result = _run_subprocess(cmd, check=False)
             if result.returncode == 0:
                 print(f"Best-day-since posted early during streams run: {track_id}")
                 _mark_post_done(should_post=not self.no_post_mode, state=self._post_state)
+                _mark_category_post_done(
+                    should_post=not self.no_post_mode,
+                    state=self._post_state,
+                    state_key="last_best_day_post_at",
+                )
                 with self._lock:
                     self._posted.add(track_id)
                 return True
@@ -658,6 +701,34 @@ def _mark_post_done(*, should_post: bool, state: dict[str, float]) -> None:
     if should_post:
         state["posted_count"] += 1
         state["last_post_at"] = time.perf_counter()
+
+
+def _wait_before_category_post(
+    *,
+    label: str,
+    should_post: bool,
+    state: dict[str, float],
+    state_key: str,
+    spacing_seconds: int,
+    log_mode: str,
+) -> None:
+    if not should_post:
+        return
+    last_post_at = state.get(state_key, 0.0)
+    if last_post_at <= 0:
+        return
+    elapsed_since_post = time.perf_counter() - last_post_at
+    wait_s = max(0.0, spacing_seconds - elapsed_since_post)
+    if wait_s > 0:
+        print(f"Waiting {int(wait_s)}s before next {label}...")
+        time.sleep(wait_s)
+    elif log_mode == "verbose":
+        print(f"{label} spacing already satisfied.")
+
+
+def _mark_category_post_done(*, should_post: bool, state: dict[str, float], state_key: str) -> None:
+    if should_post:
+        state[state_key] = time.perf_counter()
 
 
 def _run(ctx: FinalizeContext, cmd: list[str], *, label: str, should_post: bool, state: dict[str, float]) -> None:
@@ -961,6 +1032,7 @@ def _album_gain_update_targets(stats_date: str, *, threshold_pct: float = ALBUM_
             week,
             track_map,
             covers,
+            target_date=stats_date,
             merge_eras=False,
         )
     except Exception as exc:
@@ -1162,12 +1234,25 @@ def _post_one_album(
     if not ctx.no_post_mode:
         album_cmd.append("--post")
     try:
+        _wait_before_category_post(
+            label="album update post",
+            should_post=not ctx.no_post_mode,
+            state=state,
+            state_key="last_album_update_post_at",
+            spacing_seconds=ALBUM_UPDATE_POST_SPACING_SECONDS,
+            log_mode=ctx.log_mode,
+        )
         _run(
             ctx,
             album_cmd,
             label=f"album update ({album})",
             should_post=not ctx.no_post_mode,
             state=state,
+        )
+        _mark_category_post_done(
+            should_post=not ctx.no_post_mode,
+            state=state,
+            state_key="last_album_update_post_at",
         )
     except SystemExit as exc:
         print(f"Album update skipped after failure ({album}): {exc}")
@@ -1341,7 +1426,7 @@ def _post_best_day_since(ctx: FinalizeContext, state: dict[str, float]) -> None:
         str(best_day_script),
         ctx.summary["stats_date"],
         "--post-spacing-seconds",
-        str(ctx.post_spacing_seconds),
+        str(max(ctx.post_spacing_seconds, BEST_DAY_POST_SPACING_SECONDS)),
     ]
     if ctx.posted_best_day_since_tracks:
         cmd.extend(["--exclude-tracks", ",".join(sorted(ctx.posted_best_day_since_tracks))])
@@ -1349,12 +1434,25 @@ def _post_best_day_since(ctx: FinalizeContext, state: dict[str, float]) -> None:
         cmd.append("--no-post")
 
     print("Posting best-day-since stream cards...")
+    _wait_before_category_post(
+        label="best-day post",
+        should_post=not ctx.no_post_mode,
+        state=state,
+        state_key="last_best_day_post_at",
+        spacing_seconds=BEST_DAY_POST_SPACING_SECONDS,
+        log_mode=ctx.log_mode,
+    )
     _run(
         ctx,
         cmd,
         label="best-day-since posts",
         should_post=not ctx.no_post_mode,
         state=state,
+    )
+    _mark_category_post_done(
+        should_post=not ctx.no_post_mode,
+        state=state,
+        state_key="last_best_day_post_at",
     )
 
 
@@ -1624,6 +1722,14 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
             _guarded_post_step("targeted album updates", lambda: _post_album_updates(ctx, post_state))
 
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
+            _guarded_post_step("top eras post", lambda: _post_albums_daily(ctx, post_state))
+
+        _guarded_post_step("top 20 songs post", lambda: _post_streams_image(ctx, post_state))
+
+        if not ctx.debug_daily_mode and not ctx.local_test_mode:
+            _guarded_post_step("stream highlights tables", lambda: _post_spotlight_gainers(ctx, post_state))
+
+        if not ctx.debug_daily_mode and not ctx.local_test_mode:
             _guarded_post_step("debut posts", lambda: _post_debut_releases(ctx, post_state))
 
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
@@ -1637,23 +1743,8 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
 
         _guarded_post_step("stream milestones", lambda: _post_stream_milestones(ctx, post_state))
 
-        _guarded_post_step("top eras post", lambda: _post_albums_daily(ctx, post_state))
-
-        _guarded_post_step("top 20 songs post", lambda: _post_streams_image(ctx, post_state))
-
         if ctx.debug_daily_mode or ctx.local_test_mode:
             return
-
-        spotlight_thread = _start_spotlight_gainers(ctx)
-
-        if spotlight_thread is not None:
-            start = time.perf_counter()
-            spotlight_thread.join()
-            timer.add("wait stream highlights", time.perf_counter() - start)
-            spotlight_errors = getattr(spotlight_thread, "post_errors", [])
-            if spotlight_errors:
-                print(f"stream highlights thread failed; continuing finalization: {spotlight_errors[0]}")
-                post_step_failures.append(f"stream highlights thread ({spotlight_errors[0]})")
 
         # Always last: every non-Misc album, independently, highest gain first
         # (Monday/Friday only) — see _post_all_albums.

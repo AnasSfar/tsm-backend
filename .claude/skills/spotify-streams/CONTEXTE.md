@@ -308,6 +308,45 @@ Repere sur "I Knew You Were Trouble." (Red) le 2026-08-20 :
 mais absent de la table Red. Exclusion supprimee dans les deux fonctions ;
 `passes_filters` (min_days=30 pour un kind="since") reste le seul gate.
 
+## Update album "table dark/light" : Showgirl + reputation (2026-08-27)
+
+`generate_album_update_image.py` a un style de table alternatif optionnel
+(`TABLE_DARK_CSS`, `_table_dark_theme(album_name, header_accent, variant)`,
+suffixe fichier `_update_table_dark.png` / `_update_table_light.png`). Les
+albums listes dans `TABLE_DARK_DEFAULT_ALBUMS` (casefold) prennent
+automatiquement le variant **dark** quand `style == "default"`
+(`effective_album_update_style`). Contenu actuel : `the life of a showgirl`,
+`reputation`.
+
+- **Styles CLI** : `--style=table-dark` (defaut pour ces albums),
+  `--style=table-light`. Le variant light passe `variant="light"` a
+  `_table_dark_theme`. Seuls `reputation` et `tortured poets` ont un vrai bloc
+  de palette light dedie (`if variant == "light" and key == ...`) ; les autres
+  albums retombent sur leur palette unique (souvent deja claire).
+- **Palettes reputation** : dark = fond quasi-noir `#080808` ; light = blanc
+  `#f1f1f1` / panneaux gris `#e8e8e8`. Les deux : titre blackletter
+  (`'Old English Text MT','UnifrakturCook','Cloister Black',Georgia,serif`),
+  hero `grayscale(1)`, accent gris (`MONOCHROME_ALBUM_ACCENTS` force `#6b6b6b`
+  comme accent header).
+- **Header par variant** : `db/discography/headers/preferences.json`. La valeur
+  d'un album peut etre une string (tous variants) OU un objet
+  `{"dark": "...", "light": "..."}`. `reputation` utilise l'objet :
+  `71bed3bf...png` (photo N&B) en dark, `a4666c26...png` (marbre + citation
+  blackletter, deja recadree pour que la citation reste dans la bande haute)
+  en light. `_preferred_header_for_album(album, variant)` /
+  `pick_header_image(album, variant)` lisent ce variant ; `generate()` calcule
+  `header_variant` depuis `style`.
+- Les fichiers image sont gitignore (`*.png`/`*.jpg` global) ; ceux de
+  reputation ont ete force-add (`git add -f`) pour survivre a un reset
+  machine, comme les headers d'ere top-niveau (`folklore.png`...).
+- `--style=table-light` / `table-dark` ne sont **pas** postables (`main()`
+  bloque : "Experimental styles cannot be posted directly") — le post daily
+  auto utilise toujours `style="default"` -> dark. Le light est une
+  generation manuelle.
+- Pour ajouter une ere : nom casefold dans `TABLE_DARK_DEFAULT_ALBUMS`, bloc
+  `elif key ==` (et `if variant == "light" and key ==` si besoin d'un light
+  distinct) dans `_table_dark_theme`, header(s) + entree `preferences.json`.
+
 ## Fusion catalogue Spotify active (dedup dynamique)
 
 Depuis 2026-08-21 : Spotify fusionne parfois deux track_id du catalogue en un
@@ -364,6 +403,23 @@ Cablage actuel :
   sur les losers detectes pour la date exportee. Les pages frontend Albums,
   AlbumDetail, Streams/Top Songs, Image Studio et les APIs home/studio peuvent
   donc dedoubler les jours historiques sans inventer ni modifier de total.
+- Image Top Eras / albums (2026-08-27) : les dailies negatifs issus d'un split
+  post-fusion ne doivent jamais servir de baseline `vs last week`. Incident
+  2026-08-25 : le J-7 etait 2026-08-18, avec sept lignes invalides
+  negatives apres la fusion Spotify du 2026-08-17 (`Karma`, `Karma feat. Ice
+  Spice`, `Mine`, `The Story Of Us`, `Long Live`, `The Joker And The Queen`,
+  `Teardrops On My Guitar - Radio Single Remix`).
+  Les totals 2026-08-18 ont ete conserves, mais `daily_streams` vide avec
+  `estimated_reason=collection_incident_spotify_merge_2026-08-17_to_2026-08-18`.
+  `generate_albums_image.build_album_rows(..., target_date=...)` propage
+  desormais une comparaison album/era en `None` des qu'un track officiel sorti
+  a une baseline manquante ou negative; le PNG affiche alors `--` dans la
+  colonne concernee au lieu de sommer une valeur fausse. Les extras restent
+  non bloquantes: elles sont additionnees seulement si leur daily est valide.
+- `history_store.load_history_track_ids_with_daily_for_date` ne doit pas traiter
+  un `admin_override` comme automatiquement complet si son `daily_streams` est
+  vide ou negatif. Un override humain peut garder un total exact, mais il ne
+  rend pas une daily negative publiable.
 
 Si un nouveau generateur de classement/top N est ecrit, l'appeler aussi sur
 les track_id candidats de ce generateur plutot que de dupliquer la logique.

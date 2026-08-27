@@ -802,6 +802,7 @@ def generate(
         album_week,
         album_track_map,
         album_covers,
+        target_date=target_date,
     )[:top_n]
 
     target_day = date_cls.fromisoformat(target_date)

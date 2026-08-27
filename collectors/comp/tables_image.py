@@ -582,15 +582,27 @@ body{
   position:relative;
   border-bottom:1px solid rgba(255,255,255,.08);
 }
-.hdr.masthead .hdr-title{color:var(--mast-title-color,#fff)}
-.hdr.masthead .hdr-sub{color:var(--mast-sub-color,rgba(255,255,255,.85))}
-.mast-left{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+.hdr.masthead .hdr-title{
+  color:var(--mast-title-color,#fff);
+  font-size:34px;
+  font-weight:900;
+  line-height:1.05;
+  letter-spacing:0;
+}
+.hdr.masthead .hdr-sub{
+  color:var(--mast-sub-color,rgba(255,255,255,.85));
+  font-size:18px;
+  font-weight:650;
+  line-height:1.25;
+  margin-top:7px;
+}
+.mast-left{display:flex;align-items:center;gap:16px;position:relative;z-index:1;max-width:720px}
 .mast-logo-badge{
-  width:38px;height:38px;border-radius:50%;background:#fff;flex-shrink:0;
+  width:56px;height:56px;border-radius:50%;background:#fff;flex-shrink:0;
   display:flex;align-items:center;justify-content:center;
   box-shadow:0 2px 8px rgba(0,0,0,.35);
 }
-.mast-logo-badge .hdr-logo{width:19px;height:19px}
+.mast-logo-badge .hdr-logo{width:28px;height:28px}
 .mast-logo-badge .hdr-logo path{fill:#161616}
 .mast-word{
   position:absolute;

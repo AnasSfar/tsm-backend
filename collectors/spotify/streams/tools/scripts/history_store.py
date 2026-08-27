@@ -837,12 +837,6 @@ def load_history_track_ids_with_daily_for_date(stats_date: str) -> set[str]:
             track_id = (row.get("track_id") or "").strip()
             if not track_id:
                 continue
-            if (row.get("estimated_reason") or "").strip() == "admin_override":
-                # --admin explicitly force-accepted this total as-is (negative
-                # daily included) — trust that human call, don't re-apply the
-                # automatic "no blank/negative daily" guard on top of it.
-                done.add(track_id)
-                continue
             daily_raw = (row.get("daily_streams") or "").strip()
             if not daily_raw:
                 continue

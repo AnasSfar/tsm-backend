@@ -574,9 +574,9 @@ def compute_best_day_since(track: Track, points: list[Point], target_date: date)
             **record_flags,
         }
 
-    best_since = last_at_or_above.day + timedelta(days=1)
-    if best_since >= target_date:
+    if last_at_or_above.day >= target_date - timedelta(days=1):
         return None
+    best_since = last_at_or_above.day
 
     return {
         "track_id": track.track_id,
@@ -590,7 +590,7 @@ def compute_best_day_since(track: Track, points: list[Point], target_date: date)
         "best_day_since": best_since.isoformat(),
         "previous_higher_or_equal_date": last_at_or_above.day.isoformat(),
         "previous_higher_or_equal_daily": last_at_or_above.daily,
-        "days_since": (target_date - best_since).days + 1,
+        "days_since": (target_date - best_since).days,
         "first_available_date": points[0].day.isoformat() if points else None,
         **record_flags,
     }

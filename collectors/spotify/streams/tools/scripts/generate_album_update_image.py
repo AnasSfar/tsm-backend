@@ -160,6 +160,7 @@ MONOCHROME_ALBUM_ACCENTS = {
 }
 
 TABLE_DARK_DEFAULT_ALBUMS = {
+    "reputation",
     "the life of a showgirl",
 }
 
@@ -871,7 +872,7 @@ def header_images_for_album(album_name: str) -> list[Path]:
     return deduped
 
 
-def _preferred_header_for_album(album_name: str) -> Path | None:
+def _preferred_header_for_album(album_name: str, variant: str = "dark") -> Path | None:
     if not PREFERRED_HEADERS_PATH.exists():
         return None
     try:
@@ -885,7 +886,16 @@ def _preferred_header_for_album(album_name: str) -> Path | None:
     pref = None
     for key in keys:
         value = prefs.get(key)
-        if isinstance(value, str) and value.strip():
+        # A value may be a plain string (used for every variant) or a mapping
+        # {"dark": "...", "light": "..."} to pick a header per theme variant.
+        if isinstance(value, dict):
+            picked = value.get(variant) or value.get("dark") or next(
+                (v for v in value.values() if isinstance(v, str) and v.strip()), None
+            )
+            if isinstance(picked, str) and picked.strip():
+                pref = picked.strip()
+                break
+        elif isinstance(value, str) and value.strip():
             pref = value.strip()
             break
     if not pref:
@@ -906,13 +916,13 @@ def _preferred_header_for_album(album_name: str) -> Path | None:
     return None
 
 
-def pick_header_image(album_name: str) -> Path | None:
-    return _preferred_header_for_album(album_name) or _pick_random_best_quality(header_images_for_album(album_name))
+def pick_header_image(album_name: str, variant: str = "dark") -> Path | None:
+    return _preferred_header_for_album(album_name, variant) or _pick_random_best_quality(header_images_for_album(album_name))
 
 
-def resolve_header_arg(album_name: str, header_arg: str | None) -> Path | None:
+def resolve_header_arg(album_name: str, header_arg: str | None, variant: str = "dark") -> Path | None:
     if not header_arg:
-        return pick_header_image(album_name)
+        return pick_header_image(album_name, variant)
 
     raw = Path(header_arg)
     candidates: list[Path] = []
@@ -2046,6 +2056,35 @@ def _table_dark_theme(album_name: str, header_accent: str | None = None, variant
             "head-bg": "#fffafa",
             "grid-line": "rgba(47,122,78,.18)",
         })
+    if variant == "light" and key == "reputation":
+        base.update({
+            "page-bg": "#f1f1f1",
+            "text": "#171717",
+            "card-bg": "linear-gradient(180deg,#ffffff 0%,#f3f3f3 34%,#e9e9e9 100%)",
+            "hero-bg": "#e6e6e6",
+            # The stored header art is already cropped so its baked-in
+            # blackletter quote sits in the upper band, clear of the overlaid
+            # date + album title.
+            "hero-pos": "center top",
+            "hero-opacity": ".9",
+            "hero-filter": "grayscale(1) contrast(1.04) brightness(1.04)",
+            "hero-overlay": "linear-gradient(90deg,#e6e6e6 0%,rgba(230,230,230,.42) 17%,rgba(230,230,230,.12) 52%,rgba(230,230,230,.46) 86%,#e6e6e6 100%),linear-gradient(180deg,rgba(241,241,241,0) 0%,rgba(241,241,241,.26) 55%,#f1f1f1 100%)",
+            "hero-text": "#2a2a2a",
+            "title-font": "'Old English Text MT','UnifrakturCook','Cloister Black',Georgia,serif",
+            "title-size": "48px",
+            "title-spacing": "1px",
+            "title-transform": "lowercase",
+            "title-bottom": "48px",
+            "title-color": "#121212",
+            "title-shadow": "0 2px 0 rgba(255,255,255,.85),0 8px 18px rgba(18,18,18,.24)",
+            "accent": "#5a5a5a",
+            "cell-text": "#191919",
+            "daily-text": "#101010",
+            "cell-bg": "#e8e8e8",
+            "cell-bg-alt": "#dfdfdf",
+            "head-bg": "#fafafa",
+            "grid-line": "rgba(0,0,0,.13)",
+        })
     if variant == "light" and "tortured poets" in key:
         base.update({
             "page-bg": "#eee9df",
@@ -2344,6 +2383,7 @@ def generate(
     if not sections:
         raise ValueError(f"Aucune section trouvée pour l'album: {album_name!r}")
     style = effective_album_update_style(album_name, style)
+    header_variant = "light" if style == "table-light" else "dark"
     print(f"[album_update] {sum(len(s['tracks']) for s in sections)} tracks dans {len(sections)} section(s)")
 
     hist = load_history_for_album(sections, target_date)
@@ -2367,7 +2407,7 @@ def generate(
         )
 
     cover_url  = load_cover_url(album_name)
-    header_img = header_path or pick_header_image(album_name)
+    header_img = header_path or pick_header_image(album_name, header_variant)
     mono_accent = MONOCHROME_ALBUM_ACCENTS.get(album_name.strip().casefold())
 
     # Accent color comes from the selected header first; fall back to cover, then default.
@@ -2637,7 +2677,7 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
         if days_since is None:
             best_since = row.get("best_day_since")
             if isinstance(best_since, str) and re.match(r"\d{4}-\d{2}-\d{2}$", best_since):
-                days_since = (date_cls.fromisoformat(target_date) - date_cls.fromisoformat(best_since)).days + 1
+                days_since = (date_cls.fromisoformat(target_date) - date_cls.fromisoformat(best_since)).days
         return (int(days_since or 0), int(row.get("daily_streams") or 0))
 
     best_row = max(best_day_rows, key=note_rank)
@@ -2777,6 +2817,8 @@ def main() -> None:
         print(f"Unknown style: {style!r}. Supported styles: default, table-dark, table-light")
         sys.exit(1)
 
+    header_variant = "light" if style == "table-light" else "dark"
+
     if all_albums or all_headers:
         if do_post:
             print("[album_update] Batch header tests cannot be posted.")
@@ -2784,7 +2826,7 @@ def main() -> None:
         targets = all_album_names() if all_albums else [album_name]
         generated: list[Path] = []
         for target_album in targets:
-            headers = header_images_for_album(target_album) if all_headers else [resolve_header_arg(target_album, header_arg)]
+            headers = header_images_for_album(target_album) if all_headers else [resolve_header_arg(target_album, header_arg, header_variant)]
             if not headers:
                 print(f"[album_update] Skip {target_album}: aucun header.")
                 continue
@@ -2801,7 +2843,7 @@ def main() -> None:
         album_name,
         resolved_date,
         style=style,
-        header_path=resolve_header_arg(album_name, header_arg),
+        header_path=resolve_header_arg(album_name, header_arg, header_variant),
         output_suffix=f"test_{Path(header_arg).stem}" if header_arg else "",
     )
 

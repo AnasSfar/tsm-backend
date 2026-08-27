@@ -200,10 +200,10 @@ def _era_best_day_label(era: str, target_date: str, current_daily: int, track_ma
             return "best day ever"
         return "best day since before 2025"
 
-    best_since = last_at_or_above + timedelta(days=1)
-    if best_since >= target:
+    if last_at_or_above >= target - timedelta(days=1):
         return ""
-    days_since = (target - best_since).days + 1
+    best_since = last_at_or_above
+    days_since = (target - best_since).days
     if days_since < min_days:
         return ""
     return f"best day since {best_since.strftime('%B')} {_ordinal(best_since.day)}, {best_since.year}"
@@ -301,7 +301,7 @@ def main():
     print("[albums_post] Loading daily history slices...", flush=True)
     today, yest, week = generate_albums_image.load_history(target_date)
     print("[albums_post] Building album rows...", flush=True)
-    rows = generate_albums_image.build_album_rows(today, yest, week, track_map, covers)
+    rows = generate_albums_image.build_album_rows(today, yest, week, track_map, covers, target_date=target_date)
     album_track_ids = {
         track_id for track_id, info in track_map.items()
         if not info.get("chart_extra")
