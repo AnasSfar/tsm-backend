@@ -176,7 +176,7 @@ CHARTSNAPSHOT_TOP_SONGS_URL = "https://www.chartsnapshot.com/get_top_songs"
 EARLY_BEST_DAY_MIN_DAILY_STREAMS = 30_000
 EARLY_BEST_DAY_WATCHLIST_MIN_DAILY_STREAMS = 30_000
 EARLY_BEST_DAY_TRACK_LIMIT = 80
-EARLY_BEST_DAY_MAX_POSTS = 3
+EARLY_BEST_DAY_MAX_POSTS = 5
 EARLY_BEST_DAY_MIN_PCT_CHANGE = 10.0
 EARLY_BEST_DAY_MIN_SCORE = 58.0
 EARLY_BEST_DAY_PRIORITY_AFTER_DAYS = 60
@@ -3923,22 +3923,29 @@ def main():
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        print("\nStopped by user.")
-    except Exception as _exc:
-        import traceback as _traceback
-        _tb = _traceback.format_exc()
-        print(_tb, flush=True)
+    from core.run_logging import CollectorRunLog
+
+    _log_date = next(
+        (arg for arg in sys.argv[1:] if re.fullmatch(r"\d{4}-\d{2}-\d{2}", arg)),
+        get_stats_date_str(),
+    )
+    with CollectorRunLog("spotify_streams", "spstr", _log_date):
         try:
-            notify(
-                NTFY_TOPIC,
-                f"{_exc}\n\n{_tb[-1500:]}",
-                title="Taylor Swift - Streams pipeline CRASHED",
-                tags="rotating_light,warning",
-                priority="urgent",
-            )
-        except Exception:
-            pass
-        raise
+            main()
+        except KeyboardInterrupt:
+            print("\nStopped by user.")
+        except Exception as _exc:
+            import traceback as _traceback
+            _tb = _traceback.format_exc()
+            print(_tb, flush=True)
+            try:
+                notify(
+                    NTFY_TOPIC,
+                    f"{_exc}\n\n{_tb[-1500:]}",
+                    title="Taylor Swift - Streams pipeline CRASHED",
+                    tags="rotating_light,warning",
+                    priority="urgent",
+                )
+            except Exception:
+                pass
+            raise

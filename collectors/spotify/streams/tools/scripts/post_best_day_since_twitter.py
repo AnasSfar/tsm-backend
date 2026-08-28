@@ -41,6 +41,9 @@ MAX_BEST_DAY_SONG_POSTS_PER_ALBUM = 3
 POST_COLLECTION_MAX_SONG_POSTS = 10
 MIN_SONG_DAILY_STREAMS_TO_POST = 80_000
 EARLY_BEST_DAY_MIN_SCORE = 58.0
+EARLY_BEST_DAY_STANDARD_MAX_POSTS = 3
+EARLY_BEST_DAY_EXCEPTIONAL_MAX_POSTS = 5
+EARLY_BEST_DAY_EXCEPTIONAL_MIN_SCORE = 90.0
 EARLY_BEST_DAY_MAX_POSTS_PER_ERA = 1
 MAX_BEST_DAY_GROWER_POSTS = 3
 ALWAYS_POST_BEST_DAY_SINCE_AFTER_DAYS = 60
@@ -819,10 +822,10 @@ def _post_single_track_early(
     is_priority = _is_priority_best_day_since(row)
 
     locked_track_ids = _posted_track_ids_for_date(target_date)
-    if len(locked_track_ids) >= POST_COLLECTION_MAX_SONG_POSTS and not no_post:
+    if len(locked_track_ids) >= EARLY_BEST_DAY_EXCEPTIONAL_MAX_POSTS and not no_post:
         print(
             f"[best_day_since_early] Skipping {track_id}: already "
-            f"{POST_COLLECTION_MAX_SONG_POSTS} best-day song post(s) for {target_date}."
+            f"{EARLY_BEST_DAY_EXCEPTIONAL_MAX_POSTS} early best-day song post(s) for {target_date}."
         )
         return "skipped"
 
@@ -865,7 +868,8 @@ def _post_single_track_early(
         )
         return "skipped"
 
-    if min_score is not None:
+    needs_score = min_score is not None or len(locked_track_ids) >= EARLY_BEST_DAY_STANDARD_MAX_POSTS
+    if needs_score:
         score = score_best_day_since.score_single_best_day_candidate(
             track_id,
             date.fromisoformat(target_date),
@@ -879,22 +883,36 @@ def _post_single_track_early(
                 f"score status={score.get('status')} reasons={','.join(score.get('reasons') or [])}."
             )
             return "skipped"
-        dynamic_min_score, threshold_adjustments = score_best_day_since.dynamic_early_min_score(score, min_score)
+        dynamic_min_score, threshold_adjustments = score_best_day_since.dynamic_early_min_score(
+            score,
+            min_score if min_score is not None else EARLY_BEST_DAY_MIN_SCORE,
+        )
         score["dynamic_early_min_score"] = dynamic_min_score
         score["threshold_adjustments"] = {
             key: round(value, 3)
             for key, value in threshold_adjustments.items()
         }
-        if float(score.get("score") or 0.0) < dynamic_min_score:
+        numeric_score = float(score.get("score") or 0.0)
+        if numeric_score < dynamic_min_score:
             print(
                 f"[best_day_since_early] Skipping {track_id}: "
-                f"score {float(score.get('score') or 0.0):.2f} < dynamic threshold {dynamic_min_score:.2f} "
+                f"score {numeric_score:.2f} < dynamic threshold {dynamic_min_score:.2f} "
                 f"({score.get('title')})."
+            )
+            return "skipped"
+        if (
+            len(locked_track_ids) >= EARLY_BEST_DAY_STANDARD_MAX_POSTS
+            and numeric_score < EARLY_BEST_DAY_EXCEPTIONAL_MIN_SCORE
+        ):
+            print(
+                f"[best_day_since_early] Skipping {track_id}: already "
+                f"{EARLY_BEST_DAY_STANDARD_MAX_POSTS} early best-day post(s), and score "
+                f"{numeric_score:.2f} < exceptional threshold {EARLY_BEST_DAY_EXCEPTIONAL_MIN_SCORE:.2f}."
             )
             return "skipped"
         row["_early_score"] = score
         print(
-            f"[best_day_since_early] Score {float(score.get('score') or 0.0):.2f} "
+            f"[best_day_since_early] Score {numeric_score:.2f} "
             f"passes dynamic threshold {dynamic_min_score:.2f} for {score.get('title')}."
         )
 

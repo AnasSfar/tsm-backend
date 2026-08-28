@@ -37,6 +37,11 @@ DEFAULT_MIN_DAILY_STREAMS = 0
 RECENT_POST_WINDOW_DAYS = 14
 DEFAULT_EARLY_MIN_SCORE = 58.0
 ERA_CLUSTER_MIN_ROWS = 3
+BEST_EVER_BONUS = 8.0
+BIGGEST_DAY_OF_YEAR_BONUS = 18.0
+BIGGEST_DAY_OF_MONTH_BONUS = 2.0
+COMBINED_TRACK_BONUS = 1.0
+EARLY_YEAR_RECORD_THRESHOLD_DISCOUNT = -5.0
 
 
 @dataclass(frozen=True)
@@ -296,13 +301,13 @@ def _positive_move_count(points_by_day: dict[date, best_day_since.Point], target
 def _record_bonus(row: dict) -> float:
     bonus = 0.0
     if row.get("kind") == "best_ever":
-        bonus += 8.0
+        bonus += BEST_EVER_BONUS
     if row.get("is_biggest_day_of_year"):
-        bonus += 6.0
+        bonus += BIGGEST_DAY_OF_YEAR_BONUS
     if row.get("is_biggest_day_of_month"):
-        bonus += 2.0
+        bonus += BIGGEST_DAY_OF_MONTH_BONUS
     if row.get("combined"):
-        bonus += 1.0
+        bonus += COMBINED_TRACK_BONUS
     return bonus
 
 
@@ -491,7 +496,7 @@ def dynamic_early_min_score(candidate: dict, base_min_score: float = DEFAULT_EAR
         adjustments["momentum_discount"] = -1.0
 
     if candidate.get("is_biggest_day_of_year"):
-        adjustments["year_record_discount"] = -2.0
+        adjustments["year_record_discount"] = EARLY_YEAR_RECORD_THRESHOLD_DISCOUNT
 
     threshold += sum(adjustments.values())
     return round(max(48.0, min(68.0, threshold)), 3), adjustments

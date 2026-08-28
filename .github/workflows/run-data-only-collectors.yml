@@ -22,7 +22,7 @@ on:
         default: true
         type: boolean
   schedule:
-    - cron: "0 2,6,10,14,18,22 * * *"   # Apple Music every 4h; 04/08/12/16/20/00 Paris during CEST
+    - cron: "7 */2 * * *"   # Apple Music every 2h; rounds to even Paris hours during CEST
     - cron: "5 4 * * *"     # YouTube daily, approx. 06:05 Europe/Paris during CEST
 
 concurrency:
@@ -46,7 +46,7 @@ jobs:
       APPLE_MUSIC_REQUIRE_PREVIOUS_RANKS: "1"
       APPLE_MUSIC_ROUND_SCRAPED_AT: "1"
       APPLE_MUSIC_SNAPSHOT_TZ: "Europe/Paris"
-      APPLE_MUSIC_SNAPSHOT_HOURS: "0,4,8,12,16,20"
+      APPLE_MUSIC_SNAPSHOT_HOURS: "0,2,4,6,8,10,12,14,16,18,20,22"
       REQUIRE_R2_UPLOAD: "1"
       UPLOAD_TO_R2: "1"
       YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
@@ -63,7 +63,7 @@ jobs:
         run: python -m pip install requests urllib3 boto3 botocore python-dotenv beautifulsoup4 lxml
 
       - name: Download Apple Music CSV history from R2
-        if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' || github.event.schedule == '0 2,6,10,14,18,22 * * *' }}
+        if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' || github.event.schedule == '7 */2 * * *' }}
         run: |
           python - <<'PY'
           import boto3
@@ -104,7 +104,7 @@ jobs:
           PY
 
       - name: Rebuild Apple Music previous snapshots from R2
-        if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' || github.event.schedule == '0 2,6,10,14,18,22 * * *' }}
+        if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' || github.event.schedule == '7 */2 * * *' }}
         run: |
           SECONDS=0
           start="$(date -d '3 days ago' +%F)"
@@ -120,7 +120,7 @@ jobs:
           git config user.name "github-actions[bot]"
 
       - name: Run Apple Music data-only
-        if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' || github.event.schedule == '0 2,6,10,14,18,22 * * *' }}
+        if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' || github.event.schedule == '7 */2 * * *' }}
         run: |
           SECONDS=0
           python -m tsm collect apple-music --no-images --no-post
@@ -133,7 +133,7 @@ jobs:
           printf "### Apple Music data-only\n\n- Duration: %d min %02d sec\n- Scope: %s\n\n" "$((duration / 60))" "$((duration % 60))" "$scope" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Verify Apple Music R2 export
-        if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' || github.event.schedule == '0 2,6,10,14,18,22 * * *' }}
+        if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' || github.event.schedule == '7 */2 * * *' }}
         run: |
           python - <<'PY'
           import json

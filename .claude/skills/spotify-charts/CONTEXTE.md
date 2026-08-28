@@ -501,6 +501,7 @@ Forme principale:
         "streams": 1234567,
         "peak_rank": 1,
         "total_days": 1,
+        "streak": 1,
         "is_new": true,
         "is_re_entry": false,
         "movement": "NEW",
@@ -515,6 +516,14 @@ Forme principale:
 Ne pas publier un snapshot si les donnees requises sont incompletes. Les
 comparaisons journaliere/hebdo lisent les snapshots precedents quand ils
 existent.
+
+`peak_rank`, `total_days` et `streak` viennent tous de `chartEntryData`
+(`peakRank` / `appearancesOnChart` / `consecutiveAppearancesOnChart`) sur chaque
+requete de chart pays. **Fix 2026-08-29** : `daily.py` recopie maintenant
+`streak` dans l'entry `by_track` (il ne mettait que `peak_rank`/`total_days`, du
+coup seul `global` avait `streak` dans les snapshots anterieurs). Les vieux
+snapshots gardent `streak` absent pour les pays non-global -> `charts.py`
+retombe sur `current_streak` de `charts_discography/peaks_by_track.json`.
 
 ## global/, fr/, us/, uk/
 
@@ -1090,6 +1099,43 @@ Alertes actives :
 - **`new peak streams`** : **supprimee** (2026-08-27). L'historique charts ne
   remonte pas a 2017, donc pour un titre de catalogue le pic stocke n'est
   qu'un "record depuis le debut du tracking", pas un record all-time.
+
+## Discography payload + vue "Overall" (par pays)
+
+`build_spotify_chart_discography.py` ecrit, par region/pays, des `songs[]` avec
+(entre autres) `peak_rank`, `peak_streams`/`peak_streams_date`, `total_days`,
+`longest_streak`/`longest_streak_active`, et depuis 2026-08-28 :
+
+- **`days_at_peak`** : nombre de jours OU on a effectivement observe la chanson
+  au `peak_rank` dans ce pays. C'est un **minorant** (snapshots historiques
+  clairsemes) — `0` = jamais observe a ce rang (souvent le cas quand le snapshot
+  worldwide herite un `peak_rank: 1` "global" pour un pays ou la chanson n'a
+  jamais ete #1). Ne jamais "corriger" cette valeur a la hausse.
+- **`current_streak`** : streak consecutif courant, `0` si `last_date` != derniere
+  date chartee du pays.
+
+En plus des `{region}.json`, le script ecrit **`charts_discography/peaks_by_track.json`**
+= `{"<track_id>|<country>": {peak_rank, peak_streams, peak_streams_date,
+days_at_peak, total_days, current_streak, longest_streak,
+longest_streak_active}}`. `tsm-frontend/api/routes/charts.py` (handler
+`region == "worldwide"`) le merge dans chaque entry de `by_track`. **Le snapshot
+Spotify est prioritaire** : `peak_rank`, `total_days` ET `streak`
+(`consecutiveAppearancesOnChart`) sont donnes par Spotify sur CHAQUE requete de
+chart pays -> `_parse_ts_entries` les parse tous, et depuis 2026-08-29
+`daily.py` les recopie tous les trois dans l'entry `by_track` (avant cette date
+`streak` etait oublie a la construction du dict — seul `global` l'avait). Le
+lookup `peaks_by_track.json` ne remplit donc `peak_rank`/`total_days`/`streak`
+(<- `current_streak`) que s'ils manquent — utile surtout pour les vieux
+snapshots d'avant le fix. `peak_streams` et `days_at_peak` ne sont JAMAIS dans
+la reponse Spotify (`chartEntryData` a `peakDate` mais pas de compteur de jours
+au peak, ni de pic de streams historique) -> toujours du lookup ; `days_at_peak`
+n'est affiche que si le `peak_rank` du lookup egale encore le `peak_rank`
+(autoritaire) de l'entry. Cote UI c'est le tableau
+par pays de `SongBlock.jsx` (vue Overall) : colonnes Region / Position / Streams
+/ Total Days / Streak / Peak (`#N (xJ)`) / Peak Streams.
+
+Un rebuild partiel (`--regions ...`) MERGE dans le `peaks_by_track.json` existant
+(retire seulement les cles des regions rebuildees) — pas d'ecrasement total.
 
 ## Rebuild/sync
 

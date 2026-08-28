@@ -2330,6 +2330,7 @@ def main() -> int:
                 "streams":        row["streams"],
                 "peak_rank":      row["peak_rank"],
                 "total_days":     row["total_days"],
+                "streak":         row.get("streak"),
                 "is_new":         bool(row.get("is_new")),
                 "is_re_entry":    bool(row.get("is_re_entry")),
                 "movement":       row.get("movement"),

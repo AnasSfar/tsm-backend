@@ -2415,8 +2415,12 @@ def main() -> int:
 
 
 if __name__ == "__main__":
+    from core.run_logging import CollectorRunLog
+
+    _log_target_date, _ = _extract_target_date(sys.argv[1:])
     try:
-        raise SystemExit(main())
+        with CollectorRunLog("spotify_charts", "spcharts", _log_target_date):
+            raise SystemExit(main())
     except KeyboardInterrupt:
         print("\n[STOP] Ctrl+C — arrêt en cours...")
         _stop_event.set()

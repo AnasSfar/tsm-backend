@@ -223,6 +223,7 @@ def add_entry(
             "longest_streak": entry_streak,
             "_current_streak": entry_streak,
             "_charted_dates": {chart_date} if chart_date else set(),
+            "_rank_by_date": {chart_date: rank} if (chart_date and rank > 0) else {},
             "track_id": track_id,
         }
         region_rows[track_id] = summary
@@ -230,6 +231,11 @@ def add_entry(
 
     if chart_date:
         summary.setdefault("_charted_dates", set()).add(chart_date)
+    if chart_date and rank > 0:
+        rank_by_date = summary.setdefault("_rank_by_date", {})
+        previous_rank = rank_by_date.get(chart_date)
+        if previous_rank is None or rank < previous_rank:
+            rank_by_date[chart_date] = rank
     if chart_date > str(summary.get("last_date") or ""):
         summary["last_date"] = chart_date
         summary["last_rank"] = rank
@@ -348,11 +354,24 @@ def build_discographies(
             row_current_streak = to_int(summary.pop("_current_streak", None)) or 0
             current_streak = derived_current or row_current_streak
             longest_streak = to_int(summary.get("longest_streak")) or 0
+            charts_currently = bool(latest_date and str(summary.get("last_date") or "") == latest_date)
             summary["longest_streak_active"] = bool(
                 longest_streak > 0
                 and current_streak == longest_streak
-                and latest_date
-                and str(summary.get("last_date") or "") == latest_date
+                and charts_currently
+            )
+            # Running consecutive-days streak, only meaningful while the song is
+            # still on this chart (0 otherwise).
+            summary["current_streak"] = current_streak if charts_currently else 0
+            # Days spent exactly at the peak rank. Observed minimum only: sparse
+            # historical snapshots can under-count, so 0 means "not observed"
+            # (the frontend hides the "(xN)" suffix rather than showing "(x0)").
+            rank_by_date = summary.pop("_rank_by_date", {})
+            peak_rank_value = to_int(summary.get("peak_rank")) or 0
+            summary["days_at_peak"] = (
+                sum(1 for daily_rank in rank_by_date.values() if daily_rank == peak_rank_value)
+                if peak_rank_value
+                else 0
             )
         songs.sort(
             key=lambda x: (
@@ -409,6 +428,37 @@ def main() -> int:
         "count": len(payloads),
     }
     write_payload(args.output_dir / "index.json", index)
+
+    # Flat peak lookup keyed by "<track_id>|<country>", consumed by
+    # tsm-frontend api/routes/charts.py to enrich the worldwide "Overall" chart
+    # rows (peak_streams / days_at_peak are not in the raw worldwide snapshot).
+    peaks_path = args.output_dir / "peaks_by_track.json"
+    peaks_by_track: dict[str, Any] = {}
+    if limit_regions and peaks_path.exists():
+        existing = load_json(peaks_path)
+        if isinstance(existing, dict):
+            peaks_by_track = {
+                key: value
+                for key, value in existing.items()
+                if str(key).rsplit("|", 1)[-1] not in limit_regions
+            }
+    for region, payload in payloads.items():
+        for song in payload.get("songs", []):
+            track_id = str(song.get("track_id") or "").strip()
+            if not track_id:
+                continue
+            peaks_by_track[f"{track_id}|{region}"] = {
+                "peak_rank": to_int(song.get("peak_rank")) or 0,
+                "peak_streams": to_int(song.get("peak_streams") or song.get("best_streams")) or 0,
+                "peak_streams_date": song.get("peak_streams_date") or "",
+                "days_at_peak": to_int(song.get("days_at_peak")) or 0,
+                "total_days": to_int(song.get("total_days")) or 0,
+                "current_streak": to_int(song.get("current_streak")) or 0,
+                "longest_streak": to_int(song.get("longest_streak")) or 0,
+                "longest_streak_active": bool(song.get("longest_streak_active")),
+            }
+    write_payload(peaks_path, peaks_by_track)
+
     print(f"built {len(payloads)} spotify chart discography region file(s) in {args.output_dir}")
     return 0
 

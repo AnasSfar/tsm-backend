@@ -39,7 +39,7 @@ def _truthy_env(name: str, default: bool = False) -> bool:
 
 
 def _snapshot_hours() -> list[int]:
-    raw = os.getenv("APPLE_MUSIC_SNAPSHOT_HOURS", "0,4,8,12,16,20")
+    raw = os.getenv("APPLE_MUSIC_SNAPSHOT_HOURS", "0,2,4,6,8,10,12,14,16,18,20,22")
     hours: list[int] = []
     for part in raw.split(","):
         part = part.strip()

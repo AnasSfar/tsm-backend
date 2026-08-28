@@ -203,7 +203,7 @@ Idempotence (fix 17/07/2026, après double post global/us) : les `daily.py` glob
 
 **Avant tout travail ici : charger le skill `collector-apple-music`** (briefing complet : `docs/apple-music-script-context.md`).
 
-Orchestrateur : `run_apple_music.py` (appelé par `python -m tsm collect apple-music`) — `--no-post` (skip notification), `--no-images`, `--force-images`. `scraped_at` est arrondi par défaut au dernier slot Europe/Paris `00/04/08/12/16/20` (`APPLE_MUSIC_ROUND_SCRAPED_AT`, `APPLE_MUSIC_SNAPSHOT_TZ`, `APPLE_MUSIC_SNAPSHOT_HOURS`) et la même date est passée explicitement aux sous-collecteurs. Launcher : `run_apple_music.bat`. Un collecteur en échec = run abandonné (pas d'export/images/upload). Ordre du runner : `global.py` → `ts_page.py` → `ts_page_all.py` → `country_all.py` → `genre_all.py`.
+Orchestrateur : `run_apple_music.py` (appelé par `python -m tsm collect apple-music`) — `--no-post` (skip notification), `--no-images`, `--force-images`. `scraped_at` est arrondi par défaut au dernier slot pair Europe/Paris `00/02/04/.../22` (`APPLE_MUSIC_ROUND_SCRAPED_AT`, `APPLE_MUSIC_SNAPSHOT_TZ`, `APPLE_MUSIC_SNAPSHOT_HOURS`) et la même date est passée explicitement aux sous-collecteurs. Launcher : `run_apple_music.bat`. Un collecteur en échec = run abandonné (pas d'export/images/upload). Ordre du runner : `global.py` → `ts_page.py` → `ts_page_all.py` → `country_all.py` → `genre_all.py`.
 
 | Fichier | Rôle / lancement |
 |---|---|
@@ -331,7 +331,7 @@ Avant tout travail ici : charger le skill `scripts-maintenance` (ordre du workfl
 | `prune_apple_music_snapshots.py` | Rétention snapshots Apple Music : garde le dernier snapshot par jour passé, lignes retirées archivées en `.csv.gz` dans `_pruned_archive/` (dry-run par défaut). `--apply`, `--since`, `--no-archive` |
 | `prune_apple_music_images.py` | Supprime les objets R2 orphelins de `images/apple-music/` (adressés par `md5(url CDN Apple)`, non référencés par le CSV Apple Music courant — voir skill `scripts-maintenance` § "R2 : données pérennes vs cache"). Dry-run par défaut, `--apply` pour supprimer, manifeste local des clés supprimées sauf `--no-archive`, `--bucket` |
 | `chartr2.py` | Upload R2 des charts |
-| `build_spotify_chart_discography.py` | Precalcule le payload "History view" de Spotify Charts (`runtime/exports/web/site/data/charts_discography/{region}.json`, un par region/pays deja vu — global/fr/us/uk + tout pays worldwide), lu par `tsm-frontend/api/routes/charts.py::load_charts_discography`. Agrege `db/charts_history_{global,fr,us,uk}.csv` + tous les snapshots `worldwide/.../ts_worldwide_*.json` par track_id : `last_*`, `peak_rank`, `peak_streams`, `total_days`, et depuis 2026-08-26 `longest_streak`/`longest_streak_active` (plus long streak consecutif jamais atteint sur ce chart, actif si le streak courant l'egale encore). Ecrit aussi `{region}_previous.json` (meme agregation en excluant la derniere date chartee de chaque region/pays) — sert de baseline stable pour que le frontend calcule le mouvement de rang du History view par rapport a hier, quelle que soit la colonne de tri active (voir aussi `tsm-map`). Appele automatiquement par `run_all_charts.py` (`--regions` pour limiter, defaut : tout) |
+| `build_spotify_chart_discography.py` | Precalcule le payload "History view" de Spotify Charts (`runtime/exports/web/site/data/charts_discography/{region}.json`, un par region/pays deja vu — global/fr/us/uk + tout pays worldwide), lu par `tsm-frontend/api/routes/charts.py::load_charts_discography`. Agrege `db/charts_history_{global,fr,us,uk}.csv` + tous les snapshots `worldwide/.../ts_worldwide_*.json` par track_id : `last_*`, `peak_rank`, `peak_streams`, `total_days`, et depuis 2026-08-26 `longest_streak`/`longest_streak_active` (plus long streak consecutif jamais atteint sur ce chart, actif si le streak courant l'egale encore). Depuis 2026-08-28 : `days_at_peak` (nombre de jours OBSERVES exactement au `peak_rank` — minorant, 0 = non observe) et `current_streak` (streak courant, 0 si la chanson ne charte plus a la derniere date). Ecrit aussi `{region}_previous.json` (meme agregation en excluant la derniere date chartee de chaque region/pays — baseline stable pour le mouvement de rang du History view) et `peaks_by_track.json` (lookup a plat `"<track_id>|<country>" -> {peak_rank, peak_streams, peak_streams_date, days_at_peak, total_days, current_streak, longest_streak, longest_streak_active}`, consomme par `charts.py` pour enrichir les lignes du chart worldwide "Overall" — `peak_streams`/`days_at_peak` absents du snapshot brut). `--regions` fait un rebuild partiel qui MERGE dans le `peaks_by_track.json` existant. Appele automatiquement par `run_all_charts.py` (defaut : tout ; `scripts/r2.py` uploade tout `charts_discography/*.json`) |
 | `fetch_issues.py` | Récupère les signalements du site depuis R2. `--save`, `--images`, `--delete` |
 | `fetch_hiring.py` | Récupère les candidatures (préfixe `hiring/`). `--json`, `--role` |
 | `backfill_discography_from_spotify.py` | Backfill de la discographie depuis Spotify. `--apply` (déf. dry-run), `--no-backup`, tracks musicales par défaut, `--include-non-songs` pour ajouter commentary/karaoke/instrumental en DB et les collecter comme `chart_extra`, `--exclude-non-songs` (défaut), `--skip-api`, `--recent-releases N`, `--target-release-date`, `--quiet` |
@@ -402,7 +402,7 @@ Statut : migration Phase 1 appliquée le 2026-07-29 (voir `data/schema_migration
 | `README.md` / `README_FULL.md` / `CONTRIBUTING.md` / `AGENTS.md` / `CLAUDE.md` | Docs générales / instructions IA |
 | `DEPLOYMENT_AUDIT.md`, `GITHUB_SECRETS_SETUP.md`, `add_github_secrets.py` | Setup GitHub Actions (secrets) |
 | `setup.py`, `requirements.txt`, `.python-version` | Packaging/deps Python |
-| `.github/workflows/` | `run-data-only-collectors.yml` exécute Apple Music data-only toutes les 4h et YouTube data-only quotidiennement vers 06:05 Paris (CEST), avec export R2 ; `run-all-charts.yml`, `update-streams.yml`, `run-apple-music.yml`, `check-r2-storage.yml`, `keepalive.yml` restent séparés |
+| `.github/workflows/` | `run-data-only-collectors.yml` exécute Apple Music data-only toutes les 2h (`:07`, arrondi en snapshot aux heures paires Paris en CEST) et YouTube data-only quotidiennement vers 06:05 Paris (CEST), avec export R2 ; `run-all-charts.yml`, `update-streams.yml`, `run-apple-music.yml`, `check-r2-storage.yml`, `keepalive.yml` restent séparés |
 | `.claude/skills/` | Skills Claude Code : `tsm-map`, `pipeline-ops`, `data-rules`, `image-gen`, `deploy`, `admin-work`, `style-rules`, `collector-apple-music` (série « un skill par collecteur » — à charger avant tout travail sur le collecteur correspondant) |
 
 Les `.bat` du Task Scheduler vivent dans **`tsm-frontend/tasks/`** (`run_spotify_streams.bat`, `run_spotify_charts_global.bat`, `run_spotify_charts_fr.bat`, `watch_logs.bat`) et font `cd` vers ce repo.
@@ -420,8 +420,8 @@ Scripts de vérification/debug ponctuels, non maintenus : `adhoc/checks/` (véri
 pour 2 crons légers — voir `OVH.md` section « Décommissionnement »).
 Depuis le 2026-08-28, `collectors/youtube` et `collectors/apple_music`
 tournent via GitHub Actions data-only (`run-data-only-collectors.yml`) :
-Apple Music toutes les 4h (`0 2,6,10,14,18,22 * * *` UTC, soit
-04/08/12/16/20/00 Europe/Paris en CEST) et YouTube quotidiennement
+Apple Music toutes les 2h (`7 */2 * * *` UTC, soit lancement
+sur les heures paires Europe/Paris en CEST + 7 minutes, arrondi au slot pile) et YouTube quotidiennement
 (`5 4 * * *` UTC, ~06:05 Europe/Paris en CEST). Le workflow
 GitHub Actions legacy `run-apple-music.yml` reste manuel uniquement
 (`workflow_dispatch`) pour éviter une race avec le nouveau job data-only.
@@ -454,7 +454,7 @@ dans `OVH.md` à la racine.
 - Crontab (`Europe/Paris`) :
   ```
   5 6 * * * run_youtube_vps.sh        # identique à l'ancien job Windows
-  0 2,6,10,14,18,22 * * * run_apple_music_vps.sh   # equiv. 4h UTC (ancien run-apple-music.yml)
+  0 */4 * * * run_apple_music_vps.sh                # equiv. 4h UTC (ancien run-apple-music.yml)
   ```
 - Apple Music ne fait **aucun** commit/push git (jamais fait, même en local
   — seul l'upload R2 distribue la donnée) ; YouTube fait `git commit --push`
