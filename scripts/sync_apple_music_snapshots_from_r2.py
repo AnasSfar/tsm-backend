@@ -95,7 +95,7 @@ def get_bucket_name() -> str:
 def _entry_row(entry: dict[str, Any], fields: list[str], extra: dict[str, Any]) -> dict[str, Any]:
     row = dict(extra)
     for f in fields:
-        if f in row:
+        if f in row and row[f] != "":
             continue
         if f == "genre_names":
             names = entry.get("genre_names") or []
@@ -123,7 +123,7 @@ def rows_from_payload(payload: dict[str, Any], day: str, scraped_at: str) -> dic
 
     for entry in payload.get("ts_top_songs") or []:
         out["apple_music_ts_top_songs_global.csv"].append(
-            _entry_row(entry, TS_FIELDS, {"date": day, "scraped_at": scraped_at, "storefront": ""})
+            _entry_row(entry, TS_FIELDS, {"date": day, "scraped_at": scraped_at, "storefront": "global"})
         )
 
     country_charts = payload.get("country_charts") or {}

@@ -25,7 +25,6 @@ SCRIPTS = [
     HERE / "genre_all.py",
 ]
 
-
 def child_env() -> dict[str, str]:
     env = os.environ.copy()
     pythonpath_parts = [str(REPO_ROOT), str(HERE)]
