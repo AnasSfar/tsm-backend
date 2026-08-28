@@ -37,12 +37,16 @@ jobs:
       contents: write
     env:
       APPLE_MUSIC_COUNTRIES: ${{ inputs.apple_music_countries }}
+      TZ: Europe/Paris
       PYTHONUNBUFFERED: "1"
       R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
       R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
       R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
       R2_BUCKET: ${{ secrets.R2_BUCKET }}
       APPLE_MUSIC_REQUIRE_PREVIOUS_RANKS: "1"
+      APPLE_MUSIC_ROUND_SCRAPED_AT: "1"
+      APPLE_MUSIC_SNAPSHOT_TZ: "Europe/Paris"
+      APPLE_MUSIC_SNAPSHOT_HOURS: "0,4,8,12,16,20"
       REQUIRE_R2_UPLOAD: "1"
       UPLOAD_TO_R2: "1"
       YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
@@ -103,8 +107,8 @@ jobs:
         if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' || github.event.schedule == '0 2,6,10,14,18,22 * * *' }}
         run: |
           SECONDS=0
-          start="$(date -u -d '3 days ago' +%F)"
-          end="$(date -u -d 'yesterday' +%F)"
+          start="$(date -d '3 days ago' +%F)"
+          end="$(date -d 'yesterday' +%F)"
           python scripts/sync_apple_music_snapshots_from_r2.py --start "$start" --end "$end" --force --apply
           duration=$SECONDS
           printf "### Apple Music history sync\n\n- Duration: %d min %02d sec\n- Range: %s to %s\n\n" "$((duration / 60))" "$((duration % 60))" "$start" "$end" >> "$GITHUB_STEP_SUMMARY"

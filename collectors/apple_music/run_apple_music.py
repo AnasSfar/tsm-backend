@@ -5,8 +5,13 @@ import argparse
 import os
 import subprocess
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
+
+try:
+    from zoneinfo import ZoneInfo
+except ImportError:  # pragma: no cover - Python < 3.9 fallback
+    ZoneInfo = None
 
 try:
     from dotenv import load_dotenv
@@ -24,6 +29,65 @@ SCRIPTS = [
     HERE / "country_all.py",
     HERE / "genre_all.py",
 ]
+
+
+def _truthy_env(name: str, default: bool = False) -> bool:
+    value = os.getenv(name)
+    if value is None:
+        return default
+    return value.strip().lower() in ("1", "true", "yes", "on")
+
+
+def _snapshot_hours() -> list[int]:
+    raw = os.getenv("APPLE_MUSIC_SNAPSHOT_HOURS", "0,4,8,12,16,20")
+    hours: list[int] = []
+    for part in raw.split(","):
+        part = part.strip()
+        if not part:
+            continue
+        try:
+            hour = int(part)
+        except ValueError as exc:
+            raise ValueError(f"Invalid APPLE_MUSIC_SNAPSHOT_HOURS value: {part!r}") from exc
+        if hour < 0 or hour > 23:
+            raise ValueError(f"Invalid APPLE_MUSIC_SNAPSHOT_HOURS hour: {hour}")
+        hours.append(hour)
+    if not hours:
+        raise ValueError("APPLE_MUSIC_SNAPSHOT_HOURS must contain at least one hour")
+    return sorted(set(hours))
+
+
+def _now_for_snapshot() -> datetime:
+    tz_name = os.getenv("APPLE_MUSIC_SNAPSHOT_TZ", "Europe/Paris")
+    if ZoneInfo is not None and tz_name:
+        try:
+            return datetime.now(ZoneInfo(tz_name))
+        except Exception as exc:
+            print(f"[Apple Music] Could not load timezone {tz_name!r}; using local time ({exc})")
+    return datetime.now()
+
+
+def build_scraped_at() -> str:
+    now = _now_for_snapshot()
+    if not _truthy_env("APPLE_MUSIC_ROUND_SCRAPED_AT", default=True):
+        return now.strftime("%Y-%m-%dT%H:%M:%S")
+
+    hours = _snapshot_hours()
+    candidates = [
+        now.replace(hour=hour, minute=0, second=0, microsecond=0)
+        for hour in hours
+    ]
+    past = [candidate for candidate in candidates if candidate <= now]
+    if past:
+        slot = past[-1]
+    else:
+        slot = (now - timedelta(days=1)).replace(hour=hours[-1], minute=0, second=0, microsecond=0)
+
+    print(
+        "[Apple Music] Rounded scraped_at "
+        f"{now.strftime('%Y-%m-%dT%H:%M:%S')} -> {slot.strftime('%Y-%m-%dT%H:%M:%S')}"
+    )
+    return slot.strftime("%Y-%m-%dT%H:%M:%S")
 
 def child_env() -> dict[str, str]:
     env = os.environ.copy()
@@ -144,7 +208,8 @@ def run_script(script_path: Path, scraped_at: str, extra_args: list[str] | None 
     print(f"Running: {script_path.relative_to(REPO_ROOT)}")
     print(f"{'=' * 80}")
 
-    cmd = [sys.executable, str(script_path), "--scraped-at", scraped_at]
+    chart_date = scraped_at.split("T", 1)[0]
+    cmd = [sys.executable, str(script_path), "--date", chart_date, "--scraped-at", scraped_at]
     if extra_args:
         cmd.extend(extra_args)
 
@@ -170,7 +235,7 @@ def main() -> None:
     parser.add_argument("--force-images", action="store_true", help="Regenerate Apple Music country chart card images.")
     args, _unknown = parser.parse_known_args()
 
-    scraped_at = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+    scraped_at = build_scraped_at()
     print(f"[Apple Music] Starting full run - scraped_at={scraped_at}")
 
     os.environ["APPLE_MUSIC_SKIP_EXPORT"] = "1"

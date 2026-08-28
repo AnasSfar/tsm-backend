@@ -203,7 +203,7 @@ Idempotence (fix 17/07/2026, après double post global/us) : les `daily.py` glob
 
 **Avant tout travail ici : charger le skill `collector-apple-music`** (briefing complet : `docs/apple-music-script-context.md`).
 
-Orchestrateur : `run_apple_music.py` (appelé par `python -m tsm collect apple-music`) — `--no-post` (flag mort, compat CLI : ce pipeline ne poste rien), `--no-images`, `--force-images`. Launcher : `run_apple_music.bat`. Un collecteur en échec = run abandonné (pas d'export/images/upload). Ordre du runner : `global.py` → `ts_page.py` → `ts_page_all.py` → `country_all.py` → `genre_all.py`.
+Orchestrateur : `run_apple_music.py` (appelé par `python -m tsm collect apple-music`) — `--no-post` (skip notification), `--no-images`, `--force-images`. `scraped_at` est arrondi par défaut au dernier slot Europe/Paris `00/04/08/12/16/20` (`APPLE_MUSIC_ROUND_SCRAPED_AT`, `APPLE_MUSIC_SNAPSHOT_TZ`, `APPLE_MUSIC_SNAPSHOT_HOURS`) et la même date est passée explicitement aux sous-collecteurs. Launcher : `run_apple_music.bat`. Un collecteur en échec = run abandonné (pas d'export/images/upload). Ordre du runner : `global.py` → `ts_page.py` → `ts_page_all.py` → `country_all.py` → `genre_all.py`.
 
 | Fichier | Rôle / lancement |
 |---|---|
