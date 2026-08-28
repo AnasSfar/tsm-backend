@@ -103,7 +103,7 @@ jobs:
         if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' || github.event.schedule == '0 2,6,10,14,18,22 * * *' }}
         run: |
           SECONDS=0
-          start="$(date -u -d '35 days ago' +%F)"
+          start="$(date -u -d '3 days ago' +%F)"
           end="$(date -u -d 'yesterday' +%F)"
           python scripts/sync_apple_music_snapshots_from_r2.py --start "$start" --end "$end" --force --apply
           duration=$SECONDS
