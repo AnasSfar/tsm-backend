@@ -1332,7 +1332,7 @@ def post_thread(tweets: list[str], session_file: Path, *, priority: int | None =
     session_file = Path(session_file)
     profile_dir  = _profile_dir(session_file)
 
-    with _twitter_account_slot(session_file) as account_key:
+    with _twitter_account_slot(session_file, priority=priority) as account_key:
         # Premiere utilisation : creer la session (le dossier Default indique que Chrome a bien tourne)
         if not (profile_dir / "Default").exists() and not _load_storage_state(session_file):
             print("Aucun profil Twitter trouve. Connexion initiale requise...")
@@ -1420,7 +1420,7 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path, *, skip_if
         return False
 
     print("X: attente du slot de post (verrou compte)...", flush=True)
-    with _twitter_account_slot(session_file) as account_key:
+    with _twitter_account_slot(session_file, priority=priority) as account_key:
         if skip_if is not None:
             try:
                 already = bool(skip_if())
@@ -1519,7 +1519,7 @@ def schedule_post(
         print(f"X date programmation invalide: {exc}")
         return False
 
-    with _twitter_account_slot(session_file) as account_key:
+    with _twitter_account_slot(session_file, priority=priority) as account_key:
         if not (profile_dir / "Default").exists() and not _load_storage_state(session_file):
             print("Aucun profil Twitter trouve. Connexion initiale requise...")
             setup_session(session_file)
@@ -1608,7 +1608,7 @@ def post_image_thread(posts: list[tuple[str, Path | list[Path] | tuple[Path, ...
         setup_session(session_file)
 
     print("X thread: acquisition du slot compte...", flush=True)
-    with _twitter_account_slot(session_file) as account_key:
+    with _twitter_account_slot(session_file, priority=priority) as account_key:
         print("X thread: slot compte acquis", flush=True)
         with sync_playwright() as p:
             context = None
@@ -1669,4 +1669,6 @@ def split_tweets(content: str, max_len: int = 280) -> list[str]:
             current = section
 
     if current:
-        tweets.app
+        tweets.append(current)
+
+    return tweets

@@ -45,11 +45,26 @@ COUNTRY_FIELDS = [
     "date", "scraped_at", "country", "chart_type", "song_name", "apple_music_id",
     "rank", "previous_rank", "image_url", "url", "artist_name",
 ]
+COUNTRY_ALBUM_FIELDS = [
+    "date", "scraped_at", "country", "chart_type", "album_name", "apple_music_id",
+    "rank", "previous_rank", "image_url", "url", "artist_name", "release_date",
+    "genre_names",
+]
+MUSIC_VIDEO_FIELDS = [
+    "date", "scraped_at", "country", "chart_type", "video_name", "apple_music_id",
+    "rank", "previous_rank", "image_url", "url", "artist_name", "album_name",
+    "duration_ms", "release_date", "genre_names",
+]
 GENRE_FIELDS = [
     "date", "scraped_at", "country", "genre_id", "genre_name", "chart_type",
     "song_name", "apple_music_id", "rank", "previous_rank", "image_url", "url",
     "artist_name", "album_name", "duration_ms", "release_date", "isrc",
     "content_rating", "genre_names",
+]
+GENRE_ALBUM_FIELDS = [
+    "date", "scraped_at", "country", "genre_id", "genre_name", "chart_type",
+    "album_name", "apple_music_id", "rank", "previous_rank", "image_url", "url",
+    "artist_name", "release_date", "genre_names",
 ]
 TS_FIELDS = [
     "date", "scraped_at", "storefront", "song_name", "apple_music_id", "rank",
@@ -94,7 +109,10 @@ def rows_from_payload(payload: dict[str, Any], day: str, scraped_at: str) -> dic
     out: dict[str, list[dict[str, Any]]] = {
         "apple_music_global.csv": [],
         "apple_music_country_charts.csv": [],
+        "apple_music_country_albums.csv": [],
         "apple_music_genre_charts.csv": [],
+        "apple_music_genre_album_charts.csv": [],
+        "apple_music_music_video_charts.csv": [],
         "apple_music_ts_top_songs_global.csv": [],
     }
 
@@ -116,6 +134,39 @@ def rows_from_payload(payload: dict[str, Any], day: str, scraped_at: str) -> dic
                     _entry_row(entry, COUNTRY_FIELDS, {"date": day, "scraped_at": scraped_at, "country": country, "chart_type": "country"})
                 )
 
+    country_album_charts = payload.get("country_album_charts") or {}
+    if isinstance(country_album_charts, dict):
+        for country, entries in country_album_charts.items():
+            for entry in entries or []:
+                out["apple_music_country_albums.csv"].append(
+                    _entry_row(
+                        entry,
+                        COUNTRY_ALBUM_FIELDS,
+                        {"date": day, "scraped_at": scraped_at, "country": country, "chart_type": "country_albums"},
+                    )
+                )
+
+    music_video_charts = payload.get("music_video_charts") or payload.get("top_videos") or {}
+    if isinstance(music_video_charts, dict):
+        for country, entries in music_video_charts.items():
+            for entry in entries or []:
+                out["apple_music_music_video_charts.csv"].append(
+                    _entry_row(
+                        entry,
+                        MUSIC_VIDEO_FIELDS,
+                        {"date": day, "scraped_at": scraped_at, "country": country, "chart_type": "music_videos"},
+                    )
+                )
+    elif isinstance(music_video_charts, list):
+        for entry in music_video_charts:
+            out["apple_music_music_video_charts.csv"].append(
+                _entry_row(
+                    entry,
+                    MUSIC_VIDEO_FIELDS,
+                    {"date": day, "scraped_at": scraped_at, "country": "", "chart_type": "music_videos"},
+                )
+            )
+
     genre_charts = payload.get("genre_charts") or {}
     if isinstance(genre_charts, dict):
         for country, genres in genre_charts.items():
@@ -133,6 +184,23 @@ def rows_from_payload(payload: dict[str, Any], day: str, scraped_at: str) -> dic
                         )
                     )
 
+    genre_album_charts = payload.get("genre_album_charts") or {}
+    if isinstance(genre_album_charts, dict):
+        for country, genres in genre_album_charts.items():
+            if not isinstance(genres, dict):
+                continue
+            for genre_name, entries in genres.items():
+                for entry in entries or []:
+                    out["apple_music_genre_album_charts.csv"].append(
+                        _entry_row(
+                            entry, GENRE_ALBUM_FIELDS,
+                            {
+                                "date": day, "scraped_at": scraped_at, "country": country,
+                                "genre_id": "", "genre_name": genre_name, "chart_type": "genre_albums",
+                            },
+                        )
+                    )
+
     return out
 
 
@@ -140,7 +208,10 @@ def write_day_csvs(day: str, rows_by_file: dict[str, list[dict[str, Any]]], appl
     field_map = {
         "apple_music_global.csv": GLOBAL_FIELDS,
         "apple_music_country_charts.csv": COUNTRY_FIELDS,
+        "apple_music_country_albums.csv": COUNTRY_ALBUM_FIELDS,
         "apple_music_genre_charts.csv": GENRE_FIELDS,
+        "apple_music_genre_album_charts.csv": GENRE_ALBUM_FIELDS,
+        "apple_music_music_video_charts.csv": MUSIC_VIDEO_FIELDS,
         "apple_music_ts_top_songs_global.csv": TS_FIELDS,
     }
     out_dir = apple_music_charts_dir(day)
@@ -239,7 +310,10 @@ def main() -> None:
         merged: dict[str, list[dict[str, Any]]] = {
             "apple_music_global.csv": [],
             "apple_music_country_charts.csv": [],
+            "apple_music_country_albums.csv": [],
             "apple_music_genre_charts.csv": [],
+            "apple_music_genre_album_charts.csv": [],
+            "apple_music_music_video_charts.csv": [],
             "apple_music_ts_top_songs_global.csv": [],
         }
         for key in keys:

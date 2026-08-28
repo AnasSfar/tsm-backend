@@ -47,6 +47,11 @@ def _subprocess_env(extra: dict[str, str] | None = None) -> dict[str, str]:
     env = os.environ.copy()
     env["PYTHONUTF8"] = "1"
     env["PYTHONIOENCODING"] = "utf-8"
+    # Priorite de post X par defaut pour les etapes streams finalize. Les tweets
+    # charts (TWITTER_POST_PRIORITY=1, pose par run_all_charts) passent devant ;
+    # les posts "priority early" pendant la collecte descendent a 0. Voir
+    # core.twitter._twitter_account_slot.
+    env.setdefault("TWITTER_POST_PRIORITY", "3")
     if extra:
         env.update(extra)
     return env
@@ -286,6 +291,7 @@ class ReadyAlbumUpdatePoster:
                     state=self._post_state,
                     spacing_seconds=self.spacing_seconds,
                     log_mode=self.log_mode,
+                    post_priority="0",
                 )
             except SystemExit as exc:
                 print(f"Early album update skipped after failure ({album}): {exc}")
@@ -389,7 +395,7 @@ class ReadyAlbumBestDaySincePoster:
                 spacing_seconds=self.spacing_seconds,
                 log_mode=self.log_mode,
             )
-            result = _run_subprocess(cmd, check=False)
+            result = _run_subprocess(cmd, check=False, env={"TWITTER_POST_PRIORITY": "0"})
             if result.returncode == 0:
                 print(f"Album best-day-since posted early during streams run: {album}")
                 _mark_post_done(should_post=not self.no_post_mode, state=self._post_state)
@@ -470,7 +476,7 @@ class ReadyDebutReleasePoster:
                     spacing_seconds=self.spacing_seconds,
                     log_mode=self.log_mode,
                 )
-                result = run_debut_release_posts(self.stats_date, no_post=self.no_post_mode)
+                result = run_debut_release_posts(self.stats_date, no_post=self.no_post_mode, priority=0)
                 if result == 0:
                     _mark_post_done(should_post=not self.no_post_mode, state=self._post_state)
                     print("[debut] Posted early during streams run.")
@@ -600,7 +606,7 @@ class ReadyBestDaySincePoster:
                 spacing_seconds=self.spacing_seconds,
                 log_mode=self.log_mode,
             )
-            result = _run_subprocess(cmd, check=False)
+            result = _run_subprocess(cmd, check=False, env={"TWITTER_POST_PRIORITY": "0"})
             if result.returncode == 0:
                 print(f"Best-day-since posted early during streams run: {track_id}")
                 _mark_post_done(should_post=not self.no_post_mode, state=self._post_state)
@@ -621,7 +627,9 @@ def _run_streams_post(
     state: dict[str, float],
     spacing_seconds: int,
     log_mode: str,
+    post_priority: str | None = None,
 ) -> None:
+    env_extra = {"TWITTER_POST_PRIORITY": str(post_priority)} if post_priority is not None else None
     last_returncode = 0
     for attempt in range(1, FINALIZE_POST_RETRY_ATTEMPTS + 1):
         _wait_before_post(
@@ -635,7 +643,7 @@ def _run_streams_post(
         if attempt > 1:
             print(f"Retrying {label} ({attempt}/{FINALIZE_POST_RETRY_ATTEMPTS})...")
 
-        result = _run_subprocess(cmd, check=False)
+        result = _run_subprocess(cmd, check=False, env=env_extra)
         last_returncode = result.returncode
         if result.returncode == 0:
             _mark_post_done(should_post=should_post, state=state)
@@ -673,7 +681,15 @@ def _mark_post_done(*, should_post: bool, state: dict[str, float]) -> None:
         state["last_post_at"] = time.perf_counter()
 
 
-def _run(ctx: FinalizeContext, cmd: list[str], *, label: str, should_post: bool, state: dict[str, float]) -> None:
+def _run(
+    ctx: FinalizeContext,
+    cmd: list[str],
+    *,
+    label: str,
+    should_post: bool,
+    state: dict[str, float],
+    post_priority: str | None = None,
+) -> None:
     _run_streams_post(
         cmd,
         label=label,
@@ -681,6 +697,7 @@ def _run(ctx: FinalizeContext, cmd: list[str], *, label: str, should_post: bool,
         state=state,
         spacing_seconds=ctx.post_spacing_seconds,
         log_mode=ctx.log_mode,
+        post_priority=post_priority,
     )
 
 
@@ -1229,6 +1246,8 @@ def _post_one_album(
     state: dict[str, float],
     album_img_script: Path,
     album: str,
+    *,
+    post_priority: str | None = None,
 ) -> None:
     """Generate + post a single album update card, honoring locks and completeness.
 
@@ -1282,6 +1301,7 @@ def _post_one_album(
             label=f"album update ({album})",
             should_post=not ctx.no_post_mode,
             state=state,
+            post_priority=post_priority,
         )
     except SystemExit as exc:
         print(f"Album update skipped after failure ({album}): {exc}")
@@ -1440,7 +1460,9 @@ def _post_all_albums(ctx: FinalizeContext, state: dict[str, float]) -> None:
 
     album_img_script = ctx.script_dir / "tools" / "scripts" / "generate_album_update_image.py"
     for album in ranked:
-        _post_one_album(ctx, state, album_img_script, album)
+        # Sweep lundi/vendredi : toujours en dernier, donc priorite de post la plus
+        # basse (4) — il cede le pas a tout le reste (charts, recap, gainers, cards ciblees).
+        _post_one_album(ctx, state, album_img_script, album, post_priority="4")
 
 
 def _post_debut_releases(ctx: FinalizeContext, state: dict[str, float]) -> None:
@@ -1452,7 +1474,7 @@ def _post_debut_releases(ctx: FinalizeContext, state: dict[str, float]) -> None:
         spacing_seconds=ctx.post_spacing_seconds,
         log_mode=ctx.log_mode,
     )
-    result = run_debut_release_posts(ctx.summary["stats_date"], no_post=ctx.no_post_mode)
+    result = run_debut_release_posts(ctx.summary["stats_date"], no_post=ctx.no_post_mode, priority=0)
     if result != 0:
         raise SystemExit(f"{label} failed (exit {result}).")
     _mark_post_done(should_post=not ctx.no_post_mode, state=state)

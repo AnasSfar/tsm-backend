@@ -1129,6 +1129,7 @@ def post_debut_releases(
     force_track_ids: set[str] | None = None,
     force_song_selectors: set[str] | None = None,
     snapshot_collected_date: str | None = None,
+    priority: int | None = None,
 ) -> int:
     snapshot_collected_date = snapshot_collected_date or date.today().isoformat()
     day_dir = update_streams_dir(target_date)
@@ -1185,10 +1186,14 @@ def post_debut_releases(
             return 1
 
         if len(thread) > 1:
-            ok = post_image_thread([(text, image_path) for _slug, text, image_path in thread if image_path], TWITTER_SESSION)
+            ok = post_image_thread(
+                [(text, image_path) for _slug, text, image_path in thread if image_path],
+                TWITTER_SESSION,
+                priority=priority,
+            )
         else:
             slug, text, image_path = thread[0]
-            ok = bool(image_path and post_with_image(text, image_path, TWITTER_SESSION))
+            ok = bool(image_path and post_with_image(text, image_path, TWITTER_SESSION, priority=priority))
 
         if not ok:
             print(f"[debut_releases] Failed to post debut thread: {', '.join(slug for slug, _text, _image_path in thread)}.")

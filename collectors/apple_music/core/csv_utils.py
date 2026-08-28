@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import os
 import re
 from datetime import date, timedelta
 from pathlib import Path
@@ -150,8 +151,14 @@ def load_previous_ranks(
     Same-day earlier snapshots are ignored on purpose: movement markers must
     always mean "vs yesterday", not "vs this morning's rerun".
     """
+    require_previous = os.getenv("APPLE_MUSIC_REQUIRE_PREVIOUS_RANKS", "").strip().lower() in ("1", "true", "yes")
     rows = read_csv_rows(csv_path, include_daily_history=True, history_days=PREV_RANK_WINDOW_DAYS)
     if not rows:
+        if require_previous:
+            raise RuntimeError(
+                f"Apple Music previous-rank history missing for {csv_path.name}; "
+                "refusing to publish movements without a verified prior snapshot"
+            )
         return {}
 
     current_day = (today or "")[:10]
@@ -160,6 +167,12 @@ def load_previous_ranks(
         reverse=True,
     )
     if not all_keys:
+        if require_previous:
+            current_day = (today or "")[:10]
+            raise RuntimeError(
+                f"Apple Music previous-day snapshot missing for {csv_path.name} before {current_day}; "
+                "refusing to publish movements without a verified prior snapshot"
+            )
         return {}
     latest = all_keys[0]
 

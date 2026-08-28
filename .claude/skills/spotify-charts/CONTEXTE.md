@@ -371,6 +371,14 @@ Options importantes:
 - `--post-multi-song-regions`
 - `--post-multi-song-regions-only`
 
+**Priorite de post X (2026-08-28) :** `run_all_charts._build_env` pose
+`TWITTER_POST_PRIORITY=1` dans l'env de tous ses sous-process. Quand streams
+finalize poste en meme temps (defaut `3`, sweep album `4`), les tweets charts
+prennent le slot de compte X en premier. Mecanisme + bareme -> skill
+`data-rules` ; implementation -> `core/twitter.py::_twitter_account_slot`.
+Ne concerne PAS l'ordre interne des cards charts (toujours `_card_priority` /
+`_post_priority_global_new_card` etc.).
+
 **Ordre de fetch — `global` toujours en premier, bloquant (depuis 2026-08-01) :**
 la region `global` est desormais systematiquement dans le lot "Phase 1" (fetch
 prioritaire), meme en `--no-post` (ex: appel `worldwide-regional-data` de

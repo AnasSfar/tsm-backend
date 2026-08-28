@@ -189,7 +189,7 @@ Idempotence (fix 17/07/2026, après double post global/us) : les `daily.py` glob
 
 | Fichier | Rôle |
 |---|---|
-| `twitter.py` (49 Ko) | Post Twitter via Playwright (profil Chrome persistant), espacement entre posts, sessions par compte ; `post_with_image(..., skip_if=cb)` : callback re-évaluée après l'acquisition du slot de compte — si True, post annulé et retour True (anti-double-post inter-process) |
+| `twitter.py` (49 Ko) | Post Twitter via Playwright (profil Chrome persistant), espacement entre posts, sessions par compte ; `post_with_image(..., skip_if=cb)` : callback re-évaluée après l'acquisition du slot de compte — si True, post annulé et retour True (anti-double-post inter-process). **Slot de post à priorité** : `post_thread` / `post_with_image` / `post_image_thread` / `schedule_post` acceptent `priority=<int>` (plus bas = plus urgent, défaut 5) ou lisent `TWITTER_POST_PRIORITY` dans l'env. Sous contention (streams finalize + charts run_all visent le même compte), le slot va au process le plus prioritaire puis au plus ancien en attente (fichiers `waiter_<acct>_<pid>.json` dans `%TEMP%/tsm_twitter_posts/`), pas au premier qui tape le verrou. Anti-famine : +1 cran toutes les `TWITTER_WAITER_AGING_SECONDS` (défaut 300). Barème utilisé : 0 = posts « priority early » pendant la collecte (debut releases, best-day-since early) ; 1 = tweets charts (`run_all_charts._build_env`) ; 3 = étapes streams finalize (`finalize_update._subprocess_env`) ; 4 = sweep album lundi/vendredi. |
 | `data_paths.py` | **Source de vérité de tous les chemins** (REPO_ROOT, runtime, snapshots, exports web, legacy) |
 | `download.py` | Téléchargement CSV Spotify Charts |
 | `history.py` | Gestion `ts_history.json` |

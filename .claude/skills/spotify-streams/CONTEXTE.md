@@ -115,6 +115,14 @@ Locks typiques:
 
 Ne pas supprimer un lock sans verifier quelle etape il protege.
 
+Priorite de post X (2026-08-28) : `finalize_update._subprocess_env` pose
+`TWITTER_POST_PRIORITY=3` par defaut pour toutes les etapes de post ; les posts
+« priority early » pendant la collecte (debut releases, best-day-since early)
+descendent a `0`, le sweep album lundi/vendredi monte a `4`. Quand charts
+run_all (`TWITTER_POST_PRIORITY=1`) poste en meme temps, ses tweets passent
+devant les etapes streams finalize. Mecanisme + bareme -> skill `data-rules`,
+implementation -> `core/twitter.py::_twitter_account_slot`.
+
 ## Scripts principaux
 
 Racine:

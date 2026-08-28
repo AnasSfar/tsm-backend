@@ -402,6 +402,10 @@ def _build_env() -> dict[str, str]:
     env["PYTHONUNBUFFERED"] = "1"
     env["UPLOAD_TO_R2"] = "0"  # individual scripts must not upload; only export_for_web.py does
     env["CHARTS_RUN_ALL"] = "1"  # individual scripts must not git commit; run_all does it
+    # Priorite de post X : les tweets charts (chart du jour, cards NEW/RE) passent
+    # devant les posts streams finalize (albums, sweep) quand les deux pipelines
+    # tournent en meme temps. Voir core.twitter._twitter_account_slot.
+    env.setdefault("TWITTER_POST_PRIORITY", "1")
     missing = [k for k in R2_ENV_VARS if not env.get(k, "").strip()]
     if missing:
         print(f"[WARN] R2 vars manquantes: {', '.join(missing)}")

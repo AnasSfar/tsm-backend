@@ -13,7 +13,7 @@ on:
           - youtube
           - both
       apple_music_countries:
-        description: "Optional Apple Music storefront override, e.g. us,fr,gb"
+        description: "Optional Apple Music storefront override, e.g. us,fr,gb. Leave blank for full run."
         required: false
         default: ""
       commit_youtube:
@@ -39,6 +39,7 @@ jobs:
       R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
       R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
       R2_BUCKET: ${{ secrets.R2_BUCKET }}
+      APPLE_MUSIC_REQUIRE_PREVIOUS_RANKS: "1"
       REQUIRE_R2_UPLOAD: "1"
       UPLOAD_TO_R2: "1"
       YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
@@ -95,6 +96,16 @@ jobs:
                   print(f"Not found: {key} ({exc})")
           PY
 
+      - name: Rebuild Apple Music previous snapshots from R2
+        if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' }}
+        run: |
+          SECONDS=0
+          start="$(date -u -d '35 days ago' +%F)"
+          end="$(date -u -d 'yesterday' +%F)"
+          python scripts/sync_apple_music_snapshots_from_r2.py --start "$start" --end "$end" --force --apply
+          duration=$SECONDS
+          printf "### Apple Music history sync\n\n- Duration: %d min %02d sec\n- Range: %s to %s\n\n" "$((duration / 60))" "$((duration % 60))" "$start" "$end" >> "$GITHUB_STEP_SUMMARY"
+
       - name: Configure git identity
         if: ${{ inputs.collector == 'youtube' || inputs.collector == 'both' }}
         run: |
@@ -103,12 +114,29 @@ jobs:
 
       - name: Run Apple Music data-only
         if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' }}
-        run: python -m tsm collect apple-music --no-images --no-post
+        run: |
+          SECONDS=0
+          python -m tsm collect apple-music --no-images --no-post
+          duration=$SECONDS
+          if [ -n "${APPLE_MUSIC_COUNTRIES}" ]; then
+            scope="${APPLE_MUSIC_COUNTRIES}"
+          else
+            scope="full storefront discovery"
+          fi
+          printf "### Apple Music data-only\n\n- Duration: %d min %02d sec\n- Scope: %s\n\n" "$((duration / 60))" "$((duration % 60))" "$scope" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Run YouTube data-only
         if: ${{ (inputs.collector == 'youtube' || inputs.collector == 'both') && inputs.commit_youtube }}
-        run: python -m tsm collect youtube --no-post --commit
+        run: |
+          SECONDS=0
+          python -m tsm collect youtube --no-post --commit
+          duration=$SECONDS
+          printf "### YouTube data-only\n\n- Duration: %d min %02d sec\n- Commit: yes\n\n" "$((duration / 60))" "$((duration % 60))" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Run YouTube data-only without commit
         if: ${{ (inputs.collector == 'youtube' || inputs.collector == 'both') && !inputs.commit_youtube }}
-        run: python -m tsm collect youtube --no-post
+        run: |
+          SECONDS=0
+          python -m tsm collect youtube --no-post
+          duration=$SECONDS
+          printf "### YouTube data-only\n\n- Duration: %d min %02d sec\n- Commit: no\n\n" "$((duration / 60))" "$((duration % 60))" >> "$GITHUB_STEP_SUMMARY"
