@@ -22,7 +22,7 @@ on:
         default: true
         type: boolean
   schedule:
-    - cron: "0 */4 * * *"   # Apple Music every 4h (UTC; matches 02/06/10/14/18/22 Paris during CEST)
+    - cron: "0 2,6,10,14,18,22 * * *"   # Apple Music every 4h; 04/08/12/16/20/00 Paris during CEST
     - cron: "5 4 * * *"     # YouTube daily, approx. 06:05 Europe/Paris during CEST
 
 concurrency:
@@ -59,7 +59,7 @@ jobs:
         run: python -m pip install requests urllib3 boto3 botocore python-dotenv beautifulsoup4 lxml
 
       - name: Download Apple Music CSV history from R2
-        if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' || github.event.schedule == '0 */4 * * *' }}
+        if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' || github.event.schedule == '0 2,6,10,14,18,22 * * *' }}
         run: |
           python - <<'PY'
           import boto3
@@ -100,7 +100,7 @@ jobs:
           PY
 
       - name: Rebuild Apple Music previous snapshots from R2
-        if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' || github.event.schedule == '0 */4 * * *' }}
+        if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' || github.event.schedule == '0 2,6,10,14,18,22 * * *' }}
         run: |
           SECONDS=0
           start="$(date -u -d '35 days ago' +%F)"
@@ -116,7 +116,7 @@ jobs:
           git config user.name "github-actions[bot]"
 
       - name: Run Apple Music data-only
-        if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' || github.event.schedule == '0 */4 * * *' }}
+        if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' || github.event.schedule == '0 2,6,10,14,18,22 * * *' }}
         run: |
           SECONDS=0
           python -m tsm collect apple-music --no-images --no-post

@@ -420,7 +420,8 @@ Scripts de vérification/debug ponctuels, non maintenus : `adhoc/checks/` (véri
 pour 2 crons légers — voir `OVH.md` section « Décommissionnement »).
 Depuis le 2026-08-28, `collectors/youtube` et `collectors/apple_music`
 tournent via GitHub Actions data-only (`run-data-only-collectors.yml`) :
-Apple Music toutes les 4h (`0 */4 * * *` UTC) et YouTube quotidiennement
+Apple Music toutes les 4h (`0 2,6,10,14,18,22 * * *` UTC, soit
+04/08/12/16/20/00 Europe/Paris en CEST) et YouTube quotidiennement
 (`5 4 * * *` UTC, ~06:05 Europe/Paris en CEST). Le workflow
 GitHub Actions legacy `run-apple-music.yml` reste manuel uniquement
 (`workflow_dispatch`) pour éviter une race avec le nouveau job data-only.
