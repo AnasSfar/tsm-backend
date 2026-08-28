@@ -125,7 +125,7 @@ def notify_global_update(scraped_at: str) -> int:
     return result.returncode
 
 
-def run_script(script_path: Path, scraped_at: str) -> int:
+def run_script(script_path: Path, scraped_at: str, extra_args: list[str] | None = None) -> int:
     if not script_path.exists():
         print(f"[ERROR] Missing script: {script_path}")
         return 1
@@ -134,8 +134,12 @@ def run_script(script_path: Path, scraped_at: str) -> int:
     print(f"Running: {script_path.relative_to(REPO_ROOT)}")
     print(f"{'=' * 80}")
 
+    cmd = [sys.executable, str(script_path), "--scraped-at", scraped_at]
+    if extra_args:
+        cmd.extend(extra_args)
+
     result = subprocess.run(
-        [sys.executable, str(script_path), "--scraped-at", scraped_at],
+        cmd,
         cwd=REPO_ROOT,
         env=child_env(),
         check=False,
@@ -164,7 +168,8 @@ def main() -> None:
     failures: list[tuple[str, int]] = []
 
     for script in SCRIPTS:
-        code = run_script(script, scraped_at)
+        extra_args = ["--force"] if script.name == "ts_page_all.py" else None
+        code = run_script(script, scraped_at, extra_args=extra_args)
         if code != 0:
             failures.append((script.name, code))
 
