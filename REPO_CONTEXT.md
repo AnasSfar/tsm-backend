@@ -211,7 +211,7 @@ Orchestrateur : `run_apple_music.py` (appelé par `python -m tsm collect apple-m
 | `genre_all.py` | **(runner)** Songs + albums par (pays, genre) en 1 requête (`types=songs,albums&genre=`) ; écrit les 2 CSV legacy. idem |
 | `global.py` | **(runner)** Top 100 global (playlist publique). `--date`, `--scraped-at` |
 | `ts_page.py` | **(runner)** Top songs page artiste TS, **un seul storefront** (`DEFAULT_STOREFRONT` = `us`). `storefront`, `--date`, `--scraped-at`. Écrit `apple_music_ts_top_songs.csv` — **seule** entrée lue par TayBoard (`collectors/billboard/swift_top_100.py::_weekly_apple_music_ts_points`), ne pas rebrancher sur autre chose sans mettre à jour ce scoring calibré |
-| `ts_page_all.py` | **(runner, 2026-08-17)** Même chart TS top songs mais agrégé sur **tous les storefronts découverts** (`core/storefronts.py::resolve_storefronts`, ~167 pays) en un classement composite (score `500/rank**0.75` par storefront, sommé, poids égal par pays). Écrit `apple_music_ts_top_songs_global.csv`, séparé exprès du fichier single-storefront ci-dessus pour ne pas polluer le scoring TayBoard. Pagination plafonnée à `APPLE_MUSIC_TS_GLOBAL_DEPTH` (défaut 200 = 2 pages/storefront ; le catalogue TS complet fait ~675 titres/storefront). Ne tourne réellement qu'une fois/jour (`APPLE_MUSIC_TS_GLOBAL_HOUR`, défaut `02`, les autres runs du cron 4h se skip, exit 0) — le site n'affiche que le dernier snapshot, pas besoin de rafraîchir 6×/jour vu le coût (~167 storefronts). `--force` bypasse le gate horaire. `--date`, `--scraped-at`. C'est ce fichier qu'`export_apple_music.py`/`upload_ap_r2.py` lisent désormais pour l'onglet site "TS Top Songs" |
+| `ts_page_all.py` | **(runner, 2026-08-17)** Même chart TS top songs mais agrégé sur **tous les storefronts découverts** (`core/storefronts.py::resolve_storefronts`, ~167 pays) en un classement composite (score `500/rank**0.75` par storefront, multiplié par poids marché puis sommé). Écrit `apple_music_ts_top_songs_global.csv`, séparé exprès du fichier single-storefront ci-dessus pour ne pas polluer le scoring TayBoard. Pagination plafonnée à `APPLE_MUSIC_TS_GLOBAL_DEPTH` (défaut 200 = 2 pages/storefront ; le catalogue TS complet fait ~675 titres/storefront). `ts_page_all.py` garde un gate interne une fois/jour (`APPLE_MUSIC_TS_GLOBAL_HOUR`, défaut `02`), mais `run_apple_music.py` lui passe `--force` à chaque run depuis le passage GitHub Actions data-only afin que l'export R2 ait toujours un composite frais. `--date`, `--scraped-at`. C'est ce fichier qu'`export_apple_music.py`/`upload_ap_r2.py` lisent désormais pour l'onglet site "TS Top Songs" |
 | `country_charts.py` / `country_albums.py` / `music_video_charts.py` | Legacy per-type (manuels ; remplacés par `country_all.py` dans le runner) |
 | `genre_charts.py` / `genre_album_charts.py` | Legacy per-type (manuels ; remplacés par `genre_all.py`) |
 | `global_albums.py` / `top_music_videos.py` | Legacy hors runner (`storefront` pour top_music_videos) |
@@ -402,7 +402,7 @@ Statut : migration Phase 1 appliquée le 2026-07-29 (voir `data/schema_migration
 | `README.md` / `README_FULL.md` / `CONTRIBUTING.md` / `AGENTS.md` / `CLAUDE.md` | Docs générales / instructions IA |
 | `DEPLOYMENT_AUDIT.md`, `GITHUB_SECRETS_SETUP.md`, `add_github_secrets.py` | Setup GitHub Actions (secrets) |
 | `setup.py`, `requirements.txt`, `.python-version` | Packaging/deps Python |
-| `.github/workflows/` | `run-all-charts.yml`, `update-streams.yml`, `run-apple-music.yml`, `check-r2-storage.yml`, `keepalive.yml` — **en pratique la prod tourne en LOCAL via Task Scheduler**, pas via ces workflows |
+| `.github/workflows/` | `run-data-only-collectors.yml` exécute Apple Music data-only toutes les 4h et YouTube data-only quotidiennement vers 06:05 Paris (CEST), avec export R2 ; `run-all-charts.yml`, `update-streams.yml`, `run-apple-music.yml`, `check-r2-storage.yml`, `keepalive.yml` restent séparés |
 | `.claude/skills/` | Skills Claude Code : `tsm-map`, `pipeline-ops`, `data-rules`, `image-gen`, `deploy`, `admin-work`, `style-rules`, `collector-apple-music` (série « un skill par collecteur » — à charger avant tout travail sur le collecteur correspondant) |
 
 Les `.bat` du Task Scheduler vivent dans **`tsm-frontend/tasks/`** (`run_spotify_streams.bat`, `run_spotify_charts_global.bat`, `run_spotify_charts_fr.bat`, `watch_logs.bat`) et font `cd` vers ce repo.
@@ -418,11 +418,12 @@ Scripts de vérification/debug ponctuels, non maintenus : `adhoc/checks/` (véri
 
 **Ce VPS a été supprimé le 2026-08-17** (coût jugé disproportionné, ~74€/mois
 pour 2 crons légers — voir `OVH.md` section « Décommissionnement »).
-`collectors/youtube` et `collectors/apple_music` tournent de nouveau via le
-**Planificateur de tâches Windows local** (`TSM Apple Music Every 4 Hours`,
-`TSM YouTube Videos Daily` — réactivées, jamais supprimées). Le workflow
-GitHub Actions `run-apple-music.yml` est repassé en déclenchement manuel
-uniquement (`workflow_dispatch`) pour éviter une race avec le job local.
+Depuis le 2026-08-28, `collectors/youtube` et `collectors/apple_music`
+tournent via GitHub Actions data-only (`run-data-only-collectors.yml`) :
+Apple Music toutes les 4h (`0 */4 * * *` UTC) et YouTube quotidiennement
+(`5 4 * * *` UTC, ~06:05 Europe/Paris en CEST). Le workflow
+GitHub Actions legacy `run-apple-music.yml` reste manuel uniquement
+(`workflow_dispatch`) pour éviter une race avec le nouveau job data-only.
 Section conservée ci-dessous pour l'historique du setup, au cas où l'option
 VPS reviendrait (viser un flavor plus petit que `b3-16` cette fois).
 
