@@ -44,21 +44,32 @@ def export_apple_music() -> int:
 
     print("[Apple Music] Exporting CSV to JSON...")
     result = subprocess.run([sys.executable, str(export_script)], cwd=REPO_ROOT, env=child_env(), check=False)
+    if result.returncode == 0:
+        for rel_path in (
+            Path("runtime/exports/web/site/data/applemusic.json"),
+            Path("runtime/exports/web/site/data/applemusic_history.json"),
+        ):
+            path = REPO_ROOT / rel_path
+            if path.exists():
+                print(f"[Apple Music] Exported {rel_path} ({path.stat().st_size} bytes)")
+            else:
+                print(f"[Apple Music] Export missing after export: {rel_path}")
     return result.returncode
 
 
-def maybe_upload_to_r2() -> None:
+def maybe_upload_to_r2() -> int:
     if os.getenv("UPLOAD_TO_R2", "").strip().lower() in ("0", "false", "no"):
         print("[Apple Music] R2 upload skipped (UPLOAD_TO_R2 explicitly disabled)")
-        return
+        return 0
 
     upload_script = REPO_ROOT / "scripts" / "upload_ap_r2.py"
     if not upload_script.exists():
         print(f"[Apple Music] R2 upload script missing: {upload_script}")
-        return
+        return 1
 
     print("[Apple Music] Uploading history-by-song to R2...")
-    subprocess.run([sys.executable, str(upload_script)], cwd=REPO_ROOT, env=child_env(), check=False)
+    result = subprocess.run([sys.executable, str(upload_script)], cwd=REPO_ROOT, env=child_env(), check=False)
+    return result.returncode
 
 
 def regenerate_home_highlights_cache() -> None:
@@ -206,7 +217,10 @@ def main() -> None:
                 print("[Apple Music] Snapshot image generation failed, skipping R2 upload")
                 sys.exit(1)
 
-        maybe_upload_to_r2()
+        upload_code = maybe_upload_to_r2()
+        if upload_code != 0:
+            print("[Apple Music] R2 upload failed")
+            sys.exit(upload_code)
         regenerate_home_highlights_cache()
         print(f"{'=' * 80}")
 

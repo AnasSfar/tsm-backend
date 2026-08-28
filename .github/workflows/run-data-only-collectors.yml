@@ -128,6 +128,50 @@ jobs:
           fi
           printf "### Apple Music data-only\n\n- Duration: %d min %02d sec\n- Scope: %s\n\n" "$((duration / 60))" "$((duration % 60))" "$scope" >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Verify Apple Music R2 export
+        if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' || github.event.schedule == '0 2,6,10,14,18,22 * * *' }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+
+          import boto3
+
+          client = boto3.client(
+              "s3",
+              endpoint_url=f"https://{os.environ['R2_ACCOUNT_ID']}.r2.cloudflarestorage.com",
+              aws_access_key_id=os.environ["R2_ACCESS_KEY_ID"],
+              aws_secret_access_key=os.environ["R2_SECRET_ACCESS_KEY"],
+              region_name="auto",
+          )
+          bucket = os.environ.get("R2_BUCKET", "taylor-data")
+          key = "data/applemusic.json"
+          obj = client.get_object(Bucket=bucket, Key=key)
+          payload = json.loads(obj["Body"].read())
+          dates = payload.get("dates") if isinstance(payload.get("dates"), list) else []
+          latest = dates[-1] if dates else payload.get("date") or ""
+          sections = {
+              "global_chart": len(payload.get("global_chart") or []),
+              "ts_top_songs": len(payload.get("ts_top_songs") or []),
+              "country_charts": sum(len(v or []) for v in (payload.get("country_charts") or {}).values()),
+              "genre_charts": sum(
+                  len(entries or [])
+                  for genres in (payload.get("genre_charts") or {}).values()
+                  if isinstance(genres, dict)
+                  for entries in genres.values()
+              ),
+          }
+          print(f"R2 {key}: latest={latest} etag={obj.get('ETag', '').strip()}")
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as fh:
+              fh.write("### Apple Music R2 verification\n\n")
+              fh.write(f"- Key: `{key}`\n")
+              fh.write(f"- Latest: `{latest}`\n")
+              fh.write(f"- ETag: `{obj.get('ETag', '').strip()}`\n")
+              for name, count in sections.items():
+                  fh.write(f"- {name}: {count}\n")
+              fh.write("\n")
+          PY
+
       - name: Run YouTube data-only
         if: ${{ ((inputs.collector == 'youtube' || inputs.collector == 'both') && inputs.commit_youtube) || github.event.schedule == '5 4 * * *' }}
         run: |
