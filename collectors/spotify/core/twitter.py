@@ -3,6 +3,7 @@
 import json
 import hashlib
 import os
+import random
 import re
 import tempfile
 import time
@@ -14,7 +15,8 @@ from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeo
 TWITTER_COORD_DIR = Path(tempfile.gettempdir()) / "tsm_twitter_posts"
 TWITTER_COORD_LOCK = TWITTER_COORD_DIR / "coordinator.lock"
 TWITTER_POST_LOCK_TIMEOUT = 30 * 60
-TWITTER_ACCOUNT_SPACING_SECONDS = int(os.getenv("TWITTER_ACCOUNT_SPACING_SECONDS", "60"))
+TWITTER_ACCOUNT_SPACING_MIN_SECONDS = int(os.getenv("TWITTER_ACCOUNT_SPACING_MIN_SECONDS", "120"))
+TWITTER_ACCOUNT_SPACING_MAX_SECONDS = int(os.getenv("TWITTER_ACCOUNT_SPACING_MAX_SECONDS", "180"))
 TWITTER_MAX_ACTIVE_ACCOUNTS = int(os.getenv("TWITTER_MAX_ACTIVE_ACCOUNTS", "2"))
 TWITTER_FILE_UPLOAD_TIMEOUT_MS = int(os.getenv("TWITTER_FILE_UPLOAD_TIMEOUT_MS", "120000"))
 TWITTER_COMPOSE_EDITOR_TIMEOUT_MS = int(os.getenv("TWITTER_COMPOSE_EDITOR_TIMEOUT_MS", "60000"))
@@ -22,6 +24,17 @@ TWITTER_TEXT_LIMIT = 280
 TWITTER_BROWSER_LAUNCH_ATTEMPTS = int(os.getenv("TWITTER_BROWSER_LAUNCH_ATTEMPTS", "3"))
 TWITTER_BROWSER_LAUNCH_RETRY_DELAY = int(os.getenv("TWITTER_BROWSER_LAUNCH_RETRY_DELAY", "10"))
 TWITTER_LOCK_STALE_SECONDS = int(os.getenv("TWITTER_LOCK_STALE_SECONDS", str(TWITTER_POST_LOCK_TIMEOUT)))
+
+# Priorite de post inter-process (plus bas = plus urgent). Quand streams finalize
+# et charts run_all veulent poster sur le meme compte X en meme temps, le slot est
+# accorde au process le plus prioritaire (a egalite : le plus ancien en attente),
+# pas au premier qui tape le verrou. Chaque process transmet sa priorite via l'env
+# TWITTER_POST_PRIORITY (pose par l'orchestrateur pour chaque etape de post) ou via
+# l'argument priority= des fonctions post_*. Anti-famine : un process en attente
+# gagne un cran toutes les TWITTER_WAITER_AGING_SECONDS.
+TWITTER_DEFAULT_POST_PRIORITY = int(os.getenv("TWITTER_POST_PRIORITY_DEFAULT", "5"))
+TWITTER_WAITER_AGING_SECONDS = int(os.getenv("TWITTER_WAITER_AGING_SECONDS", "300"))
+
 LAST_POST_ERROR = ""
 
 
@@ -34,12 +47,8 @@ def _set_last_post_error(message: str) -> None:
     LAST_POST_ERROR = str(message or "")
 
 
-def _lock_pid_alive(path: Path) -> bool:
-    try:
-        raw = path.read_text(encoding="ascii").strip()
-        pid = int(raw)
-    except Exception:
-        return True
+def _pid_running(pid: int) -> bool:
+    """True si le process `pid` tourne encore (ou si on ne peut pas trancher)."""
     if pid <= 0 or pid == os.getpid():
         return True
     if os.name == "nt":
@@ -62,6 +71,15 @@ def _lock_pid_alive(path: Path) -> bool:
         return True
     except OSError:
         return False
+
+
+def _lock_pid_alive(path: Path) -> bool:
+    try:
+        raw = path.read_text(encoding="ascii").strip()
+        pid = int(raw)
+    except Exception:
+        return True
+    return _pid_running(pid)
 
 
 def _profile_dir(session_file: Path) -> Path:
@@ -158,7 +176,10 @@ def _wait_account_spacing(account_key: str) -> None:
         last_post_at = float(last_post_path.read_text(encoding="ascii").strip())
     except Exception:
         return
-    wait_s = TWITTER_ACCOUNT_SPACING_SECONDS - (time.time() - last_post_at)
+    min_spacing = min(TWITTER_ACCOUNT_SPACING_MIN_SECONDS, TWITTER_ACCOUNT_SPACING_MAX_SECONDS)
+    max_spacing = max(TWITTER_ACCOUNT_SPACING_MIN_SECONDS, TWITTER_ACCOUNT_SPACING_MAX_SECONDS)
+    spacing_s = random.randint(min_spacing, max_spacing)
+    wait_s = spacing_s - (time.time() - last_post_at)
     if wait_s > 0:
         print(f"Waiting {int(wait_s)}s before next X post for this account...")
         time.sleep(wait_s)
@@ -169,22 +190,153 @@ def _mark_account_posted(account_key: str) -> None:
     _last_post_path(account_key).write_text(str(time.time()), encoding="ascii")
 
 
+def _resolve_post_priority(priority: int | None) -> int:
+    """Priorite du post courant : argument explicite > env TWITTER_POST_PRIORITY > defaut."""
+    if priority is not None:
+        try:
+            return int(priority)
+        except (TypeError, ValueError):
+            return TWITTER_DEFAULT_POST_PRIORITY
+    try:
+        return int(os.getenv("TWITTER_POST_PRIORITY", str(TWITTER_DEFAULT_POST_PRIORITY)))
+    except (TypeError, ValueError):
+        return TWITTER_DEFAULT_POST_PRIORITY
+
+
+def _waiter_path(account_key: str, pid: int | None = None) -> Path:
+    return TWITTER_COORD_DIR / f"waiter_{account_key}_{pid or os.getpid()}.json"
+
+
+def _register_waiter(account_key: str, priority: int) -> tuple[Path, float]:
+    """Declare ce process comme candidat au slot de `account_key`, avec sa priorite."""
+    TWITTER_COORD_DIR.mkdir(parents=True, exist_ok=True)
+    ts = time.time()
+    path = _waiter_path(account_key)
+    payload = json.dumps({"priority": int(priority), "ts": ts, "pid": os.getpid()})
+    tmp = path.with_name(path.name + f".{os.getpid()}.tmp")
+    try:
+        tmp.write_text(payload, encoding="ascii")
+        os.replace(tmp, path)
+    except Exception:
+        try:
+            path.write_text(payload, encoding="ascii")
+        except Exception:
+            pass
+    return path, ts
+
+
+def _list_waiters(account_key: str) -> list[dict]:
+    """Waiters vivants du compte (purge au passage les morts / trop vieux / corrompus)."""
+    waiters: list[dict] = []
+    try:
+        candidates = list(TWITTER_COORD_DIR.glob(f"waiter_{account_key}_*.json"))
+    except OSError:
+        return waiters
+    for path in candidates:
+        try:
+            data = json.loads(path.read_text(encoding="ascii"))
+        except FileNotFoundError:
+            continue
+        except Exception:
+            try:
+                if time.time() - path.stat().st_mtime > 60:
+                    _safe_unlink(path)
+            except FileNotFoundError:
+                pass
+            continue
+        pid = int(data.get("pid", 0) or 0)
+        if pid and pid != os.getpid() and not _pid_running(pid):
+            _safe_unlink(path)
+            continue
+        try:
+            if time.time() - path.stat().st_mtime > TWITTER_POST_LOCK_TIMEOUT:
+                _safe_unlink(path)
+                continue
+        except FileNotFoundError:
+            continue
+        data["pid"] = pid
+        waiters.append(data)
+    return waiters
+
+
+def _waiter_sort_key(entry: dict, now: float) -> tuple[float, float, int]:
+    """Cle de tri d'un waiter : (priorite effective, anciennete, pid). Plus petit = passe avant."""
+    priority = float(entry.get("priority", TWITTER_DEFAULT_POST_PRIORITY))
+    ts = float(entry.get("ts", now))
+    if TWITTER_WAITER_AGING_SECONDS > 0:
+        priority -= (now - ts) // TWITTER_WAITER_AGING_SECONDS
+    return (priority, ts, int(entry.get("pid", 0) or 0))
+
+
+def _waiter_is_next(account_key: str, my_ts: float, my_priority: int) -> bool:
+    """True si, parmi les waiters vivants du compte, c'est notre tour de tenter le verrou."""
+    now = time.time()
+    try:
+        waiters = _list_waiters(account_key)
+    except Exception:
+        return True  # fail-open : ne jamais bloquer un post a cause de la file d'attente
+    mine = _waiter_sort_key(
+        {"priority": my_priority, "ts": my_ts, "pid": os.getpid()}, now
+    )
+    for entry in waiters:
+        if int(entry.get("pid", 0) or 0) == os.getpid():
+            continue
+        if _waiter_sort_key(entry, now) < mine:
+            return False
+    return True
+
+
 @contextmanager
-def _twitter_account_slot(session_file: Path, timeout: int = TWITTER_POST_LOCK_TIMEOUT):
-    """Serialize one X account, allow up to two accounts to post at once."""
+def _twitter_account_slot(
+    session_file: Path,
+    timeout: int = TWITTER_POST_LOCK_TIMEOUT,
+    *,
+    priority: int | None = None,
+):
+    """Serialize one X account, allow up to two accounts to post at once.
+
+    Sous contention (plusieurs process visent le meme compte), le slot est accorde
+    par priorite decroissante puis par anciennete d'attente, pas au premier qui
+    tape le verrou.
+    """
     account_key = _account_key(session_file)
     account_lock = TWITTER_COORD_DIR / f"account_{account_key}.lock"
     stale_after = max(60, TWITTER_LOCK_STALE_SECONDS)
-    account_fd = _exclusive_file(account_lock, timeout=timeout, stale_after=stale_after)
+    prio = _resolve_post_priority(priority)
+    waiter_path, waiter_ts = _register_waiter(account_key, prio)
+    account_fd = None
     active_marker = None
+    start = time.time()
     try:
+        while account_fd is None:
+            if not waiter_path.exists():
+                waiter_path, waiter_ts = _register_waiter(account_key, prio)
+            else:
+                try:
+                    os.utime(waiter_path, None)
+                except OSError:
+                    pass
+            if _waiter_is_next(account_key, waiter_ts, prio):
+                try:
+                    account_fd = _exclusive_file(account_lock, timeout=20, stale_after=stale_after)
+                except TimeoutError:
+                    account_fd = None
+            if account_fd is None:
+                if time.time() - start > timeout:
+                    raise TimeoutError(
+                        f"Twitter post slot timeout (priorite {prio}): {account_lock}"
+                    )
+                time.sleep(2)
+        _safe_unlink(waiter_path)
         active_marker = _acquire_active_account(account_key, timeout=timeout, stale_after=stale_after)
         yield account_key
     finally:
+        _safe_unlink(waiter_path)
         if active_marker is not None:
             _safe_unlink(active_marker)
-        os.close(account_fd)
-        _safe_unlink(account_lock)
+        if account_fd is not None:
+            os.close(account_fd)
+            _safe_unlink(account_lock)
 
 
 def _clean_editor_text(text: str) -> str:
@@ -1170,7 +1322,7 @@ def setup_session(session_file: Path):
     print(f"OK Session sauvegardee dans : {profile_dir}")
 
 
-def post_thread(tweets: list[str], session_file: Path) -> bool:
+def post_thread(tweets: list[str], session_file: Path, *, priority: int | None = None) -> bool:
     if not tweets:
         print("Aucun tweet a poster.")
         return False
@@ -1246,7 +1398,7 @@ def post_thread(tweets: list[str], session_file: Path) -> bool:
             return success
 
 
-def post_with_image(tweet: str, image_path: Path, session_file: Path, *, skip_if=None) -> bool:
+def post_with_image(tweet: str, image_path: Path, session_file: Path, *, skip_if=None, priority: int | None = None) -> bool:
     """Post a single tweet with one image attached.
 
     skip_if : callable optionnelle re-évaluée APRES l'acquisition du slot de compte.
@@ -1342,6 +1494,8 @@ def schedule_post(
     scheduled_at: datetime | str,
     session_file: Path,
     image_path: Path | None = None,
+    *,
+    priority: int | None = None,
 ) -> bool:
     """Schedule a single native X post through the web UI."""
     session_file = Path(session_file)
@@ -1425,7 +1579,7 @@ def schedule_post(
                     context.close()
 
 
-def post_image_thread(posts: list[tuple[str, Path | list[Path] | tuple[Path, ...]]], session_file: Path) -> bool:
+def post_image_thread(posts: list[tuple[str, Path | list[Path] | tuple[Path, ...]]], session_file: Path, *, priority: int | None = None) -> bool:
     """Post a native X thread where each post has one or more images attached."""
     normalized_posts: list[tuple[str, tuple[Path, ...]]] = []
     for text, image_paths in posts:
@@ -1515,6 +1669,4 @@ def split_tweets(content: str, max_len: int = 280) -> list[str]:
             current = section
 
     if current:
-        tweets.append(current)
-
-    return tweets
+        tweets.app

@@ -1,0 +1,114 @@
+name: Run Data-only Collectors
+
+on:
+  workflow_dispatch:
+    inputs:
+      collector:
+        description: "Collector to run"
+        required: true
+        default: "apple-music"
+        type: choice
+        options:
+          - apple-music
+          - youtube
+          - both
+      apple_music_countries:
+        description: "Optional Apple Music storefront override, e.g. us,fr,gb"
+        required: false
+        default: ""
+      commit_youtube:
+        description: "Commit and push YouTube CSV/state changes"
+        required: true
+        default: true
+        type: boolean
+
+concurrency:
+  group: run-data-only-collectors
+  cancel-in-progress: false
+
+jobs:
+  data-only:
+    runs-on: ubuntu-latest
+    environment: .env
+    permissions:
+      contents: write
+    env:
+      APPLE_MUSIC_COUNTRIES: ${{ inputs.apple_music_countries }}
+      PYTHONUNBUFFERED: "1"
+      R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+      R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      R2_BUCKET: ${{ secrets.R2_BUCKET }}
+      REQUIRE_R2_UPLOAD: "1"
+      UPLOAD_TO_R2: "1"
+      YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - name: Install data-only dependencies
+        run: python -m pip install requests urllib3 boto3 botocore python-dotenv beautifulsoup4 lxml
+
+      - name: Download Apple Music CSV history from R2
+        if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' }}
+        run: |
+          python - <<'PY'
+          import boto3
+          import csv
+          import os
+          from pathlib import Path
+
+          client = boto3.client(
+              "s3",
+              endpoint_url=f"https://{os.environ['R2_ACCOUNT_ID']}.r2.cloudflarestorage.com",
+              aws_access_key_id=os.environ["R2_ACCESS_KEY_ID"],
+              aws_secret_access_key=os.environ["R2_SECRET_ACCESS_KEY"],
+              region_name="auto",
+          )
+          bucket = os.environ.get("R2_BUCKET", "taylor-data")
+          dest_dir = Path("data/_archive/original/db")
+          dest_dir.mkdir(parents=True, exist_ok=True)
+          csv_names = [
+              "apple_music_global.csv",
+              "apple_music_country_charts.csv",
+              "apple_music_genre_charts.csv",
+              "apple_music_ts_top_songs.csv",
+              "apple_music_ts_top_songs_global.csv",
+              "apple_music_country_albums.csv",
+              "apple_music_genre_album_charts.csv",
+              "apple_music_music_video_charts.csv",
+          ]
+          for name in csv_names:
+              key = f"apple-music/db/{name}"
+              dest = dest_dir / name
+              try:
+                  client.download_file(bucket, key, str(dest))
+                  with dest.open(newline="", encoding="utf-8-sig") as fh:
+                      count = sum(1 for _ in csv.DictReader(fh))
+                  print(f"Downloaded {key} - {count} row(s)")
+              except Exception as exc:
+                  print(f"Not found: {key} ({exc})")
+          PY
+
+      - name: Configure git identity
+        if: ${{ inputs.collector == 'youtube' || inputs.collector == 'both' }}
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+
+      - name: Run Apple Music data-only
+        if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' }}
+        run: python -m tsm collect apple-music --no-images --no-post
+
+      - name: Run YouTube data-only
+        if: ${{ (inputs.collector == 'youtube' || inputs.collector == 'both') && inputs.commit_youtube }}
+        run: python -m tsm collect youtube --no-post --commit
+
+      - name: Run YouTube data-only without commit
+        if: ${{ (inputs.collector == 'youtube' || inputs.collector == 'both') && !inputs.commit_youtube }}
+        run: python -m tsm collect youtube --no-post

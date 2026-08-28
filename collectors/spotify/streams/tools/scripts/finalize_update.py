@@ -19,6 +19,7 @@ from git_ops import git_commit_and_push
 import generate_albums_image
 import generate_album_update_image
 import post_gainer_thread
+import post_best_day_since_twitter
 from post_debut_releases import post_debut_releases as run_debut_release_posts
 
 
@@ -27,14 +28,19 @@ ALBUM_UPDATE_TARGETS = (
     "reputation",
     "THE TORTURED POETS DEPARTMENT",
 )
+PRIMARY_ALBUM_UPDATE_TARGETS = (
+    "The Life of a Showgirl",
+    "THE TORTURED POETS DEPARTMENT",
+)
 ALBUM_UPDATE_GAIN_THRESHOLD_PCT = 10.0
+EXCEPTIONAL_PRIMARY_ALBUM_GAIN_THRESHOLD_PCT = 10.0
+EXCEPTIONAL_PRIMARY_ALBUM_BEST_DAY_MIN_DAYS = 90
+EXCEPTIONAL_PRIMARY_ALBUM_LIMIT = 2
 GAINER_ALBUM_UPDATE_MIN_TRACKS = 2
 GAINER_ALBUM_UPDATE_LIMIT = 5
 GAINER_ALBUM_UPDATE_MIN_BASELINE = 1000
 FINALIZE_POST_RETRY_ATTEMPTS = max(1, int(os.getenv("FINALIZE_POST_RETRY_ATTEMPTS", "3")))
 FINALIZE_POST_RETRY_SLEEP_SECONDS = max(0, int(os.getenv("FINALIZE_POST_RETRY_SLEEP_SECONDS", "60")))
-BEST_DAY_POST_SPACING_SECONDS = 5 * 60
-ALBUM_UPDATE_POST_SPACING_SECONDS = 15 * 60
 
 
 def _subprocess_env(extra: dict[str, str] | None = None) -> dict[str, str]:
@@ -273,14 +279,6 @@ class ReadyAlbumUpdatePoster:
             else:
                 cmd.append("--post")
             try:
-                _wait_before_category_post(
-                    label="album update post",
-                    should_post=not self.no_post_mode,
-                    state=self._post_state,
-                    state_key="last_album_update_post_at",
-                    spacing_seconds=ALBUM_UPDATE_POST_SPACING_SECONDS,
-                    log_mode=self.log_mode,
-                )
                 _run_streams_post(
                     cmd,
                     label=f"early album update ({album})",
@@ -294,11 +292,6 @@ class ReadyAlbumUpdatePoster:
                 with self._lock:
                     self._posted.add(album)
                 return True
-            _mark_category_post_done(
-                should_post=not self.no_post_mode,
-                state=self._post_state,
-                state_key="last_album_update_post_at",
-            )
             with self._lock:
                 self._posted.add(album)
             return True
@@ -393,31 +386,13 @@ class ReadyAlbumBestDaySincePoster:
                 label=f"early album best-day-since ({album})",
                 should_post=not self.no_post_mode,
                 state=self._post_state,
-                spacing_seconds=max(self.spacing_seconds, BEST_DAY_POST_SPACING_SECONDS),
-                log_mode=self.log_mode,
-            )
-            _wait_before_category_post(
-                label="album update post",
-                should_post=not self.no_post_mode,
-                state=self._post_state,
-                state_key="last_album_update_post_at",
-                spacing_seconds=ALBUM_UPDATE_POST_SPACING_SECONDS,
+                spacing_seconds=self.spacing_seconds,
                 log_mode=self.log_mode,
             )
             result = _run_subprocess(cmd, check=False)
             if result.returncode == 0:
                 print(f"Album best-day-since posted early during streams run: {album}")
                 _mark_post_done(should_post=not self.no_post_mode, state=self._post_state)
-                _mark_category_post_done(
-                    should_post=not self.no_post_mode,
-                    state=self._post_state,
-                    state_key="last_best_day_post_at",
-                )
-                _mark_category_post_done(
-                    should_post=not self.no_post_mode,
-                    state=self._post_state,
-                    state_key="last_album_update_post_at",
-                )
                 with self._lock:
                     self._posted.add(album)
                 return True
@@ -622,18 +597,13 @@ class ReadyBestDaySincePoster:
                 label=f"early best-day-since ({track_id})",
                 should_post=not self.no_post_mode,
                 state=self._post_state,
-                spacing_seconds=max(self.spacing_seconds, BEST_DAY_POST_SPACING_SECONDS),
+                spacing_seconds=self.spacing_seconds,
                 log_mode=self.log_mode,
             )
             result = _run_subprocess(cmd, check=False)
             if result.returncode == 0:
                 print(f"Best-day-since posted early during streams run: {track_id}")
                 _mark_post_done(should_post=not self.no_post_mode, state=self._post_state)
-                _mark_category_post_done(
-                    should_post=not self.no_post_mode,
-                    state=self._post_state,
-                    state_key="last_best_day_post_at",
-                )
                 with self._lock:
                     self._posted.add(track_id)
                 return True
@@ -701,34 +671,6 @@ def _mark_post_done(*, should_post: bool, state: dict[str, float]) -> None:
     if should_post:
         state["posted_count"] += 1
         state["last_post_at"] = time.perf_counter()
-
-
-def _wait_before_category_post(
-    *,
-    label: str,
-    should_post: bool,
-    state: dict[str, float],
-    state_key: str,
-    spacing_seconds: int,
-    log_mode: str,
-) -> None:
-    if not should_post:
-        return
-    last_post_at = state.get(state_key, 0.0)
-    if last_post_at <= 0:
-        return
-    elapsed_since_post = time.perf_counter() - last_post_at
-    wait_s = max(0.0, spacing_seconds - elapsed_since_post)
-    if wait_s > 0:
-        print(f"Waiting {int(wait_s)}s before next {label}...")
-        time.sleep(wait_s)
-    elif log_mode == "verbose":
-        print(f"{label} spacing already satisfied.")
-
-
-def _mark_category_post_done(*, should_post: bool, state: dict[str, float], state_key: str) -> None:
-    if should_post:
-        state[state_key] = time.perf_counter()
 
 
 def _run(ctx: FinalizeContext, cmd: list[str], *, label: str, should_post: bool, state: dict[str, float]) -> None:
@@ -1182,6 +1124,106 @@ def _album_update_targets(ctx: FinalizeContext) -> list[str]:
     return list(ALBUM_UPDATE_TARGETS)
 
 
+def _primary_album_update_targets(ctx: FinalizeContext) -> list[str]:
+    return [album for album in PRIMARY_ALBUM_UPDATE_TARGETS if album in ALBUM_UPDATE_TARGETS]
+
+
+def _primary_album_update_names(ctx: FinalizeContext, *, gain_targets: list[dict] | None = None) -> list[str]:
+    albums_to_post = _primary_album_update_targets(ctx)
+    for album in _exceptional_primary_album_update_targets(
+        ctx,
+        exclude_albums=set(albums_to_post),
+        gain_targets=[
+            target
+            for target in (gain_targets or _album_gain_update_targets(ctx.summary["stats_date"]))
+            if float(target.get("gain_pct") or 0.0) >= EXCEPTIONAL_PRIMARY_ALBUM_GAIN_THRESHOLD_PCT
+        ],
+    ):
+        if album not in albums_to_post:
+            albums_to_post.append(album)
+    return albums_to_post
+
+
+def _exceptional_primary_album_update_targets(
+    ctx: FinalizeContext,
+    *,
+    exclude_albums: set[str],
+    gain_targets: list[dict] | None = None,
+) -> list[str]:
+    exceptional: dict[str, tuple[int, float, str]] = {}
+
+    for target in gain_targets if gain_targets is not None else _album_gain_update_targets(
+        ctx.summary["stats_date"],
+        threshold_pct=EXCEPTIONAL_PRIMARY_ALBUM_GAIN_THRESHOLD_PCT,
+    ):
+        album = target["album"]
+        if album in exclude_albums:
+            continue
+        exceptional[album] = (
+            2,
+            float(target.get("gain_pct") or 0.0),
+            f"+{float(target.get('gain_pct') or 0.0):.1f}% daily jump",
+        )
+
+    try:
+        best_day_tracks = post_best_day_since_twitter.best_day_since.load_tracks(include_extras=False)
+        best_day_history = post_best_day_since_twitter.best_day_since.load_history()
+        best_day_target = date_cls.fromisoformat(ctx.summary["stats_date"])
+        best_day_albums = post_best_day_since_twitter.best_day_since.load_album_track_ids(best_day_tracks)
+    except Exception as exc:
+        print(f"Exceptional album best-day scan skipped: {exc}")
+        best_day_albums = {}
+        best_day_history = {}
+        best_day_target = date_cls.fromisoformat(ctx.summary["stats_date"])
+
+    for album in _all_album_names(ctx):
+        if album in exclude_albums:
+            continue
+        try:
+            track_ids = best_day_albums.get(album) or []
+            if len(track_ids) < 2:
+                continue
+            row = post_best_day_since_twitter.best_day_since.compute_album_best_day_since(
+                album,
+                track_ids,
+                best_day_history,
+                best_day_target,
+            )
+        except Exception as exc:
+            print(f"Exceptional album best-day scan skipped for {album}: {exc}")
+            continue
+        if not row:
+            continue
+        if row.get("kind") == "best_ever":
+            candidate = (4, float(row.get("daily_streams") or 0), "best day ever")
+        elif not post_best_day_since_twitter.best_day_since.passes_filters(
+            row,
+            min_days=EXCEPTIONAL_PRIMARY_ALBUM_BEST_DAY_MIN_DAYS,
+        ):
+            continue
+        else:
+            candidate = (3, float(row.get("days_since") or 0), f"best day since {row.get('best_day_since')}")
+        current = exceptional.get(album)
+        if current is None or candidate[:2] > current[:2]:
+            exceptional[album] = candidate
+
+    ranked = sorted(exceptional.items(), key=lambda item: item[1][:2], reverse=True)
+    selected = [album for album, _reason in ranked[:EXCEPTIONAL_PRIMARY_ALBUM_LIMIT]]
+    if selected:
+        print(
+            "Exceptional primary album update(s): "
+            + ", ".join(f"{album} ({exceptional[album][2]})" for album in selected)
+        )
+    return selected
+
+
+def _append_unique_album_targets(albums_to_post: list[str], targets: list[dict]) -> None:
+    for target in targets:
+        album = target["album"]
+        if album not in albums_to_post:
+            albums_to_post.append(album)
+
+
 def _post_one_album(
     ctx: FinalizeContext,
     state: dict[str, float],
@@ -1234,14 +1276,6 @@ def _post_one_album(
     if not ctx.no_post_mode:
         album_cmd.append("--post")
     try:
-        _wait_before_category_post(
-            label="album update post",
-            should_post=not ctx.no_post_mode,
-            state=state,
-            state_key="last_album_update_post_at",
-            spacing_seconds=ALBUM_UPDATE_POST_SPACING_SECONDS,
-            log_mode=ctx.log_mode,
-        )
         _run(
             ctx,
             album_cmd,
@@ -1249,28 +1283,30 @@ def _post_one_album(
             should_post=not ctx.no_post_mode,
             state=state,
         )
-        _mark_category_post_done(
-            should_post=not ctx.no_post_mode,
-            state=state,
-            state_key="last_album_update_post_at",
-        )
     except SystemExit as exc:
         print(f"Album update skipped after failure ({album}): {exc}")
 
 
-def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
+def _post_album_updates(ctx: FinalizeContext, state: dict[str, float], *, scope: str = "all") -> None:
     """Targeted album posts (ALBUM_UPDATE_TARGETS + gain/gainer scans).
 
-    Runs first among the post steps so the flagship albums (Showgirl, TTPD)
-    go out before the rest of the daily posts."""
+    Daily finalization posts only the primary albums first so the core daily
+    posts are not blocked by extra album scans. Post-only keeps the full set.
+    """
     album_img_script = ctx.script_dir / "tools" / "scripts" / "generate_album_update_image.py"
     if _is_weekend_stats_date(ctx.summary["stats_date"]):
         print("Album update posts skipped: no album cards on weekend stats dates.")
         return
 
     weekday = date_cls.fromisoformat(ctx.summary["stats_date"]).weekday()
-
+    primary_albums = _primary_album_update_targets(ctx)
     gain_targets = _album_gain_update_targets(ctx.summary["stats_date"])
+
+    if scope == "primary":
+        for album in _primary_album_update_names(ctx, gain_targets=gain_targets):
+            _post_one_album(ctx, state, album_img_script, album)
+        return
+
     if gain_targets:
         print(
             "Album update gain scan: "
@@ -1308,18 +1344,25 @@ def _post_album_updates(ctx: FinalizeContext, state: dict[str, float]) -> None:
         )
 
     albums_to_post: list[str] = _album_update_targets(ctx)
-    for target in gain_targets:
-        album = target["album"]
-        if album not in albums_to_post:
-            albums_to_post.append(album)
-    for target in gainer_targets:
-        album = target["album"]
-        if album not in albums_to_post:
-            albums_to_post.append(album)
-    for target in majority_targets:
-        album = target["album"]
-        if album not in albums_to_post:
-            albums_to_post.append(album)
+    _append_unique_album_targets(albums_to_post, gain_targets)
+    _append_unique_album_targets(albums_to_post, gainer_targets)
+    _append_unique_album_targets(albums_to_post, majority_targets)
+
+    if scope == "extra":
+        exceptional_primary_albums = _exceptional_primary_album_update_targets(
+            ctx,
+            exclude_albums=set(primary_albums),
+            gain_targets=[
+                target
+                for target in gain_targets
+                if float(target.get("gain_pct") or 0.0) >= EXCEPTIONAL_PRIMARY_ALBUM_GAIN_THRESHOLD_PCT
+            ],
+        )
+        albums_to_post = [
+            album
+            for album in albums_to_post
+            if album not in primary_albums and album not in exceptional_primary_albums
+        ]
 
     for album in albums_to_post:
         _post_one_album(ctx, state, album_img_script, album)
@@ -1426,7 +1469,7 @@ def _post_best_day_since(ctx: FinalizeContext, state: dict[str, float]) -> None:
         str(best_day_script),
         ctx.summary["stats_date"],
         "--post-spacing-seconds",
-        str(max(ctx.post_spacing_seconds, BEST_DAY_POST_SPACING_SECONDS)),
+        str(ctx.post_spacing_seconds),
     ]
     if ctx.posted_best_day_since_tracks:
         cmd.extend(["--exclude-tracks", ",".join(sorted(ctx.posted_best_day_since_tracks))])
@@ -1434,25 +1477,12 @@ def _post_best_day_since(ctx: FinalizeContext, state: dict[str, float]) -> None:
         cmd.append("--no-post")
 
     print("Posting best-day-since stream cards...")
-    _wait_before_category_post(
-        label="best-day post",
-        should_post=not ctx.no_post_mode,
-        state=state,
-        state_key="last_best_day_post_at",
-        spacing_seconds=BEST_DAY_POST_SPACING_SECONDS,
-        log_mode=ctx.log_mode,
-    )
     _run(
         ctx,
         cmd,
         label="best-day-since posts",
         should_post=not ctx.no_post_mode,
         state=state,
-    )
-    _mark_category_post_done(
-        should_post=not ctx.no_post_mode,
-        state=state,
-        state_key="last_best_day_post_at",
     )
 
 
@@ -1718,16 +1748,30 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                     print(f"{step_label} failed; continuing finalization: {exc}")
                     post_step_failures.append(f"{step_label} ({exc})")
 
+        primary_album_names: list[str] = []
+        primary_album_img_script = ctx.script_dir / "tools" / "scripts" / "generate_album_update_image.py"
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
-            _guarded_post_step("targeted album updates", lambda: _post_album_updates(ctx, post_state))
+            if _is_weekend_stats_date(ctx.summary["stats_date"]):
+                print("Primary album update posts skipped: no album cards on weekend stats dates.")
+            else:
+                primary_album_names = _primary_album_update_names(ctx)
+
+        def _post_primary_album(index: int) -> None:
+            if index < len(primary_album_names):
+                _post_one_album(ctx, post_state, primary_album_img_script, primary_album_names[index])
+
+        for album_index in range(len(primary_album_names)):
+            _guarded_post_step(
+                f"primary album update {album_index + 1}",
+                lambda album_index=album_index: _post_primary_album(album_index),
+            )
 
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
             _guarded_post_step("top eras post", lambda: _post_albums_daily(ctx, post_state))
 
         _guarded_post_step("top 20 songs post", lambda: _post_streams_image(ctx, post_state))
 
-        if not ctx.debug_daily_mode and not ctx.local_test_mode:
-            _guarded_post_step("stream highlights tables", lambda: _post_spotlight_gainers(ctx, post_state))
+        _guarded_post_step("daily recap card", lambda: _post_daily_recap_card(ctx, post_state))
 
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
             _guarded_post_step("debut posts", lambda: _post_debut_releases(ctx, post_state))
@@ -1735,20 +1779,27 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
             _guarded_post_step("best-day-since posts", lambda: _post_best_day_since(ctx, post_state))
 
-        _guarded_post_step("daily recap card", lambda: _post_daily_recap_card(ctx, post_state))
-
         _guarded_post_step("weekend song gainers", lambda: _post_weekend_song_gainers(ctx, post_state))
 
         _guarded_post_step("song overtakes", lambda: _post_song_overtakes(ctx, post_state))
 
         _guarded_post_step("stream milestones", lambda: _post_stream_milestones(ctx, post_state))
 
+        if not ctx.debug_daily_mode and not ctx.local_test_mode:
+            _guarded_post_step(
+                "extra album updates",
+                lambda: _post_album_updates(ctx, post_state, scope="extra"),
+            )
+
         if ctx.debug_daily_mode or ctx.local_test_mode:
             return
 
-        # Always last: every non-Misc album, independently, highest gain first
-        # (Monday/Friday only) — see _post_all_albums.
         _guarded_post_step("all-albums", lambda: _post_all_albums(ctx, post_state))
+
+        # Always last: biggest daily/weekly gainers should not delay the core
+        # daily posts.
+        if not ctx.debug_daily_mode and not ctx.local_test_mode:
+            _guarded_post_step("stream highlights tables", lambda: _post_spotlight_gainers(ctx, post_state))
 
         _join_background_task(forecast_thread, "forecast/image refresh", timer)
 

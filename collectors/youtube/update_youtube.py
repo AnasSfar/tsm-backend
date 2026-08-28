@@ -260,8 +260,11 @@ def enrich_chart_rows(
 
 
 def maybe_upload_youtube_to_r2(today: str) -> None:
+    require_upload = os.getenv("REQUIRE_R2_UPLOAD", "").strip().lower() in ("1", "true", "yes")
     if os.getenv("UPLOAD_TO_R2", "").strip().lower() in ("0", "false", "no"):
         print("[INFO] R2 upload skippé (UPLOAD_TO_R2 explicitement désactivé).")
+        if require_upload:
+            raise RuntimeError("R2 upload required but UPLOAD_TO_R2 is disabled")
         return
     try:
         from scripts import r2

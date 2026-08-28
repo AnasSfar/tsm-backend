@@ -38,6 +38,10 @@ for _stream in (sys.stdout, sys.stderr):
 
 NTFY_TOPIC_CHARTS = os.getenv("NTFY_TOPIC_CHARTS", "taylormuseum-charts")
 NTFY_TOPIC_SPCHARTS_DEFAULT = "tsm-spcharts"
+# "total days passed" and "streak inactive" alerts only make sense where we have
+# a deep, continuous chart history. Restrict them to the three curated regions;
+# every other region's history is partial and/or frozen (see stale-region skip).
+SPCHARTS_RANKED_HISTORY_REGIONS = {"global", "us", "uk"}
 
 _WARP_CLI = Path(r"C:\Program Files\Cloudflare\Cloudflare WARP\warp-cli.exe")
 
@@ -1543,30 +1547,9 @@ def _collect_spcharts_peak_rank_records(current_rows: list[dict], previous_rows:
     return sorted(set(alerts))
 
 
-def _collect_spcharts_peak_stream_records(current_rows: list[dict], previous_rows: list[dict]) -> list[str]:
-    previous_by_key = {
-        key: row
-        for row in previous_rows
-        if isinstance(row, dict)
-        for key in [_song_key(row)]
-        if key
-    }
-    alerts = []
-    for row in current_rows:
-        if not isinstance(row, dict):
-            continue
-        previous = previous_by_key.get(_song_key(row))
-        if not previous:
-            continue
-        current_peak = _to_int(row.get("peak_streams"))
-        previous_peak = _to_int(previous.get("peak_streams"))
-        if current_peak is None or previous_peak is None or current_peak <= previous_peak:
-            continue
-        alerts.append(
-            f"{_song_title(row)} reached new peak streams: "
-            f"{current_peak:,} (was {previous_peak:,})"
-        )
-    return sorted(set(alerts))
+# NOTE: a "new peak streams" alert used to live here, but our chart history does
+# not reach back to 2017, so for catalog songs the stored peak is only a
+# "best since tracking started" value, not an all-time record. Removed 2026-08-27.
 
 
 def _notify_spcharts_events(env: dict[str, str]) -> None:
@@ -1578,7 +1561,6 @@ def _notify_spcharts_events(env: dict[str, str]) -> None:
     total_days_alerts: list[str] = []
     streak_alerts: list[str] = []
     peak_rank_alerts: list[str] = []
-    peak_stream_alerts: list[str] = []
     for current_path in sorted(discography_dir.glob("*.json")):
         region = current_path.stem
         if region == "index" or region.endswith("_previous"):
@@ -1593,21 +1575,20 @@ def _notify_spcharts_events(env: dict[str, str]) -> None:
         current_rows = [row for row in current.get("songs", []) if isinstance(row, dict)]
         previous_rows = [row for row in previous.get("songs", []) if isinstance(row, dict)]
         region_label = region.upper()
-        total_days_alerts.extend(
-            f"[{region_label}] {line}"
-            for line in _collect_spcharts_total_days_overtakes(current_rows, previous_rows)
-        )
-        streak_alerts.extend(
-            f"[{region_label}] {line}"
-            for line in _collect_spcharts_streak_deactivations(current_rows, previous_rows)
-        )
+        # total-days overtakes and streak deactivations rely on a full continuous
+        # history, which we only have for the curated regions.
+        if region in SPCHARTS_RANKED_HISTORY_REGIONS:
+            total_days_alerts.extend(
+                f"[{region_label}] {line}"
+                for line in _collect_spcharts_total_days_overtakes(current_rows, previous_rows)
+            )
+            streak_alerts.extend(
+                f"[{region_label}] {line}"
+                for line in _collect_spcharts_streak_deactivations(current_rows, previous_rows)
+            )
         peak_rank_alerts.extend(
             f"[{region_label}] {line}"
             for line in _collect_spcharts_peak_rank_records(current_rows, previous_rows)
-        )
-        peak_stream_alerts.extend(
-            f"[{region_label}] {line}"
-            for line in _collect_spcharts_peak_stream_records(current_rows, previous_rows)
         )
 
     topic = _notify_spcharts_topic(env)
@@ -1636,15 +1617,7 @@ def _notify_spcharts_events(env: dict[str, str]) -> None:
             tags="spotify,trophy",
         )
         print(f"[spcharts_notify] peak-rank alerts: {len(peak_rank_alerts)}")
-    if peak_stream_alerts:
-        _notify(
-            topic,
-            _format_spcharts_alerts(peak_stream_alerts),
-            title="Spotify Charts - new peak streams",
-            tags="spotify,chart_with_upwards_trend",
-        )
-        print(f"[spcharts_notify] peak-stream alerts: {len(peak_stream_alerts)}")
-    if not total_days_alerts and not streak_alerts and not peak_rank_alerts and not peak_stream_alerts:
+    if not total_days_alerts and not streak_alerts and not peak_rank_alerts:
         print("[spcharts_notify] no alerts")
 
 

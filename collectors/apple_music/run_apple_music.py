@@ -183,10 +183,13 @@ def main() -> None:
             print("[Apple Music] Export failed, skipping R2 upload")
             sys.exit(1)
 
-        notify_code = notify_global_update(scraped_at)
-        if notify_code != 0:
-            print("[Apple Music] Global notification failed, skipping R2 upload")
-            sys.exit(1)
+        if not args.no_post:
+            notify_code = notify_global_update(scraped_at)
+            if notify_code != 0:
+                print("[Apple Music] Global notification failed, skipping R2 upload")
+                sys.exit(1)
+        else:
+            print("[Apple Music] Global notification skipped (--no-post)")
 
         if not args.no_images:
             cards_code = generate_country_cards(scraped_at, force=args.force_images)

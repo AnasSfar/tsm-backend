@@ -3783,14 +3783,6 @@ def main():
             best_day_since_post_state["last_post_at"],
             debut_post_state["last_post_at"],
         ),
-        "last_album_update_post_at": max(
-            album_best_day_post_state.get("last_album_update_post_at", 0.0),
-            album_post_state.get("last_album_update_post_at", 0.0),
-        ),
-        "last_best_day_post_at": max(
-            album_best_day_post_state.get("last_best_day_post_at", 0.0),
-            best_day_since_post_state.get("last_best_day_post_at", 0.0),
-        ),
     }
 
     final_web_export: BackgroundFinalWebExport | None = None

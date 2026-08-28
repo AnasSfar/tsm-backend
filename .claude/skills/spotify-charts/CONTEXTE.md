@@ -1058,6 +1058,31 @@ DB/history liees:
 `best-day-since` lit `streams_history.csv`; si la date cible est absente, le
 post est skippe plutot que devine.
 
+## Notifications discographie (ntfy spcharts)
+
+En fin de run reussi (`sync-country-charts` -> `build-country-discography`),
+`run_all_charts.py::_notify_spcharts_events` diffe pour chaque region
+`runtime/exports/web/site/data/charts_discography/<region>.json` contre
+`<region>_previous.json`. **`_previous` n'est PAS le snapshot de la veille** :
+`build_spotify_chart_discography.py` le recalcule a chaque run = tout
+l'historique de la region *sauf sa derniere date de chart*. Le diff est donc
+"effet de la derniere journee de chart de cette region", et il est
+**re-emis a chaque run** (aucun etat/dedup) : pour une region gelee (plus de
+collecte), la meme alerte repart indefiniment.
+
+Alertes actives :
+
+- **`total days passed`** et **`streak inactive`** : restreintes aux regions de
+  `SPCHARTS_RANKED_HISTORY_REGIONS = {global, us, uk}`. Ailleurs l'historique
+  est partiel/gele et le classement en jours cumules n'a pas de sens
+  (ex. flood `[GR] I Knew It, I Knew You passed ...` : GR gele au 2026-06-06 +
+  ligne worldwide corrompue `total_days: 24` au lieu de ~2).
+- **`new peak rank`** : toutes regions (un meilleur pic reste vrai meme si la
+  baseline "was #Y" peut etre imparfaite).
+- **`new peak streams`** : **supprimee** (2026-08-27). L'historique charts ne
+  remonte pas a 2017, donc pour un titre de catalogue le pic stocke n'est
+  qu'un "record depuis le debut du tracking", pas un record all-time.
+
 ## Rebuild/sync
 
 Scripts importants hors dossier:

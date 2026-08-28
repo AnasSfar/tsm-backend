@@ -2,9 +2,11 @@
   "name": "Taylor Swift",
   "spotify_url": "https://open.spotify.com/artist/06HL4z0CvFAxyc27GXpf02",
   "image_url": "https://i.scdn.co/image/ab67616d00001e028ecc33f195df6aa257c39eaa",
-  "monthly_listeners": 100301498,
+  "monthly_listeners": 100275794,
   "monthly_rank": 7,
-  "previous_monthly_listeners": 100277969,
+  "followers": 163108859,
+  "previous_monthly_listeners": 100301498,
   "previous_monthly_rank": 7,
-  "updated_at": "2026-08-26"
+  "previous_followers": null,
+  "updated_at": "2026-08-28"
 }

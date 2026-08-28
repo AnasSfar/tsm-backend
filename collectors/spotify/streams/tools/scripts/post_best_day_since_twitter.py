@@ -42,17 +42,17 @@ POST_COLLECTION_MAX_SONG_POSTS = 10
 MIN_SONG_DAILY_STREAMS_TO_POST = 80_000
 EARLY_BEST_DAY_MIN_SCORE = 58.0
 EARLY_BEST_DAY_MAX_POSTS_PER_ERA = 1
+MAX_BEST_DAY_GROWER_POSTS = 3
 ALWAYS_POST_BEST_DAY_SINCE_AFTER_DAYS = 60
 PRIORITY_BEST_DAY_SINCE_MIN_DAYS = 90
 ALBUM_RECAP_THEME_THRESHOLD_RATIO = 0.25
-BEST_DAY_POST_SPACING_SECONDS = 5 * 60
-ALBUM_UPDATE_POST_SPACING_SECONDS = 15 * 60
 
 for _stream in (sys.stdout, sys.stderr):
     try:
         _stream.reconfigure(encoding="utf-8", errors="replace")
     except Exception:
         pass
+
 
 sys.path.insert(0, str(COLLECTORS_ROOT))              # collectors/
 sys.path.insert(0, str(ROOT))                         # collectors/spotify/streams/
@@ -509,11 +509,39 @@ def _posted_track_ids_for_date(target_date: str) -> set[str]:
     return {p.stem for p in track_locks_dir.glob("*.lock")}
 
 
-def _write_track_lock(track_id: str, target_date: str, row: dict) -> None:
+def _write_track_lock(track_id: str, target_date: str, row: dict, *, post_type: str = "best_day") -> None:
     lock = _track_posted_lock_path(track_id, target_date)
     lock.parent.mkdir(parents=True, exist_ok=True)
     lock.write_text(
-        json.dumps({"best_day_since": row.get("best_day_since"), "kind": row.get("kind")}),
+        json.dumps({
+            "best_day_since": row.get("best_day_since"),
+            "kind": row.get("kind"),
+            "post_type": post_type,
+        }),
+        encoding="utf-8",
+    )
+
+
+def _grower_posted_lock_path(track_id: str, target_date: str) -> Path:
+    return _day_dir(target_date) / "best_day_grower_locks" / f"{track_id}.lock"
+
+
+def _posted_grower_track_ids_for_date(target_date: str) -> set[str]:
+    grower_locks_dir = _day_dir(target_date) / "best_day_grower_locks"
+    if not grower_locks_dir.exists():
+        return set()
+    return {p.stem for p in grower_locks_dir.glob("*.lock")}
+
+
+def _write_grower_lock(track_id: str, target_date: str, row: dict) -> None:
+    lock = _grower_posted_lock_path(track_id, target_date)
+    lock.parent.mkdir(parents=True, exist_ok=True)
+    lock.write_text(
+        json.dumps({
+            "best_day_since": row.get("best_day_since"),
+            "kind": row.get("kind"),
+            "post_type": "grower",
+        }),
         encoding="utf-8",
     )
 
@@ -713,15 +741,30 @@ body{{
 
 
 def _post_grower_for_repeat(row: dict, track: dict, target_date: str, *, no_post: bool) -> str:
+    posted_grower_ids = _posted_grower_track_ids_for_date(target_date)
+    if row["track_id"] in posted_grower_ids and not no_post:
+        print(f"[best_day_grower] Already posted grower for {row['title']} on {target_date}, skipping.")
+        return "skipped"
+    if len(posted_grower_ids) >= MAX_BEST_DAY_GROWER_POSTS and not no_post:
+        print(
+            f"[best_day_grower] Skipping {row['title']}: already "
+            f"{MAX_BEST_DAY_GROWER_POSTS} grower post(s) for {target_date}."
+        )
+        return "skipped"
+
     points = _daily_grower_points(row.get("combined_track_ids") or [row["track_id"]], target_date)
     if not points:
         print(f"[best_day_grower] Skipping {row['title']}: incomplete exact 4-day daily history.")
         return "skipped"
 
-    cover_url = get_cover_url(track, load_covers())
-    image_path = _generate_grower_image(track=track, cover_url=cover_url, target_date=target_date)
     tweet = _grower_tweet(row, track, points)
     print(f"[best_day_grower] Tweet ({len(tweet)} chars):\n{tweet}")
+    if len(tweet) > 280:
+        print(f"[best_day_grower] Skipping {row['title']}: tweet is {len(tweet)} chars (limit 280).")
+        return "skipped"
+
+    cover_url = get_cover_url(track, load_covers())
+    image_path = _generate_grower_image(track=track, cover_url=cover_url, target_date=target_date)
     print(f"[best_day_grower] Image: {image_path}")
 
     if no_post:
@@ -734,7 +777,8 @@ def _post_grower_for_repeat(row: dict, track: dict, target_date: str, *, no_post
         print(f"[best_day_grower] Failed to post {row['title']}.")
         return "error"
 
-    _write_track_lock(row["track_id"], target_date, row)
+    _write_track_lock(row["track_id"], target_date, row, post_type="grower")
+    _write_grower_lock(row["track_id"], target_date, row)
     return "posted"
 
 
@@ -1353,13 +1397,6 @@ def _post_album_best_day_rows(args, target_date: str, album_lock: Path, *, only_
             print(f"[best_day_since_post] Failed to post album {row['album']}.")
             sys.exit(1)
         _write_album_best_day_lock(row["album"], target_date, row)
-        album_best_day_post_spacing_seconds = max(args.post_spacing_seconds, BEST_DAY_POST_SPACING_SECONDS)
-        if index < len(album_rows) and album_best_day_post_spacing_seconds > 0:
-            print(
-                f"[best_day_since_post] Waiting {album_best_day_post_spacing_seconds}s "
-                "before next album best-day post..."
-            )
-            time.sleep(album_best_day_post_spacing_seconds)
 
     if album_posted_count and only_album and not args.no_post:
         album_lock.touch()
@@ -1445,7 +1482,6 @@ def main() -> None:
     args = parser.parse_args()
 
     target_date = args.date or str(date.today() - timedelta(days=1))
-    best_day_post_spacing_seconds = max(args.post_spacing_seconds, BEST_DAY_POST_SPACING_SECONDS)
 
     if args.only_track:
         result = _post_single_track_early(
@@ -1533,23 +1569,26 @@ def main() -> None:
     covers = load_covers()
 
     posted_count = 0
+    grower_post_count = len(_posted_grower_track_ids_for_date(target_date))
     for index, row in enumerate(rows, 1):
         track = row["_post_track"]
         total_today = row["_post_total_today"]
         daily_yesterday = row["_post_daily_yesterday"]
 
         if row.get("_grower_repeat"):
+            if grower_post_count >= MAX_BEST_DAY_GROWER_POSTS:
+                print(
+                    f"[best_day_grower] Skipping {row['title']}: already "
+                    f"{MAX_BEST_DAY_GROWER_POSTS} grower post(s) selected for {target_date}."
+                )
+                continue
             result = _post_grower_for_repeat(row, track, target_date, no_post=args.no_post)
             if result == "error":
                 sys.exit(1)
-            if result == "posted" and not args.no_post:
-                posted_count += 1
-            if index < len(rows) and best_day_post_spacing_seconds > 0:
-                print(
-                    f"[best_day_since_post] Waiting {best_day_post_spacing_seconds}s "
-                    "before next best-day post..."
-                )
-                time.sleep(best_day_post_spacing_seconds)
+            if result == "posted":
+                grower_post_count += 1
+                if not args.no_post:
+                    posted_count += 1
             continue
 
         cover_url = get_cover_url(track, covers)
@@ -1574,12 +1613,6 @@ def main() -> None:
             sys.exit(1)
         posted_count += 1
         _write_track_lock(row["track_id"], target_date, row)
-        if index < len(rows) and best_day_post_spacing_seconds > 0:
-            print(
-                f"[best_day_since_post] Waiting {best_day_post_spacing_seconds}s "
-                "before next best-day post..."
-            )
-            time.sleep(best_day_post_spacing_seconds)
 
     if posted_count and not args.no_post:
         lock.touch()
