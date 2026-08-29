@@ -15,14 +15,20 @@ Le pipeline ne poste pas sur X. `--no-post` existe dans le runner mais n'est pas
 un controle de publication Twitter. Ne fait jamais de commit/push git (seul
 l'upload R2 distribue la donnee).
 
-Scheduler : VPS OVH decommissionne le 2026-08-17 (cout juge disproportionne,
-~74€/mois pour 2 crons legers — voir `OVH.md` section "Decommissionnement").
-Retour au job **Windows Task Scheduler local** (`TSM Apple Music Every 4
-Hours`, reactive le 2026-08-17, jamais supprime — juste desactive du
-2026-07-30 au 2026-08-17). Le workflow GitHub Actions `run-apple-music.yml`
-existe toujours mais son trigger `schedule` est desactive (manuel via
-`workflow_dispatch` seulement) pour eviter une race avec le job local sur
-les memes cles R2. Detail complet : `REPO_CONTEXT.md` section « Deploiement
+Scheduler : depuis le 2026-08-29, prod tourne via **GitHub Actions**
+(`.github/workflows/run-data-only-collectors.yml`, job `data-only`), pas en
+local. Le `schedule:` natif de GitHub etant non fiable (retarde au top de
+l'heure, runs droppes sous charge), le workflow fire un cron frequent
+(`9,29,49 * * * *`) et `scripts/ci_data_collector_gate.py` reduit a un no-op
+(~10s) tout run inutile : Apple Music ne tourne que si le slot snapshot 2h
+Europe/Paris courant (meme arrondi que `run_apple_music.build_scraped_at`,
+importe pour rester synchro) est encore absent de
+`apple-music/db/apple_music_global.csv` sur R2. Un slot manque est
+irrecuperable (charts = etat live), d'ou 3 firings/heure.
+Le workflow legacy `run-apple-music.yml` reste `disabled` cote GitHub +
+`workflow_dispatch` seulement. Historique : Windows Task Scheduler local
+(`TSM Apple Music Every 4 Hours`) jusqu'au 2026-08-28 ; VPS OVH du
+2026-07-30 au 2026-08-17. Detail : `REPO_CONTEXT.md` section « Deploiement
 VPS OVH » et `OVH.md`.
 
 ## Entrypoint

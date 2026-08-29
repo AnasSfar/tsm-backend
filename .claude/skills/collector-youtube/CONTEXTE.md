@@ -27,18 +27,24 @@ python -m collectors.youtube.update_youtube
 
 Scheduler:
 
-- Prod tourne en automatique via le **Planificateur de tâches Windows
-  local** (tâche `TSM YouTube Videos Daily`), pas de service manuel à
-  lancer. Ça tourne sur le PC d'Anas — si le PC est éteint/en veille à
-  l'heure du run, le job ne s'exécute pas ce jour-là (pas de retry auto ; cf.
-  `manual_trusted` / [[tsm-streams-pipeline-ops]] pour le pattern de
-  rattrapage d'un jour manqué).
-- Historique : du 2026-07-30 au 2026-08-17, ça tournait via `cron` sur un
-  VPS OVH (`06:05` Europe/Paris) pendant que la tâche Windows était
-  désactivée. Le VPS a été décommissionné le 2026-08-17 (coût, pas un
-  problème technique) et la tâche Windows réactivée — retour à l'état
-  ci-dessus. Détail complet : `REPO_CONTEXT.md` section « Déploiement VPS
-  OVH » et `OVH.md`.
+- Depuis le 2026-08-29, prod tourne via **GitHub Actions**
+  (`.github/workflows/run-data-only-collectors.yml`, job `data-only`), plus
+  le PC d'Anas. Le workflow fire un cron fréquent (`9,29,49 * * * *`) et
+  `scripts/ci_data_collector_gate.py` décide : YouTube ne tourne qu'une fois
+  par jour `America/New_York`, à partir de 00:30 local. Le collector
+  lui-même re-garde via `date_already_collected` (double sécurité). Un jour
+  manqué (GitHub qui droppe *tous* les triggers pendant 24h, cas extrême) se
+  rattrape avec `--date AAAA-MM-JJ` — cf. `manual_trusted` /
+  [[tsm-streams-pipeline-ops]].
+- **Ne jamais remettre un garde-fou basé sur l'heure exacte** (`if hour !=
+  "00"`) : GitHub lance les crons avec ~1 h de retard variable, donc un test
+  d'heure pile fait skip le job presque tous les jours (bug introduit puis
+  retiré le 2026-08-29). La fenêtre « après 00:30 ET + ligne du jour
+  absente » est volontairement large.
+- Historique : Planificateur de tâches Windows local jusqu'au 2026-08-28 ;
+  avant ça, `cron` sur un VPS OVH (`06:05` Europe/Paris) du 2026-07-30 au
+  2026-08-17 (VPS décommissionné pour cause de coût). Détail :
+  `REPO_CONTEXT.md` section « Déploiement VPS OVH » et `OVH.md`.
 
 Le `.bat` local :
 

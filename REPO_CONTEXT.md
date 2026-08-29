@@ -36,7 +36,7 @@ tsm-backend/
 ├── dev/                    ← scripts ad-hoc de debug/vérification (jetables)
 ├── docs/                   ← runbook.md + data-layout-audit.md + apple-music-script-context.md
 ├── website/                ← ⚠️ site statique LEGACY — INTERDIT sauf demande explicite
-├── .github/workflows/      ← workflows GitHub (peu utilisés : tout tourne en local)
+├── .github/workflows/      ← Spotify streams/charts en local ; Apple Music + YouTube via run-data-only-collectors.yml (GitHub Actions, cron gaté)
 ├── .claude/skills/         ← skills Claude Code (tsm-map, pipeline-ops, data-rules, image-gen, deploy, admin-work, style-rules, collector-apple-music, collector-deezer)
 ├── run_daily.bat           ← launcher : python -m tsm daily
 ├── run_all_charts.bat      ← launcher : python -m tsm collect charts
@@ -342,6 +342,7 @@ Avant tout travail ici : charger le skill `scripts-maintenance` (ordre du workfl
 | `sync_apple_music_snapshots_from_r2.py` | **Sens inverse** de `upload_ap_r2.py` : reconstruit les CSV quotidiens locaux `snapshots/apple_music_charts/YYYY/MM/YYYY-MM-DD/apple_music_{global,country_charts,genre_charts,ts_top_songs}.csv` depuis `apple-music/snapshots/{timestamp}.json` sur R2 (jamais supprimé, historique complet). Nécessaire depuis le passage d'Apple Music au VPS OVH (2026-07-30, voir § 12) : la machine locale qui fait tourner `swift_top_100.py` n'a plus aucune écriture Apple Music locale, donc son historique diverge silencieusement de R2 (incident 2026-08-09, voir piège `collector-billboard/CONTEXTE.md`). Dry-run par défaut (liste ce qui serait écrit), `--apply` pour écrire ; `--start`/`--end` (défaut : lendemain du dernier jour local détecté → aujourd'hui) ; `--force` pour écraser un jour déjà présent localement |
 | `prune_apple_music_snapshots.py` | Rétention snapshots Apple Music : garde le dernier snapshot par jour passé, lignes retirées archivées en `.csv.gz` dans `_pruned_archive/` (dry-run par défaut). `--apply`, `--since`, `--no-archive` |
 | `prune_apple_music_images.py` | Supprime les objets R2 orphelins de `images/apple-music/` (adressés par `md5(url CDN Apple)`, non référencés par le CSV Apple Music courant — voir skill `scripts-maintenance` § "R2 : données pérennes vs cache"). Dry-run par défaut, `--apply` pour supprimer, manifeste local des clés supprimées sauf `--no-archive`, `--bucket` |
+| `ci_data_collector_gate.py` | **CI seulement** (`run-data-only-collectors.yml`). Décide `apple_music`/`youtube`/`youtube_commit` (→ `$GITHUB_OUTPUT`) : sur `workflow_dispatch` les inputs gagnent ; sur `schedule`, Apple Music = true si le slot snapshot 2h Europe/Paris courant (import `run_apple_music.build_scraped_at`) est > au dernier `scraped_at` de `apple-music/db/apple_music_global.csv` sur R2, YouTube = true si pas de ligne du jour `America/New_York` dans `db/youtube_views_history.csv` et heure locale ≥ 00:30. Existe parce que le `schedule:` GitHub est non fiable : cron fréquent + gate = no-op ~10 s sauf quand une collecte est réellement due |
 | `chartr2.py` | Upload R2 des charts |
 | `build_spotify_chart_discography.py` | Precalcule le payload "History view" de Spotify Charts (`runtime/exports/web/site/data/charts_discography/{region}.json`, un par region/pays deja vu — global/fr/us/uk + tout pays worldwide), lu par `tsm-frontend/api/routes/charts.py::load_charts_discography`. Agrege `db/charts_history_{global,fr,us,uk}.csv` + tous les snapshots `worldwide/.../ts_worldwide_*.json` par track_id : `last_*`, `peak_rank`, `peak_streams`, `total_days`, et depuis 2026-08-26 `longest_streak`/`longest_streak_active` (plus long streak consecutif jamais atteint sur ce chart, actif si le streak courant l'egale encore). Depuis 2026-08-28 : `days_at_peak` (nombre de jours OBSERVES exactement au `peak_rank` — minorant, 0 = non observe) et `current_streak` (streak courant, 0 si la chanson ne charte plus a la derniere date). Ecrit aussi `{region}_previous.json` (meme agregation en excluant la derniere date chartee de chaque region/pays — baseline stable pour le mouvement de rang du History view) et `peaks_by_track.json` (lookup a plat `"<track_id>|<country>" -> {peak_rank, peak_streams, peak_streams_date, days_at_peak, total_days, current_streak, longest_streak, longest_streak_active}`, consomme par `charts.py` pour enrichir les lignes du chart worldwide "Overall" — `peak_streams`/`days_at_peak` absents du snapshot brut). `--regions` fait un rebuild partiel qui MERGE dans le `peaks_by_track.json` existant. Appele automatiquement par `run_all_charts.py` (defaut : tout ; `scripts/r2.py` uploade tout `charts_discography/*.json`) |
 | `fetch_issues.py` | Récupère les signalements du site depuis R2. `--save`, `--images`, `--delete` |
@@ -350,6 +351,7 @@ Avant tout travail ici : charger le skill `scripts-maintenance` (ordre du workfl
 | `backfill_spotify_track_metadata.py` | Backfill métadonnées tracks. `--apply`, `--track`, `--limit`, `--skip-existing`, `--sleep` |
 | `backfill_global_charts.py` | Backfill `charts_history_global/fr.csv`. `--charts`, `--start`, `--end`, `--dl-workers`, `--filter-workers`, `--headless`, `--dry-run` |
 | `backfill_track_cover_cache.py` | Pré-chauffe `track_cover_cache.json` |
+| `assign_tsm_ids.py` | **IDs internes stables du catalogue.** Attribue/synchronise `tsm_song_id` (par chanson, toutes versions confondues) et `tsm_album_id` (par album) — base36 opaque, **gelés à vie**, écrits dans le registre `db/discography/tsm_id_registry.json` (append-only, source de vérité) ET dans chaque track object de `db/discography/`. Régénère `db/discography/catalog_index.json` (commité) + `catalog_index.csv` (gitignoré) : vue à plat, 1 ligne/entrée track, colonnes de schéma décodées + `catalog_code` lisible + `counts_toward_era`. Renommage de `song_family` détecté via recoupement des `track_id`/`historical_track_ids` → ID conservé. Dry-run par défaut, `--apply`, `--no-backup`, `--quiet`. À relancer après toute édition de `db/discography/` — idempotent (0 écriture si rien n'a changé). Détail → skill `scripts-maintenance` § "IDs internes du catalogue" |
 | `enrich_genres.py` | Genres par chanson. `--apply`, `--track`, `--set-genres`, `--sources`, `--refresh-cache`, `--limit`, `--skip-existing` |
 | `infer_track_flags.py` | Déduit les `filter_tags` (ancien schéma) de la discographie. `--apply`, `--track`, `--limit`, `--csv`, `--json`. ⚠️ Probablement obsolète depuis `migrate_discography_schema.py` (son rôle — déduire des tags depuis des champs flous — disparaît puisque `role`/`extra_type`/`category` sont désormais explicites) ; pas encore supprimé, à confirmer avant de le faire |
 | `migrate_discography_schema.py` | **Phase 1 de la refonte du schéma discographie** (voir § 9 "Schéma de discographie"). Dry-run par défaut (écrit `data/schema_migration_review.csv`, liste des tracks au mapping ambigu à revalider), `--apply` pour écrire (backup `.schema-migration-<horodatage>.bak`), `--no-backup`. Additif uniquement : n'écrit que les nouveaux champs (`on_album`/`role`/`extra_type`/`category`/`release_edition`/`display_album`/`tags`), ne touche/supprime jamais `type`/`edition`/`section`/`filter_tags`/`display_era` — donc zéro impact sur les scripts qui les lisent encore (Phase 2, chantier séparé). Corrige aussi `song_family` pour les extras mal reliés (ex. karaoké/voice memo qui pointaient vers leur propre famille au lieu de la chanson de base), via un index des titres "ancres" (tracks non suffixés) — jamais par vote/majorité entre extras, qui s'est révélé peu fiable sur cette DB (incohérences préexistantes de nommage) |
@@ -398,6 +400,10 @@ Chaque track a maintenant, EN PLUS des anciens champs (`type`, `edition`, `secti
 | `display_album` | string \| null | ex-`display_era`, renommé, même usage (afficher sous un album sans compter dans son tracklist) |
 | `tags` | liste réduite (ex. `christmas`) | ex-`filter_tags` — uniquement les thèmes qui ne rentrent dans aucun champ ci-dessus |
 | `song_family` | string | inchangé mais **fiabilisé** par la migration (relie maintenant correctement karaoké/voice memo/etc. à leur chanson de base) |
+| `tsm_song_id` | string \| null | **ID interne gelé** de la chanson (toutes versions confondues), base36 opaque. Écrit par `scripts/assign_tsm_ids.py`. Clé de jointure cross-collector + clé d'URL de partage. Source de vérité = `db/discography/tsm_id_registry.json` (le champ ici en est un miroir). |
+| `tsm_album_id` | string \| null | idem au niveau album (null pour les entrées `songs.json`/`misc.json`/`features.json`) |
+
+`slug` (lisible) et `catalog_code` (`REDTV/std/05` — segmenté, signifiant) sont **recalculés à chaque run** et vivent uniquement dans `tsm_id_registry.json` + `db/discography/catalog_index.{json,csv}` (jamais dans les fichiers de disco — ils re-churneraient ~20 fichiers à chaque retouche de titre). `catalog_index` = vue à plat, 1 ligne/entrée track, pour « s'y retrouver » dans le catalogue. Détail → skill `scripts-maintenance` § "IDs internes du catalogue". `tsm_song_id` + `tsm_slug` sont portés dans l'export web (`data/songs.json`, `data/albums.json`) par `export_for_web.py::load_tsm_slug_map()`.
 
 Statut : migration Phase 1 appliquée le 2026-07-29 (voir `data/schema_migration_review.csv` pour les ~131 tracks au mapping incertain à revalider via l'éditeur). **Phase 2 (pas encore faite)** : migrer chaque consommateur des anciens champs vers les nouveaux, puis retirer les anciens — gros chantier séparé touchant `best_day_since.py`, `history_store.py`, `generate_album_update_image.py`, `enrich_genres.py`, `export_for_web.py` (doit continuer à produire les mêmes champs de sortie `type`/`edition`/`display_section` pour ne rien casser côté `tsm-frontend`/`api/routes/period_recaps.py`), `swift_top_albums.py`, `swift_top_100.py`, `backfill_discography_from_spotify.py`.
 
@@ -415,7 +421,7 @@ Statut : migration Phase 1 appliquée le 2026-07-29 (voir `data/schema_migration
 | `README.md` / `README_FULL.md` / `CONTRIBUTING.md` / `AGENTS.md` / `CLAUDE.md` | Docs générales / instructions IA |
 | `DEPLOYMENT_AUDIT.md`, `GITHUB_SECRETS_SETUP.md`, `add_github_secrets.py` | Setup GitHub Actions (secrets) |
 | `setup.py`, `requirements.txt`, `.python-version` | Packaging/deps Python |
-| `.github/workflows/` | `run-data-only-collectors.yml` exécute Apple Music data-only toutes les 2h (`:07`, arrondi en snapshot aux heures paires Paris en CEST) et YouTube data-only quotidiennement vers 06:05 Paris (CEST), avec export R2 ; `run-all-charts.yml`, `update-streams.yml`, `run-apple-music.yml`, `check-r2-storage.yml`, `keepalive.yml` restent séparés |
+| `.github/workflows/` | `run-data-only-collectors.yml` : cron fréquent `9,29,49 * * * *` + `scripts/ci_data_collector_gate.py` qui gate — Apple Music data-only si le slot snapshot 2h Europe/Paris courant manque sur R2, YouTube data-only 1×/jour `America/New_York` (dès 00:30 local), les autres firings sont des no-ops ~10s. `concurrency: run-data-only-collectors`. `run-all-charts.yml`, `update-streams.yml`, `run-apple-music.yml` (tous `disabled` côté GitHub), `check-r2-storage.yml`, `keepalive.yml` restent séparés |
 | `.claude/skills/` | Skills Claude Code : `tsm-map`, `pipeline-ops`, `data-rules`, `image-gen`, `deploy`, `admin-work`, `style-rules`, `collector-apple-music` (série « un skill par collecteur » — à charger avant tout travail sur le collecteur correspondant) |
 
 Les `.bat` du Task Scheduler vivent dans **`tsm-frontend/tasks/`** (`run_spotify_streams.bat`, `run_spotify_charts_global.bat`, `run_spotify_charts_fr.bat`, `watch_logs.bat`) et font `cd` vers ce repo.
@@ -432,10 +438,16 @@ Scripts de vérification/debug ponctuels, non maintenus : `adhoc/checks/` (véri
 **Ce VPS a été supprimé le 2026-08-17** (coût jugé disproportionné, ~74€/mois
 pour 2 crons légers — voir `OVH.md` section « Décommissionnement »).
 Depuis le 2026-08-28, `collectors/youtube` et `collectors/apple_music`
-tournent via GitHub Actions data-only (`run-data-only-collectors.yml`) :
-Apple Music toutes les 2h (`7 */2 * * *` UTC, soit lancement
-sur les heures paires Europe/Paris en CEST + 7 minutes, arrondi au slot pile) et YouTube quotidiennement
-(`5 4 * * *` UTC, ~06:05 Europe/Paris en CEST). Le workflow
+tournent via GitHub Actions data-only (`run-data-only-collectors.yml`).
+**Le `schedule:` natif de GitHub est non fiable** (retardé au top de l'heure,
+runs droppés sous charge — constaté 2026-08-29 : 2 runs planifiés sur ~13,
+~1 h de retard). Depuis le 2026-08-29 le workflow fire donc un cron fréquent
+(`9,29,49 * * * *`) et `scripts/ci_data_collector_gate.py` décide quoi lancer :
+Apple Music si le slot snapshot 2h Europe/Paris courant manque encore sur R2
+(`apple-music/db/apple_music_global.csv`), YouTube 1×/jour `America/New_York`
+dès 00:30 local (le collector re-garde via `date_already_collected`). Tout
+autre firing = no-op ~10 s. Ne jamais remettre de test d'heure pile dans le
+workflow. Le workflow
 GitHub Actions legacy `run-apple-music.yml` reste manuel uniquement
 (`workflow_dispatch`) pour éviter une race avec le nouveau job data-only.
 Section conservée ci-dessous pour l'historique du setup, au cas où l'option

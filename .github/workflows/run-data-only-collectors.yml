@@ -22,9 +22,17 @@ on:
         default: true
         type: boolean
   schedule:
-    - cron: "0 */2 * * *"   # Apple Music every 2h; rounds to even Paris hours during CEST
-    - cron: "5 4 * * *"     # YouTube daily guard: 00:05 America/New_York during EDT
-    - cron: "5 5 * * *"     # YouTube daily guard: 00:05 America/New_York during EST
+    # GitHub's scheduled trigger is delayed at the top of the hour and drops
+    # runs under load, so we fire often and let scripts/ci_data_collector_gate.py
+    # turn every run that isn't needed into a ~10s no-op:
+    #   - Apple Music runs only when the current Europe/Paris 2h snapshot slot
+    #     is still missing on R2 (3 firings/hour => ~3 chances per slot).
+    #   - YouTube runs once per America/New_York day, from 00:30 local onwards.
+    - cron: "9,29,49 * * * *"
+
+concurrency:
+  group: run-data-only-collectors
+  cancel-in-progress: false
 
 jobs:
   data-only:
@@ -57,11 +65,23 @@ jobs:
           python-version: "3.13"
           cache: pip
 
-      - name: Install data-only dependencies
-        run: python -m pip install requests urllib3 boto3 botocore python-dotenv beautifulsoup4 lxml
+      - name: Install gate dependencies
+        run: python -m pip install boto3 botocore
+
+      - name: Decide what to run
+        id: gate
+        env:
+          GATE_EVENT: ${{ github.event_name }}
+          GATE_COLLECTOR: ${{ inputs.collector }}
+          GATE_COMMIT_YOUTUBE: ${{ inputs.commit_youtube }}
+        run: python scripts/ci_data_collector_gate.py
+
+      - name: Install collector dependencies
+        if: ${{ steps.gate.outputs.apple_music == 'true' || steps.gate.outputs.youtube == 'true' }}
+        run: python -m pip install requests urllib3 python-dotenv beautifulsoup4 lxml
 
       - name: Download Apple Music CSV history from R2
-        if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' || github.event.schedule == '0 */2 * * *' }}
+        if: ${{ steps.gate.outputs.apple_music == 'true' }}
         run: |
           python - <<'PY'
           import boto3
@@ -101,7 +121,7 @@ jobs:
           PY
 
       - name: Rebuild Apple Music previous snapshots from R2
-        if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' || github.event.schedule == '0 */2 * * *' }}
+        if: ${{ steps.gate.outputs.apple_music == 'true' }}
         run: |
           SECONDS=0
           start="$(date -d '3 days ago' +%F)"
@@ -111,13 +131,13 @@ jobs:
           printf "### Apple Music history sync\n\n- Duration: %d min %02d sec\n- Range: %s to %s\n\n" "$((duration / 60))" "$((duration % 60))" "$start" "$end" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Configure git identity
-        if: ${{ inputs.collector == 'youtube' || inputs.collector == 'both' || github.event.schedule == '5 4 * * *' || github.event.schedule == '5 5 * * *' }}
+        if: ${{ steps.gate.outputs.youtube == 'true' }}
         run: |
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
 
       - name: Run Apple Music data-only
-        if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' || github.event.schedule == '0 */2 * * *' }}
+        if: ${{ steps.gate.outputs.apple_music == 'true' }}
         run: |
           SECONDS=0
           python -m tsm collect apple-music --no-images
@@ -130,7 +150,7 @@ jobs:
           printf "### Apple Music data-only\n\n- Duration: %d min %02d sec\n- Scope: %s\n\n" "$((duration / 60))" "$((duration % 60))" "$scope" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Verify Apple Music R2 export
-        if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' || github.event.schedule == '0 */2 * * *' }}
+        if: ${{ steps.gate.outputs.apple_music == 'true' }}
         run: |
           python - <<'PY'
           import json
@@ -174,28 +194,15 @@ jobs:
           PY
 
       - name: Run YouTube data-only
-        if: ${{ ((inputs.collector == 'youtube' || inputs.collector == 'both') && inputs.commit_youtube) || github.event.schedule == '5 4 * * *' || github.event.schedule == '5 5 * * *' }}
+        if: ${{ steps.gate.outputs.youtube == 'true' && steps.gate.outputs.youtube_commit == 'true' }}
         run: |
           SECONDS=0
-          if [ "${GITHUB_EVENT_NAME}" = "schedule" ]; then
-            local_hour="$(python - <<'PY'
-          from datetime import datetime
-          import os
-          from zoneinfo import ZoneInfo
-          print(datetime.now(ZoneInfo(os.environ["YOUTUBE_COLLECTION_TZ"])).strftime("%H"))
-          PY
-          )"
-            if [ "${local_hour}" != "00" ]; then
-              printf "### YouTube data-only\n\n- Skipped: scheduled UTC trigger is not midnight in America/New_York\n\n" >> "$GITHUB_STEP_SUMMARY"
-              exit 0
-            fi
-          fi
           python -m tsm collect youtube --no-post --commit
           duration=$SECONDS
           printf "### YouTube data-only\n\n- Duration: %d min %02d sec\n- Commit: yes\n\n" "$((duration / 60))" "$((duration % 60))" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Run YouTube data-only without commit
-        if: ${{ (inputs.collector == 'youtube' || inputs.collector == 'both') && !inputs.commit_youtube && github.event_name == 'workflow_dispatch' }}
+        if: ${{ steps.gate.outputs.youtube == 'true' && steps.gate.outputs.youtube_commit != 'true' }}
         run: |
           SECONDS=0
           python -m tsm collect youtube --no-post
