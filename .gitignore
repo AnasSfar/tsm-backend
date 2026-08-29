@@ -99,6 +99,7 @@ collectors/spotify/charts/worldwide/tools/json/chrome_profile/
 collectors/apple_music/tools/json/apple_music_token.json
 collectors/spotify/streams/tools/.token_cache.json
 collectors/spotify/streams/tools/.image_data_uri_cache.json
+db/discography/.image_cache/
 debug*
 
 # Website generated data

@@ -174,13 +174,19 @@ CHARTSNAPSHOT_REQUIRED_VALIDATED = 20  # non-extra tracks with total - daily == 
 CHARTSNAPSHOT_ARTIST_URI = "06HL4z0CvFAxyc27GXpf02"
 CHARTSNAPSHOT_TOP_SONGS_URL = "https://www.chartsnapshot.com/get_top_songs"
 EARLY_BEST_DAY_MIN_DAILY_STREAMS = 30_000
-EARLY_BEST_DAY_WATCHLIST_MIN_DAILY_STREAMS = 30_000
-EARLY_BEST_DAY_TRACK_LIMIT = 80
+EARLY_BEST_DAY_WATCHLIST_MIN_DAILY_STREAMS = 20_000
+EARLY_BEST_DAY_TRACK_LIMIT = 100
 EARLY_BEST_DAY_MAX_POSTS = 5
 EARLY_BEST_DAY_MIN_PCT_CHANGE = 10.0
 EARLY_BEST_DAY_MIN_SCORE = 58.0
 EARLY_BEST_DAY_PRIORITY_AFTER_DAYS = 60
 EARLY_BEST_DAY_PRIORITY_RECENT_PEAK_RATIO = 0.90
+# "Biggest day of the year" early-watch: yesterday's daily already within this
+# fraction of the year's peak, and at least this many daily streams. Capped so
+# the early watcher doesn't fan out into hundreds of per-track subprocesses.
+EARLY_BEST_DAY_YEAR_RECORD_WATCH_RATIO = 0.80
+EARLY_BEST_DAY_YEAR_RECORD_MIN_DAILY = 20_000
+EARLY_BEST_DAY_YEAR_RECORD_WATCH_LIMIT = 50
 GROWER_NOTIFY_LIMIT = 3
 GROWER_NOTIFY_WINDOW_DAYS = 7
 GROWER_NOTIFY_MIN_BASELINE_DAILY = 1_000
@@ -1377,15 +1383,27 @@ def build_priority_best_day_track_ids(
             continue
         points_by_track.setdefault(track_id, []).append((row_day, daily))
 
+    year_start = date(target_day.year, 1, 1)
     candidates: list[tuple[int, int, str]] = []
+    year_record_candidates: list[tuple[int, str]] = []
     for track_id, points in points_by_track.items():
+        previous_day_daily = next((daily for day, daily in points if day == target_day - timedelta(days=1)), None)
+
+        # Plausible "biggest day of the year": yesterday's daily already sits
+        # near this year's peak, so a normal day-over-day bump tips it into a
+        # new year high. Posted early and uncapped (owner decision 2026-08-29).
+        if previous_day_daily is not None and previous_day_daily >= EARLY_BEST_DAY_YEAR_RECORD_MIN_DAILY:
+            year_dailies = [daily for day, daily in points if day >= year_start]
+            year_peak = max(year_dailies) if year_dailies else 0
+            if year_peak > 0 and previous_day_daily >= year_peak * EARLY_BEST_DAY_YEAR_RECORD_WATCH_RATIO:
+                year_record_candidates.append((year_peak - previous_day_daily, track_id))
+
         recent = [(day, daily) for day, daily in points if cutoff_day <= day < target_day]
         older = [(day, daily) for day, daily in points if day < cutoff_day]
         if not recent or not older:
             continue
 
         recent_peak = max(daily for _day, daily in recent)
-        previous_day_daily = next((daily for day, daily in points if day == target_day - timedelta(days=1)), None)
         if previous_day_daily is None:
             continue
 
@@ -1407,7 +1425,14 @@ def build_priority_best_day_track_ids(
         candidates.append((gap_to_recent_peak, -potential_days_since, track_id))
 
     candidates.sort()
-    return [track_id for _gap, _days, track_id in candidates]
+    year_record_candidates.sort()
+    ordered = [track_id for _gap, _days, track_id in candidates]
+    seen = set(ordered)
+    for _gap, track_id in year_record_candidates[:EARLY_BEST_DAY_YEAR_RECORD_WATCH_LIMIT]:
+        if track_id not in seen:
+            ordered.append(track_id)
+            seen.add(track_id)
+    return ordered
 
 
 def build_early_best_day_track_ids(
@@ -3763,7 +3788,10 @@ def main():
     else:
         print("Skipping legacy site-history CSV migration: this collector writes db/streams_history.csv directly.")
 
-    posted_album_best_day_updates = album_best_day_since_poster.stop()
+    # Stop the thread only. A best-day-since album card posted early must NOT
+    # suppress that album's regular update-table card in finalize — different
+    # card, and every album gets its update card every weekday now.
+    album_best_day_since_poster.stop()
     posted_album_updates = album_update_poster.stop()
     posted_best_day_since_tracks = best_day_since_poster.stop()
     debut_post_state = debut_release_poster.stop()
@@ -3840,7 +3868,7 @@ def main():
         extract_track_id=extract_track_id,
         load_history_track_ids_for_date=load_history_track_ids_for_date,
         find_biggest_album_gainer_for_spotlight=find_biggest_album_gainer_for_spotlight,
-        posted_album_updates=posted_album_updates | posted_album_best_day_updates,
+        posted_album_updates=posted_album_updates,
         initial_post_state=initial_post_state,
         posted_best_day_since_tracks=posted_best_day_since_tracks,
         throwback_mode=throwback_mode,

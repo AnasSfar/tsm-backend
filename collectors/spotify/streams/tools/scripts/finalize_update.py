@@ -20,6 +20,7 @@ import generate_albums_image
 import generate_album_update_image
 import post_gainer_thread
 import post_best_day_since_twitter
+import score_album_update
 from post_debut_releases import post_debut_releases as run_debut_release_posts
 
 
@@ -562,14 +563,12 @@ class ReadyBestDaySincePoster:
 
     def _done(self) -> bool:
         with self._lock:
-            if len(self._posted) >= self.max_posts:
-                return True
+            # Keep scanning every watched track even after the normal early-post
+            # cap: a biggest-day-of-the-year record is posted unconditionally and
+            # the per-track subprocess enforces the cap on the rest itself.
             return len(self._checked) >= len(self.track_ids)
 
     def _post_newly_ready_track(self) -> bool:
-        with self._lock:
-            if len(self._posted) >= self.max_posts:
-                return False
         done_ids = self.load_history_track_ids_for_date(self.stats_date)
         for track_id in self.track_ids:
             with self._lock:
@@ -607,8 +606,11 @@ class ReadyBestDaySincePoster:
                 log_mode=self.log_mode,
             )
             result = _run_subprocess(cmd, check=False, env={"TWITTER_POST_PRIORITY": "0"})
-            if result.returncode == 0:
-                print(f"Best-day-since posted early during streams run: {track_id}")
+            # exit 0 = posted, exit 2 = posted a biggest-day-of-the-year card
+            # that bypassed every cap.
+            if result.returncode in (0, 2):
+                kind = "biggest day of the year" if result.returncode == 2 else "record"
+                print(f"Best-day-since posted early during streams run ({kind}): {track_id}")
                 _mark_post_done(should_post=not self.no_post_mode, state=self._post_state)
                 with self._lock:
                     self._posted.add(track_id)
@@ -1252,8 +1254,8 @@ def _post_one_album(
     """Generate + post a single album update card, honoring locks and completeness.
 
     Shared by the targeted posts (ALBUM_UPDATE_TARGETS/gainers) and the
-    Monday/Friday all-albums sweep so both paths skip an album already
-    posted (by the other path or an earlier retry) instead of double-posting.
+    daily all-albums sweep so both paths skip an album already posted (by the
+    other path or an earlier retry) instead of double-posting.
     """
     if album in ctx.posted_album_updates:
         print(f"Album update already posted during streams run: {album}")
@@ -1323,7 +1325,11 @@ def _post_album_updates(ctx: FinalizeContext, state: dict[str, float], *, scope:
     gain_targets = _album_gain_update_targets(ctx.summary["stats_date"])
 
     if scope == "primary":
-        for album in _primary_album_update_names(ctx, gain_targets=gain_targets):
+        primary_names = _rank_albums_for_posting(
+            _primary_album_update_names(ctx, gain_targets=gain_targets),
+            ctx.summary["stats_date"],
+        )
+        for album in primary_names:
             _post_one_album(ctx, state, album_img_script, album)
         return
 
@@ -1347,10 +1353,12 @@ def _post_album_updates(ctx: FinalizeContext, state: dict[str, float], *, scope:
             )
         )
 
-    # Majority-positive scan (>50% of an album's tracks up day-over-day) only
-    # jumps the queue Tuesday-Thursday — the days the all-albums Mon/Fri sweep
-    # doesn't cover, so these albums would otherwise get no post at all that
-    # day. Decision 2026-08-05.
+    # Majority-positive scan (>50% of an album's tracks up day-over-day) lets
+    # those albums jump the queue Tuesday-Thursday (posted first, before the
+    # core daily posts) instead of waiting for the last-place all-albums sweep.
+    # Every album still gets its card every weekday via that sweep. Decision
+    # 2026-08-05, kept as an ordering nicety after the sweep went daily
+    # (2026-08-29).
     majority_targets = (
         _album_majority_positive_targets(ctx.summary["stats_date"]) if weekday in (1, 2, 3) else []
     )
@@ -1383,6 +1391,8 @@ def _post_album_updates(ctx: FinalizeContext, state: dict[str, float], *, scope:
             for album in albums_to_post
             if album not in primary_albums and album not in exceptional_primary_albums
         ]
+
+    albums_to_post = _rank_albums_for_posting(albums_to_post, ctx.summary["stats_date"])
 
     for album in albums_to_post:
         _post_one_album(ctx, state, album_img_script, album)
@@ -1436,15 +1446,39 @@ def _album_daily_total(album: str, stats_date: str) -> int:
     )
 
 
+def _rank_albums_for_posting(albums: list[str], stats_date: str) -> list[str]:
+    """Order albums best-first for posting via ``score_album_update`` (same
+    scoring shape as the best-day-since song scorer: daily abs/%% gain, weekly
+    %% gain, rarity, grower, plus album record + majority-positive bonuses).
+    Falls back to a plain daily-total sort if scoring fails — ordering must
+    never block a post."""
+    try:
+        scored = score_album_update.score_albums(list(albums), date_cls.fromisoformat(stats_date))
+    except Exception as exc:
+        print(f"[all-albums] score ranking failed ({exc}); sorting by daily total.")
+        return sorted(albums, key=lambda album: _album_daily_total(album, stats_date), reverse=True)
+
+    ranked = [item["album"] for item in scored]
+    for album in albums:
+        if album not in ranked:
+            ranked.append(album)
+    top = ", ".join(
+        f"{item['album']} {float(item.get('score') or 0.0):.0f}"
+        for item in scored[:5]
+    )
+    if top:
+        print(f"[all-albums] score order (top 5): {top}")
+    return ranked
+
+
 def _post_all_albums(ctx: FinalizeContext, state: dict[str, float]) -> None:
     """Every non-Misc album, posted independently (not as a thread), highest
-    daily gain first. Monday/Friday only, and always last among the post
-    steps (after recap/top eras/best-day-since/etc.) — decision 2026-08-05,
-    replacing the old grouped Monday/Friday thread."""
+    daily gain first. Every weekday (decision 2026-08-29, was Monday/Friday
+    only), and always last among the post steps (after recap/top eras/
+    best-day-since/etc.). No album cards on weekend stats dates."""
     stats_date = ctx.summary["stats_date"]
-    weekday = date_cls.fromisoformat(stats_date).weekday()
-    if weekday not in (0, 4):
-        print("All-albums posts skipped: posted on Monday/Friday stats dates only.")
+    if _is_weekend_stats_date(stats_date):
+        print("All-albums posts skipped: no album cards on weekend stats dates.")
         return
 
     if not ctx.no_post_mode and not ctx.summary.get("all_done"):
@@ -1456,12 +1490,13 @@ def _post_all_albums(ctx: FinalizeContext, state: dict[str, float]) -> None:
         print("[all-albums] No albums found.")
         return
 
-    ranked = sorted(albums, key=lambda album: _album_daily_total(album, stats_date), reverse=True)
+    ranked = _rank_albums_for_posting(albums, stats_date)
 
     album_img_script = ctx.script_dir / "tools" / "scripts" / "generate_album_update_image.py"
     for album in ranked:
-        # Sweep lundi/vendredi : toujours en dernier, donc priorite de post la plus
-        # basse (4) — il cede le pas a tout le reste (charts, recap, gainers, cards ciblees).
+        # Sweep quotidien (jours de semaine) : toujours en dernier, donc priorite de
+        # post la plus basse (4) — il cede le pas a tout le reste (charts, recap,
+        # gainers, cards ciblees).
         _post_one_album(ctx, state, album_img_script, album, post_priority="4")
 
 
@@ -1710,7 +1745,7 @@ def run_post_only_steps(ctx: FinalizeContext, step_names: list[str]) -> None:
     """Rejoue uniquement les étapes de post demandées sur l'history existante.
 
     Mêmes règles que la finalisation quotidienne : garde-fous de complétude,
-    locks anti-double-post et restrictions de jour (all-albums lundi/vendredi,
+    locks anti-double-post et restrictions de jour (cards album hors week-end,
     top eras hors week-end) s'appliquent toujours."""
     post_state = dict(ctx.initial_post_state or {"posted_count": 0, "last_post_at": 0.0})
     failures: list[str] = []
@@ -1776,7 +1811,9 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
             if _is_weekend_stats_date(ctx.summary["stats_date"]):
                 print("Primary album update posts skipped: no album cards on weekend stats dates.")
             else:
-                primary_album_names = _primary_album_update_names(ctx)
+                primary_album_names = _rank_albums_for_posting(
+                    _primary_album_update_names(ctx), ctx.summary["stats_date"]
+                )
 
         def _post_primary_album(index: int) -> None:
             if index < len(primary_album_names):

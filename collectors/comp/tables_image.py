@@ -3,13 +3,11 @@ from __future__ import annotations
 import base64
 import colorsys
 import random
-import re
 import sys
 from collections.abc import Callable
 from datetime import datetime, timedelta
 from io import BytesIO
 from pathlib import Path
-from urllib.request import Request, urlopen
 
 from playwright.sync_api import sync_playwright
 
@@ -34,60 +32,29 @@ except ImportError:
 # Image helpers
 # ---------------------------------------------------------------------------
 
-_img_cache: dict[str, str] = {}
+# Image fetching (persistent disk cache + retries + Spotify size fallback) lives
+# in comp.img_fetch — shared by every PNG generator so a transient network blip
+# can never blank a cover that has worked before. See that module's docstring.
+try:
+    from .img_fetch import fetch_data_uri, image_url_candidates, re_sub_spotify_size  # noqa: F401
+except ImportError:
+    from comp.img_fetch import fetch_data_uri, image_url_candidates, re_sub_spotify_size  # noqa: F401
 
-
-def _image_url_candidates(url: str) -> list[str]:
-    candidates = [url]
-    if "scdn.co/image/" in url or "spotifycdn.com/image/" in url:
-        for size_marker in ("0000b273", "00001e02", "00004851", "00001e03"):
-            alt = re_sub_spotify_size(url, size_marker)
-            if alt not in candidates:
-                candidates.append(alt)
-    return candidates
-
-
-def re_sub_spotify_size(url: str, size_marker: str) -> str:
-    return re.sub(r"ab67616d[0-9a-f]{8}", f"ab67616d{size_marker}", url, count=1)
+_image_url_candidates = image_url_candidates  # back-compat alias
 
 
 def download_as_data_uri(url: str) -> str:
-    """One-shot download returning a base64 data URI, or empty string on failure."""
-    if not url:
-        return ""
-    try:
-        req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urlopen(req, timeout=8) as resp:
-            mime = resp.headers.get_content_type() or "image/jpeg"
-            data = base64.b64encode(resp.read()).decode()
-            return f"data:{mime};base64,{data}"
-    except Exception:
-        return ""
+    """Download an image URL as a base64 data URI, or "" on failure.
+
+    Backed by comp.img_fetch (persistent cache + retries). Kept as a name for
+    callers that prefetch covers concurrently (generate_streams_image, etc.).
+    """
+    return fetch_data_uri(url) if url and str(url).startswith("http") else ""
 
 
 def url_to_data_uri(url: str) -> str:
-    """Fetch an image URL as a base64 data URI, or return empty on failure."""
-    if not url or not url.startswith("http"):
-        return url
-    if url in _img_cache:
-        return _img_cache[url]
-    last_exc = None
-    for candidate in _image_url_candidates(url):
-        for _ in range(2):
-            try:
-                req = Request(candidate, headers={"User-Agent": "Mozilla/5.0"})
-                with urlopen(req, timeout=8) as resp:
-                    mime = resp.headers.get_content_type() or "image/jpeg"
-                    data = base64.b64encode(resp.read()).decode()
-                    result = f"data:{mime};base64,{data}"
-                _img_cache[url] = result
-                _img_cache[candidate] = result
-                return result
-            except Exception as e:
-                last_exc = e
-    print(f"[warn] url_to_data_uri: failed for {url} ({last_exc})")
-    _img_cache[url] = ""
-    return ""
+    """Fetch an image URL as a base64 data URI. Non-http input is returned as-is."""
+    return fetch_data_uri(url)
 
 
 def pick_header_image(headers_dir: Path) -> Path | None:

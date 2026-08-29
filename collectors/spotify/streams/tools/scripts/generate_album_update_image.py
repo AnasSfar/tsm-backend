@@ -49,6 +49,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT.parent))   # collectors/spotify/ for core.*
 
 from core.data_paths import first_existing_db_history, update_streams_dir
+from comp.img_fetch import fetch_data_uri
 from twitter.links import streams_latest_url
 from twitter.prefixes import DEFAULT_POST_PREFIX
 import history_store
@@ -295,16 +296,15 @@ def _section_palette_colors(img_path: Path, max_colors: int = 6) -> list[str]:
 
 
 def _url_to_data_uri(url: str) -> str:
-    if not url:
+    """Cover/image URL → data URI, via the shared resilient fetcher.
+
+    comp.img_fetch adds a persistent on-disk cache + retries + Spotify size
+    fallbacks, so a transient network blip can no longer blank a cover that has
+    worked before (e.g. Speak Now (TV) on the 2026-08-26 album update image).
+    """
+    if not url or not str(url).startswith("http"):
         return ""
-    try:
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=8) as r:
-            data = r.read()
-            ct = r.headers.get("Content-Type", "image/jpeg").split(";")[0].strip()
-            return f"data:{ct};base64,{base64.b64encode(data).decode()}"
-    except Exception:
-        return ""
+    return fetch_data_uri(url)
 
 
 def _file_to_data_uri(path: Path) -> str:

@@ -115,7 +115,15 @@ ces 4 URLs.
 
 ## Covers des chansons
 
-Politique décidée : **API Spotify en principal, images Apple Music en fallback** (elles ont les bonnes versions). Attention aux multi-versions : prendre la cover de la version principale de la chanson. Cache : `db/discography/track_cover_cache.json`.
+Politique décidée : **API Spotify en principal, images Apple Music en fallback** (elles ont les bonnes versions). Attention aux multi-versions : prendre la cover de la version principale de la chanson. Cache d'URL : `db/discography/track_cover_cache.json` (résolution track_id → URL, `comp/discography.get_album_cover`).
+
+### Fetch d'image résilient — `comp/img_fetch.py` (obligatoire, ne pas dupliquer)
+
+Tous les générateurs embarquent la cover en la téléchargeant au moment du rendu et en l'inline en data-URI. **Toujours passer par `comp.img_fetch.fetch_data_uri(url)`** (ou `tables_image.url_to_data_uri` / `download_as_data_uri` qui y délèguent). Ne JAMAIS recopier une petite fonction `_url_to_data_uri` locale avec juste un cache mémoire — c'est ce qui a causé les covers manquantes (un seul timeout réseau → `except` → `""` → placeholder vide, alors que les autres covers du même run passaient : *The Fate of Ophelia* 2026-08-27 charts, *Speak Now (TV)* 2026-08-26 album update).
+
+`fetch_data_uri` : cache mémoire → **cache disque persistant** (`db/discography/.image_cache/`, gitignored, 1 fichier/URL) → download **3 tentatives** + fallback sur les autres tailles CDN Spotify. Une cover fetchée une fois avec succès n'est jamais re-téléchargée → un coup de mou réseau ultérieur ne peut plus la vider. Les échecs ne sont pas mis en cache disque.
+
+Générateurs déjà migrés : `comp/tables_image.py` (→ global charts, apple music, spotlight, streams/albums image, best_day_since, overtakes, debut…), `generate_album_update_image.py`, `generate_card_images.py`. Copies privées restantes (à migrer si elles montrent le même bug de cover vide) : `generate_country_card_images.py` (apple music), `generate_artist_chart_image.py`, `billboard/swift_top_100_image.py` (celui-ci a une sémantique de placeholder SVG propre).
 
 ## Daily négatif (`--admin`, `estimated_reason=admin_override`)
 

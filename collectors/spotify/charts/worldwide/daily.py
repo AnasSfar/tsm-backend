@@ -1995,6 +1995,22 @@ def main() -> int:
         action="store_true",
         help="Historical data-only mode: no latest write, no R2, no git commit, no total_days store write.",
     )
+    parser.add_argument(
+        "--regions",
+        nargs="+",
+        metavar="CODE",
+        help=(
+            "Restrict collection to these region codes (e.g. global us gb). Every other "
+            "discovered region is skipped. Regions already present in the date's snapshot "
+            "are merged back untouched, so this can fill a snapshot region by region."
+        ),
+    )
+    parser.add_argument(
+        "--exclude-regions",
+        nargs="+",
+        metavar="CODE",
+        help="Collect every discovered region except these codes.",
+    )
     args = parser.parse_args()
 
     if args.dates or args.dates_file or args.backfill_from or args.backfill_to:
@@ -2052,6 +2068,10 @@ def main() -> int:
                     sys.argv.append("--force")
                 if args.backfill_mode:
                     sys.argv.append("--backfill-mode")
+                if args.regions:
+                    sys.argv += ["--regions", *args.regions]
+                if args.exclude_regions:
+                    sys.argv += ["--exclude-regions", *args.exclude_regions]
                 try:
                     rc = main()
                 except Exception as exc:
@@ -2105,22 +2125,55 @@ def main() -> int:
             if t:
                 tokens.append(t)
                 print(f"[INFO] Token supplémentaire chargé depuis {sf.name}")
+    if args.regions:
+        wanted = {code.strip().lower() for code in args.regions if code.strip()}
+        # Keep explicitly requested codes even if region discovery missed one
+        # (discovery is flaky; REQUIRED_REGIONS already covers the known ~68).
+        for code in wanted:
+            regions.setdefault(code, code.upper())
+        regions = {k: v for k, v in regions.items() if k in wanted}
+    if args.exclude_regions:
+        drop = {code.strip().lower() for code in args.exclude_regions if code.strip()}
+        regions = {k: v for k, v in regions.items() if k not in drop}
+    if not regions:
+        print("[ERROR] No regions left after --regions/--exclude-regions filter")
+        return 1
+    if args.regions or args.exclude_regions:
+        print(f"[INFO] Region filter active -> {len(regions)} region(s): {', '.join(sorted(regions))}")
     print(f"[INFO] {len(tokens)} token(s) disponible(s). {len(regions)} regions to fetch.")
 
 
-    # Pré-skip des pays déjà présents pour cette date (sauf si --force)
+    # Pré-skip des pays déjà présents pour cette date (sauf si --force).
+    # Cas normal (run du jour) : on lit le pointeur "latest" charts_worldwide.json.
+    # Avec un filtre de régions (--regions/--exclude-regions), on lit à la place le
+    # snapshot daté sur disque et on merge en retour les régions hors périmètre —
+    # même sous --force, qui ne doit alors ré-fetcher QUE les régions filtrées,
+    # jamais écraser tout le snapshot daté avec un sous-ensemble.
+    region_filter_active = bool(args.regions or args.exclude_regions)
     already_done: set[str] = set()
     existing_by_track: dict[str, list[dict]] = {}
-    if not args.force and OUTPUT_PATH.exists():
+    existing_skipped_regions: list[str] = []
+    if region_filter_active:
+        existing_path = _worldwide_history_path(chart_date)
+        if not existing_path.exists():
+            existing_path = legacy_spotify_chart_dir("worldwide", chart_date) / f"ts_worldwide_{chart_date}.json"
+    else:
+        existing_path = OUTPUT_PATH if not args.force else None
+    if existing_path is not None and existing_path.exists():
         try:
-            with open(OUTPUT_PATH, encoding="utf-8-sig") as f:
+            with open(existing_path, encoding="utf-8-sig") as f:
                 data = json.load(f)
             if data.get("date") == chart_date and "by_track" in data:
                 existing_by_track = data["by_track"]
+                existing_skipped_regions = list(data.get("skipped_regions") or [])
                 for entries in data["by_track"].values():
                     for entry in entries:
                         if "country" in entry:
                             already_done.add(entry["country"])
+            # Under a region filter, force means "re-fetch the targeted regions":
+            # drop them from already_done so they land back in regions_to_fetch.
+            if args.force and region_filter_active:
+                already_done -= set(regions)
             if already_done:
                 print(f"[INFO] Skipping {len(already_done)} regions already present for {chart_date}")
         except Exception as e:
@@ -2379,10 +2432,17 @@ def main() -> int:
         except Exception as exc:
             print(f"[WARN] Could not load total_days store: {exc}")
 
+    fetched_regions = set(by_region)
     for track_id, entries in by_track.items():
         prev_entries = prev_by_track.get(track_id, [])
         prev_by_country = {e["country"]: e for e in prev_entries}
         for entry in entries:
+            # Under a region filter, entries merged back from the existing
+            # snapshot keep their stored stream_change — don't null it out just
+            # because this run only targeted other regions and the prev-day
+            # snapshot may not be filled yet.
+            if region_filter_active and entry["country"] not in fetched_regions:
+                continue
             prev = prev_by_country.get(entry["country"])
             prev_streams = prev.get("streams") if prev else None
             curr_streams = entry.get("streams")
@@ -2425,9 +2485,15 @@ def main() -> int:
         print(f"[WARN] {len(unresolved)} unresolved appearances ({len(names)} unique songs): "
               + ", ".join(sorted(names)[:5]) + ("…" if len(names) > 5 else ""))
 
+    # Under a region filter, carry forward the previous run's skipped_regions
+    # (minus any we just resolved) so the "still to retry" marker is not lost
+    # when only a subset of regions was touched this run.
+    effective_skipped = set(skipped_regions)
+    if region_filter_active and existing_skipped_regions:
+        effective_skipped |= {r for r in existing_skipped_regions if r not in by_region}
     output = {"date": chart_date, "by_track": by_track}
-    if skipped_regions:
-        output["skipped_regions"] = skipped_regions
+    if effective_skipped:
+        output["skipped_regions"] = sorted(effective_skipped)
 
     per_date_path = _worldwide_history_path(chart_date)
     per_date_path.parent.mkdir(parents=True, exist_ok=True)

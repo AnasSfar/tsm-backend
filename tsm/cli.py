@@ -32,6 +32,15 @@ from tsm.terminal_log import TerminalLog, terminal_log_path
 
 def _run(script: Path, args: list[str]) -> int:
     cmd = [sys.executable, "-u", str(script), *args]
+    return _run_cmd(cmd)
+
+
+def _run_module(module: str, args: list[str]) -> int:
+    cmd = [sys.executable, "-u", "-m", module, *args]
+    return _run_cmd(cmd)
+
+
+def _run_cmd(cmd: list[str]) -> int:
     print("$ " + " ".join(cmd))
     env = os.environ.copy()
     env["PYTHONUNBUFFERED"] = "1"
@@ -101,11 +110,10 @@ def collect_deezer(args: argparse.Namespace, passthrough: list[str]) -> int:
 
 
 def collect_youtube(args: argparse.Namespace, passthrough: list[str]) -> int:
-    script = REPO_ROOT / "collectors" / "youtube" / "update_youtube.py"
     forwarded = _ensure_no_conflicting_post_flags(passthrough, args.no_post, False)
     if args.date:
         forwarded.extend(["--date", args.date])
-    return _run(script, forwarded)
+    return _run_module("collectors.youtube.update_youtube", forwarded)
 
 
 def daily(args: argparse.Namespace, passthrough: list[str]) -> int:

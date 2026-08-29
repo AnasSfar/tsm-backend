@@ -629,8 +629,15 @@ def best_day_since_for_track(
     min_days: int = DEFAULT_MIN_DAYS,
     min_pct_change: float | None = None,
     combined: bool = False,
+    keep_year_record: bool = False,
 ) -> dict | None:
-    """Return best-day-since data for one track."""
+    """Return best-day-since data for one track.
+
+    ``keep_year_record``: a row flagged ``is_biggest_day_of_year`` is returned
+    even when it would fail ``passes_filters`` (e.g. its ``days_since`` gap is
+    shorter than ``min_days``). Biggest day of the year is always postable
+    (owner decision 2026-08-29).
+    """
     base_tracks = load_tracks(include_extras=False)
     all_tracks = load_tracks(include_extras=True)
     track = base_tracks.get(track_id) or all_tracks.get(track_id)
@@ -651,7 +658,15 @@ def best_day_since_for_track(
             return None
         row = compute_best_day_since(track, points, date.fromisoformat(target_date))
 
-    if not row or not passes_filters(row, min_days=min_days, min_pct_change=min_pct_change):
+    if not row:
+        return None
+    if (
+        keep_year_record
+        and row.get("is_biggest_day_of_year")
+        and row.get("kind") in ("since", "best_ever")
+    ):
+        return row
+    if not passes_filters(row, min_days=min_days, min_pct_change=min_pct_change):
         return None
     return row
 

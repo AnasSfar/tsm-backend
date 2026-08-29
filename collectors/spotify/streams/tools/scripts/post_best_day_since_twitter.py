@@ -445,10 +445,13 @@ def _pick_rows(
     rows.sort(key=_song_post_sort_key, reverse=True)
     counts = dict(album_post_counts or {})
 
-    # Priority rows sort first, but the daily song-post limit remains absolute.
+    # Priority rows sort first. The daily song-post limit is absolute for
+    # normal rows, but a biggest day of the year is never dropped for it.
     picked: list[dict] = []
+    capped_picked = 0
     for row in rows:
         is_priority = _is_priority_best_day_since(row)
+        is_unconditional = _is_unconditional_best_day(row)
         album = _album_key(row.get("album"))
         if not is_priority and album and counts.get(album, 0) >= max_per_album:
             print(
@@ -456,11 +459,13 @@ def _pick_rows(
                 f"already {max_per_album} best-day song post(s) for {row.get('album')}."
             )
             continue
+        if not is_unconditional and capped_picked >= limit:
+            continue
         picked.append(row)
+        if not is_unconditional:
+            capped_picked += 1
         if album:
             counts[album] = counts.get(album, 0) + 1
-        if len(picked) >= limit:
-            break
     return picked
 
 
@@ -468,11 +473,21 @@ def _song_post_sort_key(row: dict) -> tuple[int, int, int, int]:
     return (1 if row.get("is_biggest_day_of_year") else 0, *best_day_since.sort_key(row))
 
 
+def _is_unconditional_best_day(row: dict) -> bool:
+    """Biggest day of the year: always gets its own card, posted early, with no
+    per-album / per-era / daily-count cap and no score gate (owner decision
+    2026-08-29). Stronger than the >3-month priority below."""
+    return bool(row.get("is_biggest_day_of_year"))
+
+
 def _is_priority_best_day_since(row: dict) -> bool:
     """A best-day-since gap over PRIORITY_BEST_DAY_SINCE_MIN_DAYS (3 months)
     is rare and newsworthy enough that it must always get a post — it bypasses
     the per-album cap and the daily song-post limit instead of competing with
-    same-day candidates for a capped spot."""
+    same-day candidates for a capped spot. A biggest day of the year is
+    unconditional and always counts as priority too."""
+    if _is_unconditional_best_day(row):
+        return True
     return row.get("kind") == "since" and (row.get("days_since") or 0) >= PRIORITY_BEST_DAY_SINCE_MIN_DAYS
 
 
@@ -798,8 +813,9 @@ def _post_single_track_early(
     """Compute and post one track's best-day-since record immediately, if it
     already qualifies, without waiting for the rest of the day's collection.
 
-    Returns "posted", "skipped" (doesn't qualify yet / missing data, or already
-    posted for this track+date), or "error".
+    Returns "posted", "posted_unconditional" (posted a biggest-day-of-the-year
+    card that bypassed every cap), "skipped" (doesn't qualify yet / missing
+    data, or already posted for this track+date), or "error".
     """
     lock = _track_posted_lock_path(track_id, target_date)
     if lock.exists() and not no_post:
@@ -816,13 +832,19 @@ def _post_single_track_early(
         target_date,
         min_days=min_days,
         combined=False,
+        keep_year_record=True,
     )
     if not row:
         return "skipped"
     is_priority = _is_priority_best_day_since(row)
+    is_unconditional = _is_unconditional_best_day(row)
 
     locked_track_ids = _posted_track_ids_for_date(target_date)
-    if len(locked_track_ids) >= EARLY_BEST_DAY_EXCEPTIONAL_MAX_POSTS and not no_post:
+    if (
+        not is_unconditional
+        and len(locked_track_ids) >= EARLY_BEST_DAY_EXCEPTIONAL_MAX_POSTS
+        and not no_post
+    ):
         print(
             f"[best_day_since_early] Skipping {track_id}: already "
             f"{EARLY_BEST_DAY_EXCEPTIONAL_MAX_POSTS} early best-day song post(s) for {target_date}."
@@ -831,7 +853,7 @@ def _post_single_track_early(
 
     album_counts = _track_album_counts(locked_track_ids, tracks_by_id)
     album = _track_era_label(track)
-    if album and album_counts.get(album, 0) >= EARLY_BEST_DAY_MAX_POSTS_PER_ERA:
+    if not is_unconditional and album and album_counts.get(album, 0) >= EARLY_BEST_DAY_MAX_POSTS_PER_ERA:
         print(
             f"[best_day_since_early] Skipping {track_id}: already "
             f"{EARLY_BEST_DAY_MAX_POSTS_PER_ERA} early best-day post(s) for this album/era "
@@ -850,7 +872,10 @@ def _post_single_track_early(
             f"[best_day_since_early] {track_id} repeated the same best-day-since "
             f"({row['best_day_since']}); using grower tweet format."
         )
-        return _post_grower_for_repeat(row, track, target_date, no_post=no_post)
+        grower_result = _post_grower_for_repeat(row, track, target_date, no_post=no_post)
+        if is_unconditional and grower_result == "posted":
+            return "posted_unconditional"
+        return grower_result
 
     track_ids = row.get("combined_track_ids") or [track_id]
     total_today, total_yesterday, daily_today, daily_yesterday, daily_last_week = (
@@ -868,7 +893,9 @@ def _post_single_track_early(
         )
         return "skipped"
 
-    needs_score = min_score is not None or len(locked_track_ids) >= EARLY_BEST_DAY_STANDARD_MAX_POSTS
+    needs_score = not is_unconditional and (
+        min_score is not None or len(locked_track_ids) >= EARLY_BEST_DAY_STANDARD_MAX_POSTS
+    )
     if needs_score:
         score = score_best_day_since.score_single_best_day_candidate(
             track_id,
@@ -931,7 +958,7 @@ def _post_single_track_early(
     print(f"[best_day_since_early] Image: {image_path}")
 
     if no_post:
-        return "posted"
+        return "posted_unconditional" if is_unconditional else "posted"
 
     if not TWITTER_SESSION.exists():
         print(f"ERROR: Twitter session not found at {TWITTER_SESSION}")
@@ -941,7 +968,7 @@ def _post_single_track_early(
         return "error"
 
     _write_track_lock(track_id, target_date, row)
-    return "posted"
+    return "posted_unconditional" if is_unconditional else "posted"
 
 
 def _pick_album_rows(target_date: str, *, limit: int, min_days: int) -> list[dict]:
@@ -1034,7 +1061,11 @@ def _validated_song_rows_for_post(
     limit: int,
 ) -> list[dict]:
     rows: list[dict] = []
+    capped_count = 0
     for row in candidate_rows:
+        is_unconditional = _is_unconditional_best_day(row)
+        if not is_unconditional and capped_count >= limit:
+            continue
         track = tracks_by_id.get(row["track_id"])
         if not track:
             print(f"[best_day_since_post] Candidate skipped: track missing in discography: {row['title']} [{row['track_id']}].")
@@ -1056,8 +1087,8 @@ def _validated_song_rows_for_post(
         row["_post_daily_yesterday"] = daily_yesterday
         row["_post_daily_last_week"] = daily_last_week
         rows.append(row)
-        if len(rows) >= limit:
-            break
+        if not is_unconditional:
+            capped_count += 1
     return rows
 
 
@@ -1513,6 +1544,8 @@ def main() -> None:
         )
         if result == "posted":
             sys.exit(0)
+        if result == "posted_unconditional":
+            sys.exit(2)
         if result == "skipped":
             sys.exit(3)
         sys.exit(1)

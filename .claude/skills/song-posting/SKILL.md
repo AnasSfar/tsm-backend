@@ -48,6 +48,7 @@ Rules:
 - Keep the chart emoji prefix even when the album emoji is present.
 - Keep existing product wording like `earned its BEST DAY...` when the post is a best-day-since card, but convert dates to the required short format when adding explicit dates.
 - For chart entry/re-entry posts, include exact chart position/streams if the source has them; if missing, do not invent.
+- Any `is_biggest_day_of_year` best-day record is posted unconditionally — its own card, early, with no per-album / per-era / daily cap and no score gate (decision 2026-08-29). Gating detail lives in `data-rules` and `spotify-streams` CONTEXTE; do not re-add a cap for these rows.
 
 ## Validation
 

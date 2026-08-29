@@ -118,7 +118,7 @@ Ne pas supprimer un lock sans verifier quelle etape il protege.
 Priorite de post X (2026-08-28) : `finalize_update._subprocess_env` pose
 `TWITTER_POST_PRIORITY=3` par defaut pour toutes les etapes de post ; les posts
 « priority early » pendant la collecte (debut releases, best-day-since early)
-descendent a `0`, le sweep album lundi/vendredi monte a `4`. Quand charts
+descendent a `0`, le sweep album quotidien (jours de semaine) monte a `4`. Quand charts
 run_all (`TWITTER_POST_PRIORITY=1`) poste en meme temps, ses tweets passent
 devant les etapes streams finalize. Mecanisme + bareme -> skill `data-rules`,
 implementation -> `core/twitter.py::_twitter_account_slot`.
@@ -301,6 +301,72 @@ elles reduisent la marge des posts normaux suivants pour le meme album/jour
 pas besoin de changement : son seuil `ALWAYS_POST_BEST_DAY_SINCE_AFTER_DAYS
 = 60` est deja plus permissif que 90 jours.
 
+## Biggest day of the year = post inconditionnel, en early, sans limite (2026-08-29)
+
+Toute chanson qui decroche un record de daily de l'annee
+(`row["is_biggest_day_of_year"]`, calcule par
+`best_day_since.period_record_flags`) recoit sa card individuelle, postee
+pendant la collecte (priorite 0), en contournant TOUS les caps. Nouveau
+predicat `_is_unconditional_best_day(row)` dans `post_best_day_since_twitter.py` :
+
+- replie dans `_is_priority_best_day_since` (donc traite aussi comme priority
+  partout ou ce dernier est teste).
+- `_post_single_track_early` : `is_unconditional` fait sauter le cap total
+  `EARLY_BEST_DAY_EXCEPTIONAL_MAX_POSTS = 5`, le cap par ere
+  `EARLY_BEST_DAY_MAX_POSTS_PER_ERA = 1`, le cap par album, et le gate de
+  score (`needs_score = not is_unconditional and (...)`). Retourne
+  `"posted_unconditional"` -> **exit code 2** (nouveau ; `main()` mappe 0/2/3/1).
+- `best_day_since.best_day_since_for_track(keep_year_record=True)` : renvoie la
+  row meme si `passes_filters` echoue (ex. `days_since` < `min_days`). Le
+  early lane passe ce flag.
+- `_pick_rows` / `_validated_song_rows_for_post` : les rows unconditional ne
+  comptent pas dans le cap quotidien et ne sont jamais tronquees par `limit`.
+- `finalize_update.ReadyBestDaySincePoster` : `_done()` ne s'arrete plus au
+  cap `max_posts` (scanne tous les tracks surveillES) ; exit 2 traite comme
+  un post normal (spacing + exclude).
+- `update_streams.build_priority_best_day_track_ids` : ajoute les tracks dont
+  la veille est deja a >= `EARLY_BEST_DAY_YEAR_RECORD_WATCH_RATIO` (0.80) du
+  pic de l'annee ET >= `EARLY_BEST_DAY_YEAR_RECORD_MIN_DAILY` (20k), plafonne
+  a `EARLY_BEST_DAY_YEAR_RECORD_WATCH_LIMIT` (50). Watchlist standard passee a
+  `EARLY_BEST_DAY_TRACK_LIMIT = 100`, floor `EARLY_BEST_DAY_WATCHLIST_MIN_DAILY_STREAMS = 20_000`.
+
+Limite connue : un record annuel sur une chanson < 20k/j n'est pas surveille
+en early (pas de spawn subprocess pour lui pendant la collecte) mais reste
+poste individuellement et sans cap dans le batch best-day-since de finalize.
+
+## Score par album pour l'ordre de post (2026-08-29)
+
+`tools/scripts/score_album_update.py` — nouveau module read-only, calque sur
+`score_best_day_since.py` (il reutilise ses helpers `_daily_on`,
+`_rarity_value`, `_grower_value`, `_pct_score`, `_gain_score`,
+`_log_age_score`, `_pct_change`, les bonus `BIGGEST_DAY_OF_YEAR_BONUS` /
+`BEST_EVER_BONUS`).
+
+- Serie daily de l'album = somme par jour des dailies de ses tracks
+  standard-edition (`best_day_since.combine_points`, meme garde de span
+  complet que `compute_album_best_day_since`).
+- Sous-scores (memes poids-esque que le scorer chanson, adaptes) : `age`
+  (`days_since` du best-day album), `daily_abs_gain` (cap 5M),
+  `daily_pct_gain`, `weekly_pct_gain`, `rarity` (MAD sur 90j),
+  `grower` (streak + acceleration). `base_score = somme ponderee * 100`.
+- Bonus : biggest day of the year album (+18), best ever album (+8),
+  majorite de tracks en hausse d-o-d (jusqu'a +6, proportionnel a
+  `(ratio-0.5)*2`), nombre de tracks de l'album avec un best-day record ce
+  jour (jusqu'a +8, log). **Pas de penalite de fraicheur** (tous les albums
+  postent chaque jour, rien a faire tourner).
+- API : `score_albums(names, target: date)` -> liste triee, `rank_albums(names,
+  target_date: str)` -> liste de noms best-first (ne leve jamais). Cache
+  process-local : `_history()`, `_RECORD_IDS_CACHE`, `_SCORE_CACHE`,
+  `_ALBUM_TRACK_IDS_CACHE` — `finalize_update` score les albums plusieurs fois
+  par run (primary / extra / all-albums), le 1er appel paie ~35-40s
+  (`_album_record_track_ids` scanne les ~700 tracks + `load_album_sections`
+  x17), les suivants sont instantanes.
+- Cablage : `finalize_update._rank_albums_for_posting(albums, stats_date)`
+  wrappe `score_albums` avec fallback tri par `_album_daily_total` si ca
+  echoue (l'ordre ne doit jamais bloquer un post). Applique dans
+  `_post_all_albums` (sweep), `_post_album_updates` scope `extra` et `primary`,
+  et la boucle primary de `run_final_update_tasks`.
+
 ## Bug fixe : badge "of the year" invisible dans l'update album (2026-08-22)
 
 `generate_album_update_image.py::_best_day_labels_for_sections` et
@@ -315,6 +381,22 @@ Repere sur "I Knew You Were Trouble." (Red) le 2026-08-20 :
 `is_biggest_day_of_year=True`, `best_day_since=2025-08-30`, poste en card
 mais absent de la table Red. Exclusion supprimee dans les deux fonctions ;
 `passes_filters` (min_days=30 pour un kind="since") reste le seul gate.
+
+## Cover manquante dans l'album update — fix fetch resilient (2026-08-29)
+
+La petite vignette `.hdr-cover` de `generate_album_update_image.py` etait
+telechargee via un `_url_to_data_uri` local (cache memoire seul, 0 retry,
+`except -> ""`). Un seul timeout reseau au moment du rendu -> placeholder vert
+vide (`.hdr-cover-ph`), alors que le visuel d'en-tete (fichier local
+`db/discography/headers/`) s'affichait normalement. Observe : *Speak Now
+(Taylor's Version)* le 2026-08-26.
+
+Fix : `_url_to_data_uri` delegue maintenant a `comp.img_fetch.fetch_data_uri`
+(cache disque persistant `db/discography/.image_cache/` + 3 retries + fallback
+tailles CDN Spotify). Une cover fetchee une fois avec succes n'est plus jamais
+re-telechargee. `load_cover_url` (covers.json -> image_url album) est inchange —
+ce n'etait pas un probleme de resolution d'URL. Detail -> skill `image-gen`
+§ "Fetch d'image resilient".
 
 ## Update album "table dark/light" : Showgirl + reputation (2026-08-27)
 

@@ -26,7 +26,6 @@ import sys
 import unicodedata
 from datetime import date, datetime, timedelta
 from pathlib import Path
-from urllib.request import Request, urlopen
 
 import os
 import tempfile
@@ -66,6 +65,7 @@ WORLDWIDE_JSON = first_existing(WEB_EXPORT_DATA_DIR / "charts_worldwide.json", L
 SONGS_JSON = first_existing(WEB_EXPORT_DATA_DIR / "songs.json", LEGACY_WEBSITE_DATA_DIR / "songs.json")
 from comp.chart_card import render_chart_card  # noqa: E402
 from comp.export_frame import add_export_frame  # noqa: E402
+from comp.img_fetch import fetch_data_uri as _fetch_data_uri  # noqa: E402
 from collectors.twitter.albums import album_emoji as _shared_album_emoji  # noqa: E402
 from collectors.twitter.text import full_charts_update_line  # noqa: E402
 from twitter import post_image_thread as _post_image_thread  # noqa: E402
@@ -365,23 +365,6 @@ def _dominant_album_theme(
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
-_img_cache: dict[str, str] = {}
-
-
-def _spotify_image_variant(url: str, size_marker: str) -> str:
-    return re.sub(r"ab67616d[0-9a-f]{8}", f"ab67616d{size_marker}", url, count=1)
-
-
-def _image_url_candidates(url: str) -> list[str]:
-    candidates = [url]
-    if "scdn.co/image/" in url or "spotifycdn.com/image/" in url:
-        for size_marker in ("0000b273", "00001e02", "00004851", "00001e03"):
-            candidate = _spotify_image_variant(url, size_marker)
-            if candidate not in candidates:
-                candidates.append(candidate)
-    return candidates
-
-
 def _image_url_from_meta(song: dict) -> str:
     for key in ("image_url", "apple_music_image_url", "cover_url", "album_image_url"):
         value = str(song.get(key) or "").strip()
@@ -391,28 +374,13 @@ def _image_url_from_meta(song: dict) -> str:
 
 
 def _url_to_data_uri(url: str) -> str:
+    """Image URL → data URI, via comp.img_fetch (persistent cache + retries +
+    Spotify size fallbacks). Prevents a transient download failure from blanking
+    a cover that has worked before."""
     url = str(url or "").strip()
-    if not url or not url.startswith("http"):
+    if not url.startswith("http"):
         return ""
-    if url in _img_cache:
-        return _img_cache[url]
-    last_exc = None
-    for candidate in _image_url_candidates(url):
-        for _ in range(2):
-            try:
-                req = Request(candidate, headers={"User-Agent": "Mozilla/5.0"})
-                with urlopen(req, timeout=8) as resp:
-                    mime = resp.headers.get_content_type() or "image/jpeg"
-                    data = base64.b64encode(resp.read()).decode()
-                    result = f"data:{mime};base64,{data}"
-                _img_cache[url] = result
-                _img_cache[candidate] = result
-                return result
-            except Exception as exc:
-                last_exc = exc
-    print(f"[WARN] image download failed, using placeholder: {url} ({last_exc})")
-    _img_cache[url] = ""
-    return ""
+    return _fetch_data_uri(url)
 
 
 def _load_json(path: Path) -> object:

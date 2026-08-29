@@ -154,6 +154,33 @@ Options avancees:
   `daily.py --dates-file ... --backfill-mode` (au lieu d'un process par date).
   Ca evite de repayer le cout fixe (imports, Playwright, bearer token,
   decouverte des regions) a chaque date.
+- `--gaps-from-csv [REGION ...]`: calcule les dates pending depuis les dates
+  ABSENTES de `db/charts_history_<region>.csv` (le store durable suivi par git,
+  et ce que le site lit) au lieu de la presence d'un snapshot local — qui sur
+  une machine donnee est souvent tres incomplet (les snapshots ne sont PAS
+  commit, purge/desync frequent). Flag nu = `global` (Taylor charte tous les
+  jours en global, donc "date absente de `charts_history_global.csv`" = "jour
+  jamais collecte worldwide") ; plusieurs codes = union des trous
+  (`--gaps-from-csv global us uk`). **A utiliser pour tout gros rattrapage
+  historique** : sans lui, le wrapper re-collecte des centaines de dates deja
+  presentes dans les CSV/R2. Une date encore dans `done_dates` du state mais
+  toujours absente du CSV (collecte OK, sync qui a echoue) est quand meme
+  skippee — passer `--refetch-done` pour la forcer.
+- `--regions CODE ...` / `--exclude-regions CODE ...`: forwarde a
+  `daily.py`. Fill cible region par region (ex. `--regions fr` sur ~2400 dates
+  = 1 region x N dates au lieu de 68 x N). Sous filtre, `daily.py` relit le
+  snapshot date existant et merge en retour les regions hors perimetre — donc
+  jamais de perte, meme avec le `--force` que le wrapper passe par defaut (il
+  ne ré-fetch alors QUE les regions ciblees). NE PAS lancer deux workers avec
+  `--regions` sur des plages de dates qui se recouvrent : ils ecriraient le
+  meme fichier snapshot date en concurrence (read-modify-write race). Le
+  decoupage par chunks de dates du wrapper garantit deja des fichiers disjoints
+  par worker tant qu'on ne force pas un recouvrement.
+- `--request-interval` (defaut 1.0) / `--concurrency` (defaut 8) /
+  `--fetch-max-attempts` (defaut 8) : reglage du debit et de la robustesse.
+  Detail + pieges -> section "Optimisation sans perte de data" plus bas. En
+  bref : `--request-interval` est le vrai levier de vitesse (pacer global),
+  `--fetch-max-attempts` borne evite le hang "lecture infinie".
 - `--no-sync`: collecter les snapshots sans lancer les rebuild/sync finaux.
 - `--limit`: limiter le nombre de dates traitees dans un run (applique avant
   le decoupage en chunks).
@@ -309,26 +336,110 @@ Pipeline final du script de backfill, sauf `--no-sync`:
 Le backfill est couteux parce que chaque date doit interroger les regions
 Spotify exactes. `scripts/backfill_spotify_charts_history.py` regroupe deja
 les dates en chunks (un process worker par chunk, pas par date — voir
-"Backfill historique" plus haut). Les gains surs restants:
+"Backfill historique" plus haut).
 
-- Monter prudemment `SPOTIFY_WORLDWIDE_SEMAPHORE` pour fetch plus de regions en
-  parallele au sein d'une meme date.
-- Utiliser `--no-sync` sur plusieurs chunks, puis lancer une seule passe finale
-  sans `--no-sync`.
-- Ajouter de vraies sessions Spotify supplementaires si on veut plus de
-  workers en parallele (`--workers` est plafonne par
-  `len(spotify_session*.json)`). Copier le meme fichier de session ne compte
-  pas comme une vraie session independante.
+**Le vrai plafond de debit = le `RequestPacer` global de `daily.py`.** Chaque
+process worker serialise TOUTES ses requetes a une toutes les
+`SPOTIFY_WORLDWIDE_REQUEST_INTERVAL_SECONDS` (peu importe le semaphore, qui ne
+regle que le nombre "en vol"). Avec le defaut historique `2.0s` et ~68 regions
+par date : ~2,5 min/date/worker minimum -> un backfill de 650 dates a 2 workers
+= 12h+. Pieges observes ("ca n'affiche plus rien", "pas fluide") :
 
-Exemple:
+- semaphore effectif `1` : l'ancien wrapper posait
+  `SPOTIFY_WORLDWIDE_SEMAPHORE = SPOTIFY_WORLDWIDE_TOTAL_CONCURRENCY // workers`,
+  avec `TOTAL_CONCURRENCY` defaut `1` -> `1//2 = 1`. Regions fetchees une par
+  une. **Corrige** : `--concurrency` (defaut 8).
+- `FETCH_MAX_ATTEMPTS = 0` (illimite) : le wrapper direct ne le fixait pas ->
+  une region coincee en 429/WARP retente indefiniment (pause `RATE_LIMIT_MIN`
+  = 20s entre essais), zero progres, quasi zero log = "lecture infinie".
+  **Corrige** : le wrapper fixe `--fetch-max-attempts` (defaut 8) ; au-dela la
+  region est omise du snapshot (pas de stream invente), loguee, retentable.
+- `SPOTIFY_WORLDWIDE_SEMAPHORE` positionne a la main dans le shell **ne sert a
+  rien** via ce wrapper : `_run_chunk` l'ecrase. Passer par `--concurrency`.
+
+Leviers surs :
+
+- `--request-interval 1.0` (defaut) au lieu de `2.0` -> 2x plus rapide. Baisser
+  vers `0.5`-`0.7` si pas de 429 ; **remonter vers `2.0` des que les logs
+  montrent `429 - pause globale`** (c'est le seul vrai signal de surcharge).
+- `--concurrency 8`-`12`.
+- `--no-sync` sur les gros runs, puis une seule passe finale sans `--no-sync`.
+- Les 31 regions gelees (`DISCONTINUED_REGIONS` dans le wrapper) sont
+  **automatiquement exclues pour toute date > 2019-08-24** (elles n'existent
+  pas cote Spotify apres -> 404 qui consomment un slot de pacer). Elles restent
+  fetchees pour les dates <= cutoff (le wrapper split le lot du worker en deux
+  sous-appels). `--include-discontinued-regions` desactive ce filtre ;
+  `--regions` le court-circuite aussi.
+- Ajouter de vraies sessions Spotify (`--workers` plafonne par
+  `len(spotify_session*.json)`). Copier le meme fichier ne compte pas.
+
+Exemple :
 
 ```powershell
-$env:SPOTIFY_WORLDWIDE_SEMAPHORE="16"
-python .\scripts\backfill_spotify_charts_history.py --start 2020-07-01 --end 2020-07-31 --workers 2 --no-sync
+python .\scripts\backfill_spotify_charts_history.py --gaps-from-csv global `
+  --workers 2 --concurrency 10 --request-interval 0.7 --no-sync
 ```
 
-Si les logs affichent `429 - pause globale`, la concurrence est trop haute.
-Redescendre vers `12` ou `16`.
+### Etat des trous (audit 2026-08-29)
+
+Le store durable = `db/charts_history_<region>.csv` (suivi par git, lu par le
+site). Le dossier `snapshots/spotify_charts/` local n'est PAS commit et souvent
+tres incomplet sur une machine donnee — ne pas s'en servir pour juger de ce
+qu'on "a".
+
+Couverture des CSV a l'audit : `global` 82 % (~650 dates manquantes), `us`
+80 %, `uk` 78 %, `fr` **32 %**. Les trous de `global` sont **5 blocs contigus,
+tous avant 2022** :
+
+- 2018-07-05 -> 2019-04-25 (295 j) — le gros morceau
+- 2020-03-27 -> 2020-07-23 (119 j)
+- 2021-07-07 -> 2021-09-16 (72 j)
+- 2021-05-12 -> 2021-07-01 (51 j)
+- 2020-10-22 -> 2020-11-24 (34 j)
+- + ~50 j de micro-trous
+
+Depuis 2022, `global`/`us`/`uk` sont quasi complets.
+
+**31 regions figees exactement au 2019-08-23/24** (`ar bg bo cl co cr do ec eg
+es fi gr gt hn in is it jp ma mx ni pa pe py ro sv th tr uy vn za`) : c'est un
+ancien backfill TSM qui s'est arrete la, pas Spotify. La collecte reguliere a
+repris plus tard avec seulement ~37 regions "live". Pour les trous <= 2019-08
+elles etaient toutes suivies (sweep complet justifie) ; pour les trous
+2020-2021 elles n'ont jamais ete collectees et Spotify renvoie souvent 404 sur
+ces vieux charts regionaux (skip rapide avec `SPOTIFY_SKIP_LATEST_FALLBACK_ON_404=1`
+que le wrapper pose deja). Ces 31 codes vivent dans
+`backfill_spotify_charts_history.py::DISCONTINUED_REGIONS` (+ cutoff
+`DISCONTINUED_REGION_CUTOFF`), auto-exclus au-dela du cutoff.
+
+### Workflow recommande pour un gros rattrapage worldwide
+
+1. `--gaps-from-csv global` (ou `global us uk`) pour ne cibler que les vraies
+   dates manquantes — pas les ~2500 dates deja OK.
+2. `--workers 2` (plafond = nb de sessions Spotify ; 2 aujourd'hui — ajouter de
+   vraies sessions est le seul vrai levier de parallelisme).
+3. `--request-interval 0.7 --concurrency 10` pour un debit correct (le defaut
+   `daily.py` de 2.0s = ~2,5 min/date). Remonter `--request-interval` vers 2.0
+   des le premier `429 - pause globale`.
+4. Les 31 regions gelees sont auto-exclues au-dela du 2019-08-24 (rien a
+   passer ; le `[PLAN]` l'affiche).
+5. `--no-sync` sur les gros runs, puis une passe finale sans `--no-sync`
+   (+ `--upload-r2` si la prod doit refleter le backfill).
+6. `fr` (32 %) : chantier separe, `--gaps-from-csv fr --regions fr` (1 region x
+   beaucoup de dates, pas un sweep 68 regions).
+
+Reordonner la boucle "par region au lieu de par date" ne reduit PAS le nombre
+de requetes (`regions x dates`, invariant) ni le debit (pacer global). Ce qui
+fait gagner : reduire le jeu de dates (`--gaps-from-csv`), reduire le jeu de
+regions quand c'est cible (`--regions`/`--exclude-regions`), baisser
+`--request-interval`, plus de sessions.
+
+```powershell
+python .\scripts\backfill_spotify_charts_history.py --gaps-from-csv global `
+  --workers 2 --concurrency 10 --request-interval 0.7 --no-sync
+# puis, une fois tous les chunks OK :
+python .\scripts\backfill_spotify_charts_history.py --gaps-from-csv global `
+  --workers 2 --concurrency 10 --request-interval 0.7
+```
 
 ## worldwide/
 
@@ -366,6 +477,15 @@ Options importantes:
 - `--no-post`
 - `--force`
 - `--backfill-mode`
+- `--regions CODE ...` / `--exclude-regions CODE ...` : restreint/exclut la
+  liste de pays fetchee. Sous filtre, le snapshot date existant
+  (`ts_worldwide_<date>.json`, fallback legacy) est relu et les regions hors
+  perimetre sont mergees en retour intactes (`existing_by_track` +
+  `already_done`), y compris sous `--force` — qui ne veut alors dire que
+  "re-fetch les regions ciblees", jamais "ecrase tout le snapshot avec un
+  sous-ensemble". `skipped_regions` de l'ancien run est aussi conserve (moins
+  les regions resolues ce run). Permet de remplir un snapshot region par
+  region. (Sans filtre, `--force` ignore le snapshot existant comme avant.)
 - `--post-priority-region global|fr|us`
 - `--post-priority-global-new`
 - `--post-multi-song-regions`
@@ -754,6 +874,15 @@ ne marche, la collecte stricte reste en erreur; via run_all, elle reste
 `pending` sans inventer de rows ni bloquer songs/artists.
 
 ## Cards et images
+
+**Covers (2026-08-29) :** toute cover est téléchargée au rendu via
+`comp.img_fetch.fetch_data_uri` (cache disque persistant `db/discography/.image_cache/`
++ 3 retries + fallback tailles CDN Spotify). `generate_chart_image.py` (via
+`tables_image.url_to_data_uri`) et `generate_card_images.py` y délèguent. Avant
+ce fix, un seul timeout réseau vidait silencieusement UNE cover du run (ex.
+*The Fate of Ophelia* absent du `global/chart_image.png` du 2026-08-27). Ne pas
+réintroduire de `_url_to_data_uri` local à cache mémoire seul. Détail → skill
+`image-gen` § "Fetch d'image résilient".
 
 Worldwide cards:
 
