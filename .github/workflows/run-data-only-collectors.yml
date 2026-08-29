@@ -21,14 +21,13 @@ on:
         required: true
         default: true
         type: boolean
-  schedule:
-    # GitHub's scheduled trigger is delayed at the top of the hour and drops
-    # runs under load, so we fire often and let scripts/ci_data_collector_gate.py
-    # turn every run that isn't needed into a ~10s no-op:
-    #   - Apple Music runs only when the current Europe/Paris 2h snapshot slot
-    #     is still missing on R2 (3 firings/hour => ~3 chances per slot).
-    #   - YouTube runs once per America/New_York day, from 00:30 local onwards.
-    - cron: "9,29,49 * * * *"
+  # No schedule: trigger. Reverted 2026-08-29 to the local Windows Task
+  # Scheduler ("TSM Apple Music Every 4 Hours", "TSM YouTube Videos Daily").
+  # This workflow is kept manual-only (workflow_dispatch) as a catch-up escape
+  # hatch when the PC is off; the workflow is also disabled on the GitHub side
+  # so it can never race the local run on the same R2 keys. See REPO_CONTEXT.md
+  # section 12. GitHub's schedule: trigger was too unreliable for a 2h cadence
+  # (delayed at the top of the hour, drops runs under load).
 
 concurrency:
   group: run-data-only-collectors

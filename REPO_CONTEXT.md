@@ -36,7 +36,7 @@ tsm-backend/
 ├── dev/                    ← scripts ad-hoc de debug/vérification (jetables)
 ├── docs/                   ← runbook.md + data-layout-audit.md + apple-music-script-context.md
 ├── website/                ← ⚠️ site statique LEGACY — INTERDIT sauf demande explicite
-├── .github/workflows/      ← Spotify streams/charts en local ; Apple Music + YouTube via run-data-only-collectors.yml (GitHub Actions, cron gaté)
+├── .github/workflows/      ← workflows GitHub (peu utilisés : tout tourne en local ; run-data-only-collectors.yml = escape hatch manuel Apple Music/YouTube)
 ├── .claude/skills/         ← skills Claude Code (tsm-map, pipeline-ops, data-rules, image-gen, deploy, admin-work, style-rules, collector-apple-music, collector-deezer)
 ├── run_daily.bat           ← launcher : python -m tsm daily
 ├── run_all_charts.bat      ← launcher : python -m tsm collect charts
@@ -342,7 +342,7 @@ Avant tout travail ici : charger le skill `scripts-maintenance` (ordre du workfl
 | `sync_apple_music_snapshots_from_r2.py` | **Sens inverse** de `upload_ap_r2.py` : reconstruit les CSV quotidiens locaux `snapshots/apple_music_charts/YYYY/MM/YYYY-MM-DD/apple_music_{global,country_charts,genre_charts,ts_top_songs}.csv` depuis `apple-music/snapshots/{timestamp}.json` sur R2 (jamais supprimé, historique complet). Nécessaire depuis le passage d'Apple Music au VPS OVH (2026-07-30, voir § 12) : la machine locale qui fait tourner `swift_top_100.py` n'a plus aucune écriture Apple Music locale, donc son historique diverge silencieusement de R2 (incident 2026-08-09, voir piège `collector-billboard/CONTEXTE.md`). Dry-run par défaut (liste ce qui serait écrit), `--apply` pour écrire ; `--start`/`--end` (défaut : lendemain du dernier jour local détecté → aujourd'hui) ; `--force` pour écraser un jour déjà présent localement |
 | `prune_apple_music_snapshots.py` | Rétention snapshots Apple Music : garde le dernier snapshot par jour passé, lignes retirées archivées en `.csv.gz` dans `_pruned_archive/` (dry-run par défaut). `--apply`, `--since`, `--no-archive` |
 | `prune_apple_music_images.py` | Supprime les objets R2 orphelins de `images/apple-music/` (adressés par `md5(url CDN Apple)`, non référencés par le CSV Apple Music courant — voir skill `scripts-maintenance` § "R2 : données pérennes vs cache"). Dry-run par défaut, `--apply` pour supprimer, manifeste local des clés supprimées sauf `--no-archive`, `--bucket` |
-| `ci_data_collector_gate.py` | **CI seulement** (`run-data-only-collectors.yml`). Décide `apple_music`/`youtube`/`youtube_commit` (→ `$GITHUB_OUTPUT`) : sur `workflow_dispatch` les inputs gagnent ; sur `schedule`, Apple Music = true si le slot snapshot 2h Europe/Paris courant (import `run_apple_music.build_scraped_at`) est > au dernier `scraped_at` de `apple-music/db/apple_music_global.csv` sur R2, YouTube = true si pas de ligne du jour `America/New_York` dans `db/youtube_views_history.csv` et heure locale ≥ 00:30. Existe parce que le `schedule:` GitHub est non fiable : cron fréquent + gate = no-op ~10 s sauf quand une collecte est réellement due |
+| `ci_data_collector_gate.py` | **CI seulement**, utilisé par le `workflow_dispatch` de `run-data-only-collectors.yml` (escape hatch manuel). Décide `apple_music`/`youtube`/`youtube_commit` (→ `$GITHUB_OUTPUT`) : sur `workflow_dispatch` les inputs `collector`/`commit_youtube` gagnent. Contient aussi une logique de fraîcheur (slot snapshot 2h Europe/Paris manquant sur R2 ; ligne YouTube du jour `America/New_York` absente) datant de la tentative cron 2026-08-28→29, abandonnée |
 | `chartr2.py` | Upload R2 des charts |
 | `build_spotify_chart_discography.py` | Precalcule le payload "History view" de Spotify Charts (`runtime/exports/web/site/data/charts_discography/{region}.json`, un par region/pays deja vu — global/fr/us/uk + tout pays worldwide), lu par `tsm-frontend/api/routes/charts.py::load_charts_discography`. Agrege `db/charts_history_{global,fr,us,uk}.csv` + tous les snapshots `worldwide/.../ts_worldwide_*.json` par track_id : `last_*`, `peak_rank`, `peak_streams`, `total_days`, et depuis 2026-08-26 `longest_streak`/`longest_streak_active` (plus long streak consecutif jamais atteint sur ce chart, actif si le streak courant l'egale encore). Depuis 2026-08-28 : `days_at_peak` (nombre de jours OBSERVES exactement au `peak_rank` — minorant, 0 = non observe) et `current_streak` (streak courant, 0 si la chanson ne charte plus a la derniere date). Ecrit aussi `{region}_previous.json` (meme agregation en excluant la derniere date chartee de chaque region/pays — baseline stable pour le mouvement de rang du History view) et `peaks_by_track.json` (lookup a plat `"<track_id>|<country>" -> {peak_rank, peak_streams, peak_streams_date, days_at_peak, total_days, current_streak, longest_streak, longest_streak_active}`, consomme par `charts.py` pour enrichir les lignes du chart worldwide "Overall" — `peak_streams`/`days_at_peak` absents du snapshot brut). `--regions` fait un rebuild partiel qui MERGE dans le `peaks_by_track.json` existant. Appele automatiquement par `run_all_charts.py` (defaut : tout ; `scripts/r2.py` uploade tout `charts_discography/*.json`) |
 | `fetch_issues.py` | Récupère les signalements du site depuis R2. `--save`, `--images`, `--delete` |
@@ -421,7 +421,7 @@ Statut : migration Phase 1 appliquée le 2026-07-29 (voir `data/schema_migration
 | `README.md` / `README_FULL.md` / `CONTRIBUTING.md` / `AGENTS.md` / `CLAUDE.md` | Docs générales / instructions IA |
 | `DEPLOYMENT_AUDIT.md`, `GITHUB_SECRETS_SETUP.md`, `add_github_secrets.py` | Setup GitHub Actions (secrets) |
 | `setup.py`, `requirements.txt`, `.python-version` | Packaging/deps Python |
-| `.github/workflows/` | `run-data-only-collectors.yml` : cron fréquent `9,29,49 * * * *` + `scripts/ci_data_collector_gate.py` qui gate — Apple Music data-only si le slot snapshot 2h Europe/Paris courant manque sur R2, YouTube data-only 1×/jour `America/New_York` (dès 00:30 local), les autres firings sont des no-ops ~10s. `concurrency: run-data-only-collectors`. `run-all-charts.yml`, `update-streams.yml`, `run-apple-music.yml` (tous `disabled` côté GitHub), `check-r2-storage.yml`, `keepalive.yml` restent séparés |
+| `.github/workflows/` | Tous `disabled` côté GitHub, `workflow_dispatch` manuel seulement (collecte = Task Scheduler local). `run-data-only-collectors.yml` = escape hatch Apple Music/YouTube quand le PC est éteint (`scripts/ci_data_collector_gate.py` route les inputs) ; `run-apple-music.yml` legacy équivalent ; `run-all-charts.yml`, `update-streams.yml`, `check-r2-storage.yml`, `keepalive.yml` idem |
 | `.claude/skills/` | Skills Claude Code : `tsm-map`, `pipeline-ops`, `data-rules`, `image-gen`, `deploy`, `admin-work`, `style-rules`, `collector-apple-music` (série « un skill par collecteur » — à charger avant tout travail sur le collecteur correspondant) |
 
 Les `.bat` du Task Scheduler vivent dans **`tsm-frontend/tasks/`** (`run_spotify_streams.bat`, `run_spotify_charts_global.bat`, `run_spotify_charts_fr.bat`, `watch_logs.bat`) et font `cd` vers ce repo.
@@ -437,21 +437,31 @@ Scripts de vérification/debug ponctuels, non maintenus : `adhoc/checks/` (véri
 
 **Ce VPS a été supprimé le 2026-08-17** (coût jugé disproportionné, ~74€/mois
 pour 2 crons légers — voir `OVH.md` section « Décommissionnement »).
-Depuis le 2026-08-28, `collectors/youtube` et `collectors/apple_music`
-tournent via GitHub Actions data-only (`run-data-only-collectors.yml`).
-**Le `schedule:` natif de GitHub est non fiable** (retardé au top de l'heure,
-runs droppés sous charge — constaté 2026-08-29 : 2 runs planifiés sur ~13,
-~1 h de retard). Depuis le 2026-08-29 le workflow fire donc un cron fréquent
-(`9,29,49 * * * *`) et `scripts/ci_data_collector_gate.py` décide quoi lancer :
-Apple Music si le slot snapshot 2h Europe/Paris courant manque encore sur R2
-(`apple-music/db/apple_music_global.csv`), YouTube 1×/jour `America/New_York`
-dès 00:30 local (le collector re-garde via `date_already_collected`). Tout
-autre firing = no-op ~10 s. Ne jamais remettre de test d'heure pile dans le
-workflow. Le workflow
-GitHub Actions legacy `run-apple-music.yml` reste manuel uniquement
-(`workflow_dispatch`) pour éviter une race avec le nouveau job data-only.
-Section conservée ci-dessous pour l'historique du setup, au cas où l'option
-VPS reviendrait (viser un flavor plus petit que `b3-16` cette fois).
+**État actuel (2026-08-29) : `collectors/youtube` et `collectors/apple_music`
+tournent en local via le Planificateur de tâches Windows** (`TSM Apple Music
+Every 4 Hours` : `run_apple_music_hidden.vbs` → `run_apple_music.bat`, repeat
+2h ; `TSM YouTube Videos Daily` : `run_youtube.bat`, 06:05 Europe/Paris).
+
+Bascule GitHub Actions tentée le 2026-08-28 (`run-data-only-collectors.yml`,
+cron fréquent + `scripts/ci_data_collector_gate.py`) puis **abandonnée le
+2026-08-29** : le `schedule:` natif de GitHub est trop peu fiable pour une
+cadence 2h (retardé au top de l'heure, runs droppés sous charge — constaté :
+2 runs planifiés sur ~13 attendus, ~1 h de retard). Les workflows
+`run-data-only-collectors.yml` et `run-apple-music.yml` sont désormais
+`disabled` côté GitHub + `workflow_dispatch` manuel seulement, gardés comme
+escape hatch de rattrapage quand le PC est éteint (le gate route les inputs
+`collector`/`commit_youtube`). Si un jour manque, lancer une fois le workflow
+en manuel ou relancer la tâche locale.
+
+Note : si un futur besoin de rendu PNG apparaît dans `run-data-only-collectors.yml`,
+il faut y ajouter `playwright` + `playwright install chromium --with-deps` +
+Pillow (le job n'installe qu'un jeu de deps minimal ; `run-apple-music.yml`
+fait déjà le setup complet). Sinon `--notify-global-only` suffit avec les deps
+minimales depuis que `generate_snapshot_images.py` importe `tables_image` en
+lazy.
+
+Section VPS conservée ci-dessous pour l'historique, au cas où l'option
+reviendrait (viser un flavor plus petit que `b3-16` cette fois).
 
 Depuis le 2026-07-30 (et jusqu'au 2026-08-17), `collectors/youtube` et
 `collectors/apple_music` ont tourné en prod sur une instance OVH Public

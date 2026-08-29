@@ -15,21 +15,18 @@ Le pipeline ne poste pas sur X. `--no-post` existe dans le runner mais n'est pas
 un controle de publication Twitter. Ne fait jamais de commit/push git (seul
 l'upload R2 distribue la donnee).
 
-Scheduler : depuis le 2026-08-29, prod tourne via **GitHub Actions**
-(`.github/workflows/run-data-only-collectors.yml`, job `data-only`), pas en
-local. Le `schedule:` natif de GitHub etant non fiable (retarde au top de
-l'heure, runs droppes sous charge), le workflow fire un cron frequent
-(`9,29,49 * * * *`) et `scripts/ci_data_collector_gate.py` reduit a un no-op
-(~10s) tout run inutile : Apple Music ne tourne que si le slot snapshot 2h
-Europe/Paris courant (meme arrondi que `run_apple_music.build_scraped_at`,
-importe pour rester synchro) est encore absent de
-`apple-music/db/apple_music_global.csv` sur R2. Un slot manque est
-irrecuperable (charts = etat live), d'ou 3 firings/heure.
-Le workflow legacy `run-apple-music.yml` reste `disabled` cote GitHub +
-`workflow_dispatch` seulement. Historique : Windows Task Scheduler local
-(`TSM Apple Music Every 4 Hours`) jusqu'au 2026-08-28 ; VPS OVH du
-2026-07-30 au 2026-08-17. Detail : `REPO_CONTEXT.md` section « Deploiement
-VPS OVH » et `OVH.md`.
+Scheduler : prod tourne **en local via le Planificateur de taches Windows**
+(`TSM Apple Music Every 4 Hours`, action = `run_apple_music_hidden.vbs` ->
+`run_apple_music.bat`, repeat toutes les 2h). Ni GitHub Actions ni VPS.
+Tente sur GitHub Actions le 2026-08-28 (`run-data-only-collectors.yml` +
+`scripts/ci_data_collector_gate.py`), re-bascule en local le 2026-08-29 :
+le `schedule:` natif de GitHub est trop peu fiable pour une cadence 2h
+(retarde au top de l'heure, runs droppes sous charge). Les workflows
+`run-apple-music.yml` ET `run-data-only-collectors.yml` restent
+`workflow_dispatch` manuel + `disabled` cote GitHub, comme escape hatch de
+rattrapage quand le PC est eteint (utilise `ci_data_collector_gate.py` pour
+router les inputs). Historique VPS OVH (2026-07-30 -> 2026-08-17) :
+`REPO_CONTEXT.md` section « Deploiement VPS OVH » et `OVH.md`.
 
 ## Entrypoint
 
@@ -238,15 +235,13 @@ ici. Seuils/decisions produit → skill `data-rules` § "Home highlights".
   clone) et en appliquant la meme fenetre de 21 jours que
   `tsm-frontend/api/routes/apple_music.py` (`_is_recent_release`) au lieu
   d'un simple test d'appartenance au catalogue.
-- **Bug corrige (2026-08-29) : `--notify-global-only` echouait en CI sur
-  `ModuleNotFoundError: playwright`, et l'echec bloquait l'upload R2**
-  (`run_apple_music.notify_global_update` -> `sys.exit(1)`). Cause : commit
-  "Enable Apple Music global notification" (retrait de `--no-post`) alors que
-  `run-data-only-collectors.yml` n'installe qu'un jeu de deps minimal, et
-  `generate_snapshot_images.py` importait `collectors.comp.tables_image`
-  (playwright + Pillow) au niveau module meme pour le chemin notif-only qui
-  n'envoie qu'un texte ntfy. Corrige en rendant l'import `tables_image` lazy
-  (dans `_rows_html` et `generate()` seulement). Si un futur besoin de rendu
-  PNG apparait dans le workflow data-only, ajouter `playwright` +
-  `playwright install chromium --with-deps` + Pillow aux deps du job (cf.
-  `run-apple-music.yml` qui fait deja ce setup complet).
+- **Bug corrige (2026-08-29) : `--notify-global-only` echouait sur
+  `ModuleNotFoundError: playwright` quand playwright/Pillow ne sont pas
+  installes, et l'echec bloquait l'upload R2**
+  (`run_apple_music.notify_global_update` -> `sys.exit(1)`). Vu sur le
+  workflow `run-data-only-collectors.yml` (deps minimales) apres le retrait
+  de `--no-post` : `generate_snapshot_images.py` importait
+  `collectors.comp.tables_image` (playwright + Pillow) au niveau module meme
+  pour le chemin notif-only qui n'envoie qu'un texte ntfy. Corrige en rendant
+  l'import `tables_image` lazy (dans `_rows_html` et `generate()`). En local
+  le probleme ne se voit pas (venv complet), mais garder l'import lazy.

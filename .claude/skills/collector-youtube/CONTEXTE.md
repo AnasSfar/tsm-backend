@@ -27,24 +27,23 @@ python -m collectors.youtube.update_youtube
 
 Scheduler:
 
-- Depuis le 2026-08-29, prod tourne via **GitHub Actions**
-  (`.github/workflows/run-data-only-collectors.yml`, job `data-only`), plus
-  le PC d'Anas. Le workflow fire un cron fréquent (`9,29,49 * * * *`) et
-  `scripts/ci_data_collector_gate.py` décide : YouTube ne tourne qu'une fois
-  par jour `America/New_York`, à partir de 00:30 local. Le collector
-  lui-même re-garde via `date_already_collected` (double sécurité). Un jour
-  manqué (GitHub qui droppe *tous* les triggers pendant 24h, cas extrême) se
-  rattrape avec `--date AAAA-MM-JJ` — cf. `manual_trusted` /
-  [[tsm-streams-pipeline-ops]].
-- **Ne jamais remettre un garde-fou basé sur l'heure exacte** (`if hour !=
-  "00"`) : GitHub lance les crons avec ~1 h de retard variable, donc un test
-  d'heure pile fait skip le job presque tous les jours (bug introduit puis
-  retiré le 2026-08-29). La fenêtre « après 00:30 ET + ligne du jour
-  absente » est volontairement large.
-- Historique : Planificateur de tâches Windows local jusqu'au 2026-08-28 ;
-  avant ça, `cron` sur un VPS OVH (`06:05` Europe/Paris) du 2026-07-30 au
-  2026-08-17 (VPS décommissionné pour cause de coût). Détail :
-  `REPO_CONTEXT.md` section « Déploiement VPS OVH » et `OVH.md`.
+- Prod tourne via le **Planificateur de tâches Windows local** (tâche `TSM
+  YouTube Videos Daily`, action = `powershell -EncodedCommand` →
+  `collectors/youtube/run_youtube.bat` → `python -m
+  collectors.youtube.videos.update_youtube --commit --no-post`, tous les
+  jours à 06:05 Europe/Paris). Tourne sur le PC d'Anas — PC éteint à
+  l'heure du run = pas de collecte ce jour-là (pas de retry auto ; rattrapage
+  `--date AAAA-MM-JJ`, cf. `manual_trusted` / [[tsm-streams-pipeline-ops]]).
+- Tenté sur GitHub Actions le 2026-08-28 (`run-data-only-collectors.yml`),
+  re-basculé en local le 2026-08-29 : `schedule:` GitHub trop peu fiable. Le
+  workflow reste `workflow_dispatch` manuel + `disabled` côté GitHub, comme
+  escape hatch de rattrapage. `scripts/ci_data_collector_gate.py` y route les
+  inputs. **Ne jamais remettre de garde-fou basé sur l'heure exacte** dans un
+  workflow GitHub (les crons partent avec ~1 h de retard variable → un test
+  d'heure pile fait skip presque tous les jours).
+- Historique : `cron` sur VPS OVH (`06:05` Europe/Paris) du 2026-07-30 au
+  2026-08-17 (VPS décommissionné, coût). Détail : `REPO_CONTEXT.md` section
+  « Déploiement VPS OVH » et `OVH.md`.
 
 Le `.bat` local :
 
