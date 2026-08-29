@@ -234,6 +234,7 @@ def build_title_rows(
         out.append(
             {
                 "date": date,
+                "snapshot_at": _shared_value(rows, "snapshot_at"),
                 "title_key": group["title_key"],
                 "title": group["title"],
                 "video_count": len(rows),

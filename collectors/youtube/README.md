@@ -47,6 +47,8 @@ Environment:
 Output columns:
 
 - `date`
+- `snapshot_at` (exact UTC ISO 8601 timestamp of the run that wrote the row;
+  blank for rows written before 2026-08-29)
 - `video_id`
 - `title`
 - `rank`

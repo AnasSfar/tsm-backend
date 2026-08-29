@@ -72,6 +72,14 @@ JSON legacy/cache:
 Colonnes importantes:
 
 - `date`
+- `snapshot_at` (depuis 2026-08-29) : horodatage UTC ISO 8601 exact du run
+  (pris juste après le batch-fetch des stats). `daily_views` d'une date D =
+  delta entre `snapshot_at(D-1)` et `snapshot_at(D)`. Lignes antérieures =
+  colonne vide (ajout rétro-compatible en tête des `CSV_FIELDNAMES` /
+  `TITLE_CSV_FIELDNAMES`, migration auto du header via
+  `csv_utils._ensure_fieldnames` / `write_title_history`). Le frontend
+  (`api/routes/youtube.py` → `window_start`/`window_end`, rendu par
+  `pages/YouTube.jsx`) l'utilise pour afficher la vraie fenêtre horaire.
 - `video_id`
 - `title`
 - `rank`, `previous_rank`, `rank_change`

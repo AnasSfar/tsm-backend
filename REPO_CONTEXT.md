@@ -305,6 +305,16 @@ Depuis le 2026-08-14, `youtube_title_history.csv` (`daily_views` par titre
 groupé) alimente aussi le scoring TayBoard (`units_youtube`, § 5) —
 voir `collector-billboard/CONTEXTE.md`.
 
+Depuis le 2026-08-29, les deux CSV portent une colonne `snapshot_at` :
+horodatage UTC ISO 8601 exact du run (`datetime.now(timezone.utc)` juste
+après le batch-fetch des stats). `daily_views` d'une date D = delta entre
+`snapshot_at(D-1)` et `snapshot_at(D)` ; `api/routes/youtube.py` (frontend)
+en dérive `window_start`/`window_end` pour afficher la vraie fenêtre horaire
+sur la page YouTube Charts. Colonne ajoutée en tête des
+`CSV_FIELDNAMES`/`TITLE_CSV_FIELDNAMES`, migration du header automatique
+(`csv_utils._ensure_fieldnames` / `write_title_history`) ; lignes historiques
+= `snapshot_at` vide, l'UI masque alors la mention.
+
 ---
 
 ## 7. `collectors/comp/` — composants visuels partagés

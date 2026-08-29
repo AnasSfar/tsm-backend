@@ -56,6 +56,7 @@ API_BASE = "https://www.googleapis.com/youtube/v3"
 
 CSV_FIELDNAMES = [
     "date",
+    "snapshot_at",
     "video_id",
     "title",
     "rank",
@@ -85,6 +86,7 @@ CSV_FIELDNAMES = [
 
 TITLE_CSV_FIELDNAMES = [
     "date",
+    "snapshot_at",
     "title_key",
     "title",
     "rank",

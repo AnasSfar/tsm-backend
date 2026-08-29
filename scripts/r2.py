@@ -15,8 +15,6 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
-from dotenv import load_dotenv
-
 try:
     import boto3
     import botocore.config
@@ -25,7 +23,35 @@ except ImportError:
     boto3 = None
     botocore = None
 
-load_dotenv(str(Path(__file__).resolve().parents[1] / ".env"), override=True)
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def load_repo_dotenv(*, override: bool = True) -> None:
+    env_path = ROOT / ".env"
+    try:
+        from dotenv import load_dotenv
+    except ImportError:
+        if not env_path.exists():
+            return
+        for raw_line in env_path.read_text(encoding="utf-8").splitlines():
+            line = raw_line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            key = key.strip()
+            if key.startswith("export "):
+                key = key[7:].strip()
+            if not key or (not override and key in os.environ):
+                continue
+            value = value.strip()
+            if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
+                value = value[1:-1]
+            os.environ[key] = value
+        return
+    load_dotenv(str(env_path), override=override)
+
+
+load_repo_dotenv(override=True)
 
 
 def sanitize_dead_local_proxy_env() -> None:
@@ -48,7 +74,6 @@ def sanitize_dead_local_proxy_env() -> None:
 
 sanitize_dead_local_proxy_env()
 
-ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "collectors" / "spotify"))
 from core.data_paths import (  # noqa: E402
     LEGACY_WEBSITE_DATA_DIR,
@@ -1055,7 +1080,7 @@ def main() -> int:
 def _r2_ready() -> tuple[bool, str]:
     """Return (ok, skip_reason). Loads .env before checking."""
     try:
-        load_dotenv(str(Path(__file__).resolve().parents[1] / ".env"), override=True)
+        load_repo_dotenv(override=True)
     except Exception:
         pass
     if boto3 is None or botocore is None:

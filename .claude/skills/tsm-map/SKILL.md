@@ -73,6 +73,7 @@ Stockés dans R2 `site_settings.json`, servis/modifiés par `api/routes/site_set
 ## Pièges connus
 - La commande de rebuild graphify du CLAUDE.md **échoue** (module non installé) — ne pas la lancer.
 - PowerShell 5.1 : stderr des exe natifs (vite, git) affiché en `NativeCommandError` = bruit, vérifier le vrai résultat (« ✓ built »).
+- **CSP `img-src` dans `tsm-frontend/vercel.ts`** : header only (pas de meta, pas de code client), donc invisible en dev local — un nouveau host d'images externe (ex. `i.ytimg.com` pour les miniatures YouTube, ajouté 2026-08-29) doit être ajouté à `img-src` sinon le navigateur bloque silencieusement l'image (→ `onError` → fallback logo). Se voit seulement en prod / preview Vercel.
 
 ## Maintenance (obligatoire)
 Si ton changement contredit ou complète cette carte (fichier déplacé, nouveau module, flux modifié), mets à jour cette skill ET `REPO_CONTEXT.md` dans la même session.

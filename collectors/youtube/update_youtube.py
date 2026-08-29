@@ -745,6 +745,11 @@ def main() -> int:
 
     print(f"[INFO] Stats reçues pour {len(stats)}/{total_videos} vidéos\n")
 
+    # Horodatage exact de ce snapshot (UTC). daily_views d'une date D = delta
+    # entre snapshot_at(D-1) et snapshot_at(D) — permet au frontend d'afficher
+    # la fenêtre horaire réelle sur laquelle les vues ont été comptées.
+    snapshot_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
+
     # ------------------------------------------------------------------
     # 5. Calculer daily_views et construire les lignes CSV
     # ------------------------------------------------------------------
@@ -786,6 +791,7 @@ def main() -> int:
         rows.append(
             {
                 "date": today,
+                "snapshot_at": snapshot_at,
                 "video_id": vid_id,
                 "title": stat.get("title") or video_db.get(vid_id, {}).get("title", ""),
                 "rank": "",
