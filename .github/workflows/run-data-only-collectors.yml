@@ -121,7 +121,7 @@ jobs:
         if: ${{ inputs.collector == 'apple-music' || inputs.collector == 'both' || github.event.schedule == '0 */2 * * *' }}
         run: |
           SECONDS=0
-          python -m tsm collect apple-music --no-images --no-post
+          python -m tsm collect apple-music --no-images
           duration=$SECONDS
           if [ -n "${APPLE_MUSIC_COUNTRIES}" ]; then
             scope="${APPLE_MUSIC_COUNTRIES}"
