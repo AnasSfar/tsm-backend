@@ -238,3 +238,15 @@ ici. Seuils/decisions produit → skill `data-rules` § "Home highlights".
   clone) et en appliquant la meme fenetre de 21 jours que
   `tsm-frontend/api/routes/apple_music.py` (`_is_recent_release`) au lieu
   d'un simple test d'appartenance au catalogue.
+- **Bug corrige (2026-08-29) : `--notify-global-only` echouait en CI sur
+  `ModuleNotFoundError: playwright`, et l'echec bloquait l'upload R2**
+  (`run_apple_music.notify_global_update` -> `sys.exit(1)`). Cause : commit
+  "Enable Apple Music global notification" (retrait de `--no-post`) alors que
+  `run-data-only-collectors.yml` n'installe qu'un jeu de deps minimal, et
+  `generate_snapshot_images.py` importait `collectors.comp.tables_image`
+  (playwright + Pillow) au niveau module meme pour le chemin notif-only qui
+  n'envoie qu'un texte ntfy. Corrige en rendant l'import `tables_image` lazy
+  (dans `_rows_html` et `generate()` seulement). Si un futur besoin de rendu
+  PNG apparait dans le workflow data-only, ajouter `playwright` +
+  `playwright install chromium --with-deps` + Pillow aux deps du job (cf.
+  `run-apple-music.yml` qui fait deja ce setup complet).
