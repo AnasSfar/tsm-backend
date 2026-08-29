@@ -23,12 +23,8 @@ on:
         type: boolean
   schedule:
     - cron: "0 */2 * * *"   # Apple Music every 2h; rounds to even Paris hours during CEST
-    - cron: "5 4 * * *"     # YouTube daily, approx. 06:05 Europe/Paris during CEST
-
-concurrency:
-  group: run-data-only-collectors
-  cancel-in-progress: false
-  queue: max
+    - cron: "5 4 * * *"     # YouTube daily guard: 00:05 America/New_York during EDT
+    - cron: "5 5 * * *"     # YouTube daily guard: 00:05 America/New_York during EST
 
 jobs:
   data-only:
@@ -51,6 +47,7 @@ jobs:
       REQUIRE_R2_UPLOAD: "1"
       UPLOAD_TO_R2: "1"
       YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+      YOUTUBE_COLLECTION_TZ: America/New_York
 
     steps:
       - uses: actions/checkout@v4
@@ -115,7 +112,7 @@ jobs:
           printf "### Apple Music history sync\n\n- Duration: %d min %02d sec\n- Range: %s to %s\n\n" "$((duration / 60))" "$((duration % 60))" "$start" "$end" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Configure git identity
-        if: ${{ inputs.collector == 'youtube' || inputs.collector == 'both' || github.event.schedule == '5 4 * * *' }}
+        if: ${{ inputs.collector == 'youtube' || inputs.collector == 'both' || github.event.schedule == '5 4 * * *' || github.event.schedule == '5 5 * * *' }}
         run: |
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
@@ -178,9 +175,22 @@ jobs:
           PY
 
       - name: Run YouTube data-only
-        if: ${{ ((inputs.collector == 'youtube' || inputs.collector == 'both') && inputs.commit_youtube) || github.event.schedule == '5 4 * * *' }}
+        if: ${{ ((inputs.collector == 'youtube' || inputs.collector == 'both') && inputs.commit_youtube) || github.event.schedule == '5 4 * * *' || github.event.schedule == '5 5 * * *' }}
         run: |
           SECONDS=0
+          if [ "${GITHUB_EVENT_NAME}" = "schedule" ]; then
+            local_hour="$(python - <<'PY'
+          from datetime import datetime
+          import os
+          from zoneinfo import ZoneInfo
+          print(datetime.now(ZoneInfo(os.environ["YOUTUBE_COLLECTION_TZ"])).strftime("%H"))
+          PY
+          )"
+            if [ "${local_hour}" != "00" ]; then
+              printf "### YouTube data-only\n\n- Skipped: scheduled UTC trigger is not midnight in America/New_York\n\n" >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+          fi
           python -m tsm collect youtube --no-post --commit
           duration=$SECONDS
           printf "### YouTube data-only\n\n- Duration: %d min %02d sec\n- Commit: yes\n\n" "$((duration / 60))" "$((duration % 60))" >> "$GITHUB_STEP_SUMMARY"

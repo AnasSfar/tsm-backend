@@ -38,6 +38,7 @@ import subprocess
 import sys
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 for _stream in (sys.stdout, sys.stderr):
     try:
@@ -79,6 +80,16 @@ from .core.csv_utils import (
 )
 from .core.git_ops import git_commit_and_push
 from .core.title_groups import build_title_rows, write_title_history
+
+
+def _youtube_collection_date() -> str:
+    tz_name = os.getenv("YOUTUBE_COLLECTION_TZ", "America/New_York")
+    try:
+        tz = ZoneInfo(tz_name)
+    except ZoneInfoNotFoundError:
+        print(f"[WARN] Timezone YouTube inconnue: {tz_name!r}; fallback UTC.")
+        tz = timezone.utc
+    return datetime.now(tz).date().isoformat()
 
 
 def parse_args() -> argparse.Namespace:
@@ -662,7 +673,7 @@ def run_preview() -> int:
 
 def main() -> int:
     args = parse_args()
-    today = args.date or date.today().isoformat()
+    today = args.date or _youtube_collection_date()
 
     if args.preview:
         return run_preview()
