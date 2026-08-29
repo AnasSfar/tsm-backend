@@ -45,9 +45,9 @@ from collectors.spotify.core.data_paths import (  # noqa: E402
     apple_music_charts_dir,
 )
 from collectors.spotify.core.notify import send as notify_send  # noqa: E402
-from collectors.comp.tables_image import (  # noqa: E402
-    url_to_data_uri, build_table_html, render_html_to_png,
-)
+# NB: collectors.comp.tables_image is imported lazily inside the rendering
+# helpers below -- it pulls in playwright / Pillow, which the data-only CI
+# path (--notify-global-only) has no reason to install.
 from core.config import GENRES  # noqa: E402
 
 DISCOGRAPHY_DIR = REPO_ROOT / "db" / "discography"
@@ -297,6 +297,8 @@ def _rows_html(entries: list[dict]) -> str:
             "No Taylor Swift entries currently charting</div></div>"
         )
 
+    from collectors.comp.tables_image import url_to_data_uri
+
     parts: list[str] = []
     for i, entry in enumerate(entries):
         subtitle = f"{entry['artist']} · {entry['album']}" if entry["album"] else entry["artist"]
@@ -389,6 +391,8 @@ def notify_global_for_date(chart_date: str) -> None:
 
 
 def generate(chart_date: str, region: str, genre: str | None, out_dir: Path) -> Path:
+    from collectors.comp.tables_image import build_table_html, render_html_to_png
+
     rows = get_region_rows(chart_date, region, genre)
     prev_rank_fn = make_prev_rank_resolver(chart_date, region, genre)
     entries = _compute_entries(rows, prev_rank_fn, chart_date)
