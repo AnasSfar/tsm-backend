@@ -76,7 +76,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "599w",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "Cruel Summer",
@@ -148,7 +150,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "cc3p",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "Lover",
@@ -218,7 +222,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "auqf",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "The Man",
@@ -288,7 +294,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "wlny",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "The Archer",
@@ -358,7 +366,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "qqvz",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "I Think He Knows",
@@ -428,7 +438,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "vk27",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "Miss Americana & The Heartbreak Prince",
@@ -498,7 +510,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "7oc5",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "Paper Rings",
@@ -568,7 +582,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "1ndn",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "Cornelia Street",
@@ -638,7 +654,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "79xa",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "Death By A Thousand Cuts",
@@ -708,7 +726,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "2ozd",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "London Boy",
@@ -778,7 +798,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "aa9l",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "Soon You'll Get Better (feat. The Chicks)",
@@ -826,7 +848,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "z3zr",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "False God",
@@ -896,7 +920,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ax2y",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "You Need To Calm Down",
@@ -966,7 +992,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "tgcd",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "Afterglow",
@@ -1036,7 +1064,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "t398",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "ME! (feat. Brendon Urie of Panic! At The Disco)",
@@ -1106,7 +1136,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "t35q",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "It's Nice To Have A Friend",
@@ -1151,7 +1183,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "8sjs",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "Daylight",
@@ -1221,7 +1255,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "7c2t",
+          "tsm_album_id": "ksv"
         }
       ]
     },
@@ -1303,7 +1339,9 @@
           "category": "other",
           "display_album": "Lover",
           "tags": [],
-          "chart_extra": false
+          "chart_extra": false,
+          "tsm_song_id": "8lc0",
+          "tsm_album_id": "ksv"
         }
       ]
     },
@@ -1358,7 +1396,9 @@
           "category": "soundtrack",
           "display_album": "Lover",
           "tags": [],
-          "chart_extra": false
+          "chart_extra": false,
+          "tsm_song_id": "9elt",
+          "tsm_album_id": "ksv"
         }
       ]
     },
@@ -1410,7 +1450,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "boe2",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "Lover - First Dance Remix",
@@ -1480,7 +1522,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "auqf",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "Lover - Live From Paris",
@@ -1552,7 +1596,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "live",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "auqf",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "You Need To Calm Down - Clean Bandit Remix",
@@ -1622,7 +1668,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "tgcd",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "You Need To Calm Down - Live From Paris",
@@ -1694,7 +1742,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "live",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "tgcd",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "Cornelia Street - Live From Paris",
@@ -1766,7 +1816,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "live",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "79xa",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "Daylight - Live From Paris",
@@ -1838,7 +1890,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "live",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "7c2t",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "Death By A Thousand Cuts - Live From Paris",
@@ -1910,7 +1964,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "live",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "2ozd",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "The Archer - Live From Paris",
@@ -1982,7 +2038,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "live",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "qqvz",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "The Man - Live From Paris",
@@ -2054,7 +2112,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "live",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "wlny",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "ME! - Live From Paris",
@@ -2123,7 +2183,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "live",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "t35q",
+          "tsm_album_id": "ksv"
         }
       ]
     },
@@ -2202,7 +2264,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "cc3p",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "Cruel Summer - LP Giobbi Remix - Extended Version",
@@ -2272,7 +2336,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "cc3p",
+          "tsm_album_id": "ksv"
         }
       ]
     },
@@ -2354,7 +2420,9 @@
           "role": "extra",
           "extra_type": "live",
           "tags": [],
-          "chart_extra": true
+          "chart_extra": true,
+          "tsm_song_id": "cc3p",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "Soon You’ll Get Better - One World: Together At Home",
@@ -2380,7 +2448,9 @@
           "role": "extra",
           "extra_type": "other",
           "tags": [],
-          "chart_extra": true
+          "chart_extra": true,
+          "tsm_song_id": "txki",
+          "tsm_album_id": "ksv"
         },
         {
           "title": "Me! - Cover",
@@ -2413,7 +2483,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "other",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "6mmr",
+          "tsm_album_id": "ksv"
         }
       ],
       "album": "Lover"

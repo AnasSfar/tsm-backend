@@ -80,7 +80,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "20he",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "champagne problems",
@@ -153,7 +155,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "zzv1",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "gold rush",
@@ -226,7 +230,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "woxq",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "'tis the damn season",
@@ -274,7 +280,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "hl6h",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "tolerate it",
@@ -347,7 +355,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "lho7",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "no body, no crime (feat. HAIM)",
@@ -422,7 +432,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "tyoi",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "happiness",
@@ -495,7 +507,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "oxy6",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "dorothea",
@@ -568,7 +582,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "my92",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "coney island (feat. The National)",
@@ -644,7 +660,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "73fa",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "ivy",
@@ -717,7 +735,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "s2gd",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "cowboy like me",
@@ -790,7 +810,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "z8gr",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "long story short",
@@ -863,7 +885,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ris3",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "marjorie",
@@ -936,7 +960,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "zwq6",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "closure",
@@ -1009,7 +1035,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "9k0l",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "evermore (feat. Bon Iver)",
@@ -1084,7 +1112,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "kshl",
+          "tsm_album_id": "dy9"
         }
       ]
     },
@@ -1161,7 +1191,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "deluxe",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "yqri",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "it's time to go - bonus track",
@@ -1206,7 +1238,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "deluxe",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "clzn",
+          "tsm_album_id": "dy9"
         }
       ]
     },
@@ -1283,7 +1317,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "20he",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "willow - dancing witch version (Elvira remix)",
@@ -1355,7 +1391,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "20he",
+          "tsm_album_id": "dy9"
         }
       ]
     },
@@ -1436,7 +1474,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "20he",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "willow - moonlit witch version",
@@ -1510,7 +1550,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "20he",
+          "tsm_album_id": "dy9"
         }
       ]
     }

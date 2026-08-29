@@ -80,7 +80,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "dfdd",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Blank Space",
@@ -132,7 +134,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "pxm7",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Style",
@@ -205,7 +209,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "7ovr",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Out Of The Woods",
@@ -278,7 +284,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e31g",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "All You Had To Do Was Stay",
@@ -327,7 +335,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "0tf0",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Shake It Off",
@@ -394,7 +404,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "wex1",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "I Wish You Would",
@@ -443,7 +455,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "bk4n",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Bad Blood",
@@ -518,7 +532,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "htjw",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Wildest Dreams",
@@ -592,7 +608,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "rv14",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "How You Get The Girl",
@@ -640,7 +658,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "db8r",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "This Love",
@@ -688,7 +708,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "v5a9",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "I Know Places",
@@ -737,7 +759,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "gcni",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Clean",
@@ -785,7 +809,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e29n",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Wonderland",
@@ -832,7 +858,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "n3cl",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "You Are In Love",
@@ -879,7 +907,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "m0em",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "New Romantics",
@@ -948,7 +978,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "yh86",
+          "tsm_album_id": "lhq"
         }
       ]
     },
@@ -1028,7 +1060,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "deluxe",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "htjw",
+          "tsm_album_id": "lhq"
         }
       ]
     },
@@ -1083,7 +1117,9 @@
           "on_album": false,
           "category": "soundtrack",
           "display_album": "1989",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "9ima",
+          "tsm_album_id": "lhq"
         }
       ]
     },
@@ -1154,7 +1190,9 @@
           "role": "extra",
           "extra_type": "karaoke",
           "display_album": "1989",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "pxm7",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Shake It Off - Karaoke Version",
@@ -1224,7 +1262,9 @@
           "role": "extra",
           "extra_type": "karaoke",
           "display_album": "1989",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "wex1",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Style - Karaoke Version",
@@ -1300,7 +1340,9 @@
           "role": "extra",
           "extra_type": "karaoke",
           "display_album": "1989",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "7ovr",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Wildest Dreams (Arr. Lawson for Harp)",
@@ -1346,7 +1388,9 @@
           "role": "extra",
           "extra_type": "other",
           "display_album": "1989",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "9pl1",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Bad Blood - Commentary",
@@ -1379,7 +1423,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "htjw",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "All You Had To Do Was Stay - Karaoke Version",
@@ -1414,7 +1460,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "0tf0",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Blank Space - Commentary",
@@ -1447,7 +1495,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "pxm7",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Clean - Commentary",
@@ -1480,7 +1530,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e29n",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "How You Get The Girl - Commentary",
@@ -1513,7 +1565,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "db8r",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "How You Get The Girl - Karaoke Version",
@@ -1548,7 +1602,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "db8r",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "I Know Places - Commentary",
@@ -1581,7 +1637,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "gcni",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "I Know Places - Karaoke Version",
@@ -1616,7 +1674,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "gcni",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "I Wish You Would - Commentary",
@@ -1649,7 +1709,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "bk4n",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "I Wish You Would - Karaoke Version",
@@ -1684,7 +1746,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "bk4n",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "New Romantics - Karaoke Version",
@@ -1717,7 +1781,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "yh86",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Out Of The Woods - Commentary",
@@ -1750,7 +1816,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e31g",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Out Of The Woods - Karaoke Version",
@@ -1785,7 +1853,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e31g",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Style - Commentary",
@@ -1818,7 +1888,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "7ovr",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "This Love - Commentary",
@@ -1851,7 +1923,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "v5a9",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "This Love - Karaoke Version",
@@ -1886,7 +1960,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "v5a9",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Welcome to New York - Commentary",
@@ -1919,7 +1995,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "dfdd",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Welcome To New York - Karaoke Version",
@@ -1954,7 +2032,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "dfdd",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Wildest Dreams - Commentary",
@@ -1987,7 +2067,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "rv14",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Wildest Dreams - Karaoke Version",
@@ -2022,7 +2104,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "rv14",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Wonderland - Karaoke Version",
@@ -2055,7 +2139,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "n3cl",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "You Are In Love - Karaoke Version",
@@ -2088,7 +2174,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "m0em",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Shake It Off - Commentary",
@@ -2121,7 +2209,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "6kvx",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Shake It Off - Cover",
@@ -2154,7 +2244,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "other",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "i4ge",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Shake it Off (Noteservice Wind Ensemble)",
@@ -2189,7 +2281,9 @@
           "release_edition": "",
           "tags": [],
           "extra_type": "other",
-          "category": "other"
+          "category": "other",
+          "tsm_song_id": "6kvx",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Shake It Off (Best Work Edition)",
@@ -2223,7 +2317,9 @@
           "role": "extra",
           "release_edition": "",
           "tags": [],
-          "extra_type": "instrumental"
+          "extra_type": "instrumental",
+          "tsm_song_id": "mx5r",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Shake It Off/Lebedik un Freylach (Arr. ZRI for Mixed Ensemble)",
@@ -2256,7 +2352,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "other",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "tu0w",
+          "tsm_album_id": "lhq"
         }
       ]
     },
@@ -2316,7 +2414,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "voice_memo",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "pxm7",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "I Know Places - Voice Memo",
@@ -2365,7 +2465,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "voice_memo",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "gcni",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "I Wish You Would - Voice Memo",
@@ -2414,7 +2516,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "voice_memo",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "bk4n",
+          "tsm_album_id": "lhq"
         }
       ]
     },
@@ -2491,7 +2595,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "rv14",
+          "tsm_album_id": "lhq"
         }
       ]
     }

@@ -1,0 +1,5932 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-29",
+  "songs": {
+    "0qnt": {
+      "song_family": "sad_beautiful_tragic",
+      "canonical_title": "Sad Beautiful Tragic",
+      "slug": "sad-beautiful-tragic",
+      "spotify_track_ids": [
+        "21SralRv4ucDT3i1rYrr85",
+        "3rMskQgCc54bAQUfE0U4Fw",
+        "5QKhg4r4Ibt0LVTmWEXTEg",
+        "5qD1xj5lXOaX1ZDpVKZeF3",
+        "5yq6Ecb9LQvFS5rJCtPKLO",
+        "6LKjHhOW1az75pCQ9XJJtF",
+        "73qMN9bXy7MSPwwGfH3wQr",
+        "7xZbFLqqa1dbwDNMFZryE7"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "0rgo": {
+      "song_family": "babe",
+      "canonical_title": "Babe (feat. Taylor Swift)",
+      "slug": "babe-feat-taylor-swift",
+      "spotify_track_ids": [
+        "0v4z1tuZvn6LGknom9Qx7d",
+        "40PXEOFLJc7UIpLMrhSfW1",
+        "5FNeJveCmVB2TPDbIYqK0M",
+        "7FFfYM4JE1vj5n4rhHxg8q",
+        "7fRruZ12gXGwBs0zXQ6e5V"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "0sfp": {
+      "song_family": "chloe_or_sam_or_sophia_or_marcus",
+      "canonical_title": "Chloe or Sam or Sophia or Marcus",
+      "slug": "chloe-or-sam-or-sophia-or-marcus",
+      "spotify_track_ids": [
+        "1m7Fep6Dm8SG58ns8NLZhm",
+        "1rmEsOezwf2lmIZTMAO5Ag"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "0tf0": {
+      "song_family": "all_you_had_to_do_was_stay",
+      "canonical_title": "All You Had To Do Was Stay",
+      "slug": "all-you-had-to-do-was-stay",
+      "spotify_track_ids": [
+        "0dAb8TY433dl3ZfXYCLE19",
+        "0lmMtDQ2ElasKU2qDAE6NN",
+        "1Z79tpetXTqujnp0UYOV7V",
+        "2k0ZEeAqzvYMcx9Qt5aClQ",
+        "4NNolUeL5m2ju7kf8pdg6H",
+        "4vWXPp6Tuf6ury2dCh0uAI",
+        "6AQbsCRdpQ4U8YaH9ySvzP",
+        "6GXgd1BPD9bUpqw5AntGV5",
+        "6aLOekfwbytwWvQftxTEF0"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "0v9k": {
+      "song_family": "white_christmas",
+      "canonical_title": "White Christmas",
+      "slug": "white-christmas",
+      "spotify_track_ids": [
+        "7GZ3KDorsc1yWndEtzGTjf"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "0yvx": {
+      "song_family": "fifteen",
+      "canonical_title": "Fifteen",
+      "slug": "fifteen",
+      "spotify_track_ids": [
+        "2nqio0SfWg6gh2eCtfuMa5",
+        "2p2iPBELfsen9imWH0NkId",
+        "3Aelp7PlkDvBvCPqvyIopZ",
+        "3h96cE8WodfMonauQOhltu",
+        "4t0OI7XrODjSkAu3bTPmWj",
+        "4yf9OivCH2lmQWN8mzpCC6",
+        "6ZeKYXZ6esPjpuHwCtUiZh"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "0zpp": {
+      "song_family": "the_fate_of_ophelia",
+      "canonical_title": "The Fate of Ophelia",
+      "slug": "the-fate-of-ophelia",
+      "spotify_track_ids": [
+        "3CFKUvybrj8Jg5F018tyuA",
+        "3JNaLxAymiSUMrmjOarjeo",
+        "3Z2nTctPsTsgqqJm5fCSvG",
+        "3lcWDG62OH0cH5GHLdT5X4",
+        "3wXuJTeA7dkrWShvbdUk0A",
+        "53iuhJlwXhSER5J2IYYv1W",
+        "5cKBWgDjB5IXZ5jnryewOH",
+        "5k9RjjuYyOMCLL81U8FaHT",
+        "6PlBKImSl4AZoxBU7F649D"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "11p4": {
+      "song_family": "down_bad",
+      "canonical_title": "Down Bad",
+      "slug": "down-bad",
+      "spotify_track_ids": [
+        "1kbEbBdEgQdQeLXCJh28pJ",
+        "2F3N9tdombb64aW6VtZOdo"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "15p8": {
+      "song_family": "mine",
+      "canonical_title": "Mine",
+      "slug": "mine",
+      "spotify_track_ids": [
+        "0dBW6ZsW8skfvoRfgeerBF",
+        "67Io3gxHwfbUreBf114c0u",
+        "6LZaxlycSWrJZ4Volb25qx",
+        "6kFgTVa0eIjO00Pc3OA0rF",
+        "6vmevdni3tJLxzRXSU7UVd",
+        "7G0gBu6nLdhFDPRLc0HdDG",
+        "7J4cg1IeDWDY4oE19CaIra",
+        "7yndkPYP6YQQLBpPsizDfh"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "16lp": {
+      "song_family": "dress",
+      "canonical_title": "Dress",
+      "slug": "dress",
+      "spotify_track_ids": [
+        "0FfnSwDzc5KuBCkhJzIL2c",
+        "2k0w1FGqvzVPgQ9VdTaJpe",
+        "50GXx9eZeiVWB3bgMop7Ti",
+        "6X3YCswCQzX1gGZ5ji8P9x",
+        "6oVxXO5oQ4pTpO8RSnkzvv"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "1ii7": {
+      "song_family": "cassandra",
+      "canonical_title": "Cassandra",
+      "slug": "cassandra",
+      "spotify_track_ids": [
+        "0g4fMVo4JjwnIpTfFfLdxS"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "1jj7": {
+      "song_family": "hoax",
+      "canonical_title": "hoax",
+      "slug": "hoax",
+      "spotify_track_ids": [
+        "0QTBsdoJhamY3Aid3fOsOd",
+        "39z0Ktcc9Zvnim7C3YXvpC",
+        "4XCYmu7QLySdIahgBALKJK",
+        "6G61EqJgoEJhWaBT34jMyW",
+        "6MWoRt97mnSTXZhu3ggi9C"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "1ndn": {
+      "song_family": "paper_rings",
+      "canonical_title": "Paper Rings",
+      "slug": "paper-rings",
+      "spotify_track_ids": [
+        "4y5bvROuBDPr5fuwXbIBZR"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "1nmt": {
+      "song_family": "renegade",
+      "canonical_title": "Renegade",
+      "slug": "renegade",
+      "spotify_track_ids": [
+        "73W5aXorr5vxrySFcoZqIN"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "1qa7": {
+      "song_family": "this_is_why_we_can_t_have_nice_things",
+      "canonical_title": "This Is Why We Can't Have Nice Things",
+      "slug": "this-is-why-we-can-t-have-nice-things",
+      "spotify_track_ids": [
+        "07NxDD1iKCHbAldceD7QLP",
+        "0Fa1vab9Ssp9ah12rhfeRz",
+        "0MtU9ETYyVX8YPBDCYPdMb",
+        "0fF2vHE8TaB4XHExalmBP8"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "1tqq": {
+      "song_family": "invisible_string",
+      "canonical_title": "invisible string",
+      "slug": "invisible-string",
+      "spotify_track_ids": [
+        "1FRF7olkTDWPwHf5JwYudq",
+        "3yz88FVJQhwG2EqYHw3pkx",
+        "4WHIqhrbdva5vQSrCuet3l",
+        "5KByGq0JijSSDcy0qzuINs",
+        "6VsvKPJ4xjVNKpI8VVZ3SV"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "20he": {
+      "song_family": "willow",
+      "canonical_title": "willow",
+      "slug": "willow",
+      "spotify_track_ids": [
+        "0U0etHtpARihOUUY8Akc7y",
+        "0lx2cLdOt3piJbcaXIV74f",
+        "2NnrAdjE9cPdMklonMBuAv",
+        "2Ta5c5Z6DvM8GX0U1polSo",
+        "2gVhfX2Gy1T9kDuS9azrF7",
+        "3Uo7WG0vmLQ07WB4BDwy7D",
+        "3yk94DUDanXyVhRLVjmI3w",
+        "5F7hpFKLmWgMHGxQuwssuv",
+        "5XkJj6sV2XLMaURdmdXgNx",
+        "77d7q9TNbsIDmRTDPkPv3L",
+        "77p4fRpoeiZMtUy3P9kN21"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "2143": {
+      "song_family": "today_was_a_fairytale",
+      "canonical_title": "Today Was A Fairytale",
+      "slug": "today-was-a-fairytale",
+      "spotify_track_ids": [
+        "1P5QpwOgXJuoVTm3CWbnLY",
+        "2JoJrsEV15OzbijS47lids",
+        "4pFvEWbjBpPUdYRQly0THs"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "24m1": {
+      "song_family": "midnight_rain",
+      "canonical_title": "Midnight Rain",
+      "slug": "midnight-rain",
+      "spotify_track_ids": [
+        "1DAHLigfUqSLrU3RLG1EKR",
+        "3rWDp9tBPQR9z6U5YyRSK4",
+        "4eKMqf9ZMSclDX7V9Ptg7x"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "29g1": {
+      "song_family": "i_did_something_bad",
+      "canonical_title": "I Did Something Bad",
+      "slug": "i-did-something-bad",
+      "spotify_track_ids": [
+        "2hecdut2HWM5JMHqLTWThq",
+        "2nOeoic483mcNOx5TFpc3L",
+        "3TcMyNevhQZ35yaA8jHSBq",
+        "4svZDCRz4cJoneBpjpx8DJ",
+        "5fUE3r8hdIUQug2028aA8F"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "2bcp": {
+      "song_family": "the_life_of_a_showgirl_intro",
+      "canonical_title": "The Life of a Showgirl Intro",
+      "slug": "the-life-of-a-showgirl-intro",
+      "spotify_track_ids": [
+        "0yZPIEgco572UWiwoQtcYF"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "2gjh": {
+      "song_family": "love_story_pop_mix",
+      "canonical_title": "Love Story - Pop Mix",
+      "slug": "love-story-pop-mix",
+      "spotify_track_ids": [
+        "4pJ8xgaGB9VGkWwODCew8R",
+        "5lA0yK8S5tP3xoaRMCp4Ug",
+        "6CRAwMp6giXWedegUgxqLh"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "2ke0": {
+      "song_family": "electric_touch",
+      "canonical_title": "Electric Touch (feat. Fall Out Boy) (Taylor's Version) (From The Vault)",
+      "slug": "electric-touch-feat-fall-out-boy-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "4e3ZNTAV6PCrdYMUrUlMpQ"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "2ozd": {
+      "song_family": "death_by_a_thousand_cuts",
+      "canonical_title": "Death By A Thousand Cuts",
+      "slug": "death-by-a-thousand-cuts",
+      "spotify_track_ids": [
+        "2dgFqt3w9xIQRjhPtwNk3D",
+        "3oF7Or7T35yhQbGxbCGvRX"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "2pgq": {
+      "song_family": "you_re_on_your_own_kid",
+      "canonical_title": "You're On Your Own, Kid",
+      "slug": "you-re-on-your-own-kid",
+      "spotify_track_ids": [
+        "4D7BCuvgdJlYvlX5WlN54t",
+        "6PQOU00xWNrGwCZzboriXy"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "2s0a": {
+      "song_family": "betty",
+      "canonical_title": "betty",
+      "slug": "betty",
+      "spotify_track_ids": [
+        "0x3CUvkL4jUPYVONrYUubR",
+        "1hm4V38egkiHOgxTUpu0zg",
+        "1mh5dObNoOvCfHmXnhvDEK",
+        "2jhfs6moEAK13eLM6xim4l",
+        "4GS68CE8nKLIKjjapiSm2I",
+        "5kI4eCXXzyuIUXjQra0Cxi",
+        "7ojfyws0WASED96XBzRbd6"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "2uwe": {
+      "song_family": "seven",
+      "canonical_title": "seven",
+      "slug": "seven",
+      "spotify_track_ids": [
+        "2vJ7QvyCiR4DaHxwO58izA",
+        "4cOWq0cVsKjxaQpRMbDoH1",
+        "6KJqZcs9XDgVck7Lg9QOTC",
+        "7cPrz6ZMELLtuV8739mvE3"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "2xed": {
+      "song_family": "eldest_daughter",
+      "canonical_title": "Eldest Daughter",
+      "slug": "eldest-daughter",
+      "spotify_track_ids": [
+        "0wAvTNz81YTUhLFWuWJSAV",
+        "2JHzTARFUispsjZHKhrxxO",
+        "3aEo53WkfnIEBh6Cy3E2pj",
+        "5XhaIFhtZeqcExorrYSVDM",
+        "62HoDY1Km6lm47haFpUn9c",
+        "6nhsv9Jeluz5gXt592KN3m"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "32ub": {
+      "song_family": "actually_romantic",
+      "canonical_title": "Actually Romantic",
+      "slug": "actually-romantic",
+      "spotify_track_ids": [
+        "2x3mwb96B6TquRqMtbxUE1",
+        "3zAj2CyrmXsR1DJ5zYznkh",
+        "6FJemhBlVTGTCgrrrLam3D",
+        "6G3dUZrsaOYhe2gRyNukwA"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "34ff": {
+      "song_family": "cancelled",
+      "canonical_title": "CANCELLED!",
+      "slug": "cancelled",
+      "spotify_track_ids": [
+        "1appZ3c336FkPvCuywfmrs",
+        "3FzJDGVjRGNc7KrkabU5N0",
+        "67SmofYg9enUWfcPqUuoVm",
+        "6JNM6pLKbXMGG2opeExCb2"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "3eja": {
+      "song_family": "breathe",
+      "canonical_title": "Breathe",
+      "slug": "breathe",
+      "spotify_track_ids": [
+        "0qsSmObOgBZfuMIwfAQDBP",
+        "3cAHqw3B2deaHRXV9WrYAA",
+        "49mWEy5MgtNujgT7xU3emT",
+        "4Hk2aNSkhB6Y8jsJtrAjxa",
+        "6S9G7J3EB1ZY0rrZPwsBg5",
+        "795ZVsHOr5ky9yrY6FDA6Q",
+        "7HC7R2D8WjXVcUHJyEGjRs"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "3u2v": {
+      "song_family": "shouldve_said_no",
+      "canonical_title": "Should’ve Said No",
+      "slug": "should-ve-said-no",
+      "spotify_track_ids": [
+        "0ST1G2zAOuSPd6rYdF3RS0"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "3wt8": {
+      "song_family": "gasoline_feat_taylor_swift",
+      "canonical_title": "Gasoline (feat. Taylor Swift)",
+      "slug": "gasoline-feat-taylor-swift",
+      "spotify_track_ids": [
+        "2bzUVEvpZ7At5cYz1kOLI9",
+        "645Exr2lJIO45Guht3qyIa"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "3xuk": {
+      "song_family": "beautiful_eyes",
+      "canonical_title": "Beautiful Eyes",
+      "slug": "beautiful-eyes",
+      "spotify_track_ids": [
+        "1a5kAD0K7zijLlZokbRDe2",
+        "4aBW31cmkA7BLColUsMEeZ",
+        "4jXhdWmUhZEhE2t9SljMOj"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "44ok": {
+      "song_family": "crazier",
+      "canonical_title": "Crazier",
+      "slug": "crazier",
+      "spotify_track_ids": [
+        "5vyxXfD5gLlyPxGZMEjtmd"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "48wc": {
+      "song_family": "imgonnagetyouback",
+      "canonical_title": "imgonnagetyouback",
+      "slug": "imgonnagetyouback",
+      "spotify_track_ids": [
+        "1kcwpPDQnqEqmezzXdJTCP"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "4aiw": {
+      "song_family": "both_of_us",
+      "canonical_title": "Both of Us (feat. Taylor Swift)",
+      "slug": "both-of-us-feat-taylor-swift",
+      "spotify_track_ids": [
+        "0lJWmQO1fw1Tr2p2M1m5cw",
+        "3r9bgSJlJz2zlevcBRYXko"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "4e5z": {
+      "song_family": "say_don_t_go",
+      "canonical_title": "Say Don't Go (Taylor's Version) (From The Vault)",
+      "slug": "say-don-t-go-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "3CCRVu4F91Qp2mnGjmWBrf",
+        "4NioO5R9sHEZh4cGzMHyNt"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "4pvw": {
+      "song_family": "elizabeth_taylor",
+      "canonical_title": "Elizabeth Taylor",
+      "slug": "elizabeth-taylor",
+      "spotify_track_ids": [
+        "01ZJZOftkQ2kSeyG34C7g6",
+        "1jgTiNob5cVyXeJ3WgX5bL",
+        "3AKV7Mvo2Mx4tb39iPvPlT",
+        "3r9fAceWmaDFvbNiTnFiLr",
+        "4UBWugj5D20ZveyzdGpqvD",
+        "6virCtlwc98cKYVyeZYXqq"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "4ssx": {
+      "song_family": "ruin_the_friendship",
+      "canonical_title": "Ruin The Friendship",
+      "slug": "ruin-the-friendship",
+      "spotify_track_ids": [
+        "05VwM318oU6aNc1GS4MtLV",
+        "1ZbSww1TszeuJOtsdMZQv1",
+        "62V2ZHslgQV98gH4AuVXnr",
+        "6NUy8xajng5zMSGJRKniAG",
+        "6hKfPNnVlA2cgTgKj6Vgcw"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "4ty3": {
+      "song_family": "all_too_well",
+      "canonical_title": "All Too Well (10 Minute Version) (The Short Film)",
+      "slug": "all-too-well-10-minute-version-the-short-film",
+      "spotify_track_ids": [
+        "1IBhYEvvi02tDVByxIiTh4",
+        "1n3b9Eekoy3S9ZSZ5DmTW1",
+        "1q3RiD1tIWUpGsNFADMlvl",
+        "1u4HUiREUR6vX1W1RYG2Tm",
+        "1yVVoBDzSkFkZRWtq9x3u1",
+        "3To1MBLD7WqFoWEeiLDBzq",
+        "3dWmDfq6hyHsJQG7BdGaWS",
+        "3nsfB1vus2qaloUdcBZvDu",
+        "4XMP3zVxrnr58T0tjIHvpR",
+        "5enxwA8aAbwZbf5qCHORXi"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "4yg8": {
+      "song_family": "long_live",
+      "canonical_title": "Long Live",
+      "slug": "long-live",
+      "spotify_track_ids": [
+        "0yJ94T12iL5gGz5HDn1nos",
+        "3x4MisUs3dIkpDUcJMfFKA",
+        "42pHJPLlDjfvdAUb7aeDXb",
+        "4hqJ4bSlYJOXb6Z4SRmzxs",
+        "5QkzyLUb4ggojNDp8G2OxX",
+        "5sbsEKN2PIwKe0l03qoeXn",
+        "6XDBA3QWX51lDJ0oZbaJJN",
+        "7BFc7ffruhZ4Hecnqf5xju"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "599w": {
+      "song_family": "i_forgot_that_you_existed",
+      "canonical_title": "I Forgot That You Existed",
+      "slug": "i-forgot-that-you-existed",
+      "spotify_track_ids": [
+        "43rA71bccXFGD4C8GOpIlN"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "5c91": {
+      "song_family": "dancing_with_our_hands_tied",
+      "canonical_title": "Dancing With Our Hands Tied",
+      "slug": "dancing-with-our-hands-tied",
+      "spotify_track_ids": [
+        "3A6wCRe6QoH7Ea5JMpnRB8",
+        "3ZfvKQxJp4zZshiJsRPoD1",
+        "6P8j2SqbXOeaCvXh1ZXwWT",
+        "73AHP8EqSH8QXqqoFXKwdW",
+        "7I7JbDv63ZJJsSi24DyJrz"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "5k56": {
+      "song_family": "thank_you_aimee",
+      "canonical_title": "thanK you aIMee",
+      "slug": "thank-you-aimee",
+      "spotify_track_ids": [
+        "2AF66grrqUS0rkNURwiPXM",
+        "7ogK4lJDVDMU6A6vYR5rvD"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "5teo": {
+      "song_family": "holy_ground_chartsnapshot_external_6jHHWbAR",
+      "canonical_title": "Holy Ground",
+      "slug": "holy-ground",
+      "spotify_track_ids": [
+        "6jHHWbARBOwQUqtAnNKMN6"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "5uh0": {
+      "song_family": "high_infidelity",
+      "canonical_title": "High Infidelity",
+      "slug": "high-infidelity",
+      "spotify_track_ids": [
+        "1SztNGCwEHJEVFx90E5g7D",
+        "4356PL6jkERzJouVfQQkZo"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "64ql": {
+      "song_family": "the_great_war",
+      "canonical_title": "The Great War",
+      "slug": "the-great-war",
+      "spotify_track_ids": [
+        "2VuqMjgoKaOHNM8HpxtXKx",
+        "5BYl3SodS3rGmafWXRWmB7"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "65i6": {
+      "song_family": "bette_davis_eyes_live2011",
+      "canonical_title": "Bette Davis Eyes - Live/2011",
+      "slug": "bette-davis-eyes-live-2011",
+      "spotify_track_ids": [
+        "6KF9xd2hBLuexrmBX4vUWD"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "65u2": {
+      "song_family": "fresh_out_the_slammer",
+      "canonical_title": "Fresh Out The Slammer",
+      "slug": "fresh-out-the-slammer",
+      "spotify_track_ids": [
+        "3fO566xJgwxIa3qGCGBvIC",
+        "7IWcDWOfiooH5hRs9XOVYz"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "6b2t": {
+      "song_family": "we_are_never_ever_getting_back_together",
+      "canonical_title": "We Are Never Ever Getting Back Together",
+      "slug": "we-are-never-ever-getting-back-together",
+      "spotify_track_ids": [
+        "0VwNdo84DaVYLIkbVO86ND",
+        "1DSPw5AERmvyd9peYG3D48",
+        "1OYARuagDrpgNNQ4loO1Cs",
+        "1vFMCv1AuIvYYrMsGojGRK",
+        "5YqltLsjdqFtvqE7Nrysvs",
+        "6t9JL24FVFzXtpLlp6x5tZ",
+        "7AEAGTc8cReDqcbPoY9gwo"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "6bm9": {
+      "song_family": "forever_always",
+      "canonical_title": "Forever & Always",
+      "slug": "forever-and-always",
+      "spotify_track_ids": [
+        "13MAWVUSkbGMUi6I7RowRK",
+        "1msEuwSBneBKpVCZQcFTsU",
+        "1zxrcAk6eiytfavqriMcKT",
+        "46HGgtwmmuEB8mvDCyjyAc",
+        "47HtKpfzpAt8rQjjXWotFj",
+        "57USOybNwyjN8ZUZLm9hra"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "6bsf": {
+      "song_family": "i_can_fix_him_no_really_i_can",
+      "canonical_title": "I Can Fix Him (No Really I Can)",
+      "slug": "i-can-fix-him-no-really-i-can",
+      "spotify_track_ids": [
+        "2h3MDMf8sd9s4XIzpTBIjX",
+        "5chnRTB9qMK3W1M41SnU9s"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "6c3t": {
+      "song_family": "the_life_of_a_showgirl",
+      "canonical_title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
+      "slug": "the-life-of-a-showgirl-feat-sabrina-carpenter",
+      "spotify_track_ids": [
+        "2DF2sUvgHFKJ5TQGjm6n3T",
+        "42TAweWJJ9YlQ47T5nesu5",
+        "5CHOrwxKLXkY1XVZauxvnw",
+        "5eXgqtg3T8Av0m1FUaGHex",
+        "6EqHzZp61G5uQ12QEiibpT"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "6kvx": {
+      "song_family": "shake_it_off_chartsnapshot_external_0bj1bAho",
+      "canonical_title": "Shake It Off",
+      "slug": "shake-it-off",
+      "spotify_track_ids": [
+        "0bj1bAhoHpHRSl4IIyFvfU",
+        "4CWLOxjskk6fjixCboD4vJ"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "6mmr": {
+      "song_family": "me_chartsnapshot_external_5BHa3hmD",
+      "canonical_title": "Me!",
+      "slug": "me",
+      "spotify_track_ids": [
+        "5BHa3hmDOiT6s7QQc0TT37"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "6t90": {
+      "song_family": "now_that_we_don_t_talk",
+      "canonical_title": "Now That We Don't Talk (Taylor's Version) (From The Vault)",
+      "slug": "now-that-we-don-t-talk-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "5KD6AEm19QnMbfWpfoOHMl",
+        "5QUIK7ZtziW8kGWo8RqopF"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "70rb": {
+      "song_family": "father_figure",
+      "canonical_title": "Father Figure",
+      "slug": "father-figure",
+      "spotify_track_ids": [
+        "03bTIHJElXZ0O0jqOQvAbY",
+        "1lD0oPIfSYid1LhPvgrz10",
+        "2NGGvVcfb2m2NbVaXHC3gb",
+        "6H0nEKqkTRxa30Pru1h7SD"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "73fa": {
+      "song_family": "coney_island",
+      "canonical_title": "coney island (feat. The National)",
+      "slug": "coney-island-feat-the-national",
+      "spotify_track_ids": [
+        "2awNGIJHodfLZSClB3PYhz",
+        "3k7ne7VmH43ZPWxPdvPUgR",
+        "4tyX1rw9X309WkEdh2As4B"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "79xa": {
+      "song_family": "cornelia_street",
+      "canonical_title": "Cornelia Street",
+      "slug": "cornelia-street",
+      "spotify_track_ids": [
+        "12M5uqx0ZuwkpLp5rJim1a",
+        "3fGnrtrtL1IHSX9t4DKOYf"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "7c2t": {
+      "song_family": "daylight",
+      "canonical_title": "Daylight",
+      "slug": "daylight",
+      "spotify_track_ids": [
+        "1fzAuUVbzlhZ1lJAx9PtY6",
+        "7ryS0xBZNYjQqql34GCkDp"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "7cuv": {
+      "song_family": "our_song_chartsnapshot_historical_fearless",
+      "canonical_title": "Our Song",
+      "slug": "our-song",
+      "spotify_track_ids": [
+        "2l74Cv256ElApUd119a9ib",
+        "5Ct2PYPUSogyWvbV40k9Bf"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "7da8": {
+      "song_family": "i_don_t_wanna_live_forever_chartsnapshot_external_6fZGI44c",
+      "canonical_title": "I Don't Wanna Live Forever",
+      "slug": "i-don-t-wanna-live-forever",
+      "spotify_track_ids": [
+        "6fZGI44cPfpjW6YMXrxuFJ"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "7eiy": {
+      "song_family": "i_don_t_wanna_live_forever",
+      "canonical_title": "I Don't Wanna Live Forever (Fifty Shades Darker)",
+      "slug": "i-don-t-wanna-live-forever-fifty-shades-darker",
+      "spotify_track_ids": [
+        "2y5aJvzXhHPA94U5GFAcXe",
+        "3NdDpSvN911VPGivFlV5d0",
+        "55n9yjI6qqXh5F2mYvUc2y"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "7hgo": {
+      "song_family": "i_can_see_you",
+      "canonical_title": "I Can See You (Taylor's Version) (From The Vault)",
+      "slug": "i-can-see-you-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "5kHMfzgLZP95O9NBy0ku4v"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "7j3v": {
+      "song_family": "you_re_losing_me",
+      "canonical_title": "You're Losing Me (From The Vault)",
+      "slug": "you-re-losing-me-from-the-vault",
+      "spotify_track_ids": [
+        "3CWq0pAKKTWb0K4yiglDc4"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "7oc5": {
+      "song_family": "miss_americana_and_the_heartbreak_prince",
+      "canonical_title": "Miss Americana & The Heartbreak Prince",
+      "slug": "miss-americana-and-the-heartbreak-prince",
+      "spotify_track_ids": [
+        "214nt20w5wOxJnY462klLw"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "7ovr": {
+      "song_family": "style",
+      "canonical_title": "Style",
+      "slug": "style",
+      "spotify_track_ids": [
+        "0ug5NqcwcFR2xrfTkc7k8e",
+        "1Qicm51crXMvUuH4SMjobT",
+        "1fo2ctLqj3zBhRQKOXprol",
+        "1hjRhYpWyqDpPahmSlUTlc",
+        "3Vpk1hfMAQme8VJ0SNRSkd",
+        "4CyL8bBbVRYB0ogadF4aUS",
+        "4lIxdJw6W3Fg4vUIYCB0S5",
+        "63wH4MVqn36YQkwN2lai6y"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "7slc": {
+      "song_family": "exile",
+      "canonical_title": "exile (feat. Bon Iver)",
+      "slug": "exile-feat-bon-iver",
+      "spotify_track_ids": [
+        "4pvb0WLRcMtbPGmtejJJ6y",
+        "6kz2hkq1xQvDqPcUyBkw8f"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "83js": {
+      "song_family": "beautiful_ghosts_from_the_motion_picture_soundtrack_cats",
+      "canonical_title": "Beautiful Ghosts - From The Motion Picture Soundtrack \"Cats\"",
+      "slug": "beautiful-ghosts-from-the-motion-picture-soundtrack-cats",
+      "spotify_track_ids": [
+        "2evEoQAhIMaa9PfjTT5skG",
+        "6PPbs1c7f7Ove5JHUPmNZ2"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "8887": {
+      "song_family": "the_tortured_poets_department",
+      "canonical_title": "The Tortured Poets Department",
+      "slug": "the-tortured-poets-department",
+      "spotify_track_ids": [
+        "3NMrVbIVWT3fPXBj0rNDKG",
+        "4PdLaGZubp4lghChqp8erB"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "89ul": {
+      "song_family": "starlight_chartsnapshot_external_6yulzkix",
+      "canonical_title": "Starlight",
+      "slug": "starlight",
+      "spotify_track_ids": [
+        "6yulzkix69bLw7WP7TAUfU"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "8ap3": {
+      "song_family": "september_recorded_at_the_tracking_room_nashville",
+      "canonical_title": "September - Recorded at The Tracking Room Nashville",
+      "slug": "september-recorded-at-the-tracking-room-nashville",
+      "spotify_track_ids": [
+        "5eGX87IiKsGuzS3iw4CfCX"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "8gra": {
+      "song_family": "holy_ground",
+      "canonical_title": "Holy Ground",
+      "slug": "holy-ground",
+      "spotify_track_ids": [
+        "0HTZpLa2SjBmuJ6zJ7OqMm",
+        "1RHdL2SIWNrv5uChsGuHWP",
+        "1fGsZsIkQkOspfsT24nQP6",
+        "5d2Kn9oAAh9S2EbyCo1i52",
+        "661CJWXysgwKXI1dreYNBU",
+        "6Bey6yUpkCDaIWotHLhbQm",
+        "7J4b3LVCIGO4CMBDFLPoP6"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "8lc0": {
+      "song_family": "all_of_the_girls_you_loved_before",
+      "canonical_title": "All Of The Girls You Loved Before",
+      "slug": "all-of-the-girls-you-loved-before",
+      "spotify_track_ids": [
+        "17yraMKqmZIKAv3iaGcoLX",
+        "4P9Q0GojKVXpRTJCaL3kyy"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "8lu6": {
+      "song_family": "vigilante_shit",
+      "canonical_title": "Vigilante Shit",
+      "slug": "vigilante-shit",
+      "spotify_track_ids": [
+        "0GKDhq6ZbmSbRHd3eyGlB7",
+        "1xwAWUI6Dj0WGC3KiUPN0O"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "8pid": {
+      "song_family": "you_ll_always_find_your_way_back_home_chartsnapshot_external_49Nfi3WO",
+      "canonical_title": "You'll Always Find Your Way Back Home",
+      "slug": "you-ll-always-find-your-way-back-home",
+      "spotify_track_ids": [
+        "49Nfi3WOhDYAppczV12SqD"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "8r9w": {
+      "song_family": "that_s_when",
+      "canonical_title": "That's When (feat. Keith Urban) (Taylor's Version) (From The Vault)",
+      "slug": "that-s-when-feat-keith-urban-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "7eResoqEJJAVTkQYSqvO3P"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "8sjs": {
+      "song_family": "it_s_nice_to_have_a_friend",
+      "canonical_title": "It's Nice To Have A Friend",
+      "slug": "it-s-nice-to-have-a-friend",
+      "spotify_track_ids": [
+        "1SmiQ65iSAbPto6gPFlBYm"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "8v26": {
+      "song_family": "end_game",
+      "canonical_title": "End Game",
+      "slug": "end-game",
+      "spotify_track_ids": [
+        "2x0WlnmfG39ZuDmstl9xfX",
+        "3JbSLr2OhsivV46whJyGeb",
+        "4cag67C3v9ToeFivUwDUsE",
+        "5v5s9gE1UVpPaPdOxkbBwP"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "8zx5": {
+      "song_family": "suburban_legends",
+      "canonical_title": "Suburban Legends (Taylor's Version) (From The Vault)",
+      "slug": "suburban-legends-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "6M9ppdfFjR1AbpUl3Y8DcV",
+        "6T0sEnqjmHISIKwFETeeiP"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "90t7": {
+      "song_family": "timeless",
+      "canonical_title": "Timeless (Taylor's Version) (From The Vault)",
+      "slug": "timeless-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "1HCdems7PQZRj42QDWLA0A"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "92k8": {
+      "song_family": "getaway_car",
+      "canonical_title": "Getaway Car",
+      "slug": "getaway-car",
+      "spotify_track_ids": [
+        "0VE4kBnHJUgtMf0dy6DRmW",
+        "2dAXNjG5vwMAlgHzAC7vZC",
+        "5YPTYLMdNEgk7CPNPqqFyA",
+        "7bdyzcQ0onk60hfsxDCd2X"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "93m0": {
+      "song_family": "forever_and_always",
+      "canonical_title": "Forever & Always",
+      "slug": "forever-and-always",
+      "spotify_track_ids": [
+        "3T7zAF5sfNq0blGbz21TTa",
+        "72PDdE0cAdmGxhMbrqG0PI"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "941y": {
+      "song_family": "mirrorball",
+      "canonical_title": "mirrorball",
+      "slug": "mirrorball",
+      "spotify_track_ids": [
+        "0ZNU020wNYvgW84iljPkPP",
+        "2yceD2hx5HhOLgkm1CITCi",
+        "3Z76GkyDvIAewkgwWvixpc",
+        "5jQyGzcwqAxwT5QUIMivoX"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "991q": {
+      "song_family": "paris",
+      "canonical_title": "Paris",
+      "slug": "paris",
+      "spotify_track_ids": [
+        "5tWxKWq1DSP1s9WQ5PWuqu",
+        "6J834IBcZJMH38ksrgAqwF"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "9aq5": {
+      "song_family": "dear_john",
+      "canonical_title": "Dear John",
+      "slug": "dear-john",
+      "spotify_track_ids": [
+        "1GeLxMgpeCnMJntwyW6rLw",
+        "1WxSuTO0X0HKb1dkQjVkVo",
+        "1zU8j1x3yi9xalMF96pzKp",
+        "2biHaDJjwyvJAnvSqTBvk8",
+        "3K2es3gElMRJ3qvmPW442g",
+        "4DbI1rr4IQ2bc8nejy9ttd",
+        "4jqsWkHTmhBdTKHtsaw2gL",
+        "7hZuICN5eaCuQyp443RCt6"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "9b84": {
+      "song_family": "question",
+      "canonical_title": "Question...?",
+      "slug": "question",
+      "spotify_track_ids": [
+        "0heeNYlwOGuUSe7TgUD27B",
+        "7oomkQSYf1ia2VnVEWfFIU"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "9elt": {
+      "song_family": "only_the_young_featured_in_miss_americana",
+      "canonical_title": "Only The Young - Featured in Miss Americana",
+      "slug": "only-the-young-featured-in-miss-americana",
+      "spotify_track_ids": [
+        "2slqvGLwzZZYsT4K4Y1GBC"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "9ima": {
+      "song_family": "sweeter_than_fiction_from_one_chance_soundtrack",
+      "canonical_title": "Sweeter Than Fiction - From \"One Chance\" Soundtrack",
+      "slug": "sweeter-than-fiction-from-one-chance-soundtrack",
+      "spotify_track_ids": [
+        "0RFCHlNuTeUHIB36VuVbOL"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "9inz": {
+      "song_family": "american_girl",
+      "canonical_title": "American Girl",
+      "slug": "american-girl",
+      "spotify_track_ids": [
+        "4MPLRsmea37qS8imbKUC6p"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "9jx0": {
+      "song_family": "the_alchemy",
+      "canonical_title": "The Alchemy",
+      "slug": "the-alchemy",
+      "spotify_track_ids": [
+        "1dhMTsEZz6ZEquGvmzVoHn",
+        "1tuNqJOtRQVHvONR8Lg3MZ"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "9k0l": {
+      "song_family": "closure",
+      "canonical_title": "closure",
+      "slug": "closure",
+      "spotify_track_ids": [
+        "35rdVq36LMHQX0Suw9a6tK",
+        "3uayvzcbqFydIbgUeC6EJh",
+        "6a8aUhYbaQBUI8PcJ5ZmQ6"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "9pl1": {
+      "song_family": "wildest_dreams_arr_lawson_for_harp",
+      "canonical_title": "Wildest Dreams (Arr. Lawson for Harp)",
+      "slug": "wildest-dreams-arr-lawson-for-harp",
+      "spotify_track_ids": [
+        "3Ng1BPUR5qf6vQ1AizIA0D"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "a9b5": {
+      "song_family": "innocent",
+      "canonical_title": "Innocent",
+      "slug": "innocent",
+      "spotify_track_ids": [
+        "12nBPF4Rh4XLFJV0YLN7uj",
+        "3kfgJql90tzgoxByioAMXR",
+        "4JOZRF1Tp23yeLDkaJvYiC",
+        "4LraIz87diVQdDK0rhi0S4",
+        "5GPwN5iZ9ZMSXAkppj4Uvv",
+        "5tcxJo6DZ1wjkC2Fv1xDiV",
+        "6ZUSLV2UZPxqNXDX6DHBQp"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "aa9l": {
+      "song_family": "london_boy",
+      "canonical_title": "London Boy",
+      "slug": "london-boy",
+      "spotify_track_ids": [
+        "1LLXZFeAHK9R4xUramtUKw"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "adx1": {
+      "song_family": "sad_beautiful_tragic_chartsnapshot_external_5XSPL0XM",
+      "canonical_title": "Sad Beautiful Tragic",
+      "slug": "sad-beautiful-tragic",
+      "spotify_track_ids": [
+        "5XSPL0XMNxpeVV99iQQ7IX"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ahe7": {
+      "song_family": "back_to_december",
+      "canonical_title": "Back To December",
+      "slug": "back-to-december",
+      "spotify_track_ids": [
+        "0tr6XR58KBdDYd8qvHVTs8",
+        "3DrjZArsPsoqbLzUZZV1Id",
+        "3MqHevAhUErYJoC1ceESEe",
+        "5aNkiOMxQXkpoEY5bTYoCh",
+        "5fWNEKU1JTe07KsrJ7stft",
+        "5l6GqSxplqnZbLg0LTPQeG",
+        "6IH2Z54gYPLqgJtxZjX80i",
+        "73B2UZR8luWSOugqpNuAuV",
+        "79uDOz0zuuWS7HWxzMmTa2",
+        "7k7BOXE4u6luKTwcLEAyrd"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "aj72": {
+      "song_family": "two_is_better_than_one_mike_rizzo_radio_remix_chartsnapshot_external_6MRHt3aq",
+      "canonical_title": "Two Is Better Than One - Mike Rizzo Radio Remix",
+      "slug": "two-is-better-than-one-mike-rizzo-radio-remix",
+      "spotify_track_ids": [
+        "6MRHt3aqSaobkqIpRhrVfE"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ajgk": {
+      "song_family": "glitch",
+      "canonical_title": "Glitch",
+      "slug": "glitch",
+      "spotify_track_ids": [
+        "6RJBrG3VHz2hPITjv88chh",
+        "7C0w28EsX0Um2FrZs9gso2"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ajzv": {
+      "song_family": "girl_at_home",
+      "canonical_title": "Girl At Home",
+      "slug": "girl-at-home",
+      "spotify_track_ids": [
+        "0DMVrlMUn01M0IcpDbwgu7",
+        "6VFpuI0DDmbC5UyWZQ4IRY",
+        "6cf6rLb8qcklvJv90W6HCW"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "aub6": {
+      "song_family": "maroon",
+      "canonical_title": "Maroon",
+      "slug": "maroon",
+      "spotify_track_ids": [
+        "09T4f2HgIJY1Ia6FRjzTk3",
+        "3eX0NZfLtGzoLUxPNvRfqm",
+        "6qxvy9Pe4RJIq5JBVbbwbS"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "auqf": {
+      "song_family": "lover",
+      "canonical_title": "Lover",
+      "slug": "lover",
+      "spotify_track_ids": [
+        "1dGr1c8CrMLDpV6mPbImSI",
+        "2msvOEbkK50foYf9BMXr2X",
+        "4lD3RXyvHpJsM3BhIEC4aA"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ax2y": {
+      "song_family": "false_god",
+      "canonical_title": "False God",
+      "slug": "false-god",
+      "spotify_track_ids": [
+        "5hQSXkFgbxjZo9uCwd11so"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "azul": {
+      "song_family": "king_of_my_heart",
+      "canonical_title": "King Of My Heart",
+      "slug": "king-of-my-heart",
+      "spotify_track_ids": [
+        "0d9BBAvHC8DjidkKmKBNms",
+        "2d9Ud0fwm5Oq73F5vPSoQB",
+        "4d7JmiyEia47bpC1HhxUzY",
+        "5EsfyTD26nlVQ0DtYo16uJ",
+        "7HuBDWi18s4aJM8UFnNheH"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "b1di": {
+      "song_family": "lavender_haze",
+      "canonical_title": "Lavender Haze",
+      "slug": "lavender-haze",
+      "spotify_track_ids": [
+        "05kJkr80XEaZeN8kxyQoFp",
+        "0ThxqUZ9PwS6n0UT5i1XH6",
+        "0u1YuY5CjyhlCXV3wN9yYJ",
+        "1cY0NDSosVXD6Am57Ylbuy",
+        "24emu3sabKISjRkrys28jq",
+        "2M4tVhRXucLE9M3STv21Yi",
+        "2PnWf3DoX5Ha3UL8VdpVrs",
+        "47Q0MEywj692L1RQn6mC7S",
+        "5KxZfCXXmVvKhPo8hQz2pS",
+        "5jQI2r1RdgtuT8S3iG8zFC",
+        "6F67FNdOBNMFzxdj1CQ5pL",
+        "6dokmh5E6obEI11G9VaWSB",
+        "7kjSmkSo15pHlkb0mOQtfj"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "b8w5": {
+      "song_family": "i_look_in_people_s_windows",
+      "canonical_title": "I Look in People's Windows",
+      "slug": "i-look-in-people-s-windows",
+      "spotify_track_ids": [
+        "1Zai5UJ2di3qEuR2HeT2s8"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "bg38": {
+      "song_family": "guilty_as_sin",
+      "canonical_title": "Guilty as Sin?",
+      "slug": "guilty-as-sin",
+      "spotify_track_ids": [
+        "0W0iAC1VGlB82PI6elxFYf",
+        "799KrpEbhZp0MHeiA8YK9P"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "bhuw": {
+      "song_family": "the_last_time",
+      "canonical_title": "The Last Time",
+      "slug": "the-last-time",
+      "spotify_track_ids": [
+        "0y6kdSRCVQhSsHSpWvTUm7",
+        "22Zg9JjEgM0JV5HvLXNJAh",
+        "2Tz4JnXZOcjcp8fWfMjBBk",
+        "2mz69DJOIt4b1xxfxiJbBy",
+        "3n9mzjgAzjyKawvbHzciXF",
+        "3vM04liQIPwzatRCDvWvba",
+        "7vvIpJZye5cRR6De1LKM0m"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "bk4n": {
+      "song_family": "i_wish_you_would",
+      "canonical_title": "I Wish You Would",
+      "slug": "i-wish-you-would",
+      "spotify_track_ids": [
+        "1B5VzXPqMlvRw0U4HJY3dJ",
+        "2GZI4YxTKT07KaQZAMmz5N",
+        "3FxJDucHWdw6caWTKO5b23",
+        "3g7PbLRaKm2MmfHNyMbjJn",
+        "3wmN11qXGL0HyPojvEE1D9",
+        "43y1WpBdnEy5TR9aZoSQL9",
+        "4TtyvyI42C0KFnbDZvNC8Y",
+        "4eTXfpHxhxVofrBUjAhPMg",
+        "5RVJ6VKfwtosA5Q1qeHdjF",
+        "5gRYrtvyVyaCRvLt56OfuV",
+        "6Bq4W1CV7IqqZ4Dm2WVG5w"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "bnbn": {
+      "song_family": "the_1",
+      "canonical_title": "the 1",
+      "slug": "the-1",
+      "spotify_track_ids": [
+        "08J4bMHbILkwSIhbtrcvjN",
+        "0Jlcvv8IykzHaSmj49uNW8",
+        "0P9wLFurlgumLXuqFEpw52",
+        "5deqOCwIaLPld1dCj4FqRM"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "boe2": {
+      "song_family": "lover_feat_shawn_mendes",
+      "canonical_title": "Lover (Remix) [feat. Shawn Mendes]",
+      "slug": "lover-remix-feat-shawn-mendes",
+      "spotify_track_ids": [
+        "3i9UVldZOE0aD0JnyfAZZ0"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "brvb": {
+      "song_family": "but_daddy_i_love_him",
+      "canonical_title": "But Daddy I Love Him",
+      "slug": "but-daddy-i-love-him",
+      "spotify_track_ids": [
+        "1Lad0NlRHi7iNtQ6TeYK56",
+        "4QMgEffJQuKtjCNvqfRZ0m",
+        "5og4Qzt92jJzVDkOtSEilb",
+        "74sZKiwaGtSEEyjhDmi99y"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "btg7": {
+      "song_family": "starlight",
+      "canonical_title": "Starlight",
+      "slug": "starlight",
+      "spotify_track_ids": [
+        "0vqI4ZIMuifeKeItGiWbPj",
+        "1gL4vMhDV3RgJQmDuY5HK1",
+        "2ag2oLCwlFIA88hQrLMHzv",
+        "2bspOurPlpKv27SVt7UbHy",
+        "5v18oNV2JRQwbnCHTWILdH",
+        "7A2cNLRT0YJc1yjxHlKihs",
+        "7DsgoKz3zlCb2zvMU062oo",
+        "7MecVsMj22MneZt7kVFaCr"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "bv8v": {
+      "song_family": "mean",
+      "canonical_title": "Mean",
+      "slug": "mean",
+      "spotify_track_ids": [
+        "0KztjtD3ytzgYjUKIVfBnW",
+        "0LB5gCYdVYtXyPKhvZaEgI",
+        "2Aho0iiNBf6E4XYtlha9xY",
+        "30Y4CV7A6YqtQtTTo7Ue4j",
+        "4JJz3bQDt922DzUNHsGtWk",
+        "5yEPktRqvIhko5QFF3aBhQ",
+        "6yM6QsnTCTVOkKEvg3hGlo",
+        "7mFiEij8AXPUZB7aKLbUlQ"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "bxt1": {
+      "song_family": "radio_outro",
+      "canonical_title": "Radio Outro",
+      "slug": "radio-outro",
+      "spotify_track_ids": [
+        "2btS16fbQxhnO3Hbh0a83v"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "c082": {
+      "song_family": "sparks_fly",
+      "canonical_title": "Sparks Fly",
+      "slug": "sparks-fly",
+      "spotify_track_ids": [
+        "09cM9BjyNFizKUOXh6j9rT",
+        "1aBJNc2thaKyh5THWzIqHX",
+        "3MytWN8L7shNYzGl4tAKRp",
+        "3eVl0bkOfARGgQLvYJ4jbi",
+        "3nWqFKQTstzwvrLEW82dgE",
+        "46NGAvL695VnbcSeTmQWmM",
+        "4A7shC8pd0ddDSqrvETTsu",
+        "6d9IiDcFxtFVIvt9pCqyGH"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "c9bh": {
+      "song_family": "peter",
+      "canonical_title": "Peter",
+      "slug": "peter",
+      "spotify_track_ids": [
+        "3NcGodJQTArBCZwNJHF1Zu",
+        "3zMDGj4D8ogaYgAIZPeU7S"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "cc3p": {
+      "song_family": "cruel_summer",
+      "canonical_title": "Cruel Summer",
+      "slug": "cruel-summer",
+      "spotify_track_ids": [
+        "0ISHfeb30gj4CSWUZYuesj",
+        "0NQOXTDg2p7hFYlFq6tZKW",
+        "0pjBqAz8GlxGlpaU4W0DxS",
+        "1BxfuPKGuaTgP7aM0Bbdwr",
+        "37jfioVu3Bd2Du9bteXNDU",
+        "6ClYMObS7f3Nn4AiZHYQt3",
+        "6EXHGKZ79AUTzCe9BMZjhT"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ce8r": {
+      "song_family": "exile_feat_bon_iver",
+      "canonical_title": "exile (feat. Bon Iver) - the long pond studio sessions",
+      "slug": "exile-feat-bon-iver-the-long-pond-studio-sessions",
+      "spotify_track_ids": [
+        "7N015NTIWGjQDddHUdHPoO",
+        "7bFqfMKnKsZJH9FytUXg3E"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "clzn": {
+      "song_family": "it_s_time_to_go_bonus_track",
+      "canonical_title": "it's time to go - bonus track",
+      "slug": "it-s-time-to-go-bonus-track",
+      "spotify_track_ids": [
+        "1kdWw77ZpYOkhxeuhzU1j6"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "cnro": {
+      "song_family": "castles_crumbling",
+      "canonical_title": "Castles Crumbling (feat. Hayley Williams) (Taylor's Version) (From The Vault)",
+      "slug": "castles-crumbling-feat-hayley-williams-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "4ABYxlb92WBIjHu7TIKmml"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "cnx5": {
+      "song_family": "i_m_only_me_when_i_m_with_you",
+      "canonical_title": "I'm Only Me When I'm With You",
+      "slug": "i-m-only-me-when-i-m-with-you",
+      "spotify_track_ids": [
+        "0JIdBrXGSJXS72zjF9ss9u",
+        "0k7VfuL6QDZDItHMfStLGr",
+        "4hBYCCUKtPLp3IKk9RJ2Gv"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "co2a": {
+      "song_family": "birch",
+      "canonical_title": "Birch",
+      "slug": "birch",
+      "spotify_track_ids": [
+        "7wo2UNeQBowm28hfAJsEMz"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "cpnm": {
+      "song_family": "forever_always_piano_version",
+      "canonical_title": "Forever & Always (Piano Version)",
+      "slug": "forever-and-always-piano-version",
+      "spotify_track_ids": [
+        "01QdEx6kFr78ZejhQtWR5m"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "cr3c": {
+      "song_family": "august",
+      "canonical_title": "august",
+      "slug": "august",
+      "spotify_track_ids": [
+        "1UHoF9p75IVsvUt6WdTYhn",
+        "1X2cYhcDMfDtiRIYHZCpQu",
+        "3hUxzQpSfdDqwM3ZTFQY0K",
+        "4MGexoZc12lqE0hYkq9YYx",
+        "4Sj0m6AOQRgczw8Q4Q6jb0"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "crz5": {
+      "song_family": "we_were_happy",
+      "canonical_title": "We Were Happy (Taylor's Version) (From The Vault)",
+      "slug": "we-were-happy-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "34V9RiEPe8MNdU32qJsJa1"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ct16": {
+      "song_family": "my_boy_only_breaks_his_favorite_toys",
+      "canonical_title": "My Boy Only Breaks His Favorite Toys",
+      "slug": "my-boy-only-breaks-his-favorite-toys",
+      "spotify_track_ids": [
+        "05msZuGKP3OCUGQnvLBOf4",
+        "2XXwLdtuAcE0HSCu61ijAb",
+        "7uGYWMwRy24dm7RUDDhUlD"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "d4ki": {
+      "song_family": "mastermind",
+      "canonical_title": "Mastermind",
+      "slug": "mastermind",
+      "spotify_track_ids": [
+        "1QQii3pa5m8MEda0nbkjfw",
+        "6pXGAXMfoi7q7sek9uCFSL",
+        "7FmYn9e7KHMXcxqGSj9LjH"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "db8r": {
+      "song_family": "how_you_get_the_girl",
+      "canonical_title": "How You Get The Girl",
+      "slug": "how-you-get-the-girl",
+      "spotify_track_ids": [
+        "0fM9dEhUFV4MHDuJgrcfOv",
+        "0uBYyYTfuuDigZvBN6HnUt",
+        "1h4lAVDzDt8oQY2yHTEdRx",
+        "2juzwShPy28xL3umOogU3u",
+        "4dYUOfmWna6DFccnz732n8",
+        "6wfugRLamFsTRbPcCpNnP7",
+        "733OhaXQIHY7BKtY3vnSkn",
+        "75W3SngKzTuoQ94uLf3y82"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "deml": {
+      "song_family": "long_live_chartsnapshot_historical_single",
+      "canonical_title": "Long Live",
+      "slug": "long-live",
+      "spotify_track_ids": [
+        "6trbb1ao6xqh6FjKc0BRYF"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "dfdd": {
+      "song_family": "welcome_to_new_york",
+      "canonical_title": "Welcome To New York",
+      "slug": "welcome-to-new-york",
+      "spotify_track_ids": [
+        "10nqz67NQWWa7XPq7ycihi",
+        "1hR8BSuEqPCCZfv93zzzz9",
+        "2i54CJa3pEfUjTRhAU7y6R",
+        "33Kq0AT5rvwyE4azisG08x",
+        "3nRmDz7qGCvsMS30rGGY0x",
+        "4WUepByoeqcedHoYhSNHRt",
+        "4YugJd2i96PHwaflBauhXi",
+        "64FIHbthA4RhBv6fL6DGBO",
+        "6qnM0XXPZOINWA778uNqQ9"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "dwj2": {
+      "song_family": "the_bolter",
+      "canonical_title": "The Bolter",
+      "slug": "the-bolter",
+      "spotify_track_ids": [
+        "1lCtHhx85FmwyUmwkKN1Ia",
+        "2913xXOVAIDAqxzV2g4VcU"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "dwoh": {
+      "song_family": "i_can_do_it_with_a_broken_heart",
+      "canonical_title": "I Can Do It With a Broken Heart",
+      "slug": "i-can-do-it-with-a-broken-heart",
+      "spotify_track_ids": [
+        "0Z8YQJNXTCZqflWehjoJqJ",
+        "0hFF0aqyjDwDh6SQwRbTyx",
+        "2PGIFYRG1XWsPqNG14hgD1",
+        "2fPvQfGQEZOKtJ9qXeL4x8",
+        "4dgf2DYVJbtmy8zAYLs4c7",
+        "4n93SK7dQsQVu9BM5QzvAx",
+        "4q5YezDOIPcoLr8R81x9qy"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "e29n": {
+      "song_family": "clean",
+      "canonical_title": "Clean",
+      "slug": "clean",
+      "spotify_track_ids": [
+        "06WgOCf0LV2h4keYXDRnuh",
+        "0lKUBmEyQfzsQHozyeXzES",
+        "0w5HrA1s3WZIqAUYicJo0A",
+        "1NmVZsG18CzCAtw7rnV3yA",
+        "2ByBBvpR9b7IynvRmnG7kG",
+        "4bXCcoesMt8u99xMsbLr9U",
+        "5F2684mgHARE8q5QxYY8RJ",
+        "7AiIXVMIrTqHlGn7bS3f31"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "e31g": {
+      "song_family": "out_of_the_woods",
+      "canonical_title": "Out Of The Woods",
+      "slug": "out-of-the-woods",
+      "spotify_track_ids": [
+        "045ZeOHPIzhxxsm8bq5kyE",
+        "0qUnBLZ8bJqUNEeQgayL9t",
+        "1OcSfkeCg9hRC2sFKB4IMJ",
+        "4WrJR6LJ8MtIxouKHUkTEM",
+        "5OndtwLGA9O6XHFcGm2H7r",
+        "5ckUacHVEsmgJI7akKHadD",
+        "6Nde5KuTXyB7jlPO4upaBo",
+        "7x86Zn0YFrNyKQ9O7um0v2"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "e66b": {
+      "song_family": "fearless",
+      "canonical_title": "Fearless",
+      "slug": "fearless",
+      "spotify_track_ids": [
+        "15PRxID4aGtOncbffzgZXI",
+        "1ReKQQQEroKx3MMU0KaQoi",
+        "4lIbdZwGa2hgkxigHJumaV",
+        "5Gz9GFSwHObbmjSRHgTphe",
+        "5dwLFuYXsOikE1BMoBDMN6",
+        "5g7RMU3cV7zXWH244BLe7G",
+        "6Eu31gddWw0gOGO506pJYA",
+        "6zV8AVM9eVfdG7Qahwd64R",
+        "77sMIMlNaSURUAXq5coCxE",
+        "7C7usPxKM74lA8HJbCqZnz"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "e6cz": {
+      "song_family": "teardrops_on_my_guitar_chartsnapshot_external_2y2Y9tGc",
+      "canonical_title": "Teardrops On My Guitar",
+      "slug": "teardrops-on-my-guitar",
+      "spotify_track_ids": [
+        "2y2Y9tGcZLGNFfTCasJfgb"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "e7em": {
+      "song_family": "the_way_i_loved_you",
+      "canonical_title": "The Way I Loved You",
+      "slug": "the-way-i-loved-you",
+      "spotify_track_ids": [
+        "04LDcz3RX1P5sIlzQGqgUN",
+        "0j42731ciU2x6LW4PJRnEv",
+        "1e380XUelS0g4AyrUfHKHL",
+        "22bPsP2jCgbLUvh82U0Z3M",
+        "5P4wWhUYWM0IaVYLuZxdar",
+        "77VotUUL79U10TAnYdqwvr",
+        "7lzMAvyDZyZm1hPMLpfIXy"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "eibn": {
+      "song_family": "speak_now",
+      "canonical_title": "Speak Now",
+      "slug": "speak-now",
+      "spotify_track_ids": [
+        "24DefNCFiWTP8OjYWiXuYe",
+        "2PBghI9zJkQEWBzMSMo2Ki",
+        "35XDhcPNgNczxX0aUmiuKH",
+        "3QFB14MOUf3imlyISNmrbT",
+        "5KNF5SJKehiNxuvavYTc9j",
+        "5xXqyjLicvEpch72qEryFT",
+        "6nHV1NXioyCPpewRMh2DxC",
+        "7dXKdjpOaH2iwfFKmUj7aq"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ev97": {
+      "song_family": "carolina_where_the_crawdads_sing_video_edition",
+      "canonical_title": "Carolina - \"Where The Crawdads Sing\" - Video Edition",
+      "slug": "carolina-where-the-crawdads-sing-video-edition",
+      "spotify_track_ids": [
+        "12xIjI9A9UlB6zEc7kyZ06"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "f4r3": {
+      "song_family": "ronan",
+      "canonical_title": "Ronan",
+      "slug": "ronan",
+      "spotify_track_ids": [
+        "0Nw8hv79MLJa1yjtsEgz08",
+        "0WE0h1qUWJBt97DtvuMWRN",
+        "7nWui6jiMM2m9qFmET1Mtj"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "fap1": {
+      "song_family": "when_emma_falls_in_love",
+      "canonical_title": "When Emma Falls in Love (Taylor's Version) (From The Vault)",
+      "slug": "when-emma-falls-in-love-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "0zo975x58DlXbZllWvfYhg"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "fn0u": {
+      "song_family": "all_too_well_chartsnapshot_external_4foqCyc6",
+      "canonical_title": "All Too Well",
+      "slug": "all-too-well",
+      "spotify_track_ids": [
+        "4foqCyc68cBj3D0yFxsI3j"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "fq8v": {
+      "song_family": "last_christmas",
+      "canonical_title": "Last Christmas",
+      "slug": "last-christmas",
+      "spotify_track_ids": [
+        "2IprIjGNRlj3TfqUWCAo0C"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "fxdr": {
+      "song_family": "wi_h_li_t",
+      "canonical_title": "Wi$h Li$t",
+      "slug": "wi-h-li-t",
+      "spotify_track_ids": [
+        "1qwClaxDb5fCrLjXaAmB35",
+        "2TEQvxxQabwLQMqWMg1qGu",
+        "3Qeh4z08FfDBRfQMfDv83f",
+        "5yrrh7VYFMCNjUOIMzGNp5",
+        "6udRZQi3g501XNOcRnE9fo"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "g6fq": {
+      "song_family": "two_is_better_than_one_feat_taylor_swift",
+      "canonical_title": "Two Is Better Than One (feat. Taylor Swift)",
+      "slug": "two-is-better-than-one-feat-taylor-swift",
+      "spotify_track_ids": [
+        "1MaqkdFNIKPdpQGDzme5ss"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "g8vr": {
+      "song_family": "don_t_blame_me",
+      "canonical_title": "Don't Blame Me",
+      "slug": "don-t-blame-me",
+      "spotify_track_ids": [
+        "0OnfGJsCc1m9utfUYqid6O",
+        "1R0a2iXumgCiFb7HEZ7gUE",
+        "59ZmeIz57cGU5Gp9omjlYB",
+        "5JtXBqKLdfzwedmlUjjqAm"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "gcni": {
+      "song_family": "i_know_places",
+      "canonical_title": "I Know Places",
+      "slug": "i-know-places",
+      "spotify_track_ids": [
+        "1ULabO0PEsdJekqVH6G10G",
+        "2f0GI2ZLUtbGqFx8t2Gk6A",
+        "2zfgVd034GlUvk7LqBHl6u",
+        "3jBMHD19RZdAqG9iFQh7xc",
+        "4Dzma7nri1H2XNQ7b8Fs5b",
+        "4FoV729rw7IhoKlMZW5K5V",
+        "4JQm7ebhsrt10wmrP6AfXL",
+        "56dqIqcOU4iuDb8EXpgpv4",
+        "6Ck9WerfsyvC4v4AylUoDp",
+        "6EwNJz8CuVsrsLvXprJ20Q",
+        "6xxSYpv0gGX7V7Bikx1gGy"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "gigl": {
+      "song_family": "fortnight",
+      "canonical_title": "Fortnight (feat. Post Malone)",
+      "slug": "fortnight-feat-post-malone",
+      "spotify_track_ids": [
+        "1gejz5ROvJBUb6WJzkMAcc",
+        "2BUTSRKPGRsyc9FnsC5Udd",
+        "2OzhQlSqBEmt7hmkYxfT6m",
+        "6dODwocEuGzHAavXqTbwHv",
+        "7pM01Cfj8vt7z3qI2TveNT"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "gkk0": {
+      "song_family": "opalite",
+      "canonical_title": "Opalite",
+      "slug": "opalite",
+      "spotify_track_ids": [
+        "0E3Vtmgzk067KASoo0HwzV",
+        "0Ny2HkSrLtvmBVwCQywyip",
+        "0ttGLmxI0mAkMblE6iRm2S",
+        "1VCcPLfDiR1S9PJaSp5qm5",
+        "2ZbU5CJSi02RLNsldux0QQ",
+        "3yWuTOYDztXjZxdE2cIRUa",
+        "4s1Sql0NqvLh0ioDzSTaET",
+        "4utwUoDcx4zhAKXd4DD6P6",
+        "5SkuikJwvwfEvNyCepGkq3",
+        "5t1wMjV9ldVDdYs4l7mG2g",
+        "7EWLNUpx0QWUCYfmBJS9qb",
+        "7vf4GBEJmv0uXojpr5qPMX",
+        "7y16ygjcEcfo1VYKxmgVZY"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "gkl2": {
+      "song_family": "i_hate_it_here",
+      "canonical_title": "I Hate It Here",
+      "slug": "i-hate-it-here",
+      "spotify_track_ids": [
+        "3hlGuz3loYoLfI3bpwieWq"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "gzw0": {
+      "song_family": "message_in_a_bottle_fat_max_g_remix_taylors_version",
+      "canonical_title": "Message In A Bottle (Fat Max G Remix) (Taylor's Version)",
+      "slug": "message-in-a-bottle-fat-max-g-remix-taylor-s-version",
+      "spotify_track_ids": [
+        "3tGq7hWDCtrnL83y5OGual"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "h4un": {
+      "song_family": "hey_stephen",
+      "canonical_title": "Hey Stephen",
+      "slug": "hey-stephen",
+      "spotify_track_ids": [
+        "0wN94hAOTCu4Vv4TCbhVZD",
+        "3CI1f4yLwdHzcUnH7o0Xyh",
+        "3Uown9ZvhJcCBJBHOXRRhS",
+        "4WXzzCof26KJLTK5kK53dS",
+        "4fWDgRZa0GKE5KZNhE9MQa",
+        "550erGcdD9n6PnwxrvYqZT",
+        "6wcFdMmiDscAhZJrcVFumx",
+        "7Ae2hYOcJmLbGCYIA3M1VM"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "h8hc": {
+      "song_family": "silent_night",
+      "canonical_title": "Silent Night",
+      "slug": "silent-night",
+      "spotify_track_ids": [
+        "1cJkUN5LAotktryx2nPCr7"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "he2j": {
+      "song_family": "i_almost_do",
+      "canonical_title": "I Almost Do",
+      "slug": "i-almost-do",
+      "spotify_track_ids": [
+        "1eyqSYBCTane4rl4vc6PWJ",
+        "2L3QJeJer1VeCLM7Belldq",
+        "2r9CbjYgFhtAmcFv1cSquB",
+        "2rLYkfJSgTPtOTLjYEdozL",
+        "31pEV5lPJi7btskZoUr2yu",
+        "47D2v5qxq9BFVQV1cH5P8w",
+        "5VwFkx7JOimOGTYfha5rs1"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "hj9a": {
+      "song_family": "state_of_grace_chartsnapshot_external_4pvmbMjy",
+      "canonical_title": "State Of Grace",
+      "slug": "state-of-grace",
+      "spotify_track_ids": [
+        "4pvmbMjyRH4tKJiw1CjWic"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "hl1j": {
+      "song_family": "enchanted",
+      "canonical_title": "Enchanted",
+      "slug": "enchanted",
+      "spotify_track_ids": [
+        "04S1pkp1VaIqjg8zZqknR5",
+        "0ruvufCIGCWaf67Tb8R64O",
+        "10eBRyImhfqVvkiVEGf0N0",
+        "1eGBTPSSrr9Lem1BVKzgia",
+        "2XkUgopshJmI1WqFTkury3",
+        "3lm4L3pPL32PFy74dR17OR",
+        "3sW3oSbzsfecv9XoUdGs7h",
+        "3sqrvkNC6IPTIXvvbx9Arw"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "hl6h": {
+      "song_family": "tis_the_damn_season",
+      "canonical_title": "'tis the damn season",
+      "slug": "tis-the-damn-season",
+      "spotify_track_ids": [
+        "4GBkffrtA51p17JH35irGA",
+        "6sQckd3Z8NPxVVKUnavY1F",
+        "7dW84mWkdWE5a6lFWxJCBG"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "htjw": {
+      "song_family": "bad_blood",
+      "canonical_title": "Bad Blood (feat. Kendrick Lamar)",
+      "slug": "bad-blood-feat-kendrick-lamar",
+      "spotify_track_ids": [
+        "0TvQLMecTE8utzoNmvXRbK",
+        "0Xtgj2RuEo5FInZ0b4KYuY",
+        "0yN4fNzmVnmgC0dsOoi9Wh",
+        "273dCMFseLcVsoSWx59IoE",
+        "2NlmmAjGYrrjAp0MED5rGx",
+        "2fkN3ago8ded5UG0LqHKB5",
+        "3QdYxkiZu3ilLRHU6lXYvn",
+        "64FzgoLZ3oXu2SriZblHic",
+        "6bzWVosI1yQkHUrN22cMWE",
+        "6qAcApH8obo8eqatCKUHd9",
+        "6xsEAm6w9oMQYYg3jkEkMT",
+        "7oZONwFiFIErZcXAtTu7FY"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "hu7u": {
+      "song_family": "i_heart",
+      "canonical_title": "I Heart ?",
+      "slug": "i-heart",
+      "spotify_track_ids": [
+        "2HxTSD72RBQR31HtyX72sf",
+        "2kttlwS9VA4Lc5ONJ5WeX8"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "hx0m": {
+      "song_family": "superman",
+      "canonical_title": "Superman",
+      "slug": "superman",
+      "spotify_track_ids": [
+        "2R7C9dDqv1UPycvepBFziA",
+        "4evLyY5Ue1Wesc61t2KXAU",
+        "6aJ0ipi4EPmu1aTbFeXZnw"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "i4ge": {
+      "song_family": "shake_it_off_chartsnapshot_external_5luKF6M5",
+      "canonical_title": "Shake It Off",
+      "slug": "shake-it-off",
+      "spotify_track_ids": [
+        "5luKF6M5ULje5PERMqbDbV"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "idsn": {
+      "song_family": "mr_perfectly_fine",
+      "canonical_title": "Mr. Perfectly Fine (Taylor's Version) (From The Vault)",
+      "slug": "mr-perfectly-fine-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "2CYVETnhM9aytqrazYYwrK"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "igp1": {
+      "song_family": "safe_and_sound",
+      "canonical_title": "Safe & Sound (feat. Joy Williams and John Paul White)",
+      "slug": "safe-and-sound-feat-joy-williams-and-john-paul-white",
+      "spotify_track_ids": [
+        "0z9UVN8VBHJ9HdfYsOuuNf",
+        "2RJnNdu4pb3MypbBroHU0T",
+        "4HGaRnv2HuMKaZMLTJQZqV",
+        "4yTqjWF2EoFJM5BbSCe4YW",
+        "6Q237Ts37YGYRIi5Vy5lVX"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "imq4": {
+      "song_family": "don_t_you",
+      "canonical_title": "Don't You (Taylor's Version) (From The Vault)",
+      "slug": "don-t-you-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "4uuEGH5SVuzkkSFjo2DEiY"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "iygt": {
+      "song_family": "christmases_when_you_were_mine",
+      "canonical_title": "Christmases When You Were Mine",
+      "slug": "christmases-when-you-were-mine",
+      "spotify_track_ids": [
+        "1g09DZjQ7yBommCT6POY2n"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "jbyn": {
+      "song_family": "the_manuscript",
+      "canonical_title": "The Manuscript",
+      "slug": "the-manuscript",
+      "spotify_track_ids": [
+        "1DTRUYVd8rYpla9hhVVwjo"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "jcfg": {
+      "song_family": "the_other_side_of_the_door",
+      "canonical_title": "The Other Side Of The Door",
+      "slug": "the-other-side-of-the-door",
+      "spotify_track_ids": [
+        "0xvsgzM8AtBtRHZm5rav8A",
+        "1cSFlSBdpT4F5vb1frQ231",
+        "1yDJcXc549N6AabNBzFAku"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "jctp": {
+      "song_family": "our_song",
+      "canonical_title": "Our Song",
+      "slug": "our-song",
+      "spotify_track_ids": [
+        "0EQovrrG0oNLPLJrVGKqj0",
+        "15DeqWWQB4dcEWzJg15VrN",
+        "1auFjTunCeF0jbFhCx9WSZ",
+        "3iaYan8tKzKGP0MNWbSgxM"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "jdke": {
+      "song_family": "im_only_me_when_im_with_you",
+      "canonical_title": "I’m Only Me When I’m With You",
+      "slug": "i-m-only-me-when-i-m-with-you",
+      "spotify_track_ids": [
+        "1nmUwsjwOgeBxETJ51VMjx"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "jdng": {
+      "song_family": "better_man",
+      "canonical_title": "Better Man (Taylor's Version) (From The Vault)",
+      "slug": "better-man-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "3EXetjrGgwIjDRNn6YA8sa",
+        "4OmFmE0fzcMG6g0Y8p4eSD"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "jjyp": {
+      "song_family": "a_place_in_this_world",
+      "canonical_title": "A Place in this World",
+      "slug": "a-place-in-this-world",
+      "spotify_track_ids": [
+        "07hRnco0bhycHEh6k92Xlk",
+        "0be2GMLqyJKvlMVimVRl9z",
+        "5jPbjmpn2I9mw7HvSWvqFu",
+        "73OX8GdpOeGzKC6OvGSbsv"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "jkg0": {
+      "song_family": "delicate_sawyr_and_ryan_tedder_mix",
+      "canonical_title": "Delicate - Sawyr And Ryan Tedder Mix",
+      "slug": "delicate-sawyr-and-ryan-tedder-mix",
+      "spotify_track_ids": [
+        "6SYwJcqaltK2WFRmD1unUV"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "jnbx": {
+      "song_family": "this_is_me_trying",
+      "canonical_title": "this is me trying",
+      "slug": "this-is-me-trying",
+      "spotify_track_ids": [
+        "0j5renyfv1ChCoe1ca7bDP",
+        "1gaLZjPrDnHQWJds2Jg4KT",
+        "3np6rogpYUEmSeXPYy7gq4",
+        "5DnDBYrfGoxdnomqEAkFIv",
+        "7kt9e9LFSpN1zQtYEl19o1"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "jnnm": {
+      "song_family": "teardrops_on_my_guitar_alternate_version",
+      "canonical_title": "Teardrops On My Guitar - Alternate Version",
+      "slug": "teardrops-on-my-guitar-alternate-version",
+      "spotify_track_ids": [
+        "25CuBWzP3f3mngylSUgNaZ"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "k4s8": {
+      "song_family": "illicit_affairs",
+      "canonical_title": "illicit affairs",
+      "slug": "illicit-affairs",
+      "spotify_track_ids": [
+        "2NmsngXHeC1GQ9wWrzhOMf",
+        "3Qc5EXc8KGy8Z0f8yGKYDW",
+        "560uQyz3p5G9WdnMX39xc6",
+        "7CVTowKpGPA2MsIbkTl2oc"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "kfua": {
+      "song_family": "love_story",
+      "canonical_title": "Love Story",
+      "slug": "love-story",
+      "spotify_track_ids": [
+        "1D4PL9B8gOg78jiHg3FvBb",
+        "1vrd6UOGamcKNGnSHJQlSt",
+        "3CeCwYWvdfXbZLXFhBrbnf",
+        "3RNDw7yywLNyawDKV99hTx",
+        "4RBKAqJ3qyvvriDG0s9IJ3",
+        "5RaBeejGtdPEszYEKYECs2",
+        "5xPsybHWRHbTYO44xnREY5",
+        "6SgBWLgjMQdoVQytBgATGx",
+        "6YvqWjhGD8mB5QXcbcUKtx",
+        "7D4bd801muwRfuo5F3KkGk",
+        "7bad461siaxECNlaYsmIo6"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "khgk": {
+      "song_family": "clara_bow",
+      "canonical_title": "Clara Bow",
+      "slug": "clara-bow",
+      "spotify_track_ids": [
+        "1UlhrRvYzbHEyugEDspXUB",
+        "4d9PtIEVij9jW5OaLinH66"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "km1r": {
+      "song_family": "christmas_tree_farm",
+      "canonical_title": "Christmas Tree Farm",
+      "slug": "christmas-tree-farm",
+      "spotify_track_ids": [
+        "1alAo6dYalSx8yZUn17JxF",
+        "2mvabkN1i2gLnGAPUVdwek",
+        "4mKye6Z1kXuKolzMkJoKFA",
+        "50ho0AOvkm8E5l8zf7OfJI"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "kshl": {
+      "song_family": "evermore",
+      "canonical_title": "evermore (feat. Bon Iver)",
+      "slug": "evermore-feat-bon-iver",
+      "spotify_track_ids": [
+        "3O5osWf1rSoKMwe6E9ZaXP",
+        "6Wlq9rqkxrqj5Kls4Kw14H"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "kvxa": {
+      "song_family": "the_last_great_american_dynasty",
+      "canonical_title": "the last great american dynasty",
+      "slug": "the-last-great-american-dynasty",
+      "spotify_track_ids": [
+        "09Ez3CZ2kXszZwYoyKpYH9",
+        "28tIMaewZuGR8urkvFhQyA",
+        "2Eeur20xVqfUoM3Q7EFPFt",
+        "4ojxSyrEraN7d46BMBPThZ"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "kzbl": {
+      "song_family": "i_knew_you_were_trouble_chartsnapshot_external_1MDcFu6z",
+      "canonical_title": "I Knew You Were Trouble.",
+      "slug": "i-knew-you-were-trouble",
+      "spotify_track_ids": [
+        "1MDcFu6z8XNDGFyh5FIHee"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "kztc": {
+      "song_family": "i_want_you_back_live2011",
+      "canonical_title": "I Want You Back - Live/2011",
+      "slug": "i-want-you-back-live-2011",
+      "spotify_track_ids": [
+        "4KB3zBArZ1rHRExilzycaV"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "l3w9": {
+      "song_family": "stay_stay_stay",
+      "canonical_title": "Stay Stay Stay",
+      "slug": "stay-stay-stay",
+      "spotify_track_ids": [
+        "0F2S1QlnMaOfmNHIgmES3k",
+        "1ftFtW8S1621tu0MIQy0Sg",
+        "1qLeEu4iXEclkLwoBlMiou",
+        "1x0J8LFX23d5h1zzuzZorc",
+        "4sFwzqXqNcNV3cTyTybq0M",
+        "6c38bS1QsXCuqxycGAgoRH",
+        "6qOF7qaj6vWfBIDyaUfFvP",
+        "7eQj6r5PIdYKEIZjucBMcq"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "l5ks": {
+      "song_family": "the_outside",
+      "canonical_title": "The Outside",
+      "slug": "the-outside",
+      "spotify_track_ids": [
+        "2QA3IixpRcKyOdG7XDzRgv",
+        "4prldYE5Z0GxtLdO1XhgzH",
+        "6ZNW3DdJVZwPvZ8fuGfW6o",
+        "743KlSMdeOl9JJ0nNHTEKR"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "l7b8": {
+      "song_family": "nothing_new",
+      "canonical_title": "Nothing New (feat. Phoebe Bridgers) (Taylor's Version) (From The Vault)",
+      "slug": "nothing-new-feat-phoebe-bridgers-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "01K4zKU104LyJ8gMb7227B"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "lbxe": {
+      "song_family": "haunted",
+      "canonical_title": "Haunted",
+      "slug": "haunted",
+      "spotify_track_ids": [
+        "11UaQaEp2LvdspTyyuE3ur",
+        "28M2gifMU282QBM3fKajIS",
+        "2kv8uTMNaaxpXFkmFdVjat",
+        "4tMzIAFTFdqGBQLdfbPces",
+        "62rlxI6g2PNaWsHoiRryto",
+        "6PiiQa5q6FjhBfaPsCp4mJ",
+        "6PnszbMFmzHaxT2ANFgRVQ",
+        "6SdBf0ZsJZoKaH5zcDaz9X",
+        "6znB7YZhMJT2B83zfbiyLq",
+        "72idZxdEHLbi2YI486c3sE"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "lho7": {
+      "song_family": "tolerate_it",
+      "canonical_title": "tolerate it",
+      "slug": "tolerate-it",
+      "spotify_track_ids": [
+        "0PurA4JVJ8YQgSVopY8fn6",
+        "1t2M7UYoUpmhfZNMBsymJr",
+        "6lCvK2AR2uOKkVFCVlAzzm"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "llef": {
+      "song_family": "eyes_open",
+      "canonical_title": "Eyes Open",
+      "slug": "eyes-open",
+      "spotify_track_ids": [
+        "0gPmM1WtVRg3uENW3o8bfx",
+        "2NIBaWXdjaTDmytjjwbEfP",
+        "6KEemo78n0RnCQWKkeOdXz",
+        "7wjbSn8QHsxqKXU5M0jXGM"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "lq9l": {
+      "song_family": "is_it_over_now",
+      "canonical_title": "Is It Over Now? (Taylor's Version) (From The Vault)",
+      "slug": "is-it-over-now-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "1Iq8oo9XkmmvCQiGOfORiz",
+        "6IG3sQ8s9nfk6TUlVzRhbN"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "m0em": {
+      "song_family": "you_are_in_love",
+      "canonical_title": "You Are In Love",
+      "slug": "you-are-in-love",
+      "spotify_track_ids": [
+        "0TyGh27YQ5LknmiDhCzJiT",
+        "2KrOAg6FftbjgSKdd2a4rS",
+        "4A2LfnduSTsE8u0ecYROxE",
+        "4UwqOWDpdeIDVQDuKT6iza",
+        "4xUyg90BLSnPFXbqDAlBKF"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "m16s": {
+      "song_family": "state_of_grace",
+      "canonical_title": "State Of Grace",
+      "slug": "state-of-grace",
+      "spotify_track_ids": [
+        "0b16LTzby1YRVd2nq2Z0fw",
+        "2CUK34XwIWbs6J4ZJ5cFdU",
+        "5G9AVKld9q7DCrmoY42raf",
+        "5lFDIbYMcFHPPgzMcnPqSz",
+        "5mfDBWY7ncZFm7ykmFTG4i",
+        "5zyCYmiaVE5y26EZuwZbsw",
+        "6lzc0Al0zfZOIFsFvBS1ki",
+        "786NsUYn4GGUf8AOt0SQhP",
+        "7HbZuazpPbDDMkb8Tmvxq0",
+        "7r7RyzNBFfTRH9NRVBrFhJ"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "m768": {
+      "song_family": "christmas_must_be_something_more",
+      "canonical_title": "Christmas Must Be Something More",
+      "slug": "christmas-must-be-something-more",
+      "spotify_track_ids": [
+        "31JVjy3XWnh6C2zf4kLCXN"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "mb5b": {
+      "song_family": "untouchable",
+      "canonical_title": "Untouchable",
+      "slug": "untouchable",
+      "spotify_track_ids": [
+        "0tQ9vBYpldCuikPsbgOVKA",
+        "2IZ00ed83ygPIiacYScWUE",
+        "4MbHDiHQjhmoVAV75G04Ql",
+        "6ovFJkdau79DuXEvQjPaNH"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "mitr": {
+      "song_family": "never_grow_up",
+      "canonical_title": "Never Grow Up",
+      "slug": "never-grow-up",
+      "spotify_track_ids": [
+        "0eRpceXMfMVYhMVrVkgWxS",
+        "1wJL1A0QUHJPf2cm7tsrdw",
+        "2EFZ9emtKWEglWUQGEQ3P9",
+        "3JilapcaOXzjR9gtvCY8FO",
+        "3d1fzbROHb17uYI40hbql7",
+        "57w0Uyk2jJAkO2hMJ36xJZ",
+        "5v3FHVgMp8AKLxMT0X7zph"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "mlbj": {
+      "song_family": "gorgeous",
+      "canonical_title": "Gorgeous",
+      "slug": "gorgeous",
+      "spotify_track_ids": [
+        "0CLnkxpa3M4eA3HeGaERat",
+        "12WvaS3V4dPRBU2o37vX69",
+        "1ZY1PqizIl78geGM4xWlEA",
+        "3ZHTwJzCNDFvjLpVQiqpH6",
+        "5Gd19NupVe5X8bAqxf9Iaz",
+        "7enXOiKyiRhg84vgU8N8VS",
+        "7ut4Y7gxOFe3d3rLJQ7i5w"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "mp9d": {
+      "song_family": "carolina_from_the_motion_picture_where_the_crawdads_sing",
+      "canonical_title": "Carolina - From The Motion Picture “Where The Crawdads Sing”",
+      "slug": "carolina-from-the-motion-picture-where-the-crawdads-sing",
+      "spotify_track_ids": [
+        "2SVQOjsBI42bbaEeBFk5Uy",
+        "4axSuOg3BqsowKjRpj59RU"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "mwha": {
+      "song_family": "how_did_it_end",
+      "canonical_title": "How Did It End?",
+      "slug": "how-did-it-end",
+      "spotify_track_ids": [
+        "2AS8i1xuWmeWGBBwI69vfn",
+        "5Bedn0svl0ZD7RGmJkmKKw"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "mx5r": {
+      "song_family": "shake_it_off_chartsnapshot_external_5VqtAFyt",
+      "canonical_title": "Shake It Off",
+      "slug": "shake-it-off",
+      "spotify_track_ids": [
+        "5VqtAFytMGL3nIsGAHJOYA"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "my92": {
+      "song_family": "dorothea",
+      "canonical_title": "dorothea",
+      "slug": "dorothea",
+      "spotify_track_ids": [
+        "3w9VRlKPvNxj40RdUGRweH",
+        "66tOfHVH3aUrscg8vExRV4",
+        "670fUmXf4KQekzbEgaXyPA"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "n3cl": {
+      "song_family": "wonderland",
+      "canonical_title": "Wonderland",
+      "slug": "wonderland",
+      "spotify_track_ids": [
+        "2ve0kuaWUCt4Zx8x4bf1MR",
+        "6HRsJu8vcnzYDN4t0570FY",
+        "6RvRzl1YJTDnUvdOtV21IK",
+        "6iWMI5oOhWrDbLbjmwTWFq",
+        "6wyqsJdxRsSM6k5hCF1pvt"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "nabz": {
+      "song_family": "message_in_a_bottle",
+      "canonical_title": "Message In A Bottle (Taylor's Version) (From The Vault)",
+      "slug": "message-in-a-bottle-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "3z6XUommYDWPHeFhmhhT6j"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "nann": {
+      "song_family": "the_lakes_bonus_track",
+      "canonical_title": "the lakes - bonus track",
+      "slug": "the-lakes-bonus-track",
+      "spotify_track_ids": [
+        "0eFQWVz0qIxDOvhLpZ40P7",
+        "0zEprKYeuGOIZoHyu6O1E2",
+        "4LghBuFPMgETxG6NcfoDp4",
+        "5dwQhzeE8LXpl9sbZJZmQS"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "nd1o": {
+      "song_family": "we_are_never_ever_getting_back_together_chartsnapshot_external_6U1sV6To",
+      "canonical_title": "We Are Never Ever Getting Back Together",
+      "slug": "we-are-never-ever-getting-back-together",
+      "spotify_track_ids": [
+        "0kfTOGpi5eZCBxcRF5LFIh",
+        "6U1sV6To5PiDattw67fHYF"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ndfx": {
+      "song_family": "teardrops_on_my_guitar_chartsnapshot_external_2OHH1jLP",
+      "canonical_title": "Teardrops On My Guitar - Acoustic Version",
+      "slug": "teardrops-on-my-guitar-acoustic-version",
+      "spotify_track_ids": [
+        "0g5eBFfWwNP7PXFGON6SB7",
+        "17Kqa6MX5uZzLK7EOEeAxo",
+        "2OHH1jLPtrNr4024V1DwZX"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ngh4": {
+      "song_family": "florida",
+      "canonical_title": "Florida!!! (feat. Florence + The Machine)",
+      "slug": "florida-feat-florence-the-machine",
+      "spotify_track_ids": [
+        "3ZVFcD8Wlw9T9klGqmJf9F",
+        "5ExOm0dh4NyRyAdSAO9hyM"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "nh32": {
+      "song_family": "snow_on_the_beach",
+      "canonical_title": "Snow On The Beach (feat. Lana Del Rey)",
+      "slug": "snow-on-the-beach-feat-lana-del-rey",
+      "spotify_track_ids": [
+        "1wtOxkiel43cVs0Yux5Q4h",
+        "4zmKGsrXjLmljb5fTaBTot",
+        "7GA86Uo2jYbj8vIXe2nyWd"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ni3v": {
+      "song_family": "loml",
+      "canonical_title": "loml",
+      "slug": "loml",
+      "spotify_track_ids": [
+        "3YkNIrAvbKNrrwwEd7NVLl",
+        "4bDHouthhkbXJaaCem7mhX",
+        "6RSG1dKPV5gEvILwJb4QtS"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "nn88": {
+      "song_family": "the_moment_i_knew",
+      "canonical_title": "The Moment I Knew",
+      "slug": "the-moment-i-knew",
+      "spotify_track_ids": [
+        "0NRHj8hDwwmSPaA41o379r",
+        "4qTAwKJQ68gmnrnfPD3vlO",
+        "5AsmAjBSSQjRPWgAYIp8tm"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "notg": {
+      "song_family": "cardigan",
+      "canonical_title": "cardigan",
+      "slug": "cardigan",
+      "spotify_track_ids": [
+        "1bdZ8KOFXEqI4nPR2mErtl",
+        "2hmafYGj1CXYKIYcMnX4lj",
+        "3EPgWM1zfTSzEc0z4AwWTM",
+        "4LEK9rD7TWIG4FCL1s27XC",
+        "4R2kfaDFhslZEMJqAFNpdd",
+        "7zcnlq38eqNWyUF6eNaB5Z"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "nw5a": {
+      "song_family": "new_year_s_day",
+      "canonical_title": "New Year's Day",
+      "slug": "new-year-s-day",
+      "spotify_track_ids": [
+        "13tYZVTtzLUJTlM7m1ivbi",
+        "518FPNbDfkkxamoeR6lGo3",
+        "79bxjfUDHCwCe7JR4glr8r",
+        "7F5oktn5YOsR9eR5YsFtqb"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "nws6": {
+      "song_family": "foolish_one",
+      "canonical_title": "Foolish One (Taylor's Version) (From The Vault)",
+      "slug": "foolish-one-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "4s8BIKx4Zh6ryAEz8RTlaU"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "nxg3": {
+      "song_family": "teardrops_on_my_guitar",
+      "canonical_title": "Teardrops On My Guitar",
+      "slug": "teardrops-on-my-guitar",
+      "spotify_track_ids": [
+        "0VsL7c4EBrLgaNfHQep2oy",
+        "0q0YAWyXhDggKzeicHhtfa",
+        "2RM02ladxD5mgdrlAwh3h9",
+        "4DjevQhsPWULcondN4mRh5",
+        "4pJi1rVt9GNegU9kywjg4z",
+        "60oZARTE1kCh5ntBfeO1XB",
+        "6pwfOVtNVEvIYF6x0h45En",
+        "7gfzBsM4xaMb8c2WdpzEat",
+        "7zMcNqs55Mxer82bvZFkpg"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ny9o": {
+      "song_family": "the_prophecy",
+      "canonical_title": "The Prophecy",
+      "slug": "the-prophecy",
+      "spotify_track_ids": [
+        "18WFFUIsewmA8g31KAeo3e"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "o1ef": {
+      "song_family": "the_smallest_man_who_ever_lived",
+      "canonical_title": "The Smallest Man Who Ever Lived",
+      "slug": "the-smallest-man-who-ever-lived",
+      "spotify_track_ids": [
+        "18ohHg4G5Svm0kaJFQsJ12",
+        "1xtw1krCR6Dw2KwkXw5z63",
+        "2v1ivOOsgn64g5OywuH55L",
+        "4GBbcyrbDzwRtQjrsDRywK"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "o34x": {
+      "song_family": "so_high_school",
+      "canonical_title": "So High School",
+      "slug": "so-high-school",
+      "spotify_track_ids": [
+        "1GP8VW5Wk2w2obkWjGCGXd",
+        "1J1ldDi3rMQlRi49gaba0a",
+        "7Mts0OfPorF4iwOomvfqn1"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "o7zx": {
+      "song_family": "everything_has_changed",
+      "canonical_title": "Everything Has Changed",
+      "slug": "everything-has-changed",
+      "spotify_track_ids": [
+        "2XD0r1dj4JinxYTSYx71fe",
+        "3Z1kZKYfRC8iRXnYeC5sCJ",
+        "3an4u3iZSy63ygYcWslJ5f",
+        "4NAmRvqSITAAzKWnC8yRq3",
+        "536W1zo5ngO1mOTRG8cg6G",
+        "633FwmKmrHWn6sLTL3db72",
+        "7gdwoOmi258QJq0hmQ4hto",
+        "7qEUFOVcxRI19tbT68JcYK"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "o89h": {
+      "song_family": "love_story_j_stax_radio_mix",
+      "canonical_title": "Love Story - J Stax Radio Mix",
+      "slug": "love-story-j-stax-radio-mix",
+      "spotify_track_ids": [
+        "4i0M7glXqIIRKPwbLtpExi"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "oaa8": {
+      "song_family": "delicate",
+      "canonical_title": "Delicate",
+      "slug": "delicate",
+      "spotify_track_ids": [
+        "2Sy2oGjP5RYB4cLVoDU0Gz",
+        "2XmWRdsQlXna2gcAn1Dquv",
+        "58q1k1dMUO6WM34yKspSD2",
+        "5Iadj8IBPrt634WW0yGPRI",
+        "5sOch9Cf4uxcMtwFzMtNqQ",
+        "6NFyWDv5CjfwuzoCkw47Xf",
+        "7CneiDesUKFJO3Ix01dnfr"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "obiq": {
+      "song_family": "state_of_grace_acoustic_version",
+      "canonical_title": "State Of Grace (Acoustic Version)",
+      "slug": "state-of-grace-acoustic-version",
+      "spotify_track_ids": [
+        "5jAIouBES8LWMiriuNq170"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ocn4": {
+      "song_family": "anti_hero",
+      "canonical_title": "Anti-Hero",
+      "slug": "anti-hero",
+      "spotify_track_ids": [
+        "0V3wPSX9ygBnCm8psDIegu",
+        "16M9Rxid0nXhVmme7lzVwN",
+        "1BdZWUTQyvuBYbp3Sl2Cc0",
+        "1h0GRtSo5NeVVb1vqb5Uh1",
+        "22t8PQeP5klRoguomM4wZp",
+        "2G19YDBzl32ASNiRJ1sT9s",
+        "2d3d9xZutJjmUpntiyHt3F",
+        "2oWpe2L8ypC080BxpDVuTY",
+        "4XiypEn8iKbeP1TbTqdfk5",
+        "4YrpqEBNuz7IMsZtUP6bNQ",
+        "5qIHFdkW6phMsTZlN2g8Lc",
+        "6C0H8ts9M6deezz0yYR6LK",
+        "7mz1Dj0C0sa8tG3ykgtLpD"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ocws": {
+      "song_family": "you_re_not_sorry",
+      "canonical_title": "You're Not Sorry",
+      "slug": "you-re-not-sorry",
+      "spotify_track_ids": [
+        "022VobQaEUvn0YWqYf97HA",
+        "0HmCuN0Z3OX1Qrz43FLOPL",
+        "0ReNbPVMU7jUWqn1yHo9cE",
+        "1V7nao9bFNvjFrmrnSz19Y",
+        "4N419mmxYybTfAECy5j4dw",
+        "4VbErhGDMTnvPAnt5z70DL",
+        "6HWYtS215rxaaMjvpyG18W",
+        "6hABNvvhdtvcJNShuWhguU",
+        "6iiAfo4wTA2CVC3Uwx9uh8"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "of4a": {
+      "song_family": "youll_always_find_your_way_back_home",
+      "canonical_title": "You’ll Always Find Your Way Back Home",
+      "slug": "you-ll-always-find-your-way-back-home",
+      "spotify_track_ids": [
+        "12wSL3tGk3MtbDEhfG7xy3"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ofec": {
+      "song_family": "come_in_with_the_rain",
+      "canonical_title": "Come In With The Rain",
+      "slug": "come-in-with-the-rain",
+      "spotify_track_ids": [
+        "0cEG04R5cldkTLzK6phlcn",
+        "1n2wszmJyVkw6FHqyLnQsY",
+        "4pl5zcqCv4vc3cB7M4MZ6f"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ogox": {
+      "song_family": "stay_stay_stay_chartsnapshot_external_6HCWHsGF",
+      "canonical_title": "Stay Stay Stay",
+      "slug": "stay-stay-stay",
+      "spotify_track_ids": [
+        "6HCWHsGF3YM6BPnow9MkIR"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "okmt": {
+      "song_family": "ready_for_it_bloodpopa_remix",
+      "canonical_title": "...Ready For It? - BloodPopÃ‚Â® Remix",
+      "slug": "ready-for-it-bloodpopa-a-remix",
+      "spotify_track_ids": [
+        "1Ygm9KdH3wbzDekO8JgxcW"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "omw5": {
+      "song_family": "the_lucky_one_chartsnapshot_external_0PPT0FWj",
+      "canonical_title": "The Lucky One",
+      "slug": "the-lucky-one",
+      "spotify_track_ids": [
+        "0PPT0FWjjipsLfdNo0jqfx"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ostz": {
+      "song_family": "invisible",
+      "canonical_title": "Invisible",
+      "slug": "invisible",
+      "spotify_track_ids": [
+        "1k3PzDNjg38cWqOvL4M9vq",
+        "30Is1TtZHWvnZbsMtzwv6n",
+        "5OOd01o2YS1QFwdpVLds3r",
+        "5dNcm3dP4bdBHuFmOs2ZOG"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "owt3": {
+      "song_family": "love_story_j_stax_club_mix",
+      "canonical_title": "Love Story - J Stax Club Mix",
+      "slug": "love-story-j-stax-club-mix",
+      "spotify_track_ids": [
+        "0f4wi6bMMU5Pj6bb7Ga04R",
+        "193OdjKrgxsPHPG8fTGotc"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "oxy6": {
+      "song_family": "happiness",
+      "canonical_title": "happiness",
+      "slug": "happiness",
+      "spotify_track_ids": [
+        "0EFdoyXHpRHhEmsOlQhIXO",
+        "55Vf4bimc1Rtfg0PAQRAo2",
+        "73YUReisjb3A9ActdLLjJQ"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "p2ya": {
+      "song_family": "so_long_london",
+      "canonical_title": "So Long, London",
+      "slug": "so-long-london",
+      "spotify_track_ids": [
+        "0mWVScJbxO3tbXuiZOxYZE",
+        "3Vevii7qKqrmW8CcyzBHDl",
+        "7wAkQFShJ27V8362MqevQr"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "pn4s": {
+      "song_family": "love_story_instrumental_with_bgv",
+      "canonical_title": "Love Story - Instrumental with BGV",
+      "slug": "love-story-instrumental-with-bgv",
+      "spotify_track_ids": [
+        "2GZNZLMvT3gjCEPd6NNvvQ",
+        "6S9ZMuyJ6spObHDcTJOYlI"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "pt39": {
+      "song_family": "the_lucky_one",
+      "canonical_title": "The Lucky One",
+      "slug": "the-lucky-one",
+      "spotify_track_ids": [
+        "1J22bFnVC6Rmjxby941PDf",
+        "2X2J0BhxaLTmnxO4pPUhSd",
+        "2wtHlpYSgC7xEdD3DrSHNL",
+        "4e5ayHsOLJNLTGfjau2mEw",
+        "6UndbaRk1yOrD5NGR9tDWb",
+        "7L0RPhAgKzWRLSxdtkrXFT"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "pxm7": {
+      "song_family": "blank_space",
+      "canonical_title": "Blank Space",
+      "slug": "blank-space",
+      "spotify_track_ids": [
+        "0108kcWLnn2HlH2kedi1gn",
+        "0U3H1C9aasrSUBugEOfh1r",
+        "0yisH8r0f3Mkq34kjzUlCV",
+        "1p80LdxRV74UKvL8gnD7ky",
+        "1u8c2t2Cy7UBoG4ArRcF5g",
+        "2sC2P3BN0IXujNaaSyDmtP",
+        "45wMBGri1PORPjM9PwFfrS",
+        "4e6QU4gpfZj9xxcK856RgG",
+        "4fiLVxZ0UAsWAzUwGqkZA9",
+        "6N6V2v89hS4N9ossON5f9R"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "q0lw": {
+      "song_family": "tell_me_why",
+      "canonical_title": "Tell Me Why",
+      "slug": "tell-me-why",
+      "spotify_track_ids": [
+        "0k0vFacOHNuArLWMiH60p7",
+        "1SARZTSJ1YeXgImYzpSxef",
+        "3rnI1UCyGJvUTVvT97VQr5",
+        "42WE7fJI5dYoa10luMp3Na",
+        "4XrP7vKBjKLEYlRZdb0Ygr",
+        "4x7Gxk2GfwZJcqpoVT1PbR",
+        "6vLpy7UPYuOa75Bkqocrcw",
+        "7qZk0GASFHvIg5dB0nc6LI"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "qa48": {
+      "song_family": "the_best_day",
+      "canonical_title": "The Best Day",
+      "slug": "the-best-day",
+      "spotify_track_ids": [
+        "0ck1qErO76fM9xKxuSeqDk",
+        "0sxxlg7d2UZ60TdtcuKYZ0",
+        "2MzoTHyQgopGUL8ABcOAyr",
+        "3esA216TyLHEkNiBCeCmcg",
+        "3qcGsGTSDQYdy9xoMFj0YM",
+        "5YbZZ2gYfvW1UvHHF4pVaD",
+        "6ON9UuIq49xXY9GPmHIYRp"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "qe82": {
+      "song_family": "you_all_over_me",
+      "canonical_title": "You All Over Me (feat. Maren Morris) (Taylor's Version) (From The Vault)",
+      "slug": "you-all-over-me-feat-maren-morris-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "4CHpVfAhuxNJ3ibExe6kxO",
+        "5pcjystBtalYeqaiXCcgEY"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "qiph": {
+      "song_family": "my_tears_ricochet",
+      "canonical_title": "my tears ricochet",
+      "slug": "my-tears-ricochet",
+      "spotify_track_ids": [
+        "0Oju1YcbPCJuUQQWoZNdJK",
+        "1DnpjwTbSwV2V6O4PABMjW",
+        "1MgV7FIyNxIG7WzMRJV5HC",
+        "5JWgJQPrAD6LJbS8ILpy8i",
+        "5mdNyCS7ttVcAyVYOIFEjs"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "qo6k": {
+      "song_family": "the_albatross",
+      "canonical_title": "The Albatross",
+      "slug": "the-albatross",
+      "spotify_track_ids": [
+        "4EF6IyONolQy0bIQXm2EmX"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "qpe2": {
+      "song_family": "tied_together_with_a_smile",
+      "canonical_title": "Tied Together with a Smile",
+      "slug": "tied-together-with-a-smile",
+      "spotify_track_ids": [
+        "0BeWU1gZfv3bb2BPnva3cy",
+        "1YU4JKqPMYqpGDtcQn5Kzw",
+        "4eQCk8Vqfdr4mNK11QZGcT",
+        "6K0CJLVXqbGMeJSmJ4ENKK"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "qqvz": {
+      "song_family": "the_archer",
+      "canonical_title": "The Archer",
+      "slug": "the-archer",
+      "spotify_track_ids": [
+        "2fgiBCtbWo8pijF6M7pN1i",
+        "3pHkh7d0lzM2AldUtz2x37"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "qyva": {
+      "song_family": "sweet_nothing",
+      "canonical_title": "Sweet Nothing",
+      "slug": "sweet-nothing",
+      "spotify_track_ids": [
+        "0wavGRldH0AWyu2zvTz8zb",
+        "2L09RYwH5Pjzca6PmbUAw3"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "qzwm": {
+      "song_family": "change",
+      "canonical_title": "Change",
+      "slug": "change",
+      "spotify_track_ids": [
+        "0RdcBnAXyH2YZZvcBVu2k6",
+        "1NTxT72xu3GkYq5wIq0RG5",
+        "1yACRKAwlXWhXXFUSkvzhD",
+        "3ExweHKZF9B752DPQByRVT",
+        "3gFaNwyiafgUoQhR0pHYA9",
+        "3lNRE17Ba1Verccqe2h6td",
+        "5nUPw1RvAkqDIdebpDy3JI",
+        "69o9kr9UexjzeZDE8yD8dQ",
+        "6D0MZbrShD5AK8P2Ig6bow"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ra1c": {
+      "song_family": "who_s_afraid_of_little_old_me",
+      "canonical_title": "Who's Afraid of Little Old Me?",
+      "slug": "who-s-afraid-of-little-old-me",
+      "spotify_track_ids": [
+        "2d8UxVNhJinc8uat9PoM9y",
+        "36t6frENUtCYKuZus6aYDO",
+        "6kl8thRysTeVV3WvKxgZAy"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "raks": {
+      "song_family": "22",
+      "canonical_title": "22",
+      "slug": "22",
+      "spotify_track_ids": [
+        "0LBW7lkY7L8cQUXXB16bXO",
+        "18lJHS7U8vTCsh1tedD3n5",
+        "1wePVBS4L6xhCvVUItPAZQ",
+        "2ULNeSomDxVNmdDy8VxEBU",
+        "3bIxTsfeNMO7Nt2J3EUKrA",
+        "3yII7UwgLF6K5zW3xad3MP",
+        "5BIHTqXmBBdfdScTVyzUts",
+        "6ce41JVa6KFaryfmC2bu2W"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "rc7e": {
+      "song_family": "big_star_with_taylor_swift_live",
+      "canonical_title": "Big Star (with Taylor Swift) - Live",
+      "slug": "big-star-with-taylor-swift-live",
+      "spotify_track_ids": [
+        "7JKwboSAWRHJI5U1XGTqS3"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ris3": {
+      "song_family": "long_story_short",
+      "canonical_title": "long story short",
+      "slug": "long-story-short",
+      "spotify_track_ids": [
+        "0vVMlbdYx2080Oa9FndPZr",
+        "2o2sgVJIgFXk8GQjWTgI6U",
+        "5VYWxXUpxuxEmCqMLDqICo"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "rjdf": {
+      "song_family": "wood",
+      "canonical_title": "Wood",
+      "slug": "wood",
+      "spotify_track_ids": [
+        "0129EujhGkwtwTFADGem5P",
+        "0fWfEPHNFueq2UafmJlY6d",
+        "20QSU9vg05qYSDVgOTAwPp",
+        "4Ox858TeUXjy7WEKOcxaFI",
+        "5ylJtmaWPJ33cW3En7WOu0"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "rm03": {
+      "song_family": "mad_woman",
+      "canonical_title": "mad woman",
+      "slug": "mad-woman",
+      "spotify_track_ids": [
+        "04xrhDrQ2WOW8GLwu7kbc0",
+        "1Io0cp5dOYJWCKpCBDopdM",
+        "2QDyYdZyhlP2fp79KZX8Bi",
+        "7klXN6RCN5Rj0VeYO5gBzU"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "rm3r": {
+      "song_family": "drops_of_jupiter_live2011",
+      "canonical_title": "Drops Of Jupiter - Live/2011",
+      "slug": "drops-of-jupiter-live-2011",
+      "spotify_track_ids": [
+        "0BSmbCIY36iw04azzJ3S0S"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "rv14": {
+      "song_family": "wildest_dreams",
+      "canonical_title": "Wildest Dreams",
+      "slug": "wildest-dreams",
+      "spotify_track_ids": [
+        "0C5x4DoaPegrWqchk4SuLu",
+        "106R7Z57WYzBAfrXImV30y",
+        "1BXM0X5BxyUUOLEf9Rv6uZ",
+        "1K39ty6o1sHwwlZwO6a7wK",
+        "1Ov37jtRQ2YNAe8HzfczkL",
+        "27exgla7YBw9DUNNcTIpjy",
+        "3fVnlF4pGqWI9flVENcT28",
+        "4A4A6dwl5DqdqrZaEtKGPR",
+        "59HjlYCeBsxdI0fcm3zglw",
+        "5VDHMi7own9vDZjiwDES1e",
+        "66LjSOIkrnVlVbNaeJhyUF"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "s2gd": {
+      "song_family": "ivy",
+      "canonical_title": "ivy",
+      "slug": "ivy",
+      "spotify_track_ids": [
+        "19CSr8rwW05VJL2F91KFNK",
+        "43Ykum9T72UOPhBN31grpN",
+        "7tXMHAFEOzcUaUQqovRGho"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "sd6x": {
+      "song_family": "i_bet_you_think_about_me",
+      "canonical_title": "I Bet You Think About Me (feat. Chris Stapleton) (Taylor's Version) (From The Vault)",
+      "slug": "i-bet-you-think-about-me-feat-chris-stapleton-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "4CkgMiMqZ5JzW9iYXSTMTL"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "skm6": {
+      "song_family": "renegade_pop_version",
+      "canonical_title": "Renegade - Pop Version",
+      "slug": "renegade-pop-version",
+      "spotify_track_ids": [
+        "06zIBqLC9ZRm5i0iMf0kHI"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "sltt": {
+      "song_family": "would_ve_could_ve_should_ve",
+      "canonical_title": "Would've, Could've, Should've",
+      "slug": "would-ve-could-ve-should-ve",
+      "spotify_track_ids": [
+        "3pUa0ZxdSeaJXm0EIydD3F",
+        "4txojlesMFQZGWxwz2EeqB"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "snwm": {
+      "song_family": "i_almost_do_chartsnapshot_external_1B6UHn92",
+      "canonical_title": "I Almost Do",
+      "slug": "i-almost-do",
+      "spotify_track_ids": [
+        "1B6UHn92SZSGOwXheAKAb9"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "sqxf": {
+      "song_family": "run",
+      "canonical_title": "Run (feat. Ed Sheeran) (Taylor's Version) (From The Vault)",
+      "slug": "run-feat-ed-sheeran-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "4IQkfUsrwXol38VV3U7t7T"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ssgu": {
+      "song_family": "shouldve_said_no_the_3d_concert_experience",
+      "canonical_title": "Should've Said No - The 3D Concert Experience",
+      "slug": "should-ve-said-no-the-3d-concert-experience",
+      "spotify_track_ids": [
+        "06FXaDDdg0BzXl15cthMS5"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "syt2": {
+      "song_family": "i_knew_it_i_knew_you",
+      "canonical_title": "I Knew It, I Knew You",
+      "slug": "i-knew-it-i-knew-you",
+      "spotify_track_ids": [
+        "1jN9NsOkcQz2WWOj3kT1FC",
+        "23NnOJGyMrD7k3NaGDX0bb",
+        "4cHQ0okN97O3vqAqRN9Osu",
+        "5uPaqMMt59KGrdKIitDRqa",
+        "6ZwVl8oPsraGB177TNEzaX"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "t35q": {
+      "song_family": "me",
+      "canonical_title": "ME! (feat. Brendon Urie of Panic! At The Disco)",
+      "slug": "me-feat-brendon-urie-of-panic-at-the-disco",
+      "spotify_track_ids": [
+        "2Rk4JlNc2TPmZe2af99d45",
+        "5fOV54t6mMYv3H9CsnvU81"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "t398": {
+      "song_family": "afterglow",
+      "canonical_title": "Afterglow",
+      "slug": "afterglow",
+      "spotify_track_ids": [
+        "1SymEzIT3H8UZfibCs3TYi"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "t8uc": {
+      "song_family": "if_this_was_a_movie",
+      "canonical_title": "If This Was A Movie",
+      "slug": "if-this-was-a-movie",
+      "spotify_track_ids": [
+        "0kAZ3H6G9Zac4PMpmobMkj",
+        "0q6vsjvnCIWrtwRckCV7y0",
+        "0vvt4IZOMkRug195S4MUq0",
+        "5tSmAABuoOfR59lrtXdDqm"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "tbhk": {
+      "song_family": "bigger_than_the_whole_sky",
+      "canonical_title": "Bigger Than The Whole Sky",
+      "slug": "bigger-than-the-whole-sky",
+      "spotify_track_ids": [
+        "3jzbpOzoYa22FvzBkNkLvC",
+        "71CBDRKmF2VeRKYMG1DFBh"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "td0u": {
+      "song_family": "call_it_what_you_want",
+      "canonical_title": "Call It What You Want",
+      "slug": "call-it-what-you-want",
+      "spotify_track_ids": [
+        "0tDfp0vFR95Gg6Mrhza3lX",
+        "1GwMQaZz6Au3QLDbjbMdme",
+        "1VPHQriwOsy5aGHLwwZyho",
+        "2QD7DklEvkqncYacmhMukq",
+        "4eRp4OhES42IiokxA59E60"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "tgcd": {
+      "song_family": "you_need_to_calm_down",
+      "canonical_title": "You Need To Calm Down",
+      "slug": "you-need-to-calm-down",
+      "spotify_track_ids": [
+        "36a08nLG1xazGaaVKK0vv7",
+        "6RRNNciQGZEXnqk8SQ9yv5",
+        "7Bjf96uNizpvXLvNyOJpst"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "thzh": {
+      "song_family": "epiphany",
+      "canonical_title": "epiphany",
+      "slug": "epiphany",
+      "spotify_track_ids": [
+        "08fa9LFcFBTcilB3iq2e2A",
+        "0Zm4whQzxgdgh5kNW1budX",
+        "4yyKppX85ZkmlGOC2toBZA",
+        "5MFjHn1qfR9AsWuyzJLk1z"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "tlau": {
+      "song_family": "look_what_you_made_me_do",
+      "canonical_title": "Look What You Made Me Do",
+      "slug": "look-what-you-made-me-do",
+      "spotify_track_ids": [
+        "1JbR9RDP3ogVNEWFgNXAjh",
+        "1P17dC1amhFzptugyAO7Il",
+        "1zz0XSmHCFd57ne04UAp38",
+        "2VjtYe7gpfUi2OkGxR2O2z",
+        "3ilBqQXWOO6FWaPyNsVUbw",
+        "5troof8mcGO3AafoDbk1gc",
+        "6uFsE1JgZ20EXyU0JQZbUR"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "tlj0": {
+      "song_family": "honey",
+      "canonical_title": "Honey",
+      "slug": "honey",
+      "spotify_track_ids": [
+        "2TUxAAf8NbwbZjr2Ii3Hg9",
+        "3NDkfIpuZ2nrLVUSYihkWE",
+        "4qmFC3Jz5aQ0erlk2OSi2X",
+        "5EwypOO9NEI7MvjPOYZtWk",
+        "7jHzBmxAGVVPvLiq4Y45pD"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "tmvv": {
+      "song_family": "ready_for_it",
+      "canonical_title": "...Ready For It?",
+      "slug": "ready-for-it",
+      "spotify_track_ids": [
+        "19WjVVgXjdKXfLXoaDPwTM",
+        "1Ygm9KdH3wbzDekO8JgxcW",
+        "2yLa0QULdQr0qAIvVwN6B5",
+        "4twNUyTpLMPWokYmCdFDCH",
+        "4vVb2D6RYL669h7tLYOKwx",
+        "61zIoCTqx0OY5pCj26Ve9W",
+        "7zgqtptZvhf8GEmdsM2vp2"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "tpj8": {
+      "song_family": "treacherous_chartsnapshot_external_1TSPz0XU",
+      "canonical_title": "Treacherous",
+      "slug": "treacherous",
+      "spotify_track_ids": [
+        "1TSPz0XU6Xu62x06eBtcyA"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "tq67": {
+      "song_family": "stay_beautiful",
+      "canonical_title": "Stay Beautiful",
+      "slug": "stay-beautiful",
+      "spotify_track_ids": [
+        "2BYhoERzw4iA6h5fneotEy",
+        "2ZoOmCSgj0ypVAmGd1ve4y",
+        "5jTmmyo19Vi4caf8kA3xnZ",
+        "7HLQ82LguDnF5MBC7F7Yte"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ts0b": {
+      "song_family": "come_back_be_here",
+      "canonical_title": "Come Back...Be Here",
+      "slug": "come-back-be-here",
+      "spotify_track_ids": [
+        "1n8rB9AhxiAvVP1E2c3yOd",
+        "4pNApnaUWAL2J4KO2eqokq",
+        "4qyalTRMRH5YuEntvvMvq0"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "tu0w": {
+      "song_family": "shake_it_off_lebedik_un_freylach_arr_zri_for_mixed_ensemble_chartsnapshot_external_41AEhaPZ",
+      "canonical_title": "Shake It Off/Lebedik un Freylach (Arr. ZRI for Mixed Ensemble)",
+      "slug": "shake-it-off-lebedik-un-freylach-arr-zri-for-mixed-ensemble",
+      "spotify_track_ids": [
+        "41AEhaPZAukouWaZMEBJoZ"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "tu5u": {
+      "song_family": "red_chartsnapshot_external_3lHGtCM2",
+      "canonical_title": "Red",
+      "slug": "red",
+      "spotify_track_ids": [
+        "3lHGtCM2wOkqxBdn6pihJs"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "txki": {
+      "song_family": "soon_youll_get_better",
+      "canonical_title": "Soon You’ll Get Better - One World: Together At Home",
+      "slug": "soon-you-ll-get-better-one-world-together-at-home",
+      "spotify_track_ids": [
+        "4b3wGyyabId64t9rjMFdfY"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "tyoi": {
+      "song_family": "no_body_no_crime",
+      "canonical_title": "no body, no crime (feat. HAIM)",
+      "slug": "no-body-no-crime-feat-haim",
+      "spotify_track_ids": [
+        "3RaT22zZsxVYxxKR7TAaYF",
+        "6uwfVkaOM1mcMkFmSn35ix"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "u4br": {
+      "song_family": "the_joker_and_the_queen_arr_for_piano_by_david_onac_chartsnapshot_external_5vX2ztda",
+      "canonical_title": "The Joker and the Queen (Arr. for Piano by David Önaç)",
+      "slug": "the-joker-and-the-queen-arr-for-piano-by-david-onac",
+      "spotify_track_ids": [
+        "5vX2ztdaQJVKqgPbSbKqkg"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "u75t": {
+      "song_family": "the_very_first_night",
+      "canonical_title": "The Very First Night (Taylor's Version) (From The Vault)",
+      "slug": "the-very-first-night-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "6pYNq0ZwpPVazKzsqpf0G8"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "uahy": {
+      "song_family": "superstar",
+      "canonical_title": "SuperStar",
+      "slug": "superstar",
+      "spotify_track_ids": [
+        "0XfTh16YcKPzdxMPTeKTAq",
+        "14Bljc3pOOG0xQX3wqhLN9",
+        "51A8eKvvZz9uydvIZ7xRSV"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ucz9": {
+      "song_family": "last_kiss",
+      "canonical_title": "Last Kiss",
+      "slug": "last-kiss",
+      "spotify_track_ids": [
+        "1D27z8xNzjW0Mwwt1NCWhJ",
+        "1VCJ7vk3Y2DoJIAEOXe3V8",
+        "2YiBQKOQhgdSddgpCDZmYO",
+        "4h0EXpatqJImv4VRgvX6po",
+        "59KOoHFcw5XfICnO57holu",
+        "6RfWi0Jx3GvflsOtUfFpuT",
+        "6hH37tyeRdyan1mAppmVor",
+        "7fdXE3zL3J2AmQLXSDNM8b"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "uet5": {
+      "song_family": "hits_different",
+      "canonical_title": "Hits Different",
+      "slug": "hits-different",
+      "spotify_track_ids": [
+        "2BPLFluGLtHPN9EF6oK5w8",
+        "3xYJScVfxByb61dYHTwiby"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ukkx": {
+      "song_family": "the_black_dog",
+      "canonical_title": "The Black Dog",
+      "slug": "the-black-dog",
+      "spotify_track_ids": [
+        "1GPibQhTymrKGYuAK94diM",
+        "62E2nR0od0M5HYxuYLaDz7"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ulga": {
+      "song_family": "slut",
+      "canonical_title": "\"Slut!\" (Taylor's Version) (From The Vault)",
+      "slug": "slut-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "0CD7DzeCsuPJygddqlUVYa",
+        "71BqAINEnezjQfxE4VuJfq"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "urcu": {
+      "song_family": "karma",
+      "canonical_title": "Karma",
+      "slug": "karma",
+      "spotify_track_ids": [
+        "45R112Jz5hQeKgITXgSXzs",
+        "4i6cwNY6oIUU2XZxPIw82Y",
+        "5GjkD2Xujig8TPty57wfsS",
+        "7KokYm8cMIXCsGVmUvKtqf"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "urtx": {
+      "song_family": "the_lakes",
+      "canonical_title": "the lakes",
+      "slug": "the-lakes",
+      "spotify_track_ids": [
+        "0UAdDYrkCvVQftaKpL6q5f",
+        "2BDBBNaWZf2ueZwp4h52b2",
+        "6mqyTq948oap5AkyTsd6XF"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "uvuv": {
+      "song_family": "bye_bye_baby",
+      "canonical_title": "Bye Bye Baby (Taylor's Version) (From The Vault)",
+      "slug": "bye-bye-baby-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "4qUijfYU8EoIWiY6oSyrgT"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "v0ia": {
+      "song_family": "i_knew_you_were_trouble",
+      "canonical_title": "I Knew You Were Trouble",
+      "slug": "i-knew-you-were-trouble",
+      "spotify_track_ids": [
+        "0ciHz919LVKoH4zgxyMPZ9",
+        "0gbBxe4PLriS6H3QijPsUq",
+        "1BY5apCyXIjMCaMvLBnUwM",
+        "2vTjAIZbfW7W8NGBOZ5rK5",
+        "3lKZf71jeNi14udIFPJ29V",
+        "4EwrLjUsIF0PINB6sLZj3l",
+        "6AtZLIzUINvExIUy4QhdjP",
+        "6FB3v4YcR57y4tXFcdxI1E",
+        "72jCZdH0Lhg93z6Z4hBjgj"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "v0ss": {
+      "song_family": "22_chartsnapshot_external_2Cyfahse",
+      "canonical_title": "22",
+      "slug": "22",
+      "spotify_track_ids": [
+        "2CyfahsenMvjhR99j1x6X2"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "v5a9": {
+      "song_family": "this_love",
+      "canonical_title": "This Love",
+      "slug": "this-love",
+      "spotify_track_ids": [
+        "1kTPQnabROVkW9bUXdCGrB",
+        "2eZbyz03ZHkqpZz2Vw3KXy",
+        "3oKMl2tJv4fdidkXUYMI5x",
+        "4L560fic5PaTuCFm6CviKa",
+        "4WBEj8TeGtRPNJdOmT3WJW",
+        "4d1CG5ei1E2vGbvmgf5KKv",
+        "5QVVjX0ZItqlVpEuVCM9Yg",
+        "7bbhFp3V4bZct8vpSCIrR8",
+        "7juXSUrMEd7f9ljLk7Pria"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "vd7b": {
+      "song_family": "you_belong_with_me",
+      "canonical_title": "You Belong With Me",
+      "slug": "you-belong-with-me",
+      "spotify_track_ids": [
+        "02DtaJ6ADr4uQJbKEdpxxj",
+        "06qAK0pLx43pwzRi6MWV8g",
+        "1GEBsLDvJGw7kviySRI6GX",
+        "1qrpoAMXodY6895hGKoUpA",
+        "2BDqAaVKzQDnoVPZbdp68D",
+        "3GCL1PydwsLodcpv0Ll1ch",
+        "53PbrK3xHCahLA67KbR1Ck",
+        "7G6TDmGJXDoBaV6NGj3Yic",
+        "7wbATZinTGleK7zhZJs4Yq"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ve8c": {
+      "song_family": "everything_has_changed_chartsnapshot_external_5cXTESo2",
+      "canonical_title": "Everything Has Changed",
+      "slug": "everything-has-changed",
+      "spotify_track_ids": [
+        "5cXTESo2BLCYwmUKF2uE8A"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "vg83": {
+      "song_family": "taylor_swift_interview_chartsnapshot_external_6Bgc6CGz",
+      "canonical_title": "Taylor Swift Interview",
+      "slug": "taylor-swift-interview",
+      "spotify_track_ids": [
+        "6Bgc6CGzk4kvkQRiwQc6Yd"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "vgb6": {
+      "song_family": "the_story_of_us",
+      "canonical_title": "The Story Of Us",
+      "slug": "the-story-of-us",
+      "spotify_track_ids": [
+        "2jt90bYlYDg1lXYWES34LJ",
+        "3RBluWmSoG2pGA1OePzGJI",
+        "3lXekiVK1ZPZbKconsys73",
+        "44uwUM4YEfve5tDYEbVXQb",
+        "6AK3WJz8eIJLePdy09nGR4",
+        "6dTA6y0C2ReQklntzZl8l3",
+        "72GIZuUXo14oyrS0si3Rgc",
+        "7eWWHv6LTMFcaj8QgTLcYf",
+        "7vBlnGdfOLzVEqiOQQxeU8"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "vhjn": {
+      "song_family": "mary_s_song_oh_my_my_my",
+      "canonical_title": "Mary's Song (Oh My My My)",
+      "slug": "mary-s-song-oh-my-my-my",
+      "spotify_track_ids": [
+        "1QMmJSW0E8rdJRMGOUrnJd",
+        "2QrQCMel6v2JiLxqrg4p2O",
+        "3eYLIn5iJlcTUDrOg31yLj",
+        "7vKXsy9iKZl4SaASFqSQKg"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "vk27": {
+      "song_family": "i_think_he_knows",
+      "canonical_title": "I Think He Knows",
+      "slug": "i-think-he-knows",
+      "spotify_track_ids": [
+        "2YWtcWi3a83pdEg3Gif4Pd"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "vnsw": {
+      "song_family": "the_joker_and_the_queen",
+      "canonical_title": "The Joker And The Queen (feat. Taylor Swift)",
+      "slug": "the-joker-and-the-queen-feat-taylor-swift",
+      "spotify_track_ids": [
+        "2dk3qSc7779ecP8w6rNoT9",
+        "3wx2iW1rJGgdNln2I64HNh",
+        "6N1K5OVVCopBjGViHs2IvP"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "vtbl": {
+      "song_family": "tim_mcgraw",
+      "canonical_title": "Tim McGraw",
+      "slug": "tim-mcgraw",
+      "spotify_track_ids": [
+        "0Om9WAB5RS09L80DyOfTNa",
+        "2SOiWAqjpyGnMPLZd66rm0",
+        "4511PLndxxMcob8Qq5KHNw",
+        "6FbCZTXJjwBQRsKb9leofw",
+        "6tzHi7qmbncwyjdfkDuwPI"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "w0xe": {
+      "song_family": "labyrinth",
+      "canonical_title": "Labyrinth",
+      "slug": "labyrinth",
+      "spotify_track_ids": [
+        "0A1JLUlkZkp2EFrosoNQi0",
+        "4bBDkw2KBMX0tcgAaXC83Q"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "w8u6": {
+      "song_family": "should_ve_said_no",
+      "canonical_title": "Should've Said No",
+      "slug": "should-ve-said-no",
+      "spotify_track_ids": [
+        "16MVSD0mGI4RMQT83Qzm69",
+        "1gAwz7T7QfpDuSkdS7qdQ5",
+        "2gwvtlwlKhvkfjz7Fcb6Yk",
+        "3cVNvBOGCLGf7HaMhcWSQW",
+        "5a9hUL6ZuiagZhazwrtwHF"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "w955": {
+      "song_family": "dear_reader",
+      "canonical_title": "Dear Reader",
+      "slug": "dear-reader",
+      "spotify_track_ids": [
+        "10GRRCR5fctuOF4GFmATJI",
+        "7lFNXsbcbds699xCWO3pSe"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "wc7j": {
+      "song_family": "back_to_december_apologize_you_re_not_sorry",
+      "canonical_title": "Back To December/Apologize/You're Not Sorry",
+      "slug": "back-to-december-apologize-you-re-not-sorry",
+      "spotify_track_ids": [
+        "1IsquhJFJ0qcFZI7FeAEuN"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "wex1": {
+      "song_family": "shake_it_off",
+      "canonical_title": "Shake It Off",
+      "slug": "shake-it-off",
+      "spotify_track_ids": [
+        "0cqRj7pUJDkTCEsJkx8snD",
+        "2w7UyGCxnZmBXrx9A5MjTs",
+        "3fthfkkvy9av3q3uAGVf7U",
+        "3pv7Q5v2dpdefwdWIvE7yH",
+        "4omftH10jc82Sj8VJ395C7",
+        "50yNTF0Od55qnHLxYsA5Pw",
+        "5xTtaWoae3wi06K5WfVUUH"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "wkfc": {
+      "song_family": "robin",
+      "canonical_title": "Robin",
+      "slug": "robin",
+      "spotify_track_ids": [
+        "2CnjDMdpRjlWv04Xk3s6MW"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "wkub": {
+      "song_family": "bejeweled",
+      "canonical_title": "Bejeweled",
+      "slug": "bejeweled",
+      "spotify_track_ids": [
+        "0VpF6RLdCfPIeYRwMu4tZK",
+        "3qoftcUZaUOncvIYjFSPdE"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "wlny": {
+      "song_family": "the_man",
+      "canonical_title": "The Man",
+      "slug": "the-man",
+      "spotify_track_ids": [
+        "3RauEVgRgj1IuWdJ9fDs70",
+        "7FKbTRXXIWVFQmPH8zGfU0"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "woxq": {
+      "song_family": "gold_rush",
+      "canonical_title": "gold rush",
+      "slug": "gold-rush",
+      "spotify_track_ids": [
+        "2ZTKWFG6OtHI3ewy9OGNOY",
+        "3Dby3p1m6IOZn2gIIqECgK",
+        "5BK0uqwY9DNfZ630STAEaq"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "wtfg": {
+      "song_family": "forever_winter",
+      "canonical_title": "Forever Winter (Taylor's Version) (From The Vault)",
+      "slug": "forever-winter-taylor-s-version-from-the-vault",
+      "spotify_track_ids": [
+        "3oGVx9RBmiYGv5ZCecWLkx"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "wuk0": {
+      "song_family": "we_are_never_ever_getting_back_together_chartsnapshot_external_46GNHUdB",
+      "canonical_title": "We Are Never Ever Getting Back Together",
+      "slug": "we-are-never-ever-getting-back-together",
+      "spotify_track_ids": [
+        "46GNHUdBuPGnbyTlyv73px"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "wyae": {
+      "song_family": "santa_baby",
+      "canonical_title": "Santa Baby",
+      "slug": "santa-baby",
+      "spotify_track_ids": [
+        "71IScwIe7bcIlpnlkbKVQw"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "x0wu": {
+      "song_family": "delicate_recorded_at_the_tracking_room_nashville",
+      "canonical_title": "Delicate - Recorded at The Tracking Room Nashville",
+      "slug": "delicate-recorded-at-the-tracking-room-nashville",
+      "spotify_track_ids": [
+        "1Fj0T1XKuhRu7EZzJ7NJIK"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "x1ho": {
+      "song_family": "red",
+      "canonical_title": "Red",
+      "slug": "red",
+      "spotify_track_ids": [
+        "0cITLOYn1Sv4q27zZPqlNK",
+        "1AjXK5Gi1kkMRYGBjALDMr",
+        "1RvQQGwaPipiNgz8RXAKA8",
+        "1VW4AEDihVs3BQB6KnTYIY",
+        "2tYdjm4wmx4LaxihipeFXC",
+        "4OAuvHryIVv4kMDNSLuPt6",
+        "4mqgn90sCeVSYqcoftTQTd",
+        "58eq1csoygPppaeE6QnWlZ"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "x89j": {
+      "song_family": "so_it_goes",
+      "canonical_title": "So It Goes...",
+      "slug": "so-it-goes",
+      "spotify_track_ids": [
+        "0cdQJyb7pZJMw9obUd8lue",
+        "41T04yafZVrjNq2FqvLtId",
+        "4kxj7TJF4A88P4LPeLrsoZ",
+        "5PxFv9yJEg9dxvbZggykro",
+        "5oJUjUsBZcqyEhOdpif37h"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "x9a4": {
+      "song_family": "picture_to_burn",
+      "canonical_title": "Picture To Burn",
+      "slug": "picture-to-burn",
+      "spotify_track_ids": [
+        "32mVHdy0bi1XKgr0ajsBlG",
+        "3f8FaHeG75RzZHWzEQMKm7",
+        "3y40XaB0r8LwJzECdhXqmq",
+        "6mEIFRsfukxqWeKXuKaalI",
+        "7EvU9pRoJ9Xs7anx0P7tEc"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "xg6u": {
+      "song_family": "love_story_digital_dog_radio_mix",
+      "canonical_title": "Love Story - Digital Dog Radio Mix",
+      "slug": "love-story-digital-dog-radio-mix",
+      "spotify_track_ids": [
+        "4OzHfc5rHDDTIh5wyR0gQ0",
+        "5UV1IMOt1oxIBj7FodKe9v"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "xma4": {
+      "song_family": "ours",
+      "canonical_title": "Ours",
+      "slug": "ours",
+      "spotify_track_ids": [
+        "0hK93KD6Y0j9giUGh4Valj",
+        "1EQn3Uc5AyUXoiPLeyCrrg",
+        "3yNJkriPzWjkkDAWHIAVUq",
+        "68QyrSzpnoU04AAhE5z8lj"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "xnp4": {
+      "song_family": "peace",
+      "canonical_title": "peace",
+      "slug": "peace",
+      "spotify_track_ids": [
+        "0O9i6jhscByEJs1ipy5hu4",
+        "38aA4mjtRF8ZNXWoCg1XOa",
+        "4YHHz3VIXgNDGdoL9xC1tx",
+        "6rTUr8OpU5kcSqLGL2TmyR",
+        "7MbT4I8qGntX4fMdqMQgke"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "xx5b": {
+      "song_family": "begin_again",
+      "canonical_title": "Begin Again",
+      "slug": "begin-again",
+      "spotify_track_ids": [
+        "05GsNucq8Bngd9fnd4fRa0",
+        "0L4YCNRfXAoTvdpWeH2RGj",
+        "2I2RxGMfoXihaLV68CJzm7",
+        "3JayaISg308IVZhUY0XUXe",
+        "48A0aShHlovDfTMucMrE66",
+        "6W7G1EvtEMkSJkQFnWnpu1"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "xx8h": {
+      "song_family": "treacherous",
+      "canonical_title": "Treacherous",
+      "slug": "treacherous",
+      "spotify_track_ids": [
+        "0XfOV7qY3834QpFVwOb6CC",
+        "0YrMTMLpLq1UIkWgghNM6c",
+        "28d5SkpM2XwX3iDrOJE9JZ",
+        "3S7HNKPakdwNEBFIVTL6dZ",
+        "3lD0QBGaxvoc9WBDnGHFUi",
+        "4wZTdfvAQRf3azGSLhNY9H",
+        "5kYFVSQoPu7yRpfiHBwMUk",
+        "7BT9K9BDqq6HI2oWH5UMZQ"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "xxsd": {
+      "song_family": "better_than_revenge",
+      "canonical_title": "Better Than Revenge",
+      "slug": "better-than-revenge",
+      "spotify_track_ids": [
+        "0NwGC0v03ysCYINtg6ns58",
+        "0UK4QL2zQWgWzj47V6qgsz",
+        "1By2VQkUN0Frd8mKNV5NYC",
+        "27vZ8jMjNk6NGcIfFzePw9",
+        "2ythurkTtSiyfK7GprJoFW",
+        "55mh9j2aB7xZ1Oh463gK8k",
+        "6505MLhnqTDDg4tjoUz2Wp",
+        "7msaHKbkc94FKxIMsH4DAm"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "xzvs": {
+      "song_family": "highway_dont_care_feat_taylor_swift_keith_urban",
+      "canonical_title": "Highway Don’t Care (feat. Taylor Swift & Keith Urban)",
+      "slug": "highway-don-t-care-feat-taylor-swift-and-keith-urban",
+      "spotify_track_ids": [
+        "60hGQrn24APqEFSLObLeDc",
+        "6Bb5aUjzUT5ozbbr0VpnZ8"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ydmm": {
+      "song_family": "cold_as_you",
+      "canonical_title": "Cold As You",
+      "slug": "cold-as-you",
+      "spotify_track_ids": [
+        "0SwaNP777wQtTy9cEm886m",
+        "2WefzSY75eE8gWn1Zbf8xK",
+        "5f22cJ5bgEqYYpbAJn0D6D",
+        "7an1exwMnfYRcdVQm0yDev"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ye65": {
+      "song_family": "begin_again_chartsnapshot_external_4qYZFWPH",
+      "canonical_title": "Begin Again",
+      "slug": "begin-again",
+      "spotify_track_ids": [
+        "4qYZFWPHpNEZDICGCwqgrv"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "yf70": {
+      "song_family": "a_perfectly_good_heart",
+      "canonical_title": "A Perfectly Good Heart",
+      "slug": "a-perfectly-good-heart",
+      "spotify_track_ids": [
+        "0MdvaY1bXQVxkInYNCQc7y",
+        "0YgHuReCSPwTXYny7isLja",
+        "1spLfUJxtyVyiKKTegQ2r4",
+        "5NEP34PtTtFQaZpeeDPWeU"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "yh86": {
+      "song_family": "new_romantics",
+      "canonical_title": "New Romantics",
+      "slug": "new-romantics",
+      "spotify_track_ids": [
+        "0qAIiGFKLdV1xpNlEhjpq8",
+        "248qgqZNy5T5KsGHgTxeIM",
+        "2vPMoMDXxu9uX1igWZmXSG",
+        "5M787RexsAiVYjQusM98CV",
+        "6rZVy6FIG7lSJQMFXHo12z"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "yml2": {
+      "song_family": "jump_then_fall",
+      "canonical_title": "Jump Then Fall",
+      "slug": "jump-then-fall",
+      "spotify_track_ids": [
+        "08gavXombT6KR0af88i9tA",
+        "2m3ObD945KvpE5y9A1eUWm",
+        "6WWvcA62QlnRguluWAk6bv"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "yqri": {
+      "song_family": "right_where_you_left_me_bonus_track",
+      "canonical_title": "right where you left me - bonus track",
+      "slug": "right-where-you-left-me-bonus-track",
+      "spotify_track_ids": [
+        "3zwMVvkBe2qIKDObWgXw4N"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ytqf": {
+      "song_family": "hold_on_live",
+      "canonical_title": "Hold On [Live]",
+      "slug": "hold-on-live",
+      "spotify_track_ids": [
+        "2K9YhWKWpo9T4GgwWhoHCG"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "z3zr": {
+      "song_family": "soon_you_ll_get_better",
+      "canonical_title": "Soon You'll Get Better (feat. The Chicks)",
+      "slug": "soon-you-ll-get-better-feat-the-chicks",
+      "spotify_track_ids": [
+        "4AYtqFyFbX0Xkc2wtcygTr"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "z5z8": {
+      "song_family": "mine_pop_mix",
+      "canonical_title": "Mine - POP Mix",
+      "slug": "mine-pop-mix",
+      "spotify_track_ids": [
+        "0GxW5K0qzrq7L1jwSY5OmY",
+        "0OAHsZ8vrS2NKom3cvfJQD",
+        "0fAbfDiuQiUwV7FUcFfRGY"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "z8gr": {
+      "song_family": "cowboy_like_me",
+      "canonical_title": "cowboy like me",
+      "slug": "cowboy-like-me",
+      "spotify_track_ids": [
+        "1XjHRolIXL2M1EEOUsGGR4",
+        "3qy4znWySY3rwzS2vHDOeg",
+        "52OkpDsU6MmPx1AwGOb6Ap"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "z9td": {
+      "song_family": "us_feat_taylor_swift",
+      "canonical_title": "us. (feat. Taylor Swift)",
+      "slug": "us-feat-taylor-swift",
+      "spotify_track_ids": [
+        "0hhzNPE68LWLfgZwdpxVdR",
+        "5WcsxoURbNjQPQvzKpHUMn"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "zf9v": {
+      "song_family": "the_alcott_feat_taylor_swift",
+      "canonical_title": "The Alcott (feat. Taylor Swift)",
+      "slug": "the-alcott-feat-taylor-swift",
+      "spotify_track_ids": [
+        "6INztpNwOTlfSKTuPo0HOP"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "zjm5": {
+      "song_family": "macavity_from_the_motion_picture_soundtrack_cats",
+      "canonical_title": "Macavity - From The Motion Picture Soundtrack \"Cats\"",
+      "slug": "macavity-from-the-motion-picture-soundtrack-cats",
+      "spotify_track_ids": [
+        "5zOKuItOTZhRCGtPrDYmlj"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "zr09": {
+      "song_family": "fifteen_pop",
+      "canonical_title": "Fifteen - Pop Mix Edit",
+      "slug": "fifteen-pop-mix-edit",
+      "spotify_track_ids": [
+        "7lkzMhR95JrgYAurGLEP6g"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "zuie": {
+      "song_family": "white_horse",
+      "canonical_title": "White Horse",
+      "slug": "white-horse",
+      "spotify_track_ids": [
+        "1yFjBRQVhRdcdnrTE5LuyD",
+        "3L84WEUYuc6Vryfi4Fd85j",
+        "3t5kblMAefsRy9O9vOjkR4",
+        "4ieGtGwqOpvIQhRngp5VvR",
+        "4jPtq9shRdUv8Zjr0a5xkD",
+        "5YL553x8sHderRBDlm3NM3",
+        "6wn61Fzx9XMxQmieLpoIhW",
+        "7F67ujlSkp8PT7uaDPuOjP"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "zwq6": {
+      "song_family": "marjorie",
+      "canonical_title": "marjorie",
+      "slug": "marjorie",
+      "spotify_track_ids": [
+        "12ntTeqEeTg7GAVpe8Mhpl",
+        "5uICWmZTLkpEVbK22PBP6e",
+        "7vBNFh3NIZTj6tB5s1IBjE"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "zzv1": {
+      "song_family": "champagne_problems",
+      "canonical_title": "champagne problems",
+      "slug": "champagne-problems",
+      "spotify_track_ids": [
+        "0sY6ZUTh4yoctD8VIXz339",
+        "1gcyHQpBQ1lfXGdhZmWrHP",
+        "6rap8NpGq8LDcVaJWkKFPn"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    }
+  },
+  "albums": {
+    "2qn": {
+      "album": "THE TORTURED POETS DEPARTMENT",
+      "slug": "the-tortured-poets-department",
+      "spotify_track_ids": [
+        "05msZuGKP3OCUGQnvLBOf4",
+        "0W0iAC1VGlB82PI6elxFYf",
+        "0Z8YQJNXTCZqflWehjoJqJ",
+        "0g4fMVo4JjwnIpTfFfLdxS",
+        "0hFF0aqyjDwDh6SQwRbTyx",
+        "0mWVScJbxO3tbXuiZOxYZE",
+        "18WFFUIsewmA8g31KAeo3e",
+        "18ohHg4G5Svm0kaJFQsJ12",
+        "1DTRUYVd8rYpla9hhVVwjo",
+        "1GP8VW5Wk2w2obkWjGCGXd",
+        "1GPibQhTymrKGYuAK94diM",
+        "1J1ldDi3rMQlRi49gaba0a",
+        "1Lad0NlRHi7iNtQ6TeYK56",
+        "1UlhrRvYzbHEyugEDspXUB",
+        "1Zai5UJ2di3qEuR2HeT2s8",
+        "1dhMTsEZz6ZEquGvmzVoHn",
+        "1gejz5ROvJBUb6WJzkMAcc",
+        "1kbEbBdEgQdQeLXCJh28pJ",
+        "1kcwpPDQnqEqmezzXdJTCP",
+        "1lCtHhx85FmwyUmwkKN1Ia",
+        "1m7Fep6Dm8SG58ns8NLZhm",
+        "1rmEsOezwf2lmIZTMAO5Ag",
+        "1tuNqJOtRQVHvONR8Lg3MZ",
+        "1xtw1krCR6Dw2KwkXw5z63",
+        "2913xXOVAIDAqxzV2g4VcU",
+        "2AF66grrqUS0rkNURwiPXM",
+        "2AS8i1xuWmeWGBBwI69vfn",
+        "2BUTSRKPGRsyc9FnsC5Udd",
+        "2CnjDMdpRjlWv04Xk3s6MW",
+        "2F3N9tdombb64aW6VtZOdo",
+        "2OzhQlSqBEmt7hmkYxfT6m",
+        "2PGIFYRG1XWsPqNG14hgD1",
+        "2XXwLdtuAcE0HSCu61ijAb",
+        "2d8UxVNhJinc8uat9PoM9y",
+        "2fPvQfGQEZOKtJ9qXeL4x8",
+        "2h3MDMf8sd9s4XIzpTBIjX",
+        "2v1ivOOsgn64g5OywuH55L",
+        "36t6frENUtCYKuZus6aYDO",
+        "3NMrVbIVWT3fPXBj0rNDKG",
+        "3NcGodJQTArBCZwNJHF1Zu",
+        "3Vevii7qKqrmW8CcyzBHDl",
+        "3YkNIrAvbKNrrwwEd7NVLl",
+        "3ZVFcD8Wlw9T9klGqmJf9F",
+        "3fO566xJgwxIa3qGCGBvIC",
+        "3hlGuz3loYoLfI3bpwieWq",
+        "3zMDGj4D8ogaYgAIZPeU7S",
+        "4EF6IyONolQy0bIQXm2EmX",
+        "4GBbcyrbDzwRtQjrsDRywK",
+        "4PdLaGZubp4lghChqp8erB",
+        "4QMgEffJQuKtjCNvqfRZ0m",
+        "4bDHouthhkbXJaaCem7mhX",
+        "4d9PtIEVij9jW5OaLinH66",
+        "4dgf2DYVJbtmy8zAYLs4c7",
+        "4n93SK7dQsQVu9BM5QzvAx",
+        "4q5YezDOIPcoLr8R81x9qy",
+        "5Bedn0svl0ZD7RGmJkmKKw",
+        "5ExOm0dh4NyRyAdSAO9hyM",
+        "5chnRTB9qMK3W1M41SnU9s",
+        "5og4Qzt92jJzVDkOtSEilb",
+        "62E2nR0od0M5HYxuYLaDz7",
+        "6RSG1dKPV5gEvILwJb4QtS",
+        "6dODwocEuGzHAavXqTbwHv",
+        "6kl8thRysTeVV3WvKxgZAy",
+        "74sZKiwaGtSEEyjhDmi99y",
+        "799KrpEbhZp0MHeiA8YK9P",
+        "7IWcDWOfiooH5hRs9XOVYz",
+        "7Mts0OfPorF4iwOomvfqn1",
+        "7ogK4lJDVDMU6A6vYR5rvD",
+        "7pM01Cfj8vt7z3qI2TveNT",
+        "7uGYWMwRy24dm7RUDDhUlD",
+        "7wAkQFShJ27V8362MqevQr"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "5wp": {
+      "album": "Red",
+      "slug": "red",
+      "spotify_track_ids": [
+        "0F2S1QlnMaOfmNHIgmES3k",
+        "0HTZpLa2SjBmuJ6zJ7OqMm",
+        "0L4YCNRfXAoTvdpWeH2RGj",
+        "0LBW7lkY7L8cQUXXB16bXO",
+        "0Nw8hv79MLJa1yjtsEgz08",
+        "0PPT0FWjjipsLfdNo0jqfx",
+        "0VwNdo84DaVYLIkbVO86ND",
+        "0XfOV7qY3834QpFVwOb6CC",
+        "0b16LTzby1YRVd2nq2Z0fw",
+        "0cITLOYn1Sv4q27zZPqlNK",
+        "0ciHz919LVKoH4zgxyMPZ9",
+        "0gbBxe4PLriS6H3QijPsUq",
+        "0kfTOGpi5eZCBxcRF5LFIh",
+        "0vqI4ZIMuifeKeItGiWbPj",
+        "0z9UVN8VBHJ9HdfYsOuuNf",
+        "1AjXK5Gi1kkMRYGBjALDMr",
+        "1B6UHn92SZSGOwXheAKAb9",
+        "1DSPw5AERmvyd9peYG3D48",
+        "1J22bFnVC6Rmjxby941PDf",
+        "1MDcFu6z8XNDGFyh5FIHee",
+        "1OYARuagDrpgNNQ4loO1Cs",
+        "1RHdL2SIWNrv5uChsGuHWP",
+        "1RvQQGwaPipiNgz8RXAKA8",
+        "1TSPz0XU6Xu62x06eBtcyA",
+        "1VW4AEDihVs3BQB6KnTYIY",
+        "1Z79tpetXTqujnp0UYOV7V",
+        "1eyqSYBCTane4rl4vc6PWJ",
+        "1fGsZsIkQkOspfsT24nQP6",
+        "1gL4vMhDV3RgJQmDuY5HK1",
+        "1n3b9Eekoy3S9ZSZ5DmTW1",
+        "1n8rB9AhxiAvVP1E2c3yOd",
+        "1q3RiD1tIWUpGsNFADMlvl",
+        "1qLeEu4iXEclkLwoBlMiou",
+        "1u4HUiREUR6vX1W1RYG2Tm",
+        "1wePVBS4L6xhCvVUItPAZQ",
+        "1x0J8LFX23d5h1zzuzZorc",
+        "1yVVoBDzSkFkZRWtq9x3u1",
+        "22Zg9JjEgM0JV5HvLXNJAh",
+        "28d5SkpM2XwX3iDrOJE9JZ",
+        "2CUK34XwIWbs6J4ZJ5cFdU",
+        "2CyfahsenMvjhR99j1x6X2",
+        "2I2RxGMfoXihaLV68CJzm7",
+        "2L3QJeJer1VeCLM7Belldq",
+        "2Tz4JnXZOcjcp8fWfMjBBk",
+        "2ULNeSomDxVNmdDy8VxEBU",
+        "2X2J0BhxaLTmnxO4pPUhSd",
+        "2XD0r1dj4JinxYTSYx71fe",
+        "2ag2oLCwlFIA88hQrLMHzv",
+        "2mz69DJOIt4b1xxfxiJbBy",
+        "2rLYkfJSgTPtOTLjYEdozL",
+        "2tYdjm4wmx4LaxihipeFXC",
+        "2vTjAIZbfW7W8NGBOZ5rK5",
+        "2wtHlpYSgC7xEdD3DrSHNL",
+        "31pEV5lPJi7btskZoUr2yu",
+        "3To1MBLD7WqFoWEeiLDBzq",
+        "3Z1kZKYfRC8iRXnYeC5sCJ",
+        "3an4u3iZSy63ygYcWslJ5f",
+        "3bIxTsfeNMO7Nt2J3EUKrA",
+        "3dWmDfq6hyHsJQG7BdGaWS",
+        "3lD0QBGaxvoc9WBDnGHFUi",
+        "3lHGtCM2wOkqxBdn6pihJs",
+        "3lKZf71jeNi14udIFPJ29V",
+        "3lNRE17Ba1Verccqe2h6td",
+        "3n9mzjgAzjyKawvbHzciXF",
+        "3rMskQgCc54bAQUfE0U4Fw",
+        "3tGq7hWDCtrnL83y5OGual",
+        "3vM04liQIPwzatRCDvWvba",
+        "40PXEOFLJc7UIpLMrhSfW1",
+        "46GNHUdBuPGnbyTlyv73px",
+        "47D2v5qxq9BFVQV1cH5P8w",
+        "48A0aShHlovDfTMucMrE66",
+        "4EwrLjUsIF0PINB6sLZj3l",
+        "4HGaRnv2HuMKaZMLTJQZqV",
+        "4NAmRvqSITAAzKWnC8yRq3",
+        "4XMP3zVxrnr58T0tjIHvpR",
+        "4foqCyc68cBj3D0yFxsI3j",
+        "4mqgn90sCeVSYqcoftTQTd",
+        "4pvmbMjyRH4tKJiw1CjWic",
+        "4qTAwKJQ68gmnrnfPD3vlO",
+        "4qYZFWPHpNEZDICGCwqgrv",
+        "4qyalTRMRH5YuEntvvMvq0",
+        "4sFwzqXqNcNV3cTyTybq0M",
+        "4wZTdfvAQRf3azGSLhNY9H",
+        "4yTqjWF2EoFJM5BbSCe4YW",
+        "536W1zo5ngO1mOTRG8cg6G",
+        "58eq1csoygPppaeE6QnWlZ",
+        "5AsmAjBSSQjRPWgAYIp8tm",
+        "5BIHTqXmBBdfdScTVyzUts",
+        "5FNeJveCmVB2TPDbIYqK0M",
+        "5G9AVKld9q7DCrmoY42raf",
+        "5NEP34PtTtFQaZpeeDPWeU",
+        "5QKhg4r4Ibt0LVTmWEXTEg",
+        "5VwFkx7JOimOGTYfha5rs1",
+        "5XSPL0XMNxpeVV99iQQ7IX",
+        "5cXTESo2BLCYwmUKF2uE8A",
+        "5d2Kn9oAAh9S2EbyCo1i52",
+        "5kYFVSQoPu7yRpfiHBwMUk",
+        "5mfDBWY7ncZFm7ykmFTG4i",
+        "5qD1xj5lXOaX1ZDpVKZeF3",
+        "5v18oNV2JRQwbnCHTWILdH",
+        "5yq6Ecb9LQvFS5rJCtPKLO",
+        "5zyCYmiaVE5y26EZuwZbsw",
+        "633FwmKmrHWn6sLTL3db72",
+        "6Bey6yUpkCDaIWotHLhbQm",
+        "6D0MZbrShD5AK8P2Ig6bow",
+        "6FB3v4YcR57y4tXFcdxI1E",
+        "6HCWHsGF3YM6BPnow9MkIR",
+        "6LKjHhOW1az75pCQ9XJJtF",
+        "6U1sV6To5PiDattw67fHYF",
+        "6UndbaRk1yOrD5NGR9tDWb",
+        "6VFpuI0DDmbC5UyWZQ4IRY",
+        "6W7G1EvtEMkSJkQFnWnpu1",
+        "6c38bS1QsXCuqxycGAgoRH",
+        "6ce41JVa6KFaryfmC2bu2W",
+        "6cf6rLb8qcklvJv90W6HCW",
+        "6jHHWbARBOwQUqtAnNKMN6",
+        "6qOF7qaj6vWfBIDyaUfFvP",
+        "6t9JL24FVFzXtpLlp6x5tZ",
+        "72jCZdH0Lhg93z6Z4hBjgj",
+        "786NsUYn4GGUf8AOt0SQhP",
+        "7AEAGTc8cReDqcbPoY9gwo",
+        "7BT9K9BDqq6HI2oWH5UMZQ",
+        "7DsgoKz3zlCb2zvMU062oo",
+        "7FFfYM4JE1vj5n4rhHxg8q",
+        "7HbZuazpPbDDMkb8Tmvxq0",
+        "7L0RPhAgKzWRLSxdtkrXFT",
+        "7MecVsMj22MneZt7kVFaCr",
+        "7fRruZ12gXGwBs0zXQ6e5V",
+        "7gdwoOmi258QJq0hmQ4hto",
+        "7r7RyzNBFfTRH9NRVBrFhJ",
+        "7vvIpJZye5cRR6De1LKM0m",
+        "7xZbFLqqa1dbwDNMFZryE7"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "5xl": {
+      "album": "Midnights",
+      "slug": "midnights",
+      "spotify_track_ids": [
+        "05kJkr80XEaZeN8kxyQoFp",
+        "09T4f2HgIJY1Ia6FRjzTk3",
+        "0A1JLUlkZkp2EFrosoNQi0",
+        "0GKDhq6ZbmSbRHd3eyGlB7",
+        "0ThxqUZ9PwS6n0UT5i1XH6",
+        "0V3wPSX9ygBnCm8psDIegu",
+        "0VpF6RLdCfPIeYRwMu4tZK",
+        "0heeNYlwOGuUSe7TgUD27B",
+        "0u1YuY5CjyhlCXV3wN9yYJ",
+        "0wavGRldH0AWyu2zvTz8zb",
+        "10GRRCR5fctuOF4GFmATJI",
+        "16M9Rxid0nXhVmme7lzVwN",
+        "1BdZWUTQyvuBYbp3Sl2Cc0",
+        "1DAHLigfUqSLrU3RLG1EKR",
+        "1QQii3pa5m8MEda0nbkjfw",
+        "1SztNGCwEHJEVFx90E5g7D",
+        "1cY0NDSosVXD6Am57Ylbuy",
+        "1h0GRtSo5NeVVb1vqb5Uh1",
+        "1wtOxkiel43cVs0Yux5Q4h",
+        "1xwAWUI6Dj0WGC3KiUPN0O",
+        "22t8PQeP5klRoguomM4wZp",
+        "24emu3sabKISjRkrys28jq",
+        "2BPLFluGLtHPN9EF6oK5w8",
+        "2G19YDBzl32ASNiRJ1sT9s",
+        "2L09RYwH5Pjzca6PmbUAw3",
+        "2M4tVhRXucLE9M3STv21Yi",
+        "2PnWf3DoX5Ha3UL8VdpVrs",
+        "2VuqMjgoKaOHNM8HpxtXKx",
+        "2d3d9xZutJjmUpntiyHt3F",
+        "2oWpe2L8ypC080BxpDVuTY",
+        "3CWq0pAKKTWb0K4yiglDc4",
+        "3eX0NZfLtGzoLUxPNvRfqm",
+        "3jzbpOzoYa22FvzBkNkLvC",
+        "3pUa0ZxdSeaJXm0EIydD3F",
+        "3qoftcUZaUOncvIYjFSPdE",
+        "3rWDp9tBPQR9z6U5YyRSK4",
+        "3xYJScVfxByb61dYHTwiby",
+        "4356PL6jkERzJouVfQQkZo",
+        "45R112Jz5hQeKgITXgSXzs",
+        "47Q0MEywj692L1RQn6mC7S",
+        "4D7BCuvgdJlYvlX5WlN54t",
+        "4XiypEn8iKbeP1TbTqdfk5",
+        "4YrpqEBNuz7IMsZtUP6bNQ",
+        "4bBDkw2KBMX0tcgAaXC83Q",
+        "4eKMqf9ZMSclDX7V9Ptg7x",
+        "4i6cwNY6oIUU2XZxPIw82Y",
+        "4txojlesMFQZGWxwz2EeqB",
+        "4zmKGsrXjLmljb5fTaBTot",
+        "5BYl3SodS3rGmafWXRWmB7",
+        "5GjkD2Xujig8TPty57wfsS",
+        "5KxZfCXXmVvKhPo8hQz2pS",
+        "5jQI2r1RdgtuT8S3iG8zFC",
+        "5qIHFdkW6phMsTZlN2g8Lc",
+        "5tWxKWq1DSP1s9WQ5PWuqu",
+        "6C0H8ts9M6deezz0yYR6LK",
+        "6F67FNdOBNMFzxdj1CQ5pL",
+        "6J834IBcZJMH38ksrgAqwF",
+        "6PQOU00xWNrGwCZzboriXy",
+        "6RJBrG3VHz2hPITjv88chh",
+        "6dokmh5E6obEI11G9VaWSB",
+        "6pXGAXMfoi7q7sek9uCFSL",
+        "6qxvy9Pe4RJIq5JBVbbwbS",
+        "71CBDRKmF2VeRKYMG1DFBh",
+        "7C0w28EsX0Um2FrZs9gso2",
+        "7FmYn9e7KHMXcxqGSj9LjH",
+        "7GA86Uo2jYbj8vIXe2nyWd",
+        "7KokYm8cMIXCsGVmUvKtqf",
+        "7kjSmkSo15pHlkb0mOQtfj",
+        "7lFNXsbcbds699xCWO3pSe",
+        "7mz1Dj0C0sa8tG3ykgtLpD",
+        "7oomkQSYf1ia2VnVEWfFIU"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "8xq": {
+      "album": "1989 (Taylor's Version)",
+      "slug": "1989-taylor-s-version",
+      "spotify_track_ids": [
+        "0108kcWLnn2HlH2kedi1gn",
+        "045ZeOHPIzhxxsm8bq5kyE",
+        "0CD7DzeCsuPJygddqlUVYa",
+        "0TyGh27YQ5LknmiDhCzJiT",
+        "0lKUBmEyQfzsQHozyeXzES",
+        "1Iq8oo9XkmmvCQiGOfORiz",
+        "1K39ty6o1sHwwlZwO6a7wK",
+        "1OcSfkeCg9hRC2sFKB4IMJ",
+        "1Ov37jtRQ2YNAe8HzfczkL",
+        "1ULabO0PEsdJekqVH6G10G",
+        "1hR8BSuEqPCCZfv93zzzz9",
+        "1hjRhYpWyqDpPahmSlUTlc",
+        "27exgla7YBw9DUNNcTIpjy",
+        "2ByBBvpR9b7IynvRmnG7kG",
+        "2f0GI2ZLUtbGqFx8t2Gk6A",
+        "2k0ZEeAqzvYMcx9Qt5aClQ",
+        "2vPMoMDXxu9uX1igWZmXSG",
+        "2ve0kuaWUCt4Zx8x4bf1MR",
+        "3CCRVu4F91Qp2mnGjmWBrf",
+        "3FxJDucHWdw6caWTKO5b23",
+        "3Vpk1hfMAQme8VJ0SNRSkd",
+        "3pv7Q5v2dpdefwdWIvE7yH",
+        "43y1WpBdnEy5TR9aZoSQL9",
+        "45wMBGri1PORPjM9PwFfrS",
+        "4NioO5R9sHEZh4cGzMHyNt",
+        "4UwqOWDpdeIDVQDuKT6iza",
+        "4WBEj8TeGtRPNJdOmT3WJW",
+        "4WUepByoeqcedHoYhSNHRt",
+        "4d1CG5ei1E2vGbvmgf5KKv",
+        "50yNTF0Od55qnHLxYsA5Pw",
+        "5KD6AEm19QnMbfWpfoOHMl",
+        "5M787RexsAiVYjQusM98CV",
+        "5QUIK7ZtziW8kGWo8RqopF",
+        "5QVVjX0ZItqlVpEuVCM9Yg",
+        "64FzgoLZ3oXu2SriZblHic",
+        "6GXgd1BPD9bUpqw5AntGV5",
+        "6HRsJu8vcnzYDN4t0570FY",
+        "6IG3sQ8s9nfk6TUlVzRhbN",
+        "6M9ppdfFjR1AbpUl3Y8DcV",
+        "6T0sEnqjmHISIKwFETeeiP",
+        "6qAcApH8obo8eqatCKUHd9",
+        "71BqAINEnezjQfxE4VuJfq",
+        "733OhaXQIHY7BKtY3vnSkn",
+        "75W3SngKzTuoQ94uLf3y82",
+        "7oZONwFiFIErZcXAtTu7FY"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "9dy": {
+      "album": "Taylor Swift",
+      "slug": "taylor-swift",
+      "spotify_track_ids": [
+        "06FXaDDdg0BzXl15cthMS5",
+        "07hRnco0bhycHEh6k92Xlk",
+        "0BeWU1gZfv3bb2BPnva3cy",
+        "0EQovrrG0oNLPLJrVGKqj0",
+        "0JIdBrXGSJXS72zjF9ss9u",
+        "0MdvaY1bXQVxkInYNCQc7y",
+        "0Om9WAB5RS09L80DyOfTNa",
+        "0ST1G2zAOuSPd6rYdF3RS0",
+        "0VsL7c4EBrLgaNfHQep2oy",
+        "0YgHuReCSPwTXYny7isLja",
+        "0be2GMLqyJKvlMVimVRl9z",
+        "0g5eBFfWwNP7PXFGON6SB7",
+        "0k7VfuL6QDZDItHMfStLGr",
+        "0q0YAWyXhDggKzeicHhtfa",
+        "15DeqWWQB4dcEWzJg15VrN",
+        "16MVSD0mGI4RMQT83Qzm69",
+        "17Kqa6MX5uZzLK7EOEeAxo",
+        "1QMmJSW0E8rdJRMGOUrnJd",
+        "1YU4JKqPMYqpGDtcQn5Kzw",
+        "1auFjTunCeF0jbFhCx9WSZ",
+        "1gAwz7T7QfpDuSkdS7qdQ5",
+        "1k3PzDNjg38cWqOvL4M9vq",
+        "1nmUwsjwOgeBxETJ51VMjx",
+        "1spLfUJxtyVyiKKTegQ2r4",
+        "25CuBWzP3f3mngylSUgNaZ",
+        "2BYhoERzw4iA6h5fneotEy",
+        "2OHH1jLPtrNr4024V1DwZX",
+        "2QA3IixpRcKyOdG7XDzRgv",
+        "2QrQCMel6v2JiLxqrg4p2O",
+        "2RM02ladxD5mgdrlAwh3h9",
+        "2SOiWAqjpyGnMPLZd66rm0",
+        "2WefzSY75eE8gWn1Zbf8xK",
+        "2ZoOmCSgj0ypVAmGd1ve4y",
+        "2gwvtlwlKhvkfjz7Fcb6Yk",
+        "2l74Cv256ElApUd119a9ib",
+        "2y2Y9tGcZLGNFfTCasJfgb",
+        "30Is1TtZHWvnZbsMtzwv6n",
+        "32mVHdy0bi1XKgr0ajsBlG",
+        "3cVNvBOGCLGf7HaMhcWSQW",
+        "3eYLIn5iJlcTUDrOg31yLj",
+        "3f8FaHeG75RzZHWzEQMKm7",
+        "3iaYan8tKzKGP0MNWbSgxM",
+        "3y40XaB0r8LwJzECdhXqmq",
+        "4511PLndxxMcob8Qq5KHNw",
+        "49Nfi3WOhDYAppczV12SqD",
+        "4DjevQhsPWULcondN4mRh5",
+        "4aBW31cmkA7BLColUsMEeZ",
+        "4eQCk8Vqfdr4mNK11QZGcT",
+        "4hBYCCUKtPLp3IKk9RJ2Gv",
+        "4pJi1rVt9GNegU9kywjg4z",
+        "4prldYE5Z0GxtLdO1XhgzH",
+        "5Ct2PYPUSogyWvbV40k9Bf",
+        "5OOd01o2YS1QFwdpVLds3r",
+        "5a9hUL6ZuiagZhazwrtwHF",
+        "5dNcm3dP4bdBHuFmOs2ZOG",
+        "5f22cJ5bgEqYYpbAJn0D6D",
+        "5jPbjmpn2I9mw7HvSWvqFu",
+        "5jTmmyo19Vi4caf8kA3xnZ",
+        "5vyxXfD5gLlyPxGZMEjtmd",
+        "60oZARTE1kCh5ntBfeO1XB",
+        "6Bgc6CGzk4kvkQRiwQc6Yd",
+        "6FbCZTXJjwBQRsKb9leofw",
+        "6K0CJLVXqbGMeJSmJ4ENKK",
+        "6ZNW3DdJVZwPvZ8fuGfW6o",
+        "6mEIFRsfukxqWeKXuKaalI",
+        "6pwfOVtNVEvIYF6x0h45En",
+        "6tzHi7qmbncwyjdfkDuwPI",
+        "73OX8GdpOeGzKC6OvGSbsv",
+        "743KlSMdeOl9JJ0nNHTEKR",
+        "7EvU9pRoJ9Xs7anx0P7tEc",
+        "7HLQ82LguDnF5MBC7F7Yte",
+        "7an1exwMnfYRcdVQm0yDev",
+        "7gfzBsM4xaMb8c2WdpzEat",
+        "7vKXsy9iKZl4SaASFqSQKg",
+        "7zMcNqs55Mxer82bvZFkpg"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "9ni": {
+      "album": "Red (Taylor's Version)",
+      "slug": "red-taylor-s-version",
+      "spotify_track_ids": [
+        "01K4zKU104LyJ8gMb7227B",
+        "05GsNucq8Bngd9fnd4fRa0",
+        "0DMVrlMUn01M0IcpDbwgu7",
+        "0NRHj8hDwwmSPaA41o379r",
+        "0WE0h1qUWJBt97DtvuMWRN",
+        "0YrMTMLpLq1UIkWgghNM6c",
+        "0gPmM1WtVRg3uENW3o8bfx",
+        "0v4z1tuZvn6LGknom9Qx7d",
+        "0y6kdSRCVQhSsHSpWvTUm7",
+        "18lJHS7U8vTCsh1tedD3n5",
+        "1BY5apCyXIjMCaMvLBnUwM",
+        "1IBhYEvvi02tDVByxIiTh4",
+        "1ftFtW8S1621tu0MIQy0Sg",
+        "1vFMCv1AuIvYYrMsGojGRK",
+        "21SralRv4ucDT3i1rYrr85",
+        "2NIBaWXdjaTDmytjjwbEfP",
+        "2RJnNdu4pb3MypbBroHU0T",
+        "2bspOurPlpKv27SVt7UbHy",
+        "2r9CbjYgFhtAmcFv1cSquB",
+        "3S7HNKPakdwNEBFIVTL6dZ",
+        "3nsfB1vus2qaloUdcBZvDu",
+        "3oGVx9RBmiYGv5ZCecWLkx",
+        "3yII7UwgLF6K5zW3xad3MP",
+        "3z6XUommYDWPHeFhmhhT6j",
+        "4CkgMiMqZ5JzW9iYXSTMTL",
+        "4IQkfUsrwXol38VV3U7t7T",
+        "4OAuvHryIVv4kMDNSLuPt6",
+        "4OmFmE0fzcMG6g0Y8p4eSD",
+        "4e5ayHsOLJNLTGfjau2mEw",
+        "4pNApnaUWAL2J4KO2eqokq",
+        "5YqltLsjdqFtvqE7Nrysvs",
+        "5enxwA8aAbwZbf5qCHORXi",
+        "5jAIouBES8LWMiriuNq170",
+        "5lFDIbYMcFHPPgzMcnPqSz",
+        "661CJWXysgwKXI1dreYNBU",
+        "6AtZLIzUINvExIUy4QhdjP",
+        "6Q237Ts37YGYRIi5Vy5lVX",
+        "6lzc0Al0zfZOIFsFvBS1ki",
+        "6pYNq0ZwpPVazKzsqpf0G8",
+        "73qMN9bXy7MSPwwGfH3wQr",
+        "7A2cNLRT0YJc1yjxHlKihs",
+        "7J4b3LVCIGO4CMBDFLPoP6",
+        "7eQj6r5PIdYKEIZjucBMcq",
+        "7nWui6jiMM2m9qFmET1Mtj",
+        "7qEUFOVcxRI19tbT68JcYK"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "dy9": {
+      "album": "evermore",
+      "slug": "evermore",
+      "spotify_track_ids": [
+        "0EFdoyXHpRHhEmsOlQhIXO",
+        "0PurA4JVJ8YQgSVopY8fn6",
+        "0U0etHtpARihOUUY8Akc7y",
+        "0lx2cLdOt3piJbcaXIV74f",
+        "0sY6ZUTh4yoctD8VIXz339",
+        "0vVMlbdYx2080Oa9FndPZr",
+        "12ntTeqEeTg7GAVpe8Mhpl",
+        "19CSr8rwW05VJL2F91KFNK",
+        "1XjHRolIXL2M1EEOUsGGR4",
+        "1gcyHQpBQ1lfXGdhZmWrHP",
+        "1kdWw77ZpYOkhxeuhzU1j6",
+        "1t2M7UYoUpmhfZNMBsymJr",
+        "2NnrAdjE9cPdMklonMBuAv",
+        "2Ta5c5Z6DvM8GX0U1polSo",
+        "2ZTKWFG6OtHI3ewy9OGNOY",
+        "2awNGIJHodfLZSClB3PYhz",
+        "2gVhfX2Gy1T9kDuS9azrF7",
+        "2o2sgVJIgFXk8GQjWTgI6U",
+        "35rdVq36LMHQX0Suw9a6tK",
+        "3Dby3p1m6IOZn2gIIqECgK",
+        "3O5osWf1rSoKMwe6E9ZaXP",
+        "3RaT22zZsxVYxxKR7TAaYF",
+        "3Uo7WG0vmLQ07WB4BDwy7D",
+        "3k7ne7VmH43ZPWxPdvPUgR",
+        "3qy4znWySY3rwzS2vHDOeg",
+        "3uayvzcbqFydIbgUeC6EJh",
+        "3w9VRlKPvNxj40RdUGRweH",
+        "3yk94DUDanXyVhRLVjmI3w",
+        "3zwMVvkBe2qIKDObWgXw4N",
+        "43Ykum9T72UOPhBN31grpN",
+        "4GBkffrtA51p17JH35irGA",
+        "4tyX1rw9X309WkEdh2As4B",
+        "52OkpDsU6MmPx1AwGOb6Ap",
+        "55Vf4bimc1Rtfg0PAQRAo2",
+        "5BK0uqwY9DNfZ630STAEaq",
+        "5F7hpFKLmWgMHGxQuwssuv",
+        "5VYWxXUpxuxEmCqMLDqICo",
+        "5XkJj6sV2XLMaURdmdXgNx",
+        "5uICWmZTLkpEVbK22PBP6e",
+        "66tOfHVH3aUrscg8vExRV4",
+        "670fUmXf4KQekzbEgaXyPA",
+        "6Wlq9rqkxrqj5Kls4Kw14H",
+        "6a8aUhYbaQBUI8PcJ5ZmQ6",
+        "6lCvK2AR2uOKkVFCVlAzzm",
+        "6rap8NpGq8LDcVaJWkKFPn",
+        "6sQckd3Z8NPxVVKUnavY1F",
+        "6uwfVkaOM1mcMkFmSn35ix",
+        "73YUReisjb3A9ActdLLjJQ",
+        "77d7q9TNbsIDmRTDPkPv3L",
+        "77p4fRpoeiZMtUy3P9kN21",
+        "7dW84mWkdWE5a6lFWxJCBG",
+        "7tXMHAFEOzcUaUQqovRGho",
+        "7vBNFh3NIZTj6tB5s1IBjE"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "g0f": {
+      "album": "folklore",
+      "slug": "folklore",
+      "spotify_track_ids": [
+        "04xrhDrQ2WOW8GLwu7kbc0",
+        "08J4bMHbILkwSIhbtrcvjN",
+        "08fa9LFcFBTcilB3iq2e2A",
+        "09Ez3CZ2kXszZwYoyKpYH9",
+        "0Jlcvv8IykzHaSmj49uNW8",
+        "0O9i6jhscByEJs1ipy5hu4",
+        "0Oju1YcbPCJuUQQWoZNdJK",
+        "0P9wLFurlgumLXuqFEpw52",
+        "0QTBsdoJhamY3Aid3fOsOd",
+        "0UAdDYrkCvVQftaKpL6q5f",
+        "0ZNU020wNYvgW84iljPkPP",
+        "0Zm4whQzxgdgh5kNW1budX",
+        "0eFQWVz0qIxDOvhLpZ40P7",
+        "0j5renyfv1ChCoe1ca7bDP",
+        "0x3CUvkL4jUPYVONrYUubR",
+        "0zEprKYeuGOIZoHyu6O1E2",
+        "12xIjI9A9UlB6zEc7kyZ06",
+        "1DnpjwTbSwV2V6O4PABMjW",
+        "1FRF7olkTDWPwHf5JwYudq",
+        "1Io0cp5dOYJWCKpCBDopdM",
+        "1MgV7FIyNxIG7WzMRJV5HC",
+        "1UHoF9p75IVsvUt6WdTYhn",
+        "1X2cYhcDMfDtiRIYHZCpQu",
+        "1bdZ8KOFXEqI4nPR2mErtl",
+        "1gaLZjPrDnHQWJds2Jg4KT",
+        "1hm4V38egkiHOgxTUpu0zg",
+        "1mh5dObNoOvCfHmXnhvDEK",
+        "28tIMaewZuGR8urkvFhQyA",
+        "2BDBBNaWZf2ueZwp4h52b2",
+        "2Eeur20xVqfUoM3Q7EFPFt",
+        "2NmsngXHeC1GQ9wWrzhOMf",
+        "2QDyYdZyhlP2fp79KZX8Bi",
+        "2SVQOjsBI42bbaEeBFk5Uy",
+        "2hmafYGj1CXYKIYcMnX4lj",
+        "2jhfs6moEAK13eLM6xim4l",
+        "2vJ7QvyCiR4DaHxwO58izA",
+        "2yceD2hx5HhOLgkm1CITCi",
+        "38aA4mjtRF8ZNXWoCg1XOa",
+        "39z0Ktcc9Zvnim7C3YXvpC",
+        "3EPgWM1zfTSzEc0z4AwWTM",
+        "3Qc5EXc8KGy8Z0f8yGKYDW",
+        "3Z76GkyDvIAewkgwWvixpc",
+        "3hUxzQpSfdDqwM3ZTFQY0K",
+        "3np6rogpYUEmSeXPYy7gq4",
+        "3yz88FVJQhwG2EqYHw3pkx",
+        "4GS68CE8nKLIKjjapiSm2I",
+        "4LEK9rD7TWIG4FCL1s27XC",
+        "4LghBuFPMgETxG6NcfoDp4",
+        "4MGexoZc12lqE0hYkq9YYx",
+        "4R2kfaDFhslZEMJqAFNpdd",
+        "4Sj0m6AOQRgczw8Q4Q6jb0",
+        "4WHIqhrbdva5vQSrCuet3l",
+        "4XCYmu7QLySdIahgBALKJK",
+        "4YHHz3VIXgNDGdoL9xC1tx",
+        "4axSuOg3BqsowKjRpj59RU",
+        "4cOWq0cVsKjxaQpRMbDoH1",
+        "4ojxSyrEraN7d46BMBPThZ",
+        "4pvb0WLRcMtbPGmtejJJ6y",
+        "4yyKppX85ZkmlGOC2toBZA",
+        "560uQyz3p5G9WdnMX39xc6",
+        "5DnDBYrfGoxdnomqEAkFIv",
+        "5JWgJQPrAD6LJbS8ILpy8i",
+        "5KByGq0JijSSDcy0qzuINs",
+        "5MFjHn1qfR9AsWuyzJLk1z",
+        "5deqOCwIaLPld1dCj4FqRM",
+        "5dwQhzeE8LXpl9sbZJZmQS",
+        "5jQyGzcwqAxwT5QUIMivoX",
+        "5kI4eCXXzyuIUXjQra0Cxi",
+        "5mdNyCS7ttVcAyVYOIFEjs",
+        "6G61EqJgoEJhWaBT34jMyW",
+        "6KJqZcs9XDgVck7Lg9QOTC",
+        "6MWoRt97mnSTXZhu3ggi9C",
+        "6VsvKPJ4xjVNKpI8VVZ3SV",
+        "6kz2hkq1xQvDqPcUyBkw8f",
+        "6mqyTq948oap5AkyTsd6XF",
+        "6rTUr8OpU5kcSqLGL2TmyR",
+        "7CVTowKpGPA2MsIbkTl2oc",
+        "7MbT4I8qGntX4fMdqMQgke",
+        "7N015NTIWGjQDddHUdHPoO",
+        "7bFqfMKnKsZJH9FytUXg3E",
+        "7cPrz6ZMELLtuV8739mvE3",
+        "7klXN6RCN5Rj0VeYO5gBzU",
+        "7kt9e9LFSpN1zQtYEl19o1",
+        "7ojfyws0WASED96XBzRbd6",
+        "7zcnlq38eqNWyUF6eNaB5Z"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "j2z": {
+      "album": "reputation",
+      "slug": "reputation",
+      "spotify_track_ids": [
+        "07NxDD1iKCHbAldceD7QLP",
+        "0CLnkxpa3M4eA3HeGaERat",
+        "0Fa1vab9Ssp9ah12rhfeRz",
+        "0FfnSwDzc5KuBCkhJzIL2c",
+        "0MtU9ETYyVX8YPBDCYPdMb",
+        "0OnfGJsCc1m9utfUYqid6O",
+        "0VE4kBnHJUgtMf0dy6DRmW",
+        "0cdQJyb7pZJMw9obUd8lue",
+        "0d9BBAvHC8DjidkKmKBNms",
+        "0fF2vHE8TaB4XHExalmBP8",
+        "0tDfp0vFR95Gg6Mrhza3lX",
+        "12WvaS3V4dPRBU2o37vX69",
+        "13tYZVTtzLUJTlM7m1ivbi",
+        "19WjVVgXjdKXfLXoaDPwTM",
+        "1Fj0T1XKuhRu7EZzJ7NJIK",
+        "1GwMQaZz6Au3QLDbjbMdme",
+        "1JbR9RDP3ogVNEWFgNXAjh",
+        "1P17dC1amhFzptugyAO7Il",
+        "1R0a2iXumgCiFb7HEZ7gUE",
+        "1VPHQriwOsy5aGHLwwZyho",
+        "1Ygm9KdH3wbzDekO8JgxcW",
+        "1ZY1PqizIl78geGM4xWlEA",
+        "1zz0XSmHCFd57ne04UAp38",
+        "2QD7DklEvkqncYacmhMukq",
+        "2Sy2oGjP5RYB4cLVoDU0Gz",
+        "2VjtYe7gpfUi2OkGxR2O2z",
+        "2d9Ud0fwm5Oq73F5vPSoQB",
+        "2dAXNjG5vwMAlgHzAC7vZC",
+        "2hecdut2HWM5JMHqLTWThq",
+        "2k0w1FGqvzVPgQ9VdTaJpe",
+        "2nOeoic483mcNOx5TFpc3L",
+        "2x0WlnmfG39ZuDmstl9xfX",
+        "2y5aJvzXhHPA94U5GFAcXe",
+        "2yLa0QULdQr0qAIvVwN6B5",
+        "3A6wCRe6QoH7Ea5JMpnRB8",
+        "3JbSLr2OhsivV46whJyGeb",
+        "3NdDpSvN911VPGivFlV5d0",
+        "3TcMyNevhQZ35yaA8jHSBq",
+        "3ZHTwJzCNDFvjLpVQiqpH6",
+        "3ZfvKQxJp4zZshiJsRPoD1",
+        "3ilBqQXWOO6FWaPyNsVUbw",
+        "41T04yafZVrjNq2FqvLtId",
+        "4cag67C3v9ToeFivUwDUsE",
+        "4d7JmiyEia47bpC1HhxUzY",
+        "4eRp4OhES42IiokxA59E60",
+        "4kxj7TJF4A88P4LPeLrsoZ",
+        "4svZDCRz4cJoneBpjpx8DJ",
+        "4twNUyTpLMPWokYmCdFDCH",
+        "4vVb2D6RYL669h7tLYOKwx",
+        "50GXx9eZeiVWB3bgMop7Ti",
+        "518FPNbDfkkxamoeR6lGo3",
+        "55n9yjI6qqXh5F2mYvUc2y",
+        "58q1k1dMUO6WM34yKspSD2",
+        "5EsfyTD26nlVQ0DtYo16uJ",
+        "5Gd19NupVe5X8bAqxf9Iaz",
+        "5Iadj8IBPrt634WW0yGPRI",
+        "5JtXBqKLdfzwedmlUjjqAm",
+        "5PxFv9yJEg9dxvbZggykro",
+        "5YPTYLMdNEgk7CPNPqqFyA",
+        "5eGX87IiKsGuzS3iw4CfCX",
+        "5fUE3r8hdIUQug2028aA8F",
+        "5oJUjUsBZcqyEhOdpif37h",
+        "5sOch9Cf4uxcMtwFzMtNqQ",
+        "5troof8mcGO3AafoDbk1gc",
+        "5v5s9gE1UVpPaPdOxkbBwP",
+        "61zIoCTqx0OY5pCj26Ve9W",
+        "6NFyWDv5CjfwuzoCkw47Xf",
+        "6P8j2SqbXOeaCvXh1ZXwWT",
+        "6SYwJcqaltK2WFRmD1unUV",
+        "6X3YCswCQzX1gGZ5ji8P9x",
+        "6oVxXO5oQ4pTpO8RSnkzvv",
+        "6uFsE1JgZ20EXyU0JQZbUR",
+        "79bxjfUDHCwCe7JR4glr8r",
+        "7CneiDesUKFJO3Ix01dnfr",
+        "7F5oktn5YOsR9eR5YsFtqb",
+        "7HuBDWi18s4aJM8UFnNheH",
+        "7I7JbDv63ZJJsSi24DyJrz",
+        "7bdyzcQ0onk60hfsxDCd2X",
+        "7enXOiKyiRhg84vgU8N8VS",
+        "7ut4Y7gxOFe3d3rLJQ7i5w",
+        "7zgqtptZvhf8GEmdsM2vp2"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ksv": {
+      "album": "Lover",
+      "slug": "lover",
+      "spotify_track_ids": [
+        "0ISHfeb30gj4CSWUZYuesj",
+        "0NQOXTDg2p7hFYlFq6tZKW",
+        "0pjBqAz8GlxGlpaU4W0DxS",
+        "12M5uqx0ZuwkpLp5rJim1a",
+        "17yraMKqmZIKAv3iaGcoLX",
+        "1BxfuPKGuaTgP7aM0Bbdwr",
+        "1LLXZFeAHK9R4xUramtUKw",
+        "1SmiQ65iSAbPto6gPFlBYm",
+        "1SymEzIT3H8UZfibCs3TYi",
+        "1dGr1c8CrMLDpV6mPbImSI",
+        "1fzAuUVbzlhZ1lJAx9PtY6",
+        "214nt20w5wOxJnY462klLw",
+        "2Rk4JlNc2TPmZe2af99d45",
+        "2YWtcWi3a83pdEg3Gif4Pd",
+        "2dgFqt3w9xIQRjhPtwNk3D",
+        "2fgiBCtbWo8pijF6M7pN1i",
+        "2msvOEbkK50foYf9BMXr2X",
+        "2slqvGLwzZZYsT4K4Y1GBC",
+        "36a08nLG1xazGaaVKK0vv7",
+        "37jfioVu3Bd2Du9bteXNDU",
+        "3RauEVgRgj1IuWdJ9fDs70",
+        "3fGnrtrtL1IHSX9t4DKOYf",
+        "3i9UVldZOE0aD0JnyfAZZ0",
+        "3oF7Or7T35yhQbGxbCGvRX",
+        "3pHkh7d0lzM2AldUtz2x37",
+        "43rA71bccXFGD4C8GOpIlN",
+        "4AYtqFyFbX0Xkc2wtcygTr",
+        "4P9Q0GojKVXpRTJCaL3kyy",
+        "4b3wGyyabId64t9rjMFdfY",
+        "4lD3RXyvHpJsM3BhIEC4aA",
+        "4y5bvROuBDPr5fuwXbIBZR",
+        "5BHa3hmDOiT6s7QQc0TT37",
+        "5fOV54t6mMYv3H9CsnvU81",
+        "5hQSXkFgbxjZo9uCwd11so",
+        "6ClYMObS7f3Nn4AiZHYQt3",
+        "6EXHGKZ79AUTzCe9BMZjhT",
+        "6RRNNciQGZEXnqk8SQ9yv5",
+        "7Bjf96uNizpvXLvNyOJpst",
+        "7FKbTRXXIWVFQmPH8zGfU0",
+        "7ryS0xBZNYjQqql34GCkDp"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "lhq": {
+      "album": "1989",
+      "slug": "1989",
+      "spotify_track_ids": [
+        "06WgOCf0LV2h4keYXDRnuh",
+        "0C5x4DoaPegrWqchk4SuLu",
+        "0RFCHlNuTeUHIB36VuVbOL",
+        "0TvQLMecTE8utzoNmvXRbK",
+        "0U3H1C9aasrSUBugEOfh1r",
+        "0Xtgj2RuEo5FInZ0b4KYuY",
+        "0bj1bAhoHpHRSl4IIyFvfU",
+        "0cqRj7pUJDkTCEsJkx8snD",
+        "0dAb8TY433dl3ZfXYCLE19",
+        "0fM9dEhUFV4MHDuJgrcfOv",
+        "0lmMtDQ2ElasKU2qDAE6NN",
+        "0qAIiGFKLdV1xpNlEhjpq8",
+        "0qUnBLZ8bJqUNEeQgayL9t",
+        "0uBYyYTfuuDigZvBN6HnUt",
+        "0ug5NqcwcFR2xrfTkc7k8e",
+        "0w5HrA1s3WZIqAUYicJo0A",
+        "0yN4fNzmVnmgC0dsOoi9Wh",
+        "0yisH8r0f3Mkq34kjzUlCV",
+        "106R7Z57WYzBAfrXImV30y",
+        "10nqz67NQWWa7XPq7ycihi",
+        "1B5VzXPqMlvRw0U4HJY3dJ",
+        "1BXM0X5BxyUUOLEf9Rv6uZ",
+        "1NmVZsG18CzCAtw7rnV3yA",
+        "1Qicm51crXMvUuH4SMjobT",
+        "1fo2ctLqj3zBhRQKOXprol",
+        "1h4lAVDzDt8oQY2yHTEdRx",
+        "1kTPQnabROVkW9bUXdCGrB",
+        "1p80LdxRV74UKvL8gnD7ky",
+        "1u8c2t2Cy7UBoG4ArRcF5g",
+        "248qgqZNy5T5KsGHgTxeIM",
+        "273dCMFseLcVsoSWx59IoE",
+        "2GZI4YxTKT07KaQZAMmz5N",
+        "2KrOAg6FftbjgSKdd2a4rS",
+        "2NlmmAjGYrrjAp0MED5rGx",
+        "2eZbyz03ZHkqpZz2Vw3KXy",
+        "2i54CJa3pEfUjTRhAU7y6R",
+        "2juzwShPy28xL3umOogU3u",
+        "2sC2P3BN0IXujNaaSyDmtP",
+        "2w7UyGCxnZmBXrx9A5MjTs",
+        "2zfgVd034GlUvk7LqBHl6u",
+        "33Kq0AT5rvwyE4azisG08x",
+        "3Ng1BPUR5qf6vQ1AizIA0D",
+        "3QdYxkiZu3ilLRHU6lXYvn",
+        "3fVnlF4pGqWI9flVENcT28",
+        "3fthfkkvy9av3q3uAGVf7U",
+        "3g7PbLRaKm2MmfHNyMbjJn",
+        "3jBMHD19RZdAqG9iFQh7xc",
+        "3nRmDz7qGCvsMS30rGGY0x",
+        "3oKMl2tJv4fdidkXUYMI5x",
+        "3wmN11qXGL0HyPojvEE1D9",
+        "41AEhaPZAukouWaZMEBJoZ",
+        "4A2LfnduSTsE8u0ecYROxE",
+        "4A4A6dwl5DqdqrZaEtKGPR",
+        "4CWLOxjskk6fjixCboD4vJ",
+        "4CyL8bBbVRYB0ogadF4aUS",
+        "4Dzma7nri1H2XNQ7b8Fs5b",
+        "4FoV729rw7IhoKlMZW5K5V",
+        "4JQm7ebhsrt10wmrP6AfXL",
+        "4L560fic5PaTuCFm6CviKa",
+        "4NNolUeL5m2ju7kf8pdg6H",
+        "4TtyvyI42C0KFnbDZvNC8Y",
+        "4WrJR6LJ8MtIxouKHUkTEM",
+        "4YugJd2i96PHwaflBauhXi",
+        "4bXCcoesMt8u99xMsbLr9U",
+        "4dYUOfmWna6DFccnz732n8",
+        "4e6QU4gpfZj9xxcK856RgG",
+        "4eTXfpHxhxVofrBUjAhPMg",
+        "4fiLVxZ0UAsWAzUwGqkZA9",
+        "4lIxdJw6W3Fg4vUIYCB0S5",
+        "4omftH10jc82Sj8VJ395C7",
+        "4vWXPp6Tuf6ury2dCh0uAI",
+        "4xUyg90BLSnPFXbqDAlBKF",
+        "56dqIqcOU4iuDb8EXpgpv4",
+        "59HjlYCeBsxdI0fcm3zglw",
+        "5OndtwLGA9O6XHFcGm2H7r",
+        "5RVJ6VKfwtosA5Q1qeHdjF",
+        "5VDHMi7own9vDZjiwDES1e",
+        "5VqtAFytMGL3nIsGAHJOYA",
+        "5ckUacHVEsmgJI7akKHadD",
+        "5gRYrtvyVyaCRvLt56OfuV",
+        "5luKF6M5ULje5PERMqbDbV",
+        "5xTtaWoae3wi06K5WfVUUH",
+        "63wH4MVqn36YQkwN2lai6y",
+        "64FIHbthA4RhBv6fL6DGBO",
+        "66LjSOIkrnVlVbNaeJhyUF",
+        "6AQbsCRdpQ4U8YaH9ySvzP",
+        "6Bq4W1CV7IqqZ4Dm2WVG5w",
+        "6Ck9WerfsyvC4v4AylUoDp",
+        "6EwNJz8CuVsrsLvXprJ20Q",
+        "6N6V2v89hS4N9ossON5f9R",
+        "6Nde5KuTXyB7jlPO4upaBo",
+        "6RvRzl1YJTDnUvdOtV21IK",
+        "6aLOekfwbytwWvQftxTEF0",
+        "6iWMI5oOhWrDbLbjmwTWFq",
+        "6qnM0XXPZOINWA778uNqQ9",
+        "6rZVy6FIG7lSJQMFXHo12z",
+        "6wfugRLamFsTRbPcCpNnP7",
+        "6wyqsJdxRsSM6k5hCF1pvt",
+        "6xsEAm6w9oMQYYg3jkEkMT",
+        "6xxSYpv0gGX7V7Bikx1gGy",
+        "7bbhFp3V4bZct8vpSCIrR8",
+        "7juXSUrMEd7f9ljLk7Pria",
+        "7x86Zn0YFrNyKQ9O7um0v2"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "msv": {
+      "album": "Speak Now",
+      "slug": "speak-now",
+      "spotify_track_ids": [
+        "04S1pkp1VaIqjg8zZqknR5",
+        "09cM9BjyNFizKUOXh6j9rT",
+        "0GxW5K0qzrq7L1jwSY5OmY",
+        "0KztjtD3ytzgYjUKIVfBnW",
+        "0LB5gCYdVYtXyPKhvZaEgI",
+        "0OAHsZ8vrS2NKom3cvfJQD",
+        "0SwaNP777wQtTy9cEm886m",
+        "0UK4QL2zQWgWzj47V6qgsz",
+        "0dBW6ZsW8skfvoRfgeerBF",
+        "0eRpceXMfMVYhMVrVkgWxS",
+        "0fAbfDiuQiUwV7FUcFfRGY",
+        "0hK93KD6Y0j9giUGh4Valj",
+        "0ruvufCIGCWaf67Tb8R64O",
+        "0tr6XR58KBdDYd8qvHVTs8",
+        "0vvt4IZOMkRug195S4MUq0",
+        "0yJ94T12iL5gGz5HDn1nos",
+        "10eBRyImhfqVvkiVEGf0N0",
+        "11UaQaEp2LvdspTyyuE3ur",
+        "1By2VQkUN0Frd8mKNV5NYC",
+        "1D27z8xNzjW0Mwwt1NCWhJ",
+        "1EQn3Uc5AyUXoiPLeyCrrg",
+        "1GeLxMgpeCnMJntwyW6rLw",
+        "1IsquhJFJ0qcFZI7FeAEuN",
+        "1NTxT72xu3GkYq5wIq0RG5",
+        "1VCJ7vk3Y2DoJIAEOXe3V8",
+        "1aBJNc2thaKyh5THWzIqHX",
+        "1eGBTPSSrr9Lem1BVKzgia",
+        "1wJL1A0QUHJPf2cm7tsrdw",
+        "24DefNCFiWTP8OjYWiXuYe",
+        "27vZ8jMjNk6NGcIfFzePw9",
+        "28M2gifMU282QBM3fKajIS",
+        "2Aho0iiNBf6E4XYtlha9xY",
+        "2PBghI9zJkQEWBzMSMo2Ki",
+        "2R7C9dDqv1UPycvepBFziA",
+        "2XkUgopshJmI1WqFTkury3",
+        "2YiBQKOQhgdSddgpCDZmYO",
+        "2biHaDJjwyvJAnvSqTBvk8",
+        "2fkN3ago8ded5UG0LqHKB5",
+        "2jt90bYlYDg1lXYWES34LJ",
+        "2kv8uTMNaaxpXFkmFdVjat",
+        "2ythurkTtSiyfK7GprJoFW",
+        "35XDhcPNgNczxX0aUmiuKH",
+        "3DrjZArsPsoqbLzUZZV1Id",
+        "3JayaISg308IVZhUY0XUXe",
+        "3JilapcaOXzjR9gtvCY8FO",
+        "3K2es3gElMRJ3qvmPW442g",
+        "3MqHevAhUErYJoC1ceESEe",
+        "3QFB14MOUf3imlyISNmrbT",
+        "3RBluWmSoG2pGA1OePzGJI",
+        "3d1fzbROHb17uYI40hbql7",
+        "3eVl0bkOfARGgQLvYJ4jbi",
+        "3kfgJql90tzgoxByioAMXR",
+        "3lXekiVK1ZPZbKconsys73",
+        "3lm4L3pPL32PFy74dR17OR",
+        "3nWqFKQTstzwvrLEW82dgE",
+        "3sqrvkNC6IPTIXvvbx9Arw",
+        "3x4MisUs3dIkpDUcJMfFKA",
+        "42pHJPLlDjfvdAUb7aeDXb",
+        "44uwUM4YEfve5tDYEbVXQb",
+        "46NGAvL695VnbcSeTmQWmM",
+        "4A7shC8pd0ddDSqrvETTsu",
+        "4DbI1rr4IQ2bc8nejy9ttd",
+        "4Hk2aNSkhB6Y8jsJtrAjxa",
+        "4JJz3bQDt922DzUNHsGtWk",
+        "4JOZRF1Tp23yeLDkaJvYiC",
+        "4LraIz87diVQdDK0rhi0S4",
+        "4h0EXpatqJImv4VRgvX6po",
+        "4jqsWkHTmhBdTKHtsaw2gL",
+        "55mh9j2aB7xZ1Oh463gK8k",
+        "57w0Uyk2jJAkO2hMJ36xJZ",
+        "5F2684mgHARE8q5QxYY8RJ",
+        "5GPwN5iZ9ZMSXAkppj4Uvv",
+        "5KNF5SJKehiNxuvavYTc9j",
+        "5QkzyLUb4ggojNDp8G2OxX",
+        "5aNkiOMxQXkpoEY5bTYoCh",
+        "5fWNEKU1JTe07KsrJ7stft",
+        "5l6GqSxplqnZbLg0LTPQeG",
+        "5sbsEKN2PIwKe0l03qoeXn",
+        "5tSmAABuoOfR59lrtXdDqm",
+        "5tcxJo6DZ1wjkC2Fv1xDiV",
+        "5v3FHVgMp8AKLxMT0X7zph",
+        "5yEPktRqvIhko5QFF3aBhQ",
+        "62rlxI6g2PNaWsHoiRryto",
+        "6505MLhnqTDDg4tjoUz2Wp",
+        "67Io3gxHwfbUreBf114c0u",
+        "68QyrSzpnoU04AAhE5z8lj",
+        "6AK3WJz8eIJLePdy09nGR4",
+        "6IH2Z54gYPLqgJtxZjX80i",
+        "6LZaxlycSWrJZ4Volb25qx",
+        "6PiiQa5q6FjhBfaPsCp4mJ",
+        "6PnszbMFmzHaxT2ANFgRVQ",
+        "6RfWi0Jx3GvflsOtUfFpuT",
+        "6SdBf0ZsJZoKaH5zcDaz9X",
+        "6XDBA3QWX51lDJ0oZbaJJN",
+        "6ZUSLV2UZPxqNXDX6DHBQp",
+        "6aJ0ipi4EPmu1aTbFeXZnw",
+        "6bzWVosI1yQkHUrN22cMWE",
+        "6d9IiDcFxtFVIvt9pCqyGH",
+        "6hH37tyeRdyan1mAppmVor",
+        "6kFgTVa0eIjO00Pc3OA0rF",
+        "6nHV1NXioyCPpewRMh2DxC",
+        "6trbb1ao6xqh6FjKc0BRYF",
+        "6vmevdni3tJLxzRXSU7UVd",
+        "6yM6QsnTCTVOkKEvg3hGlo",
+        "6znB7YZhMJT2B83zfbiyLq",
+        "72GIZuUXo14oyrS0si3Rgc",
+        "72idZxdEHLbi2YI486c3sE",
+        "73B2UZR8luWSOugqpNuAuV",
+        "795ZVsHOr5ky9yrY6FDA6Q",
+        "7AiIXVMIrTqHlGn7bS3f31",
+        "7BFc7ffruhZ4Hecnqf5xju",
+        "7J4cg1IeDWDY4oE19CaIra",
+        "7dXKdjpOaH2iwfFKmUj7aq",
+        "7eWWHv6LTMFcaj8QgTLcYf",
+        "7fdXE3zL3J2AmQLXSDNM8b",
+        "7hZuICN5eaCuQyp443RCt6",
+        "7k7BOXE4u6luKTwcLEAyrd",
+        "7mFiEij8AXPUZB7aKLbUlQ",
+        "7msaHKbkc94FKxIMsH4DAm",
+        "7vBlnGdfOLzVEqiOQQxeU8",
+        "7yndkPYP6YQQLBpPsizDfh"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "n7d": {
+      "album": "Speak Now (Taylor's Version)",
+      "slug": "speak-now-taylor-s-version",
+      "spotify_track_ids": [
+        "0NwGC0v03ysCYINtg6ns58",
+        "0zo975x58DlXbZllWvfYhg",
+        "12nBPF4Rh4XLFJV0YLN7uj",
+        "1HCdems7PQZRj42QDWLA0A",
+        "1zU8j1x3yi9xalMF96pzKp",
+        "2EFZ9emtKWEglWUQGEQ3P9",
+        "30Y4CV7A6YqtQtTTo7Ue4j",
+        "3MytWN8L7shNYzGl4tAKRp",
+        "3sW3oSbzsfecv9XoUdGs7h",
+        "3yNJkriPzWjkkDAWHIAVUq",
+        "4ABYxlb92WBIjHu7TIKmml",
+        "4e3ZNTAV6PCrdYMUrUlMpQ",
+        "4evLyY5Ue1Wesc61t2KXAU",
+        "4hqJ4bSlYJOXb6Z4SRmzxs",
+        "4s8BIKx4Zh6ryAEz8RTlaU",
+        "4tMzIAFTFdqGBQLdfbPces",
+        "59KOoHFcw5XfICnO57holu",
+        "5kHMfzgLZP95O9NBy0ku4v",
+        "5xXqyjLicvEpch72qEryFT",
+        "6dTA6y0C2ReQklntzZl8l3",
+        "79uDOz0zuuWS7HWxzMmTa2",
+        "7G0gBu6nLdhFDPRLc0HdDG"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "uvw": {
+      "album": "Fearless (Taylor's Version)",
+      "slug": "fearless-taylor-s-version",
+      "spotify_track_ids": [
+        "01QdEx6kFr78ZejhQtWR5m",
+        "06qAK0pLx43pwzRi6MWV8g",
+        "0k0vFacOHNuArLWMiH60p7",
+        "0kAZ3H6G9Zac4PMpmobMkj",
+        "0q6vsjvnCIWrtwRckCV7y0",
+        "0tQ9vBYpldCuikPsbgOVKA",
+        "1cSFlSBdpT4F5vb1frQ231",
+        "1msEuwSBneBKpVCZQcFTsU",
+        "1n2wszmJyVkw6FHqyLnQsY",
+        "1qrpoAMXodY6895hGKoUpA",
+        "22bPsP2jCgbLUvh82U0Z3M",
+        "2CYVETnhM9aytqrazYYwrK",
+        "2JoJrsEV15OzbijS47lids",
+        "2m3ObD945KvpE5y9A1eUWm",
+        "2nqio0SfWg6gh2eCtfuMa5",
+        "34V9RiEPe8MNdU32qJsJa1",
+        "3CeCwYWvdfXbZLXFhBrbnf",
+        "3ExweHKZF9B752DPQByRVT",
+        "4CHpVfAhuxNJ3ibExe6kxO",
+        "4ieGtGwqOpvIQhRngp5VvR",
+        "4qUijfYU8EoIWiY6oSyrgT",
+        "4uuEGH5SVuzkkSFjo2DEiY",
+        "51A8eKvvZz9uydvIZ7xRSV",
+        "550erGcdD9n6PnwxrvYqZT",
+        "5RaBeejGtdPEszYEKYECs2",
+        "5YL553x8sHderRBDlm3NM3",
+        "5dwLFuYXsOikE1BMoBDMN6",
+        "5pcjystBtalYeqaiXCcgEY",
+        "6ON9UuIq49xXY9GPmHIYRp",
+        "6YvqWjhGD8mB5QXcbcUKtx",
+        "6iiAfo4wTA2CVC3Uwx9uh8",
+        "77sMIMlNaSURUAXq5coCxE",
+        "7HC7R2D8WjXVcUHJyEGjRs",
+        "7eResoqEJJAVTkQYSqvO3P"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "va1": {
+      "album": "The Life of a Showgirl",
+      "slug": "the-life-of-a-showgirl",
+      "spotify_track_ids": [
+        "0129EujhGkwtwTFADGem5P",
+        "01ZJZOftkQ2kSeyG34C7g6",
+        "03bTIHJElXZ0O0jqOQvAbY",
+        "05VwM318oU6aNc1GS4MtLV",
+        "0E3Vtmgzk067KASoo0HwzV",
+        "0Ny2HkSrLtvmBVwCQywyip",
+        "0fWfEPHNFueq2UafmJlY6d",
+        "0ttGLmxI0mAkMblE6iRm2S",
+        "0wAvTNz81YTUhLFWuWJSAV",
+        "0yZPIEgco572UWiwoQtcYF",
+        "1VCcPLfDiR1S9PJaSp5qm5",
+        "1ZbSww1TszeuJOtsdMZQv1",
+        "1appZ3c336FkPvCuywfmrs",
+        "1jgTiNob5cVyXeJ3WgX5bL",
+        "1lD0oPIfSYid1LhPvgrz10",
+        "1qwClaxDb5fCrLjXaAmB35",
+        "20QSU9vg05qYSDVgOTAwPp",
+        "2DF2sUvgHFKJ5TQGjm6n3T",
+        "2JHzTARFUispsjZHKhrxxO",
+        "2NGGvVcfb2m2NbVaXHC3gb",
+        "2TEQvxxQabwLQMqWMg1qGu",
+        "2TUxAAf8NbwbZjr2Ii3Hg9",
+        "2ZbU5CJSi02RLNsldux0QQ",
+        "2x3mwb96B6TquRqMtbxUE1",
+        "3AKV7Mvo2Mx4tb39iPvPlT",
+        "3CFKUvybrj8Jg5F018tyuA",
+        "3FzJDGVjRGNc7KrkabU5N0",
+        "3JNaLxAymiSUMrmjOarjeo",
+        "3NDkfIpuZ2nrLVUSYihkWE",
+        "3Qeh4z08FfDBRfQMfDv83f",
+        "3Z2nTctPsTsgqqJm5fCSvG",
+        "3aEo53WkfnIEBh6Cy3E2pj",
+        "3lcWDG62OH0cH5GHLdT5X4",
+        "3r9fAceWmaDFvbNiTnFiLr",
+        "3wXuJTeA7dkrWShvbdUk0A",
+        "3yWuTOYDztXjZxdE2cIRUa",
+        "3zAj2CyrmXsR1DJ5zYznkh",
+        "42TAweWJJ9YlQ47T5nesu5",
+        "4Ox858TeUXjy7WEKOcxaFI",
+        "4UBWugj5D20ZveyzdGpqvD",
+        "4qmFC3Jz5aQ0erlk2OSi2X",
+        "4s1Sql0NqvLh0ioDzSTaET",
+        "4utwUoDcx4zhAKXd4DD6P6",
+        "53iuhJlwXhSER5J2IYYv1W",
+        "5CHOrwxKLXkY1XVZauxvnw",
+        "5EwypOO9NEI7MvjPOYZtWk",
+        "5SkuikJwvwfEvNyCepGkq3",
+        "5XhaIFhtZeqcExorrYSVDM",
+        "5cKBWgDjB5IXZ5jnryewOH",
+        "5eXgqtg3T8Av0m1FUaGHex",
+        "5k9RjjuYyOMCLL81U8FaHT",
+        "5t1wMjV9ldVDdYs4l7mG2g",
+        "5ylJtmaWPJ33cW3En7WOu0",
+        "5yrrh7VYFMCNjUOIMzGNp5",
+        "62HoDY1Km6lm47haFpUn9c",
+        "62V2ZHslgQV98gH4AuVXnr",
+        "67SmofYg9enUWfcPqUuoVm",
+        "6EqHzZp61G5uQ12QEiibpT",
+        "6FJemhBlVTGTCgrrrLam3D",
+        "6G3dUZrsaOYhe2gRyNukwA",
+        "6H0nEKqkTRxa30Pru1h7SD",
+        "6JNM6pLKbXMGG2opeExCb2",
+        "6NUy8xajng5zMSGJRKniAG",
+        "6PlBKImSl4AZoxBU7F649D",
+        "6hKfPNnVlA2cgTgKj6Vgcw",
+        "6nhsv9Jeluz5gXt592KN3m",
+        "6udRZQi3g501XNOcRnE9fo",
+        "6virCtlwc98cKYVyeZYXqq",
+        "7EWLNUpx0QWUCYfmBJS9qb",
+        "7jHzBmxAGVVPvLiq4Y45pD",
+        "7vf4GBEJmv0uXojpr5qPMX",
+        "7y16ygjcEcfo1VYKxmgVZY"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "wf6": {
+      "album": "The Taylor Swift Holiday Collection",
+      "slug": "the-taylor-swift-holiday-collection",
+      "spotify_track_ids": [
+        "1alAo6dYalSx8yZUn17JxF",
+        "1cJkUN5LAotktryx2nPCr7",
+        "1g09DZjQ7yBommCT6POY2n",
+        "2IprIjGNRlj3TfqUWCAo0C",
+        "2mvabkN1i2gLnGAPUVdwek",
+        "31JVjy3XWnh6C2zf4kLCXN",
+        "4mKye6Z1kXuKolzMkJoKFA",
+        "50ho0AOvkm8E5l8zf7OfJI",
+        "71IScwIe7bcIlpnlkbKVQw",
+        "7GZ3KDorsc1yWndEtzGTjf"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "zr6": {
+      "album": "Fearless",
+      "slug": "fearless",
+      "spotify_track_ids": [
+        "022VobQaEUvn0YWqYf97HA",
+        "02DtaJ6ADr4uQJbKEdpxxj",
+        "04LDcz3RX1P5sIlzQGqgUN",
+        "08gavXombT6KR0af88i9tA",
+        "0HmCuN0Z3OX1Qrz43FLOPL",
+        "0RdcBnAXyH2YZZvcBVu2k6",
+        "0ReNbPVMU7jUWqn1yHo9cE",
+        "0XfTh16YcKPzdxMPTeKTAq",
+        "0cEG04R5cldkTLzK6phlcn",
+        "0ck1qErO76fM9xKxuSeqDk",
+        "0f4wi6bMMU5Pj6bb7Ga04R",
+        "0j42731ciU2x6LW4PJRnEv",
+        "0qsSmObOgBZfuMIwfAQDBP",
+        "0sxxlg7d2UZ60TdtcuKYZ0",
+        "0wN94hAOTCu4Vv4TCbhVZD",
+        "0xvsgzM8AtBtRHZm5rav8A",
+        "13MAWVUSkbGMUi6I7RowRK",
+        "14Bljc3pOOG0xQX3wqhLN9",
+        "15PRxID4aGtOncbffzgZXI",
+        "193OdjKrgxsPHPG8fTGotc",
+        "1D4PL9B8gOg78jiHg3FvBb",
+        "1GEBsLDvJGw7kviySRI6GX",
+        "1P5QpwOgXJuoVTm3CWbnLY",
+        "1ReKQQQEroKx3MMU0KaQoi",
+        "1SARZTSJ1YeXgImYzpSxef",
+        "1V7nao9bFNvjFrmrnSz19Y",
+        "1WxSuTO0X0HKb1dkQjVkVo",
+        "1e380XUelS0g4AyrUfHKHL",
+        "1vrd6UOGamcKNGnSHJQlSt",
+        "1yACRKAwlXWhXXFUSkvzhD",
+        "1yDJcXc549N6AabNBzFAku",
+        "1yFjBRQVhRdcdnrTE5LuyD",
+        "1zxrcAk6eiytfavqriMcKT",
+        "2BDqAaVKzQDnoVPZbdp68D",
+        "2GZNZLMvT3gjCEPd6NNvvQ",
+        "2IZ00ed83ygPIiacYScWUE",
+        "2MzoTHyQgopGUL8ABcOAyr",
+        "2XmWRdsQlXna2gcAn1Dquv",
+        "2p2iPBELfsen9imWH0NkId",
+        "3Aelp7PlkDvBvCPqvyIopZ",
+        "3CI1f4yLwdHzcUnH7o0Xyh",
+        "3GCL1PydwsLodcpv0Ll1ch",
+        "3L84WEUYuc6Vryfi4Fd85j",
+        "3RNDw7yywLNyawDKV99hTx",
+        "3T7zAF5sfNq0blGbz21TTa",
+        "3Uown9ZvhJcCBJBHOXRRhS",
+        "3cAHqw3B2deaHRXV9WrYAA",
+        "3esA216TyLHEkNiBCeCmcg",
+        "3gFaNwyiafgUoQhR0pHYA9",
+        "3h96cE8WodfMonauQOhltu",
+        "3qcGsGTSDQYdy9xoMFj0YM",
+        "3rnI1UCyGJvUTVvT97VQr5",
+        "3t5kblMAefsRy9O9vOjkR4",
+        "42WE7fJI5dYoa10luMp3Na",
+        "46HGgtwmmuEB8mvDCyjyAc",
+        "47HtKpfzpAt8rQjjXWotFj",
+        "49mWEy5MgtNujgT7xU3emT",
+        "4MbHDiHQjhmoVAV75G04Ql",
+        "4N419mmxYybTfAECy5j4dw",
+        "4OzHfc5rHDDTIh5wyR0gQ0",
+        "4RBKAqJ3qyvvriDG0s9IJ3",
+        "4VbErhGDMTnvPAnt5z70DL",
+        "4WXzzCof26KJLTK5kK53dS",
+        "4XrP7vKBjKLEYlRZdb0Ygr",
+        "4fWDgRZa0GKE5KZNhE9MQa",
+        "4i0M7glXqIIRKPwbLtpExi",
+        "4jPtq9shRdUv8Zjr0a5xkD",
+        "4lIbdZwGa2hgkxigHJumaV",
+        "4pFvEWbjBpPUdYRQly0THs",
+        "4pJ8xgaGB9VGkWwODCew8R",
+        "4pl5zcqCv4vc3cB7M4MZ6f",
+        "4t0OI7XrODjSkAu3bTPmWj",
+        "4x7Gxk2GfwZJcqpoVT1PbR",
+        "4yf9OivCH2lmQWN8mzpCC6",
+        "53PbrK3xHCahLA67KbR1Ck",
+        "57USOybNwyjN8ZUZLm9hra",
+        "59ZmeIz57cGU5Gp9omjlYB",
+        "5Gz9GFSwHObbmjSRHgTphe",
+        "5P4wWhUYWM0IaVYLuZxdar",
+        "5UV1IMOt1oxIBj7FodKe9v",
+        "5YbZZ2gYfvW1UvHHF4pVaD",
+        "5g7RMU3cV7zXWH244BLe7G",
+        "5lA0yK8S5tP3xoaRMCp4Ug",
+        "5nUPw1RvAkqDIdebpDy3JI",
+        "5xPsybHWRHbTYO44xnREY5",
+        "69o9kr9UexjzeZDE8yD8dQ",
+        "6CRAwMp6giXWedegUgxqLh",
+        "6Eu31gddWw0gOGO506pJYA",
+        "6HWYtS215rxaaMjvpyG18W",
+        "6S9G7J3EB1ZY0rrZPwsBg5",
+        "6S9ZMuyJ6spObHDcTJOYlI",
+        "6SgBWLgjMQdoVQytBgATGx",
+        "6WWvcA62QlnRguluWAk6bv",
+        "6ZeKYXZ6esPjpuHwCtUiZh",
+        "6hABNvvhdtvcJNShuWhguU",
+        "6ovFJkdau79DuXEvQjPaNH",
+        "6vLpy7UPYuOa75Bkqocrcw",
+        "6wcFdMmiDscAhZJrcVFumx",
+        "6wn61Fzx9XMxQmieLpoIhW",
+        "6yulzkix69bLw7WP7TAUfU",
+        "6zV8AVM9eVfdG7Qahwd64R",
+        "72PDdE0cAdmGxhMbrqG0PI",
+        "73AHP8EqSH8QXqqoFXKwdW",
+        "77VotUUL79U10TAnYdqwvr",
+        "7Ae2hYOcJmLbGCYIA3M1VM",
+        "7C7usPxKM74lA8HJbCqZnz",
+        "7D4bd801muwRfuo5F3KkGk",
+        "7F67ujlSkp8PT7uaDPuOjP",
+        "7G6TDmGJXDoBaV6NGj3Yic",
+        "7bad461siaxECNlaYsmIo6",
+        "7lkzMhR95JrgYAurGLEP6g",
+        "7lzMAvyDZyZm1hPMLpfIXy",
+        "7qZk0GASFHvIg5dB0nc6LI",
+        "7wbATZinTGleK7zhZJs4Yq"
+      ],
+      "created_at": "2026-08-29",
+      "updated_at": "2026-08-29",
+      "merged_into": null
+    }
+  }
+}

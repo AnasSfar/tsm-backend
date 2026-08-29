@@ -81,7 +81,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "0zpp",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Elizabeth Taylor",
@@ -154,7 +156,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "4pvw",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Opalite",
@@ -227,7 +231,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "gkk0",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Father Figure",
@@ -297,7 +303,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "70rb",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Eldest Daughter",
@@ -368,7 +376,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "2xed",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Ruin The Friendship",
@@ -441,7 +451,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "4ssx",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Actually Romantic",
@@ -514,7 +526,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "32ub",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Wi$h Li$t",
@@ -584,7 +598,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "fxdr",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Wood",
@@ -652,7 +668,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "rjdf",
+          "tsm_album_id": "va1"
         },
         {
           "title": "CANCELLED!",
@@ -725,7 +743,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "34ff",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Honey",
@@ -796,7 +816,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "tlj0",
+          "tsm_album_id": "va1"
         },
         {
           "title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
@@ -847,7 +869,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "6c3t",
+          "tsm_album_id": "va1"
         }
       ]
     },
@@ -934,7 +958,9 @@
           "role": "extra",
           "extra_type": "acoustic",
           "release_edition": "",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "0zpp",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Opalite - Life Is A Song Acoustic Version",
@@ -1010,7 +1036,9 @@
           "role": "extra",
           "extra_type": "acoustic",
           "release_edition": "",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "gkk0",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Wi$h Li$t - Settled Down Acoustic Version",
@@ -1085,7 +1113,9 @@
           "role": "extra",
           "extra_type": "acoustic",
           "release_edition": "deluxe",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "fxdr",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Ruin The Friendship - My Advice Version",
@@ -1163,7 +1193,9 @@
           "role": "extra",
           "extra_type": "acoustic",
           "release_edition": "deluxe",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "4ssx",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Eldest Daughter - Now You're Home Acoustic Version",
@@ -1238,7 +1270,9 @@
           "role": "extra",
           "extra_type": "acoustic",
           "release_edition": "deluxe",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "2xed",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Elizabeth Taylor - So Glamorous Cabaret Version",
@@ -1307,7 +1341,9 @@
           "role": "extra",
           "extra_type": "acoustic",
           "release_edition": "deluxe",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "4pvw",
+          "tsm_album_id": "va1"
         },
         {
           "title": "The Life of a Showgirl (feat. Sabrina Carpenter) - Dressing Room Rehearsal Version",
@@ -1363,7 +1399,9 @@
           "role": "extra",
           "extra_type": "acoustic",
           "release_edition": "deluxe",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "6c3t",
+          "tsm_album_id": "va1"
         }
       ]
     },
@@ -1445,7 +1483,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "gkk0",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Opalite - Chris Lake Remix",
@@ -1520,7 +1560,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "gkk0",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Opalite - Ely Oaks Remix",
@@ -1595,7 +1637,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "gkk0",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Opalite - Skream Remix",
@@ -1670,7 +1714,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "gkk0",
+          "tsm_album_id": "va1"
         },
         {
           "title": "The Fate of Ophelia - Loud Luxury Remix",
@@ -1745,7 +1791,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "0zpp",
+          "tsm_album_id": "va1"
         },
         {
           "title": "The Fate of Ophelia - The Chainsmokers Remix",
@@ -1820,7 +1868,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "0zpp",
+          "tsm_album_id": "va1"
         }
       ]
     },
@@ -1902,7 +1952,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "gkk0",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Opalite - Official Music Video Extended Version Part 2",
@@ -1977,7 +2029,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "gkk0",
+          "tsm_album_id": "va1"
         }
       ]
     },
@@ -2050,7 +2104,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "4pvw",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Father Figure - Track by Track",
@@ -2119,7 +2175,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "70rb",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Opalite - Track by Track",
@@ -2191,7 +2249,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "gkk0",
+          "tsm_album_id": "va1"
         },
         {
           "title": "The Fate of Ophelia - Track by Track",
@@ -2263,7 +2323,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "0zpp",
+          "tsm_album_id": "va1"
         },
         {
           "title": "The Life of a Showgirl - Track by Track",
@@ -2310,7 +2372,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "6c3t",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Actually Romantic - Track by Track",
@@ -2384,7 +2448,9 @@
           "role": "extra",
           "extra_type": "commentary",
           "display_album": "The Life of a Showgirl",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "32ub",
+          "tsm_album_id": "va1"
         },
         {
           "title": "CANCELLED! - Track by Track",
@@ -2458,7 +2524,9 @@
           "role": "extra",
           "extra_type": "commentary",
           "display_album": "The Life of a Showgirl",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "34ff",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Eldest Daughter - Track by Track",
@@ -2529,7 +2597,9 @@
           "role": "extra",
           "extra_type": "commentary",
           "display_album": "The Life of a Showgirl",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "2xed",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Honey - Track by Track",
@@ -2600,7 +2670,9 @@
           "role": "extra",
           "extra_type": "commentary",
           "display_album": "The Life of a Showgirl",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "tlj0",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Ruin The Friendship - Track by Track",
@@ -2674,7 +2746,9 @@
           "role": "extra",
           "extra_type": "commentary",
           "display_album": "The Life of a Showgirl",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "4ssx",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Wi$h Li$t - Track by Track",
@@ -2745,7 +2819,9 @@
           "role": "extra",
           "extra_type": "commentary",
           "display_album": "The Life of a Showgirl",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "fxdr",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Wood - Track by Track",
@@ -2813,7 +2889,9 @@
           "role": "extra",
           "extra_type": "commentary",
           "display_album": "The Life of a Showgirl",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "rjdf",
+          "tsm_album_id": "va1"
         }
       ]
     },
@@ -2864,7 +2942,9 @@
           "role": "extra",
           "extra_type": "other",
           "tags": [],
-          "chart_extra": true
+          "chart_extra": true,
+          "tsm_song_id": "2bcp",
+          "tsm_album_id": "va1"
         }
       ],
       "album": "The Life of a Showgirl"
@@ -2900,7 +2980,9 @@
           "catalog_category": "standard",
           "music_track": true,
           "role": "extra",
-          "extra_type": "remix"
+          "extra_type": "remix",
+          "tsm_song_id": "4pvw",
+          "tsm_album_id": "va1"
         },
         {
           "title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
@@ -2931,7 +3013,9 @@
           "catalog_category": "featured",
           "music_track": true,
           "role": "album_track",
-          "category": "feature"
+          "category": "feature",
+          "tsm_song_id": "6c3t",
+          "tsm_album_id": "va1"
         }
       ],
       "album": "The Life of a Showgirl"

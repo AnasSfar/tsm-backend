@@ -53,7 +53,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "vtbl",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Picture To Burn",
@@ -125,7 +127,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "x9a4",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Teardrops On My Guitar - Radio Single Remix",
@@ -170,7 +174,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "nxg3",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "A Place in this World",
@@ -217,7 +223,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "jjyp",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Cold As You",
@@ -264,7 +272,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ydmm",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "The Outside",
@@ -311,7 +321,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "l5ks",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Tied Together with a Smile",
@@ -358,7 +370,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "qpe2",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Stay Beautiful",
@@ -405,7 +419,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "tq67",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Should've Said No",
@@ -453,7 +469,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "w8u6",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Mary's Song (Oh My My My)",
@@ -500,7 +518,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "vhjn",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Our Song",
@@ -572,7 +592,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "jctp",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "I'm Only Me When I'm With You",
@@ -619,7 +641,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "cnx5",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Invisible",
@@ -666,7 +690,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ostz",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "A Perfectly Good Heart",
@@ -713,7 +739,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "yf70",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Teardrops on My Guitar - Pop Version",
@@ -760,7 +788,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "nxg3",
+          "tsm_album_id": "9dy"
         }
       ]
     },
@@ -811,7 +841,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "deluxe",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "44ok",
+          "tsm_album_id": "9dy"
         }
       ]
     },
@@ -868,7 +900,9 @@
           "role": "extra",
           "extra_type": "live",
           "display_album": "Taylor Swift",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "3xuk",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Picture To Burn - Live From Clear Channel Stripped 2008",
@@ -942,7 +976,9 @@
           "role": "extra",
           "extra_type": "live",
           "display_album": "Taylor Swift",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "x9a4",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Should've Said No - Live From Clear Channel Stripped 2008",
@@ -991,7 +1027,9 @@
           "role": "extra",
           "extra_type": "live",
           "display_album": "Taylor Swift",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "w8u6",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Should've Said No - The 3D Concert Experience",
@@ -1037,7 +1075,9 @@
           "role": "extra",
           "extra_type": "other",
           "display_album": "Taylor Swift",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ssgu",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Teardrops On My Guitar",
@@ -1086,7 +1126,9 @@
           "role": "album_track",
           "release_edition": "standard",
           "display_album": "Taylor Swift",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "nxg3",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Teardrops On My Guitar - Live From Clear Channel Stripped 2008",
@@ -1135,7 +1177,9 @@
           "role": "extra",
           "extra_type": "live",
           "display_album": "Taylor Swift",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "nxg3",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "A Perfectly Good Heart - Commentary",
@@ -1168,7 +1212,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "yf70",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "A Place In This World - Instrumental w/ BG vocals",
@@ -1201,7 +1247,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "jjyp",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "A Place In This World - Commentary",
@@ -1234,7 +1282,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "jjyp",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "I'm Only Me When I'm With You - Instrumental w/ BG vocals",
@@ -1267,7 +1317,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "cnx5",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Invisible - Commentary",
@@ -1300,7 +1352,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ostz",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Invisible - Instrumental w/ BG vocals",
@@ -1333,7 +1387,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ostz",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "I’m Only Me When I’m With You - Commentary",
@@ -1366,7 +1422,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "jdke",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Mary's Song (Oh My My My) - Commentary",
@@ -1399,7 +1457,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "vhjn",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Mary's Song (Oh My My My) - Instrumental w/ BG vocals",
@@ -1432,7 +1492,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "vhjn",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Our Song - Commentary",
@@ -1465,7 +1527,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "7cuv",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Our Song - Instrumental w/ BG vocals",
@@ -1498,7 +1562,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "jctp",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Picture To Burn - Commentary",
@@ -1531,7 +1597,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "x9a4",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Picture To Burn - Instrumental w/ BG vocals",
@@ -1564,7 +1632,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "x9a4",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Should've Said No - Instrumental w/ BG vocals",
@@ -1597,7 +1667,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "w8u6",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Stay Beautiful - Commentary",
@@ -1630,7 +1702,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "tq67",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Stay Beautiful - Instrumental w/ BG vocals",
@@ -1663,7 +1737,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "tq67",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Teardrops On My Guitar - Instrumental w/ BG vocals",
@@ -1696,7 +1772,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "nxg3",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Teardrops On My Guitar - Pop Version / Commentary",
@@ -1729,7 +1807,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "nxg3",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Teardrops On My Guitar - Radio Single Remix / Commentary",
@@ -1762,7 +1842,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "nxg3",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "The Outside - Commentary",
@@ -1795,7 +1877,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "l5ks",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "The Outside - Instrumental w/ BG vocals",
@@ -1828,7 +1912,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "l5ks",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Tied Together With A Smile - Commentary",
@@ -1861,7 +1947,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "qpe2",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Tied Together With A Smile - Instrumental w/ BG vocals",
@@ -1894,7 +1982,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "qpe2",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Tim McGraw - Commentary",
@@ -1927,7 +2017,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "vtbl",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Tim McGraw - Instrumental w/ BG vocals",
@@ -1960,7 +2052,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "vtbl",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Tim McGraw - Live",
@@ -1993,7 +2087,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "live",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "vtbl",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Our Song - International Mix",
@@ -2038,7 +2134,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "7cuv",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Teardrops On My Guitar - Acoustic Version",
@@ -2064,7 +2162,9 @@
           "role": "extra",
           "extra_type": "acoustic",
           "tags": [],
-          "chart_extra": true
+          "chart_extra": true,
+          "tsm_song_id": "ndfx",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Teardrops On My Guitar - Alternate Version",
@@ -2090,7 +2190,9 @@
           "role": "extra",
           "extra_type": "other",
           "tags": [],
-          "chart_extra": true
+          "chart_extra": true,
+          "tsm_song_id": "jnnm",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Our Song - International Mix",
@@ -2135,7 +2237,9 @@
           "role": "extra",
           "release_edition": "",
           "tags": [],
-          "extra_type": "remix"
+          "extra_type": "remix",
+          "tsm_song_id": "jctp",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Should’ve Said No - Commentary",
@@ -2168,7 +2272,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "3u2v",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Teardrops on my Guitar (WalMart Exclusive)",
@@ -2201,7 +2307,9 @@
           "on_album": true,
           "role": "extra",
           "release_edition": "",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ndfx",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "You'll Always Find Your Way Back Home (Disney Sing Along)",
@@ -2234,7 +2342,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "8pid",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Teardrops On My Guitar - Cahill Radio Edit",
@@ -2267,7 +2377,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "other",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e6cz",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Taylor Swift Interview",
@@ -2300,7 +2412,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "other",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "vg83",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Teardrops On My Guitar - Acoustic Version",
@@ -2333,7 +2447,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "acoustic",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ndfx",
+          "tsm_album_id": "9dy"
         },
         {
           "title": "Cold As You - Commentary",
@@ -2366,7 +2482,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ydmm",
+          "tsm_album_id": "9dy"
         }
       ]
     },

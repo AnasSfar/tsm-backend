@@ -54,7 +54,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "15p8",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Sparks Fly",
@@ -102,7 +104,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "c082",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Back To December",
@@ -176,7 +180,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ahe7",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Speak Now",
@@ -224,7 +230,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "eibn",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Dear John",
@@ -272,7 +280,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "9aq5",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Mean",
@@ -320,7 +330,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "bv8v",
+          "tsm_album_id": "msv"
         },
         {
           "title": "The Story Of Us",
@@ -368,7 +380,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "vgb6",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Never Grow Up",
@@ -416,7 +430,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "mitr",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Enchanted",
@@ -489,7 +505,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "hl1j",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Better Than Revenge",
@@ -562,7 +580,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "xxsd",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Innocent",
@@ -610,7 +630,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "a9b5",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Haunted",
@@ -658,7 +680,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "lbxe",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Last Kiss",
@@ -706,7 +730,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ucz9",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Long Live",
@@ -757,7 +783,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "4yg8",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Ours",
@@ -804,7 +832,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "xma4",
+          "tsm_album_id": "msv"
         },
         {
           "title": "If This Was A Movie",
@@ -851,7 +881,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "t8uc",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Superman",
@@ -898,7 +930,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "hx0m",
+          "tsm_album_id": "msv"
         }
       ]
     },
@@ -955,7 +989,9 @@
           "role": "extra",
           "extra_type": "live",
           "display_album": "Speak Now",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "wc7j",
+          "tsm_album_id": "msv"
         }
       ]
     },
@@ -1014,7 +1050,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "z5z8",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Back To December - Acoustic",
@@ -1090,7 +1128,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "acoustic",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ahe7",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Haunted - Acoustic Version",
@@ -1141,7 +1181,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "acoustic",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "lbxe",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Better Than Revenge - Live/2011",
@@ -1215,7 +1257,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "live",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "xxsd",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Last Kiss - Live/2011",
@@ -1264,7 +1308,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "live",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ucz9",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Mean - Live/2011",
@@ -1313,7 +1359,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "live",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "bv8v",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Mine - Live/2011",
@@ -1362,7 +1410,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "live",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "15p8",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Ours - Live/2011",
@@ -1411,7 +1461,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "live",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "xma4",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Sparks Fly - Live/2011",
@@ -1460,7 +1512,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "live",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "c082",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Speak Now - Live/2011",
@@ -1509,7 +1563,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "live",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "eibn",
+          "tsm_album_id": "msv"
         },
         {
           "title": "The Story Of Us - Live",
@@ -1558,7 +1614,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "live",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "vgb6",
+          "tsm_album_id": "msv"
         }
       ]
     },
@@ -1615,7 +1673,9 @@
           "role": "extra",
           "extra_type": "live",
           "display_album": "Speak Now",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "9aq5",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Enchanted - Live/2011",
@@ -1689,7 +1749,9 @@
           "role": "extra",
           "extra_type": "live",
           "display_album": "Speak Now",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "hl1j",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Haunted - Live/2011",
@@ -1738,7 +1800,9 @@
           "role": "extra",
           "extra_type": "live",
           "display_album": "Speak Now",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "lbxe",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Long Live - Live/2011",
@@ -1787,7 +1851,9 @@
           "role": "extra",
           "extra_type": "live",
           "display_album": "Speak Now",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "4yg8",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Begin Again - Commentary",
@@ -1820,7 +1886,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "xx5b",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Better Than Revenge - Instrumental With Background Vocals",
@@ -1855,7 +1923,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "xxsd",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Clean - Karaoke Version",
@@ -1890,7 +1960,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e29n",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Cold As You - Instrumental w/ BG vocals",
@@ -1923,7 +1995,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ydmm",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Bad Blood - Karaoke Version",
@@ -1958,7 +2032,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "htjw",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Change - Commentary",
@@ -1991,7 +2067,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "qzwm",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Back To December - Instrumental With Background Vocals",
@@ -2026,7 +2104,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ahe7",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Breathe - Instrumental only, no BV",
@@ -2061,7 +2141,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "3eja",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Better Than Revenge - Commentary",
@@ -2094,7 +2176,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "xxsd",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Enchanted - Commentary",
@@ -2127,7 +2211,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "hl1j",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Enchanted - Instrumental With Background Vocals",
@@ -2162,7 +2248,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "hl1j",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Haunted - Commentary",
@@ -2195,7 +2283,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "lbxe",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Haunted - Instrumental With Background Vocals",
@@ -2230,7 +2320,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "lbxe",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Innocent - Commentary",
@@ -2263,7 +2355,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "a9b5",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Innocent - Instrumental With Background Vocals",
@@ -2298,7 +2392,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "a9b5",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Last Kiss - Commentary",
@@ -2331,7 +2427,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ucz9",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Last Kiss - Instrumental With Background Vocals",
@@ -2366,7 +2464,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ucz9",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Long Live - Commentary",
@@ -2399,7 +2499,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "deml",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Long Live - Instrumental With Background Vocals",
@@ -2434,7 +2536,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "4yg8",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Mean - Commentary",
@@ -2467,7 +2571,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "bv8v",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Mean - Instrumental With Background Vocals",
@@ -2502,7 +2608,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "bv8v",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Mine - Commentary",
@@ -2535,7 +2643,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "15p8",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Mine - Instrumental With Background Vocals",
@@ -2570,7 +2680,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "15p8",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Never Grow Up - Commentary",
@@ -2603,7 +2715,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "mitr",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Never Grow Up - Instrumental With Background Vocals",
@@ -2638,7 +2752,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "mitr",
+          "tsm_album_id": "msv"
         },
         {
           "title": "The Story Of Us - International Mix",
@@ -2663,7 +2779,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "vgb6",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Sparks Fly - Commentary",
@@ -2696,7 +2814,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "c082",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Sparks Fly - Instrumental With Background Vocals",
@@ -2731,7 +2851,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "c082",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Speak Now - Commentary",
@@ -2764,7 +2886,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "eibn",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Speak Now - Instrumental With Background Vocals",
@@ -2799,7 +2923,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "eibn",
+          "tsm_album_id": "msv"
         },
         {
           "title": "The Story Of Us - Commentary",
@@ -2832,7 +2958,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "vgb6",
+          "tsm_album_id": "msv"
         },
         {
           "title": "The Story Of Us - Instrumental With Background Vocals",
@@ -2867,7 +2995,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "vgb6",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Long Live (feat. Paula Fernandes)",
@@ -2893,7 +3023,9 @@
           "role": "extra",
           "extra_type": "live",
           "tags": [],
-          "chart_extra": true
+          "chart_extra": true,
+          "tsm_song_id": "4yg8",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Long Live (feat. Paula Fernandes)",
@@ -2937,7 +3069,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "live",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "4yg8",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Back To December - Commentary",
@@ -2970,7 +3104,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ahe7",
+          "tsm_album_id": "msv"
         },
         {
           "title": "Dear John - Instrumental With Background Vocals",
@@ -3005,7 +3141,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "9aq5",
+          "tsm_album_id": "msv"
         }
       ]
     }

@@ -77,7 +77,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "tmvv",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "End Game",
@@ -146,7 +148,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "8v26",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "I Did Something Bad",
@@ -219,7 +223,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "29g1",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Don't Blame Me",
@@ -266,7 +272,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "g8vr",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Delicate",
@@ -339,7 +347,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "oaa8",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Look What You Made Me Do",
@@ -414,7 +424,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "tlau",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "So It Goes...",
@@ -484,7 +496,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "x89j",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Gorgeous",
@@ -559,7 +573,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "mlbj",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Getaway Car",
@@ -631,7 +647,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "92k8",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "King Of My Heart",
@@ -704,7 +722,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "azul",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Dancing With Our Hands Tied",
@@ -774,7 +794,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "5c91",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Dress",
@@ -847,7 +869,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "16lp",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "This Is Why We Can't Have Nice Things",
@@ -919,7 +943,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "1qa7",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Call It What You Want",
@@ -992,7 +1018,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "td0u",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "New Year's Day",
@@ -1039,7 +1067,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "nw5a",
+          "tsm_album_id": "j2z"
         }
       ]
     },
@@ -1097,7 +1127,9 @@
           "on_album": false,
           "category": "soundtrack",
           "tags": [],
-          "chart_extra": false
+          "chart_extra": false,
+          "tsm_song_id": "7eiy",
+          "tsm_album_id": "j2z"
         }
       ]
     },
@@ -1150,7 +1182,9 @@
           "role": "extra",
           "release_edition": "",
           "tags": [],
-          "extra_type": "live"
+          "extra_type": "live",
+          "tsm_song_id": "8ap3",
+          "tsm_album_id": "j2z"
         }
       ]
     },
@@ -1229,7 +1263,9 @@
           "role": "extra",
           "extra_type": "remix",
           "display_album": "",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "okmt",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "End Game - Commentary",
@@ -1262,7 +1298,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "8v26",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Getaway Car - Commentary",
@@ -1295,7 +1333,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "92k8",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Gorgeous - Commentary",
@@ -1328,7 +1368,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "mlbj",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "I Did Something Bad - Commentary",
@@ -1361,7 +1403,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "29g1",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "King Of My Heart - Commentary",
@@ -1394,7 +1438,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "azul",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Look What You Made Me Do - Commentary",
@@ -1427,7 +1473,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "tlau",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "New Year's Day - Commentary",
@@ -1460,7 +1508,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "nw5a",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "So It Goes… - Commentary",
@@ -1493,7 +1543,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "x89j",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "This Is Why We Can't Have Nice Things - Commentary",
@@ -1526,7 +1578,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "1qa7",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "…Ready For It? - Commentary",
@@ -1559,7 +1613,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "tmvv",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Delicate - Acoustic Cover",
@@ -1592,7 +1648,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "acoustic",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "oaa8",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Call It What You Want - Commentary",
@@ -1625,7 +1683,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "td0u",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Dress - Commentary",
@@ -1658,7 +1718,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "16lp",
+          "tsm_album_id": "j2z"
         }
       ]
     },
@@ -1734,7 +1796,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "tmvv",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Call It What You Want - Karaoke Version",
@@ -1806,7 +1870,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "td0u",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Dancing With Our Hands Tied - Karaoke Version",
@@ -1875,7 +1941,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "5c91",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Delicate - Karaoke Version",
@@ -1947,7 +2015,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "oaa8",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Don't Blame Me - Karaoke Version",
@@ -1994,7 +2064,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "g8vr",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Dress - Karaoke Version",
@@ -2066,7 +2138,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "16lp",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "End Game - Karaoke Version",
@@ -2135,7 +2209,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "8v26",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Getaway Car - Karaoke Version",
@@ -2207,7 +2283,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "92k8",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Gorgeous - Karaoke Version",
@@ -2279,7 +2357,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "mlbj",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "I Did Something Bad - Karaoke Version",
@@ -2351,7 +2431,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "29g1",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "King Of My Heart - Karaoke Version",
@@ -2423,7 +2505,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "azul",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Look What You Made Me Do - Karaoke Version",
@@ -2495,7 +2579,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "tlau",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "New Year's Day - Karaoke Version",
@@ -2542,7 +2628,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "nw5a",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "So It Goes... - Karaoke Version",
@@ -2611,7 +2699,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "x89j",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "This Is Why We Can't Have Nice Things - Karaoke Version",
@@ -2683,7 +2773,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "1qa7",
+          "tsm_album_id": "j2z"
         }
       ]
     },
@@ -2759,7 +2851,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "tmvv",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Delicate - Seeb Remix",
@@ -2829,7 +2923,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "oaa8",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Delicate - Recorded at The Tracking Room Nashville",
@@ -2874,7 +2970,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "x0wu",
+          "tsm_album_id": "j2z"
         },
         {
           "title": "Delicate - Sawyr And Ryan Tedder Mix",
@@ -2921,7 +3019,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "jkg0",
+          "tsm_album_id": "j2z"
         }
       ]
     }

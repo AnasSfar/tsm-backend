@@ -56,7 +56,9 @@
           "tags": [
             "christmas"
           ],
-          "chart_extra": false
+          "chart_extra": false,
+          "tsm_song_id": "fq8v",
+          "tsm_album_id": "wf6"
         },
         {
           "title": "Christmases When You Were Mine",
@@ -106,7 +108,9 @@
           "tags": [
             "christmas"
           ],
-          "chart_extra": false
+          "chart_extra": false,
+          "tsm_song_id": "iygt",
+          "tsm_album_id": "wf6"
         },
         {
           "title": "Santa Baby",
@@ -156,7 +160,9 @@
           "tags": [
             "christmas"
           ],
-          "chart_extra": false
+          "chart_extra": false,
+          "tsm_song_id": "wyae",
+          "tsm_album_id": "wf6"
         },
         {
           "title": "Silent Night",
@@ -206,7 +212,9 @@
           "tags": [
             "christmas"
           ],
-          "chart_extra": false
+          "chart_extra": false,
+          "tsm_song_id": "h8hc",
+          "tsm_album_id": "wf6"
         },
         {
           "title": "Christmas Must Be Something More",
@@ -256,7 +264,9 @@
           "tags": [
             "christmas"
           ],
-          "chart_extra": false
+          "chart_extra": false,
+          "tsm_song_id": "m768",
+          "tsm_album_id": "wf6"
         },
         {
           "title": "White Christmas",
@@ -306,7 +316,9 @@
           "tags": [
             "christmas"
           ],
-          "chart_extra": false
+          "chart_extra": false,
+          "tsm_song_id": "0v9k",
+          "tsm_album_id": "wf6"
         }
       ]
     },
@@ -367,7 +379,9 @@
             "christmas"
           ],
           "role": "single",
-          "chart_extra": false
+          "chart_extra": false,
+          "tsm_song_id": "km1r",
+          "tsm_album_id": "wf6"
         },
         {
           "title": "Christmas Tree Farm - Old Timey Version",
@@ -419,7 +433,9 @@
           "category": "other",
           "tags": [
             "christmas"
-          ]
+          ],
+          "tsm_song_id": "km1r",
+          "tsm_album_id": "wf6"
         },
         {
           "title": "Christmas Tree Farm - Recorded Live at the 2019 iHeartRadio Jingle Ball",
@@ -471,7 +487,9 @@
           "category": "other",
           "tags": [
             "christmas"
-          ]
+          ],
+          "tsm_song_id": "km1r",
+          "tsm_album_id": "wf6"
         }
       ]
     }

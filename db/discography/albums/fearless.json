@@ -57,7 +57,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e66b",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Fifteen",
@@ -107,7 +109,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "0yvx",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Love Story",
@@ -184,7 +188,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "kfua",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Hey Stephen",
@@ -235,7 +241,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "h4un",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "White Horse",
@@ -285,7 +293,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "zuie",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "You Belong With Me",
@@ -361,7 +371,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "vd7b",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Breathe",
@@ -411,7 +423,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "3eja",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Tell Me Why",
@@ -462,7 +476,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "q0lw",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "You're Not Sorry",
@@ -513,7 +529,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ocws",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "The Way I Loved You",
@@ -561,7 +579,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e7em",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Forever & Always",
@@ -608,7 +628,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "6bm9",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "The Best Day",
@@ -656,7 +678,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "qa48",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Change",
@@ -705,7 +729,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "qzwm",
+          "tsm_album_id": "zr6"
         }
       ]
     },
@@ -761,7 +787,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "platinum",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "yml2",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Untouchable",
@@ -810,7 +838,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "platinum",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "mb5b",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Forever & Always - Piano Version",
@@ -861,7 +891,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "platinum",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "6bm9",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Come In With The Rain",
@@ -910,7 +942,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "platinum",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ofec",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "SuperStar",
@@ -959,7 +993,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "platinum",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "uahy",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "The Other Side Of The Door",
@@ -1008,7 +1044,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "platinum",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "jcfg",
+          "tsm_album_id": "zr6"
         }
       ]
     },
@@ -1065,7 +1103,9 @@
           "role": "extra",
           "extra_type": "other",
           "display_album": "Fearless",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "2143",
+          "tsm_album_id": "zr6"
         }
       ]
     },
@@ -1122,7 +1162,9 @@
           "role": "extra",
           "extra_type": "live",
           "display_album": "Fearless",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "qzwm",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Fearless - Live From Clear Channel Stripped 2008",
@@ -1171,7 +1213,9 @@
           "role": "extra",
           "extra_type": "live",
           "display_album": "Fearless",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e66b",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Hey Stephen - Commentary",
@@ -1218,7 +1262,9 @@
           "role": "extra",
           "extra_type": "commentary",
           "display_album": "Fearless",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "h4un",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Love Story - Instrumental with BGV",
@@ -1267,7 +1313,9 @@
           "role": "extra",
           "extra_type": "instrumental",
           "display_album": "Fearless",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "pn4s",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Love Story - J Stax Radio Mix",
@@ -1315,7 +1363,9 @@
           "role": "extra",
           "extra_type": "remix",
           "display_album": "Fearless",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "o89h",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Love Story - Live From Clear Channel Stripped 2008",
@@ -1389,7 +1439,9 @@
           "role": "extra",
           "extra_type": "live",
           "display_album": "Fearless",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "kfua",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Love Story - Pop Mix",
@@ -1441,7 +1493,9 @@
           "role": "extra",
           "extra_type": "remix",
           "display_album": "Fearless",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "2gjh",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Untouchable - Live From Clear Channel Stripped 2008",
@@ -1490,7 +1544,9 @@
           "role": "extra",
           "extra_type": "live",
           "display_album": "Fearless",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "mb5b",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Dear John - Commentary",
@@ -1523,7 +1579,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "9aq5",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Delicate - Commentary",
@@ -1556,7 +1614,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "oaa8",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Dancing With Our Hands Tied - Commentary",
@@ -1589,7 +1649,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "5c91",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Don't Blame Me - Commentary",
@@ -1622,7 +1684,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "g8vr",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Fearless - Commentary",
@@ -1655,7 +1719,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e66b",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Fearless - Instrumental with BGV",
@@ -1690,7 +1756,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e66b",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Fifteen - Commentary",
@@ -1723,7 +1791,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "0yvx",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Fifteen - Instrumental with BGV",
@@ -1758,7 +1828,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "0yvx",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Forever & Always - Commentary",
@@ -1791,7 +1863,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "6bm9",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Forever & Always - Instrumental with BGV",
@@ -1826,7 +1900,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "93m0",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Hey Stephen - Instrumental with BGV",
@@ -1861,7 +1937,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "h4un",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Love Story - Commentary",
@@ -1894,7 +1972,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "kfua",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Tell Me Why - Commentary",
@@ -1927,7 +2007,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "q0lw",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Tell Me Why - Instrumental with BGV",
@@ -1962,7 +2044,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "q0lw",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "The Best Day - Commentary",
@@ -1995,7 +2079,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "qa48",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "The Best Day - Instrumental with BGV",
@@ -2030,7 +2116,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "qa48",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "The Way I Loved You - Commentary",
@@ -2063,7 +2151,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e7em",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "The Way I Loved You - Instrumental with BGV",
@@ -2098,7 +2188,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e7em",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "White Horse - Commentary",
@@ -2131,7 +2223,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "zuie",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "White Horse - Instrumental with BGV",
@@ -2166,7 +2260,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "zuie",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "You Belong With Me - Commentary",
@@ -2199,7 +2295,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "vd7b",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "You Belong With Me - Instrumental with BGV",
@@ -2234,7 +2332,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "vd7b",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "You're Not Sorry - Commentary",
@@ -2267,7 +2367,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ocws",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "You're Not Sorry - Instrumental with BGV",
@@ -2302,7 +2404,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ocws",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Love Story - J Stax Club Mix",
@@ -2330,7 +2434,9 @@
           "role": "extra",
           "extra_type": "remix",
           "tags": [],
-          "chart_extra": true
+          "chart_extra": true,
+          "tsm_song_id": "owt3",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Love Story - Digital Dog Radio Mix",
@@ -2358,7 +2464,9 @@
           "role": "extra",
           "extra_type": "remix",
           "tags": [],
-          "chart_extra": true
+          "chart_extra": true,
+          "tsm_song_id": "xg6u",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Fifteen - Pop Mix Edit",
@@ -2383,7 +2491,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "zr09",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Starlight - Instrumental With Background Vocals",
@@ -2416,7 +2526,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "89ul",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Breathe - Commentary",
@@ -2449,7 +2561,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "3eja",
+          "tsm_album_id": "zr6"
         }
       ]
     },
@@ -2526,7 +2640,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "kfua",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "You're Not Sorry - CSI Remix",
@@ -2571,7 +2687,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ocws",
+          "tsm_album_id": "zr6"
         }
       ]
     }

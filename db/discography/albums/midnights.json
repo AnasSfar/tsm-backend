@@ -79,7 +79,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "b1di",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Maroon",
@@ -152,7 +154,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "aub6",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Anti-Hero",
@@ -225,7 +229,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ocn4",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Snow On The Beach (feat. Lana Del Rey)",
@@ -300,7 +306,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "nh32",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "You're On Your Own, Kid",
@@ -372,7 +380,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "2pgq",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Midnight Rain",
@@ -445,7 +455,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "24m1",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Question...?",
@@ -517,7 +529,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "9b84",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Vigilante Shit",
@@ -589,7 +603,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "8lu6",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Bejeweled",
@@ -658,7 +674,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "wkub",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Labyrinth",
@@ -730,7 +748,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "w0xe",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Karma",
@@ -800,7 +820,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "urcu",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Sweet Nothing",
@@ -872,7 +894,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "qyva",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Mastermind",
@@ -945,7 +969,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "d4ki",
+          "tsm_album_id": "5xl"
         }
       ]
     },
@@ -1026,7 +1052,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "3am",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "64ql",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Bigger Than The Whole Sky",
@@ -1100,7 +1128,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "3am",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "tbhk",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Paris",
@@ -1174,7 +1204,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "3am",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "991q",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "High Infidelity",
@@ -1248,7 +1280,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "3am",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "5uh0",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Glitch",
@@ -1322,7 +1356,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "3am",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ajgk",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Would've, Could've, Should've",
@@ -1396,7 +1432,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "3am",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "sltt",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Dear Reader",
@@ -1470,7 +1508,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "3am",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "w955",
+          "tsm_album_id": "5xl"
         }
       ]
     },
@@ -1549,7 +1589,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "til_dawn",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "uet5",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Snow On The Beach (feat. More Lana Del Rey)",
@@ -1620,7 +1662,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "til_dawn",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "nh32",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Karma (feat. Ice Spice)",
@@ -1688,7 +1732,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "til_dawn",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "urcu",
+          "tsm_album_id": "5xl"
         }
       ]
     },
@@ -1744,7 +1790,9 @@
           "on_album": false,
           "role": "album_track",
           "release_edition": "from_the_vault",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "7j3v",
+          "tsm_album_id": "5xl"
         }
       ]
     },
@@ -1828,7 +1876,9 @@
           "role": "extra",
           "extra_type": "acoustic",
           "display_album": "Midnights",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "b1di",
+          "tsm_album_id": "5xl"
         }
       ]
     },
@@ -1908,7 +1958,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ocn4",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Anti-Hero - ILLENIUM Remix",
@@ -1978,7 +2030,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ocn4",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Anti-Hero - Jayda G Remix",
@@ -2050,7 +2104,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ocn4",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Anti-Hero - Kungs Remix",
@@ -2122,7 +2178,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ocn4",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Anti-Hero - Roosevelt Remix",
@@ -2194,7 +2252,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ocn4",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Anti-Hero - Acoustic Version",
@@ -2268,7 +2328,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "acoustic",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ocn4",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Lavender Haze - Felix Jaehn Remix",
@@ -2341,7 +2403,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "b1di",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Lavender Haze - Jungle Remix",
@@ -2413,7 +2477,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "b1di",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Lavender Haze - Snakehips Remix",
@@ -2485,7 +2551,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "b1di",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Lavender Haze - Tensnake Remix",
@@ -2557,7 +2625,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "b1di",
+          "tsm_album_id": "5xl"
         }
       ]
     }

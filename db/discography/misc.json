@@ -29,7 +29,8 @@
         "category": "collab",
         "tags": [],
         "role": "extra",
-        "extra_type": "live"
+        "extra_type": "live",
+        "tsm_song_id": "ytqf"
       }
     ],
     "display_section": "Extras",
@@ -84,7 +85,8 @@
         },
         "on_album": false,
         "category": "soundtrack",
-        "tags": []
+        "tags": [],
+        "tsm_song_id": "zjm5"
       },
       {
         "title": "I Knew It, I Knew You",
@@ -126,7 +128,8 @@
         "role": "",
         "extra_type": "",
         "tags": [],
-        "category": "soundtrack"
+        "category": "soundtrack",
+        "tsm_song_id": "syt2"
       },
       {
         "title": "You’ll Always Find Your Way Back Home",
@@ -152,7 +155,8 @@
         "role": "",
         "extra_type": "",
         "tags": [],
-        "category": "soundtrack"
+        "category": "soundtrack",
+        "tsm_song_id": "of4a"
       }
     ]
   },
@@ -236,7 +240,8 @@
         },
         "on_album": false,
         "category": "soundtrack",
-        "tags": []
+        "tags": [],
+        "tsm_song_id": "83js"
       },
       {
         "title": "Bette Davis Eyes - Live/2011",
@@ -284,7 +289,8 @@
         "role": "extra",
         "extra_type": "live",
         "tags": [],
-        "chart_extra": true
+        "chart_extra": true,
+        "tsm_song_id": "65i6"
       },
       {
         "title": "Big Star (with Taylor Swift) - Live",
@@ -332,7 +338,8 @@
         "extra_type": "live",
         "tags": [],
         "category": "collab",
-        "chart_extra": true
+        "chart_extra": true,
+        "tsm_song_id": "rc7e"
       },
       {
         "title": "Birch",
@@ -377,7 +384,8 @@
         "role": "extra",
         "extra_type": "other",
         "tags": [],
-        "chart_extra": true
+        "chart_extra": true,
+        "tsm_song_id": "co2a"
       },
       {
         "title": "Drops Of Jupiter - Live/2011",
@@ -425,7 +433,8 @@
         "role": "extra",
         "extra_type": "live",
         "tags": [],
-        "chart_extra": true
+        "chart_extra": true,
+        "tsm_song_id": "rm3r"
       },
       {
         "title": "Gasoline (feat. Taylor Swift)",
@@ -473,7 +482,8 @@
         "extra_type": "other",
         "tags": [],
         "category": "collab",
-        "chart_extra": true
+        "chart_extra": true,
+        "tsm_song_id": "3wt8"
       },
       {
         "title": "I Want You Back - Live/2011",
@@ -521,7 +531,8 @@
         "role": "extra",
         "extra_type": "live",
         "tags": [],
-        "chart_extra": true
+        "chart_extra": true,
+        "tsm_song_id": "kztc"
       },
       {
         "title": "Renegade",
@@ -567,7 +578,8 @@
         "extra_type": "other",
         "tags": [],
         "category": "collab",
-        "chart_extra": true
+        "chart_extra": true,
+        "tsm_song_id": "1nmt"
       },
       {
         "title": "Renegade - Pop Version",
@@ -616,7 +628,8 @@
         "extra_type": "other",
         "tags": [],
         "category": "collab",
-        "chart_extra": true
+        "chart_extra": true,
+        "tsm_song_id": "skm6"
       },
       {
         "title": "The Alcott (feat. Taylor Swift)",
@@ -662,7 +675,8 @@
         "extra_type": "other",
         "tags": [],
         "category": "collab",
-        "chart_extra": true
+        "chart_extra": true,
+        "tsm_song_id": "zf9v"
       },
       {
         "title": "Two Is Better Than One (feat. Taylor Swift)",
@@ -708,7 +722,8 @@
         "extra_type": "other",
         "tags": [],
         "category": "collab",
-        "chart_extra": true
+        "chart_extra": true,
+        "tsm_song_id": "g6fq"
       },
       {
         "title": "American Girl",
@@ -734,7 +749,8 @@
         "role": "",
         "extra_type": "",
         "tags": [],
-        "chart_extra": true
+        "chart_extra": true,
+        "tsm_song_id": "9inz"
       },
       {
         "title": "Beautiful Eyes",
@@ -762,7 +778,8 @@
         "role": "",
         "extra_type": "",
         "tags": [],
-        "chart_extra": true
+        "chart_extra": true,
+        "tsm_song_id": "3xuk"
       },
       {
         "title": "Radio Outro - Commentary",
@@ -795,7 +812,8 @@
         "on_album": false,
         "role": "extra",
         "extra_type": "commentary",
-        "tags": []
+        "tags": [],
+        "tsm_song_id": "bxt1"
       },
       {
         "title": "I Don't Wanna Live Forever - Orchestral Instrumental",
@@ -829,7 +847,8 @@
         "role": "extra",
         "extra_type": "instrumental",
         "tags": [],
-        "category": "soundtrack"
+        "category": "soundtrack",
+        "tsm_song_id": "7da8"
       },
       {
         "title": "The Joker and the Queen (Arr. for Piano by David Önaç)",
@@ -862,7 +881,8 @@
         "on_album": true,
         "role": "extra",
         "extra_type": "instrumental",
-        "tags": []
+        "tags": [],
+        "tsm_song_id": "u4br"
       },
       {
         "title": "us. (feat. Taylor Swift)",
@@ -910,7 +930,8 @@
         "extra_type": "other",
         "tags": [],
         "category": "collab",
-        "chart_extra": true
+        "chart_extra": true,
+        "tsm_song_id": "z9td"
       },
       {
         "title": "I Knew It, I Knew You - Acoustic Version",
@@ -953,7 +974,8 @@
         "role": "extra",
         "extra_type": "acoustic",
         "tags": [],
-        "chart_extra": true
+        "chart_extra": true,
+        "tsm_song_id": "syt2"
       },
       {
         "title": "I Knew It, I Knew You - Piano Version",
@@ -994,7 +1016,8 @@
         "role": "extra",
         "extra_type": "other",
         "tags": [],
-        "chart_extra": true
+        "chart_extra": true,
+        "tsm_song_id": "syt2"
       },
       {
         "title": "I Heart ?",
@@ -1022,7 +1045,8 @@
         "role": "",
         "extra_type": "",
         "tags": [],
-        "chart_extra": true
+        "chart_extra": true,
+        "tsm_song_id": "hu7u"
       },
       {
         "title": "Eyes Open",
@@ -1050,7 +1074,8 @@
         "role": "",
         "extra_type": "",
         "tags": [],
-        "category": "soundtrack"
+        "category": "soundtrack",
+        "tsm_song_id": "llef"
       },
       {
         "title": "Two Is Better Than One - Mike Rizzo Radio Remix",
@@ -1083,7 +1108,8 @@
         "on_album": true,
         "role": "extra",
         "extra_type": "remix",
-        "tags": []
+        "tags": [],
+        "tsm_song_id": "aj72"
       }
     ]
   },
@@ -1127,7 +1153,8 @@
         "on_album": false,
         "category": "collab",
         "display_album": "Features",
-        "tags": []
+        "tags": [],
+        "tsm_song_id": "vnsw"
       },
       {
         "title": "Both of Us (feat. Taylor Swift)",
@@ -1163,7 +1190,8 @@
         "on_album": false,
         "category": "collab",
         "display_album": "Features",
-        "tags": []
+        "tags": [],
+        "tsm_song_id": "4aiw"
       },
       {
         "title": "Better Man",
@@ -1193,7 +1221,8 @@
         },
         "on_album": false,
         "category": "collab",
-        "tags": []
+        "tags": [],
+        "tsm_song_id": "jdng"
       },
       {
         "title": "Highway Don’t Care (feat. Taylor Swift & Keith Urban)",
@@ -1222,7 +1251,8 @@
         ],
         "on_album": false,
         "category": "collab",
-        "tags": []
+        "tags": [],
+        "tsm_song_id": "xzvs"
       }
     ],
     "album": "Standalone & Extras"

@@ -55,7 +55,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "taylors_version",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "15p8",
+          "tsm_album_id": "n7d"
         },
         {
           "title": "Sparks Fly (Taylor's Version)",
@@ -104,7 +106,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "taylors_version",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "c082",
+          "tsm_album_id": "n7d"
         },
         {
           "title": "Back To December (Taylor's Version)",
@@ -178,7 +182,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "taylors_version",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ahe7",
+          "tsm_album_id": "n7d"
         },
         {
           "title": "Speak Now (Taylor's Version)",
@@ -227,7 +233,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "taylors_version",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "eibn",
+          "tsm_album_id": "n7d"
         },
         {
           "title": "Dear John (Taylor's Version)",
@@ -276,7 +284,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "taylors_version",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "9aq5",
+          "tsm_album_id": "n7d"
         },
         {
           "title": "Mean (Taylor's Version)",
@@ -325,7 +335,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "taylors_version",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "bv8v",
+          "tsm_album_id": "n7d"
         },
         {
           "title": "The Story Of Us (Taylor's Version)",
@@ -374,7 +386,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "taylors_version",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "vgb6",
+          "tsm_album_id": "n7d"
         },
         {
           "title": "Never Grow Up (Taylor's Version)",
@@ -423,7 +437,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "taylors_version",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "mitr",
+          "tsm_album_id": "n7d"
         },
         {
           "title": "Enchanted (Taylor's Version)",
@@ -497,7 +513,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "taylors_version",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "hl1j",
+          "tsm_album_id": "n7d"
         },
         {
           "title": "Better Than Revenge (Taylor's Version)",
@@ -571,7 +589,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "taylors_version",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "xxsd",
+          "tsm_album_id": "n7d"
         },
         {
           "title": "Innocent (Taylor's Version)",
@@ -620,7 +640,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "taylors_version",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "a9b5",
+          "tsm_album_id": "n7d"
         },
         {
           "title": "Haunted (Taylor's Version)",
@@ -669,7 +691,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "taylors_version",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "lbxe",
+          "tsm_album_id": "n7d"
         },
         {
           "title": "Last Kiss (Taylor's Version)",
@@ -718,7 +742,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "taylors_version",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ucz9",
+          "tsm_album_id": "n7d"
         },
         {
           "title": "Long Live (Taylor's Version)",
@@ -769,7 +795,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "taylors_version",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "4yg8",
+          "tsm_album_id": "n7d"
         },
         {
           "title": "Ours (Taylor's Version)",
@@ -818,7 +846,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "taylors_version",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "xma4",
+          "tsm_album_id": "n7d"
         },
         {
           "title": "Superman (Taylor's Version)",
@@ -867,7 +897,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "taylors_version",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "hx0m",
+          "tsm_album_id": "n7d"
         },
         {
           "title": "Electric Touch (feat. Fall Out Boy) (Taylor's Version) (From The Vault)",
@@ -917,7 +949,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "from_the_vault",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "2ke0",
+          "tsm_album_id": "n7d"
         },
         {
           "title": "When Emma Falls in Love (Taylor's Version) (From The Vault)",
@@ -966,7 +1000,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "from_the_vault",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "fap1",
+          "tsm_album_id": "n7d"
         },
         {
           "title": "I Can See You (Taylor's Version) (From The Vault)",
@@ -1015,7 +1051,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "from_the_vault",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "7hgo",
+          "tsm_album_id": "n7d"
         },
         {
           "title": "Castles Crumbling (feat. Hayley Williams) (Taylor's Version) (From The Vault)",
@@ -1065,7 +1103,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "from_the_vault",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "cnro",
+          "tsm_album_id": "n7d"
         },
         {
           "title": "Foolish One (Taylor's Version) (From The Vault)",
@@ -1114,7 +1154,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "from_the_vault",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "nws6",
+          "tsm_album_id": "n7d"
         },
         {
           "title": "Timeless (Taylor's Version) (From The Vault)",
@@ -1163,7 +1205,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "from_the_vault",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "90t7",
+          "tsm_album_id": "n7d"
         }
       ]
     }
