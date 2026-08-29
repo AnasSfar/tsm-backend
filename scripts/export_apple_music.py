@@ -32,7 +32,6 @@ TOP_VIDEOS_CSV = DB_DIR / "apple_music_ts_top_videos.csv"
 COUNTRY_CSV = DB_DIR / "apple_music_country_charts.csv"
 COUNTRY_ALBUMS_CSV = DB_DIR / "apple_music_country_albums.csv"
 GENRE_ALBUMS_CSV = DB_DIR / "apple_music_genre_album_charts.csv"
-MUSIC_VIDEO_CHARTS_CSV = DB_DIR / "apple_music_music_video_charts.csv"
 GENRE_CSV = DB_DIR / "apple_music_genre_charts.csv"
 
 OUT_DATA = OUT_DIR / "applemusic.json"
@@ -533,7 +532,6 @@ HISTORY_DAY_BUCKETS: tuple[tuple[str, Any], ...] = (
     ("country", {}),
     ("country_albums", {}),
     ("genre_albums", {}),
-    ("music_video_charts", {}),
     ("genre", {}),
 )
 
@@ -642,7 +640,6 @@ def main() -> None:
     del country_rows_full
     country_album_rows = read_windowed(COUNTRY_ALBUMS_CSV)
     genre_album_rows = read_windowed(GENRE_ALBUMS_CSV)
-    music_video_chart_rows = read_windowed(MUSIC_VIDEO_CHARTS_CSV)
     genre_rows = read_windowed(GENRE_CSV)
 
     global_current, global_history, _ = build_global(global_rows)
@@ -651,7 +648,6 @@ def main() -> None:
     country_current, country_history, _ = build_country(country_rows)
     country_album_current, country_album_history, _ = build_country_albums(country_album_rows)
     genre_album_current, genre_album_history, _ = build_genre_albums(genre_album_rows)
-    music_video_chart_current, music_video_chart_history, _ = build_country(music_video_chart_rows)
     genre_current, genre_history, _ = build_genre(genre_rows)
 
     all_dates = sorted(all_dates_set)
@@ -666,7 +662,6 @@ def main() -> None:
     _mirror_grouped_current_to_latest(country_current, country_history, latest_any, "countries", "country")
     _mirror_grouped_current_to_latest(country_album_current, country_album_history, latest_any, "countries", "country_albums")
     _mirror_grouped_current_to_latest(genre_album_current, genre_album_history, latest_any, "by_country", "genre_albums")
-    _mirror_grouped_current_to_latest(music_video_chart_current, music_video_chart_history, latest_any, "countries", "music_video_charts")
     _mirror_grouped_current_to_latest(genre_current, genre_history, latest_any, "by_country", "genre")
 
     applemusic_data = {
@@ -679,14 +674,13 @@ def main() -> None:
         "country_charts": country_current,
         "country_album_charts": country_album_current,
         "genre_album_charts": genre_album_current,
-        "music_video_charts": music_video_chart_current,
+        "music_video_charts": {},
         "genre_charts": genre_current,
     }
 
     history_dates = sorted(
         set(global_history) | set(top_history) | set(top_video_history) | set(country_history)
-        | set(country_album_history) | set(genre_album_history) | set(music_video_chart_history)
-        | set(genre_history)
+        | set(country_album_history) | set(genre_album_history) | set(genre_history)
     )
     applemusic_history = {
         "dates": history_dates,
@@ -696,7 +690,7 @@ def main() -> None:
         "country": country_history,
         "country_albums": country_album_history,
         "genre_albums": genre_album_history,
-        "music_video_charts": music_video_chart_history,
+        "music_video_charts": {},
         "genre": genre_history,
     }
 
@@ -709,7 +703,6 @@ def main() -> None:
         _backfill_by_country(country_album_current, prev_data.get("country_album_charts"))
         _backfill_by_genre(genre_current, prev_data.get("genre_charts"))
         _backfill_by_genre(genre_album_current, prev_data.get("genre_album_charts"))
-        _backfill_by_country(music_video_chart_current, prev_data.get("music_video_charts"))
 
     OUT_DATA.write_text(json.dumps(applemusic_data, ensure_ascii=False, indent=2), encoding="utf-8")
     # Compact on purpose: this file is shipped to R2 and loaded whole by the API.

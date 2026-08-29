@@ -112,7 +112,6 @@ def rows_from_payload(payload: dict[str, Any], day: str, scraped_at: str) -> dic
         "apple_music_country_albums.csv": [],
         "apple_music_genre_charts.csv": [],
         "apple_music_genre_album_charts.csv": [],
-        "apple_music_music_video_charts.csv": [],
         "apple_music_ts_top_songs_global.csv": [],
     }
 
@@ -145,27 +144,6 @@ def rows_from_payload(payload: dict[str, Any], day: str, scraped_at: str) -> dic
                         {"date": day, "scraped_at": scraped_at, "country": country, "chart_type": "country_albums"},
                     )
                 )
-
-    music_video_charts = payload.get("music_video_charts") or payload.get("top_videos") or {}
-    if isinstance(music_video_charts, dict):
-        for country, entries in music_video_charts.items():
-            for entry in entries or []:
-                out["apple_music_music_video_charts.csv"].append(
-                    _entry_row(
-                        entry,
-                        MUSIC_VIDEO_FIELDS,
-                        {"date": day, "scraped_at": scraped_at, "country": country, "chart_type": "music_videos"},
-                    )
-                )
-    elif isinstance(music_video_charts, list):
-        for entry in music_video_charts:
-            out["apple_music_music_video_charts.csv"].append(
-                _entry_row(
-                    entry,
-                    MUSIC_VIDEO_FIELDS,
-                    {"date": day, "scraped_at": scraped_at, "country": "", "chart_type": "music_videos"},
-                )
-            )
 
     genre_charts = payload.get("genre_charts") or {}
     if isinstance(genre_charts, dict):
@@ -211,7 +189,6 @@ def write_day_csvs(day: str, rows_by_file: dict[str, list[dict[str, Any]]], appl
         "apple_music_country_albums.csv": COUNTRY_ALBUM_FIELDS,
         "apple_music_genre_charts.csv": GENRE_FIELDS,
         "apple_music_genre_album_charts.csv": GENRE_ALBUM_FIELDS,
-        "apple_music_music_video_charts.csv": MUSIC_VIDEO_FIELDS,
         "apple_music_ts_top_songs_global.csv": TS_FIELDS,
     }
     out_dir = apple_music_charts_dir(day)
@@ -313,7 +290,6 @@ def main() -> None:
             "apple_music_country_albums.csv": [],
             "apple_music_genre_charts.csv": [],
             "apple_music_genre_album_charts.csv": [],
-            "apple_music_music_video_charts.csv": [],
             "apple_music_ts_top_songs_global.csv": [],
         }
         for key in keys:

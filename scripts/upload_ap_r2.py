@@ -37,7 +37,6 @@ COUNTRY_CSV = DB_DIR / "apple_music_country_charts.csv"
 GENRE_CSV = DB_DIR / "apple_music_genre_charts.csv"
 GLOBAL_CSV = DB_DIR / "apple_music_global.csv"
 TS_TOP_CSV = DB_DIR / "apple_music_ts_top_songs_global.csv"
-MUSIC_VIDEO_CSV = DB_DIR / "apple_music_music_video_charts.csv"
 
 R2_PREFIX = r2_keys.APPLE_MUSIC_HISTORY_BY_SONG_PREFIX
 CSV_R2_PREFIX = r2_keys.APPLE_MUSIC_DB_PREFIX
@@ -52,7 +51,6 @@ APPLE_MUSIC_CSV_NAMES = [
     "apple_music_ts_top_songs_global.csv",
     "apple_music_country_albums.csv",
     "apple_music_genre_album_charts.csv",
-    "apple_music_music_video_charts.csv",
 ]
 
 
@@ -286,14 +284,6 @@ def build_history_objects() -> dict[str, dict[str, Any]]:
         keep_fields=["date", "scraped_at", "storefront", "song_name", "rank", "previous_rank", "image_url", "url", "apple_music_id", "album_name"],
     )
 
-    append_rows(
-        grouped=grouped,
-        rows=read_csv(MUSIC_VIDEO_CSV),
-        source_name="music_video_charts",
-        keep_fields=["date", "scraped_at", "country", "video_name", "rank", "previous_rank", "image_url", "url", "apple_music_id"],
-        name_field="video_name",
-    )
-
     for normalized_name in list(grouped.keys()):
         grouped[normalized_name] = finalize_payload(grouped[normalized_name])
 
@@ -394,7 +384,7 @@ def _snapshot_payload(history: dict[str, Any], snapshot_key: str) -> dict[str, A
         "country_album_charts": (history.get("country_albums") or {}).get(snapshot_key, {}),
         "genre_charts": (history.get("genre") or {}).get(snapshot_key, {}),
         "genre_album_charts": (history.get("genre_albums") or {}).get(snapshot_key, {}),
-        "music_video_charts": (history.get("music_video_charts") or {}).get(snapshot_key, {}),
+        "music_video_charts": {},
     }
 
 

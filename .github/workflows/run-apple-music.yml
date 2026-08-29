@@ -77,7 +77,6 @@ jobs:
               "apple_music_ts_top_songs.csv",
               "apple_music_country_albums.csv",
               "apple_music_genre_album_charts.csv",
-              "apple_music_music_video_charts.csv",
           ]
           for name in csv_names:
               key = f"apple-music/db/{name}"
