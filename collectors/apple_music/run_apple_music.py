@@ -67,10 +67,17 @@ def _now_for_snapshot() -> datetime:
     return datetime.now()
 
 
+def _iso_seconds(dt: datetime) -> str:
+    """ISO-8601 to the second. Keeps the UTC offset when `dt` is timezone-aware
+    (it is, unless the Paris zone failed to load) so the frontend can render the
+    snapshot in each visitor's own timezone instead of assuming Paris."""
+    return dt.isoformat(timespec="seconds")
+
+
 def build_scraped_at() -> str:
     now = _now_for_snapshot()
     if not _truthy_env("APPLE_MUSIC_ROUND_SCRAPED_AT", default=True):
-        return now.strftime("%Y-%m-%dT%H:%M:%S")
+        return _iso_seconds(now.replace(microsecond=0))
 
     hours = _snapshot_hours()
     candidates = [
@@ -85,9 +92,9 @@ def build_scraped_at() -> str:
 
     print(
         "[Apple Music] Rounded scraped_at "
-        f"{now.strftime('%Y-%m-%dT%H:%M:%S')} -> {slot.strftime('%Y-%m-%dT%H:%M:%S')}"
+        f"{now.strftime('%Y-%m-%dT%H:%M:%S')} -> {_iso_seconds(slot)}"
     )
-    return slot.strftime("%Y-%m-%dT%H:%M:%S")
+    return _iso_seconds(slot)
 
 def child_env() -> dict[str, str]:
     env = os.environ.copy()

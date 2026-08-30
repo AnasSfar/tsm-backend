@@ -25,6 +25,7 @@ tsm-backend (Python, local, Task Scheduler)  →  R2 (bucket prod: taylor-data) 
 - `collectors/` : `spotify/` (streams + charts), `apple_music/`, `billboard/`, `youtube/`, `comp/`, `website/`.
 - Pipeline streams : `collectors/spotify/streams/update_streams.py` ; outils dans `collectors/spotify/streams/tools/scripts/` (`history_store.py`, `spotify_api.py`, `reconcile_gap_catchup.py`, `generate_albums_image.py`, `post_albums_twitter.py` hors week-end).
 - Catalogue maître : `db/discography/artist.json` ; cache covers : `db/discography/track_cover_cache.json`.
+- **Clé de jointure interne du catalogue** : `db/discography/tsm_id_registry.json` (source de vérité, `tsm_song_id`/`tsm_album_id` gelés) + `catalog_index.{json,csv}` (vue à plat). Générés par `scripts/assign_tsm_ids.py`, portés dans l'export web (`data/songs.json`/`albums.json`). Utiliser `tsm_song_id` plutôt qu'un match par titre pour relier une chanson entre collectors. Détail → skill `scripts-maintenance`.
 - Ops détaillées → skill `pipeline-ops`.
 
 ## tsm-frontend (`c:\Users\sfara\Documents\GitHub\tsm-frontend`)
@@ -57,6 +58,7 @@ tsm-backend (Python, local, Task Scheduler)  →  R2 (bucket prod: taylor-data) 
 | `pages/ImageStudio.jsx` | Générateur d'images PNG (templates dans `components/imageTemplates/`) |
 | `pages/Home.jsx` (Charts Gallery, `/`) | Tuiles collectors triées par date de dernier snapshot (`/api/version` via `/api/home-highlights`) + `components/ChartsHighlights.jsx` (carrousel de highlights). Un seul fetch `/api/home-highlights` pour toute la section (voir `api/routes/home_highlights.py` ci-dessus) — ne pas réintroduire de fetch par composant, le pool brut est calculé serveur et juste traduit/shufflé côté client |
 | `components/adminUI.jsx` | Primitives admin : AdminCard, Field, Toggle, StatusChip (tones live/warn/off UNIQUEMENT), SaveBar, ConfirmButton, ScheduleFields, Icon |
+| `components/RegionFlag.jsx` | Drapeau SVG d'un pays (flagcdn.com — host ajouté au CSP `img-src` de `vercel.ts`). `regionFlagCode()` : `overall`/genre → rien, `global`/`worldwide` → glyphe globe, `uk`→`gb`, **`il`→`ps`** (drapeau Palestine — décision éditoriale alignée sur `regionLabel` = "Occupied Palestine" dans `utils/i18n.js`). Consommé par `SongBlock`, `CountryPicker` (donc tous les pickers de région : TsTracker/AppleMusic/AppleMusicSongDetail/SongDetail), `SongDetail` (table pays), `AppleMusic.PlacementTables` (via `placement.regionKey`). |
 | `components/CustomThemeModule.jsx` | Thème temporaire (éditeur de tokens) |
 | `components/MediaLibraryModule.jsx` | Media Library (extraite d'Admin.jsx) — rendue par la console ET `/admin/journalist` |
 | `utils/anniversaries.js` | `ALL_THEME_OPTIONS` (15 thèmes) |
@@ -70,10 +72,16 @@ tsm-backend (Python, local, Task Scheduler)  →  R2 (bucket prod: taylor-data) 
 ### Settings du site
 Stockés dans R2 `site_settings.json`, servis/modifiés par `api/routes/site_settings.py` : PATCH **par section** (`PATCHABLE_SECTIONS`), normalisation `_normalize_settings`, auth admin `X-News-Token` (`require_admin_token`), backups auto.
 
+## Fuseaux horaires (frontend)
+- `utils/format.js` : `detectTimeZone()` (via `Intl`) → `setFormattingContext` dans `App.jsx` → toutes les fonctions de `format.js` rendent dans le fuseau du visiteur.
+- **Dates seules** (`YYYY-MM-DD` : snapshot, chart date, sortie) → `formatIsoDate()` (ancre `T12:00:00Z`, aucun décalage). **Ne jamais** les passer dans un formateur d'heure.
+- **Instants** (avec une heure) → `formatDateTime()` (ISO tz-aware, ex. YouTube `snapshot_at` en UTC) ou, pour les timestamps de collecteurs qui sont en heure murale de Paris (Apple Music `scraped_at`), `parseCollectorTimestamp` / `formatCollectorDateTime` / `formatCollectorClock` : elles traitent une valeur sans offset comme `Europe/Paris` (constante `COLLECTOR_TIME_ZONE`) et une valeur avec offset directement. `formatCollectorClock`/`DateTime` ajoutent l'abréviation du fuseau (`GMT+2`).
+- Backend : tout timestamp affiché doit être **tz-aware** — `datetime.now(timezone.utc).isoformat()` côté API, offset Europe/Paris pour `scraped_at` Apple Music (2026-08-30). Jamais `datetime.utcnow()` ni d'heure murale nue pour de l'affichage.
+
 ## Pièges connus
 - La commande de rebuild graphify du CLAUDE.md **échoue** (module non installé) — ne pas la lancer.
 - PowerShell 5.1 : stderr des exe natifs (vite, git) affiché en `NativeCommandError` = bruit, vérifier le vrai résultat (« ✓ built »).
-- **CSP `img-src` dans `tsm-frontend/vercel.ts`** : header only (pas de meta, pas de code client), donc invisible en dev local — un nouveau host d'images externe (ex. `i.ytimg.com` pour les miniatures YouTube, ajouté 2026-08-29) doit être ajouté à `img-src` sinon le navigateur bloque silencieusement l'image (→ `onError` → fallback logo). Se voit seulement en prod / preview Vercel.
+- **CSP `img-src` dans `tsm-frontend/vercel.ts`** : header only (pas de meta, pas de code client), donc invisible en dev local — un nouveau host d'images externe (ex. `i.ytimg.com` pour les miniatures YouTube ajouté 2026-08-29 ; `flagcdn.com` pour les drapeaux `RegionFlag` ajouté 2026-08-30) doit être ajouté à `img-src` sinon le navigateur bloque silencieusement l'image (→ `onError` → fallback logo). Se voit seulement en prod / preview Vercel.
 
 ## Maintenance (obligatoire)
 Si ton changement contredit ou complète cette carte (fichier déplacé, nouveau module, flux modifié), mets à jour cette skill ET `REPO_CONTEXT.md` dans la même session.

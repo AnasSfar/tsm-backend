@@ -51,6 +51,7 @@ FEATURES_JSON_SRC = DISCOGRAPHY_DIR / "features.json"
 MISC_EXTRA_JSON_SRC = DISCOGRAPHY_DIR / "misc.json"
 COVERS_JSON_PATH = DISCOGRAPHY_DIR / "covers.json"
 EXTRA_SECTION_SOURCES = (MISC_JSON_SRC, FEATURES_JSON_SRC, MISC_EXTRA_JSON_SRC)
+TSM_REGISTRY_PATH = DISCOGRAPHY_DIR / "tsm_id_registry.json"
 
 SITE_DATA_DIR    = WEB_EXPORT_DATA_DIR
 SITE_HISTORY_DIR = WEB_EXPORT_HISTORY_DIR
@@ -299,8 +300,39 @@ def load_album_sections_flat() -> list[dict]:
     return sections
 
 
+_TSM_SLUG_MAP: dict[str, str] | None = None
+
+
+def load_tsm_slug_map() -> dict[str, str]:
+    """{tsm_song_id: slug} from db/discography/tsm_id_registry.json.
+
+    The frozen ``tsm_song_id`` / ``tsm_album_id`` are already mirrored onto every
+    discography track object (written by scripts/assign_tsm_ids.py); only the
+    regenerated ``slug`` lives solely in the registry, so it is looked up here.
+    Missing registry / missing entries are non-fatal — assign_tsm_ids.py is the
+    fixer, this export must never hard-fail on it.
+    """
+    global _TSM_SLUG_MAP
+    if _TSM_SLUG_MAP is not None:
+        return _TSM_SLUG_MAP
+    slugs: dict[str, str] = {}
+    try:
+        data = json.loads(TSM_REGISTRY_PATH.read_text(encoding="utf-8-sig"))
+        for sid, rec in (data.get("songs") or {}).items():
+            if isinstance(rec, dict) and rec.get("slug") and not rec.get("merged_into"):
+                slugs[sid] = rec["slug"]
+    except FileNotFoundError:
+        print("[tsm-ids] tsm_id_registry.json not found — run scripts/assign_tsm_ids.py")
+    except (json.JSONDecodeError, OSError) as exc:
+        print(f"[tsm-ids] could not read tsm_id_registry.json: {exc}")
+    _TSM_SLUG_MAP = slugs
+    return slugs
+
+
 def load_tracks_from_discography() -> list[dict]:
     seen: dict[str, dict] = {}
+    tsm_slugs = load_tsm_slug_map()
+    missing_tsm_id: list[str] = []
 
     all_sections = load_album_sections_flat()
     for misc_src in EXTRA_SECTION_SOURCES:
@@ -328,6 +360,9 @@ def load_tracks_from_discography() -> list[dict]:
                 h for h in (track.get("historical_track_ids") or [])
                 if isinstance(h, str) and h and h != track_id
             ]
+            tsm_song_id = track.get("tsm_song_id") or None
+            if not tsm_song_id:
+                missing_tsm_id.append(f"{track_id} ({title})")
             seen[track_id] = {
                 "track_id": track_id,
                 "title": title,
@@ -335,6 +370,8 @@ def load_tracks_from_discography() -> list[dict]:
                 "title_clean": track.get("title_clean") or None,
                 "base_title": track.get("base_title") or None,
                 "song_family": track.get("song_family") or None,
+                "tsm_song_id": tsm_song_id,
+                "tsm_slug": tsm_slugs.get(tsm_song_id) if tsm_song_id else None,
                 "spotify_url": spotify_url,
                 "image_url": image_url,
                 "streams": None,
@@ -348,6 +385,14 @@ def load_tracks_from_discography() -> list[dict]:
                 "filter_tags": track.get("filter_tags") or [],
                 "filter_tag_sources": track.get("filter_tag_sources") or {},
             }
+
+    if missing_tsm_id:
+        sample = ", ".join(missing_tsm_id[:10])
+        extra = "" if len(missing_tsm_id) <= 10 else f" (+{len(missing_tsm_id) - 10} more)"
+        print(
+            f"[tsm-ids] WARNING: {len(missing_tsm_id)} track(s) have no tsm_song_id — "
+            f"run scripts/assign_tsm_ids.py --apply: {sample}{extra}"
+        )
 
     return list(seen.values())
 
@@ -551,6 +596,17 @@ def dedupe_songs_for_site(
             (song.get("release_date") for song in group if song.get("release_date")),
             None,
         )
+        # tsm ids are song-level: identical across every edition in the group, but
+        # keep an explicit non-null fallback in case the "best" pick predates a run
+        # of scripts/assign_tsm_ids.py.
+        if not kept.get("tsm_song_id"):
+            kept["tsm_song_id"] = next(
+                (s.get("tsm_song_id") for s in group if s.get("tsm_song_id")), None
+            )
+        if not kept.get("tsm_slug"):
+            kept["tsm_slug"] = next(
+                (s.get("tsm_slug") for s in group if s.get("tsm_slug")), None
+            )
 
         deduped.append(kept)
 
@@ -863,6 +919,9 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                     song_family   = track.get("song_family")
                     chart_extra   = track.get("chart_extra", section_chart_extra)
 
+                    tsm_song_id = track.get("tsm_song_id")
+                    tsm_album_id = track.get("tsm_album_id")
+
                     file_tracks.append({
                         "track_id":       track_id,
                         "title":          track.get("title"),
@@ -874,6 +933,8 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                         "base_title":     base_title,
                         "title_clean":    title_clean,
                         "song_family":    song_family,
+                        "tsm_song_id":    tsm_song_id,
+                        "tsm_album_id":   tsm_album_id,
                         "chart_extra":    chart_extra,
                         "section":        section_name,
                         "source_file":    file_name,
@@ -893,6 +954,8 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                         "base_title":     base_title,
                         "title_clean":    title_clean,
                         "song_family":    song_family,
+                        "tsm_song_id":    tsm_song_id,
+                        "tsm_album_id":   tsm_album_id,
                         "chart_extra":    chart_extra,
                     })
 
@@ -970,6 +1033,9 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                     song_family   = track.get("song_family")
                     chart_extra   = track.get("chart_extra", data.get("chart_extra"))
 
+                    tsm_song_id = track.get("tsm_song_id")
+                    tsm_album_id = track.get("tsm_album_id")
+
                     track_entry = {
                         "track_id":       track_id,
                         "title":          track.get("title"),
@@ -980,6 +1046,8 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                         "base_title":     base_title,
                         "title_clean":    title_clean,
                         "song_family":    song_family,
+                        "tsm_song_id":    tsm_song_id,
+                        "tsm_album_id":   tsm_album_id,
                         "chart_extra":    chart_extra,
                         "section":        section_name,
                         "source_file":    file_name,
@@ -1002,6 +1070,8 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                         "base_title":     base_title,
                         "title_clean":    title_clean,
                         "song_family":    song_family,
+                        "tsm_song_id":    tsm_song_id,
+                        "tsm_album_id":   tsm_album_id,
                         "chart_extra":    chart_extra,
                     })
 
@@ -1630,7 +1700,7 @@ def export_swift_top_100_from_csv(*, songs_by_id: dict[str, dict] | None = None)
 def export_best_day_since(stats_date: str | None) -> None:
     target_date = stats_date or best_day_since.latest_history_date(best_day_since.load_history())
     if not target_date:
-        write_json(BEST_DAY_SINCE_JSON_PATH, {"items": [], "by_track": {}})
+        write_json(BEST_DAY_SINCE_JSON_PATH, {"items": [], "by_track": {}, "albums": [], "by_album": {}})
         print(f"[best_day_since] No target date available -> {BEST_DAY_SINCE_JSON_PATH}")
         return
 
@@ -1647,7 +1717,20 @@ def export_best_day_since(stats_date: str | None) -> None:
         if row and best_day_since.passes_filters(row, min_days=best_day_since.DEFAULT_MIN_DAYS):
             rows.append(row)
 
+    albums = []
+    for album, track_ids in best_day_since.load_album_track_ids(tracks).items():
+        if len(track_ids) < 2:
+            continue
+        row = best_day_since.compute_album_best_day_since(album, track_ids, history, target)
+        if (
+            row
+            and row.get("kind") == "since"
+            and best_day_since.passes_filters(row, min_days=best_day_since.DEFAULT_MIN_DAYS)
+        ):
+            albums.append(row)
+
     rows.sort(key=best_day_since.sort_key, reverse=True)
+    albums.sort(key=best_day_since.sort_key, reverse=True)
     payload = {
         "generated_at": datetime.now().isoformat(timespec="seconds"),
         "date": target.isoformat(),
@@ -1656,9 +1739,15 @@ def export_best_day_since(stats_date: str | None) -> None:
         "count": len(rows),
         "items": rows,
         "by_track": {row["track_id"]: row for row in rows},
+        "album_count": len(albums),
+        "albums": albums,
+        "by_album": {row["album"]: row for row in albums},
     }
     write_json(BEST_DAY_SINCE_JSON_PATH, payload)
-    print(f"[best_day_since] Exported {len(rows)} row(s) for {target.isoformat()} -> {BEST_DAY_SINCE_JSON_PATH}")
+    print(
+        f"[best_day_since] Exported {len(rows)} track row(s) and {len(albums)} album row(s) "
+        f"for {target.isoformat()} -> {BEST_DAY_SINCE_JSON_PATH}"
+    )
 
 
 def export_for_web(

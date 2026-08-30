@@ -128,6 +128,7 @@ twitter_session.json
 log
 *.old
 *.track-flags-*.bak
+*.tsmids-*.bak
 LOCK
 f_*
 

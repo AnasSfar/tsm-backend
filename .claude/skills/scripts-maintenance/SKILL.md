@@ -19,9 +19,30 @@ python scripts/backfill_spotify_track_metadata.py --apply             # metadata
 python scripts/enrich_genres.py --apply                               # genres
 python scripts/infer_track_flags.py --apply                           # filter_tags déduits
 python scripts/backfill_track_cover_cache.py                          # pré-chauffe les covers (pas de --apply, écrit direct)
+python scripts/assign_tsm_ids.py --apply                              # attribue tsm_song_id / tsm_album_id + régénère catalog_index
 ```
 
 Toujours dry-run d'abord (sans `--apply`) pour lire le diff avant d'écrire. Ces scripts créent un `.json.bak` à côté du fichier modifié — normal, pas besoin de le committer séparément.
+
+## IDs internes du catalogue (`tsm_song_id` / `tsm_album_id`)
+
+`scripts/assign_tsm_ids.py` — clé de jointure interne stable pour le catalogue, à relancer **après toute modification de `db/discography/`** (nouvelle chanson, save de l'éditeur GUI, édition manuelle). Idempotent, dry-run par défaut.
+
+**Deux identifiants, rôles opposés :**
+
+| | `tsm_song_id` / `tsm_album_id` | `slug` + `catalog_code` |
+|---|---|---|
+| Forme | base36 opaque court (`4ty3` / `lhq`) | `slug` lisible (`all-too-well`) ; `catalog_code` segmenté (`REDTV/std/05`) |
+| Stabilité | **gelé à vie** | recalculé à chaque run depuis le titre / les champs de schéma |
+| Stocké | dans les track objects de `db/discography/` **et** le registre | registre + `catalog_index` uniquement (jamais dans les fichiers de disco) |
+| Rôle | jointure cross-collector + clé d'URL de partage | lecture humaine, tri, filtrage, debug |
+| Cardinalité | 1 par chanson (toutes versions) / 1 par album | `catalog_code` : 1 par (chanson × placement) |
+
+- **Source de vérité = `db/discography/tsm_id_registry.json`** (append-only). Une chanson supprimée/fusionnée n'est jamais effacée du registre → `merged_into` pointe le survivant. Éditable à la main si besoin (fusion manuelle).
+- Détecte les renommages de `song_family` via le recoupement des `track_id` (courants + `historical_track_ids`) → l'ID est conservé, seul le label bouge.
+- `db/discography/catalog_index.json` (commité) + `catalog_index.csv` (gitignoré, régénéré, à ouvrir dans un tableur) : une ligne par entrée track, toutes les colonnes de schéma décodées + `catalog_code` + `counts_toward_era` — **c'est la vue à plat pour « s'y retrouver »** dans les ~720 entrées éclatées sur 20 fichiers.
+- **Warnings à traiter** (le script ne corrige jamais tout seul) : un `track_id` Spotify sur 2+ entrées (vrai doublon DB), une entrée sans `song_family` ni titre, deux identités qui résolvent vers le même `tsm_song_id` (fusion à valider). Au 2026-08-29 : 3 warnings connus (1 track sans id Spotify + les doublons `babe` / `ready_for_it` BloodPop remix).
+- Consommé par l'export web : `collectors/spotify/streams/extras/export_for_web.py::load_tsm_slug_map()` porte `tsm_song_id` + `tsm_slug` dans `data/songs.json` / `data/albums.json` (jamais bloquant — un `[tsm-ids] WARNING` signale les tracks sans id, le fix est de relancer le script).
 
 ## Upload R2 (`scripts/r2.py`)
 

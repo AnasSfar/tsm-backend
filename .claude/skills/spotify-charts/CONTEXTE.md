@@ -176,11 +176,23 @@ Options avancees:
   meme fichier snapshot date en concurrence (read-modify-write race). Le
   decoupage par chunks de dates du wrapper garantit deja des fichiers disjoints
   par worker tant qu'on ne force pas un recouvrement.
-- `--request-interval` (defaut 1.0) / `--concurrency` (defaut 8) /
-  `--fetch-max-attempts` (defaut 8) : reglage du debit et de la robustesse.
-  Detail + pieges -> section "Optimisation sans perte de data" plus bas. En
-  bref : `--request-interval` est le vrai levier de vitesse (pacer global),
-  `--fetch-max-attempts` borne evite le hang "lecture infinie".
+- **`--per-region-sweep [CODE ...]`** : boucle sequentielle region par region.
+  Pour chaque region, UN run `daily.py --regions <une>` qui ne fetche que les
+  dates absentes de SON `charts_history_<code>.csv` dans `[--start,--end]`. Une
+  seule region par run => une requete par `--request-interval`, **jamais deux
+  requetes concurrentes qui 429 en meme temps et declenchent GlobalPause** (le
+  probleme quand on fait `--regions us gb` = 2 en parallele). Bare = tous les
+  `charts_history_<cc>.csv` 2 lettres avec >= 60 lignes, historique le plus
+  riche d'abord (une region riche en 2017-2019 a quasi surement encore un chart
+  live). Checkpoint `state['swept_regions']` apres chaque region, reprenable.
+  `uk` -> chart `gb`. `--include-discontinued-regions` pour forcer les 31
+  gelees. C'est LA methode pour combler le trou worldwide par-pays 2020-2025.
+- `--request-interval` (defaut 1.0) / `--concurrency` (defaut 6) /
+  `--fetch-max-attempts` (defaut 8) / `--rate-limit-max` (defaut 30) : reglage
+  du debit et de la robustesse. Detail + pieges -> section "Optimisation sans
+  perte de data" plus bas. En bref : `--request-interval` est le vrai levier de
+  vitesse (pacer global) ; `--concurrency` bas evite les 429 paralleles ;
+  `--fetch-max-attempts` + `--rate-limit-max` bornent le hang / les pauses.
 - `--no-sync`: collecter les snapshots sans lancer les rebuild/sync finaux.
 - `--limit`: limiter le nombre de dates traitees dans un run (applique avant
   le decoupage en chunks).
@@ -357,12 +369,34 @@ par date : ~2,5 min/date/worker minimum -> un backfill de 650 dates a 2 workers
 - `SPOTIFY_WORLDWIDE_SEMAPHORE` positionne a la main dans le shell **ne sert a
   rien** via ce wrapper : `_run_chunk` l'ecrase. Passer par `--concurrency`.
 
+- `429 - pause globale` qui gonfle (`x1 x2 x3...`, 20s -> 40s -> ... -> 300s
+  dans `daily.py`) = pendant la pause, **zero ligne de log**, indistinguable
+  d'un hang. **Corrige** : le wrapper cape a `--rate-limit-max` (defaut 30s) et
+  baisse `RATE_LIMIT_MIN_SECONDS` a 12. Une pause ne depasse plus 30s -> il y a
+  toujours une ligne au moins toutes les 30s.
+- 2 workers depuis la meme IP/WARP = 2x plus de 429 pour rien quand on est deja
+  rate-limite. Si ca 429 en boucle : `--workers 1`.
+- **Detection de chart mort (2026-08-30)** : dans une boucle multi-dates
+  (`--dates-file`), une region qui renvoie 404 `BACKFILL_DEAD_REGION_STREAK`
+  fois d'affilee (defaut 6, env `SPOTIFY_WORLDWIDE_DEAD_REGION_STREAK`) est
+  **retiree du fetch pour le reste du run** (chart jamais publie sur cette
+  periode ; beaucoup de regionaux lances seulement en 2020-2021). Un 200
+  reset le compteur. `global` n'est jamais retire. **Si `global` lui-meme
+  404 pour une date** (date pas publiee par Spotify) : la date est court-circuitee
+  apres la Phase 1, les ~40 autres regions ne sont pas tentees, la date reste
+  non ecrite donc retentable. Ordre newest-first du wrapper => sur pour le
+  sens (un chart absent en 2021 l'est aussi en 2020).
+
 Leviers surs :
 
-- `--request-interval 1.0` (defaut) au lieu de `2.0` -> 2x plus rapide. Baisser
-  vers `0.5`-`0.7` si pas de 429 ; **remonter vers `2.0` des que les logs
-  montrent `429 - pause globale`** (c'est le seul vrai signal de surcharge).
-- `--concurrency 8`-`12`.
+- `--request-interval` (defaut 1.0) : c'est LE levier de vitesse (pacer
+  global). Baisser vers `0.7` si zero 429 ; **remonter vers `1.5`-`2.0` des le
+  premier `429 - pause globale`**.
+- `--concurrency` (defaut 6) : plus bas = moins de 429 simultanes = moins de
+  pauses. Monter seulement si aucun 429.
+- `--rate-limit-max` (defaut 30) : plafond d'une pause 429. Ne pas monter.
+- `--end` a ~aujourd'hui-3 : Spotify publie avec ~1-3 j de retard, sinon les
+  dates les plus recentes renvoient 404.
 - `--no-sync` sur les gros runs, puis une seule passe finale sans `--no-sync`.
 - Les 31 regions gelees (`DISCONTINUED_REGIONS` dans le wrapper) sont
   **automatiquement exclues pour toute date > 2019-08-24** (elles n'existent
@@ -373,14 +407,35 @@ Leviers surs :
 - Ajouter de vraies sessions Spotify (`--workers` plafonne par
   `len(spotify_session*.json)`). Copier le meme fichier ne compte pas.
 
-Exemple :
+Exemple (prudent, sans hang, single worker) :
 
 ```powershell
 python .\scripts\backfill_spotify_charts_history.py --gaps-from-csv global `
-  --workers 2 --concurrency 10 --request-interval 0.7 --no-sync
+  --workers 1 --concurrency 6 --request-interval 1.0 --end 2026-08-27 --no-sync
 ```
 
-### Etat des trous (audit 2026-08-29)
+### Etat des trous (audit 2026-08-30)
+
+**Le vrai trou = l'historique worldwide PAR PAYS pour 2020-2025.** Seuls
+`global` (pipeline dedie `global/daily.py`), `us`, `uk` ont une vraie
+couverture recente ; `fr` ~55 % en 2024-2025. **Toutes les autres regions
+(`de`, `br`, `es`, `it`, `jp`, `se`, `nl`, `mx`, `no`, `dk`, `pl`... ~30) :
+2017-2019 puis quasi RIEN jusqu'a 2026.** Sur 731 jours de 2024-2025 ou Taylor
+a charte en global 731 fois, `se` n'a que 10 jours. Un tiers de regions
+(`au ca hk ie my nz ph sg tw kr`) a ~90 jours en 2024-2025 (sous-ensemble "gros
+marches" collecte un temps). C'est CA qui fait le "total days" faux sur les
+pages pays du site. -> **methode : `--per-region-sweep` sur 2024-2025** (puis
+etendre 2022-2023 si Spotify sert encore).
+
+`us`/`uk` ont aussi des trous 2025 (`us` : quasi tout Fev-Mai 2025 + Sept, ~107 j ;
+`uk` : ~45 j epars) = collecte worldwide cassee sur cette periode, `global`
+survivant seul.
+
+**`--gaps-from-csv global` sur-selectionne** et vaut peu : les 649 "trous" sont
+TOUS en 2018-2021 (zero apres 2021) = periode creuse de Taylor. Le chart global
+existe mais **Taylor souvent hors top 200** (2020-03-21 : 0 de Taylor), et les
+regionaux "live" n'existaient pas encore -> enormement de 404 legitimes. A
+faire en dernier, ou pas.
 
 Le store durable = `db/charts_history_<region>.csv` (suivi par git, lu par le
 site). Le dossier `snapshots/spotify_charts/` local n'est PAS commit et souvent
@@ -413,33 +468,50 @@ que le wrapper pose deja). Ces 31 codes vivent dans
 
 ### Workflow recommande pour un gros rattrapage worldwide
 
-1. `--gaps-from-csv global` (ou `global us uk`) pour ne cibler que les vraies
-   dates manquantes — pas les ~2500 dates deja OK.
-2. `--workers 2` (plafond = nb de sessions Spotify ; 2 aujourd'hui — ajouter de
-   vraies sessions est le seul vrai levier de parallelisme).
-3. `--request-interval 0.7 --concurrency 10` pour un debit correct (le defaut
-   `daily.py` de 2.0s = ~2,5 min/date). Remonter `--request-interval` vers 2.0
-   des le premier `429 - pause globale`.
-4. Les 31 regions gelees sont auto-exclues au-dela du 2019-08-24 (rien a
-   passer ; le `[PLAN]` l'affiche).
-5. `--no-sync` sur les gros runs, puis une passe finale sans `--no-sync`
-   (+ `--upload-r2` si la prod doit refleter le backfill).
-6. `fr` (32 %) : chantier separe, `--gaps-from-csv fr --regions fr` (1 region x
-   beaucoup de dates, pas un sweep 68 regions).
-
-Reordonner la boucle "par region au lieu de par date" ne reduit PAS le nombre
-de requetes (`regions x dates`, invariant) ni le debit (pacer global). Ce qui
-fait gagner : reduire le jeu de dates (`--gaps-from-csv`), reduire le jeu de
-regions quand c'est cible (`--regions`/`--exclude-regions`), baisser
-`--request-interval`, plus de sessions.
+**Methode par defaut : `--per-region-sweep`** (une region a la fois, une
+requete par tick de pacer). C'est le bon outil pour le trou worldwide par-pays
+2020-2025. Beaucoup plus doux que fetcher N regions/date (pas de 429 paralleles
+qui declenchent GlobalPause) et le progres est granulaire (une region a la fois,
+reprenable via `state['swept_regions']`).
 
 ```powershell
-python .\scripts\backfill_spotify_charts_history.py --gaps-from-csv global `
-  --workers 2 --concurrency 10 --request-interval 0.7 --no-sync
-# puis, une fois tous les chunks OK :
-python .\scripts\backfill_spotify_charts_history.py --gaps-from-csv global `
-  --workers 2 --concurrency 10 --request-interval 0.7
+# 2024-2025, toutes les regions, historique le plus riche d'abord :
+python .\scripts\backfill_spotify_charts_history.py --per-region-sweep `
+  --start 2024-01-01 --end 2025-12-31 --request-interval 1.0 --no-sync
+# puis la passe de sync (sans --no-sync)
+python .\scripts\backfill_spotify_charts_history.py --per-region-sweep `
+  --start 2024-01-01 --end 2025-12-31
+
+# cible : juste us + uk 2025
+python .\scripts\backfill_spotify_charts_history.py --per-region-sweep us uk `
+  --start 2025-01-01 --end 2025-12-31
 ```
+
+Reglages :
+- `--request-interval 1.0` (defaut). Zero 429 sur plusieurs regions -> `0.7`.
+  Des le premier `429 - pause globale` soutenu -> `1.5`-`2.0`.
+- `--rate-limit-max 30` (defaut) : plafonne les pauses 429 (sinon 300s de
+  silence = impression de hang).
+- `--end` a ~aujourd'hui-3 : Spotify publie en retard (sinon 404, court-circuit).
+- Les 31 regions gelees + les regions quasi-vides sont exclues du sweep bare
+  (nommables explicitement). `--include-discontinued-regions` pour forcer.
+- Detection auto de chart mort : une region qui 404 6x d'affilee dans un run est
+  ecartee ; si `global` 404 pour une date, la date est court-circuitee.
+
+**Reprise / progression** : le sweep checkpoint `state['swept_regions']` apres
+chaque region. Pour un run non-sweep (`--gaps-from-csv`), un thread watcher
+scanne les snapshots et checkpoint toutes les `--progress-interval` s (defaut
+30) + `[PROGRESS] N/total (~Yh left)`. Un kill perd <=30s -> relancer reprend.
+Le sync final n'enrichit que la plage touchee.
+
+`--gaps-from-csv global --workers 1 --end 2026-08-27` : rattrape les trous
+propres de `global` 2018-2021. Faible valeur (periode creuse), a faire en
+dernier.
+
+Reordonner la boucle "par region au lieu de par date" ne reduit pas beaucoup le
+nombre de requetes (`regions x dates`) MAIS le sweep evite les 429 paralleles et
+ne re-fetch pas les dates deja completes region par region (us/uk/ca deja a
+~85% en 2024-25 ne repayent pas).
 
 ## worldwide/
 

@@ -149,6 +149,11 @@ collectors/apple_music/tools/json/apple_music_token.json
 - `previous_rank` doit venir du dernier snapshot d'un jour distinct precedent,
   pas d'un rerun du meme jour.
 - `rewrite_for_snapshot` doit rester idempotent par `scraped_at`.
+- `scraped_at` (depuis 2026-08-30) est timezone-aware : `2026-08-30T14:00:00+02:00`
+  (`build_scraped_at()` dans `run_apple_music.py`). L'offset vient de
+  `APPLE_MUSIC_SNAPSHOT_TZ` (Europe/Paris). Ne pas revenir à une heure murale
+  nue : le frontend s'en sert pour convertir le snapshot dans le fuseau du
+  visiteur. Comparaisons internes = `scraped_at[:10]` uniquement, garder ça.
 - `apple_music_id` prime sur le titre; ne pas elargir a "meme titre = meme
   chanson" pour les donnees modernes.
 - Comme l'historique Apple Music est incomplet, une chanson deja sortie ne doit

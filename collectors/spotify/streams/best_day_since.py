@@ -744,7 +744,16 @@ def main() -> None:
             rows.append(row)
 
     rows = [row for row in rows if passes_filters(row, min_days=args.min_days)]
+    album_rows = []
+    for album, track_ids in load_album_track_ids(tracks).items():
+        if len(track_ids) < 2:
+            continue
+        row = compute_album_best_day_since(album, track_ids, history, target_date)
+        if row and row.get("kind") == "since" and passes_filters(row, min_days=args.min_days):
+            album_rows.append(row)
+
     rows.sort(key=sort_key, reverse=True)
+    album_rows.sort(key=sort_key, reverse=True)
     limited_rows = rows[: max(args.limit, 0)]
     by_track = {row["track_id"]: row for row in rows}
 
@@ -756,6 +765,9 @@ def main() -> None:
         "count": len(rows),
         "items": rows,
         "by_track": by_track,
+        "album_count": len(album_rows),
+        "albums": album_rows,
+        "by_album": {row["album"]: row for row in album_rows},
     }
 
     print(f"Best day since for {target_date.isoformat()} ({len(rows)} match(es))")

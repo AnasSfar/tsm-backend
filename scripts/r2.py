@@ -688,6 +688,7 @@ def upload_static_data(
         ("charts_worldwide.json",    "data/charts_worldwide.json"),
         ("charts_music_videos_global.json", "data/charts_music_videos_global.json"),
         ("active_catalog_merges.json", "data/active_catalog_merges.json"),
+        ("best_day_since.json",       "data/best_day_since.json"),
     ]
     if streams_daily:
         # The daily Spotify streams export should not re-check Apple Music

@@ -149,6 +149,40 @@ REQUEST_INTERVAL_SECONDS = float(os.getenv("SPOTIFY_WORLDWIDE_REQUEST_INTERVAL_S
 SKIP_LATEST_FALLBACK_ON_404 = os.getenv("SPOTIFY_SKIP_LATEST_FALLBACK_ON_404", "").strip().lower() in {"1", "true", "yes", "on"}
 IMMEDIATE_REENTRY_POST_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_IMMEDIATE_REENTRY_POST_MAX_ATTEMPTS", "3"))
 IMMEDIATE_REENTRY_POST_RETRY_SECONDS = int(os.getenv("SPOTIFY_IMMEDIATE_REENTRY_POST_RETRY_SECONDS", "30"))
+
+# --- Multi-date backfill: skip charts that don't exist for a whole era ---------
+# In a --dates-file / --backfill loop, a regional chart that 404s date after date
+# is a chart Spotify never published for that period (many regionals only launched
+# in 2020-2021). After N consecutive 404s with no 200 in between, that region is
+# dropped from the fetch set for the rest of the run so we stop paying a pacer
+# slot per date for nothing. Any 200 resets its streak. `global` is never dropped.
+# If `global` itself 404s for a date (date not published at all), the whole date
+# is short-circuited — no point trying ~40 other regions.
+BACKFILL_DEAD_REGION_STREAK = int(os.getenv("SPOTIFY_WORLDWIDE_DEAD_REGION_STREAK", "6"))
+_backfill_run_active = False
+_backfill_404_streak: dict[str, int] = {}
+_backfill_dead_regions: set[str] = set()
+_backfill_404_this_date: set[str] = set()
+
+
+def _note_region_404(region: str) -> None:
+    _backfill_404_this_date.add(region)
+    if not _backfill_run_active:
+        return
+    n = _backfill_404_streak.get(region, 0) + 1
+    _backfill_404_streak[region] = n
+    if region != "global" and n >= BACKFILL_DEAD_REGION_STREAK and region not in _backfill_dead_regions:
+        _backfill_dead_regions.add(region)
+        print(
+            f"  [{region:>6}] {n} consecutive 404s across dates — marking dead, "
+            f"skipped for the rest of this run",
+            flush=True,
+        )
+
+
+def _note_region_ok(region: str) -> None:
+    if _backfill_404_streak.get(region):
+        _backfill_404_streak[region] = 0
 _OVERVIEW_URL   = "https://charts-spotify-com-service.spotify.com/auth/v1/overview/GLOBAL"
 MULTI_SONG_REGIONAL_POST_MIN_SONGS = 3
 MULTI_SONG_REGIONAL_POST_MAX_POSTS = 1
@@ -933,10 +967,12 @@ async def _fetch_region(
                         data = await resp.json(content_type=None)
                         rows = _parse_ts_entries(data)
                         await pause.mark_success()
+                        _note_region_ok(region)
                         print(f"  [{region:>6}] {len(rows)} TS entries ({chart_date})")
                         return region, rows
                     if resp.status == 404:
                         if SKIP_LATEST_FALLBACK_ON_404:
+                            _note_region_404(region)
                             print(f"  [{region:>6}] 404 date - no chart")
                             return region, []
                         await pacer.wait()
@@ -965,8 +1001,10 @@ async def _fetch_region(
                                     f"  [{region:>6}] 404 date, latest={latest_date or 'unknown'} "
                                     f"- no chart for {chart_date} (apres {not_found_attempts} retry)"
                                 )
+                                _note_region_404(region)
                                 return region, []
                             if latest_resp.status == 404:
+                                _note_region_404(region)
                                 print(f"  [{region:>6}] 404 date+latest - no chart")
                                 return region, []
                             raise RuntimeError(
@@ -2057,6 +2095,8 @@ def main() -> int:
         original_run_all = os.environ.get("CHARTS_RUN_ALL")
         started = time.perf_counter()
         failed_dates: list[str] = []
+        global _backfill_run_active
+        _backfill_run_active = True
         try:
             os.environ["CHARTS_RUN_ALL"] = "1"
             for idx, chart_date in enumerate(chart_dates, 1):
@@ -2102,6 +2142,8 @@ def main() -> int:
         print(f"[ERROR] Invalid date: {raw_date!r}")
         return 1
 
+    _backfill_404_this_date.clear()
+
     if args.post_multi_song_regions_only:
         print(f"[INFO] chart_date = {chart_date}")
         return _post_multi_song_regions_from_snapshot(chart_date, {}, force=args.force)
@@ -2135,11 +2177,16 @@ def main() -> int:
     if args.exclude_regions:
         drop = {code.strip().lower() for code in args.exclude_regions if code.strip()}
         regions = {k: v for k, v in regions.items() if k not in drop}
+    if args.regions or args.exclude_regions:
+        print(f"[INFO] Region filter active -> {len(regions)} region(s): {', '.join(sorted(regions))}")
+    if _backfill_run_active and _backfill_dead_regions:
+        dead_here = sorted(_backfill_dead_regions & regions.keys())
+        if dead_here:
+            regions = {k: v for k, v in regions.items() if k not in _backfill_dead_regions}
+            print(f"[INFO] Skipping {len(dead_here)} region(s) marked dead earlier this run: {', '.join(dead_here)}")
     if not regions:
         print("[ERROR] No regions left after --regions/--exclude-regions filter")
         return 1
-    if args.regions or args.exclude_regions:
-        print(f"[INFO] Region filter active -> {len(regions)} region(s): {', '.join(sorted(regions))}")
     print(f"[INFO] {len(tokens)} token(s) disponible(s). {len(regions)} regions to fetch.")
 
 
@@ -2175,7 +2222,11 @@ def main() -> int:
             if args.force and region_filter_active:
                 already_done -= set(regions)
             if already_done:
-                print(f"[INFO] Skipping {len(already_done)} regions already present for {chart_date}")
+                _preview = ", ".join(sorted(already_done)[:12]) + ("…" if len(already_done) > 12 else "")
+                print(
+                    f"[INFO] {len(already_done)} region(s) already in {chart_date} snapshot "
+                    f"({_preview}) — kept as-is, not re-fetched"
+                )
         except Exception as e:
             print(f"[WARN] Could not parse existing output: {e}")
 
@@ -2238,6 +2289,18 @@ def main() -> int:
         )
         _apply_track_id_history(chart_date, priority_results)
         print(f"[INFO] Phase 1 terminée en {time.perf_counter() - t0:.1f}s")
+
+        # Backfill: if the global chart itself 404s, Spotify never published this
+        # date (or hasn't yet) — no point fetching ~40 other regions that will all
+        # 404 too. Skip fast; leave the date unwritten so it stays retryable.
+        if args.backfill_mode and "global" in regions_to_fetch and "global" in _backfill_404_this_date:
+            print(
+                f"[SKIP] {chart_date}: global chart 404 — date not published by Spotify, "
+                f"skipping the other {len(other_to_fetch)} region(s) for this date",
+                flush=True,
+            )
+            return 1
+
         for region in PRIORITY_POST_REGIONS:
             if region in priority_results and priority_results[region]:
                 _write_regional_ts_chart(chart_date, region, priority_results[region], manual_lookup, track_lookup)

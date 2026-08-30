@@ -89,6 +89,22 @@ Objets R2 importants:
 
 - `history/{YYYY-MM-DD}.json`
 - `history-by-track/{track_id}.json`
+- `data/best_day_since.json` (lu par `tsm-frontend` `api/routes/best_day_since.py`
+  -> badge etoile "best day since X" sur la liste Top Songs / page detail chanson)
+
+## Bug fixe : best_day_since.json jamais uploade en prod (2026-08-30)
+
+`export_for_web.py::export_best_day_since` regenere bien
+`runtime/exports/web/site/data/best_day_since.json` a chaque run streams, mais
+`scripts/r2.py` ne l'avait jamais dans sa liste `json_mappings` -> le fichier
+n'etait push nulle part. En prod `/api/best-day-since` renvoyait donc
+`{"items": [], "by_track": {}, "missing": "data/best_day_since.json"}` et le
+badge etoile n'apparaissait jamais (il marchait en local car le frontend lit
+le fichier directement sur disque via `TSM_BACKEND_ROOT`). Fix : ajout de
+`("best_day_since.json", "data/best_day_since.json")` a `json_mappings` dans
+`scripts/r2.py` (inclus dans le run `--streams-daily`, exclu de `--charts-only`).
+Le premier run streams suivant le publie ; sinon upload manuel via
+`python scripts/r2.py --streams-daily --skip-history-upload`.
 
 Catalogue actif:
 

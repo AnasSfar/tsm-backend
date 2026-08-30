@@ -19,6 +19,7 @@ import os
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -158,6 +159,89 @@ def _csv_dates_present(region: str) -> set[str]:
     return out
 
 
+def _snapshot_has_region(chart_date: str, region_code: str) -> bool:
+    path = _snapshot_path(chart_date)
+    if not path.exists():
+        return False
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8-sig"))
+    except Exception:
+        return False
+    for entries in (payload.get("by_track") or {}).values():
+        for entry in entries:
+            if entry.get("country") == region_code:
+                return True
+    return False
+
+
+# uk history CSV <-> Spotify chart code
+_CSV_TO_CHART_CODE = {"uk": "gb"}
+
+
+def _csv_row_count(region: str) -> int:
+    path = ROOT / "db" / f"charts_history_{region}.csv"
+    if not path.exists():
+        return 0
+    with path.open(encoding="utf-8-sig") as f:
+        return max(0, sum(1 for _ in f) - 1)
+
+
+# Regions Taylor has essentially never charted in (near-empty history, no real
+# regional chart to speak of) — excluded from the bare auto-sweep, still allowed
+# if named explicitly.
+_SWEEP_MIN_HISTORY_ROWS = 60
+
+
+def _sweep_region_codes(explicit: list[str] | None) -> list[str]:
+    """The region CSV codes to sweep, ordered richest-history first.
+    Explicit list (kept in given order), or every 2-letter
+    db/charts_history_<cc>.csv (minus global and near-empty ones)."""
+    if explicit:
+        return [c.strip().lower() for c in explicit if c.strip()]
+    out: list[str] = []
+    for p in (ROOT / "db").glob("charts_history_*.csv"):
+        code = p.stem[len("charts_history_"):]
+        if len(code) == 2 and code.isalpha() and _csv_row_count(code) >= _SWEEP_MIN_HISTORY_ROWS:
+            out.append(code)
+    # Richest history first: a region with lots of 2017-2019 rows almost certainly
+    # still has a live chart, so its gap dates are real recoverable data.
+    out.sort(key=_csv_row_count, reverse=True)
+    return out
+
+
+def _run_sync_pass(args, touched_dates: set[str], all_dates: list[str]) -> int:
+    if args.no_sync:
+        return 0
+    rc = _run([sys.executable, str(SYNC_COUNTRY_CSVS)], dry_run=args.dry_run)
+    if rc != 0:
+        return rc
+    rc = _run([sys.executable, str(BACKFILL_TRACK_IDS), "--rebuild-ts-history"], dry_run=args.dry_run)
+    if rc != 0:
+        return rc
+    enrich_lo, enrich_hi = (
+        (min(touched_dates), max(touched_dates)) if touched_dates else (all_dates[0], all_dates[-1])
+    )
+    rc = _run([sys.executable, str(ENRICH_WORLDWIDE_SNAPSHOTS), "--start", enrich_lo, "--end", enrich_hi], dry_run=args.dry_run)
+    if rc != 0:
+        return rc
+    rc = _run([sys.executable, str(BACKFILL_TOTAL_DAYS)], dry_run=args.dry_run)
+    if rc != 0:
+        return rc
+    if args.upload_r2:
+        for chart_date in sorted(touched_dates):
+            rc = _run(
+                [
+                    sys.executable, str(UPLOAD_R2), "--charts-only", "--worldwide-snapshot-only",
+                    "--skip-history-upload", "--skip-db-upload", "--skip-images-upload",
+                    "--new-date", chart_date,
+                ],
+                dry_run=args.dry_run,
+            )
+            if rc != 0:
+                return rc
+    return 0
+
+
 def _chunks(items: list[str], n: int) -> list[list[str]]:
     """Split items into n contiguous chunks (as even as possible), dropping empty ones."""
     if n <= 0:
@@ -183,6 +267,7 @@ def _run_chunk(
     per_worker_semaphore: int,
     request_interval: float,
     fetch_max_attempts: int,
+    rate_limit_max: int,
     regions: list[str] | None = None,
     exclude_regions: list[str] | None = None,
 ) -> tuple[list[str], int, float, str]:
@@ -204,6 +289,13 @@ def _run_chunk(
     # never skips real data; for an unattended backfill an unbounded retry on one
     # stuck region (sustained 429 / WARP wobble) freezes the whole date silently.
     env["SPOTIFY_WORLDWIDE_FETCH_MAX_ATTEMPTS"] = str(fetch_max_attempts)
+    # GlobalPause backoff on 429 is multiplicative (20s, 40s, 60s...) capped at
+    # SPOTIFY_WORLDWIDE_RATE_LIMIT_MAX_SECONDS (300s in daily.py). During a pause
+    # nothing prints — a 2-5 min pause reads as a freeze. Cap it low so there is
+    # a log line at least every rate_limit_max seconds, and the pause never grows
+    # into the "ça n'affiche rien" territory.
+    env["SPOTIFY_WORLDWIDE_RATE_LIMIT_MAX_SECONDS"] = str(rate_limit_max)
+    env.setdefault("SPOTIFY_WORLDWIDE_RATE_LIMIT_MIN_SECONDS", "12")
     dates_file = Path(
         tempfile.mkstemp(prefix=f"spotify_backfill_{session_file.stem}_", suffix=".txt")[1]
     )
@@ -244,6 +336,7 @@ def _run_worker(
     per_worker_semaphore: int,
     request_interval: float,
     fetch_max_attempts: int,
+    rate_limit_max: int,
     regions: list[str] | None,
     exclude_regions: list[str] | None,
     skip_discontinued: bool,
@@ -256,7 +349,8 @@ def _run_worker(
         return _run_chunk(
             chart_dates, session_file=session_file, force=force, dry_run=dry_run,
             per_worker_semaphore=per_worker_semaphore, request_interval=request_interval,
-            fetch_max_attempts=fetch_max_attempts, regions=regions, exclude_regions=base_exclude or None,
+            fetch_max_attempts=fetch_max_attempts, rate_limit_max=rate_limit_max,
+            regions=regions, exclude_regions=base_exclude or None,
         )
 
     post = [d for d in chart_dates if d > DISCONTINUED_REGION_CUTOFF]
@@ -274,11 +368,84 @@ def _run_worker(
         _, rc, elapsed, _ = _run_chunk(
             subset, session_file=session_file, force=force, dry_run=dry_run,
             per_worker_semaphore=per_worker_semaphore, request_interval=request_interval,
-            fetch_max_attempts=fetch_max_attempts, regions=None, exclude_regions=merged_exclude,
+            fetch_max_attempts=fetch_max_attempts, rate_limit_max=rate_limit_max,
+            regions=None, exclude_regions=merged_exclude,
         )
         total_rc = total_rc or rc
         total_elapsed += elapsed
     return chart_dates, total_rc, total_elapsed, session_file.name
+
+
+def _run_per_region_sweep(args, sessions, all_dates, state, state_path) -> int:
+    """One region at a time: each region's own daily.py run fetches only that
+    region's CSV-gap dates. Single region per run -> one request per pacer tick,
+    no parallel-429 cascade. Checkpoints (state['swept_regions']) after each."""
+    codes = _sweep_region_codes(args.per_region_sweep)
+    present_by_code = {c: _csv_dates_present(c) for c in codes}
+    gap_by_code = {c: [d for d in all_dates if d not in present_by_code[c]] for c in codes}
+    for c in codes:
+        if c in DISCONTINUED_REGIONS and not args.include_discontinued_regions:
+            gap_by_code[c] = [d for d in gap_by_code[c] if d <= DISCONTINUED_REGION_CUTOFF]
+    # `codes` is already ordered richest-history-first by _sweep_region_codes
+    # (explicit lists keep their given order).
+
+    swept = set(state.get("swept_regions") or [])
+    session_file = sessions[0]
+    todo = [c for c in codes if gap_by_code[c] and (args.refetch_done or c not in swept)]
+    print(
+        f"[SWEEP] {len(todo)}/{len(codes)} region(s) to do "
+        f"(range {all_dates[0]} -> {all_dates[-1]}, session {session_file.name}); "
+        f"total gap date-fetches = {sum(len(gap_by_code[c]) for c in todo)}"
+    )
+    touched_dates: set[str] = set()
+    failed_regions: dict[str, int] = {}
+
+    for i, code in enumerate(todo, 1):
+        chart_code = _CSV_TO_CHART_CODE.get(code, code)
+        dates = sorted(gap_by_code[code], reverse=True)
+        print(
+            f"\n[SWEEP] {i}/{len(todo)} {code}"
+            + (f" (chart '{chart_code}')" if chart_code != code else "")
+            + f": {len(dates)} gap date(s) {dates[-1]} -> {dates[0]}",
+            flush=True,
+        )
+        # force=False: lets daily.py's per-region already_done skip work, so a
+        # resumed / re-run region only re-probes the dates it hasn't got yet.
+        _, rc, elapsed, _ = _run_chunk(
+            dates,
+            session_file=session_file,
+            force=False,
+            dry_run=bool(args.dry_run),
+            per_worker_semaphore=1,
+            request_interval=float(args.request_interval),
+            fetch_max_attempts=int(args.fetch_max_attempts),
+            rate_limit_max=int(args.rate_limit_max),
+            regions=[chart_code],
+            exclude_regions=None,
+        )
+        got = [d for d in dates if args.dry_run or _snapshot_has_region(d, chart_code)]
+        touched_dates.update(got)
+        print(
+            f"[SWEEP] {i}/{len(todo)} {code}: {len(got)}/{len(dates)} date(s) now carry "
+            f"'{chart_code}' data in {elapsed:.0f}s",
+            flush=True,
+        )
+        if len(got) < len(dates):
+            failed_regions[code] = len(dates) - len(got)
+        swept.add(code)
+        state["swept_regions"] = sorted(swept)
+        if not args.dry_run:
+            _save_state(state_path, state)
+
+    rc = _run_sync_pass(args, touched_dates, all_dates)
+    if rc != 0:
+        return rc
+
+    print(
+        f"\n[SWEEP] done - {len(todo)} region(s), {len(touched_dates)} distinct date(s) touched"
+        + (f"; partial: {failed_regions}" if failed_regions else "")
+    )
+    return 0
 
 
 def main() -> int:
@@ -310,6 +477,16 @@ def main() -> int:
         ),
     )
     parser.add_argument("--sleep", type=float, default=0.0, help="Seconds to stagger between worker chunk launches")
+    parser.add_argument(
+        "--progress-interval",
+        type=float,
+        default=30.0,
+        help=(
+            "Seconds between progress checkpoints — the wrapper scans the snapshots "
+            "daily.py has written and saves the resume-state file. Default 30. "
+            "Lower = finer resume granularity if killed, tiny bit more disk I/O."
+        ),
+    )
     parser.add_argument("--skip-existing-snapshot", action="store_true", default=True)
     parser.add_argument(
         "--request-interval",
@@ -324,10 +501,11 @@ def main() -> int:
     parser.add_argument(
         "--concurrency",
         type=int,
-        default=8,
+        default=6,
         help=(
             "Regions fetched in parallel within each worker (SPOTIFY_WORLDWIDE_SEMAPHORE). "
-            "Default 8. Overrides the SPOTIFY_WORLDWIDE_TOTAL_CONCURRENCY env split."
+            "Default 6. Lower = fewer simultaneous 429s = fewer pauses. Overrides the "
+            "SPOTIFY_WORLDWIDE_TOTAL_CONCURRENCY env split."
         ),
     )
     parser.add_argument(
@@ -338,6 +516,16 @@ def main() -> int:
             "Max fetch attempts per region before it is omitted from the date's snapshot "
             "(SPOTIFY_WORLDWIDE_FETCH_MAX_ATTEMPTS). Default 8 — bounded so one stuck region "
             "(sustained 429 / WARP wobble) cannot freeze a date forever. 0 = unlimited."
+        ),
+    )
+    parser.add_argument(
+        "--rate-limit-max",
+        type=int,
+        default=30,
+        help=(
+            "Cap (seconds) on a single 429 GlobalPause (SPOTIFY_WORLDWIDE_RATE_LIMIT_MAX_SECONDS; "
+            "daily.py's own default is 300). Keeps pauses short and visible instead of the "
+            "multiplicative 20s->40s->...->300s silent backoff. Default 30."
         ),
     )
     parser.add_argument(
@@ -377,6 +565,21 @@ def main() -> int:
             "(e.g. --gaps-from-csv global us uk). Best signal for a large historical fill."
         ),
     )
+    parser.add_argument(
+        "--per-region-sweep",
+        nargs="*",
+        metavar="CODE",
+        default=None,
+        help=(
+            "Sequential region-by-region backfill: for each region, one daily.py run "
+            "fetching only that region's own charts_history_<code>.csv gap dates in "
+            "[--start,--end]. One region per run = one request per --request-interval, "
+            "no parallel-429 cascade — much gentler than fetching N regions per date. "
+            "Bare = every 2-letter db/charts_history_<cc>.csv (minus global), biggest "
+            "gap first; or pass codes. Checkpoints after each region; resumable. "
+            "uk is fetched as the 'gb' chart. Ignores --workers."
+        ),
+    )
     parser.add_argument("--no-sync", action="store_true", help="Do not sync charts_history CSVs after collection")
     parser.add_argument(
         "--upload-r2",
@@ -405,9 +608,16 @@ def main() -> int:
     if args.state:
         state_path = Path(args.state)
     else:
-        state_path = DEFAULT_GAPS_STATE if csv_gap_regions else DEFAULT_STATE
+        state_path = DEFAULT_GAPS_STATE if (csv_gap_regions or args.per_region_sweep is not None) else DEFAULT_STATE
     state = _load_state(state_path)
     all_dates = _date_range(start, end)
+
+    sessions = _session_files()
+    if not sessions:
+        raise SystemExit(f"No Spotify session files found in {DEFAULT_SESSION_DIR}")
+
+    if args.per_region_sweep is not None:
+        return _run_per_region_sweep(args, sessions, all_dates, state, state_path)
 
     if csv_gap_regions:
         # A date is pending if it is missing from ANY requested region's CSV
@@ -442,9 +652,6 @@ def main() -> int:
     if args.limit and args.limit > 0:
         pending = pending[: args.limit]
 
-    sessions = _session_files()
-    if not sessions:
-        raise SystemExit(f"No Spotify session files found in {DEFAULT_SESSION_DIR}")
     workers = max(1, int(args.workers or 1))
     workers = min(workers, len(sessions), len(pending) or 1)
     if args.concurrency and args.concurrency > 0:
@@ -462,6 +669,7 @@ def main() -> int:
         f"pending={len(pending)} workers={len(chunks)} chunk_sizes={[len(c) for c in chunks]} "
         f"regions_in_parallel_per_worker={per_worker_semaphore} "
         f"request_interval={args.request_interval}s fetch_max_attempts={args.fetch_max_attempts} "
+        f"rate_limit_max={args.rate_limit_max}s "
         f"sessions={', '.join(p.name for p in sessions[: len(chunks)])}"
     )
     if skip_discontinued and n_post_cutoff:
@@ -472,6 +680,46 @@ def main() -> int:
         )
     failures: dict[str, str] = dict(state.get("failed_dates") or {})
     touched_dates: set[str] = set()
+
+    # Incremental progress + resumability: one subprocess per worker can run for
+    # hours over hundreds of dates, and state was previously saved only once the
+    # whole chunk returned — a kill at date 600/649 lost everything. This watcher
+    # scans the snapshots daily.py writes as it goes and checkpoints the state
+    # file every `progress_interval` seconds.
+    state_lock = threading.Lock()
+    run_started = time.perf_counter()
+    stop_watcher = threading.Event()
+    total_pending = len(pending)
+    done_at_start = len(done & set(pending))
+
+    def _progress_watcher() -> None:
+        while not stop_watcher.wait(args.progress_interval):
+            if args.dry_run:
+                continue
+            newly = [d for d in pending if d not in done and _snapshot_is_usable(d)]
+            with state_lock:
+                if newly:
+                    for d in newly:
+                        done.add(d)
+                        touched_dates.add(d)
+                        failures.pop(d, None)
+                    state["done_dates"] = sorted(done)
+                    state["failed_dates"] = failures
+                    _save_state(state_path, state)
+                n_done = len(done & set(pending))
+            elapsed = time.perf_counter() - run_started
+            this_run = n_done - done_at_start
+            rate = this_run / elapsed if elapsed > 0 else 0
+            eta = f", ~{(total_pending - n_done) / rate / 3600:.1f}h left" if rate > 0 and n_done < total_pending else ""
+            print(
+                f"[PROGRESS] {n_done}/{total_pending} dates written "
+                f"({n_done * 100 // max(total_pending, 1)}%, +{this_run} this run){eta}",
+                flush=True,
+            )
+
+    watcher = threading.Thread(target=_progress_watcher, name="progress-watcher", daemon=True)
+    if not args.dry_run:
+        watcher.start()
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=len(chunks) or 1) as executor:
         future_to_chunk = {}
@@ -491,6 +739,7 @@ def main() -> int:
                 per_worker_semaphore=per_worker_semaphore,
                 request_interval=float(args.request_interval),
                 fetch_max_attempts=int(args.fetch_max_attempts),
+                rate_limit_max=int(args.rate_limit_max),
                 regions=args.regions,
                 exclude_regions=args.exclude_regions,
                 skip_discontinued=skip_discontinued,
@@ -506,8 +755,10 @@ def main() -> int:
             try:
                 chunk, rc, elapsed, session_name = future.result()
             except Exception as exc:
-                for chart_date in chunk:
-                    failures[chart_date] = f"exception={exc}"
+                with state_lock:
+                    for chart_date in chunk:
+                        if chart_date not in done:
+                            failures[chart_date] = f"exception={exc}"
                 print(f"[FAIL] worker {completed_workers}/{len(chunks)} ({len(chunk)} date(s)): exception={exc}", flush=True)
             else:
                 # Evaluate each date on its own snapshot, not the chunk's aggregate rc:
@@ -515,19 +766,19 @@ def main() -> int:
                 # aborting the batch, so one bad date in a chunk must not make the
                 # wrapper discard every other (successfully written) date in it.
                 ok_dates: list[str] = []
-                bad_dates: list[tuple[str, bool]] = []
+                bad_dates: list[str] = []
                 for chart_date in chunk:
-                    snapshot_usable = args.dry_run or _snapshot_is_usable(chart_date)
-                    if snapshot_usable:
+                    if args.dry_run or _snapshot_is_usable(chart_date):
                         ok_dates.append(chart_date)
                     else:
-                        bad_dates.append((chart_date, snapshot_usable))
-                for chart_date in ok_dates:
-                    done.add(chart_date)
-                    touched_dates.add(chart_date)
-                    failures.pop(chart_date, None)
-                for chart_date, snapshot_usable in bad_dates:
-                    failures[chart_date] = f"rc={rc}; snapshot_usable={snapshot_usable}; session={session_name}"
+                        bad_dates.append(chart_date)
+                with state_lock:
+                    for chart_date in ok_dates:
+                        done.add(chart_date)
+                        touched_dates.add(chart_date)
+                        failures.pop(chart_date, None)
+                    for chart_date in bad_dates:
+                        failures[chart_date] = f"rc={rc}; no usable snapshot; session={session_name}"
                 print(
                     f"[ OK ] worker {completed_workers}/{len(chunks)} via {session_name}: "
                     f"{len(ok_dates)}/{len(chunk)} date(s) in {elapsed:.1f}s"
@@ -535,44 +786,42 @@ def main() -> int:
                     flush=True,
                 )
 
-            state["done_dates"] = sorted(done)
-            state["failed_dates"] = failures
-            if not args.dry_run:
-                _save_state(state_path, state)
+            with state_lock:
+                state["done_dates"] = sorted(done)
+                state["failed_dates"] = failures
+                if not args.dry_run:
+                    _save_state(state_path, state)
 
-    if not args.no_sync:
-        rc = _run([sys.executable, str(SYNC_COUNTRY_CSVS)], dry_run=args.dry_run)
-        if rc != 0:
-            return rc
-        rc = _run([sys.executable, str(BACKFILL_TRACK_IDS), "--rebuild-ts-history"], dry_run=args.dry_run)
-        if rc != 0:
-            return rc
-        rc = _run([sys.executable, str(ENRICH_WORLDWIDE_SNAPSHOTS), "--start", all_dates[0], "--end", all_dates[-1]], dry_run=args.dry_run)
-        if rc != 0:
-            return rc
-        rc = _run([sys.executable, str(BACKFILL_TOTAL_DAYS)], dry_run=args.dry_run)
-        if rc != 0:
-            return rc
+    stop_watcher.set()
+    if watcher.is_alive():
+        watcher.join(timeout=5)
 
-        if args.upload_r2:
-            for chart_date in sorted(touched_dates):
-                rc = _run(
-                    [
-                        sys.executable, str(UPLOAD_R2),
-                        "--charts-only",
-                        "--worldwide-snapshot-only",
-                        "--skip-history-upload",
-                        "--skip-db-upload",
-                        "--skip-images-upload",
-                        "--new-date",
-                        chart_date,
-                    ],
-                    dry_run=args.dry_run,
-                )
-                if rc != 0:
-                    return rc
+    rc = _run_sync_pass(args, touched_dates, all_dates)
+    if rc != 0:
+        return rc
 
-    print(f"[DONE] done={len(done)} failed={len(failures)} state={state_path}")
+    # Summary: of the dates we wrote a snapshot for, how many actually had Taylor
+    # entries vs were empty (she was out of every chart that day — expected for
+    # 2018-2020). Empty snapshots still count as done; they won't be re-tried.
+    with_data = empty = 0
+    for chart_date in sorted(touched_dates):
+        try:
+            payload = json.loads(_snapshot_path(chart_date).read_text(encoding="utf-8-sig"))
+            if payload.get("by_track"):
+                with_data += 1
+            else:
+                empty += 1
+        except Exception:
+            pass
+    print(
+        f"[DONE] done={len(done)} (this run: {with_data} with TS data, {empty} empty) "
+        f"failed={len(failures)} state={state_path}"
+    )
+    if failures:
+        print(
+            "[DONE] failed dates are re-tried on the next run; many are Spotify-side gaps "
+            "(dates / regional charts it never published) and will keep failing fast."
+        )
     return 0 if not failures else 1
 
 
