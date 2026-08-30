@@ -114,9 +114,13 @@ def update_video_db(
     existing_db: dict[str, dict],
     new_videos: list[dict],
 ) -> dict[str, dict]:
-    """Merge newly discovered videos into the catalog."""
+    """Merge newly discovered videos into the catalog.
+
+    Does not mutate the dicts in ``new_videos`` — the caller still needs
+    ``video_id`` on them further down (e.g. to schedule first-day-views tasks).
+    """
     updated = dict(existing_db)
     for v in new_videos:
-        vid_id = v.pop("video_id")
-        updated[vid_id] = v
+        vid_id = v["video_id"]
+        updated[vid_id] = {k: val for k, val in v.items() if k != "video_id"}
     return updated

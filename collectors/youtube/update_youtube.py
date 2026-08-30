@@ -709,6 +709,7 @@ def main() -> int:
     else:
         new_videos = discover_new_videos_short_circuit(YOUTUBE_API_KEY, existing_ids)
 
+    new_video_ids = {v["video_id"] for v in new_videos}
     if new_videos:
         print(f"[INFO] {len(new_videos)} nouvelle(s) vidéo(s) découverte(s)")
         for v in new_videos[:5]:
@@ -860,8 +861,8 @@ def main() -> int:
 
     # Planifie le post "first 24h views" pile à published_at+24h pour chaque
     # vidéo tout juste découverte (pas en --bootstrap : ce serait tout le
-    # catalogue existant, aucune n'est "tout juste" publiée).
-    new_video_ids = {v["video_id"] for v in new_videos}
+    # catalogue existant, aucune n'est "tout juste" publiée). new_video_ids est
+    # capturé plus haut, avant que update_video_db ne consomme les dicts.
     if new_video_ids and not args.bootstrap and not args.no_post:
         for r in rows:
             if r["video_id"] in new_video_ids:
