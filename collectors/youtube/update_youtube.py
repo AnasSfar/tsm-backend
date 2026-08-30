@@ -9,7 +9,8 @@ Usage:
     python -m collectors.youtube.update_youtube
     python -m collectors.youtube.update_youtube --dry-run
     python -m collectors.youtube.update_youtube --debug
-    python -m collectors.youtube.update_youtube --no-post
+    python -m collectors.youtube.update_youtube --no-post     # aucun post X + pas de ntfy
+    python -m collectors.youtube.update_youtube --no-notify   # pas de ntfy, mais cards first-day OK (run_youtube.bat)
     python -m collectors.youtube.update_youtube --date 2026-04-25
     python -m collectors.youtube.update_youtube --bootstrap  # découverte complète initiale
     python -m collectors.youtube.update_youtube --preview    # aperçu card "first 24h views"
@@ -23,9 +24,10 @@ view count, poste la card "views in its first 24 hours" sur @swiftiescharts,
 puis se désinscrit elle-même. La collecte quotidienne normale
 (post_first_day_views) reste un filet de sécurité au cas où cette tâche
 n'aurait pas pu être créée ou ne se serait pas déclenchée. --no-post
-désactive la planification comme la notification ntfy. --bootstrap ne
-planifie jamais (découverte en masse, aucune vidéo n'est "tout juste"
-publiée). --preview génère un aperçu de la card à tout moment (fetch live,
+désactive la planification ET la notification ntfy ; --no-notify ne coupe
+que la ntfy (les cards first-day restent planifiées/postées — c'est ce que
+run_youtube.bat utilise). --bootstrap ne planifie jamais (découverte en
+masse, aucune vidéo n'est "tout juste" publiée). --preview génère un aperçu de la card à tout moment (fetch live,
 sans écrire le CSV ni poster) pour la vidéo actuellement en attente de son
 1er daily_views.
 """
@@ -109,7 +111,19 @@ def parse_args() -> argparse.Namespace:
     p.add_argument(
         "--no-post",
         action="store_true",
-        help="Pipeline complet mais sans notification ntfy.",
+        help=(
+            "Pas de post X/Twitter : ni la card 'first 24h views' (planification "
+            "+ filet de sécurité), ni la notification ntfy quotidienne."
+        ),
+    )
+    p.add_argument(
+        "--no-notify",
+        action="store_true",
+        help=(
+            "Coupe uniquement la notification ntfy quotidienne. Les cards "
+            "'first 24h views' restent planifiées et postées. C'est ce que "
+            "run_youtube.bat utilise."
+        ),
     )
     p.add_argument(
         "--date",
@@ -917,9 +931,9 @@ def main() -> int:
         print("[INFO] Git skippé (passer --commit pour committer).")
 
     # ------------------------------------------------------------------
-    # 10. Notification ntfy
+    # 10. Notification ntfy (coupée par --no-post OU --no-notify)
     # ------------------------------------------------------------------
-    if not args.no_post:
+    if not args.no_post and not args.no_notify:
         top5 = rows_with_daily[:5]
         lines = [f"YouTube Views {today}", ""]
         for r in top5:

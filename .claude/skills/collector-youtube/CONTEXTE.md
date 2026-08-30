@@ -30,10 +30,15 @@ Scheduler:
 - Prod tourne via le **Planificateur de tâches Windows local** (tâche `TSM
   YouTube Videos Daily`, action = `powershell -EncodedCommand` →
   `collectors/youtube/run_youtube.bat` → `python -m
-  collectors.youtube.videos.update_youtube --commit --no-post`, tous les
+  collectors.youtube.videos.update_youtube --commit --no-notify`, tous les
   jours à 06:05 Europe/Paris). Tourne sur le PC d'Anas — PC éteint à
   l'heure du run = pas de collecte ce jour-là (pas de retry auto ; rattrapage
   `--date AAAA-MM-JJ`, cf. `manual_trusted` / [[tsm-streams-pipeline-ops]]).
+- **`--no-notify` (pas `--no-post`) depuis le 2026-08-30** : `--no-post`
+  coupait aussi toute la logique first-day (planif + filet de sécurité), donc
+  depuis l'arrivée de la feature le 2026-08-25 aucune card "first 24h views"
+  ne partait automatiquement en local. `--no-notify` ne coupe que la ntfy
+  quotidienne.
 - Tenté sur GitHub Actions le 2026-08-28 (`run-data-only-collectors.yml`),
   re-basculé en local le 2026-08-29 : `schedule:` GitHub trop peu fiable. Le
   workflow reste `workflow_dispatch` manuel + `disabled` côté GitHub, comme
@@ -56,7 +61,8 @@ collectors/youtube/run_youtube.bat
 ```powershell
 python -m collectors.youtube.videos.update_youtube --dry-run
 python -m collectors.youtube.videos.update_youtube --debug
-python -m collectors.youtube.videos.update_youtube --no-post
+python -m collectors.youtube.videos.update_youtube --no-post     # aucun post X + pas de ntfy
+python -m collectors.youtube.videos.update_youtube --no-notify   # pas de ntfy, cards first-day OK (utilisé par le .bat)
 python -m collectors.youtube.videos.update_youtube --bootstrap
 python -m collectors.youtube.videos.update_youtube --commit
 python -m collectors.youtube.videos.update_youtube --force --commit
@@ -198,7 +204,9 @@ minute) :**
   la découverte au lieu du `total_views` cumulé) et a été corrigé pareil.
 - Pas de planification en `--bootstrap` (découverte en masse du catalogue
   entier — aucune de ces vidéos n'est "tout juste" publiée) ni avec
-  `--no-post` (même flag que la notification ntfy).
+  `--no-post`. **`--no-notify` NE bloque PAS la planification** (c'est tout
+  l'intérêt du split fait le 2026-08-30) — seule la ntfy quotidienne est
+  coupée. Le `.bat` de prod utilise `--no-notify`.
 
 **Filet de sécurité — vérif quotidienne (`post_first_day_views`) :**
 
