@@ -2,6 +2,7 @@
 """Notifications mobile via ntfy.sh."""
 import urllib.request
 import urllib.error
+from urllib.parse import quote
 
 
 def send(topic: str, message: str, title: str = "", tags: str = "", priority: str = "default"):
@@ -25,7 +26,10 @@ def send(topic: str, message: str, title: str = "", tags: str = "", priority: st
             method="POST",
         )
         if title:
-            req.add_header("Title", title)
+            # HTTP headers are Latin-1 only; raw non-ASCII title bytes (e.g. "·")
+            # get mangled into "�" on delivery. ntfy decodes percent-encoding,
+            # so only non-ASCII titles need it -- keep plain ASCII titles as-is.
+            req.add_header("Title", title if title.isascii() else quote(title))
         if tags:
             req.add_header("Tags", tags)
         if priority and priority != "default":

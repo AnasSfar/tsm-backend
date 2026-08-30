@@ -245,3 +245,22 @@ ici. Seuils/decisions produit → skill `data-rules` § "Home highlights".
   pour le chemin notif-only qui n'envoie qu'un texte ntfy. Corrige en rendant
   l'import `tables_image` lazy (dans `_rows_html` et `generate()`). En local
   le probleme ne se voit pas (venv complet), mais garder l'import lazy.
+- **Bug corrige (2026-08-30) : notif ntfy global affichait `&#9650;`/`&#9660;`
+  litteralement au lieu des fleches, et `·` dans le titre devenait `�`.**
+  `_rank_change()` (`generate_snapshot_images.py`) construisait `chg_text` avec
+  des entites HTML numeriques (`&#9650;`/`&#9660;`), correctes seulement dans
+  le HTML des images (`_rows_html`) — mais `_notify_text()` reutilise le meme
+  `chg_text` tel quel dans le corps texte brut envoye a ntfy, donc l'entite
+  s'affichait litteralement au lieu d'etre rendue. Corrige en utilisant les
+  caracteres unicode reels `▲`/`▼` (le HTML des images declare
+  `<meta charset="utf-8">`, donc ca reste correct cote image). Separement,
+  `collectors/spotify/core/notify.py::send()` passait le `title` tel quel en
+  header HTTP `Title` ; les headers HTTP sont Latin-1 et ntfy attend du
+  percent-encoding pour le non-ASCII, donc `·` (U+00B7, byte 0xB7 en Latin-1)
+  arrivait comme un octet UTF-8 invalide isole -> `�` a l'affichage. Corrige
+  en `quote()`-ant le titre uniquement s'il n'est pas ASCII (`title.isascii()`)
+  pour ne pas toucher aux titres ASCII deja fonctionnels des autres appelants
+  (`scripts/check_r2_storage.py`). Les autres collecteurs qui utilisent
+  `&#9650;`/`&#9660;` (Spotify streams/charts, `collectors/comp/tables_image.py`)
+  ne sont pas concernes : ils n'alimentent que du HTML d'image, jamais un
+  texte ntfy brut.
