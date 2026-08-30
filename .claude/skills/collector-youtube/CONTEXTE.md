@@ -289,6 +289,17 @@ minute) :**
   TOUTES les vidéos du catalogue, pas seulement les nouvelles — ce n'est pas
   une vraie hausse d'audience organique, ne pas le traiter comme un "best
   day" légitime si ça touche une vidéo ancienne autour de cette date.
+- **Bug corrigé le 2026-08-30 (`KeyError: 'video_id'`)** : `update_video_db`
+  (`core/channel.py`) faisait `v.pop("video_id")` sur les dicts de
+  `new_videos`, que `main()` réutilise ~150 lignes plus loin
+  (`{v["video_id"] for v in new_videos}` sur le chemin first-day-views). La
+  compréhension étant évaluée sans condition, le run **crashait dès qu'une
+  nouvelle vidéo était découverte** (jour d'un nouveau clip TS) — après
+  l'écriture du CSV views mais avant title history / upload R2 / commit git,
+  d'où un `LastTaskResult=0x1` et une ligne du jour présente en local mais
+  jamais commitée. Fix : `update_video_db` ne mute plus son input +
+  `new_video_ids` capturé juste après la découverte. Réflexe : si la tâche
+  YouTube sort `0x1` un jour où TS a posté une vidéo, checker ici en premier.
 - Tâches Planificateur `TSM_YouTube_FirstDay_<video_id>` visibles dans
   Task Scheduler (racine, pas dans un dossier dédié) : normal, une par
   vidéo tout juste découverte, en attente de son déclenchement à
