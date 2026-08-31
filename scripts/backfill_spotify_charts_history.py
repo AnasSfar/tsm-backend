@@ -379,7 +379,8 @@ def _run_worker(
 def _run_per_region_sweep(args, sessions, all_dates, state, state_path) -> int:
     """One region at a time: each region's own daily.py run fetches only that
     region's CSV-gap dates. Single region per run -> one request per pacer tick,
-    no parallel-429 cascade. Checkpoints (state['swept_regions']) after each."""
+    no parallel-429 cascade. Completion is tracked per (region, date) in
+    state['region_done']; re-running resumes only the still-pending dates."""
     codes = _sweep_region_codes(args.per_region_sweep)
     present_by_code = {c: _csv_dates_present(c) for c in codes}
     gap_by_code = {c: [d for d in all_dates if d not in present_by_code[c]] for c in codes}
@@ -389,24 +390,36 @@ def _run_per_region_sweep(args, sessions, all_dates, state, state_path) -> int:
     # `codes` is already ordered richest-history-first by _sweep_region_codes
     # (explicit lists keep their given order).
 
-    swept = set(state.get("swept_regions") or [])
+    # region_done is the source of truth; a legacy state file's swept_regions (no
+    # per-date detail, and it was written even for interrupted runs) is ignored.
+    region_done: dict[str, set[str]] = {
+        k: set(v) for k, v in (state.get("region_done") or {}).items()
+    }
+    if args.refetch_done:
+        region_done = {}
     session_file = sessions[0]
-    todo = [c for c in codes if gap_by_code[c] and (args.refetch_done or c not in swept)]
+
+    def _remaining(code: str) -> list[str]:
+        done = region_done.get(code, set())
+        return [d for d in gap_by_code[code] if d not in done]
+
+    todo = [c for c in codes if _remaining(c)]
     print(
         f"[SWEEP] {len(todo)}/{len(codes)} region(s) to do "
         f"(range {all_dates[0]} -> {all_dates[-1]}, session {session_file.name}); "
-        f"total gap date-fetches = {sum(len(gap_by_code[c]) for c in todo)}"
+        f"total gap date-fetches = {sum(len(_remaining(c)) for c in todo)}"
     )
     touched_dates: set[str] = set()
-    failed_regions: dict[str, int] = {}
+    incomplete: dict[str, int] = {}
+    consecutive_dead = 0
 
     for i, code in enumerate(todo, 1):
         chart_code = _CSV_TO_CHART_CODE.get(code, code)
-        dates = sorted(gap_by_code[code], reverse=True)
+        dates = sorted(_remaining(code), reverse=True)
         print(
             f"\n[SWEEP] {i}/{len(todo)} {code}"
             + (f" (chart '{chart_code}')" if chart_code != code else "")
-            + f": {len(dates)} gap date(s) {dates[-1]} -> {dates[0]}",
+            + f": {len(dates)} date(s) to fetch {dates[-1]} -> {dates[0]}",
             flush=True,
         )
         # force=False: lets daily.py's per-region already_done skip work, so a
@@ -425,27 +438,50 @@ def _run_per_region_sweep(args, sessions, all_dates, state, state_path) -> int:
         )
         got = [d for d in dates if args.dry_run or _snapshot_has_region(d, chart_code)]
         touched_dates.update(got)
+        # rc == 0 -> daily.py looped through every date (some empty, some with
+        # data) -> all processed. rc != 0 -> crashed/interrupted (WARP drop etc.)
+        # -> only the dates that now carry data are known-done; the rest stay
+        # pending so the next run retries just those.
+        newly_done = set(dates) if (rc == 0 or args.dry_run) else set(got)
+        region_done[code] = region_done.get(code, set()) | newly_done
+        fully = not _remaining(code)
+        if not fully:
+            incomplete[code] = len(_remaining(code))
         print(
-            f"[SWEEP] {i}/{len(todo)} {code}: {len(got)}/{len(dates)} date(s) now carry "
-            f"'{chart_code}' data in {elapsed:.0f}s",
+            f"[SWEEP] {i}/{len(todo)} {code}: {len(got)}/{len(dates)} date(s) got "
+            f"'{chart_code}' data, {len(newly_done)} processed, {elapsed:.0f}s"
+            + ("" if fully else f" — {incomplete[code]} still pending (rc={rc}), re-run to finish"),
             flush=True,
         )
-        if len(got) < len(dates):
-            failed_regions[code] = len(dates) - len(got)
-        swept.add(code)
-        state["swept_regions"] = sorted(swept)
+        state["swept_regions"] = sorted(c for c in codes if not _remaining(c))
+        state["region_done"] = {k: sorted(v) for k, v in region_done.items() if v}
         if not args.dry_run:
             _save_state(state_path, state)
+
+        # A region run that finished non-zero AND collected nothing usually means
+        # the network / WARP dropped (not that the chart is empty). Two in a row
+        # -> stop rather than grind ~30 more regions against a dead connection.
+        if rc != 0 and not got and not args.dry_run:
+            consecutive_dead += 1
+            if consecutive_dead >= 2:
+                print(
+                    "[SWEEP] 2 region runs in a row collected nothing — network/WARP is "
+                    "probably down. Stopping. Reconnect and re-run the same command to resume.",
+                    flush=True,
+                )
+                return 1
+        else:
+            consecutive_dead = 0
 
     rc = _run_sync_pass(args, touched_dates, all_dates)
     if rc != 0:
         return rc
 
     print(
-        f"\n[SWEEP] done - {len(todo)} region(s), {len(touched_dates)} distinct date(s) touched"
-        + (f"; partial: {failed_regions}" if failed_regions else "")
+        f"\n[SWEEP] done - {len(todo)} region(s) run, {len(touched_dates)} distinct date(s) with data"
+        + (f"; incomplete (re-run to finish): {incomplete}" if incomplete else "")
     )
-    return 0
+    return 0 if not incomplete else 1
 
 
 def main() -> int:

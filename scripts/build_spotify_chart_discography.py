@@ -398,6 +398,35 @@ def write_payload(path: Path, payload: Any) -> None:
     path.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
 
+# Fields carried into the by-track pivot (song_countries.json) for one country
+# row. Mirrors the per-country history columns rendered by the frontend
+# "Per Song" mode.
+def _song_country_row(song: dict[str, Any], region: str) -> dict[str, Any]:
+    return {
+        "country": str(song.get("country") or region),
+        "country_name": str(song.get("country_name") or region.upper()),
+        "last_date": song.get("last_date") or "",
+        "last_rank": to_int(song.get("last_rank")) or 0,
+        "last_streams": to_int(song.get("last_streams")) or 0,
+        "peak_rank": to_int(song.get("peak_rank")) or 0,
+        "peak_streams": to_int(song.get("peak_streams") or song.get("best_streams")) or 0,
+        "peak_streams_date": song.get("peak_streams_date") or "",
+        "total_days": to_int(song.get("total_days")) or 0,
+        "longest_streak": to_int(song.get("longest_streak")) or 0,
+        "longest_streak_active": bool(song.get("longest_streak_active")),
+        "current_streak": to_int(song.get("current_streak")) or 0,
+        "days_at_peak": to_int(song.get("days_at_peak")) or 0,
+    }
+
+
+def _sort_song_country_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    def key(row: dict[str, Any]) -> tuple[int, str]:
+        country = str(row.get("country") or "").lower()
+        return (0 if country == "global" else 1, str(row.get("country_name") or country).lower())
+
+    return sorted(rows, key=key)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build precomputed Spotify chart discography JSON per worldwide region.")
     parser.add_argument("--regions", nargs="*", help="Optional region codes to build, e.g. ph br jp.")
@@ -458,6 +487,56 @@ def main() -> int:
                 "longest_streak_active": bool(song.get("longest_streak_active")),
             }
     write_payload(peaks_path, peaks_by_track)
+
+    # By-track pivot keyed by track_id, consumed by tsm-frontend
+    # api/routes/charts.py::/api/charts/discography/song/{track_id} for the
+    # History view "Per Song" mode (one row per country the song charted in).
+    song_countries_path = args.output_dir / "song_countries.json"
+    song_countries: dict[str, Any] = {}
+    if limit_regions and song_countries_path.exists():
+        existing = load_json(song_countries_path)
+        if isinstance(existing, dict):
+            for track_id, record in existing.items():
+                if not isinstance(record, dict):
+                    continue
+                kept = [
+                    row for row in record.get("countries", [])
+                    if isinstance(row, dict)
+                    and canonical_country(row.get("country")) not in limit_regions
+                ]
+                if kept:
+                    song_countries[track_id] = {**record, "countries": kept}
+    for region, payload in payloads.items():
+        for song in payload.get("songs", []):
+            track_id = str(song.get("track_id") or "").strip()
+            if not track_id:
+                continue
+            record = song_countries.setdefault(track_id, {
+                "track_id": track_id,
+                "song_name": song.get("song_name") or track_id,
+                "image_url": song.get("image_url"),
+                "album_name": song.get("album_name") or "",
+                "artist_name": song.get("artist_name") or "",
+                "countries": [],
+            })
+            # Prefer a real title over a bare 22-char track id placeholder.
+            song_name = str(song.get("song_name") or "").strip()
+            if song_name and re.fullmatch(r"[A-Za-z0-9]{22}", str(record.get("song_name") or "")):
+                record["song_name"] = song_name
+            record["image_url"] = record.get("image_url") or song.get("image_url")
+            record["album_name"] = record.get("album_name") or song.get("album_name") or ""
+            record["artist_name"] = record.get("artist_name") or song.get("artist_name") or ""
+            record["countries"] = [
+                row for row in record["countries"]
+                if canonical_country(row.get("country")) != region
+            ]
+            record["countries"].append(_song_country_row(song, region))
+    for track_id, record in song_countries.items():
+        record["countries"] = _sort_song_country_rows(record["countries"])
+        record["latest_date"] = max(
+            (str(row.get("last_date") or "") for row in record["countries"]), default=""
+        )
+    write_payload(song_countries_path, song_countries)
 
     print(f"built {len(payloads)} spotify chart discography region file(s) in {args.output_dir}")
     return 0

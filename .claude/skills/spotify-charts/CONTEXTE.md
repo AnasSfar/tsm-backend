@@ -184,7 +184,8 @@ Options avancees:
   probleme quand on fait `--regions us gb` = 2 en parallele). Bare = tous les
   `charts_history_<cc>.csv` 2 lettres avec >= 60 lignes, historique le plus
   riche d'abord (une region riche en 2017-2019 a quasi surement encore un chart
-  live). Checkpoint `state['swept_regions']` apres chaque region, reprenable.
+  live). Checkpoint par `(region, date)` dans `state['region_done']`, reprenable ;
+  s'arrete si 2 regions d'affilee ne ramenent rien (reseau mort).
   `uk` -> chart `gb`. `--include-discontinued-regions` pour forcer les 31
   gelees. C'est LA methode pour combler le trou worldwide par-pays 2020-2025.
 - `--request-interval` (defaut 1.0) / `--concurrency` (defaut 6) /
@@ -498,11 +499,23 @@ Reglages :
 - Detection auto de chart mort : une region qui 404 6x d'affilee dans un run est
   ecartee ; si `global` 404 pour une date, la date est court-circuitee.
 
-**Reprise / progression** : le sweep checkpoint `state['swept_regions']` apres
-chaque region. Pour un run non-sweep (`--gaps-from-csv`), un thread watcher
-scanne les snapshots et checkpoint toutes les `--progress-interval` s (defaut
-30) + `[PROGRESS] N/total (~Yh left)`. Un kill perd <=30s -> relancer reprend.
-Le sync final n'enrichit que la plage touchee.
+**Reprise / progression** : le sweep checkpoint par `(region, date)` dans
+`state['region_done']` apres chaque region (`state['swept_regions']` derive,
+purement informatif — un vieux state sans `region_done` est ignore). Si un run
+region finit non-zero (crash WARP/reseau), seules les dates qui ont recu de la
+data sont marquees faites ; le reste reste pending, `--refetch-done` pour tout
+refaire. **2 regions d'affilee qui ne ramenent rien -> le sweep s'arrete**
+(reseau probablement mort) : reconnecter, relancer la meme commande. Pour un run
+non-sweep (`--gaps-from-csv`), un thread watcher scanne les snapshots et
+checkpoint toutes les `--progress-interval` s (defaut 30) + `[PROGRESS] N/total
+(~Yh left)`. Un kill perd <=30s -> relancer reprend. Le sync final n'enrichit
+que la plage touchee.
+
+**Snapshots creux != bug.** Au printemps 2025 (post-Eras, post-TTPD, pas de
+sortie) Taylor n'etait dans le US Daily Top 200 que **le week-end** (hors du
+top 200 les jours de semaine, ex. lundi 2025-04-21 : `us` = 0 entree), et
+souvent 1 seule chanson au UK. Un snapshot `{gb: 1 track}` ou `us: 0` sur cette
+periode est de la vraie donnee exacte, pas une collecte ratee.
 
 `--gaps-from-csv global --workers 1 --end 2026-08-27` : rattrape les trous
 propres de `global` 2018-2021. Faible valeur (periode creuse), a faire en
@@ -1335,8 +1348,23 @@ n'est affiche que si le `peak_rank` du lookup egale encore le `peak_rank`
 par pays de `SongBlock.jsx` (vue Overall) : colonnes Region / Position / Streams
 / Total Days / Streak / Peak (`#N (xJ)`) / Peak Streams.
 
-Un rebuild partiel (`--regions ...`) MERGE dans le `peaks_by_track.json` existant
-(retire seulement les cles des regions rebuildees) — pas d'ecrasement total.
+Le script ecrit aussi **`charts_discography/song_countries.json`** (2026-08-31)
+= pivot par track_id : `{"<track_id>": {song_name, image_url, latest_date,
+countries:[{country, country_name, last_date, last_rank, last_streams, peak_rank,
+peak_streams, peak_streams_date, total_days, longest_streak,
+longest_streak_active, current_streak, days_at_peak}]}}`. Consomme par `tsm-frontend/api/routes/charts.py` pour le **mode "Per Song" du
+History view** (`TsTracker.jsx`, `?view=history&mode=song`) : au lieu de "toutes
+les chansons d'un pays", "tous les pays d'une chanson". Meme donnee que les
+`by_country[...]` du script, juste retournee par track. Deux endpoints :
+`/api/charts/discography/songs` (defaut : toutes les chansons du dernier snapshot
+Global, **ligne Global uniquement** par chanson, precalcul only) et
+`/api/charts/discography/song/{track_id}` (une chanson, tous ses pays ; fallback
+live = base regions global/fr/us/uk seulement — le breakdown worldwide complet
+ne vient que de ce fichier).
+
+Un rebuild partiel (`--regions ...`) MERGE dans le `peaks_by_track.json` ET le
+`song_countries.json` existants (retire seulement les cles des regions
+rebuildees) — pas d'ecrasement total.
 
 ## Rebuild/sync
 
