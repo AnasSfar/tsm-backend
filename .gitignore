@@ -141,3 +141,9 @@ runtime/exports/
 # Audit manifests are intentionally versionable
 !docs/
 !docs/**/*.json
+
+# Allow the Eras Tour hero collage (downloaded reference images)
+!/assets/eras-tour-hero/
+!/assets/eras-tour-hero/*.jpg
+!/assets/eras-tour-hero/*.png
+!/assets/eras-tour-hero/*.md

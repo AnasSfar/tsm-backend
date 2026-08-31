@@ -3096,16 +3096,40 @@
       "previous_rank": 170
     }
   },
-  "Lover": {
+  "6RRNNciQGZEXnqk8SQ9yv5": {
     "2019-08-23": {
-      "rank": 160,
-      "streams": 43428
+      "rank": 132,
+      "streams": 49772,
+      "track_id": "6RRNNciQGZEXnqk8SQ9yv5",
+      "track_name": "You Need To Calm Down",
+      "previous_rank": 190,
+      "peak_rank": 100
+    },
+    "2019-08-24": {
+      "rank": 140,
+      "streams": 43755,
+      "track_id": "6RRNNciQGZEXnqk8SQ9yv5",
+      "track_name": "You Need To Calm Down",
+      "previous_rank": 132,
+      "peak_rank": 100
     }
   },
-  "The Man": {
+  "1dGr1c8CrMLDpV6mPbImSI": {
+    "2019-08-23": {
+      "rank": 160,
+      "streams": 43428,
+      "track_id": "1dGr1c8CrMLDpV6mPbImSI",
+      "track_name": "Lover",
+      "peak_rank": 160
+    }
+  },
+  "3RauEVgRgj1IuWdJ9fDs70": {
     "2019-08-23": {
       "rank": 161,
-      "streams": 43362
+      "streams": 43362,
+      "track_id": "3RauEVgRgj1IuWdJ9fDs70",
+      "track_name": "The Man",
+      "peak_rank": 161
     }
   },
   "4LEK9rD7TWIG4FCL1s27XC": {
@@ -8797,6 +8821,35 @@
     "2026-08-11": {
       "rank": 190,
       "streams": 55761,
+      "track_id": "53iuhJlwXhSER5J2IYYv1W",
+      "track_name": "The Fate of Ophelia",
+      "peak_rank": 2
+    },
+    "2026-08-17": {
+      "rank": 189,
+      "streams": 56816,
+      "track_id": "53iuhJlwXhSER5J2IYYv1W",
+      "track_name": "The Fate of Ophelia",
+      "peak_rank": 2
+    },
+    "2026-08-19": {
+      "rank": 200,
+      "streams": 54878,
+      "track_id": "53iuhJlwXhSER5J2IYYv1W",
+      "track_name": "The Fate of Ophelia",
+      "peak_rank": 2
+    },
+    "2026-08-20": {
+      "rank": 197,
+      "streams": 55598,
+      "track_id": "53iuhJlwXhSER5J2IYYv1W",
+      "track_name": "The Fate of Ophelia",
+      "previous_rank": 200,
+      "peak_rank": 2
+    },
+    "2026-08-29": {
+      "rank": 190,
+      "streams": 61266,
       "track_id": "53iuhJlwXhSER5J2IYYv1W",
       "track_name": "The Fate of Ophelia",
       "peak_rank": 2
