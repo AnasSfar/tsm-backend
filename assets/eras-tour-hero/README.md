@@ -1,10 +1,10 @@
 # Eras Tour homepage hero collage
 
-The 11 portrait photos from the hero strip on https://tstheerastour.taylorswift.com/
-(order matches the site's collage, left to right). Downloaded 2026-08-31 from the
-`assets.dmi.umgapps.com` CDN at their **original resolution** — no 4K version exists;
-these are the largest files the site serves. `panel-12` (Showgirl) is a derived
-composite, not from that site — see below.
+`panel-01` .. `panel-11` are the portrait photos from the hero strip on
+https://tstheerastour.taylorswift.com/ , one per era in **album order**. Downloaded
+2026-08-31 from the `assets.dmi.umgapps.com` CDN at their **original resolution** —
+no 4K version exists; these are the largest files the site serves. `panel-12`
+(Showgirl) is a derived composite, not from that site — see below.
 
 | File | Source URL | Resolution |
 |------|-----------|------------|
@@ -36,29 +36,34 @@ ramp in that script), then re-run `build_eras_strip.py`.
 
 ## Horizontal / landscape
 
-The site has only two pre-composed landscape images — there is no landscape Taylor
-photography on it, and no per-panel colour version at higher res.
+`landscape-keyart-1200x630.jpg` — the one official landscape image on the site
+(`assets.dmi.umgapps.com/assets/taylor-swift/meta/1678567321897-share.jpg`): the
+colour collage + "TAYLOR SWIFT / THE ERAS TOUR" logo lockup on white (the OG/share
+image). There is no other landscape Taylor photography on the site.
 
-| File | Source URL | Resolution | Notes |
-|------|-----------|------------|-------|
-| landscape-keyart-1200x630.jpg | https://assets.dmi.umgapps.com/assets/taylor-swift/meta/1678567321897-share.jpg | 1200×630 | Colour collage + "TAYLOR SWIFT / THE ERAS TOUR" logo lockup on white (the OG/share image) |
-| landscape-collage-bw-1920x981.jpg | https://assets.dmi.umgapps.com/assets/taylor-swift/playlist-generator/1678542710857-background.jpg | 1920×981 | B&W 2-row grid of the same 11 photos, no text |
+The site's own B&W 2-row collage (playlist-generator background) was dropped — it
+was 11 photos in no particular order. `collage-6x2.jpg` / `collage-6x2-bw.jpg`
+below replace it with our 12 panels in album order.
 
 Not downloaded (redundant): `tour-site/landing-images/2.jpg`, `9.jpg`, `10.jpg` are
 lower-res sepia/blue colour-grades of poses already in `panel-02`, `panel-09` and the
 big B&W portrait. The support-act headshots on the site (Sabrina Carpenter, Gracie
 Abrams, Paramore, HAIM, MUNA, …) are the openers, not Taylor.
 
-## Composed "all eras" header
+## Composed "all eras" images
 
-`../headers/all-eras.jpg` (web, ~2200px) and `all-eras-full.jpg` (hi-res, ~4400px)
-are the 12 panels stitched side by side in **album order** (debut → Showgirl).
-Rebuild both with:
+All 12 panels in **album order** (debut → Showgirl), built by
+`python scripts/build_eras_strip.py` (from the tsm-frontend repo root):
 
-```
-python scripts/build_eras_strip.py          # from the tsm-frontend repo root
-python scripts/build_eras_strip.py --labels  # burn era name + year onto each panel
-```
+| File | Layout | Size |
+|------|--------|------|
+| `../headers/all-eras.jpg` | single-row strip, web | ~2200px wide |
+| `all-eras-full.jpg` | single-row strip, hi-res | ~4400px wide |
+| `collage-6x2.jpg` | 6×2 grid, per-era colour tints | 1920×886 |
+| `collage-6x2-bw.jpg` | 6×2 grid, black & white | 1920×886 |
+
+`--labels` burns the era name + year onto each panel of the strip; `--gap N` adds
+white separators; `--width N` sets the hi-res strip width.
 
 The React component is `frontend/src/components/ErasStripHeader.jsx` (exports the
 `ERAS_STRIP` array + a `<ErasStripHeader />` with `labels` / `linkToMuseums` /
