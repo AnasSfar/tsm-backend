@@ -46,9 +46,12 @@ Environment:
 
 Output columns:
 
-- `date`
-- `snapshot_at` (exact UTC ISO 8601 timestamp of the run that wrote the row;
-  blank for rows written before 2026-08-29)
+- `date` — the **activity day** the views belong to = run date minus one. The
+  scheduled run fires at ~00:05 America/New_York (`YOUTUBE_COLLECTION_TZ`), so
+  the viewCount delta since the previous run covers the NY calendar day that
+  just ended. `--date D` sets this activity day directly.
+- `snapshot_at` (exact UTC ISO 8601 timestamp of the run that wrote the row,
+  i.e. ~`date` + 1 day at 00:05 NY; blank for rows written before 2026-08-29)
 - `video_id`
 - `title`
 - `rank`

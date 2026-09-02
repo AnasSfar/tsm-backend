@@ -81,6 +81,7 @@ Avant de songer à "nettoyer" quoi que ce soit sur R2, vérifier cette liste —
 
 ## Réparation d'historique cassé
 
+- `shift_youtube_dates_back_one_day.py` : **one-off, fait le 2026-09-02.** Décale de −1 j la colonne `date` de `db/youtube_views_history.csv` + `db/youtube_title_history.csv` (le collecteur datait les lignes avec la date du run à minuit NY au lieu de la journée d'activité écoulée). Dry-run par défaut, `--apply --expect-latest YYYY-MM-DD` (le garde-fou anti-double-run — refuse si la date max ≠ celle attendue), `.csv.<horodatage>.bak` (gitignoré via `*.csv.*.bak`). Seule la colonne `date` change (réécriture du préfixe 11 car. de chaque ligne, diff minimal par ligne). Après : `python -c "from scripts import r2; r2.upload_youtube()"` puis `python scripts/generate_home_highlights.py`. Détail de la décision → skill `data-rules` § Data (YouTube).
 - `fill_streams_from_archive.py` : reconstruit `streams_history.csv` depuis les Daily Archive (title-only ; attention aux lignes album/total après le séparateur, déjà filtrées par le script).
 - `repair_charts_fr_archive_from_history.py dates… --dry-run` : répare l'archive FR à partir de l'history.
 - `sync_spotify_country_charts_from_worldwide.py --charts --dry-run` : resynchronise les charts pays depuis worldwide.

@@ -33,7 +33,8 @@ Scheduler:
   collectors.youtube.videos.update_youtube --commit --no-notify`, tous les
   jours à 06:05 Europe/Paris). Tourne sur le PC d'Anas — PC éteint à
   l'heure du run = pas de collecte ce jour-là (pas de retry auto ; rattrapage
-  `--date AAAA-MM-JJ`, cf. `manual_trusted` / [[tsm-streams-pipeline-ops]]).
+  `--date AAAA-MM-JJ` = **jour d'activité voulu**, pas la date du run, cf.
+  `manual_trusted` / [[tsm-streams-pipeline-ops]]).
 - **`--no-notify` (pas `--no-post`) depuis le 2026-08-30** : `--no-post`
   coupait aussi toute la logique first-day (planif + filet de sécurité), donc
   depuis l'arrivée de la feature le 2026-08-25 aucune card "first 24h views"
@@ -82,15 +83,23 @@ JSON legacy/cache:
 
 Colonnes importantes:
 
-- `date`
+- `date` = **jour d'activité** = date du run − 1 jour (décision 2026-09-02, cf.
+  « Regles data » ci-dessous). Le run planifié tourne à 06:05 Europe/Paris ≈
+  00:05 America/New_York (`YOUTUBE_COLLECTION_TZ`), soit pile minuit NY : le
+  delta de `viewCount` depuis le run précédent couvre la journée calendaire NY
+  qui vient de se **terminer**. `main()` calcule `activity_date =
+  _youtube_collection_date() − 1j` (variable `run_date` gardée séparément pour
+  l'instant du run). `--date D` = jour d'activité voulu directement (pas de −1).
 - `snapshot_at` (depuis 2026-08-29) : horodatage UTC ISO 8601 exact du run
-  (pris juste après le batch-fetch des stats). `daily_views` d'une date D =
-  delta entre `snapshot_at(D-1)` et `snapshot_at(D)`. Lignes antérieures =
-  colonne vide (ajout rétro-compatible en tête des `CSV_FIELDNAMES` /
-  `TITLE_CSV_FIELDNAMES`, migration auto du header via
-  `csv_utils._ensure_fieldnames` / `write_title_history`). Le frontend
-  (`api/routes/youtube.py` → `window_start`/`window_end`, rendu par
-  `pages/YouTube.jsx`) l'utilise pour afficher la vraie fenêtre horaire.
+  (`datetime.now(timezone.utc)`, pris juste après le batch-fetch). ≈ `date`+1
+  à 06:05 Paris (mesure prise à la fin de la journée d'activité). `daily_views`
+  d'une date D = delta entre le `snapshot_at` de la **ligne précédente** et
+  celui de la ligne D. Lignes antérieures au 2026-08-29 = colonne vide (ajout
+  rétro-compatible en tête des `CSV_FIELDNAMES` / `TITLE_CSV_FIELDNAMES`,
+  migration auto du header via `csv_utils._ensure_fieldnames` /
+  `write_title_history`). Le frontend (`api/routes/youtube.py` →
+  `window_start`/`window_end`, rendu par `pages/YouTube.jsx`) l'utilise pour
+  afficher la vraie fenêtre horaire.
 - `video_id`
 - `title`
 - `rank`, `previous_rank`, `rank_change`
@@ -111,6 +120,18 @@ Colonnes importantes:
 
 ## Regles data
 
+- **Dating : `date` = jour d'activité, pas date du run (décision Anas 2026-09-02).**
+  Avant, chaque ligne était étiquetée avec la date du run (minuit NY), donc le
+  delta — qui couvre la journée *écoulée* — était daté +1. Fix : le collector
+  écrit `run_date − 1` ; l'historique complet a été décalé de −1 une fois par
+  `scripts/shift_youtube_dates_back_one_day.py` (2 CSV `db/youtube_*_history.csv`,
+  seule la colonne `date` bouge, `.bak` créés, gitignore `*.csv.*.bak`), puis
+  ré-uploadé R2 (`r2.upload_youtube()`) + `generate_home_highlights.py` re-run.
+  `ci_data_collector_gate.py::youtube_day_pending` cherche `run_date − 1`.
+  TayBoard : semaines passées gelées (snapshots R2), pas de recalcul ; futures
+  semaines prennent les dates corrigées (`_weekly_youtube_views` somme par
+  `date` dans la semaine ISO — 1 semaine de transition peut avoir 6/8 jours YT,
+  négligeable à `YOUTUBE_WEIGHT` 0.3).
 - `total_views` vient de YouTube Data API.
 - `daily_views` est uniquement le delta exact entre deux snapshots calendaires
   consecutifs.
@@ -277,6 +298,42 @@ minute) :**
   inspecter/retoucher le rendu directement.
 
 ## Consommateurs
+
+- **Frontend `tsm-frontend` — page YouTube Charts** (`api/routes/youtube.py` →
+  `pages/YouTube.jsx`). Rappel : sur un snapshot « jour manqué » (`period_days > 1`,
+  `daily_views` vide, `period_gain_views` rempli), depuis 2026-09-02 :
+  - le chart est quand même **classé** (`_metric_for_rank` : rang sur
+    `period_gain_views` faute de `daily_views`) — le collector, lui, ne classe
+    jamais ces lignes (`rank`/`previous_rank`/`rank_change` vides au CSV) ;
+    l'API backfille ces trois champs à partir du re-classement quand le CSV les
+    a laissés vides, sans jamais écraser une valeur déjà présente.
+  - la colonne **« +/- previous »** compare le gain multi-jours exact à la
+    **période de même durée juste avant** : `total(previous_date) −
+    total(previous_date − period_days)`, c.-à-d. les N jours qui précèdent
+    immédiatement la fenêtre courante (décision propriétaire 2026-09-02 :
+    récence > alignement jour-de-semaine, et surtout jamais de moyenne/jour).
+    N'est affiché **que si la date `previous_date − period_days` existe
+    exactement** comme snapshot (sinon on aurait une fenêtre de longueur
+    différente → comparaison trompeuse) ; sinon colonne vide
+    (`period_change`/`period_change_pct` vides). Champs API : `period_prev_gain`,
+    `period_change`, `period_change_pct`, `period_compare_start/end` (par ligne)
+    + `period_days`, `compare_window_start/end` (niveau payload).
+  - le header de la colonne métrique affiche `{N}-day gain` (depuis
+    `payload.period_days`), celui de « +/- » affiche « +/- Previous ».
+  - la fenêtre comptée + la fenêtre de comparaison sont affichées dans un
+    encadré `.youtube-window-box` **dans le subnav**, empilé sous les contrôles
+    Prev / calendrier / Next : `.history-date-controls` + le box sont enveloppés
+    dans `.youtube-date-stack` (flex column, `align-items:flex-end`) pour que le
+    box tombe pile sous le sélecteur de date et s'aligne sur son bord droit
+    (`.site-subnav-links:has(.youtube-date-stack)` passe en `align-items:flex-start`).
+    Clés i18n
+    `youtube_window_note` (« Views counted {start} → {end} ») +
+    `youtube_compare_window_note` (« "+/- previous" compares with the {days}
+    days before ({start} → {end}) »). La borne de début est raccourcie (sans
+    année) via `SHORT_DATETIME_OPTS`/`SHORT_DATE_OPTS`.
+  Un snapshot quotidien propre (`period_days == 1`) est inchangé : « +/- Yesterday »,
+  comparaison jour/jour telle qu'écrite par le collector, encadré = juste la
+  fenêtre comptée.
 
 - **TayBoard scoring** (ajoute 2026-08-14, `collectors/billboard/swift_top_100.py`) :
   `db/youtube_title_history.csv` (`daily_views` par titre groupe) alimente

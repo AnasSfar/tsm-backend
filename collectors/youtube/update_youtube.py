@@ -11,7 +11,7 @@ Usage:
     python -m collectors.youtube.update_youtube --debug
     python -m collectors.youtube.update_youtube --no-post     # aucun post X + pas de ntfy
     python -m collectors.youtube.update_youtube --no-notify   # pas de ntfy, mais cards first-day OK (run_youtube.bat)
-    python -m collectors.youtube.update_youtube --date 2026-04-25
+    python -m collectors.youtube.update_youtube --date 2026-04-25   # date d'activité voulue (pas la date du run)
     python -m collectors.youtube.update_youtube --bootstrap  # découverte complète initiale
     python -m collectors.youtube.update_youtube --preview    # aperçu card "first 24h views"
     python -m collectors.youtube.update_youtube --post-first-day VIDEO_ID  # interne, voir ci-dessous
@@ -128,7 +128,12 @@ def parse_args() -> argparse.Namespace:
     p.add_argument(
         "--date",
         default=None,
-        help="Override la date de collecte (format YYYY-MM-DD, défaut: aujourd'hui).",
+        help=(
+            "Force la date d'activité des lignes écrites (YYYY-MM-DD) — la "
+            "journée que les vues représentent, pas la date du run. Sans "
+            "l'option: date du run − 1 jour (le run à minuit NY mesure la "
+            "journée qui vient de se terminer)."
+        ),
     )
     p.add_argument(
         "--bootstrap",
@@ -687,7 +692,6 @@ def run_preview() -> int:
 
 def main() -> int:
     args = parse_args()
-    today = args.date or _youtube_collection_date()
 
     if args.preview:
         return run_preview()
@@ -695,8 +699,19 @@ def main() -> int:
     if args.post_first_day:
         return run_post_first_day(args.post_first_day)
 
+    # The scheduled run fires at 06:05 Europe/Paris ≈ 00:05 America/New_York
+    # (YOUTUBE_COLLECTION_TZ), i.e. right at NY midnight. The viewCount delta
+    # since the previous run therefore covers the NY calendar day that just
+    # ENDED — so the data date is the run date minus one. `--date D` is taken
+    # as the activity date directly (what you want the rows labelled), no shift.
+    run_date = _youtube_collection_date()
+    if args.date:
+        activity_date = args.date
+    else:
+        activity_date = (date.fromisoformat(run_date) - timedelta(days=1)).isoformat()
+
     print(f"\n{'='*60}")
-    print(f"  YouTube Views Collector — {today}")
+    print(f"  YouTube Views Collector — {activity_date}  (run {run_date})")
     print(f"{'='*60}\n")
 
     if not YOUTUBE_API_KEY:
@@ -740,8 +755,8 @@ def main() -> int:
     # ------------------------------------------------------------------
     # 3. Vérifier si la date est déjà collectée
     # ------------------------------------------------------------------
-    if not args.dry_run and not args.force and date_already_collected(CSV_PATH, today):
-        print(f"[INFO] Date {today} déjà dans le CSV — skip (utiliser --date pour forcer).")
+    if not args.dry_run and not args.force and date_already_collected(CSV_PATH, activity_date):
+        print(f"[INFO] Date {activity_date} déjà dans le CSV — skip (utiliser --date pour forcer).")
         return 0
 
     # ------------------------------------------------------------------
@@ -761,27 +776,29 @@ def main() -> int:
     print(f"[INFO] Stats reçues pour {len(stats)}/{total_videos} vidéos\n")
 
     # Horodatage exact de ce snapshot (UTC). daily_views d'une date D = delta
-    # entre snapshot_at(D-1) et snapshot_at(D) — permet au frontend d'afficher
-    # la fenêtre horaire réelle sur laquelle les vues ont été comptées.
+    # entre le snapshot_at de la ligne précédente et celui-ci — permet au
+    # frontend d'afficher la fenêtre horaire réelle sur laquelle les vues ont
+    # été comptées. NB : snapshot_at ≈ D+1 à 06:05 Paris (mesure prise à la fin
+    # de la journée d'activité D).
     snapshot_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
 
     # ------------------------------------------------------------------
     # 5. Calculer daily_views et construire les lignes CSV
     # ------------------------------------------------------------------
     existing_video_rows = read_csv_rows(CSV_PATH)
-    has_prior_csv_day = has_collection_before(CSV_PATH, today)
+    has_prior_csv_day = has_collection_before(CSV_PATH, activity_date)
     prev_views = get_last_views(HISTORY_PATH) if has_prior_csv_day else {}
-    previous_csv_date = _latest_date_before(existing_video_rows, today)
-    period_days = _days_between(previous_csv_date, today)
+    previous_csv_date = _latest_date_before(existing_video_rows, activity_date)
+    period_days = _days_between(previous_csv_date, activity_date)
     is_daily_snapshot = period_days == 1
-    csv_prev_views = _last_total_views_from_csv(CSV_PATH, today) if has_prior_csv_day else {}
+    csv_prev_views = _last_total_views_from_csv(CSV_PATH, activity_date) if has_prior_csv_day else {}
     if csv_prev_views:
         prev_views = {**prev_views, **csv_prev_views}
     if not has_prior_csv_day:
         print("[INFO] Aucune date précédente dans le CSV — daily_views restera vide.")
     elif not is_daily_snapshot:
         label = f"{period_days}-day gain" if period_days else "period gain"
-        print(f"[WARN] Date précédente: {previous_csv_date}; {today} sera marqué en {label}, pas en daily.")
+        print(f"[WARN] Date précédente: {previous_csv_date}; {activity_date} sera marqué en {label}, pas en daily.")
     new_views: dict[str, int] = {}
     rows: list[dict] = []
 
@@ -790,10 +807,10 @@ def main() -> int:
         prev = prev_views.get(vid_id)
         if prev is not None:
             gain = total - prev
-        elif not args.bootstrap and _is_recent_publish(stat.get("publishedAt", ""), today):
+        elif not args.bootstrap and _is_recent_publish(stat.get("publishedAt", ""), activity_date):
             # Genuinely new release, first time this video is ever collected:
-            # it didn't exist before today, so its whole total_views belongs
-            # to today's tracking day — 0 baseline, not a blank "no data yet".
+            # it didn't exist before this activity day, so its whole total_views
+            # belongs to it — 0 baseline, not a blank "no data yet".
             gain = total
         else:
             gain = None
@@ -805,7 +822,7 @@ def main() -> int:
 
         rows.append(
             {
-                "date": today,
+                "date": activity_date,
                 "snapshot_at": snapshot_at,
                 "video_id": vid_id,
                 "title": stat.get("title") or video_db.get(vid_id, {}).get("title", ""),
@@ -844,7 +861,7 @@ def main() -> int:
     # 6. Affichage Top 10
     # ------------------------------------------------------------------
     print(f"{'─'*60}")
-    print(f"  Top 10 vues quotidiennes — {today}")
+    print(f"  Top 10 vues quotidiennes — {activity_date}")
     print(f"{'─'*60}")
     for i, r in enumerate(rows_with_daily[:10], 1):
         daily_str = f"+{_fmt_views(r['daily_views'])}" if r["daily_views"] != "" else "n/a"
@@ -863,13 +880,13 @@ def main() -> int:
     all_rows = enrich_chart_rows(
         rows_with_daily + rows_no_daily,
         existing_rows=existing_video_rows,
-        target_date=today,
+        target_date=activity_date,
         key_field="video_id",
     )
     if args.force:
-        removed = remove_rows_for_date(CSV_PATH, today, CSV_FIELDNAMES)
+        removed = remove_rows_for_date(CSV_PATH, activity_date, CSV_FIELDNAMES)
         if removed:
-            print(f"[INFO] {removed} ligne(s) existante(s) supprimée(s) pour {today}")
+            print(f"[INFO] {removed} ligne(s) existante(s) supprimée(s) pour {activity_date}")
     append_rows(CSV_PATH, all_rows, CSV_FIELDNAMES)
     print(f"[INFO] CSV mis à jour : {CSV_PATH}")
 
@@ -886,7 +903,7 @@ def main() -> int:
                     print(f"[first_day_schedule] Échec (non bloquant) pour {r['video_id']}: {e}")
 
     title_rows = build_title_rows(
-        date=today,
+        date=activity_date,
         video_rows=all_rows,
         songs_path=DISCOGRAPHY_SONGS_PATH,
         manual_groups_path=VIDEO_GROUPS_PATH,
@@ -895,14 +912,14 @@ def main() -> int:
     title_rows = enrich_chart_rows(
         title_rows,
         existing_rows=existing_title_rows,
-        target_date=today,
+        target_date=activity_date,
         key_field="title_key",
     )
     write_title_history(
         TITLE_HISTORY_PATH,
         title_rows,
         TITLE_CSV_FIELDNAMES,
-        date=today,
+        date=activity_date,
     )
     print(f"[INFO] CSV titres mis à jour : {TITLE_HISTORY_PATH}")
 
@@ -912,13 +929,13 @@ def main() -> int:
     save_video_db(video_db, VIDEO_DB_PATH)
     print(f"[INFO] Catalogue vidéos mis à jour : {VIDEO_DB_PATH}")
 
-    maybe_upload_youtube_to_r2(today)
+    maybe_upload_youtube_to_r2(activity_date)
 
     # ------------------------------------------------------------------
     # 8. Post "first 24h views" card for any brand new video
     # ------------------------------------------------------------------
     try:
-        post_first_day_views(rows_with_daily, existing_video_rows, today, no_post=args.no_post)
+        post_first_day_views(rows_with_daily, existing_video_rows, activity_date, no_post=args.no_post)
     except Exception as e:
         print(f"[first_day_views] Échec (non bloquant): {e}")
 
@@ -926,7 +943,7 @@ def main() -> int:
     # 9. Git commit/push (opt-in avec --commit)
     # ------------------------------------------------------------------
     if args.commit:
-        git_commit_and_push(REPO_ROOT, message=f"youtube views {today}")
+        git_commit_and_push(REPO_ROOT, message=f"youtube views {activity_date}")
     else:
         print("[INFO] Git skippé (passer --commit pour committer).")
 
@@ -935,10 +952,10 @@ def main() -> int:
     # ------------------------------------------------------------------
     if not args.no_post and not args.no_notify:
         top5 = rows_with_daily[:5]
-        lines = [f"YouTube Views {today}", ""]
+        lines = [f"YouTube Views {activity_date}", ""]
         for r in top5:
             lines.append(f"{r['title'][:40]}: +{_fmt_views(r['daily_views'])}")
-        _notify(title=f"YouTube Views {today}", message="\n".join(lines))
+        _notify(title=f"YouTube Views {activity_date}", message="\n".join(lines))
         print("[INFO] Notification envoyée.")
 
     print("\n[OK] Collecte terminée.")

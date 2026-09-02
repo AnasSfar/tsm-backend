@@ -27,7 +27,7 @@ import csv
 import io
 import os
 import sys
-from datetime import datetime, time
+from datetime import datetime, time, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -93,14 +93,16 @@ def youtube_day_pending() -> bool:
         print(f"[gate] YouTube: {now:%H:%M} {YOUTUBE_TZ} is before 00:30 -> skip")
         return False
 
-    today = now.date().isoformat()
+    # A run just after NY midnight labels its rows with the day that just
+    # ended (run date - 1) — that's the activity date to look for.
+    activity_date = (now.date() - timedelta(days=1)).isoformat()
     if YOUTUBE_CSV.exists():
         with YOUTUBE_CSV.open(newline="", encoding="utf-8") as handle:
             for row in csv.DictReader(handle):
-                if row.get("date") == today:
-                    print(f"[gate] YouTube: {today} already in {YOUTUBE_CSV.name} -> skip")
+                if row.get("date") == activity_date:
+                    print(f"[gate] YouTube: {activity_date} already in {YOUTUBE_CSV.name} -> skip")
                     return False
-    print(f"[gate] YouTube: {today} not collected yet -> run")
+    print(f"[gate] YouTube: {activity_date} not collected yet -> run")
     return True
 
 

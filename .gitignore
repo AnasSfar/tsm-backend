@@ -129,6 +129,7 @@ log
 *.old
 *.track-flags-*.bak
 *.tsmids-*.bak
+*.csv.*.bak
 LOCK
 f_*
 
