@@ -153,11 +153,27 @@ les posts de semaine (lun-ven) et **dark** le week-end (sam/dim). Helper unique
 `comp.tables_image.masthead_theme_for_date(target_date)` — basé sur la date des
 données, jamais `now()`. Concerne : Top Songs, Top Eras, Spotlight Gainers,
 recap quotidien (`generate_weekend_streams_image.py`, CLI `--light`/`--dark`),
-recap Best Day Since. Override : recap Best Day Since « Holiday Collection » =
-light toute l'année (le code applique la règle du jour puis force). Détail
-produit → skill `spotify-streams` (« Thème masthead selon le jour »). Ne pas
-réimplémenter la règle jour-de-semaine ailleurs ; toute nouvelle card masthead
-doit passer `masthead_theme=masthead_theme_for_date(...)`.
+recap Best Day Since **global** (header fixe « all eras » depuis le 03/09/2026,
+plus de theming par album — voir `spotify-streams` § « Recap best-day-since :
+header fixe »). **Exception** : la **card recap best-day-since PAR ÈRE**
+(`_generate_recap_image(era_display=…)`, `--only-era-recap`) utilise le pool de
+headers de l'ère + titre `{Ère} - Best Day Recap` (théming volontaire). Détail
+produit → skill `spotify-streams` (« Thème masthead selon le jour », « Card
+recap best-day-since PAR ÈRE »). Ne pas réimplémenter la règle jour-de-semaine
+ailleurs ; toute nouvelle card masthead doit passer
+`masthead_theme=masthead_theme_for_date(...)`.
+
+### Marqueur ★ best-day-since sur les cards ledger (2026-09-03)
+
+Top Songs (`generate_streams_image.py`), Top Eras (`generate_albums_image.py`) et
+GAINERS (`post_stream_highlights_thread.py`) affichent `★ Titre · since <date>`
+(ou `· of the year` / `· of the month`) dans la colonne Track/Album, comme les
+images d'album update. Helper partagé `comp.tables_image.ledger_name_with_best_day(name_html, marker_label)`
+(+ CSS `.ledger-name .best-day-star` / `.best-day-note` dans `STREAMS_TABLE_CSS`) ;
+labels via `best_day_since.best_day_marker_text` / `best_day_marker_labels`
+(track-level, records combined exclus) ou `compute_album_best_day_since` par
+`era_key` (Top Eras). Toujours en try/except : un échec de lookup ne bloque
+jamais la card.
 
 ### Taille du corps de masthead (2026-08-27)
 

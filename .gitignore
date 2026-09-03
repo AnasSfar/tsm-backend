@@ -148,3 +148,7 @@ runtime/exports/
 !/assets/eras-tour-hero/*.jpg
 !/assets/eras-tour-hero/*.png
 !/assets/eras-tour-hero/*.md
+
+# Fixed best-day-since recap header (the "all eras" strip) must be versioned
+!/collectors/spotify/streams/tools/headers/best_day_recap/
+!/collectors/spotify/streams/tools/headers/best_day_recap/*.jpg

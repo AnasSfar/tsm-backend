@@ -96,6 +96,13 @@ def _is_holiday_collection_season(target_date: str) -> bool:
     return month_day >= HOLIDAY_COLLECTION_SEASON_START or month_day <= HOLIDAY_COLLECTION_SEASON_END
 
 
+def is_holiday_collection_season(target_date: str) -> bool:
+    """Public wrapper: is ``target_date`` inside the Holiday Collection's
+    Christmas posting window (Nov 25 - Jan 7)? Used by other posting scripts
+    to gate Holiday Collection song content, not just the album card."""
+    return _is_holiday_collection_season(target_date)
+
+
 def holiday_collection_post_block_reason(album_name: str, target_date: str) -> str | None:
     if not is_holiday_collection_album(album_name):
         return None
@@ -2514,6 +2521,47 @@ def generate(
     return out_path
 
 
+# Minimum gap for an album best-day-since to reword the update-card first line
+# (same threshold the standalone album best-day card used before it was removed).
+ALBUM_BEST_DAY_MIN_DAYS = 30
+
+
+def _album_best_day_row(album_name: str, canonical_name: str, target_date: str) -> dict | None:
+    """Album-level best-day-since row for the update-card first line.
+
+    Same record definition the (now removed) standalone album best-day card
+    used: standard-edition album tracks, combined daily total, a >= 30-day gap -
+    or a biggest-day-of-the-year / best-ever record regardless of the gap.
+    Returns ``None`` when the album has no postable record for the day.
+    """
+    try:
+        tracks = best_day_since.load_tracks(include_extras=False)
+        history = best_day_since.load_history()
+        by_album = best_day_since.load_album_track_ids(tracks)
+    except Exception as exc:  # noqa: BLE001 - a lookup failure must never break the caption
+        print(f"[album_update] Album best-day lookup skipped for {album_name}: {exc}")
+        return None
+
+    track_ids = by_album.get(album_name) or by_album.get(canonical_name)
+    if not track_ids or len(track_ids) < 2:
+        return None
+
+    row = best_day_since.compute_album_best_day_since(
+        album_name, track_ids, history, date_cls.fromisoformat(target_date)
+    )
+    if not row:
+        return None
+    if row.get("is_biggest_day_of_year") and row.get("kind") in ("since", "best_ever"):
+        return row
+    if row.get("kind") == "best_ever":
+        return row
+    if row.get("kind") != "since":
+        return None
+    if not best_day_since.passes_filters(row, min_days=ALBUM_BEST_DAY_MIN_DAYS):
+        return None
+    return row
+
+
 def _build_album_post_text(album_name: str, target_date: str) -> str:
     """Builds the album post text with daily total and biggest gainer/most stable track."""
     from datetime import datetime
@@ -2593,7 +2641,20 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
         first_line = f'📈| "{canonical_name}" received {total_daily_fmt} streams on its second anniversary, April 19th 2026.{album_pct_str}'
     else:
         when = f"on {date_fmt}"
-        first_line = f'📈| "{canonical_name}" received {total_daily_fmt} streams {when}.{album_pct_str}'
+        best_day_row = _album_best_day_row(album_name, canonical_name, target_date)
+        if best_day_row:
+            verb = (
+                "has once again earned"
+                if best_day_since.is_recent_repeat_record(best_day_row)
+                else "earned"
+            )
+            best_label = _best_day_post_label(best_day_row)
+            first_line = (
+                f'📈| "{canonical_name}" {verb} its {best_label} with '
+                f'{total_daily_fmt} streams {when}.{album_pct_str}'
+            )
+        else:
+            first_line = f'📈| "{canonical_name}" received {total_daily_fmt} streams {when}.{album_pct_str}'
 
     return (
         f"{first_line}\n\n"
@@ -2643,7 +2704,9 @@ def _format_best_since_long(value: object) -> str:
 
 
 def _best_day_post_label(row: dict) -> str:
-    if row.get("is_biggest_day_of_year"):
+    if row.get("kind") == "best_ever":
+        label = "BEST DAY ever"
+    elif row.get("is_biggest_day_of_year"):
         label = "BIGGEST DAY of the year"
     elif row.get("kind") == "since":
         label = f"BEST DAY since {_format_best_since_long(row.get('best_day_since'))}"
@@ -2682,6 +2745,9 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
 
     best_row = max(best_day_rows, key=note_rank)
     best_label = _best_day_post_label(best_row)
+    repeat = best_day_since.is_recent_repeat_record(best_row)
+    earned_verb = "once again earned" if repeat else "earned"
+    had_verb = "once again had" if repeat else "had"
     selected = _selected_album_post_track(sections, target_date)
     selected_title = selected.get("title") if selected else ""
     same_song = (
@@ -2693,14 +2759,14 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
     )
 
     if same_song:
-        addition = f" It earned its {best_label}."
+        addition = f" It {earned_verb} its {best_label}."
         lines = tweet.splitlines()
         for i, line in enumerate(lines):
             if f'"{_shorten_title(selected_title)}" was the ' in line:
                 lines[i] = f"{line}{addition}"
                 return "\n".join(lines)
 
-    note = f'"{note_title(best_row["title"])}" had its {best_label}.'
+    note = f'"{note_title(best_row["title"])}" {had_verb} its {best_label}.'
     marker = "\n\nSee full update here"
     if marker in tweet:
         return tweet.replace(marker, f"\n\n{note}{marker}", 1)

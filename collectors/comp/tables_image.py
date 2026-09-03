@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import base64
 import colorsys
+import html as _html
 import random
 import sys
 from collections.abc import Callable
@@ -618,6 +619,8 @@ body{
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:normal;
 }
 .ledger-sub{font-size:11px;color:var(--ledger-muted);margin-top:2px}
+.ledger-name .best-day-star{color:#e8b923}
+.ledger-name .best-day-note{font-size:10px;font-weight:700;color:var(--ledger-muted)}
 .ledger-num{text-align:right;font-variant-numeric:tabular-nums}
 .ledger-daily{font-size:13.5px;font-weight:800;color:var(--ledger-text)}
 .ledger-total{font-size:12.5px;color:var(--ledger-muted);font-weight:600}
@@ -719,6 +722,21 @@ def masthead_theme_for_date(target_date) -> str:
     except AttributeError:
         return "dark"
     return "dark" if weekday >= 5 else "light"
+
+
+def ledger_name_with_best_day(name_html: str, marker_label: str | None) -> str:
+    """Wrap a ledger entity name with the '* ... since MM/DD/YYYY' marker used on
+    the album update image. ``marker_label`` is best_day_since.best_day_marker_text
+    output ("November 26th, 2025" / "of the year" / "of the month"); "of ..."
+    labels render without the "since" prefix. Empty label -> name unchanged."""
+    if not marker_label:
+        return name_html
+    text = str(marker_label)
+    prefix = "" if text.startswith("of ") else "since "
+    return (
+        f'<span class="best-day-star">&#9733;</span> {name_html}'
+        f'<span class="best-day-note"> &middot; {prefix}{_html.escape(text)}</span>'
+    )
 
 
 def build_table_html(

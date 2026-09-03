@@ -35,7 +35,7 @@ TWITTER_SESSION = default_twitter_session(REPO_ROOT)
 from twitter.text import stream_gainers_table_tweet, track_history_line  # noqa: E402
 from core.twitter import post_image_thread, post_with_image  # noqa: E402
 from comp.fmt import fmt_delta, fmt_num, fmt_signed  # noqa: E402
-from comp.tables_image import build_table_html, dominant_color_from_data_uri, era_accent_color, masthead_theme_for_date, render_html_to_png  # noqa: E402
+from comp.tables_image import build_table_html, dominant_color_from_data_uri, era_accent_color, ledger_name_with_best_day, masthead_theme_for_date, render_html_to_png  # noqa: E402
 import best_day_since  # noqa: E402
 import generate_streams_image  # noqa: E402
 import post_gainer_thread  # noqa: E402
@@ -189,11 +189,16 @@ def _build_gainer_ledger_rows_html(
     image_cache: dict[str, str],
     cover_map: dict,
     track_album_map: dict,
+    best_day_labels: dict[str, str] | None = None,
 ) -> str:
+    best_day_labels = best_day_labels or {}
     row_html = []
     for index, row in enumerate(rows, 1):
         entry = _track_entry(row)
-        title = html.escape(str(entry.get("title") or row["track_id"]))
+        title = ledger_name_with_best_day(
+            html.escape(str(entry.get("title") or row["track_id"])),
+            best_day_labels.get(row["track_id"]),
+        )
         album = html.escape(str(entry.get("album") or row["track"].get("album") or "Taylor Swift"))
         cover_url = generate_streams_image.get_cover_url(entry, cover_map, track_album_map)
         cover = image_cache.get(cover_url, cover_url) if cover_url else ""
@@ -259,12 +264,21 @@ def _render_gainer_table_image(
     date_fmt = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
     title_period = "Daily" if period == "daily" else "Weekly"
     subtitle_compare = "vs previous day" if period == "daily" else "vs last week"
+    best_day_labels: dict[str, str] = {}
+    try:
+        best_day_labels = best_day_since.best_day_marker_labels(
+            [row["track_id"] for row in rows if row.get("track_id")],
+            date.fromisoformat(target_date),
+        )
+    except Exception as exc:  # a marker lookup must never block the card
+        print(f"[stream_highlights] best-day markers unavailable ({exc}).")
     rows_html = _build_gainer_ledger_rows_html(
         rows,
         period=period,
         image_cache=image_cache,
         cover_map=cover_map,
         track_album_map=track_album_map,
+        best_day_labels=best_day_labels,
     )
     html_text = build_table_html(
         title=f"Taylor Swift - {title_period} Gainers",

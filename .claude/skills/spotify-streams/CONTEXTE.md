@@ -350,6 +350,190 @@ Limite connue : un record annuel sur une chanson < 20k/j n'est pas surveille
 en early (pas de spawn subprocess pour lui pendant la collecte) mais reste
 poste individuellement et sans cap dans le batch best-day-since de finalize.
 
+## Batch best-day-since finalize : 3 standard / 5 max (2026-09-03)
+
+Decision proprietaire : le batch best-day-since de `finalize_update`
+(`post_best_day_since_twitter.py` sans `--only-track`) ne poste
+plus jusqu'a 10 cards chanson par jour mais **3 standard, 5 maximum**. Aligne
+sur la voie early (deja `EARLY_BEST_DAY_STANDARD_MAX_POSTS = 3` ->
+`EARLY_BEST_DAY_EXCEPTIONAL_MAX_POSTS = 5`, inchangee).
+
+- `POST_COLLECTION_MAX_SONG_POSTS` : 10 -> **5** (aussi le defaut de `--limit`).
+- Nouveau `POST_COLLECTION_STANDARD_SONG_POSTS = 3`.
+- `_validated_song_rows_for_post(..., standard_limit=3, min_days=...)` : au-dela
+  de 3 rows "capped", les slots 4-5 ne sont accordes qu'a un record
+  **exceptionnel** — `_is_priority_best_day_since(row)` (ecart >90 j) OU score
+  `score_best_day_since.score_best_day_since` (batch, pas single) >=
+  `EARLY_BEST_DAY_EXCEPTIONAL_MIN_SCORE` (90). Le score batch est calcule une
+  seule fois (map `{track_id: score}` lazy) — jamais par row ; un echec de
+  scoring n'empeche jamais un post (les candidats slots 4-5 sont alors traites
+  comme non-exceptionnels).
+- Inchange : `_is_priority_best_day_since` (>90 j) et `_is_unconditional_best_day`
+  (biggest day of the year) contournent toujours entierement le cap et ne
+  comptent pas dedans.
+
+## Bonus "stature" (chanson majeure) dans le score best-day-since (2026-09-03)
+
+Probleme : une chanson phare (All Too Well (Taylor's Version), Blank Space...)
+qui bat un record best-day-since vieux de plusieurs mois avec un mouvement
+jour/jour modeste scorait sous 58 et ratait la voie early (postee seulement
+dans le batch finalize). Le proprietaire veut ces titres en early.
+
+Fix dans `score_best_day_since.py` : nouveau `_stature_bonus(metrics)` ajoute
+au dict `score_adjustments` des DEUX scorers (single-candidate early ET batch).
+
+- Base : `max(daily_streams du jour, expected_daily baseline)` — capte "grosse
+  chanson" meme un jour plus calme ; une petite chanson sur un spike rare n'est
+  pas touchee.
+- Rampe log : 0 sous `STATURE_BONUS_MIN_SCALE` (150k), montee vers
+  `STATURE_BONUS_MAX` (14.0) a `STATURE_BONUS_FULL_SCALE` (1.2M).
+- Ex. verifie 2026-09-01 : champagne problems 62 -> 75 (passe le gate early 58),
+  Back To December 66 -> 76, my tears ricochet 34 -> 46 (reste dehors, jour
+  +0.7% faible — correct). Le gate `EARLY_BEST_DAY_MIN_SCORE`/`--early-min-score`
+  (58) n'a PAS bouge — seul le score monte.
+- Explication ajoutee dans `_explanations` : "major song clearing a
+  long-standing best day".
+
+## Blocage saisonnier Holiday Collection etendu aux cards chanson (2026-09-03)
+
+Avant : `generate_album_update_image.holiday_collection_post_block_reason` (hors
+saison 25 nov-7 jan) n'etait teste QUE pour la card best-day-since **album**.
+Les cards **chanson** d'un titre de "The Taylor Swift Holiday Collection"
+(Last Christmas, Santa Baby, White Christmas, Silent Night, Christmas Tree
+Farm...) partaient hors saison — dont "Christmas Tree Farm" en early le
+2026-09-01 comme biggest day of the year.
+
+Decision proprietaire : **le blocage saisonnier bat toutes les autres regles,
+y compris "biggest day of the year = inconditionnel"**. Hors saison, AUCUN
+contenu best-day-since d'un titre Holiday Collection ne sort.
+
+- Nouveau helper `is_holiday_collection_season(target_date)` (wrapper public de
+  `_is_holiday_collection_season`) dans `generate_album_update_image.py`.
+- `post_best_day_since_twitter._holiday_collection_out_of_season(album, date)` :
+  `is_holiday_collection_album(album) and not is_holiday_collection_season(date)`.
+- Applique dans `_find_all_rows` + `_find_recap_rows` (couvre le batch ET le
+  recap) et dans `_post_single_track_early` (voie early + grower). Verifie
+  2026-09-01 : 0 row Holiday Collection dans le recap.
+- En saison : rien ne change, les titres repassent par les gates normaux.
+- Hors scope : "Christmas Tree Farm" est bien dans l'album Holiday Collection
+  (donc couvert). Les autres singles de Noel hors album (ex. throwbacks) ne le
+  sont pas — a rediscuter si besoin.
+
+## Best-day-since ALBUM : plus de card separee, fondu dans la caption (2026-09-03)
+
+Decision proprietaire : **plus aucune card best-day-since album independante.**
+Quand l'album total decroche un best-day, on **reecrit la premiere ligne de sa
+card update quotidienne** au lieu de poster une 2e card.
+
+- `generate_album_update_image._build_album_post_text` (base) : nouveau helper
+  `_album_best_day_row(album_name, canonical_name, target_date)` — memes regles
+  que l'ancienne card (`compute_album_best_day_since`, >= 2 tracks
+  standard-edition, `passes_filters(min_days=ALBUM_BEST_DAY_MIN_DAYS=30)` OU
+  `is_biggest_day_of_year` OU `best_ever`). Si un row qualifie :
+  `📈| "X" earned its <LABEL> with N streams on <date>.<pct>` (label via
+  `_best_day_post_label`, tous types + suffixe `(combined)`), sinon la ligne
+  `received N streams` inchangee. Jamais applique le jour anniversaire TTPD.
+- **"has once again earned its ..."** : `best_day_since.is_recent_repeat_record(row)`
+  (`RECENT_REPEAT_RECORD_DAYS = 60`) — `kind == "since"` et jour battu a <= 60 j
+  (deux grosses journees rapprochees, jamais consecutives : `compute_best_day_since`
+  refuse deja un jour battu <= 1 j). Verbe `has once again earned` (album +
+  chanson `best_day_since_tweet(repeat=...)`) / `once again earned` /
+  `once again had its` (note best-day chanson de la card album). `best_ever` =
+  jamais un repeat.
+- Consequence assumee : **pas de best-day album le week-end** (les cards album
+  ne postent pas sam/dim).
+- Supprime : `post_best_day_since_twitter` `--only-album` / `--album-limit` /
+  `--album-min-days` / `--no-albums`, `_pick_album_rows`, `_album_row`,
+  `_build_album_best_day_tweet`, `_generate_album_best_day_since_image`,
+  `_post_album_best_day_rows`, `_album_best_day_lock_path` /
+  `_write_album_best_day_lock`, `ALBUM_BEST_DAY_MIN_DAYS` (deplace dans
+  `generate_album_update_image`). `finalize_update.ReadyAlbumBestDaySincePoster`
+  -> `ReadyEraRecapPoster` (ne fait plus que la card recap par ere ; l'early
+  album update card reste `ReadyAlbumUpdatePoster`, weekday-only). Cote
+  `update_streams` : `album_best_day_since_poster` -> `era_recap_poster`,
+  `stop()` ne renvoie plus rien.
+- `_exceptional_primary_albums` (finalize) garde `compute_album_best_day_since`
+  pour **prioriser l'ordre** des cards album early — c'est desormais la seule
+  mise en avant d'un best-day album.
+
+## Recap best-day-since : header fixe "all eras", plus de theme d'album (2026-09-03)
+
+Le recap best-day-since (`_generate_recap_image` / `_generate_recap_images`)
+n'a plus de theming par album. Avant : `_album_recap_theme` choisissait un
+album quand > 25 % de ses tracks battaient un record (`ALBUM_RECAP_THEME_THRESHOLD_RATIO`),
+ce qui pilotait le header (dossier de headers de l'album), le titre
+(`{album} - Best Day Recap`) et l'override light Holiday Collection. Fonction +
+constante supprimees.
+
+Desormais, chaque jour :
+- **Header fixe** = `collectors/spotify/streams/tools/headers/best_day_recap/all-eras.jpg`
+  (constante `RECAP_HEADERS_DIR`) — la bande "all eras" (2200x254) construite a
+  partir des portraits du site officiel Eras Tour, un panel par ere dans
+  l'ordre des albums. Le dossier ne contient que cette image, donc
+  `pick_header_image` la renvoie toujours. Source dans `assets/eras-tour-hero/all-eras.jpg`
+  (copie du build frontend `tsm-frontend/scripts/build_eras_strip.py` ->
+  `tsm-frontend/frontend/public/headers/all-eras.jpg` ; si les panels changent,
+  re-copier depuis le frontend). Fichiers `.jpg` de `tools/headers/**` deja
+  suivis par git.
+- **Masthead "BEST DAY"** toujours actif (avant : seulement en mode theme).
+- **Titre** toujours `Best Day Since - Full Recap`.
+- **Thème** = `masthead_theme_for_date(target_date)` (light lun-ven / dark
+  sam-dim) — plus d'override Holiday Collection (le theme d'ere n'existe plus).
+- Nom de fichier de sortie : `best_day_since_recap[_partXofY]_{date}.png` (plus
+  de suffixe `_{slug}`).
+
+## Card recap best-day-since PAR ERE (2026-09-03)
+
+En plus du recap **global** (header fixe ci-dessus), une **card recap dediee a
+une ere** part quand cette ere a une grosse journee :
+
+- **Declencheur** : `>= ERA_RECAP_MIN_SONGS = 5` chansons d'une meme **ere**
+  (`best_day_since.era_key` : Red + Red (TV), 1989 + 1989 (TV), Midnights +
+  3am/Til Dawn... comptent ensemble) qui, le meme jour, decrochent un
+  best-day-since **et** passent le gate de post individuel (daily >= 80k, ou
+  jour/jour > +10 %, ou ecart > 60 j, ou biggest day of the year).
+  `best_day_since.era_recap_groups(...)`.
+- **Timing** : postee **avant la card album update de l'ere**. En finalize
+  (`_post_era_recaps_batch`, sans cap), OU tot pendant la collecte via
+  `post_best_day_since_twitter.py --only-era-recap ALBUM` (exit 0 poste / 3 pas
+  encore 5 chansons / 1 erreur), declenche par `ReadyEraRecapPoster`
+  (une fois par ere, `_era_recap_checked`). **Cap early = 2**
+  (`EARLY_ERA_RECAP_MAX_POSTS`), **ne consomme pas** le quota chanson early.
+- **Header = theme de l'ere** : `_generate_recap_image(era_display=...)` reprend
+  la logique de l'ancien `_album_recap_theme` (pool de headers de l'album via
+  `generate_album_update_image.header_images_for_album`, masthead "BEST DAY",
+  titre `{Ere} - Best Day Recap`, override light Holiday Collection).
+- **Additive** : les chansons restent dans le recap global.
+- **Suppression** : une fois la card d'une ere postee (lock
+  `best_day_since_era_recap_locks/{slug}.lock`), **aucune card best-day-since
+  chanson individuelle de cette ere** ce jour-la (`_era_recap_posted_for` dans
+  `_find_all_rows` + `_post_single_track_early`, growers inclus) — **sauf** un
+  biggest day of the year (carte inconditionnelle maintenue, decision owner).
+- `--no-era-recap` pour sauter.
+
+## Marqueur ★ since sur Top Songs / Top Eras / GAINERS (2026-09-03)
+
+Ces 3 cards ledger affichent le marqueur `★ Titre · since <date longue>` (ou
+`· of the year` / `· of the month`) dans la colonne Track/Album, **comme les
+images d'album update**. Helper `comp.tables_image.ledger_name_with_best_day` +
+`best_day_since.best_day_marker_text(row)` / `best_day_marker_labels(track_ids,
+date)`. Top Songs / GAINERS = record **solo** par track (records combined non
+affiches, meme regle que `_best_day_labels_for_sections`) ; Top Eras = record
+**combined** de l'ere (`compute_album_best_day_since` par `era_key`). Lookup
+toujours en try/except : jamais bloquant (regle data #5). Pas de filtre
+saisonnier Holiday Collection ici (parite avec l'image d'album).
+
+## best_day_since.json enrichi + push R2 early (2026-09-03)
+
+- `export_for_web.export_best_day_since()` ecrit en plus `era_recaps` (memes
+  groupes que la card par ere) et `all_items` (tous les records du jour, sans
+  gate `min_days`) dans `data/best_day_since.json`.
+- `update_streams._upload_best_day_since_list(stats_date)` pousse ce seul
+  fichier vers R2 (`Key="data/best_day_since.json"`) **pendant la collecte** :
+  callback `on_post` des watchers best-day (`ReadyBestDaySincePoster` /
+  `ReadyEraRecapPoster`) + une fois apres `.stop()`. Best effort,
+  jamais bloquant, independant du lock d'export R2 complet.
+
 ## Score par album pour l'ordre de post (2026-08-29)
 
 `tools/scripts/score_album_update.py` — nouveau module read-only, calque sur
@@ -931,13 +1115,14 @@ dark le week-end (sam/dim)**. Base sur la **date des donnees postees**
   - `generate_weekend_streams_image.py` (recap quotidien) — `build_html` /
     `generate` calculent ; CLI `--light` / `--dark` force pour tester.
   - `post_best_day_since_twitter.py::_generate_recap_image` (recap Best Day
-    Since, "BEST DAY").
-- **Override d'ere prioritaire** : le recap Best Day Since d'une ere
-  « Holiday Collection » reste **light toute l'annee** (theming Noel) — le
-  code applique la regle du jour d'abord, puis force `"light"` si l'ere est
-  Holiday Collection. Aucun autre override d'ere sur ces cards (TTPD/Showgirl
-  n'existent que sur `generate_album_update_image.py`, systeme `theme_variant`
-  separe, hors de cette regle).
+    Since, "BEST DAY") — header fixe "all eras" + masthead toujours actif
+    depuis 2026-09-03 (cf. section "Recap best-day-since : header fixe" plus
+    haut), suit `masthead_theme_for_date` sans override.
+- **Plus d'override d'ere** (depuis 2026-09-03) : le recap Best Day Since n'a
+  plus de theming par album, donc plus d'exception « Holiday Collection reste
+  light ». Il suit la regle du jour comme les autres cards. TTPD/Showgirl
+  restent un systeme `theme_variant` separe sur `generate_album_update_image.py`,
+  hors de cette regle.
 - **Recap Best Day Since** : ses lignes utilisent les classes classiques
   `.data-row`/`.col-*` (pas `.ledger-*`), qui ont un fond quasi-blanc et un
   texte sombre code en dur. Donc son theme "dark" n'assombrit que le header +

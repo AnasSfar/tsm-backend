@@ -23,6 +23,7 @@ import csv
 import json
 import re
 import sys
+from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -43,6 +44,11 @@ FEATURES_JSON = DISCOGRAPHY_DIR / "features.json"
 DEFAULT_OUTPUT = WEB_EXPORT_DATA_DIR / "best_day_since.json"
 HISTORY_START_DATE = date(2025, 1, 1)
 DEFAULT_MIN_DAYS = 30
+# A "best day since X" whose beaten day X is at most this many days old counts as
+# a *recent repeat* record (two comparable big days close together, not on
+# consecutive days) - captions then read "has once again earned its best day
+# since X" instead of "earned its best day since X".
+RECENT_REPEAT_RECORD_DAYS = 60
 LIVE_COLLECTION_MIN_DAYS = 30
 LIVE_COLLECTION_MIN_PCT_CHANGE = 10.0
 YEAR_RECORD_IGNORE_DAYS = 15
@@ -428,6 +434,183 @@ def load_album_track_ids(tracks: dict[str, Track]) -> dict[str, list[str]]:
     return by_album
 
 
+_ERA_KEY_ALIASES = {
+    "fearless (taylor's version)": "fearless",
+    "speak now (taylor's version)": "speak now",
+    "red (taylor's version)": "red",
+    "1989 (taylor's version)": "1989",
+    "the tortured poets department: the anthology": "the tortured poets department",
+    "midnights (the til dawn edition)": "midnights",
+    "midnights (3am edition)": "midnights",
+    "folklore: the long pond studio sessions": "folklore",
+}
+
+
+def era_key(album: str | None) -> str:
+    """Normalize an album name to a stable era key: collapses Taylor's Version,
+    deluxe / anniversary / 3am / Til Dawn / anthology editions and karaoke onto
+    the base era so "Red" and "Red (Taylor's Version)" group together."""
+    text = re.sub(r"\s+", " ", (album or "").strip())
+    if not text:
+        return ""
+
+    normalized = text.casefold()
+    if normalized in _ERA_KEY_ALIASES:
+        return _ERA_KEY_ALIASES[normalized]
+
+    text = re.sub(r"\s*\(taylor's version\)", "", text, flags=re.IGNORECASE)
+    text = re.sub(
+        r"\s*\((?:deluxe|standard|expanded|bonus|anniversary|karaoke|acoustic|live|tour|edition|"
+        r"the anthology|the til dawn edition|3am edition)[^)]*\)",
+        "",
+        text,
+        flags=re.IGNORECASE,
+    )
+    text = re.sub(
+        r"\s*[-–—]\s*(?:deluxe|standard|expanded|bonus|anniversary|karaoke|acoustic|live|tour|edition).*$",
+        "",
+        text,
+        flags=re.IGNORECASE,
+    )
+    text = re.sub(r"\s*:\s*(?:the anthology|the long pond studio sessions|.*edition).*$", "", text, flags=re.IGNORECASE)
+
+    karaoke_match = re.match(r"Taylor Swift Karaoke:\s*(.+)", text, flags=re.IGNORECASE)
+    if karaoke_match:
+        text = karaoke_match.group(1)
+
+    return re.sub(r"\s+", " ", text.strip()).casefold()
+
+
+def _era_recap_post_gate_ok(
+    row: dict,
+    *,
+    min_daily_streams: int | None,
+    min_pct_change: float | None,
+    always_post_after_days: int,
+) -> bool:
+    """Mirror of ``post_best_day_since_twitter._passes_song_post_gate``: does this
+    best-day row clear the bar for an individual song post (and therefore count
+    toward an era recap)?"""
+    if row.get("is_biggest_day_of_year"):
+        return True
+    if (row.get("days_since") or 0) > always_post_after_days:
+        return True
+    daily = int(row.get("daily_streams") or 0)
+    if min_daily_streams is not None and daily >= min_daily_streams:
+        return True
+    previous_day_daily = row.get("previous_day_daily")
+    if min_pct_change is not None and previous_day_daily and previous_day_daily > 0:
+        if (daily - previous_day_daily) / previous_day_daily * 100 > min_pct_change:
+            return True
+    return min_daily_streams is None and min_pct_change is None
+
+
+def era_recap_groups(
+    target_date: date,
+    *,
+    min_songs: int = 5,
+    min_days: int = LIVE_COLLECTION_MIN_DAYS,
+    min_daily_streams: int | None = None,
+    min_pct_change: float | None = LIVE_COLLECTION_MIN_PCT_CHANGE,
+    always_post_after_days: int = 60,
+    tracks: dict[str, Track] | None = None,
+    history: dict[str, list[Point]] | None = None,
+    exclude_predicate: Callable[[Track], bool] | None = None,
+) -> list[dict]:
+    """Group the day's best-day-since song records by era and keep only eras
+    where at least ``min_songs`` songs both hit a record and clear the
+    individual post gate. Feeds the dedicated per-era "best day recap" card and
+    the web export. Records are not consumed here - a song still appears in the
+    global recap and (unless suppressed by the era card) can get its own card.
+    """
+    tracks = tracks if tracks is not None else load_tracks(include_extras=False)
+    history = history if history is not None else load_history()
+    display_names = {era_key(album): album for album in load_album_track_ids(tracks)}
+
+    buckets: dict[str, list[dict]] = {}
+    for track_id, track in tracks.items():
+        if exclude_predicate is not None and exclude_predicate(track):
+            continue
+        key = era_key(track.album)
+        if not key:
+            continue
+        row = compute_best_day_since(track, history.get(track_id) or [], target_date)
+        if not row:
+            continue
+        if not (row.get("is_biggest_day_of_year") or passes_filters(row, min_days=min_days)):
+            continue
+        if not _era_recap_post_gate_ok(
+            row,
+            min_daily_streams=min_daily_streams,
+            min_pct_change=min_pct_change,
+            always_post_after_days=always_post_after_days,
+        ):
+            continue
+        buckets.setdefault(key, []).append(row)
+
+    groups: list[dict] = []
+    for key, rows in buckets.items():
+        if len(rows) < min_songs:
+            continue
+        rows.sort(key=sort_key, reverse=True)
+        groups.append({
+            "era_key": key,
+            "album": display_names.get(key, rows[0]["album"]),
+            "count": len(rows),
+            "track_ids": [row["track_id"] for row in rows],
+            "items": rows,
+        })
+    groups.sort(key=lambda group: (group["count"], group["items"][0]["daily_streams"]), reverse=True)
+    return groups
+
+
+def best_day_marker_text(row: dict | None) -> str | None:
+    """Short "since" marker for a best-day-since row, matching the album update
+    image: "of the year" / "of the month" (no "since" prefix) or a long date
+    like "November 26th, 2025"."""
+    if not row or row.get("kind") not in ("since", "best_ever"):
+        return None
+    if row.get("is_biggest_day_of_year"):
+        return "of the year"
+    value = row.get("best_day_since")
+    if isinstance(value, str) and re.match(r"\d{4}-\d{2}-\d{2}$", value):
+        marker_date = date.fromisoformat(value)
+        return f"{marker_date.strftime('%B')} {ordinal(marker_date.day)}, {marker_date.year}"
+    if row.get("is_biggest_day_of_month"):
+        return "of the month"
+    return None
+
+
+def best_day_marker_labels(
+    track_ids: "list[str] | set[str]",
+    target_date: date,
+    *,
+    min_days: int = DEFAULT_MIN_DAYS,
+    tracks: dict[str, Track] | None = None,
+    history: dict[str, list[Point]] | None = None,
+) -> dict[str, str]:
+    """{track_id: marker text} for tracks that hit a *solo* best-day-since record
+    on ``target_date`` (combined-family records are not surfaced - same rule as
+    generate_album_update_image._best_day_labels_for_sections). Powers the
+    ``* since ...`` note on Top Songs / Top Eras / Gainers cards."""
+    tracks = tracks if tracks is not None else load_tracks(include_extras=True)
+    history = history if history is not None else load_history()
+    labels: dict[str, str] = {}
+    for track_id in set(track_ids):
+        track = tracks.get(track_id)
+        if track is None:
+            continue
+        row = compute_best_day_since(track, history.get(track_id) or [], target_date)
+        if not row or row.get("kind") != "since":
+            continue
+        if not (row.get("is_biggest_day_of_year") or passes_filters(row, min_days=min_days)):
+            continue
+        label = best_day_marker_text(row)
+        if label:
+            labels[track_id] = label
+    return labels
+
+
 def compute_album_best_day_since(
     album: str,
     track_ids: list[str],
@@ -686,6 +869,25 @@ def format_long_date(value: str) -> str:
         return "before 2025"
     d = date.fromisoformat(value)
     return d.strftime("%B {S}, %Y").replace("{S}", ordinal(d.day))
+
+
+def is_recent_repeat_record(
+    row: dict,
+    *,
+    window_days: int = RECENT_REPEAT_RECORD_DAYS,
+) -> bool:
+    """True when this "best day since" beats a *recent* prior day.
+
+    Used to switch caption wording from "earned its best day since X" to "has
+    once again earned its best day since X" - the song/album had a comparable
+    big day within ``window_days`` and just did it again (never on consecutive
+    days: ``compute_best_day_since`` already rejects a beaten day <= 1 day old).
+    ``best_ever`` has no beaten day and is never a repeat.
+    """
+    if row.get("kind") != "since":
+        return False
+    days_since = row.get("days_since")
+    return days_since is not None and 0 < int(days_since) <= window_days
 
 
 def row_label(row: dict) -> str:

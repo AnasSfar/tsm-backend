@@ -1712,9 +1712,13 @@ def export_best_day_since(stats_date: str | None) -> None:
     tracks = best_day_since.load_tracks(include_extras=False)
     history = best_day_since.load_history()
     rows = []
+    all_rows = []
     for track_id, track in tracks.items():
         row = best_day_since.compute_best_day_since(track, history.get(track_id) or [], target)
-        if row and best_day_since.passes_filters(row, min_days=best_day_since.DEFAULT_MIN_DAYS):
+        if not row:
+            continue
+        all_rows.append(row)
+        if best_day_since.passes_filters(row, min_days=best_day_since.DEFAULT_MIN_DAYS):
             rows.append(row)
 
     albums = []
@@ -1731,6 +1735,24 @@ def export_best_day_since(stats_date: str | None) -> None:
 
     rows.sort(key=best_day_since.sort_key, reverse=True)
     albums.sort(key=best_day_since.sort_key, reverse=True)
+    all_rows.sort(key=best_day_since.sort_key, reverse=True)
+
+    # Per-era recap groups: eras with >= 5 songs that hit a best-day record AND
+    # clear the individual song post gate today. Mirrors the dedicated per-era
+    # "best day recap" card in post_best_day_since_twitter.
+    try:
+        era_recaps = best_day_since.era_recap_groups(
+            target,
+            min_songs=5,
+            min_daily_streams=80_000,
+            min_pct_change=best_day_since.LIVE_COLLECTION_MIN_PCT_CHANGE,
+            tracks=tracks,
+            history=history,
+        )
+    except Exception as exc:  # never block the export on this
+        print(f"[best_day_since] era recap groups unavailable ({exc}).")
+        era_recaps = []
+
     payload = {
         "generated_at": datetime.now().isoformat(timespec="seconds"),
         "date": target.isoformat(),
@@ -1742,11 +1764,13 @@ def export_best_day_since(stats_date: str | None) -> None:
         "album_count": len(albums),
         "albums": albums,
         "by_album": {row["album"]: row for row in albums},
+        "era_recaps": era_recaps,
+        "all_items": all_rows,
     }
     write_json(BEST_DAY_SINCE_JSON_PATH, payload)
     print(
-        f"[best_day_since] Exported {len(rows)} track row(s) and {len(albums)} album row(s) "
-        f"for {target.isoformat()} -> {BEST_DAY_SINCE_JSON_PATH}"
+        f"[best_day_since] Exported {len(rows)} track row(s), {len(albums)} album row(s), "
+        f"{len(era_recaps)} era recap group(s) for {target.isoformat()} -> {BEST_DAY_SINCE_JSON_PATH}"
     )
 
 

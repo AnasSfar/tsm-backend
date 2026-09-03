@@ -43,6 +43,14 @@ BIGGEST_DAY_OF_MONTH_BONUS = 2.0
 COMBINED_TRACK_BONUS = 1.0
 EARLY_YEAR_RECORD_THRESHOLD_DISCOUNT = -5.0
 
+# Absolute-size ("stature") bonus: a major catalogue song hitting a real
+# best-day-since record is newsworthy even when the day-over-day % move is
+# modest, so its score should not sit below a tiny song's rare spike. Scaled
+# to the song's own streaming size, not to the size of the spike.
+STATURE_BONUS_MAX = 14.0
+STATURE_BONUS_MIN_SCALE = 150_000
+STATURE_BONUS_FULL_SCALE = 1_200_000
+
 
 @dataclass(frozen=True)
 class ScoreWeights:
@@ -357,6 +365,28 @@ def _surprise_impact_bonus(metrics: dict) -> float:
     return 18.0 * volume * surprise * (0.70 + 0.30 * momentum)
 
 
+def _stature_bonus(metrics: dict) -> float:
+    """Lift for a genuinely major song clearing a long-standing best-day marker.
+
+    A flagship catalogue song (e.g. All Too Well (Taylor's Version), Blank
+    Space) that hits a months-old best-day-since record deserves an early post
+    even when the day-over-day % is unremarkable. Based on the song's own
+    streaming scale - today's daily or its expected baseline, whichever is
+    larger - so a big song still qualifies on a quieter day, and a small song
+    riding a rare spike is unaffected.
+    """
+    scale = max(
+        float(metrics.get("daily_streams") or 0.0),
+        float(metrics.get("expected_daily") or 0.0),
+    )
+    if scale <= STATURE_BONUS_MIN_SCALE:
+        return 0.0
+    frac = math.log1p(scale - STATURE_BONUS_MIN_SCALE) / math.log1p(
+        STATURE_BONUS_FULL_SCALE - STATURE_BONUS_MIN_SCALE
+    )
+    return round(STATURE_BONUS_MAX * min(1.0, frac), 3)
+
+
 def _comeback_bonus(row: dict, metrics: dict) -> float:
     days_since = int(row.get("days_since") or 0)
     expected_pct = float(metrics.get("expected_pct_gain") or 0.0)
@@ -419,6 +449,8 @@ def _explanations(row: dict, metrics: dict, adjustments: dict[str, float]) -> li
         reasons.append("strong surprise vs recent history")
     if metrics.get("positive_move_days_7", 0) >= 4:
         reasons.append(f"{metrics['positive_move_days_7']}/7 recent daily moves positive")
+    if adjustments.get("stature_bonus", 0) > 0:
+        reasons.append("major song clearing a long-standing best day")
     if adjustments.get("comeback_bonus", 0) > 0:
         reasons.append("meaningful comeback pattern")
     if adjustments.get("seasonality_penalty", 0) < 0:
@@ -648,11 +680,13 @@ def score_single_best_day_candidate(
         "grower": max(0.0, min(1.0, metrics["grower"])),
     }
     surprise_impact_bonus = _surprise_impact_bonus(metrics)
+    stature_bonus = _stature_bonus(metrics)
     comeback_bonus = _comeback_bonus(row, metrics)
     seasonality_penalty = _seasonality_penalty(row, metrics, target)
     freshness_penalty = _freshness_penalty(row, target, all_tracks)
     score_adjustments = {
         "surprise_impact_bonus": surprise_impact_bonus,
+        "stature_bonus": stature_bonus,
         "comeback_bonus": comeback_bonus,
         "seasonality_penalty": -seasonality_penalty,
         "freshness_penalty": -freshness_penalty,
@@ -674,6 +708,7 @@ def score_single_best_day_candidate(
         "base_score": round(base_score, 3),
         "bonus": round(bonus, 3),
         "surprise_impact_bonus": round(surprise_impact_bonus, 3),
+        "stature_bonus": round(stature_bonus, 3),
         "comeback_bonus": round(comeback_bonus, 3),
         "seasonality_penalty": round(seasonality_penalty, 3),
         "freshness_penalty": round(freshness_penalty, 3),
@@ -786,11 +821,13 @@ def score_best_day_since(
             "grower": grower_scores.get(track_id, 0.0),
         }
         surprise_impact_bonus = _surprise_impact_bonus(metrics)
+        stature_bonus = _stature_bonus(metrics)
         comeback_bonus = _comeback_bonus(row, metrics)
         seasonality_penalty = _seasonality_penalty(row, metrics, target)
         freshness_penalty = _freshness_penalty(row, target, tracks_by_id)
         score_adjustments = {
             "surprise_impact_bonus": surprise_impact_bonus,
+            "stature_bonus": stature_bonus,
             "comeback_bonus": comeback_bonus,
             "seasonality_penalty": -seasonality_penalty,
             "freshness_penalty": -freshness_penalty,
@@ -811,6 +848,7 @@ def score_best_day_since(
             "base_score": round(base_score, 3),
             "bonus": round(bonus, 3),
             "surprise_impact_bonus": round(surprise_impact_bonus, 3),
+            "stature_bonus": round(stature_bonus, 3),
             "comeback_bonus": round(comeback_bonus, 3),
             "seasonality_penalty": round(seasonality_penalty, 3),
             "freshness_penalty": round(freshness_penalty, 3),

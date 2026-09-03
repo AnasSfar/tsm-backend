@@ -33,6 +33,7 @@ ROOT         = SCRIPT_DIR.parents[1]                    # streams/
 REPO_ROOT    = SCRIPT_DIR.parents[4]                    # repo root
 DB_DIR       = REPO_ROOT / "db"
 
+sys.path.insert(0, str(ROOT))                # collectors/spotify/streams/ for best_day_since
 sys.path.insert(0, str(ROOT.parent))         # collectors/spotify/ for core.*
 sys.path.insert(0, str(ROOT.parent.parent))  # collectors/ for comp.*
 
@@ -42,8 +43,9 @@ from comp.discography import build_cover_map  # noqa: E402
 from comp.tables_image import (  # noqa: E402
     download_as_data_uri, pick_header_image, get_dominant_color,
     rank_change, SPOTIFY_SVG, build_table_html, era_accent_color, dominant_color_from_data_uri,
-    masthead_theme_for_date,
+    ledger_name_with_best_day, masthead_theme_for_date,
 )
+import best_day_since  # noqa: E402
 import history_store  # noqa: E402
 
 HISTORY_PATH = first_existing_db_history("streams_history.csv")
@@ -569,7 +571,42 @@ def prefetch_covers(rows: list[dict]) -> dict[str, str]:
 # HTML builders
 # ---------------------------------------------------------------------------
 
-def build_rows_html(rows: list[dict], image_cache: dict[str, str], total_row: dict | None = None) -> str:
+def _album_best_day_labels(rows: list[dict], target_date: str) -> dict[str, str]:
+    """{row['album'] -> "* since ..." marker} for the Top Eras card: an era's
+    combined (all-versions) daily hitting a best-day-since record. Combined
+    album records ARE surfaced here (unlike per-song views) since the era row
+    itself is the combined total."""
+    labels: dict[str, str] = {}
+    try:
+        tracks = best_day_since.load_tracks(include_extras=False)
+        history = best_day_since.load_history()
+        target = date_cls.fromisoformat(target_date)
+        by_key: dict[str, list[str]] = {}
+        for track_id, track in tracks.items():
+            key = best_day_since.era_key(track.album)
+            if key and not track.is_alt_version:
+                by_key.setdefault(key, []).append(track_id)
+        label_by_key: dict[str, str] = {}
+        for key, track_ids in by_key.items():
+            if len(track_ids) < 2:
+                continue
+            row = best_day_since.compute_album_best_day_since(key, track_ids, history, target)
+            if row and best_day_since.passes_filters(row, min_days=best_day_since.DEFAULT_MIN_DAYS):
+                text = best_day_since.best_day_marker_text(row)
+                if text:
+                    label_by_key[key] = text
+        for row in rows:
+            key = best_day_since.era_key(row.get("album"))
+            if key in label_by_key:
+                labels[row["album"]] = label_by_key[key]
+    except Exception as exc:  # a marker lookup must never block the card
+        print(f"[albums_image] best-day markers unavailable ({exc}).")
+    return labels
+
+
+def build_rows_html(rows: list[dict], image_cache: dict[str, str], total_row: dict | None = None,
+                    best_day_labels: dict[str, str] | None = None) -> str:
+    best_day_labels = best_day_labels or {}
     html = ""
     render_rows = rows + ([total_row] if total_row else [])
     for i, row in enumerate(render_rows):
@@ -606,13 +643,14 @@ def build_rows_html(rows: list[dict], image_cache: dict[str, str], total_row: di
         rank_style = f' style="color:{rank_color}"' if rank_color else ""
 
         row_cls = "ledger-row ledger-row-total" if row.get("is_total") else "ledger-row"
+        name_html = album if row.get("is_total") else ledger_name_with_best_day(album, best_day_labels.get(album))
         html += f"""<div class="{row_cls}">
   <div class="ledger-rank"{rank_style}>{rank_label}</div>
   <div class="ledger-chg {chg_css}">{chg_text}</div>
   <div class="ledger-entity">
     {art_html}
     <div class="ledger-info">
-      <div class="ledger-name">{album}</div>
+      <div class="ledger-name">{name_html}</div>
     </div>
   </div>
   <div class="ledger-num"><span class="ledger-daily">{daily_signed}</span></div>
@@ -642,7 +680,8 @@ def build_html(rows: list[dict], target_date: str, image_cache: dict[str, str],
     if masthead_theme is None:
         masthead_theme = masthead_theme_for_date(target_date)
     date_fmt  = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
-    rows_html = build_rows_html(rows, image_cache, total_row)
+    best_day_labels = _album_best_day_labels(rows, target_date)
+    rows_html = build_rows_html(rows, image_cache, total_row, best_day_labels)
 
     return build_table_html(
         title="Taylor Swift · Eras on Spotify",

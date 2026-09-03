@@ -305,8 +305,13 @@ class ReadyAlbumUpdatePoster:
         return False
 
 
-class ReadyAlbumBestDaySincePoster:
-    """Post album best-day-since updates as soon as their album is complete."""
+class ReadyEraRecapPoster:
+    """Post the dedicated per-era best-day recap card as soon as an era's album
+    is complete during the streams run.
+
+    (Album-level best-day records are no longer posted as their own card - they
+    are folded into the first line of each album's daily update card, handled by
+    the weekday-only ``ReadyAlbumUpdatePoster`` / the finalize album sweep.)"""
 
     def __init__(
         self,
@@ -321,9 +326,11 @@ class ReadyAlbumBestDaySincePoster:
         no_post_mode: bool,
         target_albums: list[str] | tuple[str, ...],
         priority_ready: Callable[[], bool] | None = None,
+        on_post: Callable[[], None] | None = None,
     ) -> None:
         self.script_dir = script_dir
         self.stats_date = stats_date
+        self.on_post = on_post
         self.export_web_data = export_web_data
         self.album_tracks_done_for = album_tracks_done_for
         self.spacing_seconds = spacing_seconds
@@ -333,7 +340,7 @@ class ReadyAlbumBestDaySincePoster:
         self.target_albums = tuple(dict.fromkeys(target_albums))
         self.priority_ready = priority_ready or (lambda: True)
         self._checked: set[str] = set()
-        self._posted: set[str] = set()
+        self._era_recap_checked: set[str] = set()
         self._stop = threading.Event()
         self._lock = threading.Lock()
         self._thread: threading.Thread | None = None
@@ -342,15 +349,13 @@ class ReadyAlbumBestDaySincePoster:
     def start(self) -> None:
         if not self.enabled or self._thread is not None:
             return
-        self._thread = threading.Thread(target=self._run, name="ready-album-best-day-posts", daemon=True)
+        self._thread = threading.Thread(target=self._run, name="ready-era-recap-posts", daemon=True)
         self._thread.start()
 
-    def stop(self) -> set[str]:
+    def stop(self) -> None:
         self._stop.set()
         if self._thread is not None:
             self._thread.join()
-        with self._lock:
-            return set(self._posted)
 
     def post_state(self) -> dict[str, float]:
         with self._lock:
@@ -358,7 +363,7 @@ class ReadyAlbumBestDaySincePoster:
 
     def _run(self) -> None:
         while not self._stop.is_set():
-            if self._post_newly_ready_album():
+            if self._post_newly_ready_era_recap():
                 continue
             if self._done():
                 return
@@ -368,7 +373,7 @@ class ReadyAlbumBestDaySincePoster:
         with self._lock:
             return len(self._checked) >= len(self.target_albums)
 
-    def _post_newly_ready_album(self) -> bool:
+    def _post_newly_ready_era_recap(self) -> bool:
         for album in self.target_albums:
             with self._lock:
                 if album in self._checked:
@@ -380,31 +385,39 @@ class ReadyAlbumBestDaySincePoster:
             with self._lock:
                 self._checked.add(album)
 
-            print(f"Album best-day-since check ready during streams run: {album}")
-            print("Exporting current web data before early album best-day post...")
+            # Dedicated per-era best-day recap card (>= 5 post-eligible best-day
+            # songs of the era), before this era's album card. Own cap of 2,
+            # does not spend the song early-post quota. Fire once per era.
+            era = post_best_day_since_twitter._album_key(album)
+            if not era or era in self._era_recap_checked:
+                return True
+            self._era_recap_checked.add(era)
+
+            print(f"Era best-day recap check ready during streams run: {album} ({era})")
+            print("Exporting current web data before early era best-day recap post...")
             self.export_web_data(stats_date=self.stats_date)
 
             best_day_script = self.script_dir / "tools" / "scripts" / "post_best_day_since_twitter.py"
-            cmd = [sys.executable, str(best_day_script), self.stats_date, "--only-album", album]
+            recap_cmd = [
+                sys.executable, str(best_day_script), self.stats_date,
+                "--only-era-recap", album,
+            ]
             if self.no_post_mode:
-                cmd.append("--no-post")
-
+                recap_cmd.append("--no-post")
             _wait_before_post(
-                label=f"early album best-day-since ({album})",
+                label=f"early era best-day recap ({album})",
                 should_post=not self.no_post_mode,
                 state=self._post_state,
                 spacing_seconds=self.spacing_seconds,
                 log_mode=self.log_mode,
             )
-            result = _run_subprocess(cmd, check=False, env={"TWITTER_POST_PRIORITY": "0"})
-            if result.returncode == 0:
-                print(f"Album best-day-since posted early during streams run: {album}")
+            recap_result = _run_subprocess(recap_cmd, check=False, env={"TWITTER_POST_PRIORITY": "0"})
+            if recap_result.returncode == 0:
+                print(f"Era best-day recap posted early during streams run: {album} ({era})")
                 _mark_post_done(should_post=not self.no_post_mode, state=self._post_state)
-                with self._lock:
-                    self._posted.add(album)
-                return True
-            if result.returncode != 3:
-                print(f"Early album best-day-since check failed for {album} (exit {result.returncode}); skipping.")
+                _run_on_post_callback(self.on_post)
+            elif recap_result.returncode != 3:
+                print(f"Early era best-day recap check failed for {album} (exit {recap_result.returncode}); skipping.")
             return True
         return False
 
@@ -511,9 +524,11 @@ class ReadyBestDaySincePoster:
         min_score: float | None = None,
         priority_ready: Callable[[], bool] | None = None,
         priority_track_ids: list[str] | None = None,
+        on_post: Callable[[], None] | None = None,
     ) -> None:
         self.script_dir = script_dir
         self.stats_date = stats_date
+        self.on_post = on_post
         self.priority_track_ids = tuple(dict.fromkeys(priority_track_ids or []))
         self.track_ids = tuple(dict.fromkeys([*self.priority_track_ids, *track_ids]))
         self._priority_track_id_set = set(self.priority_track_ids)
@@ -614,6 +629,7 @@ class ReadyBestDaySincePoster:
                 _mark_post_done(should_post=not self.no_post_mode, state=self._post_state)
                 with self._lock:
                     self._posted.add(track_id)
+                _run_on_post_callback(self.on_post)
                 return True
             if result.returncode != 3:
                 print(f"Early best-day-since check failed for {track_id} (exit {result.returncode}); skipping.")
@@ -681,6 +697,17 @@ def _mark_post_done(*, should_post: bool, state: dict[str, float]) -> None:
     if should_post:
         state["posted_count"] += 1
         state["last_post_at"] = time.perf_counter()
+
+
+def _run_on_post_callback(callback: Callable[[], None] | None) -> None:
+    """Fire a watcher's optional post-success hook (e.g. push best_day_since.json
+    to R2 early). Must never break the watcher loop."""
+    if callback is None:
+        return
+    try:
+        callback()
+    except Exception as exc:  # a hook failure must not stall posting
+        print(f"[finalize] on-post hook failed (non-blocking): {exc}")
 
 
 def _run(

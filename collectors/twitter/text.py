@@ -75,9 +75,18 @@ def song_overtake_tweet(group: dict, stats_date: str) -> str:
 
     return build(compact_lines)
 
-def best_day_since_tweet(*, title: str, label: str, daily_streams: int, pct: str, track_id: str) -> str:
+def best_day_since_tweet(
+    *,
+    title: str,
+    label: str,
+    daily_streams: int,
+    pct: str,
+    track_id: str,
+    repeat: bool = False,
+) -> str:
+    verb = "has once again earned" if repeat else "earned"
     body = (
-        f'"{title}" earned its {label} with {int(daily_streams):,} streams [{pct}].\n\n'
+        f'"{title}" {verb} its {label} with {int(daily_streams):,} streams [{pct}].\n\n'
         f"Full history: {song_url(track_id)}"
     )
     return with_prefix(body, BEST_DAY_PREFIX)
@@ -86,6 +95,15 @@ def best_day_since_tweet(*, title: str, label: str, daily_streams: int, pct: str
 def best_day_since_recap_tweet(*, count: int, stats_date: str) -> str:
     plural = "s" if int(count) != 1 else ""
     body = f"{int(count)} song{plural} hit a best day since record on {date_label(stats_date)}. Full recap below."
+    return with_prefix(body, BEST_DAY_PREFIX)
+
+
+def best_day_since_era_recap_tweet(*, era: str, count: int, stats_date: str) -> str:
+    plural = "s" if int(count) != 1 else ""
+    body = (
+        f"{int(count)} {era} song{plural} hit a best day since record on "
+        f"{date_label(stats_date)}. Full {era} recap below."
+    )
     return with_prefix(body, BEST_DAY_PREFIX)
 
 

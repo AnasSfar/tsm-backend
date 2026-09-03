@@ -29,6 +29,7 @@ ROOT         = SCRIPT_DIR.parents[1]                    # streams/
 REPO_ROOT    = SCRIPT_DIR.parents[4]                    # repo root
 DB_DIR       = REPO_ROOT / "db"
 
+sys.path.insert(0, str(ROOT))                # collectors/spotify/streams/ for best_day_since
 sys.path.insert(0, str(ROOT.parent))         # collectors/spotify/ for core.*
 sys.path.insert(0, str(ROOT.parent.parent))  # collectors/ for comp.*
 
@@ -38,8 +39,9 @@ from comp.discography import build_cover_map, build_track_album_map  # noqa: E40
 from comp.tables_image import (  # noqa: E402
     download_as_data_uri, pick_header_image, get_dominant_color,
     SPOTIFY_SVG, build_table_html, era_accent_color, dominant_color_from_data_uri,
-    masthead_theme_for_date,
+    ledger_name_with_best_day, masthead_theme_for_date,
 )
+import best_day_since  # noqa: E402
 import history_store  # noqa: E402
 
 HISTORY_PATH = first_existing_db_history("streams_history.csv")
@@ -470,7 +472,9 @@ def prefetch_images(top_rows: list[dict], cover_map: dict, track_album_map: dict
 # ---------------------------------------------------------------------------
 
 def build_rows_html(top_rows: list[dict], cover_map: dict, track_album_map: dict,
-                    image_cache: dict[str, str] | None = None) -> str:
+                    image_cache: dict[str, str] | None = None,
+                    best_day_labels: dict[str, str] | None = None) -> str:
+    best_day_labels = best_day_labels or {}
     html = ""
     for i, entry in enumerate(top_rows):
         rank      = int(entry.get("rank") or i + 1)
@@ -500,13 +504,15 @@ def build_rows_html(top_rows: list[dict], cover_map: dict, track_album_map: dict
         rank_color = era_accent_color(album_name) or dominant_color_from_data_uri(cover_url)
         rank_style = f' style="color:{rank_color}"' if rank_color else ""
 
+        name_html = ledger_name_with_best_day(title, best_day_labels.get(entry.get("track_id") or ""))
+
         html += f"""<div class="ledger-row">
   <div class="ledger-rank"{rank_style}>{rank}</div>
   <div class="ledger-chg {chg_css}">{chg_text}</div>
   <div class="ledger-entity">
     {art_html}
     <div class="ledger-info">
-      <div class="ledger-name">{title}</div>
+      <div class="ledger-name">{name_html}</div>
       <div class="ledger-sub">{artist}</div>
     </div>
   </div>
@@ -540,7 +546,15 @@ def build_html(top_rows: list[dict], target_date: str, cover_map: dict, track_al
     if masthead_theme is None:
         masthead_theme = masthead_theme_for_date(target_date)
     date_fmt   = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
-    rows_html  = build_rows_html(top_rows, cover_map, track_album_map, image_cache)
+    best_day_labels: dict[str, str] = {}
+    try:
+        best_day_labels = best_day_since.best_day_marker_labels(
+            [row.get("track_id") for row in top_rows if row.get("track_id")],
+            date_cls.fromisoformat(target_date),
+        )
+    except Exception as exc:  # a marker lookup must never block the card
+        print(f"[streams_image] best-day markers unavailable ({exc}).")
+    rows_html  = build_rows_html(top_rows, cover_map, track_album_map, image_cache, best_day_labels)
     first_rank = top_rows[0].get("rank", 1) if top_rows else 1
     last_rank  = top_rows[-1].get("rank", top_n) if top_rows else top_n
 

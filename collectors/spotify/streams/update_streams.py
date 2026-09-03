@@ -35,7 +35,7 @@ from finalize_update import (
     POST_ONLY_STEPS,
     FinalizeContext,
     PartialWebExporter,
-    ReadyAlbumBestDaySincePoster,
+    ReadyEraRecapPoster,
     ReadyAlbumUpdatePoster,
     ReadyDebutReleasePoster,
     ReadyBestDaySincePoster,
@@ -111,7 +111,7 @@ from history_store import (
 from artist_metadata import scrape_artist_metadata, scrape_artist_top_tracks, update_artist_metadata
 from git_ops import git_commit_and_push
 from config import NTFY_TOPIC
-from core.data_paths import RUNTIME_ROOT, first_existing_db_history, update_streams_dir
+from core.data_paths import RUNTIME_ROOT, WEB_EXPORT_DATA_DIR, first_existing_db_history, update_streams_dir
 from core.notify import send as notify
 
 ROOT = RUNTIME_ROOT
@@ -468,6 +468,53 @@ def _upload_update_signal(stats_date: str) -> None:
         print(f"[signal] Update signal uploaded for {stats_date}")
     except Exception as e:
         print(f"[signal] Upload failed (non-blocking): {e}")
+
+
+_BEST_DAY_SINCE_R2_LOCK = threading.Lock()
+
+
+def _upload_best_day_since_list(stats_date: str) -> None:
+    """Push the freshly-written best_day_since.json (track rows, album rows, era
+    recap groups, full list) to R2 during collection, so the site reflects the
+    day's best-day records before the full finalize export runs. Mirrors
+    _upload_update_signal: best effort, never blocks. The local file is written
+    by the partial web export the best-day watchers already trigger."""
+    try:
+        import boto3 as _boto3
+    except ImportError:
+        return
+
+    r2_account = os.getenv("R2_ACCOUNT_ID", "").strip()
+    r2_key_id = os.getenv("R2_ACCESS_KEY_ID", "").strip()
+    r2_secret = os.getenv("R2_SECRET_ACCESS_KEY", "").strip()
+    r2_bucket = os.getenv("R2_BUCKET", "").strip()
+    if not all([r2_account, r2_key_id, r2_secret, r2_bucket]):
+        return
+    if os.getenv("UPLOAD_TO_R2", "").strip().lower() in ("0", "false", "no"):
+        return
+
+    src = WEB_EXPORT_DATA_DIR / "best_day_since.json"
+    if not src.exists():
+        return
+
+    with _BEST_DAY_SINCE_R2_LOCK:
+        try:
+            body = src.read_bytes()
+            s3 = _boto3.client(
+                "s3",
+                endpoint_url=f"https://{r2_account}.r2.cloudflarestorage.com",
+                aws_access_key_id=r2_key_id,
+                aws_secret_access_key=r2_secret,
+            )
+            s3.put_object(
+                Bucket=r2_bucket,
+                Key="data/best_day_since.json",
+                Body=body,
+                ContentType="application/json; charset=utf-8",
+            )
+            print(f"[best_day_since] List uploaded to R2 for {stats_date} ({len(body):,} bytes).")
+        except Exception as e:
+            print(f"[best_day_since] R2 upload failed (non-blocking): {e}")
 
 
 def print_help() -> None:
@@ -3228,7 +3275,7 @@ def main():
     )
     debut_release_poster.start()
 
-    album_best_day_since_poster = ReadyAlbumBestDaySincePoster(
+    era_recap_poster = ReadyEraRecapPoster(
         script_dir=_SCRIPT_DIR,
         stats_date=stats_date,
         export_web_data=early_web_export_gate.export_partial,
@@ -3239,8 +3286,9 @@ def main():
         no_post_mode=no_post_mode,
         target_albums=album_names,
         priority_ready=debut_release_poster.is_done,
+        on_post=lambda: _upload_best_day_since_list(stats_date),
     )
-    album_best_day_since_poster.start()
+    era_recap_poster.start()
 
     album_update_poster = ReadyAlbumUpdatePoster(
         script_dir=_SCRIPT_DIR,
@@ -3290,6 +3338,7 @@ def main():
         min_pct_change=EARLY_BEST_DAY_MIN_PCT_CHANGE,
         min_score=EARLY_BEST_DAY_MIN_SCORE,
         priority_ready=debut_release_poster.is_done,
+        on_post=lambda: _upload_best_day_since_list(stats_date),
     )
     best_day_since_poster.start()
 
@@ -3788,25 +3837,25 @@ def main():
     else:
         print("Skipping legacy site-history CSV migration: this collector writes db/streams_history.csv directly.")
 
-    # Stop the thread only. A best-day-since album card posted early must NOT
-    # suppress that album's regular update-table card in finalize — different
-    # card, and every album gets its update card every weekday now.
-    album_best_day_since_poster.stop()
+    era_recap_poster.stop()
     posted_album_updates = album_update_poster.stop()
     posted_best_day_since_tracks = best_day_since_poster.stop()
     debut_post_state = debut_release_poster.stop()
-    album_best_day_post_state = album_best_day_since_poster.post_state()
+    # Push the day's best-day list (rows + era recap groups) to R2 once the early
+    # lane is done, ahead of the full finalize export.
+    _upload_best_day_since_list(stats_date)
+    era_recap_post_state = era_recap_poster.post_state()
     album_post_state = album_update_poster.post_state()
     best_day_since_post_state = best_day_since_poster.post_state()
     initial_post_state = {
         "posted_count": (
-            album_best_day_post_state["posted_count"]
+            era_recap_post_state["posted_count"]
             + album_post_state["posted_count"]
             + best_day_since_post_state["posted_count"]
             + debut_post_state["posted_count"]
         ),
         "last_post_at": max(
-            album_best_day_post_state["last_post_at"],
+            era_recap_post_state["last_post_at"],
             album_post_state["last_post_at"],
             best_day_since_post_state["last_post_at"],
             debut_post_state["last_post_at"],
