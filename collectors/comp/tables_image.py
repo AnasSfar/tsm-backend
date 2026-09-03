@@ -754,6 +754,7 @@ def build_table_html(
     col_gap: int = 8,
     extra_css: str = "",
     header_background: str | None = None,
+    header_image: Path | None = None,
     handle_color_override: str | None = None,
     logo_svg: str = SPOTIFY_SVG,
     masthead_word: str | None = None,
@@ -769,9 +770,15 @@ def build_table_html(
     instead of the classic glassmorphism table.
     masthead_theme: "dark" (default) or "light" — only used when masthead_word
     is set.
+    header_image: use this exact image instead of a random pick from
+    headers_dir. Needed when the caller already scoped candidates down to a
+    specific subset (e.g. one album/era) — headers_dir may be a shared root
+    that also holds unrelated headers, so re-scanning it here would defeat
+    that scoping (e.g. legacy flat-file albums under db/discography/headers/
+    all live next to each other in the same directory).
     """
     theme = _LEDGER_THEME_TOKENS.get(masthead_theme, _LEDGER_THEME_TOKENS["dark"])
-    header_img = None if header_background else pick_header_image(headers_dir)
+    header_img = None if header_background else (header_image or pick_header_image(headers_dir))
     handle_color = handle_color_override or "#1db954"
     if header_background:
         hdr_style = f'style="background:{header_background};"'

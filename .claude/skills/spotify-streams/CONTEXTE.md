@@ -503,6 +503,24 @@ une ere** part quand cette ere a une grosse journee :
   la logique de l'ancien `_album_recap_theme` (pool de headers de l'album via
   `generate_album_update_image.header_images_for_album`, masthead "BEST DAY",
   titre `{Ere} - Best Day Recap`, override light Holiday Collection).
+  **Piege corrige (2026-09-03)** : `header_images_for_album(...)` filtre bien la
+  liste par album, mais le code ne s'en servait que pour deriver un
+  `headers_dir` (`album_headers[0].parent`) passe a `build_table_html`, qui
+  rappelle `tables_image.pick_header_image(headers_dir)` — une fonction
+  generique qui **re-scanne tout le dossier** au hasard. Pour la plupart des
+  albums (structure "plate" heritee, tous les fichiers directement sous
+  `db/discography/headers/`, pas de sous-dossier par album — seuls
+  `reputation/` et `the life of a showgirl/` en ont un), `headers_dir`
+  pointait sur la racine **partagee par tous les albums** : une card recap
+  "Red" pouvait afficher le header d'une autre ere (ex. Debut/`taylor
+  swift.png`) au hasard. Fix : `build_table_html` accepte maintenant un
+  `header_image: Path | None` explicite (bypass le re-scan) ;
+  `_generate_recap_image` le renseigne via le picker deja correctement scope
+  `generate_album_update_image.pick_header_image(era_display, masthead_theme)`
+  au lieu de compter sur `headers_dir` seul. Reflexe pour toute nouvelle card
+  qui reutilise `build_table_html(headers_dir=...)` avec une intention
+  "scopee a un sous-ensemble" : verifier que `headers_dir` n'est pas en fait
+  un dossier partage avec d'autres contenus non voulus.
 - **Additive** : les chansons restent dans le recap global.
 - **Suppression** : une fois la card d'une ere postee (lock
   `best_day_since_era_recap_locks/{slug}.lock`), **aucune card best-day-since

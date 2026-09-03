@@ -1309,8 +1309,16 @@ def _generate_recap_image(
         subtitle = f"{themed_count} songs from the era hit a best-day-since record - {date_text}"
         if "holiday collection" in era_display.casefold():
             masthead_theme = "light"
+        # Pick via the album-scoped picker rather than passing headers_dir down to
+        # build_table_html's generic pick_header_image(headers_dir): legacy flat-file
+        # albums (most of them - only a few use the new per-album subfolder layout)
+        # all live directly under HEADERS_DIR, so headers_dir there is the shared
+        # root, not this era's own folder. Re-scanning it would surface any era's
+        # header at random (e.g. a "Red" recap picking the Debut-era header).
+        header_image = generate_album_update_image.pick_header_image(era_display, masthead_theme) if album_headers else None
     else:
         headers_dir = RECAP_HEADERS_DIR
+        header_image = None
         title = "Best Day Since - Full Recap"
         subtitle = f"Every song that hit a best-day-since record - {date_text}"
     if page_count > 1:
@@ -1334,6 +1342,7 @@ def _generate_recap_image(
         handle="@swiftiescharts",
         date_str=date_text,
         headers_dir=headers_dir,
+        header_image=header_image,
         body_width=960,
         art_size=48,
         masthead_word=masthead_word,
