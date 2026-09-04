@@ -36,7 +36,6 @@ from finalize_update import (
     FinalizeContext,
     PartialWebExporter,
     ReadyEraRecapPoster,
-    ReadyAlbumUpdatePoster,
     ReadyDebutReleasePoster,
     ReadyBestDaySincePoster,
     SharedWebExportGate,
@@ -571,8 +570,8 @@ Usage:
       Post only the selected step(s) from existing history data for the latest
       available date (or the provided date). No scraping, no web export, no git.
       Completeness guards, posting locks and weekday rules still apply.
-      Steps (comma- or space-separated): top-eras, all-albums, top20, recap,
-      milestones, overtakes, best-day-since, debut, gainers, album-updates.
+      Steps (comma- or space-separated): top-eras, all-albums, top20, top45,
+      recap, weekend-gainers, milestones, overtakes, best-day-since, debut, gainers.
       Add --no-post to only generate the images without posting.
 
   python update_streams.py --no-post
@@ -3290,19 +3289,9 @@ def main():
     )
     era_recap_poster.start()
 
-    album_update_poster = ReadyAlbumUpdatePoster(
-        script_dir=_SCRIPT_DIR,
-        stats_date=stats_date,
-        export_web_data=early_web_export_gate.export_partial,
-        album_tracks_done_for=album_tracks_done_for,
-        spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
-        log_mode=LOG_MODE,
-        no_post_mode=no_post_mode,
-        target_albums=list(ALBUM_UPDATE_TARGETS),
-        # Pas de cards album le week-end (rÃ¨gle posting) : early poster inclus.
-        enabled=date.fromisoformat(stats_date).weekday() < 5,
-    )
-    album_update_poster.start()
+    # Plus de post d'album pendant la collecte (décision 2026-09-03) : toutes les
+    # cards album partent en finalize, dans l'ordre par score_album_update
+    # (2 meilleurs -> Showgirl/TTPD -> reste), alternées avec les autres posts.
 
     priority_best_day_track_ids = build_priority_best_day_track_ids(
         tracks,
@@ -3739,7 +3728,6 @@ def main():
     else:
         print("Run finished, but not all target tracks are done.")
         print("Keeping local progress only; final export/post will run after all blocking tracks are collected.")
-        album_update_poster.stop()
         best_day_since_poster.stop()
         if not debug_daily_mode and not local_test_mode:
             notify(
@@ -3838,25 +3826,25 @@ def main():
         print("Skipping legacy site-history CSV migration: this collector writes db/streams_history.csv directly.")
 
     era_recap_poster.stop()
-    posted_album_updates = album_update_poster.stop()
+    # Album cards are no longer posted during collection (decision 2026-09-03);
+    # finalize posts them all. Kept as an (always empty) set so _post_one_album's
+    # anti-double-post skip signature is unchanged.
+    posted_album_updates: set[str] = set()
     posted_best_day_since_tracks = best_day_since_poster.stop()
     debut_post_state = debut_release_poster.stop()
     # Push the day's best-day list (rows + era recap groups) to R2 once the early
     # lane is done, ahead of the full finalize export.
     _upload_best_day_since_list(stats_date)
     era_recap_post_state = era_recap_poster.post_state()
-    album_post_state = album_update_poster.post_state()
     best_day_since_post_state = best_day_since_poster.post_state()
     initial_post_state = {
         "posted_count": (
             era_recap_post_state["posted_count"]
-            + album_post_state["posted_count"]
             + best_day_since_post_state["posted_count"]
             + debut_post_state["posted_count"]
         ),
         "last_post_at": max(
             era_recap_post_state["last_post_at"],
-            album_post_state["last_post_at"],
             best_day_since_post_state["last_post_at"],
             debut_post_state["last_post_at"],
         ),

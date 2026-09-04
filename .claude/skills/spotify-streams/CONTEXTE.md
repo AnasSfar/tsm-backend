@@ -134,7 +134,7 @@ Ne pas supprimer un lock sans verifier quelle etape il protege.
 Priorite de post X (2026-08-28) : `finalize_update._subprocess_env` pose
 `TWITTER_POST_PRIORITY=3` par defaut pour toutes les etapes de post ; les posts
 « priority early » pendant la collecte (debut releases, best-day-since early)
-descendent a `0`, le sweep album quotidien (jours de semaine) monte a `4`. Quand charts
+descendent a `0`, les cards album (jours de semaine) montent a `4`. Quand charts
 run_all (`TWITTER_POST_PRIORITY=1`) poste en meme temps, ses tweets passent
 devant les etapes streams finalize. Mecanisme + bareme -> skill `data-rules`,
 implementation -> `core/twitter.py::_twitter_account_slot`.
@@ -448,13 +448,14 @@ card update quotidienne** au lieu de poster une 2e card.
   `_post_album_best_day_rows`, `_album_best_day_lock_path` /
   `_write_album_best_day_lock`, `ALBUM_BEST_DAY_MIN_DAYS` (deplace dans
   `generate_album_update_image`). `finalize_update.ReadyAlbumBestDaySincePoster`
-  -> `ReadyEraRecapPoster` (ne fait plus que la card recap par ere ; l'early
-  album update card reste `ReadyAlbumUpdatePoster`, weekday-only). Cote
+  -> `ReadyEraRecapPoster` (ne fait plus que la card recap par ere). Cote
   `update_streams` : `album_best_day_since_poster` -> `era_recap_poster`,
   `stop()` ne renvoie plus rien.
-- `_exceptional_primary_albums` (finalize) garde `compute_album_best_day_since`
-  pour **prioriser l'ordre** des cards album early — c'est desormais la seule
-  mise en avant d'un best-day album.
+- Best-day album : plus de mise en avant dediee dans l'ordre de post. Il compte
+  via les bonus de `score_album_update` (biggest-day-of-year / best-ever / nb de
+  tracks record). Voir « Refonte de l'ordre de post en finalize (2026-09-03) ».
+  (`ReadyAlbumUpdatePoster` et `_exceptional_primary_album_update_targets` sont
+  supprimes le meme jour.)
 
 ## Recap best-day-since : header fixe "all eras", plus de theme d'album (2026-09-03)
 
@@ -499,10 +500,16 @@ une ere** part quand cette ere a une grosse journee :
   encore 5 chansons / 1 erreur), declenche par `ReadyEraRecapPoster`
   (une fois par ere, `_era_recap_checked`). **Cap early = 2**
   (`EARLY_ERA_RECAP_MAX_POSTS`), **ne consomme pas** le quota chanson early.
-- **Header = theme de l'ere** : `_generate_recap_image(era_display=...)` reprend
-  la logique de l'ancien `_album_recap_theme` (pool de headers de l'album via
-  `generate_album_update_image.header_images_for_album`, masthead "BEST DAY",
-  titre `{Ere} - Best Day Recap`, override light Holiday Collection).
+- **Header = theme de l'ere** : `_generate_recap_image(era_display=...)` pool de
+  headers de l'ere via `generate_album_update_image.header_images_for_album`,
+  masthead "BEST DAY", **masthead force `dark`** tous les jours (sauf Holiday
+  Collection = light), titre `{Ere} - Best Day Recap`.
+- **Nom de l'ere = nom de base, jamais « (Taylor's Version) »** (2026-09-04) :
+  `era_recap_groups` prend `best_day_since.era_display_name(album)` (comme
+  `era_key` mais garde la casse : « 1989 (Taylor's Version) » -> « 1989 »,
+  « Red (Taylor's Version) » -> « Red », « evermore » reste minuscule) pour le
+  header ET le tweet (`best_day_since_era_recap_tweet(era=...)`). Un recap de
+  chansons de l'ere originale ne doit jamais s'afficher « (Taylor's Version) ».
 - **Additive** : les chansons restent dans le recap global.
 - **Suppression** : une fois la card d'une ere postee (lock
   `best_day_since_era_recap_locks/{slug}.lock`), **aucune card best-day-since
@@ -557,15 +564,61 @@ saisonnier Holiday Collection ici (parite avec l'image d'album).
 - API : `score_albums(names, target: date)` -> liste triee, `rank_albums(names,
   target_date: str)` -> liste de noms best-first (ne leve jamais). Cache
   process-local : `_history()`, `_RECORD_IDS_CACHE`, `_SCORE_CACHE`,
-  `_ALBUM_TRACK_IDS_CACHE` — `finalize_update` score les albums plusieurs fois
-  par run (primary / extra / all-albums), le 1er appel paie ~35-40s
-  (`_album_record_track_ids` scanne les ~700 tracks + `load_album_sections`
-  x17), les suivants sont instantanes.
+  `_ALBUM_TRACK_IDS_CACHE` — le 1er appel paie ~35-40s (`_album_record_track_ids`
+  scanne les ~700 tracks + `load_album_sections` x17), les suivants sont
+  instantanes.
 - Cablage : `finalize_update._rank_albums_for_posting(albums, stats_date)`
   wrappe `score_albums` avec fallback tri par `_album_daily_total` si ca
-  echoue (l'ordre ne doit jamais bloquer un post). Applique dans
-  `_post_all_albums` (sweep), `_post_album_updates` scope `extra` et `primary`,
-  et la boucle primary de `run_final_update_tasks`.
+  echoue (l'ordre ne doit jamais bloquer un post). Consomme par
+  `_album_post_queue(ctx, stats_date)` (voir section « Refonte ordre de post »
+  ci-dessous), qui pilote `_post_all_albums` et l'alternance de
+  `run_final_update_tasks`.
+
+## Refonte de l'ordre de post en finalize (2026-09-03)
+
+Decision proprietaire : un ordre unique et lisible, plus de chemins d'album
+multiples.
+
+**Nouvel ordre dans `finalize_update.run_final_update_tasks`** (chaque etape reste
+un `_guarded_post_step` independant) :
+
+1. `weekend recap card` (`_post_daily_recap_card`) — en tout premier (no-op en
+   semaine : genere la card en `--no-post` et sort ; poste vraiment le week-end).
+2. `top eras post` (`_post_albums_daily`) — hors debug/local.
+3. `top 20 songs post` (`_post_streams_image`).
+4. **Phase alternee 1-pour-1** entre :
+   - la **file album** `_album_post_queue(ctx, stats_date)` : `_rank_albums_for_posting`
+     (score `score_album_update`) sur **tous** les albums non-Misc, puis
+     `[2 meilleurs] + [Showgirl, TTPD s'ils ne sont pas dans le top 2] + [reste par score]`.
+     Vide le week-end / en debug / en local.
+   - les **autres posts**, dans l'ordre : `debut posts`, `best-day-since posts`
+     (hors debug/local), `weekend song gainers`, `song overtakes`, `stream milestones`.
+   - boucle : album, autre, album, autre… jusqu'a epuisement des deux files.
+     Chaque card album passe par `_post_one_album(..., post_priority="4")`.
+5. `if debug/local: return` (avant les tables gainers, comme avant).
+6. `stream highlights tables` (`_post_spotlight_gainers`) — **toujours en dernier**.
+
+**Supprime :**
+- `ReadyAlbumUpdatePoster` (classe + instanciation `album_update_poster` dans
+  `update_streams.py` + import + `.stop()` / `.post_state()` / `posted_album_updates`).
+  `posted_album_updates` reste passe a `FinalizeContext` mais est toujours `set()`.
+- `_post_album_updates` (+ cle `POST_ONLY_STEPS["album-updates"]`), `_primary_album_update_names`,
+  `_primary_album_update_targets`, `_exceptional_primary_album_update_targets`,
+  `_album_gain_update_targets`, `_album_gainer_update_targets`,
+  `_album_majority_positive_targets`, `_album_by_track_id`, `_append_unique_album_targets`.
+- Constantes `ALBUM_UPDATE_GAIN_THRESHOLD_PCT`, `EXCEPTIONAL_PRIMARY_ALBUM_*`,
+  `GAINER_ALBUM_UPDATE_*`. Imports `generate_albums_image`, `post_gainer_thread`
+  retires de `finalize_update.py`.
+- Bloc `primary album update` + `extra album updates` de `run_final_update_tasks`.
+
+**Conserve :**
+- `PRIMARY_ALBUM_UPDATE_TARGETS` = liste « forcee » (Showgirl / TTPD) apres le top 2.
+- `ALBUM_UPDATE_TARGETS` = uniquement la **priorite de scrape**
+  (`update_streams.build_album_post_priority_track_ids`), plus aucun effet de post.
+- `_post_all_albums` = entrypoint `--post-only all-albums` + fallback weekday,
+  itere sur `_album_post_queue`.
+- `--post-only` : `top20`, `top45`, `top-eras`, `all-albums`, `recap`,
+  `best-day-since`, `debut`, `gainers`, `weekend-gainers`, `overtakes`, `milestones`.
 
 ## Bug fixe : badge "of the year" invisible dans l'update album (2026-08-22)
 
@@ -813,13 +866,11 @@ combined recap card du week-end (`post_weekend_streams_twitter.py`,
 Decision produit : ces deux posts doivent maintenant sortir aussi le
 week-end, en plus de la recap combinee. Gardes weekend supprimees dans
 `finalize_update.py` (`_post_streams_image`, `_post_albums_daily`) et dans
-`post_albums_twitter.py::main` (meme garde dupliquee cote script). Les deux
-posts restent dans l'ordre d'etapes existant (`top eras post` avant `top 20
-songs post`, apres `daily recap card`/`weekend song gainers`), rien
-d'autre n'a change dans l'ordonnancement. Ne pas confondre avec la regle
-distincte "pas de cards album individuelles le week-end"
-(`_post_album_updates`, toujours sautee le week-end — non concernee par ce
-changement).
+`post_albums_twitter.py::main` (meme garde dupliquee cote script). Ordre
+actuel (cf. « Refonte de l'ordre de post en finalize (2026-09-03) ») : `weekend
+recap card` -> `top eras post` -> `top 20 songs post` -> reste. Ne pas confondre
+avec la regle distincte "pas de cards album individuelles le week-end" (file
+`_album_post_queue` vide le week-end).
 
 ## Bug fixe : track chart_extra en erreur API bloquait tout le finalize (2026-08-24)
 
@@ -1114,21 +1165,27 @@ dark le week-end (sam/dim)**. Base sur la **date des donnees postees**
     `build_table_html` passait `masthead_theme="dark"` en dur, remplace.
   - `generate_weekend_streams_image.py` (recap quotidien) — `build_html` /
     `generate` calculent ; CLI `--light` / `--dark` force pour tester.
-  - `post_best_day_since_twitter.py::_generate_recap_image` (recap Best Day
-    Since, "BEST DAY") — header fixe "all eras" + masthead toujours actif
-    depuis 2026-09-03 (cf. section "Recap best-day-since : header fixe" plus
-    haut), suit `masthead_theme_for_date` sans override.
-- **Plus d'override d'ere** (depuis 2026-09-03) : le recap Best Day Since n'a
-  plus de theming par album, donc plus d'exception « Holiday Collection reste
-  light ». Il suit la regle du jour comme les autres cards. TTPD/Showgirl
-  restent un systeme `theme_variant` separe sur `generate_album_update_image.py`,
-  hors de cette regle.
+  - `post_best_day_since_twitter.py::_generate_recap_image` — le recap **global**
+    (header fixe "all eras", "BEST DAY", `era_display=None`) suit
+    `masthead_theme_for_date` sans override. La card recap **PAR ERE**
+    (`era_display` non nul) force `masthead_theme="dark"` **tous les jours**
+    (2026-09-04) pour que la photo de l'ere ressorte au lieu de blanchir en
+    semaine ; seul « Holiday Collection » reste `light` (theme Noel).
+- **Plus d'override d'ere sur le recap global** (depuis 2026-09-03) : le recap
+  global n'a plus de theming par album, donc plus d'exception « Holiday
+  Collection reste light » cote global. Il suit la regle du jour comme les
+  autres cards. TTPD/Showgirl restent un systeme `theme_variant` separe sur
+  `generate_album_update_image.py`, hors de cette regle.
 - **Recap Best Day Since** : ses lignes utilisent les classes classiques
   `.data-row`/`.col-*` (pas `.ledger-*`), qui ont un fond quasi-blanc et un
   texte sombre code en dur. Donc son theme "dark" n'assombrit que le header +
   les rails ledger (le corps reste clair) ; en "light" tout est coherent.
   Ecart pre-existant, pas regle ici — a garder en tete si un jour on refait
   ce recap sur des vraies `.ledger-row`.
+- **Colonne "Best Since"** : `grid_cols` = 150px (etait 130px) et
+  `comp.tables_image` `.col-num` a `text-align:right` (2026-09-04) pour que les
+  dates longues type « September 26th, 2025 » ne s'affichent plus a gauche /
+  sur 2 lignes desalignees quand elles debordent.
 - **Verifie** : recap regénéré sur 2026-08-24 (lun, light) / 08-23 (dim, dark)
   / 08-22 (sam, dark) / 08-20 (jeu, light) ; Top Eras + Top Songs regénérés
   sur 08-24 (light) — PNG inspectes, vert/rouge OK, contrastes OK.

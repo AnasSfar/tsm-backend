@@ -1307,6 +1307,10 @@ def _generate_recap_image(
         )
         title = f"{era_display} - Best Day Recap"
         subtitle = f"{themed_count} songs from the era hit a best-day-since record - {date_text}"
+        # The per-era recap is an era-themed card: force the dark masthead every
+        # day (not the weekday light/dark rule) so the era's header photo reads
+        # through instead of washing out to white on weekday posts.
+        masthead_theme = "dark"
         if "holiday collection" in era_display.casefold():
             masthead_theme = "light"
     else:
@@ -1329,7 +1333,7 @@ def _generate_recap_image(
             ("Vs Week", True),
             ("Best Since", True),
         ],
-        grid_cols="48px minmax(220px,1fr) 100px 76px 76px 130px",
+        grid_cols="48px minmax(200px,1fr) 100px 76px 76px 150px",
         rows_html="\n".join(rows_html),
         handle="@swiftiescharts",
         date_str=date_text,

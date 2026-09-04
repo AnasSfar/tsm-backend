@@ -15,8 +15,12 @@ from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeo
 TWITTER_COORD_DIR = Path(tempfile.gettempdir()) / "tsm_twitter_posts"
 TWITTER_COORD_LOCK = TWITTER_COORD_DIR / "coordinator.lock"
 TWITTER_POST_LOCK_TIMEOUT = 30 * 60
-TWITTER_ACCOUNT_SPACING_MIN_SECONDS = int(os.getenv("TWITTER_ACCOUNT_SPACING_MIN_SECONDS", "120"))
-TWITTER_ACCOUNT_SPACING_MAX_SECONDS = int(os.getenv("TWITTER_ACCOUNT_SPACING_MAX_SECONDS", "180"))
+# Owner rule (data-rules): ~60 s between posts on the same account, "pas 180".
+# A flat 60 s was in force until commit 8dce8e5b6 (2026-08-28) silently bumped it
+# to a random 120-180 s inside an unrelated commit, which ~doubled every finalize
+# run (30 posts x ~90 s extra). Restored 2026-09-04, keeping a small jitter.
+TWITTER_ACCOUNT_SPACING_MIN_SECONDS = int(os.getenv("TWITTER_ACCOUNT_SPACING_MIN_SECONDS", "60"))
+TWITTER_ACCOUNT_SPACING_MAX_SECONDS = int(os.getenv("TWITTER_ACCOUNT_SPACING_MAX_SECONDS", "75"))
 TWITTER_MAX_ACTIVE_ACCOUNTS = int(os.getenv("TWITTER_MAX_ACTIVE_ACCOUNTS", "2"))
 TWITTER_FILE_UPLOAD_TIMEOUT_MS = int(os.getenv("TWITTER_FILE_UPLOAD_TIMEOUT_MS", "120000"))
 TWITTER_COMPOSE_EDITOR_TIMEOUT_MS = int(os.getenv("TWITTER_COMPOSE_EDITOR_TIMEOUT_MS", "60000"))

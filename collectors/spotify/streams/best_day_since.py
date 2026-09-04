@@ -20,6 +20,7 @@ from __future__ import annotations
 import argparse
 import calendar
 import csv
+import functools
 import json
 import re
 import sys
@@ -169,7 +170,11 @@ def is_extra_track(section: dict, item: dict) -> bool:
     ) is not None
 
 
+@functools.lru_cache(maxsize=None)
 def load_tracks(*, include_extras: bool = False) -> dict[str, Track]:
+    # Per-process cache: every caller treats the result read-only (lookups only)
+    # and the discography/history files don't change within a posting run. Callers
+    # that need to mutate must copy first. Clear with ``load_tracks.cache_clear()``.
     sections = load_album_sections()
     if include_extras:
         sections.extend(load_song_sections())
@@ -200,7 +205,11 @@ def load_tracks(*, include_extras: bool = False) -> dict[str, Track]:
     return tracks
 
 
+@functools.lru_cache(maxsize=1)
 def load_history() -> dict[str, list[Point]]:
+    # Per-process cache: parsing the ~40 MB streams_history.csv costs ~2 s and
+    # several scripts call this 3-5x per run. Read-only for all callers; the CSV
+    # is not rewritten mid-run. Clear with ``load_history.cache_clear()``.
     history: dict[str, list[Point]] = {}
     if not HISTORY_PATH.exists():
         return history
@@ -446,17 +455,13 @@ _ERA_KEY_ALIASES = {
 }
 
 
-def era_key(album: str | None) -> str:
-    """Normalize an album name to a stable era key: collapses Taylor's Version,
-    deluxe / anniversary / 3am / Til Dawn / anthology editions and karaoke onto
-    the base era so "Red" and "Red (Taylor's Version)" group together."""
+def _strip_edition_suffixes(album: str | None) -> str:
+    """Remove Taylor's Version / deluxe / anniversary / 3am / Til Dawn / anthology
+    / karaoke markers from an album name, preserving the original casing.
+    "1989 (Taylor's Version)" -> "1989", "folklore: the long pond..." -> "folklore"."""
     text = re.sub(r"\s+", " ", (album or "").strip())
     if not text:
         return ""
-
-    normalized = text.casefold()
-    if normalized in _ERA_KEY_ALIASES:
-        return _ERA_KEY_ALIASES[normalized]
 
     text = re.sub(r"\s*\(taylor's version\)", "", text, flags=re.IGNORECASE)
     text = re.sub(
@@ -478,7 +483,30 @@ def era_key(album: str | None) -> str:
     if karaoke_match:
         text = karaoke_match.group(1)
 
-    return re.sub(r"\s+", " ", text.strip()).casefold()
+    return re.sub(r"\s+", " ", text.strip())
+
+
+def era_key(album: str | None) -> str:
+    """Normalize an album name to a stable era key: collapses Taylor's Version,
+    deluxe / anniversary / 3am / Til Dawn / anthology editions and karaoke onto
+    the base era so "Red" and "Red (Taylor's Version)" group together."""
+    text = re.sub(r"\s+", " ", (album or "").strip())
+    if not text:
+        return ""
+
+    normalized = text.casefold()
+    if normalized in _ERA_KEY_ALIASES:
+        return _ERA_KEY_ALIASES[normalized]
+
+    return _strip_edition_suffixes(text).casefold()
+
+
+def era_display_name(album: str | None) -> str:
+    """Human era label for an album name: like ``era_key`` but keeps the original
+    casing (so "1989 (Taylor's Version)" -> "1989", not "1989" lowercased and not
+    the Taylor's Version title). Used for the per-era best-day recap card header
+    and tweet so a recap of original-era songs never reads "(Taylor's Version)"."""
+    return _strip_edition_suffixes(album)
 
 
 def _era_recap_post_gate_ok(
@@ -525,7 +553,13 @@ def era_recap_groups(
     """
     tracks = tracks if tracks is not None else load_tracks(include_extras=False)
     history = history if history is not None else load_history()
-    display_names = {era_key(album): album for album in load_album_track_ids(tracks)}
+    # Canonical era label per key (all album names of one era collapse to the same
+    # base name, e.g. "1989" and "1989 (Taylor's Version)" -> "1989").
+    display_names = {
+        era_key(album): (era_display_name(album) or album)
+        for album in load_album_track_ids(tracks)
+        if era_key(album)
+    }
 
     buckets: dict[str, list[dict]] = {}
     for track_id, track in tracks.items():
@@ -555,7 +589,7 @@ def era_recap_groups(
         rows.sort(key=sort_key, reverse=True)
         groups.append({
             "era_key": key,
-            "album": display_names.get(key, rows[0]["album"]),
+            "album": display_names.get(key) or era_display_name(rows[0]["album"]) or rows[0]["album"],
             "count": len(rows),
             "track_ids": [row["track_id"] for row in rows],
             "items": rows,

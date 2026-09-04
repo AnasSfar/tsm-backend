@@ -526,6 +526,7 @@ body{
 .col-num{
   font-size:14px;color:#344054;font-weight:500;
   display:flex;align-items:center;justify-content:flex-end;
+  text-align:right;
 }
 .pos{color:#067647;font-weight:600}
 .neg{color:#b42318;font-weight:600}
